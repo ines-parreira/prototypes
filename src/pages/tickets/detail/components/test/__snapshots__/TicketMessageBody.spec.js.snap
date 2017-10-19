@@ -145,13 +145,13 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
     >
       <div>
         <div>
-          <ta
+          <Card
             tag="div"
           >
             <div
               className="card"
             >
-              <Aa
+              <CardImg
                 src="https://cdn.shopify.com/s/files/1/1632/0429/products"
                 tag="img"
                 top={true}
@@ -162,14 +162,14 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
                   src="https://cdn.shopify.com/s/files/1/1632/0429/products"
                   width="100%"
                 />
-              </Aa>
-              <ba
+              </CardImg>
+              <CardBlock
                 tag="div"
               >
                 <div
                   className="card-block"
                 >
-                  <Xa
+                  <CardTitle
                     tag="h4"
                   >
                     <h4
@@ -177,8 +177,8 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
                     >
                       Fixie bike
                     </h4>
-                  </Xa>
-                  <Ua
+                  </CardTitle>
+                  <CardSubtitle
                     tag="h6"
                   >
                     <h6
@@ -186,10 +186,10 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
                     >
                       $200.00
                     </h6>
-                  </Ua>
+                  </CardSubtitle>
                 </div>
-              </ba>
-              <ws
+              </CardBlock>
+              <ButtonGroup
                 role="group"
                 tag="div"
                 vertical={true}
@@ -198,7 +198,7 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
                   className="btn-group-vertical"
                   role="group"
                 >
-                  <ei
+                  <Button
                     color="secondary"
                     href="https://sfbicycles.myshopify.com/products/fixie-bike"
                     tag="a"
@@ -212,8 +212,8 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
                     >
                       View details
                     </a>
-                  </ei>
-                  <ei
+                  </Button>
+                  <Button
                     color="secondary"
                     disabled={true}
                     tag="button"
@@ -225,8 +225,8 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
                     >
                       Share
                     </button>
-                  </ei>
-                  <ei
+                  </Button>
+                  <Button
                     color="secondary"
                     href="https://messenger-commerce.shopifyapps.com/redirect_to_cart"
                     tag="a"
@@ -240,11 +240,11 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
                     >
                       Buy now
                     </a>
-                  </ei>
+                  </Button>
                 </div>
-              </ws>
+              </ButtonGroup>
             </div>
-          </ta>
+          </Card>
         </div>
       </div>
     </FacebookCarousel>

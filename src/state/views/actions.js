@@ -327,7 +327,7 @@ export function fetchPage(page: ?number, discreet: boolean = false): thunkAction
     }
 }
 
-export function toggleSelection(idOrIds: number | Array<number>, selectAll: boolean = false) {
+export function toggleSelection(idOrIds: number | List<*>, selectAll: boolean = false) {
     return {
         type: types.TOGGLE_SELECTION,
         idOrIds,

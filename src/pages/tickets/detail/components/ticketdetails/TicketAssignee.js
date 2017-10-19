@@ -3,10 +3,12 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
 import {ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input} from 'reactstrap'
+import _isUndefined from 'lodash/isUndefined'
 
 import * as currentUserSelectors from '../../../../../state/currentUser/selectors'
 import * as usersSelectors from '../../../../../state/users/selectors'
 
+import shortcutManager from '../../../../../services/shortcutManager'
 import {AgentLabel} from '../../../../common/utils/labels'
 
 @connect((state) => {
@@ -37,6 +39,30 @@ export default class TicketAssignee extends React.Component {
         }
     }
 
+    componentDidMount() {
+        this._bindKeys()
+    }
+
+    componentWillUnmount() {
+        shortcutManager.unbind('TicketDetailContainer')
+    }
+
+    _bindKeys = () => {
+        shortcutManager.bind('TicketDetailContainer', {
+            OPEN_ASSIGNEE: {
+                action: (e) => {
+                    // shortcut key gets typed in the search field otherwisee
+                    e.preventDefault()
+                    this._toggle()
+                }
+            },
+            CLOSE_ASSIGNEE: {
+                key: 'esc',
+                action: () => this._toggle(false)
+            }
+        })
+    }
+
     _clearAgent = () => {
         this.props.setAgent(null)
         this.setState({search: ''})
@@ -47,8 +73,8 @@ export default class TicketAssignee extends React.Component {
         this.setState({search: ''})
     }
 
-    _toggle = () => {
-        const opens = !this.state.dropdownOpen
+    _toggle = (visible) => {
+        const opens = !_isUndefined(visible) ? visible : !this.state.dropdownOpen
 
         this.setState({
             dropdownOpen: opens,

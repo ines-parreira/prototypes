@@ -2,10 +2,10 @@
 
 exports[`ChatIntegrationAppearance component should display correctly when creating a new chat integration 1`] = `
 <div>
-  <gs
+  <Breadcrumb
     tag="ol"
   >
-    <bs
+    <BreadcrumbItem
       tag="li"
     >
       <Link
@@ -15,8 +15,8 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
       >
         Integrations
       </Link>
-    </bs>
-    <bs
+    </BreadcrumbItem>
+    <BreadcrumbItem
       tag="li"
     >
       <Link
@@ -26,24 +26,24 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
       >
         Chat
       </Link>
-    </bs>
-    <bs
+    </BreadcrumbItem>
+    <BreadcrumbItem
       tag="li"
     >
       New chat integration
-    </bs>
-  </gs>
+    </BreadcrumbItem>
+  </Breadcrumb>
   <h1>
     New chat integration
   </h1>
-  <gt
+  <Container
     fluid={true}
     tag="div"
   >
-    <bt
+    <Row
       tag="div"
     >
-      <Ot
+      <Col
         style={
           Object {
             "paddingLeft": 0,
@@ -60,7 +60,7 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
           ]
         }
       >
-        <rl
+        <Form
           className="ui form"
           onSubmit={[Function]}
           tag="form"
@@ -109,7 +109,7 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
               />
             </div>
           </div>
-          <ei
+          <Button
             className=""
             color="primary"
             disabled={false}
@@ -117,10 +117,10 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
             type="submit"
           >
             Add new chat
-          </ei>
-        </rl>
-      </Ot>
-      <Ot
+          </Button>
+        </Form>
+      </Col>
+      <Col
         className="p-0"
         tag="div"
         widths={
@@ -146,18 +146,18 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
           name=""
           offlineIntroductionText="We're offline!"
         />
-      </Ot>
-    </bt>
-  </gt>
+      </Col>
+    </Row>
+  </Container>
 </div>
 `;
 
 exports[`ChatIntegrationAppearance component should display correctly when integration is loading 1`] = `
 <div>
-  <gs
+  <Breadcrumb
     tag="ol"
   >
-    <bs
+    <BreadcrumbItem
       tag="li"
     >
       <Link
@@ -167,8 +167,8 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
       >
         Integrations
       </Link>
-    </bs>
-    <bs
+    </BreadcrumbItem>
+    <BreadcrumbItem
       tag="li"
     >
       <Link
@@ -178,30 +178,30 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
       >
         Chat
       </Link>
-    </bs>
-    <bs
+    </BreadcrumbItem>
+    <BreadcrumbItem
       tag="li"
     >
       hellosmoochintegration
-    </bs>
-    <bs
+    </BreadcrumbItem>
+    <BreadcrumbItem
       active={true}
       tag="li"
     >
       Appearance
-    </bs>
-  </gs>
+    </BreadcrumbItem>
+  </Breadcrumb>
   <h1>
     Appearance
   </h1>
-  <gt
+  <Container
     fluid={true}
     tag="div"
   >
-    <bt
+    <Row
       tag="div"
     >
-      <Ot
+      <Col
         style={
           Object {
             "paddingLeft": 0,
@@ -218,7 +218,7 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
           ]
         }
       >
-        <rl
+        <Form
           className="ui form"
           onSubmit={[Function]}
           tag="form"
@@ -267,7 +267,7 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
               />
             </div>
           </div>
-          <ei
+          <Button
             className="btn-loading"
             color="primary"
             disabled={true}
@@ -275,7 +275,7 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
             type="submit"
           >
             Save changes
-          </ei>
+          </Button>
           <ConfirmButton
             className="pull-right"
             color="danger"
@@ -292,9 +292,9 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
           >
             Delete chat
           </ConfirmButton>
-        </rl>
-      </Ot>
-      <Ot
+        </Form>
+      </Col>
+      <Col
         className="p-0"
         tag="div"
         widths={
@@ -320,18 +320,18 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
           name=""
           offlineIntroductionText="We're offline!"
         />
-      </Ot>
-    </bt>
-  </gt>
+      </Col>
+    </Row>
+  </Container>
 </div>
 `;
 
 exports[`ChatIntegrationAppearance component should display correctly when updating an existing integration 1`] = `
 <div>
-  <gs
+  <Breadcrumb
     tag="ol"
   >
-    <bs
+    <BreadcrumbItem
       tag="li"
     >
       <Link
@@ -341,8 +341,8 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
       >
         Integrations
       </Link>
-    </bs>
-    <bs
+    </BreadcrumbItem>
+    <BreadcrumbItem
       tag="li"
     >
       <Link
@@ -352,30 +352,30 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
       >
         Chat
       </Link>
-    </bs>
-    <bs
+    </BreadcrumbItem>
+    <BreadcrumbItem
       tag="li"
     >
       hellosmoochintegration
-    </bs>
-    <bs
+    </BreadcrumbItem>
+    <BreadcrumbItem
       active={true}
       tag="li"
     >
       Appearance
-    </bs>
-  </gs>
+    </BreadcrumbItem>
+  </Breadcrumb>
   <h1>
     Appearance
   </h1>
-  <gt
+  <Container
     fluid={true}
     tag="div"
   >
-    <bt
+    <Row
       tag="div"
     >
-      <Ot
+      <Col
         style={
           Object {
             "paddingLeft": 0,
@@ -392,7 +392,7 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
           ]
         }
       >
-        <rl
+        <Form
           className="ui form"
           onSubmit={[Function]}
           tag="form"
@@ -441,7 +441,7 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
               />
             </div>
           </div>
-          <ei
+          <Button
             className=""
             color="primary"
             disabled={false}
@@ -449,7 +449,7 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
             type="submit"
           >
             Save changes
-          </ei>
+          </Button>
           <ConfirmButton
             className="pull-right"
             color="danger"
@@ -466,9 +466,9 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
           >
             Delete chat
           </ConfirmButton>
-        </rl>
-      </Ot>
-      <Ot
+        </Form>
+      </Col>
+      <Col
         className="p-0"
         tag="div"
         widths={
@@ -494,8 +494,8 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
           name=""
           offlineIntroductionText="We're offline!"
         />
-      </Ot>
-    </bt>
-  </gt>
+      </Col>
+    </Row>
+  </Container>
 </div>
 `;

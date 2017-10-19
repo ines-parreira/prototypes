@@ -134,7 +134,7 @@ export function deleteUser(userId: number) {
     }
 }
 
-export function fetchUserHistory(userId: number, options: {successCondition?: (T: stateType) => void} = {}) {
+export function fetchUserHistory(userId: number, options: {successCondition?: (T: stateType) => boolean} = {}) {
     return (dispatch: dispatchType, getState: getStateType) => {
         dispatch({
             type: types.FETCH_USER_HISTORY_START,

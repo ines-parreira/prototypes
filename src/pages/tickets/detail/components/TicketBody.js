@@ -1,8 +1,11 @@
 import React, {PropTypes} from 'react'
 import moment from 'moment'
 import {connect} from 'react-redux'
+import _debounce from 'lodash/debounce'
 
 import * as ticketSelectors from '../../../../state/ticket/selectors'
+import shortcutManager from '../../../../services/shortcutManager'
+import {moveIndex} from '../../../common/utils/keyboard'
 
 import TicketMessage from './TicketMessage'
 import Event from './Event'
@@ -13,8 +16,14 @@ export class TicketBody extends React.Component {
         elements: PropTypes.object.isRequired,
         ticket: PropTypes.object.isRequired,
         setStatus: PropTypes.func.isRequired,
-        lastReadMessage: PropTypes.object
+        lastReadMessage: PropTypes.object,
     }
+
+    state = {
+        messageCursor: 0
+    }
+
+    _messageCursor = 0
 
     constructor(props) {
         super(props)
@@ -23,6 +32,42 @@ export class TicketBody extends React.Component {
         if (!props.elements.isEmpty()) {
             this.lastMessageDatetimeAfterMount = moment(props.elements.last().get('created_datetime'))
         }
+
+        this._messageCursor = props.elements.size - 1
+        this.state.messageCursor = this._messageCursor
+    }
+
+    componentDidMount() {
+        this._bindKeys()
+    }
+
+    componentWillUnmount() {
+        shortcutManager.unbind('TicketDetailContainer')
+    }
+
+    _updateCursorState = _debounce(() => {
+        this.setState({
+            messageCursor: this._messageCursor
+        })
+    })
+
+    _moveCursor(direction = 'next') {
+        const newCursorPosition = moveIndex(this._messageCursor, this.props.elements.size, {direction})
+        if (this._messageCursor !== newCursorPosition) {
+            this._messageCursor = newCursorPosition
+            this._updateCursorState()
+        }
+    }
+
+    _bindKeys() {
+        shortcutManager.bind('TicketDetailContainer', {
+            GO_NEXT_MESSAGE: {
+                action: () => this._moveCursor()
+            },
+            GO_PREV_MESSAGE: {
+                action: () => this._moveCursor('previous')
+            },
+        })
     }
 
     render() {
@@ -65,6 +110,7 @@ export class TicketBody extends React.Component {
                                 lastMessageDatetimeAfterMount={this.lastMessageDatetimeAfterMount}
                                 setStatus={setStatus}
                                 isLastReadMessage={isLastReadMessage}
+                                hasCursor={this.state.messageCursor === index}
                             />
                         )
                     })

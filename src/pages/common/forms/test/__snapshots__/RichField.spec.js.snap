@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RichField display alert 1`] = `
-<ml
+<FormGroup
   className=""
   color=""
   tag="div"
@@ -32,16 +32,20 @@ exports[`RichField display alert 1`] = `
         <Decorated(MentionSuggestions)
           canAddMention={false}
           onSearchChange={[Function]}
+          suggestions={
+            Immutable.List [
+            ]
+          }
         />
       </div>
       <Decorated(Toolbar) />
     </div>
   </div>
-</ml>
+</FormGroup>
 `;
 
 exports[`RichField should render a MentionSuggestions component to the DOM if in internal-note mode 1`] = `
-<ml
+<FormGroup
   className=""
   color=""
   tag="div"
@@ -256,11 +260,11 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
       <Decorated(Toolbar) />
     </div>
   </div>
-</ml>
+</FormGroup>
 `;
 
 exports[`RichField should render a basic input 1`] = `
-<ml
+<FormGroup
   className=""
   color=""
   tag="div"
@@ -470,10 +474,14 @@ exports[`RichField should render a basic input 1`] = `
         <Decorated(MentionSuggestions)
           canAddMention={false}
           onSearchChange={[Function]}
+          suggestions={
+            Immutable.List [
+            ]
+          }
         />
       </div>
       <Decorated(Toolbar) />
     </div>
   </div>
-</ml>
+</FormGroup>
 `;

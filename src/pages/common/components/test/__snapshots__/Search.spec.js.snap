@@ -12,13 +12,13 @@ exports[`Search component handle change function 1`] = `
     className=""
     style={Object {}}
   >
-    <El
+    <InputGroup
       tag="div"
     >
       <div
         className="input-group"
       >
-        <ei
+        <Input
           disabled={false}
           onChange={[Function]}
           placeholder="Search..."
@@ -44,8 +44,8 @@ exports[`Search component handle change function 1`] = `
             type="text"
             value="text"
           />
-        </ei>
-        <jl
+        </Input>
+        <InputGroupAddon
           className="hidden-sm-down"
           tag="div"
         >
@@ -56,9 +56,9 @@ exports[`Search component handle change function 1`] = `
               className="fa fa-fw fa-search"
             />
           </div>
-        </jl>
+        </InputGroupAddon>
       </div>
-    </El>
+    </InputGroup>
   </div>
 </Search>
 `;
@@ -75,13 +75,13 @@ exports[`Search component reset function 1`] = `
     className=""
     style={Object {}}
   >
-    <El
+    <InputGroup
       tag="div"
     >
       <div
         className="input-group"
       >
-        <ei
+        <Input
           disabled={false}
           onChange={[Function]}
           placeholder="Search..."
@@ -107,8 +107,8 @@ exports[`Search component reset function 1`] = `
             type="text"
             value="text"
           />
-        </ei>
-        <jl
+        </Input>
+        <InputGroupAddon
           className="hidden-sm-down"
           tag="div"
         >
@@ -119,9 +119,9 @@ exports[`Search component reset function 1`] = `
               className="fa fa-fw fa-search"
             />
           </div>
-        </jl>
+        </InputGroupAddon>
       </div>
-    </El>
+    </InputGroup>
   </div>
 </Search>
 `;
@@ -138,13 +138,13 @@ exports[`Search component reset function 2`] = `
     className=""
     style={Object {}}
   >
-    <El
+    <InputGroup
       tag="div"
     >
       <div
         className="input-group"
       >
-        <ei
+        <Input
           disabled={false}
           onChange={[Function]}
           placeholder="Search..."
@@ -170,8 +170,8 @@ exports[`Search component reset function 2`] = `
             type="text"
             value=""
           />
-        </ei>
-        <jl
+        </Input>
+        <InputGroupAddon
           className="hidden-sm-down"
           tag="div"
         >
@@ -182,9 +182,9 @@ exports[`Search component reset function 2`] = `
               className="fa fa-fw fa-search"
             />
           </div>
-        </jl>
+        </InputGroupAddon>
       </div>
-    </El>
+    </InputGroup>
   </div>
 </Search>
 `;

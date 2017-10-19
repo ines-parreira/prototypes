@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TableStat should render a table chart 1`] = `
-<Jn
+<Table
   hover={true}
   responsiveTag="div"
   tag="table"
@@ -34,5 +34,5 @@ exports[`TableStat should render a table chart 1`] = `
       </td>
     </tr>
   </tbody>
-</Jn>
+</Table>
 `;

@@ -37,13 +37,13 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
     updateOrCreateIntegration={[Function]}
   >
     <div>
-      <gs
+      <Breadcrumb
         tag="ol"
       >
         <ol
           className="breadcrumb"
         >
-          <bs
+          <BreadcrumbItem
             tag="li"
           >
             <li
@@ -62,8 +62,8 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                 </a>
               </Link>
             </li>
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             tag="li"
           >
             <li
@@ -82,15 +82,15 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                 </a>
               </Link>
             </li>
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             tag="li"
           >
             <li
               className="breadcrumb-item"
             />
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             active={true}
             tag="li"
           >
@@ -99,15 +99,15 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
             >
               Preferences
             </li>
-          </bs>
+          </BreadcrumbItem>
         </ol>
-      </gs>
+      </Breadcrumb>
       <h1
         className="mb-4"
       >
         Preferences
       </h1>
-      <rl
+      <Form
         onSubmit={[Function]}
         tag="form"
       >
@@ -136,7 +136,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                 type="checkbox"
                 value={false}
               >
-                <ml
+                <FormGroup
                   check={true}
                   className=""
                   color=""
@@ -145,7 +145,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                   <div
                     className="form-check"
                   >
-                    <Hl
+                    <Label
                       check={true}
                       className="control-label"
                       htmlFor="id-autoResponderEnabled"
@@ -155,7 +155,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                         className="control-label form-check-label "
                         htmlFor="id-autoResponderEnabled"
                       >
-                        <ei
+                        <Input
                           checked={false}
                           className="form-check-input"
                           id="id-autoResponderEnabled"
@@ -170,14 +170,14 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                             onChange={[Function]}
                             type="checkbox"
                           />
-                        </ei>
+                        </Input>
                         <span>
                           Enable auto-responder when no agent is available for chat
                         </span>
                       </label>
-                    </Hl>
+                    </Label>
                   </div>
-                </ml>
+                </FormGroup>
               </BooleanField>
             </div>
             <InputField
@@ -189,7 +189,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
               type="textarea"
               value="We're not online at the moment. Leave us your email and we'll follow up shortly."
             >
-              <ml
+              <FormGroup
                 className="undefined"
                 color=""
                 tag="div"
@@ -197,22 +197,22 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                 <div
                   className="undefined form-group"
                 >
-                  <Hl
+                  <Label
                     className="control-label"
                     htmlFor="id-autoResponderText"
                     tag="label"
                   >
                     <label
-                      className="control-label "
+                      className="control-label  form-control-label"
                       htmlFor="id-autoResponderText"
                     >
                       Auto-responder text
                     </label>
-                  </Hl>
+                  </Label>
                   <div
                     className=""
                   >
-                    <ei
+                    <Input
                       className=""
                       id="id-autoResponderText"
                       onChange={[Function]}
@@ -230,10 +230,10 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                         rows="3"
                         value="We're not online at the moment. Leave us your email and we'll follow up shortly."
                       />
-                    </ei>
+                    </Input>
                   </div>
                 </div>
-              </ml>
+              </FormGroup>
             </InputField>
           </div>
           <div
@@ -250,7 +250,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
               type="select"
               value={10800}
             >
-              <ml
+              <FormGroup
                 className=""
                 color=""
                 tag="div"
@@ -258,22 +258,22 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                 <div
                   className="form-group"
                 >
-                  <Hl
+                  <Label
                     className="control-label"
                     htmlFor="id-timeBeforeSplit"
                     tag="label"
                   >
                     <label
-                      className="control-label "
+                      className="control-label  form-control-label"
                       htmlFor="id-timeBeforeSplit"
                     >
                       Inactivity period between chat tickets
                     </label>
-                  </Hl>
+                  </Label>
                   <div
                     className=""
                   >
-                    <ei
+                    <Input
                       className=""
                       id="id-timeBeforeSplit"
                       onChange={[Function]}
@@ -313,9 +313,9 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                           7 days
                         </option>
                       </select>
-                    </ei>
+                    </Input>
                   </div>
-                  <vl
+                  <FormText
                     color="muted"
                     tag="small"
                   >
@@ -324,13 +324,13 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                     >
                       After a certain period without any new message on a chat ticket, Gorgias will create a new ticket the next time the customer contacts you over chat.
                     </small>
-                  </vl>
+                  </FormText>
                 </div>
-              </ml>
+              </FormGroup>
             </InputField>
           </div>
           <div>
-            <ei
+            <Button
               className=""
               color="primary"
               disabled={false}
@@ -345,10 +345,10 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
               >
                 Save
               </button>
-            </ei>
+            </Button>
           </div>
         </form>
-      </rl>
+      </Form>
     </div>
   </RealtimeMessagingIntegrationPreferences>
 </Connect(RealtimeMessagingIntegrationPreferences)>
@@ -391,13 +391,13 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
     updateOrCreateIntegration={[Function]}
   >
     <div>
-      <gs
+      <Breadcrumb
         tag="ol"
       >
         <ol
           className="breadcrumb"
         >
-          <bs
+          <BreadcrumbItem
             tag="li"
           >
             <li
@@ -416,8 +416,8 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                 </a>
               </Link>
             </li>
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             tag="li"
           >
             <li
@@ -436,15 +436,15 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                 </a>
               </Link>
             </li>
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             tag="li"
           >
             <li
               className="breadcrumb-item"
             />
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             active={true}
             tag="li"
           >
@@ -453,15 +453,15 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
             >
               Preferences
             </li>
-          </bs>
+          </BreadcrumbItem>
         </ol>
-      </gs>
+      </Breadcrumb>
       <h1
         className="mb-4"
       >
         Preferences
       </h1>
-      <rl
+      <Form
         onSubmit={[Function]}
         tag="form"
       >
@@ -490,7 +490,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                 type="checkbox"
                 value={false}
               >
-                <ml
+                <FormGroup
                   check={true}
                   className=""
                   color=""
@@ -499,7 +499,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                   <div
                     className="form-check"
                   >
-                    <Hl
+                    <Label
                       check={true}
                       className="control-label"
                       htmlFor="id-autoResponderEnabled"
@@ -509,7 +509,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                         className="control-label form-check-label "
                         htmlFor="id-autoResponderEnabled"
                       >
-                        <ei
+                        <Input
                           checked={false}
                           className="form-check-input"
                           id="id-autoResponderEnabled"
@@ -524,14 +524,14 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                             onChange={[Function]}
                             type="checkbox"
                           />
-                        </ei>
+                        </Input>
                         <span>
                           Enable auto-responder when no agent is available for chat
                         </span>
                       </label>
-                    </Hl>
+                    </Label>
                   </div>
-                </ml>
+                </FormGroup>
               </BooleanField>
             </div>
             <InputField
@@ -543,7 +543,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
               type="textarea"
               value="We're not online at the moment. Leave us your email and we'll follow up shortly."
             >
-              <ml
+              <FormGroup
                 className="undefined"
                 color=""
                 tag="div"
@@ -551,22 +551,22 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                 <div
                   className="undefined form-group"
                 >
-                  <Hl
+                  <Label
                     className="control-label"
                     htmlFor="id-autoResponderText"
                     tag="label"
                   >
                     <label
-                      className="control-label "
+                      className="control-label  form-control-label"
                       htmlFor="id-autoResponderText"
                     >
                       Auto-responder text
                     </label>
-                  </Hl>
+                  </Label>
                   <div
                     className=""
                   >
-                    <ei
+                    <Input
                       className=""
                       id="id-autoResponderText"
                       onChange={[Function]}
@@ -584,10 +584,10 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                         rows="3"
                         value="We're not online at the moment. Leave us your email and we'll follow up shortly."
                       />
-                    </ei>
+                    </Input>
                   </div>
                 </div>
-              </ml>
+              </FormGroup>
             </InputField>
           </div>
           <div
@@ -604,7 +604,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
               type="select"
               value={10800}
             >
-              <ml
+              <FormGroup
                 className=""
                 color=""
                 tag="div"
@@ -612,22 +612,22 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                 <div
                   className="form-group"
                 >
-                  <Hl
+                  <Label
                     className="control-label"
                     htmlFor="id-timeBeforeSplit"
                     tag="label"
                   >
                     <label
-                      className="control-label "
+                      className="control-label  form-control-label"
                       htmlFor="id-timeBeforeSplit"
                     >
                       Inactivity period between chat tickets
                     </label>
-                  </Hl>
+                  </Label>
                   <div
                     className=""
                   >
-                    <ei
+                    <Input
                       className=""
                       id="id-timeBeforeSplit"
                       onChange={[Function]}
@@ -667,9 +667,9 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                           7 days
                         </option>
                       </select>
-                    </ei>
+                    </Input>
                   </div>
-                  <vl
+                  <FormText
                     color="muted"
                     tag="small"
                   >
@@ -678,13 +678,13 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                     >
                       After a certain period without any new message on a chat ticket, Gorgias will create a new ticket the next time the customer contacts you over chat.
                     </small>
-                  </vl>
+                  </FormText>
                 </div>
-              </ml>
+              </FormGroup>
             </InputField>
           </div>
           <div>
-            <ei
+            <Button
               className=""
               color="primary"
               disabled={false}
@@ -699,10 +699,10 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
               >
                 Save
               </button>
-            </ei>
+            </Button>
           </div>
         </form>
-      </rl>
+      </Form>
     </div>
   </RealtimeMessagingIntegrationPreferences>
 </Connect(RealtimeMessagingIntegrationPreferences)>
@@ -745,13 +745,13 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
     updateOrCreateIntegration={[Function]}
   >
     <div>
-      <gs
+      <Breadcrumb
         tag="ol"
       >
         <ol
           className="breadcrumb"
         >
-          <bs
+          <BreadcrumbItem
             tag="li"
           >
             <li
@@ -770,8 +770,8 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                 </a>
               </Link>
             </li>
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             tag="li"
           >
             <li
@@ -790,15 +790,15 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                 </a>
               </Link>
             </li>
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             tag="li"
           >
             <li
               className="breadcrumb-item"
             />
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             active={true}
             tag="li"
           >
@@ -807,15 +807,15 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
             >
               Preferences
             </li>
-          </bs>
+          </BreadcrumbItem>
         </ol>
-      </gs>
+      </Breadcrumb>
       <h1
         className="mb-4"
       >
         Preferences
       </h1>
-      <rl
+      <Form
         onSubmit={[Function]}
         tag="form"
       >
@@ -842,7 +842,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                 type="checkbox"
                 value={false}
               >
-                <ml
+                <FormGroup
                   check={true}
                   className=""
                   color=""
@@ -851,7 +851,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                   <div
                     className="form-check"
                   >
-                    <Hl
+                    <Label
                       check={true}
                       className="control-label"
                       htmlFor="id-emailCaptureEnabled"
@@ -861,7 +861,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                         className="control-label form-check-label "
                         htmlFor="id-emailCaptureEnabled"
                       >
-                        <ei
+                        <Input
                           checked={false}
                           className="form-check-input"
                           id="id-emailCaptureEnabled"
@@ -876,17 +876,17 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                             onChange={[Function]}
                             type="checkbox"
                           />
-                        </ei>
+                        </Input>
                         <span>
                           Enable email capture
                         </span>
                       </label>
-                    </Hl>
+                    </Label>
                   </div>
-                </ml>
+                </FormGroup>
               </BooleanField>
             </div>
-            <ws
+            <ButtonGroup
               className="mb-3"
               role="group"
               tag="div"
@@ -895,7 +895,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                 className="mb-3 btn-group"
                 role="group"
               >
-                <ei
+                <Button
                   color="info"
                   onClick={[Function]}
                   tag="button"
@@ -908,8 +908,8 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                   >
                     Online
                   </button>
-                </ei>
-                <ei
+                </Button>
+                <Button
                   color="secondary"
                   onClick={[Function]}
                   tag="button"
@@ -922,9 +922,9 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                   >
                     Offline
                   </button>
-                </ei>
+                </Button>
               </div>
-            </ws>
+            </ButtonGroup>
             <div>
               <InputField
                 label="Email capture text"
@@ -934,7 +934,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                 type="textarea"
                 value="Leave us your email in case we reply later."
               >
-                <ml
+                <FormGroup
                   className=""
                   color=""
                   tag="div"
@@ -942,22 +942,22 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                   <div
                     className="form-group"
                   >
-                    <Hl
+                    <Label
                       className="control-label"
                       htmlFor="id-emailCaptureOfflineTriggerText"
                       tag="label"
                     >
                       <label
-                        className="control-label "
+                        className="control-label  form-control-label"
                         htmlFor="id-emailCaptureOfflineTriggerText"
                       >
                         Email capture text
                       </label>
-                    </Hl>
+                    </Label>
                     <div
                       className=""
                     >
-                      <ei
+                      <Input
                         className=""
                         id="id-emailCaptureOfflineTriggerText"
                         onChange={[Function]}
@@ -973,10 +973,10 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                           rows="3"
                           value="Leave us your email in case we reply later."
                         />
-                      </ei>
+                      </Input>
                     </div>
                   </div>
-                </ml>
+                </FormGroup>
               </InputField>
               <InputField
                 label="Thanks for your email message"
@@ -986,7 +986,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                 type="textarea"
                 value="Thanks! We'll email you at {email} if you leave."
               >
-                <ml
+                <FormGroup
                   className=""
                   color=""
                   tag="div"
@@ -994,22 +994,22 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                   <div
                     className="form-group"
                   >
-                    <Hl
+                    <Label
                       className="control-label"
                       htmlFor="id-emailCaptureOfflineThanksText"
                       tag="label"
                     >
                       <label
-                        className="control-label "
+                        className="control-label  form-control-label"
                         htmlFor="id-emailCaptureOfflineThanksText"
                       >
                         Thanks for your email message
                       </label>
-                    </Hl>
+                    </Label>
                     <div
                       className=""
                     >
-                      <ei
+                      <Input
                         className=""
                         id="id-emailCaptureOfflineThanksText"
                         onChange={[Function]}
@@ -1025,10 +1025,10 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                           rows="3"
                           value="Thanks! We'll email you at {email} if you leave."
                         />
-                      </ei>
+                      </Input>
                     </div>
                   </div>
-                </ml>
+                </FormGroup>
               </InputField>
             </div>
           </div>
@@ -1053,7 +1053,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                 type="checkbox"
                 value={false}
               >
-                <ml
+                <FormGroup
                   check={true}
                   className=""
                   color=""
@@ -1062,7 +1062,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                   <div
                     className="form-check"
                   >
-                    <Hl
+                    <Label
                       check={true}
                       className="control-label"
                       htmlFor="id-autoResponderEnabled"
@@ -1072,7 +1072,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                         className="control-label form-check-label "
                         htmlFor="id-autoResponderEnabled"
                       >
-                        <ei
+                        <Input
                           checked={false}
                           className="form-check-input"
                           id="id-autoResponderEnabled"
@@ -1087,14 +1087,14 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                             onChange={[Function]}
                             type="checkbox"
                           />
-                        </ei>
+                        </Input>
                         <span>
                           Enable auto-responder when no agent is available for chat
                         </span>
                       </label>
-                    </Hl>
+                    </Label>
                   </div>
-                </ml>
+                </FormGroup>
               </BooleanField>
             </div>
             <InputField
@@ -1106,7 +1106,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
               type="textarea"
               value="We're not online at the moment. Leave us your email and we'll follow up shortly."
             >
-              <ml
+              <FormGroup
                 className="undefined"
                 color=""
                 tag="div"
@@ -1114,22 +1114,22 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                 <div
                   className="undefined form-group"
                 >
-                  <Hl
+                  <Label
                     className="control-label"
                     htmlFor="id-autoResponderText"
                     tag="label"
                   >
                     <label
-                      className="control-label "
+                      className="control-label  form-control-label"
                       htmlFor="id-autoResponderText"
                     >
                       Auto-responder text
                     </label>
-                  </Hl>
+                  </Label>
                   <div
                     className=""
                   >
-                    <ei
+                    <Input
                       className=""
                       id="id-autoResponderText"
                       onChange={[Function]}
@@ -1147,10 +1147,10 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                         rows="3"
                         value="We're not online at the moment. Leave us your email and we'll follow up shortly."
                       />
-                    </ei>
+                    </Input>
                   </div>
                 </div>
-              </ml>
+              </FormGroup>
             </InputField>
           </div>
           <div
@@ -1167,7 +1167,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
               type="select"
               value={10800}
             >
-              <ml
+              <FormGroup
                 className=""
                 color=""
                 tag="div"
@@ -1175,22 +1175,22 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                 <div
                   className="form-group"
                 >
-                  <Hl
+                  <Label
                     className="control-label"
                     htmlFor="id-timeBeforeSplit"
                     tag="label"
                   >
                     <label
-                      className="control-label "
+                      className="control-label  form-control-label"
                       htmlFor="id-timeBeforeSplit"
                     >
                       Inactivity period between chat tickets
                     </label>
-                  </Hl>
+                  </Label>
                   <div
                     className=""
                   >
-                    <ei
+                    <Input
                       className=""
                       id="id-timeBeforeSplit"
                       onChange={[Function]}
@@ -1230,9 +1230,9 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                           7 days
                         </option>
                       </select>
-                    </ei>
+                    </Input>
                   </div>
-                  <vl
+                  <FormText
                     color="muted"
                     tag="small"
                   >
@@ -1241,13 +1241,13 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                     >
                       After a certain period without any new message on a chat ticket, Gorgias will create a new ticket the next time the customer contacts you over chat.
                     </small>
-                  </vl>
+                  </FormText>
                 </div>
-              </ml>
+              </FormGroup>
             </InputField>
           </div>
           <div>
-            <ei
+            <Button
               className=""
               color="primary"
               disabled={false}
@@ -1262,10 +1262,10 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
               >
                 Save
               </button>
-            </ei>
+            </Button>
           </div>
         </form>
-      </rl>
+      </Form>
     </div>
   </RealtimeMessagingIntegrationPreferences>
 </Connect(RealtimeMessagingIntegrationPreferences)>

@@ -110,8 +110,12 @@ export default class TicketHeader extends React.Component {
             },
             DELETE_TICKET: {
                 action: () => {
-                    this._trashTicket()
+                    this._toggleTrashConfirmation()
                 }
+            },
+            HIDE_POPOVER: {
+                key: 'esc',
+                action: () => this._toggleTrashConfirmation(false)
             },
         })
     }
@@ -192,6 +196,7 @@ export default class TicketHeader extends React.Component {
                                                             type="submit"
                                                             color="success"
                                                             onClick={this._trashTicket}
+                                                            autoFocus
                                                         >
                                                             Confirm
                                                         </Button>

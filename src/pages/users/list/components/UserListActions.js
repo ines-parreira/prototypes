@@ -11,27 +11,70 @@ import {
     PopoverTitle,
     PopoverContent,
 } from 'reactstrap'
+import _isUndefined from 'lodash/isUndefined'
+
+import shortcutManager from '../../../../services/shortcutManager'
 
 import * as ViewsActions from '../../../../state/views/actions'
 import * as UsersActions from '../../../../state/users/actions'
 
 class UserListActions extends React.Component {
     state = {
-        askDeleteConfirmation: false,
+        popoverOpen: ''
+    }
+
+    componentDidMount() {
+        this._bindKeys()
+    }
+
+    componentWillUnmount() {
+        shortcutManager.unbind('UserListActions')
+    }
+
+    _bindKeys = () => {
+        shortcutManager.bind('UserListActions', {
+            DELETE_USER: {
+                action: () => {
+                    if (!this._hasChecked()) {
+                        return
+                    }
+                    this._toggleDeleteConfirmation()
+                }
+            },
+            HIDE_POPOVER: {
+                key: 'esc',
+                action: () => {
+                    this._togglePopover()
+                }
+            },
+        })
+    }
+
+    _hasChecked = () => {
+        return !this.props.selectedItemsIds.isEmpty()
+    }
+
+    _isPopoverOpen = (popoverOpen: string) => {
+        return this.state.popoverOpen === popoverOpen
+    }
+
+    _togglePopover = (popoverOpen = '') => {
+        return this.setState({popoverOpen})
     }
 
     _bulkDelete = () => {
         const {actions, view, selectedItemsIds} = this.props
-        this.setState({askDeleteConfirmation: false})
+        this._toggleDeleteConfirmation(false)
         return actions.views.bulkDelete(view, selectedItemsIds)
     }
 
-    _toggleDeleteConfirmation = () => {
-        this.setState({askDeleteConfirmation: !this.state.askDeleteConfirmation})
+    _toggleDeleteConfirmation = (visible) => {
+        const opens = !_isUndefined(visible) ? visible : !this._isPopoverOpen('delete')
+        this._togglePopover(opens ? 'delete' : '')
     }
 
     _renderBulkActions = () => {
-        const areItemsSelected = !this.props.selectedItemsIds.isEmpty()
+        const areItemsSelected = this._hasChecked()
 
         return (
             <div className="d-inline-flex align-items-center">
@@ -59,7 +102,7 @@ class UserListActions extends React.Component {
                 </UncontrolledButtonDropdown>
                 <Popover
                     placement="bottom"
-                    isOpen={this.state.askDeleteConfirmation}
+                    isOpen={this._isPopoverOpen('delete')}
                     target="bulk-more-button"
                     toggle={this._toggleDeleteConfirmation}
                 >
@@ -73,6 +116,7 @@ class UserListActions extends React.Component {
                             type="submit"
                             color="success"
                             onClick={this._bulkDelete}
+                            autoFocus
                         >
                             Confirm
                         </Button>

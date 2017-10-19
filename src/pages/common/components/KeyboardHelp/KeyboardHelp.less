@@ -1,0 +1,21 @@
+@md-screen: 1024px;
+
+:local .component {
+  @media screen and (min-width: @md-screen) {
+    max-width: 840px !important;
+  }
+
+  div > span.combo {
+    font-family: monospace !important;
+  }
+
+  .group {
+    break-inside: avoid;
+  }
+
+  .content {
+    @media screen and (min-width: @md-screen) {
+      columns: 2 2em;
+    }
+  }
+}

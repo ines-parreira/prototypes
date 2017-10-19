@@ -26,6 +26,8 @@ class ReceiversSelectField extends React.Component {
         sourceType: PropTypes.string.isRequired,
         channel: PropTypes.string.isRequired,
         required: PropTypes.bool.isRequired,
+
+        inputRef: PropTypes.func,
     }
 
     static defaultProps = {
@@ -60,7 +62,7 @@ class ReceiversSelectField extends React.Component {
 
         return (
             <MultiSelectAsyncField
-                ref="receiverDropdown"
+                ref={this.props.inputRef}
                 name="receiver-dropdown"
                 value={this._valueFromState(value)}
                 onChange={this._onChange}

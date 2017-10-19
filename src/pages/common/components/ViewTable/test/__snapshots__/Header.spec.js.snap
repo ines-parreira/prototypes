@@ -9,7 +9,7 @@ exports[`ViewTable::Header default view displays 1`] = `
       <UncontrolledDropdown
         className="d-inline-block hidden-sm-down"
       >
-        <ei
+        <DropdownToggle
           aria-haspopup={true}
           caret={true}
           className="mr-2"
@@ -22,24 +22,24 @@ exports[`ViewTable::Header default view displays 1`] = `
             className="fa fa-cog fa-fw mr-2"
           />
           View settings
-        </ei>
-        <Xo
+        </DropdownToggle>
+        <DropdownMenu
           tag="div"
         >
-          <ei
+          <DropdownItem
             onClick={[Function]}
             tag="button"
             toggle={true}
             type="button"
           >
             Edit view
-          </ei>
-          <ei
+          </DropdownItem>
+          <DropdownItem
             divider={true}
             tag="button"
             toggle={true}
           />
-          <ei
+          <DropdownItem
             onClick={[Function]}
             tag="button"
             toggle={true}
@@ -50,18 +50,18 @@ exports[`ViewTable::Header default view displays 1`] = `
             >
               Delete view
             </span>
-            <ei
+            <Popover
               isOpen={false}
               placement="bottom"
               target="settings-view-button"
               toggle={[Function]}
             >
-              <nn
+              <PopoverTitle
                 tag="h3"
               >
                 Are you sure?
-              </nn>
-              <pn
+              </PopoverTitle>
+              <PopoverContent
                 tag="div"
               >
                 <p>
@@ -75,18 +75,18 @@ exports[`ViewTable::Header default view displays 1`] = `
                   </b>
                   .
                 </p>
-                <ei
+                <Button
                   color="success"
                   onClick={[Function]}
                   tag="button"
                   type="submit"
                 >
                   Confirm
-                </ei>
-              </pn>
-            </ei>
-          </ei>
-        </Xo>
+                </Button>
+              </PopoverContent>
+            </Popover>
+          </DropdownItem>
+        </DropdownMenu>
       </UncontrolledDropdown>
       <Search
         bindKey={true}

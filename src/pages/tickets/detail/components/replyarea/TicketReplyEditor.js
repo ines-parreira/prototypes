@@ -1,9 +1,9 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React from 'react'
 import classnames from 'classnames'
-import {Map} from 'immutable'
+import {Map, List} from 'immutable'
 import {connect} from 'react-redux'
 import _debounce from 'lodash/debounce'
-import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import {EditorState, ContentState} from 'draft-js'
 import createDndPlugin from 'draft-js-dnd-plugin'
@@ -40,7 +40,43 @@ export const updateMessageText = _debounce((props, editorState) => {
     }))
 }, 100)
 
-class TicketReplyEditor extends React.Component {
+import type {agentsType} from '../../../../../state/agents/types'
+import type {Node} from 'react'
+
+type richAreaType = {
+    state: {
+        editorState: EditorState
+    },
+    _focusEditor: () => void,
+    _setEditorState: (T: EditorState) => void
+}
+
+type toolbarPropsType = {
+    buttons: Array<Node>,
+    displayedActions?: Array<string>
+}
+
+type Props = {
+    actions: {},
+    agents:  agentsType,
+    newMessage: Map<*,*>,
+    newMessageType: string,
+    ticket: Map<*,*>,
+
+    addAttachments: typeof newMessageActions.addAttachments,
+    notify: ({}) => void,
+    setMacrosVisible: typeof macroActions.setMacrosVisible,
+    setResponseText: typeof newMessageActions.setResponseText,
+    prepareNewMessage: typeof newMessageActions.prepare,
+}
+
+type State = {
+    editorState: EditorState
+}
+
+class TicketReplyEditor extends React.Component<Props, State> {
+    richArea: richAreaType
+
     componentWillMount() {
         // set the initial state of the editor - there might be drafts
         this._updateEditorState(this._getEditorStateFromReducer(this.props))
@@ -49,17 +85,8 @@ class TicketReplyEditor extends React.Component {
     componentDidMount() {
         shortcutManager.bind('TicketDetailContainer', {
             FOCUS_REPLY_AREA: {
-                action: (e) => {
-                    if (e && e.preventDefault) { // no incoming event if manually triggered
-                        e.preventDefault()
-                    }
-
-                    if (this.richArea) {
-                        this.props.setMacrosVisible(false)
-                        this.richArea._focusEditor()
-                    }
-                }
-            },
+                action: this._focusReplyArea
+            }
         })
     }
 
@@ -90,6 +117,17 @@ class TicketReplyEditor extends React.Component {
                     this.richArea._focusEditor()
                 }
             }, 1)
+        }
+    }
+
+    _focusReplyArea = (e) => {
+        if (e && e.preventDefault) { // no incoming event if manually triggered
+            e.preventDefault()
+        }
+
+        if (this.richArea) {
+            this.props.setMacrosVisible(false)
+            this.richArea._focusEditor()
         }
     }
 
@@ -126,9 +164,10 @@ class TicketReplyEditor extends React.Component {
             RESTRAINED_SOURCE_TYPES.includes(this.props.newMessage.getIn(['newMessage', 'source', 'type']))
             && this.props.newMessage.getIn(['newMessage', 'body_text'])
 
+        const attachments = this.props.newMessage.getIn(['newMessage', 'attachments']) || List()
         const cantAddAttachmentBecauseOfAttachments =
             RESTRAINED_SOURCE_TYPES.includes(this.props.newMessage.getIn(['newMessage', 'source', 'type']))
-            && this.props.newMessage.getIn(['newMessage', 'attachments']).size >= 1
+            && attachments.size >= 1
 
         const tryToAddTooManyAttachments =
             RESTRAINED_SOURCE_TYPES.includes(this.props.newMessage.getIn(['newMessage', 'source', 'type']))
@@ -197,10 +236,6 @@ class TicketReplyEditor extends React.Component {
         updateMessageText(this.props, editorState)
     }
 
-    _onEditorEscape = () => {
-        shortcutManager.triggerAction('TicketDetailContainer', 'BLUR_EVERYTHING')
-    }
-
     render() {
         const {newMessage, newMessageType, agents} = this.props
 
@@ -220,7 +255,7 @@ class TicketReplyEditor extends React.Component {
             suggestions: agents
         }
 
-        const toolbarProps = {
+        const toolbarProps: toolbarPropsType = {
             buttons: [
                 <div className="attachment" key="attachments">
                     <label
@@ -264,9 +299,10 @@ class TicketReplyEditor extends React.Component {
             toolbarProps.displayedActions = ['emoji']
         }
 
+        const attachments = this.props.newMessage.getIn(['newMessage', 'attachments']) || List()
         const cantWriteTextBecauseOfAttachments =
             RESTRAINED_SOURCE_TYPES.includes(this.props.newMessage.getIn(['newMessage', 'source', 'type']))
-            && this.props.newMessage.getIn(['newMessage', 'attachments']).size >= 1
+            && attachments.size >= 1
 
         const alertText = 'When using Facebook, you can either send a text message, or an attachment, ' +
             'but not both at the same time. If you want to write a message, remove the attachment first.'
@@ -274,15 +310,17 @@ class TicketReplyEditor extends React.Component {
         return (
             <div className="TicketReplyEditor">
                 <RichField
-                    ref={(richArea) => {
-                        this.richArea = richArea
-                    }}
+                    ref={
+                        // $FlowFixMe
+                        (richArea: richAreaType) => {
+                            this.richArea = richArea
+                        }
+                    }
                     value={{
                         text: newMessage.getIn(['newMessage', 'body_text']),
                         html: newMessage.getIn(['newMessage', 'body_html']),
                     }}
                     onChange={this._onEditorChange}
-                    onEscape={this._onEditorEscape}
                     handleDroppedFiles={this._handleDroppedFiles}
                     canDropFiles
                     tabIndex="4"
@@ -302,19 +340,6 @@ class TicketReplyEditor extends React.Component {
     }
 }
 
-TicketReplyEditor.propTypes = {
-    actions: PropTypes.object.isRequired,
-    agents: ImmutablePropTypes.list.isRequired,
-    newMessage: PropTypes.object.isRequired,
-    newMessageType: PropTypes.string.isRequired,
-    ticket: PropTypes.object.isRequired,
-
-    addAttachments: PropTypes.func.isRequired,
-    notify: PropTypes.func.isRequired,
-    setMacrosVisible: PropTypes.func.isRequired,
-    setResponseText: PropTypes.func.isRequired,
-}
-
 function mapStateToProps(state) {
     return {
         newMessageType: newMessageSelectors.getNewMessageType(state),
@@ -328,6 +353,7 @@ const mapDispatchToProps = {
     notify,
     setMacrosVisible: macroActions.setMacrosVisible,
     setResponseText: newMessageActions.setResponseText,
+    prepareNewMessage: newMessageActions.prepare,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TicketReplyEditor)

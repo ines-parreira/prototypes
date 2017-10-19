@@ -63,7 +63,7 @@ exports[`ast widgets IntegrationSelect should render a SelectField 1`] = `
 `;
 
 exports[`ast widgets IntegrationSelect should render a loading imput (no integrations) 1`] = `
-<ei
+<Input
   placeholder="Loading integrations..."
   readOnly={true}
   tag="p"

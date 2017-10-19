@@ -14,6 +14,7 @@ import {DatetimeLabel, AgentLabel} from '../../../common/utils/labels'
 import {getValuePropFromSourceType, isForwardedMessage} from '../../../../state/ticket/utils'
 import HardWarning from './HardWarning'
 import {sourceTypeToIcon} from './../../../../config/ticket'
+import {scrollToReactNode} from '../../../common/utils/keyboard'
 
 import css from './TicketMessage.less'
 
@@ -22,6 +23,14 @@ const classnames = classnamesBind.bind(css)
 export default class TicketMessage extends React.Component {
     state = {
         infoDropdownOpen: false,
+    }
+
+    componentDidUpdate(prevProps) {
+        // only if it just got the cursor.
+        // to prevent focusing on the cursor item when a different one updates.
+        if (this.props.hasCursor && !prevProps.hasCursor) {
+            scrollToReactNode(this)
+        }
     }
 
     _toggleInfoDropdown = () => {
@@ -248,7 +257,7 @@ export default class TicketMessage extends React.Component {
                 'ticket-message-agent': message.from_agent,
                 internal: !message.public,
                 appear,
-                'ticket-message-loading': loading,
+                'ticket-message-loading': loading
             }
         )
 
@@ -325,5 +334,6 @@ TicketMessage.propTypes = {
     lastMessageDatetimeAfterMount: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
     setStatus: PropTypes.func.isRequired,
-    isLastReadMessage: PropTypes.bool
+    isLastReadMessage: PropTypes.bool,
+    hasCursor: PropTypes.bool,
 }

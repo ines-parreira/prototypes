@@ -37,9 +37,8 @@ export default class MacroModal extends React.Component {
     }
 
     componentDidMount() {
-        // Unbind the ticket shortcuts when in the modal.
-        shortcutManager.unbind('TicketDetailContainer')
-        shortcutManager.unbind('Search')
+        shortcutManager.pause()
+
         segmentTracker.logEvent(segmentTracker.EVENTS.MODAL_TOGGLED, {
             open: true,
             name: 'macros',
@@ -65,6 +64,10 @@ export default class MacroModal extends React.Component {
         if (!this.props.macros.isEmpty() && nextProps.macros.isEmpty()) {
             this._toggle()
         }
+    }
+
+    componentWillUnmount() {
+        shortcutManager.unpause()
     }
 
     _applyMacro = () => {
@@ -142,6 +145,7 @@ export default class MacroModal extends React.Component {
                 className="MacroModal"
                 size="lg"
                 header={selectionMode ? 'Macros' : 'Manage macros'}
+                autoFocus={false}
                 footer={
                     <Container fluid>
                         <Row>

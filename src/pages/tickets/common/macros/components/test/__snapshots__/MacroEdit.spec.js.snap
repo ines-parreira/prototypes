@@ -37,7 +37,7 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
           type="text"
           value="Pizza Pepperoni"
         >
-          <ml
+          <FormGroup
             className="undefined"
             color=""
             tag="div"
@@ -48,7 +48,7 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
               <div
                 className=""
               >
-                <ei
+                <Input
                   className=""
                   id="id-name"
                   onChange={[Function]}
@@ -65,10 +65,10 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                     type="text"
                     value="Pizza Pepperoni"
                   />
-                </ei>
+                </Input>
               </div>
             </div>
-          </ml>
+          </FormGroup>
         </InputField>
       </div>
       <div
@@ -77,12 +77,12 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
         <UncontrolledButtonDropdown
           className="mr-2"
         >
-          <Ms
+          <ButtonDropdown
             className="mr-2"
             isOpen={false}
             toggle={[Function]}
           >
-            <ei
+            <Dropdown
               className="mr-2"
               group={true}
               isOpen={false}
@@ -92,14 +92,14 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
               <div
                 className="mr-2 btn-group"
               >
-                <ei
+                <DropdownToggle
                   aria-haspopup={true}
                   caret={true}
                   color="info"
                   data-toggle="dropdown"
                   type="button"
                 >
-                  <ei
+                  <Button
                     aria-expanded={false}
                     aria-haspopup="true"
                     className="dropdown-toggle"
@@ -119,9 +119,9 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                     >
                       Add action
                     </button>
-                  </ei>
-                </ei>
-                <Xo
+                  </Button>
+                </DropdownToggle>
+                <DropdownMenu
                   tag="div"
                 >
                   <div
@@ -130,7 +130,7 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                     role="menu"
                     tabIndex="-1"
                   >
-                    <ei
+                    <DropdownItem
                       header={true}
                       tag="button"
                       toggle={true}
@@ -142,8 +142,8 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                       >
                         Ticket actions
                       </h6>
-                    </ei>
-                    <ei
+                    </DropdownItem>
+                    <DropdownItem
                       onClick={[Function]}
                       tag="button"
                       toggle={true}
@@ -157,8 +157,8 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                       >
                         Add response text
                       </button>
-                    </ei>
-                    <ei
+                    </DropdownItem>
+                    <DropdownItem
                       onClick={[Function]}
                       tag="button"
                       toggle={true}
@@ -172,8 +172,8 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                       >
                         Add attachments
                       </button>
-                    </ei>
-                    <ei
+                    </DropdownItem>
+                    <DropdownItem
                       onClick={[Function]}
                       tag="button"
                       toggle={true}
@@ -187,8 +187,8 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                       >
                         Add tags
                       </button>
-                    </ei>
-                    <ei
+                    </DropdownItem>
+                    <DropdownItem
                       onClick={[Function]}
                       tag="button"
                       toggle={true}
@@ -202,8 +202,8 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                       >
                         Set status
                       </button>
-                    </ei>
-                    <ei
+                    </DropdownItem>
+                    <DropdownItem
                       onClick={[Function]}
                       tag="button"
                       toggle={true}
@@ -217,8 +217,8 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                       >
                         Assign an agent
                       </button>
-                    </ei>
-                    <ei
+                    </DropdownItem>
+                    <DropdownItem
                       onClick={[Function]}
                       tag="button"
                       toggle={true}
@@ -232,8 +232,8 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                       >
                         Set subject
                       </button>
-                    </ei>
-                    <ei
+                    </DropdownItem>
+                    <DropdownItem
                       divider={true}
                       tag="button"
                       toggle={true}
@@ -243,8 +243,8 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                         onClick={[Function]}
                         tabIndex="-1"
                       />
-                    </ei>
-                    <ei
+                    </DropdownItem>
+                    <DropdownItem
                       header={true}
                       tag="button"
                       toggle={true}
@@ -256,8 +256,8 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                       >
                         External actions
                       </h6>
-                    </ei>
-                    <ei
+                    </DropdownItem>
+                    <DropdownItem
                       onClick={[Function]}
                       tag="button"
                       toggle={true}
@@ -271,12 +271,12 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                       >
                         HTTP hook
                       </button>
-                    </ei>
+                    </DropdownItem>
                   </div>
-                </Xo>
+                </DropdownMenu>
               </div>
-            </ei>
-          </Ms>
+            </Dropdown>
+          </ButtonDropdown>
         </UncontrolledButtonDropdown>
       </div>
     </div>

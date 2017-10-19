@@ -4,7 +4,9 @@ import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import {ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input} from 'reactstrap'
 import _debounce from 'lodash/debounce'
+import _isUndefined from 'lodash/isUndefined'
 
+import shortcutManager from '../../../../../services/shortcutManager'
 import {TagLabel} from '../../../../common/utils/labels'
 import {fieldEnumSearch} from '../../../../../state/views/actions'
 
@@ -16,6 +18,30 @@ export class TicketTags extends React.Component {
         search: '',
     }
 
+    componentDidMount() {
+        this._bindKeys()
+    }
+
+    componentWillUnmount() {
+        shortcutManager.unbind('TicketDetailContainer')
+    }
+
+    _bindKeys = () => {
+        shortcutManager.bind('TicketDetailContainer', {
+            OPEN_TAGS: {
+                action: (e) => {
+                    // shortcut key gets typed in the search field otherwise
+                    e.preventDefault()
+                    this._toggle()
+                }
+            },
+            CLOSE_TAGS: {
+                key: 'esc',
+                action: () => this._toggle(false)
+            }
+        })
+    }
+
     _addTag = (name) => {
         if (!name) {
             return
@@ -25,8 +51,8 @@ export class TicketTags extends React.Component {
         this.setState({search: ''})
     }
 
-    _toggle = () => {
-        const opens = !this.state.dropdownOpen
+    _toggle = (visible) => {
+        const opens = !_isUndefined(visible) ? visible : !this.state.dropdownOpen
 
         this.setState({
             dropdownOpen: opens,

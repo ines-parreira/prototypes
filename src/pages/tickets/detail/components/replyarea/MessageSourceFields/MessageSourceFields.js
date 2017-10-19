@@ -125,6 +125,7 @@ class MessageSourceFields extends React.Component {
                                             [prop]: recipients,
                                         }, false)
                                     }}
+                                    inputRef={this.props.inputRef}
                                 />
                             </div>
                         )
@@ -220,6 +221,8 @@ MessageSourceFields.propTypes = {
     canOpen: PropTypes.bool.isRequired,
     availableContactProperties: PropTypes.array.isRequired,
     optionalContactProperties: PropTypes.array.isRequired,
+
+    inputRef: PropTypes.func,
 }
 
 const mapStateToProps = (state, ownProps) => {

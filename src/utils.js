@@ -329,14 +329,6 @@ export function resolveLiteral(value: {} | string, path: string): string {
     }
 }
 
-/**
- * Return '⌘' if the user is using a Mac, Ctrl/Meta otherwise
- * @returns {string}
- */
-export function getModifier(defaultKey: string = 'Ctrl'): string {
-    const isMac = navigator.platform.toLowerCase().startsWith('mac')
-    return isMac ? '⌘' : defaultKey
-}
 
 export function compactInteger(input: number, digits: number = 0): string {
     if (!_isNumber(input)) {
@@ -489,45 +481,6 @@ export function slugify(string: string): string {
         .replace(/[ ]/g, '-')
 }
 
-/**
- * Check if element is editable (form elements, contentEditable)
- */
-export function isEditable(element: HTMLElement): boolean {
-    return element.tagName === 'INPUT'
-        || element.tagName === 'SELECT'
-        || element.tagName === 'TEXTAREA'
-        || (
-            !!element.contentEditable
-            && element.contentEditable === 'true'
-        )
-}
-
-/**
- * Find the closest parent that matches the selector
- */
-export function closest(element: HTMLElement, selector: string): ?Element {
-    let $matches
-    let $elem = element
-
-    // loop through parents
-    while ($elem && $elem !== document) {
-        if ($elem.parentElement) {
-            // find all siblings that match the selector
-            $matches = $elem.parentElement.querySelectorAll(selector)
-            // check if our element is matched (poor-man's Element.matches())
-            if ([].indexOf.call($matches, $elem) !== -1) {
-                return $elem
-            }
-
-            // go up the tree
-            $elem = $elem.parentElement
-        } else {
-            return null
-        }
-    }
-
-    return null
-}
 
 /**
  * Single convertToHTML config for the entire app (same options everywhere if needed)

@@ -4,7 +4,7 @@ exports[`TicketStatus component closed ticket 1`] = `
 <div
   className="d-inline-block mr-2"
 >
-  <ei
+  <Button
     className="d-inline-block"
     color="success"
     id="change-status-button"
@@ -15,7 +15,7 @@ exports[`TicketStatus component closed ticket 1`] = `
     <i
       className="fa fa-fw fa-check mr-1 undefined"
     />
-  </ei>
+  </Button>
   <UncontrolledTooltip
     delay={0}
     placement="bottom"
@@ -30,7 +30,7 @@ exports[`TicketStatus component open ticket 1`] = `
 <div
   className="d-inline-block mr-2"
 >
-  <ei
+  <Button
     className="d-inline-block"
     color="secondary"
     id="change-status-button"
@@ -42,7 +42,7 @@ exports[`TicketStatus component open ticket 1`] = `
       className="fa fa-fw fa-check mr-1"
     />
     Close
-  </ei>
+  </Button>
   <UncontrolledTooltip
     delay={0}
     placement="bottom"

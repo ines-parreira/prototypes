@@ -2,10 +2,10 @@
 
 exports[`HttpIntegrationDetail component should display data about the integration 1`] = `
 <div>
-  <gs
+  <Breadcrumb
     tag="ol"
   >
-    <bs
+    <BreadcrumbItem
       tag="li"
     >
       <Link
@@ -15,8 +15,8 @@ exports[`HttpIntegrationDetail component should display data about the integrati
       >
         Integrations
       </Link>
-    </bs>
-    <bs
+    </BreadcrumbItem>
+    <BreadcrumbItem
       tag="li"
     >
       <Link
@@ -26,14 +26,14 @@ exports[`HttpIntegrationDetail component should display data about the integrati
       >
         HTTP
       </Link>
-    </bs>
-    <bs
+    </BreadcrumbItem>
+    <BreadcrumbItem
       active={true}
       tag="li"
     >
       my little integration
-    </bs>
-  </gs>
+    </BreadcrumbItem>
+  </Breadcrumb>
   <h1>
     my little integration
   </h1>
@@ -49,7 +49,7 @@ exports[`HttpIntegrationDetail component should display data about the integrati
     </a>
      or contact us.
   </p>
-  <rl
+  <Form
     onSubmit={[Function]}
     tag="form"
   >
@@ -68,22 +68,22 @@ exports[`HttpIntegrationDetail component should display data about the integrati
       type="text"
       value="just a small integration, which is very practical and friendly"
     />
-    <ml
+    <FormGroup
       tag="div"
     >
-      <Hl
+      <Label
         className="control-label"
         tag="label"
       >
         Triggers
-      </Hl>
+      </Label>
       <p>
-        <vl
+        <FormText
           color="muted"
           tag="small"
         >
           This HTTP integration will be executed when any of the events below happens.
-        </vl>
+        </FormText>
       </p>
       <BooleanField
         label="Ticket created"
@@ -99,7 +99,7 @@ exports[`HttpIntegrationDetail component should display data about the integrati
         type="checkbox"
         value={false}
       />
-    </ml>
+    </FormGroup>
     <InputField
       error="Only https protocol allowed"
       help={
@@ -185,7 +185,7 @@ exports[`HttpIntegrationDetail component should display data about the integrati
         application/json
       </option>
     </InputField>
-    <ml
+    <FormGroup
       tag="div"
     >
       <HeaderFieldArray
@@ -204,7 +204,7 @@ exports[`HttpIntegrationDetail component should display data about the integrati
         name="http.headers"
         onChange={[Function]}
       />
-    </ml>
+    </FormGroup>
     <JsonField
       label="Request Body (JSON)"
       name="http.form"
@@ -221,7 +221,7 @@ exports[`HttpIntegrationDetail component should display data about the integrati
       }
     />
     <div>
-      <ei
+      <Button
         className="mr-2"
         color="primary"
         disabled={false}
@@ -229,8 +229,8 @@ exports[`HttpIntegrationDetail component should display data about the integrati
         type="submit"
       >
         Save changes
-      </ei>
-      <ei
+      </Button>
+      <Button
         className=""
         color="warning"
         onClick={[Function]}
@@ -239,7 +239,7 @@ exports[`HttpIntegrationDetail component should display data about the integrati
         type="button"
       >
         Deactivate integration
-      </ei>
+      </Button>
       <ConfirmButton
         className="pull-right"
         color="danger"
@@ -256,16 +256,16 @@ exports[`HttpIntegrationDetail component should display data about the integrati
         Delete
       </ConfirmButton>
     </div>
-  </rl>
+  </Form>
 </div>
 `;
 
 exports[`HttpIntegrationDetail component should display default if it's a new integration 1`] = `
 <div>
-  <gs
+  <Breadcrumb
     tag="ol"
   >
-    <bs
+    <BreadcrumbItem
       tag="li"
     >
       <Link
@@ -275,8 +275,8 @@ exports[`HttpIntegrationDetail component should display default if it's a new in
       >
         Integrations
       </Link>
-    </bs>
-    <bs
+    </BreadcrumbItem>
+    <BreadcrumbItem
       tag="li"
     >
       <Link
@@ -286,14 +286,14 @@ exports[`HttpIntegrationDetail component should display default if it's a new in
       >
         HTTP
       </Link>
-    </bs>
-    <bs
+    </BreadcrumbItem>
+    <BreadcrumbItem
       active={true}
       tag="li"
     >
       Add
-    </bs>
-  </gs>
+    </BreadcrumbItem>
+  </Breadcrumb>
   <h1>
     Add new HTTP integration
   </h1>
@@ -309,7 +309,7 @@ exports[`HttpIntegrationDetail component should display default if it's a new in
     </a>
      or contact us.
   </p>
-  <rl
+  <Form
     onSubmit={[Function]}
     tag="form"
   >
@@ -328,22 +328,22 @@ exports[`HttpIntegrationDetail component should display default if it's a new in
       type="text"
       value=""
     />
-    <ml
+    <FormGroup
       tag="div"
     >
-      <Hl
+      <Label
         className="control-label"
         tag="label"
       >
         Triggers
-      </Hl>
+      </Label>
       <p>
-        <vl
+        <FormText
           color="muted"
           tag="small"
         >
           This HTTP integration will be executed when any of the events below happens.
-        </vl>
+        </FormText>
       </p>
       <BooleanField
         label="Ticket created"
@@ -359,7 +359,7 @@ exports[`HttpIntegrationDetail component should display default if it's a new in
         type="checkbox"
         value={true}
       />
-    </ml>
+    </FormGroup>
     <InputField
       error={null}
       help={
@@ -445,7 +445,7 @@ exports[`HttpIntegrationDetail component should display default if it's a new in
         application/json
       </option>
     </InputField>
-    <ml
+    <FormGroup
       tag="div"
     >
       <HeaderFieldArray
@@ -453,9 +453,9 @@ exports[`HttpIntegrationDetail component should display default if it's a new in
         name="http.headers"
         onChange={[Function]}
       />
-    </ml>
+    </FormGroup>
     <div>
-      <ei
+      <Button
         className="mr-2"
         color="primary"
         disabled={false}
@@ -463,9 +463,9 @@ exports[`HttpIntegrationDetail component should display default if it's a new in
         type="submit"
       >
         Add integration
-      </ei>
+      </Button>
     </div>
-  </rl>
+  </Form>
 </div>
 `;
 

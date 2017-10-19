@@ -74,13 +74,13 @@ exports[`CampaignDetail component should display default value when it's a new c
     updateCampaign={[Function]}
   >
     <div>
-      <gs
+      <Breadcrumb
         tag="ol"
       >
         <ol
           className="breadcrumb"
         >
-          <bs
+          <BreadcrumbItem
             tag="li"
           >
             <li
@@ -99,8 +99,8 @@ exports[`CampaignDetail component should display default value when it's a new c
                 </a>
               </Link>
             </li>
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             tag="li"
           >
             <li
@@ -119,8 +119,8 @@ exports[`CampaignDetail component should display default value when it's a new c
                 </a>
               </Link>
             </li>
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             tag="li"
           >
             <li
@@ -139,8 +139,8 @@ exports[`CampaignDetail component should display default value when it's a new c
                 </a>
               </Link>
             </li>
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             tag="li"
           >
             <li
@@ -159,8 +159,8 @@ exports[`CampaignDetail component should display default value when it's a new c
                 </a>
               </Link>
             </li>
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             active={true}
             tag="li"
           >
@@ -169,26 +169,26 @@ exports[`CampaignDetail component should display default value when it's a new c
             >
               New
             </li>
-          </bs>
+          </BreadcrumbItem>
         </ol>
-      </gs>
+      </Breadcrumb>
       <h1>
         Create campaign
       </h1>
-      <gt
+      <Container
         fluid={true}
         tag="div"
       >
         <div
           className="container-fluid"
         >
-          <bt
+          <Row
             tag="div"
           >
             <div
               className="row"
             >
-              <Ot
+              <Col
                 style={
                   Object {
                     "paddingLeft": 0,
@@ -213,7 +213,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                     }
                   }
                 >
-                  <rl
+                  <Form
                     onSubmit={[Function]}
                     tag="form"
                   >
@@ -232,7 +232,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                           required={true}
                           type="input"
                         >
-                          <ml
+                          <FormGroup
                             className="undefined"
                             color=""
                             tag="div"
@@ -240,22 +240,22 @@ exports[`CampaignDetail component should display default value when it's a new c
                             <div
                               className="undefined form-group"
                             >
-                              <Hl
+                              <Label
                                 className="control-label"
                                 htmlFor="id-name"
                                 tag="label"
                               >
                                 <label
-                                  className="control-label "
+                                  className="control-label  form-control-label"
                                   htmlFor="id-name"
                                 >
                                   Campaign name
                                 </label>
-                              </Hl>
+                              </Label>
                               <div
                                 className=""
                               >
-                                <ei
+                                <Input
                                   className=""
                                   id="id-name"
                                   onChange={[Function]}
@@ -272,10 +272,10 @@ exports[`CampaignDetail component should display default value when it's a new c
                                     required={true}
                                     type="input"
                                   />
-                                </ei>
+                                </Input>
                               </div>
                             </div>
-                          </ml>
+                          </FormGroup>
                         </InputField>
                       </div>
                       <h5>
@@ -299,7 +299,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                           }
                         >
                           <div>
-                            <ei
+                            <Button
                               className="btn-frozen"
                               color="info"
                               tag="div"
@@ -310,7 +310,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                               >
                                 Current URL
                               </div>
-                            </ei>
+                            </Button>
                             <SelectField
                               allowCustomValue={false}
                               onChange={[Function]}
@@ -389,7 +389,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                   isOpen={false}
                                   toggle={[Function]}
                                 >
-                                  <ei
+                                  <Dropdown
                                     isOpen={false}
                                     tag="div"
                                     toggle={[Function]}
@@ -397,7 +397,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                     <div
                                       className="dropdown"
                                     >
-                                      <Xo
+                                      <DropdownMenu
                                         tag="div"
                                       >
                                         <div
@@ -406,7 +406,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                           role="menu"
                                           tabIndex="-1"
                                         >
-                                          <ei
+                                          <DropdownItem
                                             className="undefined"
                                             onClick={[Function]}
                                             onMouseEnter={[Function]}
@@ -423,8 +423,8 @@ exports[`CampaignDetail component should display default value when it's a new c
                                             >
                                               is not
                                             </button>
-                                          </ei>
-                                          <ei
+                                          </DropdownItem>
+                                          <DropdownItem
                                             className=""
                                             onClick={[Function]}
                                             onMouseEnter={[Function]}
@@ -441,8 +441,8 @@ exports[`CampaignDetail component should display default value when it's a new c
                                             >
                                               contains
                                             </button>
-                                          </ei>
-                                          <ei
+                                          </DropdownItem>
+                                          <DropdownItem
                                             className=""
                                             onClick={[Function]}
                                             onMouseEnter={[Function]}
@@ -459,8 +459,8 @@ exports[`CampaignDetail component should display default value when it's a new c
                                             >
                                               does not contain
                                             </button>
-                                          </ei>
-                                          <ei
+                                          </DropdownItem>
+                                          <DropdownItem
                                             className=""
                                             onClick={[Function]}
                                             onMouseEnter={[Function]}
@@ -477,8 +477,8 @@ exports[`CampaignDetail component should display default value when it's a new c
                                             >
                                               starts with
                                             </button>
-                                          </ei>
-                                          <ei
+                                          </DropdownItem>
+                                          <DropdownItem
                                             className=""
                                             onClick={[Function]}
                                             onMouseEnter={[Function]}
@@ -495,11 +495,11 @@ exports[`CampaignDetail component should display default value when it's a new c
                                             >
                                               ends with
                                             </button>
-                                          </ei>
+                                          </DropdownItem>
                                         </div>
-                                      </Xo>
+                                      </DropdownMenu>
                                     </div>
-                                  </ei>
+                                  </Dropdown>
                                 </UncontrolledDropdown>
                               </div>
                             </SelectField>
@@ -549,7 +549,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                 type="input"
                                 value=""
                               >
-                                <ml
+                                <FormGroup
                                   className=""
                                   color=""
                                   tag="div"
@@ -560,7 +560,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                     <div
                                       className=""
                                     >
-                                      <ei
+                                      <Input
                                         className=""
                                         id="id-value"
                                         onChange={[Function]}
@@ -575,10 +575,10 @@ exports[`CampaignDetail component should display default value when it's a new c
                                           type="input"
                                           value=""
                                         />
-                                      </ei>
+                                      </Input>
                                     </div>
                                   </div>
-                                </ml>
+                                </FormGroup>
                               </InputField>
                             </ValueInput>
                             <div>
@@ -590,7 +590,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                           </div>
                         </TriggerRow>
                         <UncontrolledDropdown>
-                          <ei
+                          <Dropdown
                             isOpen={false}
                             tag="div"
                             toggle={[Function]}
@@ -598,7 +598,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                             <div
                               className="dropdown"
                             >
-                              <ei
+                              <DropdownToggle
                                 aria-haspopup={true}
                                 caret={true}
                                 className="mr-2"
@@ -606,7 +606,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                 data-toggle="dropdown"
                                 type="button"
                               >
-                                <ei
+                                <Button
                                   aria-expanded={false}
                                   aria-haspopup="true"
                                   className="mr-2 dropdown-toggle"
@@ -629,9 +629,9 @@ exports[`CampaignDetail component should display default value when it's a new c
                                     />
                                     Add condition
                                   </button>
-                                </ei>
-                              </ei>
-                              <Xo
+                                </Button>
+                              </DropdownToggle>
+                              <DropdownMenu
                                 tag="div"
                               >
                                 <div
@@ -640,7 +640,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                   role="menu"
                                   tabIndex="-1"
                                 >
-                                  <ei
+                                  <DropdownItem
                                     onClick={[Function]}
                                     tag="button"
                                     toggle={true}
@@ -654,8 +654,8 @@ exports[`CampaignDetail component should display default value when it's a new c
                                     >
                                       Current URL
                                     </button>
-                                  </ei>
-                                  <ei
+                                  </DropdownItem>
+                                  <DropdownItem
                                     onClick={[Function]}
                                     tag="button"
                                     toggle={true}
@@ -669,11 +669,11 @@ exports[`CampaignDetail component should display default value when it's a new c
                                     >
                                       Time spent on page
                                     </button>
-                                  </ei>
+                                  </DropdownItem>
                                 </div>
-                              </Xo>
+                              </DropdownMenu>
                             </div>
-                          </ei>
+                          </Dropdown>
                         </UncontrolledDropdown>
                       </div>
                       <h5>
@@ -757,7 +757,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                 isOpen={false}
                                 toggle={[Function]}
                               >
-                                <ei
+                                <Dropdown
                                   isOpen={false}
                                   tag="div"
                                   toggle={[Function]}
@@ -765,7 +765,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                   <div
                                     className="dropdown"
                                   >
-                                    <Xo
+                                    <DropdownMenu
                                       tag="div"
                                     >
                                       <div
@@ -774,7 +774,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                         role="menu"
                                         tabIndex="-1"
                                       >
-                                        <ei
+                                        <DropdownItem
                                           className="undefined"
                                           onClick={[Function]}
                                           onMouseEnter={[Function]}
@@ -796,7 +796,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                               <span
                                                 className="agent-label d-inline-flex align-items-center"
                                               >
-                                                <Zs
+                                                <Badge
                                                   className="agent-id-label"
                                                   color="warning"
                                                   pill={false}
@@ -807,7 +807,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                                   >
                                                     A
                                                   </span>
-                                                </Zs>
+                                                </Badge>
                                                 <span
                                                   className="secondary-action"
                                                   style={
@@ -821,8 +821,8 @@ exports[`CampaignDetail component should display default value when it's a new c
                                               </span>
                                             </AgentLabel>
                                           </button>
-                                        </ei>
-                                        <ei
+                                        </DropdownItem>
+                                        <DropdownItem
                                           className=""
                                           onClick={[Function]}
                                           onMouseEnter={[Function]}
@@ -844,7 +844,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                               <span
                                                 className="agent-label d-inline-flex align-items-center"
                                               >
-                                                <Zs
+                                                <Badge
                                                   className="agent-id-label"
                                                   color="warning"
                                                   pill={false}
@@ -855,7 +855,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                                   >
                                                     A
                                                   </span>
-                                                </Zs>
+                                                </Badge>
                                                 <span
                                                   className="secondary-action"
                                                   style={
@@ -869,11 +869,11 @@ exports[`CampaignDetail component should display default value when it's a new c
                                               </span>
                                             </AgentLabel>
                                           </button>
-                                        </ei>
+                                        </DropdownItem>
                                       </div>
-                                    </Xo>
+                                    </DropdownMenu>
                                   </div>
-                                </ei>
+                                </Dropdown>
                               </UncontrolledDropdown>
                             </div>
                           </SelectField>
@@ -902,7 +902,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                             }
                           }
                         >
-                          <ml
+                          <FormGroup
                             className="undefined"
                             color=""
                             tag="div"
@@ -1937,6 +1937,10 @@ exports[`CampaignDetail component should display default value when it's a new c
                                     <Decorated(MentionSuggestions)
                                       canAddMention={false}
                                       onSearchChange={[Function]}
+                                      suggestions={
+                                        Immutable.List [
+                                        ]
+                                      }
                                     >
                                       <MentionSuggestions
                                         ariaProps={
@@ -2233,10 +2237,10 @@ exports[`CampaignDetail component should display default value when it's a new c
                                 </div>
                               </div>
                             </div>
-                          </ml>
+                          </FormGroup>
                         </RichField>
                       </div>
-                      <ei
+                      <Button
                         className=""
                         color="primary"
                         tag="button"
@@ -2247,12 +2251,12 @@ exports[`CampaignDetail component should display default value when it's a new c
                         >
                           Create & activate campaign
                         </button>
-                      </ei>
+                      </Button>
                     </form>
-                  </rl>
+                  </Form>
                 </div>
-              </Ot>
-              <Ot
+              </Col>
+              <Col
                 tag="div"
                 widths={
                   Array [
@@ -2313,11 +2317,11 @@ exports[`CampaignDetail component should display default value when it's a new c
                     </div>
                   </CampaignPreview>
                 </div>
-              </Ot>
+              </Col>
             </div>
-          </bt>
+          </Row>
         </div>
-      </gt>
+      </Container>
     </div>
   </CampaignDetail>
 </Connect(CampaignDetail)>
@@ -2420,13 +2424,13 @@ exports[`CampaignDetail component should display the campaign correctly when upd
     updateCampaign={[Function]}
   >
     <div>
-      <gs
+      <Breadcrumb
         tag="ol"
       >
         <ol
           className="breadcrumb"
         >
-          <bs
+          <BreadcrumbItem
             tag="li"
           >
             <li
@@ -2445,8 +2449,8 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                 </a>
               </Link>
             </li>
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             tag="li"
           >
             <li
@@ -2465,8 +2469,8 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                 </a>
               </Link>
             </li>
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             tag="li"
           >
             <li
@@ -2485,8 +2489,8 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                 </a>
               </Link>
             </li>
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             tag="li"
           >
             <li
@@ -2505,32 +2509,32 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                 </a>
               </Link>
             </li>
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             active={true}
             tag="li"
           >
             <li
               className="active breadcrumb-item"
             />
-          </bs>
+          </BreadcrumbItem>
         </ol>
-      </gs>
+      </Breadcrumb>
       <h1 />
-      <gt
+      <Container
         fluid={true}
         tag="div"
       >
         <div
           className="container-fluid"
         >
-          <bt
+          <Row
             tag="div"
           >
             <div
               className="row"
             >
-              <Ot
+              <Col
                 style={
                   Object {
                     "paddingLeft": 0,
@@ -2555,7 +2559,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                     }
                   }
                 >
-                  <rl
+                  <Form
                     onSubmit={[Function]}
                     tag="form"
                   >
@@ -2575,7 +2579,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                           type="input"
                           value=""
                         >
-                          <ml
+                          <FormGroup
                             className="undefined"
                             color=""
                             tag="div"
@@ -2583,22 +2587,22 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                             <div
                               className="undefined form-group"
                             >
-                              <Hl
+                              <Label
                                 className="control-label"
                                 htmlFor="id-name"
                                 tag="label"
                               >
                                 <label
-                                  className="control-label "
+                                  className="control-label  form-control-label"
                                   htmlFor="id-name"
                                 >
                                   Campaign name
                                 </label>
-                              </Hl>
+                              </Label>
                               <div
                                 className=""
                               >
-                                <ei
+                                <Input
                                   className=""
                                   id="id-name"
                                   onChange={[Function]}
@@ -2617,10 +2621,10 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                     type="input"
                                     value=""
                                   />
-                                </ei>
+                                </Input>
                               </div>
                             </div>
-                          </ml>
+                          </FormGroup>
                         </InputField>
                       </div>
                       <h5>
@@ -2630,7 +2634,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                         className="mb-4"
                       >
                         <UncontrolledDropdown>
-                          <ei
+                          <Dropdown
                             isOpen={false}
                             tag="div"
                             toggle={[Function]}
@@ -2638,7 +2642,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                             <div
                               className="dropdown"
                             >
-                              <ei
+                              <DropdownToggle
                                 aria-haspopup={true}
                                 caret={true}
                                 className="mr-2"
@@ -2646,7 +2650,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                 data-toggle="dropdown"
                                 type="button"
                               >
-                                <ei
+                                <Button
                                   aria-expanded={false}
                                   aria-haspopup="true"
                                   className="mr-2 dropdown-toggle"
@@ -2669,9 +2673,9 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                     />
                                     Add condition
                                   </button>
-                                </ei>
-                              </ei>
-                              <Xo
+                                </Button>
+                              </DropdownToggle>
+                              <DropdownMenu
                                 tag="div"
                               >
                                 <div
@@ -2680,7 +2684,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                   role="menu"
                                   tabIndex="-1"
                                 >
-                                  <ei
+                                  <DropdownItem
                                     onClick={[Function]}
                                     tag="button"
                                     toggle={true}
@@ -2694,8 +2698,8 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                     >
                                       Current URL
                                     </button>
-                                  </ei>
-                                  <ei
+                                  </DropdownItem>
+                                  <DropdownItem
                                     onClick={[Function]}
                                     tag="button"
                                     toggle={true}
@@ -2709,11 +2713,11 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                     >
                                       Time spent on page
                                     </button>
-                                  </ei>
+                                  </DropdownItem>
                                 </div>
-                              </Xo>
+                              </DropdownMenu>
                             </div>
-                          </ei>
+                          </Dropdown>
                         </UncontrolledDropdown>
                       </div>
                       <h5>
@@ -2797,7 +2801,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                 isOpen={false}
                                 toggle={[Function]}
                               >
-                                <ei
+                                <Dropdown
                                   isOpen={false}
                                   tag="div"
                                   toggle={[Function]}
@@ -2805,7 +2809,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                   <div
                                     className="dropdown"
                                   >
-                                    <Xo
+                                    <DropdownMenu
                                       tag="div"
                                     >
                                       <div
@@ -2814,7 +2818,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                         role="menu"
                                         tabIndex="-1"
                                       >
-                                        <ei
+                                        <DropdownItem
                                           className="undefined"
                                           onClick={[Function]}
                                           onMouseEnter={[Function]}
@@ -2836,7 +2840,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                               <span
                                                 className="agent-label d-inline-flex align-items-center"
                                               >
-                                                <Zs
+                                                <Badge
                                                   className="agent-id-label"
                                                   color="warning"
                                                   pill={false}
@@ -2847,7 +2851,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                                   >
                                                     A
                                                   </span>
-                                                </Zs>
+                                                </Badge>
                                                 <span
                                                   className="secondary-action"
                                                   style={
@@ -2861,8 +2865,8 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                               </span>
                                             </AgentLabel>
                                           </button>
-                                        </ei>
-                                        <ei
+                                        </DropdownItem>
+                                        <DropdownItem
                                           className=""
                                           onClick={[Function]}
                                           onMouseEnter={[Function]}
@@ -2884,7 +2888,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                               <span
                                                 className="agent-label d-inline-flex align-items-center"
                                               >
-                                                <Zs
+                                                <Badge
                                                   className="agent-id-label"
                                                   color="warning"
                                                   pill={false}
@@ -2895,7 +2899,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                                   >
                                                     A
                                                   </span>
-                                                </Zs>
+                                                </Badge>
                                                 <span
                                                   className="secondary-action"
                                                   style={
@@ -2909,17 +2913,17 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                               </span>
                                             </AgentLabel>
                                           </button>
-                                        </ei>
+                                        </DropdownItem>
                                       </div>
-                                    </Xo>
+                                    </DropdownMenu>
                                   </div>
-                                </ei>
+                                </Dropdown>
                               </UncontrolledDropdown>
                             </div>
                           </SelectField>
                         </div>
                       </div>
-                      <ei
+                      <Button
                         className=""
                         color="primary"
                         tag="button"
@@ -2930,7 +2934,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                         >
                           Save
                         </button>
-                      </ei>
+                      </Button>
                       <ConfirmButton
                         className="pull-right"
                         color="danger"
@@ -2949,7 +2953,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                           className="d-inline-block pull-right"
                           id="delete-campaign-button"
                         >
-                          <ei
+                          <Button
                             className=""
                             color="danger"
                             disabled={false}
@@ -2968,8 +2972,8 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                             >
                               Delete campaign
                             </button>
-                          </ei>
-                          <ei
+                          </Button>
+                          <Popover
                             isOpen={false}
                             placement="bottom right"
                             target="confirm-button-delete-campaign-button"
@@ -2978,10 +2982,10 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                         </div>
                       </ConfirmButton>
                     </form>
-                  </rl>
+                  </Form>
                 </div>
-              </Ot>
-              <Ot
+              </Col>
+              <Col
                 tag="div"
                 widths={
                   Array [
@@ -3041,11 +3045,11 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                     </div>
                   </CampaignPreview>
                 </div>
-              </Ot>
+              </Col>
             </div>
-          </bt>
+          </Row>
         </div>
-      </gt>
+      </Container>
     </div>
   </CampaignDetail>
 </Connect(CampaignDetail)>

@@ -2,10 +2,10 @@
 
 exports[`ChatIntegrationInstall component should display a placeholder if there's no Shopify store without chat, andshould display the list of Shopify stores where the chat is installed 1`] = `
 <div>
-  <gs
+  <Breadcrumb
     tag="ol"
   >
-    <bs
+    <BreadcrumbItem
       tag="li"
     >
       <Link
@@ -15,8 +15,8 @@ exports[`ChatIntegrationInstall component should display a placeholder if there'
       >
         Integrations
       </Link>
-    </bs>
-    <bs
+    </BreadcrumbItem>
+    <BreadcrumbItem
       tag="li"
     >
       <Link
@@ -26,19 +26,19 @@ exports[`ChatIntegrationInstall component should display a placeholder if there'
       >
         Chat
       </Link>
-    </bs>
-    <bs
+    </BreadcrumbItem>
+    <BreadcrumbItem
       tag="li"
     >
       mychat
-    </bs>
-    <bs
+    </BreadcrumbItem>
+    <BreadcrumbItem
       active={true}
       tag="li"
     >
       Installation
-    </bs>
-  </gs>
+    </BreadcrumbItem>
+  </Breadcrumb>
   <h1>
     Installation
   </h1>
@@ -60,7 +60,7 @@ exports[`ChatIntegrationInstall component should display a placeholder if there'
     </p>
   </div>
   <div>
-    <ei
+    <Button
       block={true}
       className="mb-2"
       color="secondary"
@@ -72,7 +72,7 @@ exports[`ChatIntegrationInstall component should display a placeholder if there'
       />
       Add chat on 
       mylittleintegration
-    </ei>
+    </Button>
     <p
       className="text-muted text-center"
     >
@@ -91,7 +91,7 @@ exports[`ChatIntegrationInstall component should display a placeholder if there'
     >
       OR
     </div>
-    <rl
+    <Form
       onSubmit={[Function]}
       tag="form"
     >
@@ -105,11 +105,11 @@ exports[`ChatIntegrationInstall component should display a placeholder if there'
         tag:
       </p>
       <div>
-        <ta
+        <Card
           className="p-0 mb-2"
           tag="div"
         >
-          <kr
+          <Alert
             className="m-0"
             color="info"
             isOpen={true}
@@ -135,9 +135,9 @@ exports[`ChatIntegrationInstall component should display a placeholder if there'
               &lt;/div&gt;
               &lt;!-- Gorgias Chat Widget End --&gt;
             </pre>
-          </kr>
-        </ta>
-        <ei
+          </Alert>
+        </Card>
+        <Button
           color="info"
           data-clipboard-target="#chat-snippet"
           id="copy-chat-snippet"
@@ -148,19 +148,19 @@ exports[`ChatIntegrationInstall component should display a placeholder if there'
             className="fa fa-fw fa-files-o mr-2"
           />
           Copy
-        </ei>
+        </Button>
       </div>
-    </rl>
+    </Form>
   </div>
 </div>
 `;
 
 exports[`ChatIntegrationInstall component should display the code snippet for custom integration 1`] = `
 <div>
-  <gs
+  <Breadcrumb
     tag="ol"
   >
-    <bs
+    <BreadcrumbItem
       tag="li"
     >
       <Link
@@ -170,8 +170,8 @@ exports[`ChatIntegrationInstall component should display the code snippet for cu
       >
         Integrations
       </Link>
-    </bs>
-    <bs
+    </BreadcrumbItem>
+    <BreadcrumbItem
       tag="li"
     >
       <Link
@@ -181,19 +181,19 @@ exports[`ChatIntegrationInstall component should display the code snippet for cu
       >
         Chat
       </Link>
-    </bs>
-    <bs
+    </BreadcrumbItem>
+    <BreadcrumbItem
       tag="li"
     >
       mychat
-    </bs>
-    <bs
+    </BreadcrumbItem>
+    <BreadcrumbItem
       active={true}
       tag="li"
     >
       Installation
-    </bs>
-  </gs>
+    </BreadcrumbItem>
+  </Breadcrumb>
   <h1>
     Installation
   </h1>
@@ -202,7 +202,7 @@ exports[`ChatIntegrationInstall component should display the code snippet for cu
   </p>
   <div />
   <div>
-    <ei
+    <Button
       block={true}
       className="mb-2"
       color="secondary"
@@ -214,7 +214,7 @@ exports[`ChatIntegrationInstall component should display the code snippet for cu
       />
       Add chat on 
       mylittleintegration
-    </ei>
+    </Button>
     <p
       className="text-muted text-center"
     >
@@ -233,7 +233,7 @@ exports[`ChatIntegrationInstall component should display the code snippet for cu
     >
       OR
     </div>
-    <rl
+    <Form
       onSubmit={[Function]}
       tag="form"
     >
@@ -247,11 +247,11 @@ exports[`ChatIntegrationInstall component should display the code snippet for cu
         tag:
       </p>
       <div>
-        <ta
+        <Card
           className="p-0 mb-2"
           tag="div"
         >
-          <kr
+          <Alert
             className="m-0"
             color="info"
             isOpen={true}
@@ -277,9 +277,9 @@ exports[`ChatIntegrationInstall component should display the code snippet for cu
               &lt;/div&gt;
               &lt;!-- Gorgias Chat Widget End --&gt;
             </pre>
-          </kr>
-        </ta>
-        <ei
+          </Alert>
+        </Card>
+        <Button
           color="info"
           data-clipboard-target="#chat-snippet"
           id="copy-chat-snippet"
@@ -290,19 +290,19 @@ exports[`ChatIntegrationInstall component should display the code snippet for cu
             className="fa fa-fw fa-files-o mr-2"
           />
           Copy
-        </ei>
+        </Button>
       </div>
-    </rl>
+    </Form>
   </div>
 </div>
 `;
 
 exports[`ChatIntegrationInstall component should display the list of Shopify stores without chats 1`] = `
 <div>
-  <gs
+  <Breadcrumb
     tag="ol"
   >
-    <bs
+    <BreadcrumbItem
       tag="li"
     >
       <Link
@@ -312,8 +312,8 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
       >
         Integrations
       </Link>
-    </bs>
-    <bs
+    </BreadcrumbItem>
+    <BreadcrumbItem
       tag="li"
     >
       <Link
@@ -323,19 +323,19 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
       >
         Chat
       </Link>
-    </bs>
-    <bs
+    </BreadcrumbItem>
+    <BreadcrumbItem
       tag="li"
     >
       mychat
-    </bs>
-    <bs
+    </BreadcrumbItem>
+    <BreadcrumbItem
       active={true}
       tag="li"
     >
       Installation
-    </bs>
-  </gs>
+    </BreadcrumbItem>
+  </Breadcrumb>
   <h1>
     Installation
   </h1>
@@ -344,7 +344,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
   </p>
   <div />
   <div>
-    <ei
+    <Button
       block={true}
       className="mb-2"
       color="secondary"
@@ -356,7 +356,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
       />
       Add chat on 
       mylittleintegration
-    </ei>
+    </Button>
     <p
       className="text-muted text-center"
     >
@@ -375,7 +375,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
     >
       OR
     </div>
-    <rl
+    <Form
       onSubmit={[Function]}
       tag="form"
     >
@@ -389,11 +389,11 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
         tag:
       </p>
       <div>
-        <ta
+        <Card
           className="p-0 mb-2"
           tag="div"
         >
-          <kr
+          <Alert
             className="m-0"
             color="info"
             isOpen={true}
@@ -419,9 +419,9 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
               &lt;/div&gt;
               &lt;!-- Gorgias Chat Widget End --&gt;
             </pre>
-          </kr>
-        </ta>
-        <ei
+          </Alert>
+        </Card>
+        <Button
           color="info"
           data-clipboard-target="#chat-snippet"
           id="copy-chat-snippet"
@@ -432,9 +432,9 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
             className="fa fa-fw fa-files-o mr-2"
           />
           Copy
-        </ei>
+        </Button>
       </div>
-    </rl>
+    </Form>
   </div>
 </div>
 `;

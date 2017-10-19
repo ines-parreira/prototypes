@@ -5,6 +5,8 @@ import classnames from 'classnames'
 import _capitalize from 'lodash/capitalize'
 import {UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 
+import shortcutManager from '../../../services/shortcutManager'
+
 import * as currentUserActions from '../../../state/currentUser/actions'
 import * as layoutActions from '../../../state/layout/actions'
 
@@ -199,6 +201,15 @@ export default class Navbar extends React.Component {
                         >
                             <i className="fa fa-fw fa-book mr-2" />
                             Documentation
+                        </DropdownItem>
+                        <DropdownItem
+                            tag="a"
+                            onClick={() => {
+                                shortcutManager.triggerAction('KeyboardHelp', 'SHOW_HELP')
+                            }}
+                        >
+                            <i className="fa fa-fw fa-keyboard-o mr-2" />
+                            Keyboard shortcuts
                         </DropdownItem>
                         <DropdownItem
                             tag="a"

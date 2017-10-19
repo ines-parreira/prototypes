@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import {connect} from 'react-redux'
 import {UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 
+import shortcutManager from '../../../../../services/shortcutManager'
 import {ticketSourceTypes} from '../../../../../utils'
 import MessageSourceFields from './MessageSourceFields/'
 import {guessReceiversFromTicket} from '../../../../../state/ticket/utils'
@@ -53,10 +54,29 @@ export default class ReplyMessageChannel extends React.Component {
 
     componentDidMount() {
         window.addEventListener('click', this._updateMessageSourceFieldsOpening)
+
+        this._bindKeys()
     }
 
     componentWillUnmount() {
         window.removeEventListener('click', this._updateMessageSourceFieldsOpening)
+
+        shortcutManager.unbind('TicketDetailContainer')
+    }
+
+    _bindKeys = () => {
+        shortcutManager.bind('TicketDetailContainer', {
+            FORWARD_REPLY: {
+                action: (e) => {
+                    e.preventDefault()
+                    this.props.prepareNewMessage('email-forward')
+
+                    if (this._messageSourceFields) {
+                        this._messageSourceFields.focusInput()
+                    }
+                }
+            }
+        })
     }
 
     _canChangeReceivers = () => {
@@ -138,6 +158,7 @@ export default class ReplyMessageChannel extends React.Component {
                 parentId={parentId.toString()}
                 canOpen={this._canChangeReceivers()}
                 isOpen={this.state.isReceiversAreaOpen}
+                inputRef={(ref) => this._messageSourceFields = ref}
             />
         )
     }

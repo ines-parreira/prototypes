@@ -1,11 +1,15 @@
 import React, {PropTypes, Component} from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router'
+import {Link, browserHistory} from 'react-router'
 import classnames from 'classnames'
 import {UncontrolledTooltip} from 'reactstrap'
+import _debounce from 'lodash/debounce'
 
 import {compactInteger, getPluralObjectName} from '../../../../utils'
 import ViewNavbarViewEditor from './ViewNavbarViewEditor'
+
+import shortcutManager from '../../../../services/shortcutManager'
+import {moveIndex} from '../../../common/utils/keyboard'
 
 import * as viewsActions from '../../../../state/views/actions'
 import {getActiveView, getViewsByType, makeGetView, makeGetViewCount} from '../../../../state/views/selectors'
@@ -34,7 +38,61 @@ class ViewNavbarView extends Component {
     }
 
     state = {
-        hasEditMode: false
+        hasEditMode: false,
+        viewCusor: 0
+    }
+
+    componentDidMount() {
+        this._bindKeys()
+    }
+
+    componentWillUnmount() {
+        shortcutManager.unbind('ViewNavbarView')
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({viewCursor: this._getViewCursor(nextProps.activeView, nextProps.views)})
+    }
+
+    _bindKeys = () => {
+        shortcutManager.bind('ViewNavbarView', {
+            GO_NEXT_VIEW: {
+                action: () => this._moveCursor()
+            },
+            GO_PREV_VIEW: {
+                action: () => this._moveCursor('previous')
+            },
+        })
+    }
+
+    _getDisplayedViews = () => {
+        // hide hidden views if we are not in edit mode
+        if (!this.state.hasEditMode) {
+            return this.props.views.filter(view => !view.get('hide', false))
+        }
+
+        return this.props.views
+    }
+
+    _getViewCursor(activeView, views) {
+        return views.findIndex((v) => v.get('id') === activeView.get('id'))
+    }
+
+    _updateViewUrl = _debounce((viewUrl) => {
+        browserHistory.push(viewUrl)
+    })
+
+    _moveCursor = (direction: string = 'next') => {
+        const displayedViews = this._getDisplayedViews()
+        const viewCursor = moveIndex(this.state.viewCursor, displayedViews.size, {
+            direction,
+            reverse: true
+        })
+        this.setState({viewCursor})
+
+        const objectName = getPluralObjectName(this.props.viewType)
+        const viewUrl = this._getViewUrl(objectName, displayedViews.get(viewCursor))
+        this._updateViewUrl(viewUrl)
     }
 
     _toggleHasEditMode = () => {
@@ -42,8 +100,12 @@ class ViewNavbarView extends Component {
         this.setState({hasEditMode: !hasEditMode})
     }
 
+    _getViewUrl = (objectName, view) => {
+        return `/app/${objectName}/${view.get('id')}/${view.get('slug')}`
+    }
+
     render() {
-        const {views, activeView, viewType, settings, isLoading} = this.props
+        const {activeView, viewType, settings, isLoading} = this.props
         const {hasEditMode} = this.state
         // we use this to build urls
         const objectName = getPluralObjectName(viewType)
@@ -52,12 +114,7 @@ class ViewNavbarView extends Component {
             [css.active]: hasEditMode
         })
 
-        let displayedViews = views
-
-        // hide hidden views if we are not in edit mode
-        if (!hasEditMode) {
-            displayedViews = displayedViews.filter(view => !view.get('hide', false))
-        }
+        let displayedViews = this._getDisplayedViews()
 
         return (
             <div>
@@ -117,7 +174,7 @@ class ViewNavbarView extends Component {
                                         return (
                                             <Link
                                                 key={key}
-                                                to={`/app/${objectName}/${view.get('id')}/${view.get('slug')}`}
+                                                to={this._getViewUrl(objectName, view)}
                                                 className={classes}
                                                 title={`${view.get('name')} ${count}`}
                                                 onClick={() => {

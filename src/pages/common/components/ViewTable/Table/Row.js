@@ -1,41 +1,44 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React from 'react'
 import classnames from 'classnames'
-import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 
 import Cell from './Cell'
+import {scrollToReactNode} from '../../../utils/keyboard'
 
 import css from '../Table.less'
 
 import * as usersSelectors from '../../../../../state/users/selectors'
 import * as viewsActions from '../../../../../state/views/actions'
 
-import * as viewsConfig from '../../../../../config/views'
-
 import * as viewsUtils from '../../../../../state/views/utils'
 
-@connect((state, ownProps) => {
-    return {
-        config: viewsConfig.getConfigByName(ownProps.type),
-        getAgentsViewing: usersSelectors.makeGetOtherAgentsOnTicket(state),
-    }
-}, {
-    toggleSelection: viewsActions.toggleSelection,
-})
-export default class Row extends React.Component {
-    static propTypes = {
-        config: ImmutablePropTypes.map.isRequired,
-        fields: ImmutablePropTypes.list.isRequired,
-        getAgentsViewing: PropTypes.func.isRequired,
-        item: ImmutablePropTypes.map.isRequired,
-        isSelected: PropTypes.bool.isRequired,
-        toggleSelection: PropTypes.func.isRequired,
-        type: PropTypes.string.isRequired,
-    }
+import type {Map, List} from 'immutable'
 
+type Props = {
+    link: string,
+    fields: List<*>,
+    item: Map<*,*>,
+    isSelected: boolean,
+    hasCursor: boolean,
+    type: string,
+
+    toggleSelection: typeof viewsActions.toggleSelection,
+    getAgentsViewing: typeof usersSelectors.makeGetOtherAgentsOnTicket,
+}
+
+class Row extends React.Component<Props> {
     static defaultProps = {
         item: fromJS({}),
+    }
+
+    componentDidUpdate(prevProps) {
+        // only if it just got the cursor.
+        // to prevent focusing on the cursor item when a different one updates.
+        if (this.props.hasCursor && !prevProps.hasCursor) {
+            scrollToReactNode(this)
+        }
     }
 
     _toggleSelection = () => {
@@ -43,9 +46,7 @@ export default class Row extends React.Component {
     }
 
     render() {
-        const {config, fields, getAgentsViewing, item, isSelected, type} = this.props
-
-        const link = `/app/${config.get('routeItem')}/${item.get('id')}`
+        const {fields, getAgentsViewing, item, isSelected, type, hasCursor, link} = this.props
 
         const agentsViewing = getAgentsViewing(item.get('id'))
 
@@ -53,6 +54,7 @@ export default class Row extends React.Component {
             <tr
                 className={classnames({
                     highlighted: item.get('is_unread'),
+                    [css['has-cursor']]: hasCursor
                 })}
             >
                 <td
@@ -90,3 +92,11 @@ export default class Row extends React.Component {
         )
     }
 }
+
+export default connect((state) => {
+    return {
+        getAgentsViewing: usersSelectors.makeGetOtherAgentsOnTicket(state),
+    }
+}, {
+    toggleSelection: viewsActions.toggleSelection,
+})(Row)

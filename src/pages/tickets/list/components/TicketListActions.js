@@ -17,6 +17,9 @@ import {
     PopoverContent,
 } from 'reactstrap'
 import _debounce from 'lodash/debounce'
+import _isUndefined from 'lodash/isUndefined'
+
+import shortcutManager from '../../../../services/shortcutManager'
 
 import * as viewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
@@ -43,9 +46,8 @@ type Props = {
 }
 
 type State = {
-    agentsDropdownOpen: boolean,
+    popoverOpen: string,
     agentsSearch: string,
-    tagsDropdownOpen: boolean,
     tagsSearch: string,
     tags: List<Map<*,*>>,
     isLoadingTags: boolean,
@@ -55,9 +57,8 @@ type State = {
 
 class TicketListActions extends React.Component<Props, State> {
     state = {
-        agentsDropdownOpen: false,
+        popoverOpen: '',
         agentsSearch: '',
-        tagsDropdownOpen: false,
         tagsSearch: '',
         tags: fromJS([]),
         isLoadingTags: false,
@@ -65,29 +66,95 @@ class TicketListActions extends React.Component<Props, State> {
         askDeleteConfirmation: false,
     }
 
-    _toggleAgentsDropdown = () => {
-        const opens = !this.state.agentsDropdownOpen
+    componentDidMount() {
+        this._bindKeys()
+    }
 
-        this.setState({
-            agentsDropdownOpen: opens,
+    componentWillUnmount() {
+        shortcutManager.unbind('TicketListActions')
+    }
+
+    _bindKeys = () => {
+        shortcutManager.bind('TicketListActions', {
+            OPEN_TICKET: {
+                action: () => this._bulkUpdate('status', 'open')
+            },
+            CLOSE_TICKET: {
+                action: () => this._bulkUpdate('status', 'closed')
+            },
+            OPEN_ASSIGNEE: {
+                action: (e) => {
+                    if (!this._hasChecked()) {
+                        return
+                    }
+                    e.preventDefault()
+                    this._toggleAgentsDropdown()
+                }
+            },
+            OPEN_TAGS: {
+                action: (e) => {
+                    if (!this._hasChecked()) {
+                        return
+                    }
+                    e.preventDefault()
+                    this._toggleTagsDropdown()
+                }
+            },
+            OPEN_MACRO: {
+                action: (e) => {
+                    if (!this._hasChecked()) {
+                        return
+                    }
+                    e.preventDefault()
+                    this.props.actions.macro.openModal()
+                }
+            },
+            DELETE_TICKET: {
+                action: () => {
+                    if (!this._hasChecked()) {
+                        return
+                    }
+                    this._toggleTrashConfirmation()
+                }
+            },
+            HIDE_POPOVER: {
+                key: 'esc',
+                action: () => {
+                    this._togglePopover()
+                }
+            },
         })
+    }
+
+    _hasChecked = () => {
+        return !this.props.selectedItemsIds.isEmpty()
+    }
+
+    _isPopoverOpen = (popoverOpen: string) => {
+        return this.state.popoverOpen === popoverOpen
+    }
+
+    _togglePopover = (popoverOpen = '') => {
+        return this.setState({popoverOpen})
+    }
+
+    _toggleAgentsDropdown = (visible) => {
+        const opens = !_isUndefined(visible) ? visible : !this._isPopoverOpen('agents')
+        this._togglePopover(opens ? 'agents' : '')
 
         if (opens) {
-            this.setState({agentsSearch: ''})
+            return this.setState({agentsSearch: ''})
         }
     }
 
-    _toggleTagsDropdown = () => {
-        const opens = !this.state.tagsDropdownOpen
-
-        this.setState({
-            tagsDropdownOpen: opens,
-        })
+    _toggleTagsDropdown = (visible) => {
+        const opens = !_isUndefined(visible) ? visible : !this._isPopoverOpen('tags')
+        this._togglePopover(opens ? 'tags' : '')
 
         if (opens) {
             const search = ''
-            this.setState({tagsSearch: search})
             this._queryTags(search)
+            return this.setState({tagsSearch: search})
         }
     }
 
@@ -129,7 +196,7 @@ class TicketListActions extends React.Component<Props, State> {
 
     _bulkTrash = () => {
         const {actions, view, selectedItemsIds} = this.props
-        this.setState({askTrashConfirmation: false})
+        this._toggleTrashConfirmation(false)
         return actions.views.bulkUpdate(view, selectedItemsIds, 'trashed_datetime', moment.utc())
     }
 
@@ -195,8 +262,9 @@ class TicketListActions extends React.Component<Props, State> {
         return options
     }
 
-    _toggleTrashConfirmation = () => {
-        this.setState({askTrashConfirmation: !this.state.askTrashConfirmation})
+    _toggleTrashConfirmation = (visible) => {
+        const opens = !_isUndefined(visible) ? visible : !this._isPopoverOpen('trash')
+        this._togglePopover(opens ? 'trash' : '')
     }
 
     _toggleDeleteConfirmation = () => {
@@ -247,7 +315,7 @@ class TicketListActions extends React.Component<Props, State> {
                 </UncontrolledButtonDropdown>
                 <ButtonDropdown
                     className="mr-2"
-                    isOpen={this.state.agentsDropdownOpen}
+                    isOpen={this._isPopoverOpen('agents')}
                     toggle={this._toggleAgentsDropdown}
                     size="sm"
                 >
@@ -278,7 +346,7 @@ class TicketListActions extends React.Component<Props, State> {
                         >
                             <div className="mb-2">Assign to:</div>
                             {
-                                this.state.agentsDropdownOpen && ( // rebuild input on each opening so "autoFocus" works
+                                this._isPopoverOpen('agents') && ( // rebuild input on each opening so "autoFocus" works
                                     <Input
                                         placeholder="Search agents..."
                                         autoFocus
@@ -317,7 +385,7 @@ class TicketListActions extends React.Component<Props, State> {
                 </ButtonDropdown>
                 <ButtonDropdown
                     className="mr-2"
-                    isOpen={this.state.tagsDropdownOpen}
+                    isOpen={this._isPopoverOpen('tags')}
                     toggle={this._toggleTagsDropdown}
                     size="sm"
                 >
@@ -340,7 +408,7 @@ class TicketListActions extends React.Component<Props, State> {
                         >
                             <div className="mb-2">Add tag:</div>
                             {
-                                this.state.tagsDropdownOpen && ( // rebuild input on each opening so "autoFocus" works
+                                this._isPopoverOpen('tags') && ( // rebuild input on each opening so "autoFocus" works
                                     <Input
                                         placeholder="Search tags..."
                                         autoFocus
@@ -405,7 +473,7 @@ class TicketListActions extends React.Component<Props, State> {
                 </UncontrolledButtonDropdown>
                 <Popover
                     placement="bottom"
-                    isOpen={this.state.askTrashConfirmation}
+                    isOpen={this._isPopoverOpen('trash')}
                     target="bulk-more-button"
                     toggle={this._toggleTrashConfirmation}
                 >
@@ -419,6 +487,7 @@ class TicketListActions extends React.Component<Props, State> {
                             type="submit"
                             color="success"
                             onClick={this._bulkTrash}
+                            autoFocus
                         >
                             Confirm
                         </Button>

@@ -9,7 +9,7 @@ import {isCurrentlyOnTicket, stripErrorMessage} from '../../utils'
 
 import * as constants from './constants'
 
-import type {dispatchType, getStateType} from '../types'
+import type {dispatchType, getStateType, thunkActionType} from '../types'
 type responseType = {
     status: string,
     user_id: string,
@@ -17,7 +17,7 @@ type responseType = {
     msg: string
 }
 
-export const search = (query: string) => ((dispatch: dispatchType): Promise<dispatchType> => {
+export const search = (query: string): thunkActionType => ((dispatch: dispatchType): Promise<dispatchType> => {
     dispatch({
         type: constants.SEARCH_USERS_START,
     })
@@ -38,7 +38,7 @@ export const search = (query: string) => ((dispatch: dispatchType): Promise<disp
         })
 })
 
-export const similarUser = (userId: string) => ((dispatch: dispatchType): Promise<dispatchType> => {
+export const similarUser = (userId: string): thunkActionType => ((dispatch: dispatchType): Promise<dispatchType> => {
     dispatch({
         type: constants.SEARCH_SIMILAR_USER_START
     })
@@ -102,7 +102,7 @@ export const fetchUserPicture = (email: string = '') => ((dispatch: dispatchType
         })
 })
 
-export const fetchPreviewUser = (userId: string) => ((dispatch: dispatchType): Promise<dispatchType> => {
+export const fetchPreviewUser = (userId: string): thunkActionType => ((dispatch: dispatchType): Promise<dispatchType> => {
     dispatch({
         type: constants.FETCH_PREVIEW_USER_START
     })

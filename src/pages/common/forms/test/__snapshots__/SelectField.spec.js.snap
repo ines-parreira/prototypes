@@ -138,10 +138,10 @@ exports[`SelectField should render a select input with custom props 1`] = `
     isOpen={false}
     toggle={[Function]}
   >
-    <Xo
+    <DropdownMenu
       tag="div"
     >
-      <ei
+      <DropdownItem
         className="undefined"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -150,8 +150,8 @@ exports[`SelectField should render a select input with custom props 1`] = `
         type="button"
       >
         Second
-      </ei>
-    </Xo>
+      </DropdownItem>
+    </DropdownMenu>
   </UncontrolledDropdown>
 </div>
 `;
@@ -193,17 +193,17 @@ exports[`SelectField should render a select input with default props 1`] = `
     isOpen={false}
     toggle={[Function]}
   >
-    <Xo
+    <DropdownMenu
       tag="div"
     >
-      <ei
+      <DropdownItem
         header={true}
         tag="button"
         toggle={true}
       >
         No result
-      </ei>
-    </Xo>
+      </DropdownItem>
+    </DropdownMenu>
   </UncontrolledDropdown>
 </div>
 `;

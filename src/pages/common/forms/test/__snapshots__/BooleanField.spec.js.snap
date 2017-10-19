@@ -1,19 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`BooleanField should render a basic boolean input 1`] = `
-<ml
+<FormGroup
   check={true}
   className=""
   color=""
   tag="div"
 >
-  <Hl
+  <Label
     check={true}
     className="control-label"
     htmlFor="id-input-2"
     tag="label"
   >
-    <ei
+    <Input
       checked="value"
       className="form-check-input"
       id="id-input-2"
@@ -25,24 +25,24 @@ exports[`BooleanField should render a basic boolean input 1`] = `
     <span>
       label
     </span>
-  </Hl>
-</ml>
+  </Label>
+</FormGroup>
 `;
 
 exports[`BooleanField should render a help text 1`] = `
-<ml
+<FormGroup
   check={true}
   className=""
   color=""
   tag="div"
 >
-  <Hl
+  <Label
     check={true}
     className="control-label"
     htmlFor="id-input-4"
     tag="label"
   >
-    <ei
+    <Input
       checked="value"
       className="form-check-input"
       id="id-input-4"
@@ -54,30 +54,30 @@ exports[`BooleanField should render a help text 1`] = `
     <span>
       label
     </span>
-  </Hl>
-  <vl
+  </Label>
+  <FormText
     color="muted"
     tag="small"
   >
     help text
-  </vl>
-</ml>
+  </FormText>
+</FormGroup>
 `;
 
 exports[`BooleanField should render a required input 1`] = `
-<ml
+<FormGroup
   check={true}
   className="undefined"
   color=""
   tag="div"
 >
-  <Hl
+  <Label
     check={true}
     className="control-label"
     htmlFor="id-input-3"
     tag="label"
   >
-    <ei
+    <Input
       checked="value"
       className="form-check-input"
       id="id-input-3"
@@ -90,24 +90,24 @@ exports[`BooleanField should render a required input 1`] = `
     <span>
       label
     </span>
-  </Hl>
-</ml>
+  </Label>
+</FormGroup>
 `;
 
 exports[`BooleanField should render inline 1`] = `
-<ml
+<FormGroup
   check={true}
   className="d-inline-block"
   color=""
   tag="div"
 >
-  <Hl
+  <Label
     check={true}
     className="control-label"
     htmlFor="id-input-6"
     tag="label"
   >
-    <ei
+    <Input
       checked="value"
       className="form-check-input"
       id="id-input-6"
@@ -119,24 +119,24 @@ exports[`BooleanField should render inline 1`] = `
     <span>
       label
     </span>
-  </Hl>
-</ml>
+  </Label>
+</FormGroup>
 `;
 
 exports[`BooleanField should render the input with an error 1`] = `
-<ml
+<FormGroup
   check={true}
   className=""
   color="danger"
   tag="div"
 >
-  <Hl
+  <Label
     check={true}
     className="control-label"
     htmlFor="id-input-5"
     tag="label"
   >
-    <ei
+    <Input
       checked="value"
       className="form-check-input form-control-danger"
       id="id-input-5"
@@ -148,13 +148,13 @@ exports[`BooleanField should render the input with an error 1`] = `
     <span>
       label
     </span>
-  </Hl>
+  </Label>
   <Errors
     tag={[Function]}
   >
     the value is wrong
   </Errors>
-</ml>
+</FormGroup>
 `;
 
 exports[`BooleanField should use default props 1`] = `

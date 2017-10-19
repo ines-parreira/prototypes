@@ -20,7 +20,7 @@ exports[`ManageTags component mounts correctly 1`] = `
         className="manage-tags-bulk-actions"
       >
         <span>
-          <ei
+          <Button
             className="mr-2"
             color="secondary"
             id="bulk-merge-button"
@@ -29,19 +29,19 @@ exports[`ManageTags component mounts correctly 1`] = `
             type="button"
           >
             Merge
-          </ei>
-          <ei
+          </Button>
+          <Popover
             isOpen={false}
             placement="bottom"
             target="bulk-merge-button"
             toggle={[Function]}
           >
-            <nn
+            <PopoverTitle
               tag="h3"
             >
               Are you sure?
-            </nn>
-            <pn
+            </PopoverTitle>
+            <PopoverContent
               tag="div"
             >
               <p>
@@ -57,19 +57,19 @@ exports[`ManageTags component mounts correctly 1`] = `
                 </b>
                 .
               </p>
-              <ei
+              <Button
                 color="success"
                 onClick={[Function]}
                 tag="button"
                 type="submit"
               >
                 Confirm
-              </ei>
-            </pn>
-          </ei>
+              </Button>
+            </PopoverContent>
+          </Popover>
         </span>
         <span>
-          <ei
+          <Button
             className="mr-2"
             color="secondary"
             id="bulk-remove-button"
@@ -78,19 +78,19 @@ exports[`ManageTags component mounts correctly 1`] = `
             type="button"
           >
             Delete
-          </ei>
-          <ei
+          </Button>
+          <Popover
             isOpen={false}
             placement="bottom"
             target="bulk-remove-button"
             toggle={[Function]}
           >
-            <nn
+            <PopoverTitle
               tag="h3"
             >
               Are you sure?
-            </nn>
-            <pn
+            </PopoverTitle>
+            <PopoverContent
               tag="div"
             >
               <p>
@@ -101,19 +101,19 @@ exports[`ManageTags component mounts correctly 1`] = `
                 </b>
                 .
               </p>
-              <ei
+              <Button
                 color="success"
                 onClick={[Function]}
                 tag="button"
                 type="submit"
               >
                 Confirm
-              </ei>
-            </pn>
-          </ei>
+              </Button>
+            </PopoverContent>
+          </Popover>
         </span>
         <span>
-          <ei
+          <Button
             color="primary"
             id="create-tag-button"
             onClick={[Function]}
@@ -121,22 +121,22 @@ exports[`ManageTags component mounts correctly 1`] = `
             type="button"
           >
             Create tag
-          </ei>
-          <ei
+          </Button>
+          <Popover
             isOpen={false}
             placement="bottom"
             target="create-tag-button"
             toggle={[Function]}
           >
-            <nn
+            <PopoverTitle
               tag="h3"
             >
               Create a new tag
-            </nn>
-            <pn
+            </PopoverTitle>
+            <PopoverContent
               tag="div"
             >
-              <rl
+              <Form
                 onSubmit={[Function]}
                 tag="form"
               >
@@ -156,7 +156,7 @@ exports[`ManageTags component mounts correctly 1`] = `
                       value=""
                     />
                   </div>
-                  <ei
+                  <Button
                     className=""
                     color="success"
                     tag="button"
@@ -165,11 +165,11 @@ exports[`ManageTags component mounts correctly 1`] = `
                     <i
                       className="fa fa-fw fa-check"
                     />
-                  </ei>
+                  </Button>
                 </div>
-              </rl>
-            </pn>
-          </ei>
+              </Form>
+            </PopoverContent>
+          </Popover>
         </span>
       </div>
     </div>

@@ -7,11 +7,11 @@ exports[`BillingPlans component should display matching current plan 1`] = `
   <h4>
     Plans
   </h4>
-  <bt
+  <Row
     className="mb-3"
     tag="div"
   >
-    <Ot
+    <Col
       sm="12"
       tag="div"
       widths={
@@ -24,22 +24,22 @@ exports[`BillingPlans component should display matching current plan 1`] = `
         ]
       }
     >
-      <da
+      <CardDeck
         tag="div"
       >
-        <ta
+        <Card
           className="text-center"
           outline={true}
           tag="div"
         >
-          <ba
+          <CardBlock
             tag="div"
           >
-            <Xa
+            <CardTitle
               tag="h4"
             >
               my plan
-            </Xa>
+            </CardTitle>
             <div
               className="mb-4 mt-3"
             >
@@ -96,7 +96,7 @@ exports[`BillingPlans component should display matching current plan 1`] = `
               </strong>
                integrations
             </div>
-            <ei
+            <Button
               className=""
               color="secondary"
               disabled={true}
@@ -105,22 +105,22 @@ exports[`BillingPlans component should display matching current plan 1`] = `
               tag="button"
             >
               Your current plan
-            </ei>
-          </ba>
-        </ta>
-        <ta
+            </Button>
+          </CardBlock>
+        </Card>
+        <Card
           className="text-center"
           outline={true}
           tag="div"
         >
-          <ba
+          <CardBlock
             tag="div"
           >
-            <Xa
+            <CardTitle
               tag="h4"
             >
               Enterprise Plan
-            </Xa>
+            </CardTitle>
             <div
               className="mb-4 mt-3"
             >
@@ -149,19 +149,19 @@ exports[`BillingPlans component should display matching current plan 1`] = `
             >
               Premium support
             </div>
-            <ei
+            <Button
               color="info"
               onClick={[Function]}
               outline={true}
               tag="button"
             >
               Contact Us
-            </ei>
-          </ba>
-        </ta>
-      </da>
-    </Ot>
-  </bt>
+            </Button>
+          </CardBlock>
+        </Card>
+      </CardDeck>
+    </Col>
+  </Row>
   <div>
     <p>
       <strong>
@@ -198,11 +198,11 @@ exports[`BillingPlans component should display multiple plans 1`] = `
   <h4>
     Plans
   </h4>
-  <bt
+  <Row
     className="mb-3"
     tag="div"
   >
-    <Ot
+    <Col
       sm="12"
       tag="div"
       widths={
@@ -215,22 +215,22 @@ exports[`BillingPlans component should display multiple plans 1`] = `
         ]
       }
     >
-      <da
+      <CardDeck
         tag="div"
       >
-        <ta
+        <Card
           className="text-center"
           outline={true}
           tag="div"
         >
-          <ba
+          <CardBlock
             tag="div"
           >
-            <Xa
+            <CardTitle
               tag="h4"
             >
               my plan
-            </Xa>
+            </CardTitle>
             <div
               className="mb-4 mt-3"
             >
@@ -287,7 +287,7 @@ exports[`BillingPlans component should display multiple plans 1`] = `
               </strong>
                integrations
             </div>
-            <ei
+            <Button
               className=""
               color="secondary"
               disabled={true}
@@ -296,22 +296,22 @@ exports[`BillingPlans component should display multiple plans 1`] = `
               tag="button"
             >
               Your current plan
-            </ei>
-          </ba>
-        </ta>
-        <ta
+            </Button>
+          </CardBlock>
+        </Card>
+        <Card
           className="text-center"
           outline={true}
           tag="div"
         >
-          <ba
+          <CardBlock
             tag="div"
           >
-            <Xa
+            <CardTitle
               tag="h4"
             >
               my second plan
-            </Xa>
+            </CardTitle>
             <div
               className="mb-4 mt-3"
             >
@@ -368,7 +368,7 @@ exports[`BillingPlans component should display multiple plans 1`] = `
               </strong>
                integrations
             </div>
-            <ei
+            <Button
               className=""
               color="info"
               disabled={false}
@@ -377,22 +377,22 @@ exports[`BillingPlans component should display multiple plans 1`] = `
               tag="button"
             >
               Switch to my second plan
-            </ei>
-          </ba>
-        </ta>
-        <ta
+            </Button>
+          </CardBlock>
+        </Card>
+        <Card
           className="text-center"
           outline={true}
           tag="div"
         >
-          <ba
+          <CardBlock
             tag="div"
           >
-            <Xa
+            <CardTitle
               tag="h4"
             >
               Enterprise Plan
-            </Xa>
+            </CardTitle>
             <div
               className="mb-4 mt-3"
             >
@@ -421,19 +421,19 @@ exports[`BillingPlans component should display multiple plans 1`] = `
             >
               Premium support
             </div>
-            <ei
+            <Button
               color="info"
               onClick={[Function]}
               outline={true}
               tag="button"
             >
               Contact Us
-            </ei>
-          </ba>
-        </ta>
-      </da>
-    </Ot>
-  </bt>
+            </Button>
+          </CardBlock>
+        </Card>
+      </CardDeck>
+    </Col>
+  </Row>
   <div>
     <p>
       <strong>
@@ -480,14 +480,14 @@ exports[`BillingPlans component should load with empty props 1`] = `
     <h4>
       Plans
     </h4>
-    <bt
+    <Row
       className="mb-3"
       tag="div"
     >
       <div
         className="mb-3 row"
       >
-        <Ot
+        <Col
           sm="12"
           tag="div"
           widths={
@@ -503,13 +503,13 @@ exports[`BillingPlans component should load with empty props 1`] = `
           <div
             className="col col-sm-12"
           >
-            <da
+            <CardDeck
               tag="div"
             >
               <div
                 className="card-deck"
               >
-                <ta
+                <Card
                   className="text-center"
                   outline={true}
                   tag="div"
@@ -517,13 +517,13 @@ exports[`BillingPlans component should load with empty props 1`] = `
                   <div
                     className="text-center card"
                   >
-                    <ba
+                    <CardBlock
                       tag="div"
                     >
                       <div
                         className="card-block"
                       >
-                        <Xa
+                        <CardTitle
                           tag="h4"
                         >
                           <h4
@@ -531,7 +531,7 @@ exports[`BillingPlans component should load with empty props 1`] = `
                           >
                             Enterprise Plan
                           </h4>
-                        </Xa>
+                        </CardTitle>
                         <div
                           className="mb-4 mt-3"
                         >
@@ -560,7 +560,7 @@ exports[`BillingPlans component should load with empty props 1`] = `
                         >
                           Premium support
                         </div>
-                        <ei
+                        <Button
                           color="info"
                           onClick={[Function]}
                           outline={true}
@@ -573,17 +573,17 @@ exports[`BillingPlans component should load with empty props 1`] = `
                           >
                             Contact Us
                           </button>
-                        </ei>
+                        </Button>
                       </div>
-                    </ba>
+                    </CardBlock>
                   </div>
-                </ta>
+                </Card>
               </div>
-            </da>
+            </CardDeck>
           </div>
-        </Ot>
+        </Col>
       </div>
-    </bt>
+    </Row>
     <div>
       <p>
         <strong>

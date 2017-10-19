@@ -577,7 +577,6 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
         updated_datetime: "2017-07-31T23:07:37.253131+00:00",
       }
     }
-    link="/app/ticket/152"
     type="ticket"
   />
   <Connect(Cell)
@@ -1144,7 +1143,6 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
         updated_datetime: "2017-07-31T23:07:37.253131+00:00",
       }
     }
-    link="/app/ticket/152"
     type="ticket"
   />
   <Connect(Cell)
@@ -1718,7 +1716,6 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
         updated_datetime: "2017-07-31T23:07:37.253131+00:00",
       }
     }
-    link="/app/ticket/152"
     type="ticket"
   />
 </tr>
@@ -2308,7 +2305,6 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
         updated_datetime: "2017-07-31T23:07:37.253131+00:00",
       }
     }
-    link="/app/ticket/1"
     type="ticket"
   />
   <Connect(Cell)
@@ -2875,7 +2871,6 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
         updated_datetime: "2017-07-31T23:07:37.253131+00:00",
       }
     }
-    link="/app/ticket/1"
     type="ticket"
   />
   <Connect(Cell)
@@ -3449,7 +3444,6 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
         updated_datetime: "2017-07-31T23:07:37.253131+00:00",
       }
     }
-    link="/app/ticket/1"
     type="ticket"
   />
 </tr>

@@ -70,7 +70,7 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
             <UncontrolledDropdown
               className="nav-dropdown"
             >
-              <ei
+              <Dropdown
                 className="nav-dropdown"
                 isOpen={false}
                 tag="div"
@@ -79,12 +79,12 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
                 <div
                   className="nav-dropdown dropdown"
                 >
-                  <ei
+                  <DropdownToggle
                     aria-haspopup={true}
                     color="secondary"
                     data-toggle="dropdown"
                   >
-                    <ei
+                    <Button
                       aria-expanded={false}
                       aria-haspopup="true"
                       className=""
@@ -116,9 +116,9 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
                           />
                         </div>
                       </button>
-                    </ei>
-                  </ei>
-                  <Xo
+                    </Button>
+                  </DropdownToggle>
+                  <DropdownMenu
                     tag="div"
                   >
                     <div
@@ -127,7 +127,7 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
                       role="menu"
                       tabIndex="-1"
                     >
-                      <ei
+                      <DropdownItem
                         onClick={[Function]}
                         tag={[Function]}
                         to="/app/tickets"
@@ -157,8 +157,8 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
                             </a>
                           </Link>
                         </NavLink>
-                      </ei>
-                      <ei
+                      </DropdownItem>
+                      <DropdownItem
                         onClick={[Function]}
                         tag={[Function]}
                         to="/app/users"
@@ -188,8 +188,8 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
                             </a>
                           </Link>
                         </NavLink>
-                      </ei>
-                      <ei
+                      </DropdownItem>
+                      <DropdownItem
                         onClick={[Function]}
                         tag={[Function]}
                         to="/app/integrations"
@@ -219,8 +219,8 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
                             </a>
                           </Link>
                         </NavLink>
-                      </ei>
-                      <ei
+                      </DropdownItem>
+                      <DropdownItem
                         className="hidden-sm-down"
                         onClick={[Function]}
                         tag={[Function]}
@@ -251,8 +251,8 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
                             </a>
                           </Link>
                         </NavLink>
-                      </ei>
-                      <ei
+                      </DropdownItem>
+                      <DropdownItem
                         onClick={[Function]}
                         tag={[Function]}
                         to="/app/settings"
@@ -282,11 +282,11 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
                             </a>
                           </Link>
                         </NavLink>
-                      </ei>
+                      </DropdownItem>
                     </div>
-                  </Xo>
+                  </DropdownMenu>
                 </div>
-              </ei>
+              </Dropdown>
             </UncontrolledDropdown>
             <div
               className="navbar-content"
@@ -341,7 +341,7 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
               className="nav-dropdown"
               dropup={true}
             >
-              <ei
+              <Dropdown
                 className="nav-dropdown"
                 dropup={true}
                 isOpen={false}
@@ -351,12 +351,12 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
                 <div
                   className="nav-dropdown dropdown dropup"
                 >
-                  <ei
+                  <DropdownToggle
                     aria-haspopup={true}
                     color="secondary"
                     data-toggle="dropdown"
                   >
-                    <ei
+                    <Button
                       aria-expanded={false}
                       aria-haspopup="true"
                       className=""
@@ -389,9 +389,9 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
                           />
                         </div>
                       </button>
-                    </ei>
-                  </ei>
-                  <Xo
+                    </Button>
+                  </DropdownToggle>
+                  <DropdownMenu
                     tag="div"
                   >
                     <div
@@ -400,7 +400,7 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
                       role="menu"
                       tabIndex="-1"
                     >
-                      <ei
+                      <DropdownItem
                         className="mt-2"
                         tag="button"
                         toggle={false}
@@ -435,8 +435,8 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
                             </div>
                           </div>
                         </button>
-                      </ei>
-                      <ei
+                      </DropdownItem>
+                      <DropdownItem
                         divider={true}
                         tag="button"
                         toggle={true}
@@ -446,8 +446,8 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
                           onClick={[Function]}
                           tabIndex="-1"
                         />
-                      </ei>
-                      <ei
+                      </DropdownItem>
+                      <DropdownItem
                         onClick={[Function]}
                         tag={[Function]}
                         to="/app/settings/profile"
@@ -480,8 +480,8 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
                             </a>
                           </Link>
                         </NavLink>
-                      </ei>
-                      <ei
+                      </DropdownItem>
+                      <DropdownItem
                         href="http://docs.gorgias.io/"
                         tag="a"
                         target="_blank"
@@ -499,8 +499,24 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
                           />
                           Documentation
                         </a>
-                      </ei>
-                      <ei
+                      </DropdownItem>
+                      <DropdownItem
+                        onClick={[Function]}
+                        tag="a"
+                        toggle={true}
+                      >
+                        <a
+                          className="dropdown-item"
+                          onClick={[Function]}
+                          tabIndex="0"
+                        >
+                          <i
+                            className="fa fa-fw fa-keyboard-o mr-2"
+                          />
+                          Keyboard shortcuts
+                        </a>
+                      </DropdownItem>
+                      <DropdownItem
                         href="/logout"
                         tag="a"
                         toggle={true}
@@ -516,11 +532,11 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
                           />
                           Log out
                         </a>
-                      </ei>
+                      </DropdownItem>
                     </div>
-                  </Xo>
+                  </DropdownMenu>
                 </div>
-              </ei>
+              </Dropdown>
             </UncontrolledDropdown>
           </div>
         </Navbar>
@@ -597,7 +613,7 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
             <UncontrolledDropdown
               className="nav-dropdown"
             >
-              <ei
+              <Dropdown
                 className="nav-dropdown"
                 isOpen={false}
                 tag="div"
@@ -606,12 +622,12 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
                 <div
                   className="nav-dropdown dropdown"
                 >
-                  <ei
+                  <DropdownToggle
                     aria-haspopup={true}
                     color="secondary"
                     data-toggle="dropdown"
                   >
-                    <ei
+                    <Button
                       aria-expanded={false}
                       aria-haspopup="true"
                       className=""
@@ -643,9 +659,9 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
                           />
                         </div>
                       </button>
-                    </ei>
-                  </ei>
-                  <Xo
+                    </Button>
+                  </DropdownToggle>
+                  <DropdownMenu
                     tag="div"
                   >
                     <div
@@ -654,7 +670,7 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
                       role="menu"
                       tabIndex="-1"
                     >
-                      <ei
+                      <DropdownItem
                         onClick={[Function]}
                         tag={[Function]}
                         to="/app/tickets"
@@ -684,8 +700,8 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
                             </a>
                           </Link>
                         </NavLink>
-                      </ei>
-                      <ei
+                      </DropdownItem>
+                      <DropdownItem
                         onClick={[Function]}
                         tag={[Function]}
                         to="/app/users"
@@ -715,8 +731,8 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
                             </a>
                           </Link>
                         </NavLink>
-                      </ei>
-                      <ei
+                      </DropdownItem>
+                      <DropdownItem
                         onClick={[Function]}
                         tag={[Function]}
                         to="/app/integrations"
@@ -746,8 +762,8 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
                             </a>
                           </Link>
                         </NavLink>
-                      </ei>
-                      <ei
+                      </DropdownItem>
+                      <DropdownItem
                         className="hidden-sm-down"
                         onClick={[Function]}
                         tag={[Function]}
@@ -778,8 +794,8 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
                             </a>
                           </Link>
                         </NavLink>
-                      </ei>
-                      <ei
+                      </DropdownItem>
+                      <DropdownItem
                         onClick={[Function]}
                         tag={[Function]}
                         to="/app/settings"
@@ -809,11 +825,11 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
                             </a>
                           </Link>
                         </NavLink>
-                      </ei>
+                      </DropdownItem>
                     </div>
-                  </Xo>
+                  </DropdownMenu>
                 </div>
-              </ei>
+              </Dropdown>
             </UncontrolledDropdown>
             <div
               className="navbar-content"
@@ -900,7 +916,7 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
               className="nav-dropdown"
               dropup={true}
             >
-              <ei
+              <Dropdown
                 className="nav-dropdown"
                 dropup={true}
                 isOpen={false}
@@ -910,12 +926,12 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
                 <div
                   className="nav-dropdown dropdown dropup"
                 >
-                  <ei
+                  <DropdownToggle
                     aria-haspopup={true}
                     color="secondary"
                     data-toggle="dropdown"
                   >
-                    <ei
+                    <Button
                       aria-expanded={false}
                       aria-haspopup="true"
                       className=""
@@ -948,9 +964,9 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
                           />
                         </div>
                       </button>
-                    </ei>
-                  </ei>
-                  <Xo
+                    </Button>
+                  </DropdownToggle>
+                  <DropdownMenu
                     tag="div"
                   >
                     <div
@@ -959,7 +975,7 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
                       role="menu"
                       tabIndex="-1"
                     >
-                      <ei
+                      <DropdownItem
                         className="mt-2"
                         tag="button"
                         toggle={false}
@@ -994,8 +1010,8 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
                             </div>
                           </div>
                         </button>
-                      </ei>
-                      <ei
+                      </DropdownItem>
+                      <DropdownItem
                         divider={true}
                         tag="button"
                         toggle={true}
@@ -1005,8 +1021,8 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
                           onClick={[Function]}
                           tabIndex="-1"
                         />
-                      </ei>
-                      <ei
+                      </DropdownItem>
+                      <DropdownItem
                         onClick={[Function]}
                         tag={[Function]}
                         to="/app/settings/profile"
@@ -1039,8 +1055,8 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
                             </a>
                           </Link>
                         </NavLink>
-                      </ei>
-                      <ei
+                      </DropdownItem>
+                      <DropdownItem
                         href="http://docs.gorgias.io/"
                         tag="a"
                         target="_blank"
@@ -1058,8 +1074,24 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
                           />
                           Documentation
                         </a>
-                      </ei>
-                      <ei
+                      </DropdownItem>
+                      <DropdownItem
+                        onClick={[Function]}
+                        tag="a"
+                        toggle={true}
+                      >
+                        <a
+                          className="dropdown-item"
+                          onClick={[Function]}
+                          tabIndex="0"
+                        >
+                          <i
+                            className="fa fa-fw fa-keyboard-o mr-2"
+                          />
+                          Keyboard shortcuts
+                        </a>
+                      </DropdownItem>
+                      <DropdownItem
                         href="/logout"
                         tag="a"
                         toggle={true}
@@ -1075,11 +1107,11 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
                           />
                           Log out
                         </a>
-                      </ei>
+                      </DropdownItem>
                     </div>
-                  </Xo>
+                  </DropdownMenu>
                 </div>
-              </ei>
+              </Dropdown>
             </UncontrolledDropdown>
           </div>
         </Navbar>

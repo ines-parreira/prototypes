@@ -56,14 +56,14 @@ exports[`BillingUsage component should display price 1`] = `
         Oct 11
       </small>
     </h4>
-    <bt
+    <Row
       className="mb-2"
       tag="div"
     >
       <div
         className="mb-2 row"
       >
-        <Ot
+        <Col
           sm="4"
           tag="div"
           widths={
@@ -79,13 +79,13 @@ exports[`BillingUsage component should display price 1`] = `
           <div
             className="col col-sm-4"
           >
-            <na
+            <CardGroup
               tag="div"
             >
               <div
                 className="card-group"
               >
-                <ta
+                <Card
                   block={true}
                   className="text-center"
                   tag="div"
@@ -100,8 +100,8 @@ exports[`BillingUsage component should display price 1`] = `
                       tickets
                     </div>
                   </div>
-                </ta>
-                <ta
+                </Card>
+                <Card
                   block={true}
                   className="text-center"
                   tag="div"
@@ -117,13 +117,13 @@ exports[`BillingUsage component should display price 1`] = `
                       cost
                     </div>
                   </div>
-                </ta>
+                </Card>
               </div>
-            </na>
+            </CardGroup>
           </div>
-        </Ot>
+        </Col>
       </div>
-    </bt>
+    </Row>
     <p>
       If you have any questions or if you want to unsubscribe, please contact us at 
       <a
@@ -171,14 +171,14 @@ exports[`BillingUsage component should load with empty props 1`] = `
         Oct 11
       </small>
     </h4>
-    <bt
+    <Row
       className="mb-2"
       tag="div"
     >
       <div
         className="mb-2 row"
       >
-        <Ot
+        <Col
           sm="4"
           tag="div"
           widths={
@@ -194,13 +194,13 @@ exports[`BillingUsage component should load with empty props 1`] = `
           <div
             className="col col-sm-4"
           >
-            <na
+            <CardGroup
               tag="div"
             >
               <div
                 className="card-group"
               >
-                <ta
+                <Card
                   block={true}
                   className="text-center"
                   tag="div"
@@ -213,8 +213,8 @@ exports[`BillingUsage component should load with empty props 1`] = `
                       tickets
                     </div>
                   </div>
-                </ta>
-                <ta
+                </Card>
+                <Card
                   block={true}
                   className="text-center"
                   tag="div"
@@ -229,13 +229,13 @@ exports[`BillingUsage component should load with empty props 1`] = `
                       cost
                     </div>
                   </div>
-                </ta>
+                </Card>
               </div>
-            </na>
+            </CardGroup>
           </div>
-        </Ot>
+        </Col>
       </div>
-    </bt>
+    </Row>
     <p>
       If you have any questions or if you want to unsubscribe, please contact us at 
       <a

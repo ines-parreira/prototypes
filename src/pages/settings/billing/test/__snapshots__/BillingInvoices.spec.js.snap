@@ -30,7 +30,7 @@ exports[`BillingInvoices component should display invoices 1`] = `
     <h4>
       Invoice history
     </h4>
-    <Jn
+    <Table
       responsiveTag="div"
       striped={true}
       tag="table"
@@ -60,7 +60,7 @@ exports[`BillingInvoices component should display invoices 1`] = `
               June 5, 2017
             </td>
             <td>
-              <Zs
+              <Badge
                 color="danger"
                 pill={false}
                 tag="span"
@@ -70,7 +70,7 @@ exports[`BillingInvoices component should display invoices 1`] = `
                 >
                   Unpaid
                 </span>
-              </Zs>
+              </Badge>
             </td>
             <td>
               10
@@ -86,7 +86,7 @@ exports[`BillingInvoices component should display invoices 1`] = `
               June 5, 2017
             </td>
             <td>
-              <Zs
+              <Badge
                 color="success"
                 pill={false}
                 tag="span"
@@ -96,7 +96,7 @@ exports[`BillingInvoices component should display invoices 1`] = `
                 >
                   Paid
                 </span>
-              </Zs>
+              </Badge>
             </td>
             <td>
               100
@@ -109,7 +109,7 @@ exports[`BillingInvoices component should display invoices 1`] = `
           </tr>
         </tbody>
       </table>
-    </Jn>
+    </Table>
   </div>
 </BillingInvoices>
 `;

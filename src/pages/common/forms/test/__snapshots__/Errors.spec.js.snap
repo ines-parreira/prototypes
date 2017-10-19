@@ -7,11 +7,11 @@ exports[`Errors custom tag 1`] = `
 `;
 
 exports[`Errors render children 1`] = `
-<cl
+<FormFeedback
   tag="div"
 >
   text
-</cl>
+</FormFeedback>
 `;
 
 exports[`Errors should use default props 1`] = `

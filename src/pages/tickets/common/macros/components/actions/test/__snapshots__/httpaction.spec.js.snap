@@ -12,10 +12,10 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
     type="text"
     value="HTTP hook"
   />
-  <bt
+  <Row
     tag="div"
   >
-    <Ot
+    <Col
       tag="div"
       widths={
         Array [
@@ -56,8 +56,8 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
           DELETE
         </option>
       </InputField>
-    </Ot>
-    <Ot
+    </Col>
+    <Col
       tag="div"
       widths={
         Array [
@@ -80,42 +80,42 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
         title="Example: https://company.com/api"
         type="text"
       />
-    </Ot>
-  </bt>
-  <ml
+    </Col>
+  </Row>
+  <FormGroup
     tag="div"
   >
-    <Hl
+    <Label
       tag="label"
     >
       URL Parameters
-    </Hl>
+    </Label>
     <ParametersEditor
       name="params"
       updateDict={[Function]}
     />
-  </ml>
-  <ml
+  </FormGroup>
+  <FormGroup
     tag="div"
   >
-    <Hl
+    <Label
       tag="label"
     >
       Headers
-    </Hl>
+    </Label>
     <ParametersEditor
       name="headers"
       updateDict={[Function]}
     />
-  </ml>
-  <ml
+  </FormGroup>
+  <FormGroup
     tag="div"
   >
-    <Hl
+    <Label
       tag="label"
     >
       Body
-    </Hl>
+    </Label>
     <div
       className="d-inline fields"
     >
@@ -137,6 +137,6 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
       onChange={[Function]}
       type="text"
     />
-  </ml>
+  </FormGroup>
 </div>
 `;

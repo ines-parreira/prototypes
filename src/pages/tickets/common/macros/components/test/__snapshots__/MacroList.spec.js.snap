@@ -13,8 +13,8 @@ exports[`MacroList component should render the macro list 1`] = `
         }
       }
     >
-      <ei
-        className="shortcuts-enable"
+      <Input
+        autoFocus={true}
         onChange={[Function]}
         placeholder="Search macros by name, tags or body..."
         tag="p"

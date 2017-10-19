@@ -23,7 +23,7 @@ exports[`BillingPaymentMethod.spec.js component should render empty card 1`] = `
       >
         No credit card registered
       </p>
-      <ei
+      <Button
         color="success"
         tag={[Function]}
         to="/app/settings/billing/add-credit-card"
@@ -43,7 +43,7 @@ exports[`BillingPaymentMethod.spec.js component should render empty card 1`] = `
             Add Credit Card
           </a>
         </Link>
-      </ei>
+      </Button>
     </div>
   </div>
 </BillingPaymentMethod>
@@ -124,7 +124,7 @@ exports[`BillingPaymentMethod.spec.js component should render shopify inactive 1
       Payment method
     </h4>
     <div>
-      <ei
+      <Button
         color="success"
         href="/integrations/shopify/billing/activate/"
         onClick={[Function]}
@@ -137,7 +137,7 @@ exports[`BillingPaymentMethod.spec.js component should render shopify inactive 1
         >
           Activate billing with Shopify
         </a>
-      </ei>
+      </Button>
     </div>
   </div>
 </BillingPaymentMethod>
@@ -183,7 +183,7 @@ exports[`BillingPaymentMethod.spec.js component should render stripe 1`] = `
           </em>
         </span>
       </p>
-      <ei
+      <Button
         color="secondary"
         tag={[Function]}
         to="/app/settings/billing/update-credit-card"
@@ -203,7 +203,7 @@ exports[`BillingPaymentMethod.spec.js component should render stripe 1`] = `
             Update Credit Card
           </a>
         </Link>
-      </ei>
+      </Button>
     </div>
   </div>
 </BillingPaymentMethod>

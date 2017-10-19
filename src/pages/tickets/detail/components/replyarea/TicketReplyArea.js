@@ -162,7 +162,6 @@ export class TicketReplyArea extends React.Component {
         const indexCurrentMacro = macrosIds.indexOf(this.state.selectedMacroId)
 
         if (e.key === 'Escape' || e.key === 'Tab') {
-            shortcutManager.triggerAction('TicketDetailContainer', 'BLUR_EVERYTHING')
             // wait next React tick before focusing the reply area so React has rendered components already
             setTimeout(() => {
                 shortcutManager.triggerAction('TicketDetailContainer', 'FOCUS_REPLY_AREA')

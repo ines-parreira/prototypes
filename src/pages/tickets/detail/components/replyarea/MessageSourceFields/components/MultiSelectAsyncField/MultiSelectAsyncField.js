@@ -41,7 +41,7 @@ class MultiSelectAsyncField extends React.Component {
 
     componentDidMount() {
         if (this.props.autoFocus) {
-            this._focusInput()
+            this.focusInput()
         }
     }
 
@@ -76,7 +76,7 @@ class MultiSelectAsyncField extends React.Component {
         e.preventDefault()
     }
 
-    _focusInput = () => {
+    focusInput = () => {
         const input = ReactDOM.findDOMNode(this.refs.input)
 
         if (input) {
@@ -320,20 +320,20 @@ class MultiSelectAsyncField extends React.Component {
     _createItems = (values) => {
         this._addValues(this._itemsFromValues(values))
         this._emptyInput()
-        this._focusInput()
+        this.focusInput()
     }
 
     _onOptionClick = (e, index) => {
         this._killEvent(e)
         this._selectOption(index)
         this._emptyInput()
-        this._focusInput()
+        this.focusInput()
     }
 
     _onItemClickRemove = (e, index) => {
         this._killEvent(e)
         this._removeValue(index)
-        this._focusInput()
+        this.focusInput()
     }
 
     _onInputBlur = (e) => {
@@ -388,7 +388,7 @@ class MultiSelectAsyncField extends React.Component {
             <div className={css.field}>
                 <div
                     className={css.values}
-                    onClick={this._focusInput}
+                    onClick={this.focusInput}
                 >
                     {
                         value.map((item, index) => (

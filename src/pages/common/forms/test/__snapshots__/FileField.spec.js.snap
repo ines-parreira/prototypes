@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`FileField should display loading when loading 1`] = `
-<ml
+<FormGroup
   className=""
   color=""
   tag="div"
@@ -17,7 +17,7 @@ exports[`FileField should display loading when loading 1`] = `
           src="value"
         />
       </div>
-      <ei
+      <Button
         color="secondary"
         disabled={true}
         tag="label"
@@ -28,7 +28,7 @@ exports[`FileField should display loading when loading 1`] = `
           />
           Uploading...
         </div>
-        <ei
+        <Input
           disabled={true}
           hidden={true}
           id="id-input-5"
@@ -36,14 +36,14 @@ exports[`FileField should display loading when loading 1`] = `
           tag="p"
           type="file"
         />
-      </ei>
+      </Button>
     </div>
   </div>
-</ml>
+</FormGroup>
 `;
 
 exports[`FileField should not render preview 1`] = `
-<ml
+<FormGroup
   className=""
   color=""
   tag="div"
@@ -54,7 +54,7 @@ exports[`FileField should not render preview 1`] = `
     <div
       className="d-flex align-center"
     >
-      <ei
+      <Button
         color="secondary"
         disabled={false}
         tag="label"
@@ -62,7 +62,7 @@ exports[`FileField should not render preview 1`] = `
         <div>
           Select a file...
         </div>
-        <ei
+        <Input
           disabled={false}
           hidden={true}
           id="id-input-4"
@@ -71,14 +71,14 @@ exports[`FileField should not render preview 1`] = `
           tag="p"
           type="file"
         />
-      </ei>
+      </Button>
     </div>
   </div>
-</ml>
+</FormGroup>
 `;
 
 exports[`FileField should render a basic file input 1`] = `
-<ml
+<FormGroup
   className=""
   color=""
   tag="div"
@@ -94,7 +94,7 @@ exports[`FileField should render a basic file input 1`] = `
           src="value"
         />
       </div>
-      <ei
+      <Button
         color="secondary"
         disabled={false}
         tag="label"
@@ -102,7 +102,7 @@ exports[`FileField should render a basic file input 1`] = `
         <div>
           Select a file...
         </div>
-        <ei
+        <Input
           disabled={false}
           hidden={true}
           id="id-input-2"
@@ -110,14 +110,14 @@ exports[`FileField should render a basic file input 1`] = `
           tag="p"
           type="file"
         />
-      </ei>
+      </Button>
     </div>
   </div>
-</ml>
+</FormGroup>
 `;
 
 exports[`FileField should render preview 1`] = `
-<ml
+<FormGroup
   className=""
   color=""
   tag="div"
@@ -133,7 +133,7 @@ exports[`FileField should render preview 1`] = `
           src="value"
         />
       </div>
-      <ei
+      <Button
         color="secondary"
         disabled={false}
         tag="label"
@@ -141,7 +141,7 @@ exports[`FileField should render preview 1`] = `
         <div>
           Select a file...
         </div>
-        <ei
+        <Input
           disabled={false}
           hidden={true}
           id="id-input-3"
@@ -150,10 +150,10 @@ exports[`FileField should render preview 1`] = `
           tag="p"
           type="file"
         />
-      </ei>
+      </Button>
     </div>
   </div>
-</ml>
+</FormGroup>
 `;
 
 exports[`FileField should use default props 1`] = `

@@ -50,13 +50,13 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
     updateCampaign={[Function]}
   >
     <div>
-      <gs
+      <Breadcrumb
         tag="ol"
       >
         <ol
           className="breadcrumb"
         >
-          <bs
+          <BreadcrumbItem
             tag="li"
           >
             <li
@@ -75,8 +75,8 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
                 </a>
               </Link>
             </li>
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             tag="li"
           >
             <li
@@ -95,8 +95,8 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
                 </a>
               </Link>
             </li>
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             tag="li"
           >
             <li
@@ -115,8 +115,8 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
                 </a>
               </Link>
             </li>
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             active={true}
             tag="li"
           >
@@ -125,9 +125,9 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
             >
               Campaigns
             </li>
-          </bs>
+          </BreadcrumbItem>
         </ol>
-      </gs>
+      </Breadcrumb>
       <div
         className="d-flex justify-content-between align-items-center mb-3"
       >
@@ -136,7 +136,7 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
         >
           Campaigns
         </h1>
-        <ei
+        <Button
           color="primary"
           tag={[Function]}
           to="/app/integrations/smooch_inside/118/campaigns/new"
@@ -156,7 +156,7 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
               Create campaign
             </a>
           </Link>
-        </ei>
+        </Button>
       </div>
       <p>
         Use campaigns to prompt visitors of your website to start chatting with your team.
@@ -239,13 +239,13 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
     updateCampaign={[Function]}
   >
     <div>
-      <gs
+      <Breadcrumb
         tag="ol"
       >
         <ol
           className="breadcrumb"
         >
-          <bs
+          <BreadcrumbItem
             tag="li"
           >
             <li
@@ -264,8 +264,8 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
                 </a>
               </Link>
             </li>
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             tag="li"
           >
             <li
@@ -284,8 +284,8 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
                 </a>
               </Link>
             </li>
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             tag="li"
           >
             <li
@@ -304,8 +304,8 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
                 </a>
               </Link>
             </li>
-          </bs>
-          <bs
+          </BreadcrumbItem>
+          <BreadcrumbItem
             active={true}
             tag="li"
           >
@@ -314,9 +314,9 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
             >
               Campaigns
             </li>
-          </bs>
+          </BreadcrumbItem>
         </ol>
-      </gs>
+      </Breadcrumb>
       <div
         className="d-flex justify-content-between align-items-center mb-3"
       >
@@ -325,7 +325,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
         >
           Campaigns
         </h1>
-        <ei
+        <Button
           color="primary"
           tag={[Function]}
           to="/app/integrations/smooch_inside/118/campaigns/new"
@@ -345,12 +345,12 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
               Create campaign
             </a>
           </Link>
-        </ei>
+        </Button>
       </div>
       <p>
         Use campaigns to prompt visitors of your website to start chatting with your team.
       </p>
-      <Jn
+      <Table
         className="mt-3"
         hover={true}
         responsiveTag="div"
@@ -444,7 +444,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
             </tr>
           </tbody>
         </table>
-      </Jn>
+      </Table>
     </div>
   </ChatIntegrationCampaigns>
 </Connect(ChatIntegrationCampaigns)>

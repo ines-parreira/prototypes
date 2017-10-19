@@ -115,7 +115,7 @@ exports[`MultiSelectField should render a multi select input with custom props 1
     className="undefined"
     onClick={[Function]}
   >
-    <Zs
+    <Badge
       className="tag"
       color="default"
       pill={false}
@@ -134,8 +134,8 @@ exports[`MultiSelectField should render a multi select input with custom props 1
           onClick={[Function]}
         />
       </span>
-    </Zs>
-    <Zs
+    </Badge>
+    <Badge
       className="tag"
       color="default"
       pill={false}
@@ -154,7 +154,7 @@ exports[`MultiSelectField should render a multi select input with custom props 1
           onClick={[Function]}
         />
       </span>
-    </Zs>
+    </Badge>
     <div>
       <input
         className="undefined ml-2"
@@ -168,10 +168,10 @@ exports[`MultiSelectField should render a multi select input with custom props 1
       <UncontrolledDropdown
         isOpen={false}
       >
-        <Xo
+        <DropdownMenu
           tag="div"
         >
-          <ei
+          <DropdownItem
             className=""
             onMouseDown={[Function]}
             onMouseEnter={[Function]}
@@ -180,8 +180,8 @@ exports[`MultiSelectField should render a multi select input with custom props 1
             type="button"
           >
             Second
-          </ei>
-        </Xo>
+          </DropdownItem>
+        </DropdownMenu>
       </UncontrolledDropdown>
     </div>
   </div>
@@ -209,17 +209,17 @@ exports[`MultiSelectField should render a select input with default props 1`] = 
       <UncontrolledDropdown
         isOpen={false}
       >
-        <Xo
+        <DropdownMenu
           tag="div"
         >
-          <ei
+          <DropdownItem
             header={true}
             tag="button"
             toggle={true}
           >
             No result
-          </ei>
-        </Xo>
+          </DropdownItem>
+        </DropdownMenu>
       </UncontrolledDropdown>
     </div>
   </div>

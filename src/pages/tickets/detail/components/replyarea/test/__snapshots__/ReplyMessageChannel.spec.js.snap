@@ -8,7 +8,7 @@ exports[`ReplyMessageChannel component existing ticket with last message as chat
     className="channel-picker"
   >
     <UncontrolledDropdown>
-      <ei
+      <DropdownToggle
         aria-haspopup={true}
         caret={true}
         color="secondary"
@@ -18,11 +18,11 @@ exports[`ReplyMessageChannel component existing ticket with last message as chat
         <i
           className="fa fa-fw fa-comments purple"
         />
-      </ei>
-      <Xo
+      </DropdownToggle>
+      <DropdownMenu
         tag="div"
       >
-        <ei
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -32,8 +32,8 @@ exports[`ReplyMessageChannel component existing ticket with last message as chat
             className="mr-2 fa fa-fw fa-envelope blue"
           />
           Reply via email
-        </ei>
-        <ei
+        </DropdownItem>
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -43,8 +43,8 @@ exports[`ReplyMessageChannel component existing ticket with last message as chat
             className="mr-2 fa fa-fw fa-reply blue"
           />
           Forward by email
-        </ei>
-        <ei
+        </DropdownItem>
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -54,8 +54,8 @@ exports[`ReplyMessageChannel component existing ticket with last message as chat
             className="mr-2 fa fa-fw fa-comments purple"
           />
           Reply via chat
-        </ei>
-        <ei
+        </DropdownItem>
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -65,8 +65,8 @@ exports[`ReplyMessageChannel component existing ticket with last message as chat
             className="mr-2 fa fa-fw fa-comment yellow"
           />
           Leave an internal note
-        </ei>
-      </Xo>
+        </DropdownItem>
+      </DropdownMenu>
     </UncontrolledDropdown>
   </div>
   <div
@@ -93,7 +93,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type chat
     className="channel-picker"
   >
     <UncontrolledDropdown>
-      <ei
+      <DropdownToggle
         aria-haspopup={true}
         caret={true}
         color="secondary"
@@ -103,11 +103,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type chat
         <i
           className="fa fa-fw fa-comments purple"
         />
-      </ei>
-      <Xo
+      </DropdownToggle>
+      <DropdownMenu
         tag="div"
       >
-        <ei
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -117,8 +117,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type chat
             className="mr-2 fa fa-fw fa-envelope blue"
           />
           Reply via email
-        </ei>
-        <ei
+        </DropdownItem>
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -128,8 +128,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type chat
             className="mr-2 fa fa-fw fa-reply blue"
           />
           Forward by email
-        </ei>
-        <ei
+        </DropdownItem>
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -139,8 +139,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type chat
             className="mr-2 fa fa-fw fa-comments purple"
           />
           Reply via chat
-        </ei>
-        <ei
+        </DropdownItem>
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -150,8 +150,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type chat
             className="mr-2 fa fa-fw fa-comment yellow"
           />
           Leave an internal note
-        </ei>
-      </Xo>
+        </DropdownItem>
+      </DropdownMenu>
     </UncontrolledDropdown>
   </div>
   <div
@@ -178,7 +178,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type emai
     className="channel-picker"
   >
     <UncontrolledDropdown>
-      <ei
+      <DropdownToggle
         aria-haspopup={true}
         caret={true}
         color="secondary"
@@ -188,11 +188,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type emai
         <i
           className="fa fa-fw fa-envelope blue"
         />
-      </ei>
-      <Xo
+      </DropdownToggle>
+      <DropdownMenu
         tag="div"
       >
-        <ei
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -202,8 +202,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type emai
             className="mr-2 fa fa-fw fa-envelope blue"
           />
           Reply via email
-        </ei>
-        <ei
+        </DropdownItem>
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -213,8 +213,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type emai
             className="mr-2 fa fa-fw fa-reply blue"
           />
           Forward by email
-        </ei>
-        <ei
+        </DropdownItem>
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -224,8 +224,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type emai
             className="mr-2 fa fa-fw fa-comment yellow"
           />
           Leave an internal note
-        </ei>
-      </Xo>
+        </DropdownItem>
+      </DropdownMenu>
     </UncontrolledDropdown>
   </div>
   <div
@@ -252,7 +252,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
     className="channel-picker"
   >
     <UncontrolledDropdown>
-      <ei
+      <DropdownToggle
         aria-haspopup={true}
         caret={true}
         color="secondary"
@@ -262,11 +262,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
         <i
           className="fa fa-fw fa-facebook-square blue"
         />
-      </ei>
-      <Xo
+      </DropdownToggle>
+      <DropdownMenu
         tag="div"
       >
-        <ei
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -276,8 +276,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
             className="mr-2 fa fa-fw fa-envelope blue"
           />
           Reply via email
-        </ei>
-        <ei
+        </DropdownItem>
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -287,8 +287,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
             className="mr-2 fa fa-fw fa-reply blue"
           />
           Forward by email
-        </ei>
-        <ei
+        </DropdownItem>
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -298,8 +298,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
             className="mr-2 fa fa-fw fa-facebook-square blue"
           />
           Reply via Facebook comment
-        </ei>
-        <ei
+        </DropdownItem>
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -309,8 +309,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
             className="mr-2 fa fa-fw fa-comment yellow"
           />
           Leave an internal note
-        </ei>
-      </Xo>
+        </DropdownItem>
+      </DropdownMenu>
     </UncontrolledDropdown>
   </div>
   <div
@@ -337,7 +337,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
     className="channel-picker"
   >
     <UncontrolledDropdown>
-      <ei
+      <DropdownToggle
         aria-haspopup={true}
         caret={true}
         color="secondary"
@@ -347,11 +347,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
         <i
           className="fa fa-fw fa-facebook-messenger blue"
         />
-      </ei>
-      <Xo
+      </DropdownToggle>
+      <DropdownMenu
         tag="div"
       >
-        <ei
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -361,8 +361,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
             className="mr-2 fa fa-fw fa-envelope blue"
           />
           Reply via email
-        </ei>
-        <ei
+        </DropdownItem>
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -372,8 +372,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
             className="mr-2 fa fa-fw fa-reply blue"
           />
           Forward by email
-        </ei>
-        <ei
+        </DropdownItem>
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -383,8 +383,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
             className="mr-2 fa fa-fw fa-facebook-messenger blue"
           />
           Reply via Messenger
-        </ei>
-        <ei
+        </DropdownItem>
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -394,8 +394,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
             className="mr-2 fa fa-fw fa-comment yellow"
           />
           Leave an internal note
-        </ei>
-      </Xo>
+        </DropdownItem>
+      </DropdownMenu>
     </UncontrolledDropdown>
   </div>
   <div
@@ -422,7 +422,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
     className="channel-picker"
   >
     <UncontrolledDropdown>
-      <ei
+      <DropdownToggle
         aria-haspopup={true}
         caret={true}
         color="secondary"
@@ -432,11 +432,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
         <i
           className="fa fa-fw fa-facebook-messenger blue"
         />
-      </ei>
-      <Xo
+      </DropdownToggle>
+      <DropdownMenu
         tag="div"
       >
-        <ei
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -446,8 +446,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
             className="mr-2 fa fa-fw fa-envelope blue"
           />
           Reply via email
-        </ei>
-        <ei
+        </DropdownItem>
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -457,8 +457,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
             className="mr-2 fa fa-fw fa-reply blue"
           />
           Forward by email
-        </ei>
-        <ei
+        </DropdownItem>
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -468,8 +468,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
             className="mr-2 fa fa-fw fa-facebook-messenger blue"
           />
           Reply via Messenger
-        </ei>
-        <ei
+        </DropdownItem>
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -479,8 +479,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
             className="mr-2 fa fa-fw fa-comment yellow"
           />
           Leave an internal note
-        </ei>
-      </Xo>
+        </DropdownItem>
+      </DropdownMenu>
     </UncontrolledDropdown>
   </div>
   <div
@@ -507,7 +507,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
     className="channel-picker"
   >
     <UncontrolledDropdown>
-      <ei
+      <DropdownToggle
         aria-haspopup={true}
         caret={true}
         color="secondary"
@@ -517,11 +517,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
         <i
           className="fa fa-fw fa-facebook-square blue"
         />
-      </ei>
-      <Xo
+      </DropdownToggle>
+      <DropdownMenu
         tag="div"
       >
-        <ei
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -531,8 +531,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
             className="mr-2 fa fa-fw fa-envelope blue"
           />
           Reply via email
-        </ei>
-        <ei
+        </DropdownItem>
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -542,8 +542,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
             className="mr-2 fa fa-fw fa-reply blue"
           />
           Forward by email
-        </ei>
-        <ei
+        </DropdownItem>
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -553,8 +553,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
             className="mr-2 fa fa-fw fa-facebook-square blue"
           />
           Reply via Facebook comment
-        </ei>
-        <ei
+        </DropdownItem>
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -564,8 +564,8 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
             className="mr-2 fa fa-fw fa-comment yellow"
           />
           Leave an internal note
-        </ei>
-      </Xo>
+        </DropdownItem>
+      </DropdownMenu>
     </UncontrolledDropdown>
   </div>
   <div
@@ -594,7 +594,7 @@ exports[`ReplyMessageChannel component new ticket 1`] = `
     className="channel-picker"
   >
     <UncontrolledDropdown>
-      <ei
+      <DropdownToggle
         aria-haspopup={true}
         caret={true}
         color="secondary"
@@ -604,11 +604,11 @@ exports[`ReplyMessageChannel component new ticket 1`] = `
         <i
           className="fa fa-fw fa-envelope blue"
         />
-      </ei>
-      <Xo
+      </DropdownToggle>
+      <DropdownMenu
         tag="div"
       >
-        <ei
+        <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -618,8 +618,8 @@ exports[`ReplyMessageChannel component new ticket 1`] = `
             className="mr-2 fa fa-fw fa-envelope blue"
           />
           Reply via email
-        </ei>
-      </Xo>
+        </DropdownItem>
+      </DropdownMenu>
     </UncontrolledDropdown>
   </div>
   <Connect(MessageSourceFields)
@@ -630,6 +630,7 @@ exports[`ReplyMessageChannel component new ticket 1`] = `
         "to": Array [],
       }
     }
+    inputRef={[Function]}
     isOpen={false}
     parentId="new"
   />

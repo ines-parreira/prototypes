@@ -13,7 +13,7 @@ exports[`Charge BeforeContent should aggregate line_items by subscriptions 1`] =
     <span
       className="field-value"
     >
-      <Zs
+      <Badge
         color="default"
         pill={false}
         tag="span"
@@ -110,13 +110,13 @@ exports[`Charge BeforeContent should display default color if there's no matchin
     <span
       className="field-value"
     >
-      <Zs
+      <Badge
         color="default"
         pill={false}
         tag="span"
       >
         Foobar
-      </Zs>
+      </Badge>
     </span>
   </div>
 </div>
@@ -135,13 +135,13 @@ exports[`Charge BeforeContent should display the appropriate color if there's a 
     <span
       className="field-value"
     >
-      <Zs
+      <Badge
         color="danger"
         pill={false}
         tag="span"
       >
         Error
-      </Zs>
+      </Badge>
     </span>
   </div>
 </div>

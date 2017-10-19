@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Stat should render a bar chart 1`] = `
-<ta
+<Card
   className="stats-card mb-3"
   tag="div"
 >
-  <ba
+  <CardBlock
     tag="div"
   >
     <h5
@@ -36,16 +36,16 @@ exports[`Stat should render a bar chart 1`] = `
         name="stat_name"
       />
     </div>
-  </ba>
-</ta>
+  </CardBlock>
+</Card>
 `;
 
 exports[`Stat should render a key metrics chart 1`] = `
-<ta
+<Card
   className="stats-card mb-3"
   tag="div"
 >
-  <ba
+  <CardBlock
     tag="div"
   >
     <h5
@@ -76,16 +76,16 @@ exports[`Stat should render a key metrics chart 1`] = `
         name="stat_name"
       />
     </div>
-  </ba>
-</ta>
+  </CardBlock>
+</Card>
 `;
 
 exports[`Stat should render a line chart 1`] = `
-<ta
+<Card
   className="stats-card mb-3"
   tag="div"
 >
-  <ba
+  <CardBlock
     tag="div"
   >
     <h5
@@ -116,16 +116,16 @@ exports[`Stat should render a line chart 1`] = `
         name="stat_name"
       />
     </div>
-  </ba>
-</ta>
+  </CardBlock>
+</Card>
 `;
 
 exports[`Stat should render a table chart 1`] = `
-<ta
+<Card
   className="stats-card mb-3"
   tag="div"
 >
-  <ba
+  <CardBlock
     tag="div"
   >
     <h5
@@ -156,6 +156,6 @@ exports[`Stat should render a table chart 1`] = `
         name="stat_name"
       />
     </div>
-  </ba>
-</ta>
+  </CardBlock>
+</Card>
 `;

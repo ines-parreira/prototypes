@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`JsonField display invalid message 1`] = `
-<ml
+<FormGroup
   className=""
   color=""
   tag="div"
@@ -9,14 +9,14 @@ exports[`JsonField display invalid message 1`] = `
   <div
     className=""
   >
-    <ml
+    <FormGroup
       color="danger"
       tag="div"
     >
       <div
         className="controls"
       >
-        <ei
+        <Input
           className="form-control-danger"
           id="id-input-2"
           onChange={[Function]}
@@ -31,9 +31,9 @@ exports[`JsonField display invalid message 1`] = `
           Invalid JSON : changes will not be saved until the JSON is fixed
         </Errors>
       </div>
-    </ml>
+    </FormGroup>
   </div>
-</ml>
+</FormGroup>
 `;
 
 exports[`JsonField should render input 1`] = `
@@ -42,7 +42,7 @@ exports[`JsonField should render input 1`] = `
   type="text"
   value="value"
 >
-  <ml
+  <FormGroup
     className=""
     color=""
     tag="div"
@@ -53,7 +53,7 @@ exports[`JsonField should render input 1`] = `
       <div
         className=""
       >
-        <ml
+        <FormGroup
           color=""
           tag="div"
         >
@@ -63,7 +63,7 @@ exports[`JsonField should render input 1`] = `
             <div
               className="controls"
             >
-              <ei
+              <Input
                 className=""
                 id="id-input-1"
                 onChange={[Function]}
@@ -79,12 +79,12 @@ exports[`JsonField should render input 1`] = `
                   rows="6"
                   value="\\"value\\""
                 />
-              </ei>
+              </Input>
             </div>
           </div>
-        </ml>
+        </FormGroup>
       </div>
     </div>
-  </ml>
+  </FormGroup>
 </JsonField>
 `;

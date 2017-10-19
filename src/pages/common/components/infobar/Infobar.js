@@ -1,13 +1,14 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React from 'react'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
 import {browserHistory, withRouter} from 'react-router'
 import {fromJS} from 'immutable'
 import {Button, UncontrolledTooltip} from 'reactstrap'
+import _noop from 'lodash/noop'
 
 import {areSourcesReady} from './utils'
 import {isCurrentlyOnTicket} from '../../../../utils'
-import shortcutManager from '../../../../services/shortcutManager'
 
 import * as infobarActions from '../../../../state/infobar/actions'
 import * as usersActions from '../../../../state/users/actions'
@@ -25,31 +26,51 @@ import Search from '../Search'
 
 import css from './Infobar.less'
 
-@withRouter
-@connect(null, {
-    fetchUserHistory: usersActions.fetchUserHistory,
-    search: infobarActions.search,
-    searchSimilarUser: infobarActions.similarUser,
-    setRequester: ticketActions.setRequester,
-})
-export default class Infobar extends React.Component {
-    static propTypes = {
-        actions: PropTypes.object.isRequired,
-        context: PropTypes.string.isRequired,
-        fetchUserHistory: PropTypes.func.isRequired,
-        identifier: PropTypes.string.isRequired,
-        infobar: PropTypes.object.isRequired,
-        isRouteEditingWidgets: PropTypes.bool.isRequired,
-        search: PropTypes.func.isRequired,
-        searchSimilarUser: PropTypes.func.isRequired,
-        sources: PropTypes.object.isRequired,
-        user: PropTypes.object.isRequired,
-        widgets: PropTypes.object.isRequired,
-        setRequester: PropTypes.func.isRequired,
-        // react-router
-        location: PropTypes.object.isRequired,
-    }
+import type {Map, List} from 'immutable'
+import type {reactRouterLocation} from '../../../../types'
+import {startEditionMode, stopEditionMode, submitWidgets} from '../../../../state/widgets/actions'
+import {fetchPreviewUser, fetchUserPicture} from '../../../../state/infobar/actions'
 
+type Props = {
+    actions: {
+        widgets: {
+            startEditionMode: typeof startEditionMode,
+            stopEditionMode: typeof stopEditionMode,
+            submitWidgets: typeof submitWidgets
+        },
+        infobar: {
+            fetchPreviewUser: typeof fetchPreviewUser,
+            fetchUserPicture: typeof fetchUserPicture,
+        }
+    },
+    context: string,
+    identifier: string,
+    infobar: {},
+    isRouteEditingWidgets:  boolean,
+    sources: Map<*,*>,
+    user: Map<*,*>,
+    widgets: Map<*,*>,
+    fetchUserHistory: typeof usersActions.fetchUserHistory,
+    search: typeof infobarActions.search,
+    searchSimilarUser: typeof infobarActions.similarUser,
+    setRequester: typeof ticketActions.setRequester,
+
+    // react-router
+    location: reactRouterLocation,
+}
+
+type State = {
+    isSearching: boolean,
+    isFetchingUser: boolean,
+    displaySearchResults: boolean,
+    displaySelectedUser: boolean,
+    showMergeUserModal: boolean,
+    searchResults: List<*>,
+    selectedUser: Map<*,*>,
+    suggestedUser: Map<*,*>,
+}
+
+class Infobar extends React.Component<Props, State> {
     static defaultProps = {
         user: fromJS({}),
     }
@@ -63,6 +84,11 @@ export default class Infobar extends React.Component {
         searchResults: fromJS([]),
         selectedUser: fromJS({}),
         suggestedUser: fromJS({}),
+    }
+
+    // refs
+    search = {
+        _reset: _noop
     }
 
     componentWillMount() {
@@ -84,6 +110,7 @@ export default class Infobar extends React.Component {
         }
 
         // if user changed then try to find a suggestion of other user to merge with it
+        // $FlowFixMe
         if (!this.props.user.equals(nextProps.user)) {
             this._updateSimilarUser(nextProps)
         }
@@ -204,8 +231,8 @@ export default class Infobar extends React.Component {
 
     _renderUserActions = () => {
         const ticketId = this.props.sources.getIn(['ticket', 'id'])
-        const requester = this.props.sources.getIn(['ticket', 'requester', 'name'])
-        const newRequester = this.state.selectedUser.get('name')
+        const requester = this.props.sources.getIn(['ticket', 'requester', 'name']) || ''
+        const newRequester = this.state.selectedUser.get('name') || ''
 
         return (
             <div className="pull-right hidden-sm-down">
@@ -455,12 +482,6 @@ export default class Infobar extends React.Component {
         )
     }
 
-    _onSearchKeyDown = (e) => {
-        if (e.key === 'Escape') {
-            shortcutManager.triggerAction('TicketDetailContainer', 'BLUR_EVERYTHING')
-        }
-    }
-
     render() {
         const {
             widgets,
@@ -485,7 +506,6 @@ export default class Infobar extends React.Component {
                             placeholder="Search for users by email, order number, etc."
                             bindKey
                             onChange={this._onSearch}
-                            onKeyDown={this._onSearchKeyDown}
                             style={{maxWidth: 'none'}}
                             searchDebounceTime={200}
                             ref={(search) => {
@@ -522,3 +542,10 @@ export default class Infobar extends React.Component {
         )
     }
 }
+
+export default withRouter(connect(null, {
+    fetchUserHistory: usersActions.fetchUserHistory,
+    search: infobarActions.search,
+    searchSimilarUser: infobarActions.similarUser,
+    setRequester: ticketActions.setRequester,
+})(Infobar))

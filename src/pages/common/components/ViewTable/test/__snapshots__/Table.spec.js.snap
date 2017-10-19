@@ -152,6 +152,7 @@ exports[`ViewTable::Table default view 1`] = `
             },
           ]
         }
+        hasCursor={true}
         isSelected={false}
         item={
           Immutable.Map {
@@ -710,6 +711,7 @@ exports[`ViewTable::Table default view 1`] = `
             updated_datetime: "2017-07-31T23:07:37.253131+00:00",
           }
         }
+        link="/app/ticket/152"
         type="ticket"
       />
     </tbody>
@@ -757,6 +759,7 @@ exports[`ViewTable::Table empty view 1`] = `
           Immutable.List [
           ]
         }
+        hasCursor={true}
         isSelected={false}
         item={
           Immutable.Map {
@@ -1315,6 +1318,7 @@ exports[`ViewTable::Table empty view 1`] = `
             updated_datetime: "2017-07-31T23:07:37.253131+00:00",
           }
         }
+        link="/app/ticket/152"
         type="ticket"
       />
     </tbody>

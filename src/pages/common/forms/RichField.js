@@ -1,5 +1,7 @@
+// @flow
 import React from 'react'
 import classnames from 'classnames'
+import {fromJS} from 'immutable'
 import _isEqual from 'lodash/isEqual'
 
 import {ContentState, EditorState, RichUtils} from 'draft-js'
@@ -14,15 +16,41 @@ import createMentionPlugin, {suggestionsFilter} from '../draftjs/plugins/mention
 
 import InputField from './InputField'
 import {convertFromHTML, convertToHTML, removeMentions} from '../../../utils'
+import {scrollToReactNode} from '../../common/utils/keyboard'
+
 import 'draft-js/dist/Draft.css'
 
+import type {List} from 'immutable'
 
-export default class RichField extends InputField {
+type suggestionsType = List<*>
+type canAddMentionType = boolean
+
+type Props = {
+    allowExternalChanges: boolean,
+    placeholder: string,
+    value: any,
+
+    mentionProps?: {
+        suggestions: suggestionsType,
+        canAddMention: canAddMentionType
+    }
+}
+
+type State = {
+    editorState: EditorState,
+    placeholder: string,
+    isDragging: boolean,
+
+    mentionSuggestions?: suggestionsType,
+    canAddMention?: canAddMentionType
+}
+
+export default class RichField extends InputField<Props, State> {
     static defaultProps = {
         allowExternalChanges: false
     }
 
-    constructor(props) {
+    constructor(props: Props) {
         super(props)
 
         this.dndPlugin = createDndPlugin()
@@ -54,6 +82,8 @@ export default class RichField extends InputField {
             editorState,
             placeholder: props.placeholder,
             isDragging: false,
+            mentionSuggestions: fromJS([]),
+            canAddMention: false,
         }
 
         if (this.props.mentionProps) {
@@ -66,7 +96,7 @@ export default class RichField extends InputField {
         this._updateEditorState(this.props.value)
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         if (this.props.mentionProps && nextProps.mentionProps) {
             if (this.props.mentionProps.canAddMention && !nextProps.mentionProps.canAddMention) {
                 this.setState({
@@ -82,25 +112,22 @@ export default class RichField extends InputField {
     }
 
     // used by parents that want to set a new editor state
-    _setEditorState = (editorState, focus = false) => {
-        this._onChange(editorState, () => {
-            if (focus) {
-                this._focusEditor()
-            }
-        })
+    _setEditorState = (editorState: EditorState) => {
+        this._onChange(editorState)
     }
 
     _focusEditor = () => {
         if (this.editor) {
             this.editor.focus()
+            scrollToReactNode(this.editor)
         }
     }
 
-    _didHTMLChanged = (html) => {
+    _didHTMLChanged = (html: string) => {
         return convertToHTML(this.state.editorState.getCurrentContent()) !== html
     }
 
-    _updateEditorState = (value, callback) => {
+    _updateEditorState = (value: {html: string, text: string}, callback?: () => any) => {
         // if incoming value is the same as the current one, don't update the current one
         if (!this._didHTMLChanged(value.html)) {
             return
@@ -133,7 +160,7 @@ export default class RichField extends InputField {
     }
 
     // This is for handling things like Bold, Italic, etc..
-    _handleKeyCommand = (command) => {
+    _handleKeyCommand = (command: string) => {
         const {editorState} = this.state
         const newState = RichUtils.handleKeyCommand(editorState, command)
         if (newState) {
@@ -144,14 +171,14 @@ export default class RichField extends InputField {
         return 'not-handled'
     }
 
-    _handleDroppedFiles = (...args) => {
+    _handleDroppedFiles = (...args: Array<any>) => {
         const {handleDroppedFiles} = this.props
         if (handleDroppedFiles) {
             return handleDroppedFiles(...args)
         }
     }
 
-    _onChange = (editorState) => {
+    _onChange = (editorState: EditorState) => {
         this.setState({editorState}, () => {
             // notify the parent of the new editor state
             this.props.onChange(editorState)
@@ -163,7 +190,7 @@ export default class RichField extends InputField {
         this.setState({placeholder: ''})
     }
 
-    onSearchChange = ({value}) => {
+    onSearchChange = ({value}: {value: string}) => {
         if (this.props.mentionProps) {
             this.setState({
                 mentionSuggestions: suggestionsFilter(value, this.props.mentionProps.suggestions)

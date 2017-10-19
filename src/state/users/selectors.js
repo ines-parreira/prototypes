@@ -5,7 +5,7 @@ import {createSelector} from 'reselect'
 import * as currentUserSelectors from '../currentUser/selectors'
 
 import type {List, Map} from 'immutable'
-import type {stateType, currentUserType} from '../types'
+import type {stateType, currentUserType, thunkActionType} from '../types'
 import type {agentsType} from '../agents/types'
 type ticketIdType = string
 
@@ -124,7 +124,7 @@ export const getOtherAgentsOnTicket = (ticketId: ticketIdType) => createSelector
     }
 )
 
-export const makeGetOtherAgentsOnTicket = (state: stateType) => (ticketId: ticketIdType) => getOtherAgentsOnTicket(ticketId)(state)
+export const makeGetOtherAgentsOnTicket = (state: stateType): thunkActionType => (ticketId: ticketIdType) => getOtherAgentsOnTicket(ticketId)(state)
 
 // Location of typing agents in the app by their ids
 export const getAgentsIdsTypingStatus = createSelector(
