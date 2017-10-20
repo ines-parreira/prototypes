@@ -10,6 +10,8 @@ import {getSourcePathFromContext} from '../../../../state/widgets/utils'
 import _isEqual from 'lodash/isEqual'
 import * as integrationsSelectors from '../../../../state/integrations/selectors'
 
+import css from './InfobarWidgets.less'
+
 class InfobarWidgets extends React.Component {
     shouldComponentUpdate(nextProps) {
         return !this.props.source.equals(nextProps.source)
@@ -144,7 +146,7 @@ class InfobarWidgets extends React.Component {
 
         const isEditing = !!(editing && editing.isEditing)
 
-        const className = classnames('widgets-list', {
+        const className = classnames('widgets-list', css.component, {
             editing: isEditing,
             dragging: !!(editing && editing.isDragging)
         })

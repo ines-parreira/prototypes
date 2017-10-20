@@ -1,12 +1,67 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React from 'react'
 import linkifyStr from 'linkifyjs/string'
+import Clipboard from 'clipboard'
+import {connect} from 'react-redux'
+import _noop from 'lodash/noop'
+
 import {sanitizeHtmlDefault, proxifyImages} from '../../../../utils'
 import FacebookCarousel from './FacebookCarousel'
+import {isDoubleTap} from '../../../common/utils/touch'
+import {notify} from '../../../../state/notifications/actions'
 
-export default class TicketMessageBody extends React.Component {
+import type {Node} from 'react'
+
+type clipboardType = {
+    destroy: () => void,
+}
+
+type messageType = {
+    body_html: string,
+    body_text: string,
+    stripped_text: string,
+    stripped_html: string,
+    meta: {
+        facebook_carousel: {}
+    }
+}
+
+type Props = {
+    message: messageType,
+    notify: ({}) => void,
+}
+
+type State = {
+    showFullBody: boolean
+}
+
+class TicketMessageBody extends React.Component<Props, State> {
     constructor() {
         super()
         this.state = {showFullBody: false}
+    }
+
+    _clipboard: clipboardType = {destroy: _noop}
+    _message: ?Node = null
+
+    componentDidMount() {
+        this._bindClipboard()
+    }
+
+    componentWillUnmount() {
+        this._clipboard.destroy()
+    }
+
+    _bindClipboard = () => {
+        if (!this._message) {
+            return
+        }
+
+        this._clipboard = new Clipboard(this._message, {
+            text: (trigger) => isDoubleTap(trigger) ? trigger.getAttribute('data-clipboard-text') : null
+        })
+
+        this._clipboard.on('success', () => this.props.notify({message: 'Copied!'}))
     }
 
     render() {
@@ -63,7 +118,11 @@ export default class TicketMessageBody extends React.Component {
         }
 
         return (
-            <div className={classNames}>
+            <div
+                className={classNames}
+                data-clipboard-text={message.body_text}
+                ref={(ref) => this._message = ref}
+            >
                 {content}
                 {extension}
             </div>
@@ -71,6 +130,6 @@ export default class TicketMessageBody extends React.Component {
     }
 }
 
-TicketMessageBody.propTypes = {
-    message: PropTypes.object.isRequired
-}
+export default connect(null, {
+    notify
+})(TicketMessageBody)

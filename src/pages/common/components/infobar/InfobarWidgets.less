@@ -1,0 +1,42 @@
+:local .component {
+  &:global.editing {
+    &:last-child {
+      padding-bottom: 50px;
+    }
+
+    .wrapper {
+      background: #e5f0f8;
+
+      &:hover {
+        background: #b7d2e6;
+
+        & > .content > .header > .tools {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  &:global:not(.editing) {
+    .wrapper:not(:first-child) {
+      padding-top: 0;
+    }
+
+    .wrapper:not(:last-child) {
+      margin-bottom: 0;
+    }
+  }
+
+  &:global.dragging {
+    .card,
+    .message {
+      &:not(.wrapper):not(.can-drop) {
+        background-color: #eeeeee;
+      }
+
+      .simple-field.draggable:hover {
+        border: 1px solid transparent !important;
+      }
+    }
+  }
+}

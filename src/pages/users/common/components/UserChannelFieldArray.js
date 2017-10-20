@@ -46,7 +46,7 @@ class UserChannelFieldArray extends React.Component {
                             key={index}
                             className="mb-3 form-row"
                         >
-                            <Col xs="10">
+                            <Col md="10" xs="9">
                                 <InputField
                                     type={type}
                                     name={`${contact}.address`}
@@ -56,7 +56,7 @@ class UserChannelFieldArray extends React.Component {
                                     error={errors[index] && errors[index].address}
                                 />
                             </Col>
-                            <Col xs="2">
+                            <Col md="2" xs="3">
                                 <Button
                                     color="danger"
                                     type="button"

@@ -3,12 +3,15 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
 import _last from 'lodash/last'
+import classnames from 'classnames'
 import {Card, CardBlock} from 'reactstrap'
 
 import DragWrapper from '../../dragging/WidgetsDragWrapper'
 import InfobarWidget from '../InfobarWidget'
 
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
+
+import css from './CardInfobarWidget.less'
 
 @connect((state, ownProps) => {
     const {widget, template} = ownProps
@@ -76,7 +79,7 @@ class WrapperInfobarWidget extends React.Component {
         const tp = template.get('templatePath')
 
         return (
-            <Card className="wrapper transparent draggable">
+            <Card className={classnames(css.component, 'wrapper transparent draggable')}>
                 {
                     isEditing
                     && (

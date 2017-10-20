@@ -2118,119 +2118,121 @@ exports[`CampaignDetail component should display default value when it's a new c
                                       <div
                                         className="editor-toolbar"
                                       >
-                                        <div
-                                          className=""
-                                          onClick={[Function]}
-                                          onMouseDown={[Function]}
-                                        >
-                                          <i
-                                            className="fa fa-fw fa-bold"
-                                            title="Bold"
-                                          />
-                                        </div>
-                                        <div
-                                          className=""
-                                          onClick={[Function]}
-                                          onMouseDown={[Function]}
-                                        >
-                                          <i
-                                            className="fa fa-fw fa-italic"
-                                            title="Italic"
-                                          />
-                                        </div>
-                                        <div
-                                          className=""
-                                          onClick={[Function]}
-                                          onMouseDown={[Function]}
-                                        >
-                                          <i
-                                            className="fa fa-fw fa-underline"
-                                            title="Underline"
-                                          />
-                                        </div>
-                                        <AddImage
-                                          action={
-                                            Object {
-                                              "active": [Function],
-                                              "component": [Function],
-                                              "functions": Object {
+                                        <div>
+                                          <div
+                                            className=""
+                                            onClick={[Function]}
+                                            onMouseDown={[Function]}
+                                          >
+                                            <i
+                                              className="fa fa-fw fa-bold"
+                                              title="Bold"
+                                            />
+                                          </div>
+                                          <div
+                                            className=""
+                                            onClick={[Function]}
+                                            onMouseDown={[Function]}
+                                          >
+                                            <i
+                                              className="fa fa-fw fa-italic"
+                                              title="Italic"
+                                            />
+                                          </div>
+                                          <div
+                                            className=""
+                                            onClick={[Function]}
+                                            onMouseDown={[Function]}
+                                          >
+                                            <i
+                                              className="fa fa-fw fa-underline"
+                                              title="Underline"
+                                            />
+                                          </div>
+                                          <AddImage
+                                            action={
+                                              Object {
+                                                "active": [Function],
+                                                "component": [Function],
+                                                "functions": Object {
+                                                  "addImage": [Function],
+                                                },
+                                                "isActive": [Function],
+                                                "isDisabled": [Function],
+                                                "key": "image",
+                                                "name": "Insert image",
+                                              }
+                                            }
+                                            functions={
+                                              Object {
                                                 "addImage": [Function],
-                                              },
-                                              "isActive": [Function],
-                                              "isDisabled": [Function],
-                                              "key": "image",
-                                              "name": "Insert image",
+                                              }
                                             }
-                                          }
-                                          functions={
-                                            Object {
-                                              "addImage": [Function],
-                                            }
-                                          }
-                                          isActive={false}
-                                          isDisabled={false}
-                                        >
-                                          <Popover
-                                            icon="fa-file-image-o"
                                             isActive={false}
                                             isDisabled={false}
-                                            name="Insert image"
                                           >
-                                            <span>
-                                              <i
-                                                className="fa fa-fw fa-file-image-o"
-                                                onMouseUp={[Function]}
-                                                title="Insert image"
-                                              />
-                                              <div
-                                                className="undefined"
-                                                onClick={[Function]}
-                                              />
-                                            </span>
-                                          </Popover>
-                                        </AddImage>
-                                        <AddEmoji
-                                          action={
-                                            Object {
-                                              "active": [Function],
-                                              "component": [Function],
-                                              "functions": Object {
+                                            <Popover
+                                              icon="fa-file-image-o"
+                                              isActive={false}
+                                              isDisabled={false}
+                                              name="Insert image"
+                                            >
+                                              <span>
+                                                <i
+                                                  className="fa fa-fw fa-file-image-o"
+                                                  onMouseUp={[Function]}
+                                                  title="Insert image"
+                                                />
+                                                <div
+                                                  className="undefined"
+                                                  onClick={[Function]}
+                                                />
+                                              </span>
+                                            </Popover>
+                                          </AddImage>
+                                          <AddEmoji
+                                            action={
+                                              Object {
+                                                "active": [Function],
+                                                "component": [Function],
+                                                "functions": Object {
+                                                  "addEmoji": [Function],
+                                                },
+                                                "isActive": [Function],
+                                                "isDisabled": [Function],
+                                                "key": "emoji",
+                                                "name": "Insert emoji",
+                                              }
+                                            }
+                                            functions={
+                                              Object {
                                                 "addEmoji": [Function],
-                                              },
-                                              "isActive": [Function],
-                                              "isDisabled": [Function],
-                                              "key": "emoji",
-                                              "name": "Insert emoji",
+                                              }
                                             }
-                                          }
-                                          functions={
-                                            Object {
-                                              "addEmoji": [Function],
-                                            }
-                                          }
-                                          isActive={false}
-                                          isDisabled={false}
-                                        >
-                                          <Popover
-                                            className="p-0 d-flex"
-                                            icon="fa-smile-o"
                                             isActive={false}
                                             isDisabled={false}
-                                            name="Insert emoji"
                                           >
-                                            <span>
-                                              <i
-                                                className="fa fa-fw fa-smile-o"
-                                                onMouseUp={[Function]}
-                                                title="Insert emoji"
-                                              />
-                                              <div
-                                                className="p-0 d-flex undefined"
-                                                onClick={[Function]}
-                                              />
-                                            </span>
-                                          </Popover>
-                                        </AddEmoji>
+                                            <Popover
+                                              className="p-0 d-flex"
+                                              icon="fa-smile-o"
+                                              isActive={false}
+                                              isDisabled={false}
+                                              name="Insert emoji"
+                                            >
+                                              <span>
+                                                <i
+                                                  className="fa fa-fw fa-smile-o"
+                                                  onMouseUp={[Function]}
+                                                  title="Insert emoji"
+                                                />
+                                                <div
+                                                  className="p-0 d-flex undefined"
+                                                  onClick={[Function]}
+                                                />
+                                              </span>
+                                            </Popover>
+                                          </AddEmoji>
+                                        </div>
                                       </div>
                                     </Toolbar>
                                   </Decorated(Toolbar)>

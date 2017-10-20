@@ -2,12 +2,19 @@ import React from 'react'
 import {mount} from 'enzyme'
 import TicketMessageBody from '../TicketMessageBody'
 
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+const middlewares = [thunk]
+const mockStore = configureMockStore(middlewares)
+
 describe('components', () => {
     describe('TicketMessageBody', () => {
         it('with empty props', () => {
             const component = mount(
                 <TicketMessageBody
                     message={{}}
+                    store={mockStore()}
                 />
             )
 
@@ -20,6 +27,7 @@ describe('components', () => {
                         body_text: 'text',
                         body_html: 'html'
                     }}
+                    store={mockStore()}
                 />
             )
 
@@ -33,6 +41,7 @@ describe('components', () => {
                         body_text: 'text',
                         body_html: ''
                     }}
+                    store={mockStore()}
                 />
             )
 
@@ -48,6 +57,7 @@ describe('components', () => {
                         stripped_html: 'stripped html',
                         stripped_text: 'stripped text'
                     }}
+                    store={mockStore()}
                 />
             )
 
@@ -61,6 +71,7 @@ describe('components', () => {
                         body_text: 'text http://gorgias.io/',
                         body_html: ''
                     }}
+                    store={mockStore()}
                 />
             )
 
@@ -97,6 +108,7 @@ describe('components', () => {
                             }]
                         }
                     }}
+                    store={mockStore()}
                 />
             )
 
@@ -110,6 +122,7 @@ describe('components', () => {
                         body_text: 'https://gorgias.io',
                         body_html: ''
                     }}
+                    store={mockStore()}
                 />
             )
 
@@ -123,6 +136,7 @@ describe('components', () => {
                         body_text: '',
                         body_html: '<a href="#">text</a>'
                     }}
+                    store={mockStore()}
                 />
             )
 

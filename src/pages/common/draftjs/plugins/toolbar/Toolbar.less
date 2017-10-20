@@ -7,10 +7,6 @@
   bottom: 5px;
   left: 7px;
 
-  @media @mobiles {
-    display: none !important;
-  }
-
   .icon {
     font-size: 14px;
   }
@@ -45,6 +41,15 @@
     &.disabled {
       opacity: .2;
       cursor: not-allowed;
+    }
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: row;
+
+    @media @mobiles {
+      display: none !important;
     }
   }
 

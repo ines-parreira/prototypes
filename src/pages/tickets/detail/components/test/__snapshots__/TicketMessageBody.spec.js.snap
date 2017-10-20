@@ -1,57 +1,119 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`components TicketMessageBody html by default 1`] = `
-<TicketMessageBody
+<Connect(TicketMessageBody)
   message={
     Object {
       "body_html": "html",
       "body_text": "text",
     }
   }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
 >
-  <div
-    className="ticket-message-body"
+  <TicketMessageBody
+    message={
+      Object {
+        "body_html": "html",
+        "body_text": "text",
+      }
+    }
+    notify={[Function]}
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
   >
-    <div>
-      <div
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "html",
+    <div
+      className="ticket-message-body"
+      data-clipboard-text="text"
+    >
+      <div>
+        <div
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "html",
+            }
           }
-        }
-      />
+        />
+      </div>
     </div>
-  </div>
-</TicketMessageBody>
+  </TicketMessageBody>
+</Connect(TicketMessageBody)>
 `;
 
 exports[`components TicketMessageBody linkify body_text 1`] = `
-<TicketMessageBody
+<Connect(TicketMessageBody)
   message={
     Object {
       "body_html": "",
       "body_text": "text http://gorgias.io/",
     }
   }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
 >
-  <div
-    className="ticket-message-body ticket-message-body-text"
+  <TicketMessageBody
+    message={
+      Object {
+        "body_html": "",
+        "body_text": "text http://gorgias.io/",
+      }
+    }
+    notify={[Function]}
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
   >
-    <div>
-      <div
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "text <a href=\\"http://gorgias.io/\\" class=\\"linkified\\" target=\\"_blank\\">http://gorgias.io/</a>",
+    <div
+      className="ticket-message-body ticket-message-body-text"
+      data-clipboard-text="text http://gorgias.io/"
+    >
+      <div>
+        <div
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "text <a href=\\"http://gorgias.io/\\" class=\\"linkified\\" target=\\"_blank\\">http://gorgias.io/</a>",
+            }
           }
-        }
-      />
+        />
+      </div>
     </div>
-  </div>
-</TicketMessageBody>
+  </TicketMessageBody>
+</Connect(TicketMessageBody)>
 `;
 
 exports[`components TicketMessageBody should display the Facebook carousel if there's matching metadata 1`] = `
-<TicketMessageBody
+<Connect(TicketMessageBody)
   message={
     Object {
       "body_html": "",
@@ -93,167 +155,233 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
       },
     }
   }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
 >
-  <div
-    className="ticket-message-body ticket-message-body-text"
-  >
-    <div>
-      <div
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "text <a href=\\"http://gorgias.io/\\" class=\\"linkified\\" target=\\"_blank\\">http://gorgias.io/</a>",
-          }
-        }
-      />
-    </div>
-    <FacebookCarousel
-      data={
-        Array [
-          Object {
-            "payload": Object {
-              "elements": Array [
-                Object {
-                  "buttons": Array [
-                    Object {
-                      "title": "View details",
-                      "type": "web_url",
-                      "url": "https://sfbicycles.myshopify.com/products/fixie-bike",
-                      "webview_height_ratio": "tall",
-                    },
-                    Object {
-                      "type": "element_share",
-                    },
-                    Object {
-                      "title": "Buy now",
-                      "type": "web_url",
-                      "url": "https://messenger-commerce.shopifyapps.com/redirect_to_cart",
-                      "webview_height_ratio": "tall",
-                    },
-                  ],
-                  "image_url": "https://cdn.shopify.com/s/files/1/1632/0429/products",
-                  "subtitle": "$200.00",
-                  "title": "Fixie bike",
-                },
-              ],
-              "sharable": true,
-              "template_type": "generic",
+  <TicketMessageBody
+    message={
+      Object {
+        "body_html": "",
+        "body_text": "text http://gorgias.io/",
+        "meta": Object {
+          "facebook_carousel": Array [
+            Object {
+              "payload": Object {
+                "elements": Array [
+                  Object {
+                    "buttons": Array [
+                      Object {
+                        "title": "View details",
+                        "type": "web_url",
+                        "url": "https://sfbicycles.myshopify.com/products/fixie-bike",
+                        "webview_height_ratio": "tall",
+                      },
+                      Object {
+                        "type": "element_share",
+                      },
+                      Object {
+                        "title": "Buy now",
+                        "type": "web_url",
+                        "url": "https://messenger-commerce.shopifyapps.com/redirect_to_cart",
+                        "webview_height_ratio": "tall",
+                      },
+                    ],
+                    "image_url": "https://cdn.shopify.com/s/files/1/1632/0429/products",
+                    "subtitle": "$200.00",
+                    "title": "Fixie bike",
+                  },
+                ],
+                "sharable": true,
+                "template_type": "generic",
+              },
+              "type": "template",
             },
-            "type": "template",
-          },
-        ]
+          ],
+        },
       }
+    }
+    notify={[Function]}
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+  >
+    <div
+      className="ticket-message-body ticket-message-body-text"
+      data-clipboard-text="text http://gorgias.io/"
     >
       <div>
-        <div>
-          <Card
-            tag="div"
-          >
-            <div
-              className="card"
-            >
-              <CardImg
-                src="https://cdn.shopify.com/s/files/1/1632/0429/products"
-                tag="img"
-                top={true}
-                width="100%"
-              >
-                <img
-                  className="card-img-top"
-                  src="https://cdn.shopify.com/s/files/1/1632/0429/products"
-                  width="100%"
-                />
-              </CardImg>
-              <CardBlock
-                tag="div"
-              >
-                <div
-                  className="card-block"
-                >
-                  <CardTitle
-                    tag="h4"
-                  >
-                    <h4
-                      className="card-title"
-                    >
-                      Fixie bike
-                    </h4>
-                  </CardTitle>
-                  <CardSubtitle
-                    tag="h6"
-                  >
-                    <h6
-                      className="card-subtitle"
-                    >
-                      $200.00
-                    </h6>
-                  </CardSubtitle>
-                </div>
-              </CardBlock>
-              <ButtonGroup
-                role="group"
-                tag="div"
-                vertical={true}
-              >
-                <div
-                  className="btn-group-vertical"
-                  role="group"
-                >
-                  <Button
-                    color="secondary"
-                    href="https://sfbicycles.myshopify.com/products/fixie-bike"
-                    tag="a"
-                    target="_blank"
-                  >
-                    <a
-                      className="btn btn-secondary"
-                      href="https://sfbicycles.myshopify.com/products/fixie-bike"
-                      onClick={[Function]}
-                      target="_blank"
-                    >
-                      View details
-                    </a>
-                  </Button>
-                  <Button
-                    color="secondary"
-                    disabled={true}
-                    tag="button"
-                  >
-                    <button
-                      className="btn btn-secondary disabled"
-                      disabled={true}
-                      onClick={[Function]}
-                    >
-                      Share
-                    </button>
-                  </Button>
-                  <Button
-                    color="secondary"
-                    href="https://messenger-commerce.shopifyapps.com/redirect_to_cart"
-                    tag="a"
-                    target="_blank"
-                  >
-                    <a
-                      className="btn btn-secondary"
-                      href="https://messenger-commerce.shopifyapps.com/redirect_to_cart"
-                      onClick={[Function]}
-                      target="_blank"
-                    >
-                      Buy now
-                    </a>
-                  </Button>
-                </div>
-              </ButtonGroup>
-            </div>
-          </Card>
-        </div>
+        <div
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "text <a href=\\"http://gorgias.io/\\" class=\\"linkified\\" target=\\"_blank\\">http://gorgias.io/</a>",
+            }
+          }
+        />
       </div>
-    </FacebookCarousel>
-  </div>
-</TicketMessageBody>
+      <FacebookCarousel
+        data={
+          Array [
+            Object {
+              "payload": Object {
+                "elements": Array [
+                  Object {
+                    "buttons": Array [
+                      Object {
+                        "title": "View details",
+                        "type": "web_url",
+                        "url": "https://sfbicycles.myshopify.com/products/fixie-bike",
+                        "webview_height_ratio": "tall",
+                      },
+                      Object {
+                        "type": "element_share",
+                      },
+                      Object {
+                        "title": "Buy now",
+                        "type": "web_url",
+                        "url": "https://messenger-commerce.shopifyapps.com/redirect_to_cart",
+                        "webview_height_ratio": "tall",
+                      },
+                    ],
+                    "image_url": "https://cdn.shopify.com/s/files/1/1632/0429/products",
+                    "subtitle": "$200.00",
+                    "title": "Fixie bike",
+                  },
+                ],
+                "sharable": true,
+                "template_type": "generic",
+              },
+              "type": "template",
+            },
+          ]
+        }
+      >
+        <div>
+          <div>
+            <Card
+              tag="div"
+            >
+              <div
+                className="card"
+              >
+                <CardImg
+                  src="https://cdn.shopify.com/s/files/1/1632/0429/products"
+                  tag="img"
+                  top={true}
+                  width="100%"
+                >
+                  <img
+                    className="card-img-top"
+                    src="https://cdn.shopify.com/s/files/1/1632/0429/products"
+                    width="100%"
+                  />
+                </CardImg>
+                <CardBlock
+                  tag="div"
+                >
+                  <div
+                    className="card-block"
+                  >
+                    <CardTitle
+                      tag="h4"
+                    >
+                      <h4
+                        className="card-title"
+                      >
+                        Fixie bike
+                      </h4>
+                    </CardTitle>
+                    <CardSubtitle
+                      tag="h6"
+                    >
+                      <h6
+                        className="card-subtitle"
+                      >
+                        $200.00
+                      </h6>
+                    </CardSubtitle>
+                  </div>
+                </CardBlock>
+                <ButtonGroup
+                  role="group"
+                  tag="div"
+                  vertical={true}
+                >
+                  <div
+                    className="btn-group-vertical"
+                    role="group"
+                  >
+                    <Button
+                      color="secondary"
+                      href="https://sfbicycles.myshopify.com/products/fixie-bike"
+                      tag="a"
+                      target="_blank"
+                    >
+                      <a
+                        className="btn btn-secondary"
+                        href="https://sfbicycles.myshopify.com/products/fixie-bike"
+                        onClick={[Function]}
+                        target="_blank"
+                      >
+                        View details
+                      </a>
+                    </Button>
+                    <Button
+                      color="secondary"
+                      disabled={true}
+                      tag="button"
+                    >
+                      <button
+                        className="btn btn-secondary disabled"
+                        disabled={true}
+                        onClick={[Function]}
+                      >
+                        Share
+                      </button>
+                    </Button>
+                    <Button
+                      color="secondary"
+                      href="https://messenger-commerce.shopifyapps.com/redirect_to_cart"
+                      tag="a"
+                      target="_blank"
+                    >
+                      <a
+                        className="btn btn-secondary"
+                        href="https://messenger-commerce.shopifyapps.com/redirect_to_cart"
+                        onClick={[Function]}
+                        target="_blank"
+                      >
+                        Buy now
+                      </a>
+                    </Button>
+                  </div>
+                </ButtonGroup>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </FacebookCarousel>
+    </div>
+  </TicketMessageBody>
+</Connect(TicketMessageBody)>
 `;
 
 exports[`components TicketMessageBody use stripped_html if available 1`] = `
-<TicketMessageBody
+<Connect(TicketMessageBody)
   message={
     Object {
       "body_html": "long html",
@@ -262,73 +390,162 @@ exports[`components TicketMessageBody use stripped_html if available 1`] = `
       "stripped_text": "stripped text",
     }
   }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
 >
-  <div
-    className="ticket-message-body"
+  <TicketMessageBody
+    message={
+      Object {
+        "body_html": "long html",
+        "body_text": "text",
+        "stripped_html": "stripped html",
+        "stripped_text": "stripped text",
+      }
+    }
+    notify={[Function]}
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
   >
-    <div>
-      <div
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "stripped html",
+    <div
+      className="ticket-message-body"
+      data-clipboard-text="text"
+    >
+      <div>
+        <div
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "stripped html",
+            }
           }
-        }
-      />
-      <div
-        className="mail-quote-toggle"
-        onClick={[Function]}
-        title="Show full content"
-      >
-        <i
-          className="fa fa-fw fa-ellipsis-h"
         />
+        <div
+          className="mail-quote-toggle"
+          onClick={[Function]}
+          title="Show full content"
+        >
+          <i
+            className="fa fa-fw fa-ellipsis-h"
+          />
+        </div>
       </div>
     </div>
-  </div>
-</TicketMessageBody>
+  </TicketMessageBody>
+</Connect(TicketMessageBody)>
 `;
 
 exports[`components TicketMessageBody use text when no html 1`] = `
-<TicketMessageBody
+<Connect(TicketMessageBody)
   message={
     Object {
       "body_html": "",
       "body_text": "text",
     }
   }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
 >
-  <div
-    className="ticket-message-body ticket-message-body-text"
+  <TicketMessageBody
+    message={
+      Object {
+        "body_html": "",
+        "body_text": "text",
+      }
+    }
+    notify={[Function]}
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
   >
-    <div>
-      <div
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "text",
+    <div
+      className="ticket-message-body ticket-message-body-text"
+      data-clipboard-text="text"
+    >
+      <div>
+        <div
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "text",
+            }
           }
-        }
-      />
+        />
+      </div>
     </div>
-  </div>
-</TicketMessageBody>
+  </TicketMessageBody>
+</Connect(TicketMessageBody)>
 `;
 
 exports[`components TicketMessageBody with empty props 1`] = `
-<TicketMessageBody
+<Connect(TicketMessageBody)
   message={Object {}}
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
 >
-  <div
-    className="ticket-message-body ticket-message-body-text"
+  <TicketMessageBody
+    message={Object {}}
+    notify={[Function]}
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
   >
-    <div>
-      <div
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "undefined",
+    <div
+      className="ticket-message-body ticket-message-body-text"
+    >
+      <div>
+        <div
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "undefined",
+            }
           }
-        }
-      />
+        />
+      </div>
     </div>
-  </div>
-</TicketMessageBody>
+  </TicketMessageBody>
+</Connect(TicketMessageBody)>
 `;

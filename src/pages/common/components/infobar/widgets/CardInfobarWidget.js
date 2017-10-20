@@ -10,6 +10,8 @@ import TooltipWidgetEditCard from '../forms/TooltipWidgetEditCard'
 
 import InfobarWidget from '../InfobarWidget'
 
+import css from './CardInfobarWidget.less'
+
 class CardInfobarWidget extends React.Component {
     constructor(props) {
         super(props)
@@ -164,7 +166,7 @@ class CardInfobarWidget extends React.Component {
         const childWidgets = template.get('widgets', fromJS([]))
 
         const isTransparent = !template.getIn(['meta', 'displayCard'], true)
-        const className = classnames({
+        const className = classnames(css.component, {
             'can-drop': editing && editing.canDrop(ap),
             draggable: !isParentList,
             closed: !this.state.open && !isEditing,

@@ -1,0 +1,139 @@
+@import "../../../../../../css/new/mixins";
+
+:local .component {
+  width: 100%;
+
+  :global {
+    .header {
+      padding: 10px 14px !important;
+    }
+
+    .header .placeholder {
+      color: #b4b4b4;
+    }
+
+    .action-buttons {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 6px;
+      padding-right: 24px;
+
+      @media @desktops {
+        padding-right: 0;
+      }
+
+      .action-button {
+        padding: 5px 9px;
+        margin-right: .4rem;
+        margin-bottom: .4rem;
+
+        @media @desktops {
+          margin-bottom: 0;
+        }
+      }
+
+      .action-dropdown {
+        position: absolute;
+        right: 0;
+
+        @media @desktops {
+          position: relative;
+        }
+      }
+    }
+
+    .content {
+      height: auto;
+      opacity: 1;
+    }
+
+    .dropdown-icon {
+      float: right;
+      margin-left: 6px;
+
+      i {
+        width: 11px;
+      }
+    }
+
+    &,
+    .content,
+    .dropdown-icon {
+      transition: all .1s linear;
+    }
+  }
+
+  &:global.closed {
+    overflow: hidden;
+
+    .content {
+      opacity: 0;
+      height: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .header {
+      border-color: transparent;
+    }
+
+    .dropdown-icon {
+      transform: rotate(-90deg);
+    }
+
+    .action-dropdown {
+      display: none;
+    }
+  }
+
+
+  &:global.transparent {
+    background: transparent;
+    border: none;
+    margin: 0;
+
+    & > .content {
+      border: none;
+    }
+
+    &:not(.wrapper) > .content {
+      padding: 0;
+    }
+  }
+
+  &:global.wrapper {
+    @wrapper-padding: 12px;
+    box-sizing: content-box;
+
+    border-radius: 3px;
+    padding: @wrapper-padding @wrapper-padding 0 @wrapper-padding;
+    margin: 0 -@wrapper-padding;
+    transition: all .2s linear;
+
+    &:not(:last-child) {
+      margin-bottom: 12px;
+    }
+
+    & > .header {
+      padding-top: 0 !important;
+      border: none;
+    }
+
+    & > .content {
+      box-sizing: border-box;
+      padding-right: 0;
+      padding-left: 0;
+      padding-top: 0;
+
+      & > .header {
+        border: none;
+        padding: 0;
+
+        & > .tools {
+          transition: all .2s linear;
+        }
+      }
+    }
+  }
+}

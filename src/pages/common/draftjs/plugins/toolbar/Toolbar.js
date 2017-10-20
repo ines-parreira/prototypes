@@ -113,7 +113,9 @@ class Toolbar extends React.Component {
 
         return (
             <div className={classnames('editor-toolbar', css.page)}>
-                {filteredActions.map(this._renderAction)}
+                <div className={css.actions}>
+                    {filteredActions.map(this._renderAction)}
+                </div>
                 {buttons.map(this._renderButton)}
             </div>
         )
