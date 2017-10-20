@@ -109,7 +109,8 @@ export default class Table extends React.Component<Props, State> {
                 }
             },
             OPEN_ITEM: {
-                action: () => {
+                action: (e) => {
+                    e.preventDefault()
                     const item = this.props.items.get(this.state.rowCursor)
                     browserHistory.push(this._getItemLink(item))
                 }

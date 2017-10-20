@@ -1,7 +1,7 @@
-@md-screen: 1024px;
+@import "../../../../../css/new/mixins";
 
 :local .component {
-  @media screen and (min-width: @md-screen) {
+  @media @desktops {
     max-width: 840px !important;
   }
 
@@ -14,7 +14,7 @@
   }
 
   .content {
-    @media screen and (min-width: @md-screen) {
+    @media @desktops {
       columns: 2 2em;
     }
   }
