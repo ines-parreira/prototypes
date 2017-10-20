@@ -18,13 +18,12 @@ export default class TicketAttachments extends React.Component {
         )
     }
 
-    removeAttachment = (idx) => {
-        return (e) => {
-            this.props.deleteAttachment(idx)
+    removeAttachment = (idx, e) => {
+        this.props.deleteAttachment(idx)
 
-            // prevent opening the thumb when clicking the delete button
-            e.preventDefault()
-        }
+        // prevent opening the thumb when clicking the delete button
+        e.preventDefault()
+        e.stopPropagation()
     }
 
     renderRemoveIcon = (idx) => {
@@ -32,7 +31,7 @@ export default class TicketAttachments extends React.Component {
             return (
                 <i
                     className="attachments-item-remove fa fa-fw fa-close"
-                    onClick={this.removeAttachment(idx)}
+                    onClick={(e) => this.removeAttachment(idx, e)}
                 />
             )
         }

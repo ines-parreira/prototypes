@@ -3,7 +3,7 @@ import {shallow, mount} from 'enzyme'
 import _noop from 'lodash/noop'
 
 import {uploadFiles} from '../../../../utils'
-import FileField from '../FileField'
+import {FileField} from '../FileField'
 
 jest.mock('../../../../utils', () => {
     return {
@@ -65,5 +65,29 @@ describe('FileField', () => {
         component.find('input').simulate('change')
         expect(component.state('isUploading')).toBe(true)
         expect(uploadFiles).toBeCalled()
+    })
+
+    it('should notify a warning when trying to upload a SVG', () => {
+        let calledNotify = false
+        uploadFiles.mockReset()
+
+        const component = mount(
+            <FileField
+                {...minProps}
+                notify={() => calledNotify = true}
+            />
+        )
+
+        component.find('input').simulate('change', {
+            target: {
+                files: [{
+                    type: 'image/svg+xml'
+                }]
+            }
+        })
+
+        expect(component.state('isUploading')).toBe(false)
+        expect(uploadFiles).not.toBeCalled()
+        expect(calledNotify).toBe(true)
     })
 })

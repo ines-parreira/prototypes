@@ -235,7 +235,7 @@ export const canLeaveInternalNote = (sourceType) => {
  * @returns {boolean}
  */
 export const acceptsOnlyImages = (sourceType) => {
-    return ['chat'].includes(sourceType)
+    return ['chat', 'facebook-messenger'].includes(sourceType)
 }
 
 /**

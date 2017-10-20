@@ -340,7 +340,7 @@ function prepareTicketDataToSend(dispatch: dispatchType, ticket: Map<*,*>, newMe
         }
 
         // Facebook does not accept comment with just an attachment.
-        if (data.newMessage.channel === 'facebook') {
+        if (data.newMessage.channel === 'facebook' && data.newMessage.source.type === 'facebook-comment') {
             if ((data.newMessage.body_text.length === 0) && (data.newMessage.attachments.length > 0)) {
                 dispatch(notify({
                     status: 'error',

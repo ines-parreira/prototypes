@@ -1,6 +1,9 @@
 import React, {PropTypes} from 'react'
+import {connect} from 'react-redux'
 import {Button, Input} from 'reactstrap'
 import _isArray from 'lodash/isArray'
+
+import {notify} from './../../../state/notifications/actions'
 
 import {uploadFiles} from '../../../utils'
 
@@ -8,7 +11,7 @@ import InputField from './InputField'
 
 import css from './FileField.less'
 
-export default class FileField extends InputField {
+export class FileField extends InputField {
     static propTypes = Object.assign({
         noPreview: PropTypes.bool.isRequired,
         returnFiles: PropTypes.bool.isRequired,
@@ -28,6 +31,26 @@ export default class FileField extends InputField {
     _onChange = (e) => {
         const files = e.target.files
         this.setState({isUploading: true})
+
+        const filesArray = Array.from(files)
+        let isSvg = false
+
+        filesArray.forEach((file) => {
+            if (file.type.endsWith('svg+xml')) {
+                isSvg = true
+            }
+        })
+
+        if (isSvg) {
+            this.props.notify({
+                type: 'error',
+                status: 'warning',
+                message: 'Uploading SVGs is not allowed.'
+            })
+            this.setState({isUploading: false})
+            return
+        }
+
         uploadFiles(files).then((files) => {
             this.setState({isUploading: false})
 
@@ -66,9 +89,11 @@ export default class FileField extends InputField {
             onChange, // eslint-disable-line
             placeholder,
             returnFiles, // eslint-disable-line
+            notify, // eslint-disable-line
             value,
             ...rest,
         } = this.props
+
         const {isUploading} = this.state
 
         const disabled = isUploading
@@ -115,3 +140,7 @@ export default class FileField extends InputField {
         )
     }
 }
+
+export default connect(null, {
+    notify
+})(FileField)

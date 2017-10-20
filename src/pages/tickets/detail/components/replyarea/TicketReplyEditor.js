@@ -176,6 +176,7 @@ class TicketReplyEditor extends React.Component<Props, State> {
         if (cantAddAttachmentBecauseOfText) {
             this.props.notify({
                 type: 'error',
+                status: 'warning',
                 message: 'When using Facebook, you can either send a text message, or an attachment, ' +
                 'but not both at the same time'
             })
@@ -186,6 +187,7 @@ class TicketReplyEditor extends React.Component<Props, State> {
         if (cantAddAttachmentBecauseOfAttachments || tryToAddTooManyAttachments) {
             this.props.notify({
                 type: 'error',
+                status: 'warning',
                 message: 'When using Facebook, you can only send attachments one by one.'
             })
 
@@ -195,15 +197,51 @@ class TicketReplyEditor extends React.Component<Props, State> {
         return true
     }
 
-    _handleFiles = (files) => {
+    _handleFiles = (files, validationRegex) => {
+        const {newMessageType} = this.props
+
         if (!this._canAddAttachments(files)) {
+            return
+        }
+
+        let regex = null
+        let cancel = false
+
+        let filesArray = Array.from(files)
+
+        if (validationRegex) {
+            regex = new RegExp(validationRegex)
+        }
+
+        filesArray.forEach((file) => {
+            if (regex && !file.type.match(regex) && !cancel) {
+                this.props.notify({
+                    type: 'error',
+                    status: 'warning',
+                    message: `When answering to ${newMessageType} messages, the only attachments allowed are ${' '}
+                    images (except svg).`
+                })
+                cancel = true
+            }
+
+            if (file.type.endsWith('svg+xml')) {
+                this.props.notify({
+                    type: 'error',
+                    status: 'warning',
+                    message: 'Uploading SVGs is not allowed.'
+                })
+                cancel = true
+            }
+        })
+
+        if (cancel) {
             return
         }
 
         this.props.addAttachments(this.props.ticket, files)
     }
 
-    _handleDroppedFiles = (selection, files) => {
+    _handleDroppedFiles = (selection, files, validationRegex) => {
         dndPlugin.handleDroppedFiles(selection, files, {
             getEditorState: () => this.state.editorState,
             setEditorState: (editorState) => {
@@ -212,7 +250,7 @@ class TicketReplyEditor extends React.Component<Props, State> {
             }
         })
 
-        this._handleFiles(files)
+        this._handleFiles(files, validationRegex)
         return false
     }
 
@@ -282,7 +320,7 @@ class TicketReplyEditor extends React.Component<Props, State> {
                         type="file"
                         multiple
                         onChange={(event) => {
-                            return this._handleFiles(event.target.files)
+                            return this._handleFiles(event.target.files, attachmentInputProps.accept)
                         }}
                         onClick={(event) => {
                             // empty input on click
@@ -294,21 +332,28 @@ class TicketReplyEditor extends React.Component<Props, State> {
             ],
         }
 
-
-        if (!isNewMessageRichType) {
-            toolbarProps.displayedActions = ['emoji']
-        }
-
         const attachments = this.props.newMessage.getIn(['newMessage', 'attachments']) || List()
         const cantWriteTextBecauseOfAttachments =
             RESTRAINED_SOURCE_TYPES.includes(this.props.newMessage.getIn(['newMessage', 'source', 'type']))
             && attachments.size >= 1
 
+        if (!isNewMessageRichType) {
+            toolbarProps.displayedActions = ['emoji']
+        }
+
+        // If we can't write text nor add more attachments, we don't need to display any toolbar button
+        if (cantWriteTextBecauseOfAttachments) {
+            toolbarProps.displayedActions = []
+            toolbarProps.buttons = []
+        }
+
         const alertText = 'When using Facebook, you can either send a text message, or an attachment, ' +
             'but not both at the same time. If you want to write a message, remove the attachment first.'
 
+        const isAlert = cantWriteTextBecauseOfAttachments
+
         return (
-            <div className="TicketReplyEditor">
+            <div className={classnames('TicketReplyEditor', {'is-alert': isAlert})}>
                 <RichField
                     ref={
                         // $FlowFixMe
@@ -321,7 +366,9 @@ class TicketReplyEditor extends React.Component<Props, State> {
                         html: newMessage.getIn(['newMessage', 'body_html']),
                     }}
                     onChange={this._onEditorChange}
-                    handleDroppedFiles={this._handleDroppedFiles}
+                    handleDroppedFiles={(selection, files) => {
+                        this._handleDroppedFiles(selection, files, attachmentInputProps.accept)
+                    }}
                     canDropFiles
                     tabIndex="4"
                     spellCheck
@@ -331,7 +378,7 @@ class TicketReplyEditor extends React.Component<Props, State> {
                     }
                     toolbarProps={toolbarProps}
                     mentionProps={mentionProps}
-                    alertMode={cantWriteTextBecauseOfAttachments && 'warning'}
+                    alertMode={isAlert && 'warning'}
                     alertText={alertText}
                     placeholder="Click here to reply, or press r."
                 />
