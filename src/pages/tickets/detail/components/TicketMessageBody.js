@@ -1,20 +1,9 @@
 // @flow
 import React from 'react'
 import linkifyStr from 'linkifyjs/string'
-import Clipboard from 'clipboard'
-import {connect} from 'react-redux'
-import _noop from 'lodash/noop'
 
 import {sanitizeHtmlDefault, proxifyImages} from '../../../../utils'
 import FacebookCarousel from './FacebookCarousel'
-import {isDoubleTap} from '../../../common/utils/touch'
-import {notify} from '../../../../state/notifications/actions'
-
-import type {Node} from 'react'
-
-type clipboardType = {
-    destroy: () => void,
-}
 
 type messageType = {
     body_html: string,
@@ -28,40 +17,16 @@ type messageType = {
 
 type Props = {
     message: messageType,
-    notify: ({}) => void,
 }
 
 type State = {
     showFullBody: boolean
 }
 
-class TicketMessageBody extends React.Component<Props, State> {
+export default class TicketMessageBody extends React.Component<Props, State> {
     constructor() {
         super()
         this.state = {showFullBody: false}
-    }
-
-    _clipboard: clipboardType = {destroy: _noop}
-    _message: ?Node = null
-
-    componentDidMount() {
-        this._bindClipboard()
-    }
-
-    componentWillUnmount() {
-        this._clipboard.destroy()
-    }
-
-    _bindClipboard = () => {
-        if (!this._message) {
-            return
-        }
-
-        this._clipboard = new Clipboard(this._message, {
-            text: (trigger) => isDoubleTap(trigger) ? trigger.getAttribute('data-clipboard-text') : null
-        })
-
-        this._clipboard.on('success', () => this.props.notify({message: 'Copied!'}))
     }
 
     render() {
@@ -120,8 +85,6 @@ class TicketMessageBody extends React.Component<Props, State> {
         return (
             <div
                 className={classNames}
-                data-clipboard-text={message.body_text}
-                ref={(ref) => this._message = ref}
             >
                 {content}
                 {extension}
@@ -129,7 +92,3 @@ class TicketMessageBody extends React.Component<Props, State> {
         )
     }
 }
-
-export default connect(null, {
-    notify
-})(TicketMessageBody)
