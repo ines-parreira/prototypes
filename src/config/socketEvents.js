@@ -5,6 +5,7 @@ import * as viewsActions from '../state/views/actions'
 
 import * as viewsConstants from '../state/views/constants'
 import * as macroConstants from '../state/macro/constants'
+import * as currentAccountConstants from '../state/currentAccount/constants'
 import * as socketConstants from './socketConstants'
 
 import {isCurrentlyOnTicket} from '../utils'
@@ -182,4 +183,13 @@ export const receivedEvents = [{
             resp: json.macro,
         })
     },
-}]
+}, {
+    name: 'account-updated',
+    onReceive: function (json) {
+        return this.dispatch({
+            type: currentAccountConstants.UPDATE_ACCOUNT_SUCCESS,
+            resp: json.account,
+        })
+    },
+},
+]

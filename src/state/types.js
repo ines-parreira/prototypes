@@ -25,6 +25,7 @@ export type stateType = {
 }
 
 export type currentUserType = Map<*,*>
+export type currentAccountType = Map<*,*>
 export type getStateType = () => stateType
 
 // redux

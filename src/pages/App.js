@@ -9,9 +9,12 @@ import NotificationsSystem from 'reapop'
 import * as utils from '../utils'
 
 import * as layoutActions from '../state/layout/actions'
+import * as activityActions from '../state/activity/actions'
+import * as currentAccountActions from '../state/currentAccount/actions'
 import {fetchUser, fetchUsers} from '../state/users/actions'
 import {fetchSettings} from '../state/settings/actions'
 import {fetchTags} from '../state/tags/actions'
+import {injectInterceptor} from '../utils/axios'
 
 import * as layoutSelectors from '../state/layout/selectors'
 
@@ -34,15 +37,15 @@ import 'font-awesome/css/font-awesome.css'
 import '../../css/main.less'
 import css from './App.less'
 
-import * as activityActions from '../state/activity/actions'
 
 import type {reactRouterLocation} from '../types'
 import type {Node} from 'react'
-import type {currentUserType} from '../state/types'
+import type {currentUserType, currentAccountType} from '../state/types'
 
 type Props = {
     // current logged in user
     currentUser: currentUserType,
+    currentAccount: currentAccountType,
 
     currentRoute: {
         infobarOnMobile?: boolean,
@@ -52,10 +55,12 @@ type Props = {
     fetchUsers: typeof fetchUsers,
     fetchSettings: typeof fetchSettings,
     fetchTags: typeof fetchTags,
+    injectInterceptor: typeof injectInterceptor,
     pollActivity: typeof activityActions.pollActivity,
     pollChats: typeof activityActions.pollChats,
     openPanel: typeof layoutActions.openPanel,
     closePanels: typeof layoutActions.closePanels,
+    updateAccountSuccess: typeof currentAccountActions.updateAccountSuccess,
 
     openedPanel?: string,
 
@@ -96,6 +101,11 @@ class App extends React.Component<Props> {
 
         this.props.pollActivity()
         this.props.pollChats()
+        this.props.injectInterceptor()
+
+        // We're triggering an account update the first time the app is mounted so we can get
+        // the notification from the middleware for limited (Ex: disabled, free trial ending) accounts
+        this.props.updateAccountSuccess(this.props.currentAccount)
     }
 
     componentDidMount() {
@@ -131,7 +141,7 @@ class App extends React.Component<Props> {
                         {this.props.navbar}
 
                         <div className={classnames('app-content', css.content)}>
-                            <BannerNotifications notifications={bannerNotifications} />
+                            <BannerNotifications notifications={bannerNotifications}/>
 
                             <div className="mobile-nav hidden-md-up d-flex justify-content-between align-items-center">
                                 <Button
@@ -140,7 +150,7 @@ class App extends React.Component<Props> {
                                     color="link"
                                     onClick={() => this.props.openPanel('navbar')}
                                 >
-                                    <i className="fa fa-fw fa-bars" />
+                                    <i className="fa fa-fw fa-bars"/>
                                 </Button>
                                 {
                                     currentRoute.infobarOnMobile && (
@@ -157,17 +167,17 @@ class App extends React.Component<Props> {
                             </div>
                             {
                                 currentRoute.noContainerPadding ? (
-                                        <Container
-                                            fluid
-                                            className={classnames(css['main-content'])}
-                                        >
-                                            {this.props.content || this.props.children}
-                                        </Container>
-                                    ) : (
-                                        <FullPage>
-                                            {this.props.content || this.props.children}
-                                        </FullPage>
-                                    )
+                                    <Container
+                                        fluid
+                                        className={classnames(css['main-content'])}
+                                    >
+                                        {this.props.content || this.props.children}
+                                    </Container>
+                                ) : (
+                                    <FullPage>
+                                        {this.props.content || this.props.children}
+                                    </FullPage>
+                                )
                             }
                         </div>
 
@@ -181,7 +191,7 @@ class App extends React.Component<Props> {
                         />
                     </div>
 
-                    <KeyboardHelp />
+                    <KeyboardHelp/>
 
                     <NotificationsSystem
                         theme={notificationsTheme}
@@ -196,6 +206,7 @@ class App extends React.Component<Props> {
 function mapStateToProps(state, ownProps) {
     return {
         currentUser: state.currentUser,
+        currentAccount: state.currentAccount,
         notifications: state.notifications,
         openedPanel: layoutSelectors.getCurrentOpenedPanel(state),
         currentRoute: utils.currentRoute(ownProps.routes),
@@ -207,8 +218,10 @@ export default connect(mapStateToProps, {
     fetchUsers,
     fetchSettings,
     fetchTags,
+    injectInterceptor: injectInterceptor,
     pollActivity: activityActions.pollActivity,
     pollChats: activityActions.pollChats,
     openPanel: layoutActions.openPanel,
     closePanels: layoutActions.closePanels,
+    updateAccountSuccess: currentAccountActions.updateAccountSuccess,
 })(App)

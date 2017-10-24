@@ -5,10 +5,18 @@ import * as constants from './constants'
 import {notify} from '../notifications/actions'
 
 import type {dispatchType} from '../types'
+
 type settingType = {
     id: string,
     type: string
 }
+
+export const updateAccountSuccess = (resp: {}) => ((dispatch: dispatchType) => {
+    dispatch({
+        type: constants.UPDATE_ACCOUNT_SUCCESS,
+        resp
+    })
+})
 
 export const updateAccount = (values: {}) => ((dispatch: dispatchType): Promise<dispatchType> => {
     dispatch({type: constants.UPDATE_ACCOUNT_START})

@@ -7,7 +7,6 @@ export const initialState = fromJS({
         loading: false,
     },
     tickets: [],
-    git_commit: '',
     newVersion: false
 })
 
@@ -17,7 +16,6 @@ import type {actionType} from '../types'
 type defaultActionType = actionType & {
     ticketId: string,
     resp: {
-        git_commit: string,
         tickets: Array<{}>
     }
 }
@@ -31,9 +29,7 @@ export default (state: Map<*,*> = initialState, action: defaultActionType): Map<
             return state.setIn(['_internal', 'loading'], false)
 
         case constants.SUBMIT_ACTIVITY_SUCCESS: {
-            return state.merge({
-                git_commit: action.resp.git_commit
-            }).setIn(['_internal', 'loading'], false)
+            return state.setIn(['_internal', 'loading'], false)
         }
 
         case constants.SUBMIT_CHATS_SUCCESS: {

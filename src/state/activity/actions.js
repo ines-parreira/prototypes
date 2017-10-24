@@ -4,29 +4,24 @@ import {fromJS} from 'immutable'
 import Push from 'push.js'
 
 import {fetchPage} from '../../state/views/actions'
-import {notify} from '../../state/notifications/actions'
-import * as currentAccountTypes from '../currentAccount/constants'
-import * as billingTypes from '../billing/constants'
-import * as viewsTypes from '../views/constants'
+
 import * as constants from './constants'
 import {shouldUpdateView} from './utils'
-import {toQueryParams, playNotificationSound} from '../../utils'
+import {playNotificationSound, toQueryParams} from '../../utils'
 
 import * as viewsSelectors from '../views/selectors'
 import {POLL_ACTIVITY_TIMEOUT} from '../../config'
 
 import type {dispatchType, getStateType} from '../types'
 
-export const pollActivity = () => (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
+export const pollActivity = () => (dispatch: dispatchType, getState: getStateType): ?Promise<dispatchType> => {
     const {activity, views} = getState()
 
     const loading = activity.getIn(['_internal', 'loading'], false)
 
     // don't send activity again if previous one is not done
     if (loading) {
-        return dispatch({
-            type: constants.SUBMIT_ACTIVITY_DISCARD
-        })
+        return
     }
 
     dispatch({
@@ -48,33 +43,11 @@ export const pollActivity = () => (dispatch: dispatchType, getState: getStateTyp
             const _state = getState()
             // renaming variables since they are already used in upper scope
             const {views: _views} = _state
-            const prevGitCommit = activity.get('git_commit')
-
-            if (resp.git_commit && resp.git_commit !== prevGitCommit) {
-                dispatch(notify({
-                    style: 'banner',
-                    status: 'info',
-                    dismissible: false,
-                    onClick: () => {
-                        window.location.reload()
-                    },
-                    allowHtml: true,
-                    message: `An update is available for Gorgias. Click <a>here</a> to reload the page and get the 
-                    latest improvements.`
-                }))
-            }
 
             dispatch({
                 type: constants.SUBMIT_ACTIVITY_SUCCESS,
                 resp
             })
-
-            if (resp.views) {
-                dispatch({
-                    type: viewsTypes.UPDATE_VIEW_LIST,
-                    items: resp.views
-                })
-            }
 
             // TODO @jebarjonet CHECK if something new before fetching
             // if currently on a view, ask for its auto refresh
@@ -92,21 +65,7 @@ export const pollActivity = () => (dispatch: dispatchType, getState: getStateTyp
                     }
                 }
             }
-
-            if (resp.current_account) {
-                dispatch({
-                    type: currentAccountTypes.UPDATE_ACCOUNT_SUCCESS,
-                    resp: resp.current_account
-                })
-            }
-
-            if (resp.current_usage) {
-                dispatch({
-                    type: billingTypes.FETCH_CURRENT_USAGE_SUCCESS,
-                    resp: resp.current_usage
-                })
-            }
-        }, error => {
+        }, (error) => {
             console.error('Failed polling activity', error)
             return dispatch({
                 type: constants.SUBMIT_ACTIVITY_ERROR,
@@ -162,7 +121,7 @@ export const pollChats = () => (dispatch: dispatchType, getState: getStateType):
                     }
                 })
             }
-        }, error => {
+        }, (error) => {
             console.error('Failed polling chats', error)
             return dispatch({
                 type: constants.SUBMIT_ACTIVITY_ERROR,
