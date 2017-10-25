@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import Lightbox from 'react-images'
 
 import {fileIconFromContentType} from '../../../common/utils'
+import shortcutManager from '../../../../../services/shortcutManager'
 
 export default class TicketAttachments extends React.Component {
     state = {
@@ -68,12 +69,17 @@ export default class TicketAttachments extends React.Component {
             isLightboxOpen: true,
             currentImage: images.indexOf(attachment),
         })
+
+        // pause hotkeys
+        shortcutManager.pause()
     }
 
     closeLightbox = () => {
         this.setState({
             isLightboxOpen: false
         })
+
+        shortcutManager.unpause()
     }
 
     gotoImage = (index) => {
