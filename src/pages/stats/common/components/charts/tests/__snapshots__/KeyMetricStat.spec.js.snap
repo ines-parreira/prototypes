@@ -19,13 +19,13 @@ exports[`KeyMetricStat should render a key metrics chart 1`] = `
             className="fa fa-fw fa-question-circle ml-1"
           />
         </span>
-        <UncontrolledTooltip
+        <Tooltip
           delay={0}
           placement="top"
           target="title-median_first_response_time"
         >
           Difference between the date when the first message was received from the user and the first response of the agent. Only tickets with at least 1 response are taken into account. This doesn't take into account responses sent by the rules (median)
-        </UncontrolledTooltip>
+        </Tooltip>
       </span>
     </div>
     <div
@@ -47,13 +47,13 @@ exports[`KeyMetricStat should render a key metrics chart 1`] = `
             %
           </div>
         </span>
-        <UncontrolledTooltip
+        <Tooltip
           delay={0}
           placement="top"
           target="value-0"
         >
           Compared to : Sep 05, 2017 - Sep 06, 2017
-        </UncontrolledTooltip>
+        </Tooltip>
       </span>
     </div>
   </div>
@@ -72,13 +72,13 @@ exports[`KeyMetricStat should render a key metrics chart 1`] = `
             className="fa fa-fw fa-question-circle ml-1"
           />
         </span>
-        <UncontrolledTooltip
+        <Tooltip
           delay={0}
           placement="top"
           target="title-median_resolution_time"
         >
           Difference between the date the ticket was created and when it was closed (median). Only tickets with at least 1 response are taken into account
-        </UncontrolledTooltip>
+        </Tooltip>
       </span>
     </div>
     <div
@@ -100,13 +100,13 @@ exports[`KeyMetricStat should render a key metrics chart 1`] = `
             %
           </div>
         </span>
-        <UncontrolledTooltip
+        <Tooltip
           delay={0}
           placement="top"
           target="value-1"
         >
           Compared to : Sep 05, 2017 - Sep 06, 2017
-        </UncontrolledTooltip>
+        </Tooltip>
       </span>
     </div>
   </div>
@@ -125,13 +125,13 @@ exports[`KeyMetricStat should render a key metrics chart 1`] = `
             className="fa fa-fw fa-question-circle ml-1"
           />
         </span>
-        <UncontrolledTooltip
+        <Tooltip
           delay={0}
           placement="top"
           target="title-total_one_touch_tickets"
         >
           Percentage of tickets that were solved with only one response from your agents
-        </UncontrolledTooltip>
+        </Tooltip>
       </span>
     </div>
     <div
@@ -150,13 +150,13 @@ exports[`KeyMetricStat should render a key metrics chart 1`] = `
             %
           </div>
         </span>
-        <UncontrolledTooltip
+        <Tooltip
           delay={0}
           placement="top"
           target="value-2"
         >
           Compared to : Sep 05, 2017 - Sep 06, 2017
-        </UncontrolledTooltip>
+        </Tooltip>
       </span>
     </div>
   </div>

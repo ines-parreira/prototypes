@@ -82,11 +82,12 @@ exports[`BillingPlans component should display matching current plan 1`] = `
                   className="fa fa-question-circle"
                 />
               </a>
-              <UncontrolledTooltip
+              <Tooltip
+                delay={0}
                 target="additional-tickets-tooltip-plan1"
               >
                 If you reply to more tickets than included in your plan this is the additional cost per 100 tickets.
-              </UncontrolledTooltip>
+              </Tooltip>
             </div>
             <div
               className="mb-3"
@@ -273,11 +274,12 @@ exports[`BillingPlans component should display multiple plans 1`] = `
                   className="fa fa-question-circle"
                 />
               </a>
-              <UncontrolledTooltip
+              <Tooltip
+                delay={0}
                 target="additional-tickets-tooltip-plan1"
               >
                 If you reply to more tickets than included in your plan this is the additional cost per 100 tickets.
-              </UncontrolledTooltip>
+              </Tooltip>
             </div>
             <div
               className="mb-3"
@@ -354,11 +356,12 @@ exports[`BillingPlans component should display multiple plans 1`] = `
                   className="fa fa-question-circle"
                 />
               </a>
-              <UncontrolledTooltip
+              <Tooltip
+                delay={0}
                 target="additional-tickets-tooltip-plan2"
               >
                 If you reply to more tickets than included in your plan this is the additional cost per 100 tickets.
-              </UncontrolledTooltip>
+              </Tooltip>
             </div>
             <div
               className="mb-3"

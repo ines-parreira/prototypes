@@ -3,7 +3,7 @@ import moment from 'moment'
 import {List, fromJS} from 'immutable'
 import classnamesBind from 'classnames/bind'
 import {isArray as _isArray} from 'lodash'
-import {Popover, PopoverContent, UncontrolledTooltip} from 'reactstrap'
+import {Popover, PopoverContent} from 'reactstrap'
 
 import TicketMessageActions from './TicketMessageActions'
 import TicketMessageBody from './TicketMessageBody'
@@ -15,6 +15,8 @@ import {getValuePropFromSourceType, isForwardedMessage} from '../../../../state/
 import HardWarning from './HardWarning'
 import {sourceTypeToIcon} from './../../../../config/ticket'
 import {scrollToReactNode} from '../../../common/utils/keyboard'
+
+import Tooltip from '../../../common/components/Tooltip'
 
 import css from './TicketMessage.less'
 
@@ -299,14 +301,13 @@ export default class TicketMessage extends React.Component {
                                         id="read-status"
                                         className="fa fa-check mr-2"
                                     />
-                                    <UncontrolledTooltip
+                                    <Tooltip
                                         placement="top"
                                         target="read-status"
-                                        delay={0}
                                     >
                                         Seen by customer{' '}
                                         {formatDatetime(message.opened_datetime, timezone).toLowerCase()}
-                                    </UncontrolledTooltip>
+                                    </Tooltip>
                                 </span>
                             )
                         }

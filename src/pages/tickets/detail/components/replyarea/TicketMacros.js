@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
-import {UncontrolledTooltip, Button} from 'reactstrap'
+import {Button} from 'reactstrap'
 
 import {isRichType} from '../../../../../config/ticket'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import Preview from '../../../common/macros/Preview'
+import Tooltip from '../../../../common/components/Tooltip'
 
 class TicketMacros extends React.Component {
     componentDidUpdate(prevProps) {
@@ -115,13 +116,12 @@ class TicketMacros extends React.Component {
                             >
                                 Close
                             </Button>
-                            <UncontrolledTooltip
+                            <Tooltip
                                 placement="top"
                                 target="clear-macro-button"
-                                delay={0}
                             >
                                 <strong>Esc</strong> to close the macro list.
-                            </UncontrolledTooltip>
+                            </Tooltip>
                         </a>
                     )
                 }

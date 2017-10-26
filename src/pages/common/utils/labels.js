@@ -5,8 +5,9 @@ import classnames from 'classnames'
 import _isObject from 'lodash/isObject'
 import _isArray from 'lodash/isArray'
 import _isString from 'lodash/isString'
-import {Badge, UncontrolledTooltip} from 'reactstrap'
+import {Badge} from 'reactstrap'
 
+import Tooltip from '../components/Tooltip'
 import {formatDatetime, toJS, isImmutable} from '../../../utils'
 import {sourceTypeToIcon} from '../../../config/ticket'
 
@@ -228,13 +229,13 @@ export class DatetimeLabel extends React.Component {
                 <span id={this.id}>
                     {labelDatetime}
                 </span>
-                <UncontrolledTooltip
+                <Tooltip
                     placement="top"
                     target={this.id}
                     delay={{show: 200, hide: 0}}
                 >
                     {tooltipDatetime}
-                </UncontrolledTooltip>
+                </Tooltip>
             </span>
         )
     }

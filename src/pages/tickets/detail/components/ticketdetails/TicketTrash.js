@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
-import {UncontrolledTooltip} from 'reactstrap'
+
+import Tooltip from '../../../../common/components/Tooltip'
 
 export default class TicketTrash extends React.Component {
     static propTypes = {
@@ -21,13 +22,12 @@ export default class TicketTrash extends React.Component {
                     id="ticket-header-trash-icon"
                     className="fa fa-trash text-danger"
                 />
-                <UncontrolledTooltip
+                <Tooltip
                     placement="top"
                     target="ticket-header-trash-icon"
-                    delay={0}
                 >
                     Deleted
-                </UncontrolledTooltip>
+                </Tooltip>
             </div>
         )
     }

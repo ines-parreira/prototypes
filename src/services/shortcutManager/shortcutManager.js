@@ -6,7 +6,8 @@ import _get from 'lodash/get'
 import _findIndex from 'lodash/findIndex'
 
 import keymap from '../../config/shortcuts'
-import {getModifier, isEditable, isButton, closest} from './utils'
+import {getModifier, isButton, closest} from './utils'
+import {isEditable} from '../common/utils'
 
 const mousetrap = new Mousetrap()
 

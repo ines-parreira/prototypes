@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import {connect} from 'react-redux'
 import {browserHistory, withRouter} from 'react-router'
 import {fromJS} from 'immutable'
-import {Button, UncontrolledTooltip} from 'reactstrap'
+import {Button} from 'reactstrap'
 import _noop from 'lodash/noop'
 
 import {areSourcesReady} from './utils'
@@ -17,6 +17,7 @@ import * as ticketActions from '../../../../state/ticket/actions'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
 import Loader from '../Loader'
+import Tooltip from '../Tooltip'
 import ConfirmButton from '../ConfirmButton'
 import InfobarLayout from './InfobarLayout'
 import InfobarUserInfo from './InfobarUserInfo'
@@ -526,12 +527,12 @@ class Infobar extends React.Component<Props, State> {
                         >
                             <i className="fa fa-fw fa-cog" />
                         </Button>
-                        <UncontrolledTooltip
+                        <Tooltip
                             placement="left"
                             target="toggle-widgets-edition-button"
                         >
                             {isEditing ? 'Leave widgets edition' : 'Edit widgets'}
-                        </UncontrolledTooltip>
+                        </Tooltip>
                     </div>
                     <div className="infobar-box">
                         {this._renderContent()}

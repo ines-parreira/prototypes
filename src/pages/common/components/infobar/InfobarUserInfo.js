@@ -4,9 +4,10 @@ import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
-import {Button, UncontrolledTooltip} from 'reactstrap'
+import {Button} from 'reactstrap'
 import Clipboard from 'clipboard'
 
+import Tooltip from '../Tooltip'
 import InfobarWidgets from './InfobarWidgets'
 import InfobarAddIntegrationSuggestion from './InfobarAddIntegrationSuggestion'
 import ProfileImage from './../ProfileImage'
@@ -261,13 +262,13 @@ class InfobarUserInfo extends React.Component {
                             className="fa fa-fw fa-clipboard clickable"
                             data-clipboard-target={`#${id}`}
                         />
-                        <UncontrolledTooltip
+                        <Tooltip
                             placement="top"
                             target={`copy-icon-${idx}`}
                             delay={{show: 1000, hide: 0}}
                         >
                             Copy
-                        </UncontrolledTooltip>
+                        </Tooltip>
                     </span>
                 </p>
             )

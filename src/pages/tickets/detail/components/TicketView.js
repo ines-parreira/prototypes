@@ -84,7 +84,10 @@ export default class TicketView extends React.Component {
 
     componentDidMount() {
         // scroll to the bottom of the ticket content the first time the ticket is viewed.
-        this.refs.ticketContent.scrollTop = this.refs.ticketContent.scrollHeight
+        // decrease the bottom padding, to avoid scrolling to a white screen on touchscreens.
+        const styles = window.getComputedStyle(this.refs.ticketContent)
+        const maxScrollTop = this.refs.ticketContent.scrollHeight - this.refs.ticketContent.clientHeight
+        this.refs.ticketContent.scrollTop = maxScrollTop - parseInt(styles.paddingBottom)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -130,7 +133,7 @@ export default class TicketView extends React.Component {
 
         return (
             <div
-                className={classnames(css['viewers-banner'], {
+                className={classnames(css.viewersBanner, {
                     [css.hidden]: agentsViewing.size <= 0 && agentsTyping.size <= 0,
                 })}
             >
@@ -283,7 +286,7 @@ export default class TicketView extends React.Component {
                     }
 
                     <form
-                        className={classnames('ticket-form', css['new-message-form'])}
+                        className={classnames('ticket-form', css.newMessageForm)}
                         onSubmit={this._handleSubmit}
                         ref="newMessageForm"
                     >

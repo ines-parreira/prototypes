@@ -2,8 +2,9 @@ import React, {PropTypes} from 'react'
 import moment from 'moment'
 import classnames from 'classnames'
 import _isFunction from 'lodash/isFunction'
-import {UncontrolledTooltip, Table} from 'reactstrap'
+import {Table} from 'reactstrap'
 
+import Tooltip from '../../../../common/components/Tooltip'
 import {renderDifference, comparedPeriodString} from '../../utils'
 
 export default class TableStat extends React.Component {
@@ -37,13 +38,12 @@ export default class TableStat extends React.Component {
                         <span id={id}>
                             {renderDifference(callback(line, value), value)}
                         </span>
-                        <UncontrolledTooltip
+                        <Tooltip
                             placement="top"
                             target={id}
-                            delay={0}
                         >
                             {tooltipDelta}
-                        </UncontrolledTooltip>
+                        </Tooltip>
                     </span>
                 )
             }

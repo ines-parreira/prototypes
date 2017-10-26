@@ -1,8 +1,8 @@
 import React from 'react'
 import classnames from 'classnames'
 import {Entity} from 'draft-js'
-import {UncontrolledTooltip} from 'reactstrap'
 
+import Tooltip from '../../../components/Tooltip'
 import {linkify} from '../../../../../utils'
 
 import * as integrationsHelpers from '../../../../../state/integrations/helpers'
@@ -83,13 +83,12 @@ export const link = {
                 rel="noopener noreferrer"
             >
                 {children}
-                <UncontrolledTooltip
+                <Tooltip
                     placement="top"
                     target={id}
-                    delay={0}
                 >
                     {url}
-                </UncontrolledTooltip>
+                </Tooltip>
             </a>
         )
     },

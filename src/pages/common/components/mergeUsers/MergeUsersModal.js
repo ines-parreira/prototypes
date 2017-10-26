@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import _clone from 'lodash/clone'
 import _pick from 'lodash/pick'
 import _omit from 'lodash/omit'
-import {Button, Form, UncontrolledTooltip} from 'reactstrap'
+import {Button, Form} from 'reactstrap'
 
 import Modal from '../Modal'
 
@@ -15,6 +15,7 @@ import BinaryChoiceField from './BinaryChoiceField'
 import MultiSelectBinaryChoiceField from './MultiSelectBinaryChoiceField'
 import {isCustomerDataPresent, isCustomerDataValid} from '../infobar/utils'
 import ConfirmButton from '../ConfirmButton'
+import Tooltip from '../Tooltip'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
 const defaultContent = {
@@ -169,13 +170,12 @@ class MergeUsersModal extends React.Component {
                                             id="merge-primary-email"
                                             className="fa fa-fw fa-question-circle ml-2"
                                         />
-                                        <UncontrolledTooltip
+                                        <Tooltip
                                             placement="top"
                                             target="merge-primary-email"
-                                            delay={0}
                                         >
                                             This is the email address which will be used to fetch data for the user
-                                        </UncontrolledTooltip>
+                                        </Tooltip>
                                     </span>
                             )}
                             options={[
@@ -209,13 +209,12 @@ class MergeUsersModal extends React.Component {
                                         id="merge-contact-info"
                                         className="fa fa-fw fa-question-circle ml-2"
                                     />
-                                    <UncontrolledTooltip
+                                    <Tooltip
                                         placement="top"
                                         target="merge-contact-info"
-                                        delay={0}
                                     >
                                         You can not deselect the contact info associated with the primary email
-                                    </UncontrolledTooltip>
+                                    </Tooltip>
                                 </span>
                             )}
                             name="user.channels"

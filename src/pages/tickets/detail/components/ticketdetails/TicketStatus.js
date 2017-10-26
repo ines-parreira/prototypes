@@ -1,6 +1,8 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
-import {Button, UncontrolledTooltip} from 'reactstrap'
+import {Button} from 'reactstrap'
+
+import Tooltip from '../../../../common/components/Tooltip'
 
 import css from './TicketStatus.less'
 
@@ -26,13 +28,12 @@ export default class TicketStatus extends React.Component {
                     />
                     {toClose && 'Close'}
                 </Button>
-                <UncontrolledTooltip
+                <Tooltip
                     placement="bottom"
                     target="change-status-button"
-                    delay={0}
                 >
                     {toClose ? 'Close (press C)' : 'Reopen (press O)'}
-                </UncontrolledTooltip>
+                </Tooltip>
             </div>
         )
     }

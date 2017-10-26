@@ -1,7 +1,8 @@
 import React, {PropTypes} from 'react'
 import moment from 'moment'
+
+import Tooltip from '../../../../common/components/Tooltip'
 import {comparedPeriodString, formatDuration, formatPercent} from '../../utils'
-import {UncontrolledTooltip} from 'reactstrap'
 import {renderDifference} from '../../utils'
 
 export default class KeyMetricStat extends React.Component {
@@ -18,13 +19,12 @@ export default class KeyMetricStat extends React.Component {
                 <span id={id}>
                     {content}
                 </span>
-                <UncontrolledTooltip
+                <Tooltip
                     placement="top"
                     target={id}
-                    delay={0}
                 >
                     {text}
-                </UncontrolledTooltip>
+                </Tooltip>
             </span>
         )
     }

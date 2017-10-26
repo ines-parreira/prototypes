@@ -2,8 +2,8 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 import {Link, withRouter} from 'react-router'
-import {UncontrolledTooltip} from 'reactstrap'
 
+import Tooltip from './Tooltip'
 import {isCurrentlyOnTicket} from '../../../utils'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 
@@ -86,13 +86,12 @@ class RecentChats extends React.Component {
                             Chats
                         </span>
                     </h4>
-                    <UncontrolledTooltip
+                    <Tooltip
                         placement="right"
                         target="active-chats-title"
-                        delay={0}
                     >
                         Open chats assigned to you or unassigned
-                    </UncontrolledTooltip>
+                    </Tooltip>
 
                     <div className="menu">
                         {

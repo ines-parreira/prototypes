@@ -1,8 +1,9 @@
 import React, {PropTypes} from 'react'
 import {Map} from 'immutable'
 import classnames from 'classnames'
-import {UncontrolledTooltip, Row, Col} from 'reactstrap'
+import {Row, Col} from 'reactstrap'
 
+import Tooltip from '../../../../common/components/Tooltip'
 import InputField from '../../../../common/forms/InputField'
 
 export default class ParametersEditor extends React.Component {
@@ -81,13 +82,12 @@ export default class ParametersEditor extends React.Component {
                                     >
                                         <i className="fa fa-fw fa-asterisk" />
                                     </button>
-                                    <UncontrolledTooltip
+                                    <Tooltip
                                         placement="top"
                                         target={`parameter-required-${name}-${index}`}
-                                        delay={0}
                                     >
                                         {requiredTitle}
-                                    </UncontrolledTooltip>
+                                    </Tooltip>
                                     <button
                                         type="button"
                                         id={`parameter-editable-${name}-${index}`}
@@ -96,13 +96,12 @@ export default class ParametersEditor extends React.Component {
                                     >
                                         <i className="fa fa-fw fa-pencil" />
                                     </button>
-                                    <UncontrolledTooltip
+                                    <Tooltip
                                         placement="top"
                                         target={`parameter-editable-${name}-${index}`}
-                                        delay={0}
                                     >
                                         {editableTitle}
-                                    </UncontrolledTooltip>
+                                    </Tooltip>
                                     <i
                                         className="fa fa-fw fa-close text-danger clickable"
                                         onClick={() => this.deleteRow(index)}

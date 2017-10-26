@@ -21,13 +21,13 @@ exports[`TicketSubmitButtons component empty ticket 1`] = `
     >
       Send
     </ConfirmButton>
-    <UncontrolledTooltip
+    <Tooltip
       delay={0}
       placement="top"
       target="submit-button"
     >
       Ctrl + Enter
-    </UncontrolledTooltip>
+    </Tooltip>
     <ConfirmButton
       className=""
       color="primary"
@@ -45,13 +45,13 @@ exports[`TicketSubmitButtons component empty ticket 1`] = `
     >
       Send & Close
     </ConfirmButton>
-    <UncontrolledTooltip
+    <Tooltip
       delay={0}
       placement="top"
       target="submit-and-close-button"
     >
       Ctrl + Shift + Enter
-    </UncontrolledTooltip>
+    </Tooltip>
   </div>
   <small
     className="pull-right text-faded hidden-sm-down"
@@ -71,13 +71,13 @@ exports[`TicketSubmitButtons component empty ticket 1`] = `
       id="hide-helpers-button"
       onClick={[Function]}
     />
-    <UncontrolledTooltip
+    <Tooltip
       delay={0}
       placement="top"
       target="hide-helpers-button"
     >
       Permanently hide tips
-    </UncontrolledTooltip>
+    </Tooltip>
   </small>
 </div>
 `;

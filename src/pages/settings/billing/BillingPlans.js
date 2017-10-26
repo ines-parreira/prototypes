@@ -1,6 +1,8 @@
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {Card, CardDeck, CardBlock, CardTitle, Row, Col, Button, UncontrolledTooltip} from 'reactstrap'
+import {Card, CardDeck, CardBlock, CardTitle, Row, Col, Button} from 'reactstrap'
+
+import Tooltip from '../../common/components/Tooltip'
 import {notify} from '../../../state/notifications/actions'
 import {updateSubscription} from '../../../state/billing/actions'
 import * as billingSelectors from '../../../state/billing/selectors'
@@ -83,10 +85,10 @@ export class BillingPlans extends Component {
                                                 <a id={`additional-tickets-tooltip-${planId}`}>
                                                     <i className="fa fa-question-circle"/>
                                                 </a>
-                                                <UncontrolledTooltip target={`additional-tickets-tooltip-${planId}`}>
+                                                <Tooltip target={`additional-tickets-tooltip-${planId}`}>
                                                     If you reply to more tickets than included in your plan
                                                     this is the additional cost per 100 tickets.
-                                                </UncontrolledTooltip>
+                                                </Tooltip>
                                             </div>
                                             <div className="mb-3">
                                                 <strong>{plan.get('integrations')}</strong> integrations

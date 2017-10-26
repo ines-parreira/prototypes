@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {UncontrolledTooltip} from 'reactstrap'
 import _sample from 'lodash/sample'
 
 import shortcutManager from '../../../../../services/shortcutManager'
@@ -12,6 +11,7 @@ import * as currentAccountSelectors from '../../../../../state/currentAccount/se
 import * as currentUserSelectors from '../../../../../state/currentUser/selectors'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 
+import Tooltip from '../../../../common/components/Tooltip'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 
 /* eslint-disable react/jsx-key */
@@ -97,13 +97,12 @@ export default class TicketSubmitButtons extends React.Component {
                     >
                         Send
                     </ConfirmButton>
-                    <UncontrolledTooltip
+                    <Tooltip
                         placement="top"
                         target="submit-button"
-                        delay={0}
                     >
                         {shortcutManager.getActionKeys(keymap.TicketDetailContainer.actions.SUBMIT_TICKET)}
-                    </UncontrolledTooltip>
+                    </Tooltip>
 
                     <ConfirmButton
                         id="submit-and-close-button"
@@ -119,13 +118,12 @@ export default class TicketSubmitButtons extends React.Component {
                     >
                         Send &amp; Close
                     </ConfirmButton>
-                    <UncontrolledTooltip
+                    <Tooltip
                         placement="top"
                         target="submit-and-close-button"
-                        delay={0}
                     >
                         {shortcutManager.getActionKeys(keymap.TicketDetailContainer.actions.SUBMIT_CLOSE_TICKET)}
-                    </UncontrolledTooltip>
+                    </Tooltip>
                 </div>
 
                 {
@@ -138,13 +136,12 @@ export default class TicketSubmitButtons extends React.Component {
                                 className="fa fa-fw fa-close cursor-pointer ml-1"
                                 onClick={this._hideTips}
                             />
-                            <UncontrolledTooltip
+                            <Tooltip
                                 placement="top"
                                 target="hide-helpers-button"
-                                delay={0}
                             >
                                 Permanently hide tips
-                            </UncontrolledTooltip>
+                            </Tooltip>
                         </small>
                     )
                 }

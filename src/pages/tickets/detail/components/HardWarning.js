@@ -1,7 +1,9 @@
 import React, {PropTypes} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {UncontrolledTooltip, Button, Card, CardBlock} from 'reactstrap'
+import {Button, Card, CardBlock} from 'reactstrap'
+
+import Tooltip from '../../../common/components/Tooltip'
 
 import * as TicketActions from '../../../../state/ticket/actions'
 import * as NewMessageActions from '../../../../state/newMessage/actions'
@@ -85,13 +87,12 @@ class HardWarning extends React.Component {
                         <i className="fa fa-fw fa-refresh mr-2" />
                         Retry
                     </Button>
-                    <UncontrolledTooltip
+                    <Tooltip
                         placement="top"
                         target={id}
-                        delay={0}
                     >
                         {retryTooltipMessage}
-                    </UncontrolledTooltip>
+                    </Tooltip>
                 </span>
             )
         }
@@ -111,13 +112,12 @@ class HardWarning extends React.Component {
                         <i className="fa fa-fw fa-chevron-right mr-2" />
                         Force
                     </Button>
-                    <UncontrolledTooltip
+                    <Tooltip
                         placement="top"
                         target={id}
-                        delay={0}
                     >
                         Ignore failure, execute other actions and send the message
-                    </UncontrolledTooltip>
+                    </Tooltip>
                 </span>
             )
         }
@@ -137,13 +137,12 @@ class HardWarning extends React.Component {
                         <i className="fa fa-fw fa-ban mr-2" />
                         Cancel
                     </Button>
-                    <UncontrolledTooltip
+                    <Tooltip
                         placement="top"
                         target={id}
-                        delay={0}
                     >
                        Delete the message and never send it
-                    </UncontrolledTooltip>
+                    </Tooltip>
                 </span>
             )
         }

@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
-import {UncontrolledTooltip} from 'reactstrap'
+
+import Tooltip from '../../../../common/components/Tooltip'
 
 export default class TicketSpam extends React.Component {
     static propTypes = {
@@ -21,13 +22,12 @@ export default class TicketSpam extends React.Component {
                     id="ticket-header-spam-icon"
                     className="fa fa-flag text-danger"
                 />
-                <UncontrolledTooltip
+                <Tooltip
                     placement="top"
                     target="ticket-header-spam-icon"
-                    delay={0}
                 >
                     Marked as spam
-                </UncontrolledTooltip>
+                </Tooltip>
             </div>
         )
     }

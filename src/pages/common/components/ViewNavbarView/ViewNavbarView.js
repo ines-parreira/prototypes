@@ -2,11 +2,11 @@ import React, {PropTypes, Component} from 'react'
 import {connect} from 'react-redux'
 import {Link, browserHistory} from 'react-router'
 import classnames from 'classnames'
-import {UncontrolledTooltip} from 'reactstrap'
 import _debounce from 'lodash/debounce'
 
 import {compactInteger, getPluralObjectName} from '../../../../utils'
 import ViewNavbarViewEditor from './ViewNavbarViewEditor'
+import Tooltip from '../Tooltip'
 
 import shortcutManager from '../../../../services/shortcutManager'
 import {moveIndex} from '../../../common/utils/keyboard'
@@ -139,13 +139,12 @@ class ViewNavbarView extends Component {
                                     )
                                 }
                             </span>
-                            <UncontrolledTooltip
-                                delay={0}
+                            <Tooltip
                                 placement="top"
                                 target="navbar-views-settings"
                             >
                                 {hasEditMode ? popupLeaveMessage : popupEnterMessage}
-                            </UncontrolledTooltip>
+                            </Tooltip>
                         </span>
                     </h4>
                     <div className="menu">

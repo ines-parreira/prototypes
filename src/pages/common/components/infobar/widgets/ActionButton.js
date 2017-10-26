@@ -3,9 +3,10 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 import _omit from 'lodash/omit'
-import {UncontrolledTooltip, Button} from 'reactstrap'
+import {Button} from 'reactstrap'
 
 import Modal from '../../Modal'
+import Tooltip from '../../Tooltip'
 
 import {getActionByName} from '../../../../../config/actions'
 import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
@@ -140,13 +141,12 @@ class ActionButton extends React.Component {
                     {children}
                     {
                         tooltip && this.id && (
-                            <UncontrolledTooltip
+                            <Tooltip
                                 placement="top"
                                 target={this.id}
-                                delay={0}
                             >
                                 {tooltip}
-                            </UncontrolledTooltip>
+                            </Tooltip>
                         )
                     }
                 </Tag>

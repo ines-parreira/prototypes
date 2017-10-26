@@ -4,6 +4,8 @@ import {browserHistory} from 'react-router'
 
 import {store} from './init'
 import Root from './pages/Root'
+// eslint-disable-next-line
+import mobileScrollManager from './services/mobileScrollManager'
 
 render(
     <Root
