@@ -11,7 +11,7 @@ type messageType = {
     stripped_text: string,
     stripped_html: string,
     meta: {
-        facebook_carousel: Array<*>
+        facebook_carousel: {}
     }
 }
 

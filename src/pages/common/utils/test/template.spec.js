@@ -61,23 +61,5 @@ describe('components utils : template', () => {
                 },
             })).toBe('Hello Michael, how about a nice ?')
         })
-
-        it('render 0 numbers', () => {
-            expect(renderTemplate('You have {{sum}} orders.', {
-                sum: 0,
-            })).toBe('You have 0 orders.')
-        })
-
-        it('empty string for null', () => {
-            expect(renderTemplate('You have {{sum}} orders.', {
-                sum: null,
-            })).toBe('You have  orders.')
-        })
-
-        it('empty string for undefined', () => {
-            expect(renderTemplate('You have {{sum}} orders.', {
-                sum: undefined,
-            })).toBe('You have  orders.')
-        })
     })
 })

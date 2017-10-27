@@ -2,12 +2,8 @@ import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import {Input} from 'reactstrap'
-import _debounce from 'lodash/debounce'
 
-import shortcutManager from '../../../../../services/shortcutManager'
-import {moveIndex, scrollToReactNode} from '../../../../common/utils/keyboard'
 import {getActionTemplate} from '../../../../../utils'
-
 import * as search from '../../../../../state/macro/search'
 
 export default class MacroList extends React.Component {
@@ -23,26 +19,6 @@ export default class MacroList extends React.Component {
         searchedMacrosIds: fromJS([]),
     }
 
-    _macroCursor = 0
-    _activeMacro = null
-
-    componentDidMount() {
-        shortcutManager.bind('MacroModal', {
-            GO_NEXT_MACRO: {
-                action: (e) => {
-                    e.preventDefault()
-                    this._moveCursor()
-                }
-            },
-            GO_PREV_MACRO: {
-                action: (e) => {
-                    e.preventDefault()
-                    this._moveCursor('previous')
-                }
-            },
-        })
-    }
-
     componentDidUpdate(prevProps, prevState) {
         const macros = this._getMacros().filter(macro => !this._isMacroDisabled(macro))
         const macrosIds = macros.map(macro => macro.get('id'))
@@ -55,42 +31,6 @@ export default class MacroList extends React.Component {
             this.props.handleClickItem(firstMacroId)
         }
     }
-
-    componentWillReceiveProps(nextProps) {
-        const macros = this._getMacros(nextProps)
-        this._macroCursor = this._getMacroCursor(nextProps.currentMacro, macros)
-    }
-
-    componentWillUnmount() {
-        shortcutManager.unbind('MacroModal')
-    }
-
-    _getMacroCursor(currentMacro, macros) {
-        return macros.findIndex((m) => m.get('id') === currentMacro.get('id'))
-    }
-
-    _moveCursor = (direction: string = 'next') => {
-        const macros = this._getMacros()
-        this._macroCursor = moveIndex(this._macroCursor, macros.size, {
-            direction,
-            rotate: true
-        })
-        const macro = macros.get(this._macroCursor)
-        // skip disabled macros
-        if (this._isMacroDisabled(macro)) {
-            return this._moveCursor(direction)
-        }
-
-        this._selectCursorMacro(macro.get('id'))
-    }
-
-    _selectCursorMacro = _debounce((macroId) => {
-        this.props.handleClickItem(macroId)
-
-        if (this._activeMacro) {
-            scrollToReactNode(this._activeMacro)
-        }
-    })
 
     _getMacros = (props = this.props, state = this.state) => {
         if (state.searchQuery) {
@@ -138,18 +78,16 @@ export default class MacroList extends React.Component {
                             onChange={e => this._handleSearch(e.target.value)}
                             placeholder="Search macros by name, tags or body..."
                             autoFocus={true}
-                            className="shortcuts-enable"
                         />
                     </div>
                     {macros.map((macro) => {
                         const isDisabled = this._isMacroDisabled(macro)
-                        const isActive = currentMacro && macro.get('id') === currentMacro.get('id')
 
                         return (
                             <div
                                 key={macro.get('id')}
                                 className={classnames('macro-item m-0', {
-                                    active: isActive,
+                                    active: currentMacro && macro.get('id') === currentMacro.get('id'),
                                     disabled: isDisabled,
                                 })}
                                 onClick={() => {
@@ -158,11 +96,6 @@ export default class MacroList extends React.Component {
                                     }
 
                                     this.props.handleClickItem(macro.get('id'))
-                                }}
-                                ref={(ref) => {
-                                    if (isActive) {
-                                        this._activeMacro = ref
-                                    }
                                 }}
                             >
                                 {macro.get('name')}

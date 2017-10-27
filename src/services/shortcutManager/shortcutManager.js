@@ -3,6 +3,7 @@ import Mousetrap from 'mousetrap'
 import _merge from 'lodash/merge'
 import _clone from 'lodash/clone'
 import _get from 'lodash/get'
+import _isEqual from 'lodash/isEqual'
 import _findIndex from 'lodash/findIndex'
 
 import keymap from '../../config/shortcuts'
@@ -50,21 +51,67 @@ export class ShortcutManager {
 
     _keymap = _clone(keymap)
 
-    _getComponentKeymap(component: string) {
+    // keep track of bound keys and events,
+    // to be able to support multiple events on the same combo.
+    // https://github.com/ccampbell/mousetrap/issues/108
+    // https://github.com/ccampbell/mousetrap/issues/98
+    // eg. {'a': Array<{key: string, action: () => {}}>}
+    _hotkeys = {}
+
+    _cacheKey(action: keyboardActionType, component: string) {
+        action.component = component
+
+        // set-up cache
+        const keys = this._hotkeys[action.key] || []
+
+        // don't add empty actions or duplicates
+        if (!action.action) {
+            return keys
+        }
+
+        // update the action fn if duplicate
+        const duplicateIndex = _findIndex(keys, (k) => _isEqual(k, action))
+
+        if (~duplicateIndex) {
+            keys[duplicateIndex].action = action.action
+        } else {
+            keys.push(action)
+        }
+
+        this._hotkeys[action.key] = keys
+
+        return keys
+    }
+
+    // remove actions with the same combo, from the same component
+    _clearKeyCache(action: keyboardActionType, component: string) {
+        const keys = (this._hotkeys[action.key] || []).filter((a) => {
+            return a.component !== component
+        })
+
+        this._hotkeys[action.key] = keys
+
+        return keys
+    }
+
+    _getHotkeys(key?: string) {
+        if (!key) {
+            return this._hotkeys
+        }
+
+        return this._hotkeys[key]
+    }
+
+    _getKeymapActions(component: string) {
         if (!this._keymap[component] || !this._keymap[component].actions) {
             this._keymap[component] = {
                 actions: {}
             }
         }
 
-        return this._keymap[component]
+        return this._keymap[component].actions
     }
 
-    _setComponentKeymap(component: string, keymap: {}) {
-        this._keymap[component] = keymap
-    }
-
-    _bound = []
     bind(component: string = 'global', actions: keymapActionsType = {}) {
         // allow overwriting shortcut properties from components and
         // merge actions into the keymap object,
@@ -72,82 +119,54 @@ export class ShortcutManager {
         // using just the component name.
         // allows unbind/re-bind actions of component actions,
         // from different component.
-        this._setComponentKeymap(component, _merge(this._getComponentKeymap(component), {actions}))
-        const index = _findIndex(this._bound, (b) => b.name === component)
-        if (!~index) {
-            this._bound.push({
-                name: component,
-                paused: this._isPaused
-            })
-        }
+        const componentActions = _merge(this._getKeymapActions(component), actions)
 
-        this._bindMousetrap()
+        // bind all shortcut actions
+        Object.keys(componentActions).forEach((actionName) => {
+            const action = componentActions[actionName]
+            const keys = this._cacheKey(action, component)
+
+            this._bindMousetrap(action, keys)
+        })
     }
 
     unbind(component: string) {
-        const index = _findIndex(this._bound, (b) => b.name === component)
-        if (~index) {
-            this._bound.splice(index, 1)
+        // remove all cached actions on the same component
+        const hotkeys = this._getHotkeys()
+        Object.keys(hotkeys).forEach((key) => {
+            const actions = this._getHotkeys(key)
+
+            actions.forEach((action) => {
+                // clean cache
+                const keys = this._clearKeyCache(action, component)
+
+                this._bindMousetrap(action, keys)
+            })
+        })
+    }
+
+    pause(whitelist: Array<string> = ['esc']) {
+        mousetrap.stopCallback = (e, element, combo) => {
+            if (whitelist.includes(combo)) {
+                return this._stopCallback(e, element, combo)
+            }
+
+            return true
         }
     }
 
-    _isPaused = false
-
-    pause(whitelist: Array<string> = []) {
-        this._isPaused = true
-
-        this._bound.forEach((b) => {
-            if (!whitelist.includes(b.name)) {
-                b.paused = true
-            }
-        })
-    }
-
     unpause() {
-        this._isPaused = false
-
-        this._bound.forEach((b) => b.paused = false)
+        mousetrap.stopCallback = this._stopCallback
     }
 
-    _globalAction = (e: Event, combo: string) => {
-        const filteredComponents = this._bound.filter((b) => {
-            if (!b.paused) {
-                return true
-            }
+    _bindMousetrap(action: keyboardActionType, keys: Array<keyboardActionType>) {
+        if (!keys.length) {
+            return mousetrap.unbind(action.key)
+        }
 
-            return false
+        return mousetrap.bind(action.key, (e) => {
+            keys.forEach((key) => key.action(e))
         })
-
-        filteredComponents.forEach((c) => {
-            const keymap = this._getComponentKeymap(c.name)
-            Object.keys(keymap.actions).forEach((a) => {
-                const action = keymap.actions[a]
-                if (
-                    (typeof action.key === 'object' && action.key.includes(combo))
-                    || action.key === combo
-                ) {
-                    action.action(e)
-                }
-            })
-        })
-    }
-
-    _bindMousetrap() {
-        const keys = []
-        Object.keys(this._keymap).forEach((c) => {
-            const keymap = this._getComponentKeymap(c)
-            Object.keys(keymap.actions).forEach((a) => {
-                const action = keymap.actions[a]
-                if (typeof action.key === 'object') {
-                    Array.prototype.push.apply(keys, action.key)
-                } else {
-                    keys.push(action.key)
-                }
-            })
-        })
-
-        // bind all possible hotkeys to the global handler
-        mousetrap.bind(keys, this._globalAction)
     }
 
     triggerAction(component: string = 'global', actionName: string) {

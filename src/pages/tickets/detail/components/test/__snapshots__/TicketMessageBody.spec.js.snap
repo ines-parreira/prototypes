@@ -174,312 +174,108 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
       }
     >
       <div>
-        <Slider
-          arrows={true}
-          infinite={false}
-          responsive={
-            Array [
-              Object {
-                "breakpoint": 769,
-                "settings": Object {
-                  "slidesToShow": 1,
-                },
-              },
-              Object {
-                "breakpoint": 1441,
-                "settings": Object {
-                  "slidesToShow": 2,
-                },
-              },
-            ]
-          }
-          slidesToShow="3"
-        >
-          <Component
-            accessibility={true}
-            adaptiveHeight={false}
-            afterChange={null}
-            arrows={true}
-            autoplay={false}
-            autoplaySpeed={3000}
-            beforeChange={null}
-            centerMode={false}
-            centerPadding="50px"
-            className=""
-            cssEase="ease"
-            customPaging={[Function]}
-            dots={false}
-            dotsClass="slick-dots"
-            draggable={true}
-            easing="linear"
-            edgeEvent={null}
-            edgeFriction={0.35}
-            fade={false}
-            focusOnSelect={false}
-            infinite={false}
-            init={null}
-            initialSlide={0}
-            lazyLoad={false}
-            nextArrow={null}
-            pauseOnHover={true}
-            prevArrow={null}
-            responsive={
-              Array [
-                Object {
-                  "breakpoint": 769,
-                  "settings": Object {
-                    "slidesToShow": 1,
-                  },
-                },
-                Object {
-                  "breakpoint": 1441,
-                  "settings": Object {
-                    "slidesToShow": 2,
-                  },
-                },
-              ]
-            }
-            rtl={false}
-            slide="div"
-            slidesToScroll={1}
-            slidesToShow="3"
-            speed={500}
-            swipe={true}
-            swipeEvent={null}
-            swipeToSlide={false}
-            touchMove={true}
-            touchThreshold={5}
-            useCSS={true}
-            variableWidth={false}
-            vertical={false}
-            waitForAnimate={true}
+        <div>
+          <Card
+            tag="div"
           >
             <div
-              className="slick-initialized slick-slider"
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              onMouseOver={[Function]}
+              className="card"
             >
-              <PrevArrow
-                centerMode={false}
-                clickHandler={[Function]}
-                currentSlide={0}
-                infinite={false}
-                nextArrow={null}
-                prevArrow={null}
-                slideCount={1}
-                slidesToShow="3"
+              <CardImg
+                src="https://cdn.shopify.com/s/files/1/1632/0429/products"
+                tag="img"
+                top={true}
+                width="100%"
               >
-                <button
-                  className="slick-arrow slick-prev slick-disabled"
-                  data-role="none"
-                  onClick={null}
-                  style={
-                    Object {
-                      "display": "block",
-                    }
-                  }
-                  type="button"
-                >
-                   Previous
-                </button>
-              </PrevArrow>
-              <div
-                className="slick-list"
-                onKeyDown={[Function]}
-                onMouseDown={[Function]}
-                onMouseLeave={null}
-                onMouseMove={null}
-                onMouseUp={[Function]}
-                onTouchCancel={null}
-                onTouchEnd={[Function]}
-                onTouchMove={null}
-                onTouchStart={[Function]}
-                style={Object {}}
+                <img
+                  className="card-img-top"
+                  src="https://cdn.shopify.com/s/files/1/1632/0429/products"
+                  width="100%"
+                />
+              </CardImg>
+              <CardBlock
+                tag="div"
               >
-                <Track
-                  centerMode={false}
-                  cssEase="ease"
-                  currentSlide={0}
-                  fade={false}
-                  focusOnSelect={null}
-                  infinite={false}
-                  lazyLoad={false}
-                  lazyLoadedList={Array []}
-                  rtl={false}
-                  slideCount={1}
-                  slideWidth={0}
-                  slidesToScroll={1}
-                  slidesToShow="3"
-                  speed={500}
-                  trackStyle={
-                    Object {
-                      "WebkitTransform": "translate3d(0px, 0px, 0px)",
-                      "WebkitTransition": "",
-                      "msTransform": "translateX(0px)",
-                      "opacity": 1,
-                      "transform": "translate3d(0px, 0px, 0px)",
-                      "transition": "",
-                    }
-                  }
-                  variableWidth={false}
+                <div
+                  className="card-block"
                 >
-                  <div
-                    className="slick-track"
-                    style={
-                      Object {
-                        "WebkitTransform": "translate3d(0px, 0px, 0px)",
-                        "WebkitTransition": "",
-                        "msTransform": "translateX(0px)",
-                        "opacity": 1,
-                        "transform": "translate3d(0px, 0px, 0px)",
-                        "transition": "",
-                      }
-                    }
+                  <CardTitle
+                    tag="h4"
                   >
-                    <div
-                      className="slick-slide slick-active"
-                      data-index={0}
-                      onClick={[Function]}
-                      style={
-                        Object {
-                          "outline": "none",
-                          "width": 0,
-                        }
-                      }
-                      tabIndex="-1"
+                    <h4
+                      className="card-title"
                     >
-                      <Card
-                        tag="div"
-                      >
-                        <div
-                          className="card"
-                        >
-                          <CardImg
-                            src="https://cdn.shopify.com/s/files/1/1632/0429/products"
-                            tag="img"
-                            top={true}
-                            width="100%"
-                          >
-                            <img
-                              className="card-img-top"
-                              src="https://cdn.shopify.com/s/files/1/1632/0429/products"
-                              width="100%"
-                            />
-                          </CardImg>
-                          <CardBlock
-                            tag="div"
-                          >
-                            <div
-                              className="card-block"
-                            >
-                              <CardTitle
-                                tag="h4"
-                              >
-                                <h4
-                                  className="card-title"
-                                >
-                                  Fixie bike
-                                </h4>
-                              </CardTitle>
-                              <CardSubtitle
-                                tag="h6"
-                              >
-                                <h6
-                                  className="card-subtitle"
-                                >
-                                  $200.00
-                                </h6>
-                              </CardSubtitle>
-                            </div>
-                          </CardBlock>
-                          <ButtonGroup
-                            role="group"
-                            tag="div"
-                            vertical={true}
-                          >
-                            <div
-                              className="btn-group-vertical"
-                              role="group"
-                            >
-                              <Button
-                                color="secondary"
-                                href="https://sfbicycles.myshopify.com/products/fixie-bike"
-                                tag="a"
-                                target="_blank"
-                              >
-                                <a
-                                  className="btn btn-secondary"
-                                  href="https://sfbicycles.myshopify.com/products/fixie-bike"
-                                  onClick={[Function]}
-                                  target="_blank"
-                                >
-                                  View details
-                                </a>
-                              </Button>
-                              <Button
-                                color="secondary"
-                                disabled={true}
-                                tag="button"
-                              >
-                                <button
-                                  className="btn btn-secondary disabled"
-                                  disabled={true}
-                                  onClick={[Function]}
-                                >
-                                  Share
-                                </button>
-                              </Button>
-                              <Button
-                                color="secondary"
-                                href="https://messenger-commerce.shopifyapps.com/redirect_to_cart"
-                                tag="a"
-                                target="_blank"
-                              >
-                                <a
-                                  className="btn btn-secondary"
-                                  href="https://messenger-commerce.shopifyapps.com/redirect_to_cart"
-                                  onClick={[Function]}
-                                  target="_blank"
-                                >
-                                  Buy now
-                                </a>
-                              </Button>
-                            </div>
-                          </ButtonGroup>
-                        </div>
-                      </Card>
-                    </div>
-                  </div>
-                </Track>
-              </div>
-              <NextArrow
-                centerMode={false}
-                clickHandler={[Function]}
-                currentSlide={0}
-                infinite={false}
-                nextArrow={null}
-                prevArrow={null}
-                slideCount={1}
-                slidesToShow="3"
+                      Fixie bike
+                    </h4>
+                  </CardTitle>
+                  <CardSubtitle
+                    tag="h6"
+                  >
+                    <h6
+                      className="card-subtitle"
+                    >
+                      $200.00
+                    </h6>
+                  </CardSubtitle>
+                </div>
+              </CardBlock>
+              <ButtonGroup
+                role="group"
+                tag="div"
+                vertical={true}
               >
-                <button
-                  className="slick-arrow slick-next slick-disabled"
-                  data-role="none"
-                  onClick={null}
-                  style={
-                    Object {
-                      "display": "block",
-                    }
-                  }
-                  type="button"
+                <div
+                  className="btn-group-vertical"
+                  role="group"
                 >
-                   Next
-                </button>
-              </NextArrow>
+                  <Button
+                    color="secondary"
+                    href="https://sfbicycles.myshopify.com/products/fixie-bike"
+                    tag="a"
+                    target="_blank"
+                  >
+                    <a
+                      className="btn btn-secondary"
+                      href="https://sfbicycles.myshopify.com/products/fixie-bike"
+                      onClick={[Function]}
+                      target="_blank"
+                    >
+                      View details
+                    </a>
+                  </Button>
+                  <Button
+                    color="secondary"
+                    disabled={true}
+                    tag="button"
+                  >
+                    <button
+                      className="btn btn-secondary disabled"
+                      disabled={true}
+                      onClick={[Function]}
+                    >
+                      Share
+                    </button>
+                  </Button>
+                  <Button
+                    color="secondary"
+                    href="https://messenger-commerce.shopifyapps.com/redirect_to_cart"
+                    tag="a"
+                    target="_blank"
+                  >
+                    <a
+                      className="btn btn-secondary"
+                      href="https://messenger-commerce.shopifyapps.com/redirect_to_cart"
+                      onClick={[Function]}
+                      target="_blank"
+                    >
+                      Buy now
+                    </a>
+                  </Button>
+                </div>
+              </ButtonGroup>
             </div>
-          </Component>
-        </Slider>
+          </Card>
+        </div>
       </div>
     </FacebookCarousel>
   </div>
