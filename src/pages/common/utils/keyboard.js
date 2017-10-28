@@ -39,7 +39,7 @@ export function moveIndex(
     const atStart = (newIndex < 0)
     const atEnd = (newIndex >= length)
 
-    if (options.reverse) {
+    if (options.rotate) {
         if (atStart) {
             return length - 1
         } else if (atEnd) {

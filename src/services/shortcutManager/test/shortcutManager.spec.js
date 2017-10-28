@@ -1,104 +1,138 @@
-import _noop from 'lodash/noop'
-
 import {ShortcutManager} from '../shortcutManager'
 
 describe('shortcutManager', () => {
     let sm
+    let counter = 0
+    const bump = () => counter++
+
     beforeEach(() => {
+        counter = 0
         sm = new ShortcutManager()
     })
 
-    describe('cache', () => {
-        it('cache hotkey action', () => {
-            const action = {
+    it('bind component', () => {
+        const actions = {
+            ACTION_NAME: {
                 key: 'p',
-                action: _noop
+                action: bump
             }
-            sm.bind('pizza', {
-                ACTION_NAME: action
-            })
+        }
+        sm.bind('pizza', actions)
+        sm.trigger('p')
 
-            expect(sm._getHotkeys('p')).toMatchObject([action])
+        expect(counter).toBe(1)
+    })
+
+    it('unbind component', () => {
+        const actions = {
+            ACTION_NAME: {
+                key: 'p',
+                action: bump
+            }
+        }
+        sm.bind('pizza', actions)
+        sm.unbind('pizza')
+        sm.trigger('p')
+
+        expect(counter).toEqual(0)
+    })
+
+    it('support multiple events on combo', () => {
+        const action = {
+            key: 'p',
+            action: bump
+        }
+        const anotherAction = {
+            key: 'p',
+            action: bump
+        }
+        sm.bind('pizza', {
+            ACTION_NAME: action,
+            ANOTHER_ACTION_NAME: anotherAction
+        })
+        sm.trigger('p')
+
+        expect(counter).toBe(2)
+    })
+
+    it('only unbind events from component', () => {
+        const action = {
+            key: 'p',
+            action: bump
+        }
+        const anotherAction = {
+            key: 'p',
+            action: bump
+        }
+        sm.bind('pizza', {
+            ACTION_NAME: action,
+        })
+        sm.bind('pepperoni', {
+            ANOTHER_ACTION_NAME: anotherAction
         })
 
-        it('clear hotkey from cache', () => {
-            const action = {
-                key: 'p',
-                action: _noop
-            }
-            sm.bind('pizza', {
-                ACTION_NAME: action
-            })
-            sm.unbind('pizza')
+        sm.unbind('pizza')
+        sm.trigger('p')
 
-            expect(sm._getHotkeys('p')).toEqual([])
+        expect(counter).toBe(1)
+    })
+
+    it('not duplicate actions', () => {
+        const action = {
+            key: 'p',
+            action: bump
+        }
+        sm.bind('pizza', {
+            ACTION_NAME: action
         })
-
-        it('support multiple events on combo', () => {
-            const action = {
-                key: 'p',
-                action: () => {}
-            }
-            const anotherAction = {
-                key: 'p',
-                action: () => {}
-            }
-            sm.bind('pizza', {
-                ACTION_NAME: action,
-                ANOTHER_ACTION_NAME: anotherAction
-            })
-
-            expect(sm._getHotkeys('p')).toMatchObject([action, anotherAction])
+        sm.bind('pizza', {
+            ACTION_NAME: action
         })
+        sm.trigger('p')
 
-        it('only unbind events from component', () => {
-            const action = {
-                key: 'p',
-                action: _noop
-            }
-            const anotherAction = {
-                key: 'p',
-                action: _noop
-            }
-            sm.bind('pizza', {
-                ACTION_NAME: action,
-            })
-            sm.bind('pepperoni', {
-                ANOTHER_ACTION_NAME: anotherAction
-            })
+        expect(counter).toBe(1)
+    })
 
-            sm.unbind('pizza')
-
-            expect(sm._getHotkeys('p')).toMatchObject([anotherAction])
+    it('rebind actions defined in different component', () => {
+        const action = {
+            key: 'p',
+            action: bump
+        }
+        sm.bind('pizza', {
+            ACTION_NAME: action,
         })
+        sm.unbind('pizza')
+        sm.bind('pizza')
+        sm.trigger('p')
 
-        it('not duplicate actions', () => {
-            const action = {
-                key: 'p',
-                action: _noop
-            }
-            sm.bind('pizza', {
-                ACTION_NAME: action
-            })
-            sm.bind('pizza', {
-                ACTION_NAME: action
-            })
+        expect(counter).toBe(1)
+    })
 
-            expect(sm._getHotkeys('p')).toMatchObject([action])
+    it('pause bound component', () => {
+        const action = {
+            key: 'p',
+            action: bump
+        }
+        sm.bind('pizza', {
+            ACTION_NAME: action,
         })
+        sm.pause()
+        sm.trigger('p')
 
-        it('rebind actions defined in different component', () => {
-            const action = {
-                key: 'p',
-                action: _noop
-            }
-            sm.bind('pizza', {
-                ACTION_NAME: action,
-            })
-            sm.unbind('pizza')
-            sm.bind('pizza')
+        expect(counter).toBe(0)
+    })
 
-            expect(sm._getHotkeys('p')).toMatchObject([action])
+    it('pause unbound component', () => {
+        const action = {
+            key: 'p',
+            action: bump
+        }
+        sm.pause()
+        sm.bind('pizza', {
+            ACTION_NAME: action,
         })
+        sm.trigger('p')
+
+        expect(counter).toBe(0)
     })
 })

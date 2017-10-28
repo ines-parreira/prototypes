@@ -37,7 +37,7 @@ export default class MacroModal extends React.Component {
     }
 
     componentDidMount() {
-        shortcutManager.pause()
+        shortcutManager.pause(['MacroModal'])
 
         segmentTracker.logEvent(segmentTracker.EVENTS.MODAL_TOGGLED, {
             open: true,

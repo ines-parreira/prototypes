@@ -1,9 +1,54 @@
-:local {
-  .carouselCard {
-    max-width: 300px;
-    display: inline-flex;
-    margin: 15px 15px 0 0 !important; // :(
+@margins: 4px;
 
+:local {
+  .carousel {
+    margin: 0 -@margins;
+
+    :global {
+      .slick-arrow {
+        width: 30px;
+        height: 30px;
+        z-index: 1;
+        background: #fff;
+        border: 1px solid rgba(0, 0, 0, .125);
+      }
+
+      .slick-arrow.slick-disabled {
+        display: none !important;
+      }
+
+      .slick-prev:before,
+      .slick-next:before {
+        color: #333;
+        font-family: FontAwesome;
+      }
+
+      .slick-prev {
+        left: @margins;
+        border-radius: 0 3px 3px 0;
+
+        &:before {
+          content: '\f104';
+        }
+      }
+
+      .slick-next {
+        right: @margins;
+        border-radius: 3px 0 0 3px;
+
+        &:before {
+          content: '\f105';
+        }
+      }
+    }
+  }
+
+  .carouselCardContainer {
+    /* bottom border is cut by slick-carousel */
+    padding: 0 @margins 1px;
+  }
+
+  .carouselCard {
     .buttons {
       width: 100%;
 
@@ -20,5 +65,11 @@
         border-bottom: 0;
       }
     }
+  }
+
+  .carouselImage {
+    width: auto;
+    margin: 0 auto;
+    max-height: 200px;
   }
 }

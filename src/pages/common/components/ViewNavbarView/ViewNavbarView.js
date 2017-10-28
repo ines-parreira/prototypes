@@ -86,7 +86,7 @@ class ViewNavbarView extends Component {
         const displayedViews = this._getDisplayedViews()
         const viewCursor = moveIndex(this.state.viewCursor, displayedViews.size, {
             direction,
-            reverse: true
+            rotate: true
         })
         this.setState({viewCursor})
 

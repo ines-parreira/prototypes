@@ -1,4 +1,6 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React from 'react'
+import _get from 'lodash/get'
 
 import {
     Card,
@@ -9,76 +11,124 @@ import {
     Button,
     ButtonGroup
 } from 'reactstrap'
+import Slider from 'react-slick'
 
 import css from './FacebookCarousel.less'
 
+type Props = {
+    data: Array<{
+        type: 'template',
+        payload: {
+            template_type: string,
+            elements?: Array<{
+                title: string,
+                subtitle: string,
+                image_url: string,
+                buttons?: Array<{
+                    type: string,
+                    title: string,
+                    url: string
+                }>
+            }>
+        }
+    }>
+}
 
-export default class FacebookCarousel extends React.Component {
-    static propTypes = {
-        data: PropTypes.array.isRequired
+export default class FacebookCarousel extends React.Component<Props> {
+    static defaultProps = {
+        data: []
     }
 
     render() {
         const {data} = this.props
 
         return (
-            <div>
+            <div className={css.carousel}>
                 {
                     data.map((template, idx) => {
+                        const templateType = _get(template, ['payload', 'template_type']) || ''
+                        const elements = _get(template, ['payload', 'elements']) || []
+
+                        // only render generic templates with elements
+                        if (templateType !== 'generic' || !elements.length) {
+                            return null
+                        }
+
                         return (
-                            <div key={idx}>
+                            <Slider
+                                key={idx}
+                                arrows
+                                slidesToShow="3"
+                                infinite={false}
+                                responsive={[
+                                    {
+                                        breakpoint: 769,
+                                        settings: {slidesToShow: 1}
+                                    },
+                                    {
+                                        breakpoint: 1441,
+                                        settings: {slidesToShow: 2}
+                                    }
+                                ]}
+                            >
                                 {
-                                    template.payload && template.payload.elements &&
-                                    template.payload.elements.map((element, idx) => {
+                                    elements.map((element, idx) => {
+                                        const buttons = element.buttons || []
+
                                         return (
-                                            <Card
+                                            <div
                                                 key={idx}
-                                                className={css.carouselCard}
+                                                className={css.carouselCardContainer}
                                             >
-                                                <CardImg
-                                                    top
-                                                    width="100%"
-                                                    src={element.image_url}
-                                                />
-                                                <CardBlock>
-                                                    <CardTitle>{element.title}</CardTitle>
-                                                    <CardSubtitle>{element.subtitle}</CardSubtitle>
-                                                </CardBlock>
-                                                <ButtonGroup
-                                                    vertical
-                                                    className={css.buttons}
+                                                <Card
+                                                    className={css.carouselCard}
                                                 >
-                                                {
-                                                    element.buttons && element.buttons.map((button, idx) => {
-                                                        if (button.type === 'web_url') {
-                                                            return (
-                                                                <Button
-                                                                    key={idx}
-                                                                    tag="a"
-                                                                    href={button.url}
-                                                                    target="_blank"
-                                                                >
-                                                                    {button.title}
-                                                                </Button>
-                                                            )
-                                                        } else if (button.type === 'element_share') {
-                                                            return (
-                                                                <Button
-                                                                    key={idx}
-                                                                    disabled
-                                                                >
-                                                                    Share
-                                                                </Button>
-                                                            )
-                                                        }
-                                                    })
-                                                }
-                                                </ButtonGroup>
-                                            </Card>
+                                                    <CardImg
+                                                        top
+                                                        width="100%"
+                                                        src={element.image_url}
+                                                        className={css.carouselImage}
+                                                    />
+                                                    <CardBlock>
+                                                        <CardTitle>{element.title}</CardTitle>
+                                                        <CardSubtitle>{element.subtitle}</CardSubtitle>
+                                                    </CardBlock>
+                                                    <ButtonGroup
+                                                        vertical
+                                                        className={css.buttons}
+                                                    >
+                                                    {
+                                                        buttons.map((button, idx) => {
+                                                            if (button.type === 'web_url') {
+                                                                return (
+                                                                    <Button
+                                                                        key={idx}
+                                                                        tag="a"
+                                                                        href={button.url}
+                                                                        target="_blank"
+                                                                    >
+                                                                        {button.title}
+                                                                    </Button>
+                                                                )
+                                                            } else if (button.type === 'element_share') {
+                                                                return (
+                                                                    <Button
+                                                                        key={idx}
+                                                                        disabled
+                                                                    >
+                                                                        Share
+                                                                    </Button>
+                                                                )
+                                                            }
+                                                        })
+                                                    }
+                                                    </ButtonGroup>
+                                                </Card>
+                                            </div>
                                         )
                                     })
                                 }
-                            </div>
+                            </Slider>
                         )
                     })
                 }

@@ -184,6 +184,19 @@ export default {
             },
         }
     },
+    MacroModal: {
+        description: 'Macros',
+        actions: {
+            GO_NEXT_MACRO: {
+                key: 'down',
+                description: 'Go to the next macro.'
+            },
+            GO_PREV_MACRO: {
+                key: 'up',
+                description: 'Go to the previous macro.'
+            },
+        }
+    },
     KeyboardHelp: {
         description: 'Help dialog',
         actions: {

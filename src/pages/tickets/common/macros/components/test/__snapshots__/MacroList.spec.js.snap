@@ -15,6 +15,7 @@ exports[`MacroList component should render the macro list 1`] = `
     >
       <Input
         autoFocus={true}
+        className="shortcuts-enable"
         onChange={[Function]}
         placeholder="Search macros by name, tags or body..."
         tag="p"
