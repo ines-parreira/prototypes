@@ -7,7 +7,6 @@ exports[`TicketInfobarContainer component should render infobar for new ticket 1
       "infobar": Object {
         "executeAction": [Function],
         "fetchPreviewUser": [Function],
-        "fetchUserPicture": [Function],
         "handleExecutedAction": [Function],
         "search": [Function],
         "similarUser": [Function],

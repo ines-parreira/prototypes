@@ -50,43 +50,6 @@ Array [
 ]
 `;
 
-exports[`infobar actions fetch user picture fail 1`] = `
-Array [
-  Object {
-    "type": "FETCH_USER_PICTURE_START",
-  },
-  Object {
-    "type": "FETCH_USER_PICTURE_ERROR",
-  },
-]
-`;
-
-exports[`infobar actions fetch user picture gravatar 1`] = `
-Array [
-  Object {
-    "type": "FETCH_USER_PICTURE_START",
-  },
-  Object {
-    "email": "alex@gorgias.io",
-    "type": "FETCH_USER_PICTURE_SUCCESS",
-    "url": "https://www.gravatar.com/avatar/b0603c6a6734698e0b93b1350c6c8286?d=404&s=50",
-  },
-]
-`;
-
-exports[`infobar actions fetch user picture picasaweb 1`] = `
-Array [
-  Object {
-    "type": "FETCH_USER_PICTURE_START",
-  },
-  Object {
-    "email": "alex@gorgias.io",
-    "type": "FETCH_USER_PICTURE_SUCCESS",
-    "url": "http://good.url",
-  },
-]
-`;
-
 exports[`infobar actions handle executed action display error 1`] = `
 Array [
   Object {

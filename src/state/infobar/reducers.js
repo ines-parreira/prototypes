@@ -8,9 +8,7 @@ import type {actionType} from '../types'
 
 export const initialState = fromJS({
     _internal: {
-        loading: {
-            displayedUserPictureUrl: false,
-        },
+        loading: {},
     },
     picture: {
         url: null,
@@ -21,25 +19,6 @@ export const initialState = fromJS({
 
 export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
     switch (action.type) {
-        case constants.FETCH_USER_PICTURE_START: {
-            return state.setIn(['_internal', 'loading', 'displayedUserPictureUrl'], true)
-        }
-
-        case constants.FETCH_USER_PICTURE_SUCCESS: {
-            return state
-                .setIn(['_internal', 'loading', 'displayedUserPictureUrl'], false)
-                .set('picture', fromJS({
-                    url: action.url,
-                    email: action.email
-                }))
-        }
-
-        case constants.FETCH_USER_PICTURE_ERROR: {
-            return state
-                .set('displayedUserPictureUrl', null)
-                .setIn(['_internal', 'loading', 'displayedUserPictureUrl'], false)
-        }
-
         case constants.EXECUTE_ACTION_START: {
             if (!action.callback) {
                 return state

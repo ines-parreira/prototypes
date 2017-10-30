@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
 import moment from 'moment-timezone'
-import {Form, FormGroup, Button} from 'reactstrap'
+import {Form, FormGroup, FormText, Button, Label, Row, Col} from 'reactstrap'
 
 import {AVAILABLE_LANGUAGES} from './../../../../config'
 
@@ -11,6 +11,7 @@ import BooleanField from '../../../common/forms/BooleanField'
 import RichField from '../../../common/forms/RichField'
 import InputField from '../../../common/forms/InputField'
 import {convertToHTML} from '../../../../utils'
+import Avatar from '../../../common/components/Avatar'
 
 const defaultContent = {
     name: '',
@@ -119,73 +120,97 @@ class YourProfileView extends React.Component {
                     className="mb-4"
                     onSubmit={this._handleSubmit}
                 >
-                    <InputField
-                        type="text"
-                        name="name"
-                        label="Your name"
-                        placeholder="John Doe"
-                        required
-                        value={this.state.name}
-                        onChange={name => this.setState({name})}
-                    />
-                    <InputField
-                        type="email"
-                        name="email"
-                        label="Your email"
-                        placeholder="john.doe@acme.com"
-                        required
-                        value={this.state.email}
-                        onChange={email => this.setState({email})}
-                    />
-                    <InputField
-                        type="select"
-                        name="timezone"
-                        label="Timezone"
-                        value={this.state.timezone}
-                        onChange={timezone => this.setState({timezone})}
-                    >
-                        {
-                            moment.tz.names().map((name, idx) => <option key={idx} value={name}>{name}</option>)
-                        }
-                    </InputField>
-                    <InputField
-                        type="select"
-                        name="language"
-                        label="Language"
-                        help="Changing the language also changes the time format"
-                        value={this.state.language}
-                        onChange={language => this.setState({language})}
-                    >
-                        {
-                            AVAILABLE_LANGUAGES.map((locale, idx) => (
-                                <option
-                                    key={idx}
-                                    value={locale.localeName}
-                                >
-                                    {locale.displayName}
-                                </option>
-                            ))
-                        }
-                    </InputField>
-                    <RichField
-                        name="signature"
-                        label="Signature"
-                        value={this.state.signature}
-                        onChange={this._onSignatureChange}
-                    />
+                    <Row>
+                        <Col md="9">
+                            <InputField
+                                type="text"
+                                name="name"
+                                label="Your name"
+                                placeholder="John Doe"
+                                required
+                                value={this.state.name}
+                                onChange={name => this.setState({name})}
+                            />
+                            <InputField
+                                type="email"
+                                name="email"
+                                label="Your email"
+                                placeholder="john.doe@acme.com"
+                                required
+                                value={this.state.email}
+                                onChange={email => this.setState({email})}
+                            />
+                            <InputField
+                                type="select"
+                                name="timezone"
+                                label="Timezone"
+                                value={this.state.timezone}
+                                onChange={timezone => this.setState({timezone})}
+                            >
+                                {
+                                    moment.tz.names().map((name, idx) => <option key={idx} value={name}>{name}</option>)
+                                }
+                            </InputField>
+                            <InputField
+                                type="select"
+                                name="language"
+                                label="Language"
+                                help="Changing the language also changes the time format"
+                                value={this.state.language}
+                                onChange={language => this.setState({language})}
+                            >
+                                {
+                                    AVAILABLE_LANGUAGES.map((locale, idx) => (
+                                        <option
+                                            key={idx}
+                                            value={locale.localeName}
+                                        >
+                                            {locale.displayName}
+                                        </option>
+                                    ))
+                                }
+                            </InputField>
+                            <RichField
+                                name="signature"
+                                label="Signature"
+                                value={this.state.signature}
+                                onChange={this._onSignatureChange}
+                            />
 
-                    <div>
-                        <Button
-                            type="submit"
-                            color="primary"
-                            className={classnames({
-                                'btn-loading': loadingUser,
-                            })}
-                            disabled={loadingUser}
-                        >
-                            Save
-                        </Button>
-                    </div>
+                        </Col>
+                        <Col md="3" xs="12">
+
+                            <FormGroup>
+                                <Label className="control-label">
+                                    Profile picture
+                                </Label>
+
+                                <div>
+                                    <Avatar
+                                        email={this.state.email}
+                                        name={this.state.name}
+                                        size="100"
+                                    />
+                                </div>
+
+                                <FormText color="muted">
+                                    Login to <a href="https://en.gravatar.com/" target="_blank" rel="noopener noreferrer">Gravatar</a> to update your profile picture.
+                                </FormText>
+                            </FormGroup>
+
+                        </Col>
+                    </Row>
+
+                    <Button
+                        type="submit"
+                        color="primary"
+                        className={classnames({
+                            'btn-loading': loadingUser,
+                        })}
+                        disabled={loadingUser}
+                    >
+                        Save
+                    </Button>
                 </Form>
 
                 <h4>

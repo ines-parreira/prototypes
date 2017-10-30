@@ -1,0 +1,30 @@
+@import "../../../../../css/new/colors";
+
+:local .component {
+  position: relative;
+  overflow: hidden;
+  background: darken(@blue, 3%);
+  border-radius: 5px;
+
+  .gravatar,
+  .initials {
+    width: 100%;
+    height: 100%;
+  }
+
+  .initials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #fff;
+    font-size: 21px;
+    text-align: center;
+  }
+
+  .gravatar {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}

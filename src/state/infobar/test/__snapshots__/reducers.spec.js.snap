@@ -3,9 +3,7 @@
 exports[`infobar reducers execute action 1`] = `
 Object {
   "_internal": Object {
-    "loading": Object {
-      "displayedUserPictureUrl": false,
-    },
+    "loading": Object {},
   },
   "pendingActionsCallbacks": Array [],
   "picture": Object {
@@ -18,9 +16,7 @@ Object {
 exports[`infobar reducers execute action 2`] = `
 Object {
   "_internal": Object {
-    "loading": Object {
-      "displayedUserPictureUrl": false,
-    },
+    "loading": Object {},
   },
   "pendingActionsCallbacks": Array [
     Object {
@@ -38,9 +34,7 @@ Object {
 exports[`infobar reducers execute action 3`] = `
 Object {
   "_internal": Object {
-    "loading": Object {
-      "displayedUserPictureUrl": false,
-    },
+    "loading": Object {},
   },
   "pendingActionsCallbacks": Array [],
   "picture": Object {
@@ -53,9 +47,7 @@ Object {
 exports[`infobar reducers execute action 4`] = `
 Object {
   "_internal": Object {
-    "loading": Object {
-      "displayedUserPictureUrl": false,
-    },
+    "loading": Object {},
   },
   "pendingActionsCallbacks": Array [],
   "picture": Object {
@@ -68,9 +60,7 @@ Object {
 exports[`infobar reducers fetch user picture 1`] = `
 Object {
   "_internal": Object {
-    "loading": Object {
-      "displayedUserPictureUrl": true,
-    },
+    "loading": Object {},
   },
   "pendingActionsCallbacks": Array [],
   "picture": Object {
@@ -83,14 +73,12 @@ Object {
 exports[`infobar reducers fetch user picture 2`] = `
 Object {
   "_internal": Object {
-    "loading": Object {
-      "displayedUserPictureUrl": false,
-    },
+    "loading": Object {},
   },
   "pendingActionsCallbacks": Array [],
   "picture": Object {
-    "email": "alex@gorgias.io",
-    "url": "http://good.url",
+    "email": null,
+    "url": null,
   },
 }
 `;
@@ -98,11 +86,8 @@ Object {
 exports[`infobar reducers fetch user picture 3`] = `
 Object {
   "_internal": Object {
-    "loading": Object {
-      "displayedUserPictureUrl": false,
-    },
+    "loading": Object {},
   },
-  "displayedUserPictureUrl": null,
   "pendingActionsCallbacks": Array [],
   "picture": Object {
     "email": null,

@@ -50,36 +50,6 @@ describe('infobar actions', () => {
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    describe('fetch user picture', () => {
-        const email = 'alex@gorgias.io'
-        const md5 = 'b0603c6a6734698e0b93b1350c6c8286'
-        const gravatar_url = `https://www.gravatar.com/avatar/${md5}?d=404&s=50`
-        const picasa_url = `https://picasaweb.google.com/data/entry/api/user/${encodeURIComponent(email)}?alt=json`
-
-        it('gravatar', () => {
-            mockServer.onGet(gravatar_url).reply(200)
-
-            return store.dispatch(actions.fetchUserPicture(email))
-                .then(() => expect(store.getActions()).toMatchSnapshot())
-        })
-
-        it('picasaweb', () => {
-            mockServer.onGet(gravatar_url).reply(400)
-            mockServer.onGet(picasa_url).reply(200, {entry: {gphoto$thumbnail: {$t: 'http://good.url'}}})
-
-            return store.dispatch(actions.fetchUserPicture(email))
-                .then(() => expect(store.getActions()).toMatchSnapshot())
-        })
-
-        it('fail', () => {
-            mockServer.onGet(gravatar_url).reply(400)
-            mockServer.onGet(picasa_url).reply(400)
-
-            return store.dispatch(actions.fetchUserPicture(email))
-                .then(() => expect(store.getActions()).toMatchSnapshot())
-        })
-    })
-
     describe('execute action', () => {
         const actionName = 'shopifyRefundShippingCostOfOrder'
         const integrationId = 5

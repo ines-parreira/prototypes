@@ -13,9 +13,7 @@ describe('infobar selectors', () => {
         state = {
             infobar: initialState.mergeDeep(fromJS({
                 _internal: {
-                    loading: {
-                        displayedUserPictureUrl: false
-                    }
+                    loading: {}
                 },
                 picture: {
                     url: 'http://good.url',
@@ -28,7 +26,6 @@ describe('infobar selectors', () => {
                     callback: jest.fn(),
                     id: 'shopifyRefundShippingCostOfOrder-35-5-4194477515',
                 }],
-                displayedUserPictureUrl: null
             })),
         }
     })

@@ -1,7 +1,5 @@
 // @flow
 import axios from 'axios'
-import {fromJS} from 'immutable'
-import md5 from 'md5'
 import {browserHistory} from 'react-router'
 
 import {notify} from '../notifications/actions'
@@ -56,49 +54,6 @@ export const similarUser = (userId: string): thunkActionType => ((dispatch: disp
                 error,
                 reason: 'Failed to do the search similar users. Please try again...'
             })
-        })
-})
-
-export const fetchUserPicture = (email: string = '') => ((dispatch: dispatchType): Promise<dispatchType> => {
-    dispatch({
-        type: constants.FETCH_USER_PICTURE_START
-    })
-
-    // s = 50 means the picture's width=height=50px; d=404 means if there's no image, returns a 404 error
-    const GRAVATAR_URL = `https://www.gravatar.com/avatar/${md5(email)}?d=404&s=50`
-    const GOOGLE_URL = `https://picasaweb.google.com/data/entry/api/user/${encodeURIComponent(email)}?alt=json`
-
-    return axios.get(GRAVATAR_URL)
-        .then(() => {
-            return dispatch({
-                type: constants.FETCH_USER_PICTURE_SUCCESS,
-                url: GRAVATAR_URL,
-                email
-            })
-        }, () => {
-            return axios.get(GOOGLE_URL)
-                .then((json = {}) => json.data)
-                .then((data = {}) => {
-                    const thumbnailUrl = fromJS(data).getIn(['entry', 'gphoto$thumbnail', '$t'])
-
-                    if (thumbnailUrl) {
-                        dispatch({
-                            type: constants.FETCH_USER_PICTURE_SUCCESS,
-                            url: thumbnailUrl,
-                            email
-                        })
-                    } else {
-                        dispatch({
-                            type: constants.FETCH_USER_PICTURE_ERROR
-                        })
-                    }
-                }, () => {
-                    // DO NOT ADD AN ERROR FIELD HERE: it's on purpose, we don't want an error message to be
-                    // displayed if there's no picture for a user
-                    return dispatch({
-                        type: constants.FETCH_USER_PICTURE_ERROR,
-                    })
-                })
         })
 })
 

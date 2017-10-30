@@ -45,6 +45,7 @@
     "find-with-regex": "^1.0.2",
     "font-awesome": "^4.7.0",
     "immutable": "^3.8.1",
+    "jsonp": "^0.2.1",
     "less": "^2.7.2",
     "linkify-it": "^2.0.3",
     "linkifyjs": "^2.1.0",
@@ -135,7 +136,9 @@
       "\\.(css|less)$": "<rootDir>/g/static/private/js/test/__mocks__/styleMock.js"
     },
     "setupTestFrameworkScriptFile": "./node_modules/jest-enzyme/lib/index.js",
-    "setupFiles": ["./g/static/private/js/test/setup.js"],
+    "setupFiles": [
+      "./g/static/private/js/test/setup.js"
+    ],
     "globals": {
       "IMAGE_PROXY_URL": "http://image-proxy/"
     }

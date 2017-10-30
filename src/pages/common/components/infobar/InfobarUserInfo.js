@@ -10,7 +10,7 @@ import Clipboard from 'clipboard'
 import Tooltip from '../Tooltip'
 import InfobarWidgets from './InfobarWidgets'
 import InfobarAddIntegrationSuggestion from './InfobarAddIntegrationSuggestion'
-import ProfileImage from './../ProfileImage'
+import Avatar from './../Avatar'
 import {canDrop, areSourcesReady, jsonToWidgets} from './utils'
 import {itemsWithContext} from '../../../../state/widgets/utils'
 
@@ -317,8 +317,6 @@ class InfobarUserInfo extends React.Component {
 
     render() {
         const {
-            fetchUserPicture,
-            infobar,
             user,
             sources,
             widgets
@@ -334,12 +332,11 @@ class InfobarUserInfo extends React.Component {
             <div className="flex-vertical">
                 <div className="infobar-top">
                     <div className="user-profile">
-                        <ProfileImage
+                        <Avatar
+                            className="mr-3"
                             name={user.get('name', '')}
                             email={user.get('email', '')}
-                            pictureObject={infobar.get('picture')}
-                            isLoading={infobar.getIn(['_internal', 'loading', 'displayedUserPictureUrl'])}
-                            fetchUserPicture={fetchUserPicture}
+                            google
                         />
                         <h2>
                             <Link to={`/app/user/${user.get('id')}`}>
@@ -357,7 +354,6 @@ class InfobarUserInfo extends React.Component {
 
 InfobarUserInfo.propTypes = {
     actions: PropTypes.object.isRequired,
-    fetchUserPicture: PropTypes.func.isRequired,
     hasIntegrations: PropTypes.bool.isRequired,
     infobar: PropTypes.object.isRequired,
     isEditing: PropTypes.bool.isRequired,

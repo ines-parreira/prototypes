@@ -30,7 +30,7 @@ import css from './Infobar.less'
 import type {Map, List} from 'immutable'
 import type {reactRouterLocation} from '../../../../types'
 import {startEditionMode, stopEditionMode, submitWidgets} from '../../../../state/widgets/actions'
-import {fetchPreviewUser, fetchUserPicture} from '../../../../state/infobar/actions'
+import {fetchPreviewUser} from '../../../../state/infobar/actions'
 
 type Props = {
     actions: {
@@ -40,8 +40,7 @@ type Props = {
             submitWidgets: typeof submitWidgets
         },
         infobar: {
-            fetchPreviewUser: typeof fetchPreviewUser,
-            fetchUserPicture: typeof fetchUserPicture,
+            fetchPreviewUser: typeof fetchPreviewUser
         }
     },
     context: string,
@@ -337,7 +336,6 @@ class Infobar extends React.Component<Props, State> {
         return (
             <InfobarUserInfo
                 actions={this.props.actions.widgets}
-                fetchUserPicture={this.props.actions.infobar.fetchUserPicture}
                 infobar={this.props.infobar}
                 isEditing={isEditing}
                 sources={sources}

@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Avatar component should render default with no props 1`] = `
+<div
+  className=""
+  style={
+    Object {
+      "height": "50px",
+      "width": "50px",
+    }
+  }
+>
+  <div
+    style={
+      Object {
+        "fontSize": "20.833333333333336px",
+      }
+    }
+  >
+    <span />
+  </div>
+</div>
+`;
+
+exports[`Avatar component should render only the initials 1`] = `
+<div
+  className=""
+  style={
+    Object {
+      "height": "50px",
+      "width": "50px",
+    }
+  }
+>
+  <div
+    style={
+      Object {
+        "fontSize": "20.833333333333336px",
+      }
+    }
+  >
+    <span>
+      MC
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Avatar component should render with className 1`] = `
+<div
+  className="marie-curie"
+  style={
+    Object {
+      "height": "50px",
+      "width": "50px",
+    }
+  }
+>
+  <div
+    style={
+      Object {
+        "fontSize": "20.833333333333336px",
+      }
+    }
+  >
+    <span />
+  </div>
+</div>
+`;
