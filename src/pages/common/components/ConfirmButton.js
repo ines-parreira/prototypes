@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React from 'react'
 import classnames from 'classnames'
 import {
     Button,
@@ -6,34 +7,71 @@ import {
     PopoverTitle,
     PopoverContent,
 } from 'reactstrap'
+import _get from 'lodash/get'
 import _noop from 'lodash/noop'
 
-export default class ConfirmButton extends React.Component {
-    form = null
+import type {Node} from 'react'
+
+type Props = {
+    id?: string,
+    type?: 'button' | 'submit',
+    className?: string,
+    disabled?: boolean,
+    confirm: () => void,
+    title?: string,
+    content?: Node,
+    children?: Node,
+    skip?: boolean,
+    loading?: boolean,
+    placement?: string
+}
+
+type State = {
+    loading: boolean,
+    showConfirmation: boolean
+}
+
+export default class ConfirmButton extends React.Component<Props, State> {
+    static defaultProps = {
+        id: '',
+        type: 'button',
+        className: '',
+        disabled: false,
+        confirm: _noop,
+        title: 'Are you sure?',
+        content: null,
+        skip: false,
+        loading: false,
+        placement: 'bottom'
+    }
 
     state = {
         loading: false,
         showConfirmation: false
     }
 
+    _form: ?HTMLElement = null
+    _mounted: boolean = false
+
     componentWillMount() {
-        this.mounted = true
+        this._mounted = true
     }
 
     componentWillUnmount() {
-        this.mounted = false
+        this._mounted = false
     }
 
-    _showConfirmation = (e) => {
-        if (this.props.type === 'submit' && !!e.target.form) {
+    _showConfirmation = (e: Event) => {
+        const form: HTMLFormElement = _get(e, ['target', 'form'])
+        if (this.props.type === 'submit' && !!form) {
             // don't show popover for invalid forms
-            if (!e.target.form.checkValidity()) {
+            if (!form.checkValidity()) {
                 return
             }
 
             // stop real submit,
             // we'll trigger it from the confirm button.
-            this.form = e.target.form
+            this._form = form
             e.preventDefault()
         }
 
@@ -49,7 +87,7 @@ export default class ConfirmButton extends React.Component {
     }
 
     _hideLoading = () => {
-        if (!this.mounted) {
+        if (!this._mounted) {
             return
         }
 
@@ -63,7 +101,10 @@ export default class ConfirmButton extends React.Component {
             this.props.confirm()
             // popover is outside the form,
             // so we need to simulate the submit.
-            this.form.dispatchEvent(new Event('submit'))
+            // _form can be null.
+            if (this._form) {
+                this._form.dispatchEvent(new Event('submit'))
+            }
             return
         }
 
@@ -140,32 +181,4 @@ export default class ConfirmButton extends React.Component {
         )
     }
 
-}
-
-ConfirmButton.propTypes = {
-    id: PropTypes.string,
-    type: PropTypes.string,
-    className: PropTypes.string,
-    disabled: PropTypes.bool,
-    confirm: PropTypes.func,
-    title: PropTypes.string,
-    content: PropTypes.node,
-    children: PropTypes.node,
-    skip: PropTypes.bool,
-    loading: PropTypes.bool,
-    placement: PropTypes.string
-}
-
-
-ConfirmButton.defaultProps = {
-    id: '',
-    type: 'button',
-    className: '',
-    disabled: false,
-    confirm: _noop,
-    title: 'Are you sure?',
-    content: null,
-    skip: false,
-    loading: false,
-    placement: 'bottom'
 }
