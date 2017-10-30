@@ -3,76 +3,9 @@ import axios from 'axios'
 import {fromJS} from 'immutable'
 import Push from 'push.js'
 
-import {fetchPage} from '../../state/views/actions'
-
 import * as constants from './constants'
-import {shouldUpdateView} from './utils'
-import {playNotificationSound, toQueryParams} from '../../utils'
-
-import * as viewsSelectors from '../views/selectors'
-import {POLL_ACTIVITY_TIMEOUT} from '../../config'
-
+import {playNotificationSound} from '../../utils'
 import type {dispatchType, getStateType} from '../types'
-
-export const pollActivity = () => (dispatch: dispatchType, getState: getStateType): ?Promise<dispatchType> => {
-    const {activity, views} = getState()
-
-    const loading = activity.getIn(['_internal', 'loading'], false)
-
-    // don't send activity again if previous one is not done
-    if (loading) {
-        return
-    }
-
-    dispatch({
-        type: constants.SUBMIT_ACTIVITY_START
-    })
-
-    const params = {}
-
-    // TODO @jebarjonet CHECK if something new before fetching
-    // if currently on a view, check if has unseen updates on this view
-    const activeViewId = views.getIn(['active', 'id'])
-    if (shouldUpdateView(activeViewId, views)) {
-        params.queryView = activeViewId
-    }
-
-    return axios.get(`/api/activity/?${toQueryParams(params)}`, {timeout: POLL_ACTIVITY_TIMEOUT})
-        .then((json = {}) => json.data)
-        .then((resp = {}) => {
-            const _state = getState()
-            // renaming variables since they are already used in upper scope
-            const {views: _views} = _state
-
-            dispatch({
-                type: constants.SUBMIT_ACTIVITY_SUCCESS,
-                resp
-            })
-
-            // TODO @jebarjonet CHECK if something new before fetching
-            // if currently on a view, ask for its auto refresh
-            const _activeViewId = _views.getIn(['active', 'id'])
-            if (shouldUpdateView(_activeViewId, _views)) {
-                const isFetchingView = viewsSelectors.isLoading('fetchList')(_state)
-                    || viewsSelectors.isLoading('fetchListDiscreet')(_state)
-
-                // don't fetch view if it is currently fetching
-                if (!isFetchingView) {
-                    const isEditing = _views.getIn(['active', 'editMode'], false)
-
-                    if (!isEditing) {
-                        dispatch(fetchPage(null, true))
-                    }
-                }
-            }
-        }, (error) => {
-            console.error('Failed polling activity', error)
-            return dispatch({
-                type: constants.SUBMIT_ACTIVITY_ERROR,
-                error,
-            })
-        })
-}
 
 
 export const pollChats = () => (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {

@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`actions should update updated datetime of recent views 1`] = `
+Object {
+  "type": "UPDATE_RECENT_VIEWS",
+  "viewIds": Array [
+    1,
+  ],
+}
+`;
+
+exports[`actions should update updated datetime of recent views 2`] = `
+Array [
+  Object {
+    "type": "UPDATE_RECENT_VIEWS",
+    "viewIds": Array [
+      1,
+    ],
+  },
+]
+`;

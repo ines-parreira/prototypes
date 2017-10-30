@@ -45,8 +45,8 @@ describe('Config: socketEvents', () => {
 
                 const dataToSend = event.dataToSend()
                 expect(_isObject(dataToSend)).toBe(true)
-                expect(dataToSend).toHaveProperty('objectType')
-                expect(dataToSend).toHaveProperty('objectId')
+                expect(dataToSend).toHaveProperty('dataType')
+                expect(dataToSend).toHaveProperty('data')
             })
         })
     })

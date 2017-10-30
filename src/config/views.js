@@ -8,6 +8,15 @@ import {TagLabel} from '../pages/common/utils/labels'
 
 import _isUndefined from 'lodash/isUndefined'
 
+// Expiration times for views counts (second).
+// After this period, we will ask for a new count.
+export const ACTIVE_VIEW_COUNT_TIMEOUT = 10
+export const RECENT_VIEWS_COUNTS_TIMEOUT = 10
+
+// Number of maximum recent views we store in the reducer and local storage.
+// View counts will only be calculated periodically for these views.
+export const MAX_RECENT_VIEWS = 8
+
 export const defaultCell = (fieldName, item) => {
     const value = item.get(fieldName)
 

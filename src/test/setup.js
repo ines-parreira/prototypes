@@ -8,3 +8,31 @@ Object.defineProperty(window, 'matchMedia', {
         }
     })
 })
+
+// Mock of the localStorage API
+// to be able to test portion of code which access the localStorage API
+class LocalStorageMock {
+    constructor() {
+        this.store = {}
+    }
+
+    clear() {
+        this.store = {}
+    }
+
+    getItem(key) {
+        return this.store[key] || null
+    }
+
+    setItem(key, value) {
+        this.store[key] = value.toString()
+    }
+
+    removeItem(key) {
+        delete this.store[key]
+    }
+}
+
+Object.defineProperty(window, 'localStorage', {
+    value: new LocalStorageMock
+})

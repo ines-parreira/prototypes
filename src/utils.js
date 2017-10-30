@@ -718,21 +718,14 @@ export function hasRole(user: userType, requiredRole: string): boolean {
  * @param ticketId
  * @returns {boolean}
  */
-export const isCurrentlyOnTicket = (ticketId: string = ''): boolean => {
-    if (!ticketId) {
-        return false
+export const isCurrentlyOnTicket = (ticketId: ?string): boolean => {
+    let matchUrl = '/app/ticket/'
+
+    if (ticketId) {
+        matchUrl += ticketId
     }
 
-    const suffix = [
-        '',
-        '/',
-        '/edit-widgets',
-    ]
-
-    const objectURL = `/app/ticket/${ticketId}`
-    const currentUrl = window.location.pathname.split('?')[0]
-
-    return suffix.some(s => currentUrl.endsWith(`${objectURL}${s}`))
+    return window.location.pathname.startsWith(matchUrl)
 }
 
 /**

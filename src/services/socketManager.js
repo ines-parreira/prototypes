@@ -177,20 +177,20 @@ class SocketManager {
      * Send data needed to join a room on server
      * Add this data to array of current joined rooms (used when reconnecting)
      * @example
-     * socketManagerInstance._joinRoom({objectType: 'Ticket', objectId: 12})
+     * socketManagerInstance._joinRoom({dataType: 'Ticket', data: 12})
      * @param data
      * @param callback
      */
     _joinRoom = (data, callback = _noop) => {
         // if no object id or object type, we don't join anything
-        if (!data.objectId || !data.objectType) {
+        if (!data.data || !data.dataType) {
             return
         }
 
         const roomData = {
             event: ROOM_JOINED,
-            objectType: data.objectType,
-            objectId: data.objectId,
+            dataType: data.dataType,
+            data: data.data,
         }
 
         devLog('socket join room', roomData)
@@ -208,11 +208,11 @@ class SocketManager {
     /**
      * Add room data to array of current joined rooms (used when reconnecting)
      * @example
-     * socketManagerInstance._saveJoinRoom({event: 'join-room', objectType: 'Ticket', objectId: 12})
+     * socketManagerInstance._saveJoinRoom({event: 'join-room', dataType: 'Ticket', data: 12})
      * @param data
      */
     _saveJoinRoom = (data) => {
-        // leave other rooms of same objectType
+        // leave other rooms of same dataType
         this._saveLeaveRoom(data)
         // add this room to current rooms
         this.roomsData.push(data)
@@ -222,20 +222,20 @@ class SocketManager {
      * Send data needed to leave a room on server
      * Remove this data from array of current joined rooms (used when reconnecting)
      * @example
-     * socketManagerInstance._leaveRoom({objectType: 'Ticket', objectId: 12})
+     * socketManagerInstance._leaveRoom({dataType: 'Ticket', data: 12})
      * @param data
      * @param callback
      */
     _leaveRoom = (data, callback = _noop) => {
         // if no object id or object type, we don't leave anything
-        if (!data.objectId || !data.objectType) {
+        if (!data.data || !data.dataType) {
             return
         }
 
         const roomData = {
             event: ROOM_LEFT,
-            objectType: data.objectType,
-            objectId: data.objectId,
+            dataType: data.dataType,
+            data: data.data,
         }
 
         devLog('socket leave room', roomData)
@@ -253,13 +253,13 @@ class SocketManager {
     /**
      * Remove room data from array of current joined rooms (used when reconnecting)
      * @example
-     * socketManagerInstance._saveJoinRoom({event: 'leave-room', objectType: 'Ticket', objectId: 12})
+     * socketManagerInstance._saveJoinRoom({event: 'leave-room', dataType: 'Ticket', data: 12})
      * @param data
      */
     _saveLeaveRoom = (data) => {
-        // remove all rooms of same objectType as passed data
+        // remove all rooms of same dataType as passed data
         this.roomsData = this.roomsData.filter((roomData) => {
-            return roomData.objectType !== data.objectType
+            return roomData.dataType !== data.dataType
         })
     }
 }

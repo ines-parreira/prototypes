@@ -146,6 +146,8 @@ Immutable.Map {
   },
   active: Immutable.Map {
   },
+  recent: Immutable.Map {
+  },
   loading: false,
   _internal: Immutable.Map {
     currentViewId: null,
@@ -167,6 +169,8 @@ Immutable.Map {
   counts: Immutable.Map {
   },
   active: Immutable.Map {
+  },
+  recent: Immutable.Map {
   },
   loading: false,
   _internal: Immutable.Map {
@@ -327,6 +331,8 @@ Immutable.Map {
   counts: Immutable.Map {
   },
   active: Immutable.Map {
+  },
+  recent: Immutable.Map {
   },
   loading: false,
   _internal: Immutable.Map {

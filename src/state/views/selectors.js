@@ -8,6 +8,7 @@ import {getSettingsByType as getCurrentUserSettingsByType} from '../currentUser/
 
 import type {Map, List} from 'immutable'
 import type {stateType} from '../types'
+import moment from 'moment/moment'
 
 export const getViewsState = (state: stateType) => state.views || fromJS({})
 
@@ -192,3 +193,28 @@ export const getViewCount = (viewId: string) => createSelector(
 )
 
 export const makeGetViewCount = (state: stateType) => (viewId: string) => getViewCount(viewId)(state)
+
+export const getRecentViews = createSelector(
+    [getViewsState],
+    state => state.get('recent') || fromJS({})
+)
+/**
+ * Get id of views which have their counts expired
+ * @param offset a time in seconds
+ * @returns {Reselect.Selector<any, any>}
+ */
+export const getExpiredViewsCounts = (offset: number) => createSelector(
+    [getRecentViews],
+    recentViews => {
+        return recentViews
+            .filter(view => {
+                const expireAt = moment(view.get('updated_datetime')).add(offset, 's')
+                return expireAt.isBefore(moment.utc())
+            })
+            .keySeq()
+            .map(viewId => parseInt(viewId))
+            .toList()
+    }
+)
+
+

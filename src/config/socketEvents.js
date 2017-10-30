@@ -21,8 +21,8 @@ export const sendEvents = [
         dataToSend: function (id) {
             return {
                 event: socketConstants.TICKET_VIEWED,
-                objectType: 'Ticket',
-                objectId: id,
+                dataType: 'Ticket',
+                data: parseInt(id),
             }
         },
     },
@@ -31,8 +31,8 @@ export const sendEvents = [
         dataToSend: function (id) {
             return {
                 event: socketConstants.AGENT_TYPING_STARTED,
-                objectType: 'Ticket',
-                objectId: id,
+                dataType: 'Ticket',
+                data: parseInt(id),
             }
         },
     },
@@ -41,8 +41,18 @@ export const sendEvents = [
         dataToSend: function (id) {
             return {
                 event: socketConstants.AGENT_TYPING_STOPPED,
-                objectType: 'Ticket',
-                objectId: id,
+                dataType: 'Ticket',
+                data: parseInt(id),
+            }
+        },
+    },
+    {
+        name: socketConstants.VIEWS_COUNTS_EXPIRED,
+        dataToSend: function (viewIds) {
+            return {
+                event: socketConstants.VIEWS_COUNTS_EXPIRED,
+                dataType: 'View',
+                data: viewIds,
             }
         },
     }
@@ -59,8 +69,8 @@ export const joinEvents = [{
     name: 'ticket',
     dataToSend: function (id) {
         return {
-            objectType: 'Ticket',
-            objectId: id,
+            dataType: 'Ticket',
+            data: parseInt(id),
         }
     },
     onLeave: function (id) {
@@ -70,16 +80,16 @@ export const joinEvents = [{
     name: 'user',
     dataToSend: function (id) {
         return {
-            objectType: 'User',
-            objectId: id,
+            dataType: 'User',
+            data: parseInt(id),
         }
     },
 }, {
     name: 'view',
     dataToSend: function (id) {
         return {
-            objectType: 'View',
-            objectId: id,
+            dataType: 'View',
+            data: parseInt(id),
         }
     },
 }]
@@ -157,7 +167,7 @@ export const receivedEvents = [{
 }, {
     name: 'views-count-updated',
     onReceive: function (json) {
-        return this.dispatch(viewsActions.handleViewsCount(json))
+        return this.dispatch(viewsActions.handleViewsCount(json.counts))
     },
 }, {
     name: 'macro-created',

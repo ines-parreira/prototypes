@@ -1,16 +1,19 @@
 // @flow
 import axios from 'axios'
 import {fromJS} from 'immutable'
-import {browserHistory} from 'react-router'
-import * as types from './constants'
-import {notify} from '../notifications/actions'
-import {fetchUsers} from '../users/actions'
-import {getPluralObjectName, getHashOfObj} from '../../utils'
 import _max from 'lodash/max'
+import {browserHistory} from 'react-router'
 
+
+import * as types from './constants'
 import * as viewsSelectors from './selectors'
 import * as viewsConfig from '../../config/views'
+import * as socketConstants from '../../config/socketConstants'
+import {notify} from '../notifications/actions'
+import {fetchUsers} from '../users/actions'
 import socketManager from '../../services/socketManager'
+import {getPluralObjectName, getHashOfObj, isCurrentlyOnTicket, isCurrentlyOnView} from '../../utils'
+import {shouldUpdateView} from './utils'
 
 import type {Map, List} from 'immutable'
 import type {dispatchType, getStateType, thunkActionType} from '../types'
@@ -20,6 +23,8 @@ export const setViewActive = (view: viewType) => (dispatch: dispatchType): dispa
     if (view) {
         socketManager.join('view', view.get('id'))
     }
+
+    dispatch(addRecentView(view.get('id')))
 
     return dispatch({
         type: types.SET_VIEW_ACTIVE,
@@ -456,7 +461,6 @@ export function bulkDelete(activeView: viewType, ids: List<*>): thunkActionType 
     }
 }
 
-
 export function bulkApplyMacro(macroId: string) {
     return {
         type: types.BULK_APPLY_MACRO,
@@ -468,7 +472,84 @@ export function bulkApplyMacro(macroId: string) {
  * Handle views item count update
  * @param response
  */
-export const handleViewsCount = ({counts}: {counts: number}) => ({
+export const handleViewsCount = (counts: {counts: number}): Object => ({
     type: types.UPDATE_COUNTS,
     counts,
+})
+
+/**
+ * Add a view to the recent views
+ */
+export const addRecentView = (viewId: number): Object => ({
+    type: types.ADD_RECENT_VIEW,
+    viewId
+})
+
+export const fetchActiveViewTickets = () => (dispatch: dispatchType, getState: getStateType): ?Promise<dispatchType> => {
+    const state = getState()
+    const viewsState = viewsSelectors.getViewsState(state)
+    const activeView = viewsSelectors.getActiveView(state)
+    const isFetchingView = viewsSelectors.isLoading('fetchList')(state)
+        || viewsSelectors.isLoading('fetchListDiscreet')(state)
+    const isEditing = activeView.get('editMode') || false
+
+    if (!shouldUpdateView(activeView.get('id'), viewsState) || isFetchingView || isEditing) {
+        return
+    }
+
+    return dispatch(fetchPage(null, true))
+}
+
+export const fetchRecentViewsCounts = () => (dispatch: dispatchType, getState: getStateType) => {
+    // do not fetch views counts when the current user is not doing support
+    if (!isCurrentlyOnTicket() && !isCurrentlyOnView()) {
+        return
+    }
+
+    const state = getState()
+    const activeViewId = viewsSelectors.getActiveView(state).get('id')
+    let viewIds = viewsSelectors.getExpiredViewsCounts(viewsConfig.RECENT_VIEWS_COUNTS_TIMEOUT)(state)
+
+    if (viewIds.isEmpty()) {
+        return
+    }
+
+    const activeViewIndex = viewIds.indexOf(activeViewId)
+    // there is already a polling system on ticket view
+    // which fetch view count for the active view
+    // so if the user is on a view, we don't have to fetch new counts for the active view
+    if (isCurrentlyOnView() && ~activeViewIndex) {
+        viewIds = viewIds.delete(activeViewIndex)
+    }
+
+    if (!viewIds.isEmpty()) {
+        dispatch(updateRecentViews(viewIds.toJS()))
+        socketManager.send(socketConstants.VIEWS_COUNTS_EXPIRED, viewIds.toJS())
+    }
+}
+
+export const fetchActiveViewCount = () => (dispatch: dispatchType, getState: getStateType) => {
+    // there is already a polling system on ticket view
+    // which fetch view count for the active view
+    // so if the user is not on a ticket, we don't have to fetch new counts
+    if (!isCurrentlyOnTicket()) {
+        return
+    }
+
+    const state = getState()
+    const activeViewId = viewsSelectors.getActiveView(state).get('id')
+    const viewIds = viewsSelectors.getExpiredViewsCounts(viewsConfig.ACTIVE_VIEW_COUNT_TIMEOUT)(state)
+
+    if (viewIds.includes(activeViewId)) {
+        dispatch(updateRecentViews([activeViewId]))
+        socketManager.send(socketConstants.VIEWS_COUNTS_EXPIRED, [activeViewId])
+    }
+}
+
+/**
+ * Update updated datetime of recent views
+ */
+export const updateRecentViews = (viewIds) => ({
+    type: types.UPDATE_RECENT_VIEWS,
+    viewIds
 })

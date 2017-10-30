@@ -1,11 +1,17 @@
 // @flow
-import {fromJS} from 'immutable'
 import esprima from 'esprima'
+import {fromJS} from 'immutable'
+import moment from 'moment'
+import _isArray from 'lodash/isArray'
+import _isInteger from 'lodash/isInteger'
+
 import {EMPTY_OPERATORS} from '../../config'
 
 import type {Map} from 'immutable'
-import type {filterType} from './types'
+import type {filterType, viewsStateType} from './types'
 import type {agentsType} from '../agents/types'
+import {isCurrentlyOnView} from '../../utils'
+
 type viewType = Map<*,*>
 type astType = Map<*,*>
 type pathType = Array<string | number>
@@ -150,4 +156,74 @@ export function agentsViewingMessage(agents: agentsType): string {
 export function agentsTypingMessage(agents: agentsType): string {
     const agentsNames = agents.map(agent => agent.get('name')).join(', ')
     return `${agentsNames} ${agents.size > 1 ? 'are' : 'is'} typing`
+}
+
+// Class responsible for getting and storing recent views
+class RecentViewsStorage {
+    storage: ?Object
+    storageKey: string
+
+    constructor() {
+        this.storage = null
+        this.storageKey = 'recentViews'
+
+        if (window.localStorage) {
+            this.storage = window.localStorage
+        }
+    }
+
+    get(): ?Object {
+        if (!this.storage) {
+            return
+        }
+
+        let recentViews = null
+
+        try {
+            recentViews = JSON.parse(this.storage.getItem(this.storageKey))
+        } catch (error) {
+            console.log(error)
+            return
+        }
+
+        if (!_isArray(recentViews)) {
+            return
+        }
+
+        const views = {}
+        const now = moment.utc().toISOString()
+
+        recentViews.forEach(viewId => {
+            if (_isInteger(viewId)) {
+                views[viewId] = {
+                    inserted_datetime: now,
+                    updated_datetime: now
+                }
+            }
+        })
+
+        return views
+    }
+
+    set(views: Array<number>) {
+        if (this.storage) {
+            try {
+                localStorage.setItem(this.storageKey, JSON.stringify(views))
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    }
+}
+
+export const recentViewsStorage = new RecentViewsStorage()
+
+/**
+ * Return true if view should be updated (refetched)
+ * @param viewId
+ * @param viewsState
+ * @returns {boolean}
+ */
+export const shouldUpdateView = (viewId: string, viewsState: viewsStateType): boolean => {
+    return !['search', 'new', '0', 0].includes(viewId) && isCurrentlyOnView(viewId, viewsState)
 }

@@ -10,6 +10,7 @@ import * as utils from '../utils'
 
 import * as layoutActions from '../state/layout/actions'
 import * as activityActions from '../state/activity/actions'
+import * as viewsActions from '../state/views/actions'
 import * as currentAccountActions from '../state/currentAccount/actions'
 import {fetchUser, fetchUsers} from '../state/users/actions'
 import {fetchSettings} from '../state/settings/actions'
@@ -22,13 +23,18 @@ import * as segmentTracker from '../store/middlewares/segmentTracker'
 import KeyboardHelp from './common/components/KeyboardHelp'
 import socketManager from '../services/socketManager'
 
-import {POLL_ACTIVITY_INTERVAL, CHAT_POLLING_INTERVAL} from '../config'
-
 import notificationsTheme from './common/components/Notifications'
 import shortcutManager from '../services/shortcutManager'
 import BannerNotifications from './common/components/BannerNotifications/'
 import ModalNotification from './common/components/ModalNotification'
 import FullPage from './common/components/FullPage'
+import {
+    ACTIVE_VIEW_COUNT_POLLING_INTERVAL,
+    ACTIVE_VIEW_POLLING_INTERVAL,
+    CHAT_POLLING_INTERVAL,
+    RECENT_VIEWS_COUNTS_POLLING_INTERVAL
+} from '../config'
+
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'react-bootstrap-daterangepicker/css/daterangepicker.css'
@@ -56,7 +62,9 @@ type Props = {
     fetchSettings: typeof fetchSettings,
     fetchTags: typeof fetchTags,
     injectInterceptor: typeof injectInterceptor,
-    pollActivity: typeof activityActions.pollActivity,
+    fetchActiveViewCount: typeof viewsActions.fetchActiveViewCount,
+    fetchRecentViewsCounts: typeof viewsActions.fetchRecentViewsCounts,
+    fetchActiveViewTickets: typeof viewsActions.fetchActiveViewTickets,
     pollChats: typeof activityActions.pollChats,
     openPanel: typeof layoutActions.openPanel,
     closePanels: typeof layoutActions.closePanels,
@@ -78,7 +86,6 @@ type Props = {
     notifications: Array<*>,
 }
 
-const intervals = {}
 
 class App extends React.Component<Props> {
     componentWillMount() {
@@ -95,11 +102,12 @@ class App extends React.Component<Props> {
         }
 
         if (shouldPoll) {
-            intervals.activity = setInterval(this.props.pollActivity, POLL_ACTIVITY_INTERVAL)
-            intervals.chats = setInterval(this.props.pollChats, CHAT_POLLING_INTERVAL)
+            setInterval(this.props.pollChats, CHAT_POLLING_INTERVAL)
+            setInterval(this.props.fetchActiveViewTickets, ACTIVE_VIEW_POLLING_INTERVAL)
+            setInterval(this.props.fetchActiveViewCount, ACTIVE_VIEW_COUNT_POLLING_INTERVAL)
+            setInterval(this.props.fetchRecentViewsCounts, RECENT_VIEWS_COUNTS_POLLING_INTERVAL)
         }
 
-        this.props.pollActivity()
         this.props.pollChats()
         this.props.injectInterceptor()
 
@@ -219,7 +227,9 @@ export default connect(mapStateToProps, {
     fetchSettings,
     fetchTags,
     injectInterceptor: injectInterceptor,
-    pollActivity: activityActions.pollActivity,
+    fetchActiveViewCount: viewsActions.fetchActiveViewCount,
+    fetchRecentViewsCounts: viewsActions.fetchRecentViewsCounts,
+    fetchActiveViewTickets: viewsActions.fetchActiveViewTickets,
     pollChats: activityActions.pollChats,
     openPanel: layoutActions.openPanel,
     closePanels: layoutActions.closePanels,

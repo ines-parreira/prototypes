@@ -1,25 +1,29 @@
 // @flow
 import {fromJS} from 'immutable'
+import moment from 'moment'
 import _isNumber from 'lodash/isNumber'
+import type {Map} from 'immutable'
 
 import * as constants from './constants'
 import {getCode} from '../../utils'
-import {shouldUpdateView} from '../activity/utils'
 import {
     addFilterAST,
     removeFilterAST,
+    recentViewsStorage,
     updateFilterOperator,
-    updateFilterValue
+    updateFilterValue,
+    shouldUpdateView
 } from './utils'
 import * as selectors from './selectors'
 
-import type {Map} from 'immutable'
 import type {actionType} from '../types'
+import {MAX_RECENT_VIEWS} from '../../config/views'
 
 export const initialState = fromJS({
     items: [],
     counts: {},
     active: {},
+    recent: {},
     loading: false,
     _internal: {
         currentViewId: null,
@@ -39,6 +43,47 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
     let activeView = state.get('active', fromJS({}))
 
     switch (action.type) {
+        case constants.ADD_RECENT_VIEW: {
+            if (!action.viewId) {
+                return state
+            }
+
+            // update recent views
+            const newState = state.update('recent', views => {
+                const now = moment.utc().toISOString()
+                // merge the new view and keep the most recent ones
+                return views
+                    .mergeDeep(fromJS({
+                        [action.viewId]: {
+                            inserted_datetime: now,
+                            updated_datetime: now
+                        }
+                    }))
+                    .sortBy(view => view.get('insert_datetime'))
+                    .slice(-MAX_RECENT_VIEWS)
+            })
+
+            // store recent view on the client
+            const recentViews = selectors.getRecentViews({views: newState})
+            const viewIds = recentViews.keySeq().map(viewId => parseInt(viewId)).toJS()
+            recentViewsStorage.set(viewIds)
+
+            return newState
+
+        }
+
+        case constants.UPDATE_RECENT_VIEWS: {
+            // update datetime of given recent views
+            return state.update('recent', views => {
+                return views.map((view, viewId) => {
+                    if (action.viewIds.includes(parseInt(viewId))) {
+                        return view.set('updated_datetime', moment.utc().toISOString())
+                    }
+                    return view
+                })
+            })
+        }
+
         case constants.SET_VIEW_ACTIVE: {
             if (action.view) {
                 return state.set('active', action.view)
@@ -261,9 +306,21 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
         }
 
         case constants.UPDATE_COUNTS: {
-            return state.mergeDeep({
-                counts: action.counts
-            })
+            const viewIds = Object.keys(action.counts)
+            return state
+            // update view counts
+                .mergeDeep({
+                    counts: action.counts
+                })
+                // update datetime when we receive count for a recent view
+                .update('recent', views => {
+                    return views.map((view, viewId) => {
+                        if (viewIds.includes(viewId)) {
+                            return view.set('updated_datetime', moment.utc().toISOString())
+                        }
+                        return view
+                    })
+                })
         }
 
         default:

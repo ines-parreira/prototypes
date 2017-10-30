@@ -178,6 +178,32 @@ describe('global utils', () => {
         })
     })
 
+    describe('isCurrentlyOnTicket', () => {
+        beforeAll(() => {
+            Object.defineProperty(window.location, 'pathname', {writable: true})
+        })
+
+        afterAll(() => {
+            Object.defineProperty(window.location, 'pathname', {writable: false})
+        })
+
+        it('should be true', () => {
+            window.location.pathname = '/app/ticket/'
+            expect(utils.isCurrentlyOnTicket()).toBe(true)
+            window.location.pathname = '/app/ticket/12'
+            expect(utils.isCurrentlyOnTicket(12)).toBe(true)
+        })
+
+        it('should be false', () => {
+            window.location.pathname = '/app/rules'
+            expect(utils.isCurrentlyOnTicket()).toBe(false)
+            window.location.pathname = '/app/tickets'
+            expect(utils.isCurrentlyOnTicket()).toBe(false)
+            window.location.pathname = '/app/ticket/12'
+            expect(utils.isCurrentlyOnTicket(13)).toBe(false)
+        })
+    })
+
     describe('usage', () => {
         const _plan = fromJS(plan)
 
@@ -545,7 +571,10 @@ describe('global utils', () => {
             const value = {html, text}
 
             const contentState = ContentState.createFromText(text)
-            const editorState = addMention(EditorState.createWithContent(contentState), fromJS({name: 'Bob', id: 1}), '@', '@', 'SEGMENTED')
+            const editorState = addMention(EditorState.createWithContent(contentState), fromJS({
+                name: 'Bob',
+                id: 1
+            }), '@', '@', 'SEGMENTED')
 
             const cleanEditorState = utils.removeMentions(editorState, value)
             expect(convertToRaw(cleanEditorState.getCurrentContent()).entityMap).toEqual({})

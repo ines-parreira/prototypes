@@ -1,7 +1,10 @@
 import {fromJS} from 'immutable'
+import moment from 'moment'
 import reducers, {initialState} from '../reducers'
 import * as fixtures from '../../../fixtures/views'
 import * as types from '../constants'
+import * as utils from '../utils'
+import * as selectors from '../selectors'
 
 describe('reducers', () => {
     describe('views', () => {
@@ -149,6 +152,85 @@ describe('reducers', () => {
                 type: types.DELETE_VIEW_SUCCESS,
                 viewId: fixtures.view.id
             })).toMatchSnapshot()
+        })
+
+        it('should handle ADD_RECENT_VIEW', () => {
+            const beforeActionDt = moment.utc()
+            const state = reducers(initialState, {
+                type: types.ADD_RECENT_VIEW,
+                viewId: 1
+            })
+
+            const recentViews = selectors.getRecentViews({views: state}).toJS()
+            console.error(recentViews)
+            const viewIds = Object.keys(recentViews)
+            const now = moment.utc().add(1, 's')
+
+            // should store new view id in the Redux state
+            expect(viewIds).toEqual(['1'])
+            for (let view in recentViews) {
+                expect(moment(view.insert_datetime).isBetween(beforeActionDt, now)).toBe(true)
+                expect(moment(view.updated_datetime).isBetween(beforeActionDt, now)).toBe(true)
+            }
+
+            // should store recent views in the localStorage
+            const views = utils.recentViewsStorage.get()
+            expect(Object.keys(views)).toEqual(['1'])
+        })
+
+        it('should handle UPDATE_COUNTS', () => {
+            let state = initialState.mergeDeep(fromJS({
+                recent: {
+                    1: {},
+                    2: {}
+                }
+            }))
+            const counts = {
+                1: 12,
+                2: 234,
+                3: 78,
+            }
+            const beforeActionDt = moment.utc()
+
+            state = reducers(state, {
+                type: types.UPDATE_COUNTS,
+                counts
+            })
+
+            // should update view counts
+            expect(state.get('counts').toJS()).toEqual(counts)
+
+            const now = moment.utc().add(1, 's')
+            const recentViews = selectors.getRecentViews({views: state}).toJS()
+            // should update when these view counts were updated for each recent views
+            expect(recentViews).not.toEqual({})
+
+            for (let view in recentViews) {
+                expect(moment(view.updated_datetime).isBetween(beforeActionDt, now)).toBe(true)
+            }
+        })
+
+        it('should update updated datetime of recent views', () => {
+            const beforeActionDt = moment.utc()
+            let state = initialState.mergeDeep(fromJS({
+                recent: {
+                    1: {},
+                    2: {}
+                }
+            }))
+            state = reducers(state, {
+                type: types.UPDATE_RECENT_VIEWS,
+                viewIds: [1, 2]
+            })
+
+            const now = moment.utc().add(1, 's')
+            const recentViews = selectors.getRecentViews({views: state}).toJS()
+            // should update when these view counts were updated for each recent views
+            expect(recentViews).not.toEqual({})
+
+            for (let view in recentViews) {
+                expect(moment(view.updated_datetime).isBetween(beforeActionDt, now)).toBe(true)
+            }
         })
     })
 })

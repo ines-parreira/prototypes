@@ -4,6 +4,7 @@ import Promise from 'promise-polyfill'
 import includes from 'array-includes'
 
 import configureStore from './store/configureStore'
+import {recentViewsStorage} from './state/views/utils'
 
 // Polyfills
 Array.prototype.includes = Array.prototype.includes || includes // eslint-disable-line no-extend-native
@@ -36,6 +37,12 @@ const initialState = window.GORGIAS_STATE || {}
 
 if (initialState.currentUser) {
     initMoment(initialState.currentUser)
+}
+
+const recentViews = recentViewsStorage.get()
+
+if (recentViews) {
+    initialState.views.recent = recentViews
 }
 
 export const store = configureStore(toImmutableProps(initialState))
