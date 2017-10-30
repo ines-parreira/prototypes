@@ -166,7 +166,7 @@ class ShopifyIntegrationDetail extends React.Component {
                                     <p>
                                         We're currently importing all your Shopify customers. This way, you'll see
                                         customer info & orders next to tickets. We'll notify you via email when the
-                                        import is done. <Link to="/app/users">Review imported users.</Link>
+                                        import is done. We typically sync 3,000 customers an hour. <Link to="/app/users">Review imported users.</Link>
                                     </p>
                                 </Alert>
                             )
