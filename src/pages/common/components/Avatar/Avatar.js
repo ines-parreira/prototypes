@@ -2,6 +2,7 @@
 import React from 'react'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
+import _isEqual from 'lodash/isEqual'
 
 import {userPictureUrl} from './utils'
 
@@ -42,7 +43,9 @@ export default class Avatar extends React.Component<Props, State> {
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        this._setImageUrl(nextProps)
+        if (!_isEqual(nextProps, this.props)) {
+            this._setImageUrl(nextProps)
+        }
     }
 
     _setImageUrl = _debounce((props) => {
