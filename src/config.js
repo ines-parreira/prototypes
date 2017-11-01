@@ -122,12 +122,6 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/aircall.png'
     },
     {
-        type: 'smooch',
-        title: 'Smooch',
-        description: 'Connect your own Smooch to Gorgias',
-        image: 'integrations/smooch.png',
-    },
-    {
         type: 'http',
         title: 'HTTP',
         description: 'Connect any application to Gorgias',
@@ -246,6 +240,18 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         description: 'Trigger zaps with macros',
         url: 'https://gorgias.helpdocs.io/integrations/http-integrations#zapier',
         image: 'integrations/zapier.png',
+    },
+    {
+        title: 'Ottspott',
+        description: 'Create tickets from phone conversations',
+        url: 'http://docs.gorgias.io/integrations/ottspott',
+        image: 'integrations/ottspott.png'
+    },
+    {
+        type: 'smooch',
+        title: 'Smooch',
+        description: 'Connect your own Smooch to Gorgias',
+        image: 'integrations/smooch.png',
     }
 ]
 
