@@ -1,17 +1,10 @@
 import axios from 'axios'
-
 import _get from 'lodash/get'
 import _find from 'lodash/find'
 
 import {hoursToSeconds} from './utils'
 
-// polling intervals
-export const CHAT_POLLING_INTERVAL = 9000
-export const ACTIVE_VIEW_POLLING_INTERVAL = 10000
-export const ACTIVE_VIEW_COUNT_POLLING_INTERVAL = 1000
-export const RECENT_VIEWS_COUNTS_POLLING_INTERVAL = 5000
-
-// TODO @jebarjonet switch all configuration to modular version
+// TODO @LouisBarranqueiro switch all configuration to modular version
 
 /**
  * Set default axios headers

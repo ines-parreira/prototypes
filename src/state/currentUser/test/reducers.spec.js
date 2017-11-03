@@ -173,4 +173,27 @@ describe('current user reducers', () => {
             ).toJS()
         ).toMatchSnapshot()
     })
+
+    describe('should handle TOGGLE_ACTIVE_STATUS', () => {
+        it('without status', () => {
+            const action = {
+                type: types.TOGGLE_ACTIVE_STATUS,
+            }
+            expect(reducer(initialState, action))
+                .toEqualImmutable(initialState.set('is_active', true))
+            expect(reducer(initialState.set('is_active', true), action))
+                .toEqualImmutable(initialState.set('is_active', false))
+        })
+
+        it('with status', () => {
+            const action = {
+                type: types.TOGGLE_ACTIVE_STATUS,
+                status: false
+            }
+            expect(reducer(initialState, action))
+                .toEqualImmutable(initialState.set('is_active', false))
+            expect(reducer(initialState, {...action, status: true}))
+                .toEqualImmutable(initialState.set('is_active', true))
+        })
+    })
 })

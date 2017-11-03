@@ -68,3 +68,8 @@ export const isHidingTips = createSelector(
     [getPreferences],
     state => state.getIn(['data', 'hide_tips']) || false
 )
+
+export const isActive = createSelector(
+    [getCurrentUserState],
+    state => state.get('is_active') !== false
+)

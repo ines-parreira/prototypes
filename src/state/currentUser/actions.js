@@ -1,10 +1,11 @@
 // @flow
 import axios from 'axios'
 import * as constants from './constants'
+import _isUndefined from 'lodash/isUndefined'
 import {notify} from '../notifications/actions'
 
 // types
-import type {dispatchType} from '../types'
+import type {dispatchType, getStateType} from '../types'
 
 export const changePassword = (oldPassword: string, newPassword: string) => ((dispatch: dispatchType): Promise<dispatchType> => {
     dispatch({type: constants.CHANGE_PASSWORD_START})
@@ -75,5 +76,17 @@ export function submitSetting(data: {id?: string, type: string}, notification: b
                     reason: 'Failed to update settings'
                 })
             })
+    }
+}
+
+export const toggleActiveStatus = (status: ?boolean) => (dispatch: dispatchType, getState: getStateType) => {
+    const {currentUser} = getState()
+    const currentStatus = currentUser.get('is_active')
+
+    if (_isUndefined(status) || status !== currentStatus) {
+        dispatch({
+            type: constants.TOGGLE_ACTIVE_STATUS,
+            status
+        })
     }
 }

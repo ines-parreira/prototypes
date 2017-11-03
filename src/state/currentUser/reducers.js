@@ -2,6 +2,7 @@
 import * as userConstants from '../users/constants'
 import * as constants from './constants'
 import {fromJS} from 'immutable'
+import _isUndefined from 'lodash/isUndefined'
 
 // types
 import type {Map} from 'immutable'
@@ -63,6 +64,8 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
             }
             return newState.update('settings', settings => settings.push(fromJS(action.resp)))
         }
+        case constants.TOGGLE_ACTIVE_STATUS:
+            return state.update('is_active', status => _isUndefined(action.status) ? !status : action.status)
         default:
             return state
     }

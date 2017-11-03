@@ -162,7 +162,6 @@ describe('reducers', () => {
             })
 
             const recentViews = selectors.getRecentViews({views: state}).toJS()
-            console.error(recentViews)
             const viewIds = Object.keys(recentViews)
             const now = moment.utc().add(1, 's')
 

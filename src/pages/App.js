@@ -28,12 +28,8 @@ import shortcutManager from '../services/shortcutManager'
 import BannerNotifications from './common/components/BannerNotifications/'
 import ModalNotification from './common/components/ModalNotification'
 import FullPage from './common/components/FullPage'
-import {
-    ACTIVE_VIEW_COUNT_POLLING_INTERVAL,
-    ACTIVE_VIEW_POLLING_INTERVAL,
-    CHAT_POLLING_INTERVAL,
-    RECENT_VIEWS_COUNTS_POLLING_INTERVAL
-} from '../config'
+import userActivityManager from '../services/userActivityManager'
+import pollingManager from '../services/pollingManager'
 
 
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -86,34 +82,15 @@ type Props = {
     notifications: Array<*>,
 }
 
-
 class App extends React.Component<Props> {
     componentWillMount() {
         this.props.fetchUsers(['agent', 'admin', 'bot'])
-        // activity polling
-        let shouldPoll = true
-        const pollingParameter = this.props.location.query._activity_polling || ''
-        const pollingConfiguration = window.DISABLE_ACTIVITY_POLLING || ''
-
-        if (pollingParameter) {
-            shouldPoll = pollingParameter === 'true'
-        } else if (pollingConfiguration) {
-            shouldPoll = pollingConfiguration === 'False'
-        }
-
-        if (shouldPoll) {
-            setInterval(this.props.pollChats, CHAT_POLLING_INTERVAL)
-            setInterval(this.props.fetchActiveViewTickets, ACTIVE_VIEW_POLLING_INTERVAL)
-            setInterval(this.props.fetchActiveViewCount, ACTIVE_VIEW_COUNT_POLLING_INTERVAL)
-            setInterval(this.props.fetchRecentViewsCounts, RECENT_VIEWS_COUNTS_POLLING_INTERVAL)
-        }
-
-        this.props.pollChats()
         this.props.injectInterceptor()
-
         // We're triggering an account update the first time the app is mounted so we can get
         // the notification from the middleware for limited (Ex: disabled, free trial ending) accounts
         this.props.updateAccountSuccess(this.props.currentAccount)
+        userActivityManager.watch()
+        pollingManager.start()
     }
 
     componentDidMount() {
@@ -124,6 +101,20 @@ class App extends React.Component<Props> {
     componentWillUnmount() {
         shortcutManager.unbind('App')
         socketManager.disconnect()
+        pollingManager.stop()
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const isUserActive = this.props.currentUser.get('is_active')
+        const isNextUserActive = nextProps.currentUser.get('is_active')
+
+        if (isUserActive && !isNextUserActive) {
+            // Stop polling when current user becomes inactive
+            pollingManager.pause()
+        } else if (!isUserActive && isNextUserActive) {
+            // Start polling when current user becomes active
+            pollingManager.start()
+        }
     }
 
     render() {

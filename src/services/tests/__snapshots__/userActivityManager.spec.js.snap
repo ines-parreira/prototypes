@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`services userActivityManager should dispatch TOGGLE_ACTIVE_STATUS 1`] = `
+Array [
+  Object {
+    "status": true,
+    "type": "TOGGLE_ACTIVE_STATUS",
+  },
+]
+`;
+
+exports[`services userActivityManager should dispatch TOGGLE_ACTIVE_STATUS 2`] = `
+Array [
+  Object {
+    "status": false,
+    "type": "TOGGLE_ACTIVE_STATUS",
+  },
+]
+`;

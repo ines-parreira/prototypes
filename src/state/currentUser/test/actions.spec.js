@@ -4,6 +4,7 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import * as actions from '../actions'
 import {initialState} from '../reducers'
+import * as types from '../constants'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -52,6 +53,33 @@ describe('current user actions', () => {
 
             return store.dispatch(actions.submitSetting(data))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+    })
+
+    describe('toggleActiveStatus()', () => {
+        it('should dispatch without status', () => {
+
+            const expectedActions = [{
+                type: types.TOGGLE_ACTIVE_STATUS,
+            }]
+            store.dispatch(actions.toggleActiveStatus())
+            expect(store.getActions()).toEqual(expectedActions)
+        })
+        it('should dispatch with status', () => {
+            const expectedActions = [{
+                type: types.TOGGLE_ACTIVE_STATUS,
+                status: true
+            }]
+            store.dispatch(actions.toggleActiveStatus(true))
+            expect(store.getActions()).toEqual(expectedActions)
+        })
+
+        it('should not dispatch when the status is the same', () => {
+            store = mockStore({
+                currentUser: initialState.set('is_active', true)
+            })
+            store.dispatch(actions.toggleActiveStatus(true))
+            expect(store.getActions()).toEqual([])
         })
     })
 })

@@ -75,4 +75,15 @@ describe('current user selectors', () => {
         expect(selectors.isHidingTips(state)).toBe(true)
         expect(selectors.isHidingTips({})).toBe(false)
     })
+
+    it('isActive', () => {
+        state = {currentUser: fromJS({})}
+        expect(selectors.isActive(state)).toBe(true)
+
+        state = {currentUser: fromJS({is_active: true})}
+        expect(selectors.isActive(state)).toBe(true)
+
+        state = {currentUser: fromJS({is_active: false})}
+        expect(selectors.isActive(state)).toBe(false)
+    })
 })
