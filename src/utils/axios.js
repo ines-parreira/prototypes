@@ -27,6 +27,27 @@ export const injectInterceptor = () => (dispatch: dispatchType) => {
                     message: `An update is available for Gorgias. Click <a>here</a> to reload the page and get the 
             latest improvements.`
                 }))
+
+                setTimeout(() => {
+                    dispatch(notify({
+                        dismissAfter: 0,
+                        status: 'warning',
+                        dismissible: false,
+                        allowHtml: true,
+                        message: 'An update is available for Gorgias. The app will be reloaded automatically in few seconds.',
+                        buttons: [{
+                            name: 'Reload',
+                            primary: true,
+                            onClick: () => {
+                                window.location.reload()
+                            },
+                        }]
+                    }))
+
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 60000)
+                }, 10800000) // 3 hours
             }, 15000)
         }
         return response
