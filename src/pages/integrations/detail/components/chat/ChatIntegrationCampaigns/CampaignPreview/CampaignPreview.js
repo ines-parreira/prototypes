@@ -30,10 +30,13 @@ export default class CampaignPreview extends React.Component {
                             <img src={authorAvatarUrl || 'https://www.gravatar.com/avatar/0?d=mm'}/>
                         </div>
                         <div className={css.message}>
-                            <div>
+                            <div className={css.authorName}>
                                 <b>{authorName || '[Random agent\'s name]'}</b>
                             </div>
-                            <div dangerouslySetInnerHTML={{__html: html}}/>
+                            <div
+                                className={css.messageText}
+                                dangerouslySetInnerHTML={{__html: html}}
+                            />
                         </div>
                     </div>
                     <div className={css.footer}>
