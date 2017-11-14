@@ -1,5 +1,57 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`actions new message addSignature() should always pass the args to the reducer 1`] = `
+Array [
+  Object {
+    "args": Immutable.Map {
+      contentState: Object {
+            "blockMap": Object {
+              "someRandomKey": Object {
+                "characterList": Array [
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                ],
+                "data": Object {},
+                "depth": 0,
+                "key": "someRandomKey",
+                "text": "foo",
+                "type": "unstyled",
+              },
+            },
+            "selectionAfter": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+            "selectionBefore": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+          },
+},
+    "currentUser": Object {},
+    "type": "NEW_MESSAGE_ADD_SIGNATURE",
+  },
+]
+`;
+
 exports[`actions new message prepare() email-forward 1`] = `
 Array [
   Object {

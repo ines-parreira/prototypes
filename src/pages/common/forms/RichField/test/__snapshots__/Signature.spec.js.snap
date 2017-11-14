@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Signature should render the signature button 1`] = `
+<Signature
+  addSignature={[Function]}
+  currentUser={
+    Immutable.Map {
+      signature_text: "Text Signature",
+      signature_html: "<a href=\\"#\\">Text Signature</a>",
+    }
+  }
+  editorState={
+    EditorState {
+      "_immutable": Object {
+        "allowUndo": true,
+        "currentContent": Object {
+          "blockMap": Object {
+            "123": Object {
+              "characterList": Array [],
+              "data": Object {},
+              "depth": 0,
+              "key": "123",
+              "text": "",
+              "type": "unstyled",
+            },
+          },
+          "selectionAfter": Object {
+            "anchorKey": "123",
+            "anchorOffset": 0,
+            "focusKey": "123",
+            "focusOffset": 0,
+            "hasFocus": false,
+            "isBackward": false,
+          },
+          "selectionBefore": Object {
+            "anchorKey": "123",
+            "anchorOffset": 0,
+            "focusKey": "123",
+            "focusOffset": 0,
+            "hasFocus": false,
+            "isBackward": false,
+          },
+        },
+        "decorator": null,
+        "directionMap": Object {
+          "123": "LTR",
+        },
+        "forceSelection": false,
+        "inCompositionMode": false,
+        "inlineStyleOverride": null,
+        "lastChangeType": null,
+        "nativelyRenderedContent": null,
+        "redoStack": Array [],
+        "selection": Object {
+          "anchorKey": "123",
+          "anchorOffset": 0,
+          "focusKey": "123",
+          "focusOffset": 0,
+          "hasFocus": false,
+          "isBackward": false,
+        },
+        "treeMap": Object {
+          "123": Array [
+            Object {
+              "decoratorKey": null,
+              "end": 0,
+              "leaves": Array [
+                Object {
+                  "end": 0,
+                  "start": 0,
+                },
+              ],
+              "start": 0,
+            },
+          ],
+        },
+        "undoStack": Array [],
+      },
+    }
+  }
+  isDirty={false}
+  newMessageType="email"
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+/>
+`;

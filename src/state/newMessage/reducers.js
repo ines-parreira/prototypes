@@ -239,10 +239,6 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
             }
 
             context = responseUtils.addCache(context)
-            // only deal with signature when email
-            if (state.getIn(['newMessage', 'source', 'type']) === 'email') {
-                context = responseUtils.addSignature(context)
-            }
             context = responseUtils.applyMacro(context)
             responseUtils.updateCache(context)
 
@@ -266,9 +262,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
                 })
             }
 
-            const dirty = contentState
-                && contentState.hasText()
-                && !responseUtils.onlySignature(contentState, action.currentUser)
+            const dirty = !!contentState
             return context.state.mergeDeep({
                 newMessage: {
                     body_text: contentState ? contentState.getPlainText() : '',
@@ -278,7 +272,6 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
                     dirty,
                     forceFocus: !!context.forceFocus,
                     forceUpdate: !!context.forceUpdate,
-                    signatureAdded: !!context.signatureAdded,
                     cacheAdded: !!context.cacheAdded,
                 }
             })
@@ -286,6 +279,35 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
                 .setIn(['state', 'contentState'], contentState)
                 .setIn(['state', 'selectionState'], selectionState)
                 .setIn(['newMessage', 'mention_ids'], ids)
+        }
+
+        case types.NEW_MESSAGE_ADD_SIGNATURE: {
+            const contentState = action.args.get('contentState')
+
+            // only deal with signature when email
+            if (state.getIn(['newMessage', 'source', 'type']) !== 'email') {
+                return state
+            }
+
+            const context = responseUtils.addSignature({
+                state,
+                contentState,
+                action: {
+                    currentUser: action.currentUser,
+                }
+            })
+
+            return context.state.mergeDeep({
+                newMessage: {
+                    body_text: context.contentState ? context.contentState.getPlainText() : '',
+                    body_html: context.contentState ? convertToHTML(context.contentState) : ''
+                },
+                state: {
+                    forceUpdate: context.forceUpdate,
+                    signatureAdded: context.signatureAdded
+                }
+            })
+                .setIn(['state', 'contentState'], context.contentState)
         }
 
         case types.NEW_MESSAGE_SET_SENDER: {

@@ -519,7 +519,7 @@ exports[`components TicketMessageBody use stripped_html if available 1`] = `
         }
       />
       <div
-        className="mail-quote-toggle"
+        className="btn-more"
         onClick={[Function]}
         title="Show full content"
       >

@@ -4,6 +4,7 @@ import {EditorState, ContentState} from 'draft-js'
 import addMention from '../../../pages/common/draftjs/plugins/mentions/modifiers/addMention'
 import reducer, {makeNewMessage, initialState} from '../reducers'
 import * as types from '../constants'
+import {convertToHTML} from '../../../utils'
 
 jest.addMatchers(immutableMatchers)
 
@@ -222,6 +223,31 @@ describe('New message reducers', () => {
                 }).getIn(['newMessage', 'mention_ids'])
             ).toEqual(fromJS([8]))
         })
+
+        it('should not add signature to email', () => {
+            const action = {
+                type: types.SET_RESPONSE_TEXT,
+                state: initialState,
+                args: fromJS({
+                    contentState: ContentState.createFromText('Hello')
+                }),
+                currentUser: fromJS({
+                    signature_text: 'Cruel World!',
+                    signature_html: '<a href="#">Cruel World!</a>',
+                })
+            }
+
+            expect(reducer(
+                initialState.mergeDeep({
+                    newMessage: {
+                        source: {
+                            type: 'email'
+                        }
+                    },
+                }),
+                action
+            ).getIn(['state', 'contentState']).getPlainText()).toEqual('Hello')
+        })
     })
 
     describe('NEW_MESSAGE_SET_RECEIVERS action', () => {
@@ -277,4 +303,43 @@ describe('New message reducers', () => {
         }
         expect(reducer(initialState, action)).toMatchSnapshot()
     })
+
+    describe('NEW_MESSAGE_ADD_SIGNATURE action', () => {
+        let action
+        let body_text
+        let body_html
+        beforeEach(() => {
+            action = {
+                type: types.NEW_MESSAGE_ADD_SIGNATURE,
+                state: initialState,
+                args: fromJS({
+                    contentState: ContentState.createFromText('Hello')
+                }),
+                currentUser: fromJS({
+                    signature_text: 'Cruel World!',
+                    signature_html: '<a href="#">Cruel World!</a>',
+                })
+            }
+
+            body_text = 'Hello\n\nCruel World!'
+            body_html = '<div>Hello</div><br><div><a href=\"about:blank#\" target=\"_blank\">Cruel World!</a></div>'
+        })
+
+        it('should match the contentState plain text', () => {
+            expect(reducer(initialState, action).getIn(['state', 'contentState']).getPlainText()).toBe(body_text)
+        })
+
+        it('should match the contentState html', () => {
+            expect(convertToHTML(reducer(initialState, action).getIn(['state', 'contentState']))).toBe(body_html)
+        })
+
+        it('should add signature to body_text', () => {
+            expect(reducer(initialState, action).getIn(['newMessage', 'body_text'])).toBe(body_text)
+        })
+
+        it('should add signature to body_html', () => {
+            expect(reducer(initialState, action).getIn(['newMessage', 'body_html'])).toBe(body_html)
+        })
+    })
+
 })

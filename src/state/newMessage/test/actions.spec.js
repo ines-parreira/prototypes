@@ -395,5 +395,68 @@ describe('actions', () => {
                 expect(socketManager.send.mock.calls.length).toBe(0)
             })
         })
+
+        describe('prepareTicketDataToSend()', () => {
+            let data = {}
+
+            beforeEach(() => {
+                store = mockStore({
+                    newMessage: initialState,
+                    currentUser: {}
+                })
+                const contentState = ContentState.createFromText('foo')
+
+                store.dispatch((dispatch) => {
+                    data = actions.prepareTicketDataToSend(
+                        dispatch,
+                        fromJS({
+                            messages: [],
+                            status: 'open',
+                            channel: ''
+                        }),
+                        fromJS({
+                            state: {contentState},
+                            newMessage: {
+                                source: {
+                                    type: 'email'
+                                }
+                            }
+                        }),
+                        '',
+                        [],
+                        fromJS({
+                            signature_text: 'Cruel World!',
+                            signature_html: '<a href="https://gorgias.io/">Cruel World!</a>',
+                        })
+                    )
+                })
+            })
+
+            it('should add plain text signature to message', () => {
+                expect.assertions(1)
+                // BUG because generateRandomKey is mocked newlines not added
+                expect(data.newMessage.body_text).toBe('fooCruel World!')
+            })
+
+            it('should add html signature to message', () => {
+                expect.assertions(1)
+                // BUG because generateRandomKey is mocked <br>s are not added
+                expect(data.newMessage.body_html).toBe('<div>foo<a href="https://gorgias.io/" target="_blank">Cruel World!</a></div>')
+            })
+        })
+
+        describe('addSignature()', () => {
+            it('should always pass the args to the reducer', () => {
+                store = mockStore({
+                    newMessage: initialState,
+                    currentUser: {}
+                })
+                const contentState = ContentState.createFromText('foo')
+
+                store.dispatch(actions.addSignature(fromJS({contentState})))
+
+                expect(store.getActions()).toMatchSnapshot()
+            })
+        })
     })
 })

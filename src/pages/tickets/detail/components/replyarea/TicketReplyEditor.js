@@ -381,6 +381,7 @@ class TicketReplyEditor extends React.Component<Props, State> {
                     alertMode={isAlert && 'warning'}
                     alertText={alertText}
                     placeholder="Click here to reply, or press r."
+                    signature
                 />
             </div>
         )
@@ -391,7 +392,7 @@ function mapStateToProps(state) {
     return {
         newMessageType: newMessageSelectors.getNewMessageType(state),
         newMessage: state.newMessage,
-        agents: getOtherAgents(state)
+        agents: getOtherAgents(state),
     }
 }
 

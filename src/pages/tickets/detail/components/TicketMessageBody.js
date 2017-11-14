@@ -42,7 +42,7 @@ export default class TicketMessageBody extends React.Component<Props, State> {
             if (stripped.replace(/\s+/g, '') !== body.replace(/\s+/g, '')) {
                 quoteButton = (
                     <div
-                        className="mail-quote-toggle"
+                        className="btn-more"
                         title="Show full content"
                         onClick={() => this.setState({showFullBody: !this.state.showFullBody})}
                     >

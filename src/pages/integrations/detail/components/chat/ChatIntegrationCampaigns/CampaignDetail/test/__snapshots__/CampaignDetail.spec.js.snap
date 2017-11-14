@@ -884,6 +884,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                           placeholder="Write your message"
                           required={true}
                           rows="8"
+                          signature={false}
                           toolbarProps={
                             Object {
                               "displayedActions": Array [

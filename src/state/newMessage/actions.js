@@ -16,6 +16,7 @@ import * as ticketConstants from '../ticket/constants'
 import {notify} from '../notifications/actions'
 import * as ticketActions from '../ticket/actions'
 import {renderTemplate} from '../../pages/common/utils/template'
+import {convertToHTML} from '../../utils'
 
 import {
     getActionTemplate,
@@ -174,6 +175,20 @@ export const setResponseText = (args: Map<*,*> = fromJS({})) => (dispatch: dispa
 }
 
 /**
+ * Adds the signature to the reply editor
+ */
+export const addSignature = (args: Map<*,*> = fromJS({})) => (dispatch: dispatchType, getState: getStateType): dispatchType => {
+    const state = getState()
+    const {currentUser} = state
+
+    return dispatch({
+        type: constants.NEW_MESSAGE_ADD_SIGNATURE,
+        args,
+        currentUser,
+    })
+}
+
+/**
  * Set new message receivers
  * @param receivers - object such as {to: [], cc: []}
  * @param replaceAll - boolean true if should replace all recipients properties with the incoming object (to, cc, bcc)
@@ -307,7 +322,7 @@ export const initializeMessageDraft = () => (dispatch: dispatchType) => {
  * Adds the newMessage to the ticket's messages, attaches actions and sets some source elements on the message.
  * Also sets some properties on the ticket.
  */
-function prepareTicketDataToSend(dispatch: dispatchType, ticket: Map<*,*>, newMessage: newMessageType, status: ?string, macroActions: ?macroActionsType, currentUser: currentUserType): ?{ticket: ticketType, newMessage: newMessageType} {
+export function prepareTicketDataToSend(dispatch: dispatchType, ticket: Map<*,*>, newMessage: Map<*,*>, status: ?string, macroActions: ?macroActionsType, currentUser: currentUserType): ?{ticket: ticketType, newMessage: newMessageType} {
     const data = toJS(ticket)
     data.newMessage = toJS(newMessage).newMessage
 
@@ -319,6 +334,25 @@ function prepareTicketDataToSend(dispatch: dispatchType, ticket: Map<*,*>, newMe
     // Prepare newMessage to send it.
     if (data.newMessage) {
         const sourceType = data.newMessage.source.type
+
+        // add signature
+        // only on email, if not already added
+        if (sourceType === 'email' && !newMessage.getIn(['state', 'signatureAdded'], false)) {
+            const context = responseUtils.addSignature({
+                state: newMessage,
+                contentState: newMessage.getIn(['state', 'contentState']),
+                action: {currentUser},
+            })
+
+            const bodyText = context.contentState ? context.contentState.getPlainText() : ''
+            const bodyHtml = context.contentState ? convertToHTML(context.contentState) : ''
+            if (bodyText) {
+                data.newMessage.body_text = bodyText
+            }
+            if (bodyHtml) {
+                data.newMessage.body_html = bodyHtml
+            }
+        }
 
         let lastSameTypeMessage = getLastSameSourceTypeMessage(ticket.get('messages'), sourceType)
 

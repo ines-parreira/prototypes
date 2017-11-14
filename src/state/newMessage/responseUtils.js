@@ -7,7 +7,7 @@ import _pickBy from 'lodash/pickBy'
 import {fromJS} from 'immutable'
 import {convertFromHTML} from '../../utils'
 import {isRichType} from '../../config/ticket'
-import {convertToRaw, convertFromRaw, ContentState, SelectionState} from 'draft-js'
+import {convertToRaw, convertFromRaw, ContentState, SelectionState, Modifier} from 'draft-js'
 
 import ticketReplyCache from './ticketReplyCache'
 import {renderTemplate} from '../../pages/common/utils/template'
@@ -34,6 +34,16 @@ type contextType = {
     signatureAdded?: boolean,
     cacheAdded?: boolean,
     selectionState?: SelectionState,
+}
+type signatureContextType = {
+    action: {
+        currentUser: currentUserType
+    },
+    state: Map<*,*>,
+    contentState: ContentState,
+    selectionState?: SelectionState,
+    signatureAdded?: boolean,
+    forceUpdate?: boolean,
 }
 type rawType = {
     blocks: Array<*>,
@@ -193,7 +203,7 @@ export const addCache = (context: contextType): contextType => {
  * @param blocks
  * @private
  */
-const _selectionAfter = (blocks: Array<{key: string, text: string}>) => {
+const _selectionAfter = (blocks: Array<{key: string, text: string}>): ?SelectionState => {
     if (blocks && blocks.length) {
         // we only want the last block, we put the selection after it
         const block = blocks.slice(-1)[0]
@@ -212,7 +222,7 @@ const _selectionAfter = (blocks: Array<{key: string, text: string}>) => {
  * @returns {*}
  * @private
  */
-const _markSignatureAdded = (context: contextType): contextType => {
+const _markSignatureAdded = (context: signatureContextType): signatureContextType => {
     context.signatureAdded = true
     context.state = context.state.setIn(['state', 'signatureAdded'], true)
     return context
@@ -224,17 +234,12 @@ const _markSignatureAdded = (context: contextType): contextType => {
  * @param context
  * @returns {*}
  */
-export const addSignature = (context: contextType): contextType => {
+export const addSignature = (context: signatureContextType): signatureContextType => {
     const {action, state, contentState} = context
 
     context.signatureAdded = state.getIn(['state', 'signatureAdded'], false)
 
     if (context.signatureAdded) {
-        return _markSignatureAdded(context)
-    }
-
-    // Only add if we don't have any text already or we added from macro
-    if (contentState && contentState.hasText() && !action.fromMacro) {
         return _markSignatureAdded(context)
     }
 
@@ -260,11 +265,13 @@ export const addSignature = (context: contextType): contextType => {
     signatureBlocks = signatureBlocks.map((b) => b.set('data', fromJS({signature: true})))
 
     // Concat the signature blocks at the end of the content
-    context.contentState = ContentState.createFromBlockArray(signatureBlocks)
+    const signatureContentState = ContentState.createFromBlockArray(signatureBlocks)
 
-    // TODO(@xarg): commented this out because we don't want to force the selection if a signature is set
-    // Set the position of the cursor just before the signature. Only if we don't already have a selection state!
-    // context.selectionState = _selectionBefore(context.contentState.getBlocksAsArray())
+    // using contentState.getSelectionAfter inserts the signature at the start,
+    // when the content is loaded from cache.
+    context.selectionState = _selectionAfter(contentState.getBlocksAsArray()) || contentState.getSelectionAfter()
+    context.contentState = Modifier.replaceWithFragment(contentState, context.selectionState, signatureContentState.getBlockMap())
+
     context.forceUpdate = true
 
     return _markSignatureAdded(context)

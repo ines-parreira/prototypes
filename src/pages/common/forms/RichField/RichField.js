@@ -10,13 +10,15 @@ import createDndPlugin from 'draft-js-dnd-plugin'
 import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
 import createResizeablePlugin from 'draft-js-resizeable-plugin'
 
-import createToolbarPlugin from '../draftjs/plugins/toolbar'
+import createToolbarPlugin from '../../draftjs/plugins/toolbar'
 
-import createMentionPlugin, {suggestionsFilter} from '../draftjs/plugins/mentions'
+import createMentionPlugin, {suggestionsFilter} from '../../draftjs/plugins/mentions'
 
-import InputField from './InputField'
-import {convertFromHTML, convertToHTML, removeMentions} from '../../../utils'
-import {scrollToReactNode} from '../../common/utils/keyboard'
+import InputField from '../InputField'
+import {convertFromHTML, convertToHTML, removeMentions} from '../../../../utils'
+import {scrollToReactNode} from '../../../common/utils/keyboard'
+
+import Signature from './Signature'
 
 import 'draft-js/dist/Draft.css'
 
@@ -29,6 +31,7 @@ type Props = {
     allowExternalChanges: boolean,
     placeholder: string,
     value: any,
+    signature: boolean,
 
     mentionProps?: {
         suggestions: suggestionsType,
@@ -47,7 +50,8 @@ type State = {
 
 export default class RichField extends InputField<Props, State> {
     static defaultProps = {
-        allowExternalChanges: false
+        allowExternalChanges: false,
+        signature: false
     }
 
     constructor(props: Props) {
@@ -219,6 +223,7 @@ export default class RichField extends InputField<Props, State> {
             mentionProps,
             toolbarProps,
             displayOnly,
+            signature,
             ...rest,
         } = this.props
 
@@ -293,7 +298,13 @@ export default class RichField extends InputField<Props, State> {
                             />
                         )
                     }
+
+                    {
+                        signature &&
+                        <Signature editorState={this.state.editorState} />
+                    }
                 </div>
+
                 <Toolbar {...toolbarProps} />
             </div>
         )

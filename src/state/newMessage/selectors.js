@@ -26,6 +26,11 @@ export const isLoading = (name: string) => createSelector(
 // ex: isLoading: makeIsLoading(state)   then : const isMerging = isLoading('merge')
 export const makeIsLoading = (state: stateType) => (name: string): boolean => isLoading(name)(state)
 
+export const isDirty = createSelector(
+    [getNewMessageState],
+    state => state.getIn(['state', 'dirty'], false)
+)
+
 export const getNewMessage = createImmutableSelector(
     [getNewMessageState],
     state => state.get('newMessage') || fromJS({})
