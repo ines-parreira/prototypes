@@ -73,3 +73,5 @@ g/static/*/_build/*
 
 # docker-compose env_file
 .env
+
+db_fixtures
