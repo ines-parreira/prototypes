@@ -188,6 +188,7 @@ class SocketManager {
         }
 
         const roomData = {
+            clientId: window.CLIENT_ID,
             event: ROOM_JOINED,
             dataType: data.dataType,
             data: data.data,
@@ -233,6 +234,7 @@ class SocketManager {
         }
 
         const roomData = {
+            clientId: window.CLIENT_ID,
             event: ROOM_LEFT,
             dataType: data.dataType,
             data: data.data,

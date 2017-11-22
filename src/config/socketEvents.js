@@ -9,6 +9,7 @@ import * as currentAccountConstants from '../state/currentAccount/constants'
 import * as socketConstants from './socketConstants'
 
 import {isCurrentlyOnTicket} from '../utils'
+import {SID_UPDATED} from './socketConstants'
 
 /**
  * Events that can be sent to server via socket
@@ -20,6 +21,7 @@ export const sendEvents = [
         name: socketConstants.TICKET_VIEWED,
         dataToSend: function (id) {
             return {
+                clientId: window.CLIENT_ID,
                 event: socketConstants.TICKET_VIEWED,
                 dataType: 'Ticket',
                 data: parseInt(id),
@@ -30,6 +32,7 @@ export const sendEvents = [
         name: socketConstants.AGENT_TYPING_STARTED,
         dataToSend: function (id) {
             return {
+                clientId: window.CLIENT_ID,
                 event: socketConstants.AGENT_TYPING_STARTED,
                 dataType: 'Ticket',
                 data: parseInt(id),
@@ -40,6 +43,7 @@ export const sendEvents = [
         name: socketConstants.AGENT_TYPING_STOPPED,
         dataToSend: function (id) {
             return {
+                clientId: window.CLIENT_ID,
                 event: socketConstants.AGENT_TYPING_STOPPED,
                 dataType: 'Ticket',
                 data: parseInt(id),
@@ -55,6 +59,15 @@ export const sendEvents = [
                 data: viewIds,
             }
         },
+    },
+    {
+        name: socketConstants.SID_UPDATED,
+        dataToSend: function () {
+            return {
+                clientId: window.CLIENT_ID,
+                event: socketConstants.SID_UPDATED
+            }
+        }
     }
 ]
 
@@ -69,6 +82,7 @@ export const joinEvents = [{
     name: 'ticket',
     dataToSend: function (id) {
         return {
+            clientId: window.CLIENT_ID,
             dataType: 'Ticket',
             data: parseInt(id),
         }
@@ -80,6 +94,7 @@ export const joinEvents = [{
     name: 'user',
     dataToSend: function (id) {
         return {
+            clientId: window.CLIENT_ID,
             dataType: 'User',
             data: parseInt(id),
         }
@@ -88,6 +103,7 @@ export const joinEvents = [{
     name: 'view',
     dataToSend: function (id) {
         return {
+            clientId: window.CLIENT_ID,
             dataType: 'View',
             data: parseInt(id),
         }
@@ -201,5 +217,10 @@ export const receivedEvents = [{
             resp: json.account,
         })
     },
-},
+}, {
+    name: SID_UPDATED,
+    onReceive: function () {
+        return this.send(socketConstants.SID_UPDATED)
+    }
+}
 ]
