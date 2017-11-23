@@ -1,10 +1,13 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
+import moment from 'moment'
 import throttle from 'lodash/throttle'
+
 import {BlankState} from './components/BlankState'
 import {fetchStat} from '../../../../state/stats/actions'
 import {TICKETS_CLOSED_PER_AGENT} from '../../../../config/stats'
-import moment from 'moment'
+
+import {getAgentClosedTicketsStats} from './../../../../state/stats/selectors'
 
 const _fetch = throttle((props) => {
     props.fetchStat(TICKETS_CLOSED_PER_AGENT, {
@@ -17,9 +20,11 @@ const _fetch = throttle((props) => {
 
 function mapStateToProps(state) {
     let totalClosedTickets = 0
+    const currentUser = state.currentUser
 
     if (state.stats && !state.stats.isEmpty()) {
-        totalClosedTickets = state.stats.getIn([TICKETS_CLOSED_PER_AGENT, 'data', 'lines', 0, 1], 0)
+        const currentUserClosedTicketsStats = getAgentClosedTicketsStats(currentUser)(state)
+        totalClosedTickets = currentUserClosedTicketsStats.get(1, 0)
     }
 
     return {
