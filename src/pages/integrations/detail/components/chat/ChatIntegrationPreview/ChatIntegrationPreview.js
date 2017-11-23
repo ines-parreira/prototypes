@@ -104,7 +104,10 @@ const ChatIntegrationPreview = ({
                 className={css.button}
                 style={_bgColor(mainColor)}
             >
-                <i className={css.icon}/>
+                <div className={css.iconWrapper}>
+                    <i className={css.icon}/>
+                    <div className={css.shadow}></div>
+                </div>
             </div>
         </div>
     )

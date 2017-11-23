@@ -107,7 +107,10 @@ exports[`ChatIntegrationPreview should display the properties correctly 1`] = `
       }
     }
   >
-    <i />
+    <div>
+      <i />
+      <div />
+    </div>
   </div>
 </div>
 `;
