@@ -35,6 +35,7 @@ class EmailIntegrationUpdate extends React.Component {
         this.state = Object.assign({
             isCopied: false,
             dirty: false,
+            errors: {}
         }, this._getIntegrationValues(props.integration))
     }
 
@@ -253,6 +254,27 @@ class EmailIntegrationUpdate extends React.Component {
         )
     }
 
+    _setName = (name) => {
+        const {integration} = this.props
+        const {errors} = this.state
+
+        const isGmail = integration.get('type') === 'gmail'
+
+        // If it's a Gmail integration, we don't want to allow having '@' in the name
+        if (isGmail && name && /[@]+/.test(name)) {
+            errors.name = 'The name of your Gmail integration cannot contain a "@".'
+        } else {
+            errors.name = null
+        }
+
+
+        this.setState({
+            dirty: true,
+            name,
+            errors
+        })
+    }
+
     _renderSettings = () => {
         const {
             domain,
@@ -267,7 +289,14 @@ class EmailIntegrationUpdate extends React.Component {
         const isDeactivated = !!integration.get('deactivated_datetime')
         const isDeleting = loading.get('delete') === integration.get('id')
         const isGmail = integration.get('type') === 'gmail'
-        const {name, use_gmail_categories, import_spam} = this.state
+
+        const {name, use_gmail_categories, import_spam, errors} = this.state
+
+        const hasErrors = errors.length > 0
+
+        const nameHelp = isGmail
+            ? 'The name that customers will see when they receive emails from you. Cannot contain a "@".'
+            : 'The name that customers will see when they receive emails from you'
 
         return (
             <div className="mt-4">
@@ -281,12 +310,11 @@ class EmailIntegrationUpdate extends React.Component {
                         label="Address name"
                         placeholder={`${_capitalize(domain)} Support`}
                         required
-                        help="The name that customers will see when they receive emails from you"
+                        help={nameHelp}
+                        error={errors.name}
+
                         value={name}
-                        onChange={value => this.setState({
-                            dirty: true,
-                            name: value
-                        })}
+                        onChange={(name)=> this._setName(name)}
                     />
                     {
                         isGmail && (
@@ -320,7 +348,7 @@ class EmailIntegrationUpdate extends React.Component {
                         <Button
                             type="submit"
                             color="primary"
-                            disabled={!this.state.dirty || isSubmitting || isDeleting}
+                            disabled={!this.state.dirty || isSubmitting || isDeleting || hasErrors}
                             className={classNames({
                                 'btn-loading': isSubmitting,
                             })}

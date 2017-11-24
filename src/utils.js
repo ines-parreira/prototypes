@@ -972,7 +972,7 @@ export const validateWebhookURL = (val: string): ?string => {
     const rules = [
         {
             test: /^((?!(\..)).)*$/,
-            message: 'Invlalid URL'
+            message: 'Invalid URL'
         },
         {
             test: /^(?!https:).*:/,
