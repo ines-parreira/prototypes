@@ -8,8 +8,8 @@ import {getDisplayName} from '../../state/users/helpers'
 import {getAgents} from '../../state/users/selectors'
 import {getTags} from '../../state/tags/selectors'
 import {views as statViewsConfig} from '../../config/stats'
+import {CHANNELS} from '../../config/ticket'
 
-const CHANNELS = ['aircall', 'api', 'chat', 'email', 'facebook', 'phone']
 
 const mapStateToProps = (state, props) => {
     const view = props.params.view || 'overview'
