@@ -201,6 +201,16 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
                 },
               },
             },
+            Immutable.Map {
+              name: "last_message",
+              title: "Last message",
+              path: "last_message_datetime",
+              filter: Immutable.Map {
+                sort: Immutable.Map {
+                  last_message_datetime: "desc",
+                },
+              },
+            },
           ],
           api: "tickets",
           type: "ticket-list",
@@ -357,6 +367,16 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
             filter: Immutable.Map {
               sort: Immutable.Map {
                 updated_datetime: "desc",
+              },
+            },
+          },
+          Immutable.Map {
+            name: "last_message",
+            title: "Last message",
+            path: "last_message_datetime",
+            filter: Immutable.Map {
+              sort: Immutable.Map {
+                last_message_datetime: "desc",
               },
             },
           },

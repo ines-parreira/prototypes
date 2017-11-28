@@ -148,6 +148,16 @@ export const views = fromJS([{
                     updated_datetime: 'desc',
                 }
             }
+        },
+        {
+            name: 'last_message',
+            title: 'Last message',
+            path: 'last_message_datetime',
+            filter: {
+                sort: {
+                    last_message_datetime: 'desc',
+                }
+            }
         }
     ],
     cell: (fieldName, item) => {
@@ -156,6 +166,8 @@ export const views = fromJS([{
                 return item.get('created_datetime')
             case 'updated':
                 return item.get('updated_datetime')
+            case 'last_message':
+                return item.get('last_message_datetime')
             case 'requester':
                 return item.get('requester') || fromJS({})
             case 'assignee':
@@ -231,8 +243,9 @@ export const views = fromJS([{
     },
     newView: () => {
         return baseView().merge({
-            fields: ['details', 'channel', 'assignee', 'status', 'requester', 'created'],
+            fields: ['details', 'channel', 'assignee', 'status', 'requester', 'created', 'last_message'],
             type: 'ticket-list',
+            order_by: 'last_message_datetime',
         })
     },
     searchView: (query) => {

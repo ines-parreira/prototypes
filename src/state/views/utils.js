@@ -32,10 +32,7 @@ export function removeFilterAST(view: viewType, index: number): ?Map<*,*> {
     // As always, we assume that we only have && operators
     const codeSplit = view.get('filters').split('&&')
     codeSplit.splice(index, 1)
-    if (codeSplit.length !== 0) {
-        return fromJS(esprima.parse(codeSplit.join('&&')))
-    }
-    return null
+    return fromJS(esprima.parse(codeSplit.join('&&')))
 }
 
 // Update a node (CallExpression) in the ast

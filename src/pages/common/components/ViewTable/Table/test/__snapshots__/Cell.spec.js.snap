@@ -207,6 +207,16 @@ Object {
                 },
             },
         },
+        Immutable.Map {
+            name: "last_message",
+            title: "Last message",
+            path: "last_message_datetime",
+            filter: Immutable.Map {
+                sort: Immutable.Map {
+                    last_message_datetime: "desc",
+                },
+            },
+        },
     ],
     api: "tickets",
     type: "ticket-list",
