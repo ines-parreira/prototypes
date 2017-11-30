@@ -5,7 +5,7 @@ import {Map, List} from 'immutable'
 import {connect} from 'react-redux'
 import _debounce from 'lodash/debounce'
 
-import {EditorState, ContentState} from 'draft-js'
+import {EditorState, ContentState, SelectionState} from 'draft-js'
 import createDndPlugin from 'draft-js-dnd-plugin'
 
 import shortcutManager from '../../../../../services/shortcutManager'
@@ -40,6 +40,7 @@ export const updateMessageText = _debounce((props, editorState) => {
     }))
 }, 100)
 
+import type {attachmentType} from '../../../../../types'
 import type {agentsType} from '../../../../../state/agents/types'
 import type {Node} from 'react'
 
@@ -50,11 +51,12 @@ type richAreaType = {
     _focusEditor: () => void,
     _setEditorState: (T: EditorState) => void
 }
-
 type toolbarPropsType = {
     buttons: Array<Node>,
     displayedActions?: Array<string>
 }
+type filesType = Array<attachmentType>
+type validationRegexType = string | RegExp
 
 type Props = {
     actions: {},
@@ -66,15 +68,14 @@ type Props = {
     addAttachments: typeof newMessageActions.addAttachments,
     notify: ({}) => void,
     setMacrosVisible: typeof macroActions.setMacrosVisible,
-    setResponseText: typeof newMessageActions.setResponseText,
-    prepareNewMessage: typeof newMessageActions.prepare,
+    setResponseText: typeof newMessageActions.setResponseText
 }
 
 type State = {
     editorState: EditorState
 }
 
-class TicketReplyEditor extends React.Component<Props, State> {
+export class TicketReplyEditor extends React.Component<Props, State> {
     richArea: richAreaType
 
     componentWillMount() {
@@ -92,9 +93,14 @@ class TicketReplyEditor extends React.Component<Props, State> {
 
     componentWillUnmount() {
         shortcutManager.unbind('TicketDetailContainer')
+
+        // prevent updating the newMessage state value with an old value.
+        // without it on unmount the newMessage state is populated with the old editor value,
+        // because of the debouncer.
+        updateMessageText.cancel()
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         // only update if forceUpdate is true and it changed
         const prevForceUpdate = this.props.newMessage.getIn(['state', 'forceUpdate'])
         const nextForceUpdate = nextProps.newMessage.getIn(['state', 'forceUpdate'])
@@ -120,7 +126,7 @@ class TicketReplyEditor extends React.Component<Props, State> {
         }
     }
 
-    _focusReplyArea = (e) => {
+    _focusReplyArea = (e: Event) => {
         if (e && e.preventDefault) { // no incoming event if manually triggered
             e.preventDefault()
         }
@@ -131,7 +137,7 @@ class TicketReplyEditor extends React.Component<Props, State> {
         }
     }
 
-    _getEditorStateFromReducer = (props) => {
+    _getEditorStateFromReducer = (props: Props) => {
         const state = props.newMessage.get('state')
         const contentState = state.get('contentState')
         const selectionState = state.get('selectionState')
@@ -159,7 +165,7 @@ class TicketReplyEditor extends React.Component<Props, State> {
         return editorState
     }
 
-    _canAddAttachments = (files) => {
+    _canAddAttachments = (files: filesType) => {
         const cantAddAttachmentBecauseOfText =
             RESTRAINED_SOURCE_TYPES.includes(this.props.newMessage.getIn(['newMessage', 'source', 'type']))
             && this.props.newMessage.getIn(['newMessage', 'body_text'])
@@ -197,7 +203,7 @@ class TicketReplyEditor extends React.Component<Props, State> {
         return true
     }
 
-    _handleFiles = (files, validationRegex) => {
+    _handleFiles = (files: filesType, validationRegex: validationRegexType) => {
         const {newMessageType} = this.props
 
         if (!this._canAddAttachments(files)) {
@@ -241,7 +247,7 @@ class TicketReplyEditor extends React.Component<Props, State> {
         this.props.addAttachments(this.props.ticket, files)
     }
 
-    _handleDroppedFiles = (selection, files, validationRegex) => {
+    _handleDroppedFiles = (selection: SelectionState, files: filesType, validationRegex: validationRegexType) => {
         dndPlugin.handleDroppedFiles(selection, files, {
             getEditorState: () => this.state.editorState,
             setEditorState: (editorState) => {
@@ -262,14 +268,14 @@ class TicketReplyEditor extends React.Component<Props, State> {
         return this.richArea.state.editorState
     }
 
-    _updateEditorState = (editorState) => {
+    _updateEditorState = (editorState: EditorState) => {
         if (!this.richArea) {
             return
         }
         this.richArea._setEditorState(editorState)
     }
 
-    _onEditorChange = (editorState) => {
+    _onEditorChange = (editorState: EditorState) => {
         // update the reducer when the editor state is changed
         updateMessageText(this.props, editorState)
     }
@@ -401,7 +407,6 @@ const mapDispatchToProps = {
     notify,
     setMacrosVisible: macroActions.setMacrosVisible,
     setResponseText: newMessageActions.setResponseText,
-    prepareNewMessage: newMessageActions.prepare,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TicketReplyEditor)

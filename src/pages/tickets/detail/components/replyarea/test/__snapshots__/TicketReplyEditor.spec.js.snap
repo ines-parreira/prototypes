@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TicketReplyEditor component should render empty ticket 1`] = `
+<div
+  className="TicketReplyEditor"
+>
+  <RichField
+    alertMode={false}
+    alertText="When using Facebook, you can either send a text message, or an attachment, but not both at the same time. If you want to write a message, remove the attachment first."
+    allowExternalChanges={false}
+    canDropFiles={true}
+    handleDroppedFiles={[Function]}
+    mentionProps={
+      Object {
+        "canAddMention": false,
+        "suggestions": Immutable.List [
+      ],
+      }
+    }
+    onChange={[Function]}
+    placeholder="Click here to reply, or press r."
+    readOnly={false}
+    signature={true}
+    spellCheck={true}
+    tabIndex="4"
+    toolbarProps={
+      Object {
+        "buttons": Array [
+          <div
+            className="attachment"
+      >
+            <label
+                  className="m-0"
+                  htmlFor="attachments-input"
+            >
+                  <i
+                        className="fa fa-fw fa-paperclip"
+                        title="Add attachment"
+                  />
+            </label>
+            <input
+                  id="attachments-input"
+                  multiple={true}
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  type="file"
+            />
+      </div>,
+        ],
+      }
+    }
+    value={
+      Object {
+        "html": "",
+        "text": "",
+      }
+    }
+  />
+</div>
+`;
