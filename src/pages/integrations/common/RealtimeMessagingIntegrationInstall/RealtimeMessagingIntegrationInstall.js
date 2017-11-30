@@ -136,15 +136,19 @@ class RealtimeMessagingIntegrationInstall extends React.Component<Props,State> {
             : shopifyIntegrationsWithoutFacebook
 
         const integrationName = isChat ? integration.get('name') : integration.getIn(['facebook', 'name'])
-        const integrationAlias = isChat ? 'chat' : 'page'
+        const integrationAlias = isChat ? 'chat' : 'customer chat'
         const pageTitle = isChat ? 'Installation' : 'Customer chat'
         const pageDescription = isChat
             ? 'Let\'s install your chat on your website.'
             : (
                 <span>
                     Customer chat allows customers to contact you through Messenger directly on your website.{' '}
-                    <a href="http://docs.gorgias.io/integrations/facebook#customer_chat">
-                        Learn more
+                    <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="http://docs.gorgias.io/integrations/facebook#customer_chat"
+                    >
+                        Learn more.
                     </a>
                 </span>
             )
@@ -257,9 +261,16 @@ class RealtimeMessagingIntegrationInstall extends React.Component<Props,State> {
                                                 To install the Messenger widget on your website manually, you first need
                                                 to whitelist your website's domain for your Facebook page on Facebook.
                                                 You can do so{' '}
-                                                <a href={`https://business.facebook.com/${integration.getIn(['facebook', 'page_id'], '')}/settings/?tab=messenger_platform`}>here</a>
+                                                <a
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    href={`https://business.facebook.com/${integration.getIn(['facebook', 'page_id'], '')}/settings/?tab=messenger_platform`}
+                                                >
+                                                    here
+                                                </a>
                                                 . In the <kbd>Whitelisted Domains</kbd> section, just add the address
-                                                of you website. Then, copy the code below and paste it on your website
+                                                of you website.<br/><br/>
+                                                Then, copy the code below and paste it on your website
                                                 above the {' '}<kbd>{'</body>'}</kbd>{' '}tag:
                                             </p>
                                         ) : (
