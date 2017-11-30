@@ -47,7 +47,7 @@ export default class ShopifyIntegrationList extends React.Component {
 
         const longTypeDescription = (
             <div>
-                <p>Shopify is an e-commerce platform used by 300,000+ stores.</p>
+                <p>Shopify is an e-commerce platform used by 500,000+ stores.</p>
 
                 <p>How Gorgias works with Shopify:</p>
                 <ul>
