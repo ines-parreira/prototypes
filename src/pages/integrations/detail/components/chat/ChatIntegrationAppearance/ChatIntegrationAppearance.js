@@ -154,9 +154,7 @@ class ChatIntegrationAppearance extends React.Component {
 
                 <Container fluid>
                     <Row>
-                        <Col
-                            style={{paddingLeft: 0}}
-                        >
+                        <Col style={{paddingLeft: 0}}>
                             <Form
                                 className="ui form"
                                 onSubmit={this._handleSubmit}

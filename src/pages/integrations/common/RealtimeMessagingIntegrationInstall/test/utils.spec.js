@@ -1,8 +1,8 @@
 import {fromJS} from 'immutable'
-import {renderCodeSnippet} from '../utils'
+import {renderChatCodeSnippet, renderFacebookCodeSnippet} from '../utils'
 
 describe('chat utils', () => {
-    describe('renderCodeSnippet', () => {
+    describe('renderChatCodeSnippet', () => {
         it('should render correctly with new format', () => {
             const integration = fromJS({
                 decoration: {
@@ -21,7 +21,19 @@ describe('chat utils', () => {
                 }
             })
 
-            expect(renderCodeSnippet(integration)).toMatchSnapshot()
+            expect(renderChatCodeSnippet(integration)).toMatchSnapshot()
+        })
+    })
+
+    describe('renderFacebookCodeSnippet', () => {
+        it('should render correctly', () => {
+            const integration = fromJS({
+                facebook: {
+                    page_id: 'mylittlepageid'
+                }
+            })
+
+            expect(renderFacebookCodeSnippet(integration)).toMatchSnapshot()
         })
     })
 })

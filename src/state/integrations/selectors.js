@@ -134,6 +134,19 @@ export const getShopifyIntegrationsWithoutChat = (state: stateType) => {
     })
 }
 
+export const getShopifyIntegrationsWithoutFacebook = (state: stateType) => {
+    const shopifyIntegrations = getIntegrationsByTypes('shopify')(state)
+    const facebookIntegrations = getIntegrationsByTypes('facebook')(state)
+
+    return shopifyIntegrations.filter((shopifyIntegration) => {
+        const shopifyId = shopifyIntegration.get('id')
+
+        return !facebookIntegrations.some((facebookIntegration) => {
+            return facebookIntegration.getIn(['meta', 'shopify_integration_ids'], fromJS([])).contains(shopifyId)
+        })
+    })
+}
+
 export const getChatIntegrationCampaigns = (id: number) => createSelector(
     [getIntegrationById(id)],
     (integration) => integration.getIn(['meta', 'campaigns']) || fromJS([])

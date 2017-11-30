@@ -3,16 +3,26 @@ import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import classname from 'classnames'
 
-import _capitalize from 'lodash/capitalize'
-
 import Navbar from '../../common/components/Navbar'
 
 import * as integrationSelectors from './../../../state/integrations/selectors'
 
 const pagesPerIntegrationType = {
-    'smooch_inside': ['appearance', 'installation', 'preferences', 'campaigns'],
-    smooch: ['overview', 'preferences'],
-    facebook: ['overview', 'preferences'],
+    'smooch_inside': [
+        {value: 'appearance', label: 'Appearance'},
+        {value: 'installation', label: 'Installation'},
+        {value: 'preferences', label: 'Preferences'},
+        {value: 'campaigns', label: 'Campaigns'},
+    ],
+    smooch: [
+        {value: 'overview', label: 'Overview'},
+        {value: 'preferences', label: 'Preferences'},
+    ],
+    facebook: [
+        {value: 'overview', label: 'Overview'},
+        {value: 'customer_chat', label: 'Customer chat'},
+        {value: 'preferences', label: 'Preferences'},
+    ]
 }
 
 @connect((state, props) => {
@@ -54,15 +64,15 @@ export default class IntegrationNavbarContainer extends React.Component {
                                 </h4>
                                 <div className="menu">
                                 {
-                                    config.map((pageName) => {
+                                    config.map((pageConfig) => {
                                         return (
                                             <Link
-                                                key={pageName}
-                                                to={`/app/integrations/${integrationType}/${integrationId}/${pageName}`}
-                                                className={classname('item', {'active': extra === pageName})}
-                                                title={_capitalize(pageName)}
+                                                key={pageConfig.value}
+                                                to={`/app/integrations/${integrationType}/${integrationId}/${pageConfig.value}`}
+                                                className={classname('item', {'active': extra === pageConfig.value})}
+                                                title={pageConfig.label}
                                             >
-                                                {_capitalize(pageName)}
+                                                {pageConfig.label}
                                             </Link>
                                         )
                                     })

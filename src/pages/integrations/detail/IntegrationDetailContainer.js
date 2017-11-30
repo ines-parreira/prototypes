@@ -21,7 +21,7 @@ import HttpIntegrationDetail from './components/http/HttpIntegrationDetail'
 
 import ChatIntegrationList from './components/chat/ChatIntegrationList'
 import ChatIntegrationAppearance from './components/chat/ChatIntegrationAppearance'
-import ChatIntegrationInstall from './components/chat/ChatIntegrationInstall'
+import RealtimeMessagingIntegrationInstall from './../common/RealtimeMessagingIntegrationInstall'
 import RealtimeMessagingIntegrationPreferences from './../common/RealtimeMessagingIntegrationPreferences'
 
 import SmoochIntegrationDetail from './components/smooch/SmoochIntegrationDetail'
@@ -154,6 +154,16 @@ class IntegrationDetailContainer extends React.Component {
                         )
                     }
 
+                    if (params.extra === 'customer_chat') {
+                        return (
+                            <RealtimeMessagingIntegrationInstall
+                                actions={actions}
+                                loading={commonProps.loading}
+                                integration={commonProps.integration}
+                            />
+                        )
+                    }
+
                     if (isUpdate) {
                         if (params.extra === 'preferences') {
                             return (
@@ -214,7 +224,7 @@ class IntegrationDetailContainer extends React.Component {
                 if (isDetail) {
                     if (params.extra === 'installation') {
                         return (
-                            <ChatIntegrationInstall
+                            <RealtimeMessagingIntegrationInstall
                                 actions={actions}
                                 loading={commonProps.loading}
                                 integration={commonProps.integration}

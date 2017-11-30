@@ -1,10 +1,10 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
-import ChatIntegrationInstall from './../ChatIntegrationInstall'
-import configureStore from './../../../../../../../store/configureStore'
+import RealtimeMessagingIntegrationInstall from './../RealtimeMessagingIntegrationInstall'
+import configureStore from './../../../../../store/configureStore'
 
-describe('ChatIntegrationInstall component', () => {
+describe('RealtimeMessagingIntegrationInstall component', () => {
     const minStore = {
         integrations: fromJS({
             integrations: [{
@@ -27,7 +27,7 @@ describe('ChatIntegrationInstall component', () => {
 
     it('should display the list of Shopify stores without chats', () => {
         const component = shallow(
-            <ChatIntegrationInstall
+            <RealtimeMessagingIntegrationInstall
                 {...minProps}
                 integration={fromJS({
                     id: 2,
@@ -47,7 +47,7 @@ describe('ChatIntegrationInstall component', () => {
     it('should display a placeholder if there\'s no Shopify store without chat, and' +
         'should display the list of Shopify stores where the chat is installed', () => {
         const component = shallow(
-            <ChatIntegrationInstall
+            <RealtimeMessagingIntegrationInstall
                 {...minProps}
                 integration={fromJS({
                     id: 2,
@@ -66,7 +66,7 @@ describe('ChatIntegrationInstall component', () => {
 
     it('should display the code snippet for custom integration', () => {
         const component = shallow(
-            <ChatIntegrationInstall
+            <RealtimeMessagingIntegrationInstall
                 {...minProps}
                 integration={fromJS({
                     id: 2,

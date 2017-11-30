@@ -321,6 +321,22 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
                       className="item"
                       onlyActiveOnIndex={false}
                       style={Object {}}
+                      title="Customer chat"
+                      to="/app/integrations/facebook/78945/customer_chat"
+                    >
+                      <a
+                        className="item"
+                        onClick={[Function]}
+                        style={Object {}}
+                        title="Customer chat"
+                      >
+                        Customer chat
+                      </a>
+                    </Link>
+                    <Link
+                      className="item"
+                      onlyActiveOnIndex={false}
+                      style={Object {}}
                       title="Preferences"
                       to="/app/integrations/facebook/78945/preferences"
                     >
