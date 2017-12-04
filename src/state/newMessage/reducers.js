@@ -73,7 +73,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
         case types.NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS: {
             return state.mergeDeep({
                 newMessage: {
-                    attachments: state.getIn(['newMessage', 'attachments'], fromJS([])).concat(action.resp),
+                    attachments: state.getIn(['newMessage', 'attachments'], fromJS([])).concat(fromJS(action.resp)),
                 },
                 state: {
                     dirty: true,

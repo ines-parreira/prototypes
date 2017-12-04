@@ -4,12 +4,12 @@ import _noop from 'lodash/noop'
 // aphrodite is required by react-images
 import {StyleSheetTestUtils} from 'aphrodite'
 
-import {List} from 'immutable'
+import {fromJS} from 'immutable'
 import TicketAttachments from '../TicketAttachments'
 
 describe('TicketAttachments component', () => {
     // attachments is an immutable list of pojos
-    const attachments = new List().push({
+    const attachments = fromJS([{
         name: 'foo',
         content_type: 'image/png',
         url: 'bar'
@@ -17,7 +17,7 @@ describe('TicketAttachments component', () => {
         name: 'bar',
         content_type: 'text/html',
         url: 'foo'
-    })
+    }])
 
     describe('read-only', () => {
         let component
@@ -120,6 +120,60 @@ describe('TicketAttachments component', () => {
             })
 
             expect(component.state('isLightboxOpen')).toBe(false)
+        })
+    })
+
+    describe('private', () => {
+        it('should display an error message if there\'s private attachments', () => {
+            const component = shallow(
+                <TicketAttachments
+                    attachments={fromJS([{
+                        name: 'foo',
+                        content_type: 'image/png',
+                        url: 'bar',
+                        public: false
+                    }, {
+                        name: 'bar',
+                        content_type: 'image/png',
+                        url: 'baz',
+                        public: false
+                    }, {
+                        name: 'baz',
+                        content_type: 'image/png',
+                        url: 'foo',
+                        public: false
+                    }])}
+                    deleteAttachment={_noop}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should display both an error message and attachments', () => {
+            const component = shallow(
+                <TicketAttachments
+                    attachments={fromJS([{
+                        name: 'foo',
+                        content_type: 'image/png',
+                        url: 'bar',
+                        public: true
+                    }, {
+                        name: 'bar',
+                        content_type: 'image/png',
+                        url: 'baz',
+                        public: false
+                    }, {
+                        name: 'baz',
+                        content_type: 'image/png',
+                        url: 'foo',
+                        public: true
+                    }])}
+                    deleteAttachment={_noop}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
         })
     })
 })

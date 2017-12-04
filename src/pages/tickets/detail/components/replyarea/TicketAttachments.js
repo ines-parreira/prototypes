@@ -1,11 +1,24 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
 import classNames from 'classnames'
 import Lightbox from 'react-images'
+import type {List} from 'immutable'
 
 import {fileIconFromContentType} from '../../../common/utils'
 import shortcutManager from '../../../../../services/shortcutManager'
 
-export default class TicketAttachments extends React.Component {
+
+type Props = {
+    attachments: List<*>,
+    removable: boolean,
+    deleteAttachment: ({}) => void
+}
+
+type State = {
+    isLightboxOpen: boolean,
+    currentImage: number
+}
+
+export default class TicketAttachments extends React.Component<Props, State> {
     state = {
         isLightboxOpen: false,
         currentImage: 0
@@ -41,7 +54,7 @@ export default class TicketAttachments extends React.Component {
     }
 
     isImage = (attachment) => {
-        return attachment.content_type.startsWith('image/')
+        return attachment.get('content_type').startsWith('image/')
     }
 
     setImagePreview = (attachment) => {
@@ -54,7 +67,7 @@ export default class TicketAttachments extends React.Component {
         }
 
         return {
-            backgroundImage: `url(${window.IMAGE_PROXY_URL}120x80/${attachment.url})`
+            backgroundImage: `url(${window.IMAGE_PROXY_URL}120x80/${attachment.get('url')})`
         }
     }
 
@@ -67,7 +80,7 @@ export default class TicketAttachments extends React.Component {
 
         this.setState({
             isLightboxOpen: true,
-            currentImage: images.indexOf(attachment),
+            currentImage: images.findIndex((curImage) => curImage.get('url') === attachment.get('url')),
         })
 
         // pause hotkeys
@@ -95,39 +108,52 @@ export default class TicketAttachments extends React.Component {
         }
 
         const images = attachments.filter(this.isImage)
+        const failedAttachments = attachments.filter((attachment) => attachment.get('public') === false)
+        const publicAttachments = attachments.filter((attachment) => attachment.get('public') !== false)
 
         return (
             <div className="attachments">
                 {
-                    attachments.map((attachment, idx) => (
-                        <a
-                            href={attachment.url || '#'}
-                            target="_blank"
-                            className={classNames('attachments-item', {
-                                'attachments-item-has-preview': this.isImage(attachment)
-                            })}
-                            key={idx}
-                            style={this.setImagePreview(attachment)}
-                            onClick={(e) => this.openLightbox(e, attachment, images)}
-                        >
-                            <div className="attachments-item-meta">
-                                <div className="attachments-item-meta-name">
-                                    {attachment.name}
+                    failedAttachments.size > 0 && (
+                        <div className="mb-2">
+                            <i className='fa fa-warning mr-1'/>
+                            {' '}There is {`${failedAttachments.size}`} attachment(s) to this message which we{' '}
+                            couldn't download.
+                        </div>
+                    )
+                }
+                {
+                    publicAttachments.map((attachment, idx) => {
+                        return (
+                            <a
+                                href={attachment.get('url') || '#'}
+                                target="_blank"
+                                className={classNames('attachments-item', {
+                                    'attachments-item-has-preview': this.isImage(attachment)
+                                })}
+                                key={idx}
+                                style={this.setImagePreview(attachment)}
+                                onClick={(e) => this.openLightbox(e, attachment, images)}
+                            >
+                                <div className="attachments-item-meta">
+                                    <div className="attachments-item-meta-name">
+                                        {attachment.get('name')}
+                                    </div>
+
+                                    {this.renderAttachmentIcon(attachment.get('content_type'))}
+
+                                    {this.renderRemoveIcon(idx)}
                                 </div>
-
-                                {this.renderAttachmentIcon(attachment.content_type)}
-
-                                {this.renderRemoveIcon(idx)}
-                            </div>
-                        </a>
-                    ))
+                            </a>
+                        )
+                    })
                 }
 
                 <Lightbox
                     images={images.map((image) => {
                         return {
-                            src: image.url,
-                            caption: image.name
+                            src: image.get('url'),
+                            caption: image.get('name')
                         }
                     }).toJS()}
                     isOpen={isLightboxOpen}
@@ -142,10 +168,4 @@ export default class TicketAttachments extends React.Component {
             </div>
         )
     }
-}
-
-TicketAttachments.propTypes = {
-    attachments: PropTypes.object.isRequired,
-    removable: PropTypes.bool.isRequired,
-    deleteAttachment: PropTypes.func
 }

@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import moment from 'moment'
-import {List, fromJS} from 'immutable'
+import {fromJS} from 'immutable'
 import classnamesBind from 'classnames/bind'
 import {isArray as _isArray} from 'lodash'
 import {Popover, PopoverContent} from 'reactstrap'
@@ -42,7 +42,7 @@ export default class TicketMessage extends React.Component {
     renderAttachment(message) {
         if (message.attachments) {
             return (
-                <TicketAttachments attachments={List(message.attachments)} removable={false} />
+                <TicketAttachments attachments={fromJS(message.attachments)}/>
             )
         }
         return null
