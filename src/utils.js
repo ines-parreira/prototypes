@@ -46,7 +46,8 @@ import type {
     esprimaParse,
     reactRouterRoute
 } from './types'
-type userType = {roles: Array<string | {name:string}>} | Map<*,*>
+
+type userType = {roles: Array<string | {name: string}>} | Map<*, *>
 type messageType = {
     created_datetime: Date,
     source: {type: string}
@@ -54,7 +55,7 @@ type messageType = {
 type propertyType = {
     type: string,
     meta: {},
-    items: {$ref:{}}
+    items: {$ref: {}}
 }
 type equalityOperatorType = 'eq' | 'contains'
 
@@ -474,11 +475,11 @@ export function slugify(string: string): string {
         return string
     }
 
-    return string
+    return encodeURIComponent(string
         .toLowerCase()
         .trim()
         .replace(/\//ig, '')
-        .replace(/[ ]/g, '-')
+        .replace(/[ ]/g, '-'))
 }
 
 
@@ -620,13 +621,13 @@ export function removeMentions(editorState: EditorState, value: {text: string, h
  * Return true if passed object is immutable (from Immutable JS)
  * @param object
  */
-export const isImmutable = (object: {} | Iterable<*,*>): boolean => Immutable.Iterable.isIterable(object)
+export const isImmutable = (object: {} | Iterable<*, *>): boolean => Immutable.Iterable.isIterable(object)
 
 /**
  * Return a passed object as immutable
  * @param object
  */
-export const toImmutable = (object: {} | Iterable<*,*>): any => isImmutable(object) ? object : fromJS(object)
+export const toImmutable = (object: {} | Iterable<*, *>): any => isImmutable(object) ? object : fromJS(object)
 
 /**
  * Return a passed object as plain JS (not Immutable)
@@ -634,14 +635,14 @@ export const toImmutable = (object: {} | Iterable<*,*>): any => isImmutable(obje
  */
 // throws error on missing toJS() for plain object.
 // $FlowFixMe
-export const toJS = (object: {} | Iterable<*,*>): any => isImmutable(object) ? object.toJS() : object
+export const toJS = (object: {} | Iterable<*, *>): any => isImmutable(object) ? object.toJS() : object
 
 /**
  * Return field path
  * @param field
  * @returns {*|string|string|string}
  */
-export const fieldPath = (field: {} | Iterable<*,*> = {}): string => {
+export const fieldPath = (field: {} | Iterable<*, *> = {}): string => {
     field = toJS(field)
     // $FlowFixMe
     return field.path || field.name
@@ -771,7 +772,7 @@ export function getPluralObjectName(viewType: string): string {
  * @param plan A plan in `config.py` - billing section
  * @returns {boolean}
  */
-export function hasReachedLimit(limit: string, tickets: number, plan: Iterable<*,*>): boolean {
+export function hasReachedLimit(limit: string, tickets: number, plan: Iterable<*, *>): boolean {
     const freeTickets = plan.get('free_tickets', 0)
     return tickets >= plan.getIn(['limits', limit], freeTickets)
 }
@@ -928,7 +929,7 @@ const _valuesDeep = (obj: {}): {} => {
  * "
  * @param incomingError server error
  */
-export const errorToChildren = (incomingError: {response: {data: {error:{data:{}}}}}): ?string => {
+export const errorToChildren = (incomingError: {response: {data: {error: {data: {}}}}}): ?string => {
     const error = _get(incomingError, 'response.data.error', {})
     const {data} = error
     const hasErrors = !!data
