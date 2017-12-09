@@ -1,21 +1,31 @@
 export const actions = [{
     name: 'shopifyRefundShippingCostOfOrder',
     label: 'Refund shipping cost of order',
+    objectType: 'order',
 }, {
     name: 'shopifyCancelOrder',
     label: 'Cancel order',
+    objectType: 'order',
 }, {
     name: 'shopifyFullRefundOrder',
     label: 'Full refund order',
+    objectType: 'order',
 }, {
     name: 'shopifyDuplicateOrder',
     label: 'Duplicate order',
+    objectType: 'order',
 }, {
     name: 'shopifyRefundOrderItem',
     label: 'Refund item',
+    objectType: 'item',
 }, {
     name: 'rechargeCancelSubscription',
-    label: 'Cancel subscription'
+    label: 'Cancel subscription',
+    objectType: 'subscription',
+}, {
+    name: 'rechargeSkipCharge',
+    label: 'Skip charge',
+    objectType: 'charge',
 }]
 
 export const getActionByName = (name) => {

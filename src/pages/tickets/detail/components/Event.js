@@ -17,10 +17,24 @@ import * as ticketSelectors from '../../../../state/ticket/selectors'
 import css from './Event.less'
 
 
-export class Event extends React.Component {
+@connect((state, ownProps) => {
+    const {event} = ownProps
+
+    const integration = integrationsSelectors.getIntegrationById(event.getIn(['data', 'integration_id']))(state)
+
+    const integrationData = ticketSelectors
+        .getIntegrationDataByIntegrationId(integration.get('id', '').toString())(state)
+
+    return {
+        currentUser: currentUserSelectors.getCurrentUser(state),
+        integrationData,
+        integration,
+    }
+})
+export default class Event extends React.Component {
     static propTypes = {
         currentUser: ImmutablePropTypes.map.isRequired,
-        customerForIntegration: ImmutablePropTypes.map.isRequired,
+        integrationData: ImmutablePropTypes.map.isRequired,
         event: ImmutablePropTypes.map.isRequired,
         isLast: PropTypes.bool.isRequired,
         integration: ImmutablePropTypes.map.isRequired,
@@ -35,13 +49,24 @@ export class Event extends React.Component {
     }
 
     _getOrder = (orderId) => {
-        const {customerForIntegration: data} = this.props
-        return data.get('orders', fromJS([])).find(order => order.get('id') === orderId) || fromJS({})
+        const {integrationData: data} = this.props
+        return (data.get('orders') || fromJS([])).find((order) => order.get('id').toString() === orderId.toString()) || fromJS({})
     }
 
     _getItem = (orderId, itemId) => {
         const order = this._getOrder(orderId)
-        return order.get('line_items', fromJS([])).find(item => item.get('id') === itemId) || fromJS({})
+        return (order.get('line_items') || fromJS([])).find((item) => item.get('id').toString() === itemId.toString()) || fromJS({})
+    }
+
+    _getSubscription = (subscriptionId) => {
+        const {integrationData: data} = this.props
+        return (data.get('subscriptions') || fromJS([])).find((subscription) => subscription.get('id').toString() === subscriptionId.toString())
+            || fromJS({})
+    }
+
+    _getCharge = (chargeId) => {
+        const {integrationData: data} = this.props
+        return (data.get('charges') || fromJS([])).find((charge) => charge.get('id').toString() === chargeId.toString()) || fromJS({})
     }
 
     _renderDetails = (isError, eventData) => {
@@ -62,9 +87,16 @@ export class Event extends React.Component {
                     <div>
                         {
                             payload.map((value, key) => {
+                                let stringValue = value
+
+                                // Necessary to display correctly booleans
+                                if (value !== undefined && value !== null) {
+                                    stringValue = value.toString()
+                                }
+
                                 return (
                                     <div key={key}>
-                                        <b>{humanizeString(key)}</b>: {value}
+                                        <b>{humanizeString(key)}</b>: {stringValue}
                                     </div>
                                 )
                             }).toList()
@@ -78,7 +110,7 @@ export class Event extends React.Component {
     }
 
     getDisplayableType(integrationType) {
-        if (integrationType) {
+        if (integrationType === 'smooch_inside') {
             return 'chat'
         }
 
@@ -86,7 +118,7 @@ export class Event extends React.Component {
     }
 
     render() {
-        const {currentUser, event, isLast, integration} = this.props
+        const {currentUser, event, isLast, integration, integrationData} = this.props
         const user = event.get('user') || fromJS({})
         const status = event.getIn(['data', 'status'])
         const actionName = event.getIn(['data', 'action_name'])
@@ -103,26 +135,40 @@ export class Event extends React.Component {
 
         const hasIntegration = !integration.isEmpty()
 
-        let label = actionConfig.label
-        let labelLink = ''
-        let order = fromJS({})
-        let item = fromJS({})
+        let actionLabel = actionConfig.label
+        let objectLabel = ''
+        let objectLink = ''
 
         if (hasIntegration) {
-            // following code is made for Shopify events
-            // split this when future integration events come
-            order = this._getOrder(payload.get('order_id'))
-            if (actionName.endsWith('Order')) {
-                labelLink += order.get('name')
-            } else if (actionName.endsWith('Item')) {
-                item = this._getItem(payload.get('order_id'), payload.get('item_id'))
-                labelLink += `${payload.get('quantity')} × ${item.get('name')}`
+            if (integration.get('type') === 'shopify') {
+                const shopName = integration.getIn(['meta', 'shop_name'])
+                const order = this._getOrder(payload.get('order_id'))
+
+                if (actionConfig.objectType === 'order') {
+                    objectLabel += order.get('name')
+                } else if (actionConfig.objectType === 'item') {
+                    const item = this._getItem(payload.get('order_id'), payload.get('item_id'))
+                    objectLabel += `${payload.get('quantity')} × ${item.get('name')}`
+                }
+
+                objectLink = `https://${shopName}.myshopify.com/admin/orders/${order.get('id')}`
+            } else if (integration.get('type') === 'recharge') {
+                const storeName = integration.getIn(['meta', 'store_name'])
+                const hash = integrationData.getIn(['customer', 'hash'])
+                const subscription = this._getSubscription(payload.get('subscription_id'))
+
+                if (actionConfig.objectType === 'subscription') {
+                    objectLabel += subscription.get('id')
+                } else if (actionConfig.objectType === 'charge') {
+                    const charge = this._getCharge(payload.get('charge_id'))
+                    objectLabel += charge.get('id')
+                }
+
+                objectLink = `https://${storeName}.myshopify.com/admin/apps/shopify-recurring-payments/customers/${hash}/subscriptions/items/${subscription.get('id')}`
             }
         } else {
-            label += ` #${payload.get('order_id')} (deleted integration)`
+            actionLabel += ` #${payload.get('order_id')} (deleted integration)`
         }
-
-        const shopName = integration.getIn(['meta', 'shop_name'])
 
         return (
             <div
@@ -148,14 +194,14 @@ export class Event extends React.Component {
                         </div>
 
                         <span className={css.actionName}>
-                            {label} {' '}
+                            {actionLabel} {' '}
                             {
-                                !!labelLink && (
+                                !!objectLabel && (
                                     <a
-                                        href={`https://${shopName}.myshopify.com/admin/orders/${order.get('id')}`}
+                                        href={objectLink}
                                         target="_blank"
                                     >
-                                        {labelLink}
+                                        {objectLabel}
                                     </a>
                                 )
                             }
@@ -208,19 +254,3 @@ export class Event extends React.Component {
         )
     }
 }
-
-
-export default connect((state, ownProps) => {
-    const {event} = ownProps
-
-    const integration = integrationsSelectors.getIntegrationById(event.getIn(['data', 'integration_id']))(state)
-
-    const customerForIntegration = ticketSelectors
-        .getIntegrationDataByIntegrationId(integration.get('id', '').toString())(state)
-
-    return {
-        currentUser: currentUserSelectors.getCurrentUser(state),
-        customerForIntegration,
-        integration,
-    }
-})(Event)

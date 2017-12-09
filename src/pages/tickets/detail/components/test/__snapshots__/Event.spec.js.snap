@@ -1,0 +1,759 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Event component should display correctly a failed event for a Recharge Charge action 1`] = `
+<div
+  className=""
+>
+  <div>
+    <div>
+      <div
+        className=""
+        title="Fail"
+      >
+        <i
+          className="fa fa-fw fa-close"
+        />
+      </div>
+      <span>
+        Skip charge
+         
+         
+        <a
+          href="https://my-store.myshopify.com/admin/apps/shopify-recurring-payments/customers/sd478fs57dfds4f1/subscriptions/items/6"
+          target="_blank"
+        >
+          8
+        </a>
+      </span>
+      <span>
+        on
+      </span>
+      <span>
+        Recharge
+         (
+        my-store
+        )
+      </span>
+      <span>
+        by
+      </span>
+      <AgentLabel
+        name="Acme Support"
+      />
+      <Button
+        className="ml-1 p-0"
+        color="link"
+        onClick={[Function]}
+        tag="button"
+      >
+        (details)
+      </Button>
+    </div>
+    <div
+      className="ticket-message-time"
+    >
+      <DatetimeLabel
+        dateTime="2017-12-07T01:01:34.502206+00:00"
+        settings={
+          Object {
+            "position": "top left",
+          }
+        }
+      />
+    </div>
+  </div>
+  <Card
+    className="undefined"
+    tag="div"
+  >
+    <CardBlock
+      tag="div"
+    >
+      <div>
+        <b
+          className="text-danger"
+        >
+          Error:
+        </b>
+         
+        the error is real
+      </div>
+      <div>
+        <div>
+          <div>
+            <b>
+              Subscription id
+            </b>
+            : 
+            6
+          </div>
+          <div>
+            <b>
+              Charge id
+            </b>
+            : 
+            8
+          </div>
+        </div>
+      </div>
+    </CardBlock>
+  </Card>
+</div>
+`;
+
+exports[`Event component should display correctly a failed event for a Recharge Subscription action 1`] = `
+<div
+  className=""
+>
+  <div>
+    <div>
+      <div
+        className=""
+        title="Fail"
+      >
+        <i
+          className="fa fa-fw fa-close"
+        />
+      </div>
+      <span>
+        Cancel subscription
+         
+         
+        <a
+          href="https://my-store.myshopify.com/admin/apps/shopify-recurring-payments/customers/sd478fs57dfds4f1/subscriptions/items/6"
+          target="_blank"
+        >
+          6
+        </a>
+      </span>
+      <span>
+        on
+      </span>
+      <span>
+        Recharge
+         (
+        my-store
+        )
+      </span>
+      <span>
+        by
+      </span>
+      <AgentLabel
+        name="Acme Support"
+      />
+      <Button
+        className="ml-1 p-0"
+        color="link"
+        onClick={[Function]}
+        tag="button"
+      >
+        (details)
+      </Button>
+    </div>
+    <div
+      className="ticket-message-time"
+    >
+      <DatetimeLabel
+        dateTime="2017-12-07T01:01:34.502206+00:00"
+        settings={
+          Object {
+            "position": "top left",
+          }
+        }
+      />
+    </div>
+  </div>
+  <Card
+    className="undefined"
+    tag="div"
+  >
+    <CardBlock
+      tag="div"
+    >
+      <div>
+        <b
+          className="text-danger"
+        >
+          Error:
+        </b>
+         
+        the error is real
+      </div>
+      <div>
+        <div>
+          <div>
+            <b>
+              Subscription id
+            </b>
+            : 
+            6
+          </div>
+        </div>
+      </div>
+    </CardBlock>
+  </Card>
+</div>
+`;
+
+exports[`Event component should display correctly a failed event for a Shopify Item action 1`] = `
+<div
+  className=""
+>
+  <div>
+    <div>
+      <div
+        className=""
+        title="Fail"
+      >
+        <i
+          className="fa fa-fw fa-close"
+        />
+      </div>
+      <span>
+        Refund item
+         
+         
+        <a
+          href="https://my-store.myshopify.com/admin/orders/3"
+          target="_blank"
+        >
+          2 × Beautiful butterfly
+        </a>
+      </span>
+      <span>
+        on
+      </span>
+      <span>
+        Shopify
+         (
+        my-store
+        )
+      </span>
+      <span>
+        by
+      </span>
+      <AgentLabel
+        name="Acme Support"
+      />
+      <Button
+        className="ml-1 p-0"
+        color="link"
+        onClick={[Function]}
+        tag="button"
+      >
+        (details)
+      </Button>
+    </div>
+    <div
+      className="ticket-message-time"
+    >
+      <DatetimeLabel
+        dateTime="2017-12-07T01:01:34.502206+00:00"
+        settings={
+          Object {
+            "position": "top left",
+          }
+        }
+      />
+    </div>
+  </div>
+  <Card
+    className="undefined"
+    tag="div"
+  >
+    <CardBlock
+      tag="div"
+    >
+      <div>
+        <b
+          className="text-danger"
+        >
+          Error:
+        </b>
+         
+        the error is real
+      </div>
+      <div>
+        <div>
+          <div>
+            <b>
+              Order id
+            </b>
+            : 
+            3
+          </div>
+          <div>
+            <b>
+              Item id
+            </b>
+            : 
+            5
+          </div>
+          <div>
+            <b>
+              Quantity
+            </b>
+            : 
+            2
+          </div>
+        </div>
+      </div>
+    </CardBlock>
+  </Card>
+</div>
+`;
+
+exports[`Event component should display correctly a failed event for a Shopify Order action 1`] = `
+<div
+  className=""
+>
+  <div>
+    <div>
+      <div
+        className=""
+        title="Fail"
+      >
+        <i
+          className="fa fa-fw fa-close"
+        />
+      </div>
+      <span>
+        Full refund order
+         
+         
+        <a
+          href="https://my-store.myshopify.com/admin/orders/3"
+          target="_blank"
+        >
+          #1234
+        </a>
+      </span>
+      <span>
+        on
+      </span>
+      <span>
+        Shopify
+         (
+        my-store
+        )
+      </span>
+      <span>
+        by
+      </span>
+      <AgentLabel
+        name="Acme Support"
+      />
+      <Button
+        className="ml-1 p-0"
+        color="link"
+        onClick={[Function]}
+        tag="button"
+      >
+        (details)
+      </Button>
+    </div>
+    <div
+      className="ticket-message-time"
+    >
+      <DatetimeLabel
+        dateTime="2017-12-07T01:01:34.502206+00:00"
+        settings={
+          Object {
+            "position": "top left",
+          }
+        }
+      />
+    </div>
+  </div>
+  <Card
+    className="undefined"
+    tag="div"
+  >
+    <CardBlock
+      tag="div"
+    >
+      <div>
+        <b
+          className="text-danger"
+        >
+          Error:
+        </b>
+         
+        the error is real
+      </div>
+      <div>
+        <div>
+          <div>
+            <b>
+              Order id
+            </b>
+            : 
+            3
+          </div>
+        </div>
+      </div>
+    </CardBlock>
+  </Card>
+</div>
+`;
+
+exports[`Event component should display correctly a successful event for a Recharge Charge action 1`] = `
+<div
+  className=""
+>
+  <div>
+    <div>
+      <div
+        className="undefined"
+        title="Success"
+      >
+        <i
+          className="fa fa-fw fa-check"
+        />
+      </div>
+      <span>
+        Skip charge
+         
+         
+        <a
+          href="https://my-store.myshopify.com/admin/apps/shopify-recurring-payments/customers/sd478fs57dfds4f1/subscriptions/items/6"
+          target="_blank"
+        >
+          8
+        </a>
+      </span>
+      <span>
+        on
+      </span>
+      <span>
+        Recharge
+         (
+        my-store
+        )
+      </span>
+      <span>
+        by
+      </span>
+      <AgentLabel
+        name="Acme Support"
+      />
+      <Button
+        className="ml-1 p-0"
+        color="link"
+        onClick={[Function]}
+        tag="button"
+      >
+        (details)
+      </Button>
+    </div>
+    <div
+      className="ticket-message-time"
+    >
+      <DatetimeLabel
+        dateTime="2017-12-07T01:01:34.502206+00:00"
+        settings={
+          Object {
+            "position": "top left",
+          }
+        }
+      />
+    </div>
+  </div>
+  <Card
+    className="undefined"
+    tag="div"
+  >
+    <CardBlock
+      tag="div"
+    >
+      <div>
+        <div>
+          <div>
+            <b>
+              Subscription id
+            </b>
+            : 
+            6
+          </div>
+          <div>
+            <b>
+              Charge id
+            </b>
+            : 
+            8
+          </div>
+        </div>
+      </div>
+    </CardBlock>
+  </Card>
+</div>
+`;
+
+exports[`Event component should display correctly a successful event for a Recharge Subscription action 1`] = `
+<div
+  className=""
+>
+  <div>
+    <div>
+      <div
+        className="undefined"
+        title="Success"
+      >
+        <i
+          className="fa fa-fw fa-check"
+        />
+      </div>
+      <span>
+        Cancel subscription
+         
+         
+        <a
+          href="https://my-store.myshopify.com/admin/apps/shopify-recurring-payments/customers/sd478fs57dfds4f1/subscriptions/items/6"
+          target="_blank"
+        >
+          6
+        </a>
+      </span>
+      <span>
+        on
+      </span>
+      <span>
+        Recharge
+         (
+        my-store
+        )
+      </span>
+      <span>
+        by
+      </span>
+      <AgentLabel
+        name="Acme Support"
+      />
+      <Button
+        className="ml-1 p-0"
+        color="link"
+        onClick={[Function]}
+        tag="button"
+      >
+        (details)
+      </Button>
+    </div>
+    <div
+      className="ticket-message-time"
+    >
+      <DatetimeLabel
+        dateTime="2017-12-07T01:01:34.502206+00:00"
+        settings={
+          Object {
+            "position": "top left",
+          }
+        }
+      />
+    </div>
+  </div>
+  <Card
+    className="undefined"
+    tag="div"
+  >
+    <CardBlock
+      tag="div"
+    >
+      <div>
+        <div>
+          <div>
+            <b>
+              Subscription id
+            </b>
+            : 
+            6
+          </div>
+        </div>
+      </div>
+    </CardBlock>
+  </Card>
+</div>
+`;
+
+exports[`Event component should display correctly a successful event for a Shopify Item action 1`] = `
+<div
+  className=""
+>
+  <div>
+    <div>
+      <div
+        className="undefined"
+        title="Success"
+      >
+        <i
+          className="fa fa-fw fa-check"
+        />
+      </div>
+      <span>
+        Refund item
+         
+         
+        <a
+          href="https://my-store.myshopify.com/admin/orders/3"
+          target="_blank"
+        >
+          2 × Beautiful butterfly
+        </a>
+      </span>
+      <span>
+        on
+      </span>
+      <span>
+        Shopify
+         (
+        my-store
+        )
+      </span>
+      <span>
+        by
+      </span>
+      <AgentLabel
+        name="Acme Support"
+      />
+      <Button
+        className="ml-1 p-0"
+        color="link"
+        onClick={[Function]}
+        tag="button"
+      >
+        (details)
+      </Button>
+    </div>
+    <div
+      className="ticket-message-time"
+    >
+      <DatetimeLabel
+        dateTime="2017-12-07T01:01:34.502206+00:00"
+        settings={
+          Object {
+            "position": "top left",
+          }
+        }
+      />
+    </div>
+  </div>
+  <Card
+    className="undefined"
+    tag="div"
+  >
+    <CardBlock
+      tag="div"
+    >
+      <div>
+        <div>
+          <div>
+            <b>
+              Order id
+            </b>
+            : 
+            3
+          </div>
+          <div>
+            <b>
+              Item id
+            </b>
+            : 
+            5
+          </div>
+          <div>
+            <b>
+              Quantity
+            </b>
+            : 
+            2
+          </div>
+        </div>
+      </div>
+    </CardBlock>
+  </Card>
+</div>
+`;
+
+exports[`Event component should display correctly a successful event for a Shopify Order action 1`] = `
+<div
+  className=""
+>
+  <div>
+    <div>
+      <div
+        className="undefined"
+        title="Success"
+      >
+        <i
+          className="fa fa-fw fa-check"
+        />
+      </div>
+      <span>
+        Full refund order
+         
+         
+        <a
+          href="https://my-store.myshopify.com/admin/orders/3"
+          target="_blank"
+        >
+          #1234
+        </a>
+      </span>
+      <span>
+        on
+      </span>
+      <span>
+        Shopify
+         (
+        my-store
+        )
+      </span>
+      <span>
+        by
+      </span>
+      <AgentLabel
+        name="Acme Support"
+      />
+      <Button
+        className="ml-1 p-0"
+        color="link"
+        onClick={[Function]}
+        tag="button"
+      >
+        (details)
+      </Button>
+    </div>
+    <div
+      className="ticket-message-time"
+    >
+      <DatetimeLabel
+        dateTime="2017-12-07T01:01:34.502206+00:00"
+        settings={
+          Object {
+            "position": "top left",
+          }
+        }
+      />
+    </div>
+  </div>
+  <Card
+    className="undefined"
+    tag="div"
+  >
+    <CardBlock
+      tag="div"
+    >
+      <div>
+        <div>
+          <div>
+            <b>
+              Order id
+            </b>
+            : 
+            3
+          </div>
+        </div>
+      </div>
+    </CardBlock>
+  </Card>
+</div>
+`;
