@@ -88,7 +88,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
 
         case types.ADD_ATTACHMENTS: {
             return state.updateIn(['newMessage', 'attachments'], fromJS([]), (attachements) => {
-                return attachements.concat(action.args.get('attachments').toJS())
+                return attachements.concat(action.args.get('attachments'))
             })
         }
 
