@@ -363,7 +363,9 @@ export function bulkUpdate(activeView: viewType, ids: List<*>, key: string, valu
                     successMessage = `${ids.size} tickets have been marked as ${value}.`
                     break
                 case 'assignee_user':
-                    successMessage = `${ids.size} tickets have been assigned to ${value.name}!`
+                    successMessage = value
+                        ? `${ids.size} tickets have been assigned to ${value.name}.`
+                        : `${ids.size} tickets have been unassigned.`
                     break
                 case 'priority':
                     successMessage = `${ids.size} tickets have been marked as ${value} priority.`

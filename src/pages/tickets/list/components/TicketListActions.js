@@ -272,12 +272,24 @@ class TicketListActions extends React.Component<Props, State> {
     }
 
     _renderBulkActions = () => {
-        const {currentUser, isActiveViewTrashView} = this.props
+        const {
+            currentUser,
+            isActiveViewTrashView,
+            selectedItemsIds,
+            agents,
+            actions
+        } = this.props
 
-        const areItemsSelected = !this.props.selectedItemsIds.isEmpty()
+        const {
+            agentsSearch,
+            tagsSearch,
+            askDeleteConfirmation
+        } = this.state
 
-        const agents = this.props.agents.filter((agent) => {
-            return agent.get('name').toLowerCase().includes(this.state.agentsSearch.toLowerCase())
+        const areItemsSelected = !selectedItemsIds.isEmpty()
+
+        const filteredAgents = agents.filter((agent) => {
+            return agent.get('name').toLowerCase().includes(agentsSearch.toLowerCase())
         })
 
         return (
@@ -350,7 +362,7 @@ class TicketListActions extends React.Component<Props, State> {
                                     <Input
                                         placeholder="Search agents..."
                                         autoFocus
-                                        value={this.state.agentsSearch}
+                                        value={agentsSearch}
                                         onChange={e => this.setState({agentsSearch: e.target.value})}
                                     />
                                 )
@@ -358,12 +370,12 @@ class TicketListActions extends React.Component<Props, State> {
                         </DropdownItem>
                         <DropdownItem divider/>
                         {
-                            agents.isEmpty() ? (
+                            filteredAgents.isEmpty() ? (
                                 <DropdownItem header>
                                     Could not find any agent
                                 </DropdownItem>
                             ) : (
-                                agents.map((agent) => {
+                                filteredAgents.map((agent) => {
                                     return (
                                         <DropdownItem
                                             key={agent.get('id')}
@@ -380,7 +392,21 @@ class TicketListActions extends React.Component<Props, State> {
                                     )
                                 })
                             )
+
                         }
+                        <DropdownItem divider/>
+                        <DropdownItem
+                            key="clear"
+                            type="button"
+                            onClick={() => this._bulkUpdate('assignee_user', null)}
+                        >
+                            <span
+                                style={{textTransform: 'none'}}
+                                className="text-warning"
+                            >
+                                Clear assignee
+                            </span>
+                        </DropdownItem>
                     </DropdownMenu>
                 </ButtonDropdown>
                 <ButtonDropdown
@@ -412,7 +438,7 @@ class TicketListActions extends React.Component<Props, State> {
                                     <Input
                                         placeholder="Search tags..."
                                         autoFocus
-                                        value={this.state.tagsSearch}
+                                        value={tagsSearch}
                                         onChange={e => this._searchTags(e.target.value)}
                                     />
                                 )
@@ -437,7 +463,7 @@ class TicketListActions extends React.Component<Props, State> {
                     <DropdownMenu right>
                         <DropdownItem
                             type="button"
-                            onClick={this.props.actions.macro.openModal}
+                            onClick={actions.macro.openModal}
                         >
                             Apply macro
                         </DropdownItem>
@@ -480,8 +506,8 @@ class TicketListActions extends React.Component<Props, State> {
                     <PopoverTitle>Are you sure?</PopoverTitle>
                     <PopoverContent>
                         <p>
-                            Are you sure you want to delete {this.props.selectedItemsIds.size}{' '}
-                            ticket{this.props.selectedItemsIds.size > 1 && 's'}?
+                            Are you sure you want to delete {selectedItemsIds.size}{' '}
+                            ticket{selectedItemsIds.size > 1 && 's'}?
                         </p>
                         <Button
                             type="submit"
@@ -495,15 +521,15 @@ class TicketListActions extends React.Component<Props, State> {
                 </Popover>
                 <Popover
                     placement="bottom"
-                    isOpen={this.state.askDeleteConfirmation}
+                    isOpen={askDeleteConfirmation}
                     target="bulk-more-button"
                     toggle={this._toggleDeleteConfirmation}
                 >
                     <PopoverTitle>Are you sure?</PopoverTitle>
                     <PopoverContent>
                         <p>
-                            Are you sure you want to delete {this.props.selectedItemsIds.size}{' '}
-                            ticket{this.props.selectedItemsIds.size > 1 && 's'} forever?
+                            Are you sure you want to delete {selectedItemsIds.size}{' '}
+                            ticket{selectedItemsIds.size > 1 && 's'} forever?
                         </p>
                         <Button
                             type="submit"
