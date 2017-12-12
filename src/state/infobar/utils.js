@@ -29,5 +29,5 @@ export const actionButtonHashForData = ({action_name, user_id, integration_id, p
 
     identifier = identifier.concat(orderedPayload)
 
-    return identifier.join('-')
+    return identifier.join('-').replace(/\./g, '_')
 }

@@ -409,7 +409,18 @@ export const ACTION_TEMPLATES = [
         integrationType: 'shopify',
         name: 'shopifyCancelLastOrder',
         title: 'Cancel last order',
-        arguments: {},
+        arguments: {
+            restock: {
+                label: 'Restock',
+                type: 'boolean',
+                default: true,
+                editable: true,
+                input: {
+                    type: 'checkbox'
+                },
+                display_order: 1
+            }
+        },
         validators: [
             {
                 validate: (requester) => {
@@ -442,10 +453,21 @@ export const ACTION_TEMPLATES = [
         title: 'Cancel order',
         arguments: {
             order_id: {
+                label: 'Order ID',
                 type: 'string',
                 default: '',
                 editable: true,
                 required: true
+            },
+            restock: {
+                label: 'Restock',
+                type: 'boolean',
+                default: true,
+                editable: true,
+                input: {
+                    type: 'checkbox'
+                },
+                display_order: 1
             }
         }
     },
@@ -482,39 +504,52 @@ export const ACTION_TEMPLATES = [
         ],
         arguments: {
             address1: {
+                label: 'Address (1)',
                 type: 'string',
-                default: '{ticket.requester.customer._shopify.orders[0].shipping_address.address1}',
+                default: '{{ticket.requester.integrations.shopify.orders[0].shipping_address.address1}}',
                 editable: true,
                 required: false,
                 display_order: 1
             },
             address2: {
+                label: 'Address (2)',
                 type: 'string',
-                default: '{ticket.requester.customer._shopify.orders[0].shipping_address.address2}',
+                default: '{{ticket.requester.integrations.shopify.orders[0].shipping_address.address2}}',
                 editable: true,
                 required: false,
                 display_order: 2
             },
             city: {
+                label: 'City',
                 type: 'string',
-                default: '{ticket.requester.customer._shopify.orders[0].shipping_address.city}',
+                default: '{{ticket.requester.integrations.shopify.orders[0].shipping_address.city}}',
                 editable: true,
                 required: false,
                 display_order: 3
             },
-            country: {
+            zip: {
+                label: 'Zip',
                 type: 'string',
-                default: '{ticket.requester.customer._shopify.orders[0].shipping_address.country}',
+                default: '{{ticket.requester.integrations.shopify.orders[0].shipping_address.zip}}',
                 editable: true,
                 required: false,
                 display_order: 4
             },
-            zip: {
+            province: {
+                label: 'State/Province',
                 type: 'string',
-                default: '{ticket.requester.customer._shopify.orders[0].shipping_address.zip}',
+                default: '{{ticket.requester.integrations.shopify.orders[0].shipping_address.province}}',
                 editable: true,
                 required: false,
                 display_order: 5
+            },
+            country: {
+                label: 'Country',
+                type: 'string',
+                default: '{{ticket.requester.integrations.shopify.orders[0].shipping_address.country}}',
+                editable: true,
+                required: false,
+                display_order: 6
             },
         },
         validators: [
@@ -581,7 +616,18 @@ export const ACTION_TEMPLATES = [
         integrationType: 'shopify',
         name: 'shopifyFullRefundLastOrder',
         title: 'Refund last order',
-        arguments: {},
+        arguments: {
+            restock: {
+                label: 'Restock',
+                type: 'boolean',
+                default: true,
+                editable: true,
+                input: {
+                    type: 'checkbox'
+                },
+                display_order: 1
+            }
+        },
         notes: [
             'This action will fail if the payment hasn\'t been captured yet.'
         ],
@@ -608,6 +654,84 @@ export const ACTION_TEMPLATES = [
                 },
                 error: 'The last order has already been refunded or hasn\'t been paid for yet.'
             }
+        ]
+    },
+    {
+        execution: 'back',
+        integrationType: 'shopify',
+        name: 'shopifyPartialRefundLastOrder',
+        title: 'Partially refund last order',
+        arguments: {
+            amount: {
+                label: 'Amount',
+                default: '{{ticket.requester.integrations.shopify.orders[0].total_price}}',
+                editable: true,
+                required: true,
+                display_order: 1,
+                input: {
+                    type: 'number',
+                    step: 0.01
+                }
+            }
+        },
+        notes: [
+            'This action will fail if the payment hasn\'t been captured yet.'
+        ],
+        validators: [
+            {
+                validate: (requester) => {
+                    return _find(requester.integrations, {'__integration_type__': 'shopify'})
+                },
+                error: 'This user has no Shopify data.'
+            },
+            {
+                validate: (requester) => {
+                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+
+                    return _get(shopifyIntegration, ['orders'])
+                },
+                error: 'This user has no order to refund.'
+            },
+            {
+                validate: (requester) => {
+                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+
+                    return !['refunded', 'accepted'].includes(_get(shopifyIntegration, ['orders', 0, 'financial_status']))
+                },
+                error: 'The last order has already been refunded or hasn\'t been paid for yet.'
+            }
+        ]
+    },
+    {
+        execution: 'back',
+        integrationType: 'shopify',
+        name: 'shopifyEditNoteOfLastOrder',
+        title: 'Edit last order\'s note',
+        arguments: {
+            note: {
+                label: 'Note',
+                type: 'string',
+                default: '{{ticket.requester.integrations.shopify.orders[0].note}}',
+                editable: true,
+                required: false,  // can be nulled
+                display_order: 1
+            }
+        },
+        validators: [
+            {
+                validate: (requester) => {
+                    return _find(requester.integrations, {'__integration_type__': 'shopify'})
+                },
+                error: 'This user has no Shopify data.'
+            },
+            {
+                validate: (requester) => {
+                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+
+                    return _get(shopifyIntegration, ['orders'])
+                },
+                error: 'This user has no order to edit.'
+            },
         ]
     },
     {

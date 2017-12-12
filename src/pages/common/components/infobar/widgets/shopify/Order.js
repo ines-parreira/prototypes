@@ -1,11 +1,17 @@
+// @flow
 import React, {PropTypes} from 'react'
+import type {Node} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {fromJS} from 'immutable'
-import {UncontrolledButtonDropdown, Badge, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
+import {
+    Badge,
+} from 'reactstrap'
 
 import {humanizeString} from '../../../../../../utils'
 
-import ActionButton from '../ActionButton'
+import type {ActionType} from './../types'
+
+import ActionButtonsGroup from '../ActionButtonsGroup'
 
 export default () => {
     return {
@@ -17,12 +23,12 @@ export default () => {
     }
 }
 
-class AfterTitle extends React.Component { // eslint-disable-line
-    static propTypes = {
-        isEditing: PropTypes.bool.isRequired,
-        source: ImmutablePropTypes.map.isRequired,
-    }
+type AfterTitleProps = {
+    isEditing: boolean,
+    source: Map<string, string | number | boolean>
+}
 
+class AfterTitle extends React.Component<AfterTitleProps> { // eslint-disable-line
     static contextTypes = {
         integrationId: PropTypes.number,
         isOrderCancelled: PropTypes.bool.isRequired,
@@ -30,8 +36,16 @@ class AfterTitle extends React.Component { // eslint-disable-line
     }
 
     render() {
-        const {source} = this.props
-        const {integrationId, isOrderCancelled, isOrderRefunded} = this.context
+        const {source} : AfterTitleProps = this.props
+        const {
+            integrationId,
+            isOrderCancelled,
+            isOrderRefunded
+        } : {
+            integrationId: number,
+            isOrderCancelled: boolean,
+            isOrderRefunded: boolean
+        } = this.context
 
         if (this.props.isEditing) {
             return null
@@ -41,21 +55,71 @@ class AfterTitle extends React.Component { // eslint-disable-line
             return null
         }
 
-        let actions = [
+        const orderTotalPrice: number = parseInt(source.get('total_price') || '0')
+
+        let actions: Array<ActionType> = [
             {
-                actionName: 'shopifyRefundShippingCostOfOrder',
-                reason: 'refund the shipping cost of this order',
+                key: 'refund',
+                options: [
+                    {
+                        value: 'shopifyPartialRefundOrder',
+                        label: 'Partial refund',
+                        parameters: [
+                            {
+                                name: 'amount',
+                                type: 'number',
+                                defaultValue: orderTotalPrice,
+                                label: 'Amount',
+                                placeholder: 'Amount',
+                                required: true,
+                                step: 0.01,
+                                min: 0.01,
+                                max: orderTotalPrice
+                            }
+                        ],
+                    },
+                    {
+                        value: 'shopifyFullRefundOrder',
+                        label: 'Full refund',
+                        parameters: [
+                            {name: 'restock', type: 'checkbox', defaultValue: true, label: 'Restock all items'}
+                        ]
+                    },
+                    {
+                        value: 'shopifyRefundShippingCostOfOrder',
+                        label: 'Refund shipping only'
+                    },
+                ],
+                title: (
+                    <div>
+                        <i className="fa fa-fw fa-repeat mr-2" />
+                        Refund order
+                    </div>
+                ),
                 child: (
                     <div>
-                        <i className="fa fa-fw fa-truck mr-2" />
-                        Refund shipping
+                        <i className="fa fa-fw fa-repeat mr-2" />
+                        Refund
                     </div>
                 )
             },
             {
-                actionName: 'shopifyCancelOrder',
-                reason: 'cancel this order',
-                tooltip: 'Cancel & refund the order on Shopify. Notify the customer via email. No restocking.',
+                key: 'cancel',
+                options: [
+                    {
+                        value: 'shopifyCancelOrder',
+                        label: 'Cancel order',
+                        parameters: [
+                            {name: 'restock', type: 'checkbox', defaultValue: true, label: 'Restock all items'}
+                        ]
+                    }
+                ],
+                title: (
+                    <div>
+                        <i className="fa fa-fw fa-ban mr-1" />
+                        Cancel order
+                    </div>
+                ),
                 child: (
                     <div>
                         <i className="fa fa-fw fa-ban mr-1" />
@@ -64,99 +128,51 @@ class AfterTitle extends React.Component { // eslint-disable-line
                 )
             },
             {
-                actionName: 'shopifyFullRefundOrder',
-                reason: 'refund this order',
-                tooltip: 'Refund order without restocking items',
-                child: (
-                    <div>
-                        <i className="fa fa-fw fa-repeat mr-2" />
-                        Full refund
-                    </div>
-                )
-            },
-            {
-                actionName: 'shopifyDuplicateOrder',
-                reason: 'duplicate this order',
-                child: (
+                key: 'duplicate',
+                options: [
+                    {
+                        value: 'shopifyDuplicateOrder',
+                        label: 'Duplicate',
+                    }
+                ],
+                tooltip: 'This will create a new order with the same items and mark it as paid.',
+                title: (
                     <div>
                         <i className="fa fa-fw fa-clone mr-2" />
                         Duplicate order
                     </div>
+                ),
+                child: (
+                    <div>
+                        <i className="fa fa-fw fa-clone mr-2" />
+                        Duplicate
+                    </div>
                 )
-            }
+            },
         ]
 
         let removed = []
 
         if (isOrderCancelled) {
-            removed = removed.concat(['shopifyCancelOrder'])
+            removed = removed.concat(['cancel'])
         }
 
         if (isOrderRefunded) {
-            removed = removed.concat(['shopifyRefundShippingCostOfOrder', 'shopifyFullRefundOrder'])
+            removed = removed.concat(['refund'])
         }
 
         // remove removed actions from list of available actions
-        actions = actions.filter(action => !removed.includes(action.actionName))
+        actions = actions.filter((action: ActionType) => !removed.includes(action.key))
 
-        const payload = {
-            order_id: source.get('id'),
+        const payload: Object = {
+            order_id: source.get('id') || ''
         }
 
-        const buttons = actions.slice(0, 2)
-        const dropdownOptions = actions.slice(2)
-
         return (
-            <div className="action-buttons">
-                {
-                    buttons.map((action) => {
-                        return (
-                            <ActionButton
-                                key={action.actionName}
-                                tag="button"
-                                className="btn btn-sm btn-secondary action-button"
-                                actionName={action.actionName}
-                                reason={action.reason}
-                                payload={payload}
-                                tooltip={action.tooltip}
-                            >
-                                {action.child}
-                            </ActionButton>
-                        )
-                    })
-                }
-                {
-                    dropdownOptions.length > 0 && (
-                        <UncontrolledButtonDropdown className="action-dropdown">
-                            <DropdownToggle
-                                caret
-                                className="caret-only"
-                                type="button"
-                                color="secondary"
-                                size="sm"
-                            />
-                            <DropdownMenu right>
-                                {
-                                    dropdownOptions.map((action) => {
-                                        return (
-                                            <ActionButton
-                                                key={action.actionName}
-                                                className="dropdown-item"
-                                                actionName={action.actionName}
-                                                reason={action.reason}
-                                                payload={payload}
-                                                tag={DropdownItem}
-                                            >
-                                                {action.child}
-                                            </ActionButton>
-                                        )
-                                    })
-                                }
-                            </DropdownMenu>
-                        </UncontrolledButtonDropdown>
-                    )
-                }
-            </div>
+            <ActionButtonsGroup
+                actions={actions}
+                payload={payload}
+            />
         )
     }
 }
@@ -169,20 +185,21 @@ const statusColors = {
     refunded: 'warning',
 }
 
-class BeforeContent extends React.Component { // eslint-disable-line
-    static propTypes = {
-        source: ImmutablePropTypes.map.isRequired,
-    }
 
+type BeforeContentProps = {
+    source: Map<*,*>
+}
+
+class BeforeContent extends React.Component<BeforeContentProps> { // eslint-disable-line
     static contextTypes = {
         isOrderCancelled: PropTypes.bool.isRequired,
     }
 
     render() {
         const {source} = this.props
-        const {isOrderCancelled} = this.context
+        const {isOrderCancelled} : {isOrderCancelled: boolean} = this.context
 
-        const status = source.get('financial_status')
+        const status: string = source.get('financial_status') || ''
 
         return (
             <div className="simple-field">
@@ -209,23 +226,24 @@ class BeforeContent extends React.Component { // eslint-disable-line
     }
 }
 
-class TitleWrapper extends React.Component { // eslint-disable-line
-    static propTypes = {
-        children: PropTypes.node,
-        source: ImmutablePropTypes.map.isRequired,
-    }
 
+type TitleWrapperProps = {
+    children?: Node,
+    source: Map<*,*>
+}
+
+class TitleWrapper extends React.Component<TitleWrapperProps> { // eslint-disable-line
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
     }
 
     render() {
         const {children, source} = this.props
-        const shopName = this.context.integration.getIn(['meta', 'shop_name'])
+        const shopName : string = this.context.integration.getIn(['meta', 'shop_name'])
 
         return (
             <a
-                href={`https://${shopName}.myshopify.com/admin/orders/${source.get('id')}`}
+                href={`https://${shopName}.myshopify.com/admin/orders/${(source.get('id') || '').toString()}`}
                 target="_blank"
             >
                 {children}
@@ -234,12 +252,13 @@ class TitleWrapper extends React.Component { // eslint-disable-line
     }
 }
 
-class Wrapper extends React.Component { // eslint-disable-line
-    static propTypes = {
-        children: PropTypes.node,
-        source: ImmutablePropTypes.map.isRequired,
-    }
 
+type WrapperProps = {
+    children?: Node,
+    source: Map<*,*>
+}
+
+class Wrapper extends React.Component<WrapperProps> { // eslint-disable-line
     static childContextTypes = {
         order: ImmutablePropTypes.map.isRequired,
         orderId: PropTypes.number,
@@ -252,7 +271,7 @@ class Wrapper extends React.Component { // eslint-disable-line
 
         const isCancelled = !!order.get('cancelled_at')
 
-        const isRefunded = !order.get('refunds', fromJS([])).isEmpty()
+        const isRefunded = order.get('financial_status') === 'refunded'
 
         return {
             order,

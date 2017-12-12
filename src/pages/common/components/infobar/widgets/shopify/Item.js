@@ -3,7 +3,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {fromJS} from 'immutable'
 import {Badge} from 'reactstrap'
 
-import ActionButton from '../ActionButton'
+import ActionButtonsGroup from '../ActionButtonsGroup'
 
 export default () => { // eslint-disable-line
     return {
@@ -48,39 +48,52 @@ class AfterTitle extends React.Component { // eslint-disable-line
             return null
         }
 
+        let actions = [
+            {
+                key: 'refund',
+                options: [
+                    {
+                        value: 'shopifyRefundOrderItem',
+                        label: 'Refund item(s)',
+                        parameters: [
+                            {
+                                name: 'quantity',
+                                type: 'number',
+                                defaultValue: quantity,
+                                placeholder: 'Quantity',
+                                required: true,
+                                min: 1,
+                                max: quantity
+                            },
+                            {
+                                name: 'restock',
+                                type: 'checkbox',
+                                defaultValue: false,
+                                label: 'Restock items'
+                            }
+                        ]
+                    }
+                ],
+                title: (
+                    <div>
+                        <i className="fa fa-fw fa-repeat mr-2" />
+                        Refund item
+                    </div>
+                ),
+                child: (
+                    <div>
+                        <i className="fa fa-fw fa-repeat mr-2" />
+                        Refund
+                    </div>
+                )
+            }
+        ]
+
         return (
-            <div className="action-buttons">
-                <ActionButton
-                    tag="button"
-                    className="btn btn-sm btn-secondary action-button"
-                    actionName="shopifyRefundOrderItem"
-                    reason={`refund ${source.get('name')}`}
-                    payload={{
-                        ...payload,
-                        quantity: 1,
-                    }}
-                    tooltip="Refund item without restocking it"
-                >
-                    <i className="fa fa-fw fa-repeat mr-2" />
-                    Refund one
-                </ActionButton>
-                {
-                    quantity > 1 && (
-                        <ActionButton
-                            key="all"
-                            tag="button"
-                            className="btn btn-sm btn-secondary action-button"
-                            actionName="shopifyRefundOrderItem"
-                            reason={`refund ${quantity} ${source.get('name')}`}
-                            payload={payload}
-                            tooltip="Refund items without restocking them"
-                        >
-                            <i className="fa fa-fw fa-repeat mr-2" />
-                            Refund {quantity}
-                        </ActionButton>
-                    )
-                }
-            </div>
+            <ActionButtonsGroup
+                actions={actions}
+                payload={payload}
+            />
         )
     }
 }

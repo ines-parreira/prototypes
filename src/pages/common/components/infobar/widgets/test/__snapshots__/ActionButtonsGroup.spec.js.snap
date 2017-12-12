@@ -1,0 +1,187 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ActionButtonsGroup component should not render the dropdown if there 3 or less actions 1`] = `
+<ButtonGroup
+  className="action-buttons"
+  role="group"
+  tag="div"
+>
+  <Connect(ActionButton)
+    options={
+      Array [
+        Object {
+          "label": "Option 1",
+          "value": "option1",
+        },
+      ]
+    }
+    payload={Object {}}
+    title={
+      <div>
+        Option 1
+      </div>
+    }
+  >
+    <div>
+      Option 1
+    </div>
+  </Connect(ActionButton)>
+  <Connect(ActionButton)
+    options={
+      Array [
+        Object {
+          "label": "Option 1",
+          "value": "option1",
+        },
+      ]
+    }
+    payload={Object {}}
+    title={
+      <div>
+        Option 1
+      </div>
+    }
+  >
+    <div>
+      Option 1
+    </div>
+  </Connect(ActionButton)>
+  <Connect(ActionButton)
+    options={
+      Array [
+        Object {
+          "label": "Option 1",
+          "value": "option1",
+        },
+      ]
+    }
+    payload={Object {}}
+    title={
+      <div>
+        Option 1
+      </div>
+    }
+  >
+    <div>
+      Option 1
+    </div>
+  </Connect(ActionButton)>
+</ButtonGroup>
+`;
+
+exports[`ActionButtonsGroup component should render null if there's no actions 1`] = `null`;
+
+exports[`ActionButtonsGroup component should render the dropdown if there more than 3 actions 1`] = `
+<ButtonGroup
+  className="action-buttons"
+  role="group"
+  tag="div"
+>
+  <Connect(ActionButton)
+    options={
+      Array [
+        Object {
+          "label": "Option 1",
+          "value": "option1",
+        },
+      ]
+    }
+    payload={Object {}}
+    title={
+      <div>
+        Option 1
+      </div>
+    }
+  >
+    <div>
+      Option 1
+    </div>
+  </Connect(ActionButton)>
+  <Connect(ActionButton)
+    options={
+      Array [
+        Object {
+          "label": "Option 1",
+          "value": "option1",
+        },
+      ]
+    }
+    payload={Object {}}
+    title={
+      <div>
+        Option 1
+      </div>
+    }
+  >
+    <div>
+      Option 1
+    </div>
+  </Connect(ActionButton)>
+  <Connect(ActionButton)
+    options={
+      Array [
+        Object {
+          "label": "Option 1",
+          "value": "option1",
+        },
+      ]
+    }
+    payload={Object {}}
+    title={
+      <div>
+        Option 1
+      </div>
+    }
+  >
+    <div>
+      Option 1
+    </div>
+  </Connect(ActionButton)>
+  <ButtonDropdown
+    className="action-dropdown"
+    isOpen={false}
+    toggle={[Function]}
+  >
+    <DropdownToggle
+      aria-haspopup={true}
+      caret={true}
+      className="caret-only"
+      color="secondary"
+      data-toggle="dropdown"
+      size="sm"
+      type="button"
+    />
+    <DropdownMenu
+      right={true}
+      tag="div"
+    >
+      <Connect(ActionButton)
+        options={
+          Array [
+            Object {
+              "label": "Option 1",
+              "value": "option1",
+            },
+          ]
+        }
+        payload={Object {}}
+        tag={[Function]}
+        tagOptions={
+          Object {
+            "toggle": false,
+          }
+        }
+        title={
+          <div>
+            Option 1
+          </div>
+        }
+      >
+        <div>
+          Option 1
+        </div>
+      </Connect(ActionButton)>
+    </DropdownMenu>
+  </ButtonDropdown>
+</ButtonGroup>
+`;

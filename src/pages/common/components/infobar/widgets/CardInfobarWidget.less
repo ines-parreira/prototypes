@@ -16,7 +16,7 @@
       position: relative;
       display: flex;
       flex-wrap: wrap;
-      margin-top: 6px;
+      margin-top: 8px;
       padding-right: 24px;
 
       @media @desktops {
@@ -25,11 +25,14 @@
 
       .action-button {
         padding: 5px 9px;
-        margin-right: .4rem;
         margin-bottom: .4rem;
 
         @media @desktops {
           margin-bottom: 0;
+        }
+
+        &:focus {
+          outline: none;
         }
       }
 

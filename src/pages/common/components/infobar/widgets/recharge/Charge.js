@@ -1,9 +1,8 @@
 import React, {PropTypes} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-// import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import {
-    Badge
+    Badge,
 } from 'reactstrap'
 
 import _lowerCase from 'lodash/lowerCase'
@@ -11,10 +10,7 @@ import _groupBy from 'lodash/groupBy'
 
 import {humanizeString, toJS} from '../../../../../../utils'
 
-// import * as userSelectors from './../../../../../../state/users/selectors'
-// import * as ticketSelectors from './../../../../../../state/ticket/selectors'
-
-import ActionButton from '../ActionButton'
+import ActionButtonsGroup from '../ActionButtonsGroup'
 
 export default () => {
     return {
@@ -51,13 +47,19 @@ export class SubscriptionAfterTitle extends React.Component { // eslint-disable-
 
         let actions = [
             {
-                actionName: 'rechargeSkipCharge',
-                reason: 'skip this charge for this subscription',
+                key: 'skip',
+                options: [{value: 'rechargeSkipCharge'}],
                 tooltip: 'Skip the charge for this subscription on Recharge',
-                child: (
+                title: (
                     <div>
                         <i className="fa fa-fw fa-ban mr-1" />
                         Skip charge on subscription
+                    </div>
+                ),
+                child: (
+                    <div>
+                        <i className="fa fa-fw fa-ban mr-1" />
+                        Skip
                     </div>
                 )
             },
@@ -78,25 +80,10 @@ export class SubscriptionAfterTitle extends React.Component { // eslint-disable-
         }
 
         return (
-            <div className="action-buttons">
-                {
-                    actions.map((action) => {
-                        return (
-                            <ActionButton
-                                key={action.actionName}
-                                tag="button"
-                                className="btn btn-sm btn-secondary action-button"
-                                actionName={action.actionName}
-                                reason={action.reason}
-                                payload={payload}
-                                tooltip={action.tooltip}
-                            >
-                                {action.child}
-                            </ActionButton>
-                        )
-                    })
-                }
-            </div>
+            <ActionButtonsGroup
+                payload={payload}
+                actions={actions}
+            />
         )
     }
 }

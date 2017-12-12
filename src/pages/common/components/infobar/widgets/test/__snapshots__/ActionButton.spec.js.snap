@@ -1,0 +1,657 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ActionButton component should display a single option with a checkbox parameter 1`] = `
+<Button
+  className="action-button"
+  color="secondary"
+  disabled={false}
+  id="initialActionId"
+  onClick={[Function]}
+  size="sm"
+  tag="button"
+>
+  <div>
+    <i
+      className="fa fa-fw fa-repeat mr-2"
+    />
+    Little action
+  </div>
+  <Popover
+    isOpen={false}
+    placement="bottom"
+    target="initialActionId"
+    tether={
+      Object {
+        "constraints": Array [
+          Object {
+            "attachment": "together none",
+            "pin": true,
+            "to": "scrollParent",
+          },
+          Object {
+            "attachment": "together none",
+            "pin": true,
+            "to": "window",
+          },
+        ],
+      }
+    }
+    toggle={[Function]}
+  >
+    <PopoverTitle
+      tag="h3"
+    >
+      <div>
+        <i
+          className="fa fa-fw fa-repeat mr-2"
+        />
+        Execute my little action
+      </div>
+    </PopoverTitle>
+    <PopoverContent
+      tag="div"
+    >
+      <p>
+        This action is little, but it is powerful.
+      </p>
+      <Form
+        onSubmit={[Function]}
+        tag="form"
+      >
+        <BooleanField
+          label="Execute the action for real"
+          name="param"
+          onChange={[Function]}
+          type="checkbox"
+        />
+        <Button
+          block={true}
+          color="success"
+          tag="button"
+        >
+          Confirm
+        </Button>
+      </Form>
+    </PopoverContent>
+  </Popover>
+</Button>
+`;
+
+exports[`ActionButton component should display a single option with a number parameter 1`] = `
+<Button
+  className="action-button"
+  color="secondary"
+  disabled={false}
+  id="initialActionId"
+  onClick={[Function]}
+  size="sm"
+  tag="button"
+>
+  <div>
+    <i
+      className="fa fa-fw fa-repeat mr-2"
+    />
+    Little action
+  </div>
+  <Popover
+    isOpen={false}
+    placement="bottom"
+    target="initialActionId"
+    tether={
+      Object {
+        "constraints": Array [
+          Object {
+            "attachment": "together none",
+            "pin": true,
+            "to": "scrollParent",
+          },
+          Object {
+            "attachment": "together none",
+            "pin": true,
+            "to": "window",
+          },
+        ],
+      }
+    }
+    toggle={[Function]}
+  >
+    <PopoverTitle
+      tag="h3"
+    >
+      <div>
+        <i
+          className="fa fa-fw fa-repeat mr-2"
+        />
+        Execute my little action
+      </div>
+    </PopoverTitle>
+    <PopoverContent
+      tag="div"
+    >
+      <p>
+        This action is little, but it is powerful.
+      </p>
+      <Form
+        onSubmit={[Function]}
+        tag="form"
+      >
+        <InputField
+          max={9}
+          min={2}
+          name="param"
+          onChange={[Function]}
+          placeholder="Just a param"
+          required={true}
+          step={0.1}
+          type="number"
+        />
+        <Button
+          block={true}
+          color="success"
+          tag="button"
+        >
+          Confirm
+        </Button>
+      </Form>
+    </PopoverContent>
+  </Popover>
+</Button>
+`;
+
+exports[`ActionButton component should display a single option with a text parameter 1`] = `
+<Button
+  className="action-button"
+  color="secondary"
+  disabled={false}
+  id="initialActionId"
+  onClick={[Function]}
+  size="sm"
+  tag="button"
+>
+  <div>
+    <i
+      className="fa fa-fw fa-repeat mr-2"
+    />
+    Little action
+  </div>
+  <Popover
+    isOpen={false}
+    placement="bottom"
+    target="initialActionId"
+    tether={
+      Object {
+        "constraints": Array [
+          Object {
+            "attachment": "together none",
+            "pin": true,
+            "to": "scrollParent",
+          },
+          Object {
+            "attachment": "together none",
+            "pin": true,
+            "to": "window",
+          },
+        ],
+      }
+    }
+    toggle={[Function]}
+  >
+    <PopoverTitle
+      tag="h3"
+    >
+      <div>
+        <i
+          className="fa fa-fw fa-repeat mr-2"
+        />
+        Execute my little action
+      </div>
+    </PopoverTitle>
+    <PopoverContent
+      tag="div"
+    >
+      <p>
+        This action is little, but it is powerful.
+      </p>
+      <Form
+        onSubmit={[Function]}
+        tag="form"
+      >
+        <InputField
+          name="param"
+          onChange={[Function]}
+          placeholder="Just a param"
+          required={true}
+          type="text"
+        />
+        <Button
+          block={true}
+          color="success"
+          tag="button"
+        >
+          Confirm
+        </Button>
+      </Form>
+    </PopoverContent>
+  </Popover>
+</Button>
+`;
+
+exports[`ActionButton component should display a single option with no parameters 1`] = `
+<Button
+  className="action-button"
+  color="secondary"
+  disabled={false}
+  id="initialActionId"
+  onClick={[Function]}
+  size="sm"
+  tag="button"
+>
+  <div>
+    <i
+      className="fa fa-fw fa-repeat mr-2"
+    />
+    Little action
+  </div>
+  <Popover
+    isOpen={false}
+    placement="bottom"
+    target="initialActionId"
+    tether={
+      Object {
+        "constraints": Array [
+          Object {
+            "attachment": "together none",
+            "pin": true,
+            "to": "scrollParent",
+          },
+          Object {
+            "attachment": "together none",
+            "pin": true,
+            "to": "window",
+          },
+        ],
+      }
+    }
+    toggle={[Function]}
+  >
+    <PopoverTitle
+      tag="h3"
+    >
+      <div>
+        <i
+          className="fa fa-fw fa-repeat mr-2"
+        />
+        Execute my little action
+      </div>
+    </PopoverTitle>
+    <PopoverContent
+      tag="div"
+    >
+      <p>
+        This action is little, but it is powerful.
+      </p>
+      <Form
+        onSubmit={[Function]}
+        tag="form"
+      >
+        <Button
+          block={true}
+          color="success"
+          tag="button"
+        >
+          Confirm
+        </Button>
+      </Form>
+    </PopoverContent>
+  </Popover>
+</Button>
+`;
+
+exports[`ActionButton component should display multiple options with a common parameter 1`] = `
+<Button
+  className="action-button"
+  color="secondary"
+  disabled={false}
+  id="initialActionId"
+  onClick={[Function]}
+  size="sm"
+  tag="button"
+>
+  <div>
+    <i
+      className="fa fa-fw fa-repeat mr-2"
+    />
+    Little action
+  </div>
+  <Popover
+    isOpen={false}
+    placement="bottom"
+    target="initialActionId"
+    tether={
+      Object {
+        "constraints": Array [
+          Object {
+            "attachment": "together none",
+            "pin": true,
+            "to": "scrollParent",
+          },
+          Object {
+            "attachment": "together none",
+            "pin": true,
+            "to": "window",
+          },
+        ],
+      }
+    }
+    toggle={[Function]}
+  >
+    <PopoverTitle
+      tag="h3"
+    >
+      <div>
+        <i
+          className="fa fa-fw fa-repeat mr-2"
+        />
+        Execute my little action
+      </div>
+    </PopoverTitle>
+    <PopoverContent
+      tag="div"
+    >
+      <p>
+        This action is little, but it is powerful.
+      </p>
+      <Form
+        onSubmit={[Function]}
+        tag="form"
+      >
+        <Label
+          tag="label"
+        >
+          Type
+        </Label>
+        <SelectField
+          allowCustomValue={false}
+          onChange={[Function]}
+          options={
+            Array [
+              Object {
+                "label": "My little action",
+                "parameters": Array [
+                  Object {
+                    "defaultValue": "hello",
+                    "name": "param",
+                    "placeholder": "Just a param",
+                    "required": true,
+                    "type": "text",
+                  },
+                ],
+                "value": "myLittleAction",
+              },
+              Object {
+                "label": "My big action",
+                "parameters": Array [
+                  Object {
+                    "defaultValue": "hello",
+                    "name": "param",
+                    "placeholder": "Just a param",
+                    "required": true,
+                    "type": "text",
+                  },
+                ],
+                "value": "myBigAction",
+              },
+            ]
+          }
+          placeholder="Select an option"
+          singular="option"
+          style={
+            Object {
+              "marginBottom": "1rem",
+            }
+          }
+          value=""
+        />
+        <InputField
+          name="param"
+          onChange={[Function]}
+          placeholder="Just a param"
+          required={true}
+          type="text"
+        />
+        <Button
+          block={true}
+          color="success"
+          tag="button"
+        >
+          Confirm
+        </Button>
+      </Form>
+    </PopoverContent>
+  </Popover>
+</Button>
+`;
+
+exports[`ActionButton component should display multiple options with different parameter 1`] = `
+<Button
+  className="action-button"
+  color="secondary"
+  disabled={false}
+  id="initialActionId"
+  onClick={[Function]}
+  size="sm"
+  tag="button"
+>
+  <div>
+    <i
+      className="fa fa-fw fa-repeat mr-2"
+    />
+    Little action
+  </div>
+  <Popover
+    isOpen={false}
+    placement="bottom"
+    target="initialActionId"
+    tether={
+      Object {
+        "constraints": Array [
+          Object {
+            "attachment": "together none",
+            "pin": true,
+            "to": "scrollParent",
+          },
+          Object {
+            "attachment": "together none",
+            "pin": true,
+            "to": "window",
+          },
+        ],
+      }
+    }
+    toggle={[Function]}
+  >
+    <PopoverTitle
+      tag="h3"
+    >
+      <div>
+        <i
+          className="fa fa-fw fa-repeat mr-2"
+        />
+        Execute my little action
+      </div>
+    </PopoverTitle>
+    <PopoverContent
+      tag="div"
+    >
+      <p>
+        This action is little, but it is powerful.
+      </p>
+      <Form
+        onSubmit={[Function]}
+        tag="form"
+      >
+        <Label
+          tag="label"
+        >
+          Type
+        </Label>
+        <SelectField
+          allowCustomValue={false}
+          onChange={[Function]}
+          options={
+            Array [
+              Object {
+                "label": "My little action",
+                "parameters": Array [
+                  Object {
+                    "defaultValue": "hello",
+                    "name": "param",
+                    "placeholder": "Just a param",
+                    "required": true,
+                    "type": "text",
+                  },
+                ],
+                "value": "myLittleAction",
+              },
+              Object {
+                "label": "My big action",
+                "parameters": Array [
+                  Object {
+                    "defaultValue": true,
+                    "label": "Execute the action for real",
+                    "name": "param",
+                    "type": "checkbox",
+                  },
+                ],
+                "value": "myBigAction",
+              },
+            ]
+          }
+          placeholder="Select an option"
+          singular="option"
+          style={
+            Object {
+              "marginBottom": "1rem",
+            }
+          }
+          value=""
+        />
+        <InputField
+          name="param"
+          onChange={[Function]}
+          placeholder="Just a param"
+          required={true}
+          type="text"
+        />
+        <Button
+          block={true}
+          color="success"
+          tag="button"
+        >
+          Confirm
+        </Button>
+      </Form>
+    </PopoverContent>
+  </Popover>
+</Button>
+`;
+
+exports[`ActionButton component should display multiple options without parameters 1`] = `
+<Button
+  className="action-button"
+  color="secondary"
+  disabled={false}
+  id="initialActionId"
+  onClick={[Function]}
+  size="sm"
+  tag="button"
+>
+  <div>
+    <i
+      className="fa fa-fw fa-repeat mr-2"
+    />
+    Little action
+  </div>
+  <Popover
+    isOpen={false}
+    placement="bottom"
+    target="initialActionId"
+    tether={
+      Object {
+        "constraints": Array [
+          Object {
+            "attachment": "together none",
+            "pin": true,
+            "to": "scrollParent",
+          },
+          Object {
+            "attachment": "together none",
+            "pin": true,
+            "to": "window",
+          },
+        ],
+      }
+    }
+    toggle={[Function]}
+  >
+    <PopoverTitle
+      tag="h3"
+    >
+      <div>
+        <i
+          className="fa fa-fw fa-repeat mr-2"
+        />
+        Execute my little action
+      </div>
+    </PopoverTitle>
+    <PopoverContent
+      tag="div"
+    >
+      <p>
+        This action is little, but it is powerful.
+      </p>
+      <Form
+        onSubmit={[Function]}
+        tag="form"
+      >
+        <Label
+          tag="label"
+        >
+          Type
+        </Label>
+        <SelectField
+          allowCustomValue={false}
+          onChange={[Function]}
+          options={
+            Array [
+              Object {
+                "label": "My little action",
+                "value": "myLittleAction",
+              },
+              Object {
+                "label": "My big action",
+                "value": "myBigAction",
+              },
+            ]
+          }
+          placeholder="Select an option"
+          singular="option"
+          style={
+            Object {
+              "marginBottom": "1rem",
+            }
+          }
+          value=""
+        />
+        <Button
+          block={true}
+          color="success"
+          tag="button"
+        >
+          Confirm
+        </Button>
+      </Form>
+    </PopoverContent>
+  </Popover>
+</Button>
+`;

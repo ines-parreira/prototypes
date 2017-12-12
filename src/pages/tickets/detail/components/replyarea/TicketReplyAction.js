@@ -7,6 +7,8 @@ import {FORM_CONTENT_TYPE} from './../../../../../config'
 import {getIconUrl, getIconFromUrl} from './../../../../../state/integrations/helpers'
 
 import InputField from '../../../../common/forms/InputField'
+import BooleanField from '../../../../common/forms/BooleanField'
+
 
 export default class TicketReplyAction extends React.Component {
     setListDictValue(arg, value, category) {
@@ -72,18 +74,38 @@ export default class TicketReplyAction extends React.Component {
         return (
             <div>
                 {
-                    sortedArgs.map((value, key) => (
-                        <div key={key} className="arg-input">
-                            <div className="mr-3">{key}</div>
-                            <InputField
-                                type="text"
-                                value={value}
-                                onChange={(value) => this.setValue(key, value, null)}
-                                required={template.arguments[key].required || false}
-                                inline
-                            />
-                        </div>
-                    )).toList()
+                    sortedArgs.map((value, key) => {
+                        const label = template.arguments[key].label
+                        const inputConfig = template.arguments[key].input
+
+                        if (inputConfig && inputConfig.type === 'checkbox') {
+                            return (
+                                <div key={key} className="arg-input">
+                                    <BooleanField
+                                        {...inputConfig}
+                                        value={value}
+                                        onChange={(value) => this.setValue(key, value, null)}
+                                        required={template.arguments[key].required || false}
+                                        label={label || key}
+                                        inline
+                                    />
+                                </div>
+                            )
+                        }
+
+                        return (
+                            <div key={key} className="arg-input">
+                                <InputField
+                                    {...inputConfig}
+                                    value={value}
+                                    onChange={(value) => this.setValue(key, value, null)}
+                                    required={template.arguments[key].required || false}
+                                    label={label || key}
+                                    inline
+                                />
+                            </div>
+                        )
+                    }).toList()
                 }
             </div>
         )
@@ -105,10 +127,10 @@ export default class TicketReplyAction extends React.Component {
 
         if (type === 'http') {
             const headersArgs = action.getIn(['arguments', 'headers'], fromJS([]))
-                .filter(curAction => curAction.get('editable'))
+                .filter((curAction) => curAction.get('editable'))
 
             const paramsArgs = action.getIn(['arguments', 'params'], fromJS([]))
-                .filter(curAction => curAction.get('editable'))
+                .filter((curAction) => curAction.get('editable'))
 
             const formData = action.getIn(['arguments', 'content_type']) === FORM_CONTENT_TYPE
                 ? action.getIn(['arguments', 'form'], fromJS([])).filter(curAction => curAction.get('editable'))

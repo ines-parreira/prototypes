@@ -148,62 +148,110 @@ exports[`Charge BeforeContent should display the appropriate color if there's a 
 `;
 
 exports[`Charge SubscriptionAfterTitle should display the skipCharge action if the charge is queued 1`] = `
-<div
-  className="action-buttons"
->
-  <Connect(ActionButton)
-    actionName="rechargeSkipCharge"
-    className="btn btn-sm btn-secondary action-button"
-    payload={
+<ActionButtonsGroup
+  actions={
+    Array [
       Object {
-        "charge_id": undefined,
-        "subscription_id": undefined,
-      }
+        "child": <div>
+          <i
+                className="fa fa-fw fa-ban mr-1"
+          />
+          Skip
+    </div>,
+        "key": "skip",
+        "options": Array [
+          Object {
+            "value": "rechargeSkipCharge",
+          },
+        ],
+        "title": <div>
+          <i
+                className="fa fa-fw fa-ban mr-1"
+          />
+          Skip charge on subscription
+    </div>,
+        "tooltip": "Skip the charge for this subscription on Recharge",
+      },
+    ]
+  }
+  payload={
+    Object {
+      "charge_id": undefined,
+      "subscription_id": undefined,
     }
-    reason="skip this charge for this subscription"
-    tag="button"
-    tooltip="Skip the charge for this subscription on Recharge"
-  >
-    <div>
-      <i
-        className="fa fa-fw fa-ban mr-1"
-      />
-      Skip charge on subscription
-    </div>
-  </Connect(ActionButton)>
-</div>
+  }
+/>
 `;
 
 exports[`Charge SubscriptionAfterTitle should display the skipCharge action with the correct payload taken from the source 1`] = `
-<div
-  className="action-buttons"
->
-  <Connect(ActionButton)
-    actionName="rechargeSkipCharge"
-    className="btn btn-sm btn-secondary action-button"
-    payload={
+<ActionButtonsGroup
+  actions={
+    Array [
       Object {
-        "charge_id": 2,
-        "subscription_id": 3,
-      }
+        "child": <div>
+          <i
+                className="fa fa-fw fa-ban mr-1"
+          />
+          Skip
+    </div>,
+        "key": "skip",
+        "options": Array [
+          Object {
+            "value": "rechargeSkipCharge",
+          },
+        ],
+        "title": <div>
+          <i
+                className="fa fa-fw fa-ban mr-1"
+          />
+          Skip charge on subscription
+    </div>,
+        "tooltip": "Skip the charge for this subscription on Recharge",
+      },
+    ]
+  }
+  payload={
+    Object {
+      "charge_id": 2,
+      "subscription_id": 3,
     }
-    reason="skip this charge for this subscription"
-    tag="button"
-    tooltip="Skip the charge for this subscription on Recharge"
-  >
-    <div>
-      <i
-        className="fa fa-fw fa-ban mr-1"
-      />
-      Skip charge on subscription
-    </div>
-  </Connect(ActionButton)>
-</div>
+  }
+/>
 `;
 
 exports[`Charge SubscriptionAfterTitle should not display the skipCharge action if the charge is not queued 1`] = `
-<div
-  className="action-buttons"
+<ActionButtonsGroup
+  actions={
+    Array [
+      Object {
+        "child": <div>
+          <i
+                className="fa fa-fw fa-ban mr-1"
+          />
+          Skip
+    </div>,
+        "key": "skip",
+        "options": Array [
+          Object {
+            "value": "rechargeSkipCharge",
+          },
+        ],
+        "title": <div>
+          <i
+                className="fa fa-fw fa-ban mr-1"
+          />
+          Skip charge on subscription
+    </div>,
+        "tooltip": "Skip the charge for this subscription on Recharge",
+      },
+    ]
+  }
+  payload={
+    Object {
+      "charge_id": undefined,
+      "subscription_id": undefined,
+    }
+  }
 />
 `;
 

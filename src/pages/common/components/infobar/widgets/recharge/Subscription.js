@@ -11,7 +11,7 @@ import {humanizeString} from '../../../../../../utils'
 import * as ticketSelectors from './../../../../../../state/ticket/selectors'
 import * as userSelectors from './../../../../../../state/users/selectors'
 
-import ActionButton from '../ActionButton'
+import ActionButtonsGroup from '../ActionButtonsGroup'
 
 export default () => {
     return {
@@ -48,13 +48,18 @@ class AfterTitle extends React.Component { // eslint-disable-line
 
         let actions = [
             {
-                actionName: 'rechargeCancelSubscription',
-                reason: 'cancel this subscription',
-                tooltip: 'Cancel the subscription on Recharge',
-                child: (
+                key: 'cancel',
+                options: [{value: 'rechargeCancelSubscription'}],
+                title: (
                     <div>
                         <i className="fa fa-fw fa-ban mr-1" />
                         Cancel subscription
+                    </div>
+                ),
+                child: (
+                    <div>
+                        <i className="fa fa-fw fa-ban mr-1" />
+                        Cancel
                     </div>
                 )
             },
@@ -67,32 +72,17 @@ class AfterTitle extends React.Component { // eslint-disable-line
         }
 
         // remove removed actions from list of available actions
-        actions = actions.filter(action => !removed.includes(action.actionName))
+        actions = actions.filter((action) => !removed.includes(action.actionName))
 
         const payload = {
             subscription_id: source.get('id'),
         }
 
         return (
-            <div className="action-buttons">
-                {
-                    actions.map((action) => {
-                        return (
-                            <ActionButton
-                                key={action.actionName}
-                                tag="button"
-                                className="btn btn-sm btn-secondary action-button"
-                                actionName={action.actionName}
-                                reason={action.reason}
-                                payload={payload}
-                                tooltip={action.tooltip}
-                            >
-                                {action.child}
-                            </ActionButton>
-                        )
-                    })
-                }
-            </div>
+            <ActionButtonsGroup
+                actions={actions}
+                payload={payload}
+            />
         )
     }
 }

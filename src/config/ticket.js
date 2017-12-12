@@ -69,6 +69,9 @@ export const VARIABLES = [{
     }, {
         name: 'Delivery status of last order',
         value: 'ticket.requester.integrations.shopify.orders[0].fulfillments[0].shipment_status',
+    }, {
+        name: 'Status URL of last order',
+        value: 'ticket.requester.integrations.shopify.orders[0].order_status_url',
     }]
 }, {
     type: 'recharge',

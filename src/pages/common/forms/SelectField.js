@@ -170,7 +170,7 @@ export default class SelectField extends Component {
         // 10: width of the arrow of the select
         // 305: max-width allowed (pixel perfect)
         // we use this value to increase the min height of the input and
-        // the label to increase or decrease according to its contentc
+        // the label to increase or decrease according to its content
         const selectMinWidth = _min([input.length * 7 + 10, 305])
 
         return (

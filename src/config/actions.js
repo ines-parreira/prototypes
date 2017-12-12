@@ -15,10 +15,20 @@ export const actions = [{
     label: 'Duplicate order',
     objectType: 'order',
 }, {
+    name: 'shopifyPartialRefundOrder',
+    label: 'Partial refund order',
+    objectType: 'order',
+}, {
     name: 'shopifyRefundOrderItem',
     label: 'Refund item',
     objectType: 'item',
 }, {
+    name: 'shopifyDuplicateOrder',
+    label: 'Duplicate order',
+}, {
+//     name: 'shopifyCreateGiftCard',
+//     label: 'Create gift card',
+// }, {
     name: 'rechargeCancelSubscription',
     label: 'Cancel subscription',
     objectType: 'subscription',
