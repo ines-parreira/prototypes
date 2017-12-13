@@ -329,13 +329,6 @@ describe('global utils', () => {
             const contentState = ContentState.createFromText(text)
             expect(utils.convertToHTML(contentState)).toEqual('<div>Hey Marie Curie,</div><div>multiple links: <a href="http://www.facebook.comwww.github.com" class="linkified" target="_blank">www.facebook.comwww.github.com</a></div><br><div>Thanks for contacting us.</div>')
         })
-
-        it('should wrap images in inline-block divs', () => {
-            const baseHTML = '<figure><img src="https://gorgias.io/" /></figure>'
-            const contentState = utils.convertFromHTML(baseHTML)
-            const newHTML = utils.convertToHTML(contentState)
-            expect(newHTML).toEqual('<div style="display: inline-block"><img src="https://gorgias.io/" width="400px" style="max-width: 100%"></div>')
-        })
     })
 
     describe('humanize string', () => {
