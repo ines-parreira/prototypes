@@ -30,6 +30,7 @@ export class TicketReplyArea extends React.Component {
             searchQuery: '',
             searchedMacrosIds: fromJS([]),
             selectedMacroId,
+            isMacroDisplayInitialized: false
         }
     }
 
@@ -56,9 +57,10 @@ export class TicketReplyArea extends React.Component {
         const prevContentState = this.props.newMessage.getIn(CONTENT_STATE_PATH)
         const nextContextState = nextProps.newMessage.getIn(CONTENT_STATE_PATH)
 
-        // here we make sure that we only toggle the macros
-        // if the current contentState is null.
-        if (prevContentState === null && nextProps.newMessageType === 'email' &&
+        // Here we make sure that we only toggle the macros if the current contentState is null.
+        // We also want to automatically set the macros display only once, when the data is loaded.
+        if (!this.state.isMacroDisplayInitialized &&
+            prevContentState === null && nextProps.newMessageType === 'email' &&
             nextProps.macros.get('visible') === this.props.macros.get('visible')) {
             // default
             let showMacros = nextProps.preferences.get('show_macros')
@@ -83,6 +85,7 @@ export class TicketReplyArea extends React.Component {
             }
 
             this._setMacrosVisible(showMacros)
+            this.setState({isMacroDisplayInitialized: true})
         }
     }
 
