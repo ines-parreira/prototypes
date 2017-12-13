@@ -342,4 +342,26 @@ describe('New message reducers', () => {
         })
     })
 
+    describe('ADD_ATTACHMENTS action', () => {
+        it('should add attachments to newMessage', () => {
+            const attachments = fromJS([
+                {
+                    content_type: 'image/jpeg',
+                    name: 'batman.jpg',
+                    size: '2563',
+                    url: 'https://uploads.gorgias.io/Zr1WE86rb6J4Mvgl/batman-b40a130a-5546-417a-b8bc-44a0aa59d7ba.jpg'
+                }
+            ])
+            const action = {
+                type: types.ADD_ATTACHMENTS,
+                args: fromJS({attachments})
+            }
+
+            expect(
+                reducer(initialState, action)
+            ).toEqualImmutable(
+                initialState.setIn(['newMessage', 'attachments'], attachments)
+            )
+        })
+    })
 })
