@@ -238,11 +238,13 @@ export default class Form extends React.Component {
                                         <PopoverTitle>Are you sure?</PopoverTitle>
                                         <PopoverContent>
                                             <p>
-                                                You are about to <b>delete</b> this team member.
+                                                You are about to <b>delete</b> this team member. This action is{' '}
+                                                <b>irreversible</b>. This will unassign this team member from{' '}
+                                                all its tickets, open or closed, and delete its statistics.
                                             </p>
                                             <Button
                                                 type="submit"
-                                                color="success"
+                                                color="danger"
                                                 onClick={() => {
                                                     this._toggleDeleteConfirmation()
                                                     this._delete()
