@@ -4,8 +4,9 @@ import {Card, CardDeck, CardBlock, CardTitle, Row, Col, Button} from 'reactstrap
 
 import Tooltip from '../../common/components/Tooltip'
 import {notify} from '../../../state/notifications/actions'
-import {updateSubscription} from '../../../state/billing/actions'
+import {updateSubscription} from '../../../state/currentAccount/actions'
 import * as billingSelectors from '../../../state/billing/selectors'
+import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
 import css from './BillingPlans.less'
 import classnames from 'classnames'
 import {openChat} from '../../../utils'
@@ -15,8 +16,8 @@ export class BillingPlans extends Component {
         notify: PropTypes.func.isRequired,
         updateSubscription: PropTypes.func.isRequired,
         isAllowedToChangePlan: PropTypes.func.isRequired,
-        currentPlanId: PropTypes.string.isRequired,
         plans: PropTypes.object.isRequired,
+        subscription: PropTypes.object
     }
 
     state = {
@@ -43,8 +44,9 @@ export class BillingPlans extends Component {
     }
 
     render() {
-        const {currentPlanId, plans} = this.props
+        const {plans, subscription} = this.props
         const {isUpdating} = this.state
+        const planSentencePrefix = subscription.isEmpty() ? 'Choose' : 'Switch to'
         let i = 0
 
         return (
@@ -54,11 +56,11 @@ export class BillingPlans extends Component {
                     <Col sm="12">
                         <CardDeck>
                             {plans.map((plan, planId) => {
-                                i++
+                                ++i
                                 if (!plan.get('public')) {
                                     return null
                                 }
-                                const isCurrentPlan = planId === currentPlanId
+                                const isCurrentPlan = planId === subscription.get('plan')
                                 const costMultiplier = 100
                                 const costPerTicket = plan.get('cost_per_ticket') * costMultiplier
 
@@ -100,7 +102,10 @@ export class BillingPlans extends Component {
                                                 disabled={isCurrentPlan || isUpdating}
                                                 onClick={() => this._updateSubscription(planId)}
                                             >
-                                                {isCurrentPlan ? 'Your current plan' : `Switch to ${plan.get('name')}`}
+                                                {isCurrentPlan
+                                                    ? 'Your current plan'
+                                                    : `${planSentencePrefix} ${plan.get('name')}`
+                                                }
                                             </Button>
                                         </CardBlock>
                                     </Card>
@@ -137,16 +142,12 @@ export class BillingPlans extends Component {
                         <strong>Are all tickets counted? What about spam?</strong>
                     </p>
 
-                    <p>
-                        <span>
-                            We bill for a ticket only if your team uses Gorgias to send replies to customers.
-                            Specifically we bill you if the ticket:
-                        </span>
-                        <ul>
-                            <li>Has at least 1 reply sent using the helpdesk by a team member (agent).</li>
-                            <li>Or is sent using an automatic reply (using the Rules).</li>
-                        </ul>
-                    </p>
+                    We bill for a ticket only if your team uses Gorgias to send replies to customers.
+                    Specifically we bill you if the ticket:
+                    <ul>
+                        <li>Has at least 1 reply sent using the helpdesk by a team member (agent).</li>
+                        <li>Or is sent using an automatic reply (using the Rules).</li>
+                    </ul>
 
                     <p>
                         <strong>Note:</strong> Tickets that are imported into Gorgias from Facebook, Gmail, etc.. are
@@ -161,7 +162,7 @@ export class BillingPlans extends Component {
 export default connect((state) => {
     return {
         isAllowedToChangePlan: billingSelectors.makeIsAllowedToChangePlan(state),
-        currentPlanId: billingSelectors.currentPlanId(state),
         plans: billingSelectors.plans(state),
+        subscription: currentAccountSelectors.getCurrentSubscription(state),
     }
 }, {notify, updateSubscription})(BillingPlans)

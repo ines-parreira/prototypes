@@ -99,13 +99,13 @@ exports[`BillingPlans component should display matching current plan 1`] = `
             </div>
             <Button
               className=""
-              color="secondary"
-              disabled={true}
+              color="info"
+              disabled={false}
               onClick={[Function]}
               outline={true}
               tag="button"
             >
-              Your current plan
+              Choose my plan
             </Button>
           </CardBlock>
         </Card>
@@ -169,19 +169,15 @@ exports[`BillingPlans component should display matching current plan 1`] = `
         Are all tickets counted? What about spam?
       </strong>
     </p>
-    <p>
-      <span>
-        We bill for a ticket only if your team uses Gorgias to send replies to customers. Specifically we bill you if the ticket:
-      </span>
-      <ul>
-        <li>
-          Has at least 1 reply sent using the helpdesk by a team member (agent).
-        </li>
-        <li>
-          Or is sent using an automatic reply (using the Rules).
-        </li>
-      </ul>
-    </p>
+    We bill for a ticket only if your team uses Gorgias to send replies to customers. Specifically we bill you if the ticket:
+    <ul>
+      <li>
+        Has at least 1 reply sent using the helpdesk by a team member (agent).
+      </li>
+      <li>
+        Or is sent using an automatic reply (using the Rules).
+      </li>
+    </ul>
     <p>
       <strong>
         Note:
@@ -291,13 +287,13 @@ exports[`BillingPlans component should display multiple plans 1`] = `
             </div>
             <Button
               className=""
-              color="secondary"
-              disabled={true}
+              color="info"
+              disabled={false}
               onClick={[Function]}
               outline={true}
               tag="button"
             >
-              Your current plan
+              Choose my plan
             </Button>
           </CardBlock>
         </Card>
@@ -379,7 +375,7 @@ exports[`BillingPlans component should display multiple plans 1`] = `
               outline={true}
               tag="button"
             >
-              Switch to my second plan
+              Choose my second plan
             </Button>
           </CardBlock>
         </Card>
@@ -443,19 +439,15 @@ exports[`BillingPlans component should display multiple plans 1`] = `
         Are all tickets counted? What about spam?
       </strong>
     </p>
-    <p>
-      <span>
-        We bill for a ticket only if your team uses Gorgias to send replies to customers. Specifically we bill you if the ticket:
-      </span>
-      <ul>
-        <li>
-          Has at least 1 reply sent using the helpdesk by a team member (agent).
-        </li>
-        <li>
-          Or is sent using an automatic reply (using the Rules).
-        </li>
-      </ul>
-    </p>
+    We bill for a ticket only if your team uses Gorgias to send replies to customers. Specifically we bill you if the ticket:
+    <ul>
+      <li>
+        Has at least 1 reply sent using the helpdesk by a team member (agent).
+      </li>
+      <li>
+        Or is sent using an automatic reply (using the Rules).
+      </li>
+    </ul>
     <p>
       <strong>
         Note:
@@ -472,6 +464,10 @@ exports[`BillingPlans component should load with empty props 1`] = `
   isAllowedToChangePlan={[Function]}
   notify={[Function]}
   plans={
+    Immutable.Map {
+    }
+  }
+  subscription={
     Immutable.Map {
     }
   }
@@ -593,19 +589,15 @@ exports[`BillingPlans component should load with empty props 1`] = `
           Are all tickets counted? What about spam?
         </strong>
       </p>
-      <p>
-        <span>
-          We bill for a ticket only if your team uses Gorgias to send replies to customers. Specifically we bill you if the ticket:
-        </span>
-        <ul>
-          <li>
-            Has at least 1 reply sent using the helpdesk by a team member (agent).
-          </li>
-          <li>
-            Or is sent using an automatic reply (using the Rules).
-          </li>
-        </ul>
-      </p>
+      We bill for a ticket only if your team uses Gorgias to send replies to customers. Specifically we bill you if the ticket:
+      <ul>
+        <li>
+          Has at least 1 reply sent using the helpdesk by a team member (agent).
+        </li>
+        <li>
+          Or is sent using an automatic reply (using the Rules).
+        </li>
+      </ul>
       <p>
         <strong>
           Note:

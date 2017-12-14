@@ -11,7 +11,7 @@ describe('current account reducers', () => {
         expect(reducer(undefined, {})).toEqualImmutable(initialState)
     })
 
-    it('update agent', () => {
+    it('update account', () => {
         // start
         expect(
             reducer(
@@ -70,4 +70,27 @@ describe('current account reducers', () => {
             ).toJS()
         ).toMatchSnapshot()
     })
+
+    describe('update subscription', () => {
+        it('without any existing subscription', () => {
+            const state = initialState.set('current_subscription', null)
+            expect(
+                reducer(state, {
+                    type: types.UPDATE_SUBSCRIPTION_SUCCESS,
+                    subscription: {plan: 'basic-usd-1'},
+                }).toJS()
+            ).toMatchSnapshot()
+        })
+
+        it('with an existing subscription', () => {
+            const state = initialState.set('current_subscription', fromJS({plan: 'advanced-usd-1'}))
+            expect(
+                reducer(state, {
+                    type: types.UPDATE_SUBSCRIPTION_SUCCESS,
+                    subscription: {plan: 'basic-usd-1'},
+                }).toJS()
+            ).toMatchSnapshot()
+        })
+    })
+
 })

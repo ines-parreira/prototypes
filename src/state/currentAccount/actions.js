@@ -75,3 +75,26 @@ export function submitSetting(setting: settingType) {
             })
     }
 }
+
+export function updateSubscription(subscription: {}) {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
+        return axios.put('/api/billing/subscription/', subscription)
+            .then((json = {}) => json.data)
+            .then((resp) => {
+                dispatch(notify({
+                    status: 'success',
+                    message: 'Your subscription was updated.',
+                }))
+                return dispatch({
+                    type: constants.UPDATE_SUBSCRIPTION_SUCCESS,
+                    subscription: resp,
+                })
+            }, (error) => {
+                return dispatch({
+                    type: constants.UPDATE_SUBSCRIPTION_ERROR,
+                    error,
+                    reason: 'Failed to update the current subscription.'
+                })
+            })
+    }
+}

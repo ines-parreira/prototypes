@@ -13,6 +13,7 @@ describe('BillingPlans component', () => {
                 isAllowedToChangePlan={() => true}
                 currentPlanId="some-plan"
                 plans={fromJS({})}
+                subscription={fromJS({})}
             />
         )
         expect(component).toMatchSnapshot()
@@ -34,6 +35,7 @@ describe('BillingPlans component', () => {
                         integrations: 10
                     }
                 })}
+                subscription={fromJS({})}
             />
         )
         expect(component).toMatchSnapshot()
@@ -70,6 +72,7 @@ describe('BillingPlans component', () => {
                         integrations: 100
                     }
                 })}
+                subscription={fromJS({})}
             />
         )
         expect(component).toMatchSnapshot()

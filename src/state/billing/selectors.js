@@ -5,14 +5,15 @@ import {getActiveIntegrations} from '../integrations/selectors'
 
 // types
 import type {stateType} from '../types'
+import {getCurrentAccountState} from '../currentAccount/selectors'
 
 export const DEFAULT_PLAN = 'standard-usd-1'
 
 export const getBillingState = (state: stateType) => state.billing || fromJS({})
 
 export const currentPlanId = createSelector(
-    [getBillingState],
-    state => state.get('currentPlanId') || DEFAULT_PLAN
+    [getCurrentAccountState],
+    state => state.getIn(['current_subscription', 'plan'])
 )
 
 export const plans = createSelector(

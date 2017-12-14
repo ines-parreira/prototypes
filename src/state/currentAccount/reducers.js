@@ -19,8 +19,24 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
             return state.setIn(['_internal', 'loading', 'updateAccount'], true)
         case constants.UPDATE_ACCOUNT_ERROR:
             return state.setIn(['_internal', 'loading', 'updateAccount'], false)
-        case constants.UPDATE_ACCOUNT_SUCCESS:
-            return state.setIn(['_internal', 'loading', 'updateAccount'], false).merge(action.resp)
+        case constants.UPDATE_ACCOUNT_SUCCESS: {
+            const account = fromJS(action.resp)
+            return state.setIn(['_internal', 'loading', 'updateAccount'], false)
+                .merge(account)
+                // do not merge the current subscription
+                // in case it has been canceled and it's empty
+                .set('current_subscription', account.get('current_subscription'))
+        }
+
+        case constants.UPDATE_SUBSCRIPTION_SUCCESS:
+            return state.update('current_subscription', subscription => {
+                if (subscription) {
+                    return subscription.merge(fromJS(action.subscription))
+                }
+                return fromJS(action.subscription)
+            })
+
+
         case constants.UPDATE_ACCOUNT_SETTING: {
             const new_setting = action.setting
 

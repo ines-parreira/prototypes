@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`current account reducers update agent 1`] = `
+exports[`current account reducers update account 1`] = `
 Object {
   "_internal": Object {
     "loading": Object {
@@ -11,13 +11,14 @@ Object {
 }
 `;
 
-exports[`current account reducers update agent 2`] = `
+exports[`current account reducers update account 2`] = `
 Object {
   "_internal": Object {
     "loading": Object {
       "updateAccount": false,
     },
   },
+  "current_subscription": undefined,
   "settings": Array [
     Object {
       "id": 10,
@@ -26,7 +27,7 @@ Object {
 }
 `;
 
-exports[`current account reducers update agent 3`] = `
+exports[`current account reducers update account 3`] = `
 Object {
   "_internal": Object {
     "loading": Object {
@@ -61,5 +62,29 @@ Object {
       "id": 1,
     },
   ],
+}
+`;
+
+exports[`current account reducers update subscription with an existing subscription 1`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {},
+  },
+  "current_subscription": Object {
+    "plan": "basic-usd-1",
+  },
+  "settings": Array [],
+}
+`;
+
+exports[`current account reducers update subscription without any existing subscription 1`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {},
+  },
+  "current_subscription": Object {
+    "plan": "basic-usd-1",
+  },
+  "settings": Array [],
 }
 `;

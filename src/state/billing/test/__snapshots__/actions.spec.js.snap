@@ -92,14 +92,3 @@ Array [
   },
 ]
 `;
-
-exports[`billing actions update subscription 1`] = `
-Array [
-  Object {
-    "resp": Object {
-      "plan": "basic",
-    },
-    "type": "UPDATE_SUBSCRIPTION_SUCCESS",
-  },
-]
-`;

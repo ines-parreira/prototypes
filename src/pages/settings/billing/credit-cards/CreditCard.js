@@ -132,7 +132,7 @@ class CreditCard extends Component {
         const invalid = Object.keys(this.state.errors).length > 0
         const isUpdating = /update-credit-card/.test(this.props.location.pathname)
         const action = isUpdating ? 'Update' : 'Add'
-        const payment = (isUpdating || currentPlan.get('amount') === 0) ? '' :
+        const payment = (isUpdating || currentPlan.isEmpty() || currentPlan.get('amount') === 0) ? '' :
             ` and pay ${currentPlan.get('currencySign')}${currentPlan.get('amount')}`
 
         const {isStripeLoaded} = this.state

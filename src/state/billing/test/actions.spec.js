@@ -171,15 +171,4 @@ describe('billing actions', () => {
             expect(store.getActions()).toMatchSnapshot()
         })
     })
-
-    it('update subscription', () => {
-        const subscription = {
-            plan: 'basic',
-        }
-
-        mockServer.onPut('/api/billing/subscription/').reply(200, subscription)
-
-        return store.dispatch(actions.updateSubscription())
-            .then(() => expect(store.getActions()).toMatchSnapshot())
-    })
 })

@@ -51,4 +51,16 @@ describe('current account actions', () => {
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })
+
+    describe('update subscription', () => {
+        it('update subscription', () => {
+            const subscription = {plan: 'basic'}
+
+            mockServer.onPut('/api/billing/subscription/').reply(202, subscription)
+
+            return store.dispatch(actions.updateSubscription())
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+    })
+
 })

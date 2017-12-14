@@ -38,3 +38,14 @@ Array [
   },
 ]
 `;
+
+exports[`current account actions update subscription update subscription 1`] = `
+Array [
+  Object {
+    "subscription": Object {
+      "plan": "basic",
+    },
+    "type": "UPDATE_SUBSCRIPTION_SUCCESS",
+  },
+]
+`;

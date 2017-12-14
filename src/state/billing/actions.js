@@ -52,7 +52,6 @@ export function fetchInvoices() {
     }
 }
 
-
 export function fetchPaymentMethod() {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         return axios.get('/api/billing/payment-method/')
@@ -161,28 +160,5 @@ export function updateCreditCard(creditCard: creditCardType) {
                 reason: 'Unable to update credit card. Please reload this page.'
             })
         }
-    }
-}
-
-export function updateSubscription(subscription: {}) {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
-        return axios.put('/api/billing/subscription/', subscription)
-            .then((json = {}) => json.data)
-            .then((resp) => {
-                dispatch(notify({
-                    status: 'success',
-                    message: 'Your subscription was updated.',
-                }))
-                return dispatch({
-                    type: constants.UPDATE_SUBSCRIPTION_SUCCESS,
-                    resp
-                })
-            }, (error) => {
-                return dispatch({
-                    type: constants.UPDATE_SUBSCRIPTION_ERROR,
-                    error,
-                    reason: 'Failed to update the current subscription.'
-                })
-            })
     }
 }

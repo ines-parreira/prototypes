@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BillingPaymentMethod.spec.js component should render empty card 1`] = `
+exports[`BillingPaymentMethod Shopify should render a button 1`] = `
 <BillingPaymentMethod
   creditCard={
     Immutable.Map {
@@ -8,8 +8,13 @@ exports[`BillingPaymentMethod.spec.js component should render empty card 1`] = `
   }
   fetchCreditCard={[Function]}
   fetchPaymentMethod={[Function]}
-  paymentIsActive={true}
-  paymentMethod="stripe"
+  paymentIsActive={false}
+  paymentMethod="shopify"
+  subscription={
+    Immutable.Map {
+      plan: "basic-usd-1",
+    }
+  }
 >
   <div
     className="mb-5"
@@ -18,67 +23,75 @@ exports[`BillingPaymentMethod.spec.js component should render empty card 1`] = `
       Payment method
     </h4>
     <div>
-      <p
-        className="mt-2 mb-2"
+      <div
+        id="activate-shopify-billing-button"
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
       >
-        No credit card registered
-      </p>
-      <Button
-        color="success"
-        tag={[Function]}
-        to="/app/settings/billing/add-credit-card"
-      >
-        <Link
-          className="btn btn-success"
+        <Button
+          className=""
+          color="success"
+          disabled={false}
+          href="/integrations/shopify/billing/activate/"
           onClick={[Function]}
-          onlyActiveOnIndex={false}
-          style={Object {}}
-          to="/app/settings/billing/add-credit-card"
+          tag="a"
         >
           <a
             className="btn btn-success"
+            disabled={false}
+            href="/integrations/shopify/billing/activate/"
             onClick={[Function]}
-            style={Object {}}
           >
-            Add Credit Card
+            Activate billing with Shopify
           </a>
-        </Link>
-      </Button>
+        </Button>
+      </div>
     </div>
   </div>
 </BillingPaymentMethod>
 `;
 
-exports[`BillingPaymentMethod.spec.js component should render loading 1`] = `
-<BillingPaymentMethod
-  creditCard={
-    Immutable.Map {
-    }
-  }
-  fetchCreditCard={[Function]}
-  fetchPaymentMethod={[Function]}
-  paymentIsActive={true}
-  paymentMethod="stripe"
+exports[`BillingPaymentMethod Shopify should render a disabled button 1`] = `
+<div
+  className="mb-5"
 >
-  <Loader
-    inline={false}
-  >
+  <h4>
+    Payment method
+  </h4>
+  <div>
     <div
-      className="loader-container"
+      id="activate-shopify-billing-button"
+      style={
+        Object {
+          "display": "inline-block",
+        }
+      }
     >
-      <div
-        className="loader-inner"
+      <Button
+        className=""
+        color="success"
+        disabled={true}
+        href="/integrations/shopify/billing/activate/"
+        onClick={[Function]}
+        tag="a"
       >
-        <i
-          className="fa fa-fw fa-circle-o-notch fa-spin"
-        />
-      </div>
+        Activate billing with Shopify
+      </Button>
+      <UncontrolledTooltip
+        placement="top"
+        target="activate-shopify-billing-button"
+      >
+        Select a plan before activating Shopify billing
+      </UncontrolledTooltip>
     </div>
-  </Loader>
-</BillingPaymentMethod>
+  </div>
+</div>
 `;
 
-exports[`BillingPaymentMethod.spec.js component should render shopify active 1`] = `
+exports[`BillingPaymentMethod Shopify should render an active status 1`] = `
 <BillingPaymentMethod
   creditCard={
     Immutable.Map {
@@ -88,6 +101,11 @@ exports[`BillingPaymentMethod.spec.js component should render shopify active 1`]
   fetchPaymentMethod={[Function]}
   paymentIsActive={true}
   paymentMethod="shopify"
+  subscription={
+    Immutable.Map {
+      plan: "basic-usd-1",
+    }
+  }
 >
   <div
     className="mb-5"
@@ -106,7 +124,7 @@ exports[`BillingPaymentMethod.spec.js component should render shopify active 1`]
 </BillingPaymentMethod>
 `;
 
-exports[`BillingPaymentMethod.spec.js component should render shopify inactive 1`] = `
+exports[`BillingPaymentMethod Stripe should render a button 1`] = `
 <BillingPaymentMethod
   creditCard={
     Immutable.Map {
@@ -114,8 +132,13 @@ exports[`BillingPaymentMethod.spec.js component should render shopify inactive 1
   }
   fetchCreditCard={[Function]}
   fetchPaymentMethod={[Function]}
-  paymentIsActive={false}
-  paymentMethod="shopify"
+  paymentIsActive={true}
+  paymentMethod="stripe"
+  subscription={
+    Immutable.Map {
+      plan: "basic-usd-1",
+    }
+  }
 >
   <div
     className="mb-5"
@@ -124,26 +147,50 @@ exports[`BillingPaymentMethod.spec.js component should render shopify inactive 1
       Payment method
     </h4>
     <div>
-      <Button
-        color="success"
-        href="/integrations/shopify/billing/activate/"
-        onClick={[Function]}
-        tag="a"
+      <p
+        className="mt-2 mb-2"
       >
-        <a
-          className="btn btn-success"
-          href="/integrations/shopify/billing/activate/"
-          onClick={[Function]}
+        No credit card registered
+      </p>
+      <div
+        id="add-credit-card-button"
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <Button
+          color="success"
+          disabled={false}
+          tag={[Function]}
+          to="/app/settings/billing/add-credit-card"
         >
-          Activate billing with Shopify
-        </a>
-      </Button>
+          <Link
+            className="btn btn-success"
+            disabled={false}
+            onClick={[Function]}
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/billing/add-credit-card"
+          >
+            <a
+              className="btn btn-success"
+              disabled={false}
+              onClick={[Function]}
+              style={Object {}}
+            >
+              Add Credit Card
+            </a>
+          </Link>
+        </Button>
+      </div>
     </div>
   </div>
 </BillingPaymentMethod>
 `;
 
-exports[`BillingPaymentMethod.spec.js component should render stripe 1`] = `
+exports[`BillingPaymentMethod Stripe should render a button to update a credit card 1`] = `
 <BillingPaymentMethod
   creditCard={
     Immutable.Map {
@@ -157,6 +204,11 @@ exports[`BillingPaymentMethod.spec.js component should render stripe 1`] = `
   fetchPaymentMethod={[Function]}
   paymentIsActive={true}
   paymentMethod="stripe"
+  subscription={
+    Immutable.Map {
+      plan: "basic-usd-1",
+    }
+  }
 >
   <div
     className="mb-5"
@@ -206,5 +258,74 @@ exports[`BillingPaymentMethod.spec.js component should render stripe 1`] = `
       </Button>
     </div>
   </div>
+</BillingPaymentMethod>
+`;
+
+exports[`BillingPaymentMethod Stripe should render a disabled button 1`] = `
+<div
+  className="mb-5"
+>
+  <h4>
+    Payment method
+  </h4>
+  <div>
+    <p
+      className="mt-2 mb-2"
+    >
+      No credit card registered
+    </p>
+    <div
+      id="add-credit-card-button"
+      style={
+        Object {
+          "display": "inline-block",
+        }
+      }
+    >
+      <Button
+        color="success"
+        disabled={true}
+        tag={[Function]}
+        to="/app/settings/billing/add-credit-card"
+      >
+        Add Credit Card
+      </Button>
+      <UncontrolledTooltip
+        placement="top"
+        target="add-credit-card-button"
+      >
+        Select a plan before adding a credit card
+      </UncontrolledTooltip>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`BillingPaymentMethod Stripe should render a loader 1`] = `
+<BillingPaymentMethod
+  creditCard={
+    Immutable.Map {
+    }
+  }
+  fetchCreditCard={[Function]}
+  fetchPaymentMethod={[Function]}
+  paymentIsActive={true}
+  paymentMethod="stripe"
+>
+  <Loader
+    inline={false}
+  >
+    <div
+      className="loader-container"
+    >
+      <div
+        className="loader-inner"
+      >
+        <i
+          className="fa fa-fw fa-circle-o-notch fa-spin"
+        />
+      </div>
+    </div>
+  </Loader>
 </BillingPaymentMethod>
 `;

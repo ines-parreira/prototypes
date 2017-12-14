@@ -1,12 +1,13 @@
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
-import {Button} from 'reactstrap'
+import {Button, UncontrolledTooltip} from 'reactstrap'
 import * as billingSelectors from '../../../state/billing/selectors'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
 import {fetchPaymentMethod, fetchCreditCard} from '../../../state/billing/actions'
 import Loader from '../../common/components/Loader'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker'
+import classNames from 'classnames'
 
 export class BillingPaymentMethod extends Component {
     static propTypes = {
@@ -17,10 +18,12 @@ export class BillingPaymentMethod extends Component {
         paymentIsActive: PropTypes.bool.isRequired,
         currentUserId: PropTypes.number.isRequired,
         currentAccountId: PropTypes.number.isRequired,
+        subscription: PropTypes.object.isRequired,
     }
 
     state = {
         isLoading: false,
+        isActivatingShopifyBilling: false
     }
 
     componentWillMount() {
@@ -33,9 +36,10 @@ export class BillingPaymentMethod extends Component {
     }
 
     _renderStripe() {
-        const {creditCard} = this.props
-
+        const {creditCard, subscription} = this.props
+        const hasNoSubscription = subscription.isEmpty()
         let creditCardLabel = 'No credit card registered'
+
         if (!creditCard.isEmpty()) {
             creditCardLabel = (
                 <span>
@@ -44,18 +48,37 @@ export class BillingPaymentMethod extends Component {
                 </span>
             )
         }
+
         return (
             <div>
                 <p className="mt-2 mb-2">{creditCardLabel}</p>
                 {
                     creditCard.isEmpty() ? (
-                        <Button
-                            tag={Link}
-                            color="success"
-                            to="/app/settings/billing/add-credit-card"
+                        <div
+                            id="add-credit-card-button"
+                            style={{
+                                display: 'inline-block'
+                            }}
                         >
-                            Add Credit Card
-                        </Button>
+                            <Button
+                                tag={Link}
+                                color="success"
+                                to="/app/settings/billing/add-credit-card"
+                                disabled={hasNoSubscription}
+                            >
+                                Add Credit Card
+                            </Button>
+                            {
+                                hasNoSubscription ? (
+                                    <UncontrolledTooltip
+                                        placement="top"
+                                        target="add-credit-card-button"
+                                    >
+                                        Select a plan before adding a credit card
+                                    </UncontrolledTooltip>
+                                ) : null
+                            }
+                        </div>
                     ) : (
                         <Button
                             tag={Link}
@@ -69,25 +92,55 @@ export class BillingPaymentMethod extends Component {
         )
     }
 
+    _onActivateShopifyBilling = () => {
+        const {currentUserId, currentAccountId} = this.props
+
+        segmentTracker.logEvent(segmentTracker.EVENTS.PAYMENT_METHOD_ADDED, {
+            payment_method: 'shopify',
+            user_id: currentUserId,
+            account_id: currentAccountId
+        })
+        this.setState({isActivatingShopifyBilling: true})
+    }
+
     _renderShopify() {
-        const {paymentIsActive, currentUserId, currentAccountId} = this.props
+        const {paymentIsActive, subscription} = this.props
+        const {isActivatingShopifyBilling} = this.state
+        const hasNoSubscription = subscription.isEmpty()
+
         return (
             <div>
                 {paymentIsActive ? (
                     <p className="mt-2 mb-2">Payment with Shopify activated.</p>
                 ) : (
-                    <Button
-                        tag="a"
-                        color="success"
-                        href="/integrations/shopify/billing/activate/"
-                        onClick={() => segmentTracker.logEvent(segmentTracker.EVENTS.PAYMENT_METHOD_ADDED, {
-                            payment_method: 'shopify',
-                            user_id: currentUserId,
-                            account_id: currentAccountId
-                        })}
+                    <div
+                        id="activate-shopify-billing-button"
+                        style={{
+                            display: 'inline-block'
+                        }}
                     >
-                        Activate billing with Shopify
-                    </Button>
+
+                        <Button
+                            tag="a"
+                            color="success"
+                            href="/integrations/shopify/billing/activate/"
+                            onClick={this._onActivateShopifyBilling}
+                            className={classNames({'btn-loading': isActivatingShopifyBilling})}
+                            disabled={hasNoSubscription}
+                        >
+                            Activate billing with Shopify
+                        </Button>
+                        {
+                            hasNoSubscription ? (
+                                <UncontrolledTooltip
+                                    placement="top"
+                                    target="activate-shopify-billing-button"
+                                >
+                                    Select a plan before activating Shopify billing
+                                </UncontrolledTooltip>
+                            ) : null
+                        }
+                    </div>
                 )}
             </div>
         )
@@ -108,11 +161,13 @@ export class BillingPaymentMethod extends Component {
         )
     }
 }
+
 export default connect((state) => {
     return {
         currentUserId: state.currentUser.get('id'),
         currentAccountId: state.currentAccount.get('id'),
         creditCard: billingSelectors.creditCard(state),
+        subscription: currentAccountSelectors.getCurrentSubscription(state),
         paymentMethod: currentAccountSelectors.paymentMethod(state),
         paymentIsActive: currentAccountSelectors.paymentIsActive(state),
     }

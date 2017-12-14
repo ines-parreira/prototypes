@@ -1,6 +1,5 @@
 export const billingState = {
     paymentMethod: 'stripe',
-    currentPlanId: 'team-usd-1',
     plans: {
         free: {
             amount: 0,

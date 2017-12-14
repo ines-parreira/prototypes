@@ -3,6 +3,7 @@ import {fromJS, OrderedMap} from 'immutable'
 
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
+import {initialState as initialCurrentAccountState} from '../../currentAccount/reducers'
 
 import * as billingFixtures from '../../../fixtures/billing'
 
@@ -26,11 +27,6 @@ describe('billing selectors', () => {
         expect(selectors.getBillingState(state)).toEqualImmutable(state.billing)
     })
 
-    it('currentPlanId', () => {
-        expect(selectors.currentPlanId({})).toBe(selectors.DEFAULT_PLAN)
-        expect(selectors.currentPlanId(state)).toBe(state.billing.get('currentPlanId'))
-    })
-
     it('plans', () => {
         expect(selectors.plans({})).toEqualImmutable(OrderedMap())
 
@@ -43,13 +39,6 @@ describe('billing selectors', () => {
             expect(plan).toHaveProperty('amount')
             expect(plan).toHaveProperty('currencySign')
         })
-    })
-
-    it('currentPlan', () => {
-        expect(selectors.currentPlan({})).toEqualImmutable(fromJS({}))
-
-        const currentPlan = selectors.currentPlan(state)
-        expect(currentPlan.get('name')).toBe(state.billing.getIn(['plans', 'team-usd-1', 'name']))
     })
 
     it('getPlan', () => {
@@ -83,11 +72,11 @@ describe('billing selectors', () => {
         expect(selectors.isAllowedToCreateIntegration({})).toBe(false)
         expect(selectors.isAllowedToCreateIntegration({
             ...state,
-            billing: state.billing.set('currentPlanId', 'standard-usd-1'),
+            currentAccount: initialCurrentAccountState.set('current_subscription', fromJS({plan: 'standard-usd-1'})),
         })).toBe(false)
         expect(selectors.isAllowedToCreateIntegration({
             ...state,
-            billing: state.billing.set('currentPlanId', 'growth-usd-1'),
+            currentAccount: initialCurrentAccountState.set('current_subscription', fromJS({plan: 'growth-usd-1'})),
         })).toBe(true)
     })
 

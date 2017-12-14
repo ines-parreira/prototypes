@@ -16,8 +16,6 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
             return state.set('creditCard', fromJS(action.resp))
         case constants.FETCH_CURRENT_USAGE_SUCCESS:
             return state.set('currentUsage', fromJS(action.resp))
-        case constants.UPDATE_SUBSCRIPTION_SUCCESS:
-            return state.set('currentPlanId', action.resp.data.plan)
         default:
             return state
     }
