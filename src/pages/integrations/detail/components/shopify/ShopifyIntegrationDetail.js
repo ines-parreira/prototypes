@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import {Link, withRouter} from 'react-router'
+import {browserHistory, Link, withRouter} from 'react-router'
 import {connect} from 'react-redux'
 import {notify} from './../../../../../state/notifications/actions'
 import classNames from 'classnames'
@@ -37,13 +37,27 @@ class ShopifyIntegrationDetail extends React.Component {
     }
 
     componentDidMount() {
-        const needScopeUpdate = this.props.location.query.error === 'need_scope_update'
+        // display message from url
+        const {
+            message,
+            message_type: status = 'info',
+            error
+        } = this.props.location.query
 
-        if (needScopeUpdate) {
+        if (error === 'need_scope_update') {
             this.props.notify({
                 status: 'error',
                 message: 'You need to update your app permissions in order to do that.'
             })
+        }
+
+        if (message) {
+            this.props.notify({
+                status,
+                title: decodeURIComponent(message.replace(/\+/g, ' '))
+            })
+            // remove error from url
+            browserHistory.push(window.location.pathname)
         }
     }
 
