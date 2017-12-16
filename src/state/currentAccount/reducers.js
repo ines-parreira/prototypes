@@ -36,7 +36,6 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
                 return fromJS(action.subscription)
             })
 
-
         case constants.UPDATE_ACCOUNT_SETTING: {
             const new_setting = action.setting
 
