@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 import plan from '../fixtures/plan'
 import * as utils from '../utils'
 import TICKET_LANGUAGES from '../config/ticketLanguages'
-import {ContentState, EditorState, convertToRaw} from 'draft-js'
+import {ContentState, EditorState, convertToRaw, Entity, AtomicBlockUtils} from 'draft-js'
 import schemasJSON from '../fixtures/openapi'
 
 import addMention from '../pages/common/draftjs/plugins/mentions/modifiers/addMention'
@@ -328,6 +328,29 @@ describe('global utils', () => {
             const text = 'Hey Marie Curie,\nmultiple links: www.facebook.comwww.github.com\n\nThanks for contacting us.'
             const contentState = ContentState.createFromText(text)
             expect(utils.convertToHTML(contentState)).toEqual('<div>Hey Marie Curie,</div><div>multiple links: <a href="http://www.facebook.comwww.github.com" class="linkified" target="_blank">www.facebook.comwww.github.com</a></div><br><div>Thanks for contacting us.</div>')
+        })
+
+        it('should wrap images in inline-block figures', () => {
+            const baseHTML = '<figure><img src="https://gorgias.io/" /></figure>'
+            const contentState = utils.convertFromHTML(baseHTML)
+            const newHTML = utils.convertToHTML(contentState)
+            expect(newHTML).toEqual('<figure style="display: inline-block; margin: 0"><img src="https://gorgias.io/" width="400px" style="max-width: 100%"></figure>')
+        })
+
+        // tests interaction between convertToHTML and convertFromHTML.
+        it('should turn images into atomic blocks', () => {
+            // create an editor state with an image
+            const entityKey = Entity.create('img', 'IMMUTABLE', {src: ''})
+            let editorState = AtomicBlockUtils.insertAtomicBlock(
+                EditorState.createEmpty(),
+                entityKey,
+                ' ',
+            )
+            // convert ContentState to plain html
+            const wrappedHTML = utils.convertToHTML(editorState.getCurrentContent())
+            // convert resulted html back to ContentState
+            const contentState = utils.convertFromHTML(wrappedHTML)
+            expect(contentState.getBlocksAsArray().find(b => b.type === 'atomic')).toBeTruthy()
         })
     })
 

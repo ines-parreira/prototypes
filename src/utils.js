@@ -497,7 +497,7 @@ export function convertToHTML(contentState: ContentState): string {
                 empty: '<br>' // when we have an empty block (corresponds with a new line, add a line break)
             },
             atomic: {
-                start: '<figure>',
+                start: '<figure style="display: inline-block; margin: 0">',
                 end: '</figure>'
             }
         },
@@ -514,7 +514,7 @@ export function convertToHTML(contentState: ContentState): string {
                 const width = entity.data.width || 400
 
                 // keep the start/end way of doing until https://github.com/HubSpot/draft-convert/issues/47 is fixed
-                return `<img src="${entity.data.src}" width="${width}px" />`
+                return `<img src="${entity.data.src}" width="${width}px" style="max-width: 100%" />`
             }
 
             if (entity.type === 'mention') {
