@@ -11,6 +11,7 @@ import _isEqual from 'lodash/isEqual'
 import * as integrationsSelectors from '../../../../state/integrations/selectors'
 
 import css from './InfobarWidgets.less'
+import PlaceholderWidget from './widgets/PlaceholderWidget'
 
 class InfobarWidgets extends React.Component {
     shouldComponentUpdate(nextProps) {
@@ -40,9 +41,13 @@ class InfobarWidgets extends React.Component {
                     let integration = null
 
                     if (widget.get('type') !== 'http') {
-                        selectedIntegrations = integrations.filter((i) => i.get('type').toString() === widget.get('type'))
+                        selectedIntegrations = integrations.filter(
+                            (i) => i.get('type').toString() === widget.get('type')
+                        )
                     } else {
-                        selectedIntegrations = integrations.filter((i) => i.get('id').toString() === widget.get('integration_id').toString())
+                        selectedIntegrations = integrations.filter(
+                            (i) => i.get('id').toString() === widget.get('integration_id').toString()
+                        )
                     }
 
                     if (!selectedIntegrations || selectedIntegrations.isEmpty()) {
@@ -106,16 +111,52 @@ class InfobarWidgets extends React.Component {
             }))
         })
 
+
+        // Here we add the non-displayed widgets to the list.
+        if (isEditing) {
+            const displayedWidgetsIds = preparedDisplayList.map((item) => item.getIn(['widget', 'id']))
+            const nonDisplayedWidgets = widgets.filter((widget) => !displayedWidgetsIds.includes(widget.get('id')))
+
+            const nonDisplayedItems = nonDisplayedWidgets.map((widget) => {
+                const template = widget
+                    .get('template', fromJS({}))
+                    .set('path', genericSourcePath)
+                    .set('templatePath', `${widget.get('order')}.template`)
+
+                return fromJS({
+                    widget,
+                    template,
+                    open: false,
+                    type: 'placeholder'
+                })
+            })
+
+            preparedDisplayList = preparedDisplayList.concat(nonDisplayedItems)
+        }
+
         preparedDisplayList = preparedDisplayList.sort((a, b) => {
             return compare(a.getIn(['widget', 'order']), b.getIn(['widget', 'order']))
         })
-
 
         // We create the components separately from the rest of the function because we want to assign `templatePath`
         // AFTER having sorted the results by `widget.order`.
         return preparedDisplayList.map((item, i) => {
             const order = item.getIn(['widget', 'order'])
             const newItem = item.set('template', item.get('template').set('templatePath', `${order}.template`))
+
+            if (item.get('type') === 'placeholder') {
+                return  (
+                    <PlaceholderWidget
+                        key={`${newItem.getIn(['template', 'path']).toString()}-${i}`}
+                        source={source}
+                        widget={newItem.get('widget')}
+                        template={newItem.get('template')}
+                        editing={editing}
+                        isEditing={isEditing}
+                        open={newItem.get('open')}
+                    />
+                )
+            }
 
             return (
                 <InfobarWidget

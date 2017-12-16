@@ -1,0 +1,3948 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InfobarWidgets component should display http and shopify data in non-editing mode 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(InfobarWidgets)
+    context="ticket"
+    editing={
+      Object {
+        "actions": Object {
+          "foo": [Function],
+          "removeEditedWidget": [Function],
+        },
+        "canDrop": [Function],
+        "isDragging": false,
+        "isEditing": false,
+      }
+    }
+    source={
+      Immutable.Map {
+        ticket: Immutable.Map {
+          requester: Immutable.Map {
+            integrations: Immutable.Map {
+              1: Immutable.Map {
+                foo: "1",
+              },
+              2: Immutable.Map {
+                bar: "2",
+              },
+            },
+          },
+        },
+      }
+    }
+    widgets={
+      Immutable.List [
+        Immutable.Map {
+          id: 4,
+          type: "http",
+          integration_id: 1,
+          template: Immutable.Map {
+            type: "wrapper",
+            widgets: Immutable.List [
+              Immutable.Map {
+                path: "",
+                type: "card",
+                title: "Foo container",
+                widgets: Immutable.List [
+                  Immutable.Map {
+                    path: "foo",
+                    type: "text",
+                    title: "Foo",
+                    order: 1,
+                  },
+                ],
+              },
+            ],
+          },
+          order: 1,
+        },
+        Immutable.Map {
+          id: 5,
+          type: "shopify",
+          template: Immutable.Map {
+            type: "wrapper",
+            widgets: Immutable.List [
+              Immutable.Map {
+                path: "",
+                type: "card",
+                title: "Bar container",
+                widgets: Immutable.List [
+                  Immutable.Map {
+                    path: "bar",
+                    type: "text",
+                    title: "Bar",
+                    order: 1,
+                  },
+                ],
+              },
+            ],
+          },
+          order: 2,
+        },
+        Immutable.Map {
+          id: 6,
+          type: "recharge",
+          template: Immutable.Map {
+            type: "wrapper",
+            widgets: Immutable.List [
+              Immutable.Map {
+                path: "",
+                type: "card",
+                title: "Baz container",
+                widgets: Immutable.List [
+                  Immutable.Map {
+                    path: "baz",
+                    type: "text",
+                    title: "Baz",
+                    order: 1,
+                  },
+                ],
+              },
+            ],
+          },
+          order: 3,
+        },
+      ]
+    }
+  >
+    <InfobarWidgets
+      context="ticket"
+      dispatch={[Function]}
+      editing={
+        Object {
+          "actions": Object {
+            "foo": [Function],
+            "removeEditedWidget": [Function],
+          },
+          "canDrop": [Function],
+          "isDragging": false,
+          "isEditing": false,
+        }
+      }
+      integrations={
+        Immutable.List [
+          Immutable.Map {
+            id: 1,
+            type: "http",
+            name: "my little http integration",
+          },
+          Immutable.Map {
+            id: 2,
+            type: "shopify",
+            name: "my little shopify integration",
+          },
+          Immutable.Map {
+            id: 3,
+            type: "recharge",
+            name: "my little recharge integration",
+          },
+        ]
+      }
+      source={
+        Immutable.Map {
+          ticket: Immutable.Map {
+            requester: Immutable.Map {
+              integrations: Immutable.Map {
+                1: Immutable.Map {
+                  foo: "1",
+                },
+                2: Immutable.Map {
+                  bar: "2",
+                },
+              },
+            },
+          },
+        }
+      }
+      widgets={
+        Immutable.List [
+          Immutable.Map {
+            id: 4,
+            type: "http",
+            integration_id: 1,
+            template: Immutable.Map {
+              type: "wrapper",
+              widgets: Immutable.List [
+                Immutable.Map {
+                  path: "",
+                  type: "card",
+                  title: "Foo container",
+                  widgets: Immutable.List [
+                    Immutable.Map {
+                      path: "foo",
+                      type: "text",
+                      title: "Foo",
+                      order: 1,
+                    },
+                  ],
+                },
+              ],
+            },
+            order: 1,
+          },
+          Immutable.Map {
+            id: 5,
+            type: "shopify",
+            template: Immutable.Map {
+              type: "wrapper",
+              widgets: Immutable.List [
+                Immutable.Map {
+                  path: "",
+                  type: "card",
+                  title: "Bar container",
+                  widgets: Immutable.List [
+                    Immutable.Map {
+                      path: "bar",
+                      type: "text",
+                      title: "Bar",
+                      order: 1,
+                    },
+                  ],
+                },
+              ],
+            },
+            order: 2,
+          },
+          Immutable.Map {
+            id: 6,
+            type: "recharge",
+            template: Immutable.Map {
+              type: "wrapper",
+              widgets: Immutable.List [
+                Immutable.Map {
+                  path: "",
+                  type: "card",
+                  title: "Baz container",
+                  widgets: Immutable.List [
+                    Immutable.Map {
+                      path: "baz",
+                      type: "text",
+                      title: "Baz",
+                      order: 1,
+                    },
+                  ],
+                },
+              ],
+            },
+            order: 3,
+          },
+        ]
+      }
+    >
+      <div
+        className="widgets-list"
+      >
+        <DragWrapper
+          actions={
+            Object {
+              "foo": [Function],
+              "removeEditedWidget": [Function],
+            }
+          }
+          group={
+            Object {
+              "name": "root",
+              "pull": false,
+              "put": true,
+            }
+          }
+          isEditing={false}
+          sort={true}
+          templatePath=""
+          watchDrop={true}
+        >
+          <div>
+            <InfobarWidget
+              editing={
+                Object {
+                  "actions": Object {
+                    "foo": [Function],
+                    "removeEditedWidget": [Function],
+                  },
+                  "canDrop": [Function],
+                  "isDragging": false,
+                  "isEditing": false,
+                }
+              }
+              isEditing={false}
+              open={true}
+              source={
+                Immutable.Map {
+                  ticket: Immutable.Map {
+                    requester: Immutable.Map {
+                      integrations: Immutable.Map {
+                        1: Immutable.Map {
+                          foo: "1",
+                        },
+                        2: Immutable.Map {
+                          bar: "2",
+                        },
+                      },
+                    },
+                  },
+                }
+              }
+              template={
+                Immutable.Map {
+                  type: "wrapper",
+                  widgets: Immutable.List [
+                    Immutable.Map {
+                      path: "",
+                      type: "card",
+                      title: "Foo container",
+                      widgets: Immutable.List [
+                        Immutable.Map {
+                          path: "foo",
+                          type: "text",
+                          title: "Foo",
+                          order: 1,
+                        },
+                      ],
+                    },
+                  ],
+                  path: Array [
+                    "ticket",
+                    "requester",
+                    "integrations",
+                    "1",
+                  ],
+                  templatePath: "1.template",
+                }
+              }
+              widget={
+                Immutable.Map {
+                  id: 4,
+                  type: "http",
+                  integration_id: 1,
+                  template: Immutable.Map {
+                    type: "wrapper",
+                    widgets: Immutable.List [
+                      Immutable.Map {
+                        path: "",
+                        type: "card",
+                        title: "Foo container",
+                        widgets: Immutable.List [
+                          Immutable.Map {
+                            path: "foo",
+                            type: "text",
+                            title: "Foo",
+                            order: 1,
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  order: 1,
+                }
+              }
+            >
+              <Connect(WrapperInfobarWidget)
+                editing={
+                  Object {
+                    "actions": Object {
+                      "foo": [Function],
+                      "removeEditedWidget": [Function],
+                    },
+                    "canDrop": [Function],
+                    "isDragging": false,
+                    "isEditing": false,
+                  }
+                }
+                isEditing={false}
+                source={
+                  Immutable.Map {
+                    foo: "1",
+                  }
+                }
+                template={
+                  Immutable.Map {
+                    type: "wrapper",
+                    widgets: Immutable.List [
+                      Immutable.Map {
+                        path: "",
+                        type: "card",
+                        title: "Foo container",
+                        widgets: Immutable.List [
+                          Immutable.Map {
+                            path: "foo",
+                            type: "text",
+                            title: "Foo",
+                            order: 1,
+                          },
+                        ],
+                      },
+                    ],
+                    path: Array [
+                      "ticket",
+                      "requester",
+                      "integrations",
+                      "1",
+                    ],
+                    templatePath: "1.template",
+                    absolutePath: Array [
+                      "ticket",
+                      "requester",
+                      "integrations",
+                      "1",
+                    ],
+                  }
+                }
+                widget={
+                  Immutable.Map {
+                    id: 4,
+                    type: "http",
+                    integration_id: 1,
+                    template: Immutable.Map {
+                      type: "wrapper",
+                      widgets: Immutable.List [
+                        Immutable.Map {
+                          path: "",
+                          type: "card",
+                          title: "Foo container",
+                          widgets: Immutable.List [
+                            Immutable.Map {
+                              path: "foo",
+                              type: "text",
+                              title: "Foo",
+                              order: 1,
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    order: 1,
+                  }
+                }
+              >
+                <WrapperInfobarWidget
+                  dispatch={[Function]}
+                  editing={
+                    Object {
+                      "actions": Object {
+                        "foo": [Function],
+                        "removeEditedWidget": [Function],
+                      },
+                      "canDrop": [Function],
+                      "isDragging": false,
+                      "isEditing": false,
+                    }
+                  }
+                  integration={
+                    Immutable.Map {
+                      id: 1,
+                      type: "http",
+                      name: "my little http integration",
+                    }
+                  }
+                  isEditing={false}
+                  source={
+                    Immutable.Map {
+                      foo: "1",
+                    }
+                  }
+                  template={
+                    Immutable.Map {
+                      type: "wrapper",
+                      widgets: Immutable.List [
+                        Immutable.Map {
+                          path: "",
+                          type: "card",
+                          title: "Foo container",
+                          widgets: Immutable.List [
+                            Immutable.Map {
+                              path: "foo",
+                              type: "text",
+                              title: "Foo",
+                              order: 1,
+                            },
+                          ],
+                        },
+                      ],
+                      path: Array [
+                        "ticket",
+                        "requester",
+                        "integrations",
+                        "1",
+                      ],
+                      templatePath: "1.template",
+                      absolutePath: Array [
+                        "ticket",
+                        "requester",
+                        "integrations",
+                        "1",
+                      ],
+                    }
+                  }
+                  widget={
+                    Immutable.Map {
+                      id: 4,
+                      type: "http",
+                      integration_id: 1,
+                      template: Immutable.Map {
+                        type: "wrapper",
+                        widgets: Immutable.List [
+                          Immutable.Map {
+                            path: "",
+                            type: "card",
+                            title: "Foo container",
+                            widgets: Immutable.List [
+                              Immutable.Map {
+                                path: "foo",
+                                type: "text",
+                                title: "Foo",
+                                order: 1,
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      order: 1,
+                    }
+                  }
+                >
+                  <Card
+                    className="wrapper transparent draggable"
+                    tag="div"
+                  >
+                    <div
+                      className="wrapper transparent draggable card"
+                    >
+                      <CardBlock
+                        className="content"
+                        tag="div"
+                      >
+                        <div
+                          className="content card-block"
+                        >
+                          <DragWrapper
+                            actions={
+                              Object {
+                                "foo": [Function],
+                                "removeEditedWidget": [Function],
+                              }
+                            }
+                            group={
+                              Object {
+                                "name": "ticket.requester.integrations.1",
+                                "pull": false,
+                                "put": true,
+                              }
+                            }
+                            isEditing={false}
+                            sort={true}
+                            templatePath="1.template"
+                            watchDrop={true}
+                          >
+                            <div>
+                              <InfobarWidget
+                                editing={
+                                  Object {
+                                    "actions": Object {
+                                      "foo": [Function],
+                                      "removeEditedWidget": [Function],
+                                    },
+                                    "canDrop": [Function],
+                                    "isDragging": false,
+                                    "isEditing": false,
+                                  }
+                                }
+                                isEditing={false}
+                                open={false}
+                                parent={
+                                  Immutable.Map {
+                                    type: "wrapper",
+                                    widgets: Immutable.List [
+                                      Immutable.Map {
+                                        path: "",
+                                        type: "card",
+                                        title: "Foo container",
+                                        widgets: Immutable.List [
+                                          Immutable.Map {
+                                            path: "foo",
+                                            type: "text",
+                                            title: "Foo",
+                                            order: 1,
+                                          },
+                                        ],
+                                      },
+                                    ],
+                                    path: Array [
+                                      "ticket",
+                                      "requester",
+                                      "integrations",
+                                      "1",
+                                    ],
+                                    templatePath: "1.template",
+                                    absolutePath: Array [
+                                      "ticket",
+                                      "requester",
+                                      "integrations",
+                                      "1",
+                                    ],
+                                  }
+                                }
+                                source={
+                                  Immutable.Map {
+                                    foo: "1",
+                                  }
+                                }
+                                template={
+                                  Immutable.Map {
+                                    path: "",
+                                    type: "card",
+                                    title: "Foo container",
+                                    widgets: Immutable.List [
+                                      Immutable.Map {
+                                        path: "foo",
+                                        type: "text",
+                                        title: "Foo",
+                                        order: 1,
+                                      },
+                                    ],
+                                    templatePath: "1.template.widgets.0",
+                                  }
+                                }
+                                widget={
+                                  Immutable.Map {
+                                    id: 4,
+                                    type: "http",
+                                    integration_id: 1,
+                                    template: Immutable.Map {
+                                      type: "wrapper",
+                                      widgets: Immutable.List [
+                                        Immutable.Map {
+                                          path: "",
+                                          type: "card",
+                                          title: "Foo container",
+                                          widgets: Immutable.List [
+                                            Immutable.Map {
+                                              path: "foo",
+                                              type: "text",
+                                              title: "Foo",
+                                              order: 1,
+                                            },
+                                          ],
+                                        },
+                                      ],
+                                    },
+                                    order: 1,
+                                  }
+                                }
+                              >
+                                <CardInfobarWidget
+                                  AfterTitle={null}
+                                  BeforeContent={null}
+                                  TitleWrapper={null}
+                                  Wrapper={null}
+                                  editing={
+                                    Object {
+                                      "actions": Object {
+                                        "foo": [Function],
+                                        "removeEditedWidget": [Function],
+                                      },
+                                      "canDrop": [Function],
+                                      "isDragging": false,
+                                      "isEditing": false,
+                                    }
+                                  }
+                                  isEditing={false}
+                                  isParentList={false}
+                                  open={true}
+                                  parent={
+                                    Immutable.Map {
+                                      type: "wrapper",
+                                      widgets: Immutable.List [
+                                        Immutable.Map {
+                                          path: "",
+                                          type: "card",
+                                          title: "Foo container",
+                                          widgets: Immutable.List [
+                                            Immutable.Map {
+                                              path: "foo",
+                                              type: "text",
+                                              title: "Foo",
+                                              order: 1,
+                                            },
+                                          ],
+                                        },
+                                      ],
+                                      path: Array [
+                                        "ticket",
+                                        "requester",
+                                        "integrations",
+                                        "1",
+                                      ],
+                                      templatePath: "1.template",
+                                      absolutePath: Array [
+                                        "ticket",
+                                        "requester",
+                                        "integrations",
+                                        "1",
+                                      ],
+                                    }
+                                  }
+                                  source={
+                                    Immutable.Map {
+                                      foo: "1",
+                                    }
+                                  }
+                                  template={
+                                    Immutable.Map {
+                                      path: "",
+                                      type: "card",
+                                      title: "Foo container",
+                                      widgets: Immutable.List [
+                                        Immutable.Map {
+                                          path: "foo",
+                                          type: "text",
+                                          title: "Foo",
+                                          order: 1,
+                                        },
+                                      ],
+                                      templatePath: "1.template.widgets.0",
+                                      absolutePath: Array [
+                                        "ticket",
+                                        "requester",
+                                        "integrations",
+                                        "1",
+                                      ],
+                                    }
+                                  }
+                                  widget={
+                                    Immutable.Map {
+                                      id: 4,
+                                      type: "http",
+                                      integration_id: 1,
+                                      template: Immutable.Map {
+                                        type: "wrapper",
+                                        widgets: Immutable.List [
+                                          Immutable.Map {
+                                            path: "",
+                                            type: "card",
+                                            title: "Foo container",
+                                            widgets: Immutable.List [
+                                              Immutable.Map {
+                                                path: "foo",
+                                                type: "text",
+                                                title: "Foo",
+                                                order: 1,
+                                              },
+                                            ],
+                                          },
+                                        ],
+                                      },
+                                      order: 1,
+                                    }
+                                  }
+                                >
+                                  <Card
+                                    className="can-drop draggable"
+                                    data-key=""
+                                    tag="div"
+                                  >
+                                    <div
+                                      className="can-drop draggable card"
+                                      data-key=""
+                                    >
+                                      <CardBlock
+                                        className="header clearfix"
+                                        id="card-widget-1"
+                                        tag="div"
+                                      >
+                                        <div
+                                          className="header clearfix card-block"
+                                          id="card-widget-1"
+                                        >
+                                          <span
+                                            className="dropdown-icon clickable"
+                                            onClick={[Function]}
+                                          >
+                                            <i
+                                              className="fa fa-fw fa-caret-down"
+                                            />
+                                          </span>
+                                          <span>
+                                            Foo container
+                                          </span>
+                                          <span
+                                            className="tools"
+                                          />
+                                          <Popover
+                                            isOpen={false}
+                                            placement="left"
+                                            target="card-widget-1"
+                                            toggle={[Function]}
+                                          />
+                                        </div>
+                                      </CardBlock>
+                                      <CardBlock
+                                        className="content"
+                                        tag="div"
+                                      >
+                                        <div
+                                          className="content card-block"
+                                        >
+                                          <DragWrapper
+                                            actions={
+                                              Object {
+                                                "foo": [Function],
+                                                "removeEditedWidget": [Function],
+                                              }
+                                            }
+                                            group={
+                                              Object {
+                                                "name": "ticket.requester.integrations.1",
+                                                "pull": false,
+                                                "put": true,
+                                              }
+                                            }
+                                            isEditing={false}
+                                            sort={true}
+                                            templatePath="1.template.widgets.0"
+                                            watchDrop={true}
+                                          >
+                                            <div>
+                                              <InfobarWidget
+                                                editing={
+                                                  Object {
+                                                    "actions": Object {
+                                                      "foo": [Function],
+                                                      "removeEditedWidget": [Function],
+                                                    },
+                                                    "canDrop": [Function],
+                                                    "isDragging": false,
+                                                    "isEditing": false,
+                                                  }
+                                                }
+                                                isEditing={false}
+                                                open={false}
+                                                parent={
+                                                  Immutable.Map {
+                                                    path: "",
+                                                    type: "card",
+                                                    title: "Foo container",
+                                                    widgets: Immutable.List [
+                                                      Immutable.Map {
+                                                        path: "foo",
+                                                        type: "text",
+                                                        title: "Foo",
+                                                        order: 1,
+                                                      },
+                                                    ],
+                                                    templatePath: "1.template.widgets.0",
+                                                    absolutePath: Array [
+                                                      "ticket",
+                                                      "requester",
+                                                      "integrations",
+                                                      "1",
+                                                    ],
+                                                  }
+                                                }
+                                                source={
+                                                  Immutable.Map {
+                                                    foo: "1",
+                                                  }
+                                                }
+                                                template={
+                                                  Immutable.Map {
+                                                    path: "foo",
+                                                    type: "text",
+                                                    title: "Foo",
+                                                    order: 1,
+                                                    templatePath: "1.template.widgets.0.widgets.0",
+                                                  }
+                                                }
+                                                widget={
+                                                  Immutable.Map {
+                                                    id: 4,
+                                                    type: "http",
+                                                    integration_id: 1,
+                                                    template: Immutable.Map {
+                                                      type: "wrapper",
+                                                      widgets: Immutable.List [
+                                                        Immutable.Map {
+                                                          path: "",
+                                                          type: "card",
+                                                          title: "Foo container",
+                                                          widgets: Immutable.List [
+                                                            Immutable.Map {
+                                                              path: "foo",
+                                                              type: "text",
+                                                              title: "Foo",
+                                                              order: 1,
+                                                            },
+                                                          ],
+                                                        },
+                                                      ],
+                                                    },
+                                                    order: 1,
+                                                  }
+                                                }
+                                              >
+                                                <FieldInfobarWidget
+                                                  editing={
+                                                    Object {
+                                                      "actions": Object {
+                                                        "foo": [Function],
+                                                        "removeEditedWidget": [Function],
+                                                      },
+                                                      "canDrop": [Function],
+                                                      "isDragging": false,
+                                                      "isEditing": false,
+                                                    }
+                                                  }
+                                                  isEditing={false}
+                                                  isParentList={false}
+                                                  template={
+                                                    Immutable.Map {
+                                                      path: Array [
+                                                        "foo",
+                                                      ],
+                                                      type: "text",
+                                                      title: "Foo",
+                                                      order: 1,
+                                                      templatePath: "1.template.widgets.0.widgets.0",
+                                                      absolutePath: Array [
+                                                        "ticket",
+                                                        "requester",
+                                                        "integrations",
+                                                        "1",
+                                                        "foo",
+                                                      ],
+                                                    }
+                                                  }
+                                                  value="1"
+                                                  widget={
+                                                    Immutable.Map {
+                                                      id: 4,
+                                                      type: "http",
+                                                      integration_id: 1,
+                                                      template: Immutable.Map {
+                                                        type: "wrapper",
+                                                        widgets: Immutable.List [
+                                                          Immutable.Map {
+                                                            path: "",
+                                                            type: "card",
+                                                            title: "Foo container",
+                                                            widgets: Immutable.List [
+                                                              Immutable.Map {
+                                                                path: "foo",
+                                                                type: "text",
+                                                                title: "Foo",
+                                                                order: 1,
+                                                              },
+                                                            ],
+                                                          },
+                                                        ],
+                                                      },
+                                                      order: 1,
+                                                    }
+                                                  }
+                                                >
+                                                  <div
+                                                    className="simple-field draggable"
+                                                    id="field-widget-2"
+                                                    onClick={[Function]}
+                                                  >
+                                                    <span
+                                                      className="field-label"
+                                                    >
+                                                      Foo
+                                                      :
+                                                    </span>
+                                                    <span
+                                                      className="field-value"
+                                                    >
+                                                      1
+                                                    </span>
+                                                    <Popover
+                                                      isOpen={false}
+                                                      placement="left"
+                                                      target="field-widget-2"
+                                                      toggle={[Function]}
+                                                    />
+                                                  </div>
+                                                </FieldInfobarWidget>
+                                              </InfobarWidget>
+                                            </div>
+                                          </DragWrapper>
+                                        </div>
+                                      </CardBlock>
+                                    </div>
+                                  </Card>
+                                </CardInfobarWidget>
+                              </InfobarWidget>
+                            </div>
+                          </DragWrapper>
+                        </div>
+                      </CardBlock>
+                    </div>
+                  </Card>
+                </WrapperInfobarWidget>
+              </Connect(WrapperInfobarWidget)>
+            </InfobarWidget>
+            <InfobarWidget
+              editing={
+                Object {
+                  "actions": Object {
+                    "foo": [Function],
+                    "removeEditedWidget": [Function],
+                  },
+                  "canDrop": [Function],
+                  "isDragging": false,
+                  "isEditing": false,
+                }
+              }
+              isEditing={false}
+              open={false}
+              source={
+                Immutable.Map {
+                  ticket: Immutable.Map {
+                    requester: Immutable.Map {
+                      integrations: Immutable.Map {
+                        1: Immutable.Map {
+                          foo: "1",
+                        },
+                        2: Immutable.Map {
+                          bar: "2",
+                        },
+                      },
+                    },
+                  },
+                }
+              }
+              template={
+                Immutable.Map {
+                  type: "wrapper",
+                  widgets: Immutable.List [
+                    Immutable.Map {
+                      path: "",
+                      type: "card",
+                      title: "Bar container",
+                      widgets: Immutable.List [
+                        Immutable.Map {
+                          path: "bar",
+                          type: "text",
+                          title: "Bar",
+                          order: 1,
+                        },
+                      ],
+                    },
+                  ],
+                  path: Array [
+                    "ticket",
+                    "requester",
+                    "integrations",
+                    "2",
+                  ],
+                  templatePath: "2.template",
+                }
+              }
+              widget={
+                Immutable.Map {
+                  id: 5,
+                  type: "shopify",
+                  template: Immutable.Map {
+                    type: "wrapper",
+                    widgets: Immutable.List [
+                      Immutable.Map {
+                        path: "",
+                        type: "card",
+                        title: "Bar container",
+                        widgets: Immutable.List [
+                          Immutable.Map {
+                            path: "bar",
+                            type: "text",
+                            title: "Bar",
+                            order: 1,
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  order: 2,
+                }
+              }
+            >
+              <Connect(WrapperInfobarWidget)
+                editing={
+                  Object {
+                    "actions": Object {
+                      "foo": [Function],
+                      "removeEditedWidget": [Function],
+                    },
+                    "canDrop": [Function],
+                    "isDragging": false,
+                    "isEditing": false,
+                  }
+                }
+                isEditing={false}
+                source={
+                  Immutable.Map {
+                    bar: "2",
+                  }
+                }
+                template={
+                  Immutable.Map {
+                    type: "wrapper",
+                    widgets: Immutable.List [
+                      Immutable.Map {
+                        path: "",
+                        type: "card",
+                        title: "Bar container",
+                        widgets: Immutable.List [
+                          Immutable.Map {
+                            path: "bar",
+                            type: "text",
+                            title: "Bar",
+                            order: 1,
+                          },
+                        ],
+                      },
+                    ],
+                    path: Array [
+                      "ticket",
+                      "requester",
+                      "integrations",
+                      "2",
+                    ],
+                    templatePath: "2.template",
+                    absolutePath: Array [
+                      "ticket",
+                      "requester",
+                      "integrations",
+                      "2",
+                    ],
+                  }
+                }
+                widget={
+                  Immutable.Map {
+                    id: 5,
+                    type: "shopify",
+                    template: Immutable.Map {
+                      type: "wrapper",
+                      widgets: Immutable.List [
+                        Immutable.Map {
+                          path: "",
+                          type: "card",
+                          title: "Bar container",
+                          widgets: Immutable.List [
+                            Immutable.Map {
+                              path: "bar",
+                              type: "text",
+                              title: "Bar",
+                              order: 1,
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    order: 2,
+                  }
+                }
+              >
+                <WrapperInfobarWidget
+                  dispatch={[Function]}
+                  editing={
+                    Object {
+                      "actions": Object {
+                        "foo": [Function],
+                        "removeEditedWidget": [Function],
+                      },
+                      "canDrop": [Function],
+                      "isDragging": false,
+                      "isEditing": false,
+                    }
+                  }
+                  integration={
+                    Immutable.Map {
+                      id: 2,
+                      type: "shopify",
+                      name: "my little shopify integration",
+                    }
+                  }
+                  isEditing={false}
+                  source={
+                    Immutable.Map {
+                      bar: "2",
+                    }
+                  }
+                  template={
+                    Immutable.Map {
+                      type: "wrapper",
+                      widgets: Immutable.List [
+                        Immutable.Map {
+                          path: "",
+                          type: "card",
+                          title: "Bar container",
+                          widgets: Immutable.List [
+                            Immutable.Map {
+                              path: "bar",
+                              type: "text",
+                              title: "Bar",
+                              order: 1,
+                            },
+                          ],
+                        },
+                      ],
+                      path: Array [
+                        "ticket",
+                        "requester",
+                        "integrations",
+                        "2",
+                      ],
+                      templatePath: "2.template",
+                      absolutePath: Array [
+                        "ticket",
+                        "requester",
+                        "integrations",
+                        "2",
+                      ],
+                    }
+                  }
+                  widget={
+                    Immutable.Map {
+                      id: 5,
+                      type: "shopify",
+                      template: Immutable.Map {
+                        type: "wrapper",
+                        widgets: Immutable.List [
+                          Immutable.Map {
+                            path: "",
+                            type: "card",
+                            title: "Bar container",
+                            widgets: Immutable.List [
+                              Immutable.Map {
+                                path: "bar",
+                                type: "text",
+                                title: "Bar",
+                                order: 1,
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      order: 2,
+                    }
+                  }
+                >
+                  <Card
+                    className="wrapper transparent draggable"
+                    tag="div"
+                  >
+                    <div
+                      className="wrapper transparent draggable card"
+                    >
+                      <CardBlock
+                        className="content"
+                        tag="div"
+                      >
+                        <div
+                          className="content card-block"
+                        >
+                          <DragWrapper
+                            actions={
+                              Object {
+                                "foo": [Function],
+                                "removeEditedWidget": [Function],
+                              }
+                            }
+                            group={
+                              Object {
+                                "name": "ticket.requester.integrations.2",
+                                "pull": false,
+                                "put": true,
+                              }
+                            }
+                            isEditing={false}
+                            sort={true}
+                            templatePath="2.template"
+                            watchDrop={true}
+                          >
+                            <div>
+                              <InfobarWidget
+                                editing={
+                                  Object {
+                                    "actions": Object {
+                                      "foo": [Function],
+                                      "removeEditedWidget": [Function],
+                                    },
+                                    "canDrop": [Function],
+                                    "isDragging": false,
+                                    "isEditing": false,
+                                  }
+                                }
+                                isEditing={false}
+                                open={false}
+                                parent={
+                                  Immutable.Map {
+                                    type: "wrapper",
+                                    widgets: Immutable.List [
+                                      Immutable.Map {
+                                        path: "",
+                                        type: "card",
+                                        title: "Bar container",
+                                        widgets: Immutable.List [
+                                          Immutable.Map {
+                                            path: "bar",
+                                            type: "text",
+                                            title: "Bar",
+                                            order: 1,
+                                          },
+                                        ],
+                                      },
+                                    ],
+                                    path: Array [
+                                      "ticket",
+                                      "requester",
+                                      "integrations",
+                                      "2",
+                                    ],
+                                    templatePath: "2.template",
+                                    absolutePath: Array [
+                                      "ticket",
+                                      "requester",
+                                      "integrations",
+                                      "2",
+                                    ],
+                                  }
+                                }
+                                source={
+                                  Immutable.Map {
+                                    bar: "2",
+                                  }
+                                }
+                                template={
+                                  Immutable.Map {
+                                    path: "",
+                                    type: "card",
+                                    title: "Bar container",
+                                    widgets: Immutable.List [
+                                      Immutable.Map {
+                                        path: "bar",
+                                        type: "text",
+                                        title: "Bar",
+                                        order: 1,
+                                      },
+                                    ],
+                                    templatePath: "2.template.widgets.0",
+                                  }
+                                }
+                                widget={
+                                  Immutable.Map {
+                                    id: 5,
+                                    type: "shopify",
+                                    template: Immutable.Map {
+                                      type: "wrapper",
+                                      widgets: Immutable.List [
+                                        Immutable.Map {
+                                          path: "",
+                                          type: "card",
+                                          title: "Bar container",
+                                          widgets: Immutable.List [
+                                            Immutable.Map {
+                                              path: "bar",
+                                              type: "text",
+                                              title: "Bar",
+                                              order: 1,
+                                            },
+                                          ],
+                                        },
+                                      ],
+                                    },
+                                    order: 2,
+                                  }
+                                }
+                              >
+                                <CardInfobarWidget
+                                  AfterTitle={null}
+                                  BeforeContent={null}
+                                  TitleWrapper={null}
+                                  Wrapper={null}
+                                  editing={
+                                    Object {
+                                      "actions": Object {
+                                        "foo": [Function],
+                                        "removeEditedWidget": [Function],
+                                      },
+                                      "canDrop": [Function],
+                                      "isDragging": false,
+                                      "isEditing": false,
+                                    }
+                                  }
+                                  isEditing={false}
+                                  isParentList={false}
+                                  open={true}
+                                  parent={
+                                    Immutable.Map {
+                                      type: "wrapper",
+                                      widgets: Immutable.List [
+                                        Immutable.Map {
+                                          path: "",
+                                          type: "card",
+                                          title: "Bar container",
+                                          widgets: Immutable.List [
+                                            Immutable.Map {
+                                              path: "bar",
+                                              type: "text",
+                                              title: "Bar",
+                                              order: 1,
+                                            },
+                                          ],
+                                        },
+                                      ],
+                                      path: Array [
+                                        "ticket",
+                                        "requester",
+                                        "integrations",
+                                        "2",
+                                      ],
+                                      templatePath: "2.template",
+                                      absolutePath: Array [
+                                        "ticket",
+                                        "requester",
+                                        "integrations",
+                                        "2",
+                                      ],
+                                    }
+                                  }
+                                  source={
+                                    Immutable.Map {
+                                      bar: "2",
+                                    }
+                                  }
+                                  template={
+                                    Immutable.Map {
+                                      path: "",
+                                      type: "card",
+                                      title: "Bar container",
+                                      widgets: Immutable.List [
+                                        Immutable.Map {
+                                          path: "bar",
+                                          type: "text",
+                                          title: "Bar",
+                                          order: 1,
+                                        },
+                                      ],
+                                      templatePath: "2.template.widgets.0",
+                                      absolutePath: Array [
+                                        "ticket",
+                                        "requester",
+                                        "integrations",
+                                        "2",
+                                      ],
+                                    }
+                                  }
+                                  widget={
+                                    Immutable.Map {
+                                      id: 5,
+                                      type: "shopify",
+                                      template: Immutable.Map {
+                                        type: "wrapper",
+                                        widgets: Immutable.List [
+                                          Immutable.Map {
+                                            path: "",
+                                            type: "card",
+                                            title: "Bar container",
+                                            widgets: Immutable.List [
+                                              Immutable.Map {
+                                                path: "bar",
+                                                type: "text",
+                                                title: "Bar",
+                                                order: 1,
+                                              },
+                                            ],
+                                          },
+                                        ],
+                                      },
+                                      order: 2,
+                                    }
+                                  }
+                                >
+                                  <Card
+                                    className="can-drop draggable"
+                                    data-key=""
+                                    tag="div"
+                                  >
+                                    <div
+                                      className="can-drop draggable card"
+                                      data-key=""
+                                    >
+                                      <CardBlock
+                                        className="header clearfix"
+                                        id="card-widget-3"
+                                        tag="div"
+                                      >
+                                        <div
+                                          className="header clearfix card-block"
+                                          id="card-widget-3"
+                                        >
+                                          <span
+                                            className="dropdown-icon clickable"
+                                            onClick={[Function]}
+                                          >
+                                            <i
+                                              className="fa fa-fw fa-caret-down"
+                                            />
+                                          </span>
+                                          <span>
+                                            Bar container
+                                          </span>
+                                          <span
+                                            className="tools"
+                                          />
+                                          <Popover
+                                            isOpen={false}
+                                            placement="left"
+                                            target="card-widget-3"
+                                            toggle={[Function]}
+                                          />
+                                        </div>
+                                      </CardBlock>
+                                      <CardBlock
+                                        className="content"
+                                        tag="div"
+                                      >
+                                        <div
+                                          className="content card-block"
+                                        >
+                                          <DragWrapper
+                                            actions={
+                                              Object {
+                                                "foo": [Function],
+                                                "removeEditedWidget": [Function],
+                                              }
+                                            }
+                                            group={
+                                              Object {
+                                                "name": "ticket.requester.integrations.2",
+                                                "pull": false,
+                                                "put": true,
+                                              }
+                                            }
+                                            isEditing={false}
+                                            sort={true}
+                                            templatePath="2.template.widgets.0"
+                                            watchDrop={true}
+                                          >
+                                            <div>
+                                              <InfobarWidget
+                                                editing={
+                                                  Object {
+                                                    "actions": Object {
+                                                      "foo": [Function],
+                                                      "removeEditedWidget": [Function],
+                                                    },
+                                                    "canDrop": [Function],
+                                                    "isDragging": false,
+                                                    "isEditing": false,
+                                                  }
+                                                }
+                                                isEditing={false}
+                                                open={false}
+                                                parent={
+                                                  Immutable.Map {
+                                                    path: "",
+                                                    type: "card",
+                                                    title: "Bar container",
+                                                    widgets: Immutable.List [
+                                                      Immutable.Map {
+                                                        path: "bar",
+                                                        type: "text",
+                                                        title: "Bar",
+                                                        order: 1,
+                                                      },
+                                                    ],
+                                                    templatePath: "2.template.widgets.0",
+                                                    absolutePath: Array [
+                                                      "ticket",
+                                                      "requester",
+                                                      "integrations",
+                                                      "2",
+                                                    ],
+                                                  }
+                                                }
+                                                source={
+                                                  Immutable.Map {
+                                                    bar: "2",
+                                                  }
+                                                }
+                                                template={
+                                                  Immutable.Map {
+                                                    path: "bar",
+                                                    type: "text",
+                                                    title: "Bar",
+                                                    order: 1,
+                                                    templatePath: "2.template.widgets.0.widgets.0",
+                                                  }
+                                                }
+                                                widget={
+                                                  Immutable.Map {
+                                                    id: 5,
+                                                    type: "shopify",
+                                                    template: Immutable.Map {
+                                                      type: "wrapper",
+                                                      widgets: Immutable.List [
+                                                        Immutable.Map {
+                                                          path: "",
+                                                          type: "card",
+                                                          title: "Bar container",
+                                                          widgets: Immutable.List [
+                                                            Immutable.Map {
+                                                              path: "bar",
+                                                              type: "text",
+                                                              title: "Bar",
+                                                              order: 1,
+                                                            },
+                                                          ],
+                                                        },
+                                                      ],
+                                                    },
+                                                    order: 2,
+                                                  }
+                                                }
+                                              >
+                                                <FieldInfobarWidget
+                                                  editing={
+                                                    Object {
+                                                      "actions": Object {
+                                                        "foo": [Function],
+                                                        "removeEditedWidget": [Function],
+                                                      },
+                                                      "canDrop": [Function],
+                                                      "isDragging": false,
+                                                      "isEditing": false,
+                                                    }
+                                                  }
+                                                  isEditing={false}
+                                                  isParentList={false}
+                                                  template={
+                                                    Immutable.Map {
+                                                      path: Array [
+                                                        "bar",
+                                                      ],
+                                                      type: "text",
+                                                      title: "Bar",
+                                                      order: 1,
+                                                      templatePath: "2.template.widgets.0.widgets.0",
+                                                      absolutePath: Array [
+                                                        "ticket",
+                                                        "requester",
+                                                        "integrations",
+                                                        "2",
+                                                        "bar",
+                                                      ],
+                                                    }
+                                                  }
+                                                  value="2"
+                                                  widget={
+                                                    Immutable.Map {
+                                                      id: 5,
+                                                      type: "shopify",
+                                                      template: Immutable.Map {
+                                                        type: "wrapper",
+                                                        widgets: Immutable.List [
+                                                          Immutable.Map {
+                                                            path: "",
+                                                            type: "card",
+                                                            title: "Bar container",
+                                                            widgets: Immutable.List [
+                                                              Immutable.Map {
+                                                                path: "bar",
+                                                                type: "text",
+                                                                title: "Bar",
+                                                                order: 1,
+                                                              },
+                                                            ],
+                                                          },
+                                                        ],
+                                                      },
+                                                      order: 2,
+                                                    }
+                                                  }
+                                                >
+                                                  <div
+                                                    className="simple-field draggable"
+                                                    id="field-widget-4"
+                                                    onClick={[Function]}
+                                                  >
+                                                    <span
+                                                      className="field-label"
+                                                    >
+                                                      Bar
+                                                      :
+                                                    </span>
+                                                    <span
+                                                      className="field-value"
+                                                    >
+                                                      2
+                                                    </span>
+                                                    <Popover
+                                                      isOpen={false}
+                                                      placement="left"
+                                                      target="field-widget-4"
+                                                      toggle={[Function]}
+                                                    />
+                                                  </div>
+                                                </FieldInfobarWidget>
+                                              </InfobarWidget>
+                                            </div>
+                                          </DragWrapper>
+                                        </div>
+                                      </CardBlock>
+                                    </div>
+                                  </Card>
+                                </CardInfobarWidget>
+                              </InfobarWidget>
+                            </div>
+                          </DragWrapper>
+                        </div>
+                      </CardBlock>
+                    </div>
+                  </Card>
+                </WrapperInfobarWidget>
+              </Connect(WrapperInfobarWidget)>
+            </InfobarWidget>
+          </div>
+        </DragWrapper>
+      </div>
+    </InfobarWidgets>
+  </Connect(InfobarWidgets)>
+</Provider>
+`;
+
+exports[`InfobarWidgets component should display http and shopify data, + recharge placeholder, in editing mode 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(InfobarWidgets)
+    context="ticket"
+    editing={
+      Object {
+        "actions": Object {
+          "foo": [Function],
+          "removeEditedWidget": [Function],
+        },
+        "canDrop": [Function],
+        "isDragging": false,
+        "isEditing": true,
+      }
+    }
+    source={
+      Immutable.Map {
+        ticket: Immutable.Map {
+          requester: Immutable.Map {
+            integrations: Immutable.Map {
+              1: Immutable.Map {
+                foo: "1",
+              },
+              2: Immutable.Map {
+                bar: "2",
+              },
+            },
+          },
+        },
+      }
+    }
+    widgets={
+      Immutable.List [
+        Immutable.Map {
+          id: 4,
+          type: "http",
+          integration_id: 1,
+          template: Immutable.Map {
+            type: "wrapper",
+            widgets: Immutable.List [
+              Immutable.Map {
+                path: "",
+                type: "card",
+                title: "Foo container",
+                widgets: Immutable.List [
+                  Immutable.Map {
+                    path: "foo",
+                    type: "text",
+                    title: "Foo",
+                    order: 1,
+                  },
+                ],
+              },
+            ],
+          },
+          order: 1,
+        },
+        Immutable.Map {
+          id: 5,
+          type: "shopify",
+          template: Immutable.Map {
+            type: "wrapper",
+            widgets: Immutable.List [
+              Immutable.Map {
+                path: "",
+                type: "card",
+                title: "Bar container",
+                widgets: Immutable.List [
+                  Immutable.Map {
+                    path: "bar",
+                    type: "text",
+                    title: "Bar",
+                    order: 1,
+                  },
+                ],
+              },
+            ],
+          },
+          order: 2,
+        },
+        Immutable.Map {
+          id: 6,
+          type: "recharge",
+          template: Immutable.Map {
+            type: "wrapper",
+            widgets: Immutable.List [
+              Immutable.Map {
+                path: "",
+                type: "card",
+                title: "Baz container",
+                widgets: Immutable.List [
+                  Immutable.Map {
+                    path: "baz",
+                    type: "text",
+                    title: "Baz",
+                    order: 1,
+                  },
+                ],
+              },
+            ],
+          },
+          order: 3,
+        },
+      ]
+    }
+  >
+    <InfobarWidgets
+      context="ticket"
+      dispatch={[Function]}
+      editing={
+        Object {
+          "actions": Object {
+            "foo": [Function],
+            "removeEditedWidget": [Function],
+          },
+          "canDrop": [Function],
+          "isDragging": false,
+          "isEditing": true,
+        }
+      }
+      integrations={
+        Immutable.List [
+          Immutable.Map {
+            id: 1,
+            type: "http",
+            name: "my little http integration",
+          },
+          Immutable.Map {
+            id: 2,
+            type: "shopify",
+            name: "my little shopify integration",
+          },
+          Immutable.Map {
+            id: 3,
+            type: "recharge",
+            name: "my little recharge integration",
+          },
+        ]
+      }
+      source={
+        Immutable.Map {
+          ticket: Immutable.Map {
+            requester: Immutable.Map {
+              integrations: Immutable.Map {
+                1: Immutable.Map {
+                  foo: "1",
+                },
+                2: Immutable.Map {
+                  bar: "2",
+                },
+              },
+            },
+          },
+        }
+      }
+      widgets={
+        Immutable.List [
+          Immutable.Map {
+            id: 4,
+            type: "http",
+            integration_id: 1,
+            template: Immutable.Map {
+              type: "wrapper",
+              widgets: Immutable.List [
+                Immutable.Map {
+                  path: "",
+                  type: "card",
+                  title: "Foo container",
+                  widgets: Immutable.List [
+                    Immutable.Map {
+                      path: "foo",
+                      type: "text",
+                      title: "Foo",
+                      order: 1,
+                    },
+                  ],
+                },
+              ],
+            },
+            order: 1,
+          },
+          Immutable.Map {
+            id: 5,
+            type: "shopify",
+            template: Immutable.Map {
+              type: "wrapper",
+              widgets: Immutable.List [
+                Immutable.Map {
+                  path: "",
+                  type: "card",
+                  title: "Bar container",
+                  widgets: Immutable.List [
+                    Immutable.Map {
+                      path: "bar",
+                      type: "text",
+                      title: "Bar",
+                      order: 1,
+                    },
+                  ],
+                },
+              ],
+            },
+            order: 2,
+          },
+          Immutable.Map {
+            id: 6,
+            type: "recharge",
+            template: Immutable.Map {
+              type: "wrapper",
+              widgets: Immutable.List [
+                Immutable.Map {
+                  path: "",
+                  type: "card",
+                  title: "Baz container",
+                  widgets: Immutable.List [
+                    Immutable.Map {
+                      path: "baz",
+                      type: "text",
+                      title: "Baz",
+                      order: 1,
+                    },
+                  ],
+                },
+              ],
+            },
+            order: 3,
+          },
+        ]
+      }
+    >
+      <div
+        className="widgets-list editing"
+      >
+        <DragWrapper
+          actions={
+            Object {
+              "foo": [Function],
+              "removeEditedWidget": [Function],
+            }
+          }
+          group={
+            Object {
+              "name": "root",
+              "pull": false,
+              "put": true,
+            }
+          }
+          isEditing={true}
+          sort={true}
+          templatePath=""
+          watchDrop={true}
+        >
+          <ReactSortable
+            className=""
+            onChange={[Function]}
+            options={
+              Object {
+                "animation": 150,
+                "draggable": ".draggable",
+                "group": Object {
+                  "name": "root",
+                  "pull": false,
+                  "put": true,
+                },
+                "onAdd": [Function],
+                "onEnd": [Function],
+                "onFilter": [Function],
+                "onMove": [Function],
+                "onRemove": [Function],
+                "onSort": [Function],
+                "onStart": [Function],
+                "onUpdate": [Function],
+                "sort": true,
+              }
+            }
+            tag="div"
+          >
+            <div
+              className=""
+            >
+              <InfobarWidget
+                editing={
+                  Object {
+                    "actions": Object {
+                      "foo": [Function],
+                      "removeEditedWidget": [Function],
+                    },
+                    "canDrop": [Function],
+                    "isDragging": false,
+                    "isEditing": true,
+                  }
+                }
+                isEditing={true}
+                open={true}
+                source={
+                  Immutable.Map {
+                    ticket: Immutable.Map {
+                      requester: Immutable.Map {
+                        integrations: Immutable.Map {
+                          1: Immutable.Map {
+                            foo: "1",
+                          },
+                          2: Immutable.Map {
+                            bar: "2",
+                          },
+                        },
+                      },
+                    },
+                  }
+                }
+                template={
+                  Immutable.Map {
+                    type: "wrapper",
+                    widgets: Immutable.List [
+                      Immutable.Map {
+                        path: "",
+                        type: "card",
+                        title: "Foo container",
+                        widgets: Immutable.List [
+                          Immutable.Map {
+                            path: "foo",
+                            type: "text",
+                            title: "Foo",
+                            order: 1,
+                          },
+                        ],
+                      },
+                    ],
+                    path: Array [
+                      "ticket",
+                      "requester",
+                      "integrations",
+                      "1",
+                    ],
+                    templatePath: "1.template",
+                  }
+                }
+                widget={
+                  Immutable.Map {
+                    id: 4,
+                    type: "http",
+                    integration_id: 1,
+                    template: Immutable.Map {
+                      type: "wrapper",
+                      widgets: Immutable.List [
+                        Immutable.Map {
+                          path: "",
+                          type: "card",
+                          title: "Foo container",
+                          widgets: Immutable.List [
+                            Immutable.Map {
+                              path: "foo",
+                              type: "text",
+                              title: "Foo",
+                              order: 1,
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    order: 1,
+                  }
+                }
+              >
+                <Connect(WrapperInfobarWidget)
+                  editing={
+                    Object {
+                      "actions": Object {
+                        "foo": [Function],
+                        "removeEditedWidget": [Function],
+                      },
+                      "canDrop": [Function],
+                      "isDragging": false,
+                      "isEditing": true,
+                    }
+                  }
+                  isEditing={true}
+                  source={
+                    Immutable.Map {
+                      foo: "1",
+                    }
+                  }
+                  template={
+                    Immutable.Map {
+                      type: "wrapper",
+                      widgets: Immutable.List [
+                        Immutable.Map {
+                          path: "",
+                          type: "card",
+                          title: "Foo container",
+                          widgets: Immutable.List [
+                            Immutable.Map {
+                              path: "foo",
+                              type: "text",
+                              title: "Foo",
+                              order: 1,
+                            },
+                          ],
+                        },
+                      ],
+                      path: Array [
+                        "ticket",
+                        "requester",
+                        "integrations",
+                        "1",
+                      ],
+                      templatePath: "1.template",
+                      absolutePath: Array [
+                        "ticket",
+                        "requester",
+                        "integrations",
+                        "1",
+                      ],
+                    }
+                  }
+                  widget={
+                    Immutable.Map {
+                      id: 4,
+                      type: "http",
+                      integration_id: 1,
+                      template: Immutable.Map {
+                        type: "wrapper",
+                        widgets: Immutable.List [
+                          Immutable.Map {
+                            path: "",
+                            type: "card",
+                            title: "Foo container",
+                            widgets: Immutable.List [
+                              Immutable.Map {
+                                path: "foo",
+                                type: "text",
+                                title: "Foo",
+                                order: 1,
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      order: 1,
+                    }
+                  }
+                >
+                  <WrapperInfobarWidget
+                    dispatch={[Function]}
+                    editing={
+                      Object {
+                        "actions": Object {
+                          "foo": [Function],
+                          "removeEditedWidget": [Function],
+                        },
+                        "canDrop": [Function],
+                        "isDragging": false,
+                        "isEditing": true,
+                      }
+                    }
+                    integration={
+                      Immutable.Map {
+                        id: 1,
+                        type: "http",
+                        name: "my little http integration",
+                      }
+                    }
+                    isEditing={true}
+                    source={
+                      Immutable.Map {
+                        foo: "1",
+                      }
+                    }
+                    template={
+                      Immutable.Map {
+                        type: "wrapper",
+                        widgets: Immutable.List [
+                          Immutable.Map {
+                            path: "",
+                            type: "card",
+                            title: "Foo container",
+                            widgets: Immutable.List [
+                              Immutable.Map {
+                                path: "foo",
+                                type: "text",
+                                title: "Foo",
+                                order: 1,
+                              },
+                            ],
+                          },
+                        ],
+                        path: Array [
+                          "ticket",
+                          "requester",
+                          "integrations",
+                          "1",
+                        ],
+                        templatePath: "1.template",
+                        absolutePath: Array [
+                          "ticket",
+                          "requester",
+                          "integrations",
+                          "1",
+                        ],
+                      }
+                    }
+                    widget={
+                      Immutable.Map {
+                        id: 4,
+                        type: "http",
+                        integration_id: 1,
+                        template: Immutable.Map {
+                          type: "wrapper",
+                          widgets: Immutable.List [
+                            Immutable.Map {
+                              path: "",
+                              type: "card",
+                              title: "Foo container",
+                              widgets: Immutable.List [
+                                Immutable.Map {
+                                  path: "foo",
+                                  type: "text",
+                                  title: "Foo",
+                                  order: 1,
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                        order: 1,
+                      }
+                    }
+                  >
+                    <Card
+                      className="wrapper transparent draggable"
+                      tag="div"
+                    >
+                      <div
+                        className="wrapper transparent draggable card"
+                      >
+                        <CardBlock
+                          className="header clearfix"
+                          tag="div"
+                        >
+                          <div
+                            className="header clearfix card-block"
+                          >
+                            <span
+                              className="tools"
+                            >
+                              <i
+                                className="fa fa-fw fa-close text-danger clickable"
+                                onClick={[Function]}
+                              />
+                            </span>
+                          </div>
+                        </CardBlock>
+                        <CardBlock
+                          className="content"
+                          tag="div"
+                        >
+                          <div
+                            className="content card-block"
+                          >
+                            <DragWrapper
+                              actions={
+                                Object {
+                                  "foo": [Function],
+                                  "removeEditedWidget": [Function],
+                                }
+                              }
+                              group={
+                                Object {
+                                  "name": "ticket.requester.integrations.1",
+                                  "pull": false,
+                                  "put": true,
+                                }
+                              }
+                              isEditing={true}
+                              sort={true}
+                              templatePath="1.template"
+                              watchDrop={true}
+                            >
+                              <ReactSortable
+                                className=""
+                                onChange={[Function]}
+                                options={
+                                  Object {
+                                    "animation": 150,
+                                    "draggable": ".draggable",
+                                    "group": Object {
+                                      "name": "ticket.requester.integrations.1",
+                                      "pull": false,
+                                      "put": true,
+                                    },
+                                    "onAdd": [Function],
+                                    "onEnd": [Function],
+                                    "onFilter": [Function],
+                                    "onMove": [Function],
+                                    "onRemove": [Function],
+                                    "onSort": [Function],
+                                    "onStart": [Function],
+                                    "onUpdate": [Function],
+                                    "sort": true,
+                                  }
+                                }
+                                tag="div"
+                              >
+                                <div
+                                  className=""
+                                >
+                                  <InfobarWidget
+                                    editing={
+                                      Object {
+                                        "actions": Object {
+                                          "foo": [Function],
+                                          "removeEditedWidget": [Function],
+                                        },
+                                        "canDrop": [Function],
+                                        "isDragging": false,
+                                        "isEditing": true,
+                                      }
+                                    }
+                                    isEditing={true}
+                                    open={false}
+                                    parent={
+                                      Immutable.Map {
+                                        type: "wrapper",
+                                        widgets: Immutable.List [
+                                          Immutable.Map {
+                                            path: "",
+                                            type: "card",
+                                            title: "Foo container",
+                                            widgets: Immutable.List [
+                                              Immutable.Map {
+                                                path: "foo",
+                                                type: "text",
+                                                title: "Foo",
+                                                order: 1,
+                                              },
+                                            ],
+                                          },
+                                        ],
+                                        path: Array [
+                                          "ticket",
+                                          "requester",
+                                          "integrations",
+                                          "1",
+                                        ],
+                                        templatePath: "1.template",
+                                        absolutePath: Array [
+                                          "ticket",
+                                          "requester",
+                                          "integrations",
+                                          "1",
+                                        ],
+                                      }
+                                    }
+                                    source={
+                                      Immutable.Map {
+                                        foo: "1",
+                                      }
+                                    }
+                                    template={
+                                      Immutable.Map {
+                                        path: "",
+                                        type: "card",
+                                        title: "Foo container",
+                                        widgets: Immutable.List [
+                                          Immutable.Map {
+                                            path: "foo",
+                                            type: "text",
+                                            title: "Foo",
+                                            order: 1,
+                                          },
+                                        ],
+                                        templatePath: "1.template.widgets.0",
+                                      }
+                                    }
+                                    widget={
+                                      Immutable.Map {
+                                        id: 4,
+                                        type: "http",
+                                        integration_id: 1,
+                                        template: Immutable.Map {
+                                          type: "wrapper",
+                                          widgets: Immutable.List [
+                                            Immutable.Map {
+                                              path: "",
+                                              type: "card",
+                                              title: "Foo container",
+                                              widgets: Immutable.List [
+                                                Immutable.Map {
+                                                  path: "foo",
+                                                  type: "text",
+                                                  title: "Foo",
+                                                  order: 1,
+                                                },
+                                              ],
+                                            },
+                                          ],
+                                        },
+                                        order: 1,
+                                      }
+                                    }
+                                  >
+                                    <CardInfobarWidget
+                                      AfterTitle={null}
+                                      BeforeContent={null}
+                                      TitleWrapper={null}
+                                      Wrapper={null}
+                                      editing={
+                                        Object {
+                                          "actions": Object {
+                                            "foo": [Function],
+                                            "removeEditedWidget": [Function],
+                                          },
+                                          "canDrop": [Function],
+                                          "isDragging": false,
+                                          "isEditing": true,
+                                        }
+                                      }
+                                      isEditing={true}
+                                      isParentList={false}
+                                      open={true}
+                                      parent={
+                                        Immutable.Map {
+                                          type: "wrapper",
+                                          widgets: Immutable.List [
+                                            Immutable.Map {
+                                              path: "",
+                                              type: "card",
+                                              title: "Foo container",
+                                              widgets: Immutable.List [
+                                                Immutable.Map {
+                                                  path: "foo",
+                                                  type: "text",
+                                                  title: "Foo",
+                                                  order: 1,
+                                                },
+                                              ],
+                                            },
+                                          ],
+                                          path: Array [
+                                            "ticket",
+                                            "requester",
+                                            "integrations",
+                                            "1",
+                                          ],
+                                          templatePath: "1.template",
+                                          absolutePath: Array [
+                                            "ticket",
+                                            "requester",
+                                            "integrations",
+                                            "1",
+                                          ],
+                                        }
+                                      }
+                                      source={
+                                        Immutable.Map {
+                                          foo: "1",
+                                        }
+                                      }
+                                      template={
+                                        Immutable.Map {
+                                          path: "",
+                                          type: "card",
+                                          title: "Foo container",
+                                          widgets: Immutable.List [
+                                            Immutable.Map {
+                                              path: "foo",
+                                              type: "text",
+                                              title: "Foo",
+                                              order: 1,
+                                            },
+                                          ],
+                                          templatePath: "1.template.widgets.0",
+                                          absolutePath: Array [
+                                            "ticket",
+                                            "requester",
+                                            "integrations",
+                                            "1",
+                                          ],
+                                        }
+                                      }
+                                      widget={
+                                        Immutable.Map {
+                                          id: 4,
+                                          type: "http",
+                                          integration_id: 1,
+                                          template: Immutable.Map {
+                                            type: "wrapper",
+                                            widgets: Immutable.List [
+                                              Immutable.Map {
+                                                path: "",
+                                                type: "card",
+                                                title: "Foo container",
+                                                widgets: Immutable.List [
+                                                  Immutable.Map {
+                                                    path: "foo",
+                                                    type: "text",
+                                                    title: "Foo",
+                                                    order: 1,
+                                                  },
+                                                ],
+                                              },
+                                            ],
+                                          },
+                                          order: 1,
+                                        }
+                                      }
+                                    >
+                                      <Card
+                                        className="can-drop draggable"
+                                        data-key=""
+                                        tag="div"
+                                      >
+                                        <div
+                                          className="can-drop draggable card"
+                                          data-key=""
+                                        >
+                                          <CardBlock
+                                            className="header clearfix"
+                                            id="card-widget-5"
+                                            tag="div"
+                                          >
+                                            <div
+                                              className="header clearfix card-block"
+                                              id="card-widget-5"
+                                            >
+                                              <span>
+                                                Foo container
+                                              </span>
+                                              <span
+                                                className="tools"
+                                              >
+                                                <span>
+                                                  <i
+                                                    className="fa fa-fw fa-cog text-faded clickable"
+                                                    onClick={[Function]}
+                                                  />
+                                                  <i
+                                                    className="fa fa-fw fa-close text-danger clickable"
+                                                    onClick={[Function]}
+                                                  />
+                                                </span>
+                                              </span>
+                                              <Popover
+                                                isOpen={false}
+                                                placement="left"
+                                                target="card-widget-5"
+                                                toggle={[Function]}
+                                              />
+                                            </div>
+                                          </CardBlock>
+                                          <CardBlock
+                                            className="content"
+                                            tag="div"
+                                          >
+                                            <div
+                                              className="content card-block"
+                                            >
+                                              <DragWrapper
+                                                actions={
+                                                  Object {
+                                                    "foo": [Function],
+                                                    "removeEditedWidget": [Function],
+                                                  }
+                                                }
+                                                group={
+                                                  Object {
+                                                    "name": "ticket.requester.integrations.1",
+                                                    "pull": false,
+                                                    "put": true,
+                                                  }
+                                                }
+                                                isEditing={true}
+                                                sort={true}
+                                                templatePath="1.template.widgets.0"
+                                                watchDrop={true}
+                                              >
+                                                <ReactSortable
+                                                  className=""
+                                                  onChange={[Function]}
+                                                  options={
+                                                    Object {
+                                                      "animation": 150,
+                                                      "draggable": ".draggable",
+                                                      "group": Object {
+                                                        "name": "ticket.requester.integrations.1",
+                                                        "pull": false,
+                                                        "put": true,
+                                                      },
+                                                      "onAdd": [Function],
+                                                      "onEnd": [Function],
+                                                      "onFilter": [Function],
+                                                      "onMove": [Function],
+                                                      "onRemove": [Function],
+                                                      "onSort": [Function],
+                                                      "onStart": [Function],
+                                                      "onUpdate": [Function],
+                                                      "sort": true,
+                                                    }
+                                                  }
+                                                  tag="div"
+                                                >
+                                                  <div
+                                                    className=""
+                                                  >
+                                                    <InfobarWidget
+                                                      editing={
+                                                        Object {
+                                                          "actions": Object {
+                                                            "foo": [Function],
+                                                            "removeEditedWidget": [Function],
+                                                          },
+                                                          "canDrop": [Function],
+                                                          "isDragging": false,
+                                                          "isEditing": true,
+                                                        }
+                                                      }
+                                                      isEditing={true}
+                                                      open={false}
+                                                      parent={
+                                                        Immutable.Map {
+                                                          path: "",
+                                                          type: "card",
+                                                          title: "Foo container",
+                                                          widgets: Immutable.List [
+                                                            Immutable.Map {
+                                                              path: "foo",
+                                                              type: "text",
+                                                              title: "Foo",
+                                                              order: 1,
+                                                            },
+                                                          ],
+                                                          templatePath: "1.template.widgets.0",
+                                                          absolutePath: Array [
+                                                            "ticket",
+                                                            "requester",
+                                                            "integrations",
+                                                            "1",
+                                                          ],
+                                                        }
+                                                      }
+                                                      source={
+                                                        Immutable.Map {
+                                                          foo: "1",
+                                                        }
+                                                      }
+                                                      template={
+                                                        Immutable.Map {
+                                                          path: "foo",
+                                                          type: "text",
+                                                          title: "Foo",
+                                                          order: 1,
+                                                          templatePath: "1.template.widgets.0.widgets.0",
+                                                        }
+                                                      }
+                                                      widget={
+                                                        Immutable.Map {
+                                                          id: 4,
+                                                          type: "http",
+                                                          integration_id: 1,
+                                                          template: Immutable.Map {
+                                                            type: "wrapper",
+                                                            widgets: Immutable.List [
+                                                              Immutable.Map {
+                                                                path: "",
+                                                                type: "card",
+                                                                title: "Foo container",
+                                                                widgets: Immutable.List [
+                                                                  Immutable.Map {
+                                                                    path: "foo",
+                                                                    type: "text",
+                                                                    title: "Foo",
+                                                                    order: 1,
+                                                                  },
+                                                                ],
+                                                              },
+                                                            ],
+                                                          },
+                                                          order: 1,
+                                                        }
+                                                      }
+                                                    >
+                                                      <FieldInfobarWidget
+                                                        editing={
+                                                          Object {
+                                                            "actions": Object {
+                                                              "foo": [Function],
+                                                              "removeEditedWidget": [Function],
+                                                            },
+                                                            "canDrop": [Function],
+                                                            "isDragging": false,
+                                                            "isEditing": true,
+                                                          }
+                                                        }
+                                                        isEditing={true}
+                                                        isParentList={false}
+                                                        template={
+                                                          Immutable.Map {
+                                                            path: Array [
+                                                              "foo",
+                                                            ],
+                                                            type: "text",
+                                                            title: "Foo",
+                                                            order: 1,
+                                                            templatePath: "1.template.widgets.0.widgets.0",
+                                                            absolutePath: Array [
+                                                              "ticket",
+                                                              "requester",
+                                                              "integrations",
+                                                              "1",
+                                                              "foo",
+                                                            ],
+                                                          }
+                                                        }
+                                                        value="1"
+                                                        widget={
+                                                          Immutable.Map {
+                                                            id: 4,
+                                                            type: "http",
+                                                            integration_id: 1,
+                                                            template: Immutable.Map {
+                                                              type: "wrapper",
+                                                              widgets: Immutable.List [
+                                                                Immutable.Map {
+                                                                  path: "",
+                                                                  type: "card",
+                                                                  title: "Foo container",
+                                                                  widgets: Immutable.List [
+                                                                    Immutable.Map {
+                                                                      path: "foo",
+                                                                      type: "text",
+                                                                      title: "Foo",
+                                                                      order: 1,
+                                                                    },
+                                                                  ],
+                                                                },
+                                                              ],
+                                                            },
+                                                            order: 1,
+                                                          }
+                                                        }
+                                                      >
+                                                        <div
+                                                          className="simple-field draggable"
+                                                          id="field-widget-6"
+                                                          onClick={[Function]}
+                                                        >
+                                                          <span
+                                                            className="field-label"
+                                                          >
+                                                            Foo
+                                                            :
+                                                          </span>
+                                                          <span
+                                                            className="field-value"
+                                                          >
+                                                            1
+                                                          </span>
+                                                          <span
+                                                            className="tools"
+                                                          >
+                                                            <i
+                                                              className="fa fa-fw fa-close text-danger clickable"
+                                                              onClick={[Function]}
+                                                            />
+                                                          </span>
+                                                          <Popover
+                                                            isOpen={false}
+                                                            placement="left"
+                                                            target="field-widget-6"
+                                                            toggle={[Function]}
+                                                          />
+                                                        </div>
+                                                      </FieldInfobarWidget>
+                                                    </InfobarWidget>
+                                                  </div>
+                                                </ReactSortable>
+                                              </DragWrapper>
+                                            </div>
+                                          </CardBlock>
+                                        </div>
+                                      </Card>
+                                    </CardInfobarWidget>
+                                  </InfobarWidget>
+                                </div>
+                              </ReactSortable>
+                            </DragWrapper>
+                          </div>
+                        </CardBlock>
+                      </div>
+                    </Card>
+                  </WrapperInfobarWidget>
+                </Connect(WrapperInfobarWidget)>
+              </InfobarWidget>
+              <InfobarWidget
+                editing={
+                  Object {
+                    "actions": Object {
+                      "foo": [Function],
+                      "removeEditedWidget": [Function],
+                    },
+                    "canDrop": [Function],
+                    "isDragging": false,
+                    "isEditing": true,
+                  }
+                }
+                isEditing={true}
+                open={false}
+                source={
+                  Immutable.Map {
+                    ticket: Immutable.Map {
+                      requester: Immutable.Map {
+                        integrations: Immutable.Map {
+                          1: Immutable.Map {
+                            foo: "1",
+                          },
+                          2: Immutable.Map {
+                            bar: "2",
+                          },
+                        },
+                      },
+                    },
+                  }
+                }
+                template={
+                  Immutable.Map {
+                    type: "wrapper",
+                    widgets: Immutable.List [
+                      Immutable.Map {
+                        path: "",
+                        type: "card",
+                        title: "Bar container",
+                        widgets: Immutable.List [
+                          Immutable.Map {
+                            path: "bar",
+                            type: "text",
+                            title: "Bar",
+                            order: 1,
+                          },
+                        ],
+                      },
+                    ],
+                    path: Array [
+                      "ticket",
+                      "requester",
+                      "integrations",
+                      "2",
+                    ],
+                    templatePath: "2.template",
+                  }
+                }
+                widget={
+                  Immutable.Map {
+                    id: 5,
+                    type: "shopify",
+                    template: Immutable.Map {
+                      type: "wrapper",
+                      widgets: Immutable.List [
+                        Immutable.Map {
+                          path: "",
+                          type: "card",
+                          title: "Bar container",
+                          widgets: Immutable.List [
+                            Immutable.Map {
+                              path: "bar",
+                              type: "text",
+                              title: "Bar",
+                              order: 1,
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    order: 2,
+                  }
+                }
+              >
+                <Connect(WrapperInfobarWidget)
+                  editing={
+                    Object {
+                      "actions": Object {
+                        "foo": [Function],
+                        "removeEditedWidget": [Function],
+                      },
+                      "canDrop": [Function],
+                      "isDragging": false,
+                      "isEditing": true,
+                    }
+                  }
+                  isEditing={true}
+                  source={
+                    Immutable.Map {
+                      bar: "2",
+                    }
+                  }
+                  template={
+                    Immutable.Map {
+                      type: "wrapper",
+                      widgets: Immutable.List [
+                        Immutable.Map {
+                          path: "",
+                          type: "card",
+                          title: "Bar container",
+                          widgets: Immutable.List [
+                            Immutable.Map {
+                              path: "bar",
+                              type: "text",
+                              title: "Bar",
+                              order: 1,
+                            },
+                          ],
+                        },
+                      ],
+                      path: Array [
+                        "ticket",
+                        "requester",
+                        "integrations",
+                        "2",
+                      ],
+                      templatePath: "2.template",
+                      absolutePath: Array [
+                        "ticket",
+                        "requester",
+                        "integrations",
+                        "2",
+                      ],
+                    }
+                  }
+                  widget={
+                    Immutable.Map {
+                      id: 5,
+                      type: "shopify",
+                      template: Immutable.Map {
+                        type: "wrapper",
+                        widgets: Immutable.List [
+                          Immutable.Map {
+                            path: "",
+                            type: "card",
+                            title: "Bar container",
+                            widgets: Immutable.List [
+                              Immutable.Map {
+                                path: "bar",
+                                type: "text",
+                                title: "Bar",
+                                order: 1,
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      order: 2,
+                    }
+                  }
+                >
+                  <WrapperInfobarWidget
+                    dispatch={[Function]}
+                    editing={
+                      Object {
+                        "actions": Object {
+                          "foo": [Function],
+                          "removeEditedWidget": [Function],
+                        },
+                        "canDrop": [Function],
+                        "isDragging": false,
+                        "isEditing": true,
+                      }
+                    }
+                    integration={
+                      Immutable.Map {
+                        id: 2,
+                        type: "shopify",
+                        name: "my little shopify integration",
+                      }
+                    }
+                    isEditing={true}
+                    source={
+                      Immutable.Map {
+                        bar: "2",
+                      }
+                    }
+                    template={
+                      Immutable.Map {
+                        type: "wrapper",
+                        widgets: Immutable.List [
+                          Immutable.Map {
+                            path: "",
+                            type: "card",
+                            title: "Bar container",
+                            widgets: Immutable.List [
+                              Immutable.Map {
+                                path: "bar",
+                                type: "text",
+                                title: "Bar",
+                                order: 1,
+                              },
+                            ],
+                          },
+                        ],
+                        path: Array [
+                          "ticket",
+                          "requester",
+                          "integrations",
+                          "2",
+                        ],
+                        templatePath: "2.template",
+                        absolutePath: Array [
+                          "ticket",
+                          "requester",
+                          "integrations",
+                          "2",
+                        ],
+                      }
+                    }
+                    widget={
+                      Immutable.Map {
+                        id: 5,
+                        type: "shopify",
+                        template: Immutable.Map {
+                          type: "wrapper",
+                          widgets: Immutable.List [
+                            Immutable.Map {
+                              path: "",
+                              type: "card",
+                              title: "Bar container",
+                              widgets: Immutable.List [
+                                Immutable.Map {
+                                  path: "bar",
+                                  type: "text",
+                                  title: "Bar",
+                                  order: 1,
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                        order: 2,
+                      }
+                    }
+                  >
+                    <Card
+                      className="wrapper transparent draggable"
+                      tag="div"
+                    >
+                      <div
+                        className="wrapper transparent draggable card"
+                      >
+                        <CardBlock
+                          className="header clearfix"
+                          tag="div"
+                        >
+                          <div
+                            className="header clearfix card-block"
+                          >
+                            <span
+                              className="tools"
+                            >
+                              <i
+                                className="fa fa-fw fa-close text-danger clickable"
+                                onClick={[Function]}
+                              />
+                            </span>
+                          </div>
+                        </CardBlock>
+                        <CardBlock
+                          className="content"
+                          tag="div"
+                        >
+                          <div
+                            className="content card-block"
+                          >
+                            <DragWrapper
+                              actions={
+                                Object {
+                                  "foo": [Function],
+                                  "removeEditedWidget": [Function],
+                                }
+                              }
+                              group={
+                                Object {
+                                  "name": "ticket.requester.integrations.2",
+                                  "pull": false,
+                                  "put": true,
+                                }
+                              }
+                              isEditing={true}
+                              sort={true}
+                              templatePath="2.template"
+                              watchDrop={true}
+                            >
+                              <ReactSortable
+                                className=""
+                                onChange={[Function]}
+                                options={
+                                  Object {
+                                    "animation": 150,
+                                    "draggable": ".draggable",
+                                    "group": Object {
+                                      "name": "ticket.requester.integrations.2",
+                                      "pull": false,
+                                      "put": true,
+                                    },
+                                    "onAdd": [Function],
+                                    "onEnd": [Function],
+                                    "onFilter": [Function],
+                                    "onMove": [Function],
+                                    "onRemove": [Function],
+                                    "onSort": [Function],
+                                    "onStart": [Function],
+                                    "onUpdate": [Function],
+                                    "sort": true,
+                                  }
+                                }
+                                tag="div"
+                              >
+                                <div
+                                  className=""
+                                >
+                                  <InfobarWidget
+                                    editing={
+                                      Object {
+                                        "actions": Object {
+                                          "foo": [Function],
+                                          "removeEditedWidget": [Function],
+                                        },
+                                        "canDrop": [Function],
+                                        "isDragging": false,
+                                        "isEditing": true,
+                                      }
+                                    }
+                                    isEditing={true}
+                                    open={false}
+                                    parent={
+                                      Immutable.Map {
+                                        type: "wrapper",
+                                        widgets: Immutable.List [
+                                          Immutable.Map {
+                                            path: "",
+                                            type: "card",
+                                            title: "Bar container",
+                                            widgets: Immutable.List [
+                                              Immutable.Map {
+                                                path: "bar",
+                                                type: "text",
+                                                title: "Bar",
+                                                order: 1,
+                                              },
+                                            ],
+                                          },
+                                        ],
+                                        path: Array [
+                                          "ticket",
+                                          "requester",
+                                          "integrations",
+                                          "2",
+                                        ],
+                                        templatePath: "2.template",
+                                        absolutePath: Array [
+                                          "ticket",
+                                          "requester",
+                                          "integrations",
+                                          "2",
+                                        ],
+                                      }
+                                    }
+                                    source={
+                                      Immutable.Map {
+                                        bar: "2",
+                                      }
+                                    }
+                                    template={
+                                      Immutable.Map {
+                                        path: "",
+                                        type: "card",
+                                        title: "Bar container",
+                                        widgets: Immutable.List [
+                                          Immutable.Map {
+                                            path: "bar",
+                                            type: "text",
+                                            title: "Bar",
+                                            order: 1,
+                                          },
+                                        ],
+                                        templatePath: "2.template.widgets.0",
+                                      }
+                                    }
+                                    widget={
+                                      Immutable.Map {
+                                        id: 5,
+                                        type: "shopify",
+                                        template: Immutable.Map {
+                                          type: "wrapper",
+                                          widgets: Immutable.List [
+                                            Immutable.Map {
+                                              path: "",
+                                              type: "card",
+                                              title: "Bar container",
+                                              widgets: Immutable.List [
+                                                Immutable.Map {
+                                                  path: "bar",
+                                                  type: "text",
+                                                  title: "Bar",
+                                                  order: 1,
+                                                },
+                                              ],
+                                            },
+                                          ],
+                                        },
+                                        order: 2,
+                                      }
+                                    }
+                                  >
+                                    <CardInfobarWidget
+                                      AfterTitle={null}
+                                      BeforeContent={null}
+                                      TitleWrapper={null}
+                                      Wrapper={null}
+                                      editing={
+                                        Object {
+                                          "actions": Object {
+                                            "foo": [Function],
+                                            "removeEditedWidget": [Function],
+                                          },
+                                          "canDrop": [Function],
+                                          "isDragging": false,
+                                          "isEditing": true,
+                                        }
+                                      }
+                                      isEditing={true}
+                                      isParentList={false}
+                                      open={true}
+                                      parent={
+                                        Immutable.Map {
+                                          type: "wrapper",
+                                          widgets: Immutable.List [
+                                            Immutable.Map {
+                                              path: "",
+                                              type: "card",
+                                              title: "Bar container",
+                                              widgets: Immutable.List [
+                                                Immutable.Map {
+                                                  path: "bar",
+                                                  type: "text",
+                                                  title: "Bar",
+                                                  order: 1,
+                                                },
+                                              ],
+                                            },
+                                          ],
+                                          path: Array [
+                                            "ticket",
+                                            "requester",
+                                            "integrations",
+                                            "2",
+                                          ],
+                                          templatePath: "2.template",
+                                          absolutePath: Array [
+                                            "ticket",
+                                            "requester",
+                                            "integrations",
+                                            "2",
+                                          ],
+                                        }
+                                      }
+                                      source={
+                                        Immutable.Map {
+                                          bar: "2",
+                                        }
+                                      }
+                                      template={
+                                        Immutable.Map {
+                                          path: "",
+                                          type: "card",
+                                          title: "Bar container",
+                                          widgets: Immutable.List [
+                                            Immutable.Map {
+                                              path: "bar",
+                                              type: "text",
+                                              title: "Bar",
+                                              order: 1,
+                                            },
+                                          ],
+                                          templatePath: "2.template.widgets.0",
+                                          absolutePath: Array [
+                                            "ticket",
+                                            "requester",
+                                            "integrations",
+                                            "2",
+                                          ],
+                                        }
+                                      }
+                                      widget={
+                                        Immutable.Map {
+                                          id: 5,
+                                          type: "shopify",
+                                          template: Immutable.Map {
+                                            type: "wrapper",
+                                            widgets: Immutable.List [
+                                              Immutable.Map {
+                                                path: "",
+                                                type: "card",
+                                                title: "Bar container",
+                                                widgets: Immutable.List [
+                                                  Immutable.Map {
+                                                    path: "bar",
+                                                    type: "text",
+                                                    title: "Bar",
+                                                    order: 1,
+                                                  },
+                                                ],
+                                              },
+                                            ],
+                                          },
+                                          order: 2,
+                                        }
+                                      }
+                                    >
+                                      <Card
+                                        className="can-drop draggable"
+                                        data-key=""
+                                        tag="div"
+                                      >
+                                        <div
+                                          className="can-drop draggable card"
+                                          data-key=""
+                                        >
+                                          <CardBlock
+                                            className="header clearfix"
+                                            id="card-widget-7"
+                                            tag="div"
+                                          >
+                                            <div
+                                              className="header clearfix card-block"
+                                              id="card-widget-7"
+                                            >
+                                              <span>
+                                                Bar container
+                                              </span>
+                                              <span
+                                                className="tools"
+                                              >
+                                                <span>
+                                                  <i
+                                                    className="fa fa-fw fa-cog text-faded clickable"
+                                                    onClick={[Function]}
+                                                  />
+                                                  <i
+                                                    className="fa fa-fw fa-close text-danger clickable"
+                                                    onClick={[Function]}
+                                                  />
+                                                </span>
+                                              </span>
+                                              <Popover
+                                                isOpen={false}
+                                                placement="left"
+                                                target="card-widget-7"
+                                                toggle={[Function]}
+                                              />
+                                            </div>
+                                          </CardBlock>
+                                          <CardBlock
+                                            className="content"
+                                            tag="div"
+                                          >
+                                            <div
+                                              className="content card-block"
+                                            >
+                                              <DragWrapper
+                                                actions={
+                                                  Object {
+                                                    "foo": [Function],
+                                                    "removeEditedWidget": [Function],
+                                                  }
+                                                }
+                                                group={
+                                                  Object {
+                                                    "name": "ticket.requester.integrations.2",
+                                                    "pull": false,
+                                                    "put": true,
+                                                  }
+                                                }
+                                                isEditing={true}
+                                                sort={true}
+                                                templatePath="2.template.widgets.0"
+                                                watchDrop={true}
+                                              >
+                                                <ReactSortable
+                                                  className=""
+                                                  onChange={[Function]}
+                                                  options={
+                                                    Object {
+                                                      "animation": 150,
+                                                      "draggable": ".draggable",
+                                                      "group": Object {
+                                                        "name": "ticket.requester.integrations.2",
+                                                        "pull": false,
+                                                        "put": true,
+                                                      },
+                                                      "onAdd": [Function],
+                                                      "onEnd": [Function],
+                                                      "onFilter": [Function],
+                                                      "onMove": [Function],
+                                                      "onRemove": [Function],
+                                                      "onSort": [Function],
+                                                      "onStart": [Function],
+                                                      "onUpdate": [Function],
+                                                      "sort": true,
+                                                    }
+                                                  }
+                                                  tag="div"
+                                                >
+                                                  <div
+                                                    className=""
+                                                  >
+                                                    <InfobarWidget
+                                                      editing={
+                                                        Object {
+                                                          "actions": Object {
+                                                            "foo": [Function],
+                                                            "removeEditedWidget": [Function],
+                                                          },
+                                                          "canDrop": [Function],
+                                                          "isDragging": false,
+                                                          "isEditing": true,
+                                                        }
+                                                      }
+                                                      isEditing={true}
+                                                      open={false}
+                                                      parent={
+                                                        Immutable.Map {
+                                                          path: "",
+                                                          type: "card",
+                                                          title: "Bar container",
+                                                          widgets: Immutable.List [
+                                                            Immutable.Map {
+                                                              path: "bar",
+                                                              type: "text",
+                                                              title: "Bar",
+                                                              order: 1,
+                                                            },
+                                                          ],
+                                                          templatePath: "2.template.widgets.0",
+                                                          absolutePath: Array [
+                                                            "ticket",
+                                                            "requester",
+                                                            "integrations",
+                                                            "2",
+                                                          ],
+                                                        }
+                                                      }
+                                                      source={
+                                                        Immutable.Map {
+                                                          bar: "2",
+                                                        }
+                                                      }
+                                                      template={
+                                                        Immutable.Map {
+                                                          path: "bar",
+                                                          type: "text",
+                                                          title: "Bar",
+                                                          order: 1,
+                                                          templatePath: "2.template.widgets.0.widgets.0",
+                                                        }
+                                                      }
+                                                      widget={
+                                                        Immutable.Map {
+                                                          id: 5,
+                                                          type: "shopify",
+                                                          template: Immutable.Map {
+                                                            type: "wrapper",
+                                                            widgets: Immutable.List [
+                                                              Immutable.Map {
+                                                                path: "",
+                                                                type: "card",
+                                                                title: "Bar container",
+                                                                widgets: Immutable.List [
+                                                                  Immutable.Map {
+                                                                    path: "bar",
+                                                                    type: "text",
+                                                                    title: "Bar",
+                                                                    order: 1,
+                                                                  },
+                                                                ],
+                                                              },
+                                                            ],
+                                                          },
+                                                          order: 2,
+                                                        }
+                                                      }
+                                                    >
+                                                      <FieldInfobarWidget
+                                                        editing={
+                                                          Object {
+                                                            "actions": Object {
+                                                              "foo": [Function],
+                                                              "removeEditedWidget": [Function],
+                                                            },
+                                                            "canDrop": [Function],
+                                                            "isDragging": false,
+                                                            "isEditing": true,
+                                                          }
+                                                        }
+                                                        isEditing={true}
+                                                        isParentList={false}
+                                                        template={
+                                                          Immutable.Map {
+                                                            path: Array [
+                                                              "bar",
+                                                            ],
+                                                            type: "text",
+                                                            title: "Bar",
+                                                            order: 1,
+                                                            templatePath: "2.template.widgets.0.widgets.0",
+                                                            absolutePath: Array [
+                                                              "ticket",
+                                                              "requester",
+                                                              "integrations",
+                                                              "2",
+                                                              "bar",
+                                                            ],
+                                                          }
+                                                        }
+                                                        value="2"
+                                                        widget={
+                                                          Immutable.Map {
+                                                            id: 5,
+                                                            type: "shopify",
+                                                            template: Immutable.Map {
+                                                              type: "wrapper",
+                                                              widgets: Immutable.List [
+                                                                Immutable.Map {
+                                                                  path: "",
+                                                                  type: "card",
+                                                                  title: "Bar container",
+                                                                  widgets: Immutable.List [
+                                                                    Immutable.Map {
+                                                                      path: "bar",
+                                                                      type: "text",
+                                                                      title: "Bar",
+                                                                      order: 1,
+                                                                    },
+                                                                  ],
+                                                                },
+                                                              ],
+                                                            },
+                                                            order: 2,
+                                                          }
+                                                        }
+                                                      >
+                                                        <div
+                                                          className="simple-field draggable"
+                                                          id="field-widget-8"
+                                                          onClick={[Function]}
+                                                        >
+                                                          <span
+                                                            className="field-label"
+                                                          >
+                                                            Bar
+                                                            :
+                                                          </span>
+                                                          <span
+                                                            className="field-value"
+                                                          >
+                                                            2
+                                                          </span>
+                                                          <span
+                                                            className="tools"
+                                                          >
+                                                            <i
+                                                              className="fa fa-fw fa-close text-danger clickable"
+                                                              onClick={[Function]}
+                                                            />
+                                                          </span>
+                                                          <Popover
+                                                            isOpen={false}
+                                                            placement="left"
+                                                            target="field-widget-8"
+                                                            toggle={[Function]}
+                                                          />
+                                                        </div>
+                                                      </FieldInfobarWidget>
+                                                    </InfobarWidget>
+                                                  </div>
+                                                </ReactSortable>
+                                              </DragWrapper>
+                                            </div>
+                                          </CardBlock>
+                                        </div>
+                                      </Card>
+                                    </CardInfobarWidget>
+                                  </InfobarWidget>
+                                </div>
+                              </ReactSortable>
+                            </DragWrapper>
+                          </div>
+                        </CardBlock>
+                      </div>
+                    </Card>
+                  </WrapperInfobarWidget>
+                </Connect(WrapperInfobarWidget)>
+              </InfobarWidget>
+              <Connect(PlaceholderWidget)
+                editing={
+                  Object {
+                    "actions": Object {
+                      "foo": [Function],
+                      "removeEditedWidget": [Function],
+                    },
+                    "canDrop": [Function],
+                    "isDragging": false,
+                    "isEditing": true,
+                  }
+                }
+                isEditing={true}
+                open={false}
+                source={
+                  Immutable.Map {
+                    ticket: Immutable.Map {
+                      requester: Immutable.Map {
+                        integrations: Immutable.Map {
+                          1: Immutable.Map {
+                            foo: "1",
+                          },
+                          2: Immutable.Map {
+                            bar: "2",
+                          },
+                        },
+                      },
+                    },
+                  }
+                }
+                template={
+                  Immutable.Map {
+                    type: "wrapper",
+                    widgets: Immutable.List [
+                      Immutable.Map {
+                        path: "",
+                        type: "card",
+                        title: "Baz container",
+                        widgets: Immutable.List [
+                          Immutable.Map {
+                            path: "baz",
+                            type: "text",
+                            title: "Baz",
+                            order: 1,
+                          },
+                        ],
+                      },
+                    ],
+                    path: Array [
+                      "ticket",
+                      "requester",
+                      "integrations",
+                    ],
+                    templatePath: "3.template",
+                  }
+                }
+                widget={
+                  Immutable.Map {
+                    id: 6,
+                    type: "recharge",
+                    template: Immutable.Map {
+                      type: "wrapper",
+                      widgets: Immutable.List [
+                        Immutable.Map {
+                          path: "",
+                          type: "card",
+                          title: "Baz container",
+                          widgets: Immutable.List [
+                            Immutable.Map {
+                              path: "baz",
+                              type: "text",
+                              title: "Baz",
+                              order: 1,
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    order: 3,
+                  }
+                }
+              >
+                <PlaceholderWidget
+                  dispatch={[Function]}
+                  editing={
+                    Object {
+                      "actions": Object {
+                        "foo": [Function],
+                        "removeEditedWidget": [Function],
+                      },
+                      "canDrop": [Function],
+                      "isDragging": false,
+                      "isEditing": true,
+                    }
+                  }
+                  integration={null}
+                  isEditing={true}
+                  open={false}
+                  source={
+                    Immutable.Map {
+                      ticket: Immutable.Map {
+                        requester: Immutable.Map {
+                          integrations: Immutable.Map {
+                            1: Immutable.Map {
+                              foo: "1",
+                            },
+                            2: Immutable.Map {
+                              bar: "2",
+                            },
+                          },
+                        },
+                      },
+                    }
+                  }
+                  template={
+                    Immutable.Map {
+                      type: "wrapper",
+                      widgets: Immutable.List [
+                        Immutable.Map {
+                          path: "",
+                          type: "card",
+                          title: "Baz container",
+                          widgets: Immutable.List [
+                            Immutable.Map {
+                              path: "baz",
+                              type: "text",
+                              title: "Baz",
+                              order: 1,
+                            },
+                          ],
+                        },
+                      ],
+                      path: Array [
+                        "ticket",
+                        "requester",
+                        "integrations",
+                      ],
+                      templatePath: "3.template",
+                    }
+                  }
+                  widget={
+                    Immutable.Map {
+                      id: 6,
+                      type: "recharge",
+                      template: Immutable.Map {
+                        type: "wrapper",
+                        widgets: Immutable.List [
+                          Immutable.Map {
+                            path: "",
+                            type: "card",
+                            title: "Baz container",
+                            widgets: Immutable.List [
+                              Immutable.Map {
+                                path: "baz",
+                                type: "text",
+                                title: "Baz",
+                                order: 1,
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      order: 3,
+                    }
+                  }
+                >
+                  <Card
+                    className="wrapper transparent draggable"
+                    tag="div"
+                  >
+                    <div
+                      className="wrapper transparent draggable card"
+                    >
+                      <CardBlock
+                        className="clearfix"
+                        tag="div"
+                      >
+                        <div
+                          className="clearfix card-block"
+                        >
+                          <span
+                            className="tools"
+                          >
+                            <i
+                              className="fa fa-fw fa-close text-danger clickable"
+                              onClick={[Function]}
+                            />
+                          </span>
+                          <h5
+                            className=""
+                          >
+                            Widget for Recharge data
+                          </h5>
+                        </div>
+                      </CardBlock>
+                    </div>
+                  </Card>
+                </PlaceholderWidget>
+              </Connect(PlaceholderWidget)>
+            </div>
+          </ReactSortable>
+        </DragWrapper>
+      </div>
+    </InfobarWidgets>
+  </Connect(InfobarWidgets)>
+</Provider>
+`;
+
+exports[`InfobarWidgets component should not display anything if there's no widgets 1`] = `
+<Connect(InfobarWidgets)
+  context="ticket"
+  editing={
+    Object {
+      "actions": Object {
+        "foo": [Function],
+        "removeEditedWidget": [Function],
+      },
+      "canDrop": [Function],
+      "isDragging": false,
+      "isEditing": false,
+    }
+  }
+  source={
+    Immutable.Map {
+      ticket: Immutable.Map {
+        requester: Immutable.Map {
+          integrations: Immutable.Map {
+            1: Immutable.Map {
+              foo: "1",
+            },
+            2: Immutable.Map {
+              bar: "2",
+            },
+          },
+        },
+      },
+    }
+  }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+  widgets={null}
+>
+  <InfobarWidgets
+    context="ticket"
+    dispatch={[Function]}
+    editing={
+      Object {
+        "actions": Object {
+          "foo": [Function],
+          "removeEditedWidget": [Function],
+        },
+        "canDrop": [Function],
+        "isDragging": false,
+        "isEditing": false,
+      }
+    }
+    integrations={
+      Immutable.List [
+        Immutable.Map {
+          id: 1,
+          type: "http",
+          name: "my little http integration",
+        },
+        Immutable.Map {
+          id: 2,
+          type: "shopify",
+          name: "my little shopify integration",
+        },
+        Immutable.Map {
+          id: 3,
+          type: "recharge",
+          name: "my little recharge integration",
+        },
+      ]
+    }
+    source={
+      Immutable.Map {
+        ticket: Immutable.Map {
+          requester: Immutable.Map {
+            integrations: Immutable.Map {
+              1: Immutable.Map {
+                foo: "1",
+              },
+              2: Immutable.Map {
+                bar: "2",
+              },
+            },
+          },
+        },
+      }
+    }
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+    widgets={null}
+  />
+</Connect(InfobarWidgets)>
+`;

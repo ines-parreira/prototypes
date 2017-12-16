@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PlaceholderWidget component should display the integration name if the widget is for an HTTP integration 1`] = `
+<Card
+  className="wrapper transparent draggable"
+  tag="div"
+>
+  <CardBlock
+    className="clearfix"
+    tag="div"
+  >
+    <span
+      className="tools"
+    >
+      <i
+        className="fa fa-fw fa-close text-danger clickable"
+        onClick={[Function]}
+      />
+    </span>
+    <h5
+      className=""
+    >
+      Widget for my little integration http data
+    </h5>
+  </CardBlock>
+</Card>
+`;
+
+exports[`PlaceholderWidget component should display the integration type if the widget is not for an HTTP integration 1`] = `
+<Card
+  className="wrapper transparent draggable"
+  tag="div"
+>
+  <CardBlock
+    className="clearfix"
+    tag="div"
+  >
+    <span
+      className="tools"
+    >
+      <i
+        className="fa fa-fw fa-close text-danger clickable"
+        onClick={[Function]}
+      />
+    </span>
+    <h5
+      className=""
+    >
+      Widget for Shopify data
+    </h5>
+  </CardBlock>
+</Card>
+`;

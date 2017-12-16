@@ -81,15 +81,14 @@ class WrapperInfobarWidget extends React.Component {
         return (
             <Card className={classnames(css.component, 'wrapper transparent draggable')}>
                 {
-                    isEditing
-                    && (
+                    isEditing && (
                         <CardBlock className="header clearfix">
-                                <span className="tools">
-                                    <i
-                                        className="fa fa-fw fa-close text-danger clickable"
-                                        onClick={this._deleteWrapper}
-                                    />
-                                </span>
+                            <span className="tools">
+                                <i
+                                    className="fa fa-fw fa-close text-danger clickable"
+                                    onClick={this._deleteWrapper}
+                                />
+                            </span>
                         </CardBlock>
                     )
                 }
