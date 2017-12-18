@@ -1,5 +1,142 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`BillingPlans component should display a custom plan 1`] = `
+<div
+  className="mb-4"
+>
+  <h4>
+    Plans
+  </h4>
+  <Row
+    className="mb-3"
+    tag="div"
+  >
+    <Col
+      sm="12"
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+    >
+      <CardDeck
+        tag="div"
+      >
+        <Card
+          className="text-center"
+          outline={true}
+          tag="div"
+        >
+          <CardBlock
+            tag="div"
+          >
+            <CardTitle
+              tag="h4"
+            >
+              custom plan
+            </CardTitle>
+            <div
+              className="mb-4 mt-3"
+            >
+              <h3>
+                <em>
+                  $
+                </em>
+              </h3>
+              per 
+            </div>
+            <div>
+              <strong>
+                Includes:
+              </strong>
+            </div>
+            <div>
+              Unlimited agents
+            </div>
+            <div>
+              <strong>
+                100
+              </strong>
+               tickets included
+            </div>
+            <div>
+              <span>
+                <strong>
+                  + 
+                  $
+                  NaN
+                </strong>
+                 per 
+                100
+                 tickets 
+              </span>
+              <a
+                id="additional-tickets-tooltip-custom"
+              >
+                <i
+                  className="fa fa-question-circle"
+                />
+              </a>
+              <Tooltip
+                delay={0}
+                target="additional-tickets-tooltip-custom"
+              >
+                If you reply to more tickets than included in your plan this is the additional cost per 100 tickets.
+              </Tooltip>
+            </div>
+            <div
+              className="mb-3"
+            >
+              <strong>
+                10
+              </strong>
+               integrations
+            </div>
+            <Button
+              className=""
+              color="secondary"
+              disabled={true}
+              onClick={[Function]}
+              outline={true}
+              tag="button"
+            >
+              Your current plan
+            </Button>
+          </CardBlock>
+        </Card>
+      </CardDeck>
+    </Col>
+  </Row>
+  <div>
+    <p>
+      <strong>
+        Are all tickets counted? What about spam?
+      </strong>
+    </p>
+    We bill for a ticket only if your team uses Gorgias to send replies to customers. Specifically we bill you if the ticket:
+    <ul>
+      <li>
+        Has at least 1 reply sent using the helpdesk by a team member (agent).
+      </li>
+      <li>
+        Or is sent using an automatic reply (using the Rules).
+      </li>
+    </ul>
+    <p>
+      <strong>
+        Note:
+      </strong>
+       Tickets that are imported into Gorgias from Facebook, Gmail, etc.. are not billed.
+    </p>
+  </div>
+</div>
+`;
+
 exports[`BillingPlans component should display matching current plan 1`] = `
 <div
   className="mb-4"
@@ -99,13 +236,13 @@ exports[`BillingPlans component should display matching current plan 1`] = `
             </div>
             <Button
               className=""
-              color="info"
-              disabled={false}
+              color="secondary"
+              disabled={true}
               onClick={[Function]}
               outline={true}
               tag="button"
             >
-              Choose my plan
+              Your current plan
             </Button>
           </CardBlock>
         </Card>
@@ -287,13 +424,13 @@ exports[`BillingPlans component should display multiple plans 1`] = `
             </div>
             <Button
               className=""
-              color="info"
-              disabled={false}
+              color="secondary"
+              disabled={true}
               onClick={[Function]}
               outline={true}
               tag="button"
             >
-              Choose my plan
+              Your current plan
             </Button>
           </CardBlock>
         </Card>
@@ -375,7 +512,7 @@ exports[`BillingPlans component should display multiple plans 1`] = `
               outline={true}
               tag="button"
             >
-              Choose my second plan
+              Switch to my second plan
             </Button>
           </CardBlock>
         </Card>
@@ -460,7 +597,10 @@ exports[`BillingPlans component should display multiple plans 1`] = `
 
 exports[`BillingPlans component should load with empty props 1`] = `
 <BillingPlans
-  currentPlanId="some-plan"
+  currentPlan={
+    Immutable.Map {
+    }
+  }
   isAllowedToChangePlan={[Function]}
   notify={[Function]}
   plans={
@@ -469,6 +609,7 @@ exports[`BillingPlans component should load with empty props 1`] = `
   }
   subscription={
     Immutable.Map {
+      plan: "some-plan",
     }
   }
   updateSubscription={[Function]}

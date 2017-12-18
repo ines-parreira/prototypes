@@ -11,9 +11,9 @@ describe('BillingPlans component', () => {
                 notify={() => true}
                 updateSubscription={() => true}
                 isAllowedToChangePlan={() => true}
-                currentPlanId="some-plan"
                 plans={fromJS({})}
-                subscription={fromJS({})}
+                subscription={fromJS({plan: 'some-plan'})}
+                currentPlan={fromJS({})}
             />
         )
         expect(component).toMatchSnapshot()
@@ -25,7 +25,6 @@ describe('BillingPlans component', () => {
                 notify={() => true}
                 updateSubscription={() => true}
                 isAllowedToChangePlan={() => true}
-                currentPlanId="plan1"
                 plans={fromJS({
                     plan1: {
                         public: true,
@@ -35,7 +34,8 @@ describe('BillingPlans component', () => {
                         integrations: 10
                     }
                 })}
-                subscription={fromJS({})}
+                subscription={fromJS({plan: 'plan1'})}
+                currentPlan={fromJS({})}
             />
         )
         expect(component).toMatchSnapshot()
@@ -48,7 +48,6 @@ describe('BillingPlans component', () => {
                 notify={() => true}
                 updateSubscription={() => true}
                 isAllowedToChangePlan={() => true}
-                currentPlanId="plan1"
                 plans={fromJS({
                     plan1: {
                         public: true,
@@ -72,7 +71,37 @@ describe('BillingPlans component', () => {
                         integrations: 100
                     }
                 })}
-                subscription={fromJS({})}
+                subscription={fromJS({plan: 'plan1'})}
+                currentPlan={fromJS({})}
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should display a custom plan', () => {
+        const component = shallow(
+            <BillingPlans
+                notify={() => true}
+                updateSubscription={() => true}
+                isAllowedToChangePlan={() => true}
+                plans={fromJS({
+                    custom: {
+                        public: true,
+                        name: 'custom plan',
+                        free_tickets: 100,
+                        currencySign: '$',
+                        integrations: 10
+                    },
+                    plan1: {
+                        public: true,
+                        name: 'plan 1',
+                        free_tickets: 100,
+                        currencySign: '$',
+                        integrations: 10
+                    }
+                })}
+                subscription={fromJS({plan: 'custom'})}
+                currentPlan={fromJS({custom: true})}
             />
         )
         expect(component).toMatchSnapshot()

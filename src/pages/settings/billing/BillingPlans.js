@@ -13,6 +13,7 @@ import {openChat} from '../../../utils'
 
 export class BillingPlans extends Component {
     static propTypes = {
+        currentPlan: PropTypes.object.isRequired,
         notify: PropTypes.func.isRequired,
         updateSubscription: PropTypes.func.isRequired,
         isAllowedToChangePlan: PropTypes.func.isRequired,
@@ -44,10 +45,17 @@ export class BillingPlans extends Component {
     }
 
     render() {
-        const {plans, subscription} = this.props
+        const {currentPlan, subscription} = this.props
         const {isUpdating} = this.state
         const planSentencePrefix = subscription.isEmpty() ? 'Choose' : 'Switch to'
+        const isCustomPlan = currentPlan.get('custom', false)
+        let {plans} = this.props
         let i = 0
+
+        if (isCustomPlan) {
+            plans = plans.filter((plan, planId) => planId === subscription.get('plan'))
+        }
+
 
         return (
             <div className="mb-4">
@@ -111,28 +119,31 @@ export class BillingPlans extends Component {
                                     </Card>
                                 )
                             }).toList()}
-                            <Card className={classnames('text-center', css.plan, css['plan-enterprise'])} outline>
-                                <CardBlock>
-                                    <CardTitle>Enterprise Plan</CardTitle>
-                                    <div className="mb-4 mt-3">
-                                        <h3>Contact us</h3>
-                                        Billed annually
+                            {
+                                isCustomPlan ? null :
+                                    <Card className={classnames('text-center', css.plan, css['plan-enterprise'])} outline>
+                                        <CardBlock>
+                                            <CardTitle>Enterprise Plan</CardTitle>
+                                            <div className="mb-4 mt-3">
+                                                <h3>Contact us</h3>
+                                                Billed annually
 
-                                    </div>
-                                    <div><strong>Includes:</strong></div>
-                                    <div>Unlimited agents</div>
-                                    <div>Discounted prices for volumes
-                                        of <strong>10,000+</strong> tickets.
-                                    </div>
-                                    <div className="mb-3">Premium support</div>
-                                    <Button
-                                        color="info"
-                                        outline
-                                        onClick={openChat}>
-                                        Contact Us
-                                    </Button>
-                                </CardBlock>
-                            </Card>
+                                            </div>
+                                            <div><strong>Includes:</strong></div>
+                                            <div>Unlimited agents</div>
+                                            <div>Discounted prices for volumes
+                                                of <strong>10,000+</strong> tickets.
+                                            </div>
+                                            <div className="mb-3">Premium support</div>
+                                            <Button
+                                                color="info"
+                                                outline
+                                                onClick={openChat}>
+                                                Contact Us
+                                            </Button>
+                                        </CardBlock>
+                                    </Card>
+                            }
                         </CardDeck>
                     </Col>
                 </Row>
@@ -160,9 +171,12 @@ export class BillingPlans extends Component {
 }
 
 export default connect((state) => {
+    const subscription = currentAccountSelectors.getCurrentSubscription(state)
+
     return {
+        currentPlan: billingSelectors.getPlan(subscription.get('plan'))(state),
         isAllowedToChangePlan: billingSelectors.makeIsAllowedToChangePlan(state),
         plans: billingSelectors.plans(state),
-        subscription: currentAccountSelectors.getCurrentSubscription(state),
+        subscription,
     }
 }, {notify, updateSubscription})(BillingPlans)
