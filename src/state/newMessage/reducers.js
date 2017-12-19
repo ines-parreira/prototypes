@@ -23,26 +23,28 @@ import {
 import type {Map} from 'immutable'
 import type {actionType} from '../types'
 
-export const makeNewMessage = (channel: string, sourceType: string) => fromJS({
-    via: 'helpdesk',
-    public: true,
-    from_agent: true,
-    sender: null,
-    source: {
-        type: sourceType,
-        from: {}, // = ticket.messages[first].from_agent ? ticket.messages[first].source.from : ... .to
-        to: [],
-        cc: [],
-        bcc: [],
-    },
-    subject: '',
-    body_text: '',
-    body_html: '',
-    channel,
-    attachments: [],
-    macros: [],
-    mention_ids: [],
-})
+export const makeNewMessage = (channel: string, sourceType: string) => {
+    return fromJS({
+        via: 'helpdesk',
+        public: ticketConfig.isPublic(sourceType),
+        from_agent: true,
+        sender: null,
+        source: {
+            type: sourceType,
+            from: {}, // = ticket.messages[first].from_agent ? ticket.messages[first].source.from : ... .to
+            to: [],
+            cc: [],
+            bcc: [],
+        },
+        subject: '',
+        body_text: '',
+        body_html: '',
+        channel,
+        attachments: [],
+        macros: [],
+        mention_ids: [],
+    })
+}
 
 export const initialState = fromJS({
     state: {
@@ -156,7 +158,8 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
             const {ticket} = action
             const messages = ticket.get('messages', fromJS([]))
 
-            const sourceType = getSourceTypeOfResponse(messages)
+            const messageType = state.getIn(['newMessage', 'source', 'type'])
+            const sourceType = messageType || getSourceTypeOfResponse(messages)
 
             const newMessage = makeNewMessage(getChannelFromSourceType(sourceType), sourceType)
                 .set('subject', state.getIn(['newMessage', 'subject']))

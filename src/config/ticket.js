@@ -145,7 +145,7 @@ export function lastNonSystemTypeMessage(messages) {
  * @param messages
  * @returns {*}
  */
-export const sourceTypeToChannel = (sourceType, messages) => {
+export const sourceTypeToChannel = (sourceType, messages = []) => {
     if (!sourceType) {
         return DEFAULT_CHANNEL
     }

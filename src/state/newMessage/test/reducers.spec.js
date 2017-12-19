@@ -364,4 +364,87 @@ describe('New message reducers', () => {
             )
         })
     })
+
+    describe('NEW_MESSAGE_RESET_FROM_TICKET action', () => {
+        const ticket = fromJS({
+            events: [],
+            messages: [
+                {channel: 'email'}
+            ],
+            subject: '',
+            via: 'helpdesk',
+            channel: 'email',
+            assignee_user: null,
+            status: 'open',
+            spam: false,
+            sender: null,
+            requester: null,
+            receiver: null,
+            priority: 'normal',
+            tags: [],
+            trashed_datetime: null
+        })
+
+        it('should not change existing message source type', () => {
+            const action = {
+                type: types.NEW_MESSAGE_RESET_FROM_TICKET,
+                ticket,
+            }
+
+            const state = initialState.setIn(['newMessage', 'source', 'type'], 'internal-note')
+
+            expect(
+                reducer(state, action).getIn(['newMessage', 'source', 'type'])
+            ).toEqual(
+                'internal-note'
+            )
+        })
+
+        it('should not make internal-note public', () => {
+            const action = {
+                type: types.NEW_MESSAGE_RESET_FROM_TICKET,
+                ticket,
+            }
+
+            const state = initialState.mergeDeep({
+                newMessage: {
+                    source: {type: 'internal-note'},
+                    public: false
+                }
+            })
+
+            expect(
+                reducer(state, action)
+            ).toEqualImmutable(
+                initialState.mergeDeep({
+                    newMessage: {
+                        source: {type: 'internal-note'},
+                        public: false
+                    }
+                })
+            )
+        })
+
+        it('should make email public', () => {
+            const action = {
+                type: types.NEW_MESSAGE_RESET_FROM_TICKET,
+                ticket,
+            }
+
+            const state = initialState.mergeDeep({
+                newMessage: {public: false}
+            })
+
+            expect(
+                reducer(state, action)
+            ).toEqualImmutable(
+                initialState.mergeDeep({
+                    newMessage: {
+                        source: {type: 'email'},
+                        public: true
+                    }
+                })
+            )
+        })
+    })
 })
