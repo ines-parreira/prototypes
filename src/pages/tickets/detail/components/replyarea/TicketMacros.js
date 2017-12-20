@@ -10,7 +10,17 @@ import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import Preview from '../../../common/macros/Preview'
 import Tooltip from '../../../../common/components/Tooltip'
 
-class TicketMacros extends React.Component {
+import {notify} from './../../../../../state/notifications/actions'
+
+
+@connect((state) => {
+    return {
+        newMessageType: newMessageSelectors.getNewMessageType(state),
+    }
+}, {
+    notify
+})
+export default class TicketMacros extends React.Component {
     componentDidUpdate(prevProps) {
         // brings the preview to top when previewing another macro
         if (this.props.selectedMacroId !== prevProps.selectedMacroId) {
@@ -27,11 +37,15 @@ class TicketMacros extends React.Component {
     }
 
     renderMacroListItem = (macro) => {
+        if (!macro) {
+            return null
+        }
+
         return (
             <div
                 key={macro.get('id')}
                 className={classnames('macro-item', {
-                    active: macro.get('id') === this.props.selectedMacroId,
+                    active: macro.get('id') === this.props.selectedMacroId
                 })}
                 onMouseEnter={() => this.props.setSelectedMacroId(macro.get('id'))}
                 onClick={() => this.props.applyMacro(macro)}
@@ -46,7 +60,7 @@ class TicketMacros extends React.Component {
     render() {
         const {macros, newMessageType, openModal, searchQuery, setMacrosVisible} = this.props
         const items = macros.get('items')
-        const macro = items.find(macro => macro.get('id') === this.props.selectedMacroId) || fromJS({})
+        const macro = items.find((macro) => macro.get('id') === this.props.selectedMacroId) || fromJS({})
         const macrosVisible = macros.get('visible')
 
         let content = (
@@ -141,16 +155,9 @@ TicketMacros.propTypes = {
     searchQuery: PropTypes.string,
     selectedMacroId: PropTypes.number,
     setSelectedMacroId: PropTypes.func.isRequired,
+    notify: PropTypes.func.isRequired
 }
 
 TicketMacros.defaultProps = {
     macros: fromJS({})
 }
-
-function mapStateToProps(state) {
-    return {
-        newMessageType: newMessageSelectors.getNewMessageType(state),
-    }
-}
-
-export default connect(mapStateToProps)(TicketMacros)

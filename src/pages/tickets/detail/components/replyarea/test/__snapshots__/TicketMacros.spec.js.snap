@@ -1,0 +1,201 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TicketMacros component should display an empty state if there's no macros 1`] = `
+<div
+  className="TicketMacros"
+>
+  <a
+    className="clear-macros"
+    id="clear-macro-button"
+    onClick={[Function]}
+  >
+    <i
+      className="fa fa-fw fa-close hidden-sm-down"
+    />
+    <Button
+      className="hidden-md-up"
+      color="secondary"
+      size="sm"
+      tag="button"
+    >
+      Close
+    </Button>
+    <Tooltip
+      delay={0}
+      placement="top"
+      target="clear-macro-button"
+    >
+      <strong>
+        Esc
+      </strong>
+       to close the macro list.
+    </Tooltip>
+  </a>
+  <div
+    className="no-result-container"
+  >
+    <p>
+      You don't have any macros yet
+    </p>
+    <Button
+      color="info"
+      onClick={[Function]}
+      tag="button"
+      type="button"
+    >
+      <i
+        className="fa fa-fw fa-plus mr-2"
+      />
+      Create a new macro
+    </Button>
+  </div>
+</div>
+`;
+
+exports[`TicketMacros component should display another empty state if there's no macros matching the searchQuery 1`] = `
+<div
+  className="TicketMacros"
+>
+  <a
+    className="clear-macros"
+    id="clear-macro-button"
+    onClick={[Function]}
+  >
+    <i
+      className="fa fa-fw fa-close hidden-sm-down"
+    />
+    <Button
+      className="hidden-md-up"
+      color="secondary"
+      size="sm"
+      tag="button"
+    >
+      Close
+    </Button>
+    <Tooltip
+      delay={0}
+      placement="top"
+      target="clear-macro-button"
+    >
+      <strong>
+        Esc
+      </strong>
+       to close the macro list.
+    </Tooltip>
+  </a>
+  <div
+    className="no-result-container"
+  >
+    <p>
+      <span>
+        No macro for 
+        <b>
+          Foo Bar
+        </b>
+      </span>
+    </p>
+    <Button
+      color="info"
+      onClick={[Function]}
+      tag="button"
+      type="button"
+    >
+      <i
+        className="fa fa-fw fa-plus mr-2"
+      />
+      Create a new macro
+    </Button>
+  </div>
+</div>
+`;
+
+exports[`TicketMacros component should display macros list, and selected macro 1`] = `
+<div
+  className="TicketMacros"
+>
+  <a
+    className="clear-macros"
+    id="clear-macro-button"
+    onClick={[Function]}
+  >
+    <i
+      className="fa fa-fw fa-close hidden-sm-down"
+    />
+    <Button
+      className="hidden-md-up"
+      color="secondary"
+      size="sm"
+      tag="button"
+    >
+      Close
+    </Button>
+    <Tooltip
+      delay={0}
+      placement="top"
+      target="clear-macro-button"
+    >
+      <strong>
+        Esc
+      </strong>
+       to close the macro list.
+    </Tooltip>
+  </a>
+  <div
+    className="d-flex"
+    style={
+      Object {
+        "height": "100%",
+      }
+    }
+  >
+    <div
+      className="macro-list"
+      style={
+        Object {
+          "width": "35%",
+        }
+      }
+    >
+      <div
+        className="macro-item"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        <div
+          className="content"
+        >
+          Refund my order
+        </div>
+      </div>
+      <div
+        className="macro-item"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        <div
+          className="content"
+        >
+          Order my refund
+        </div>
+      </div>
+    </div>
+    <div
+      className="macro-preview-container"
+    >
+      <a
+        className="btn btn-secondary manage-macros"
+        onClick={[Function]}
+      >
+        Manage macros
+      </a>
+      <Preview
+        displayHTML={true}
+        macro={
+          Immutable.Map {
+          }
+        }
+      />
+    </div>
+  </div>
+</div>
+`;

@@ -12,6 +12,7 @@ import shortcutManager from '../../../../../services/shortcutManager'
 import * as search from '../../../../../state/macro/search'
 import * as ticketActions from '../../../../../state/ticket/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
+import {notify} from './../../../../../state/notifications/actions'
 import {getPreferences} from './../../../../../state/currentUser/selectors'
 import MacroContainer from '../../../common/macros/MacroContainer'
 
@@ -140,7 +141,25 @@ export class TicketReplyArea extends React.Component {
     }
 
     _applyMacro = (macro) => {
-        this.props.applyMacro(macro, this.props.ticket.get('id'))
+        const {newMessageType} = this.props
+
+        const hasAttachments = !macro.get('actions').filter((action) => action.get('name') === 'addAttachments').isEmpty()
+        const hasText = !macro.get('actions').filter((action) => action.get('name') === 'setResponseText').isEmpty()
+        const isMessengerMessage = newMessageType === 'facebook-messenger'
+
+        let appliedMacro = macro
+
+        if (isMessengerMessage && hasText && hasAttachments) {
+            this.props.notify({
+                title: 'We have removed the attachment from this message, because you cannot send text and attachments at the same time on Messenger.'
+            })
+            appliedMacro = appliedMacro.update(
+                'actions',
+                (actions) => actions.filter((action) => action.get('name') !== 'addAttachments')
+            )
+        }
+
+        this.props.applyMacro(appliedMacro, this.props.ticket.get('id'))
     }
 
     _getMacros = (props = this.props, state = this.state) => {
@@ -235,7 +254,7 @@ export class TicketReplyArea extends React.Component {
                 <div className="TicketReplyArea-content">
                     <TicketMacros
                         macros={macros}
-                        applyMacro={this.props.applyMacro}
+                        applyMacro={this._applyMacro}
                         openModal={this.props.openModal}
                         setMacrosVisible={this._setMacrosVisible}
                         searchQuery={this.state.searchQuery}
@@ -275,6 +294,7 @@ TicketReplyArea.propTypes = {
     preferences: PropTypes.object.isRequired,
     newMessage: PropTypes.object.isRequired,
     newMessageType: PropTypes.string.isRequired,
+    notify: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {
@@ -288,6 +308,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
     applyMacro: ticketActions.applyMacro,
+    notify,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TicketReplyArea)

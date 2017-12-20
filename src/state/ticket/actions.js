@@ -298,7 +298,7 @@ export const applyMacro = (macro, ticketId) => (dispatch, getState) => {
 
     const renderedMacro = macro.update('actions', (actions) => {
         return actions.map((action) => {
-            return action.update('arguments', args => nestedReplace(args, state, (args) => {
+            return action.update('arguments', (args) => nestedReplace(args, state, (args) => {
                 return dispatch(notify(args))
             }))
         })
@@ -312,11 +312,11 @@ export const applyMacro = (macro, ticketId) => (dispatch, getState) => {
 
     const actions = renderedMacro.get('actions', fromJS([]))
 
-    actions.forEach(action => dispatch(applyMacroAction(action)))
+    actions.forEach((action) => dispatch(applyMacroAction(action)))
 
     state = getState() // refetch state after macro actions has been applied
 
-    const actionNames = actions.map(a => a.get('name')).toJS()
+    const actionNames = actions.map((action) => action.get('name')).toJS()
     const partialUpdate = buildPartialUpdateFromAction(actionNames, state)
 
     dispatch(ticketPartialUpdate(partialUpdate))

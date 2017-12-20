@@ -57,8 +57,10 @@ export default class MacroList extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const macros = this._getMacros(nextProps)
-        this._macroCursor = this._getMacroCursor(nextProps.currentMacro, macros)
+        if (nextProps.currentMacro) {
+            const macros = this._getMacros(nextProps)
+            this._macroCursor = this._getMacroCursor(nextProps.currentMacro, macros)
+        }
     }
 
     componentWillUnmount() {
@@ -66,7 +68,7 @@ export default class MacroList extends React.Component {
     }
 
     _getMacroCursor(currentMacro, macros) {
-        return macros.findIndex((m) => m.get('id') === currentMacro.get('id'))
+        return macros.findIndex((macro) => macro.get('id') === currentMacro.get('id'))
     }
 
     _moveCursor = (direction: string = 'next') => {
