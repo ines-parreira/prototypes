@@ -61,10 +61,13 @@ describe('current account selectors', () => {
         expect(selectors.shouldPayWithShopify({})).toBe(false)
     })
 
-    it('doesPayWithShopify', () => {
-        expect(selectors.doesPayWithShopify(setStateWith(state, ['meta', 'shopify_billing', 'active'], true))).toBe(true)
-        expect(selectors.doesPayWithShopify(setStateWith(state, ['meta', 'shopify_billing', 'active'], false))).toBe(false)
-        expect(selectors.doesPayWithShopify({})).toBe(false)
+    it('getShopifyBillingStatus', () => {
+        expect(selectors.getShopifyBillingStatus(setStateWith(state, ['meta', 'shopify_billing', 'active'], true))).toBe('active')
+        expect(selectors.getShopifyBillingStatus(setStateWith(state, ['meta', 'shopify_billing', 'active'], false))).toBe('inactive')
+        expect(selectors.getShopifyBillingStatus({})).toBe('inactive')
+
+        const newState = setStateWith(state, ['meta', 'shopify_billing'], fromJS({active: false, charge_id: '123'}))
+        expect(selectors.getShopifyBillingStatus(newState)).toBe('canceled')
     })
 
     it('paymentMethod', () => {

@@ -37,9 +37,18 @@ export const shouldPayWithShopify = createSelector(
     state => state.get('should_pay_with_shopify', false)
 )
 
-export const doesPayWithShopify = createSelector(
+export const getShopifyBillingStatus = createSelector(
     [getCurrentAccountMeta],
-    state => state.getIn(['shopify_billing', 'active'], false)
+    state => {
+        const billingMeta = state.get('shopify_billing') || fromJS({})
+        if (billingMeta.get('active')) {
+            return 'active'
+        } else if (billingMeta.get('charge_id')) {
+            return 'canceled'
+        }
+
+        return 'inactive'
+    }
 )
 
 export const paymentMethod = (state: stateType) => shouldPayWithShopify(state) ? 'shopify' : 'stripe'
@@ -48,7 +57,7 @@ export const paymentIsActive = (state: stateType) => {
     const currentPaymentMethod = paymentMethod(state)
 
     if (currentPaymentMethod === 'shopify') {
-        return doesPayWithShopify(state)
+        return getShopifyBillingStatus(state) === 'active'
     }
 
     return hasCreditCard(state)

@@ -11,6 +11,7 @@ import classNames from 'classnames'
 
 export class BillingPaymentMethod extends Component {
     static propTypes = {
+        currentPlan: PropTypes.object.isRequired,
         fetchPaymentMethod: PropTypes.func.isRequired,
         fetchCreditCard: PropTypes.func.isRequired,
         creditCard: PropTypes.object.isRequired,
@@ -18,6 +19,7 @@ export class BillingPaymentMethod extends Component {
         paymentIsActive: PropTypes.bool.isRequired,
         currentUserId: PropTypes.number.isRequired,
         currentAccountId: PropTypes.number.isRequired,
+        shopifyBillingStatus: PropTypes.string,
         subscription: PropTypes.object.isRequired,
     }
 
@@ -104,22 +106,47 @@ export class BillingPaymentMethod extends Component {
     }
 
     _renderShopify() {
-        const {paymentIsActive, subscription} = this.props
+        const {currentPlan, shopifyBillingStatus, subscription} = this.props
         const {isActivatingShopifyBilling} = this.state
         const hasNoSubscription = subscription.isEmpty()
 
-        return (
-            <div>
-                {paymentIsActive ? (
-                    <p className="mt-2 mb-2">Payment with Shopify activated.</p>
-                ) : (
+        switch (shopifyBillingStatus) {
+            case 'active':
+                return (
+                    <p className="mt-2 mb-2">
+                        Payment with Shopify activated.
+                    </p>
+                )
+            case 'canceled':
+                return (
+                    <Button
+                        tag="a"
+                        color="success"
+                        href="/integrations/shopify/billing/activate/"
+                        onClick={() => {
+                            this.setState({isActivatingShopifyBilling: true})
+                        }}
+                        className={classNames({'btn-loading': isActivatingShopifyBilling})}
+                    >
+                        Reactivate billing with Shopify
+                    </Button>
+                )
+
+            case 'inactive': {
+                const amount = currentPlan.get('amount')
+                let buttonLabel = 'Activate billing with Shopify'
+
+                if (amount && amount !== 0) {
+                    buttonLabel += ` and pay ${currentPlan.get('currencySign')}${amount}`
+                }
+
+                return (
                     <div
                         id="activate-shopify-billing-button"
                         style={{
                             display: 'inline-block'
                         }}
                     >
-
                         <Button
                             tag="a"
                             color="success"
@@ -128,7 +155,7 @@ export class BillingPaymentMethod extends Component {
                             className={classNames({'btn-loading': isActivatingShopifyBilling})}
                             disabled={hasNoSubscription}
                         >
-                            Activate billing with Shopify
+                            {buttonLabel}
                         </Button>
                         {
                             hasNoSubscription ? (
@@ -141,16 +168,16 @@ export class BillingPaymentMethod extends Component {
                             ) : null
                         }
                     </div>
-                )}
-            </div>
-        )
+                )
+            }
+        }
     }
 
     render() {
         const {paymentMethod} = this.props
 
         if (this.state.isLoading) {
-            return <Loader />
+            return <Loader/>
         }
 
         return (
@@ -168,7 +195,9 @@ export default connect((state) => {
         currentAccountId: state.currentAccount.get('id'),
         creditCard: billingSelectors.creditCard(state),
         subscription: currentAccountSelectors.getCurrentSubscription(state),
+        currentPlan: billingSelectors.currentPlan(state),
         paymentMethod: currentAccountSelectors.paymentMethod(state),
+        shopifyBillingStatus: currentAccountSelectors.getShopifyBillingStatus(state),
         paymentIsActive: currentAccountSelectors.paymentIsActive(state),
     }
 }, {fetchPaymentMethod, fetchCreditCard})(BillingPaymentMethod)

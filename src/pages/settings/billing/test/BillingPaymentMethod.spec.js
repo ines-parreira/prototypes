@@ -9,10 +9,11 @@ describe('BillingPaymentMethod', () => {
         it('should render a loader', () => {
             const component = mount(
                 <BillingPaymentMethod
+                    currentPlan={fromJS({})}
                     fetchPaymentMethod={() => Promise.resolve()}
                     fetchCreditCard={() => Promise.resolve()}
                     creditCard={fromJS({})}
-                    paymentMethod={'stripe'}
+                    paymentMethod="stripe"
                     paymentIsActive
                 />
             )
@@ -22,10 +23,11 @@ describe('BillingPaymentMethod', () => {
         it('should render a button', () => {
             const component = mount(
                 <BillingPaymentMethod
+                    currentPlan={fromJS({})}
                     fetchPaymentMethod={() => Promise.resolve()}
                     fetchCreditCard={() => Promise.resolve()}
                     creditCard={fromJS({})}
-                    paymentMethod={'stripe'}
+                    paymentMethod="stripe"
                     paymentIsActive
                     subscription={fromJS({plan: 'basic-usd-1'})}
                 />
@@ -37,10 +39,11 @@ describe('BillingPaymentMethod', () => {
         it('should render a disabled button', () => {
             const component = shallow(
                 <BillingPaymentMethod
+                    currentPlan={fromJS({})}
                     fetchPaymentMethod={() => Promise.resolve()}
                     fetchCreditCard={() => Promise.resolve()}
                     creditCard={fromJS({})}
-                    paymentMethod={'stripe'}
+                    paymentMethod="stripe"
                     subscription={fromJS({})}
                 />
             )
@@ -51,6 +54,7 @@ describe('BillingPaymentMethod', () => {
         it('should render a button to update a credit card', () => {
             const component = mount(
                 <BillingPaymentMethod
+                    currentPlan={fromJS({})}
                     fetchPaymentMethod={() => Promise.resolve()}
                     fetchCreditCard={() => Promise.resolve()}
                     creditCard={fromJS({
@@ -59,7 +63,7 @@ describe('BillingPaymentMethod', () => {
                         exp_month: 9,
                         exp_year: 2017
                     })}
-                    paymentMethod={'stripe'}
+                    paymentMethod="stripe"
                     paymentIsActive
                     subscription={fromJS({plan: 'basic-usd-1'})}
                 />
@@ -74,12 +78,14 @@ describe('BillingPaymentMethod', () => {
         it('should render an active status', () => {
             const component = mount(
                 <BillingPaymentMethod
+                    currentPlan={fromJS({})}
                     fetchPaymentMethod={() => Promise.resolve()}
                     fetchCreditCard={() => Promise.resolve()}
                     creditCard={fromJS({})}
-                    paymentMethod={'shopify'}
+                    paymentMethod="shopify"
                     paymentIsActive
                     subscription={fromJS({plan: 'basic-usd-1'})}
+                    shopifyBillingStatus="active"
                 />
             )
             component.setState({isLoading: false})
@@ -89,12 +95,31 @@ describe('BillingPaymentMethod', () => {
         it('should render a disabled button', () => {
             const component = shallow(
                 <BillingPaymentMethod
+                    currentPlan={fromJS({})}
                     fetchPaymentMethod={() => Promise.resolve()}
                     fetchCreditCard={() => Promise.resolve()}
                     creditCard={fromJS({})}
-                    paymentMethod={'shopify'}
+                    paymentMethod="shopify"
                     paymentIsActive={false}
                     subscription={fromJS({})}
+                    shopifyBillingStatus="inactive"
+                />
+            )
+            component.setState({isLoading: false})
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should render a button to reactivate billing', () => {
+            const component = shallow(
+                <BillingPaymentMethod
+                    currentPlan={fromJS({})}
+                    fetchPaymentMethod={() => Promise.resolve()}
+                    fetchCreditCard={() => Promise.resolve()}
+                    creditCard={fromJS({})}
+                    paymentMethod="shopify"
+                    paymentIsActive={false}
+                    subscription={fromJS({})}
+                    shopifyBillingStatus="canceled"
                 />
             )
             component.setState({isLoading: false})
@@ -104,12 +129,17 @@ describe('BillingPaymentMethod', () => {
         it('should render a button', () => {
             const component = mount(
                 <BillingPaymentMethod
+                    currentPlan={fromJS({
+                        amount: 12,
+                        currencySign: '$'
+                    })}
                     fetchPaymentMethod={() => Promise.resolve()}
                     fetchCreditCard={() => Promise.resolve()}
                     creditCard={fromJS({})}
-                    paymentMethod={'shopify'}
+                    paymentMethod="shopify"
                     paymentIsActive={false}
                     subscription={fromJS({plan: 'basic-usd-1'})}
+                    shopifyBillingStatus="inactive"
                 />
             )
             component.setState({isLoading: false})

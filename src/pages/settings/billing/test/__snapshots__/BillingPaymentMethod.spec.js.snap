@@ -6,10 +6,17 @@ exports[`BillingPaymentMethod Shopify should render a button 1`] = `
     Immutable.Map {
     }
   }
+  currentPlan={
+    Immutable.Map {
+      amount: 12,
+      currencySign: "$",
+    }
+  }
   fetchCreditCard={[Function]}
   fetchPaymentMethod={[Function]}
   paymentIsActive={false}
   paymentMethod="shopify"
+  shopifyBillingStatus="inactive"
   subscription={
     Immutable.Map {
       plan: "basic-usd-1",
@@ -22,46 +29,6 @@ exports[`BillingPaymentMethod Shopify should render a button 1`] = `
     <h4>
       Payment method
     </h4>
-    <div>
-      <div
-        id="activate-shopify-billing-button"
-        style={
-          Object {
-            "display": "inline-block",
-          }
-        }
-      >
-        <Button
-          className=""
-          color="success"
-          disabled={false}
-          href="/integrations/shopify/billing/activate/"
-          onClick={[Function]}
-          tag="a"
-        >
-          <a
-            className="btn btn-success"
-            disabled={false}
-            href="/integrations/shopify/billing/activate/"
-            onClick={[Function]}
-          >
-            Activate billing with Shopify
-          </a>
-        </Button>
-      </div>
-    </div>
-  </div>
-</BillingPaymentMethod>
-`;
-
-exports[`BillingPaymentMethod Shopify should render a disabled button 1`] = `
-<div
-  className="mb-5"
->
-  <h4>
-    Payment method
-  </h4>
-  <div>
     <div
       id="activate-shopify-billing-button"
       style={
@@ -73,20 +40,75 @@ exports[`BillingPaymentMethod Shopify should render a disabled button 1`] = `
       <Button
         className=""
         color="success"
-        disabled={true}
+        disabled={false}
         href="/integrations/shopify/billing/activate/"
         onClick={[Function]}
         tag="a"
       >
-        Activate billing with Shopify
+        <a
+          className="btn btn-success"
+          disabled={false}
+          href="/integrations/shopify/billing/activate/"
+          onClick={[Function]}
+        >
+          Activate billing with Shopify and pay $12
+        </a>
       </Button>
-      <UncontrolledTooltip
-        placement="top"
-        target="activate-shopify-billing-button"
-      >
-        Select a plan before activating Shopify billing
-      </UncontrolledTooltip>
     </div>
+  </div>
+</BillingPaymentMethod>
+`;
+
+exports[`BillingPaymentMethod Shopify should render a button to reactivate billing 1`] = `
+<div
+  className="mb-5"
+>
+  <h4>
+    Payment method
+  </h4>
+  <Button
+    className=""
+    color="success"
+    href="/integrations/shopify/billing/activate/"
+    onClick={[Function]}
+    tag="a"
+  >
+    Reactivate billing with Shopify
+  </Button>
+</div>
+`;
+
+exports[`BillingPaymentMethod Shopify should render a disabled button 1`] = `
+<div
+  className="mb-5"
+>
+  <h4>
+    Payment method
+  </h4>
+  <div
+    id="activate-shopify-billing-button"
+    style={
+      Object {
+        "display": "inline-block",
+      }
+    }
+  >
+    <Button
+      className=""
+      color="success"
+      disabled={true}
+      href="/integrations/shopify/billing/activate/"
+      onClick={[Function]}
+      tag="a"
+    >
+      Activate billing with Shopify
+    </Button>
+    <UncontrolledTooltip
+      placement="top"
+      target="activate-shopify-billing-button"
+    >
+      Select a plan before activating Shopify billing
+    </UncontrolledTooltip>
   </div>
 </div>
 `;
@@ -97,10 +119,15 @@ exports[`BillingPaymentMethod Shopify should render an active status 1`] = `
     Immutable.Map {
     }
   }
+  currentPlan={
+    Immutable.Map {
+    }
+  }
   fetchCreditCard={[Function]}
   fetchPaymentMethod={[Function]}
   paymentIsActive={true}
   paymentMethod="shopify"
+  shopifyBillingStatus="active"
   subscription={
     Immutable.Map {
       plan: "basic-usd-1",
@@ -113,13 +140,11 @@ exports[`BillingPaymentMethod Shopify should render an active status 1`] = `
     <h4>
       Payment method
     </h4>
-    <div>
-      <p
-        className="mt-2 mb-2"
-      >
-        Payment with Shopify activated.
-      </p>
-    </div>
+    <p
+      className="mt-2 mb-2"
+    >
+      Payment with Shopify activated.
+    </p>
   </div>
 </BillingPaymentMethod>
 `;
@@ -127,6 +152,10 @@ exports[`BillingPaymentMethod Shopify should render an active status 1`] = `
 exports[`BillingPaymentMethod Stripe should render a button 1`] = `
 <BillingPaymentMethod
   creditCard={
+    Immutable.Map {
+    }
+  }
+  currentPlan={
     Immutable.Map {
     }
   }
@@ -198,6 +227,10 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
       last4: 4242,
       exp_month: 9,
       exp_year: 2017,
+    }
+  }
+  currentPlan={
+    Immutable.Map {
     }
   }
   fetchCreditCard={[Function]}
@@ -304,6 +337,10 @@ exports[`BillingPaymentMethod Stripe should render a disabled button 1`] = `
 exports[`BillingPaymentMethod Stripe should render a loader 1`] = `
 <BillingPaymentMethod
   creditCard={
+    Immutable.Map {
+    }
+  }
+  currentPlan={
     Immutable.Map {
     }
   }

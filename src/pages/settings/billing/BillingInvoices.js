@@ -42,14 +42,13 @@ export class BillingInvoices extends Component {
                     <tr>
                         <th>Date</th>
                         <th>Status</th>
-                        <th>Tickets</th>
                         <th>Amount</th>
+                        <th>Description</th>
                     </tr>
                     </thead>
                     <tbody>
                     {invoices.map((invoice) => {
                         const paid = invoice.get('paid')
-                        const tickets = invoice.getIn(['metadata', 'tickets'], '-')
                         return (
                             <tr key={invoice.get('id')}>
                                 <td>{moment.unix(invoice.get('date')).format('LL')}</td>
@@ -60,8 +59,8 @@ export class BillingInvoices extends Component {
                                         <Badge color="danger">Unpaid</Badge>
                                     )}
                                 </td>
-                                <td>{tickets} </td>
                                 <td>{`$${invoice.get('amount_due') / 100}`} </td>
+                                <td>{invoice.get('description') || '-'} </td>
                             </tr>
                         )
                     })}

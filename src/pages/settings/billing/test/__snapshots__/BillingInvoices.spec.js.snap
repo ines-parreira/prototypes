@@ -47,10 +47,10 @@ exports[`BillingInvoices component should display invoices 1`] = `
               Status
             </th>
             <th>
-              Tickets
+              Amount
             </th>
             <th>
-              Amount
+              Description
             </th>
           </tr>
         </thead>
@@ -73,11 +73,11 @@ exports[`BillingInvoices component should display invoices 1`] = `
               </Badge>
             </td>
             <td>
-              10
+              $10
                
             </td>
             <td>
-              $10
+              -
                
             </td>
           </tr>
@@ -99,11 +99,11 @@ exports[`BillingInvoices component should display invoices 1`] = `
               </Badge>
             </td>
             <td>
-              100
+              $100
                
             </td>
             <td>
-              $100
+              -
                
             </td>
           </tr>
