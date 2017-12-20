@@ -533,6 +533,17 @@ Array [
 ]
 `;
 
+exports[`ticket actions removeCategory 1`] = `
+Array [
+  Object {
+    "args": Immutable.Map {
+      category: "delivery/status",
+},
+    "type": "REMOVE_TICKET_CATEGORY",
+  },
+]
+`;
+
 exports[`ticket actions removeTag 1`] = `
 Array [
   Object {

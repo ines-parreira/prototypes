@@ -147,6 +147,10 @@ export default (state = initialState, action) => {
             return state.set('tags', ticketTags.delete(index))
         }
 
+        case types.REMOVE_TICKET_CATEGORY: {
+            return state.set('category', null)
+        }
+
         case types.SET_SPAM: {
             return state.set('spam', action.spam)
         }

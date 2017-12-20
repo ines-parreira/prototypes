@@ -141,6 +141,15 @@ export const removeTag = (tag) => (dispatch, getState) => {
     return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('addTags', getState())))
 }
 
+export const removeCategory = (category) => (dispatch) => {
+    dispatch({
+        type: types.REMOVE_TICKET_CATEGORY,
+        args: fromJS({category}),
+    })
+
+    return dispatch(ticketPartialUpdate({category: null}))
+}
+
 export const setSpam = (spam, callback = _noop) => (dispatch, getState) => {
     const {ticket} = getState()
     const currentSpam = ticket.get('spam')

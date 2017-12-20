@@ -16,6 +16,7 @@ import {
 import shortcutManager from '../../../../services/shortcutManager'
 import EditableTitle from '../../../common/components/EditableTitle'
 import TicketTags from './ticketdetails/TicketTags'
+import TicketCategory from './ticketdetails/TicketCategory'
 import TicketStatus from './ticketdetails/TicketStatus'
 import TicketAssignee from './ticketdetails/TicketAssignee'
 import TicketSpam from './ticketdetails/TicketSpam'
@@ -220,6 +221,11 @@ export default class TicketHeader extends React.Component {
                                 />
                             )
                         }
+
+                        <TicketCategory
+                            category={ticket.get('category')}
+                            removeCategory={actions.ticket.removeCategory}
+                        />
 
                         <TicketTags
                             ticketTags={ticket.get('tags')}

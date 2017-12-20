@@ -864,6 +864,40 @@ Object {
 }
 `;
 
+exports[`ticket reducers remove category 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "category": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
 exports[`ticket reducers remove tag 1`] = `
 Object {
   "_internal": Object {

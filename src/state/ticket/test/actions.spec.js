@@ -128,6 +128,12 @@ describe('ticket actions', () => {
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
+    it('removeCategory', () => {
+        mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
+        return store.dispatch(actions.removeCategory('delivery/status'))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
     describe('setSpam', () => {
         it('fails because same status', () => {
             store = mockStore({ticket: initialState.set('spam', true)})

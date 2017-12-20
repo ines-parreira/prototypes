@@ -277,6 +277,23 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
+    it('remove category', () => {
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        category: 'delivery/status',
+                    }),
+                {
+                    type: types.REMOVE_TICKET_CATEGORY,
+                    args: fromJS({
+                        category: 'delivery/status',
+                    })
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
     it('set spam', () => {
         // set true
         expect(

@@ -1,0 +1,129 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TicketCategory component should display categories 1`] = `
+<div
+  className="d-inline-flex align-items-center flex-wrap hidden-sm-down"
+>
+  <UncontrolledTooltip
+    placement="bottom"
+    target="ticket-category"
+  >
+    Ticket category (beta). Gorgias automatically tags tickets with a category.
+  </UncontrolledTooltip>
+  <Badge
+    className="ticket-category"
+    color="info"
+    id="ticket-category"
+    pill={false}
+    tag="span"
+  >
+    <i
+      aria-hidden="true"
+      className="fa fa-truck"
+    />
+     
+    Delivery status
+    <i
+      className="fa fa-fw fa-close cursor-pointer ml-1"
+      onClick={[Function]}
+    />
+  </Badge>
+   
+</div>
+`;
+
+exports[`TicketCategory component should display categories 2`] = `
+<div
+  className="d-inline-flex align-items-center flex-wrap hidden-sm-down"
+>
+  <UncontrolledTooltip
+    placement="bottom"
+    target="ticket-category"
+  >
+    Ticket category (beta). Gorgias automatically tags tickets with a category.
+  </UncontrolledTooltip>
+  <Badge
+    className="ticket-category"
+    color="info"
+    id="ticket-category"
+    pill={false}
+    tag="span"
+  >
+    <i
+      aria-hidden="true"
+      className="fa fa-ban"
+    />
+     
+    Cancel order
+    <i
+      className="fa fa-fw fa-close cursor-pointer ml-1"
+      onClick={[Function]}
+    />
+  </Badge>
+   
+</div>
+`;
+
+exports[`TicketCategory component should display categories 3`] = `
+<div
+  className="d-inline-flex align-items-center flex-wrap hidden-sm-down"
+>
+  <UncontrolledTooltip
+    placement="bottom"
+    target="ticket-category"
+  >
+    Ticket category (beta). Gorgias automatically tags tickets with a category.
+  </UncontrolledTooltip>
+  <Badge
+    className="ticket-category"
+    color="info"
+    id="ticket-category"
+    pill={false}
+    tag="span"
+  >
+    <i
+      aria-hidden="true"
+      className="fa fa-undo"
+    />
+     
+    Return
+    <i
+      className="fa fa-fw fa-close cursor-pointer ml-1"
+      onClick={[Function]}
+    />
+  </Badge>
+   
+</div>
+`;
+
+exports[`TicketCategory component should display categories 4`] = `
+<div
+  className="d-inline-flex align-items-center flex-wrap hidden-sm-down"
+>
+  <UncontrolledTooltip
+    placement="bottom"
+    target="ticket-category"
+  >
+    Ticket category (beta). Gorgias automatically tags tickets with a category.
+  </UncontrolledTooltip>
+  <Badge
+    className="ticket-category"
+    color="info"
+    id="ticket-category"
+    pill={false}
+    tag="span"
+  >
+    <i
+      aria-hidden="true"
+      className="fa fa-magic"
+    />
+     
+    unknown-category
+    <i
+      className="fa fa-fw fa-close cursor-pointer ml-1"
+      onClick={[Function]}
+    />
+  </Badge>
+   
+</div>
+`;
