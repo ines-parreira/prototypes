@@ -224,6 +224,7 @@ export default class TicketHeader extends React.Component {
 
                         <TicketCategory
                             category={ticket.get('category')}
+                            setCategory={actions.ticket.setCategory}
                             removeCategory={actions.ticket.removeCategory}
                         />
 

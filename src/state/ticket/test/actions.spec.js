@@ -128,9 +128,15 @@ describe('ticket actions', () => {
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
+    it('setCategory', () => {
+        mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
+        return store.dispatch(actions.setCategory('delivery/status'))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
     it('removeCategory', () => {
         mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
-        return store.dispatch(actions.removeCategory('delivery/status'))
+        return store.dispatch(actions.removeCategory())
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 

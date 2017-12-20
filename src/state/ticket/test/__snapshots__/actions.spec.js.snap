@@ -536,9 +536,6 @@ Array [
 exports[`ticket actions removeCategory 1`] = `
 Array [
   Object {
-    "args": Immutable.Map {
-      category: "delivery/status",
-},
     "type": "REMOVE_TICKET_CATEGORY",
   },
 ]
@@ -564,6 +561,15 @@ Array [
       },
 },
     "type": "setAssignee",
+  },
+]
+`;
+
+exports[`ticket actions setCategory 1`] = `
+Array [
+  Object {
+    "category": "delivery/status",
+    "type": "SET_TICKET_CATEGORY",
   },
 ]
 `;

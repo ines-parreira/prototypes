@@ -277,6 +277,22 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
+
+    it('set category', () => {
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        category: 'delivery/status',
+                    }),
+                {
+                    type: types.SET_TICKET_CATEGORY,
+                    category: 'order/cancel',
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
     it('remove category', () => {
         expect(
             reducer(
@@ -286,9 +302,6 @@ describe('ticket reducers', () => {
                     }),
                 {
                     type: types.REMOVE_TICKET_CATEGORY,
-                    args: fromJS({
-                        category: 'delivery/status',
-                    })
                 }
             ).toJS()
         ).toMatchSnapshot()

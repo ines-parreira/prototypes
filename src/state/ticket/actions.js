@@ -109,12 +109,12 @@ export const ticketPartialUpdate = (args) => (dispatch, getState) => {
 
     return axios.put(`/api/tickets/${ticketId}/`, args)
         .then((json = {}) => json.data)
-        .then(resp => {
+        .then((resp) => {
             return dispatch({
                 type: types.TICKET_PARTIAL_UPDATE_SUCCESS,
                 resp
             })
-        }, error => {
+        }, (error) => {
             return dispatch({
                 type: types.TICKET_PARTIAL_UPDATE_ERROR,
                 error,
@@ -141,10 +141,18 @@ export const removeTag = (tag) => (dispatch, getState) => {
     return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('addTags', getState())))
 }
 
-export const removeCategory = (category) => (dispatch) => {
+export const setCategory = (category) => (dispatch) => {
+    dispatch({
+        type: types.SET_TICKET_CATEGORY,
+        category
+    })
+
+    return dispatch(ticketPartialUpdate({category: category}))
+}
+
+export const removeCategory = () => (dispatch) => {
     dispatch({
         type: types.REMOVE_TICKET_CATEGORY,
-        args: fromJS({category}),
     })
 
     return dispatch(ticketPartialUpdate({category: null}))
@@ -256,7 +264,7 @@ export const deleteMessage = (ticketId, messageId) => (dispatch) => {
                 type: types.DELETE_TICKET_MESSAGE_SUCCESS,
                 messageId
             })
-        }, error => {
+        }, (error) => {
             return dispatch({
                 type: types.DELETE_TICKET_MESSAGE_ERROR,
                 error,
@@ -372,7 +380,7 @@ export const fetchTicket = (ticketId) => (dispatch) => {
 
     return axios.get(url)
         .then((json = {}) => json.data)
-        .then(resp => {
+        .then((resp) => {
             if (_isEmpty(resp)) {
                 console.error('No results for', url)
             }
@@ -410,7 +418,7 @@ export const fetchTicket = (ticketId) => (dispatch) => {
             socketManager.send('ticket-viewed', ticketId)
 
             return dispatch(newMessageActions.resetReceiversAndSender)
-        }, error => {
+        }, (error) => {
             return dispatch({
                 type: types.FETCH_TICKET_ERROR,
                 error,
@@ -457,13 +465,13 @@ export function updateTicketMessage(ticketId, messageId, data, action = null) {
 
         return axios.put(url, data)
             .then((json = {}) => json.data)
-            .then(resp => {
+            .then((resp) => {
                 return dispatch({
                     type: types.UPDATE_TICKET_MESSAGE_SUCCESS,
                     messageId,
                     resp
                 })
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: types.UPDATE_TICKET_MESSAGE_ERROR,
                     messageId,
@@ -512,7 +520,7 @@ export function deleteTicket(id) {
                     status: 'success',
                     message: 'Ticket deleted'
                 }))
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: types.DELETE_TICKET_ERROR,
                     error,

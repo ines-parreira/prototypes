@@ -1,12 +1,19 @@
 // @flow
 import React from 'react'
-import {removeCategory} from '../../../../../state/ticket/actions'
-import {Badge, UncontrolledTooltip} from 'reactstrap'
+import {setCategory, removeCategory} from '../../../../../state/ticket/actions'
+import {
+    ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle
+} from 'reactstrap'
 
 
 type Props = {
     category: string,
+    setCategory: typeof setCategory,
     removeCategory: typeof removeCategory,
+}
+
+type State = {
+    dropdownOpen: boolean
 }
 
 const categoryLabels = {
@@ -24,36 +31,67 @@ const categoryLabels = {
     },
 }
 
-export default class TicketCategory extends React.Component<Props> {
-    render() {
-        const {category, removeCategory} = this.props
+export default class TicketCategory extends React.Component<Props, State> {
+    state = {
+        dropdownOpen: false
+    }
 
-        if (!category) {
+    _toggle = () => {
+        this.setState({dropdownOpen: !this.state.dropdownOpen})
+    }
+
+    _shouldDisplay() {
+        return window.DEVELOPMENT || document.cookie.includes('is_gorgias_staff')
+    }
+
+    render() {
+        const {category, setCategory, removeCategory} = this.props
+        const categoryLabel = categoryLabels[category]
+
+        if (!this._shouldDisplay()) {
             return null
         }
 
-        const categoryLabel = categoryLabels[category]
         const label = categoryLabel ? categoryLabel.label : category
         const icon = categoryLabel ? categoryLabel.icon : 'fa-magic'
 
         return (
             <div className="d-inline-flex align-items-center flex-wrap hidden-sm-down">
-                <UncontrolledTooltip placement="bottom" target="ticket-category">
-                    Ticket category (beta). Gorgias automatically tags tickets with a category.
-                </UncontrolledTooltip>
-                <Badge
+                <ButtonDropdown
                     id="ticket-category"
-                    className="ticket-category"
-                    color='info'
+                    isOpen={this.state.dropdownOpen}
+                    toggle={this._toggle}
                 >
-                    <i className={`fa ${icon}`} aria-hidden="true"/>
-                    &nbsp;
-                    {label}
-                    <i
-                        className="fa fa-fw fa-close cursor-pointer ml-1"
-                        onClick={() => removeCategory(category)}
-                    />
-                </Badge>
+                    <DropdownToggle
+                        caret
+                        color="info"
+                        size="sm"
+                    >
+                        <i className={`fa ${icon}`} aria-hidden="true"/>
+                        &nbsp;
+                        {label}
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        <DropdownItem
+                            header
+                        >
+                            Ticket category (beta)
+                        </DropdownItem>
+                        {Object.keys(categoryLabels).map((category) => (
+                            <DropdownItem
+                                className="dropdown-item-input"
+                                key={category}
+                                onClick={() => setCategory(category)}
+                            >
+                                <i className={`fa ${categoryLabels[category].icon}`} aria-hidden="true"/>
+                                &nbsp;
+                                {categoryLabels[category].label}
+                            </DropdownItem>
+                        ))}
+                        <DropdownItem divider/>
+                        <DropdownItem onClick={removeCategory}>Clear category</DropdownItem>
+                    </DropdownMenu>
+                </ButtonDropdown>
                 &nbsp;
             </div>
         )
