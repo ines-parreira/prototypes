@@ -88,6 +88,7 @@ export default class RichField extends InputField<Props, State> {
             isDragging: false,
             mentionSuggestions: fromJS([]),
             canAddMention: false,
+            isFocused: false
         }
 
         if (this.props.mentionProps) {
@@ -120,11 +121,15 @@ export default class RichField extends InputField<Props, State> {
         this._onChange(editorState)
     }
 
-    _focusEditor = () => {
+    focusEditor = () => {
         if (this.editor) {
             this.editor.focus()
             scrollToReactNode(this.editor)
         }
+    }
+
+    isFocused = () => {
+        return this.state.isFocused
     }
 
     _didHTMLChanged = (html: string) => {
@@ -190,8 +195,15 @@ export default class RichField extends InputField<Props, State> {
     }
 
     _onFocus = () => {
-        // once focused we're removing the placeholder (Gmail style)
-        this.setState({placeholder: ''})
+        this.setState({
+            // once focused we're removing the placeholder (Gmail style)
+            placeholder: '',
+            isFocused: true
+        })
+    }
+
+    _onBlur = () => {
+        this.setState({isFocused: false})
     }
 
     onSearchChange = ({value}: {value: string}) => {
@@ -247,7 +259,7 @@ export default class RichField extends InputField<Props, State> {
                         drop: this.state.isDragging && canDropFiles,
                     })}
                     style={{paddingBottom: '26px'}}
-                    onClick={this._focusEditor}
+                    onClick={this.focusEditor}
                     onDragOver={() => this.setState({isDragging: true})}
                     onDragLeave={() => this.setState({isDragging: false})}
                     onDrop={() => this.setState({isDragging: false})}
@@ -262,6 +274,7 @@ export default class RichField extends InputField<Props, State> {
                                 editorState={this.state.editorState}
                                 onChange={this._onChange}
                                 onFocus={this._onFocus}
+                                onBlur={this._onBlur}
                                 plugins={this.plugins}
                                 handleKeyCommand={this._handleKeyCommand}
                                 handleDroppedFiles={this._handleDroppedFiles}

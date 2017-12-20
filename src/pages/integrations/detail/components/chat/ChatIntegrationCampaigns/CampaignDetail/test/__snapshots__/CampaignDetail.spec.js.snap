@@ -1061,6 +1061,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                       }
                                       handleDroppedFiles={[Function]}
                                       handleKeyCommand={[Function]}
+                                      onBlur={[Function]}
                                       onChange={[Function]}
                                       onFocus={[Function]}
                                       placeholder="Write your message"
@@ -1314,6 +1315,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                         handleKeyCommand={[Function]}
                                         handleReturn={[Function]}
                                         keyBindingFn={[Function]}
+                                        onBlur={[Function]}
                                         onChange={[Function]}
                                         onDownArrow={[Function]}
                                         onEscape={[Function]}

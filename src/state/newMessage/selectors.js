@@ -31,9 +31,19 @@ export const isDirty = createSelector(
     state => state.getIn(['state', 'dirty'], false)
 )
 
+export const isCacheAdded = createSelector(
+    [getNewMessageState],
+    state => state.getIn(['state', 'cacheAdded'], false)
+)
+
 export const getNewMessage = createImmutableSelector(
     [getNewMessageState],
     state => state.get('newMessage') || fromJS({})
+)
+
+export const getNewMessageContentState = createImmutableSelector(
+    [getNewMessageState],
+    state => state.getIn(['state', 'contentState'])
 )
 
 export const getNewMessageType = createSelector(

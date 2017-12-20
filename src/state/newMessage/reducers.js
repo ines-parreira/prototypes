@@ -1,7 +1,7 @@
 // @flow
 import * as types from './constants'
 import {fromJS} from 'immutable'
-import {convertToRaw} from 'draft-js'
+import {convertToRaw, ContentState} from 'draft-js'
 import {convertToHTML} from '../../utils'
 import * as responseUtils from './responseUtils'
 import {getReceiversProperties} from './selectors'
@@ -53,9 +53,10 @@ export const initialState = fromJS({
         cacheAdded: false,
         forceUpdate: false,
         forceFocus: false,
-        contentState: null,
+        contentState: ContentState.createFromText(''),
         selectionState: null,
         appliedMacro: null,
+        firstNewMessage: true,
     },
     _internal: {
         loading: {
@@ -65,6 +66,19 @@ export const initialState = fromJS({
     },
     newMessage: makeNewMessage('email', 'email')
 })
+
+const resetContentState = (state: Map<*,*>) => {
+    return state
+        .mergeDeep({
+            state: {
+                dirty: false,
+                cacheAdded: false,
+                signatureAdded: false,
+            }
+        })
+        .setIn(['state', 'contentState'], ContentState.createFromText(''))
+        .setIn(['state', 'selectionState'], null)
+}
 
 export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
     switch (action.type) {
@@ -130,16 +144,12 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
             const {channel} = action.message
             let messages = fromJS(action.messages)
 
-            let newState = state
+            let newState = resetContentState(state)
                 .mergeDeep({
                     state: {
-                        dirty: false,
-                        contentState: null,
-                        selectionState: null,
-                        signatureAdded: false,
-                        cacheAdded: false,
                         forceUpdate: false,
                         forceFocus: false,
+                        firstNewMessage: false,
                     }
                 })
 
@@ -175,14 +185,9 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
             const {channel} = action.resp
             let messages = fromJS(action.resp.messages)
 
-            const newState = state
+            const newState = resetContentState(state)
                 .mergeDeep({
                     state: {
-                        dirty: false,
-                        contentState: null,
-                        selectionState: null,
-                        signatureAdded: false,
-                        cacheAdded: false,
                         appliedMacro: null,
                         forceUpdate: false,
                         forceFocus: false,
@@ -200,16 +205,8 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
         case types.NEW_MESSAGE_FETCH_TICKET_SUCCESS: {
             const {messages} = action.resp
             const sourceType = getSourceTypeOfResponse(messages)
-            return state.set('newMessage', makeNewMessage(getChannelFromSourceType(sourceType, messages), sourceType))
-                .mergeDeep({
-                    state: {
-                        dirty: false,
-                        contentState: null,
-                        selectionState: null,
-                        signatureAdded: false,
-                        cacheAdded: false,
-                    }
-                })
+            return resetContentState(state)
+                .set('newMessage', makeNewMessage(getChannelFromSourceType(sourceType, messages), sourceType))
         }
 
         case types.NEW_MESSAGE_SET_SOURCE_TYPE: {
@@ -265,7 +262,11 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
                 })
             }
 
-            const dirty = !!contentState
+            let dirty = state.getIn(['state', 'dirty'])
+            if (!dirty && contentState.hasText()) {
+                dirty = true
+            }
+
             return context.state.mergeDeep({
                 newMessage: {
                     body_text: contentState ? contentState.getPlainText() : '',

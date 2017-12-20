@@ -28,6 +28,7 @@ export default class TicketReply extends React.Component {
         newMessage: PropTypes.object.isRequired,
         appliedMacro: PropTypes.object,
         isNewMessagePublic: PropTypes.bool.isRequired,
+        richAreaRef: PropTypes.func,
     }
 
     _renderAttachments = () => {
@@ -75,7 +76,7 @@ export default class TicketReply extends React.Component {
     }
 
     render() {
-        const {ticket, isNewMessagePublic, actions} = this.props
+        const {ticket, isNewMessagePublic, actions, richAreaRef} = this.props
 
         const className = classNames('TicketReply', this.props.className, {
             internal: !isNewMessagePublic,
@@ -86,6 +87,7 @@ export default class TicketReply extends React.Component {
                 <TicketReplyEditor
                     actions={actions}
                     ticket={ticket}
+                    richAreaRef={richAreaRef}
                 />
                 {this._renderAttachments()}
                 {this._renderActions()}

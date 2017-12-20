@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import {Map, List} from 'immutable'
 import {connect} from 'react-redux'
 import _debounce from 'lodash/debounce'
+import _noop from 'lodash/noop'
 
 import {EditorState, ContentState, SelectionState} from 'draft-js'
 import createDndPlugin from 'draft-js-dnd-plugin'
@@ -48,7 +49,7 @@ type richAreaType = {
     state: {
         editorState: EditorState
     },
-    _focusEditor: () => void,
+    focusEditor: () => void,
     _setEditorState: (T: EditorState) => void
 }
 type toolbarPropsType = {
@@ -68,7 +69,9 @@ type Props = {
     addAttachments: typeof newMessageActions.addAttachments,
     notify: ({}) => void,
     setMacrosVisible: typeof macroActions.setMacrosVisible,
-    setResponseText: typeof newMessageActions.setResponseText
+    setResponseText: typeof newMessageActions.setResponseText,
+
+    richAreaRef: (T: richAreaType) => void
 }
 
 type State = {
@@ -77,6 +80,10 @@ type State = {
 
 export class TicketReplyEditor extends React.Component<Props, State> {
     richArea: richAreaType
+
+    static defaultProps = {
+        richAreaRef: _noop
+    }
 
     componentWillMount() {
         // set the initial state of the editor - there might be drafts
@@ -120,7 +127,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
             setTimeout(() => {
                 // it's rare, but sometimes the richArea disappears after the tick
                 if (this.richArea) {
-                    this.richArea._focusEditor()
+                    this.richArea.focusEditor()
                 }
             }, 1)
         }
@@ -133,7 +140,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
 
         if (this.richArea) {
             this.props.setMacrosVisible(false)
-            this.richArea._focusEditor()
+            this.richArea.focusEditor()
         }
     }
 
@@ -281,7 +288,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
     }
 
     render() {
-        const {newMessage, newMessageType, agents} = this.props
+        const {newMessage, newMessageType, agents, richAreaRef} = this.props
 
         const isNewMessageRichType = isRichType(newMessageType)
         const newMessageAcceptsOnlyImages = acceptsOnlyImages(newMessageType)
@@ -365,6 +372,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
                         // $FlowFixMe
                         (richArea: richAreaType) => {
                             this.richArea = richArea
+                            richAreaRef(richArea)
                         }
                     }
                     value={{

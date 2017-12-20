@@ -50,6 +50,68 @@ type rawType = {
     entityMap: {}
 }
 
+function getSignatureText(currentUser: currentUserType): string {
+    return `${signatureTextPrefix}${currentUser.get('signature_text')}`
+}
+
+function getSignatureContentState (currentUser: currentUserType, isRich: boolean = true): ContentState {
+    let signatureBlocks = null
+    const signatureHTML = currentUser.get('signature_html')
+    const signatureText = currentUser.get('signature_text')
+    if (signatureHTML && isRich) {
+        signatureBlocks = convertFromHTML(`${signatureHTMLPrefix}${signatureHTML}`).getBlocksAsArray()
+    } else if (signatureText) {
+        signatureBlocks = ContentState.createFromText(getSignatureText(currentUser)).getBlocksAsArray()
+    }
+
+    if (!signatureBlocks) {
+        return ContentState.createFromText('')
+    }
+
+    // mark blocks with signature meta flag - useful later for removing it when switching to chat or internal note
+    signatureBlocks = signatureBlocks.map((b) => b.set('data', fromJS({signature: true})))
+
+    // Concat the signature blocks at the end of the content
+    return ContentState.createFromBlockArray(signatureBlocks)
+}
+
+// find a contentState in another contentState and return a selection state
+function findContentState (parentContentState: ContentState, contentState: ContentState): SelectionState {
+    let selectionState = SelectionState.createEmpty()
+    const parentBlocks = parentContentState.getBlocksAsArray()
+    const blocks = contentState.getBlocksAsArray()
+    const clearKeys = {
+        key: '',
+        characterList: []
+    }
+
+    // find block array inside block array
+    let j = 0
+    parentBlocks.some((block) => {
+        const key = block.getKey()
+        if (block.merge(clearKeys).equals(blocks[j].merge(clearKeys))) {
+            j++
+
+            if (!selectionState.getAnchorKey()) {
+                selectionState = selectionState.set('anchorKey', key)
+            }
+
+            if (j === blocks.length) {
+                selectionState = selectionState.merge({
+                    focusKey: key,
+                    focusOffset: block.getLength()
+                })
+                return true
+            }
+        } else {
+            // reset other index
+            j = 0
+        }
+    })
+
+    return selectionState
+}
+
 /**
  * Test if a signature was already add to our content to avoid adding it twice
  *
@@ -57,7 +119,7 @@ type rawType = {
  * @param currentUser
  */
 export const isSignatureAdded = (contentState: ContentState, currentUser: currentUserType = fromJS({})): boolean => (
-    contentState.getPlainText().includes(`${signatureTextPrefix}${currentUser.get('signature_text')}`)
+    contentState.getPlainText().includes(getSignatureText(currentUser))
 )
 
 /**
@@ -71,7 +133,7 @@ export const onlySignature = (contentState: ContentState, currentUser: currentUs
         return false
     }
 
-    return `${signatureTextPrefix}${currentUser.get('signature_text')}` === contentState.getPlainText()
+    return getSignatureText(currentUser) === contentState.getPlainText()
 }
 
 /**
@@ -248,33 +310,37 @@ export const addSignature = (context: signatureContextType): signatureContextTyp
         return _markSignatureAdded(context)
     }
 
-    let signatureBlocks = null
-    const signatureHTML = action.currentUser.get('signature_html')
-    const signatureText = action.currentUser.get('signature_text')
-    if (signatureHTML && isRichType(selectors.getNewMessageType({newMessage: state}))) {
-        signatureBlocks = convertFromHTML(`${signatureHTMLPrefix}${signatureHTML}`).getBlocksAsArray()
-    } else if (signatureText) {
-        signatureBlocks = ContentState.createFromText(`${signatureTextPrefix}${signatureText}`).getBlocksAsArray()
-    }
-
-    if (!signatureBlocks) {
+    const signatureContentState = getSignatureContentState(action.currentUser, isRichType(selectors.getNewMessageType({newMessage: state})))
+    if (!signatureContentState.hasText()) {
         return context
     }
-
-    // mark blocks with signature meta flag - useful later for removing it when switching to chat or internal note
-    signatureBlocks = signatureBlocks.map((b) => b.set('data', fromJS({signature: true})))
-
-    // Concat the signature blocks at the end of the content
-    const signatureContentState = ContentState.createFromBlockArray(signatureBlocks)
 
     // using contentState.getSelectionAfter inserts the signature at the start,
     // when the content is loaded from cache.
     context.selectionState = _selectionAfter(contentState.getBlocksAsArray()) || contentState.getSelectionAfter()
+    // add the signature contentState at the end of the existing content
     context.contentState = Modifier.replaceWithFragment(contentState, context.selectionState, signatureContentState.getBlockMap())
 
     context.forceUpdate = true
 
     return _markSignatureAdded(context)
+}
+
+/**
+ * Remove the signature (if any) from the content state
+ *
+ * @param context
+ * @returns {*}
+ */
+export const removeSignature = (contentState: ContentState, currentUser: currentUserType): ContentState => {
+    const signature = getSignatureContentState(currentUser)
+    const selectionState = findContentState(contentState, signature)
+    // check if selection is empty
+    if (selectionState.getAnchorKey() && selectionState.getFocusKey()) {
+        return Modifier.removeRange(contentState, selectionState)
+    }
+
+    return contentState
 }
 
 /**

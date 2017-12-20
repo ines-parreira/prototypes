@@ -7,7 +7,6 @@ import {Input} from 'reactstrap'
 
 import TicketReply from './TicketReply'
 import TicketMacros from './TicketMacros'
-import {onlySignature} from '../../../../../state/newMessage/responseUtils'
 import shortcutManager from '../../../../../services/shortcutManager'
 
 import * as search from '../../../../../state/macro/search'
@@ -29,8 +28,8 @@ export class TicketReplyArea extends React.Component {
         this.state = {
             searchQuery: '',
             searchedMacrosIds: fromJS([]),
+            isMacroDisplayInitialized: false,
             selectedMacroId,
-            isMacroDisplayInitialized: false
         }
     }
 
@@ -54,43 +53,60 @@ export class TicketReplyArea extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const prevContentState = this.props.newMessage.getIn(CONTENT_STATE_PATH)
-        const nextContextState = nextProps.newMessage.getIn(CONTENT_STATE_PATH)
-
-        // Here we make sure that we only toggle the macros if the current contentState is null.
-        // We also want to automatically set the macros display only once, when the data is loaded.
-        if (!this.state.isMacroDisplayInitialized &&
-            prevContentState === null && nextProps.newMessageType === 'email' &&
-            nextProps.macros.get('visible') === this.props.macros.get('visible')) {
-            // default
-            let showMacros = nextProps.preferences.get('show_macros')
-
-            // show/hide macros depending on the profile setting
-            const preferences = nextProps.currentUser
-                .get('settings')
-                .find((s) => s.get('type') === 'preferences')
-
-            if (preferences) {
-                showMacros = preferences.getIn(['data', 'show_macros'])
-            }
-
-            // macros are hidden if there is more text than the signature
-            const shouldHideMacros = (
-                nextContextState &&
-                nextContextState.hasText() && !onlySignature(nextContextState, nextProps.currentUser)
-            )
-
-            if (shouldHideMacros) {
-                showMacros = false
-            }
-
-            this._setMacrosVisible(showMacros)
-            this.setState({isMacroDisplayInitialized: true})
-        }
+        this._showMacrosDefault(nextProps)
     }
 
     componentWillUnmount() {
         shortcutManager.unbind('TicketDetailContainer')
+    }
+
+    // show macros depending on the show_macros preference
+    _showMacrosDefault(nextProps) {
+        const nextContextState = nextProps.newMessage.getIn(CONTENT_STATE_PATH)
+        const editorFocused = this.richArea && this.richArea.isFocused()
+
+        // has any text
+        const hasText = (
+            nextContextState
+            && nextContextState.hasText()
+        )
+
+        // default
+        let showMacros = nextProps.preferences.get('show_macros')
+
+        // show/hide macros depending on the profile setting
+        const preferences = nextProps.currentUser
+            .get('settings')
+            .find((s) => s.get('type') === 'preferences')
+
+        if (preferences) {
+            showMacros = preferences.getIn(['data', 'show_macros'])
+        }
+
+        // don't toggle macros
+        if (
+            // if show_macros preference is false
+            !showMacros
+            // macros where already shown
+            || this.state.isMacroDisplayInitialized
+            // cache wasn't added yet
+            || !nextProps.cacheAdded
+            // message is not email
+            || nextProps.newMessageType !== 'email'
+            // editor has text
+            || hasText
+            // editor is focused.
+            // fixes issues caused by the debounced setResponseText,
+            // that causes the contentState to be set with a delay.
+            || editorFocused
+            // or manually changed macro visibility
+            || nextProps.macros.get('visible') !== this.props.macros.get('visible')
+        ) {
+            return
+        }
+
+        this._setMacrosVisible(showMacros)
+        this.setState({isMacroDisplayInitialized: true})
     }
 
     _bindKeys() {
@@ -235,6 +251,7 @@ export class TicketReplyArea extends React.Component {
                         ticket={this.props.ticket}
                         appliedMacro={this.props.ticket.getIn(['state', 'appliedMacro'])}
                         users={this.props.users}
+                        richAreaRef={(ref) => this.richArea = ref}
                     />
                 </div>
 
@@ -264,7 +281,8 @@ function mapStateToProps(state) {
     return {
         newMessageType: newMessageSelectors.getNewMessageType(state),
         newMessage: state.newMessage,
-        preferences: getPreferences(state)
+        preferences: getPreferences(state),
+        cacheAdded: newMessageSelectors.isCacheAdded(state),
     }
 }
 

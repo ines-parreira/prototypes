@@ -4,7 +4,9 @@ import {EditorState, ContentState} from 'draft-js'
 import addMention from '../../../pages/common/draftjs/plugins/mentions/modifiers/addMention'
 import reducer, {makeNewMessage, initialState} from '../reducers'
 import * as types from '../constants'
-import {convertToHTML} from '../../../utils'
+
+// mock random key generation so they match from a snapshot to the other
+jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
 
 jest.addMatchers(immutableMatchers)
 
@@ -169,6 +171,15 @@ describe('New message reducers', () => {
         )
     })
 
+    it('should set firstNewMessage to false after posting a message', () => {
+        expect(
+            reducer(initialState, {
+                type: types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
+                message: {channel: 'email'}
+            }).getIn(['state', 'firstNewMessage'])
+        ).toEqual(false)
+    })
+
     describe('SET_RESPONSE_TEXT action', () => {
         it('should attach ids of any agent mentioned if in internal-note mode', () => {
             const editorState = EditorState.push(EditorState.createEmpty(), ContentState.createFromText('@Bob'))
@@ -302,44 +313,6 @@ describe('New message reducers', () => {
             subject: 'Hello World!'
         }
         expect(reducer(initialState, action)).toMatchSnapshot()
-    })
-
-    describe('NEW_MESSAGE_ADD_SIGNATURE action', () => {
-        let action
-        let body_text
-        let body_html
-        beforeEach(() => {
-            action = {
-                type: types.NEW_MESSAGE_ADD_SIGNATURE,
-                state: initialState,
-                args: fromJS({
-                    contentState: ContentState.createFromText('Hello')
-                }),
-                currentUser: fromJS({
-                    signature_text: 'Cruel World!',
-                    signature_html: '<a href="#">Cruel World!</a>',
-                })
-            }
-
-            body_text = 'Hello\n\nCruel World!'
-            body_html = '<div>Hello</div><br><div><a href=\"about:blank#\" target=\"_blank\">Cruel World!</a></div>'
-        })
-
-        it('should match the contentState plain text', () => {
-            expect(reducer(initialState, action).getIn(['state', 'contentState']).getPlainText()).toBe(body_text)
-        })
-
-        it('should match the contentState html', () => {
-            expect(convertToHTML(reducer(initialState, action).getIn(['state', 'contentState']))).toBe(body_html)
-        })
-
-        it('should add signature to body_text', () => {
-            expect(reducer(initialState, action).getIn(['newMessage', 'body_text'])).toBe(body_text)
-        })
-
-        it('should add signature to body_html', () => {
-            expect(reducer(initialState, action).getIn(['newMessage', 'body_html'])).toBe(body_html)
-        })
     })
 
     describe('ADD_ATTACHMENTS action', () => {

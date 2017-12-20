@@ -14,6 +14,7 @@ import * as constants from './constants'
 import * as ticketConstants from '../ticket/constants'
 
 import {notify} from '../notifications/actions'
+import * as macroActions from '../macro/actions'
 import * as ticketActions from '../ticket/actions'
 import {renderTemplate} from '../../pages/common/utils/template'
 import {convertToHTML} from '../../utils'
@@ -35,6 +36,7 @@ import {
 import * as integrationSelectors from '../integrations/selectors'
 import * as ticketSelectors from '../ticket/selectors'
 import * as usersSelectors from '../users/selectors'
+import * as currentUserSelectors from '../currentUser/selectors'
 import * as selectors from './selectors'
 import * as responseUtils from './responseUtils'
 import {AGENT_TYPING_STARTED, AGENT_TYPING_STOPPED} from '../../config/socketConstants'
@@ -251,13 +253,24 @@ export const setSourceExtra = (extra: {}) => ({
 })
 
 /**
+ * Prepare default message
+ */
+const prepareDefault = (sourceType: string) => (dispatch: dispatchType, getState: getStateType): dispatchType => {
+    dispatch(setSubject())
+    dispatch(setSourceType(sourceType))
+    dispatch(setSourceExtra({}))
+    resetReceiversAndSender(dispatch, getState)
+}
+
+/**
  * Prepare the new message based on its source type
  * @param {String} sourceType the new source type
  */
 export const prepare = (sourceType: string) => (dispatch: dispatchType, getState: getStateType) => {
+    const state = getState()
+
     switch (sourceType) {
         case 'email-forward': {
-            const state = getState()
             const currentTicket = ticketSelectors.getTicket(state)
             const attachments = toJS(ticketSelectors.getLastMessage(state).get('attachments') || fromJS([]))
 
@@ -272,11 +285,31 @@ export const prepare = (sourceType: string) => (dispatch: dispatchType, getState
             })
             break
         }
+        case 'internal-note': {
+            // remove signature, if added
+            let contentState = selectors.getNewMessageContentState(state)
+            const currentUser = currentUserSelectors.getCurrentUser(state)
+            if(responseUtils.isSignatureAdded(contentState, currentUser)) {
+                contentState = responseUtils.removeSignature(contentState, currentUser)
+            }
+
+            // hide macros when switching to internal-note
+            dispatch(macroActions.setMacrosVisible(false))
+            // update content with removed signature,
+            // and focus the editor
+            dispatch(setResponseText(
+                fromJS({
+                    contentState,
+                    forceFocus: true,
+                    forceUpdate: true,
+                })
+            ))
+            dispatch(prepareDefault(sourceType))
+
+            break
+        }
         default: {
-            dispatch(setSubject())
-            dispatch(setSourceType(sourceType))
-            dispatch(setSourceExtra({}))
-            resetReceiversAndSender(dispatch, getState)
+            dispatch(prepareDefault(sourceType))
             break
         }
     }
@@ -322,7 +355,7 @@ export const initializeMessageDraft = () => (dispatch: dispatchType) => {
  * Adds the newMessage to the ticket's messages, attaches actions and sets some source elements on the message.
  * Also sets some properties on the ticket.
  */
-export function prepareTicketDataToSend(dispatch: dispatchType, ticket: Map<*,*>, newMessage: Map<*,*>, status: ?string, macroActions: ?macroActionsType, currentUser: currentUserType): ?{ticket: ticketType, newMessage: newMessageType} {
+export function prepareTicketDataToSend(dispatch: dispatchType, ticket: Map<*,*>, newMessage: Map<*,*>, status: ?string, actionsForMacro: ?macroActionsType, currentUser: currentUserType): ?{ticket: ticketType, newMessage: newMessageType} {
     const data = toJS(ticket)
     data.newMessage = toJS(newMessage).newMessage
 
@@ -385,8 +418,8 @@ export function prepareTicketDataToSend(dispatch: dispatchType, ticket: Map<*,*>
             }
         }
 
-        if (macroActions) {
-            data.newMessage.actions = macroActions.map(curAction => formatAction(
+        if (actionsForMacro) {
+            data.newMessage.actions = actionsForMacro.map(curAction => formatAction(
                 curAction,
                 fromJS(getActionTemplate(curAction.get('name'))),
                 {ticket: ticket.toJS(), currentUser: currentUser.toJS()}

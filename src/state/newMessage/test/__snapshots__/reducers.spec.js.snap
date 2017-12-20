@@ -3,14 +3,42 @@
 exports[`New message reducers should handle NEW_MESSAGE_SET_SUBJECT 1`] = `
 Immutable.Map {
   state: Immutable.Map {
-    dirty: false,
-    signatureAdded: false,
-    cacheAdded: false,
-    forceUpdate: false,
-    forceFocus: false,
-    contentState: null,
     selectionState: null,
+    signatureAdded: false,
+    forceFocus: false,
     appliedMacro: null,
+    dirty: false,
+    forceUpdate: false,
+    firstNewMessage: true,
+    contentState: Object {
+      "blockMap": Object {
+        "someRandomKey": Object {
+          "characterList": Array [],
+          "data": Object {},
+          "depth": 0,
+          "key": "someRandomKey",
+          "text": "",
+          "type": "unstyled",
+        },
+      },
+      "selectionAfter": Object {
+        "anchorKey": "someRandomKey",
+        "anchorOffset": 0,
+        "focusKey": "someRandomKey",
+        "focusOffset": 0,
+        "hasFocus": false,
+        "isBackward": false,
+      },
+      "selectionBefore": Object {
+        "anchorKey": "someRandomKey",
+        "anchorOffset": 0,
+        "focusKey": "someRandomKey",
+        "focusOffset": 0,
+        "hasFocus": false,
+        "isBackward": false,
+      },
+    },
+    cacheAdded: false,
   },
   _internal: Immutable.Map {
     loading: Immutable.Map {
