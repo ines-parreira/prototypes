@@ -49,11 +49,11 @@ export class BillingPlans extends Component {
         const {isUpdating} = this.state
         const planSentencePrefix = subscription.isEmpty() ? 'Choose' : 'Switch to'
         const isCustomPlan = currentPlan.get('custom', false)
-        let {plans} = this.props
+        let plans = this.props.plans.filter(plan => plan.get('public') && !plan.get('custom'))
         let i = 0
 
         if (isCustomPlan) {
-            plans = plans.filter((plan, planId) => planId === subscription.get('plan'))
+            plans = this.props.plans.filter((plan, planId) => planId === subscription.get('plan'))
         }
 
 
@@ -65,9 +65,6 @@ export class BillingPlans extends Component {
                         <CardDeck>
                             {plans.map((plan, planId) => {
                                 ++i
-                                if (!plan.get('public')) {
-                                    return null
-                                }
                                 const isCurrentPlan = planId === subscription.get('plan')
                                 const costMultiplier = 100
                                 const costPerTicket = plan.get('cost_per_ticket') * costMultiplier
