@@ -426,7 +426,8 @@ export const nestedReplace = (obj, state, notify) => {
         return replaceVariables(obj, state, notify)
     }
 
-    if (typeof obj === 'object') {
+    // since typeof null === 'object', we also need to verify obj is not null
+    if (typeof obj === 'object' && obj !== null) {
         return obj.map((item) => nestedReplace(item, state, notify))
     }
 
