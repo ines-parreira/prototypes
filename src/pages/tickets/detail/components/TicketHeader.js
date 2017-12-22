@@ -20,9 +20,11 @@ import TicketCategory from './ticketdetails/TicketCategory'
 import TicketStatus from './ticketdetails/TicketStatus'
 import TicketAssignee from './ticketdetails/TicketAssignee'
 import TicketSpam from './ticketdetails/TicketSpam'
+import TicketSnooze from './ticketdetails/TicketSnooze'
 import TicketTrash from './ticketdetails/TicketTrash'
 
 import * as ticketActions from '../../../../state/ticket/actions'
+import TicketSnoozePicker from './ticketdetails/TicketSnoozePicker'
 
 @connect(null, {
     setTrashed: ticketActions.setTrashed,
@@ -41,6 +43,7 @@ export default class TicketHeader extends React.Component {
 
     state = {
         askTrashConfirmation: false,
+        showSnoozePicker: false
     }
 
     componentDidMount() {
@@ -88,6 +91,16 @@ export default class TicketHeader extends React.Component {
         return this.props.setTrashed(null)
     }
 
+    _setSnooze = (event, picker) => {
+        return this.props.actions.ticket.setSnooze(picker.endDate.format(), () => {
+            this._goToNextUrl()
+        })
+    }
+
+    _toggleSnoozePicker = () => {
+        this.setState({showSnoozePicker: !this.state.showSnoozePicker})
+    }
+
     _toggleSpam = () => {
         const spam = !this.props.ticket.get('spam')
         return this.props.setSpam(spam, () => {
@@ -123,6 +136,7 @@ export default class TicketHeader extends React.Component {
 
     render() {
         const {ticket, actions} = this.props
+        const {showSnoozePicker} = this.state
         const isUpdate = !!ticket.get('id')
         const isTrashed = !!ticket.get('trashed_datetime')
 
@@ -147,7 +161,19 @@ export default class TicketHeader extends React.Component {
                                 >
                                     <i className="fa fa-fw fa-caret-down" />
                                 </DropdownToggle>
+                                <TicketSnoozePicker
+                                    datetime={ticket.get('snooze_datetime')}
+                                    isOpen={showSnoozePicker}
+                                    toggle={this._toggleSnoozePicker}
+                                    onApply={this._setSnooze}
+                                />
                                 <DropdownMenu right>
+                                    <DropdownItem
+                                        type="button"
+                                        onClick={this._toggleSnoozePicker}
+                                    >
+                                        Snooze
+                                    </DropdownItem>
                                     <DropdownItem
                                         type="button"
                                         onClick={() => {
@@ -158,7 +184,7 @@ export default class TicketHeader extends React.Component {
                                             }, 1)
                                         }}
                                     >
-                                        Print ticket
+                                        Print
                                     </DropdownItem>
                                     <DropdownItem
                                         type="button"
@@ -235,8 +261,9 @@ export default class TicketHeader extends React.Component {
                         />
                     </div>
                     <div className="d-inline-flex">
-                        <TicketTrash trashed={isTrashed} />
-                        <TicketSpam spam={ticket.get('spam')} />
+                        <TicketSnooze datetime={ticket.get('snooze_datetime')}/>
+                        <TicketTrash trashed={isTrashed}/>
+                        <TicketSpam spam={ticket.get('spam')}/>
                         <TicketAssignee
                             direction="right"
                             currentAssignee={ticket.getIn(['assignee_user', 'name'])}

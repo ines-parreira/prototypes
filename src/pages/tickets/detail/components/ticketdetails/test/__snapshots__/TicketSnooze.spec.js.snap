@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TicketSnooze should render an icon with a tooltip 1`] = `
+<div
+  className="d-inline-block mr-3"
+>
+  <i
+    className="fa fa-lg fa-clock-o text-primary"
+    id="ticket-header-snooze-icon"
+  />
+  <Tooltip
+    delay={0}
+    placement="top"
+    target="ticket-header-snooze-icon"
+  >
+    Snooze 
+    07/09/49944
+  </Tooltip>
+</div>
+`;
+
+exports[`TicketSnooze should render null 1`] = `null`;

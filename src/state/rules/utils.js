@@ -12,6 +12,7 @@ import {collectionOperators} from '../../config/rules'
 
 import type {Map, List} from 'immutable'
 import type {schemasType} from '../../types'
+import {EMPTY_OPERATORS} from '../../config'
 type argPathType = Array<?string>
 
 /**
@@ -276,6 +277,11 @@ function resolveCallee(callExpression: Map<*,*>, firstArgSchema: schemasType): s
  * @returns {String} The new value of the second argument.
  */
 function resolveSecondArg(callExpression: Map<*,*>, firstArgSchema: schemasType, callee, reset) {
+    // empty operators have only one argument
+    if (Object.keys(EMPTY_OPERATORS).includes(callee)) {
+        return null
+    }
+
     const isCollectionCallee = collectionOperators.includes(callee)
     const args = callExpression.getIn(['arguments', 1]) || fromJS({})
     let cur_default = 'null'
@@ -420,7 +426,12 @@ export function updateCallExpression(state: Map<*,*>, path: List<*>, schemas: sc
     const callee = resolveCallee(callExpression, firstArgSchema)
     const secondArg = resolveSecondArg(callExpression, firstArgSchema, callee, hasPropertyChanged)
     // generate the new CallExpression and replace the old one
-    const rawCallExpression = `${callee}(${firstArg.join('.')}, ${secondArg})`
+    let rawCallExpression = `${callee}(${firstArg.join('.')}`
+
+    if (secondArg) {
+        rawCallExpression += `, ${secondArg}`
+    }
+    rawCallExpression += ')'
     // getAST will give us the whole Program, but we're only interested in the first CallExpression
     const newCallExpression = fromJS(getAST(rawCallExpression)).getIn(['body', 0, 'expression'])
     return state.setIn(callExpressionPath, newCallExpression)

@@ -28,6 +28,7 @@ export const SET_TRASHED = 'setTrashed'
 export const SET_STATUS = 'setStatus'
 export const SET_AGENT = 'setAssignee'
 export const SET_SUBJECT = 'setSubject'
+export const SET_SNOOZE = 'setSnooze'
 
 export const SET_REQUESTER = 'setRequester'
 

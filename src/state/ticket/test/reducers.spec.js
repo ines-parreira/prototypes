@@ -277,7 +277,6 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-
     it('set category', () => {
         expect(
             reducer(
@@ -339,6 +338,21 @@ describe('ticket reducers', () => {
             reducer(initialState, {type: types.SET_TRASHED, trashed_datetime: 'trashed_datetime'})
         ).toEqualImmutable(
             initialState.set('trashed_datetime', 'trashed_datetime')
+        )
+    })
+
+    it('set snooze', () => {
+        const action = {
+            type: types.SET_SNOOZE,
+            snooze_datetime: '2017-01-21 18:20:02',
+            status: 'closed'
+        }
+        expect(
+            reducer(initialState, action)
+        ).toEqualImmutable(
+            initialState
+                .set('snooze_datetime', action.snooze_datetime)
+                .set('status', action.status)
         )
     })
 
@@ -553,7 +567,6 @@ describe('ticket reducers', () => {
             ).toJS()
         ).toMatchSnapshot()
     })
-
 
     it('toggle history', () => {
         expect(

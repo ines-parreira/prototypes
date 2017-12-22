@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 
 import * as ticketConfig from './ticket'
 import TICKET_LANGUAGES from './ticketLanguages'
-import {stripHTML, getLanguageDisplayName} from '../utils'
+import {stripHTML, getLanguageDisplayName, formatDatetime} from '../utils'
 import {TagLabel} from '../pages/common/utils/labels'
 
 import _isUndefined from 'lodash/isUndefined'
@@ -98,7 +98,7 @@ export const views = fromJS([{
             path: 'requester.id',
             filter: {
                 type: 'user',
-            }
+            },
         },
         {
             name: 'assignee',
@@ -136,7 +136,8 @@ export const views = fromJS([{
             filter: {
                 sort: {
                     created_datetime: 'desc',
-                }
+                },
+                show: false
             }
         },
         {
@@ -146,7 +147,8 @@ export const views = fromJS([{
             filter: {
                 sort: {
                     updated_datetime: 'desc',
-                }
+                },
+                show: false
             }
         },
         {
@@ -156,6 +158,17 @@ export const views = fromJS([{
             filter: {
                 sort: {
                     last_message_datetime: 'desc',
+                },
+                show: false
+            }
+        },
+        {
+            name: 'snooze',
+            title: 'Snooze',
+            path: 'snooze_datetime',
+            filter: {
+                sort: {
+                    snooze_datetime: 'desc',
                 }
             }
         }
@@ -166,6 +179,8 @@ export const views = fromJS([{
                 return item.get('created_datetime')
             case 'updated':
                 return item.get('updated_datetime')
+            case 'snooze':
+                return item.get('snooze_datetime') ? formatDatetime(item.get('snooze_datetime')) : ''
             case 'last_message':
                 return item.get('last_message_datetime')
             case 'requester':

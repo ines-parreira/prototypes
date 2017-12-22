@@ -256,6 +256,28 @@ export const setSubject = (subject) => (dispatch, getState) => {
     return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setSubject', getState())))
 }
 
+export const setSnooze = (datetime, callback = _noop) => (dispatch) => {
+    const data = {
+        snooze_datetime: datetime,
+        status: 'closed'
+    }
+
+    dispatch({
+        type: types.SET_SNOOZE,
+        ...data
+    })
+
+    // execute callback immediately, do not wait for server answer
+    callback()
+
+    return dispatch(ticketPartialUpdate(data)).then(() => {
+        dispatch(notify({
+            status: 'success',
+            message: 'The ticket has been closed and snoozed.'
+        }))
+    })
+}
+
 export const deleteMessage = (ticketId, messageId) => (dispatch) => {
     return axios.delete(`/api/tickets/${ticketId}/messages/${messageId}/`)
         .then((json = {}) => json.data)

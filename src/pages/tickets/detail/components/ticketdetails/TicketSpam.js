@@ -20,7 +20,7 @@ export default class TicketSpam extends React.Component {
             <div className="d-inline-block mr-3">
                 <i
                     id="ticket-header-spam-icon"
-                    className="fa fa-flag text-danger"
+                    className="fa fa-lg fa-flag text-danger"
                 />
                 <Tooltip
                     placement="top"

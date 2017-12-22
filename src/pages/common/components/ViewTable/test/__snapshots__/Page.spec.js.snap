@@ -45,6 +45,7 @@ exports[`ViewTable::Page component default view 1`] = `
               sort: Immutable.Map {
                 created_datetime: "desc",
               },
+              show: false,
             },
           },
         ]

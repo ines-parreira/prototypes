@@ -588,6 +588,26 @@ Array [
 ]
 `;
 
+exports[`ticket actions setSnooze should snooze ticket 1`] = `
+Array [
+  Object {
+    "snooze_datetime": "2017-12-21",
+    "status": "closed",
+    "type": "setSnooze",
+  },
+]
+`;
+
+exports[`ticket actions setSnooze should snooze ticket and call the callback 1`] = `
+Array [
+  Object {
+    "snooze_datetime": "2017-12-21",
+    "status": "closed",
+    "type": "setSnooze",
+  },
+]
+`;
+
 exports[`ticket actions setSpam fails because same status 1`] = `Array []`;
 
 exports[`ticket actions setSpam success 1`] = `

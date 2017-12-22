@@ -466,6 +466,16 @@ describe('global utils', () => {
         })
     })
 
+    describe('getDefaultOperator', () => {
+        const schemas = fromJS(schemasJSON)
+
+        it('should return default operator', () => {
+            expect(utils.getDefaultOperator('ticket.snooze_datetime', schemas)).toBe('isEmpty')
+            expect(utils.getDefaultOperator('ticket.language', schemas)).toBe('eq')
+            expect(utils.getDefaultOperator('ticket.channel', schemas)).toBe('eq')
+        })
+    })
+
     describe('proxifyImages', () => {
         beforeEach(() => {
             window.IMAGE_PROXY_URL = 'http://proxy-url/'

@@ -189,6 +189,7 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
                 sort: Immutable.Map {
                   created_datetime: "desc",
                 },
+                show: false,
               },
             },
             Immutable.Map {
@@ -199,6 +200,7 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
                 sort: Immutable.Map {
                   updated_datetime: "desc",
                 },
+                show: false,
               },
             },
             Immutable.Map {
@@ -208,6 +210,17 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
               filter: Immutable.Map {
                 sort: Immutable.Map {
                   last_message_datetime: "desc",
+                },
+                show: false,
+              },
+            },
+            Immutable.Map {
+              name: "snooze",
+              title: "Snooze",
+              path: "snooze_datetime",
+              filter: Immutable.Map {
+                sort: Immutable.Map {
+                  snooze_datetime: "desc",
                 },
               },
             },
@@ -358,6 +371,7 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
               sort: Immutable.Map {
                 created_datetime: "desc",
               },
+              show: false,
             },
           },
           Immutable.Map {
@@ -368,6 +382,7 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
               sort: Immutable.Map {
                 updated_datetime: "desc",
               },
+              show: false,
             },
           },
           Immutable.Map {
@@ -377,6 +392,17 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
             filter: Immutable.Map {
               sort: Immutable.Map {
                 last_message_datetime: "desc",
+              },
+              show: false,
+            },
+          },
+          Immutable.Map {
+            name: "snooze",
+            title: "Snooze",
+            path: "snooze_datetime",
+            filter: Immutable.Map {
+              sort: Immutable.Map {
+                snooze_datetime: "desc",
               },
             },
           },

@@ -18,7 +18,7 @@ import {
 } from 'reactstrap'
 
 import Filters from './Filters'
-import {equalityOperator, slugify, fieldPath} from '../../../../utils'
+import {getDefaultOperator, slugify, fieldPath} from '../../../../utils'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
 import * as viewsActions from '../../../../state/views/actions'
@@ -27,6 +27,7 @@ import * as usersSelectors from '../../../../state/users/selectors'
 import * as schemasSelectors from '../../../../state/schemas/selectors'
 
 import * as viewsConfig from '../../../../config/views'
+import {EMPTY_OPERATORS} from '../../../../config'
 
 class FilterTopbar extends React.Component {
     static propTypes = {
@@ -110,12 +111,17 @@ class FilterTopbar extends React.Component {
 
     _onClickFilter = (field) => {
         const left = this._left(field)
-
-        this.props.addFieldFilter(field.toJS(), {
+        const operator = getDefaultOperator(left, this.props.schemas)
+        const filter = {
             left,
-            operator: equalityOperator(left, this.props.schemas),
-            right: '\'\'',
-        })
+            operator
+        }
+
+        if (!Object.keys(EMPTY_OPERATORS).includes(operator)) {
+            filter.right = '\'\''
+        }
+
+        this.props.addFieldFilter(field.toJS(), filter)
     }
 
     _cancel = () => {
@@ -173,7 +179,7 @@ class FilterTopbar extends React.Component {
         }
 
         const filterableFields = config.get('fields')
-            .filter(field => field.get('filter') && !field.getIn(['filter', 'sort']))
+            .filter(field => field.get('filter') && field.getIn(['filter', 'show'], true))
             .sortBy(field => field.get('title'))
 
         return (

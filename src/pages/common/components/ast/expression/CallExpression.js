@@ -47,6 +47,9 @@ class CallExpression extends React.Component {
         // arguments: Expression1, Expression2
         if (parent.contains('test')) {
             const root = Immutable.List(['definitions'])
+            const firstArg = funcArgs[0]
+            const secondArg = funcArgs[1]
+
             let left = root.concat(getSyntaxTreeLeaves(funcArgs[0]))
 
             // we find the first object after the definitions, Ex: ticket => Ticket
@@ -68,7 +71,7 @@ class CallExpression extends React.Component {
             return (
                 <span>
                     <Expression
-                        {...funcArgs[0]}
+                        {...firstArg}
                         parent={parent.push('arguments', 0)}
                         rule={rule}
                         actions={actions}
@@ -83,15 +86,18 @@ class CallExpression extends React.Component {
                         schemas={schemas}
                         leftsiblings={left.push('meta', 'operators')}
                     />
-                    <Expression
-                        {...funcArgs[1]}
-                        parent={parent.push('arguments', 1)}
-                        callee={callee}
-                        rule={rule}
-                        actions={actions}
-                        schemas={schemas}
-                        leftsiblings={left}
-                    />
+                    {secondArg ?
+                        <Expression
+                            {...secondArg}
+                            parent={parent.push('arguments', 1)}
+                            callee={callee}
+                            rule={rule}
+                            actions={actions}
+                            schemas={schemas}
+                            leftsiblings={left}
+                        />
+                        : null
+                    }
                     {hovered && deleteBinaryExpression}
                 </span>
             )

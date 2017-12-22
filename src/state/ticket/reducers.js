@@ -183,6 +183,12 @@ export default (state = initialState, action) => {
             return state.set('requester', requester)
         }
 
+        case types.SET_SNOOZE: {
+            return state
+                .set('snooze_datetime', action.snooze_datetime)
+                .set('status', action.status)
+        }
+
         case types.APPLY_MACRO: {
             ticketReplyCache.set(action.ticketId, {
                 macro: action.macro

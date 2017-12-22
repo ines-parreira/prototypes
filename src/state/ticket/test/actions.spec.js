@@ -192,6 +192,26 @@ describe('ticket actions', () => {
 
     })
 
+    describe('setSnooze', () => {
+        it('should snooze ticket', () => {
+            store = mockStore({ticket: initialState.set('snooze_datetime', null)})
+
+            store.dispatch(actions.setSnooze('2017-12-21')).then(() => {
+                expect(store.getActions()).toMatchSnapshot()
+            })
+        })
+
+        it('should snooze ticket and call the callback', () => {
+            const callbackSpy = jest.fn()
+            store = mockStore({ticket: initialState.set('snooze_datetime', null)})
+
+            store.dispatch(actions.setSnooze('2017-12-21', callbackSpy)).then(() => {
+                expect(store.getActions()).toMatchSnapshot()
+                expect(callbackSpy).toHaveBeenCalled()
+            })
+        })
+    })
+
     it('setAgent', () => {
         mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
         return store.dispatch(actions.setAgent({id: 1}))

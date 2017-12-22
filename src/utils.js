@@ -57,7 +57,6 @@ type propertyType = {
     meta: {},
     items: {$ref: {}}
 }
-type equalityOperatorType = 'eq' | 'contains'
 
 
 // note that 2 letters tlds are automatically interpreted
@@ -159,7 +158,7 @@ export function isGorgiasSupportAddress(address: string): boolean {
     return /^support@[a-zA-Z0-9-]+.gorgias.io$/.test(address)
 }
 
-export function formatDatetime(datetime: Date | number, timezone: string, format: string = 'calendar'): Date | number {
+export function formatDatetime(datetime: Date | number | string, timezone: ?string, format: string = 'calendar'): Date | number | string {
     try {
         let momentDate = moment(datetime)
 
@@ -299,12 +298,23 @@ export function findProperty(field: string, schemas: schemasType, alwaysRef: boo
     return prop
 }
 
-export function equalityOperator(field: string, schemas: schemasType): ?equalityOperatorType {
-    const prop = findProperty(field, schemas)
+export function getDefaultOperator(field: string, schemas: schemasType): ?string {
+    const prop: ?Object = findProperty(field, schemas)
+
     if (!prop) {
         return null
     }
 
+    // return the first operator defined in the meta of the field
+    if (prop.meta && prop.meta.operators) {
+        const operators = Object.keys(prop.meta.operators)
+
+        if (operators.length) {
+            return operators[0]
+        }
+    }
+
+    // return an operator based on the type of the field
     switch (prop.type) {
         case 'integer':
             return 'eq'

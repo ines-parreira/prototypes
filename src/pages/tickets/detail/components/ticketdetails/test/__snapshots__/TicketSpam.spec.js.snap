@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TicketSpam html should display spam flag 1`] = `"<div class=\\"d-inline-block mr-3\\"><i id=\\"ticket-header-spam-icon\\" class=\\"fa fa-flag text-danger\\"></i></div>"`;
+exports[`TicketSpam html should display spam flag 1`] = `"<div class=\\"d-inline-block mr-3\\"><i id=\\"ticket-header-spam-icon\\" class=\\"fa fa-lg fa-flag text-danger\\"></i></div>"`;
 
 exports[`TicketSpam html should not display a spam flag 1`] = `null`;
 
