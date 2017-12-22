@@ -50,7 +50,7 @@ export const isEditMode = createSelector(
 export const areFiltersValid = createSelector(
     [getActiveView],
     view => {
-        return !view.get('filters').includes(', \'\')')
+        return !(view.get('filters') || '').includes(', \'\')')
     }
 )
 
