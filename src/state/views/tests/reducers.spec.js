@@ -210,7 +210,7 @@ describe('reducers', () => {
         })
 
         it('should update updated datetime of recent views', () => {
-            const beforeActionDt = moment.utc()
+            const beforeActionDt = moment.utc().subtract(10, 's')
             let state = initialState.mergeDeep(fromJS({
                 recent: {
                     1: {},
@@ -222,7 +222,7 @@ describe('reducers', () => {
                 viewIds: [1, 2]
             })
 
-            const now = moment.utc().add(5, 's')
+            const now = moment.utc().add(10, 's')
             const recentViews = selectors.getRecentViews({views: state}).toJS()
             // should update when these view counts were updated for each recent views
             expect(recentViews).not.toEqual({})
