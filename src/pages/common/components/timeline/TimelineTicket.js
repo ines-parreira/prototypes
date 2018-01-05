@@ -1,9 +1,9 @@
 import React, {PropTypes} from 'react'
 import {browserHistory} from 'react-router'
 import classnames from 'classnames'
-import {Card, CardBlock} from 'reactstrap'
+import {Card, CardBlock, UncontrolledTooltip} from 'reactstrap'
 
-import {StatusLabel} from '../../utils/labels'
+import {StatusLabel, AgentLabel, DatetimeLabel} from '../../utils/labels'
 import {formatDatetime, stripHTML} from '../../../../utils'
 
 export default class TimelineTicket extends React.Component {
@@ -29,11 +29,14 @@ export default class TimelineTicket extends React.Component {
         if (messageCount > 1) {
             subject = `(${messageCount}) ${subject}`
         }
+        const assigneeName = ticket.getIn(['assignee_user', 'name'])
 
         return (
             <Card
                 className={classnames('TimelineTicket', {current: this.props.isCurrent})}
                 onClick={this._goToTicket}
+                tag="a"
+                href={`/app/ticket/${ticket.get('id')}`}
             >
                 <CardBlock>
                     <div>
@@ -44,15 +47,21 @@ export default class TimelineTicket extends React.Component {
                             {ticket.get('excerpt')}
                         </div>
                     </div>
-
                     <div>
-                        <StatusLabel status={ticket.get('status')} />
+                        {assigneeName && (
+                            <AgentLabel name={assigneeName}/>
+                        )}
                     </div>
-
                     <div>
-                        <div className="created-datetime text-center">
-                            {formatDatetime(ticket.get('created_datetime'))}
-                        </div>
+                        <StatusLabel status={ticket.get('status')}/>
+                    </div>
+                    <div>
+                        <DatetimeLabel
+                            dateTime={ticket.get('created_datetime')}
+                            settings={{
+                                position: 'top left'
+                            }}
+                        />
                     </div>
                 </CardBlock>
             </Card>
