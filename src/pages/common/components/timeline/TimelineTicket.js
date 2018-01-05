@@ -7,7 +7,9 @@ import {StatusLabel, AgentLabel, DatetimeLabel} from '../../utils/labels'
 import {stripHTML} from '../../../../utils'
 
 export default class TimelineTicket extends React.Component {
-    _goToTicket = () => {
+    _goToTicket = (e) => {
+        e.preventDefault()
+
         if (this.props.actions.displayHistoryOnNextPage) {
             this.props.actions.displayHistoryOnNextPage(true)
         }
