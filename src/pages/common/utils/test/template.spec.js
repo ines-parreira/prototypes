@@ -1,4 +1,5 @@
 import {renderTemplate} from '../template'
+import moment from 'moment'
 
 describe('components utils : template', () => {
     describe('renderTemplate', () => {
@@ -78,6 +79,67 @@ describe('components utils : template', () => {
             expect(renderTemplate('You have {{sum}} orders.', {
                 sum: undefined,
             })).toBe('You have  orders.')
+        })
+
+        it('render format datetime', () => {
+            expect(renderTemplate('{{date|datetime_format("YYYY")}}', {
+                date: '2018-01-02',
+            })).toBe('2018')
+        })
+        it('render format datetime (different format)', () => {
+            expect(renderTemplate('{{date|datetime_format("YYYY-MM")}}', {
+                date: '2018-01-02',
+            })).toBe('2018-01')
+        })
+
+        it('render the fallback', () => {
+            expect(renderTemplate('Hi {{x|fallback("there")}}', {
+                x: 'Alex',
+            })).toBe('Hi Alex')
+
+            expect(renderTemplate('Hi {{x|fallback("there")}}', {
+                x: '',
+            })).toBe('Hi there')
+
+            expect(renderTemplate('Hi {{x|fallback("there")}}', {
+                y: 'Alex',
+            })).toBe('Hi there')
+        })
+
+        it.skip('render relative datetime', () => {
+            expect(renderTemplate('{{date|datetime_relative()}}', {
+                date: moment().subtract(2, 'days').format(),
+            })).toBe('2 days ago')
+        })
+        it.skip('render relative datetime - without postfix', () => {
+            expect(renderTemplate('{{date|datetime_relative(true)}}', {
+                date: moment().subtract(2, 'days').format(),
+            })).toBe('2 days')
+        })
+        it.skip('render calendar datetime', () => {
+            expect(renderTemplate('{{date|datetime_calendar()}}', {
+                date: moment().subtract(1, 'hour').format(),
+            })).toBe('Today at ' + moment().subtract(1, 'hour').format('h:mm A'))
+        })
+        it.skip('render relative calendar - custom', () => {
+            expect(renderTemplate('{{date|datetime_calendar(null, {sameDay: "[Td at] LT"})}}', {
+                date: moment().subtract(1, 'hour').format(),
+            })).toBe('Td at ' + moment().subtract(1, 'hour').format('h:mm A'))
+        })
+        it.skip('render relative calendar - custom', () => {
+            expect(renderTemplate('{{date|datetime_calendar(null, {sameDay: "[Today at] LT zz"})}}', {
+                date: moment().subtract(1, 'hour').format(),
+            })).toBe('Today at ' + moment().subtract(1, 'hour').format('h:mm A'))
+        })
+        it('should ignore unknown filters and just render the value', () => {
+            expect(renderTemplate('{{x|unknown()}}', {
+                x: 123
+            })).toBe('123')
+        })
+        it('should not execute XSS', () => {
+            expect(renderTemplate('{{x|datetime_relative(alert(123))}}', {
+                x: 123
+            })).toBe('{{x|datetime_relative(alert(123))}}')
         })
     })
 })
