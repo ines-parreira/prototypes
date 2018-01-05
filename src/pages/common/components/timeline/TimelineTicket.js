@@ -1,10 +1,10 @@
 import React, {PropTypes} from 'react'
 import {browserHistory} from 'react-router'
 import classnames from 'classnames'
-import {Card, CardBlock, UncontrolledTooltip} from 'reactstrap'
+import {Card, CardBlock} from 'reactstrap'
 
 import {StatusLabel, AgentLabel, DatetimeLabel} from '../../utils/labels'
-import {formatDatetime, stripHTML} from '../../../../utils'
+import {stripHTML} from '../../../../utils'
 
 export default class TimelineTicket extends React.Component {
     _goToTicket = () => {
