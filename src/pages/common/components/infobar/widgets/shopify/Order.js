@@ -55,7 +55,7 @@ class AfterTitle extends React.Component<AfterTitleProps> { // eslint-disable-li
             return null
         }
 
-        const orderTotalPrice: number = parseInt(source.get('total_price') || '0')
+        const orderTotalPrice: number = parseFloat(source.get('total_price') || '0')
 
         let actions: Array<ActionType> = [
             {
