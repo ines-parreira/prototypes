@@ -398,7 +398,7 @@ export const replaceVariables = (argument, state, notify) => {
 
     // If there's a var of format `ticket.requester.integrations.XXX`, then it's a dynamic variable.
     // Else, it would be `ticket.requester.integrations[XXX]`.
-    let variables = argument.match(/{ticket.requester.integrations.[\w\d\]\[._-]+}/g)
+    let variables = argument.match(/{{ticket.requester.integrations.[\w\d\]\[._-]+\|?([\w_]+\([^(]*\))?}}/g)
     let newArgument = argument
 
     if (variables) {
