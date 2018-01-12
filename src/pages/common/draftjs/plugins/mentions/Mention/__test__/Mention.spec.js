@@ -1,14 +1,16 @@
 import React from 'react'
 import {render} from 'enzyme'
 import {Map} from 'immutable'
-import {Entity} from 'draft-js'
+import {ContentState} from 'draft-js'
 import Mention from '../index'
 
 describe('Mention', () => {
     it('can render when mention is an Object', () => {
         const mention = {}
-        const entityKey = Entity.create('mention', 'SEGMENTED', {mention})
-        const result = render(<Mention entityKey={entityKey} theme={Map()}/>)
+        const contentState = ContentState.createFromText('')
+        const entityContentState = contentState.createEntity('mention', 'SEGMENTED', {mention})
+        const entityKey = entityContentState.getLastCreatedEntityKey()
+        const result = render(<Mention contentState={contentState} entityKey={entityKey} theme={Map()}/>)
         expect(result.length).toEqual(1)
     })
 })

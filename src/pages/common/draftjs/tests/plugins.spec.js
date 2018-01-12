@@ -36,8 +36,9 @@ describe('DraftJS convertToHtml', () => {
         const text = 'a url link and link'
         const positions = [{start: 6, length: 4}, {start: 15, length: 4}]
 
-        const content = convertFromHTML(html).getBlockMap().first()
-        const decorations = composite.getDecorations(content).toArray()
+        const contentState = convertFromHTML(html)
+        const content = contentState.getBlockMap().first()
+        const decorations = composite.getDecorations(content, contentState).toArray()
 
         expect(decorations.length).toBe(text.length)
         expect(content.getText()).toEqual(text)
@@ -60,8 +61,9 @@ describe('DraftJS display entities', () => {
         const text = 'url http://google.com'
         const positions = [{start: 4, length: 17}]
 
-        const content = convertFromHTML(text).getBlockMap().first()
-        const decorations = composite.getDecorations(content).toArray()
+        const contentState = convertFromHTML(text)
+        const content = contentState.getBlockMap().first()
+        const decorations = composite.getDecorations(content, contentState).toArray()
 
         expect(decorations.length).toBe(text.length)
         expect(content.getText()).toEqual(text)
@@ -84,8 +86,9 @@ describe('DraftJS display entities', () => {
         editorState = attachImmutableEntitiesToVariables(editorState)
         const positions = [{start: 9, length: 21}, {start: 35, length: 26}]
 
-        const content = editorState.getCurrentContent().getBlockMap().first()
-        const decorations = composite.getDecorations(content).toArray()
+        const contentState = editorState.getCurrentContent()
+        const content = contentState.getBlockMap().first()
+        const decorations = composite.getDecorations(content, contentState).toArray()
 
         expect(decorations.length).toBe(text.length)
         expect(content.getText()).toEqual(text)
@@ -106,8 +109,9 @@ describe('DraftJS decorators', () => {
     it('find url in text', () => {
         const composite = utils.getCompositeDecorator(foundUrlDecorator)
         const text = 'find a url http://google.com'
-        const content = ContentState.createFromText(text).getBlockMap().first()
-        const decorations = composite.getDecorations(content).toArray()
+        const contentState = ContentState.createFromText(text)
+        const content = contentState.getBlockMap().first()
+        const decorations = composite.getDecorations(content, contentState).toArray()
 
         expect(decorations[2]).toEqual(decorations[4])
     })

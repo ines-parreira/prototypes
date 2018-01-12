@@ -7,7 +7,7 @@ import _debounce from 'lodash/debounce'
 import _noop from 'lodash/noop'
 
 import {EditorState, ContentState, SelectionState} from 'draft-js'
-import createDndPlugin from 'draft-js-dnd-plugin'
+import createDndUploadPlugin from '@mikeljames/draft-js-drag-n-drop-upload-plugin'
 
 import shortcutManager from '../../../../../services/shortcutManager'
 import RichField from '../../../../common/forms/RichField'
@@ -21,7 +21,7 @@ import {getOtherAgents} from '../../../../../state/users/selectors'
 
 import {notify} from '../../../../../state/notifications/actions'
 
-const dndPlugin = createDndPlugin()
+const dndPlugin = createDndUploadPlugin()
 
 // Those are the source type which can send either text or attachment, but not both; they also cannot send more
 // than one attachment at a time

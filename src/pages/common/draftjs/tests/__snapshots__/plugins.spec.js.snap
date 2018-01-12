@@ -10,12 +10,15 @@ exports[`DraftJS Plugins render bold text 1`] = `
     <div
       aria-activedescendant={undefined}
       aria-autocomplete={undefined}
+      aria-controls={undefined}
       aria-describedby={null}
-      aria-expanded={undefined}
-      aria-haspopup={undefined}
+      aria-expanded={null}
       aria-label={undefined}
-      aria-owns={undefined}
-      className="public-DraftEditor-content"
+      aria-multiline={undefined}
+      autoCapitalize={undefined}
+      autoComplete={undefined}
+      autoCorrect={undefined}
+      className="notranslate public-DraftEditor-content"
       contentEditable={true}
       data-testid={undefined}
       onBeforeInput={[Function]}
@@ -42,7 +45,9 @@ exports[`DraftJS Plugins render bold text 1`] = `
       spellCheck={false}
       style={
         Object {
+          "WebkitUserSelect": "text",
           "outline": "none",
+          "userSelect": "text",
           "whiteSpace": "pre-wrap",
           "wordWrap": "break-word",
         }
@@ -115,12 +120,15 @@ exports[`DraftJS Plugins render link found in text 1`] = `
     <div
       aria-activedescendant={undefined}
       aria-autocomplete={undefined}
+      aria-controls={undefined}
       aria-describedby={null}
-      aria-expanded={undefined}
-      aria-haspopup={undefined}
+      aria-expanded={null}
       aria-label={undefined}
-      aria-owns={undefined}
-      className="public-DraftEditor-content"
+      aria-multiline={undefined}
+      autoCapitalize={undefined}
+      autoComplete={undefined}
+      autoCorrect={undefined}
+      className="notranslate public-DraftEditor-content"
       contentEditable={true}
       data-testid={undefined}
       onBeforeInput={[Function]}
@@ -147,7 +155,9 @@ exports[`DraftJS Plugins render link found in text 1`] = `
       spellCheck={false}
       style={
         Object {
+          "WebkitUserSelect": "text",
           "outline": "none",
+          "userSelect": "text",
           "whiteSpace": "pre-wrap",
           "wordWrap": "break-word",
         }
@@ -206,12 +216,15 @@ exports[`DraftJS Plugins render simple text 1`] = `
     <div
       aria-activedescendant={undefined}
       aria-autocomplete={undefined}
+      aria-controls={undefined}
       aria-describedby={null}
-      aria-expanded={undefined}
-      aria-haspopup={undefined}
+      aria-expanded={null}
       aria-label={undefined}
-      aria-owns={undefined}
-      className="public-DraftEditor-content"
+      aria-multiline={undefined}
+      autoCapitalize={undefined}
+      autoComplete={undefined}
+      autoCorrect={undefined}
+      className="notranslate public-DraftEditor-content"
       contentEditable={true}
       data-testid={undefined}
       onBeforeInput={[Function]}
@@ -238,7 +251,9 @@ exports[`DraftJS Plugins render simple text 1`] = `
       spellCheck={false}
       style={
         Object {
+          "WebkitUserSelect": "text",
           "outline": "none",
+          "userSelect": "text",
           "whiteSpace": "pre-wrap",
           "wordWrap": "break-word",
         }

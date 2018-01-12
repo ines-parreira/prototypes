@@ -1,11 +1,11 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
-import {Entity} from 'draft-js'
 
 // image render in draft js
 class Image extends React.Component {
     static propTypes = {
         block: PropTypes.object.isRequired,
+        contentState: PropTypes.object.isRequired,
         className: PropTypes.string.isRequired,
         theme: PropTypes.object.isRequired,
     }
@@ -20,6 +20,7 @@ class Image extends React.Component {
             block,
             className,
             theme,
+            contentState,
             ...otherProps
         } = this.props
 
@@ -38,7 +39,7 @@ class Image extends React.Component {
 
         const combinedClassName = classnames(theme.image, className)
 
-        const {src} = Entity.get(block.getEntityAt(0)).getData()
+        const {src} = contentState.getEntity(block.getEntityAt(0)).getData()
 
         return (
             <img

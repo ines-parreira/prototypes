@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 import plan from '../fixtures/plan'
 import * as utils from '../utils'
 import TICKET_LANGUAGES from '../config/ticketLanguages'
-import {ContentState, EditorState, convertToRaw, Entity, AtomicBlockUtils} from 'draft-js'
+import {ContentState, EditorState, convertToRaw, AtomicBlockUtils} from 'draft-js'
 import schemasJSON from '../fixtures/openapi'
 
 import addMention from '../pages/common/draftjs/plugins/mentions/modifiers/addMention'
@@ -340,7 +340,10 @@ describe('global utils', () => {
         // tests interaction between convertToHTML and convertFromHTML.
         it('should turn images into atomic blocks', () => {
             // create an editor state with an image
-            const entityKey = Entity.create('img', 'IMMUTABLE', {src: ''})
+            const entityKey = ContentState
+                .createFromText('')
+                .createEntity('img', 'IMMUTABLE', {src: ''})
+                .getLastCreatedEntityKey()
             let editorState = AtomicBlockUtils.insertAtomicBlock(
                 EditorState.createEmpty(),
                 entityKey,

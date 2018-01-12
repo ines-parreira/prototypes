@@ -105,6 +105,20 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
                       "type": "unstyled",
                     },
                   },
+                  "entityMap": Object {
+                    "__add": [Function],
+                    "__create": [Function],
+                    "__get": [Function],
+                    "__getLastCreatedEntityKey": [Function],
+                    "__mergeData": [Function],
+                    "__replaceData": [Function],
+                    "add": [Function],
+                    "create": [Function],
+                    "get": [Function],
+                    "getLastCreatedEntityKey": [Function],
+                    "mergeData": [Function],
+                    "replaceData": [Function],
+                  },
                   "selectionAfter": Object {
                     "anchorKey": "123",
                     "anchorOffset": 0,
@@ -167,6 +181,20 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
                         "type": "unstyled",
                       },
                     },
+                    "entityMap": Object {
+                      "__add": [Function],
+                      "__create": [Function],
+                      "__get": [Function],
+                      "__getLastCreatedEntityKey": [Function],
+                      "__mergeData": [Function],
+                      "__replaceData": [Function],
+                      "add": [Function],
+                      "create": [Function],
+                      "get": [Function],
+                      "getLastCreatedEntityKey": [Function],
+                      "mergeData": [Function],
+                      "replaceData": [Function],
+                    },
                     "selectionAfter": Object {
                       "anchorKey": "123",
                       "anchorOffset": 0,
@@ -196,10 +224,7 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
           plugins={
             Array [
               Object {
-                "decorator": [Function],
-                "handleDrop": [Function],
                 "handleDroppedFiles": [Function],
-                "initialize": [Function],
               },
               Object {
                 "handleReturn": [Function],
@@ -325,6 +350,20 @@ exports[`RichField should render a basic input 1`] = `
                       "type": "unstyled",
                     },
                   },
+                  "entityMap": Object {
+                    "__add": [Function],
+                    "__create": [Function],
+                    "__get": [Function],
+                    "__getLastCreatedEntityKey": [Function],
+                    "__mergeData": [Function],
+                    "__replaceData": [Function],
+                    "add": [Function],
+                    "create": [Function],
+                    "get": [Function],
+                    "getLastCreatedEntityKey": [Function],
+                    "mergeData": [Function],
+                    "replaceData": [Function],
+                  },
                   "selectionAfter": Object {
                     "anchorKey": "123",
                     "anchorOffset": 0,
@@ -387,6 +426,20 @@ exports[`RichField should render a basic input 1`] = `
                         "type": "unstyled",
                       },
                     },
+                    "entityMap": Object {
+                      "__add": [Function],
+                      "__create": [Function],
+                      "__get": [Function],
+                      "__getLastCreatedEntityKey": [Function],
+                      "__mergeData": [Function],
+                      "__replaceData": [Function],
+                      "add": [Function],
+                      "create": [Function],
+                      "get": [Function],
+                      "getLastCreatedEntityKey": [Function],
+                      "mergeData": [Function],
+                      "replaceData": [Function],
+                    },
                     "selectionAfter": Object {
                       "anchorKey": "123",
                       "anchorOffset": 0,
@@ -416,10 +469,7 @@ exports[`RichField should render a basic input 1`] = `
           plugins={
             Array [
               Object {
-                "decorator": [Function],
-                "handleDrop": [Function],
                 "handleDroppedFiles": [Function],
-                "initialize": [Function],
               },
               Object {
                 "handleReturn": [Function],

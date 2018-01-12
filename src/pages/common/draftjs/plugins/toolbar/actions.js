@@ -1,4 +1,4 @@
-import {RichUtils, EditorState, Entity, AtomicBlockUtils} from 'draft-js'
+import {RichUtils, EditorState, AtomicBlockUtils} from 'draft-js'
 import {insertText} from '../../../../../utils'
 import AddLink from './components/AddLink'
 import AddImage from './components/AddImage'
@@ -39,7 +39,7 @@ export default [
             block.findEntityRanges(
                 (character) => {
                     const entityKey = character.getEntity()
-                    return entityKey !== null && Entity.get(entityKey).getType() === 'link'
+                    return entityKey !== null && contentState.getEntity(entityKey).getType() === 'link'
                 },
                 (start, end) => {
                     if (block.getKey() === selection.anchorKey && selection.anchorKey === selection.focusKey) {
@@ -76,7 +76,12 @@ export default [
                     return setEditorState(insertText(editorState, url))
                 }
 
-                const entityKey = Entity.create('link', 'MUTABLE', {url})
+                const entityContentState = editorState.getCurrentContent().createEntity(
+                    'link',
+                    'MUTABLE',
+                    {url}
+                )
+                const entityKey = entityContentState.getLastCreatedEntityKey()
                 setEditorState(RichUtils.toggleLink(editorState, selection, entityKey))
             },
         }
@@ -87,7 +92,12 @@ export default [
         component: AddImage,
         functions: {
             addImage: (block, action, editorState, setEditorState, url) => {
-                const entityKey = Entity.create('img', 'IMMUTABLE', {src: url, width: '400'})
+                const entityContentState = editorState.getCurrentContent().createEntity(
+                    'img',
+                    'IMMUTABLE',
+                    {src: url, width: '400'}
+                )
+                const entityKey = entityContentState.getLastCreatedEntityKey()
                 let newEditorState = AtomicBlockUtils.insertAtomicBlock(
                     editorState,
                     entityKey,

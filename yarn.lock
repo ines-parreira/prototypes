@@ -2,6 +2,16 @@
 # yarn lockfile v1
 
 
+"@mikeljames/draft-js-drag-n-drop-upload-plugin@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@mikeljames/draft-js-drag-n-drop-upload-plugin/-/draft-js-drag-n-drop-upload-plugin-2.0.1.tgz#829875e2020a7a3c4b20b208bcb52aa902c7b677"
+  dependencies:
+    decorate-component-with-props "^1.0.2"
+    find-with-regex "^1.0.2"
+    immutable "~3.7.4"
+    prop-types "^15.5.8"
+    union-class-names "^1.0.0"
+
 "@types/react@^15.0.22":
   version "15.0.24"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-15.0.24.tgz#8a75299dc37906df327c18ca918bf97a55e7123b"
@@ -1955,21 +1965,15 @@ debug@2.2.0, debug@~2.2.0:
   dependencies:
     ms "0.7.1"
 
-debug@2.3.3, debug@^2.1.1, debug@^2.2.0:
+debug@2.3.3:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.3.3.tgz#40c453e67e6e13c901ddec317af8986cda9eff8c"
   dependencies:
     ms "0.7.2"
 
-debug@^2.1.3:
+debug@^2.1.1, debug@^2.1.3, debug@^2.2.0, debug@^2.6.3, debug@^2.6.8:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
-  dependencies:
-    ms "2.0.0"
-
-debug@^2.6.3, debug@^2.6.8:
-  version "2.6.8"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.8.tgz#e731531ca2ede27d188222427da17821d68ff4fc"
   dependencies:
     ms "2.0.0"
 
@@ -2127,60 +2131,44 @@ domutils@1.5.1, domutils@^1.5.1:
     dom-serializer "0"
     domelementtype "1"
 
-draft-convert@^1.4.6:
-  version "1.4.6"
-  resolved "https://registry.yarnpkg.com/draft-convert/-/draft-convert-1.4.6.tgz#0f8308399db4388bea9f7b99f420c28c787f03ee"
+draft-convert@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/draft-convert/-/draft-convert-2.0.1.tgz#dfaa812b489fa87b38a54e16d04523eab63564d9"
   dependencies:
     immutable "~3.7.4"
     invariant "^2.2.1"
 
-draft-js-block-breakout-plugin@^1.0.1:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/draft-js-block-breakout-plugin/-/draft-js-block-breakout-plugin-1.0.2.tgz#5541038a34a19c6493b02ce64ca47c0876a39ca3"
+draft-js-block-breakout-plugin@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/draft-js-block-breakout-plugin/-/draft-js-block-breakout-plugin-2.0.1.tgz#a38e3bd68d9538d7af15d4d966844d6e6d2ad850"
   dependencies:
     immutable "~3.7.4"
 
-draft-js-dnd-plugin@2.0.0-beta6:
-  version "2.0.0-beta6"
-  resolved "https://registry.yarnpkg.com/draft-js-dnd-plugin/-/draft-js-dnd-plugin-2.0.0-beta6.tgz#812251f00e8cea1389e65ea8755677885918d92e"
+draft-js-plugins-editor@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/draft-js-plugins-editor/-/draft-js-plugins-editor-2.0.4.tgz#ab7178de886d6d11f9f43a448c844da6266053e0"
   dependencies:
     decorate-component-with-props "^1.0.2"
-    draft-js ">=0.9.1"
     find-with-regex "^1.0.2"
-    immutable ">=3.8.1"
-    react ">=15.3.1"
-    react-dom ">=15.3.1"
+    immutable "~3.7.4"
+    prop-types "^15.5.8"
     union-class-names "^1.0.0"
 
-draft-js-plugins-editor@2.0.0-beta9:
-  version "2.0.0-beta9"
-  resolved "https://registry.yarnpkg.com/draft-js-plugins-editor/-/draft-js-plugins-editor-2.0.0-beta9.tgz#9793b46c4765c205366055e1c7c566d955561a72"
+draft-js-resizeable-plugin@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/draft-js-resizeable-plugin/-/draft-js-resizeable-plugin-2.0.1.tgz#11183d4f681f0bf305b0bff55e42d91ba32aaae9"
   dependencies:
     decorate-component-with-props "^1.0.2"
-    draft-js ">=0.9.1"
     find-with-regex "^1.0.2"
-    immutable ">=3.8.1"
-    react ">=15.3.1"
-    react-dom ">=15.3.1"
+    immutable "~3.7.4"
+    prop-types "^15.5.8"
     union-class-names "^1.0.0"
 
-draft-js-resizeable-plugin@2.0.0-beta9:
-  version "2.0.0-beta9"
-  resolved "https://registry.yarnpkg.com/draft-js-resizeable-plugin/-/draft-js-resizeable-plugin-2.0.0-beta9.tgz#498af4d0a4151ac37f68fe0cd227fbc00f7ed0fd"
+draft-js@^0.10.4:
+  version "0.10.4"
+  resolved "https://registry.yarnpkg.com/draft-js/-/draft-js-0.10.4.tgz#147741642097c8120d8edc232e9503e8b7fb8d35"
   dependencies:
-    decorate-component-with-props "^1.0.2"
-    draft-js ">=0.9.1"
-    find-with-regex "^1.0.2"
-    immutable ">=3.8.1"
-    react ">=15.3.1"
-    react-dom ">=15.3.1"
-    union-class-names "^1.0.0"
-
-draft-js@>=0.9.1, draft-js@^0.9.1:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/draft-js/-/draft-js-0.9.1.tgz#940a51a0ad1fede0411676b6404f4050495f54f9"
-  dependencies:
-    fbjs "^0.8.3"
+    fbjs "^0.8.15"
     immutable "~3.7.4"
     object-assign "^4.1.0"
 
@@ -2715,9 +2703,21 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "^2.0.0"
 
-fbjs@^0.8.1, fbjs@^0.8.3, fbjs@^0.8.4:
+fbjs@^0.8.1, fbjs@^0.8.4:
   version "0.8.8"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.8.tgz#02f1b6e0ea0d46c24e0b51a2d24df069563a5ad6"
+  dependencies:
+    core-js "^1.0.0"
+    isomorphic-fetch "^2.1.1"
+    loose-envify "^1.0.0"
+    object-assign "^4.1.0"
+    promise "^7.1.1"
+    setimmediate "^1.0.5"
+    ua-parser-js "^0.7.9"
+
+fbjs@^0.8.15:
+  version "0.8.16"
+  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.16.tgz#5e67432f550dc41b572bf55847b8aca64e5337db"
   dependencies:
     core-js "^1.0.0"
     isomorphic-fetch "^2.1.1"
@@ -3238,7 +3238,7 @@ immutable-devtools@0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/immutable-devtools/-/immutable-devtools-0.0.7.tgz#da0fbdd860c3a8a598967fc544bb0329ec3ad26e"
 
-immutable@>=3.8.1, immutable@^3.8.1:
+immutable@^3.8.1:
   version "3.8.1"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.1.tgz#200807f11ab0f72710ea485542de088075f68cd2"
 
@@ -5263,7 +5263,7 @@ react-document-title@^2.0.2:
   dependencies:
     react-side-effect "^1.0.2"
 
-react-dom@>=0.14.0, react-dom@>=15.3.1, react-dom@^15.3.2:
+react-dom@>=0.14.0, react-dom@^15.3.2:
   version "15.4.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.4.2.tgz#015363f05b0a1fd52ae9efdd3a0060d90695208f"
   dependencies:
@@ -5366,7 +5366,7 @@ react-transition-group@^1.1.2, react-transition-group@^1.1.3:
     prop-types "^15.5.6"
     warning "^3.0.0"
 
-react@>=0.14.0, react@>=15.3.1, react@^15.0.0, react@^15.3.2:
+react@>=0.14.0, react@^15.0.0, react@^15.3.2:
   version "15.4.2"
   resolved "https://registry.yarnpkg.com/react/-/react-15.4.2.tgz#41f7991b26185392ba9bae96c8889e7e018397ef"
   dependencies:

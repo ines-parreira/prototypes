@@ -3,7 +3,6 @@
  */
 
 import React, {PropTypes} from 'react'
-import {Entity} from 'draft-js'
 import {fromJS} from 'immutable'
 
 const MentionText = ({children, className}) =>{
@@ -20,12 +19,13 @@ const MentionText = ({children, className}) =>{
 const Mention = (props) => {
     const {
         entityKey,
+        contentState,
         theme = {},
         children,
         decoratedText,
     } = props
 
-    const mention = fromJS(Entity.get(entityKey).getData().mention)
+    const mention = fromJS(contentState.getEntity(entityKey).getData().mention)
 
     return (
         <MentionText
@@ -47,6 +47,7 @@ MentionText.propTypes = {
 
 Mention.propTypes = {
     entityKey: PropTypes.string,
+    contentState: PropTypes.object,
     mentionComponent: PropTypes.object,
     theme: PropTypes.object,
     children: PropTypes.array,

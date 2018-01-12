@@ -1,6 +1,5 @@
 import React from 'react'
 import classnames from 'classnames'
-import {Entity} from 'draft-js'
 
 import Tooltip from '../../../components/Tooltip'
 import {linkify} from '../../../../../utils'
@@ -11,16 +10,16 @@ import * as integrationsHelpers from '../../../../../state/integrations/helpers'
 
 // VARIABLE
 export const variable = {
-    strategy: (contentBlock, callback) => {
+    strategy: (contentBlock, callback, contentState) => {
         contentBlock.findEntityRanges(
             (character) => {
                 const entityKey = character.getEntity()
-                return entityKey !== null && Entity.get(entityKey).getType() === 'variable'
+                return entityKey !== null && contentState.getEntity(entityKey).getType() === 'variable'
             }, callback
         )
     },
-    component: ({children, entityKey}) => { // eslint-disable-line
-        const entity = Entity.get(entityKey).getData()
+    component: ({children, entityKey, contentState}) => { // eslint-disable-line
+        const entity = contentState.getEntity(entityKey).getData()
         const {fullName, type} = entity
 
         let title = fullName
@@ -63,16 +62,16 @@ export const variable = {
 
 // LINK
 export const link = {
-    strategy: (contentBlock, callback) => {
+    strategy: (contentBlock, callback, contentState) => {
         contentBlock.findEntityRanges(
             (character) => {
                 const entityKey = character.getEntity()
-                return entityKey !== null && Entity.get(entityKey).getType() === 'link'
+                return entityKey !== null && contentState.getEntity(entityKey).getType() === 'link'
             }, callback
         )
     },
-    component: ({children, entityKey}) => { // eslint-disable-line
-        const entity = Entity.get(entityKey).getData()
+    component: ({children, entityKey, contentState}) => { // eslint-disable-line
+        const entity = contentState.getEntity(entityKey).getData()
         const {url} = entity
         const id = `link-${entityKey}`
         return (

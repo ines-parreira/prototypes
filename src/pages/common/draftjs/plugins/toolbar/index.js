@@ -1,5 +1,4 @@
 import decorateComponentWithProps from 'decorate-component-with-props'
-import {Entity} from 'draft-js'
 
 import createStore from './createStore'
 import decorators from './decorators'
@@ -27,10 +26,11 @@ const toolbarPlugin = (config = {}) => {
         },
         Toolbar: decorateComponentWithProps(Toolbar, toolbarProps),
         decorators,
-        blockRendererFn: (block) => {
+        blockRendererFn: (block, {getEditorState}) => {
+            const contetState = getEditorState().getCurrentContent()
             // render img (atomic block)
             if (block.getType() === 'atomic') {
-                const entity = Entity.get(block.getEntityAt(0))
+                const entity = contetState.getEntity(block.getEntityAt(0))
                 const type = entity.getType()
                 if (type === 'img') {
                     let component = Image

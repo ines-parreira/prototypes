@@ -9,7 +9,7 @@ exports[`DatePicker should render a date range picker 1`] = `
     ]
   }
   cancelClass="btn-secondary"
-  minDate={"2017-12-24T08:00:00.000Z"}
+  minDate={"2017-12-24T07:00:00.000Z"}
   onApply={null}
   onEvent={[Function]}
   onHide={null}
@@ -17,14 +17,14 @@ exports[`DatePicker should render a date range picker 1`] = `
   ranges={
     Object {
       "tomorrow": Array [
-        "2017-12-24T08:00:00.000Z",
-        "2017-12-24T08:00:00.000Z",
+        "2017-12-24T07:00:00.000Z",
+        "2017-12-24T07:00:00.000Z",
       ],
     }
   }
   showCustomRangeLabel={false}
   singleDatePicker={true}
-  startDate={"2017-12-24T08:00:00.000Z"}
+  startDate={"2017-12-24T07:00:00.000Z"}
   timePicker={true}
 >
   Select a date

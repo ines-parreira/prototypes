@@ -6,7 +6,9 @@ import _isEqual from 'lodash/isEqual'
 
 import {ContentState, EditorState, RichUtils} from 'draft-js'
 import Editor, {composeDecorators} from 'draft-js-plugins-editor'
-import createDndPlugin from 'draft-js-dnd-plugin'
+// TODO switch to official source when published
+// https://github.com/draft-js-plugins/draft-js-plugins/issues/755
+import createDndUploadPlugin from '@mikeljames/draft-js-drag-n-drop-upload-plugin'
 import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
 import createResizeablePlugin from 'draft-js-resizeable-plugin'
 
@@ -57,7 +59,7 @@ export default class RichField extends InputField<Props, State> {
     constructor(props: Props) {
         super(props)
 
-        this.dndPlugin = createDndPlugin()
+        this.dndPlugin = createDndUploadPlugin()
         this.blockBreakoutPlugin = createBlockBreakoutPlugin()
         this.resizeablePlugin = createResizeablePlugin({
             horizontal: 'absolute',

@@ -949,6 +949,20 @@ exports[`CampaignDetail component should display default value when it's a new c
                                                   "type": "unstyled",
                                                 },
                                               },
+                                              "entityMap": Object {
+                                                "__add": [Function],
+                                                "__create": [Function],
+                                                "__get": [Function],
+                                                "__getLastCreatedEntityKey": [Function],
+                                                "__mergeData": [Function],
+                                                "__replaceData": [Function],
+                                                "add": [Function],
+                                                "create": [Function],
+                                                "get": [Function],
+                                                "getLastCreatedEntityKey": [Function],
+                                                "mergeData": [Function],
+                                                "replaceData": [Function],
+                                              },
                                               "selectionAfter": Object {
                                                 "anchorKey": "someRandomKey",
                                                 "anchorOffset": 0,
@@ -1038,6 +1052,20 @@ exports[`CampaignDetail component should display default value when it's a new c
                                                     "type": "unstyled",
                                                   },
                                                 },
+                                                "entityMap": Object {
+                                                  "__add": [Function],
+                                                  "__create": [Function],
+                                                  "__get": [Function],
+                                                  "__getLastCreatedEntityKey": [Function],
+                                                  "__mergeData": [Function],
+                                                  "__replaceData": [Function],
+                                                  "add": [Function],
+                                                  "create": [Function],
+                                                  "get": [Function],
+                                                  "getLastCreatedEntityKey": [Function],
+                                                  "mergeData": [Function],
+                                                  "replaceData": [Function],
+                                                },
                                                 "selectionAfter": Object {
                                                   "anchorKey": "someRandomKey",
                                                   "anchorOffset": 0,
@@ -1068,10 +1096,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                       plugins={
                                         Array [
                                           Object {
-                                            "decorator": [Function],
-                                            "handleDrop": [Function],
                                             "handleDroppedFiles": [Function],
-                                            "initialize": [Function],
                                           },
                                           Object {
                                             "handleReturn": [Function],
@@ -1157,6 +1182,9 @@ exports[`CampaignDetail component should display default value when it's a new c
                                               "element": "figure",
                                             },
                                             unstyled: Object {
+                                              "aliasedElements": Array [
+                                                "p",
+                                              ],
                                               "element": "div",
                                             },
                                             header-two: Object {
@@ -1199,6 +1227,20 @@ exports[`CampaignDetail component should display default value when it's a new c
                                                     "text": "",
                                                     "type": "unstyled",
                                                   },
+                                                },
+                                                "entityMap": Object {
+                                                  "__add": [Function],
+                                                  "__create": [Function],
+                                                  "__get": [Function],
+                                                  "__getLastCreatedEntityKey": [Function],
+                                                  "__mergeData": [Function],
+                                                  "__replaceData": [Function],
+                                                  "add": [Function],
+                                                  "create": [Function],
+                                                  "get": [Function],
+                                                  "getLastCreatedEntityKey": [Function],
+                                                  "mergeData": [Function],
+                                                  "replaceData": [Function],
                                                 },
                                                 "selectionAfter": Object {
                                                   "anchorKey": "someRandomKey",
@@ -1289,6 +1331,20 @@ exports[`CampaignDetail component should display default value when it's a new c
                                                       "type": "unstyled",
                                                     },
                                                   },
+                                                  "entityMap": Object {
+                                                    "__add": [Function],
+                                                    "__create": [Function],
+                                                    "__get": [Function],
+                                                    "__getLastCreatedEntityKey": [Function],
+                                                    "__mergeData": [Function],
+                                                    "__replaceData": [Function],
+                                                    "add": [Function],
+                                                    "create": [Function],
+                                                    "get": [Function],
+                                                    "getLastCreatedEntityKey": [Function],
+                                                    "mergeData": [Function],
+                                                    "replaceData": [Function],
+                                                  },
                                                   "selectionAfter": Object {
                                                     "anchorKey": "someRandomKey",
                                                     "anchorOffset": 0,
@@ -1310,7 +1366,6 @@ exports[`CampaignDetail component should display default value when it's a new c
                                             },
                                           }
                                         }
-                                        handleDrop={[Function]}
                                         handleDroppedFiles={[Function]}
                                         handleKeyCommand={[Function]}
                                         handleReturn={[Function]}
@@ -1326,10 +1381,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                         plugins={
                                           Array [
                                             Object {
-                                              "decorator": [Function],
-                                              "handleDrop": [Function],
                                               "handleDroppedFiles": [Function],
-                                              "initialize": [Function],
                                             },
                                             Object {
                                               "handleReturn": [Function],
@@ -1407,6 +1459,20 @@ exports[`CampaignDetail component should display default value when it's a new c
                                                         "text": "",
                                                         "type": "unstyled",
                                                       },
+                                                    },
+                                                    "entityMap": Object {
+                                                      "__add": [Function],
+                                                      "__create": [Function],
+                                                      "__get": [Function],
+                                                      "__getLastCreatedEntityKey": [Function],
+                                                      "__mergeData": [Function],
+                                                      "__replaceData": [Function],
+                                                      "add": [Function],
+                                                      "create": [Function],
+                                                      "get": [Function],
+                                                      "getLastCreatedEntityKey": [Function],
+                                                      "mergeData": [Function],
+                                                      "replaceData": [Function],
                                                     },
                                                     "selectionAfter": Object {
                                                       "anchorKey": "someRandomKey",
@@ -1497,6 +1563,20 @@ exports[`CampaignDetail component should display default value when it's a new c
                                                           "type": "unstyled",
                                                         },
                                                       },
+                                                      "entityMap": Object {
+                                                        "__add": [Function],
+                                                        "__create": [Function],
+                                                        "__get": [Function],
+                                                        "__getLastCreatedEntityKey": [Function],
+                                                        "__mergeData": [Function],
+                                                        "__replaceData": [Function],
+                                                        "add": [Function],
+                                                        "create": [Function],
+                                                        "get": [Function],
+                                                        "getLastCreatedEntityKey": [Function],
+                                                        "mergeData": [Function],
+                                                        "replaceData": [Function],
+                                                      },
                                                       "selectionAfter": Object {
                                                         "anchorKey": "someRandomKey",
                                                         "anchorOffset": 0,
@@ -1537,9 +1617,8 @@ exports[`CampaignDetail component should display default value when it's a new c
                                             <div
                                               aria-autocomplete="list"
                                               aria-describedby="placeholder-someRandomKey"
-                                              aria-expanded="false"
-                                              aria-haspopup="false"
-                                              className="public-DraftEditor-content"
+                                              aria-expanded={true}
+                                              className="notranslate public-DraftEditor-content"
                                               contentEditable={true}
                                               onBeforeInput={[Function]}
                                               onBlur={[Function]}
@@ -1565,7 +1644,9 @@ exports[`CampaignDetail component should display default value when it's a new c
                                               spellCheck={false}
                                               style={
                                                 Object {
+                                                  "WebkitUserSelect": "text",
                                                   "outline": "none",
+                                                  "userSelect": "text",
                                                   "whiteSpace": "pre-wrap",
                                                   "wordWrap": "break-word",
                                                 }
@@ -1600,6 +1681,9 @@ exports[`CampaignDetail component should display default value when it's a new c
                                                       "element": "figure",
                                                     },
                                                     unstyled: Object {
+                                                      "aliasedElements": Array [
+                                                        "p",
+                                                      ],
                                                       "element": "div",
                                                     },
                                                     header-two: Object {
@@ -1659,6 +1743,20 @@ exports[`CampaignDetail component should display default value when it's a new c
                                                             "text": "",
                                                             "type": "unstyled",
                                                           },
+                                                        },
+                                                        "entityMap": Object {
+                                                          "__add": [Function],
+                                                          "__create": [Function],
+                                                          "__get": [Function],
+                                                          "__getLastCreatedEntityKey": [Function],
+                                                          "__mergeData": [Function],
+                                                          "__replaceData": [Function],
+                                                          "add": [Function],
+                                                          "create": [Function],
+                                                          "get": [Function],
+                                                          "getLastCreatedEntityKey": [Function],
+                                                          "mergeData": [Function],
+                                                          "replaceData": [Function],
                                                         },
                                                         "selectionAfter": Object {
                                                           "anchorKey": "someRandomKey",
@@ -1749,6 +1847,20 @@ exports[`CampaignDetail component should display default value when it's a new c
                                                               "type": "unstyled",
                                                             },
                                                           },
+                                                          "entityMap": Object {
+                                                            "__add": [Function],
+                                                            "__create": [Function],
+                                                            "__get": [Function],
+                                                            "__getLastCreatedEntityKey": [Function],
+                                                            "__mergeData": [Function],
+                                                            "__replaceData": [Function],
+                                                            "add": [Function],
+                                                            "create": [Function],
+                                                            "get": [Function],
+                                                            "getLastCreatedEntityKey": [Function],
+                                                            "mergeData": [Function],
+                                                            "replaceData": [Function],
+                                                          },
                                                           "selectionAfter": Object {
                                                             "anchorKey": "someRandomKey",
                                                             "anchorOffset": 0,
@@ -1789,6 +1901,50 @@ exports[`CampaignDetail component should display default value when it's a new c
                                                           "key": "someRandomKey",
                                                           "text": "",
                                                           "type": "unstyled",
+                                                        }
+                                                      }
+                                                      contentState={
+                                                        Object {
+                                                          "blockMap": Object {
+                                                            "someRandomKey": Object {
+                                                              "characterList": Array [],
+                                                              "data": Object {},
+                                                              "depth": 0,
+                                                              "key": "someRandomKey",
+                                                              "text": "",
+                                                              "type": "unstyled",
+                                                            },
+                                                          },
+                                                          "entityMap": Object {
+                                                            "__add": [Function],
+                                                            "__create": [Function],
+                                                            "__get": [Function],
+                                                            "__getLastCreatedEntityKey": [Function],
+                                                            "__mergeData": [Function],
+                                                            "__replaceData": [Function],
+                                                            "add": [Function],
+                                                            "create": [Function],
+                                                            "get": [Function],
+                                                            "getLastCreatedEntityKey": [Function],
+                                                            "mergeData": [Function],
+                                                            "replaceData": [Function],
+                                                          },
+                                                          "selectionAfter": Object {
+                                                            "anchorKey": "someRandomKey",
+                                                            "anchorOffset": 0,
+                                                            "focusKey": "someRandomKey",
+                                                            "focusOffset": 0,
+                                                            "hasFocus": false,
+                                                            "isBackward": false,
+                                                          },
+                                                          "selectionBefore": Object {
+                                                            "anchorKey": "someRandomKey",
+                                                            "anchorOffset": 0,
+                                                            "focusKey": "someRandomKey",
+                                                            "focusOffset": 0,
+                                                            "hasFocus": true,
+                                                            "isBackward": false,
+                                                          },
                                                         }
                                                       }
                                                       customStyleMap={
@@ -1875,7 +2031,16 @@ exports[`CampaignDetail component should display default value when it's a new c
                                                         data-offset-key="someRandomKey-0-0"
                                                       >
                                                         <DraftEditorLeaf
-                                                          blockKey="someRandomKey"
+                                                          block={
+                                                            Object {
+                                                              "characterList": Array [],
+                                                              "data": Object {},
+                                                              "depth": 0,
+                                                              "key": "someRandomKey",
+                                                              "text": "",
+                                                              "type": "unstyled",
+                                                            }
+                                                          }
                                                           customStyleMap={
                                                             Object {
                                                               "BOLD": Object {

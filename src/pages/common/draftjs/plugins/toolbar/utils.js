@@ -1,4 +1,4 @@
-import {EditorState, Modifier, SelectionState, Entity, RichUtils} from 'draft-js'
+import {EditorState, Modifier, SelectionState, RichUtils} from 'draft-js'
 import findWithRegex from 'find-with-regex'
 import _forEach from 'lodash/forEach'
 import _trim from 'lodash/trim'
@@ -90,7 +90,7 @@ export const attachImmutableEntitiesToVariables = (editorState) => {
             const existingEntityKey = block.getEntityAt(start)
             if (existingEntityKey) {
                 // avoid manipulation in case the variable already has an entity
-                const entity = Entity.get(existingEntityKey)
+                const entity = contentState.getEntity(existingEntityKey)
                 if (entity && entity.get('type') === 'variable') {
                     return
                 }
@@ -107,7 +107,12 @@ export const attachImmutableEntitiesToVariables = (editorState) => {
                 return
             }
 
-            const entityKey = Entity.create('variable', 'IMMUTABLE', {...variable, result: value})
+            const entityContentState = contentState.createEntity(
+                'variable',
+                'IMMUTABLE',
+                {...variable, result: value}
+            )
+            const entityKey = entityContentState.getLastCreatedEntityKey()
             newContentState = Modifier.replaceText(
                 newContentState,
                 selection,

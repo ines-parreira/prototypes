@@ -14,7 +14,7 @@ exports[`TicketSnooze should render an icon with a tooltip 1`] = `
     target="ticket-header-snooze-icon"
   >
     Snooze 
-    07/09/49944
+    05/28/49944
   </Tooltip>
 </div>
 `;

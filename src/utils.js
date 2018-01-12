@@ -22,7 +22,7 @@ import escodegen from 'escodegen'
 import moment from 'moment-timezone'
 import linkifyhtml from 'linkifyjs/html'
 import sanitizeHtml from 'sanitize-html'
-import {Entity, Modifier, EditorState, ContentState} from 'draft-js'
+import {Modifier, EditorState, ContentState} from 'draft-js'
 import {convertToHTML as _convertToHTML, convertFromHTML as _convertFromHTML} from 'draft-convert'
 // $FlowFixMe: will be fixed with immutable 4.x
 import Immutable, {fromJS} from 'immutable'
@@ -556,9 +556,9 @@ export function convertFromHTML(html: string): ContentState {
                 return 'atomic'
             }
         },
-        htmlToEntity: (nodeName, node) => {
+        htmlToEntity: (nodeName, node, createEntity) => {
             if (nodeName === 'a') {
-                return Entity.create(
+                return createEntity(
                     'link',
                     'MUTABLE',
                     {url: unescapeTemplateVars(node.href)}
@@ -566,7 +566,7 @@ export function convertFromHTML(html: string): ContentState {
             }
 
             if (nodeName === 'img') {
-                return Entity.create(
+                return createEntity(
                     'img',
                     'MUTABLE',
                     {

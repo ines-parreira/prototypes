@@ -2,11 +2,13 @@
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
 
-import {Modifier, EditorState, Entity} from 'draft-js'
+import {Modifier, EditorState} from 'draft-js'
 import {getSearchText, getTypeByTrigger} from '../utils'
 
 const addMention = (editorState, mention, mentionPrefix, mentionTrigger, entityMutability) => {
-    const entityKey = Entity.create(getTypeByTrigger(mentionTrigger), entityMutability, {mention})
+    const contentState = editorState.getCurrentContent()
+    const entityContentState = contentState.createEntity(getTypeByTrigger(mentionTrigger), entityMutability, {mention})
+    const entityKey = entityContentState.getLastCreatedEntityKey()
 
     const currentSelectionState = editorState.getSelection()
     const {begin, end} = getSearchText(editorState, currentSelectionState)
@@ -18,7 +20,7 @@ const addMention = (editorState, mention, mentionPrefix, mentionTrigger, entityM
     })
 
     let mentionReplacedContent = Modifier.replaceText(
-        editorState.getCurrentContent(),
+        contentState,
         mentionTextSelection,
         `${mentionPrefix}${mention.get('name')}`,
         null, // no inline style needed
@@ -28,7 +30,7 @@ const addMention = (editorState, mention, mentionPrefix, mentionTrigger, entityM
     // If the mention is inserted at the end, a space is appended right after for
     // a smooth writing experience.
     const blockKey = mentionTextSelection.getAnchorKey()
-    const blockSize = editorState.getCurrentContent().getBlockForKey(blockKey).getLength()
+    const blockSize = contentState.getBlockForKey(blockKey).getLength()
     if (blockSize === end) {
         mentionReplacedContent = Modifier.insertText(
             mentionReplacedContent,
