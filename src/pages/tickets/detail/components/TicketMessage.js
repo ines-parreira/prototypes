@@ -93,7 +93,11 @@ export default class TicketMessage extends React.Component {
             && source.type !== 'api'
             && source.type !== 'system-message'
 
-        if (hasLegend) {
+        if (!source.from) {
+            if (['aircall', 'phone'].includes(source.type)) {
+                legend = 'Unknown number'
+            }
+        } else if (hasLegend) {
             legend = `${source.from[getValuePropFromSourceType(source.type)]}`
         }
 
