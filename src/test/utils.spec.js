@@ -355,6 +355,12 @@ describe('global utils', () => {
             const contentState = utils.convertFromHTML(wrappedHTML)
             expect(contentState.getBlocksAsArray().find(b => b.type === 'atomic')).toBeTruthy()
         })
+
+        it('should convert links with {{variables}} to html', () => {
+            const text = 'Hello there\n\nwww.google.com/{{ticket.id}}'
+            const contentState = ContentState.createFromText(text)
+            expect(utils.convertToHTML(contentState)).toEqual('<div>Hello there</div><br><div><a href="http://www.google.com/{{ticket.id}}" class="linkified" target="_blank">www.google.com/{{ticket.id}}</a></div>')
+        })
     })
 
     describe('humanize string', () => {

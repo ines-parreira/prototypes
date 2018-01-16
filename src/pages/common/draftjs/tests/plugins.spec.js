@@ -112,8 +112,17 @@ describe('DraftJS decorators', () => {
         const contentState = ContentState.createFromText(text)
         const content = contentState.getBlockMap().first()
         const decorations = composite.getDecorations(content, contentState).toArray()
+        const expectedDecorations = Array(11).fill(null).concat(Array(17).fill('0.0'))
+        expect(decorations).toEqual(expectedDecorations)
+    })
 
-        expect(decorations[2]).toEqual(decorations[4])
+    it('find url with {{variable}} in text', () => {
+        const composite = utils.getCompositeDecorator(foundUrlDecorator)
+        const text = 'find a url http://google.com/{{ticket.id}}'
+        const content = ContentState.createFromText(text).getBlockMap().first()
+        const decorations = composite.getDecorations(content).toArray()
+        const expectedDecorations = Array(11).fill(null).concat(Array(31).fill('0.0'))
+        expect(decorations).toEqual(expectedDecorations)
     })
 })
 

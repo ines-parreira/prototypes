@@ -494,12 +494,33 @@ export function slugify(string: string): string {
 
 
 /**
+ * Temporarily adds an uid at the end of each {{variable}} (eg. {{variable}}123),
+ * runs the callback on the new string, then removes the uid.
+ * Required for supporting links ending with variables (eg. www.google.com/{{ticket.id}}).
+ *
+ * @param {String} field the field path. E.g: ticket.requester.id
+ * @param {Function} function to run on the string
+ * @returns {String} parsed string with removed uids
+ */
+const fixLinkVars = (html: string, callback: (T: string) => string): string => {
+    // use a uid, so we don't accidentally replace something else.
+    const uid = String(Date.now())
+    // add uid at the end of the variables,
+    // this makes urls with {{}} valid.
+    const replacedHtml = html.replace(/{{.*?}}/g, (match) => `${match}${uid}`)
+    // synchronous extra parsing (eg. linkify)
+    const parsedHtml = callback(replacedHtml) || replacedHtml
+    // remove the added uid
+    const restoreRegex = new RegExp(`{{.*?}}${uid}`, 'g')
+    return parsedHtml.replace(restoreRegex, (match) => match.replace(uid, ''))
+}
+
+/**
  * Single convertToHTML config for the entire app (same options everywhere if needed)
  * @param contentState
  */
 export function convertToHTML(contentState: ContentState): string {
-    // linkify transforms linkified urls into actual HTML links
-    return linkifyhtml(_convertToHTML({
+    return fixLinkVars(_convertToHTML({
         blockToHTML: {
             unstyled: {
                 start: '<div>',
@@ -536,12 +557,15 @@ export function convertToHTML(contentState: ContentState): string {
 
             return originalText
         }
-    })(contentState), {
-        validate: {
-            url(value) {
-                return linkify.test(value)
+    })(contentState), (str) => {
+        // linkify transforms linkified urls into actual HTML links
+        return linkifyhtml(str, {
+            validate: {
+                url(value) {
+                    return linkify.test(value)
+                }
             }
-        }
+        })
     })
 }
 

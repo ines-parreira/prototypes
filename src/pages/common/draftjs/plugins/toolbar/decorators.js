@@ -96,7 +96,13 @@ export const link = {
 // URL FOUND IN TEXT
 export const foundUrl = {
     strategy: (contentBlock, callback) => {
-        const links = linkify.match(contentBlock.get('text'))
+        // BUG double-closing curly braces, brackets, etc. break linkify-it detection,
+        // because they're not valid URL characters.
+        // https://github.com/markdown-it/linkify-it/issues/52
+        // we just need the text start/end indexes,
+        // so we can replace them with anything of the same length.
+        const encodedText = contentBlock.get('text').replace(/{{(.*?)}}/g, (m, group) => `**${group}**`)
+        const links = linkify.match(encodedText)
 
         if (!links) {
             return
