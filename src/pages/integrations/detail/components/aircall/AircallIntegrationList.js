@@ -9,7 +9,6 @@ import * as integrationsActions from '../../../../../state/integrations/actions'
 @connect(null, {
     activate: integrationsActions.activateIntegration,
     deactivate: integrationsActions.deactivateIntegration,
-    delete: integrationsActions.deleteIntegration,
 })
 export default class AircallIntegrationList extends React.Component {
     static propTypes = {
@@ -17,7 +16,6 @@ export default class AircallIntegrationList extends React.Component {
         loading: PropTypes.object.isRequired,
         activate: PropTypes.func.isRequired,
         deactivate: PropTypes.func.isRequired,
-        delete: PropTypes.func.isRequired,
     }
 
     render() {
@@ -36,7 +34,6 @@ export default class AircallIntegrationList extends React.Component {
                     key={int.get('id')}
                     activate={this.props.activate}
                     deactivate={this.props.deactivate}
-                    delete={this.props.delete}
                     integration={int}
                 />
             )
