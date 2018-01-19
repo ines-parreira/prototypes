@@ -61,8 +61,16 @@ export const sendEvents = [
         },
     },
     {
+        name: socketConstants.AGENT_ACTIVE,
+        dataToSend: function() {
+            return {
+                event: socketConstants.AGENT_ACTIVE,
+            }
+        },
+    },
+    {
         name: socketConstants.SID_UPDATED,
-        dataToSend: function () {
+        dataToSend: function() {
             return {
                 clientId: window.CLIENT_ID,
                 event: socketConstants.SID_UPDATED

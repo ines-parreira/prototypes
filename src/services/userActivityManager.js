@@ -2,11 +2,13 @@ import _throttle from 'lodash/throttle'
 
 import {store as reduxStore} from '../init'
 import {toggleActiveStatus} from '../state/currentUser/actions'
+import * as socketConstants from '../config/socketConstants'
+import socketManager from './socketManager'
 
 
 class UserActivityManager {
     inactivityTimeout = 60000 // 1 min
-    watchThrottling = 5000 // 5 secs
+    watchThrottling = 15000 // 15 secs
     userActivityFn = null
     store = reduxStore
 
@@ -15,6 +17,8 @@ class UserActivityManager {
      * set him as inactive after a period of inactivity
      */
     setCurrentUserActive = _throttle(() => {
+        socketManager.send(socketConstants.AGENT_ACTIVE)
+
         clearTimeout(this.userActivityFn)
         const currentUser = this.store.getState().currentUser
 

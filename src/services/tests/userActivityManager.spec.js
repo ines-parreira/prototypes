@@ -2,6 +2,8 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import userActivityManager from '../userActivityManager'
+import socketManager from '../socketManager'
+import * as socketConstants from '../../config/socketConstants'
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
@@ -11,7 +13,12 @@ describe('services', () => {
 
         it('should dispatch TOGGLE_ACTIVE_STATUS', (done) => {
             // mark the current user as inactive
+            const sendSpy = jest.fn()
+            const send = socketManager.send
+
             store = mockStore({currentUser: fromJS({is_active: false})})
+
+            socketManager.send = sendSpy
             userActivityManager.store = store
             userActivityManager.inactivityTimeout = 5
             userActivityManager.watchThrottling = 0
@@ -19,14 +26,20 @@ describe('services', () => {
             userActivityManager.setCurrentUserActive()
             expect(store.getActions()).toMatchSnapshot()
 
+            // Should send an event via websocket
+            expect(sendSpy).toHaveBeenCalledWith(socketConstants.AGENT_ACTIVE)
+
             // mark the current user as active
             store = mockStore({currentUser: fromJS({is_active: true})})
+
             userActivityManager.store = store
+            socketManager.send = send
 
             setTimeout(() => {
                 expect(store.getActions()).toMatchSnapshot()
                 done()
             }, userActivityManager.inactivityTimeout + 1)
+
         })
 
         it('should watch user activity', () => {
