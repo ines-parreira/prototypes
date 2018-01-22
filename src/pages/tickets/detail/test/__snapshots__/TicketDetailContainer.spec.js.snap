@@ -25,9 +25,6 @@ exports[`TicketDetailContainer component should render container for new ticket 
             "submitTicket": [Function],
             "submitTicketMessage": [Function],
           },
-          "settings": Object {
-            "fetchSettings": [Function],
-          },
           "tag": Object {
             "addTags": [Function],
             "bulkDelete": [Function],
@@ -65,6 +62,7 @@ exports[`TicketDetailContainer component should render container for new ticket 
             "fetchPage": [Function],
             "fetchRecentViewsCounts": [Function],
             "fetchViews": [Function],
+            "fetchVisibleViewsCounts": [Function],
             "fieldEnumSearch": [Function],
             "handleViewsCount": [Function],
             "removeFieldFilter": [Function],

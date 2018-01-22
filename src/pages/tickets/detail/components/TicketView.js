@@ -30,7 +30,6 @@ import appCss from '../../../App.less'
         currentUser: state.currentUser,
         macros: state.macros,
         routing: state.routing,
-        settings: state.settings,
         tags: tagsSelectors.getTags(state),
         ticket: state.ticket,
         ticketBody: ticketSelectors.getBody(state),
@@ -50,7 +49,6 @@ export default class TicketView extends React.Component {
         hideTicket: PropTypes.func.isRequired,
         isTicketHidden: PropTypes.bool.isRequired,
         macros: PropTypes.object.isRequired,
-        settings: PropTypes.object.isRequired,
         submit: PropTypes.func.isRequired,
         tags: PropTypes.object.isRequired,
         ticket: PropTypes.object.isRequired,
@@ -292,7 +290,6 @@ export default class TicketView extends React.Component {
                     >
                         <ReplyMessageChannel
                             actions={this.props.actions}
-                            settings={this.props.settings}
                         />
 
                         <TicketReplyArea

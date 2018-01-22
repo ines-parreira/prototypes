@@ -14,7 +14,6 @@ export type stateType = {
     notifications: {},
     rules: {},
     schemas: {},
-    settings: {},
     stats: {},
     tags: {},
     ticket: {},

@@ -12,9 +12,7 @@ import * as layoutActions from '../state/layout/actions'
 import * as activityActions from '../state/activity/actions'
 import * as viewsActions from '../state/views/actions'
 import * as currentAccountActions from '../state/currentAccount/actions'
-import {fetchUser, fetchUsers} from '../state/users/actions'
-import {fetchSettings} from '../state/settings/actions'
-import {fetchTags} from '../state/tags/actions'
+import {fetchUser} from '../state/users/actions'
 import {injectInterceptor} from '../utils/axios'
 
 import * as layoutSelectors from '../state/layout/selectors'
@@ -48,19 +46,13 @@ type Props = {
     // current logged in user
     currentUser: currentUserType,
     currentAccount: currentAccountType,
-
     currentRoute: {
         infobarOnMobile?: boolean,
         noContainerPadding?: boolean,
     },
     fetchUser: typeof fetchUser,
-    fetchUsers: typeof fetchUsers,
-    fetchSettings: typeof fetchSettings,
-    fetchTags: typeof fetchTags,
     injectInterceptor: typeof injectInterceptor,
-    fetchActiveViewCount: typeof viewsActions.fetchActiveViewCount,
-    fetchRecentViewsCounts: typeof viewsActions.fetchRecentViewsCounts,
-    fetchActiveViewTickets: typeof viewsActions.fetchActiveViewTickets,
+    fetchVisibleViewsCounts: typeof viewsActions.fetchVisibleViewsCounts,
     pollChats: typeof activityActions.pollChats,
     openPanel: typeof layoutActions.openPanel,
     closePanels: typeof layoutActions.closePanels,
@@ -84,13 +76,15 @@ type Props = {
 
 class App extends React.Component<Props> {
     componentWillMount() {
-        this.props.fetchUsers(['agent', 'admin', 'bot'])
         this.props.injectInterceptor()
         // We're triggering an account update the first time the app is mounted so we can get
         // the notification from the middleware for limited (Ex: disabled, free trial ending) accounts
         this.props.updateAccountSuccess(this.props.currentAccount)
         userActivityManager.watch()
         pollingManager.start()
+
+        // ask for the newest view counts
+        this.props.fetchVisibleViewsCounts()
     }
 
     componentDidMount() {
@@ -214,13 +208,8 @@ function mapStateToProps(state, ownProps) {
 
 export default connect(mapStateToProps, {
     fetchUser,
-    fetchUsers,
-    fetchSettings,
-    fetchTags,
     injectInterceptor: injectInterceptor,
-    fetchActiveViewCount: viewsActions.fetchActiveViewCount,
-    fetchRecentViewsCounts: viewsActions.fetchRecentViewsCounts,
-    fetchActiveViewTickets: viewsActions.fetchActiveViewTickets,
+    fetchVisibleViewsCounts: viewsActions.fetchVisibleViewsCounts,
     pollChats: activityActions.pollChats,
     openPanel: layoutActions.openPanel,
     closePanels: layoutActions.closePanels,

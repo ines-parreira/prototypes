@@ -86,7 +86,7 @@ export const updateFieldFilterOperator = (index: number, operator: string) => ({
 })
 
 // not a real redux action, is used to return data, not to be used in the reducer
-export function fieldEnumSearch(field: Map<*,*>, query: string): thunkActionType {
+export function fieldEnumSearch(field: Map<*, *>, query: string): thunkActionType {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
             type: types.UPDATE_VIEW_FIELD_ENUM_START
@@ -474,7 +474,7 @@ export function bulkApplyMacro(macroId: string) {
  * Handle views item count update
  * @param response
  */
-export const handleViewsCount = (counts: {counts: number}): Object => ({
+export const handleViewsCount = (counts: { counts: number }): Object => ({
     type: types.UPDATE_COUNTS,
     counts,
 })
@@ -500,6 +500,15 @@ export const fetchActiveViewTickets = () => (dispatch: dispatchType, getState: g
     }
 
     return dispatch(fetchPage(null, true))
+}
+
+export const fetchVisibleViewsCounts = () => (dispatch: dispatchType, getState: getStateType) => {
+    const state = getState()
+    const viewIds = viewsSelectors.getVisibleViewIds()(state).toJS()
+    socketManager.send(socketConstants.VIEWS_COUNTS_EXPIRED, {
+        viewIds,
+        force: true
+    })
 }
 
 export const fetchRecentViewsCounts = () => (dispatch: dispatchType, getState: getStateType) => {

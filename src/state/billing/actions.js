@@ -138,7 +138,7 @@ export function updateCreditCard(creditCard: creditCardType) {
                                 segmentTracker.logEvent(segmentTracker.EVENTS.PAYMENT_METHOD_ADDED, {
                                     payment_method: 'stripe',
                                     user_id: currentUser.get('id'),
-                                    account_id: currentAccount.get('id')
+                                    account_domain: currentAccount.get('domain')
                                 })
                             }
 

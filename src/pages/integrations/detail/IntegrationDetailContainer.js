@@ -65,11 +65,7 @@ class IntegrationDetailContainer extends React.Component {
     }
 
     render() {
-        const {actions, integrations, params, settings, currentUser} = this.props
-
-        if (!settings.get('loaded')) {
-            return null
-        }
+        const {actions, integrations, params, currentUser} = this.props
 
         const isDetail = !!params.integrationId
         const isUpdate = isDetail && params.integrationId !== 'new'
@@ -367,14 +363,12 @@ IntegrationDetailContainer.propTypes = {
         integrationType: PropTypes.string.isRequired,
         integrationId: PropTypes.string
     }).isRequired,
-    settings: PropTypes.object.isRequired,
     getRedirectUri: PropTypes.func.isRequired,
     currentUser: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => ({
     integrations: state.integrations,
-    settings: state.settings,
     getRedirectUri: IntegrationsSelectors.makeGetRedirectUri(state),
     currentUser: state.currentUser
 })

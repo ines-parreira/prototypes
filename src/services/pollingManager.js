@@ -38,7 +38,6 @@ class PollingManager {
         this.store.dispatch(pollChats())
         this.store.dispatch(fetchActiveViewTickets())
         this.store.dispatch(fetchActiveViewCount())
-        this.store.dispatch(fetchRecentViewsCounts())
     }
 
     stopInterval = (interval) => {

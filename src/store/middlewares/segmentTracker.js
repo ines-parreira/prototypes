@@ -60,4 +60,5 @@ export const EVENTS = {
     USER_MERGE_CLICKED: 'user-merge-clicked',
     VIEW_FILTER_ADD_CLICKED: 'view-filter-add-clicked',
     PAYMENT_METHOD_ADDED: 'payment-method-added',
+    PAYMENT_METHOD_ADD_CLICKED: 'payment-method-add-clicked',
 }

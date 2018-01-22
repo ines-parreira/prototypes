@@ -18,12 +18,15 @@ import InputField from '../../../common/forms/InputField'
 
 import 'react-credit-card/source/card.css'
 import 'react-credit-card/source/card-types.css'
+import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
 class CreditCard extends Component {
     static propTypes = {
         location: PropTypes.object.isRequired,
         updateCreditCard: PropTypes.func.isRequired,
         currentPlan: PropTypes.object.isRequired,
+        currentUser: PropTypes.object.isRequired,
+        currentAccount: PropTypes.object.isRequired,
         number: PropTypes.string,
         name: PropTypes.string,
         expDate: PropTypes.string,
@@ -73,19 +76,25 @@ class CreditCard extends Component {
             isSubmitting: true
         })
 
-        return this.props.updateCreditCard(formData)
-        .then(({error} = {}) => {
-            const newState = {
-                isSubmitting: false,
-                errors: {}
-            }
-
-            if (error && error.message) {
-                newState.errors.global = error.message
-            }
-
-            this.setState(newState)
+        segmentTracker.logEvent(segmentTracker.EVENTS.PAYMENT_METHOD_ADD_CLICKED, {
+            payment_method: 'stripe',
+            user_id: this.props.currentUser.get('id'),
+            account_domain: this.props.currentAccount.get('domain')
         })
+
+        return this.props.updateCreditCard(formData)
+            .then(({error} = {}) => {
+                const newState = {
+                    isSubmitting: false,
+                    errors: {}
+                }
+
+                if (error && error.message) {
+                    newState.errors.global = error.message
+                }
+
+                this.setState(newState)
+            })
     }
 
     _validate(values) {
@@ -138,7 +147,7 @@ class CreditCard extends Component {
         const {isStripeLoaded} = this.state
 
         if (!isStripeLoaded) {
-            return <Loader />
+            return <Loader/>
         }
 
         return (
@@ -244,7 +253,9 @@ class CreditCard extends Component {
 
 function mapStateToProps(state) {
     return {
-        currentPlan: currentPlanSelector(state)
+        currentPlan: currentPlanSelector(state),
+        currentUser: state.currentUser,
+        currentAccount: state.currentAccount,
     }
 }
 

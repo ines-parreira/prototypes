@@ -18,7 +18,7 @@ export class BillingPaymentMethod extends Component {
         paymentMethod: PropTypes.string.isRequired,
         paymentIsActive: PropTypes.bool.isRequired,
         currentUserId: PropTypes.number.isRequired,
-        currentAccountId: PropTypes.number.isRequired,
+        currentAccountDomain: PropTypes.string.isRequired,
         shopifyBillingStatus: PropTypes.string,
         subscription: PropTypes.object.isRequired,
     }
@@ -95,12 +95,12 @@ export class BillingPaymentMethod extends Component {
     }
 
     _onActivateShopifyBilling = () => {
-        const {currentUserId, currentAccountId} = this.props
+        const {currentUserId, currentAccountDomain} = this.props
 
-        segmentTracker.logEvent(segmentTracker.EVENTS.PAYMENT_METHOD_ADDED, {
+        segmentTracker.logEvent(segmentTracker.EVENTS.PAYMENT_METHOD_ADD_CLICKED, {
             payment_method: 'shopify',
             user_id: currentUserId,
-            account_id: currentAccountId
+            account_domain: currentAccountDomain
         })
         this.setState({isActivatingShopifyBilling: true})
     }
@@ -192,7 +192,7 @@ export class BillingPaymentMethod extends Component {
 export default connect((state) => {
     return {
         currentUserId: state.currentUser.get('id'),
-        currentAccountId: state.currentAccount.get('id'),
+        currentAccountDomain: state.currentAccount.get('domain'),
         creditCard: billingSelectors.creditCard(state),
         subscription: currentAccountSelectors.getCurrentSubscription(state),
         currentPlan: billingSelectors.currentPlan(state),

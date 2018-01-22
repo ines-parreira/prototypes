@@ -14,7 +14,6 @@ import * as TicketActions from '../../../state/ticket/actions'
 import * as MacroActions from '../../../state/macro/actions'
 import * as UserActions from '../../../state/users/actions'
 import * as TagActions from '../../../state/tags/actions'
-import * as SettingsActions from '../../../state/settings/actions'
 import socketManager from '../../../services/socketManager'
 
 import * as newMessageActions from '../../../state/newMessage/actions'
@@ -46,7 +45,6 @@ import {updateMessageText} from './components/replyarea/TicketReplyEditor'
     return {
         actions: {
             macro: bindActionCreators(MacroActions, dispatch),
-            settings: bindActionCreators(SettingsActions, dispatch),
             tag: bindActionCreators(TagActions, dispatch),
             ticket: bindActionCreators(TicketActions, dispatch),
             user: bindActionCreators(UserActions, dispatch),

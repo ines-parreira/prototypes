@@ -13,7 +13,6 @@ import macrosReducer from './macro/reducers'
 import newMessageReducer from './newMessage/reducers'
 import rulesReducer from './rules/reducers'
 import schemasReducer from './schemas/reducers'
-import settingsReducer from './settings/reducers'
 import statsReducer from './stats/reducers'
 import tagsReducer from './tags/reducers'
 import ticketReducer from './ticket/reducers'
@@ -36,7 +35,6 @@ const rootReducer = combineReducers({
     notifications: notificationsReducer(),
     rules: rulesReducer,
     schemas: schemasReducer,
-    settings: settingsReducer,
     stats: statsReducer,
     tags: tagsReducer,
     ticket: ticketReducer,

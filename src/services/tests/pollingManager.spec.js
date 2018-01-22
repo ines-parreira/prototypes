@@ -37,7 +37,7 @@ describe('services', () => {
             // should set intervals to fetch resources periodically
             expect(setInterval).toHaveBeenCalledTimes(4)
             // should fetch resources immediately
-            expect(spy).toHaveBeenCalledTimes(4)
+            expect(spy).toHaveBeenCalledTimes(3)
         })
 
         it('should pause all pollings unless chats polling', () => {
