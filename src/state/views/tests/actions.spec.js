@@ -160,7 +160,7 @@ describe('actions', () => {
             store = mockStore({views: state})
             store.dispatch(actions.fetchRecentViewsCounts())
             expect(sendSpy.mock.calls.length).toEqual(1)
-            expect(sendSpy.mock.calls[0]).toEqual([socketConstants.VIEWS_COUNTS_EXPIRED, [2, 3]])
+            expect(sendSpy.mock.calls[0]).toEqual([socketConstants.VIEWS_COUNTS_EXPIRED, {viewIds: [2, 3]}])
         })
     })
     describe('fetchActiveViewCount', () => {
@@ -215,7 +215,7 @@ describe('actions', () => {
             store = mockStore({views: state})
             store.dispatch(actions.fetchActiveViewCount())
             expect(sendSpy.mock.calls.length).toEqual(1)
-            expect(sendSpy.mock.calls[0]).toEqual([socketConstants.VIEWS_COUNTS_EXPIRED, [1]])
+            expect(sendSpy.mock.calls[0]).toEqual([socketConstants.VIEWS_COUNTS_EXPIRED, {viewIds: [1]}])
         })
     })
 
