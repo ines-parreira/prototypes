@@ -128,7 +128,7 @@ class ViewNavbarView extends Component {
                             <span id="navbar-views-settings">
                                 {isLoading
                                     ? (
-                                        <i className="fa fa-fw fa-circle-o-notch fa-spin" />
+                                        <i className="fa fa-fw fa-circle-o-notch fa-spin"/>
                                     ) : (
                                         <i
                                             className={classnames('hidden-sm-down fa fa-fw', {
@@ -167,8 +167,13 @@ class ViewNavbarView extends Component {
                                         })
 
                                         const viewCount = this.props.getViewCount(view.get('id'))
-                                        const count = `(${viewCount})`
-                                        const compactCount = `(${compactInteger(viewCount)})`
+                                        let count = ''
+                                        let compactCount = ''
+
+                                        if (viewCount !== null) {
+                                            count = `(${viewCount})`
+                                            compactCount = `(${compactInteger(viewCount)})`
+                                        }
 
                                         return (
                                             <Link

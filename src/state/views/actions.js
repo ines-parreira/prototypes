@@ -507,7 +507,7 @@ export const fetchVisibleViewsCounts = () => (dispatch: dispatchType, getState: 
     const viewIds = viewsSelectors.getVisibleViewIds()(state).toJS()
     socketManager.send(socketConstants.VIEWS_COUNTS_EXPIRED, {
         viewIds,
-        force: true
+        all: true
     })
 }
 
@@ -535,7 +535,9 @@ export const fetchRecentViewsCounts = () => (dispatch: dispatchType, getState: g
 
     if (!viewIds.isEmpty()) {
         dispatch(updateRecentViews(viewIds.toJS()))
-        socketManager.send(socketConstants.VIEWS_COUNTS_EXPIRED, viewIds.toJS())
+        socketManager.send(socketConstants.VIEWS_COUNTS_EXPIRED, {
+            viewIds: viewIds.toJS()
+        })
     }
 }
 
@@ -553,7 +555,9 @@ export const fetchActiveViewCount = () => (dispatch: dispatchType, getState: get
 
     if (viewIds.includes(activeViewId)) {
         dispatch(updateRecentViews([activeViewId]))
-        socketManager.send(socketConstants.VIEWS_COUNTS_EXPIRED, [activeViewId])
+        socketManager.send(socketConstants.VIEWS_COUNTS_EXPIRED, {
+            viewIds: [activeViewId]
+        })
     }
 }
 

@@ -188,7 +188,7 @@ export const getViewCount = (viewId: string) => createSelector(
     [getViewsState],
     (state) => {
         const counts = state.get('counts', fromJS({}))
-        return counts.get(viewId.toString(), 0)
+        return counts.get(viewId.toString(), null)
     }
 )
 
