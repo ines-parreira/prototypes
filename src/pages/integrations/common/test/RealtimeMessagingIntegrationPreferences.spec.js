@@ -111,7 +111,7 @@ describe('RealtimeMessagingIntegrationPreferences component', () => {
                 preferences: {
                     auto_responder: {
                         enabled: false,
-                        text: 'We\'re not online at the moment. Leave us your email and we\'ll follow up shortly.',
+                        text: 'We\'re away at the moment. Leave us your email and we\'ll follow up shortly.',
                     },
                     time_before_split: 3 * 60 * 60,
                     email_capture: {
@@ -121,7 +121,7 @@ describe('RealtimeMessagingIntegrationPreferences component', () => {
                             thanks_text: 'Thanks! We\'ll email you at {email} if you leave.',
                         },
                         offline: {
-                            trigger_text: 'We\'re offline, leave us your email and we\'ll respond shortly.',
+                            trigger_text: 'We\'re away, leave us your email and we\'ll respond shortly.',
                             thanks_text: 'Thanks {email}! We\'ll get back to you shortly.',
                         }
                     }

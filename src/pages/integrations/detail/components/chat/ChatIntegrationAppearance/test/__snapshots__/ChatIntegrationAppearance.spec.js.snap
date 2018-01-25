@@ -83,11 +83,11 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
                 value="What can we do for you?"
               />
               <InputField
-                label="Offline introduction text"
+                label="Away introduction text"
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
-                value="We're offline!"
+                value="We're away!"
               />
               <InputField
                 label="Input placeholder"
@@ -144,7 +144,7 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
           isOnline={true}
           mainColor="#0d87dd"
           name=""
-          offlineIntroductionText="We're offline!"
+          offlineIntroductionText="We're away!"
         />
       </Col>
     </Row>
@@ -241,11 +241,11 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
                 value="What can we do for you?"
               />
               <InputField
-                label="Offline introduction text"
+                label="Away introduction text"
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
-                value="We're offline!"
+                value="We're away!"
               />
               <InputField
                 label="Input placeholder"
@@ -318,7 +318,7 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
           isOnline={true}
           mainColor="#0d87dd"
           name=""
-          offlineIntroductionText="We're offline!"
+          offlineIntroductionText="We're away!"
         />
       </Col>
     </Row>
@@ -415,11 +415,11 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
                 value="What can we do for you?"
               />
               <InputField
-                label="Offline introduction text"
+                label="Away introduction text"
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
-                value="We're offline!"
+                value="We're away!"
               />
               <InputField
                 label="Input placeholder"
@@ -492,7 +492,7 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
           isOnline={true}
           mainColor="#0d87dd"
           name=""
-          offlineIntroductionText="We're offline!"
+          offlineIntroductionText="We're away!"
         />
       </Col>
     </Row>
