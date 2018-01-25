@@ -35,7 +35,7 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
             autoResponderEnabled: integration.getIn(['meta', 'preferences', 'auto_responder', 'enabled'])
                 || false,
             autoResponderText: integration.getIn(['meta', 'preferences', 'auto_responder', 'text']) ||
-                'We\'re not online at the moment. Leave us your email and we\'ll follow up shortly.',
+                'We\'re away at the moment. Leave us your email and we\'ll follow up shortly.',
             timeBeforeSplit: integration.getIn(['meta', 'preferences', 'time_before_split'],
                 TIMES_BEFORE_SPLIT[1].value),
             isUpdating: false,
@@ -51,7 +51,7 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
                 emailCaptureOnlineThanksText: emailCapturePreferences.getIn(['online', 'thanks_text'])
                     || 'Thanks! We\'ll email you at {email} if you leave.',
                 emailCaptureOfflineTriggerText: emailCapturePreferences.getIn(['offline', 'trigger_text'])
-                    || 'We\'re offline, leave us your email and we\'ll respond shortly.',
+                    || 'We\'re away, leave us your email and we\'ll respond shortly.',
                 emailCaptureOfflineThanksText: emailCapturePreferences.getIn(['offline', 'thanks_text'])
                     || 'Thanks {email}! We\'ll get back to you shortly.',
                 isModifyingOnlineData: true
@@ -191,7 +191,7 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
                                         color={!isModifyingOnlineData ? 'info' : 'secondary'}
                                         onClick={() => this.setState({isModifyingOnlineData: false})}
                                     >
-                                        Offline
+                                        Away
                                     </Button>
                                 </ButtonGroup>
 
@@ -244,7 +244,7 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
 
                     <div className="mb-4">
                         <h4>
-                            Offline auto-responder
+                            Away auto-responder
                         </h4>
 
                         <p>

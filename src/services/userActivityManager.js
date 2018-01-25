@@ -7,7 +7,7 @@ import socketManager from './socketManager'
 
 
 class UserActivityManager {
-    inactivityTimeout = 180000 // 3 min
+    inactivityTimeout = 60000 // 1 min
     watchThrottling = 15000 // 15 secs
     userActivityFn = null
     store = reduxStore

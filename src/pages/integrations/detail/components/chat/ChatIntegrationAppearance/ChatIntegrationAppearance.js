@@ -32,7 +32,7 @@ export const defaultContent = {
     type: 'smooch_inside',
     name: '',
     introductionText: 'What can we do for you?',
-    offlineIntroductionText: 'We\'re offline!',
+    offlineIntroductionText: 'We\'re away!',
     inputPlaceholder: 'Type a message...',
     mainColor: '#0d87dd',
     conversationColor: '#0d87dd',
@@ -183,7 +183,7 @@ class ChatIntegrationAppearance extends React.Component {
                                             value={this.state.offlineIntroductionText}
                                             onFocus={() => {this.setState({isOnline: false})}}
                                             onChange={value => {this.setState({offlineIntroductionText: value})}}
-                                            label="Offline introduction text"
+                                            label="Away introduction text"
                                         />
 
                                         <InputField
