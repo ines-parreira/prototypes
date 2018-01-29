@@ -102,7 +102,7 @@ class App extends React.Component<Props> {
 
         if (isUserActive && !isNextUserActive) {
             // Stop polling when current user becomes inactive
-            pollingManager.stop()
+            pollingManager.pause()
         } else if (!isUserActive && isNextUserActive) {
             // Start polling when current user becomes active
             pollingManager.start()
