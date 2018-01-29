@@ -24,40 +24,11 @@ Array [
   Object {
     "isUpdate": false,
     "resp": Object {
-      "data": Object {},
       "hello": "world",
       "type": "macro",
     },
     "settingType": "macro",
     "type": "SUBMIT_SETTING_SUCCESS",
-  },
-]
-`;
-
-exports[`current user actions submit setting should update available for chat status and fetch chats 1`] = `
-Array [
-  Object {
-    "settingType": "preferences",
-    "type": "SUBMIT_SETTING_START",
-  },
-  Object {
-    "isUpdate": false,
-    "resp": Object {
-      "data": Object {
-        "available_for_chat": false,
-      },
-      "type": "preferences",
-    },
-    "settingType": "preferences",
-    "type": "SUBMIT_SETTING_SUCCESS",
-  },
-  Object {
-    "tickets": Array [
-      Object {
-        "id": 1,
-      },
-    ],
-    "type": "SET_CHATS",
   },
 ]
 `;
@@ -71,7 +42,6 @@ Array [
   Object {
     "isUpdate": true,
     "resp": Object {
-      "data": Object {},
       "hello": "world",
       "id": 1,
       "type": "macro",
