@@ -155,6 +155,7 @@ export default class TicketMessage extends React.Component {
     renderMeta(message) {
         let fromWidget = null
         let viaWidget = null
+        let refWidget = null
 
         if (message.meta && message.meta.current_page) {
             let displayString = message.meta.current_page
@@ -175,6 +176,41 @@ export default class TicketMessage extends React.Component {
             )
         }
 
+        if (message.source && message.source.type && message.source.extra &&
+            ['facebook-post', 'facebook-comment'].includes(message.source.type)
+        ) {
+            const postId = message.source.extra.post_id
+            const parentId = message.source.extra.parent_id
+            let messageId = message.message_id
+
+            const isPost = message.source.type === 'facebook-post'
+            const isComment = parentId === postId
+
+            let type = 'reply'
+
+            if (isPost) {
+                type = 'post'
+                messageId = postId
+            } else if (isComment) {
+                type = 'comment'
+            }
+
+            refWidget = (
+                <span
+                    key="ref-widget"
+                    className="hidden-sm-down ticket-message-from"
+                >
+                    go to {' '}
+                    <a
+                        target="_blank"
+                        href={`https://facebook.com/${messageId}`}
+                    >
+                        {type}
+                    </a>
+                </span>
+            )
+        }
+
         if (message.via === 'rule') {
             viaWidget = (
                 <span
@@ -187,6 +223,7 @@ export default class TicketMessage extends React.Component {
         }
 
         return [
+            refWidget,
             fromWidget,
             viaWidget
         ]
