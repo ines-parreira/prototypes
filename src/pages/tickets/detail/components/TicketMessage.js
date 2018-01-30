@@ -200,7 +200,7 @@ export default class TicketMessage extends React.Component {
                     key="ref-widget"
                     className="hidden-sm-down ticket-message-from"
                 >
-                    go to {' '}
+                    go to{' '}
                     <a
                         target="_blank"
                         href={`https://facebook.com/${messageId}`}
