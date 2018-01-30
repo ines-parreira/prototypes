@@ -36,3 +36,29 @@ class LocalStorageMock {
 Object.defineProperty(window, 'localStorage', {
     value: new LocalStorageMock
 })
+
+// Mock of the PushJS API (browser notification)
+class mockPushJS {
+    constructor() {
+        this.notifications = []
+    }
+
+    getAll() {
+        return this.notifications
+    }
+
+    clear() {
+        this.notifications = []
+    }
+
+    create(title, data) {
+        this.notifications.push({
+            title,
+            ...data
+        })
+    }
+}
+
+jest.mock('push.js', () => {
+    return new mockPushJS
+})

@@ -1,23 +1,21 @@
 import {fromJS} from 'immutable'
-import Push from 'push.js'
 import {browserHistory} from 'react-router'
 
 import _isEmpty from 'lodash/isEmpty'
 import _noop from 'lodash/noop'
 import axios from 'axios'
 
+import browserNotification from '../../services/browserNotification'
 import * as newMessageActions from '../newMessage/actions'
 import * as types from './constants'
 import * as newMessageTypes from '../newMessage/constants'
 
 import {DEFAULT_ACTIONS} from '../../config'
 import {setMacrosVisible} from '../macro/actions'
-import {TICKET_VIEWED} from '../activity/constants'
 import {notify} from '../notifications/actions'
 import {
     isCurrentlyOnTicket,
     isTabActive,
-    playNotificationSound,
 } from '../../utils'
 import {
     buildPartialUpdateFromAction,
@@ -25,6 +23,7 @@ import {
 } from './utils'
 
 import socketManager from '../../services/socketManager'
+import {markChatAsRead} from '../chats/actions'
 
 export const mergeTicket = (ticket) => (dispatch, getState) => {
     ticket = fromJS(ticket)
@@ -46,19 +45,9 @@ export const mergeTicket = (ticket) => (dispatch, getState) => {
         const newMessage = ticket.get('messages', fromJS([])).last()
 
         if (messagesLength !== previousMessagesLength && newMessage && !newMessage.get('from_agent')) {
-            const from = newMessage.getIn(['sender', 'name']) || 'Gorgias'
-            const body = newMessage.get('body_text') || 'You received an answer'
-            playNotificationSound()
-            Push.create(from, {
-                body: body,
-                timeout: 5000,
-                icon: `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/icons/logo.png`,
-                onClick: function () {
-                    // send on helpdesk and close notification
-                    window.focus()
-                    this.close()
-                }
-            })
+            const title = newMessage.getIn(['sender', 'name'])
+            const body = newMessage.get('body_text')
+            browserNotification.newMessage({title, body})
         }
     }
 
@@ -393,10 +382,7 @@ export const fetchTicket = (ticketId) => (dispatch) => {
         type: types.FETCH_TICKET_START,
     })
 
-    dispatch({
-        type: TICKET_VIEWED,
-        ticketId
-    })
+    dispatch(markChatAsRead(ticketId))
 
     const url = `/api/tickets/${ticketId}/`
 

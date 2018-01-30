@@ -34,8 +34,6 @@ import TICKET_LANGUAGES from './config/ticketLanguages'
 import {ACTION_TEMPLATES} from './config'
 import {availableVariables} from './config/rules'
 
-const notificationSoundData = require('../../private/audio/notification.mp3')
-
 // types
 import type {Map, Iterable} from 'immutable'
 import type {viewsStateType} from './state/views/types'
@@ -68,14 +66,6 @@ let activeTab = true
 window.onfocus = () => activeTab = true
 window.onblur = () => activeTab = false
 export const isTabActive = () => activeTab
-
-// play sound notification
-export const playNotificationSound = () => {
-    // $FlowFixMe
-    const notificationSound = new Audio(notificationSoundData)
-    notificationSound.load()
-    notificationSound.play()
-}
 
 /**
  * Console log info only on dev environment

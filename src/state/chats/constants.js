@@ -1,0 +1,5 @@
+export const FETCH_CHATS_ERROR = 'FETCH_CHATS_ERROR'
+export const SET_CHATS = 'SET_CHATS'
+export const ADD_CHAT = 'ADD_CHAT'
+export const REMOVE_CHAT = 'REMOVE_CHAT'
+export const MARK_CHAT_AS_READ = 'MARK_CHAT_AS_READ'

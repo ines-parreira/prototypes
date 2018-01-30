@@ -1,5 +1,4 @@
 import {fetchActiveViewCount, fetchActiveViewTickets, fetchRecentViewsCounts} from '../state/views/actions'
-import {pollChats} from '../state/activity/actions'
 import {store as reduxStore} from '../init'
 
 class PollingManager {
@@ -9,7 +8,6 @@ class PollingManager {
     activeViewInterval = 10000
     activeViewCountInterval = 1000
     recentViewsCountsInterval = 5000
-    chatInterval = 9000
 
     start = () => {
         if (window.DISABLE_ACTIVITY_POLLING === 'True') {
@@ -18,10 +16,6 @@ class PollingManager {
 
         // clear previous intervals before creating new intervals
         this.stop()
-
-        this.intervals.chats = setInterval(() => {
-            this.store.dispatch(pollChats())
-        }, this.chatInterval)
 
         this.intervals.activeViewTickets = setInterval(() => {
             this.store.dispatch(fetchActiveViewTickets())
@@ -35,29 +29,18 @@ class PollingManager {
             this.store.dispatch(fetchRecentViewsCounts())
         }, this.recentViewsCountsInterval)
 
-        this.store.dispatch(pollChats())
         this.store.dispatch(fetchActiveViewTickets())
         this.store.dispatch(fetchActiveViewCount())
     }
 
-    stopInterval = (interval) => {
-        clearInterval(this.intervals[interval])
-        delete this.intervals[interval]
-    }
-
-    pause = () => {
-        Object.keys(this.intervals).forEach(interval => {
-            //  do not stop chat polling
-            if (interval === 'chats') {
-                return
-            }
-
-            this.stopInterval(interval)
-        })
-    }
 
     stop = () => {
-        Object.keys(this.intervals).forEach(interval => this.stopInterval(interval))
+        Object.keys(this.intervals).forEach(interval => this._stopInterval(interval))
+    }
+
+    _stopInterval = (interval) => {
+        clearInterval(this.intervals[interval])
+        delete this.intervals[interval]
     }
 }
 

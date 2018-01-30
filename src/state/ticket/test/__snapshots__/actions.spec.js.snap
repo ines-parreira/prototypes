@@ -316,7 +316,7 @@ Array [
   },
   Object {
     "ticketId": 1,
-    "type": "TICKET_VIEWED",
+    "type": "MARK_CHAT_AS_READ",
   },
   Object {
     "resp": Object {

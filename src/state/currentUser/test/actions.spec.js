@@ -5,6 +5,7 @@ import MockAdapter from 'axios-mock-adapter'
 import * as actions from '../actions'
 import {initialState} from '../reducers'
 import * as types from '../constants'
+import {fromJS} from 'immutable'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -38,7 +39,7 @@ describe('current user actions', () => {
 
     describe('submit setting', () => {
         it('creation', () => {
-            const data = {type: 'macro', hello: 'world'}
+            const data = {type: 'macro', hello: 'world', data: {}}
 
             mockServer.onPost('/api/users/0/settings/').reply(200, data)
 
@@ -47,12 +48,38 @@ describe('current user actions', () => {
         })
 
         it('update', () => {
-            const data = {type: 'macro', id: 1, hello: 'world'}
+            const data = {type: 'macro', id: 1, hello: 'world', data: {}}
 
             mockServer.onPut('/api/users/0/settings/1/').reply(200, data)
 
             return store.dispatch(actions.submitSetting(data))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+
+        it('should update available for chat status and fetch chats', (done) => {
+            // the current user is not available for chat by default
+            const settings = fromJS([{
+                type: 'preferences',
+                data: {'available_for_chat': true}
+            }])
+            const state = initialState.set('settings', settings)
+            store = mockStore({currentUser: state})
+
+            // update his status
+            const newSetting = {type: 'preferences', data: {'available_for_chat': false}}
+            const chats = {
+                tickets: [{id: 1}]
+            }
+            mockServer.onPost('/api/users/0/settings/').reply(200, newSetting)
+            mockServer.onGet('/api/activity/chats/').reply(200, chats)
+
+            return store.dispatch(actions.submitSetting(newSetting))
+                .then(() => {
+                    setTimeout(() => {
+                        expect(store.getActions()).toMatchSnapshot()
+                        done()
+                    }, 1)
+                })
         })
     })
 
