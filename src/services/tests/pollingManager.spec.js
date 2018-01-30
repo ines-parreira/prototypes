@@ -35,16 +35,24 @@ describe('services', () => {
             store.dispatch = spy
             pollingManager.start()
             // should set intervals to fetch resources periodically
-            expect(setInterval).toHaveBeenCalledTimes(3)
+            expect(setInterval).toHaveBeenCalledTimes(4)
             // should fetch resources immediately
-            expect(spy).toHaveBeenCalledTimes(2)
+            expect(spy).toHaveBeenCalledTimes(3)
+        })
+
+        it('should pause all pollings unless chats polling', () => {
+            pollingManager.start()
+            jest.clearAllTimers()
+            pollingManager.pause()
+            expect(clearInterval).toHaveBeenCalledTimes(3)
+            expect(pollingManager.intervals.chats).toBeDefined()
         })
 
         it('should stop pollings', () => {
             pollingManager.start()
             jest.clearAllTimers()
             pollingManager.stop()
-            expect(clearInterval).toHaveBeenCalledTimes(3)
+            expect(clearInterval).toHaveBeenCalledTimes(4)
             expect(pollingManager.intervals).toEqual({})
         })
     })

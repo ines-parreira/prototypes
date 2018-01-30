@@ -6,8 +6,6 @@ import {notify} from '../notifications/actions'
 
 // types
 import type {dispatchType, getStateType} from '../types'
-import {fetchChats} from '../chats/actions'
-import * as currentUserSelectors from './selectors'
 
 export const changePassword = (oldPassword: string, newPassword: string) => ((dispatch: dispatchType): Promise<dispatchType> => {
     dispatch({type: constants.CHANGE_PASSWORD_START})
@@ -35,11 +33,9 @@ export const changePassword = (oldPassword: string, newPassword: string) => ((di
         })
 })
 
-export function submitSetting(data: {id?: string, type: string, data: Object}, notification: boolean) {
-    return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType | {}> => {
+export function submitSetting(data: {id?: string, type: string}, notification: boolean) {
+    return (dispatch: dispatchType): Promise<dispatchType | {}> => {
         const isUpdate = !!data.id
-        const userPrefs = currentUserSelectors.getPreferences(getState())
-        const prevIsAvailableForChat = userPrefs.getIn(['data', 'available_for_chat'], true)
         let promise
 
         dispatch({
@@ -63,11 +59,6 @@ export function submitSetting(data: {id?: string, type: string, data: Object}, n
                     isUpdate,
                     resp
                 })
-
-                // Refresh chat tickets if the current user updates his availability for chats
-                if (prevIsAvailableForChat !== data.data.available_for_chat) {
-                    dispatch(fetchChats())
-                }
 
                 if (notification) {
                     dispatch(notify({
