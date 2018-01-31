@@ -71,6 +71,10 @@ export default class ImportZendeskDetail extends React.Component {
                     Zendesk import
                 </h1>
 
+                <p>
+                    This will import up to 10000 tickets from your Zendesk account.
+                </p>
+
                 <Form onSubmit={this._onSubmit}>
                     <InputField
                         type="text"
