@@ -237,9 +237,15 @@ export default class TicketMessage extends React.Component {
     _renderMessageNotSent() {
         const {message, ticket, setStatus} = this.props
 
+        let error = 'This message was not sent.'
+
+        if (message.meta && message.meta.error) {
+            error = message.meta.error
+        }
+
         return (
             <HardWarning
-                error="This message was not sent: error while sending the message."
+                error={error}
                 message={fromJS(message)}
                 messageId={message.id}
                 ticketId={message.ticket_id || ticket.get('id')}
@@ -260,7 +266,7 @@ export default class TicketMessage extends React.Component {
 
         return (
             <HardWarning
-                error="This message was not sent: one or more actions failed."
+                error="This message was not sent because one or more actions failed while sending it."
                 retryTooltipMessage="Retry to execute the failed action(s) automatically, and send the message if it succeeds."
                 messageId={message.id}
                 ticketId={message.ticket_id || ticket.get('id')}
