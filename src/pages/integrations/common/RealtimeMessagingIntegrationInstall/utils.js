@@ -15,7 +15,7 @@ export const renderFacebookCodeSnippet = (integration) => {
       appId            : '1751254291756263',
       autoLogAppEvents : true,
       xfbml            : true,
-      version          : 'v2.6'
+      version          : 'v2.12'
     });
     FB.AppEvents.logPageView();
   };

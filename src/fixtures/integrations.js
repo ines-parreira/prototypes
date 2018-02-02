@@ -1,7 +1,7 @@
 export const integrationsState = {
     authentication: {
         facebook: {
-            redirect_uri: 'https://www.facebook.com/v2.6/dialog/oauth?scope=manage_pages%2Cpublish_pages%2Cread_page_mailboxes&client_id=1754623041419388&response_type=token&redirect_uri=https%3A%2F%2Facme-louis.ngrok.io%2Fintegrations%2Ffacebook%2Fauth%2Fcallback%2F29949774171f2ae73d6ad2c25119f8c9d879fa5dacee1bc4abe3806d7b2f144f%23'
+            redirect_uri: 'https://www.facebook.com/v2.12/dialog/oauth?scope=manage_pages%2Cpublish_pages%2Cread_page_mailboxes&client_id=1754623041419388&response_type=token&redirect_uri=https%3A%2F%2Facme-louis.ngrok.io%2Fintegrations%2Ffacebook%2Fauth%2Fcallback%2F29949774171f2ae73d6ad2c25119f8c9d879fa5dacee1bc4abe3806d7b2f144f%23'
         },
         shopify: {
             redirect_uri: 'https://{{shop_name}}.myshopify.com/admin/oauth/authorize?scope=read_orders%2Cread_customers%2Cwrite_orders%2Cwrite_customers&state=29949774171f2ae73d6ad2c25119f8c9d879fa5dacee1bc4abe3806d7b2f144f&client_id=d783d0d0ded4ab7a13c20f47533819a3&redirect_uri=https%3A%2F%2Facme-louis.ngrok.io%2Fintegrations%2Fshopify%2Fauth%2Fcallback%2F'
