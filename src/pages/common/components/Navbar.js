@@ -167,7 +167,7 @@ export default class Navbar extends React.Component {
                         </div>
                     </DropdownToggle>
                     <DropdownMenu>
-                        <DropdownItem
+                        <DropdownItem tag="a"
                             className="mt-2"
                             toggle={false}
                         >
