@@ -9,17 +9,20 @@ import {Button} from 'reactstrap'
 export default class PeriodPicker extends React.Component {
     constructor(props) {
         super(props)
+        const startOfToday = () => moment().startOf('day')
+        const endOfToday = () => moment().endOf('day')
+        const someDaysAgoStartOfDay = (days) => startOfToday().subtract(days - 1, 'days')
 
         this.state = {
             ranges: {
-                Today: [moment(), moment()],
-                'Last 7 days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 days': [moment().subtract(29, 'days'), moment()],
-                'Last 60 days': [moment().subtract(59, 'days'), moment()],
-                'Last 90 days': [moment().subtract(89, 'days'), moment()],
+                Today: [startOfToday(), endOfToday()],
+                'Last 7 days': [someDaysAgoStartOfDay(7), endOfToday()],
+                'Last 30 days': [someDaysAgoStartOfDay(30), endOfToday()],
+                'Last 60 days': [someDaysAgoStartOfDay(60), endOfToday()],
+                'Last 90 days': [someDaysAgoStartOfDay(90), endOfToday()],
             },
-            startDate: props.startDatetime || moment().subtract(29, 'days'),
-            endDate: props.endDatetime || moment(),
+            startDate: props.startDatetime,
+            endDate: props.endDatetime,
         }
     }
 
@@ -43,8 +46,8 @@ export default class PeriodPicker extends React.Component {
 
     _handleEvent = (event, picker) => {
         this.props.onChange({
-            start_datetime: picker.startDate.format(),
-            end_datetime: picker.endDate.format(),
+            start_datetime: picker.startDate.startOf('day').format(),
+            end_datetime: picker.endDate.endOf('day').format(),
         })
     }
 

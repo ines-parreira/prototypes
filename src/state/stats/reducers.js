@@ -7,9 +7,7 @@ import type {actionType} from '../types'
 
 export const initialState = fromJS({
     _internal: {
-        loading: {
-            stats: false
-        },
+        loading: {},
         meta: {},
         filters: {}
     }
@@ -17,28 +15,14 @@ export const initialState = fromJS({
 
 export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
     switch (action.type) {
-        case constants.FETCH_STATS_START: {
-            return state.setIn(['_internal', 'loading', 'stats'], true)
-        }
+        case constants.FETCH_STATS_SUCCESS:
+            return state.set(action.name, fromJS(action.resp.data))
 
-        case constants.FETCH_STATS_SUCCESS: {
-            return state
-                .set(action.name, fromJS(action.resp.data))
-                .updateIn(['_internal', 'meta'], meta => (meta || fromJS({})).merge(fromJS(action.resp.meta)))
-                .setIn(['_internal', 'loading', 'stats'], false)
-        }
+        case constants.SET_STATS_META:
+            return state.setIn(['_internal', 'meta'], fromJS(action.meta))
 
-        case constants.FETCH_STATS_ERROR: {
-            return state.setIn(['_internal', 'loading', 'stats'], false)
-        }
-
-        case constants.SET_STATS_META: {
-            return state.updateIn(['_internal', 'meta'], meta => (meta || fromJS({})).merge(fromJS(action.meta)))
-        }
-
-        case constants.SET_STATS_FILTER: {
-            return state.setIn(['_internal', 'filters', action.name], fromJS(action.values))
-        }
+        case constants.SET_STATS_FILTERS:
+            return state.setIn(['_internal', 'filters'], fromJS(action.filters))
 
         default:
             return state

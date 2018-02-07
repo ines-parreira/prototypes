@@ -1,9 +1,8 @@
 // @flow
 import axios from 'axios'
-import {fromJS} from 'immutable'
 import * as constants from './constants'
 
-import type {dispatchType, actionType, getStateType} from '../types'
+import type {dispatchType, actionType} from '../types'
 
 export function setMeta(meta: {} = {}): actionType {
     return {
@@ -12,45 +11,43 @@ export function setMeta(meta: {} = {}): actionType {
     }
 }
 
-export function setFilter(filterName: string, values: {}): actionType {
+export function setFilters(filters: Object): actionType {
     return {
-        type: constants.SET_STATS_FILTER,
-        name: filterName,
-        values,
+        type: constants.SET_STATS_FILTERS,
+        filters
     }
 }
 
-export function fetchStat(name: string, newMeta: {} = {}, newFilters: {} = {}) {
-    return (dispatch: dispatchType, getState: getStateType) => {
-        const statsState = getState().stats
-        // get current meta
-        const meta = statsState.getIn(['_internal', 'meta'], fromJS({}))
-        // get current filters
-        const filters = statsState.getIn(['_internal', 'filters'], fromJS({})).merge(newFilters)
-        // merge with passed meta
-        const params = meta.merge(newMeta).toJS()
+/**
+ * Fetch a statistic
+ *
+ * @param {String} name - the name of the statistic to fetch
+ * @param {Object} meta - the period (datetimes)
+ * @param {Object} filters - the filters to apply on the statistics
+ * @param {String} label - the key under which the statistic will be saved in the reducer
+ * @returns {Promise}
+ */
+export function fetchStat(name: string, meta: {} = {}, filters: {} = {}, label: string) {
+    return (dispatch: dispatchType) => {
+        const params = {
+            ...meta,
+            filters: filters,
+        }
+        const config = {timeout: 60000 * 3}
 
-        // update stats meta to match what is asked to server
-        dispatch(setMeta(params))
-        params.filters = filters.toJS()
-
-        dispatch({
-            type: constants.FETCH_STATS_START
-        })
-
-        return axios.post(`/api/stats/${name}/`, params)
+        return axios.post(`/api/stats/${name}/`, params, config)
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
                     type: constants.FETCH_STATS_SUCCESS,
-                    name,
+                    name: label || name,
                     resp
                 })
             }, error => {
                 return dispatch({
                     type: constants.FETCH_STATS_ERROR,
                     error,
-                    reason: 'Unable to receive stats'
+                    reason: 'Failed to retrieve statistics'
                 })
             })
     }

@@ -42,29 +42,6 @@ describe('reducers', () => {
             )
         })
 
-        it('receive meta', () => {
-            const meta = {
-                start_datetime: 'now'
-            }
-
-            const resp = {
-                name: 'overview',
-                data: {},
-                meta,
-            }
-
-            expect(
-                reducer(
-                    initialState, {
-                        type: types.FETCH_STATS_SUCCESS,
-                        resp,
-                    }
-                ).getIn(['_internal', 'meta'])
-            ).toEqualImmutable(
-                fromJS(initialState.getIn(['_internal', 'meta']).merge(meta))
-            )
-        })
-
         it('set meta', () => {
             const meta = {
                 start_datetime: 'now'
@@ -82,21 +59,19 @@ describe('reducers', () => {
             )
         })
 
-        it('set filter', () => {
-            const name = 'tags'
-            const values = [1, 4]
+        it('set filters', () => {
+            const filters = {tags: [1, 5]}
 
             expect(
                 reducer(
                     initialState, {
-                        type: types.SET_STATS_FILTER,
-                        name,
-                        values,
+                        type: types.SET_STATS_FILTERS,
+                        filters,
                     }
                 ).getIn(['_internal', 'filters'])
             ).toEqualImmutable(
                 fromJS(initialState.getIn(['_internal', 'filters']).merge({
-                    [name]: values
+                    tags: [1, 5]
                 }))
             )
         })

@@ -1,9 +1,9 @@
 import React, {PropTypes} from 'react'
+import update from 'react/lib/update'
 import moment from 'moment'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import _debounce from 'lodash/debounce'
-import _assign from 'lodash/assign'
 import {stats as statsConfig} from '../../config/stats'
 
 import PeriodPicker from './common/PeriodPicker'
@@ -13,7 +13,7 @@ import {fieldEnumSearch} from '../../state/views/actions'
 import SearchableSelectField from './common/SearchableSelectField'
 import Stat from './common/components/charts/Stat'
 
-class OverviewStatsView extends React.Component {
+class StatsView extends React.Component {
     static propTypes = {
         config: PropTypes.object.isRequired,
         channels: PropTypes.array,
@@ -22,9 +22,9 @@ class OverviewStatsView extends React.Component {
         stats: PropTypes.object.isRequired,
         meta: PropTypes.object.isRequired,
         filters: PropTypes.object.isRequired,
-        isLoading: PropTypes.bool.isRequired,
         fetchStat: PropTypes.func.isRequired,
-        setFilter: PropTypes.func.isRequired,
+        setMeta: PropTypes.func.isRequired,
+        setFilters: PropTypes.func.isRequired,
         fieldEnumSearch: PropTypes.func.isRequired,
     }
 
@@ -38,32 +38,57 @@ class OverviewStatsView extends React.Component {
     }
 
     componentWillMount() {
-        this._fetchStats(this.props.config.get('stats'))
+        const {config, meta, filters} = this.props
+        this._fetchStats(config.get('stats'), meta.toJS(), filters.toJS())
+    }
+
+    /**
+     * Reset filters and meta when users leave statistics
+     */
+    componentWillUnmount() {
+        this.props.setFilters(fromJS({}))
+        this.props.setMeta(fromJS({}))
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.config.get('name') !== nextProps.config.get('name')) {
-            this._fetchStats(nextProps.config.get('stats'))
+            this._fetchStats(nextProps.config.get('stats'), nextProps.meta.toJS(), nextProps.filters.toJS())
         }
     }
 
-    _fetchStats = (stats, meta) => {
+    _updateLoadingStatsState = (stats, loading) => {
+        let newState = this.state
+
+        stats.forEach((stat) => {
+            newState = update(newState, {
+                loadings: {
+                    [stat]: {$set: loading}
+                }
+            })
+        })
+        this.setState(newState)
+    }
+
+    _fetchStats = (stats, meta, filters) => {
+        this._updateLoadingStatsState(stats, true)
+
         stats.forEach(stat => {
-            this.setState({loadings: _assign({}, this.state.loadings, {[stat]: true})})
-            this.props.fetchStat(stat, meta).then(() => {
-                this.setState({loadings: _assign({}, this.state.loadings, {[stat]: false})})
+            this.props.fetchStat(stat, meta, filters).then(() => {
+                this._updateLoadingStatsState([stat], false)
             })
         })
     }
 
     _handleDateChange = (meta) => {
-        this._fetchStats(this.props.config.get('stats'), meta)
+        this.props.setMeta(meta)
+        this._fetchStats(this.props.config.get('stats'), meta, this.props.filters.toJS())
     }
 
     _handleFilterChange = (filterName) => {
         return (values) => {
-            this.props.setFilter(filterName, fromJS(values))
-            this._fetchStats(this.props.config.get('stats'))
+            const filters = this.props.filters.set(filterName, fromJS(values))
+            this.props.setFilters(filters)
+            this._fetchStats(this.props.config.get('stats'), this.props.meta.toJS(), filters.toJS())
         }
     }
 
@@ -91,7 +116,7 @@ class OverviewStatsView extends React.Component {
     }
 
     render() {
-        const {meta, isLoading, stats, config} = this.props
+        const {meta, stats, config} = this.props
         const startDatetime = moment(meta.get('start_datetime'))
         const endDatetime = moment(meta.get('end_datetime'))
 
@@ -105,7 +130,6 @@ class OverviewStatsView extends React.Component {
                                 singular="agent"
                                 items={this.props.agents}
                                 input={this._makeInputControl('agents')}
-                                isDisabled={isLoading}
                             />
                         )}
                         {config.get('filters', []).includes('tags') && (
@@ -114,7 +138,6 @@ class OverviewStatsView extends React.Component {
                                 singular="tag"
                                 items={this.state.tags.map(tag => ({label: tag.name, value: tag.id}))}
                                 input={this._makeInputControl('tags')}
-                                isDisabled={isLoading}
                                 onSearch={this._onSearchTags}
                             />
                         )}
@@ -124,7 +147,6 @@ class OverviewStatsView extends React.Component {
                                 singular="channel"
                                 items={this.props.channels}
                                 input={this._makeInputControl('channels')}
-                                isDisabled={isLoading}
                             />
                         )}
                         {config.get('filters', []).includes('date') && (
@@ -132,15 +154,11 @@ class OverviewStatsView extends React.Component {
                                 startDatetime={startDatetime}
                                 endDatetime={endDatetime}
                                 onChange={this._handleDateChange}
-                                isDisabled={isLoading}
                             />
                         )}
                     </div>
                 </PageHeader>
                 {config.get('stats').map((statName, idx) => {
-                    if (isLoading) {
-                        return <Loader key={idx}/>
-                    }
                     const isCurrentStatLoading = this.state.loadings[statName]
                     const stat = stats.get(statName)
 
@@ -164,4 +182,4 @@ class OverviewStatsView extends React.Component {
     }
 }
 
-export default connect(null, {fieldEnumSearch})(OverviewStatsView)
+export default connect(null, {fieldEnumSearch})(StatsView)

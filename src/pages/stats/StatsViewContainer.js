@@ -2,19 +2,28 @@ import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import _upperFirst from 'lodash/upperFirst'
 
-import OverviewStatsView from './StatsView'
-import {setFilter, fetchStat} from '../../state/stats/actions'
+import StatsView from './StatsView'
+import * as statsActions from '../../state/stats/actions'
 import {getDisplayName} from '../../state/users/helpers'
 import {getAgents} from '../../state/users/selectors'
 import {getTags} from '../../state/tags/selectors'
 import {views as statViewsConfig} from '../../config/stats'
 import {CHANNELS} from '../../config/ticket'
-
+import moment from 'moment/moment'
 
 const mapStateToProps = (state, props) => {
     const view = props.params.view || 'overview'
     const config = statViewsConfig.get(view)
     const statNames = config.get('stats')
+    let meta = state.stats.getIn(['_internal', 'meta'], fromJS({}))
+
+    // default period: last 7 days
+    if (meta.isEmpty()) {
+        meta = fromJS({
+            'start_datetime': moment().startOf('day').subtract(6, 'days').format(),
+            'end_datetime': moment().endOf('day').format()
+        })
+    }
 
     return {
         tags: getTags(state).toJS(),
@@ -27,11 +36,15 @@ const mapStateToProps = (state, props) => {
             value: agent.get('id'),
         })).toJS(),
         stats: state.stats.filter((stat, statName) => statNames.includes(statName)),
-        meta: state.stats.getIn(['_internal', 'meta'], fromJS({})),
+        meta,
         filters: state.stats.getIn(['_internal', 'filters'], fromJS({})),
-        isLoading: state.stats.getIn(['_internal', 'loading', 'stats']),
         config,
     }
 }
 
-export default connect(mapStateToProps, {setFilter, fetchStat})(OverviewStatsView)
+const actions = {
+    setMeta: statsActions.setMeta,
+    setFilters: statsActions.setFilters,
+    fetchStat: statsActions.fetchStat
+}
+export default connect(mapStateToProps, actions)(StatsView)

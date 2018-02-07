@@ -32,24 +32,4 @@ describe('stats selectors', () => {
             expect(selectors.getStats({})).toEqualImmutable(fromJS({}))
         })
     })
-
-    describe('getTicketsClosedPerAgentStats selector', () => {
-        it('should return all stats of tickets closed per agent, or an empty List', () => {
-            expect(selectors.getTicketsClosedPerAgentStats(state))
-                .toEqualImmutable(state.stats.getIn([TICKETS_CLOSED_PER_AGENT, 'data', 'lines']))
-            expect(selectors.getTicketsClosedPerAgentStats({})).toEqualImmutable(fromJS([]))
-        })
-    })
-
-    describe('getAgentClosedTicketsStats selector', () => {
-        it('should return stats of tickets closed for this agent, or an empty List', () => {
-            const user = fromJS({
-                name: 'bar'
-            })
-
-            expect(selectors.getAgentClosedTicketsStats(user)(state))
-                .toEqualImmutable(state.stats.getIn([TICKETS_CLOSED_PER_AGENT, 'data', 'lines', 1]))
-            expect(selectors.getAgentClosedTicketsStats(user)({})).toEqualImmutable(fromJS([]))
-        })
-    })
 })

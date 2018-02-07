@@ -2,19 +2,11 @@
 import {fromJS} from 'immutable'
 import type {Map} from 'immutable'
 import {createSelector} from 'reselect'
-import type {stateType, currentUserType} from '../types'
-import {TICKETS_CLOSED_PER_AGENT} from '../../config/stats'
-
+import type {stateType} from '../types'
 
 export const getStats = (state: stateType) => state.stats || fromJS({})
 
-
-export const getTicketsClosedPerAgentStats = createSelector(
+export const getStat = (statName: string) => createSelector(
     [getStats],
-    (state: Map<*,*>) => state.getIn([TICKETS_CLOSED_PER_AGENT, 'data', 'lines']) || fromJS([])
-)
-
-export const getAgentClosedTicketsStats = (user: currentUserType) => createSelector(
-    [getTicketsClosedPerAgentStats],
-    (state: Array<*>) => state.find((line) => line.get(0) === user.get('name')) || fromJS([])
+    (state: Map<*, *>) => state.get(statName, fromJS({}))
 )
