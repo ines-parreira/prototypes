@@ -6,15 +6,22 @@ import serverErrorHandler from './middlewares/serverErrorHandler'
 import usageLimitNotifier from './middlewares/usageLimitNotifier'
 import rootReducer from '../state/reducers'
 
+const midlewares = [
+    ravenCrashReporter,
+    thunk,
+    serverErrorHandler,
+    usageLimitNotifier,
+
+]
+
+if (window.LogRocket) {
+    midlewares.push(window.LogRocket.reduxMiddleware())
+}
+
 export default function configureStore(initialState) {
     return createStore(
         rootReducer,
         initialState,
-        applyMiddleware(
-            ravenCrashReporter,
-            thunk,
-            serverErrorHandler,
-            usageLimitNotifier
-        )
+        applyMiddleware(...midlewares)
     )
 }
