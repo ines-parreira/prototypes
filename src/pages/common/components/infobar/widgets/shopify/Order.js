@@ -90,6 +90,7 @@ class AfterTitle extends React.Component<AfterTitleProps> { // eslint-disable-li
                         label: 'Refund shipping only'
                     },
                 ],
+                tooltip: 'This will refund the order in Shopify.',
                 title: (
                     <div>
                         <i className="fa fa-fw fa-repeat mr-2" />
@@ -110,10 +111,12 @@ class AfterTitle extends React.Component<AfterTitleProps> { // eslint-disable-li
                         value: 'shopifyCancelOrder',
                         label: 'Cancel order',
                         parameters: [
-                            {name: 'restock', type: 'checkbox', defaultValue: true, label: 'Restock all items'}
+                            {name: 'refund', type: 'checkbox', defaultValue: true, label: 'Refund order'},
+                            {name: 'restock', type: 'checkbox', defaultValue: true, label: 'Restock all items'},
                         ]
                     }
                 ],
+                tooltip: 'This will cancel the order in Shopify.',
                 title: (
                     <div>
                         <i className="fa fa-fw fa-ban mr-1" />

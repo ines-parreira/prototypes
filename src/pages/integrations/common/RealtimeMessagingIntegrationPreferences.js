@@ -18,6 +18,7 @@ import {TIMES_BEFORE_SPLIT} from '../../../config'
 import InputField from '../../common/forms/InputField'
 import BooleanField from '../../common/forms/BooleanField'
 import {updateOrCreateIntegration} from '../../../state/integrations/actions'
+import {hoursToSeconds} from '../../../utils'
 
 @connect(null, {
     updateOrCreateIntegration
@@ -31,13 +32,21 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
     state = {}
 
     _initState = (integration) => {
+        let defaultTimeBeforeSplit = hoursToSeconds(3)
+
+        if (integration.get('type') === 'facebook') {
+            defaultTimeBeforeSplit = hoursToSeconds(24)
+        } else if (integration.get('type') === 'smooch-inside') {
+            defaultTimeBeforeSplit = hoursToSeconds(6)
+        }
+
         this.setState({
             autoResponderEnabled: integration.getIn(['meta', 'preferences', 'auto_responder', 'enabled'])
                 || false,
             autoResponderText: integration.getIn(['meta', 'preferences', 'auto_responder', 'text']) ||
                 'We\'re away at the moment. Leave us your email and we\'ll follow up shortly.',
             timeBeforeSplit: integration.getIn(['meta', 'preferences', 'time_before_split'],
-                TIMES_BEFORE_SPLIT[1].value),
+                defaultTimeBeforeSplit),
             isUpdating: false,
         })
 

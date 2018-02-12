@@ -419,6 +419,16 @@ export const ACTION_TEMPLATES = [
                     type: 'checkbox'
                 },
                 display_order: 1
+            },
+            refund: {
+                label: 'Refund',
+                type: 'boolean',
+                default: true,
+                editable: true,
+                input: {
+                    type: 'checkbox'
+                },
+                display_order: 2
             }
         },
         validators: [
@@ -468,6 +478,16 @@ export const ACTION_TEMPLATES = [
                     type: 'checkbox'
                 },
                 display_order: 1
+            },
+            refund: {
+                label: 'Refund',
+                type: 'boolean',
+                default: true,
+                editable: true,
+                input: {
+                    type: 'checkbox'
+                },
+                display_order: 2
             }
         }
     },
@@ -783,15 +803,15 @@ export const DEFAULT_PREFERENCES = {
 export const TIMES_BEFORE_SPLIT = [
     {
         value: hoursToSeconds(0.5),
-        label: '30 min'
+        label: '30 minutes'
     },
     {
         value: hoursToSeconds(3),
-        label: '3 hrs'
+        label: '3 hours'
     },
     {
         value: hoursToSeconds(6),
-        label: '6 hrs'
+        label: '6 hours'
     },
     {
         value: hoursToSeconds(24),

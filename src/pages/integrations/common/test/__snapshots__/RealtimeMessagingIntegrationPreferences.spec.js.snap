@@ -248,7 +248,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
               name="timeBeforeSplit"
               onChange={[Function]}
               type="select"
-              value={10800}
+              value={86400}
             >
               <FormGroup
                 className=""
@@ -279,28 +279,28 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                       onChange={[Function]}
                       tag="p"
                       type="select"
-                      value={10800}
+                      value={86400}
                     >
                       <select
                         className="form-control"
                         id="id-timeBeforeSplit"
                         onChange={[Function]}
-                        value={10800}
+                        value={86400}
                       >
                         <option
                           value={1800}
                         >
-                          30 min
+                          30 minutes
                         </option>
                         <option
                           value={10800}
                         >
-                          3 hrs
+                          3 hours
                         </option>
                         <option
                           value={21600}
                         >
-                          6 hrs
+                          6 hours
                         </option>
                         <option
                           value={86400}
@@ -644,17 +644,17 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                         <option
                           value={1800}
                         >
-                          30 min
+                          30 minutes
                         </option>
                         <option
                           value={10800}
                         >
-                          3 hrs
+                          3 hours
                         </option>
                         <option
                           value={21600}
                         >
-                          6 hrs
+                          6 hours
                         </option>
                         <option
                           value={86400}
@@ -1207,17 +1207,17 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                         <option
                           value={1800}
                         >
-                          30 min
+                          30 minutes
                         </option>
                         <option
                           value={10800}
                         >
-                          3 hrs
+                          3 hours
                         </option>
                         <option
                           value={21600}
                         >
-                          6 hrs
+                          6 hours
                         </option>
                         <option
                           value={86400}
