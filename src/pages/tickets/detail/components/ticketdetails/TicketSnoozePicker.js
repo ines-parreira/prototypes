@@ -4,8 +4,8 @@ import moment from 'moment/moment'
 import DatePicker from '../../../../common/forms/DatePicker'
 
 type Props = {
-    children: ?string,
-    datetime: ?string,
+    children?: string,
+    datetime?: string,
     isOpen: boolean,
     onApply: Function,
     ranges: Object,
