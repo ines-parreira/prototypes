@@ -7,7 +7,6 @@ import _noop from 'lodash/noop'
 import axios from 'axios'
 
 import * as newMessageActions from '../newMessage/actions'
-import * as viewsSelectors from '../views/selectors'
 import * as types from './constants'
 import * as newMessageTypes from '../newMessage/constants'
 
@@ -26,7 +25,6 @@ import {
 } from './utils'
 
 import socketManager from '../../services/socketManager'
-import type {dispatchType, getStateType} from '../types'
 
 export const mergeTicket = (ticket) => (dispatch, getState) => {
     ticket = fromJS(ticket)
@@ -449,104 +447,6 @@ export const fetchTicket = (ticketId) => (dispatch) => {
                 reason: `Failed to fetch ticket ${ticketId}`
             })
         })
-}
-
-/**
- * Fetch the next or the previous ticket immediately
- * but wait for the Promise (`promise` argument) to be resolved to display it
- *
- * @param {Integer} ticketId - the id of the ticket from which we want the next or the previous ticket
- * @param {String} direction - `next` or `prev` to get the ticket after or before the current ticket
- * @param {String} promise - promise to resolve before displaying the ticket fetched
- * @returns {Promise}
- */
-export const _goToNextOrPrevTicket = (ticketId: number, direction: string, promise: Promise) => {
-    return (dispatch: dispatchType<Promise>, getState: getStateType) => {
-        if (!promise) {
-            // we do not display the loading state if there is a promise to resolve
-            // because we want to do it discreetly: while something else is happenning.
-            dispatch({
-                type: types.FETCH_TICKET_START,
-            })
-
-            // create a simple Promise resolved to go to the ticket as soon as it's fetched
-            promise = Promise.resolve()
-        }
-
-        const viewId = viewsSelectors.getActiveView(getState()).get('id')
-        const url = `/api/views/${viewId}/tickets/${ticketId}/${direction}`
-
-        if (!viewId) {
-            return promise.then(() => {
-                // there is no active view so we go to the first view
-                browserHistory.push('/app')
-            })
-        }
-
-        return axios.get(url)
-            .then((json = {}) => json.data)
-            .then((ticket) => {
-                // wait for the promise to be resolved to go to the ticket
-                return promise.then(() => {
-                    if (!ticket) {
-                        // there is no other ticket the user can handle so we go back to the view
-                        browserHistory.push(`/app/tickets/${viewId}`)
-                        return
-                    }
-
-                    const requesterId = fromJS(ticket).getIn(['requester', 'id'])
-
-                    if (ticketId) {
-                        socketManager.join('ticket', ticket.id)
-                    }
-
-                    if (requesterId) {
-                        socketManager.join('user', requesterId)
-                    }
-
-                    dispatch({
-                        type: types.FETCH_TICKET_SUCCESS,
-                        resp: ticket,
-                        ticketId: ticket.id,
-                    })
-
-                    dispatch({
-                        type: newMessageTypes.NEW_MESSAGE_FETCH_TICKET_SUCCESS,
-                        resp: ticket,
-                    })
-
-                    dispatch(newMessageActions.initializeMessageDraft())
-
-                    // Notify the server that we viewed this ticket
-                    socketManager.send('ticket-viewed', ticket.id)
-                    dispatch(newMessageActions.resetReceiversAndSender)
-
-                    browserHistory.push(`/app/ticket/${ticket.id}`)
-                })
-            }, (error) => {
-                return dispatch({
-                    type: types.FETCH_TICKET_ERROR,
-                    error,
-                    reason: 'Failed to fetch ticket'
-                })
-            })
-    }
-}
-
-/**
- * Fetch the previous ticket immediately
- * but wait the Promise (`promise` argument) to be resolved to display it
- */
-export const goToPrevTicket = (ticketId: number, promise: Promise) => (dispatch: dispatchType<Promise>) => {
-    return dispatch(_goToNextOrPrevTicket(ticketId, 'prev', promise))
-}
-
-/**
- * Fetch the next ticket immediately
- * but wait the Promise (`promise` argument) to be resolved to display it
- */
-export const goToNextTicket = (ticketId: number, promise: Promise) => (dispatch: dispatchType<Promise>) => {
-    return dispatch(_goToNextOrPrevTicket(ticketId, 'next', promise))
 }
 
 export const handleMessageActionError = (ticketId) => (dispatch) => {

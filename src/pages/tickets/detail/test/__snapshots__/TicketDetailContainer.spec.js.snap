@@ -80,6 +80,7 @@ exports[`TicketDetailContainer component should render container for new ticket 
           },
         }
       }
+      computeNextUrl={[Function]}
       hideTicket={[Function]}
       isTicketHidden={false}
       setStatus={[Function]}

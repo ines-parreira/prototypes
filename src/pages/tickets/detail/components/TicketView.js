@@ -44,6 +44,7 @@ export default class TicketView extends React.Component {
         agents: PropTypes.object.isRequired,
         agentsViewing: PropTypes.object.isRequired,
         agentsTyping: PropTypes.object.isRequired,
+        computeNextUrl: PropTypes.func.isRequired,
         currentUser: PropTypes.object.isRequired,
         hideTicket: PropTypes.func.isRequired,
         isTicketHidden: PropTypes.bool.isRequired,
@@ -162,6 +163,7 @@ export default class TicketView extends React.Component {
             users,
             usersIsLoading,
             actions,
+            computeNextUrl,
             isTicketHidden,
             setStatus,
         } = this.props
@@ -258,6 +260,7 @@ export default class TicketView extends React.Component {
                     <TicketHeader
                         ticket={ticket}
                         actions={actions}
+                        computeNextUrl={computeNextUrl}
                         hideTicket={this.props.hideTicket}
                     />
 

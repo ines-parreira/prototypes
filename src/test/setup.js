@@ -1,5 +1,3 @@
-import{browserHistory} from 'react-router'
-
 // jsdom does not support matchMedia
 Object.defineProperty(window, 'matchMedia', {
     value: jest.fn(() => {
@@ -38,6 +36,3 @@ class LocalStorageMock {
 Object.defineProperty(window, 'localStorage', {
     value: new LocalStorageMock
 })
-
-// Mock browserHistoryAPI
-browserHistory.push = jest.fn()

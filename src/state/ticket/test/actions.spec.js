@@ -3,7 +3,6 @@ import axios from 'axios'
 import moment from 'moment'
 import MockAdapter from 'axios-mock-adapter'
 import thunk from 'redux-thunk'
-import {browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 
@@ -175,6 +174,7 @@ describe('ticket actions', () => {
                 expect(store.getActions()).toMatchSnapshot()
             })
         })
+
 
         it('should not dispatch actions (same status)', () => {
             store = mockStore({ticket: initialState.set('trashed_datetime', null)})
@@ -351,137 +351,5 @@ describe('ticket actions', () => {
     it('deleteTicketPendingMessage', () => {
         store.dispatch(actions.deleteTicketPendingMessage({id: 1}))
         return expect(store.getActions()).toMatchSnapshot()
-    })
-
-    describe('goToNextTicket()', () => {
-        afterEach(() => {
-            jest.clearAllMocks()
-        })
-
-        it('should go to first view because there is no active view', (done) => {
-            store.dispatch(actions.goToNextTicket(1)).then(() => {
-                expect(store.getActions()).toMatchSnapshot()
-                expect(browserHistory.push).toHaveBeenCalledWith('/app')
-                done()
-            })
-        })
-
-        it('should fetch next ticket and go to the active view because there is no ticket', (done) => {
-            mockServer.onGet('/api/views/1/tickets/1/next').reply(200)
-            store = mockStore({
-                ticket: initialState,
-                views: fromJS({active: {id: 1}})
-            })
-
-            store.dispatch(actions.goToNextTicket(1)).then(() => {
-                expect(store.getActions()).toMatchSnapshot()
-                expect(browserHistory.push).toHaveBeenCalledWith('/app/tickets/1')
-                done()
-            })
-        })
-
-        it('should fetch next ticket and go to this ticket', (done) => {
-            const ticket = {id: 2, requesterId: 1}
-            mockServer.onGet('/api/views/1/tickets/1/next').reply(200, ticket)
-            store = mockStore({
-                ticket: initialState,
-                views: fromJS({active: {id: 1}})
-            })
-
-            const fetchTicketPromise = store.dispatch(actions.goToNextTicket(1))
-
-            expect(store.getActions()).not.toEqual([])
-
-            fetchTicketPromise.then(() => {
-                expect(store.getActions()).toMatchSnapshot()
-                expect(browserHistory.push).toHaveBeenCalledWith('/app/ticket/2')
-                done()
-            })
-        })
-
-        it('should fetch next ticket and wait for promise to be resolved to go to this ticket', (done) => {
-            mockServer.onGet('/api/views/1/tickets/1/next').reply(200, {id: 2})
-            store = mockStore({
-                ticket: initialState,
-                views: fromJS({active: {id: 1}})
-            })
-
-            const promise = Promise.resolve()
-            const fetchTicketPromise = store.dispatch(actions.goToNextTicket(1, promise))
-
-            expect(store.getActions()).toEqual([])
-
-            fetchTicketPromise.then(() => {
-                expect(store.getActions()).toMatchSnapshot()
-                expect(browserHistory.push).toHaveBeenCalledWith('/app/ticket/2')
-                done()
-            })
-        })
-    })
-
-    describe('goToPrevTicket()', () => {
-        afterEach(() => {
-            jest.clearAllMocks()
-        })
-
-        it('should go to first view because there is no active view', (done) => {
-            store.dispatch(actions.goToPrevTicket(2)).then(() => {
-                expect(store.getActions()).toMatchSnapshot()
-                expect(browserHistory.push).toHaveBeenCalledWith('/app')
-                done()
-            })
-        })
-
-        it('should fetch previous ticket and go to the active view because there is no ticket', (done) => {
-            mockServer.onGet('/api/views/1/tickets/2/prev').reply(200)
-            store = mockStore({
-                ticket: initialState,
-                views: fromJS({active: {id: 1}})
-            })
-
-            store.dispatch(actions.goToPrevTicket(2)).then(() => {
-                expect(store.getActions()).toMatchSnapshot()
-                expect(browserHistory.push).toHaveBeenCalledWith('/app/tickets/1')
-                done()
-            })
-        })
-
-        it('should fetch previous ticket and go to this ticket', (done) => {
-            const ticket = {id: 1, requesterId: 1}
-            mockServer.onGet('/api/views/1/tickets/2/prev').reply(200, ticket)
-            store = mockStore({
-                ticket: initialState,
-                views: fromJS({active: {id: 1}})
-            })
-
-            const fetchTicketPromise = store.dispatch(actions.goToPrevTicket(2))
-
-            expect(store.getActions()).not.toEqual([])
-
-            fetchTicketPromise.then(() => {
-                expect(store.getActions()).toMatchSnapshot()
-                expect(browserHistory.push).toHaveBeenCalledWith('/app/ticket/1')
-                done()
-            })
-        })
-
-        it('should fetch previous ticket and wait for promise to be resolved to go to this ticket', (done) => {
-            mockServer.onGet('/api/views/1/tickets/2/prev').reply(200, {id: 1})
-            store = mockStore({
-                ticket: initialState,
-                views: fromJS({active: {id: 1}})
-            })
-
-            const promise = Promise.resolve()
-            const fetchTicketPromise = store.dispatch(actions.goToPrevTicket(2, promise))
-
-            expect(store.getActions()).toEqual([])
-
-            fetchTicketPromise.then(() => {
-                expect(store.getActions()).toMatchSnapshot()
-                expect(browserHistory.push).toHaveBeenCalledWith('/app/ticket/1')
-                done()
-            })
-        })
     })
 })

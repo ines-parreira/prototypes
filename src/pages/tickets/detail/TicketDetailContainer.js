@@ -94,6 +94,8 @@ export default class TicketDetailContainer extends React.Component {
         isTicketHidden: false,
     }
 
+    _fetchTicketData = (ticketId) => this.props.actions.ticket.fetchTicket(ticketId)
+
     _showTicket = () => {
         this.setState({
             isTicketHidden: false,
@@ -101,10 +103,8 @@ export default class TicketDetailContainer extends React.Component {
     }
 
     _hideTicket = () => {
-        return new Promise((resolve) => {
-            this.setState({isTicketHidden: true})
-            // 100ms to let the animation goes
-            return setTimeout(resolve, 100)
+        this.setState({
+            isTicketHidden: true,
         })
     }
 
@@ -112,7 +112,7 @@ export default class TicketDetailContainer extends React.Component {
         this.props.actions.tag.fetchTags()
         this.props.actions.user.fetchUsers(['agent', 'admin', 'bot'])
         this.props.actions.ticket.clearTicket()
-        this.props.actions.ticket.fetchTicket(this.props.params.ticketId)
+        this._fetchTicketData(this.props.params.ticketId)
 
         const userId = parseInt(this.props.location.query.requester)
         if (
@@ -129,35 +129,38 @@ export default class TicketDetailContainer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const nextTicket = nextProps.ticket
-        const nextParams = nextProps.params
-        const nextUsers = nextProps.users
-        const ticketIdParamChanged = nextParams.ticketId !== this.props.params.ticketId
-        const nextTicketIsNew = nextParams.ticketId === 'new'
-        const nextTicketIdParamMatchesNextTicket = nextTicket.get('id', '').toString() === nextParams.ticketId
-
-        if (!nextTicketIsNew && nextTicket.get('requester') && !nextUsers.getIn(['userHistory', 'triedLoading'])) {
-            const requesterId = nextTicket.getIn(['requester', 'id'])
-
-            if (!requesterId) {
-                return
-            }
-
-            // Fetch the ticket's requester history (tickets + events).
-            this.props.actions.user.fetchUserHistory(requesterId, {
+        /**
+         * Fetch the ticket's requester history (tickets + events) after the ticket's details have been loaded.
+         */
+        if (
+            nextProps.params.ticketId !== 'new'
+            && nextProps.ticket.get('requester')
+            && !nextProps.users.getIn(['userHistory', 'triedLoading'])
+        ) {
+            const askedUserId = nextProps.ticket.getIn(['requester', 'id'], '')
+            this.props.actions.user.fetchUserHistory(askedUserId, {
                 successCondition: (state) => {
-                    return state.ticket.getIn(['requester', 'id']) === requesterId
+                    return state.ticket.getIn(['requester', 'id'], '').toString() === askedUserId.toString()
                 }
             })
         }
 
-        if (ticketIdParamChanged) {
-            // if the ticket in the reducer is not the one asked, we fetch it and display it
-            if (!nextTicketIsNew && !nextTicketIdParamMatchesNextTicket) {
+        if (
+            nextProps.params.ticketId !== this.props.params.ticketId
+            && nextProps.params.ticketId !== 'new'
+        ) {
+            /**
+             * Fetch required data when loading a ticket.
+             */
+            if (this.props.params.ticketId !== 'new') {
+                // Don't clear when creating a new ticket: looks better this way
                 this.props.actions.ticket.clearTicket()
-                this.props.actions.ticket.fetchTicket(nextParams.ticketId)
             }
 
+            this._fetchTicketData(nextProps.params.ticketId)
+        }
+
+        if (nextProps.params.ticketId !== this.props.params.ticketId) {
             this._showTicket()
         }
 
@@ -165,9 +168,8 @@ export default class TicketDetailContainer extends React.Component {
         // map default channel (email) to address, for the receivers select.
         const receiver = nextProps.activeUser.set('address', nextProps.activeUser.get('email'))
         const requester = this.props.ticket.get('requester') || fromJS({})
-
         if (
-            nextTicketIsNew &&
+            nextProps.params.ticketId === 'new' &&
             nextProps.location.query.requester &&
             nextProps.activeUser.get('id') === parseInt(nextProps.location.query.requester) &&
             !requester.equals(receiver)
@@ -216,16 +218,22 @@ export default class TicketDetailContainer extends React.Component {
             GO_BACK: {
                 action: () => {
                     if (!modalVisible()) {
-                        this.props.actions.ticket.clearTicket()
-                        this.props.actions.ticket.goToPrevTicket(this.props.params.ticketId)
+                        const nextUrl = this._computeNextUrl(false)
+
+                        if (nextUrl) {
+                            browserHistory.push(nextUrl)
+                        }
                     }
                 }
             },
             GO_FORWARD: {
                 action: () => {
                     if (!modalVisible()) {
-                        this.props.actions.ticket.clearTicket()
-                        this.props.actions.ticket.goToNextTicket(this.props.params.ticketId)
+                        const nextUrl = this._computeNextUrl(true)
+
+                        if (nextUrl) {
+                            browserHistory.push(nextUrl)
+                        }
                     }
                 }
             },
@@ -254,6 +262,46 @@ export default class TicketDetailContainer extends React.Component {
                 }
             }
         })
+    }
+
+    _computeNextUrl = (ascending) => {
+        let nextTicketUrl = '/app'
+        const translation = ascending ? 1 : -1
+        const ticketId = this.props.ticket.get('id')
+
+        if (!ticketId) {
+            return false
+        }
+
+        const currentTicketIndex = this.props.tickets.get('items', fromJS([]))
+            .findIndex(ticket => ticket.get('id') === ticketId)
+
+        if (!currentTicketIndex && currentTicketIndex !== 0) {
+            return false
+        }
+
+        const nextIndex = currentTicketIndex + translation
+        const nextTicket = this.props.tickets.get('items').toJS()[nextIndex]
+        const activeView = this.props.activeView
+
+        if (nextTicket && nextTicket.id) {
+            nextTicketUrl = `/app/ticket/${nextTicket.id}`
+        } else if (!activeView.isEmpty()) {
+            nextTicketUrl = `/app/tickets/${activeView.get('id')}/${activeView.get('slug')}`
+
+            // if the active view is a search view, come back to it
+            const searchedTerm = activeView.get('search')
+            if (searchedTerm) {
+                nextTicketUrl = `/app/tickets/search?q=${encodeURIComponent(searchedTerm)}`
+            } else {
+                const page = this.props.pagination.get('page')
+                if (page && page > 1) {
+                    nextTicketUrl += `?page=${page}`
+                }
+            }
+        }
+
+        return nextTicketUrl
     }
 
     _submit = (status, next, action, resetMessage = true) => {
@@ -344,6 +392,7 @@ export default class TicketDetailContainer extends React.Component {
                 <div className="TicketDetailContainer">
                     <TicketView
                         actions={this.props.actions}
+                        computeNextUrl={this._computeNextUrl}
                         hideTicket={this._hideTicket}
                         isTicketHidden={this.state.isTicketHidden}
                         submit={this._submit}
