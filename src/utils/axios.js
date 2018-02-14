@@ -50,6 +50,7 @@ export const injectInterceptor = () => (dispatch: dispatchType) => {
                 }, 10800000) // 3 hours
             }, 15000)
         }
+
         return response
     })
 }

@@ -25,8 +25,14 @@ const crashReporter = () => (next) => (action) => {
         // Send the report
         // whole state is too big, can not be sent
         // state: store.getState()
+        // If the action holds error.response.headers object, send x-request-id to sentry
+        let customTags = {}
+        if (action.error && action.error.response && action.error.response.headers) {
+            customTags = {'XRequestID' : action.error.response.headers['x-request-id']}
+        }
         Raven.captureException(err, {
-            extra: action
+            extra: action,
+            tags: customTags
         })
     }
 }
