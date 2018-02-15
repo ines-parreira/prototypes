@@ -69,6 +69,15 @@ export default class FacebookIntegrationSetup extends React.Component {
             const settings = this.state.pages[integration.get('id')] || {}
 
             if (settings.page_enabled) {
+                // If the private messages are enabled, then enable messenger by default
+                // This is to avoid duplicate messages when receiving the first Messenger message on a new Facebook
+                // integration.
+                // todo(@martin): when we have completely deactivated `conversations` and use only `messenger`,
+                // definitely replace `private_messages_enabled` by `messenger_enabled`
+                if (settings.private_messages_enabled) {
+                    settings.messenger_enabled = true
+                }
+
                 const updated = integration
                     .set('deleted_datetime', null)
                     .mergeDeep({
