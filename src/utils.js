@@ -403,7 +403,7 @@ export function sanitizeHtmlDefault(html: string): string {
         },
         nonTextTags: ['style', 'script', 'textarea', 'noscript', 'title'],
         transformTags: {
-            'a': sanitizeHtml.simpleTransform('a', {target: '_blank'})
+            'a': sanitizeHtml.simpleTransform('a', {target: '_blank', rel: 'noreferrer noopener'})
         }
     })
 }

@@ -142,5 +142,33 @@ describe('components', () => {
 
             expect(component.render().find('a').prop('target')).toBe('_blank')
         })
+
+        it('should set rel=noopener noreferrer  for all links', () => {
+            const component = mount(
+                <TicketMessageBody
+                    message={{
+                        body_text: 'https://gorgias.io',
+                        body_html: ''
+                    }}
+                    store={mockStore()}
+                />
+            )
+
+            expect(component.render().find('a').prop('rel')).toBe('noreferrer noopener')
+        })
+
+        it('should set rel=noopener noreferrer  for all links', () => {
+            const component = mount(
+                <TicketMessageBody
+                    message={{
+                        body_text: '',
+                        body_html: '<a href="#">text</a>'
+                    }}
+                    store={mockStore()}
+                />
+            )
+
+            expect(component.render().find('a').prop('rel')).toBe('noreferrer noopener')
+        })
     })
 })

@@ -61,7 +61,7 @@ exports[`components TicketMessageBody linkify body_text 1`] = `
       <div
         dangerouslySetInnerHTML={
           Object {
-            "__html": "text <a href=\\"http://gorgias.io/\\" class=\\"linkified\\" target=\\"_blank\\">http://gorgias.io/</a>",
+            "__html": "text <a href=\\"http://gorgias.io/\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">http://gorgias.io/</a>",
           }
         }
       />
@@ -131,7 +131,7 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
       <div
         dangerouslySetInnerHTML={
           Object {
-            "__html": "text <a href=\\"http://gorgias.io/\\" class=\\"linkified\\" target=\\"_blank\\">http://gorgias.io/</a>",
+            "__html": "text <a href=\\"http://gorgias.io/\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">http://gorgias.io/</a>",
           }
         }
       />
