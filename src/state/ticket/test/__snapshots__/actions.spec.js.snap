@@ -458,6 +458,360 @@ Array [
 ]
 `;
 
+exports[`ticket actions goToNextTicket() should fetch next ticket and go to the active view because there is no ticket 1`] = `
+Array [
+  Object {
+    "type": "FETCH_TICKET_START",
+  },
+]
+`;
+
+exports[`ticket actions goToNextTicket() should fetch next ticket and go to this ticket 1`] = `
+Array [
+  Object {
+    "type": "FETCH_TICKET_START",
+  },
+  Object {
+    "resp": Object {
+      "id": 2,
+      "requesterId": 1,
+    },
+    "ticketId": 2,
+    "type": "FETCH_TICKET_SUCCESS",
+  },
+  Object {
+    "resp": Object {
+      "id": 2,
+      "requesterId": 1,
+    },
+    "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
+  },
+  Object {
+    "appliedMacro": null,
+    "args": Immutable.Map {
+},
+    "currentUser": undefined,
+    "forceFocus": false,
+    "forceUpdate": false,
+    "fromMacro": false,
+    "ticket": Immutable.Map {
+      trashed_datetime: null,
+      channel: "email",
+      priority: "normal",
+      spam: false,
+      subject: "",
+      messages: Immutable.List [
+      ],
+      via: "helpdesk",
+      receiver: null,
+      state: Immutable.Map {
+            dirty: false,
+            latestEventDatetime: null,
+            appliedMacro: null,
+      },
+      status: "open",
+      sender: null,
+      tags: Immutable.List [
+      ],
+      events: Immutable.List [
+      ],
+      assignee_user: null,
+      _internal: Immutable.Map {
+            displayHistory: false,
+            shouldDisplayHistoryOnNextPage: false,
+            loading: Immutable.Map {
+                  fetchTicket: false,
+                  deleteMessage: false,
+            },
+            pendingMessages: Immutable.List [
+            ],
+      },
+      requester: null,
+},
+    "ticketId": undefined,
+    "type": "setResponseText",
+  },
+  Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+]
+`;
+
+exports[`ticket actions goToNextTicket() should fetch next ticket and wait for promise to be resolved to go to this ticket 1`] = `
+Array [
+  Object {
+    "resp": Object {
+      "id": 2,
+    },
+    "ticketId": 2,
+    "type": "FETCH_TICKET_SUCCESS",
+  },
+  Object {
+    "resp": Object {
+      "id": 2,
+    },
+    "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
+  },
+  Object {
+    "appliedMacro": null,
+    "args": Immutable.Map {
+},
+    "currentUser": undefined,
+    "forceFocus": false,
+    "forceUpdate": false,
+    "fromMacro": false,
+    "ticket": Immutable.Map {
+      trashed_datetime: null,
+      channel: "email",
+      priority: "normal",
+      spam: false,
+      subject: "",
+      messages: Immutable.List [
+      ],
+      via: "helpdesk",
+      receiver: null,
+      state: Immutable.Map {
+            dirty: false,
+            latestEventDatetime: null,
+            appliedMacro: null,
+      },
+      status: "open",
+      sender: null,
+      tags: Immutable.List [
+      ],
+      events: Immutable.List [
+      ],
+      assignee_user: null,
+      _internal: Immutable.Map {
+            displayHistory: false,
+            shouldDisplayHistoryOnNextPage: false,
+            loading: Immutable.Map {
+                  fetchTicket: false,
+                  deleteMessage: false,
+            },
+            pendingMessages: Immutable.List [
+            ],
+      },
+      requester: null,
+},
+    "ticketId": undefined,
+    "type": "setResponseText",
+  },
+  Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+]
+`;
+
+exports[`ticket actions goToNextTicket() should go to first view because there is no active view 1`] = `
+Array [
+  Object {
+    "type": "FETCH_TICKET_START",
+  },
+]
+`;
+
+exports[`ticket actions goToPrevTicket() should fetch previous ticket and go to the active view because there is no ticket 1`] = `
+Array [
+  Object {
+    "type": "FETCH_TICKET_START",
+  },
+]
+`;
+
+exports[`ticket actions goToPrevTicket() should fetch previous ticket and go to this ticket 1`] = `
+Array [
+  Object {
+    "type": "FETCH_TICKET_START",
+  },
+  Object {
+    "resp": Object {
+      "id": 1,
+      "requesterId": 1,
+    },
+    "ticketId": 1,
+    "type": "FETCH_TICKET_SUCCESS",
+  },
+  Object {
+    "resp": Object {
+      "id": 1,
+      "requesterId": 1,
+    },
+    "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
+  },
+  Object {
+    "appliedMacro": null,
+    "args": Immutable.Map {
+},
+    "currentUser": undefined,
+    "forceFocus": false,
+    "forceUpdate": false,
+    "fromMacro": false,
+    "ticket": Immutable.Map {
+      trashed_datetime: null,
+      channel: "email",
+      priority: "normal",
+      spam: false,
+      subject: "",
+      messages: Immutable.List [
+      ],
+      via: "helpdesk",
+      receiver: null,
+      state: Immutable.Map {
+            dirty: false,
+            latestEventDatetime: null,
+            appliedMacro: null,
+      },
+      status: "open",
+      sender: null,
+      tags: Immutable.List [
+      ],
+      events: Immutable.List [
+      ],
+      assignee_user: null,
+      _internal: Immutable.Map {
+            displayHistory: false,
+            shouldDisplayHistoryOnNextPage: false,
+            loading: Immutable.Map {
+                  fetchTicket: false,
+                  deleteMessage: false,
+            },
+            pendingMessages: Immutable.List [
+            ],
+      },
+      requester: null,
+},
+    "ticketId": undefined,
+    "type": "setResponseText",
+  },
+  Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+]
+`;
+
+exports[`ticket actions goToPrevTicket() should fetch previous ticket and wait for promise to be resolved to go to this ticket 1`] = `
+Array [
+  Object {
+    "resp": Object {
+      "id": 1,
+    },
+    "ticketId": 1,
+    "type": "FETCH_TICKET_SUCCESS",
+  },
+  Object {
+    "resp": Object {
+      "id": 1,
+    },
+    "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
+  },
+  Object {
+    "appliedMacro": null,
+    "args": Immutable.Map {
+},
+    "currentUser": undefined,
+    "forceFocus": false,
+    "forceUpdate": false,
+    "fromMacro": false,
+    "ticket": Immutable.Map {
+      trashed_datetime: null,
+      channel: "email",
+      priority: "normal",
+      spam: false,
+      subject: "",
+      messages: Immutable.List [
+      ],
+      via: "helpdesk",
+      receiver: null,
+      state: Immutable.Map {
+            dirty: false,
+            latestEventDatetime: null,
+            appliedMacro: null,
+      },
+      status: "open",
+      sender: null,
+      tags: Immutable.List [
+      ],
+      events: Immutable.List [
+      ],
+      assignee_user: null,
+      _internal: Immutable.Map {
+            displayHistory: false,
+            shouldDisplayHistoryOnNextPage: false,
+            loading: Immutable.Map {
+                  fetchTicket: false,
+                  deleteMessage: false,
+            },
+            pendingMessages: Immutable.List [
+            ],
+      },
+      requester: null,
+},
+    "ticketId": undefined,
+    "type": "setResponseText",
+  },
+  Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+]
+`;
+
+exports[`ticket actions goToPrevTicket() should go to first view because there is no active view 1`] = `
+Array [
+  Object {
+    "type": "FETCH_TICKET_START",
+  },
+]
+`;
+
 exports[`ticket actions handleMessageActionError 1`] = `Array []`;
 
 exports[`ticket actions mergeRequester 1`] = `

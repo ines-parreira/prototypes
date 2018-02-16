@@ -1,7 +1,7 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React from 'react'
 import {connect} from 'react-redux'
 import moment from 'moment'
-import {browserHistory} from 'react-router'
 import {
     UncontrolledDropdown,
     DropdownToggle,
@@ -26,21 +26,30 @@ import TicketTrash from './ticketdetails/TicketTrash'
 import * as ticketActions from '../../../../state/ticket/actions'
 import TicketSnoozePicker from './ticketdetails/TicketSnoozePicker'
 
+
+type Props = {
+    ticket: Object,
+    actions: Object,
+    setTrashed: typeof ticketActions.setTrashed,
+    setSpam: typeof ticketActions.setSpam,
+    clearTicket: typeof ticketActions.clearTicket,
+    goToNextTicket: typeof ticketActions.goToNextTicket,
+    hideTicket: () => any,
+}
+
+type State = {
+    askTrashConfirmation: boolean,
+    showSnoozePicker: boolean
+}
+
+
 @connect(null, {
     setTrashed: ticketActions.setTrashed,
     setSpam: ticketActions.setSpam,
+    clearTicket: ticketActions.clearTicket,
+    goToNextTicket: ticketActions.goToNextTicket,
 })
-export default class TicketHeader extends React.Component {
-    static propTypes = {
-        ticket: PropTypes.object.isRequired,
-        actions: PropTypes.object.isRequired,
-        setTrashed: PropTypes.func.isRequired,
-        setSpam: PropTypes.func.isRequired,
-
-        computeNextUrl: PropTypes.func.isRequired,
-        hideTicket: PropTypes.func.isRequired,
-    }
-
+export default class TicketHeader extends React.Component<Props, State> {
     state = {
         askTrashConfirmation: false,
         showSnoozePicker: false
@@ -54,36 +63,32 @@ export default class TicketHeader extends React.Component {
         shortcutManager.unbind('TicketDetailContainer')
     }
 
-    _toggleStatus = (status) => {
+    _toggleStatus = (status: string) => {
         const newStatus = status === 'closed' ? 'open' : 'closed'
         return this._setStatus(newStatus)
     }
 
-    _goToNextUrl = () => {
-        const {computeNextUrl, hideTicket} = this.props
-        const nextUrl = computeNextUrl(true)
-        // redirect to the next ticket after the transition is done.
-        if (nextUrl) {
-            hideTicket()
-            // delay redirect to let the hiding animation appear
-            setTimeout(() => browserHistory.push(nextUrl), 300)
-        }
+    _goToNextTicket = () => {
+        const {hideTicket, goToNextTicket, clearTicket} = this.props
+        const promise = hideTicket().then(clearTicket)
+
+        goToNextTicket(this.props.ticket.get('id'), promise)
     }
 
-    _setStatus = (status) => {
+    _setStatus = (status: string) => {
         return this.props.actions.ticket.setStatus(status, () => {
-            this._goToNextUrl()
+            this._goToNextTicket()
         })
     }
 
-    _toggleTrashConfirmation = (state = !this.state.askTrashConfirmation) => {
-        this.setState({askTrashConfirmation: state})
+    _toggleTrashConfirmation = (status: boolean = !this.state.askTrashConfirmation) => {
+        this.setState({askTrashConfirmation: status})
     }
 
     _trashTicket = () => {
         this._toggleTrashConfirmation(false)
         return this.props.setTrashed(moment.utc(), () => {
-            this._goToNextUrl()
+            this._goToNextTicket()
         })
     }
 
@@ -91,9 +96,9 @@ export default class TicketHeader extends React.Component {
         return this.props.setTrashed(null)
     }
 
-    _setSnooze = (event, picker) => {
+    _setSnooze = (event: Object, picker: Object) => {
         return this.props.actions.ticket.setSnooze(picker.endDate.format(), () => {
-            this._goToNextUrl()
+            this._goToNextTicket()
         })
     }
 
@@ -105,7 +110,7 @@ export default class TicketHeader extends React.Component {
         const spam = !this.props.ticket.get('spam')
         return this.props.setSpam(spam, () => {
             if (spam) {
-                this._goToNextUrl()
+                this._goToNextTicket()
             }
         })
     }
