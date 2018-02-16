@@ -52,6 +52,7 @@ export default class HeaderFieldArray extends React.Component {
                                     name={`${header}.key`}
                                     placeholder="Key"
                                     value={header.key}
+                                    required
                                     onChange={(value) => { this._update(index, 'key', _trim(value))}}
                                 />
                             </Col>
@@ -61,6 +62,7 @@ export default class HeaderFieldArray extends React.Component {
                                     name={`${header}.value`}
                                     placeholder="Value"
                                     value={header.value}
+                                    required
                                     onChange={(value) => { this._update(index, 'value', value)}}
                                 />
                             </Col>
