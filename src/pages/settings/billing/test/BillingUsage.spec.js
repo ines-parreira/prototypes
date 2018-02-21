@@ -41,7 +41,7 @@ describe('BillingUsage component', () => {
                     },
                     data: {
                         cost: 10,
-                        tickets: 10
+                        extra_tickets: 10
                     }
                 })}
                 fetchCurrentUsage={() => Promise.resolve()}

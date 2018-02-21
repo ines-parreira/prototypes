@@ -36,7 +36,7 @@ exports[`BillingUsage component should display price 1`] = `
       },
       data: Immutable.Map {
         cost: 10,
-        tickets: 10,
+        extra_tickets: 10,
       },
     }
   }

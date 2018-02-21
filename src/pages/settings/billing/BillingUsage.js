@@ -46,7 +46,7 @@ export class BillingUsage extends Component {
                         <CardGroup>
                             <Card block className="text-center">
                                 <h3>
-                                    {currentUsage.getIn(['data', 'tickets'])}
+                                    {currentUsage.getIn(['data', 'extra_tickets'])}
                                 </h3>
                                 <div>
                                     tickets
