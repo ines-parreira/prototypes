@@ -822,3 +822,8 @@ export const TIMES_BEFORE_SPLIT = [
         label: '7 days'
     }
 ]
+
+/**
+ * Max header length
+ */
+export const MAX_HEADER_LENGTH = 1000

@@ -208,7 +208,7 @@ export class MacroEdit extends React.Component {
                                     break
                                 case 'http':
                                     config = {
-                                        title: 'Action HTTP',
+                                        title: 'HTTP WebHook',
                                         content: (
                                             <HttpAction
                                                 index={index}

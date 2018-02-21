@@ -5,6 +5,7 @@ import {Row, Col} from 'reactstrap'
 
 import Tooltip from '../../../../common/components/Tooltip'
 import InputField from '../../../../common/forms/InputField'
+import {MAX_HEADER_LENGTH} from '../../../../../config'
 
 export default class ParametersEditor extends React.Component {
     addRow = () => {
@@ -59,6 +60,9 @@ export default class ParametersEditor extends React.Component {
                                         type="text"
                                         placeholder="Key"
                                         value={dict.get('key')}
+                                        required
+                                        form="macro_form"
+                                        maxLength={MAX_HEADER_LENGTH}
                                         onChange={value => this.changeValue('key', index, value)}
                                     />
                                 </Col>
@@ -67,8 +71,12 @@ export default class ParametersEditor extends React.Component {
                                         type="text"
                                         placeholder="Value"
                                         value={dict.get('value')}
+                                        form="macro_form"
+                                        maxLength={MAX_HEADER_LENGTH}
+                                        required={this.props.name === 'headers'}
                                         onChange={value => this.changeValue('value', index, value)}
                                     />
+
                                 </Col>
                                 <Col
                                     xs="3"

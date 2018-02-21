@@ -10,7 +10,7 @@ import InputField from '../../../../../common/forms/InputField'
 import BooleanField from '../../../../../common/forms/BooleanField'
 import JsonField from '../../../../../common/forms/JsonField'
 
-import {validateWebhookURL} from '../../../../../../utils'
+import {validateWebhookURL, validateWebhookURLToPattern} from '../../../../../../utils'
 
 export default class HttpAction extends React.Component {
     _setTitle = (title) => {
@@ -88,6 +88,7 @@ export default class HttpAction extends React.Component {
                     value={action.get('title')}
                     onChange={this._setTitle}
                     required
+                    form="macro_form"
                 />
                 <Row>
                     <Col xs="3">
@@ -98,6 +99,7 @@ export default class HttpAction extends React.Component {
                             value={action.getIn(['arguments', 'method'])}
                             onChange={value => this._setArgument('method', value)}
                             required
+                            form="macro_form"
                         >
                             {
                                 AVAILABLE_HTTP_METHODS.map((method) =>
@@ -113,7 +115,7 @@ export default class HttpAction extends React.Component {
                     </Col>
                     <Col xs="9">
                         <InputField
-                            type="text"
+                            type="url"
                             title='Example: https://company.com/api'
                             name="url"
                             label="URL"
@@ -122,6 +124,8 @@ export default class HttpAction extends React.Component {
                             onChange={value => this._setArgument('url', value)}
                             help="Example: https://company.com/api"
                             required
+                            form="macro_form"
+                            pattern={validateWebhookURLToPattern(action.getIn(['arguments', 'url']))}
                         />
                     </Col>
                 </Row>

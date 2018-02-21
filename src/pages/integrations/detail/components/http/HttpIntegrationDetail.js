@@ -23,7 +23,7 @@ import ConfirmButton from '../../../../common/components/ConfirmButton'
 import InputField from '../../../../common/forms/InputField'
 import BooleanField from '../../../../common/forms/BooleanField'
 import JsonField from '../../../../common/forms/JsonField'
-import {toJS, validateWebhookURL} from '../../../../../utils'
+import {toJS, validateWebhookURL, validateWebhookURLToPattern} from '../../../../../utils'
 
 export const defaultContent = {
     type: 'http',
@@ -247,13 +247,14 @@ export default class HttpIntegrationDetail extends React.Component {
                         />
                     </FormGroup>
                     <InputField
-                        type="text"
+                        type="url"
                         error={validateWebhookURL(this.state.url)}
                         name="http.url"
                         label="URL"
                         title='Example: https://company.com/api'
                         placeholder="https://company.com/api/users?email={{ticket.requester.email}}"
                         required
+                        pattern={validateWebhookURLToPattern(this.state.url)}
                         help={(
                             <div>
                                 You can use <code>{'{{ticket.requester.email}}'}</code> to pass the email of the

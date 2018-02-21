@@ -5,6 +5,7 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
   className="http"
 >
   <InputField
+    form="macro_form"
     label="Title"
     name="title"
     onChange={[Function]}
@@ -29,6 +30,7 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
       xs="3"
     >
       <InputField
+        form="macro_form"
         label="Method"
         name="method"
         onChange={[Function]}
@@ -72,13 +74,15 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
     >
       <InputField
         error={null}
+        form="macro_form"
         help="Example: https://company.com/api"
         label="URL"
         name="url"
         onChange={[Function]}
+        pattern="*"
         required={true}
         title="Example: https://company.com/api"
-        type="text"
+        type="url"
       />
     </Col>
   </Row>

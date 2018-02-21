@@ -122,10 +122,11 @@ exports[`HttpIntegrationDetail component should display data about the integrati
       label="URL"
       name="http.url"
       onChange={[Function]}
+      pattern="$a"
       placeholder="https://company.com/api/users?email={{ticket.requester.email}}"
       required={true}
       title="Example: https://company.com/api"
-      type="text"
+      type="url"
       value="http://httpbin.org/post"
     />
     <InputField
@@ -382,10 +383,11 @@ exports[`HttpIntegrationDetail component should display default if it's a new in
       label="URL"
       name="http.url"
       onChange={[Function]}
+      pattern="*"
       placeholder="https://company.com/api/users?email={{ticket.requester.email}}"
       required={true}
       title="Example: https://company.com/api"
-      type="text"
+      type="url"
       value=""
     />
     <InputField

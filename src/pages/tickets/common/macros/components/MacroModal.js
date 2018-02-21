@@ -89,14 +89,16 @@ export default class MacroModal extends React.Component {
         return this.props.handleClickItem(macroId)
     }
 
-    _createMacro = () => {
+    _createMacro = (e) => {
+        e.preventDefault()
         return this.props.actions.macro.createMacro(this.props.currentMacro.set('actions', this.state.actions).set('name', this.state.name))
             .then((resp) => {
                 this._handleClickItem(resp.id)
             })
     }
 
-    _updateMacro = () => {
+    _updateMacro = (e) => {
+        e.preventDefault()
         return this.props.actions.macro.updateMacro(this.props.currentMacro.set('actions', this.state.actions).set('name', this.state.name))
     }
 
@@ -197,23 +199,28 @@ export default class MacroModal extends React.Component {
                                             <div className="d-inline-block pull-right">
                                                 {
                                                     isUpdate ? (
-                                                        <Button
-                                                            type="submit"
-                                                            color="primary"
-                                                            onClick={this._updateMacro}
+                                                        <form id="macro_form"
+                                                              onSubmit={(e) => (this._updateMacro(e))}
                                                         >
-                                                            Update macro
-                                                        </Button>
+                                                            <Button
+                                                                type="submit"
+                                                                color="primary"
+                                                            >
+                                                                Update macro
+                                                            </Button>
+                                                        </form>
                                                     ) : (
-                                                        <Button
-                                                            type="submit"
-                                                            color="primary"
-                                                            onClick={this._createMacro}
+                                                        <form id="macro_form"
+                                                              onSubmit={(e) => (this._createMacro(e))}
                                                         >
-                                                            Create macro
-                                                        </Button>
-                                                    )
-                                                }
+                                                            <Button
+                                                                type="submit"
+                                                                color="primary"
+                                                            >
+                                                                Create macro
+                                                            </Button>
+                                                        </form>
+                                                    )}
                                             </div>
                                         </div>
                                     )

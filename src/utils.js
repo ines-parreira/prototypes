@@ -998,6 +998,20 @@ export function hoursToSeconds(hours: number = 0): number {
     return 60 * 60 * hours
 }
 
+
+/**
+ * Function that wraps functionality for cheking webhook url and return a valid or invalid pattern
+ * @param val - url string
+ * @returns invalid pattern if there are errors with url
+ */
+export const validateWebhookURLToPattern = (val: string): ?string => {
+    if (validateWebhookURL(val)) {
+        // Will look for "a" after the end of the string -> impossible
+        return '$a'
+    }
+    return '*'
+}
+
 /**
  * Function that wraps functionality for checking webhook urls
  * @param val - url string
