@@ -42,13 +42,7 @@ describe('actions', () => {
             store.dispatch(actions.setSender())
             const expectedActions = store.getActions()
 
-            expect(expectedActions).toEqual([{
-                type: types.NEW_MESSAGE_SET_SENDER,
-                sender: fromJS({
-                    name: 'Acme Support',
-                    address: 'support@acme.com'
-                })
-            }])
+            expect(expectedActions).toMatchSnapshot()
         })
 
         it('dispatch setSender - `from` field from last message from agent (chat, messenger)', () => {
@@ -400,34 +394,39 @@ describe('actions', () => {
             let data = {}
 
             beforeEach(() => {
+                const contentState = ContentState.createFromText('Hi ')
                 store = mockStore({
-                    newMessage: initialState,
-                    currentUser: {}
-                })
-                const contentState = ContentState.createFromText('foo')
-
-                store.dispatch((dispatch) => {
-                    data = actions.prepareTicketDataToSend(
-                        dispatch,
-                        fromJS({
-                            messages: [],
-                            status: 'open',
-                            channel: ''
-                        }),
-                        fromJS({
-                            state: {contentState},
-                            newMessage: {
-                                source: {
-                                    type: 'email'
+                    integrations: fromJS(integrationsState),
+                    newMessage: fromJS({
+                        state: {contentState},
+                        newMessage: {
+                            source: {
+                                type: 'email',
+                                from: {
+                                    address: 'support@acme.gorgias.io'
                                 }
                             }
-                        }),
+                        }
+                    }),
+                    currentUser: fromJS({
+                        first_name: 'Steve'
+                    }),
+                    ticket: fromJS({
+                        messages: [],
+                        status: 'open',
+                        channel: ''
+                    })
+                })
+
+                store.dispatch((dispatch, getState) => {
+                    data = actions.prepareTicketDataToSend(
+                        dispatch,
+                        getState,
+                        getState().ticket,
+                        getState().newMessage,
                         '',
                         [],
-                        fromJS({
-                            signature_text: 'Cruel World!',
-                            signature_html: '<a href="https://gorgias.io/">Cruel World!</a>',
-                        })
+                        fromJS({})
                     )
                 })
             })
@@ -435,25 +434,28 @@ describe('actions', () => {
             it('should add plain text signature to message', () => {
                 expect.assertions(1)
                 // BUG because generateRandomKey is mocked newlines not added
-                expect(data.newMessage.body_text).toBe('fooCruel World!')
+                expect(data.newMessage.body_text).toBe('Hi cheers, Steve')
             })
 
             it('should add html signature to message', () => {
                 expect.assertions(1)
                 // BUG because generateRandomKey is mocked <br>s are not added
-                expect(data.newMessage.body_html).toBe('<div>foo<a href="https://gorgias.io/" target="_blank">Cruel World!</a></div>')
+                expect(data.newMessage.body_html).toBe('<div>Hi cheers, <strong>Steve</strong></div>')
             })
         })
 
         describe('addSignature()', () => {
-            it('should always pass the args to the reducer', () => {
+            it('should dispatch NEW_MESSAGE_ADD_SIGNATURE action', () => {
                 store = mockStore({
-                    newMessage: initialState,
-                    currentUser: {}
+                    newMessage: initialState
                 })
                 const contentState = ContentState.createFromText('foo')
+                const signature = fromJS({
+                    text: 'Cheers, Steve',
+                    html: 'Cheers, <strong>Steve</strong>',
 
-                store.dispatch(actions.addSignature(fromJS({contentState})))
+                })
+                store.dispatch(actions.addSignature(contentState, signature))
 
                 expect(store.getActions()).toMatchSnapshot()
             })

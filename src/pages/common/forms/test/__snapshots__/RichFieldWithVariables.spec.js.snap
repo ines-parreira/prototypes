@@ -1,0 +1,127 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RichFieldWithVariables should render an input with variable dropdowns 1`] = `
+<div
+  className="field"
+>
+  <div
+    className="textarea-toolbar"
+  >
+    <UncontrolledButtonDropdown>
+      <DropdownToggle
+        aria-haspopup={true}
+        caret={true}
+        color="link"
+        data-toggle="dropdown"
+        style={
+          Object {
+            "color": "inherit",
+          }
+        }
+        type="button"
+      >
+        Ticket requester
+      </DropdownToggle>
+      <DropdownMenu
+        tag="div"
+      >
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          First name
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Last name
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Full name
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Email
+        </DropdownItem>
+      </DropdownMenu>
+    </UncontrolledButtonDropdown>
+    <UncontrolledButtonDropdown>
+      <DropdownToggle
+        aria-haspopup={true}
+        caret={true}
+        color="link"
+        data-toggle="dropdown"
+        style={
+          Object {
+            "color": "inherit",
+          }
+        }
+        type="button"
+      >
+        Current agent
+      </DropdownToggle>
+      <DropdownMenu
+        tag="div"
+      >
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          First name
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Last name
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Full name
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Email
+        </DropdownItem>
+      </DropdownMenu>
+    </UncontrolledButtonDropdown>
+  </div>
+  <RichField
+    allowExternalChanges={false}
+    onChange={[Function]}
+    signature={false}
+    value={
+      Object {
+        "html": "html",
+        "text": "text",
+      }
+    }
+  />
+</div>
+`;

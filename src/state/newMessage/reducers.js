@@ -286,32 +286,20 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
         }
 
         case types.NEW_MESSAGE_ADD_SIGNATURE: {
-            const contentState = action.args.get('contentState')
+            const {contentState, signature} = action
+            const newContentState = responseUtils.addSignature(contentState, signature)
 
-            // only deal with signature when email
-            if (state.getIn(['newMessage', 'source', 'type']) !== 'email') {
-                return state
-            }
-
-            const context = responseUtils.addSignature({
-                state,
-                contentState,
-                action: {
-                    currentUser: action.currentUser,
-                }
-            })
-
-            return context.state.mergeDeep({
+            return state.mergeDeep({
                 newMessage: {
-                    body_text: context.contentState ? context.contentState.getPlainText() : '',
-                    body_html: context.contentState ? convertToHTML(context.contentState) : ''
+                    body_text: newContentState ? newContentState.getPlainText() : '',
+                    body_html: newContentState ? convertToHTML(newContentState) : ''
                 },
                 state: {
-                    forceUpdate: context.forceUpdate,
-                    signatureAdded: context.signatureAdded
+                    forceUpdate: true,
+                    signatureAdded: true
                 }
             })
-                .setIn(['state', 'contentState'], context.contentState)
+                .setIn(['state', 'contentState'], newContentState)
         }
 
         case types.NEW_MESSAGE_SET_SENDER: {

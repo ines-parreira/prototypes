@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`integrations selectors should get channel by type and address 1`] = `
+Immutable.Map {
+  id: 1,
+  type: "email",
+  name: "Acme Support",
+  address: "support@acme.gorgias.io",
+  preferred: true,
+  signature: Immutable.Map {
+    text: "cheers, Steve",
+    html: "cheers, <strong>Steve</strong>",
+  },
+}
+`;
+
+exports[`integrations selectors should get channels 1`] = `
+Immutable.List [
+  Immutable.Map {
+    id: 5,
+    type: "email",
+    name: "Acme Billing",
+    address: "billing@acme.gorgias.io",
+    preferred: false,
+    signature: Immutable.Map {
+      text: "cheers, Steve",
+      html: "cheers, <strong>Steve</strong>",
+    },
+  },
+  Immutable.Map {
+    id: 1,
+    type: "email",
+    name: "Acme Support",
+    address: "support@acme.gorgias.io",
+    preferred: true,
+    signature: Immutable.Map {
+      text: "cheers, Steve",
+      html: "cheers, <strong>Steve</strong>",
+    },
+  },
+  Immutable.Map {
+    id: 5,
+    type: "email",
+    name: "Acme Contact",
+    address: "contact@acme.com",
+    preferred: true,
+    signature: undefined,
+  },
+]
+`;
+
+exports[`integrations selectors should get channels signature 1`] = `
+Immutable.Map {
+  text: "cheers, Steve",
+  html: "cheers, <strong>Steve</strong>",
+}
+`;

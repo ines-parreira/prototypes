@@ -11,23 +11,20 @@ import {convertToHTML} from '../../../utils'
 describe('New message reducers', () => {
     describe('NEW_MESSAGE_ADD_SIGNATURE action', () => {
         let action
-        let body_text
-        let body_html
+        const body_text =  'Hello\n\nCruel World!'
+        const body_html = '<div>Hello</div><br><div><a href=\"about:blank#\" target=\"_blank\">Cruel World!</a></div>'
+        const signature = fromJS({
+            text: 'Cruel World!',
+            html: '<a href="#">Cruel World!</a>',
+        })
+
         beforeEach(() => {
             action = {
                 type: types.NEW_MESSAGE_ADD_SIGNATURE,
-                state: initialState,
-                args: fromJS({
-                    contentState: ContentState.createFromText('Hello')
-                }),
-                currentUser: fromJS({
-                    signature_text: 'Cruel World!',
-                    signature_html: '<a href="#">Cruel World!</a>',
-                })
+                contentState: ContentState.createFromText('Hello'),
+                signature
             }
 
-            body_text = 'Hello\n\nCruel World!'
-            body_html = '<div>Hello</div><br><div><a href=\"about:blank#\" target=\"_blank\">Cruel World!</a></div>'
         })
 
         it('should match the contentState plain text', () => {

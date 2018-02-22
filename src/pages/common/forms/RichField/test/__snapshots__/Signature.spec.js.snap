@@ -3,12 +3,6 @@
 exports[`Signature should render the signature button 1`] = `
 <Signature
   addSignature={[Function]}
-  currentUser={
-    Immutable.Map {
-      signature_text: "Text Signature",
-      signature_html: "<a href=\\"#\\">Text Signature</a>",
-    }
-  }
   editorState={
     EditorState {
       "_immutable": Object {
@@ -93,7 +87,12 @@ exports[`Signature should render the signature button 1`] = `
     }
   }
   isDirty={false}
-  newMessageType="email"
+  signature={
+    Immutable.Map {
+      text: "cheers, Steve",
+      html: "cheers, <strong>Steve</strong>",
+    }
+  }
   store={
     Object {
       "clearActions": [Function],

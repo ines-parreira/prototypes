@@ -16,14 +16,14 @@ jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
 describe('Signature', () => {
     let editorState
     let initialState
-    const currentUser = fromJS({
-        signature_text: 'Text Signature',
-        signature_html: '<a href="#">Text Signature</a>'
-    })
+    const emailAddress = 'support@acme.gorgias.io'
     const newMessage = fromJS({
         newMessage: {
             source: {
-                type: 'email'
+                type: 'email',
+                from: {
+                    address: emailAddress
+                }
             }
         }
     })
@@ -31,8 +31,26 @@ describe('Signature', () => {
     beforeEach(() => {
         editorState = EditorState.createEmpty()
         initialState = {
-            currentUser,
-            newMessage
+            integrations: fromJS({
+                integrations: [{
+                    type: 'gmail',
+                    meta: {
+                        address: emailAddress,
+                        preferred: true,
+                        signature: {
+                            text: 'cheers, {{current_user.first_name}}',
+                            html: 'cheers, <strong>{{current_user.first_name}}</strong>'
+                        }
+                    },
+                }]
+            }),
+            currentUser: fromJS({
+                first_name: 'Steve',
+                signature_text: 'best regards, steve',
+                signature_html: 'best regards, <strong>steve</strong>'
+            }),
+            newMessage,
+            ticket: fromJS({})
         }
     })
 
@@ -47,12 +65,11 @@ describe('Signature', () => {
     })
 
     it('should not render for messageType other than email', () => {
+        initialState.newMessage = initialState.newMessage.setIn(['newMessage', 'source', 'type'], 'chat')
+
         const component = shallow(
             <Signature
-                store={mockStore({
-                    currentUser,
-                    newMessage: newMessage.setIn(['newMessage', 'source', 'type'], 'random')
-                })}
+                store={mockStore(initialState)}
                 editorState={editorState}
             />
         )
@@ -61,15 +78,14 @@ describe('Signature', () => {
     })
 
     it('should not render when no signature set', () => {
+        initialState.newMessage = initialState.newMessage.setIn(['newMessage', 'source', 'from'], fromJS({
+            address: 'unknonw@acme.gorgias.io'
+        }))
+        initialState.currentUser = fromJS({})
+
         const component = shallow(
             <Signature
-                store={mockStore({
-                    newMessage,
-                    currentUser: currentUser.merge({
-                        signature_text: '',
-                        signature_html: '',
-                    }),
-                })}
+                store={mockStore(initialState)}
                 editorState={editorState}
             />
         )
@@ -78,15 +94,13 @@ describe('Signature', () => {
     })
 
     it('should render with only text signature', () => {
+        initialState.integrations = initialState.integrations.setIn(['integrations', 0, 'meta', 'signature'], fromJS({
+            text: 'cheers, {{current_user.first_name}}'
+        }))
+
         const component = shallow(
             <Signature
-                store={mockStore({
-                    newMessage,
-                    currentUser: currentUser.merge({
-                        signature_text: 'Text signature',
-                        signature_html: '',
-                    }),
-                })}
+                store={mockStore(initialState)}
                 editorState={editorState}
             />
         )
@@ -94,20 +108,15 @@ describe('Signature', () => {
         expect(component.dive().find('button').exists()).toBe(true)
     })
 
-    it('should render with only html signature', () => {
+    it('should render with agent\'s signature (fallback)', () => {
+        initialState.integrations = initialState.integrations.setIn(['integrations', 0, 'meta', 'signature'], fromJS({}))
+
         const component = shallow(
             <Signature
-                store={mockStore({
-                    newMessage,
-                    currentUser: currentUser.merge({
-                        signature_text: '',
-                        signature_html: '<img src="" />',
-                    }),
-                })}
+                store={mockStore(initialState)}
                 editorState={editorState}
             />
         )
-
         expect(component.dive().find('button').exists()).toBe(true)
     })
 })

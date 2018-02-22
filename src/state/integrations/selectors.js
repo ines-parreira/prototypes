@@ -61,27 +61,42 @@ export const getEmailIntegrations = createSelector(
 
 // return email and gmail integrations formatted as channel
 export const getChannels = createSelector(
-    [getEmailIntegrations],
-    state => state.map(integration => {
-        let type = integration.get('type')
+    [state => state, getEmailIntegrations],
+    (state, integrations) => {
+        const nestedReplace = require('../ticket/utils').nestedReplace
 
-        if (integration.get('type') === 'gmail') {
-            type = 'email'
-        }
+        return integrations.map(integration => {
+            let type = integration.get('type')
 
-        return fromJS({
-            id: integration.get('id'),
-            type,
-            name: integration.get('name'),
-            address: integration.getIn(['meta', 'address']),
-            preferred: integration.getIn(['meta', 'preferred']),
+            if (integration.get('type') === 'gmail') {
+                type = 'email'
+            }
+
+            return fromJS({
+                id: integration.get('id'),
+                type,
+                name: integration.get('name'),
+                address: integration.getIn(['meta', 'address']),
+                preferred: integration.getIn(['meta', 'preferred']),
+                signature: nestedReplace(integration.getIn(['meta', 'signature']), state)
+            })
         })
-    })
+    }
 )
 
 export const getChannelsByType = (type: string) => createSelector(
     [getChannels],
     state => state.filter(integration => integration.get('type') === type)
+)
+
+export const getChannelByTypeAndAddress = (type: string, address: string) => createSelector(
+    [getChannels],
+    channels => channels.filter((channel) => channel.get('type') === type && channel.get('address') === address).first() || fromJS({})
+)
+
+export const getChannelSignature = (type: string, address: string) => createSelector(
+    [getChannelByTypeAndAddress(type, address)],
+    channel => channel.get('signature') || fromJS({})
 )
 
 export const getAuthData = (type: string) => createSelector(

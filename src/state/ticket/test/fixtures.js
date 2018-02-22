@@ -51,7 +51,7 @@ export const emailTicket = fromJS({
                 address: 'marc.wall@gmail.com'
             }, {
                 name: 'Acme Support',
-                address: 'support@acme.com'
+                address: 'support@acme.gorgias.io'
             }],
             from: {
                 name: 'Steve Frizeli',
@@ -70,7 +70,7 @@ export const emailTicket = fromJS({
             }],
             from: {
                 name: 'Acme Support',
-                address: 'support@acme.com'
+                address: 'support@acme.gorgias.io'
             },
             type: 'email'
         },

@@ -18,6 +18,7 @@ export const USABLE_SOURCE_TYPES = ['email', 'chat', 'facebook-messenger', 'face
 // available variables in macros
 export const VARIABLES = [{
     name: 'Ticket requester',
+    type: 'ticket.requester',
     children: [{
         name: 'First name',
         fullName: 'Requester first name',
@@ -37,6 +38,7 @@ export const VARIABLES = [{
     }],
 }, {
     name: 'Current agent',
+    type: 'current_user',
     children: [{
         name: 'First name',
         fullName: 'Current agent first name',
@@ -57,6 +59,7 @@ export const VARIABLES = [{
 }, {
     type: 'shopify',
     name: 'Shopify',
+    integration: true,
     children: [{
         name: 'Last order\'s number',
         value: 'ticket.requester.integrations.shopify.orders[0].name',
@@ -81,6 +84,7 @@ export const VARIABLES = [{
     }]
 }, {
     type: 'recharge',
+    integration: true,
     name: 'Recharge',
     children: [{
         name: 'Customer\'s hash',
@@ -304,8 +308,12 @@ export const sourceTypeToIcon = (sourceType) => {
  * Return variables config
  * @returns {[*,*,*,*]}
  */
-export const getVariables = () => {
-    return VARIABLES
+export const getVariables = (types) => {
+    if (!types) {
+        return VARIABLES
+    }
+
+    return VARIABLES.filter((variables) => types.includes(variables.type))
 }
 
 /**
