@@ -47,11 +47,12 @@ export default class FacebookIntegrationSetup extends React.Component {
         const pages = {}
 
         props.integrations
-            .forEach((i) => {
-                pages[i.get('id')] = {
+            .forEach((integration) => {
+                pages[integration.get('id')] = {
                     page_enabled: false,
                     private_messages_enabled: true,
                     posts_enabled: true,
+                    instagram_comments_enabled: !!integration.getIn(['meta', 'instagram', 'id']),
                     import_history_enabled: false,
                 }
             })
@@ -94,13 +95,16 @@ export default class FacebookIntegrationSetup extends React.Component {
         browserHistory.push('/app/integrations/facebook')
     }
 
-    _onChange = (value, id, name) => {
+    _onChange = (integration, value, id, name) => {
         this.state.pages[id][name] = value
+
+        const canEnableInstagram = !!integration.getIn(['meta', 'instagram', 'id'])
 
         // if page_enabled option changes, set the same value for following values
         if (name === 'page_enabled') {
             this.state.pages[id]['private_messages_enabled'] = value
             this.state.pages[id]['posts_enabled'] = value
+            this.state.pages[id]['instagram_comments_enabled'] = value && canEnableInstagram
         }
 
         this.setState(this.state)
@@ -120,9 +124,11 @@ export default class FacebookIntegrationSetup extends React.Component {
         return (
             <div>
                 {
-                    integrations.map((i) => {
-                        const id = i.get('id')
-                        const page = i.get('facebook')
+                    integrations.map((integration) => {
+                        const id = integration.get('id')
+                        const page = integration.get('facebook')
+
+                        const instagramIsDisabled = !integration.getIn(['meta', 'instagram', 'id'])
 
                         return (
                             <div
@@ -152,14 +158,14 @@ export default class FacebookIntegrationSetup extends React.Component {
                                             type="checkbox"
                                             label="Enable this page"
                                             value={this._getValue(id, 'page_enabled')}
-                                            onChange={value => this._onChange(value, id, 'page_enabled')}
+                                            onChange={(value) => this._onChange(integration, value, id, 'page_enabled')}
                                         />
                                         <BooleanField
                                             name={`${id}.private_messages_enabled`}
                                             type="checkbox"
-                                            label="Enable Facebook Messenger"
+                                            label="Enable Messenger"
                                             value={this._getValue(id, 'private_messages_enabled')}
-                                            onChange={value => this._onChange(value, id, 'private_messages_enabled')}
+                                            onChange={(value) => this._onChange(integration, value, id, 'private_messages_enabled')}
                                             disabled={!this._getValue(id, 'page_enabled')}
                                         />
                                         <BooleanField
@@ -167,15 +173,23 @@ export default class FacebookIntegrationSetup extends React.Component {
                                             type="checkbox"
                                             label="Enable Facebook posts & comments"
                                             value={this._getValue(id, 'posts_enabled')}
-                                            onChange={value => this._onChange(value, id, 'posts_enabled')}
+                                            onChange={(value) => this._onChange(integration, value, id, 'posts_enabled')}
                                             disabled={!this._getValue(id, 'page_enabled')}
+                                        />
+                                        <BooleanField
+                                            name={`${id}.instagram_comments_enabled`}
+                                            type="checkbox"
+                                            label="Enable Instagram comments"
+                                            value={this._getValue(id, 'instagram_comments_enabled')}
+                                            onChange={(value) => this._onChange(integration, value, id, 'instagram_comments_enabled')}
+                                            disabled={!this._getValue(id, 'page_enabled') || instagramIsDisabled}
                                         />
                                         <BooleanField
                                             name={`${id}.import_history_enabled`}
                                             type="checkbox"
                                             label="Import 30 days of history (posts, comments and messages) as closed tickets"
                                             value={this._getValue(id, 'import_history_enabled')}
-                                            onChange={value => this._onChange(value, id, 'import_history_enabled')}
+                                            onChange={(value) => this._onChange(integration, value, id, 'import_history_enabled')}
                                             disabled={!this._getValue(id, 'page_enabled')}
                                         />
                                     </FormGroup>
@@ -211,7 +225,12 @@ export default class FacebookIntegrationSetup extends React.Component {
                 </Breadcrumb>
 
                 <h1>Facebook Pages setup</h1>
-                <p>One last step: choose the pages you want to manage with Gorgias.</p>
+                <p>
+                    One last step: choose the pages you want to manage with Gorgias.<br/>
+                    If you just wanted to update your integrations or your permissions: it's done,{' '}
+                    you can leave this page.
+                </p>
+
 
                 <Form onSubmit={this._handleSubmit}>
                     {this._renderPages()}

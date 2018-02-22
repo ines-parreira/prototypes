@@ -196,7 +196,7 @@ class InfobarUserInfo extends React.Component {
         channels = channels
             .filter((channel) => { // hide chats and facebook
                 const type = channel.get('type')
-                return type !== 'chat' && !type.includes('facebook')
+                return type !== 'chat' && !type.includes('facebook') && type !== 'instagram'
             })
             .sortBy(channel => channel.get('address', '').toLowerCase()) // order addresses alphabetically
             .sortBy(channel => -channel.get('preferred')) // put preferred addresses on top

@@ -184,6 +184,7 @@ Object {
                     "phone",
                     "sms",
                     "twitter",
+                    "instagram-comment",
                 ],
             },
         },

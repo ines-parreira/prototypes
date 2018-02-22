@@ -145,7 +145,8 @@ export default class ReplyMessageChannel extends React.Component {
             ? 'new'
             : `${ticket.get('id', '')} - ${messages.last().get('id', '')} - ${md5(messages.last().get('source'))}`
 
-        const disabledChannels = ['facebook-post', 'facebook-message', 'chat', 'api', 'facebook-messenger']
+        const disabledChannels = ['facebook-post', 'facebook-message', 'chat', 'api', 'facebook-messenger',
+            'instagram-comment', 'instagram-media']
 
         const isInputEnabled =
             !disabledChannels.includes(this.props.sourceType)
@@ -176,6 +177,7 @@ export default class ReplyMessageChannel extends React.Component {
         const suggestFacebookComment = isUpdate && (sources.includes('facebook-post') || sources.includes('facebook-comment'))
         const suggestFacebookMessage = isUpdate && sources.includes('facebook-message')
         const suggestFacebookMessenger = isUpdate && sources.includes('facebook-messenger')
+        const suggestInstagram = isUpdate && (sources.includes('instagram-media') || sources.includes('instagram-comment'))
         const suggestInternalNote = isUpdate
         const suggestForwardByEmail = isUpdate
         const iconLabel = isForward ? 'email-forward' : this.props.sourceType
@@ -269,6 +271,19 @@ export default class ReplyMessageChannel extends React.Component {
                                     >
                                         <i className={classnames('mr-2', sourceTypeToIcon('facebook-message'))} />
                                         Reply via Messenger
+                                    </DropdownItem>
+                                )
+                            }
+                            {
+                                suggestInstagram && (
+                                    <DropdownItem
+                                        type="button"
+                                        onClick={() => {
+                                            prepareNewMessage('instagram-comment')
+                                        }}
+                                    >
+                                        <i className={classnames('mr-2', sourceTypeToIcon('instagram-comment'))} />
+                                        Reply via Instagram
                                     </DropdownItem>
                                 )
                             }

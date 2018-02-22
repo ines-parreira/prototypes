@@ -89,6 +89,7 @@ export default class TicketMessage extends React.Component {
 
         let legend = ''
         const hasLegend = !source.type.startsWith('facebook')
+            && !source.type.startsWith('instagram')
             && source.type !== 'chat'
             && source.type !== 'api'
             && source.type !== 'system-message'
@@ -177,22 +178,29 @@ export default class TicketMessage extends React.Component {
         }
 
         if (message.source && message.source.type && message.source.extra &&
-            ['facebook-post', 'facebook-comment'].includes(message.source.type)
+            ['facebook-post', 'facebook-comment', 'instagram-media'].includes(message.source.type)
         ) {
             const postId = message.source.extra.post_id
             const parentId = message.source.extra.parent_id
-            let messageId = message.message_id
+            const messageId = message.message_id
+            const permalink = message.source.extra.permalink
 
-            const isPost = message.source.type === 'facebook-post'
-            const isComment = parentId === postId
+            const isFacebookPost = message.source.type === 'facebook-post'
+            const isFacebookComment = parentId === postId
+            const isInstagramMedia = message.source.type === 'instagram-media'
 
             let type = 'reply'
+            let link = null
 
-            if (isPost) {
+            if (isFacebookPost) {
                 type = 'post'
-                messageId = postId
-            } else if (isComment) {
+                link = `https://facebook.com/${postId}`
+            } else if (isInstagramMedia) {
+                type = 'media'
+                link = permalink
+            } else if (isFacebookComment) {
                 type = 'comment'
+                link = `https://facebook.com/${messageId}`
             }
 
             refWidget = (
@@ -203,7 +211,7 @@ export default class TicketMessage extends React.Component {
                     go to{' '}
                     <a
                         target="_blank"
-                        href={`https://facebook.com/${messageId}`}
+                        href={link}
                     >
                         {type}
                     </a>

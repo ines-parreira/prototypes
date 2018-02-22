@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import _truncate from 'lodash/truncate'
 import {
+    Alert,
     FormGroup,
     Button,
     Popover,
@@ -78,6 +79,32 @@ export default class FacebookIntegrationDetail extends React.Component {
         const page = integration.get('facebook') || fromJS({})
         const isDisabled = integration.get('deactivated_datetime')
 
+        const integrationScope = integration.getIn(['meta', 'oauth', 'scope']) || fromJS([])
+        const doesntHaveInstagramPermissions = !integrationScope.includes('instagram_basic')
+            || !integrationScope.includes('instagram_manage_comments')
+        const doesntHaveInstagramId = !integration.getIn(['meta', 'instagram', 'id'])
+
+        let disabledInstagramComponent = null
+
+        if (doesntHaveInstagramPermissions) {
+            disabledInstagramComponent = (
+                <Alert color="warning">
+                    Instagram is disabled because we miss the required permissions. Please go to the{' '}
+                    <Link to="/app/integrations/facebook">Facebook integrations list</Link> and click on{' '}
+                    Login to Facebook to update your permissions.
+                </Alert>
+            )
+        } else if (doesntHaveInstagramId) {
+            disabledInstagramComponent = (
+                <Alert color="warning">
+                    You cannot activate Instagram on this page: it is not associated with any Instagram account.<br/>
+                    If you just associated the page with an Instagram account, please go to the{' '}
+                    <Link to="/app/integrations/facebook">Facebook integrations list</Link> and click on{' '}
+                    Login to Facebook to update your integrations.
+                </Alert>
+            )
+        }
+
         if (loading.get('integration') || page.isEmpty()) {
             return <Loader />
         }
@@ -114,13 +141,13 @@ export default class FacebookIntegrationDetail extends React.Component {
                         </p>
                     </div>
                 </div>
-
+                {disabledInstagramComponent}
                 <div>
                     <FormGroup>
                         <BooleanField
                             name="private_messages_enabled"
                             type="checkbox"
-                            label="Enable Facebook Messenger"
+                            label="Enable Messenger"
                             value={this.state.settings.private_messages_enabled}
                             onChange={value => this._onChange(value, 'private_messages_enabled')}
                         />
@@ -130,6 +157,14 @@ export default class FacebookIntegrationDetail extends React.Component {
                             label="Enable Facebook posts & comments"
                             value={this.state.settings.posts_enabled}
                             onChange={value => this._onChange(value, 'posts_enabled')}
+                        />
+                        <BooleanField
+                            name="instagram_comments_enabled"
+                            type="checkbox"
+                            label="Enable Instagram comments"
+                            value={this.state.settings.instagram_comments_enabled}
+                            onChange={value => this._onChange(value, 'instagram_comments_enabled')}
+                            disabled={doesntHaveInstagramPermissions || doesntHaveInstagramId}
                         />
                         <BooleanField
                             name="import_history_enabled"

@@ -80,10 +80,10 @@ class MessageSourceFields extends React.Component {
         } = this.props
 
         // fields that are displayed by default
-        const mandatoryFields = availableContactProperties.filter(r => !optionalContactProperties.includes(r))
+        const mandatoryFields = availableContactProperties.filter((r) => !optionalContactProperties.includes(r))
 
         // available optional fields, depends on the fields configuration above (depends on source type or channel)
-        const availableOptionalFields = availableContactProperties.filter(r => optionalContactProperties.includes(r))
+        const availableOptionalFields = availableContactProperties.filter((r) => optionalContactProperties.includes(r))
 
         // selected optional fields or fields already containing data
         const displayedOptionalFields = availableOptionalFields.filter((r) => {
@@ -178,7 +178,7 @@ class MessageSourceFields extends React.Component {
     _renderClosed = () => {
         const {sourceType, allRecipients, canOpen} = this.props
 
-        const allDisplayedNames = allRecipients.toJS().map(v => displayUserNameFromSource(v, sourceType))
+        const allDisplayedNames = allRecipients.toJS().map((v) => displayUserNameFromSource(v, sourceType))
 
         return (
             <div className="message-source-field">

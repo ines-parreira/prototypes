@@ -8,12 +8,12 @@ export const DEFAULT_CHANNEL = 'email'
 export const DEFAULT_SOURCE_TYPE = 'email'
 
 export const STATUSES = ['open', 'closed']
-export const CHANNELS = ['aircall', 'api', 'chat', 'email', 'facebook', 'facebook-messenger', 'phone', 'sms', 'twitter']
+export const CHANNELS = ['aircall', 'api', 'chat', 'email', 'facebook', 'facebook-messenger', 'phone', 'sms', 'twitter', 'instagram-comment']
 
 export const SYSTEM_SOURCE_TYPES = ['internal-note', 'system-message']
 
 // source types that can be used to answer
-export const USABLE_SOURCE_TYPES = ['email', 'chat', 'facebook-messenger', 'facebook-message', 'facebook-comment', 'internal-note']
+export const USABLE_SOURCE_TYPES = ['email', 'chat', 'facebook-messenger', 'facebook-message', 'facebook-comment', 'internal-note', 'instagram-comment']
 
 // available variables in macros
 export const VARIABLES = [{
@@ -173,6 +173,10 @@ export const sourceTypeToChannel = (sourceType, messages = []) => {
         return 'facebook'
     }
 
+    if (sourceType.startsWith('instagram')) {
+        return 'instagram-comment'
+    }
+
     if (sourceType === 'ottspott-call') {
         return 'phone'
     }
@@ -202,6 +206,10 @@ export const responseSourceType = (messages) => {
 
     if (lastSourceType === 'facebook-post') {
         return 'facebook-comment'
+    }
+
+    if (lastSourceType === 'instagram-media') {
+        return 'instagram-comment'
     }
 
     if (!isAnswerableType(lastSourceType)) {
@@ -283,6 +291,10 @@ export const sourceTypeToIcon = (sourceType) => {
             return 'fa fa-fw fa-cog'
         case 'twitter':
             return 'fa fa-fw fa-twitter blue'
+        case 'instagram-media':
+        case 'instagram-comment':
+        case 'instagram':
+            return 'fa fa-fw fa-instagram purple'
         default:
             return 'fa fa-fw fa-question'
     }

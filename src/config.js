@@ -66,7 +66,9 @@ export const SOURCE_VALUE_PROP = {
     'facebook-message': 'address',
     'facebook-comment': 'address',
     'facebook-messenger': 'address',
-    'facebook-post': 'address'
+    'facebook-post': 'address',
+    'instagram-media': 'address',
+    'instagram-comment': 'address'
 }
 
 export const TICKET_STATUSES = ['open', 'closed']
@@ -104,8 +106,8 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     },
     {
         type: 'facebook',
-        title: 'Facebook',
-        description: 'Create tickets when your customers post on your page or contact you on Messenger',
+        title: 'Facebook, Messenger & Instagram',
+        description: 'Create tickets from Facebook posts and comments, Instagram comments and Messenger conversations',
         image: 'integrations/facebook.png',
     },
     {
