@@ -147,12 +147,26 @@ export default (state = initialState, action) => {
             return state.set('tags', ticketTags.delete(index))
         }
 
-        case types.SET_TICKET_CATEGORY: {
-            return state.set('category', action.category)
+        case types.SET_TICKET_MESSAGE_REQUEST: {
+            return state.merge({
+                messages: state.get('messages').map((m) => {
+                    if (m.get('id') === action.messageId) {
+                        return m.set('request_id', action.requestId)
+                    }
+                    return m
+                })
+            })
         }
 
-        case types.REMOVE_TICKET_CATEGORY: {
-            return state.set('category', null)
+        case types.REMOVE_TICKET_MESSAGE_REQUEST: {
+            return state.merge({
+                messages: state.get('messages').map((m) => {
+                    if (m.get('id') === action.messageId) {
+                        return m.set('request_id', null)
+                    }
+                    return m
+                })
+            })
         }
 
         case types.SET_SPAM: {

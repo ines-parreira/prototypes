@@ -61,6 +61,11 @@ export const getMessages = createImmutableSelector(
     state => state.get('messages') || fromJS([])
 )
 
+export const getCustomerMessages = createImmutableSelector(
+    [getMessages],
+    (messages) => messages.filter((m) => m.get('from_agent') === false) || fromJS([])
+)
+
 export const getPendingMessages = createImmutableSelector(
     [getTicketState],
     state => state.getIn(['_internal', 'pendingMessages']) || fromJS([])

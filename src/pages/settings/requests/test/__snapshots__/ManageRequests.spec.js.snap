@@ -1,0 +1,572 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ManageRequests component should display loader 1`] = `
+<ManageRequests
+  fetchRequests={[Function]}
+  requests={
+    Immutable.Map {
+    }
+  }
+>
+  <Loader
+    inline={false}
+  >
+    <div
+      className="loader-container"
+    >
+      <div
+        className="loader-inner"
+      >
+        <i
+          className="fa fa-fw fa-circle-o-notch fa-spin"
+        />
+      </div>
+    </div>
+  </Loader>
+</ManageRequests>
+`;
+
+exports[`ManageRequests component should display requests 1`] = `
+<ManageRequests
+  fetchRequests={[Function]}
+  requests={
+    Immutable.List [
+      Immutable.Map {
+        id: 123,
+        name: "missing items",
+      },
+      Immutable.Map {
+        id: 125,
+        name: "order status",
+      },
+    ]
+  }
+>
+  <div>
+    <div
+      className="manage-requests d-flex justify-content-between"
+    >
+      <h1>
+        <i
+          className="fa fa-fw fa-magic blue mr-2"
+        />
+        Manage Requests (experimental)
+      </h1>
+      <div
+        className="pull-right"
+      >
+        <div
+          className="manage-requests-bulk-actions"
+        >
+          <Button
+            className="mr-2"
+            color="secondary"
+            disabled={true}
+            id="bulk-remove-button"
+            onClick={[Function]}
+            tag="button"
+            type="button"
+          >
+            <button
+              className="mr-2 btn btn-secondary disabled"
+              disabled={true}
+              id="bulk-remove-button"
+              onClick={[Function]}
+              type="button"
+            >
+              Delete Requests
+            </button>
+          </Button>
+          <Popover
+            isOpen={false}
+            placement="bottom"
+            target="bulk-remove-button"
+            toggle={[Function]}
+          />
+          <Link
+            className="btn btn-primary"
+            id="create-request-button"
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/requests/add"
+          >
+            <a
+              className="btn btn-primary"
+              id="create-request-button"
+              onClick={[Function]}
+              style={Object {}}
+            >
+              Create request
+            </a>
+          </Link>
+        </div>
+      </div>
+    </div>
+    <div
+      className="manage-requests-description"
+    >
+      <p>
+        Requests are distinct categories of customer messages that can be used to automatically classify individual customer requests, questions, demands/etc... Requests are most useful in combination with 
+        <Link
+          onlyActiveOnIndex={false}
+          style={Object {}}
+          to="/app/settings/rules/"
+        >
+          <a
+            onClick={[Function]}
+            style={Object {}}
+          >
+            Rules
+          </a>
+        </Link>
+         and can be used to create automatic replies.
+      </p>
+      <Alert
+        color="warning"
+        isOpen={true}
+        tag="div"
+        transitionAppearTimeout={150}
+        transitionEnterTimeout={150}
+        transitionLeaveTimeout={150}
+      >
+        <CSSTransitionGroup
+          component={[Function]}
+          transitionAppear={true}
+          transitionAppearTimeout={150}
+          transitionEnter={true}
+          transitionEnterTimeout={150}
+          transitionLeave={true}
+          transitionLeaveTimeout={150}
+          transitionName={
+            Object {
+              "appear": "fade",
+              "appearActive": "show",
+              "enter": "fade",
+              "enterActive": "show",
+              "leave": "fade",
+              "leaveActive": "out",
+            }
+          }
+        >
+          <TransitionGroup
+            childFactory={[Function]}
+            component={[Function]}
+            transitionAppear={true}
+            transitionAppearTimeout={150}
+            transitionEnter={true}
+            transitionEnterTimeout={150}
+            transitionLeave={true}
+            transitionLeaveTimeout={150}
+            transitionName={
+              Object {
+                "appear": "fade",
+                "appearActive": "show",
+                "enter": "fade",
+                "enterActive": "show",
+                "leave": "fade",
+                "leaveActive": "out",
+              }
+            }
+          >
+            <FirstChild>
+              <CSSTransitionGroupChild
+                appear={true}
+                appearTimeout={150}
+                enter={true}
+                enterTimeout={150}
+                leave={true}
+                leaveTimeout={150}
+                name={
+                  Object {
+                    "appear": "fade",
+                    "appearActive": "show",
+                    "enter": "fade",
+                    "enterActive": "show",
+                    "leave": "fade",
+                    "leaveActive": "out",
+                  }
+                }
+              >
+                <div
+                  className="alert alert-warning"
+                  role="alert"
+                >
+                  <strong>
+                    Note:
+                  </strong>
+                   This feature is experimental and should be used with care.
+                </div>
+              </CSSTransitionGroupChild>
+            </FirstChild>
+          </TransitionGroup>
+        </CSSTransitionGroup>
+      </Alert>
+    </div>
+    <table
+      className="main-table view-table"
+    >
+      <thead>
+        <tr>
+          <td
+            className="cell-wrapper cell-short clickable"
+            onClick={[Function]}
+          >
+            <input
+              checked={false}
+              type="checkbox"
+            />
+          </td>
+          <td
+            colSpan={2}
+          >
+            <div
+              className="cell-wrapper"
+            >
+              Requests
+            </div>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td
+            className="cell-wrapper cell-short clickable"
+            onClick={[Function]}
+          >
+            <input
+              checked={false}
+              type="checkbox"
+            />
+          </td>
+          <td>
+            <div
+              className="cell-wrapper"
+            >
+              missing items
+            </div>
+          </td>
+          <td
+            className="smallest"
+          >
+            <div
+              className="cell-wrapper"
+            >
+              <Link
+                className="p-0 mr-3 btn-link"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/requests/update/123"
+              >
+                <a
+                  className="p-0 mr-3 btn-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  <i
+                    className="fa fa-fw fa-pencil mr-1"
+                  />
+                  Edit
+                </a>
+              </Link>
+              <Button
+                className="p-0"
+                color="link"
+                id="remove-button-123"
+                onClick={[Function]}
+                tag="button"
+                type="button"
+              >
+                <button
+                  className="p-0 btn btn-link"
+                  id="remove-button-123"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <i
+                    className="fa fa-fw fa-close mr-1"
+                  />
+                  Delete
+                </button>
+              </Button>
+              <Popover
+                isOpen={false}
+                placement="left"
+                target="remove-button-123"
+                toggle={[Function]}
+              />
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td
+            className="cell-wrapper cell-short clickable"
+            onClick={[Function]}
+          >
+            <input
+              checked={false}
+              type="checkbox"
+            />
+          </td>
+          <td>
+            <div
+              className="cell-wrapper"
+            >
+              order status
+            </div>
+          </td>
+          <td
+            className="smallest"
+          >
+            <div
+              className="cell-wrapper"
+            >
+              <Link
+                className="p-0 mr-3 btn-link"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/requests/update/125"
+              >
+                <a
+                  className="p-0 mr-3 btn-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  <i
+                    className="fa fa-fw fa-pencil mr-1"
+                  />
+                  Edit
+                </a>
+              </Link>
+              <Button
+                className="p-0"
+                color="link"
+                id="remove-button-125"
+                onClick={[Function]}
+                tag="button"
+                type="button"
+              >
+                <button
+                  className="p-0 btn btn-link"
+                  id="remove-button-125"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <i
+                    className="fa fa-fw fa-close mr-1"
+                  />
+                  Delete
+                </button>
+              </Button>
+              <Popover
+                isOpen={false}
+                placement="left"
+                target="remove-button-125"
+                toggle={[Function]}
+              />
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ManageRequests>
+`;
+
+exports[`ManageRequests component should load with empty props 1`] = `
+<ManageRequests
+  fetchRequests={[Function]}
+  requests={
+    Immutable.Map {
+    }
+  }
+>
+  <div>
+    <div
+      className="manage-requests d-flex justify-content-between"
+    >
+      <h1>
+        <i
+          className="fa fa-fw fa-magic blue mr-2"
+        />
+        Manage Requests (experimental)
+      </h1>
+      <div
+        className="pull-right"
+      >
+        <div
+          className="manage-requests-bulk-actions"
+        >
+          <Button
+            className="mr-2"
+            color="secondary"
+            disabled={true}
+            id="bulk-remove-button"
+            onClick={[Function]}
+            tag="button"
+            type="button"
+          >
+            <button
+              className="mr-2 btn btn-secondary disabled"
+              disabled={true}
+              id="bulk-remove-button"
+              onClick={[Function]}
+              type="button"
+            >
+              Delete Requests
+            </button>
+          </Button>
+          <Popover
+            isOpen={false}
+            placement="bottom"
+            target="bulk-remove-button"
+            toggle={[Function]}
+          />
+          <Link
+            className="btn btn-primary"
+            id="create-request-button"
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/requests/add"
+          >
+            <a
+              className="btn btn-primary"
+              id="create-request-button"
+              onClick={[Function]}
+              style={Object {}}
+            >
+              Create request
+            </a>
+          </Link>
+        </div>
+      </div>
+    </div>
+    <div
+      className="manage-requests-description"
+    >
+      <p>
+        Requests are distinct categories of customer messages that can be used to automatically classify individual customer requests, questions, demands/etc... Requests are most useful in combination with 
+        <Link
+          onlyActiveOnIndex={false}
+          style={Object {}}
+          to="/app/settings/rules/"
+        >
+          <a
+            onClick={[Function]}
+            style={Object {}}
+          >
+            Rules
+          </a>
+        </Link>
+         and can be used to create automatic replies.
+      </p>
+      <Alert
+        color="warning"
+        isOpen={true}
+        tag="div"
+        transitionAppearTimeout={150}
+        transitionEnterTimeout={150}
+        transitionLeaveTimeout={150}
+      >
+        <CSSTransitionGroup
+          component={[Function]}
+          transitionAppear={true}
+          transitionAppearTimeout={150}
+          transitionEnter={true}
+          transitionEnterTimeout={150}
+          transitionLeave={true}
+          transitionLeaveTimeout={150}
+          transitionName={
+            Object {
+              "appear": "fade",
+              "appearActive": "show",
+              "enter": "fade",
+              "enterActive": "show",
+              "leave": "fade",
+              "leaveActive": "out",
+            }
+          }
+        >
+          <TransitionGroup
+            childFactory={[Function]}
+            component={[Function]}
+            transitionAppear={true}
+            transitionAppearTimeout={150}
+            transitionEnter={true}
+            transitionEnterTimeout={150}
+            transitionLeave={true}
+            transitionLeaveTimeout={150}
+            transitionName={
+              Object {
+                "appear": "fade",
+                "appearActive": "show",
+                "enter": "fade",
+                "enterActive": "show",
+                "leave": "fade",
+                "leaveActive": "out",
+              }
+            }
+          >
+            <FirstChild>
+              <CSSTransitionGroupChild
+                appear={true}
+                appearTimeout={150}
+                enter={true}
+                enterTimeout={150}
+                leave={true}
+                leaveTimeout={150}
+                name={
+                  Object {
+                    "appear": "fade",
+                    "appearActive": "show",
+                    "enter": "fade",
+                    "enterActive": "show",
+                    "leave": "fade",
+                    "leaveActive": "out",
+                  }
+                }
+              >
+                <div
+                  className="alert alert-warning"
+                  role="alert"
+                >
+                  <strong>
+                    Note:
+                  </strong>
+                   This feature is experimental and should be used with care.
+                </div>
+              </CSSTransitionGroupChild>
+            </FirstChild>
+          </TransitionGroup>
+        </CSSTransitionGroup>
+      </Alert>
+    </div>
+    <table
+      className="main-table view-table"
+    >
+      <thead>
+        <tr>
+          <td
+            className="cell-wrapper cell-short clickable"
+            onClick={[Function]}
+          >
+            <input
+              checked={false}
+              type="checkbox"
+            />
+          </td>
+          <td
+            colSpan={2}
+          >
+            <div
+              className="cell-wrapper"
+            >
+              Requests
+            </div>
+          </td>
+        </tr>
+      </thead>
+      <tbody />
+    </table>
+  </div>
+</ManageRequests>
+`;

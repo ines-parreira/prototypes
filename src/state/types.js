@@ -10,6 +10,7 @@ export type stateType = {
     integrations: {},
     layout: {},
     macros: {},
+    requests: {},
     newMessage: {},
     notifications: {},
     rules: {},
