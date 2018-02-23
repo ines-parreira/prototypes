@@ -43,6 +43,8 @@ jest.mock('../../../../state/ticket/actions', () => {
         fetchTicket: jest.fn(() => _identity),
         clearTicket: jest.fn(() => _identity),
         setRequester: jest.fn(() => () => Promise.resolve()),
+        setStatus: jest.fn((status, callback) => () => callback()),
+        goToNextTicket: jest.fn(() => () => Promise.resolve)
     }
 })
 
@@ -121,6 +123,66 @@ describe('TicketDetailContainer component', () => {
         expect(ticketActions.setRequester).toBeCalledWith(
             activeUser.set('address', activeUser.get('email'))
         )
+    })
+
+    it('should not go to next ticket when setting status=closed and history is open', () => {
+        const store = mockStore({
+            ticket: fromJS({
+                messages: [],
+                _internal: {
+                    displayHistory: true
+                }
+            }),
+            newMessage: fromJS({
+                newMessage: {
+                    source: {
+                        to: []
+                    }
+                }
+            })
+        })
+
+        const component = shallow(
+            <TicketDetailContainer
+                router={minProps.router}
+                store={store}
+            />
+        ).dive().dive().instance()
+
+        component._hideTicket = jest.fn()
+        component._setStatus('closed')
+
+        expect(component._hideTicket.mock.calls.length).toBe(0)
+    })
+
+    it('should go to next ticket when setting status=closed and history is closed', () => {
+        const store = mockStore({
+            ticket: fromJS({
+                messages: [],
+                _internal: {
+                    displayHistory: false
+                }
+            }),
+            newMessage: fromJS({
+                newMessage: {
+                    source: {
+                        to: []
+                    }
+                }
+            })
+        })
+
+        const component = shallow(
+            <TicketDetailContainer
+                router={minProps.router}
+                store={store}
+            />
+        ).dive().dive().instance()
+
+        component._hideTicket = jest.fn(() => Promise.resolve())
+        component._setStatus('closed')
+
+        expect(component._hideTicket.mock.calls.length).toBe(1)
     })
 
     it('should set activeUser as receiver', () => {
