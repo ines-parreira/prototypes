@@ -316,8 +316,11 @@ export default class TicketDetailContainer extends React.Component {
     }
 
     _setStatus = (status) => {
+        const {ticket} = this.props
         return this.props.actions.ticket.setStatus(status, () => {
-            if (status === 'closed') {
+
+            // If the history is open, we don't want to go to the next ticket
+            if (status === 'closed' && !ticket.getIn(['_internal', 'displayHistory'])) {
                 const promise = this._hideTicket().then(this.props.actions.ticket.clearTicket)
                 this.props.actions.ticket.goToNextTicket(this.props.params.ticketId, promise)
             }

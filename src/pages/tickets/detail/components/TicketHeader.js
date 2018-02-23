@@ -69,7 +69,13 @@ export default class TicketHeader extends React.Component<Props, State> {
     }
 
     _goToNextTicket = () => {
-        const {hideTicket, goToNextTicket, clearTicket} = this.props
+        const {hideTicket, goToNextTicket, clearTicket, ticket} = this.props
+
+        // If the history is open, we don't want to go to the next ticket
+        if (ticket.getIn(['_internal', 'displayHistory'])) {
+            return
+        }
+
         const promise = hideTicket().then(clearTicket)
 
         goToNextTicket(this.props.ticket.get('id'), promise)
