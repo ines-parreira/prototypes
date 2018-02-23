@@ -24,8 +24,7 @@ type contextType = {
         ticketId: string,
         currentUser: currentUserType,
         ticket: Map<*,*>,
-        args: Map<*,*>,
-        signature: Map<*,*>
+        args: Map<*,*>
     },
     appliedMacro: {},
     contentState: ContentState,
@@ -36,21 +35,33 @@ type contextType = {
     cacheAdded?: boolean,
     selectionState?: SelectionState,
 }
-
+type signatureContextType = {
+    action: {
+        currentUser: currentUserType
+    },
+    state: Map<*,*>,
+    contentState: ContentState,
+    selectionState?: SelectionState,
+    signatureAdded?: boolean,
+    forceUpdate?: boolean,
+}
 type rawType = {
     blocks: Array<*>,
     entityMap: {}
 }
 
-export const getSignatureContentState = (signature: Map<*,*>): ContentState => {
-    let signatureBlocks = null
-    const text =  signature.get('text')
-    const html =  signature.get('html')
+function getSignatureText(currentUser: currentUserType): string {
+    return `${signatureTextPrefix}${currentUser.get('signature_text')}`
+}
 
-    if (text) {
-        signatureBlocks = convertFromHTML(`${signatureHTMLPrefix}${html}`).getBlocksAsArray()
-    } else if (text) {
-        signatureBlocks = ContentState.createFromText(text).getBlocksAsArray()
+function getSignatureContentState (currentUser: currentUserType, isRich: boolean = true): ContentState {
+    let signatureBlocks = null
+    const signatureHTML = currentUser.get('signature_html')
+    const signatureText = currentUser.get('signature_text')
+    if (signatureHTML && isRich) {
+        signatureBlocks = convertFromHTML(`${signatureHTMLPrefix}${signatureHTML}`).getBlocksAsArray()
+    } else if (signatureText) {
+        signatureBlocks = ContentState.createFromText(getSignatureText(currentUser)).getBlocksAsArray()
     }
 
     if (!signatureBlocks) {
@@ -102,27 +113,34 @@ function findContentState (parentContentState: ContentState, contentState: Conte
 }
 
 /**
- * Test if the given signature is in the content state
+ * Test if a signature was already add to our content to avoid adding it twice
+ *
+ * @param contentState
+ * @param currentUser
  */
-export const isSignatureAdded = (contentState: ?ContentState, textSignature: ?string = ''): boolean => {
-    if (!contentState || !textSignature) {
+export const isSignatureAdded = (contentState: ContentState, currentUser: currentUserType = fromJS({})): boolean => (
+    contentState.getPlainText().includes(getSignatureText(currentUser))
+)
+
+/**
+ * Test if the contentState only has the signature and nothing else
+ *
+ * @param contentState
+ * @param currentUser
+ */
+export const onlySignature = (contentState: ContentState, currentUser: currentUserType = fromJS({})): boolean => {
+    if (!contentState) {
         return false
     }
 
-    return contentState.getPlainText().includes(signatureTextPrefix + textSignature)
-}
-/**
- * Test if the contentState only has the signature and nothing else
- */
-export const hasOnlySignature = (contentState: ?ContentState, textSignature: ?string): boolean => {
-    if (!contentState || !textSignature) {
-        return false
-    }
-    return contentState.getPlainText() === signatureTextPrefix + textSignature
+    return getSignatureText(currentUser) === contentState.getPlainText()
 }
 
 /**
  * Get the initial editor state (contentState + selectionState) from cache or return an empty state
+ *
+ * @param context
+ * @returns {*}
  */
 export const getCache = (context: contextType): contextType => {
     const {action} = context
@@ -153,13 +171,14 @@ export const getCache = (context: contextType): contextType => {
 
 /**
  * Update the cache by saving the contentState and selectionState
+ *
+ * @param context
  */
 export const updateCache = (context: contextType) => {
     const {contentState, selectionState, appliedMacro, action} = context
-    const textSignature = action.signature ? action.signature.get('text') : ''
-
     // We're storing the content state in a persistent storage so we can keep it after page refresh
-    if ((contentState && contentState.hasText() && !hasOnlySignature(contentState, textSignature)) ||
+    if (
+        (contentState && contentState.hasText() && !onlySignature(contentState, action.currentUser)) ||
         appliedMacro
     ) {
         // TODO (@xarg): We also need to keep the attachments in the cache
@@ -259,33 +278,63 @@ const _selectionAfter = (blocks: Array<{key: string, text: string}>): ?Selection
 }
 
 /**
- * Add a signature (if any) at the end of the content state
+ * Mark the context with signature added fields so we don't add the signature twice
+ *
+ * @param context
+ * @returns {*}
+ * @private
  */
-export const addSignature = (contentState: ?Object, signature: Object): any => {
-    if(!contentState) {
-        return contentState
+const _markSignatureAdded = (context: signatureContextType): signatureContextType => {
+    context.signatureAdded = true
+    context.state = context.state.setIn(['state', 'signatureAdded'], true)
+    return context
+}
+
+/**
+ * Add a signature (if any) at the end of the content state
+ *
+ * @param context
+ * @returns {*}
+ */
+export const addSignature = (context: signatureContextType): signatureContextType => {
+    const {action, state, contentState} = context
+
+    context.signatureAdded = state.getIn(['state', 'signatureAdded'], false)
+
+    if (context.signatureAdded) {
+        return _markSignatureAdded(context)
     }
 
-    const signatureContentState = getSignatureContentState(signature)
+    // Only add if the we don't have the signature already
+    if (contentState && isSignatureAdded(contentState, action.currentUser)) {
+        return _markSignatureAdded(context)
+    }
 
+    const signatureContentState = getSignatureContentState(action.currentUser, isRichType(selectors.getNewMessageType({newMessage: state})))
     if (!signatureContentState.hasText()) {
-        return contentState
+        return context
     }
 
     // using contentState.getSelectionAfter inserts the signature at the start,
     // when the content is loaded from cache.
-    const selectionState = _selectionAfter(contentState.getBlocksAsArray()) || contentState.getSelectionAfter()
+    context.selectionState = _selectionAfter(contentState.getBlocksAsArray()) || contentState.getSelectionAfter()
     // add the signature contentState at the end of the existing content
-    return Modifier.replaceWithFragment(contentState, selectionState, signatureContentState.getBlockMap())
+    context.contentState = Modifier.replaceWithFragment(contentState, context.selectionState, signatureContentState.getBlockMap())
+
+    context.forceUpdate = true
+
+    return _markSignatureAdded(context)
 }
 
 /**
  * Remove the signature (if any) from the content state
+ *
+ * @param context
+ * @returns {*}
  */
-export const removeSignature = (contentState: ContentState, signature: Map<*,*>): ContentState => {
-    const signatureContentState = getSignatureContentState(signature)
-    const selectionState = findContentState(contentState, signatureContentState)
-
+export const removeSignature = (contentState: ContentState, currentUser: currentUserType): ContentState => {
+    const signature = getSignatureContentState(currentUser)
+    const selectionState = findContentState(contentState, signature)
     // check if selection is empty
     if (selectionState.getAnchorKey() && selectionState.getFocusKey()) {
         return Modifier.removeRange(contentState, selectionState)

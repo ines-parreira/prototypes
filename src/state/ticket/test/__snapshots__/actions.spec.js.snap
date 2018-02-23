@@ -341,8 +341,6 @@ Array [
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
     "ticket": Immutable.Map {
       trashed_datetime: null,
       channel: "email",
@@ -409,8 +407,6 @@ Array [
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
     "ticket": Immutable.Map {
       trashed_datetime: null,
       channel: "email",
@@ -498,8 +494,6 @@ Array [
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
     "ticket": Immutable.Map {
       trashed_datetime: null,
       channel: "email",
@@ -578,8 +572,6 @@ Array [
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
     "ticket": Immutable.Map {
       trashed_datetime: null,
       channel: "email",
@@ -679,8 +671,6 @@ Array [
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
     "ticket": Immutable.Map {
       trashed_datetime: null,
       channel: "email",
@@ -759,8 +749,6 @@ Array [
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
     "ticket": Immutable.Map {
       trashed_datetime: null,
       channel: "email",

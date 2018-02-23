@@ -53,14 +53,10 @@ export const integrationsState = {
             deleted_datetime: null,
             mappings: [],
             meta: {
-                address: 'billing@acme.gorgias.io',
+                address: 'billing@acme.com',
                 preferred: false,
                 oauth: {
                     status: 'success'
-                },
-                signature: {
-                    text: 'cheers, {{current_user.first_name}}',
-                    html: 'cheers, <strong>{{current_user.first_name}}</strong>'
                 }
             },
             facebook: null,
@@ -178,12 +174,8 @@ export const integrationsState = {
             deleted_datetime: null,
             mappings: [],
             meta: {
-                address: 'support@acme.gorgias.io',
-                preferred: true,
-                signature: {
-                    text: 'cheers, {{current_user.first_name}}',
-                    html: 'cheers, <strong>{{current_user.first_name}}</strong>'
-                }
+                address: 'support@acme.com',
+                preferred: true
             },
             facebook: null,
             http: null,

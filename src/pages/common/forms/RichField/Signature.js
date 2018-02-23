@@ -1,19 +1,20 @@
 // @flow
 import React from 'react'
-import {connect} from 'react-redux'
-import {fromJS} from 'immutable'
+import {Map, fromJS} from 'immutable'
 import {EditorState} from 'draft-js'
+import {connect} from 'react-redux'
 
-import * as newMessageSelectors from '../../../../state/newMessage/selectors'
 import * as currentUserSelectors from '../../../../state/currentUser/selectors'
+import * as newMessageSelectors from '../../../../state/newMessage/selectors'
 import * as newMessageActions from '../../../../state/newMessage/actions'
 import * as responseUtils from '../../../../state/newMessage/responseUtils'
 
 type Props = {
-    addSignature: typeof newMessageActions.addSignature,
+    currentUser: Map<*,*>,
+    newMessageType: string,
     editorState: EditorState,
     isDirty: boolean,
-    signature: Object,
+    addSignature: typeof newMessageActions.addSignature,
 }
 
 type State = {
@@ -30,9 +31,10 @@ class Signature extends React.Component<Props, State> {
     }
 
     _shouldShowBtn = (props) => {
-        const signatureText = props.signature.get('text')
+        const signatureHTML = (props.currentUser.get('signature_html') || '').trim()
+        const signatureText = (props.currentUser.get('signature_text') || '').trim()
 
-        if (!signatureText) {
+        if (props.newMessageType !== 'email' || (!signatureHTML && !signatureText)) {
             return false
         }
 
@@ -41,7 +43,7 @@ class Signature extends React.Component<Props, State> {
 
     _hasSignature(props) {
         const contentState = props.editorState.getCurrentContent()
-        return contentState && responseUtils.isSignatureAdded(contentState, props.signature.get('text'))
+        return contentState && responseUtils.isSignatureAdded(contentState, props.currentUser)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -57,7 +59,7 @@ class Signature extends React.Component<Props, State> {
 
     _addResponseSignature = () => {
         const contentState = this.props.editorState.getCurrentContent()
-        this.props.addSignature(contentState, this.props.signature)
+        this.props.addSignature(fromJS({contentState}))
 
         // only add the signature once
         this.setState({forceHideButton: true})
@@ -75,7 +77,7 @@ class Signature extends React.Component<Props, State> {
             <button
                 type="button"
                 className="btn-more"
-                title="Show signature"
+                title="Add signature"
                 onClick={this._addResponseSignature}
             >
                 <i className="fa fa-fw fa-ellipsis-h" />
@@ -84,21 +86,11 @@ class Signature extends React.Component<Props, State> {
     }
 }
 
+
 function mapStateToProps(state) {
-    const newMessageType = newMessageSelectors.getNewMessageType(state)
-    let signature = newMessageSelectors.getNewMessageSignature(state)
-
-    // TODO(@LouisBarranqueiro): remove this when users switched to email integration signatures
-    if (!signature.get('text') && newMessageType.startsWith('email')) {
-        const currentUser = currentUserSelectors.getCurrentUser(state)
-        signature = fromJS({
-            text: currentUser.get('signature_text'),
-            html: currentUser.get('signature_html')
-        })
-    }
-
     return {
-        signature,
+        currentUser: currentUserSelectors.getCurrentUser(state),
+        newMessageType: newMessageSelectors.getNewMessageType(state),
         isDirty: newMessageSelectors.isDirty(state),
     }
 }

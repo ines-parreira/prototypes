@@ -2,15 +2,15 @@ import React, {PropTypes} from 'react'
 import classnames from 'classnames'
 import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
-import _noop from 'lodash/noop'
 import moment from 'moment-timezone'
-import {Alert, Form, FormGroup, FormText, Button, Label, Row, Col} from 'reactstrap'
+import {Form, FormGroup, FormText, Button, Label, Row, Col} from 'reactstrap'
 
 import {AVAILABLE_LANGUAGES} from './../../../../config'
 
 import BooleanField from '../../../common/forms/BooleanField'
 import RichField from '../../../common/forms/RichField'
 import InputField from '../../../common/forms/InputField'
+import {convertToHTML} from '../../../../utils'
 import Avatar from '../../../common/components/Avatar'
 
 const defaultContent = {
@@ -29,6 +29,10 @@ class YourProfileView extends React.Component {
         this.state = _merge({
             loadingPreferences: false,
             preferences: props.preferences.get('data'),
+            signature: {
+                text: '',
+                html: '',
+            },
         }, this._getForm(props))
     }
 
@@ -44,12 +48,32 @@ class YourProfileView extends React.Component {
             return defaultContent
         }
 
-        return _pick(props.currentUser.toJS(), Object.keys(defaultContent))
+        return _merge(
+            _pick(props.currentUser.toJS(), Object.keys(defaultContent)),
+            {
+                signature: {
+                    text: props.currentUser.get('signature_text', ''),
+                    html: props.currentUser.get('signature_html', '')
+                }
+            }
+        )
     }
 
     _handleSubmit = (e) => {
         e.preventDefault()
-        const normalizedValues = _pick(this.state, Object.keys(defaultContent))
+        const normalizedValues = _merge(
+            _pick(this.state, Object.keys(defaultContent)),
+            {
+                signature_text: this.state.signature.text,
+                signature_html: this.state.signature.html
+            }
+        )
+
+        // if no text, set no html
+        if (!normalizedValues.signature_text) {
+            normalizedValues.signature_html = ''
+        }
+
         return this.props.actions.submitUser(normalizedValues, 0)
     }
 
@@ -66,10 +90,20 @@ class YourProfileView extends React.Component {
             })
     }
 
+    _onSignatureChange = (editorState) => {
+        const contentState = editorState.getCurrentContent()
+
+        this.setState({
+            signature: {
+                text: contentState.getPlainText(),
+                html: convertToHTML(contentState),
+            }
+        })
+    }
+
     render() {
-        const {isLoading, currentUser} = this.props
+        const {isLoading} = this.props
         const loadingUser = isLoading && !this.state.loadingPreferences
-        const hasSignature = currentUser.get('signature_text') || currentUser.get('signature_html')
 
         return (
             <div>
@@ -136,26 +170,13 @@ class YourProfileView extends React.Component {
                                     ))
                                 }
                             </InputField>
-                            {hasSignature ?
-                                <RichField
-                                    name="signature"
-                                    label={[
-                                        <Label key="label">Signature</Label>,
-                                        <Alert key="alert" color="warning" className="font-weight-normal">
-                                            <i className="fa fa-info-circle"/>{' '}
-                                            Personal signatures are now in read-only and will be soon removed.{' '}
-                                            <strong>Signatures are now customizable in each email integration.</strong>
-                                        </Alert>
-                                    ]}
-                                    readOnly
-                                    value={{
-                                        text: currentUser.get('signature_text'),
-                                        html: currentUser.get('signature_html')
-                                    }}
-                                    onChange={_noop}
-                                />
-                                : null
-                            }
+                            <RichField
+                                name="signature"
+                                label="Signature"
+                                value={this.state.signature}
+                                onChange={this._onSignatureChange}
+                            />
+
                         </Col>
                         <Col md="3" xs="12">
 
@@ -173,10 +194,10 @@ class YourProfileView extends React.Component {
                                 </div>
 
                                 <FormText color="muted">
-                                    Login to <a href="https://en.gravatar.com/" target="_blank"
-                                    rel="noopener noreferrer">Gravatar</a> to update your profile picture.
+                                    Login to <a href="https://en.gravatar.com/" target="_blank" rel="noopener noreferrer">Gravatar</a> to update your profile picture.
                                 </FormText>
                             </FormGroup>
+
                         </Col>
                     </Row>
 

@@ -1,80 +1,67 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`actions new message addSignature() should dispatch NEW_MESSAGE_ADD_SIGNATURE action 1`] = `
+exports[`actions new message addSignature() should always pass the args to the reducer 1`] = `
 Array [
   Object {
-    "contentState": Object {
-      "blockMap": Object {
-        "someRandomKey": Object {
-          "characterList": Array [
-            Object {
-              "entity": null,
-              "style": Array [],
+    "args": Immutable.Map {
+      contentState: Object {
+            "blockMap": Object {
+              "someRandomKey": Object {
+                "characterList": Array [
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                ],
+                "data": Object {},
+                "depth": 0,
+                "key": "someRandomKey",
+                "text": "foo",
+                "type": "unstyled",
+              },
             },
-            Object {
-              "entity": null,
-              "style": Array [],
+            "entityMap": Object {
+              "__add": [Function],
+              "__create": [Function],
+              "__get": [Function],
+              "__getLastCreatedEntityKey": [Function],
+              "__mergeData": [Function],
+              "__replaceData": [Function],
+              "add": [Function],
+              "create": [Function],
+              "get": [Function],
+              "getLastCreatedEntityKey": [Function],
+              "mergeData": [Function],
+              "replaceData": [Function],
             },
-            Object {
-              "entity": null,
-              "style": Array [],
+            "selectionAfter": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
             },
-          ],
-          "data": Object {},
-          "depth": 0,
-          "key": "someRandomKey",
-          "text": "foo",
-          "type": "unstyled",
-        },
-      },
-      "entityMap": Object {
-        "__add": [Function],
-        "__create": [Function],
-        "__get": [Function],
-        "__getLastCreatedEntityKey": [Function],
-        "__mergeData": [Function],
-        "__replaceData": [Function],
-        "add": [Function],
-        "create": [Function],
-        "get": [Function],
-        "getLastCreatedEntityKey": [Function],
-        "mergeData": [Function],
-        "replaceData": [Function],
-      },
-      "selectionAfter": Object {
-        "anchorKey": "someRandomKey",
-        "anchorOffset": 0,
-        "focusKey": "someRandomKey",
-        "focusOffset": 0,
-        "hasFocus": false,
-        "isBackward": false,
-      },
-      "selectionBefore": Object {
-        "anchorKey": "someRandomKey",
-        "anchorOffset": 0,
-        "focusKey": "someRandomKey",
-        "focusOffset": 0,
-        "hasFocus": false,
-        "isBackward": false,
-      },
-    },
-    "signature": Immutable.Map {
-      text: "Cheers, Steve",
-      html: "Cheers, <strong>Steve</strong>",
+            "selectionBefore": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+          },
 },
+    "currentUser": Object {},
     "type": "NEW_MESSAGE_ADD_SIGNATURE",
-  },
-]
-`;
-
-exports[`actions new message dispatch setSender - with address 1`] = `
-Array [
-  Object {
-    "sender": Immutable.Map {
-      name: "Acme Support",
-      address: "support@acme.gorgias.io",
-},
-    "type": "NEW_MESSAGE_SET_SENDER",
   },
 ]
 `;
@@ -96,7 +83,7 @@ Array [
                         },
                         Immutable.Map {
                               name: "Acme Support",
-                              address: "support@acme.gorgias.io",
+                              address: "support@acme.com",
                         },
                   ],
                   from: Immutable.Map {
@@ -120,7 +107,7 @@ Array [
                   ],
                   from: Immutable.Map {
                         name: "Acme Support",
-                        address: "support@acme.gorgias.io",
+                        address: "support@acme.com",
                   },
                   type: "email",
             },
@@ -140,7 +127,7 @@ Array [
   Object {
     "sender": Immutable.Map {
       name: "Acme Support",
-      address: "support@acme.gorgias.io",
+      address: "support@acme.com",
 },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
@@ -173,7 +160,7 @@ Array [
                         },
                         Immutable.Map {
                               name: "Acme Support",
-                              address: "support@acme.gorgias.io",
+                              address: "support@acme.com",
                         },
                   ],
                   from: Immutable.Map {
@@ -197,7 +184,7 @@ Array [
                   ],
                   from: Immutable.Map {
                         name: "Acme Support",
-                        address: "support@acme.gorgias.io",
+                        address: "support@acme.com",
                   },
                   type: "email",
             },
@@ -227,7 +214,7 @@ Array [
   Object {
     "sender": Immutable.Map {
       name: "Acme Support",
-      address: "support@acme.gorgias.io",
+      address: "support@acme.com",
 },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
@@ -251,7 +238,7 @@ Array [
                         },
                         Immutable.Map {
                               name: "Acme Support",
-                              address: "support@acme.gorgias.io",
+                              address: "support@acme.com",
                         },
                   ],
                   from: Immutable.Map {
@@ -275,7 +262,7 @@ Array [
                   ],
                   from: Immutable.Map {
                         name: "Acme Support",
-                        address: "support@acme.gorgias.io",
+                        address: "support@acme.com",
                   },
                   type: "email",
             },
@@ -305,7 +292,7 @@ Array [
   Object {
     "sender": Immutable.Map {
       name: "Acme Support",
-      address: "support@acme.gorgias.io",
+      address: "support@acme.com",
 },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
@@ -329,7 +316,7 @@ Array [
                         },
                         Immutable.Map {
                               name: "Acme Support",
-                              address: "support@acme.gorgias.io",
+                              address: "support@acme.com",
                         },
                   ],
                   from: Immutable.Map {
@@ -353,7 +340,7 @@ Array [
                   ],
                   from: Immutable.Map {
                         name: "Acme Support",
-                        address: "support@acme.gorgias.io",
+                        address: "support@acme.com",
                   },
                   type: "email",
             },
@@ -383,7 +370,7 @@ Array [
   Object {
     "sender": Immutable.Map {
       name: "Acme Support",
-      address: "support@acme.gorgias.io",
+      address: "support@acme.com",
 },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
@@ -407,7 +394,7 @@ Array [
                         },
                         Immutable.Map {
                               name: "Acme Support",
-                              address: "support@acme.gorgias.io",
+                              address: "support@acme.com",
                         },
                   ],
                   from: Immutable.Map {
@@ -431,7 +418,7 @@ Array [
                   ],
                   from: Immutable.Map {
                         name: "Acme Support",
-                        address: "support@acme.gorgias.io",
+                        address: "support@acme.com",
                   },
                   type: "email",
             },
@@ -461,7 +448,7 @@ Array [
   Object {
     "sender": Immutable.Map {
       name: "Acme Support",
-      address: "support@acme.gorgias.io",
+      address: "support@acme.com",
 },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
@@ -485,7 +472,7 @@ Array [
                         },
                         Immutable.Map {
                               name: "Acme Support",
-                              address: "support@acme.gorgias.io",
+                              address: "support@acme.com",
                         },
                   ],
                   from: Immutable.Map {
@@ -509,7 +496,7 @@ Array [
                   ],
                   from: Immutable.Map {
                         name: "Acme Support",
-                        address: "support@acme.gorgias.io",
+                        address: "support@acme.com",
                   },
                   type: "email",
             },
@@ -539,7 +526,7 @@ Array [
   Object {
     "sender": Immutable.Map {
       name: "Acme Support",
-      address: "support@acme.gorgias.io",
+      address: "support@acme.com",
 },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
@@ -606,8 +593,6 @@ Array [
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
     "ticket": Immutable.Map {
       messages: Immutable.List [
             Immutable.Map {
@@ -619,7 +604,7 @@ Array [
                               },
                               Immutable.Map {
                                     name: "Acme Support",
-                                    address: "support@acme.gorgias.io",
+                                    address: "support@acme.com",
                               },
                         ],
                         from: Immutable.Map {
@@ -643,7 +628,7 @@ Array [
                         ],
                         from: Immutable.Map {
                               name: "Acme Support",
-                              address: "support@acme.gorgias.io",
+                              address: "support@acme.com",
                         },
                         type: "email",
                   },
@@ -749,8 +734,6 @@ Array [
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
     "ticket": Immutable.Map {
       id: 1,
 },
@@ -825,8 +808,6 @@ Array [
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
     "ticket": Immutable.Map {
       id: 1,
 },
@@ -890,8 +871,6 @@ Array [
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
     "ticket": Immutable.Map {
       id: 1,
 },
@@ -955,8 +934,6 @@ Array [
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
     "ticket": Immutable.Map {
       id: 1,
 },
@@ -1031,8 +1008,6 @@ Array [
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
     "ticket": Immutable.Map {
       id: 1,
 },

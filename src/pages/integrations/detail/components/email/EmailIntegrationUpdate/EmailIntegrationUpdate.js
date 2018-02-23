@@ -17,7 +17,7 @@ import {
     FormGroup,
 } from 'reactstrap'
 
-import {convertToHTML, isGorgiasSupportAddress} from '../../../../../../utils'
+import {isGorgiasSupportAddress} from '../../../../../../utils'
 import Loader from '../../../../../common/components/Loader'
 import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker'
 import * as notificationActions from '../../../../../../state/notifications/actions'
@@ -27,7 +27,6 @@ import ConfirmButton from '../../../../../common/components/ConfirmButton'
 
 import InputField from '../../../../../common/forms/InputField'
 import BooleanField from '../../../../../common/forms/BooleanField'
-import RichFieldWithVariables from '../../../../../common/forms/RichFieldWithVariables'
 
 class EmailIntegrationUpdate extends React.Component {
     constructor(props) {
@@ -70,7 +69,7 @@ class EmailIntegrationUpdate extends React.Component {
     _getIntegrationValues = (integration) => {
         const data = {
             name: integration.get('name', ''),
-            import_spam: integration.getIn(['meta', 'import_spam']) || false,
+            import_spam: integration.getIn(['meta', 'import_spam']) || false
         }
 
         if (integration.get('type') === 'gmail') {
@@ -83,12 +82,8 @@ class EmailIntegrationUpdate extends React.Component {
         const {integration} = this.props
         let form
 
-        form = integration
-            .set('name', this.state.name)
-            .setIn(['meta', 'import_spam'], this.state.import_spam)
-            .setIn(['meta', 'signature', 'text'], this.state.signature_text)
-            .setIn(['meta', 'signature', 'html'], this.state.signature_html)
-
+        form = integration.set('name', this.state.name)
+        form = form.setIn(['meta', 'import_spam'], this.state.import_spam)
 
         if (integration.get('type') === 'gmail') {
             form = form.setIn(['meta', 'use_gmail_categories'], this.state.use_gmail_categories)
@@ -280,15 +275,6 @@ class EmailIntegrationUpdate extends React.Component {
         })
     }
 
-    _updateSignature = (editorState) => {
-        const contentState = editorState.getCurrentContent()
-        this.setState({
-            dirty: true,
-            signature_text: contentState.getPlainText(),
-            signature_html: convertToHTML(contentState),
-        })
-    }
-
     _renderSettings = () => {
         const {
             domain,
@@ -304,12 +290,8 @@ class EmailIntegrationUpdate extends React.Component {
         const isDeleting = loading.get('delete') === integration.get('id')
         const isGmail = integration.get('type') === 'gmail'
 
-        const {
-            errors,
-            import_spam,
-            name,
-            use_gmail_categories,
-        } = this.state
+        const {name, use_gmail_categories, import_spam, errors} = this.state
+
         const hasErrors = errors.length > 0
 
         const nameHelp = isGmail
@@ -349,19 +331,6 @@ class EmailIntegrationUpdate extends React.Component {
                             </FormGroup>
                         )
                     }
-                    <FormGroup>
-                        <RichFieldWithVariables
-                            allowExternalChanges
-                            name="signature"
-                            label="Signature"
-                            value={{
-                                text: integration.getIn(['meta', 'signature', 'text']) || '',
-                                html: integration.getIn(['meta', 'signature', 'html']) || '',
-                            }}
-                            variableTypes={['current_user']}
-                            onChange={this._updateSignature}
-                        />
-                    </FormGroup>
                     <FormGroup>
                         <BooleanField
                             name="import_spam"

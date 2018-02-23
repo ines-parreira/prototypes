@@ -1,11 +1,6 @@
-import * as immutableMatchers from 'jest-immutable-matchers'
-
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
 import {fromJS, List} from 'immutable'
-
-jest.addMatchers(immutableMatchers)
-
 
 describe('selectors', () => {
     describe('new message', () => {
@@ -91,53 +86,6 @@ describe('selectors', () => {
                 state.newMessage = state.newMessage
                     .setIn(['newMessage', 'source', 'type'], 'internal-note')
                 expect(selectors.isReady(state)).toEqual(false)
-            })
-        })
-
-        describe('getNewMessageSignature()', () => {
-            let emailAddress = 'support@acme.gorgias.io'
-            let integrationsState = fromJS({
-                integrations: [{
-                    type: 'gmail',
-                    meta: {
-                        address: emailAddress,
-                        signature: {
-                            text: 'Cheers, {{current_user.first_name}}',
-                            html: 'Cheers, <strong>{{current_user.first_name}}</strong>'
-                        }
-                    }
-                }]
-            })
-
-            beforeEach(() => {
-                state = {
-                    currentUser: fromJS({first_name: 'Steve'}),
-                    integrations: integrationsState,
-                    newMessage: initialState,
-                    ticket: fromJS({})
-                }
-            })
-
-            it('should return a rendered signature (email address)', () => {
-                state.newMessage = state.newMessage
-                    .setIn(['newMessage', 'source', 'from'], fromJS({address: emailAddress}))
-
-                expect(selectors.getNewMessageSignature(state)).toMatchSnapshot()
-            })
-
-            it('should not return a signature (chat message)', () => {
-                state.newMessage = state.newMessage
-                    .setIn(['newMessage', 'source', 'type'], 'chat')
-
-                expect(selectors.getNewMessageSignature(state)).toEqualImmutable(fromJS({}))
-            })
-
-            it('should not return a signature (unknown address)', () => {
-                state.newMessage = state.newMessage
-                    .setIn(['newMessage', 'source', 'from'], fromJS({'address': 'unknown@acme.gorgias.io'}))
-                    .setIn(['newMessage', 'source', 'type'], 'email')
-
-                expect(selectors.getNewMessageSignature(state)).toEqualImmutable(fromJS({}))
             })
         })
     })
