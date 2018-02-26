@@ -32,7 +32,7 @@ export default class TicketMessageBody extends React.Component<Props, State> {
     render() {
         const {message} = this.props
 
-        let body = message.body_html || message.body_text
+        let body = message.body_html || message.body_text || ''
         const stripped = message.body_html && message.stripped_html ? message.stripped_html : message.stripped_text
 
         let quoteButton = null

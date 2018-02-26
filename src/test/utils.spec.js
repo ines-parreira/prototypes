@@ -636,4 +636,20 @@ describe('global utils', () => {
                 .toEqual('hello %7B%7Bintegrations.data%7D%7D 7B%hello 7B%7B%hello7%D7%D')
         })
     })
+
+    describe('sanitizeHtmlDefault', () => {
+        it('should return entry parameter if it\'s not a string', () => {
+            expect(utils.sanitizeHtmlDefault(undefined)).toBe(undefined)
+            expect(utils.sanitizeHtmlDefault(null)).toBe(null)
+            expect(utils.sanitizeHtmlDefault(12)).toBe(12)
+        })
+
+        it('should remove all comments of html', () => {
+            expect(utils.sanitizeHtmlDefault('<p><!-->hey</p>')).toBe('<p>hey</p>')
+            expect(utils.sanitizeHtmlDefault('<p><!--[if IE9]>hey</p>')).toBe('<p>hey</p>')
+            expect(utils.sanitizeHtmlDefault('<p><!--[if IE9]>hey<![endif]--></p>')).toBe('<p>hey</p>')
+            expect(utils.sanitizeHtmlDefault('<p><!-- hola senor -->hey</p>')).toBe('<p>hey</p>')
+            expect(utils.sanitizeHtmlDefault('<p><!-- hola senor -->--> hey</p>')).toBe('<p>--&gt; hey</p>')
+        })
+    })
 })

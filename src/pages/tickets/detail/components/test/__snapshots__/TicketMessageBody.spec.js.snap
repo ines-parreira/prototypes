@@ -588,7 +588,7 @@ exports[`components TicketMessageBody with empty props 1`] = `
       <div
         dangerouslySetInnerHTML={
           Object {
-            "__html": "undefined",
+            "__html": "",
           }
         }
       />

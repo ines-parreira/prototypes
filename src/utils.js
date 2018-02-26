@@ -392,7 +392,14 @@ export function stripHTML(text: string): ?string {
 
 /** sanitizeHtml with a sensible config. */
 export function sanitizeHtmlDefault(html: string): string {
-    return sanitizeHtml(html, {
+    if (typeof html !== 'string') {
+        return html
+    }
+
+    // Remove all HTML comments
+    const sanitizedHtml = html.replace(/<\!((\-\-.*?)|(.*?\-\-))\>/g, '')
+
+    return sanitizeHtml(sanitizedHtml, {
         allowedTags: ['h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
             'nl', 'li', 'b', 'i', 'u', 'strong', 'em', 'ins', 'strike', 'code', 'hr', 'br', 'div',
             'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre', 'img', 'font', 'span', 'audio'],
