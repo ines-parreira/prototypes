@@ -277,38 +277,30 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('set request', () => {
+    it('set category', () => {
         expect(
             reducer(
                 initialState
                     .mergeDeep({
-                        messages: [{
-                            id: 1,
-                            request_id: 1,
-                        }]
+                        category: 'delivery/status',
                     }),
                 {
-                    type: types.SET_TICKET_MESSAGE_REQUEST,
-                    messageId: 1,
-                    requestId: 2
+                    type: types.SET_TICKET_CATEGORY,
+                    category: 'order/cancel',
                 }
             ).toJS()
         ).toMatchSnapshot()
     })
 
-    it('remove request', () => {
+    it('remove category', () => {
         expect(
             reducer(
                 initialState
                     .mergeDeep({
-                        messages: [{
-                            id: 1,
-                            request_id: 1,
-                        }]
+                        category: 'delivery/status',
                     }),
                 {
-                    type: types.REMOVE_TICKET_MESSAGE_REQUEST,
-                    messageId: 1
+                    type: types.REMOVE_TICKET_CATEGORY,
                 }
             ).toJS()
         ).toMatchSnapshot()

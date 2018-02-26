@@ -864,7 +864,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers remove request 1`] = `
+exports[`ticket reducers remove category 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -876,14 +876,10 @@ Object {
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_user": null,
+  "category": null,
   "channel": "email",
   "events": Array [],
-  "messages": Array [
-    Object {
-      "id": 1,
-      "request_id": null,
-    },
-  ],
+  "messages": Array [],
   "priority": "normal",
   "receiver": null,
   "requester": null,
@@ -1044,7 +1040,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers set request 1`] = `
+exports[`ticket reducers set category 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -1056,14 +1052,10 @@ Object {
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_user": null,
+  "category": "order/cancel",
   "channel": "email",
   "events": Array [],
-  "messages": Array [
-    Object {
-      "id": 1,
-      "request_id": 2,
-    },
-  ],
+  "messages": Array [],
   "priority": "normal",
   "receiver": null,
   "requester": null,

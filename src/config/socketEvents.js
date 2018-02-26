@@ -5,7 +5,6 @@ import * as viewsActions from '../state/views/actions'
 
 import * as viewsConstants from '../state/views/constants'
 import * as macroConstants from '../state/macro/constants'
-import * as requestsConstants from '../state/requests/constants'
 import * as currentAccountConstants from '../state/currentAccount/constants'
 import * as socketConstants from './socketConstants'
 
@@ -216,30 +215,6 @@ export const receivedEvents = [{
         return this.dispatch({
             type: macroConstants.DELETE_MACRO_SUCCESS,
             resp: json.macro,
-        })
-    },
-}, {
-    name: 'request-created',
-    onReceive: function (json) {
-        return this.dispatch({
-            type: requestsConstants.CREATE_REQUEST_SUCCESS,
-            resp: json.request,
-        })
-    },
-}, {
-    name: 'request-updated',
-    onReceive: function (json) {
-        return this.dispatch({
-            type: requestsConstants.UPDATE_REQUEST_SUCCESS,
-            resp: json.request,
-        })
-    },
-}, {
-    name: 'request-deleted',
-    onReceive: function (json) {
-        return this.dispatch({
-            type: requestsConstants.DELETE_REQUEST_SUCCESS,
-            resp: json.request,
         })
     },
 }, {

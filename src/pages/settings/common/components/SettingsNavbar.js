@@ -60,16 +60,6 @@ export default class SettingsNavbar extends React.Component {
             }]
         }]
 
-        // @xarg: temporary hiding of the requests navigation
-        if (window.DEVELOPMENT || document.cookie.includes('is_gorgias_staff')) {
-            categories[1].links.push({
-                requiredRole: 'admin',
-                to: 'requests',
-                text: 'Requests',
-                className: 'hidden-sm-down',
-            })
-        }
-
         return (
             <div>
                 {

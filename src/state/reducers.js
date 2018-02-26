@@ -10,7 +10,6 @@ import infobarReducer from './infobar/reducers'
 import integrationsReducer from './integrations/reducers'
 import layoutReducer from './layout/reducers'
 import macrosReducer from './macro/reducers'
-import requestsReducer from './requests/reducers'
 import newMessageReducer from './newMessage/reducers'
 import rulesReducer from './rules/reducers'
 import schemasReducer from './schemas/reducers'
@@ -32,7 +31,6 @@ const rootReducer = combineReducers({
     integrations: integrationsReducer,
     layout: layoutReducer,
     macros: macrosReducer,
-    requests: requestsReducer,
     newMessage: newMessageReducer,
     notifications: notificationsReducer(),
     rules: rulesReducer,

@@ -887,11 +887,10 @@ Array [
 ]
 `;
 
-exports[`ticket actions removeRequest 1`] = `
+exports[`ticket actions removeCategory 1`] = `
 Array [
   Object {
-    "messageId": 1,
-    "type": "REMOVE_TICKET_MESSAGE_REQUEST",
+    "type": "REMOVE_TICKET_CATEGORY",
   },
 ]
 `;
@@ -920,12 +919,11 @@ Array [
 ]
 `;
 
-exports[`ticket actions setRequest 1`] = `
+exports[`ticket actions setCategory 1`] = `
 Array [
   Object {
-    "messageId": 1,
-    "requestId": 1,
-    "type": "SET_TICKET_MESSAGE_REQUEST",
+    "category": "delivery/status",
+    "type": "SET_TICKET_CATEGORY",
   },
 ]
 `;

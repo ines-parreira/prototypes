@@ -27,7 +27,6 @@ import {
 
 import socketManager from '../../services/socketManager'
 import type {dispatchType, getStateType} from '../types'
-import {getCustomerMessages} from './selectors'
 
 export const mergeTicket = (ticket) => (dispatch, getState) => {
     ticket = fromJS(ticket)
@@ -144,60 +143,21 @@ export const removeTag = (tag) => (dispatch, getState) => {
     return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('addTags', getState())))
 }
 
-export const setRequest = (request) => (dispatch, getState) => {
-    const messages = getCustomerMessages(getState()).sortBy((m) => m.get('created_datetime'))
-    const lastMessageWithRequest = messages.find((m) => m.get('request_id'))
-    // if there is a request set we modify it, otherwise the last customer message is set as a request.
-    const message = lastMessageWithRequest ? lastMessageWithRequest : messages.last()
+export const setCategory = (category) => (dispatch) => {
+    dispatch({
+        type: types.SET_TICKET_CATEGORY,
+        category
+    })
 
-    if (!message) {
-        return Promise.resolve()
-    }
-    
-    const messageId = message.get('id')
-    const ticketId = message.get('ticket_id')
-
-    return axios.put(`/api/tickets/${ticketId}/messages/${messageId}/`, {request_id: request.get('id')})
-        .then((json = {}) => json.data)
-        .then(() => {
-            return dispatch({
-                type: types.SET_TICKET_MESSAGE_REQUEST,
-                requestId: request.get('id'),
-                messageId
-            })
-        }, (error) => {
-            return dispatch({
-                type: types.SET_TICKET_MESSAGE_REQUEST_ERROR,
-                error,
-                reason: 'Failed to set request'
-            })
-        })
+    return dispatch(ticketPartialUpdate({category: category}))
 }
 
-export const removeRequest = () => (dispatch, getState) => {
-    const messages = getCustomerMessages(getState()).sortBy((m) => m.get('created_datetime'))
-    const lastMessageWithRequest = messages.find((m) => m.get('request_id'))
-    if (!lastMessageWithRequest) {
-        return
-    }
+export const removeCategory = () => (dispatch) => {
+    dispatch({
+        type: types.REMOVE_TICKET_CATEGORY,
+    })
 
-    const messageId = lastMessageWithRequest.get('id')
-    const ticketId = lastMessageWithRequest.get('ticket_id')
-
-    return axios.put(`/api/tickets/${ticketId}/messages/${messageId}/`, {request_id: null})
-        .then((json = {}) => json.data)
-        .then(() => {
-            return dispatch({
-                type: types.REMOVE_TICKET_MESSAGE_REQUEST,
-                messageId
-            })
-        }, (error) => {
-            return dispatch({
-                type: types.REMOVE_TICKET_MESSAGE_REQUEST_ERROR,
-                error,
-                reason: 'Failed to set request'
-            })
-        })
+    return dispatch(ticketPartialUpdate({category: null}))
 }
 
 export const setSpam = (spam, callback = _noop) => (dispatch, getState) => {

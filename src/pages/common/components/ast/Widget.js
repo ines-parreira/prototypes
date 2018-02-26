@@ -10,7 +10,6 @@ import Select from './widget/ReactSelect'
 import StatusSelect from './widget/StatusSelect'
 import PrioritySelect from './widget/PrioritySelect'
 import MacroSelect from './widget/MacroSelect'
-import RequestSelect from './widget/RequestSelect'
 import AssigneeSelect from './widget/AssigneeSelect'
 import IntegrationSelect from './widget/IntegrationSelect'
 
@@ -290,9 +289,9 @@ export default class Widget extends React.Component {
                     onChange={this._handleChange}
                 />
             case 'select':
-                return <Select {...widget} onChange={this._handleChange}/>
+                return <Select {...widget} onChange={this._handleChange} />
             case 'status-select':
-                return <StatusSelect {...widget} onChange={this._handleChange}/>
+                return <StatusSelect {...widget} onChange={this._handleChange} />
             case 'tags-select':
                 return (
                     <TagsSelect
@@ -302,15 +301,13 @@ export default class Widget extends React.Component {
                     />
                 )
             case 'priority-select':
-                return <PrioritySelect {...widget} onChange={this._handleChange}/>
+                return <PrioritySelect {...widget} onChange={this._handleChange} />
             case 'macro-select':
-                return <MacroSelect {...widget} onChange={this._handleChange}/>
-            case 'request-select':
-                return <RequestSelect {...widget} onChange={this._handleChange}/>
+                return <MacroSelect {...widget} onChange={this._handleChange} />
             case 'assignee_user-select':
-                return <AssigneeSelect {...widget} onChange={this._handleChange}/>
+                return <AssigneeSelect {...widget} onChange={this._handleChange} />
             case 'integration-select':
-                return <IntegrationSelect {...widget} onChange={this._handleChange}/>
+                return <IntegrationSelect {...widget} onChange={this._handleChange} />
             case 'textarea':
                 return this._textarea(value)
             case 'rich-field':
