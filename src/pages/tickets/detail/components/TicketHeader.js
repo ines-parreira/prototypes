@@ -16,7 +16,7 @@ import {
 import shortcutManager from '../../../../services/shortcutManager'
 import EditableTitle from '../../../common/components/EditableTitle'
 import TicketTags from './ticketdetails/TicketTags'
-import TicketCategory from './ticketdetails/TicketCategory'
+import TicketRequest from './ticketdetails/TicketRequest'
 import TicketStatus from './ticketdetails/TicketStatus'
 import TicketAssignee from './ticketdetails/TicketAssignee'
 import TicketSpam from './ticketdetails/TicketSpam'
@@ -170,7 +170,7 @@ export default class TicketHeader extends React.Component<Props, State> {
                                     size="sm"
                                     id="ticket-actions-button"
                                 >
-                                    <i className="fa fa-fw fa-caret-down" />
+                                    <i className="fa fa-fw fa-caret-down"/>
                                 </DropdownToggle>
                                 <TicketSnoozePicker
                                     datetime={ticket.get('snooze_datetime')}
@@ -259,11 +259,7 @@ export default class TicketHeader extends React.Component<Props, State> {
                             )
                         }
 
-                        <TicketCategory
-                            category={ticket.get('category')}
-                            setCategory={actions.ticket.setCategory}
-                            removeCategory={actions.ticket.removeCategory}
-                        />
+                        <TicketRequest />
 
                         <TicketTags
                             ticketTags={ticket.get('tags')}

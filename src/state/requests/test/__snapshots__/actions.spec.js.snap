@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`requests actions bulkDelete 1`] = `
+Array [
+  Object {
+    "requestIds": Array [
+      1,
+      2,
+    ],
+    "type": "DELETE_BULK_REQUEST_SUCCESS",
+  },
+]
+`;
+
+exports[`requests actions create 1`] = `
+Array [
+  Object {
+    "resp": Object {
+      "id": 1,
+    },
+    "type": "CREATE_REQUEST_SUCCESS",
+  },
+]
+`;
+
+exports[`requests actions delete 1`] = `
+Array [
+  Object {
+    "resp": undefined,
+    "type": "DELETE_REQUEST_SUCCESS",
+  },
+]
+`;
+
+exports[`requests actions fetchRequests success actions 1`] = `
+Array [
+  Object {
+    "type": "FETCH_REQUEST_LIST_START",
+  },
+  Object {
+    "resp": Object {
+      "data": Array [
+        "refund",
+      ],
+    },
+    "type": "FETCH_REQUEST_LIST_SUCCESS",
+  },
+]
+`;
+
+exports[`requests actions update 1`] = `
+Array [
+  Object {
+    "resp": Object {
+      "id": 1,
+    },
+    "type": "UPDATE_REQUEST_SUCCESS",
+  },
+]
+`;

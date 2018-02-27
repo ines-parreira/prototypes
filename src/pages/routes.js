@@ -29,6 +29,8 @@ import UserRoleRequired from './common/components/UserRoleRequired'
 import BillingContainer from './settings/billing/BillingContainer'
 import CreditCardContainer from './settings/billing/credit-cards/CreditCard'
 import ManageTagsContainer from './settings/tags/ManageTags'
+import ManageRequestsContainer from './settings/requests/ManageRequests'
+import ManageRequestItemContainer from './settings/requests/ManageRequestItem'
 import ImportDataContainer from './settings/importData/ImportDataContainer'
 import ImportZendeskDetail from './settings/importData/zendesk/ImportZendeskDetail'
 
@@ -267,6 +269,28 @@ export default (
                     navbar: SettingsNavbarContainer
                 }}
             />
+            <Route path="requests">
+                <IndexRoute
+                    components={{
+                        content: UserRoleRequired(ManageRequestsContainer, 'admin'),
+                        navbar: SettingsNavbarContainer
+                    }}
+                />
+                <Route
+                    path="add"
+                    components={{
+                        content: UserRoleRequired(ManageRequestItemContainer, 'admin'),
+                        navbar: SettingsNavbarContainer
+                    }}
+                />
+                <Route
+                    path="update/:id"
+                    components={{
+                        content: UserRoleRequired(ManageRequestItemContainer, 'admin'),
+                        navbar: SettingsNavbarContainer
+                    }}
+                />
+            </Route>
             <Route path="import-data">
                 <IndexRoute
                     components={{
@@ -283,6 +307,6 @@ export default (
                 />
             </Route>
         </Route>
-        <Route path="*" component={NoMatch} />
+        <Route path="*" component={NoMatch}/>
     </Route>
 )

@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`requests reducers create request 1`] = `
+Object {
+  "items": Array [
+    Object {
+      "id": 3,
+      "name": "new_fake_name",
+    },
+  ],
+}
+`;
+
+exports[`requests reducers delete bulk request 1`] = `
+Object {
+  "items": Array [
+    Object {
+      "id": 2,
+      "name": "other_current_fake_name",
+    },
+  ],
+}
+`;
+
+exports[`requests reducers delete request 1`] = `
+Object {
+  "items": Array [
+    Object {
+      "id": 2,
+      "name": "other_current_fake_name",
+    },
+  ],
+}
+`;
+
+exports[`requests reducers fetch request list 1`] = `
+Object {
+  "items": Array [
+    Object {
+      "id": 3,
+      "name": "new_fake_name",
+    },
+    Object {
+      "id": 4,
+      "name": "other_new_fake_name",
+    },
+  ],
+}
+`;
+
+exports[`requests reducers update request 1`] = `
+Object {
+  "items": Array [
+    Object {
+      "id": 1,
+      "name": "updated",
+    },
+    Object {
+      "id": 2,
+      "name": "other_current_fake_name",
+    },
+  ],
+}
+`;

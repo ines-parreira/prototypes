@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ast widgets RequestSelect should handle change 1`] = `
+<InputField
+  inline={true}
+  onChange={[Function]}
+  type="select"
+  value={1}
+>
+  <option
+    value={1}
+  >
+    shipping status
+  </option>
+  <option
+    value={2}
+  >
+    missing items
+  </option>
+</InputField>
+`;
+
+exports[`ast widgets RequestSelect should render int as value 1`] = `
+<Select
+  onChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "shipping status",
+        "value": 1,
+      },
+      Object {
+        "label": "missing items",
+        "value": 2,
+      },
+    ]
+  }
+  value={1}
+/>
+`;
