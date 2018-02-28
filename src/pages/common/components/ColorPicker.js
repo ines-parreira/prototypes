@@ -8,6 +8,7 @@ import {
 } from 'reactstrap'
 
 import css from './ColorPicker.less'
+import {DEFAULT_TAG_COLOR} from '../../../config'
 
 const colors = [
     '#EB144C', // red
@@ -63,7 +64,6 @@ export default class ColorPicker extends Component {
 
     render() {
         const {value} = this.props
-
         return (
             <div className="d-inline-block">
                 <Button
@@ -76,7 +76,7 @@ export default class ColorPicker extends Component {
                     <div
                         className={css.color}
                         style={{
-                            backgroundColor: value,
+                            backgroundColor: value || DEFAULT_TAG_COLOR,
                         }}
                     />
                 </Button>

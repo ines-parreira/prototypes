@@ -14,6 +14,8 @@ import ColorPicker from '../../common/components/ColorPicker'
 import {TagLabel} from '../../common/utils/labels'
 
 import * as tagsActions from '../../../state/tags/actions'
+import {toJS} from '../../../utils'
+import {DEFAULT_TAG_COLOR} from '../../../config'
 
 export class Row extends Component {
     static propTypes = {
@@ -55,6 +57,13 @@ export class Row extends Component {
 
     _onSave = (e) => {
         e.preventDefault()
+
+        let obj = toJS(this.state.decoration)
+        // Set default blue color if no color
+        if (obj.color === '') {
+            obj.color = DEFAULT_TAG_COLOR
+            this.state.decoration = fromJS(obj)
+        }
 
         const row = this.props.row
             .set('name', this.state.name)

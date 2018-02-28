@@ -829,3 +829,5 @@ export const TIMES_BEFORE_SPLIT = [
  * Max header length
  */
 export const MAX_HEADER_LENGTH = 1000
+
+export const DEFAULT_TAG_COLOR = '#0693E3'

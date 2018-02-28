@@ -12,6 +12,7 @@ import {formatDatetime, toJS, isImmutable} from '../../../utils'
 import {sourceTypeToIcon} from '../../../config/ticket'
 
 import * as usersHelpers from '../../../state/users/helpers'
+import {DEFAULT_TAG_COLOR} from '../../../config'
 
 /**
  * AGENT
@@ -73,7 +74,7 @@ UserLabel.propTypes = {
  * TAG
  */
 export const TagLabel = ({decoration, children, style}) => {
-    style.color = (decoration || fromJS({})).get('color') || '#0275d8'
+    style.color = (decoration || fromJS({})).get('color') || DEFAULT_TAG_COLOR
 
     return (
         <Badge
