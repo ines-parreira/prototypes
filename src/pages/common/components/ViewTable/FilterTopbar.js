@@ -39,6 +39,7 @@ class FilterTopbar extends React.Component {
         currentUser: PropTypes.object.isRequired,
         fetchPage: PropTypes.func.isRequired,
         isUpdate: PropTypes.bool.isRequired,
+        isSearch: PropTypes.bool.isRequired,
         pristineActiveView: ImmutablePropTypes.map.isRequired,
         removeFieldFilter: PropTypes.func.isRequired,
         updateFieldFilter: PropTypes.func.isRequired,
@@ -170,11 +171,11 @@ class FilterTopbar extends React.Component {
     }
 
     render() {
-        const {config, activeView, areFiltersValid, isUpdate, agents, currentUser} = this.props
+        const {config, activeView, areFiltersValid, isUpdate, isSearch, agents, currentUser} = this.props
         const {isSubmitting} = this.state
         const isSystemView = activeView.get('category') === 'system'
 
-        if (!activeView.get('editMode')) {
+        if (!activeView.get('editMode') && !isSearch) {
             return null
         }
 
@@ -226,10 +227,10 @@ class FilterTopbar extends React.Component {
                 <CardFooter>
                     <div className="d-flex align-items-center justify-content-between">
                         {
-                            isSystemView ? (
+                            (isSystemView || isSearch) ? (
                                 <span>
                                     <i className="fa fa-fw fa-info-circle mr-2"/>
-                                    System views changes cannot be saved
+                                    This view cannot be saved
                                 </span>
                             ) : (
                                 isUpdate ? (
@@ -293,16 +294,17 @@ class FilterTopbar extends React.Component {
                                 )
                             )
                         }
-
-                        <Button
-                            type="submit"
-                            color="secondary"
-                            className="pull-right"
-                            disabled={isSubmitting}
-                            onClick={this._cancel}
-                        >
-                            Cancel
-                        </Button>
+                        {!isSearch && (
+                            <Button
+                                type="submit"
+                                color="secondary"
+                                className="pull-right"
+                                disabled={isSubmitting}
+                                onClick={this._cancel}
+                            >
+                                Cancel
+                            </Button>
+                        )}
                     </div>
                 </CardFooter>
             </Card>

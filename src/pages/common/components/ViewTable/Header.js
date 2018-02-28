@@ -232,6 +232,7 @@ export default class Header extends React.Component {
                 </div>
                 <FilterTopbar
                     isUpdate={isUpdate}
+                    isSearch={isSearch}
                     type={type}
                 />
             </div>

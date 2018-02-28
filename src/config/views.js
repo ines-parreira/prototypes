@@ -267,8 +267,9 @@ export const views = fromJS([{
         return baseView().merge({
             name: `Search "${query}"`,
             search: query,
-            fields: ['details', 'channel', 'assignee', 'status', 'requester', 'created', 'updated'],
+            fields: ['details', 'channel', 'assignee', 'status', 'requester', 'created', 'last_message'],
             type: 'ticket-list',
+            order_by: 'last_message_datetime',
         })
     },
 }, {

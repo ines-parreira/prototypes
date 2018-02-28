@@ -116,6 +116,7 @@ exports[`ViewTable::Header default view displays 1`] = `
     </div>
   </div>
   <Connect(FilterTopbar)
+    isSearch={false}
     isUpdate={true}
     type="ticket"
   />
@@ -156,6 +157,7 @@ exports[`ViewTable::Header empty view 1`] = `
     </div>
   </div>
   <Connect(FilterTopbar)
+    isSearch={false}
     isUpdate={false}
     type="ticket"
   />
@@ -205,6 +207,7 @@ exports[`ViewTable::Header search view 1`] = `
     </div>
   </div>
   <Connect(FilterTopbar)
+    isSearch={true}
     isUpdate={true}
     type="ticket"
   />
