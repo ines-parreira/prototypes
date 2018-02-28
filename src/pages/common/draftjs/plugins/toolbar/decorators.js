@@ -20,11 +20,11 @@ export const variable = {
     },
     component: ({children, entityKey, contentState}) => { // eslint-disable-line
         const entity = contentState.getEntity(entityKey).getData()
-        const {fullName, type} = entity
-
+        const {fullName, type, integration} = entity
+        const entityIsIntegration = type && integration
         let title = fullName
 
-        if (type) {
+        if (entityIsIntegration) {
             const config = integrationsHelpers.getIntegrationConfig(type)
             title = `${config.title}: ${title}`
         }
@@ -36,12 +36,12 @@ export const variable = {
             >
                 <div
                     className={classnames('badge-variable', {
-                        [`badge-variable-type-${type}`]: !!type,
+                        [`badge-variable-type-${type}`]: entityIsIntegration,
                     })}
                     contentEditable={false}
                 >
                     {
-                        !!type && (
+                        entityIsIntegration && (
                             <img
                                 className="badge-variable-icon"
                                 src={integrationsHelpers.getIconFromType(type)}

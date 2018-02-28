@@ -395,6 +395,7 @@ export const replaceIntegrationVariables = (integrationType, ticketState, variab
 
 export const replaceVariables = (argument, state, notify) => {
     let ticketState = state.ticket
+    let currentUserState = state.currentUser
 
     // If there's a var of format `ticket.requester.integrations.XXX`, then it's a dynamic variable.
     // Else, it would be `ticket.requester.integrations[XXX]`.
@@ -416,8 +417,8 @@ export const replaceVariables = (argument, state, notify) => {
     }
 
     return renderObject(newArgument, {
-        ticket: ticketState.toJS(),
-        current_user: state.currentUser.toJS()
+        ticket: ticketState ? ticketState.toJS() : ticketState,
+        current_user: currentUserState ? state.currentUser.toJS() : currentUserState,
     })
 }
 

@@ -36,7 +36,6 @@ import {
 import * as integrationSelectors from '../integrations/selectors'
 import * as ticketSelectors from '../ticket/selectors'
 import * as usersSelectors from '../users/selectors'
-import * as currentUserSelectors from '../currentUser/selectors'
 import * as selectors from './selectors'
 import * as responseUtils from './responseUtils'
 import {AGENT_TYPING_STARTED, AGENT_TYPING_STOPPED} from '../../config/socketConstants'
@@ -144,15 +143,14 @@ const _throttledIsTyping = _throttle((ticketId: string) => {
 export const setResponseText = (args: Map<*,*> = fromJS({})) => (dispatch: dispatchType, getState: getStateType): dispatchType => {
     const state = getState()
     const {ticket, currentUser, newMessage} = state
-
     const contentState = args.get('contentState')
     const ticketId = ticket.get('id')
+    const signature = selectors.getNewMessageSignature(state)
 
     if (contentState && newMessage && ticketId) {
         const plainText = contentState.getPlainText()
 
-        if (plainText
-            && !responseUtils.onlySignature(contentState, currentUser)
+        if (plainText && !responseUtils.hasOnlySignature(contentState, signature.get('text'))
             && newMessage.getIn(['newMessage', 'source', 'type']) !== 'internal-note'
         ) {
             _throttledIsTyping(ticketId)
@@ -161,7 +159,6 @@ export const setResponseText = (args: Map<*,*> = fromJS({})) => (dispatch: dispa
             socketManager.send(AGENT_TYPING_STOPPED, ticketId)
         }
     }
-
     // should have the same params in state/ticket/actions/applyMacroAction
     return dispatch({
         type: constants.SET_RESPONSE_TEXT,
@@ -172,21 +169,27 @@ export const setResponseText = (args: Map<*,*> = fromJS({})) => (dispatch: dispa
         ticket, // used in middleware, not in reducer
         appliedMacro: ticket.getIn(['state', 'appliedMacro']),
         currentUser, // used in middleware, not in reducer
+        signature,
         fromMacro: false, // used in middleware, not in reducer
     })
 }
 
 /**
- * Adds the signature to the reply editor
+ * Add a signature (if any) at the end of the content state
  */
-export const addSignature = (args: Map<*,*> = fromJS({})) => (dispatch: dispatchType, getState: getStateType): dispatchType => {
-    const state = getState()
-    const {currentUser} = state
+export const addSignature = (contentState: Object, signature: Object) => (dispatch: dispatchType, getState: getStateType): dispatchType => {
+    const {newMessage} = getState()
+
+    if (newMessage.getIn(['newMessage', 'source', 'type']) !== 'email' ||
+        newMessage.getIn(['newMessage', 'state', 'signatureAdded'], false) === true ||
+        responseUtils.isSignatureAdded(contentState, signature.get('text'))) {
+        return
+    }
 
     return dispatch({
         type: constants.NEW_MESSAGE_ADD_SIGNATURE,
-        args,
-        currentUser,
+        contentState,
+        signature,
     })
 }
 
@@ -288,9 +291,10 @@ export const prepare = (sourceType: string) => (dispatch: dispatchType, getState
         case 'internal-note': {
             // remove signature, if added
             let contentState = selectors.getNewMessageContentState(state)
-            const currentUser = currentUserSelectors.getCurrentUser(state)
-            if(responseUtils.isSignatureAdded(contentState, currentUser)) {
-                contentState = responseUtils.removeSignature(contentState, currentUser)
+            const signature = selectors.getNewMessageSignature(state)
+
+            if (responseUtils.isSignatureAdded(contentState, signature.get('text'))) {
+                contentState = responseUtils.removeSignature(contentState, signature)
             }
 
             // hide macros when switching to internal-note
@@ -355,7 +359,7 @@ export const initializeMessageDraft = () => (dispatch: dispatchType) => {
  * Adds the newMessage to the ticket's messages, attaches actions and sets some source elements on the message.
  * Also sets some properties on the ticket.
  */
-export function prepareTicketDataToSend(dispatch: dispatchType, ticket: Map<*,*>, newMessage: Map<*,*>, status: ?string, actionsForMacro: ?macroActionsType, currentUser: currentUserType): ?{ticket: ticketType, newMessage: newMessageType} {
+export function prepareTicketDataToSend(dispatch: dispatchType, getState: getStateType, ticket: Map<*,*>, newMessage: Map<*,*>, status: ?string, actionsForMacro: ?macroActionsType, currentUser: currentUserType): ?{ticket: ticketType, newMessage: newMessageType} {
     const data = toJS(ticket)
     data.newMessage = toJS(newMessage).newMessage
 
@@ -371,14 +375,22 @@ export function prepareTicketDataToSend(dispatch: dispatchType, ticket: Map<*,*>
         // add signature
         // only on email, if not already added
         if (sourceType === 'email' && !newMessage.getIn(['state', 'signatureAdded'], false)) {
-            const context = responseUtils.addSignature({
-                state: newMessage,
-                contentState: newMessage.getIn(['state', 'contentState']),
-                action: {currentUser},
-            })
+            const state = getState()
+            const contentState = newMessage.getIn(['state', 'contentState'])
+            let signature = selectors.getNewMessageSignature(state)
 
-            const bodyText = context.contentState ? context.contentState.getPlainText() : ''
-            const bodyHtml = context.contentState ? convertToHTML(context.contentState) : ''
+            // TODO(@LouisBarranqueiro): remove this when users switched to email integration signatures
+            if (!signature.get('text')) {
+                signature = fromJS({
+                    text: currentUser.get('signature_text'),
+                    html: currentUser.get('signature_html')
+                })
+            }
+
+            const newContentState = responseUtils.addSignature(contentState, signature)
+            const bodyText = newContentState ? newContentState.getPlainText() : ''
+            const bodyHtml = newContentState ? convertToHTML(newContentState) : ''
+
             if (bodyText) {
                 data.newMessage.body_text = bodyText
             }
@@ -515,7 +527,7 @@ export function submitTicketMessage(status: ?string, macroActions: ?macroActions
 
             messageToSend = retryMessage.get('originalMessage')
         } else {
-            const dataToSend = prepareTicketDataToSend(dispatch, ticket, newMessage, status, macroActions, currentUser)
+            const dataToSend = prepareTicketDataToSend(dispatch, getState, ticket, newMessage, status, macroActions, currentUser)
 
             if (!dataToSend || _isNull(dataToSend)) {
                 return dispatch({
@@ -633,7 +645,7 @@ export function submitTicket(ticket: Map<*,*>, status: ?string, macroActions: ?m
             type: constants.NEW_MESSAGE_SUBMIT_TICKET_START
         })
 
-        const dataToSend = prepareTicketDataToSend(dispatch, ticket, newMessage, status, macroActions, currentUser)
+        const dataToSend = prepareTicketDataToSend(dispatch, getState, ticket, newMessage, status, macroActions, currentUser)
 
         // in case of,
         // error is dispatched by prepareTicketDataToSend

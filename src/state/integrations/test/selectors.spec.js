@@ -1,12 +1,16 @@
 import {
     getIntegrationsState, getIntegrations, getEmailIntegrations, getChannels,
-    getShopifyIntegrationsWithoutChat, getChatIntegrationCampaigns, getChatIntegrationCampaignById
+    getShopifyIntegrationsWithoutChat, getChatIntegrationCampaigns, getChatIntegrationCampaignById, getChannelByTypeAndAddress,
+    getChannelSignature
 } from '../selectors'
 import {integrationsState} from '../../../fixtures/integrations'
 import {fromJS} from 'immutable'
 
 const state = {
     integrations: fromJS(integrationsState),
+    currentUser: fromJS({
+        'first_name': 'Steve'
+    })
 }
 
 describe('integrations selectors', () => {
@@ -30,23 +34,16 @@ describe('integrations selectors', () => {
     })
 
     it('should get channels', () => {
-        const channels = getChannels(state)
-        const expected = getEmailIntegrations(state).map(inte => {
-            let type = inte.get('type')
+        expect(getChannels(state)).toMatchSnapshot()
+    })
 
-            if (inte.get('type') === 'gmail') {
-                type = 'email'
-            }
+    it('should get channel by type and address', () => {
+        expect(getChannelByTypeAndAddress()(state)).toEqual(fromJS({}))
+        expect(getChannelByTypeAndAddress('email', 'support@acme.gorgias.io')(state)).toMatchSnapshot()
+    })
 
-            return fromJS({
-                id: inte.get('id'),
-                type,
-                name: inte.get('name'),
-                address: inte.getIn(['meta', 'address']),
-                preferred: inte.getIn(['meta', 'preferred']),
-            })
-        })
-        expect(channels.equals(expected)).toEqual(true)
+    it('should get channels signature', () => {
+        expect(getChannelSignature('email', 'support@acme.gorgias.io')(state)).toMatchSnapshot()
     })
 
     describe('getShopifyIntegrationsWithoutChat selector', () => {

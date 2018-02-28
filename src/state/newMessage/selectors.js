@@ -5,6 +5,7 @@ import {isImmutable, createImmutableSelector} from '../../utils'
 
 import type {Map} from 'immutable'
 import type {stateType} from '../types'
+import * as integrationsSelectors from '../integrations/selectors'
 
 export const getReceiversProperties = () => ['to', 'cc', 'bcc']
 
@@ -156,3 +157,9 @@ export const isReady = createSelector(
             && (hasRecipients || !isNewMessagePublic)
     }
 )
+
+export const getNewMessageSignature = (state: stateType) => {
+    const sourceType = getNewMessageType(state)
+    const sourceFrom = getNewMessageSourceProperty('from')(state)
+    return integrationsSelectors.getChannelSignature(sourceType, sourceFrom.get('address'))(state)
+}
