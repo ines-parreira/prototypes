@@ -26,7 +26,7 @@ describe('utils', () => {
 
                 const beforeGetDt = moment.utc()
                 const views = utils.recentViewsStorage.get()
-                const now = moment.utc().add(5, 's')
+                const now = moment.utc().add(10, 's')
 
                 expect(Object.keys(views)).toEqual(['1', '2'])
 
