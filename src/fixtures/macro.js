@@ -60,7 +60,7 @@ export const macros = [
         }],
         created_datetime: '2017-08-01T17:56:51.212461+00:00',
         updated_datetime: '2017-08-01T17:56:51.212472+00:00',
-        usage: 0
+        usage: 3
     }, {
         id: 3,
         name: 'Cancel Order',

@@ -13,17 +13,18 @@ const mockStore = configureMockStore(middlewares)
 
 describe('TicketMacros component', () => {
     let store
+    const defaultState = {
+        newMessage: fromJS({
+            newMessage: {
+                source: {
+                    type: 'email'
+                }
+            }
+        })
+    }
 
     beforeEach(() => {
-        store = mockStore({
-            newMessage: fromJS({
-                newMessage: {
-                    source: {
-                        type: 'email'
-                    }
-                }
-            })
-        })
+        store = mockStore(defaultState)
     })
 
     const baseMacros = [{
@@ -43,8 +44,9 @@ describe('TicketMacros component', () => {
     it('should display an empty state if there\'s no macros', () => {
         const component = shallow(
             <TicketMacros
+                macros={fromJS([])}
+                macrosVisible={true}
                 store={store}
-                macros={fromJS({items: [], visible: true})}
                 applyMacro={_noop}
                 openModal={_noop}
                 setMacrosVisible={_noop}
@@ -58,8 +60,9 @@ describe('TicketMacros component', () => {
     it('should display another empty state if there\'s no macros matching the searchQuery', () => {
         const component = shallow(
             <TicketMacros
+                macros={fromJS([])}
+                macrosVisible={true}
                 store={store}
-                macros={fromJS({items: [], visible: true})}
                 applyMacro={_noop}
                 openModal={_noop}
                 setMacrosVisible={_noop}
@@ -74,8 +77,9 @@ describe('TicketMacros component', () => {
     it('should display macros list, and selected macro', () => {
         const component = shallow(
             <TicketMacros
+                macros={fromJS(baseMacros)}
+                macrosVisible={true}
                 store={store}
-                macros={fromJS({items: baseMacros, visible: true})}
                 applyMacro={_noop}
                 openModal={_noop}
                 setMacrosVisible={_noop}

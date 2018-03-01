@@ -15,6 +15,7 @@ import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {notify} from './../../../../../state/notifications/actions'
 import {getPreferences} from './../../../../../state/currentUser/selectors'
 import MacroContainer from '../../../common/macros/MacroContainer'
+import {areMacrosVisible, getMacrosOrderedByUsage} from '../../../../../state/macro/selectors'
 
 const CONTENT_STATE_PATH = ['state', 'contentState']
 
@@ -38,7 +39,7 @@ export class TicketReplyArea extends React.Component {
         this._bindKeys()
 
         // TODO(@xarg): move this closer after the loading of the initial state.
-        search.populate(this.props.macros.get('items'))
+        search.populate(this.props.macros)
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -87,21 +88,21 @@ export class TicketReplyArea extends React.Component {
         // don't toggle macros
         if (
             // if show_macros preference is false
-            !showMacros
-            // macros where already shown
-            || this.state.isMacroDisplayInitialized
-            // cache wasn't added yet
-            || !nextProps.cacheAdded
-            // message is not email
-            || nextProps.newMessageType !== 'email'
-            // editor has text
-            || hasText
-            // editor is focused.
-            // fixes issues caused by the debounced setResponseText,
-            // that causes the contentState to be set with a delay.
-            || editorFocused
-            // or manually changed macro visibility
-            || nextProps.macros.get('visible') !== this.props.macros.get('visible')
+        !showMacros
+        // macros where already shown
+        || this.state.isMacroDisplayInitialized
+        // cache wasn't added yet
+        || !nextProps.cacheAdded
+        // message is not email
+        || nextProps.newMessageType !== 'email'
+        // editor has text
+        || hasText
+        // editor is focused.
+        // fixes issues caused by the debounced setResponseText,
+        // that causes the contentState to be set with a delay.
+        || editorFocused
+        // or manually changed macro visibility
+        || nextProps.macros.get('visible') !== this.props.macros.get('visible')
         ) {
             return
         }
@@ -163,7 +164,7 @@ export class TicketReplyArea extends React.Component {
     }
 
     _getMacros = (props = this.props, state = this.state) => {
-        const macros = props.macros.get('items')
+        const macros = props.macros
         if (state.searchQuery) {
             return state.searchedMacrosIds.map((macroId) =>
                 macros.find((m) =>
@@ -224,15 +225,14 @@ export class TicketReplyArea extends React.Component {
 
         if (e.key === 'Enter') {
             e.preventDefault()
-            const macro = macros.find(macro => macro.get('id') === this.state.selectedMacroId)
+            const macro = macros.find((macro) => macro.get('id') === this.state.selectedMacroId)
             this._applyMacro(macro)
         }
     }
 
     render = () => {
-        const macros = this.props.macros.set('items', this._getMacros())
-
-        const macrosVisible = macros.get('visible')
+        const macros = this._getMacros()
+        const macrosVisible = this.props.macrosVisible
 
         return (
             <div
@@ -242,7 +242,7 @@ export class TicketReplyArea extends React.Component {
             >
                 <div className="TicketReplyArea-search">
                     <Input
-                        ref={macroInput => this.macroInput = macroInput}
+                        ref={(macroInput) => this.macroInput = macroInput}
                         tabIndex="3"
                         onChange={(e) => this._handleSearch(e.target.value)}
                         onKeyDown={this._handleSearchKeyDown}
@@ -254,6 +254,7 @@ export class TicketReplyArea extends React.Component {
                 <div className="TicketReplyArea-content">
                     <TicketMacros
                         macros={macros}
+                        macrosVisible={macrosVisible}
                         applyMacro={this._applyMacro}
                         openModal={this.props.openModal}
                         setMacrosVisible={this._setMacrosVisible}
@@ -286,6 +287,7 @@ TicketReplyArea.propTypes = {
     actions: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
     macros: PropTypes.object.isRequired,
+    macrosVisible: PropTypes.bool.isRequired,
     currentUser: PropTypes.object.isRequired,
     users: PropTypes.object.isRequired,
     applyMacro: PropTypes.func.isRequired,
@@ -299,6 +301,8 @@ TicketReplyArea.propTypes = {
 
 function mapStateToProps(state) {
     return {
+        macros: getMacrosOrderedByUsage(state),
+        macrosVisible: areMacrosVisible(state),
         newMessageType: newMessageSelectors.getNewMessageType(state),
         newMessage: state.newMessage,
         preferences: getPreferences(state),

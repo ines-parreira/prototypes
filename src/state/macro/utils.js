@@ -47,5 +47,3 @@ export function generateDefaultAction(actionType: string): ?Map<*,*> {
 
     return ret
 }
-
-export const orderByName = (macros: Map<*,*>): Map<*,*> => macros.sortBy((m) => m.get('name'))

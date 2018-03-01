@@ -12,12 +12,9 @@ import Tooltip from '../../../../common/components/Tooltip'
 
 import {notify} from './../../../../../state/notifications/actions'
 
-
-@connect((state) => {
-    return {
-        newMessageType: newMessageSelectors.getNewMessageType(state),
-    }
-}, {
+@connect((state) => ({
+    newMessageType: newMessageSelectors.getNewMessageType(state),
+}), {
     notify
 })
 export default class TicketMacros extends React.Component {
@@ -58,10 +55,8 @@ export default class TicketMacros extends React.Component {
     }
 
     render() {
-        const {macros, newMessageType, openModal, searchQuery, setMacrosVisible} = this.props
-        const items = macros.get('items')
-        const macro = items.find((macro) => macro.get('id') === this.props.selectedMacroId) || fromJS({})
-        const macrosVisible = macros.get('visible')
+        const {macros, macrosVisible, newMessageType, openModal, searchQuery, setMacrosVisible} = this.props
+        const macro = macros.find((macro) => macro.get('id') === this.props.selectedMacroId) || fromJS({})
 
         let content = (
             <div
@@ -72,7 +67,7 @@ export default class TicketMacros extends React.Component {
                     className="macro-list"
                     style={{width: '35%'}}
                 >
-                    {items.map(this.renderMacroListItem)}
+                    {macros.map(this.renderMacroListItem)}
                 </div>
                 <div
                     className="macro-preview-container"
@@ -92,14 +87,14 @@ export default class TicketMacros extends React.Component {
             </div>
         )
 
-        if (items.isEmpty()) {
+        if (macros.isEmpty()) {
             content = (
                 <div className="no-result-container">
                     <p>
                         {
                             !!searchQuery ? (
-                                    <span>No macro for <b>{searchQuery}</b></span>
-                                ) : 'You don\'t have any macros yet'
+                                <span>No macro for <b>{searchQuery}</b></span>
+                            ) : 'You don\'t have any macros yet'
                         }
                     </p>
                     <Button
@@ -107,7 +102,7 @@ export default class TicketMacros extends React.Component {
                         color="info"
                         onClick={openModal}
                     >
-                        <i className="fa fa-fw fa-plus mr-2" />
+                        <i className="fa fa-fw fa-plus mr-2"/>
                         Create a new macro
                     </Button>
                 </div>
@@ -122,7 +117,7 @@ export default class TicketMacros extends React.Component {
                             className="clear-macros"
                             onClick={() => setMacrosVisible(false)}
                         >
-                            <i className="fa fa-fw fa-close hidden-sm-down" />
+                            <i className="fa fa-fw fa-close hidden-sm-down"/>
                             <Button
                                 color="secondary"
                                 size="sm"
@@ -148,6 +143,7 @@ export default class TicketMacros extends React.Component {
 
 TicketMacros.propTypes = {
     macros: PropTypes.object.isRequired,
+    macrosVisible: PropTypes.bool.isRequired,
     applyMacro: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
     newMessageType: PropTypes.string.isRequired,
@@ -159,5 +155,6 @@ TicketMacros.propTypes = {
 }
 
 TicketMacros.defaultProps = {
-    macros: fromJS({})
+    macros: fromJS([]),
+    macrosVisible: false,
 }
