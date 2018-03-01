@@ -64,7 +64,7 @@ export default class SetResponseTextAction extends React.Component {
         const variables = getVariables()
 
         return variables.map((category, index) => {
-            if (category.type && !hasIntegrationOfTypes(category.type)) {
+            if (category.integration && !hasIntegrationOfTypes(category.type)) {
                 return null
             }
 
