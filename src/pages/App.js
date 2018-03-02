@@ -9,6 +9,7 @@ import NotificationsSystem from 'reapop'
 import * as utils from '../utils'
 
 import * as layoutActions from '../state/layout/actions'
+import * as activityActions from '../state/activity/actions'
 import * as viewsActions from '../state/views/actions'
 import * as currentAccountActions from '../state/currentAccount/actions'
 import {fetchUser} from '../state/users/actions'
@@ -52,6 +53,7 @@ type Props = {
     fetchUser: typeof fetchUser,
     injectInterceptor: typeof injectInterceptor,
     fetchVisibleViewsCounts: typeof viewsActions.fetchVisibleViewsCounts,
+    pollChats: typeof activityActions.pollChats,
     openPanel: typeof layoutActions.openPanel,
     closePanels: typeof layoutActions.closePanels,
     updateAccountSuccess: typeof currentAccountActions.updateAccountSuccess,
@@ -102,7 +104,7 @@ class App extends React.Component<Props> {
 
         if (isUserActive && !isNextUserActive) {
             // Stop polling when current user becomes inactive
-            pollingManager.stop()
+            pollingManager.pause()
         } else if (!isUserActive && isNextUserActive) {
             // Start polling when current user becomes active
             pollingManager.start()
@@ -208,6 +210,7 @@ export default connect(mapStateToProps, {
     fetchUser,
     injectInterceptor: injectInterceptor,
     fetchVisibleViewsCounts: viewsActions.fetchVisibleViewsCounts,
+    pollChats: activityActions.pollChats,
     openPanel: layoutActions.openPanel,
     closePanels: layoutActions.closePanels,
     updateAccountSuccess: currentAccountActions.updateAccountSuccess,

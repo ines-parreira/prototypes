@@ -2,7 +2,6 @@ import * as ticketActions from '../state/ticket/actions'
 import * as infobarActions from '../state/infobar/actions'
 import * as usersActions from '../state/users/actions'
 import * as viewsActions from '../state/views/actions'
-import * as chatsActions from '../state/chats/actions'
 
 import * as viewsConstants from '../state/views/constants'
 import * as macroConstants from '../state/macro/constants'
@@ -12,9 +11,6 @@ import * as socketConstants from './socketConstants'
 
 import {isCurrentlyOnTicket} from '../utils'
 import {SID_UPDATED} from './socketConstants'
-
-import {store as reduxStore} from '../init'
-import {MAX_RECENT_CHATS} from './chats'
 
 /**
  * Events that can be sent to server via socket
@@ -258,43 +254,6 @@ export const receivedEvents = [{
     name: SID_UPDATED,
     onReceive: function () {
         return this.send(socketConstants.SID_UPDATED)
-    },
-}, {
-    name: socketConstants.TICKET_MESSAGE_CHAT_CREATED,
-    onReceive: function(json) {
-        const ticket = json.data
-        // send browser notifications only for new customer messages
-        const shouldNotify = !ticket.last_message_from_agent
-
-        // mark the chat as read because the agent is viewing the ticket
-        if (isCurrentlyOnTicket(ticket.id)) {
-            this.send(socketConstants.TICKET_VIEWED, ticket.id)
-            ticket.is_unread = false
-        }
-
-        return this.dispatch(chatsActions.addChat(ticket, shouldNotify))
-    }
-}, {
-    name: socketConstants.TICKET_CHAT_UPDATED,
-    onReceive: function(json) {
-        const {currentUser, chats} = reduxStore.getState()
-        const ticket = json.data
-
-        // we fetch new chats in case we didn't fetch them all at the initial load
-        if (chats.get('tickets').size < MAX_RECENT_CHATS) {
-            chatsActions.fetchChatsThrottled(this.dispatch)
-        }
-
-        if (ticket.spam || ticket.trashed_datetime || ticket.deleted_datetime || ticket.status === 'closed') {
-            return this.dispatch(chatsActions.removeChat(ticket.id))
-        }
-
-        // ticket has been assigned to someone else
-        if (ticket.assignee_user_id && ticket.assignee_user_id !== currentUser.get('id')) {
-            return this.dispatch(chatsActions.removeChat(ticket.id))
-        }
-
-        return this.dispatch(chatsActions.addChat(ticket, false))
     }
 }
 ]
