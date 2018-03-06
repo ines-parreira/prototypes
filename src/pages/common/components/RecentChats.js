@@ -8,6 +8,7 @@ import {isCurrentlyOnTicket} from '../../../utils'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 
 import {sourceTypeToIcon} from '../../../config/ticket'
+import {MAX_RECENT_CHATS} from '../../../config/chats'
 
 class RecentChatsItem extends React.Component {
     static propTypes = {
@@ -21,10 +22,8 @@ class RecentChatsItem extends React.Component {
 
     render() {
         const {recentTicket, position} = this.props
-
         const channel = recentTicket.get('channel')
-
-        const text = recentTicket.get('subject')
+        const requesterName = recentTicket.get('requester_name')
 
         // is the current link active or not?
         const isActive = isCurrentlyOnTicket(recentTicket.get('id'))
@@ -44,10 +43,10 @@ class RecentChatsItem extends React.Component {
                 }}
                 to={`/app/ticket/${recentTicket.get('id')}`}
                 className={linkClasses}
-                title={text}
+                title={requesterName}
             >
                 <i className={classnames('uncolored mr-2', sourceTypeToIcon(channel))} />
-                <span>{text}</span>
+                <span>{requesterName}</span>
             </Link>
         )
     }
@@ -55,7 +54,7 @@ class RecentChatsItem extends React.Component {
 
 class RecentChats extends React.Component {
     static propTypes = {
-        activity: PropTypes.object,
+        chats: PropTypes.object,
         router: PropTypes.object,
     }
 
@@ -72,7 +71,7 @@ class RecentChats extends React.Component {
     }
 
     render() {
-        const tickets = this.props.activity.get('tickets')
+        const tickets = this.props.chats.get('tickets')
 
         if (!tickets || tickets.isEmpty()) {
             return null
@@ -95,7 +94,7 @@ class RecentChats extends React.Component {
 
                     <div className="menu">
                         {
-                            tickets.map((e, index) => (
+                            tickets.slice(0, MAX_RECENT_CHATS).map((e, index) => (
                                 <RecentChatsItem
                                     key={e.get('id')}
                                     recentTicket={e}
@@ -111,7 +110,7 @@ class RecentChats extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    activity: state.activity,
+    chats: state.chats,
 })
 
 export default withRouter(connect(mapStateToProps)(RecentChats))
