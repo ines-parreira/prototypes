@@ -336,6 +336,10 @@ export const getVariablesList = (variablesList = VARIABLES) => {
                 object.type = category.type
             }
 
+            if (category.integration) {
+                object.integration = category.integration
+            }
+
             variables.push(object)
         })
     })
