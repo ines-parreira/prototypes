@@ -28,6 +28,16 @@ describe('addSignature', () => {
         expect(newContentState.getPlainText()).toBe('\n\nCruel World!')
     })
 
+    it('should add plain text signature (no html)', () => {
+        const signature = fromJS({
+            text: 'Cruel World!',
+        })
+        const contentState = ContentState.createFromText('')
+        const newContentState = responseUtils.addSignature(contentState, signature)
+
+        expect(newContentState.getPlainText()).toBe('\n\nCruel World!')
+    })
+
     it('should add html signature', () => {
         const signature = fromJS({
             text: 'Cruel World!',

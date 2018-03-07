@@ -30,9 +30,9 @@ class Signature extends React.Component<Props, State> {
     }
 
     _shouldShowBtn = (props) => {
-        const signatureText = props.signature.get('text')
+        const hasSignature = props.signature.get('text') || props.signature.get('html')
 
-        if (!signatureText) {
+        if (!hasSignature) {
             return false
         }
 

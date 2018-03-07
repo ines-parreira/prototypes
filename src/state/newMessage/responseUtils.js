@@ -47,10 +47,10 @@ export const getSignatureContentState = (signature: Map<*,*>): ContentState => {
     const text =  signature.get('text')
     const html =  signature.get('html')
 
-    if (text) {
+    if (html) {
         signatureBlocks = convertFromHTML(`${signatureHTMLPrefix}${html}`).getBlocksAsArray()
     } else if (text) {
-        signatureBlocks = ContentState.createFromText(text).getBlocksAsArray()
+        signatureBlocks = ContentState.createFromText(`${signatureTextPrefix}${text}`).getBlocksAsArray()
     }
 
     if (!signatureBlocks) {
