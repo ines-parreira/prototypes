@@ -12,6 +12,8 @@ import * as newMessageActions from '../../../../state/newMessage/actions'
 import * as ticketActions from '../../../../state/ticket/actions'
 
 import TicketDetailContainer from '../TicketDetailContainer'
+import * as ticketsActions from '../../../../state/tickets/actions'
+import moment from 'moment'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -36,6 +38,13 @@ jest.mock('../../../../state/newMessage/actions', () => {
     }
 })
 
+jest.mock('../../../../state/tickets/actions', () => {
+    const _identity = require('lodash/identity')
+    return {
+        updateCursor: jest.fn(() => _identity),
+    }
+})
+
 jest.mock('../../../../state/ticket/actions', () => {
     const _identity = require('lodash/identity')
 
@@ -49,6 +58,10 @@ jest.mock('../../../../state/ticket/actions', () => {
 })
 
 describe('TicketDetailContainer component', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
     const minProps = {
         store: mockStore({
             ticket: fromJS({
@@ -201,8 +214,43 @@ describe('TicketDetailContainer component', () => {
 
         component.setProps({activeUser})
 
-        expect(newMessageActions.setReceivers).toBeCalledWith({
-            to: [activeUser.set('address', activeUser.get('email')).toJS()]
-        }, true)
+        // wait promise to be resolved
+        setTimeout(() => {
+            expect(newMessageActions.setReceivers).toBeCalledWith({
+                to: [activeUser.set('address', activeUser.get('email')).toJS()]
+            }, true)
+        }, 1)
+    })
+
+    it('should update cursor of the view when the id of the ticket changes', () => {
+        const activeView = fromJS({order_by: 'updated_datetime'})
+        const newTicket = fromJS({id: 9999, updated_datetime: '2018-12-20'})
+        const component = shallow(
+            <TicketDetailContainer
+                {...minProps}
+                params={{userId: '1'}}
+                location={{query: {requester:'1'}}}
+                />
+        ).dive().dive()
+        component.setProps({activeView: activeView})
+        component.setProps({ticket: newTicket})
+
+        expect(ticketsActions.updateCursor).toBeCalledWith(newTicket.get(activeView.get('order_by')))
+    })
+
+    it('should NOT update the cursor of the view when ticket\'s attributes change', () => {
+        const activeView = fromJS({order_by: 'updated_datetime'})
+        const ticket = minProps.store.getState().ticket
+        const component = shallow(
+            <TicketDetailContainer
+                {...minProps}
+                activeView={activeView}
+                params={{userId: '1'}}
+                location={{query: {requester:'1'}}}
+                />
+        ).dive().dive()
+        component.setProps({ticket: ticket.set('updated_datetime', moment())})
+
+        expect(ticketsActions.updateCursor).not.toHaveBeenCalled()
     })
 })

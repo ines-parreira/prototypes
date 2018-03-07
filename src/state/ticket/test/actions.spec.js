@@ -403,7 +403,7 @@ describe('ticket actions', () => {
         })
 
         it('should fetch next ticket and go to the active view because there is no ticket', (done) => {
-            mockServer.onGet('/api/views/1/tickets/1/next').reply(200)
+            mockServer.onPut('/api/views/1/tickets/1/next').reply(200)
             store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {id: 1}})
@@ -418,7 +418,7 @@ describe('ticket actions', () => {
 
         it('should fetch next ticket and go to this ticket', (done) => {
             const ticket = {id: 2, requesterId: 1}
-            mockServer.onGet('/api/views/1/tickets/1/next').reply(200, ticket)
+            mockServer.onPut('/api/views/1/tickets/1/next').reply(200, ticket)
             store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {id: 1}})
@@ -436,7 +436,7 @@ describe('ticket actions', () => {
         })
 
         it('should fetch next ticket and wait for promise to be resolved to go to this ticket', (done) => {
-            mockServer.onGet('/api/views/1/tickets/1/next').reply(200, {id: 2})
+            mockServer.onPut('/api/views/1/tickets/1/next').reply(200, {id: 2})
             store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {id: 1}})
@@ -469,7 +469,7 @@ describe('ticket actions', () => {
         })
 
         it('should fetch previous ticket and go to the active view because there is no ticket', (done) => {
-            mockServer.onGet('/api/views/1/tickets/2/prev').reply(200)
+            mockServer.onPut('/api/views/1/tickets/2/prev').reply(200)
             store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {id: 1}})
@@ -484,7 +484,7 @@ describe('ticket actions', () => {
 
         it('should fetch previous ticket and go to this ticket', (done) => {
             const ticket = {id: 1, requesterId: 1}
-            mockServer.onGet('/api/views/1/tickets/2/prev').reply(200, ticket)
+            mockServer.onPut('/api/views/1/tickets/2/prev').reply(200, ticket)
             store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {id: 1}})
@@ -502,7 +502,7 @@ describe('ticket actions', () => {
         })
 
         it('should fetch previous ticket and wait for promise to be resolved to go to this ticket', (done) => {
-            mockServer.onGet('/api/views/1/tickets/2/prev').reply(200, {id: 1})
+            mockServer.onPut('/api/views/1/tickets/2/prev').reply(200, {id: 1})
             store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {id: 1}})

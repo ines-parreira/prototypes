@@ -14,6 +14,7 @@ import * as TicketActions from '../../../state/ticket/actions'
 import * as MacroActions from '../../../state/macro/actions'
 import * as UserActions from '../../../state/users/actions'
 import * as TagActions from '../../../state/tags/actions'
+import * as ticketsActions from '../../../state/tickets/actions'
 import socketManager from '../../../services/socketManager'
 
 import * as newMessageActions from '../../../state/newMessage/actions'
@@ -51,6 +52,7 @@ import {updateMessageText} from './components/replyarea/TicketReplyEditor'
             views: bindActionCreators(ViewsActions, dispatch),
             newMessage: bindActionCreators(newMessageActions, dispatch),
         },
+        updateActiveViewCursor: bindActionCreators(ticketsActions.updateCursor, dispatch),
         submitTicket: bindActionCreators(newMessageActions.submitTicket, dispatch),
         submitTicketMessage: bindActionCreators(newMessageActions.submitTicketMessage, dispatch),
     }
@@ -68,6 +70,7 @@ export default class TicketDetailContainer extends React.Component {
         actions: PropTypes.object.isRequired,
         submitTicket: PropTypes.func.isRequired,
         submitTicketMessage: PropTypes.func.isRequired,
+        updateActiveViewCursor: PropTypes.func.isRequired,
         activeView: PropTypes.object.isRequired,
         currentUser: PropTypes.object,
         macros: PropTypes.object,
@@ -180,6 +183,13 @@ export default class TicketDetailContainer extends React.Component {
                     to: [receiver.toJS()]
                 }, true)
             })
+        }
+
+        // We update the cursor when we display the ticket for the first time.
+        // If an attribute of the ticket changes, we don't want to update the cursor because
+        // its position in the view has maybe changed.
+        if (nextTicket.get('id') && nextTicket.get('id') !== this.props.ticket.get('id')) {
+            this.props.updateActiveViewCursor(nextTicket.get(this.props.activeView.get('order_by')))
         }
     }
 

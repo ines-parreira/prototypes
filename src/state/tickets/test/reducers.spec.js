@@ -2,6 +2,7 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 
 import {fromJS} from 'immutable'
 
+import * as types from '../constants'
 import reducer, {initialState} from '../reducers'
 import * as viewTypes from '../../views/constants'
 import * as ticketTypes from '../../ticket/constants'
@@ -108,5 +109,14 @@ describe('tickets reducers', () => {
                 }
             )
         ).toMatchSnapshot()
+    })
+
+    it('should update cursor', () => {
+        const action = {
+            type: types.UPDATE_CURSOR,
+            cursor: 'new'
+        }
+        expect(reducer(initialState, action))
+            .toEqualImmutable(initialState.set('cursor', action.cursor))
     })
 })

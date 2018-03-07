@@ -1,17 +1,26 @@
 // @flow
 import * as ticketTypes from '../ticket/constants'
 import * as viewsTypes from '../views/constants'
+import * as types from './constants'
 import {fromJS} from 'immutable'
 
 import type {Map} from 'immutable'
 import type {actionType} from '../types'
 
 export const initialState = fromJS({
+    // The cursor contains the value of an attribute of a ticket used to sort tickets in a view.
+    // E.g: if the current view is ordered by `updated_datetime`,
+    // the value will be the `updated_datetime` of the current ticket.
+    cursor: null,
     items: [],
 })
 
 export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
     switch (action.type) {
+        case types.UPDATE_CURSOR: {
+            return state.set('cursor', action.cursor)
+        }
+
         case viewsTypes.FETCH_LIST_VIEW_SUCCESS: {
             if (action.viewType !== 'ticket-list') {
                 return state

@@ -1,0 +1,1 @@
+export const UPDATE_CURSOR = 'UPDATE_CURSOR'

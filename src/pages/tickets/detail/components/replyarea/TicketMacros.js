@@ -146,12 +146,12 @@ TicketMacros.propTypes = {
     macrosVisible: PropTypes.bool.isRequired,
     applyMacro: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
-    newMessageType: PropTypes.string.isRequired,
+    newMessageType: PropTypes.string,
     setMacrosVisible: PropTypes.func.isRequired,
     searchQuery: PropTypes.string,
     selectedMacroId: PropTypes.number,
     setSelectedMacroId: PropTypes.func.isRequired,
-    notify: PropTypes.func.isRequired
+    notify: PropTypes.func
 }
 
 TicketMacros.defaultProps = {

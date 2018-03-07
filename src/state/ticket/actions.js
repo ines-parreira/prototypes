@@ -27,6 +27,7 @@ import socketManager from '../../services/socketManager'
 import type {dispatchType, getStateType} from '../types'
 import {getCustomerMessages} from './selectors'
 import {markChatAsRead} from '../chats/actions'
+import * as ticketsSelectors from '../tickets/selectors'
 
 export const mergeTicket = (ticket) => (dispatch, getState) => {
     ticket = fromJS(ticket)
@@ -483,6 +484,7 @@ export const fetchTicket = (ticketId) => (dispatch) => {
  *
  * @param {Integer} ticketId - the id of the ticket from which we want the next or the previous ticket
  * @param {String} direction - `next` or `prev` to get the ticket after or before the current ticket
+ * @param {String} cursor - the value of the attribute of the ticket used to sort tickets in the current view
  * @param {String} promise - promise to resolve before displaying the ticket fetched
  * @returns {Promise}
  */
@@ -500,6 +502,7 @@ export const _goToNextOrPrevTicket = (ticketId: number, direction: string, promi
         }
 
         const viewId = viewsSelectors.getActiveView(getState()).get('id')
+        const viewCursor = ticketsSelectors.getCursor(getState())
         const url = `/api/views/${viewId}/tickets/${ticketId}/${direction}`
 
         if (!viewId) {
@@ -509,7 +512,7 @@ export const _goToNextOrPrevTicket = (ticketId: number, direction: string, promi
             })
         }
 
-        return axios.get(url)
+        return axios.put(url, {cursor: viewCursor})
             .then((json = {}) => json.data)
             .then((ticket) => {
                 // wait for the promise to be resolved to go to the ticket

@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tickets actions updateCursor() should update cursor 1`] = `
+Array [
+  Object {
+    "cursor": "new",
+    "type": "UPDATE_CURSOR",
+  },
+]
+`;

@@ -11,3 +11,8 @@ export const getTickets = createImmutableSelector(
     [getTicketsState],
     state => state.get('items') || fromJS([])
 )
+
+export const getCursor = createImmutableSelector(
+    [getTicketsState],
+    state => state.get('cursor', null)
+)
