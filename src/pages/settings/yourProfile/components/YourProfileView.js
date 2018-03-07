@@ -12,12 +12,13 @@ import BooleanField from '../../../common/forms/BooleanField'
 import RichField from '../../../common/forms/RichField'
 import InputField from '../../../common/forms/InputField'
 import Avatar from '../../../common/components/Avatar'
+import FileField from '../../../common/forms/FileField'
 
 const defaultContent = {
     name: '',
     email: '',
     timezone: '',
-    language: '',
+    language: ''
 }
 
 class YourProfileView extends React.Component {
@@ -30,6 +31,10 @@ class YourProfileView extends React.Component {
             loadingPreferences: false,
             preferences: props.preferences.get('data'),
         }, this._getForm(props))
+
+        if (!this.props.currentUser.isEmpty()) {
+            this.isInitialized = true
+        }
     }
 
     componentWillUpdate(nextProps) {
@@ -44,12 +49,25 @@ class YourProfileView extends React.Component {
             return defaultContent
         }
 
-        return _pick(props.currentUser.toJS(), Object.keys(defaultContent))
+        return _merge(
+            _pick(props.currentUser.toJS(), Object.keys(defaultContent)),
+            {
+                profilePictureUrl: props.currentUser.getIn(['meta', 'profile_picture_url'])
+            }
+        )
     }
 
     _handleSubmit = (e) => {
         e.preventDefault()
-        const normalizedValues = _pick(this.state, Object.keys(defaultContent))
+        const normalizedValues = _merge(
+            _pick(this.state, Object.keys(defaultContent)),
+            {
+                meta: {
+                    profile_picture_url: this.state.profilePictureUrl
+                }
+            }
+        )
+
         return this.props.actions.submitUser(normalizedValues, 0)
     }
 
@@ -169,12 +187,23 @@ class YourProfileView extends React.Component {
                                         email={this.state.email}
                                         name={this.state.name}
                                         size="100"
+                                        url={this.state.profilePictureUrl}
                                     />
                                 </div>
 
+                                <br/>
+
+                                <FileField
+                                    returnFiles={false}
+                                    noPreview={true}
+                                    onChange={(data) => this.setState({profilePictureUrl: data})}
+                                    uploadType="profile_picture"
+                                />
+
                                 <FormText color="muted">
-                                    Login to <a href="https://en.gravatar.com/" target="_blank"
-                                    rel="noopener noreferrer">Gravatar</a> to update your profile picture.
+                                    The image must be square and weight less than 500kB.<br/>
+                                    If you don't want to upload your picture here, but have a <a href="https://en.gravatar.com/" target="_blank" rel="noopener noreferrer">Gravatar</a>{' '}
+                                    account, we'll use it.
                                 </FormText>
                             </FormGroup>
                         </Col>

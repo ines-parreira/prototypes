@@ -110,7 +110,7 @@ export const addAttachments = (ticket: Map<*,*>, atts: Array<attachmentType>) =>
     }
 
     return uploadFiles(attachments)
-        .then(resp => {
+        .then((resp) => {
             const state = getState()
             const {ticket: _ticket} = state
 
@@ -122,7 +122,15 @@ export const addAttachments = (ticket: Map<*,*>, atts: Array<attachmentType>) =>
                 type: constants.NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS,
                 resp
             })
-        }, error => {
+        }, (error) => {
+            if (error.response.status === 413) {
+                return dispatch({
+                    type: constants.NEW_MESSAGE_ADD_ATTACHMENT_ERROR,
+                    error,
+                    reason: 'Failed to upload files. One or more files are larger than the size limit of 10MB.'
+                })
+            }
+
             return dispatch({
                 type: constants.NEW_MESSAGE_ADD_ATTACHMENT_ERROR,
                 error,

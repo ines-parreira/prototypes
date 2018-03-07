@@ -851,9 +851,10 @@ export function loadScript(url: string, callback: () => void) {
 /**
  * Upload file action meant to be used by another action
  * @param files
+ * @param type: the type of file we're uploading
  * @return {Array} - [{content_type, name, size, url}]
  */
-export const uploadFiles = (files: Array<attachmentType>): Promise<*> => {
+export const uploadFiles = (files: Array<attachmentType>, type: string = ''): Promise<*> => {
     const formData = new window.FormData()
 
     for (let i = 0; i < files.length; i++) {
@@ -861,7 +862,7 @@ export const uploadFiles = (files: Array<attachmentType>): Promise<*> => {
         formData.append(file.name, file)
     }
 
-    return axios.post('/api/upload/', formData)
+    return axios.post(`/api/upload/${type ? `?type=${type}` : ''}`, formData)
         .then((json = {}) => json.data)
 }
 

@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
 import {Button, Input} from 'reactstrap'
 import _isArray from 'lodash/isArray'
@@ -15,6 +16,7 @@ export class FileField extends InputField {
     static propTypes = Object.assign({
         noPreview: PropTypes.bool.isRequired,
         returnFiles: PropTypes.bool.isRequired,
+        uploadType: PropTypes.string.isRequired,
     }, InputField.propTypes)
 
     static defaultProps = {
@@ -33,6 +35,7 @@ export class FileField extends InputField {
         this.setState({isUploading: true})
 
         const filesArray = Array.from(files)
+
         let isSvg = false
 
         filesArray.forEach((file) => {
@@ -51,7 +54,7 @@ export class FileField extends InputField {
             return
         }
 
-        uploadFiles(files).then((files) => {
+        uploadFiles(files, this.props.uploadType).then((files) => {
             this.setState({isUploading: false})
 
             // if we want to return files, return them otherwise return urls only
@@ -75,6 +78,21 @@ export class FileField extends InputField {
             }
 
             this.props.onChange(result)
+        }, (error) => {
+            this.setState({isUploading: false})
+            let errorMessage = fromJS(error.response).getIn(['data', 'error', 'msg'])
+
+            if (!errorMessage) {
+                errorMessage = error.response.status === 413
+                    ? 'Failed to upload files. One or more files are larger than the size limit of 10MB.'
+                    : 'Failed to upload files. Please try again later.'
+            }
+
+            this.props.notify({
+                type: 'error',
+                status: 'error',
+                message: errorMessage
+            })
         })
     }
 
@@ -90,6 +108,7 @@ export class FileField extends InputField {
             placeholder,
             returnFiles, // eslint-disable-line
             notify, // eslint-disable-line
+            uploadType, // eslint-disable-line
             value,
             ...rest,
         } = this.props

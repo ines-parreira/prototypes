@@ -38,7 +38,7 @@ export default class Avatar extends React.Component<Props, State> {
         }
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this._setImageUrl(this.props)
     }
 
