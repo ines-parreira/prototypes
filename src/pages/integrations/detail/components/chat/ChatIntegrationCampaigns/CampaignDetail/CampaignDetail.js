@@ -248,12 +248,21 @@ export default class CampaignDetail extends React.Component {
         // If there's no author, it means we want to display a random agent as author.
         // If empty, we have to delete the field because, if `author` is present, validation server-side will expect it
         // to have the required fields
-        const message = author
-            ? this.state.message.set('author', fromJS({
+        let message
+        if (author) {
+            message = this.state.message.set('author', fromJS({
                 name: author.get('name'),
                 email: author.get('email')
             }))
-            : this.state.message.delete('author')
+
+            const authorAvatarUrl = author.getIn(['meta', 'profile_picture_url'])
+
+            if (authorAvatarUrl) {
+                message = message.setIn(['author', 'avatar_url'], authorAvatarUrl)
+            }
+        } else {
+            message = this.state.message.delete('author')
+        }
 
         const form = fromJS({
             name: this.state.name,
@@ -281,7 +290,7 @@ export default class CampaignDetail extends React.Component {
             ? this.state.message.set('author', fromJS({
                 name: author.get('name'),
                 email: author.get('email'),
-                avatar_url: GRAVATAR_URL_TEMPLATE.replace('{emailMd5}', md5(author.get('email')))
+                avatar_url: author.getIn(['meta', 'profile_picture_url'], GRAVATAR_URL_TEMPLATE.replace('{emailMd5}', md5(author.get('email'))))
             }))
             : this.state.message.delete('author')
 
