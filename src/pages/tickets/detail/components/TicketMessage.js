@@ -5,6 +5,8 @@ import classnamesBind from 'classnames/bind'
 import {isArray as _isArray} from 'lodash'
 import {Popover, PopoverContent} from 'reactstrap'
 
+import * as infobarActions from './../../../../state/infobar/actions'
+
 import TicketMessageActions from './TicketMessageActions'
 import TicketMessageBody from './TicketMessageBody'
 import TicketAttachments from './replyarea/TicketAttachments'
@@ -19,9 +21,13 @@ import {scrollToReactNode} from '../../../common/utils/keyboard'
 import Tooltip from '../../../common/components/Tooltip'
 
 import css from './TicketMessage.less'
+import {connect} from 'react-redux'
 
 const classnames = classnamesBind.bind(css)
 
+@connect(null, {
+    executeAction: infobarActions.executeAction
+})
 export default class TicketMessage extends React.Component {
     state = {
         infoDropdownOpen: false,
@@ -153,10 +159,17 @@ export default class TicketMessage extends React.Component {
         )
     }
 
+    _toggleHideComment = (shouldHide) => {
+        const {message, executeAction} = this.props
+
+        executeAction(shouldHide ? 'instagramHideComment' : 'instagramUnhideComment',
+            message.integration_id,
+            undefined,
+            {'comment_id': message.message_id})
+    }
+
     renderMeta(message) {
-        let fromWidget = null
-        let viaWidget = null
-        let refWidget = null
+        const widgets = []
 
         if (message.meta && message.meta.current_page) {
             let displayString = message.meta.current_page
@@ -165,7 +178,7 @@ export default class TicketMessage extends React.Component {
                 displayString = `...${displayString.substr(displayString.length - 25)}`
             }
 
-            fromWidget = (
+            widgets.push(
                 <span
                     key="from-widget"
                     className="hidden-sm-down ticket-message-from"
@@ -203,7 +216,7 @@ export default class TicketMessage extends React.Component {
                 link = `https://facebook.com/${messageId}`
             }
 
-            refWidget = (
+            widgets.push(
                 <span
                     key="ref-widget"
                     className="hidden-sm-down ticket-message-from"
@@ -220,7 +233,7 @@ export default class TicketMessage extends React.Component {
         }
 
         if (message.via === 'rule') {
-            viaWidget = (
+            widgets.push(
                 <span
                     key="via-widget"
                     className="hidden-sm-down ticket-message-from"
@@ -230,11 +243,28 @@ export default class TicketMessage extends React.Component {
             )
         }
 
-        return [
-            refWidget,
-            fromWidget,
-            viaWidget
-        ]
+        if (message.source && message.source.type === 'instagram-comment') {
+            let hiddenDatetime = null
+
+            if (message.meta && message.meta.hidden_datetime) {
+                hiddenDatetime = message.meta.hidden_datetime
+            }
+
+            const shouldHide = !hiddenDatetime
+
+            widgets.push(
+                <span
+                    key="hide-widget"
+                    className="hidden-sm-down ticket-message-from"
+                >
+                    <a onClick={() => this._toggleHideComment(shouldHide)}>
+                        {shouldHide ? 'hide comment' : 'unhide comment'}
+                    </a>
+                </span>
+            )
+        }
+
+        return widgets
     }
 
     /**
@@ -390,6 +420,7 @@ TicketMessage.propTypes = {
     lastMessageDatetimeAfterMount: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
     setStatus: PropTypes.func.isRequired,
+    executeAction: PropTypes.func.isRequired,
     isLastReadMessage: PropTypes.bool,
     hasCursor: PropTypes.bool,
 }

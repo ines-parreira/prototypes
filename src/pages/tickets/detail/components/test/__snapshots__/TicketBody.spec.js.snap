@@ -4,7 +4,7 @@ exports[`TicketBody should display events with messages 1`] = `
 <div
   className="TicketMessages"
 >
-  <TicketMessage
+  <Connect(TicketMessage)
     hasCursor={false}
     isLastReadMessage={true}
     lastMessageDatetimeAfterMount={"2017-07-02T02:00:00.000Z"}
@@ -39,7 +39,7 @@ exports[`TicketBody should display messages 1`] = `
 <div
   className="TicketMessages"
 >
-  <TicketMessage
+  <Connect(TicketMessage)
     hasCursor={true}
     isLastReadMessage={true}
     lastMessageDatetimeAfterMount={"2017-07-02T01:00:00.000Z"}
@@ -65,7 +65,7 @@ exports[`TicketBody should not pass \`isLastReadMessage\` for a new message 1`] 
 <div
   className="TicketMessages"
 >
-  <TicketMessage
+  <Connect(TicketMessage)
     hasCursor={true}
     isLastReadMessage={true}
     lastMessageDatetimeAfterMount={"2017-07-02T01:00:00.000Z"}
@@ -91,7 +91,7 @@ exports[`TicketBody should pass \`isLastReadMessage\` only for the last read mes
 <div
   className="TicketMessages"
 >
-  <TicketMessage
+  <Connect(TicketMessage)
     hasCursor={false}
     isLastReadMessage={true}
     lastMessageDatetimeAfterMount={"2017-07-02T03:00:00.000Z"}
@@ -110,7 +110,7 @@ exports[`TicketBody should pass \`isLastReadMessage\` only for the last read mes
     }
     timezone="UTC"
   />
-  <TicketMessage
+  <Connect(TicketMessage)
     hasCursor={false}
     isLastReadMessage={false}
     lastMessageDatetimeAfterMount={"2017-07-02T03:00:00.000Z"}
@@ -129,7 +129,7 @@ exports[`TicketBody should pass \`isLastReadMessage\` only for the last read mes
     }
     timezone="UTC"
   />
-  <TicketMessage
+  <Connect(TicketMessage)
     hasCursor={true}
     isLastReadMessage={false}
     lastMessageDatetimeAfterMount={"2017-07-02T03:00:00.000Z"}
