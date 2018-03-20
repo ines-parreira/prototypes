@@ -9,7 +9,7 @@ import {
     FormGroup,
     Breadcrumb,
     BreadcrumbItem,
-    Button,
+    Button, Container,
 } from 'reactstrap'
 
 import Loader from '../../../../common/components/Loader'
@@ -19,6 +19,7 @@ import BooleanField from '../../../../common/forms/BooleanField'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 
 import css from './FacebookIntegrationSetup.less'
+import PageHeader from '../../../../common/components/PageHeader'
 
 @connect((state) => {
     // Here we only want the DELETED integrations of the current_user
@@ -211,42 +212,46 @@ export default class FacebookIntegrationSetup extends React.Component {
         }
 
         return (
-            <div>
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link to="/app/settings/integrations">Integrations</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        <Link to="/app/settings/integrations/facebook">Facebook</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>
-                        Facebook Pages setup
-                    </BreadcrumbItem>
-                </Breadcrumb>
+            <div className="full-width">
+                <PageHeader title={(
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations">Integrations</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations/facebook">Facebook</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>
+                            Facebook Pages setup
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                )}/>
 
-                <h1>Facebook Pages setup</h1>
-                <p>
-                    One last step: choose the pages you want to manage with Gorgias.<br/>
-                    If you just wanted to update your integrations or your permissions: it's done,{' '}
-                    you can leave this page.
-                </p>
+                <Container fluid className="page-container">
+                    <h1>Facebook Pages setup</h1>
+                    <p>
+                        One last step: choose the pages you want to manage with Gorgias.<br/>
+                        If you just wanted to update your integrations or your permissions: it's done,{' '}
+                        you can leave this page.
+                    </p>
 
 
-                <Form onSubmit={this._handleSubmit}>
-                    {this._renderPages()}
+                    <Form onSubmit={this._handleSubmit}>
+                        {this._renderPages()}
 
-                    <div className="mt-3">
-                        <Button
-                            type="submit"
-                            color="success"
-                            className={classNames({
-                                'btn-loading': loading.get('updateIntegration'),
-                            })}
-                        >
-                            Add Pages
-                        </Button>
-                    </div>
-                </Form>
+                        <div className="mt-3">
+                            <Button
+                                type="submit"
+                                color="success"
+                                className={classNames({
+                                    'btn-loading': loading.get('updateIntegration'),
+                                })}
+                            >
+                                Add Pages
+                            </Button>
+                        </div>
+                    </Form>
+                </Container>
             </div>
         )
     }
