@@ -349,7 +349,7 @@ export default class TicketMessage extends React.Component {
                         size="36"
                     />
                 </div>
-                <div className="flex-grow">
+                <div className={css.body}>
                     {
                         !loading && error && this._renderActionFailed()
                     }
