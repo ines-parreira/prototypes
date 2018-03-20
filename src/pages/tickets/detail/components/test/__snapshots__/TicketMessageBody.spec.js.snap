@@ -197,17 +197,18 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
           }
           slidesToShow="3"
         >
-          <Component
+          <InnerSlider
             accessibility={true}
             adaptiveHeight={false}
             afterChange={null}
+            appendDots={[Function]}
             arrows={true}
             autoplay={false}
             autoplaySpeed={3000}
             beforeChange={null}
             centerMode={false}
             centerPadding="50px"
-            className=""
+            className=" unslicked"
             cssEase="ease"
             customPaging={[Function]}
             dots={false}
@@ -244,63 +245,28 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
             rtl={false}
             slide="div"
             slidesToScroll={1}
-            slidesToShow="3"
+            slidesToShow={1}
             speed={500}
             swipe={true}
             swipeEvent={null}
             swipeToSlide={false}
             touchMove={true}
             touchThreshold={5}
+            unslick={true}
             useCSS={true}
             variableWidth={false}
             vertical={false}
             waitForAnimate={true}
           >
             <div
-              className="slick-initialized slick-slider"
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              onMouseOver={[Function]}
+              className="slick-initialized slick-slider  unslicked"
             >
-              <PrevArrow
-                centerMode={false}
-                clickHandler={[Function]}
-                currentSlide={0}
-                infinite={false}
-                nextArrow={null}
-                prevArrow={null}
-                slideCount={1}
-                slidesToShow="3"
-              >
-                <button
-                  className="slick-arrow slick-prev slick-disabled"
-                  data-role="none"
-                  onClick={null}
-                  style={
-                    Object {
-                      "display": "block",
-                    }
-                  }
-                  type="button"
-                >
-                   Previous
-                </button>
-              </PrevArrow>
               <div
                 className="slick-list"
-                onKeyDown={[Function]}
-                onMouseDown={[Function]}
-                onMouseLeave={null}
-                onMouseMove={null}
-                onMouseUp={[Function]}
-                onTouchCancel={null}
-                onTouchEnd={[Function]}
-                onTouchMove={null}
-                onTouchStart={[Function]}
-                style={Object {}}
               >
                 <Track
                   centerMode={false}
+                  centerPadding="50px"
                   cssEase="ease"
                   currentSlide={0}
                   fade={false}
@@ -308,11 +274,13 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
                   infinite={false}
                   lazyLoad={false}
                   lazyLoadedList={Array []}
+                  listHeight={0}
                   rtl={false}
                   slideCount={1}
+                  slideHeight={0}
                   slideWidth={0}
                   slidesToScroll={1}
-                  slidesToShow="3"
+                  slidesToShow={1}
                   speed={500}
                   trackStyle={
                     Object {
@@ -324,7 +292,9 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
                       "transition": "",
                     }
                   }
+                  unslick={true}
                   variableWidth={false}
+                  vertical={false}
                 >
                   <div
                     className="slick-track"
@@ -340,7 +310,7 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
                     }
                   >
                     <div
-                      className="slick-slide slick-active carouselCardContainer"
+                      className="slick-slide slick-active slick-current carouselCardContainer"
                       data-index={0}
                       onClick={[Function]}
                       style={
@@ -458,32 +428,8 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
                   </div>
                 </Track>
               </div>
-              <NextArrow
-                centerMode={false}
-                clickHandler={[Function]}
-                currentSlide={0}
-                infinite={false}
-                nextArrow={null}
-                prevArrow={null}
-                slideCount={1}
-                slidesToShow="3"
-              >
-                <button
-                  className="slick-arrow slick-next slick-disabled"
-                  data-role="none"
-                  onClick={null}
-                  style={
-                    Object {
-                      "display": "block",
-                    }
-                  }
-                  type="button"
-                >
-                   Next
-                </button>
-              </NextArrow>
             </div>
-          </Component>
+          </InnerSlider>
         </Slider>
       </div>
     </FacebookCarousel>
