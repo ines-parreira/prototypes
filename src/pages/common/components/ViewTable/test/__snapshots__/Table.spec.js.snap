@@ -3,12 +3,12 @@
 exports[`ViewTable::Table default view 1`] = `
 <div>
   <table
-    className="main-table view-table"
+    className="table view-table"
   >
     <thead>
       <tr>
         <td
-          className="cell-wrapper cell-short clickable hidden-sm-down"
+          className="cell-wrapper cell-short clickable d-none d-md-table-cell"
           onClick={[Function]}
         >
           <input
@@ -717,6 +717,7 @@ exports[`ViewTable::Table default view 1`] = `
     </tbody>
   </table>
   <Pagination
+    className="pagination pagination-transparent"
     currentPage={1}
     onChange={[Function]}
     pageCount={1}
@@ -728,6 +729,7 @@ exports[`ViewTable::Table default view with no items 1`] = `
 <div>
   <Connect(BlankStateContainer) />
   <Pagination
+    className="pagination pagination-transparent"
     currentPage={1}
     onChange={[Function]}
     pageCount={1}
@@ -738,12 +740,12 @@ exports[`ViewTable::Table default view with no items 1`] = `
 exports[`ViewTable::Table empty view 1`] = `
 <div>
   <table
-    className="main-table view-table"
+    className="table view-table"
   >
     <thead>
       <tr>
         <td
-          className="cell-wrapper cell-short clickable hidden-sm-down"
+          className="cell-wrapper cell-short clickable d-none d-md-table-cell"
           onClick={[Function]}
         >
           <input
@@ -1324,6 +1326,7 @@ exports[`ViewTable::Table empty view 1`] = `
     </tbody>
   </table>
   <Pagination
+    className="pagination pagination-transparent"
     currentPage={1}
     onChange={[Function]}
     pageCount={1}
@@ -1349,6 +1352,7 @@ exports[`ViewTable::Table modified view with no items 1`] = `
     }
   />
   <Pagination
+    className="pagination pagination-transparent"
     currentPage={1}
     onChange={[Function]}
     pageCount={1}

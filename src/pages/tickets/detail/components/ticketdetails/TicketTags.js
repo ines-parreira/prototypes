@@ -1,14 +1,17 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
-import classnames from 'classnames'
 import {fromJS} from 'immutable'
-import {ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input} from 'reactstrap'
+import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Input} from 'reactstrap'
 import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
 
 import shortcutManager from '../../../../../services/shortcutManager'
 import {TagLabel} from '../../../../common/utils/labels'
 import {fieldEnumSearch} from '../../../../../state/views/actions'
+
+import headerCss from '../TicketHeader.less'
+import css from './TicketTags.less'
+import classnames from 'classnames'
 
 export class TicketTags extends React.Component {
     state = {
@@ -37,7 +40,7 @@ export class TicketTags extends React.Component {
             },
             CLOSE_TAGS: {
                 key: 'esc',
-                action: () => this._toggle(false)
+                action: () => this._toggle(null, false)
             }
         })
     }
@@ -51,7 +54,7 @@ export class TicketTags extends React.Component {
         this.setState({search: ''})
     }
 
-    _toggle = (visible) => {
+    _toggle = (e, visible) => {
         const opens = !_isUndefined(visible) ? visible : !this.state.dropdownOpen
 
         this.setState({
@@ -144,10 +147,9 @@ export class TicketTags extends React.Component {
     }
 
     render() {
-        const {ticketTags, removeTag} = this.props
-
+        const {ticketTags, removeTag, transparent} = this.props
         return (
-            <div className="d-inline-flex align-items-center flex-wrap hidden-sm-down">
+            <div className="d-none d-md-inline-flex align-items-center flex-wrap ml-2">
                 {
                     ticketTags
                         .sort((a, b) => a.get('name').toLowerCase() > b.get('name').toLowerCase() ? 1 : -1)
@@ -159,39 +161,48 @@ export class TicketTags extends React.Component {
                                 <span>
                                     {tag.get('name')}
                                     <i
-                                        className="fa fa-fw fa-close cursor-pointer ml-1"
+                                        className="material-icons cursor-pointer ml-1"
                                         onClick={() => removeTag(tag.get('name'))}
-                                    />
+                                    >
+                                        close
+                                    </i>
                                 </span>
                             </TagLabel>
                         ))
                 }
 
-                <ButtonDropdown
-                    className={classnames({
-                        'ml-1': !ticketTags.isEmpty(),
-                    })}
+                <Dropdown
+                    className={css.addTags}
                     isOpen={this.state.dropdownOpen}
                     toggle={this._toggle}
+                    group={false}
                 >
                     <DropdownToggle
-                        className="d-inline-flex align-items-center p-0"
-                        color="link"
+                        color="secondary"
                         type="button"
+                        className={classnames(headerCss.headerButton, {
+                            'btn-transparent': transparent
+                        })}
                     >
-                        <i className="fa fa-fw fa-plus" />
+                        <i className="material-icons md-1">
+                            add
+                        </i>
                         {
                             !ticketTags.size && (
-                                <span className="ml-1">Add tag</span>
+                                <strong className="align-middle">add tags</strong>
                             )
                         }
                     </DropdownToggle>
-                    <DropdownMenu style={{width: '230px'}}>
+                    <DropdownMenu className={css.dropdown}>
+                        <DropdownItem
+                            header
+                        >
+                            ADD TAG:
+                        </DropdownItem>
                         <DropdownItem
                             header
                             className="dropdown-item-input"
                         >
-                            <div className="mb-2">Add tag:</div>
                             {
                                 this.state.dropdownOpen && ( // rebuild input on each opening so "autoFocus" works
                                     <Input
@@ -206,7 +217,7 @@ export class TicketTags extends React.Component {
                         <DropdownItem divider />
                         {this._displayMenu()}
                     </DropdownMenu>
-                </ButtonDropdown>
+                </Dropdown>
             </div>
         )
     }
@@ -217,6 +228,11 @@ TicketTags.propTypes = {
     addTags: PropTypes.func.isRequired,
     removeTag: PropTypes.func.isRequired,
     fieldEnumSearch: PropTypes.func.isRequired,
+    transparent: PropTypes.bool
+}
+
+TicketTags.defaultProps = {
+    transparent: false
 }
 
 const mapDispatchToProps = {

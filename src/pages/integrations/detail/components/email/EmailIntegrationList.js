@@ -33,7 +33,7 @@ export default class EmailIntegrationList extends React.Component {
 
             const isForwardingOn = int.getIn(['meta', 'is_forwarding_on'])
 
-            const editLink = `/app/integrations/email/${int.get('id')}`
+            const editLink = `/app/settings/integrations/email/${int.get('id')}`
 
             return (
                 <tr key={int.get('id')}>
@@ -110,7 +110,7 @@ export default class EmailIntegrationList extends React.Component {
                 integrationType="email"
                 integrations={getIntegrationsByTypes(integrations, ['email', 'gmail'])}
                 longTypeDescription={longTypeDescription}
-                createIntegration={() => browserHistory.push('/app/integrations/email/new')}
+                createIntegration={() => browserHistory.push('/app/settings/integrations/email/new')}
                 createIntegrationButtonText="Add email address"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}

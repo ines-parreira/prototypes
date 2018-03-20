@@ -2,11 +2,14 @@ import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import _get from 'lodash/get'
 import {Button} from 'reactstrap'
+import classnames from 'classnames'
 
 import {getActionTemplate} from '../../../../utils'
 import Modal from '../../../common/components/Modal'
 import {JSONTree} from './../../../common/components/JSONTree'
 import {JSON_CONTENT_TYPE, FORM_CONTENT_TYPE} from './../../../../config'
+
+import css from './TicketMessageActions.less'
 
 export default class TicketMessageActions extends React.Component {
     constructor(props) {
@@ -50,7 +53,7 @@ export default class TicketMessageActions extends React.Component {
                 }
                 {
                     !!action.arguments.form && contentType === FORM_CONTENT_TYPE && (
-                        <div className="ticket-message-actions-params-block">
+                        <div className="mt-3">
                             <h3>Form Data</h3>
                             {
                                 Object.keys(action.arguments.form).map((arg, idx) => (
@@ -62,7 +65,7 @@ export default class TicketMessageActions extends React.Component {
                 }
                 {
                     !!action.arguments.json && contentType === JSON_CONTENT_TYPE && (
-                        <div className="ticket-message-actions-params-block">
+                        <div className="mt-3">
                             <h3>JSON Data</h3>
                             <JSONTree data={fromJS(action.arguments.json)} />
                         </div>
@@ -70,10 +73,10 @@ export default class TicketMessageActions extends React.Component {
                 }
                 {
                     !!action.response && (
-                        <div className="ticket-message-actions-params-block">
+                        <div className="mt-3">
                             <h2>Response</h2>
                             <p>Status code: <b>{action.response.status_code}</b></p>
-                            <div className="ticket-message-actions-response-body">
+                            <div className={css.body}>
                                 <b>Body</b>:
                                 <pre>
                                     <code>
@@ -102,7 +105,7 @@ export default class TicketMessageActions extends React.Component {
         }
 
         return (
-            <div className="ticket-message-actions">
+            <div className={classnames(css.component, 'mt-3')}>
                 {
                     backActions.map((action, index) => {
                         let color = 'success'
@@ -124,7 +127,7 @@ export default class TicketMessageActions extends React.Component {
                         return (
                             <div
                                 key={`message-actions-${index}`}
-                                className="ticket-message-actions-item"
+                                className="d-inline-block mr-1"
                             >
                                 <Button
                                     type="button"

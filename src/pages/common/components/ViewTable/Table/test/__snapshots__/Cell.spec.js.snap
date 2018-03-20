@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ViewTable::Table::Cell default cell 1`] = `
-<td>
+<td
+  className="limit-overflow"
+>
   <Link
     onlyActiveOnIndex={false}
     style={Object {}}

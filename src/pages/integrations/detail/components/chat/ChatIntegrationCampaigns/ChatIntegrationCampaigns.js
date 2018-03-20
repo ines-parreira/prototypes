@@ -4,11 +4,13 @@ import {fromJS} from 'immutable'
 
 import moment from 'moment'
 
-import {Breadcrumb, BreadcrumbItem, Button, Table} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Button, Container, Table} from 'reactstrap'
 import ToggleButton from '../../../../../common/components/ToggleButton'
 import {connect} from 'react-redux'
 
 import * as campaignActions from '../../../../../../state/campaigns/actions'
+import PageHeader from '../../../../../common/components/PageHeader'
+import RealtimeMessagingIntegrationNavigation from '../../../../common/RealtimeMessagingIntegrationNavigation'
 
 @connect(null, {
     updateCampaign: campaignActions.updateCampaign
@@ -38,83 +40,81 @@ export default class ChatIntegrationCampaigns extends React.Component {
         const campaigns = integration.getIn(['meta', 'campaigns']) || fromJS([])
 
         return (
-             <div>
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link to="/app/integrations">Integrations</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        <Link to={`/app/integrations/${integration.get('type')}`}>
-                            Chat
-                        </Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        <Link to={`/app/integrations/${integration.get('type')}/${integration.get('id')}`}>
+            <div className="full-width">
+                <PageHeader title={(
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations">Integrations</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            <Link to={`/app/settings/integrations/${integration.get('type')}`}>
+                                Chat
+                            </Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
                             {integration.get('name')}
-                        </Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>
-                        Campaigns
-                    </BreadcrumbItem>
-                </Breadcrumb>
-
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                    <h1 className="mb-4">
-                        Campaigns
-                    </h1>
-
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>
+                            Campaigns
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                )}>
                     <Button
                         tag={Link}
-                        color="primary"
-                        to={`/app/integrations/${integration.get('type')}/${integration.get('id')}/campaigns/new`}
+                        color="success"
+                        to={`/app/settings/integrations/${integration.get('type')}/${integration.get('id')}/campaigns/new`}
                     >
                         Create campaign
                     </Button>
-                </div>
+                </PageHeader>
 
-                 <p>Use campaigns to prompt visitors of your website to start chatting with your team.</p>
+                <RealtimeMessagingIntegrationNavigation integration={integration}/>
 
-                 {
-                     !campaigns.isEmpty() && (
-                        <Table
-                            className="mt-3"
-                            hover
-                        >
-                            <tbody>
-                             {
-                                campaigns.map((campaign) => {
-                                    const editLink = `/app/integrations/${integration.get('type')}/${integration.get('id')}/campaigns/${campaign.get('id')}`
+                <Container fluid className="page-container">
+                    <p>Use campaigns to prompt visitors of your website to start chatting with your team.</p>
 
-                                    return (
-                                        <tr key={campaign.get('id')}>
-                                            <td className="link-full-td">
-                                                <Link to={editLink}>
-                                                    <div>
-                                                        <b>{campaign.get('name')}</b>
-                                                    </div>
-                                                </Link>
-                                            </td>
-                                            <td className="smallest align-middle">
-                                                <ToggleButton
-                                                    value={!campaign.get('deactivated_datetime')}
-                                                    onChange={() => this.toggleCampaign(campaign)}
-                                                />
-                                            </td>
-                                        </tr>
-                                    )
-                                })
-                             }
-                            </tbody>
-                         </Table>
-                     )
-                 }
+                    {
+                        !campaigns.isEmpty() && (
+                            <Table
+                                className="mt-3"
+                                hover
+                            >
+                                <tbody>
+                                {
+                                    campaigns.map((campaign) => {
+                                        const editLink = `/app/settings/integrations/${integration.get('type')}/${integration.get('id')}/campaigns/${campaign.get('id')}`
 
-                 {
-                     campaigns.isEmpty() && (
-                         <div>This integration doesn't have any campaigns yet.</div>
-                     )
-                 }
-             </div>
+                                        return (
+                                            <tr key={campaign.get('id')}>
+                                                <td className="link-full-td">
+                                                    <Link to={editLink}>
+                                                        <div>
+                                                            <b>{campaign.get('name')}</b>
+                                                        </div>
+                                                    </Link>
+                                                </td>
+                                                <td className="smallest align-middle">
+                                                    <ToggleButton
+                                                        value={!campaign.get('deactivated_datetime')}
+                                                        onChange={() => this.toggleCampaign(campaign)}
+                                                    />
+                                                </td>
+                                            </tr>
+                                        )
+                                    })
+                                }
+                                </tbody>
+                            </Table>
+                        )
+                    }
+
+                    {
+                        campaigns.isEmpty() && (
+                            <div>This integration doesn't have any campaigns yet.</div>
+                        )
+                    }
+                </Container>
+            </div>
         )
     }
 }

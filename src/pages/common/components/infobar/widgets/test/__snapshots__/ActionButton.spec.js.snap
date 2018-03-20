@@ -2,7 +2,7 @@
 
 exports[`ActionButton component should display a single option with a checkbox parameter 1`] = `
 <Button
-  className="action-button"
+  className="button action-button"
   color="secondary"
   disabled={false}
   id="initialActionId"
@@ -17,8 +17,15 @@ exports[`ActionButton component should display a single option with a checkbox p
     Little action
   </div>
   <Popover
+    delay={
+      Object {
+        "hide": 0,
+        "show": 0,
+      }
+    }
     isOpen={false}
     placement="bottom"
+    placementPrefix="bs-popover"
     target="initialActionId"
     tether={
       Object {
@@ -38,7 +45,7 @@ exports[`ActionButton component should display a single option with a checkbox p
     }
     toggle={[Function]}
   >
-    <PopoverTitle
+    <PopoverHeader
       tag="h3"
     >
       <div>
@@ -47,11 +54,13 @@ exports[`ActionButton component should display a single option with a checkbox p
         />
         Execute my little action
       </div>
-    </PopoverTitle>
-    <PopoverContent
+    </PopoverHeader>
+    <PopoverBody
       tag="div"
     >
-      <p>
+      <p
+        className="tooltip"
+      >
         This action is little, but it is powerful.
       </p>
       <Form
@@ -59,6 +68,7 @@ exports[`ActionButton component should display a single option with a checkbox p
         tag="form"
       >
         <BooleanField
+          className="mb-2"
           label="Execute the action for real"
           name="param"
           onChange={[Function]}
@@ -72,14 +82,14 @@ exports[`ActionButton component should display a single option with a checkbox p
           Confirm
         </Button>
       </Form>
-    </PopoverContent>
+    </PopoverBody>
   </Popover>
 </Button>
 `;
 
 exports[`ActionButton component should display a single option with a number parameter 1`] = `
 <Button
-  className="action-button"
+  className="button action-button"
   color="secondary"
   disabled={false}
   id="initialActionId"
@@ -94,8 +104,15 @@ exports[`ActionButton component should display a single option with a number par
     Little action
   </div>
   <Popover
+    delay={
+      Object {
+        "hide": 0,
+        "show": 0,
+      }
+    }
     isOpen={false}
     placement="bottom"
+    placementPrefix="bs-popover"
     target="initialActionId"
     tether={
       Object {
@@ -115,7 +132,7 @@ exports[`ActionButton component should display a single option with a number par
     }
     toggle={[Function]}
   >
-    <PopoverTitle
+    <PopoverHeader
       tag="h3"
     >
       <div>
@@ -124,11 +141,13 @@ exports[`ActionButton component should display a single option with a number par
         />
         Execute my little action
       </div>
-    </PopoverTitle>
-    <PopoverContent
+    </PopoverHeader>
+    <PopoverBody
       tag="div"
     >
-      <p>
+      <p
+        className="tooltip"
+      >
         This action is little, but it is powerful.
       </p>
       <Form
@@ -136,6 +155,7 @@ exports[`ActionButton component should display a single option with a number par
         tag="form"
       >
         <InputField
+          className="mb-2"
           max={9}
           min={2}
           name="param"
@@ -153,14 +173,14 @@ exports[`ActionButton component should display a single option with a number par
           Confirm
         </Button>
       </Form>
-    </PopoverContent>
+    </PopoverBody>
   </Popover>
 </Button>
 `;
 
 exports[`ActionButton component should display a single option with a text parameter 1`] = `
 <Button
-  className="action-button"
+  className="button action-button"
   color="secondary"
   disabled={false}
   id="initialActionId"
@@ -175,8 +195,15 @@ exports[`ActionButton component should display a single option with a text param
     Little action
   </div>
   <Popover
+    delay={
+      Object {
+        "hide": 0,
+        "show": 0,
+      }
+    }
     isOpen={false}
     placement="bottom"
+    placementPrefix="bs-popover"
     target="initialActionId"
     tether={
       Object {
@@ -196,7 +223,7 @@ exports[`ActionButton component should display a single option with a text param
     }
     toggle={[Function]}
   >
-    <PopoverTitle
+    <PopoverHeader
       tag="h3"
     >
       <div>
@@ -205,11 +232,13 @@ exports[`ActionButton component should display a single option with a text param
         />
         Execute my little action
       </div>
-    </PopoverTitle>
-    <PopoverContent
+    </PopoverHeader>
+    <PopoverBody
       tag="div"
     >
-      <p>
+      <p
+        className="tooltip"
+      >
         This action is little, but it is powerful.
       </p>
       <Form
@@ -217,6 +246,7 @@ exports[`ActionButton component should display a single option with a text param
         tag="form"
       >
         <InputField
+          className="mb-2"
           name="param"
           onChange={[Function]}
           placeholder="Just a param"
@@ -231,14 +261,14 @@ exports[`ActionButton component should display a single option with a text param
           Confirm
         </Button>
       </Form>
-    </PopoverContent>
+    </PopoverBody>
   </Popover>
 </Button>
 `;
 
 exports[`ActionButton component should display a single option with no parameters 1`] = `
 <Button
-  className="action-button"
+  className="button action-button"
   color="secondary"
   disabled={false}
   id="initialActionId"
@@ -253,8 +283,15 @@ exports[`ActionButton component should display a single option with no parameter
     Little action
   </div>
   <Popover
+    delay={
+      Object {
+        "hide": 0,
+        "show": 0,
+      }
+    }
     isOpen={false}
     placement="bottom"
+    placementPrefix="bs-popover"
     target="initialActionId"
     tether={
       Object {
@@ -274,7 +311,7 @@ exports[`ActionButton component should display a single option with no parameter
     }
     toggle={[Function]}
   >
-    <PopoverTitle
+    <PopoverHeader
       tag="h3"
     >
       <div>
@@ -283,11 +320,13 @@ exports[`ActionButton component should display a single option with no parameter
         />
         Execute my little action
       </div>
-    </PopoverTitle>
-    <PopoverContent
+    </PopoverHeader>
+    <PopoverBody
       tag="div"
     >
-      <p>
+      <p
+        className="tooltip"
+      >
         This action is little, but it is powerful.
       </p>
       <Form
@@ -302,14 +341,14 @@ exports[`ActionButton component should display a single option with no parameter
           Confirm
         </Button>
       </Form>
-    </PopoverContent>
+    </PopoverBody>
   </Popover>
 </Button>
 `;
 
 exports[`ActionButton component should display multiple options with a common parameter 1`] = `
 <Button
-  className="action-button"
+  className="button action-button"
   color="secondary"
   disabled={false}
   id="initialActionId"
@@ -324,8 +363,15 @@ exports[`ActionButton component should display multiple options with a common pa
     Little action
   </div>
   <Popover
+    delay={
+      Object {
+        "hide": 0,
+        "show": 0,
+      }
+    }
     isOpen={false}
     placement="bottom"
+    placementPrefix="bs-popover"
     target="initialActionId"
     tether={
       Object {
@@ -345,7 +391,7 @@ exports[`ActionButton component should display multiple options with a common pa
     }
     toggle={[Function]}
   >
-    <PopoverTitle
+    <PopoverHeader
       tag="h3"
     >
       <div>
@@ -354,11 +400,13 @@ exports[`ActionButton component should display multiple options with a common pa
         />
         Execute my little action
       </div>
-    </PopoverTitle>
-    <PopoverContent
+    </PopoverHeader>
+    <PopoverBody
       tag="div"
     >
-      <p>
+      <p
+        className="tooltip"
+      >
         This action is little, but it is powerful.
       </p>
       <Form
@@ -367,6 +415,15 @@ exports[`ActionButton component should display multiple options with a common pa
       >
         <Label
           tag="label"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
         >
           Type
         </Label>
@@ -413,6 +470,7 @@ exports[`ActionButton component should display multiple options with a common pa
           value=""
         />
         <InputField
+          className="mb-2"
           name="param"
           onChange={[Function]}
           placeholder="Just a param"
@@ -427,14 +485,14 @@ exports[`ActionButton component should display multiple options with a common pa
           Confirm
         </Button>
       </Form>
-    </PopoverContent>
+    </PopoverBody>
   </Popover>
 </Button>
 `;
 
 exports[`ActionButton component should display multiple options with different parameter 1`] = `
 <Button
-  className="action-button"
+  className="button action-button"
   color="secondary"
   disabled={false}
   id="initialActionId"
@@ -449,8 +507,15 @@ exports[`ActionButton component should display multiple options with different p
     Little action
   </div>
   <Popover
+    delay={
+      Object {
+        "hide": 0,
+        "show": 0,
+      }
+    }
     isOpen={false}
     placement="bottom"
+    placementPrefix="bs-popover"
     target="initialActionId"
     tether={
       Object {
@@ -470,7 +535,7 @@ exports[`ActionButton component should display multiple options with different p
     }
     toggle={[Function]}
   >
-    <PopoverTitle
+    <PopoverHeader
       tag="h3"
     >
       <div>
@@ -479,11 +544,13 @@ exports[`ActionButton component should display multiple options with different p
         />
         Execute my little action
       </div>
-    </PopoverTitle>
-    <PopoverContent
+    </PopoverHeader>
+    <PopoverBody
       tag="div"
     >
-      <p>
+      <p
+        className="tooltip"
+      >
         This action is little, but it is powerful.
       </p>
       <Form
@@ -492,6 +559,15 @@ exports[`ActionButton component should display multiple options with different p
       >
         <Label
           tag="label"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
         >
           Type
         </Label>
@@ -537,6 +613,7 @@ exports[`ActionButton component should display multiple options with different p
           value=""
         />
         <InputField
+          className="mb-2"
           name="param"
           onChange={[Function]}
           placeholder="Just a param"
@@ -551,14 +628,14 @@ exports[`ActionButton component should display multiple options with different p
           Confirm
         </Button>
       </Form>
-    </PopoverContent>
+    </PopoverBody>
   </Popover>
 </Button>
 `;
 
 exports[`ActionButton component should display multiple options without parameters 1`] = `
 <Button
-  className="action-button"
+  className="button action-button"
   color="secondary"
   disabled={false}
   id="initialActionId"
@@ -573,8 +650,15 @@ exports[`ActionButton component should display multiple options without paramete
     Little action
   </div>
   <Popover
+    delay={
+      Object {
+        "hide": 0,
+        "show": 0,
+      }
+    }
     isOpen={false}
     placement="bottom"
+    placementPrefix="bs-popover"
     target="initialActionId"
     tether={
       Object {
@@ -594,7 +678,7 @@ exports[`ActionButton component should display multiple options without paramete
     }
     toggle={[Function]}
   >
-    <PopoverTitle
+    <PopoverHeader
       tag="h3"
     >
       <div>
@@ -603,11 +687,13 @@ exports[`ActionButton component should display multiple options without paramete
         />
         Execute my little action
       </div>
-    </PopoverTitle>
-    <PopoverContent
+    </PopoverHeader>
+    <PopoverBody
       tag="div"
     >
-      <p>
+      <p
+        className="tooltip"
+      >
         This action is little, but it is powerful.
       </p>
       <Form
@@ -616,6 +702,15 @@ exports[`ActionButton component should display multiple options without paramete
       >
         <Label
           tag="label"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
         >
           Type
         </Label>
@@ -651,7 +746,7 @@ exports[`ActionButton component should display multiple options without paramete
           Confirm
         </Button>
       </Form>
-    </PopoverContent>
+    </PopoverBody>
   </Popover>
 </Button>
 `;

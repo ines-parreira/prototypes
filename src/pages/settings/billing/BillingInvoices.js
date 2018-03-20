@@ -27,7 +27,7 @@ export class BillingInvoices extends Component {
     render() {
         const {invoices} = this.props
         if (this.state.isLoading) {
-            return <Loader />
+            return <Loader/>
         }
 
         if (invoices.isEmpty()) {
@@ -36,12 +36,20 @@ export class BillingInvoices extends Component {
 
         return (
             <div>
-                <h4>Invoice history</h4>
+                <h4>
+                    <i className="material-icons">receipt</i> Payment history
+                </h4>
+                <p>
+                    The account owner will receive an invoice by email at the start of each billing period.
+                    <br/>
+                    <strong>Note:</strong> PDF invoices will soon be added to this list and the ability to change the
+                    billing email address.
+                </p>
                 <Table striped>
                     <thead>
                     <tr>
-                        <th>Date</th>
                         <th>Status</th>
+                        <th>Date</th>
                         <th>Amount</th>
                         <th>Description</th>
                     </tr>
@@ -51,7 +59,6 @@ export class BillingInvoices extends Component {
                         const paid = invoice.get('paid')
                         return (
                             <tr key={invoice.get('id')}>
-                                <td>{moment.unix(invoice.get('date')).format('LL')}</td>
                                 <td>
                                     {paid ? (
                                         <Badge color="success">Paid</Badge>
@@ -59,6 +66,7 @@ export class BillingInvoices extends Component {
                                         <Badge color="danger">Unpaid</Badge>
                                     )}
                                 </td>
+                                <td>{moment.unix(invoice.get('date')).format('LL')}</td>
                                 <td>{`$${invoice.get('amount_due') / 100}`} </td>
                                 <td>{invoice.get('description') || '-'} </td>
                             </tr>
@@ -70,6 +78,7 @@ export class BillingInvoices extends Component {
         )
     }
 }
+
 export default connect((state) => {
     return {
         invoices: billingSelectors.invoices(state),

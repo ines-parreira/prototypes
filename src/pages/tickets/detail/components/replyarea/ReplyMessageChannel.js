@@ -13,7 +13,7 @@ import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {getMessages} from '../../../../../state/ticket/selectors'
 import * as integrationSelectors from '../../../../../state/integrations/selectors'
 
-import {sourceTypeToIcon} from './../../../../../config/ticket'
+import SourceIcon from '../../../../common/components/SourceIcon'
 
 import css from './ReplyMessageChannel.less'
 
@@ -46,6 +46,7 @@ export default class ReplyMessageChannel extends React.Component {
         sourceType: PropTypes.string.isRequired,
         ticket: PropTypes.object.isRequired,
         prepareNewMessage: PropTypes.func.isRequired,
+        className: PropTypes.string,
     }
 
     state = {
@@ -129,12 +130,8 @@ export default class ReplyMessageChannel extends React.Component {
 
         if (!isNewMessagePublic) {
             return (
-                <div className="message-source-fields">
-                    <div className="message-source-field">
-                        <span className="receivers-list">
-                            Internal note
-                        </span>
-                    </div>
+                <div>
+                    Internal note
                 </div>
             )
         }
@@ -165,7 +162,7 @@ export default class ReplyMessageChannel extends React.Component {
     }
 
     render() {
-        const {isUpdate, messages, prepareNewMessage, isForward} = this.props
+        const {isUpdate, messages, prepareNewMessage, isForward, className} = this.props
 
         const sources = ticketSourceTypes(messages.toJS())
 
@@ -185,19 +182,23 @@ export default class ReplyMessageChannel extends React.Component {
         return (
             <div
                 ref="messageChannel"
-                className="ReplyMessageChannel open"
+                className={classnames(css.component, className)}
             >
                 <div
                     ref="channelPicker"
-                    className={classnames('channel-picker', css['channel-dropdown'])}
+                    className="mt-1 mr-2"
                 >
                     <UncontrolledDropdown>
                         <DropdownToggle
                             caret
+                            color=""
                             type="button"
-                            className={css['dropdown-toggle']}
+                            className={css.dropdownToggle}
                         >
-                            <i className={sourceTypeToIcon(iconLabel)} />
+                            <SourceIcon
+                                type={iconLabel}
+                                className="md-2"
+                            />
                         </DropdownToggle>
                         <DropdownMenu>
                             <DropdownItem
@@ -206,7 +207,7 @@ export default class ReplyMessageChannel extends React.Component {
                                     prepareNewMessage('email')
                                 }}
                             >
-                                <i className={classnames('mr-2', sourceTypeToIcon('email'))} />
+                                <SourceIcon type="email" />
                                 Reply via email
                             </DropdownItem>
                             {
@@ -217,7 +218,7 @@ export default class ReplyMessageChannel extends React.Component {
                                             prepareNewMessage('email-forward')
                                         }}
                                     >
-                                        <i className={classnames('mr-2', sourceTypeToIcon('email-forward'))} />
+                                        <SourceIcon type="email-forward" />
                                         Forward by email
                                     </DropdownItem>
                                 )
@@ -230,7 +231,7 @@ export default class ReplyMessageChannel extends React.Component {
                                             prepareNewMessage('chat')
                                         }}
                                     >
-                                        <i className={classnames('mr-2', sourceTypeToIcon('chat'))} />
+                                        <SourceIcon type="chat" />
                                         Reply via chat
                                     </DropdownItem>
                                 )
@@ -243,7 +244,7 @@ export default class ReplyMessageChannel extends React.Component {
                                             prepareNewMessage('facebook-comment')
                                         }}
                                     >
-                                        <i className={classnames('mr-2', sourceTypeToIcon('facebook-comment'))} />
+                                        <SourceIcon type="facebook-comment" />
                                         Reply via Facebook comment
                                     </DropdownItem>
                                 )
@@ -256,7 +257,7 @@ export default class ReplyMessageChannel extends React.Component {
                                             prepareNewMessage('facebook-messenger')
                                         }}
                                     >
-                                        <i className={classnames('mr-2', sourceTypeToIcon('facebook-messenger'))} />
+                                        <SourceIcon type="facebook-messenger" />
                                         Reply via Messenger
                                     </DropdownItem>
                                 )
@@ -269,7 +270,7 @@ export default class ReplyMessageChannel extends React.Component {
                                             prepareNewMessage('facebook-message')
                                         }}
                                     >
-                                        <i className={classnames('mr-2', sourceTypeToIcon('facebook-message'))} />
+                                        <SourceIcon type="facebook-message" />
                                         Reply via Messenger
                                     </DropdownItem>
                                 )
@@ -282,7 +283,7 @@ export default class ReplyMessageChannel extends React.Component {
                                             prepareNewMessage('instagram-comment')
                                         }}
                                     >
-                                        <i className={classnames('mr-2', sourceTypeToIcon('instagram-comment'))} />
+                                        <SourceIcon type="instagram-comment" />
                                         Reply via Instagram
                                     </DropdownItem>
                                 )
@@ -295,7 +296,7 @@ export default class ReplyMessageChannel extends React.Component {
                                             prepareNewMessage('internal-note')
                                         }}
                                     >
-                                        <i className={classnames('mr-2', sourceTypeToIcon('internal-note'))} />
+                                        <SourceIcon type="internal-note" />
                                         Leave an internal note
                                     </DropdownItem>
                                 )

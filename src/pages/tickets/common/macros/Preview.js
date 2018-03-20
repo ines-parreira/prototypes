@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import _capitalize from 'lodash/capitalize'
+import classnames from 'classnames'
 import {Badge} from 'reactstrap'
 
 import {fileIconFromContentType, getSortedIntegrationActions} from '../../common/utils'
@@ -9,13 +10,15 @@ import {getActionTemplate} from './../../../../utils'
 
 import RichField from '../../../common/forms/RichField'
 
+import css from './Preview.less'
+
 class Preview extends React.Component {
     renderAddAttachments = (attachments) => {
         if (!attachments) {
             return null
         }
         return (
-            <div className="macro-data">
+            <div className="mb-3">
                 <strong className="text-muted mr-2">
                     Attach files:
                 </strong>
@@ -26,7 +29,9 @@ class Preview extends React.Component {
                             color="secondary"
                             className="mr-1 mb-1"
                         >
-                            <i className={`fa fa-fw  ${fileIconFromContentType(file.get('content_type'))} mr-2`} />
+                            <i className="material-icons mr-2">
+                                {fileIconFromContentType(file.get('content_type'))}
+                            </i>
                             {file.get('name')}
                         </Badge>
                     ))
@@ -46,7 +51,7 @@ class Preview extends React.Component {
             }
 
             return (
-                <div className="macro-data">
+                <div className={css.macroData}>
                     <RichField
                         value={value}
                         onChange={() => null}
@@ -60,7 +65,7 @@ class Preview extends React.Component {
     renderSetStatus(setStatusAction) {
         if (setStatusAction) {
             return (
-                <div className="macro-data">
+                <div className={css.macroData}>
                     <strong className="text-muted mr-2">
                         Set status:
                     </strong>
@@ -76,7 +81,7 @@ class Preview extends React.Component {
         }
 
         return (
-            <div className="macro-data">
+            <div className={css.macroData}>
                 <strong className="text-muted mr-2">
                     Add tags:
                 </strong>
@@ -99,7 +104,7 @@ class Preview extends React.Component {
         }
 
         return (
-            <div className="macro-data">
+            <div className={css.macroData}>
                 <strong className="text-muted mr-2">
                     Assign to:
                 </strong>
@@ -119,11 +124,11 @@ class Preview extends React.Component {
         }
 
         return (
-            <div className="macro-data">
+            <div className={css.macroData}>
                 <strong className="text-muted mr-2">
                     Set subject:
                 </strong>
-                <b className="integration-action">
+                <b className={css.integrationAction}>
                     {setSubjectAction.getIn(['arguments', 'subject'])}
                 </b>
             </div>
@@ -138,7 +143,7 @@ class Preview extends React.Component {
         return (
             <div
                 key={integrationType}
-                className="macro-data integration-actions"
+                className={classnames(css.macroData, css.integrationActions)}
             >
                 <strong className="text-muted mr-2">
                     {_capitalize(integrationType)} actions:
@@ -146,13 +151,13 @@ class Preview extends React.Component {
                 {
                     integrationActions.map((action, idx) =>
                         <div
-                            className="integration-action"
+                            className={css.integrationAction}
                             key={`integration-action-${idx}`}
                         >
                             <img
                                 src={getIconFromType(integrationType)}
                                 role="presentation"
-                                className="logo"
+                                className={css.logo}
                             />
                             {action.get('title')}
                         </div>
@@ -163,7 +168,7 @@ class Preview extends React.Component {
     }
 
     render() {
-        const {macro} = this.props
+        const {macro, className} = this.props
 
         if (!macro || macro.isEmpty()) {
             return null
@@ -183,7 +188,7 @@ class Preview extends React.Component {
         const sortedBackActions = getSortedIntegrationActions(backActions)
 
         return (
-            <div className="macro-preview">
+            <div className={classnames(css.component, className)}>
                 {this.renderSetStatus(setStatusAction)}
                 {this.renderAddTags(addTagsActions)}
                 {this.renderSetAssignee(setAssigneeAction)}
@@ -201,6 +206,7 @@ class Preview extends React.Component {
 Preview.propTypes = {
     displayHTML: PropTypes.bool.isRequired,
     macro: PropTypes.object.isRequired,
+    className: PropTypes.string,
 }
 
 Preview.defaultProps = {

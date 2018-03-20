@@ -27,10 +27,10 @@ export default class FacebookIntegrationLogin extends React.Component {
             <div>
                 <Breadcrumb>
                     <BreadcrumbItem>
-                        <Link to="/app/integrations">Integrations</Link>
+                        <Link to="/app/settings/integrations">Integrations</Link>
                     </BreadcrumbItem>
                     <BreadcrumbItem>
-                        <Link to="/app/integrations/facebook">Facebook</Link>
+                        <Link to="/app/settings/integrations/facebook">Facebook</Link>
                     </BreadcrumbItem>
                     <BreadcrumbItem active>
                         Login to Facebook
@@ -43,7 +43,7 @@ export default class FacebookIntegrationLogin extends React.Component {
 
                 <Button
                     type="submit"
-                    color="primary"
+                    color="success"
                     className={classNames({
                         'btn-loading': isLoading,
                     })}

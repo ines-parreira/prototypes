@@ -68,11 +68,11 @@ class AfterTitle extends React.Component { // eslint-disable-line
         let removed = []
 
         if (isSubscriptionCancelled) {
-            removed = removed.concat(['rechargeCancelSubscription'])
+            removed = removed.concat(['cancel'])
         }
 
         // remove removed actions from list of available actions
-        actions = actions.filter((action) => !removed.includes(action.actionName))
+        actions = actions.filter((action) => !removed.includes(action.key))
 
         const payload = {
             subscription_id: source.get('id'),

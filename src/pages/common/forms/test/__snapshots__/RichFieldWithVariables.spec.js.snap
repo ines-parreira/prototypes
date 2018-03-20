@@ -12,7 +12,6 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
         aria-haspopup={true}
         caret={true}
         color="link"
-        data-toggle="dropdown"
         style={
           Object {
             "color": "inherit",
@@ -23,6 +22,7 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
         Ticket requester
       </DropdownToggle>
       <DropdownMenu
+        flip={true}
         tag="div"
       >
         <DropdownItem
@@ -64,7 +64,6 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
         aria-haspopup={true}
         caret={true}
         color="link"
-        data-toggle="dropdown"
         style={
           Object {
             "color": "inherit",
@@ -75,6 +74,7 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
         Current agent
       </DropdownToggle>
       <DropdownMenu
+        flip={true}
         tag="div"
       >
         <DropdownItem
@@ -116,6 +116,7 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
     allowExternalChanges={false}
     onChange={[Function]}
     signature={false}
+    type="text"
     value={
       Object {
         "html": "html",

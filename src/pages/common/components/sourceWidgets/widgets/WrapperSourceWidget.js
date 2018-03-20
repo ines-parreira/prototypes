@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import _last from 'lodash/last'
-import {Card, CardBlock, CardTitle} from 'reactstrap'
+import {Card, CardBody, CardTitle} from 'reactstrap'
 
 import DragWrapper from '../../dragging/WidgetsDragWrapper'
 import {humanizeString} from '../../../../../utils'
@@ -54,12 +54,12 @@ class WrapperSourceWidget extends React.Component {
                 className={`wrapper draggable ${parent.get('type')}`}
                 data-key={template.get('path').join('.')}
             >
-                <CardBlock className="header">
+                <CardBody className="header">
                     <CardTitle>
                         {displayName}
                     </CardTitle>
-                </CardBlock>
-                <CardBlock className="content">
+                </CardBody>
+                <CardBody className="content">
                     <DragWrapper
                         actions={editing && editing.actions}
                         group={{
@@ -88,7 +88,7 @@ class WrapperSourceWidget extends React.Component {
                                 })
                         }
                     </DragWrapper>
-                </CardBlock>
+                </CardBody>
             </Card>
         )
     }

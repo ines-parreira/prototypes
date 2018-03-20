@@ -28,11 +28,6 @@ import FullPage from './common/components/FullPage'
 import userActivityManager from '../services/userActivityManager'
 import pollingManager from '../services/pollingManager'
 
-
-import 'bootstrap/dist/css/bootstrap.min.css'
-import 'react-bootstrap-daterangepicker/css/daterangepicker.css'
-import 'font-awesome/css/font-awesome.css'
-
 import '../../css/main.less'
 import css from './App.less'
 
@@ -47,7 +42,7 @@ type Props = {
     currentAccount: currentAccountType,
     currentRoute: {
         infobarOnMobile?: boolean,
-        noContainerPadding?: boolean,
+        containerPadding?: boolean,
     },
     fetchUser: typeof fetchUser,
     injectInterceptor: typeof injectInterceptor,
@@ -119,6 +114,8 @@ class App extends React.Component<Props> {
         return (
             <DocumentTitle title="Gorgias">
                 <div className={classnames(css.page)}>
+                    <BannerNotifications notifications={bannerNotifications}/>
+
                     {
                         modalNotifications.map((notification) => (
                             <ModalNotification
@@ -132,9 +129,7 @@ class App extends React.Component<Props> {
                         {this.props.navbar}
 
                         <div className={classnames('app-content', css.content)}>
-                            <BannerNotifications notifications={bannerNotifications}/>
-
-                            <div className="mobile-nav hidden-md-up d-flex justify-content-between align-items-center">
+                            <div className="mobile-nav d-md-none d-flex justify-content-between align-items-center">
                                 <Button
                                     className="mr-3"
                                     type="button"
@@ -157,17 +152,17 @@ class App extends React.Component<Props> {
                                 }
                             </div>
                             {
-                                currentRoute.noContainerPadding ? (
+                                currentRoute.containerPadding ? (
+                                    <FullPage>
+                                        {this.props.content || this.props.children}
+                                    </FullPage>
+                                ) : (
                                     <Container
                                         fluid
                                         className={classnames(css['main-content'])}
                                     >
                                         {this.props.content || this.props.children}
                                     </Container>
-                                ) : (
-                                    <FullPage>
-                                        {this.props.content || this.props.children}
-                                    </FullPage>
                                 )
                             }
                         </div>

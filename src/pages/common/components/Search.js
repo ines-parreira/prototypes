@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import ReactDOM from 'react-dom'
 import classnames from 'classnames'
-import {Input, InputGroup, InputGroupAddon} from 'reactstrap'
+import {Input} from 'reactstrap'
 import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
 
@@ -124,23 +124,21 @@ export default class Search extends React.Component {
 
         return (
             <div
-                className={classnames(css.component, className)}
+                className={classnames(css.component, 'input-icon', className)}
                 style={style}
             >
-                <InputGroup>
-                    <Input
-                        ref="searchInput"
-                        type="text"
-                        className={css.input}
-                        value={this.state.search}
-                        onChange={e => this._handleChange(e.target.value)}
-                        style={{zIndex: 1}} // override the zIndex 2 of Bootstrap .form-control class
-                        {...rest}
-                    />
-                    <InputGroupAddon className="hidden-sm-down">
-                        <i className="fa fa-fw fa-search" />
-                    </InputGroupAddon>
-                </InputGroup>
+                <i className={classnames(css.icon, 'icon material-icons md-2')}>
+                    search
+                </i>
+                <Input
+                    ref="searchInput"
+                    type="text"
+                    className={css.input}
+                    value={this.state.search}
+                    onChange={e => this._handleChange(e.target.value)}
+                    style={{zIndex: 1}} // override the zIndex 2 of Bootstrap .form-control class
+                    {...rest}
+                />
             </div>
         )
     }

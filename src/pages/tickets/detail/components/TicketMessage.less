@@ -1,26 +1,146 @@
+@import '~css/new/colors';
+@import '~css/new/mixins';
+
 :local .component {
   display: flex;
-  flex-direction: column;
+  position: relative;
+  padding: 4px 2em 16px 2em;
+  margin: 0 -30px;
+  word-break: break-word;
+
+  @media @mobiles {
+    padding: .8em 16px;
+    margin: 0 -16px;
+  }
+
+  &.fromAgent {
+    background: fade(@lightPurple, 2%);
+  }
+
+  &:hover {
+    background: #f7f7fa;
+  }
+
+  &.internal {
+    background: @lightYellow;
+    box-shadow: inset 5px 0 0 0 #fd9b5a;
+
+    &:hover {
+      background: darken(@lightYellow, 3%);
+    }
+  }
+
+  &.appear {
+    animation: appear .1s linear;
+    animation-fill-mode: forwards;
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+      }
+    }
+  }
 
   .header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    overflow: visible;
+    padding-bottom: .5em;
+
+    transition: padding .16s ease-out;
   }
 
   .source {
     transition: all .2s linear;
 
+    color: desaturate(@lightPurple, 30%);
+
     &:hover {
-      color: #545454 !important;
+      color: @purple;
     }
   }
 
   .date {
-    margin-left: 8px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .headerDetails {
+    float: left;
+    display: inline-flex;
+    align-items: center;
+
+    & > * {
+      margin-right: 6px;
+    }
+  }
+
+  .author {
+    margin-right: .8em;
+    line-height: 1em;
+    font-weight: bold;
+  }
+
+  .isAgent {
+    color: @blue;
+  }
+
+  .avatar {
+    width: 56px;
+    flex-shrink: 0;
+  }
+
+  .from {
+    color: darken(@lightGrey, 8%);
+    font-size: 1rem;
+  }
+
+  .from a {
+    font-weight: 600;
+    color: darken(@lightGrey, 8%);
+    text-decoration: underline !important;
+  }
+
+  .attachmentsLabel {
+    display: block;
+    margin-bottom: .5em;
+
+    color: @blue;
+    font-weight: 500;
+    font-size: 12px;
+  }
+
+  .agentIcon {
+    margin-right: 6px;
+
+    vertical-align: text-bottom;
   }
 }
+
+/* sourceDetails is in a popover
+ */
+:local .sourceDetails {
+  ul {
+    padding: .4em .8em;
+    margin: 0;
+    list-style-type: none;
+
+    color: inherit;
+  }
+
+  li {
+    line-height: 1.5em;
+  }
+
+  li strong {
+    margin-left: .4em;
+
+    color: @black;
+  }
+}
+
 
 /* loading state.
  * keyframe animation is broken for :local styles,
@@ -77,4 +197,16 @@
     border-color: rgba(0, 0, 0, 0.6) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1);
     animation: ticket-message-loading-spin 0.4s infinite linear, ticket-message-loading-spinner-opacity 0.4s @delay forwards linear;
   }
+}
+
+/* this is a special class that allows putting a maximum width for facebook stickers
+ */
+.gorgias-facebook-share-image {
+  max-width: 120px;
+}
+
+/* Mentioned agent's name text
+ */
+.gorgias-mention {
+  color: @grey
 }

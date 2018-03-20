@@ -46,10 +46,10 @@ type Props = {
     context: string,
     identifier: string,
     infobar: {},
-    isRouteEditingWidgets:  boolean,
-    sources: Map<*,*>,
-    user: Map<*,*>,
-    widgets: Map<*,*>,
+    isRouteEditingWidgets: boolean,
+    sources: Map<*, *>,
+    user: Map<*, *>,
+    widgets: Map<*, *>,
     fetchUserHistory: typeof usersActions.fetchUserHistory,
     search: typeof infobarActions.search,
     searchSimilarUser: typeof infobarActions.similarUser,
@@ -66,8 +66,8 @@ type State = {
     displaySelectedUser: boolean,
     showMergeUserModal: boolean,
     searchResults: List<*>,
-    selectedUser: Map<*,*>,
-    suggestedUser: Map<*,*>,
+    selectedUser: Map<*, *>,
+    suggestedUser: Map<*, *>,
 }
 
 class Infobar extends React.Component<Props, State> {
@@ -200,31 +200,29 @@ class Infobar extends React.Component<Props, State> {
         const isSavingWidgets = widgets.getIn(['_internal', 'loading', 'saving'])
 
         return (
-            <div className="infobar-footer">
-                <div>
-                    <Button
-                        type="button"
-                        color="primary"
-                        className={classnames('mr-2', {
-                            'btn-loading': isSavingWidgets,
-                        })}
-                        disabled={isSavingWidgets || !isDirty}
-                        onClick={this._saveWidgets}
-                    >
-                        Save changes
-                    </Button>
-                    <Button
-                        type="button"
-                        color="secondary"
-                        className={classnames({
-                            'btn-loading': isSavingWidgets,
-                        })}
-                        disabled={isSavingWidgets || !isDirty}
-                        onClick={this._cancelWidgetsUpdates}
-                    >
-                        Cancel
-                    </Button>
-                </div>
+            <div className={css.footer}>
+                <Button
+                    type="button"
+                    color="success"
+                    className={classnames('mr-2', {
+                        'btn-loading': isSavingWidgets,
+                    })}
+                    disabled={isSavingWidgets || !isDirty}
+                    onClick={this._saveWidgets}
+                >
+                    Save changes
+                </Button>
+                <Button
+                    type="button"
+                    color="secondary"
+                    className={classnames({
+                        'btn-loading': isSavingWidgets,
+                    })}
+                    disabled={isSavingWidgets || !isDirty}
+                    onClick={this._cancelWidgetsUpdates}
+                >
+                    Cancel
+                </Button>
             </div>
         )
     }
@@ -235,12 +233,11 @@ class Infobar extends React.Component<Props, State> {
         const newRequester = this.state.selectedUser.get('name') || ''
 
         return (
-            <div className="pull-right hidden-sm-down">
+            <div className="float-right d-none d-md-block">
                 {
                     isCurrentlyOnTicket(ticketId) && ( // do not display on user profile
                         <ConfirmButton
                             className="mr-2"
-                            placement="left"
                             title="Change ticket requester"
                             content={`Are you use you want to set ${newRequester} as the requester instead of ${requester}?`}
                             confirm={this._setRequester}
@@ -354,7 +351,7 @@ class Infobar extends React.Component<Props, State> {
         const mode = this._mode()
 
         if (mode === 'loading') {
-            return <Loader />
+            return <Loader/>
         }
 
         if (mode === 'selected') {
@@ -367,7 +364,7 @@ class Infobar extends React.Component<Props, State> {
                             type="button"
                             onClick={() => this._resetSelected()}
                         >
-                            <i className="fa fa-fw fa-arrow-left mr-2" />
+                            <i className="fa fa-fw fa-arrow-left mr-2"/>
                             Back
                         </Button>
                         {
@@ -404,7 +401,9 @@ class Infobar extends React.Component<Props, State> {
                             type="button"
                             onClick={() => this._resetSearch()}
                         >
-                            <i className="fa fa-fw fa-arrow-left mr-2" />
+                            <i className="material-icons md-2 mr-2">
+                                arrow_back
+                            </i>
                             Back
                         </Button>
                     </div>
@@ -438,20 +437,19 @@ class Infobar extends React.Component<Props, State> {
                 {this._renderUserInfo(this.props.user)}
                 {
                     displaySuggestedUser && (
-                        <div className="hidden-sm-down">
-                            <div className="infobar-section-separator" />
-                            <div className={classnames(css['suggested-user'])}>
-                                <h4>Is this the same user?</h4>
+                        <div className="d-none d-md-block">
+                            <div className="infobar-section-separator"/>
+                            <div className={classnames(css.suggestedUser)}>
+                                <h4>Is this the same person?</h4>
                                 <p>
-                                    We have found someone similar to the requester of this ticket. If it is the same
-                                    person,
-                                    merge them together to get a unified view of this user.
+                                    'We have found someone similar to the requester of this ticket. If it is the same
+                                    person, merge them together to get a unified view of this user.
                                 </p>
                                 <div style={{marginBottom: '30px'}}>
                                     <Button
                                         className="mr-2"
                                         type="button"
-                                        color="secondary"
+                                        color="primary"
                                         onClick={() => {
                                             segmentTracker.logEvent(segmentTracker.EVENTS.USER_MERGE_CLICK, {
                                                 location: 'suggested user in infobar',
@@ -459,7 +457,8 @@ class Infobar extends React.Component<Props, State> {
                                             this.setState({showMergeUserModal: true})
                                         }}
                                     >
-                                        Merge
+
+                                        <i className="material-icons mr-1">call_merge</i>Merge
                                     </Button>
                                 </div>
                                 {this._renderUserInfo(this.state.suggestedUser)}
@@ -497,7 +496,9 @@ class Infobar extends React.Component<Props, State> {
             && !this.state.displaySelectedUser
 
         return (
-            <InfobarLayout>
+            <InfobarLayout className={classnames({
+                [css.editing]: isEditing
+            })}>
                 <div className="infobar-content">
                     <div className="infobar-search-wrapper d-flex align-items-center justify-content-between">
                         <Search
@@ -513,7 +514,7 @@ class Infobar extends React.Component<Props, State> {
                         />
 
                         <Button
-                            className="hidden-sm-down ml-2"
+                            className={classnames(css.toggleWidgets, 'd-none d-md-inline-block ml-2 btn-transparent')}
                             type="button"
                             id="toggle-widgets-edition-button"
                             color="secondary"
@@ -523,7 +524,9 @@ class Infobar extends React.Component<Props, State> {
                                 this._toggleEditionMode(!isEditing)
                             }}
                         >
-                            <i className="fa fa-fw fa-cog" />
+                            <i className="material-icons md-2">
+                                settings
+                            </i>
                         </Button>
                         <Tooltip
                             placement="left"
@@ -532,7 +535,7 @@ class Infobar extends React.Component<Props, State> {
                             {isEditing ? 'Leave widgets edition' : 'Edit widgets'}
                         </Tooltip>
                     </div>
-                    <div className="infobar-box">
+                    <div className={css.content}>
                         {this._renderContent()}
                     </div>
                 </div>

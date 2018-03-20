@@ -1,11 +1,13 @@
 import React, {PropTypes} from 'react'
 import {Map} from 'immutable'
 import classnames from 'classnames'
-import {Row, Col} from 'reactstrap'
+import {Row, Col, Button} from 'reactstrap'
 
 import Tooltip from '../../../../common/components/Tooltip'
 import InputField from '../../../../common/forms/InputField'
 import {MAX_HEADER_LENGTH} from '../../../../../config'
+
+import css from './ParametersEditor.less'
 
 export default class ParametersEditor extends React.Component {
     addRow = () => {
@@ -34,7 +36,7 @@ export default class ParametersEditor extends React.Component {
                     list.map((dict, index) => {
                         const requiredClassName = classnames('btn btn-sm mr-2', {
                             'btn-secondary': !dict.get('required'),
-                            'btn-info': dict.get('required'),
+                            'btn-primary': dict.get('required'),
                         })
 
                         const requiredTitle = dict.get('required')
@@ -43,7 +45,7 @@ export default class ParametersEditor extends React.Component {
 
                         const editableClassName = classnames('btn btn-sm mr-2', {
                             'btn-secondary': !dict.get('editable'),
-                            'btn-info': dict.get('editable'),
+                            'btn-primary': dict.get('editable'),
                         })
 
                         const editableTitle = dict.get('editable')
@@ -66,7 +68,7 @@ export default class ParametersEditor extends React.Component {
                                         onChange={value => this.changeValue('key', index, value)}
                                     />
                                 </Col>
-                                <Col xs="6">
+                                <Col className="flex-grow">
                                     <InputField
                                         type="text"
                                         placeholder="Value"
@@ -79,8 +81,7 @@ export default class ParametersEditor extends React.Component {
 
                                 </Col>
                                 <Col
-                                    xs="3"
-                                    className="d-flex align-items-center"
+                                    className="d-flex col-sm-auto"
                                 >
                                     <button
                                         type="button"
@@ -88,7 +89,9 @@ export default class ParametersEditor extends React.Component {
                                         className={requiredClassName}
                                         onClick={() => this.changeValue('required', index, !dict.get('required'))}
                                     >
-                                        <i className="fa fa-fw fa-asterisk" />
+                                        <span className={classnames(css.asteriskWrap)}>
+                                            <i className="icon-custom icon-asterisk" />
+                                        </span>
                                     </button>
                                     <Tooltip
                                         placement="top"
@@ -102,7 +105,9 @@ export default class ParametersEditor extends React.Component {
                                         className={editableClassName}
                                         onClick={() => this.changeValue('editable', index, !dict.get('editable'))}
                                     >
-                                        <i className="fa fa-fw fa-pencil" />
+                                        <i className="material-icons md-2">
+                                            edit
+                                        </i>
                                     </button>
                                     <Tooltip
                                         placement="top"
@@ -110,19 +115,29 @@ export default class ParametersEditor extends React.Component {
                                     >
                                         {editableTitle}
                                     </Tooltip>
-                                    <i
-                                        className="fa fa-fw fa-close text-danger clickable"
+                                    <Button
+                                        type="button"
+                                        size="sm"
+                                        id={`parameter-editable-${name}-${index}`}
                                         onClick={() => this.deleteRow(index)}
-                                    />
+                                    >
+                                        <i className="material-icons md-2 text-danger">
+                                            delete
+                                        </i>
+                                    </Button>
                                 </Col>
                             </Row>
                         )
                     })
                 }
-                <i
-                    className="fa fa-fw fa-plus clickable"
+                <Button
+                    size="sm"
                     onClick={this.addRow}
-                />
+                >
+                    <i className="material-icons md-2">
+                        add
+                    </i>
+                </Button>
             </div>
         )
     }

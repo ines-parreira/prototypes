@@ -69,7 +69,6 @@ class UserDetailContainer extends React.Component {
         return (
             <div className="mt-4 mb-4">
                 <Timeline
-                    isDisplayed
                     userHistory={this.props.users.get('userHistory')}
                     revert
                     displayAll
@@ -101,7 +100,7 @@ class UserDetailContainer extends React.Component {
                 <div className="flex-spaced-row">
                     <h1>{usersHelpers.getDisplayName(activeUser)}</h1>
 
-                    <div className="pull-right">
+                    <div>
                         <Link
                             className="btn btn-secondary mr-2"
                             to={`/app/ticket/new?requester=${activeUser.get('id')}`}

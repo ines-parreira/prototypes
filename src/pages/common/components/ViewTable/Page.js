@@ -9,6 +9,7 @@ import _get from 'lodash/get'
 import Loader from '../Loader'
 import Header from './Header'
 import Table from './Table'
+import FilterTopbar from './FilterTopbar'
 
 import * as viewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
@@ -53,6 +54,7 @@ export default class Page extends React.Component {
         urlViewId: PropTypes.string,
         updateView: PropTypes.func.isRequired,
         viewButtons: PropTypes.node,
+        className: PropTypes.string,
     }
 
     static defaultProps = {
@@ -146,14 +148,14 @@ export default class Page extends React.Component {
     }
 
     render() {
-        const {activeView, isSearch, isUpdate, type} = this.props
+        const {activeView, isSearch, isUpdate, type, className} = this.props
 
         if (activeView.isEmpty()) {
             return <Loader />
         }
 
         return (
-            <div className={css.page}>
+            <div className={classnames(css.page, className)}>
                 <div className="container-padding">
                     <Header
                         isSearch={isSearch}
@@ -162,7 +164,12 @@ export default class Page extends React.Component {
                         viewButtons={this.props.viewButtons}
                     />
                 </div>
-                <div className={classnames(css.table, 'container-padding')}>
+                <FilterTopbar
+                    isUpdate={isUpdate}
+                    isSearch={isSearch}
+                    type={type}
+                />
+                <div className={css.table}>
                     {this._renderTable()}
                 </div>
             </div>

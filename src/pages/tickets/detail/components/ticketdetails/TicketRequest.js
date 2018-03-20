@@ -1,12 +1,14 @@
 // @flow
 import React from 'react'
 import {connect} from 'react-redux'
-import {ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 import classNames from 'classnames'
 
 import {removeRequest, setRequest} from '../../../../../state/ticket/actions'
 import {getRequests, getLatestRequest} from '../../../../../state/requests/selectors'
 import {fromJS} from 'immutable'
+
+import headerCss from '../TicketHeader.less'
 
 type Props = {
     request: Object,
@@ -59,24 +61,25 @@ export class TicketRequest extends React.Component<Props, State> {
 
         const label = !request.isEmpty() ? request.get('name') : ''
 
+        console.log('hey')
+
         return (
-            <div className="d-inline-flex align-items-center flex-wrap hidden-sm-down">
-                <ButtonDropdown
+            <div className="d-none d-md-inline-flex align-items-center flex-wrap">
+                <Dropdown
                     id="ticket-request"
                     isOpen={this.state.dropdownOpen}
                     toggle={this._toggle}
                 >
                     <DropdownToggle
                         caret
-                        color="info"
-                        size="sm"
+                        color="secondary"
+                        type="button"
                         disabled={isLoading}
-                        className={classNames({
+                        className={classNames(headerCss.headerButton, 'btn-transparent', {
                             'btn-loading': isLoading,
                         })}
                     >
-                        <i className="fa fa-magic" aria-hidden="true"/>
-                        &nbsp;
+                        <i className="icon-custom icon-magic" aria-hidden="true"/>
                         {label}
                     </DropdownToggle>
 
@@ -84,11 +87,10 @@ export class TicketRequest extends React.Component<Props, State> {
                         <DropdownItem
                             header
                         >
-                            Ticket request (beta)
+                            TICKET REQUEST (BETA)
                         </DropdownItem>
                         {requests.map((request) => (
                             <DropdownItem
-                                className="dropdown-item-input"
                                 key={request}
                                 onClick={() => this._onChange(() => setRequest(request))}
                             >
@@ -98,8 +100,7 @@ export class TicketRequest extends React.Component<Props, State> {
                         <DropdownItem divider/>
                         <DropdownItem onClick={() => this._onChange(removeRequest)}>Clear request</DropdownItem>
                     </DropdownMenu>
-                </ButtonDropdown>
-                &nbsp;
+                </Dropdown>
             </div>
         )
     }

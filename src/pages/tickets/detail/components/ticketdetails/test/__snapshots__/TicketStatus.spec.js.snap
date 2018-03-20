@@ -5,7 +5,7 @@ exports[`TicketStatus component closed ticket 1`] = `
   className="d-inline-block mr-2"
 >
   <Button
-    className="d-inline-block"
+    className="headerButton font-weight-medium closed"
     color="success"
     id="change-status-button"
     onClick={[Function]}
@@ -13,8 +13,10 @@ exports[`TicketStatus component closed ticket 1`] = `
     type="button"
   >
     <i
-      className="fa fa-fw fa-check mr-1 undefined"
-    />
+      className="icon material-icons md-3"
+    >
+      check
+    </i>
   </Button>
   <Tooltip
     delay={0}
@@ -31,7 +33,7 @@ exports[`TicketStatus component open ticket 1`] = `
   className="d-inline-block mr-2"
 >
   <Button
-    className="d-inline-block"
+    className="headerButton font-weight-medium"
     color="secondary"
     id="change-status-button"
     onClick={[Function]}
@@ -39,8 +41,10 @@ exports[`TicketStatus component open ticket 1`] = `
     type="button"
   >
     <i
-      className="fa fa-fw fa-check mr-1"
-    />
+      className="icon material-icons md-2 mr-1"
+    >
+      check
+    </i>
     Close
   </Button>
   <Tooltip

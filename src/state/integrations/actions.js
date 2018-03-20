@@ -75,7 +75,7 @@ export function onCreateSuccess(dispatch: dispatchType, resp: integrationType): 
         nextStep = '/overview'
     }
 
-    browserHistory.push(`/app/integrations/${resp.type}/${resp.id || ''}${nextStep}`)
+    browserHistory.push(`/app/settings/integrations/${resp.type}/${resp.id || ''}${nextStep}`)
 
     dispatch(notify({
         status: 'success',
@@ -145,7 +145,7 @@ export function fetchIntegration(integrationId: string, integrationType: string,
                 }
             }, (error) => {
                 // We redirect to the integrations home page if we can't find the wanted integration on the server
-                browserHistory.replace(`/app/integrations/${integrationType}`)
+                browserHistory.replace(`/app/settings/integrations/${integrationType}`)
                 return dispatch({
                     type: constants.FETCH_INTEGRATION_ERROR,
                     error,

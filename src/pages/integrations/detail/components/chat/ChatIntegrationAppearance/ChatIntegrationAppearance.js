@@ -27,6 +27,8 @@ import InputField from '../../../../../common/forms/InputField'
 import ColorField from '../../../../../common/forms/ColorField'
 
 import css from './ChatIntegrationAppearance.less'
+import PageHeader from '../../../../../common/components/PageHeader'
+import RealtimeMessagingIntegrationNavigation from '../../../../common/RealtimeMessagingIntegrationNavigation'
 
 export const defaultContent = {
     type: 'smooch_inside',
@@ -126,37 +128,40 @@ class ChatIntegrationAppearance extends React.Component {
         const isSubmitting = this._isSubmitting()
 
         if (loading.get('integration')) {
-            return <Loader />
+            return <Loader/>
         }
 
         return (
-            <div>
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link to="/app/integrations">Integrations</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        <Link to="/app/integrations/smooch_inside">Chat</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        {isUpdate ? integration.get('name') : 'New chat integration'}
-                    </BreadcrumbItem>
-                    {
-                        isUpdate && (
-                            <BreadcrumbItem active>
-                                Appearance
-                            </BreadcrumbItem>
-                        )
-                    }
-                </Breadcrumb>
+            <div className="full-width">
+                <PageHeader title={(
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations">Integrations</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations/smooch_inside">Chat</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            {isUpdate ? integration.get('name') : 'New chat integration'}
+                        </BreadcrumbItem>
+                        {
+                            isUpdate && (
+                                <BreadcrumbItem active>
+                                    Appearance
+                                </BreadcrumbItem>
+                            )
+                        }
+                    </Breadcrumb>
+                )}/>
 
-                <h1>{isUpdate ? 'Appearance' : 'New chat integration'}</h1>
+                {isUpdate && (
+                    <RealtimeMessagingIntegrationNavigation integration={integration}/>
+                )}
 
-                <Container fluid>
+                <Container fluid className="page-container">
                     <Row>
-                        <Col style={{paddingLeft: 0}}>
+                        <Col>
                             <Form
-                                className="ui form"
                                 onSubmit={this._handleSubmit}
                             >
                                 <div className={css.form}>
@@ -181,8 +186,12 @@ class ChatIntegrationAppearance extends React.Component {
                                         <InputField
                                             type="text"
                                             value={this.state.offlineIntroductionText}
-                                            onFocus={() => {this.setState({isOnline: false})}}
-                                            onChange={value => {this.setState({offlineIntroductionText: value})}}
+                                            onFocus={() => {
+                                                this.setState({isOnline: false})
+                                            }}
+                                            onChange={value => {
+                                                this.setState({offlineIntroductionText: value})
+                                            }}
                                             label="Away introduction text"
                                         />
 
@@ -210,7 +219,7 @@ class ChatIntegrationAppearance extends React.Component {
 
                                 <Button
                                     type="submit"
-                                    color="primary"
+                                    color="success"
                                     className={classnames({
                                         'btn-loading': isSubmitting,
                                     })}
@@ -222,7 +231,7 @@ class ChatIntegrationAppearance extends React.Component {
                                 {
                                     isUpdate && (
                                         <ConfirmButton
-                                            className="pull-right"
+                                            className="float-right"
                                             color="danger"
                                             outline
                                             confirm={() => actions.deleteIntegration(integration)}

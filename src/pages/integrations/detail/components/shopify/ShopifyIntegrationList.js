@@ -95,7 +95,7 @@ export default class ShopifyIntegrationList extends React.Component {
             }
 
             const isDisabled = int.get('deactivated_datetime')
-            const editLink = `/app/integrations/shopify/${int.get('id')}`
+            const editLink = `/app/settings/integrations/shopify/${int.get('id')}`
 
             return (
                 <tr key={int.get('id')}>
@@ -121,7 +121,7 @@ export default class ShopifyIntegrationList extends React.Component {
                 longTypeDescription={longTypeDescription}
                 integrationType="shopify"
                 integrations={integrations.filter((v) => v.get('type') === 'shopify')}
-                createIntegration={() => browserHistory.push('/app/integrations/shopify/new')}
+                createIntegration={() => browserHistory.push('/app/settings/integrations/shopify/new')}
                 createIntegrationButtonText="Add Shopify"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}

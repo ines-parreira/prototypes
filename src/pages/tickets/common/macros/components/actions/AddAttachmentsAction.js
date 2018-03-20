@@ -23,14 +23,18 @@ export default class AddAttachmentsAction extends Component {
                     <Badge
                         key={index}
                         color="secondary"
-                        className="mr-1 mb-1"
+                        className="tag mr-2 mb-1"
                     >
-                        <i className={`fa fa-fw ${fileIconFromContentType(file.get('content_type'))} mr-2`} />
+                        <i className="material-icons mr-2">
+                            {fileIconFromContentType(file.get('content_type'))}
+                        </i>
                         <span className="mr-2">{file.get('name')}</span>
                         <i
-                            className="fa fa-fw fa-close clickable"
+                            className="material-icons clickable"
                             onClick={() => this._removeAttachment(index)}
-                        />
+                        >
+                            close
+                        </i>
                     </Badge>
                 )
             })
@@ -41,7 +45,14 @@ export default class AddAttachmentsAction extends Component {
             <div>
                 {this._renderAttachments()}
                 <FileField
-                    placeholder="Select files..."
+                    placeholder={(
+                        <span>
+                            <i className="material-icons mr-1">
+                                attach_file
+                            </i>
+                            Select files...
+                        </span>
+                    )}
                     onChange={this._addAttachments}
                     inline
                     multiple

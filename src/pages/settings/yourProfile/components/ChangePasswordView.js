@@ -3,9 +3,10 @@ import classnames from 'classnames'
 import _pick from 'lodash/pick'
 import _toString from 'lodash/toString'
 import _forEach from 'lodash/forEach'
-import {Form, Button} from 'reactstrap'
+import {Form, Button, Container} from 'reactstrap'
 
 import InputField from '../../../common/forms/InputField'
+import PageHeader from '../../../common/components/PageHeader'
 
 class ChangePasswordView extends React.Component {
     state = {
@@ -71,63 +72,62 @@ class ChangePasswordView extends React.Component {
         const invalid = Object.keys(this.state.errors).length > 0
 
         return (
-            <div>
-                <h1>
-                    <i className="fa fa-fw fa-lock blue mr-2" />
-                    Change password
-                </h1>
-                <p>
-                    Enter your current password to confirm your identity, then the new password you would like to
-                    set instead.
-                </p>
+            <div className="full-width">
+                <PageHeader title="Change password"/>
+                <Container fluid className="page-container">
+                    <p>
+                        Enter your current password to confirm your identity, then the new password you would like to
+                        set instead.
+                    </p>
 
-                <Form onSubmit={this._handleSubmit}>
-                    <InputField
-                        type="password"
-                        name="old_password"
-                        label="Current password"
-                        placeholder="Current password"
-                        required
-                        value={this.state.old_password}
-                        onChange={old_password => this._updateField({old_password})}
-                        error={this.state.errors.old_password}
-                    />
-                    <InputField
-                        type="password"
-                        name="new_password"
-                        label="New password"
-                        placeholder="New password"
-                        min="6"
-                        required
-                        value={this.state.new_password}
-                        onChange={new_password => this._updateField({new_password})}
-                        error={this.state.errors.new_password}
-                    />
-                    <InputField
-                        type="password"
-                        name="confirm_new_password"
-                        label="Confirm new password"
-                        placeholder="Confirm new password"
-                        min="6"
-                        required
-                        value={this.state.confirm_new_password}
-                        onChange={confirm_new_password => this._updateField({confirm_new_password})}
-                        error={this.state.errors.confirm_new_password}
-                    />
+                    <Form onSubmit={this._handleSubmit}>
+                        <InputField
+                            type="password"
+                            name="old_password"
+                            label="Current password"
+                            placeholder="Current password"
+                            required
+                            value={this.state.old_password}
+                            onChange={old_password => this._updateField({old_password})}
+                            error={this.state.errors.old_password}
+                        />
+                        <InputField
+                            type="password"
+                            name="new_password"
+                            label="New password"
+                            placeholder="New password"
+                            min="6"
+                            required
+                            value={this.state.new_password}
+                            onChange={new_password => this._updateField({new_password})}
+                            error={this.state.errors.new_password}
+                        />
+                        <InputField
+                            type="password"
+                            name="confirm_new_password"
+                            label="Confirm new password"
+                            placeholder="Confirm new password"
+                            min="6"
+                            required
+                            value={this.state.confirm_new_password}
+                            onChange={confirm_new_password => this._updateField({confirm_new_password})}
+                            error={this.state.errors.confirm_new_password}
+                        />
 
-                    <div>
-                        <Button
-                            type="submit"
-                            color="primary"
-                            className={classnames({
-                                'btn-loading': isLoading,
-                            })}
-                            disabled={isLoading || invalid || !this.state.dirty}
-                        >
-                            Save
-                        </Button>
-                    </div>
-                </Form>
+                        <div>
+                            <Button
+                                type="submit"
+                                color="success"
+                                className={classnames({
+                                    'btn-loading': isLoading,
+                                })}
+                                disabled={isLoading || invalid || !this.state.dirty}
+                            >
+                                Update your password
+                            </Button>
+                        </div>
+                    </Form>
+                </Container>
             </div>
         )
     }

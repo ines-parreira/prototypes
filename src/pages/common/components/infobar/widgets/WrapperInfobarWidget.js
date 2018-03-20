@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
 import _last from 'lodash/last'
 import classnames from 'classnames'
-import {Card, CardBlock} from 'reactstrap'
+import {Card, CardBody} from 'reactstrap'
 
 import DragWrapper from '../../dragging/WidgetsDragWrapper'
 import InfobarWidget from '../InfobarWidget'
@@ -82,18 +82,20 @@ class WrapperInfobarWidget extends React.Component {
             <Card className={classnames(css.component, 'wrapper transparent draggable')}>
                 {
                     isEditing && (
-                        <CardBlock className="header clearfix">
+                        <CardBody className="header clearfix">
                             <span className="tools">
                                 <i
-                                    className="fa fa-fw fa-close text-danger clickable"
+                                    className="material-icons text-danger clickable"
                                     onClick={this._deleteWrapper}
-                                />
+                                >
+                                    close
+                                </i>
                             </span>
-                        </CardBlock>
+                        </CardBody>
                     )
                 }
 
-                <CardBlock className="content">
+                <CardBody className="content">
                     <DragWrapper
                         actions={editing && editing.actions}
                         sort
@@ -127,7 +129,7 @@ class WrapperInfobarWidget extends React.Component {
                                 })
                         }
                     </DragWrapper>
-                </CardBlock>
+                </CardBody>
             </Card>
         )
     }

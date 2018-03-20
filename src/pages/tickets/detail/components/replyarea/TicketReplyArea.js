@@ -14,8 +14,9 @@ import * as ticketActions from '../../../../../state/ticket/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {notify} from './../../../../../state/notifications/actions'
 import {getPreferences} from './../../../../../state/currentUser/selectors'
-import MacroContainer from '../../../common/macros/MacroContainer'
 import {areMacrosVisible, getMacrosOrderedByUsage} from '../../../../../state/macro/selectors'
+
+import css from './TicketReplyArea.less'
 
 const CONTENT_STATE_PATH = ['state', 'contentState']
 
@@ -236,11 +237,14 @@ export class TicketReplyArea extends React.Component {
 
         return (
             <div
-                className={classnames('TicketReplyArea', {
-                    'TicketReplyArea-macros-visible': macrosVisible
+                className={classnames(css.component, {
+                    [css.macrosVisible]: macrosVisible
                 })}
             >
-                <div className="TicketReplyArea-search">
+                <div className={css.search}>
+                    <i className={classnames(css.searchIcon, 'material-icons md-2 text-info')}>
+                        flash_on
+                    </i>
                     <Input
                         ref={(macroInput) => this.macroInput = macroInput}
                         tabIndex="3"
@@ -251,16 +255,18 @@ export class TicketReplyArea extends React.Component {
                     />
                 </div>
 
-                <div className="TicketReplyArea-content">
+                <div className={css.content}>
                     <TicketMacros
                         macros={macros}
                         macrosVisible={macrosVisible}
                         applyMacro={this._applyMacro}
-                        openModal={this.props.openModal}
                         setMacrosVisible={this._setMacrosVisible}
                         searchQuery={this.state.searchQuery}
                         selectedMacroId={this.state.selectedMacroId}
                         setSelectedMacroId={(selectedMacroId) => this.setState({selectedMacroId})}
+                        className={classnames({
+                            'd-block': macrosVisible
+                        })}
                     />
 
                     <TicketReply
@@ -275,9 +281,7 @@ export class TicketReplyArea extends React.Component {
                     />
                 </div>
 
-                <MacroContainer
-                    selectedMacroIdOnOpen={this.state.selectedMacroId}
-                />
+
             </div>
         )
     }
@@ -292,7 +296,6 @@ TicketReplyArea.propTypes = {
     users: PropTypes.object.isRequired,
     applyMacro: PropTypes.func.isRequired,
     updateMacro: PropTypes.func,
-    openModal: PropTypes.func.isRequired,
     preferences: PropTypes.object.isRequired,
     newMessage: PropTypes.object.isRequired,
     newMessageType: PropTypes.string.isRequired,

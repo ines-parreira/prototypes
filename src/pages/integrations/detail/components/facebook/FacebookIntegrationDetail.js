@@ -8,15 +8,17 @@ import {
     FormGroup,
     Button,
     Popover,
-    PopoverTitle,
-    PopoverContent,
+    PopoverHeader,
+    PopoverBody,
     Breadcrumb,
-    BreadcrumbItem,
+    BreadcrumbItem, Container,
 } from 'reactstrap'
 
 import Loader from '../../../../common/components/Loader'
 
 import BooleanField from '../../../../common/forms/BooleanField'
+import PageHeader from '../../../../common/components/PageHeader'
+import RealtimeMessagingIntegrationNavigation from '../../../common/RealtimeMessagingIntegrationNavigation'
 
 export default class FacebookIntegrationDetail extends React.Component {
     state = {
@@ -66,7 +68,7 @@ export default class FacebookIntegrationDetail extends React.Component {
     _disable = () => {
         this.setState({askDisableConfirmation: false})
         this.props.actions.deactivateIntegration(this.props.integration.get('id'))
-        browserHistory.push('/app/integrations/facebook')
+        browserHistory.push('/app/settings/integrations/facebook')
     }
 
     _toggleDisableConfirmation = () => {
@@ -90,7 +92,7 @@ export default class FacebookIntegrationDetail extends React.Component {
             disabledInstagramComponent = (
                 <Alert color="warning">
                     Instagram is disabled because we miss the required permissions. Please go to the{' '}
-                    <Link to="/app/integrations/facebook">Facebook integrations list</Link> and click on{' '}
+                    <Link to="/app/settings/integrations/facebook">Facebook integrations list</Link> and click on{' '}
                     Login to Facebook to update your permissions.
                 </Alert>
             )
@@ -99,7 +101,7 @@ export default class FacebookIntegrationDetail extends React.Component {
                 <Alert color="warning">
                     You cannot activate Instagram on this page: it is not associated with any Instagram account.<br/>
                     If you just associated the page with an Instagram account, please go to the{' '}
-                    <Link to="/app/integrations/facebook">Facebook integrations list</Link> and click on{' '}
+                    <Link to="/app/settings/integrations/facebook">Facebook integrations list</Link> and click on{' '}
                     Login to Facebook to update your integrations.
                 </Alert>
             )
@@ -109,87 +111,94 @@ export default class FacebookIntegrationDetail extends React.Component {
             return <Loader />
         }
 
+        console.log('reload')
+
         return (
-            <div>
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link to="/app/integrations">Integrations</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        <Link to="/app/integrations/facebook">Facebook</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        {page.get('name')}
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>
-                        Overview
-                    </BreadcrumbItem>
-                </Breadcrumb>
-
-                <div className="d-flex align-items-center mb-3">
-                    <img
-                        className="image rounded mr-3"
-                        alt={page.get('name')}
-                        src={page.getIn(['picture', 'data', 'url'])}
-                    />
-                    <div className="d-flex flex-column">
-                        <h2 className="header">
+            <div className="full-width">
+                <PageHeader title={(
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations">Integrations</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations/facebook">Facebook, Messenger & Instagram</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
                             {page.get('name')}
-                        </h2>
-                        <p className="text-faded">
-                            {_truncate(page.get('about'), {length: 100})}
-                        </p>
-                    </div>
-                </div>
-                {disabledInstagramComponent}
-                <div>
-                    <FormGroup>
-                        <BooleanField
-                            name="private_messages_enabled"
-                            type="checkbox"
-                            label="Enable Messenger"
-                            value={this.state.settings.private_messages_enabled}
-                            onChange={value => this._onChange(value, 'private_messages_enabled')}
-                        />
-                        <BooleanField
-                            name="posts_enabled"
-                            type="checkbox"
-                            label="Enable Facebook posts & comments"
-                            value={this.state.settings.posts_enabled}
-                            onChange={value => this._onChange(value, 'posts_enabled')}
-                        />
-                        <BooleanField
-                            name="instagram_comments_enabled"
-                            type="checkbox"
-                            label="Enable Instagram comments"
-                            value={this.state.settings.instagram_comments_enabled}
-                            onChange={value => this._onChange(value, 'instagram_comments_enabled')}
-                            disabled={doesntHaveInstagramPermissions || doesntHaveInstagramId}
-                        />
-                        <BooleanField
-                            name="import_history_enabled"
-                            type="checkbox"
-                            label="Import 30 days of history (posts, comments and messages) as closed tickets"
-                            value={this.state.settings.import_history_enabled}
-                            onChange={value => this._onChange(value, 'import_history_enabled')}
-                        />
-                    </FormGroup>
-                </div>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>
+                            Overview
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                )}/>
 
-                <div>
-                    <Button
-                        type="submit"
-                        color="primary"
-                        className={classNames('mr-2', {
-                            'btn-loading': loading.get('updateIntegration'),
-                        })}
-                        onClick={this._handleSubmit}
-                    >
-                        Save changes
-                    </Button>
-                    {
-                        !isDisabled && (
-                            <span>
+                <RealtimeMessagingIntegrationNavigation integration={integration}/>
+
+                <Container fluid className="page-container">
+                    <div className="d-flex align-items-center mb-3">
+                        <img
+                            className="image rounded mr-3"
+                            alt={page.get('name')}
+                            src={page.getIn(['picture', 'data', 'url'])}
+                        />
+                        <div className="d-flex flex-column">
+                            <h2 className="header">
+                                {page.get('name')}
+                            </h2>
+                            <p className="text-faded">
+                                {_truncate(page.get('about'), {length: 100})}
+                            </p>
+                        </div>
+                    </div>
+                    {disabledInstagramComponent}
+                    <div>
+                        <FormGroup>
+                            <BooleanField
+                                name="private_messages_enabled"
+                                type="checkbox"
+                                label="Enable Messenger"
+                                value={this.state.settings.private_messages_enabled}
+                                onChange={value => this._onChange(value, 'private_messages_enabled')}
+                            />
+                            <BooleanField
+                                name="posts_enabled"
+                                type="checkbox"
+                                label="Enable Facebook posts & comments"
+                                value={this.state.settings.posts_enabled}
+                                onChange={value => this._onChange(value, 'posts_enabled')}
+                            />
+                            <BooleanField
+                                name="instagram_comments_enabled"
+                                type="checkbox"
+                                label="Enable Instagram comments"
+                                value={this.state.settings.instagram_comments_enabled}
+                                onChange={value => this._onChange(value, 'instagram_comments_enabled')}
+                                disabled={doesntHaveInstagramPermissions || doesntHaveInstagramId}
+                            />
+                            <BooleanField
+                                name="import_history_enabled"
+                                type="checkbox"
+                                label="Import 30 days of history (posts, comments and messages) as closed tickets"
+                                value={this.state.settings.import_history_enabled}
+                                onChange={value => this._onChange(value, 'import_history_enabled')}
+                            />
+                        </FormGroup>
+                    </div>
+
+                    <div>
+                        <Button
+                            type="submit"
+                            color="success"
+                            className={classNames('mr-2', {
+                                'btn-loading': loading.get('updateIntegration'),
+                            })}
+                            onClick={this._handleSubmit}
+                        >
+                            Save changes
+                        </Button>
+                        {
+                            !isDisabled && (
+                                <span>
                                 <Button
                                     type="submit"
                                     color="warning"
@@ -205,8 +214,8 @@ export default class FacebookIntegrationDetail extends React.Component {
                                     target="disable-integration-button"
                                     toggle={this._toggleDisableConfirmation}
                                 >
-                                    <PopoverTitle>Are you sure?</PopoverTitle>
-                                    <PopoverContent>
+                                    <PopoverHeader>Are you sure?</PopoverHeader>
+                                    <PopoverBody>
                                         <p>
                                             This page will not be synchronised with Gorgias anymore.
                                         </p>
@@ -217,22 +226,23 @@ export default class FacebookIntegrationDetail extends React.Component {
                                         >
                                             Confirm
                                         </Button>
-                                    </PopoverContent>
+                                    </PopoverBody>
                                 </Popover>
                             </span>
-                        )
-                    }
-                    <Button
-                        type="button"
-                        color="danger"
-                        className={classNames('pull-right', {
-                            'btn-loading': false,
-                        })}
-                        onClick={() => actions.deleteIntegration(integration)}
-                    >
-                        Delete
-                    </Button>
-                </div>
+                            )
+                        }
+                        <Button
+                            type="button"
+                            color="danger"
+                            className={classNames('float-right', {
+                                'btn-loading': false,
+                            })}
+                            onClick={() => actions.deleteIntegration(integration)}
+                        >
+                            <i className="material-icons">delete</i> Delete this page
+                        </Button>
+                    </div>
+                </Container>
             </div>
         )
     }

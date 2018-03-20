@@ -28,6 +28,8 @@ import CampaignPreview from './../CampaignPreview/CampaignPreview'
 import {convertToHTML} from '../../../../../../../utils'
 
 import {CAMPAIGNS_TRIGGER_KEYS, GRAVATAR_URL_TEMPLATE} from '../../../../../../../config/campaigns'
+import PageHeader from '../../../../../../common/components/PageHeader'
+import RealtimeMessagingIntegrationNavigation from '../../../../../common/RealtimeMessagingIntegrationNavigation'
 
 /**
  * Generate and return a default empty trigger associated with a trigger configuration.
@@ -300,7 +302,7 @@ export default class CampaignDetail extends React.Component {
     _deleteCampaign = () => {
         const {deleteCampaign, campaign, integration} = this.props
         deleteCampaign(campaign, integration).then(() => {
-            browserHistory.push(`/app/integrations/${integration.get('type')}/${integration.get('id')}/campaigns`)
+            browserHistory.push(`/app/settings/integrations/${integration.get('type')}/${integration.get('id')}/campaigns`)
         })
     }
 
@@ -329,30 +331,34 @@ export default class CampaignDetail extends React.Component {
         })
 
         return (
-            <div>
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link to="/app/integrations">Integrations</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        <Link to="/app/integrations/smooch_inside/${integration.get('id')}">Chat</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        <Link to={`/app/integrations/smooch_inside/${integration.get('id')}`}>{integration.get('name')}</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        <Link to={`/app/integrations/smooch_inside/${integration.get('id')}/campaigns`}>Campaigns</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>
-                        {isUpdate ? campaign.get('name') : 'New'}
-                    </BreadcrumbItem>
-                </Breadcrumb>
+            <div className="full-width">
+                <PageHeader title={(
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations">Integrations</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations/smooch_inside/${integration.get('id')}">Chat</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            {integration.get('name')}
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            <Link to={`/app/settings/integrations/smooch_inside/${integration.get('id')}/campaigns`}>
+                                Campaigns
+                            </Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>
+                            {isUpdate ? campaign.get('name') : 'New campaign'}
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                )}/>
 
-                <h1>{isUpdate ? name : 'Create campaign'}</h1>
+                <RealtimeMessagingIntegrationNavigation integration={integration}/>
 
-                <Container fluid>
+                <Container fluid className="page-container">
                     <Row>
-                        <Col style={{paddingLeft: 0}}>
+                        <Col>
                             <Form onSubmit={this._handleSubmit}>
                                 <div className="mb-4">
                                     <InputField
@@ -462,7 +468,7 @@ export default class CampaignDetail extends React.Component {
                                 </div>
 
                                 <Button
-                                    color="primary"
+                                    color="success"
                                     className={classnames({'btn-loading': this.state.loading})}
                                 >
                                     {isUpdate ? 'Save' : 'Create & activate campaign'}
@@ -473,7 +479,7 @@ export default class CampaignDetail extends React.Component {
                                     isUpdate && (
                                         <ConfirmButton
                                             id="delete-campaign-button"
-                                            className="pull-right"
+                                            className="float-right"
                                             placement="bottom right"
                                             color="danger"
                                             outline

@@ -1,22 +1,12 @@
 import React, {PropTypes} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
-import {
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-    Button,
-    Popover,
-    PopoverTitle,
-    PopoverContent,
-} from 'reactstrap'
 import {Link, browserHistory, withRouter} from 'react-router'
 import {fromJS} from 'immutable'
 import _get from 'lodash/get'
+import classnames from 'classnames'
 
 import EditableTitle from '../EditableTitle'
-import FilterTopbar from './FilterTopbar'
 import Search from '../Search'
 import {slugify} from '../../../../utils'
 
@@ -24,6 +14,8 @@ import * as viewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
 
 import * as viewsConfig from '../../../../config/views'
+
+import css from './Header.less'
 
 @withRouter
 @connect((state, ownProps) => {
@@ -107,134 +99,70 @@ export default class Header extends React.Component {
             config,
             isSearch,
             isUpdate,
-            type,
             viewButtons,
         } = this.props
 
         const isEditMode = activeView.get('editMode')
-        const isSystemView = activeView.get('category') === 'system'
 
         return (
-            <div>
-                <div>
-                    <div className="d-flex justify-content-between mb-2">
-                        {
-                            isUpdate && !isSearch && (
-                                <UncontrolledDropdown className="d-inline-block hidden-sm-down">
-                                    <DropdownToggle
-                                        caret
-                                        type="button"
-                                        id="settings-view-button"
-                                        className="mr-2"
-                                    >
-                                        <i className="fa fa-cog fa-fw mr-2" />
-                                        View settings
-                                    </DropdownToggle>
-                                    <DropdownMenu>
-                                        <DropdownItem
-                                            type="button"
-                                            onClick={() => this.props.updateView(activeView)}
-                                        >
-                                            Edit view
-                                        </DropdownItem>
-                                        {
-                                            !isSystemView && [
-                                                <DropdownItem
-                                                    key="delete-button-divider"
-                                                    divider
-                                                />,
-                                                <DropdownItem
-                                                    key="delete-button"
-                                                    type="button"
-                                                    onClick={this._toggleDeleteConfirmation}
-                                                >
-                                                    <span className="text-danger">Delete view</span>
-                                                    <Popover
-                                                        placement="bottom"
-                                                        isOpen={this.state.askDeleteConfirmation}
-                                                        target="settings-view-button"
-                                                        toggle={this._toggleDeleteConfirmation}
-                                                    >
-                                                        <PopoverTitle>Are you sure?</PopoverTitle>
-                                                        <PopoverContent>
-                                                            <p>
-                                                                You are about to <b>delete</b> this view for <b>all users</b>.
-                                                            </p>
-                                                            <Button
-                                                                type="submit"
-                                                                color="success"
-                                                                onClick={() => {
-                                                                    this.props.deleteView(activeView)
-                                                                    this._toggleDeleteConfirmation()
-                                                                }}
-                                                            >
-                                                                Confirm
-                                                            </Button>
-                                                        </PopoverContent>
-                                                    </Popover>
-                                                </DropdownItem>
-                                            ]}
-                                    </DropdownMenu>
-                                </UncontrolledDropdown>
-                            )
-                        }
-
+            <div className={css.component}>
+                <div className="d-flex flex-grow">
+                    <div className="d-flex flex-grow mr-2">
                         {
                             isSearch && (
                                 <Link
                                     className="btn btn-secondary mr-2"
                                     to={this._goBackUrl()}
                                 >
-                                    <i className="fa fa-fw fa-arrow-left mr-2" />
+                                    <i className="fa fa-fw fa-arrow-left mr-2"/>
                                     Back
                                 </Link>
                             )
                         }
 
+                        {(isEditMode || isSearch) ? (
+                            <EditableTitle
+                                className={classnames(css.title, 'flex-grow')}
+                                title={activeView.get('name', '')}
+                                placeholder="View name"
+                                disabled={isSearch}
+                                select={!isUpdate}
+                                update={(name) => {
+                                    if (name !== activeView.get('name')) {
+                                        this._updateViewName(name)
+                                    }
+                                }}
+                                forceEditMode
+                            />
+                        ) : (
+                            <div
+                                id="settings-view-button"
+                                className={classnames(css.title, 'mr-2 h-100 cursor-pointer')}
+                                color="transparent"
+                                onClick={() => this.props.updateView(activeView)}
+                            >
+                                {activeView.get('name')}
+                                <i className="material-icons">
+                                    keyboard_arrow_down
+                                </i>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="d-flex">
                         <Search
                             bindKey
                             onChange={this._search}
-                            className="pull-right"
                             placeholder={`Search ${config.get('plural')}...`}
                             searchDebounceTime={400}
                             location={`${activeView.get('id')}${!!isSearch && '(s)'}`}
                             forcedQuery={this._searchQuery()}
+                            className="mr-2"
                         />
-                    </div>
-
-                    <div className="clearfix d-flex flex-row align-items-center">
-                        {
-                            isSearch ? (
-                                    <EditableTitle
-                                        className="mr-2"
-                                        title={activeView.get('name', '')}
-                                        disabled
-                                    />
-                                ) : (
-                                    <EditableTitle
-                                        className="mr-2"
-                                        select={!isUpdate}
-                                        title={activeView.get('name', '')}
-                                        placeholder="View name"
-                                        update={(name) => {
-                                            if (name !== activeView.get('name')) {
-                                                this._updateViewName(name)
-                                            }
-                                        }}
-                                        disabled={!isEditMode}
-                                        forceEditMode={isEditMode}
-                                    />
-                                )
-                        }
 
                         {viewButtons}
                     </div>
                 </div>
-                <FilterTopbar
-                    isUpdate={isUpdate}
-                    isSearch={isSearch}
-                    type={type}
-                />
             </div>
         )
     }

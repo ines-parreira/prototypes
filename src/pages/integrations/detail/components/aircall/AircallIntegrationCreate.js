@@ -7,7 +7,7 @@ import {
     BreadcrumbItem,
     Input,
     InputGroup,
-    InputGroupButton
+    InputGroupAddon
 } from 'reactstrap'
 import Clipboard from 'clipboard'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
@@ -42,10 +42,10 @@ export default class AircallIntegrationCreate extends Component {
             <div>
                 <Breadcrumb>
                     <BreadcrumbItem>
-                        <Link to="/app/integrations">Integrations</Link>
+                        <Link to="/app/settings/integrations">Integrations</Link>
                     </BreadcrumbItem>
                     <BreadcrumbItem>
-                        <Link to="/app/integrations/aircall">Aircall</Link>
+                        <Link to="/app/settings/integrations/aircall">Aircall</Link>
                     </BreadcrumbItem>
                     <BreadcrumbItem active>
                         Connect Aircall
@@ -59,7 +59,8 @@ export default class AircallIntegrationCreate extends Component {
                         <ul>
                             <li>1. Copy the webhook url below</li>
                             <li>2. Add a Webhook integration in your Aircall account, under{' '}
-                                <a href="https://dashboard-v2.aircall.io/integrations" target="_blank" rel="noopener noreferrer">
+                                <a href="https://dashboard-v2.aircall.io/integrations" target="_blank"
+                                   rel="noopener noreferrer">
                                     integrations
                                 </a>
                             </li>
@@ -78,22 +79,22 @@ export default class AircallIntegrationCreate extends Component {
                             value={this.props.webhookUrl}
                             readOnly
                         />
-                        <InputGroupButton>
+                        <InputGroupAddon addonType="append">
                             <Button
                                 id="copyWebhookUrl"
-                                color="info"
+                                color="primary"
                                 data-clipboard-target="#webhookUrl"
                             >
                                 <i className="fa fa-fw fa-files-o mr-2"/>
                                 {this.state.isCopied ? 'Copied!' : 'Copy'}
                             </Button>
-                        </InputGroupButton>
+                        </InputGroupAddon>
                     </InputGroup>
                 </div>
                 <Button
-                    color="primary"
+                    color="success"
                     tag={Link}
-                    to="/app/integrations/aircall"
+                    to="/app/settings/integrations/aircall"
                 >
                     I did it
                 </Button>

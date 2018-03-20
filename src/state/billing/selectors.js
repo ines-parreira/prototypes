@@ -13,15 +13,15 @@ export const getBillingState = (state: stateType) => state.billing || fromJS({})
 
 export const currentPlanId = createSelector(
     [getCurrentAccountState],
-    state => state.getIn(['current_subscription', 'plan'])
+    (state) => state.getIn(['current_subscription', 'plan'])
 )
 
 export const plans = createSelector(
     [getBillingState],
-    state => {
+    (state) => {
         return state.get('plans', fromJS({}))
-            .sortBy(plan => plan.get('order') || Infinity)
-            .map(plan => {
+            .sortBy((plan) => plan.get('order') || Infinity)
+            .map((plan) => {
                 const amount = plan.get('amount') || 0
                 return plan
                     .set('amount', amount / 100) // stripe amount are in cents
@@ -42,23 +42,23 @@ export const getPlan = (planId: string) => createSelector(
 
 export const invoices = createSelector(
     [getBillingState],
-    billing => billing.get('invoices', fromJS([]))
+    (billing) => billing.get('invoices', fromJS([]))
         .filter((invoice) => invoice.get('attempted') && invoice.get('amount_due') > 0)
 )
 
 export const creditCard = createSelector(
     [getBillingState],
-    billing => billing.get('creditCard') || fromJS({})
+    (billing) => billing.get('creditCard') || fromJS({})
 )
 
 export const paymentMethod = createSelector(
     [getBillingState],
-    billing => billing.get('paymentMethod') || ''
+    (billing) => billing.get('paymentMethod') || ''
 )
 
 export const currentUsage = createSelector(
     [getBillingState],
-    billing => billing.get('currentUsage') || fromJS({})
+    (billing) => billing.get('currentUsage') || fromJS({})
 )
 
 export const isAllowedToCreateIntegration = createSelector(

@@ -60,7 +60,7 @@ class RuleForm extends React.Component {
                             onChange={(description) => this._updateField({description})}
                         />
                     </div>
-                    <div className="actions pull-right mt-3">
+                    <div className="actions float-right mt-3">
                         <Button
                             className="mr-2"
                             color="secondary"

@@ -59,7 +59,7 @@ class SearchableSelectField extends React.Component {
         const hasSelectedItems = !!input.value.length
 
         // filter items by text search
-        const filteredItems = items.filter(item => item.label.toLowerCase().includes(search.toLowerCase()))
+        const filteredItems = items.filter((item) => item.label.toLowerCase().includes(search.toLowerCase()))
 
         return (
             <UncontrolledDropdown
@@ -74,14 +74,14 @@ class SearchableSelectField extends React.Component {
                 >
                     {
                         hasSelectedItems ? (
-                                <span>
+                            <span>
                                     {input.value.length} {input.value.length > 1 ? plural : singular}
                                 </span>
-                            ) : (
-                                <span>
+                        ) : (
+                            <span>
                                     All {plural}
                                 </span>
-                            )
+                        )
                     }
                 </DropdownToggle>
                 <DropdownMenu
@@ -97,41 +97,41 @@ class SearchableSelectField extends React.Component {
                             placeholder={`Search ${plural}...`}
                             autoFocus
                             value={search}
-                            onChange={e => this._handleSearchChange(e.target.value)}
+                            onChange={(e) => this._handleSearchChange(e.target.value)}
                         />
                     </DropdownItem>
                     {
                         filteredItems.length === 0 ? (
-                                <DropdownItem header>
-                                    Could not find any {singular}
-                                </DropdownItem>
-                            ) : (
-                                filteredItems.map((item) => {
-                                    const isChecked = input.value.includes(item.value)
+                            <DropdownItem header>
+                                Could not find any {singular}
+                            </DropdownItem>
+                        ) : (
+                            filteredItems.map((item) => {
+                                const isChecked = input.value.includes(item.value)
 
-                                    return (
-                                        <DropdownItem
-                                            key={item.value}
-                                            type="button"
-                                            onClick={(e) => {
-                                                e.preventDefault()
-                                                e.stopPropagation()
-                                                this._handleOptionClick(item.value)
-                                            }}
-                                            toggle={false}
-                                        >
-                                            <Label check>
-                                                <Input
-                                                    className="mr-2"
-                                                    type="checkbox"
-                                                    checked={isChecked}
-                                                />
-                                                {' '}{item.label}
-                                            </Label>
-                                        </DropdownItem>
-                                    )
-                                })
-                            )
+                                return (
+                                    <DropdownItem
+                                        key={item.value}
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            e.stopPropagation()
+                                            this._handleOptionClick(item.value)
+                                        }}
+                                        toggle={false}
+                                    >
+                                        <Label check>
+                                            <input
+                                                className="mr-2"
+                                                type="checkbox"
+                                                checked={isChecked}
+                                            />
+                                            {' '}
+                                            {item.label}
+                                        </Label>
+                                    </DropdownItem>
+                                )
+                            })
+                        )
                     }
                     {
                         hasSelectedItems && [

@@ -6,13 +6,14 @@ import {
     Alert,
     Button,
     Breadcrumb,
-    BreadcrumbItem,
+    BreadcrumbItem, Container,
 } from 'reactstrap'
 
 import Loader from '../../../../common/components/Loader'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 
 import InputField from '../../../../common/forms/InputField'
+import PageHeader from '../../../../common/components/PageHeader'
 
 class RechargeIntegrationDetail extends React.Component {
     static propTypes = {
@@ -80,131 +81,134 @@ class RechargeIntegrationDetail extends React.Component {
         }
 
         return (
-            <div>
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link to="/app/integrations">Integrations</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        <Link to="/app/integrations/recharge">Recharge</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>
-                        {isUpdate ? integration.get('name') : 'Add'}
-                    </BreadcrumbItem>
-                </Breadcrumb>
-
-                <h1>{isUpdate ? integration.get('name') : 'Add integration'}</h1>
-
-                {
-                    isUpdate && isSyncOver !== undefined && (
-                        isSyncOver
-                            ? (
-                                <p>
-                                    All your Recharge users have been imported. You can now see their info in the
-                                    sidebar. <Link to="/app/users">Review your users.</Link>
-                                </p>
-                            ) : (
-                                <Alert color="info" className="mb-4">
-                                    <p>
-                                        <b className="alert-heading">
-                                            <i className="fa fa-refresh fa-spin mr-2" />
-                                            Importing your Recharge customers
-                                        </b>
-                                    </p>
-                                    <p>
-                                        We're currently importing all your Recharge customers. This way, you'll see
-                                        customer info & orders next to tickets. We'll notify you via email when the
-                                        import is done. <Link to="/app/users">Review imported users.</Link>
-                                    </p>
-                                </Alert>
-                            )
-                    )
-                }
-
-                <InputField
-                    type="text"
-                    name="name"
-                    label="Shopify store name"
-                    value={isUpdate ? integration.get('name') : undefined}
-                    onChange={(value) => this.setState({store_name: value})}
-                    placeholder={'ex: "acme" for acme.myshopify.com'}
-                    disabled={isUpdate}
-                    rightAddon=".myshopify.com"
-                    required
+            <div className="full-width">
+                <PageHeader title={(
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations">Integrations</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations/recharge">Recharge</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>
+                            {isUpdate ? integration.get('name') : 'Add integration'}
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                )}
                 />
 
-                <div>
+                <Container fluid className="page-container">
                     {
-                        isUpdate && needScopeUpdate && (
-                            <Button
-                                type="button"
-                                color="info"
-                                className={classNames('mr-2', {
-                                    'btn-loading': isSubmitting,
-                                })}
-                                disabled={isSubmitting}
-                                onClick={this._updateAppPermissions}
-                            >
-                                Update app permissions
-                            </Button>
+                        isUpdate && isSyncOver !== undefined && (
+                            isSyncOver
+                                ? (
+                                    <p>
+                                        All your Recharge users have been imported. You can now see their info in the
+                                        sidebar. <Link to="/app/users">Review your users.</Link>
+                                    </p>
+                                ) : (
+                                    <Alert color="info" className="mb-4">
+                                        <p>
+                                            <b className="alert-heading">
+                                                <i className="fa fa-refresh fa-spin mr-2" />
+                                                Importing your Recharge customers
+                                            </b>
+                                        </p>
+                                        <p>
+                                            We're currently importing all your Recharge customers. This way, you'll see
+                                            customer info & orders next to tickets. We'll notify you via email when the
+                                            import is done. <Link to="/app/users">Review imported users.</Link>
+                                        </p>
+                                    </Alert>
+                                )
                         )
                     }
-                    {
-                        !isUpdate && (
-                            <Button
-                                type="button"
-                                color="success"
-                                className={classNames({
-                                    'btn-loading': isSubmitting,
-                                })}
-                                onClick={() => this._submit()}
-                            >
-                                Add Recharge integration
-                            </Button>
-                        )
-                    }
-                    {
-                        isUpdate && !authenticationRequired && isActive && (
-                            <Button
-                                type="button"
-                                color="warning"
-                                outline
-                                className={classNames({
-                                    'btn-loading': isSubmitting,
-                                })}
-                                onClick={() => actions.deactivateIntegration(integration.get('id'))}
-                            >
-                                Deactivate integration
-                            </Button>
-                        )
-                    }
-                    {
-                        isUpdate && !authenticationRequired && !isActive && (
-                            <Button
-                                type="button"
-                                color="success"
-                                className={classNames({
-                                    'btn-loading': isSubmitting,
-                                })}
-                                onClick={() => actions.activateIntegration(integration.get('id'))}
-                            >
-                                Re-activate integration
-                            </Button>
-                        )
-                    }
-                    {
-                        isUpdate && (
-                            <ConfirmButton
-                                className="pull-right"
-                                color="danger"
-                                confirm={() => actions.deleteIntegration(integration)}
-                                content="Are you sure you want to delete this integration?"
-                            >
-                                Delete
-                            </ConfirmButton>
-                        )
-                    }
-                </div>
+
+                    <InputField
+                        type="text"
+                        name="name"
+                        label="Shopify store name"
+                        value={isUpdate ? integration.get('name') : undefined}
+                        onChange={(value) => this.setState({store_name: value})}
+                        placeholder={'ex: "acme" for acme.myshopify.com'}
+                        disabled={isUpdate}
+                        rightAddon=".myshopify.com"
+                        required
+                    />
+
+                    <div>
+                        {
+                            isUpdate && needScopeUpdate && (
+                                <Button
+                                    type="button"
+                                    color="info"
+                                    className={classNames('mr-2', {
+                                        'btn-loading': isSubmitting,
+                                    })}
+                                    disabled={isSubmitting}
+                                    onClick={this._updateAppPermissions}
+                                >
+                                    Update app permissions
+                                </Button>
+                            )
+                        }
+                        {
+                            !isUpdate && (
+                                <Button
+                                    type="button"
+                                    color="success"
+                                    className={classNames({
+                                        'btn-loading': isSubmitting,
+                                    })}
+                                    onClick={() => this._submit()}
+                                >
+                                    Add Recharge integration
+                                </Button>
+                            )
+                        }
+                        {
+                            isUpdate && !authenticationRequired && isActive && (
+                                <Button
+                                    type="button"
+                                    color="warning"
+                                    outline
+                                    className={classNames({
+                                        'btn-loading': isSubmitting,
+                                    })}
+                                    onClick={() => actions.deactivateIntegration(integration.get('id'))}
+                                >
+                                    Deactivate integration
+                                </Button>
+                            )
+                        }
+                        {
+                            isUpdate && !authenticationRequired && !isActive && (
+                                <Button
+                                    type="button"
+                                    color="success"
+                                    className={classNames({
+                                        'btn-loading': isSubmitting,
+                                    })}
+                                    onClick={() => actions.activateIntegration(integration.get('id'))}
+                                >
+                                    Re-activate integration
+                                </Button>
+                            )
+                        }
+                        {
+                            isUpdate && (
+                                <ConfirmButton
+                                    className="float-right"
+                                    color="danger"
+                                    confirm={() => actions.deleteIntegration(integration)}
+                                    content="Are you sure you want to delete this integration?"
+                                >
+                                    Delete
+                                </ConfirmButton>
+                            )
+                        }
+                    </div>
+                </Container>
             </div>
         )
     }

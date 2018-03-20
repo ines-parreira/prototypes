@@ -2,47 +2,64 @@
 
 exports[`RealtimeMessagingIntegrationInstall component should display a placeholder if there's no Shopify store without chat, andshould display the list of Shopify stores where the chat is installed 1`] = `
 <div>
-  <Breadcrumb
-    tag="ol"
-  >
-    <BreadcrumbItem
-      tag="li"
-    >
-      <Link
-        onlyActiveOnIndex={false}
-        style={Object {}}
-        to="/app/integrations"
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
       >
-        Integrations
-      </Link>
-    </BreadcrumbItem>
-    <BreadcrumbItem
-      tag="li"
-    >
-      <Link
-        onlyActiveOnIndex={false}
-        style={Object {}}
-        to="/app/integrations/smooch_inside"
-      >
-        Chat
-      </Link>
-    </BreadcrumbItem>
-    <BreadcrumbItem
-      tag="li"
-    >
-      mychat
-    </BreadcrumbItem>
-    <BreadcrumbItem
-      active={true}
-      tag="li"
-    >
-      Installation
-    </BreadcrumbItem>
-  </Breadcrumb>
-  <h1>
-    Installation
-  </h1>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/smooch_inside"
+          >
+            Chat
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          mychat
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Installation
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <RealtimeMessagingIntegrationNavigation
+    integration={
+      Immutable.Map {
+        id: 2,
+        name: "mychat",
+        type: "smooch_inside",
+        meta: Immutable.Map {
+          shopify_integration_ids: Immutable.List [
+            1,
+          ],
+          script_url: "config.gorgias.io/foo/chat/bar",
+        },
+      }
+    }
+  />
   <Container
+    className="page-container"
     fluid={true}
     tag="div"
   >
@@ -51,11 +68,6 @@ exports[`RealtimeMessagingIntegrationInstall component should display a placehol
     >
       <Col
         md="8"
-        style={
-          Object {
-            "paddingLeft": 0,
-          }
-        }
         tag="div"
         widths={
           Array [
@@ -86,7 +98,9 @@ exports[`RealtimeMessagingIntegrationInstall component should display a placehol
             </a>
           </p>
         </div>
-        <div>
+        <div
+          className="form"
+        >
           <Button
             block={true}
             className="mb-2"
@@ -95,6 +109,7 @@ exports[`RealtimeMessagingIntegrationInstall component should display a placehol
             tag="button"
           >
             <img
+              className="shopifyLogo"
               src="test-file-stub"
             />
             Add 
@@ -102,15 +117,13 @@ exports[`RealtimeMessagingIntegrationInstall component should display a placehol
              on 
             mylittleintegration
           </Button>
-          <p
-            className="text-muted text-center"
-          >
+          <p>
             Can't see your store here?
              
             <Link
               onlyActiveOnIndex={false}
               style={Object {}}
-              to="/app/integrations/shopify/new/"
+              to="/app/settings/integrations/shopify/new/"
             >
               Connect it to Gorgias
             </Link>
@@ -133,19 +146,39 @@ exports[`RealtimeMessagingIntegrationInstall component should display a placehol
                
               tag:
             </p>
-            <div>
+            <div
+              className="snippet"
+            >
               <Card
                 className="p-0 mb-2"
                 tag="div"
               >
                 <Alert
                   className="m-0"
+                  closeAriaLabel="Close"
                   color="info"
                   isOpen={true}
                   tag="div"
-                  transitionAppearTimeout={150}
-                  transitionEnterTimeout={150}
-                  transitionLeaveTimeout={150}
+                  transition={
+                    Object {
+                      "appear": true,
+                      "baseClass": "fade",
+                      "baseClassActive": "show",
+                      "enter": true,
+                      "exit": true,
+                      "in": true,
+                      "mountOnEnter": false,
+                      "onEnter": [Function],
+                      "onEntered": [Function],
+                      "onEntering": [Function],
+                      "onExit": [Function],
+                      "onExited": [Function],
+                      "onExiting": [Function],
+                      "tag": "div",
+                      "timeout": 150,
+                      "unmountOnExit": true,
+                    }
+                  }
                 >
                   <pre
                     id="code-snippet"
@@ -167,6 +200,7 @@ exports[`RealtimeMessagingIntegrationInstall component should display a placehol
                 </Alert>
               </Card>
               <Button
+                className="copy"
                 color="info"
                 data-clipboard-target="#code-snippet"
                 id="copy-code-snippet"
@@ -189,47 +223,71 @@ exports[`RealtimeMessagingIntegrationInstall component should display a placehol
 
 exports[`RealtimeMessagingIntegrationInstall component should display the code snippet for custom integration 1`] = `
 <div>
-  <Breadcrumb
-    tag="ol"
-  >
-    <BreadcrumbItem
-      tag="li"
-    >
-      <Link
-        onlyActiveOnIndex={false}
-        style={Object {}}
-        to="/app/integrations"
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
       >
-        Integrations
-      </Link>
-    </BreadcrumbItem>
-    <BreadcrumbItem
-      tag="li"
-    >
-      <Link
-        onlyActiveOnIndex={false}
-        style={Object {}}
-        to="/app/integrations/smooch_inside"
-      >
-        Chat
-      </Link>
-    </BreadcrumbItem>
-    <BreadcrumbItem
-      tag="li"
-    >
-      mychat
-    </BreadcrumbItem>
-    <BreadcrumbItem
-      active={true}
-      tag="li"
-    >
-      Installation
-    </BreadcrumbItem>
-  </Breadcrumb>
-  <h1>
-    Installation
-  </h1>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/smooch_inside"
+          >
+            Chat
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          mychat
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Installation
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <RealtimeMessagingIntegrationNavigation
+    integration={
+      Immutable.Map {
+        id: 2,
+        name: "mychat",
+        type: "smooch_inside",
+        decoration: Immutable.Map {
+          header_color: "#789456",
+          chat_icon_color: "#AB7891",
+          conversation_color: "#B7B7B7",
+          header_text: "some window title",
+          introduction_text: "some introduction text",
+          input_placeholder: "type here to send messages",
+          send_button_text: "Lets goooo",
+        },
+        meta: Immutable.Map {
+          app_token: "a86sd47a56sd4asd",
+          script_url: "config.gorgias.io/foo/chat/bar",
+        },
+      }
+    }
+  />
   <Container
+    className="page-container"
     fluid={true}
     tag="div"
   >
@@ -238,11 +296,6 @@ exports[`RealtimeMessagingIntegrationInstall component should display the code s
     >
       <Col
         md="8"
-        style={
-          Object {
-            "paddingLeft": 0,
-          }
-        }
         tag="div"
         widths={
           Array [
@@ -258,7 +311,9 @@ exports[`RealtimeMessagingIntegrationInstall component should display the code s
           Let's install your chat on your website.
         </p>
         <div />
-        <div>
+        <div
+          className="form"
+        >
           <Button
             block={true}
             className="mb-2"
@@ -267,6 +322,7 @@ exports[`RealtimeMessagingIntegrationInstall component should display the code s
             tag="button"
           >
             <img
+              className="shopifyLogo"
               src="test-file-stub"
             />
             Add 
@@ -274,15 +330,13 @@ exports[`RealtimeMessagingIntegrationInstall component should display the code s
              on 
             mylittleintegration
           </Button>
-          <p
-            className="text-muted text-center"
-          >
+          <p>
             Can't see your store here?
              
             <Link
               onlyActiveOnIndex={false}
               style={Object {}}
-              to="/app/integrations/shopify/new/"
+              to="/app/settings/integrations/shopify/new/"
             >
               Connect it to Gorgias
             </Link>
@@ -305,19 +359,39 @@ exports[`RealtimeMessagingIntegrationInstall component should display the code s
                
               tag:
             </p>
-            <div>
+            <div
+              className="snippet"
+            >
               <Card
                 className="p-0 mb-2"
                 tag="div"
               >
                 <Alert
                   className="m-0"
+                  closeAriaLabel="Close"
                   color="info"
                   isOpen={true}
                   tag="div"
-                  transitionAppearTimeout={150}
-                  transitionEnterTimeout={150}
-                  transitionLeaveTimeout={150}
+                  transition={
+                    Object {
+                      "appear": true,
+                      "baseClass": "fade",
+                      "baseClassActive": "show",
+                      "enter": true,
+                      "exit": true,
+                      "in": true,
+                      "mountOnEnter": false,
+                      "onEnter": [Function],
+                      "onEntered": [Function],
+                      "onEntering": [Function],
+                      "onExit": [Function],
+                      "onExited": [Function],
+                      "onExiting": [Function],
+                      "tag": "div",
+                      "timeout": 150,
+                      "unmountOnExit": true,
+                    }
+                  }
                 >
                   <pre
                     id="code-snippet"
@@ -339,6 +413,7 @@ exports[`RealtimeMessagingIntegrationInstall component should display the code s
                 </Alert>
               </Card>
               <Button
+                className="copy"
                 color="info"
                 data-clipboard-target="#code-snippet"
                 id="copy-code-snippet"
@@ -361,47 +436,64 @@ exports[`RealtimeMessagingIntegrationInstall component should display the code s
 
 exports[`RealtimeMessagingIntegrationInstall component should display the list of Shopify stores without chats 1`] = `
 <div>
-  <Breadcrumb
-    tag="ol"
-  >
-    <BreadcrumbItem
-      tag="li"
-    >
-      <Link
-        onlyActiveOnIndex={false}
-        style={Object {}}
-        to="/app/integrations"
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
       >
-        Integrations
-      </Link>
-    </BreadcrumbItem>
-    <BreadcrumbItem
-      tag="li"
-    >
-      <Link
-        onlyActiveOnIndex={false}
-        style={Object {}}
-        to="/app/integrations/smooch_inside"
-      >
-        Chat
-      </Link>
-    </BreadcrumbItem>
-    <BreadcrumbItem
-      tag="li"
-    >
-      mychat
-    </BreadcrumbItem>
-    <BreadcrumbItem
-      active={true}
-      tag="li"
-    >
-      Installation
-    </BreadcrumbItem>
-  </Breadcrumb>
-  <h1>
-    Installation
-  </h1>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/smooch_inside"
+          >
+            Chat
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          mychat
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Installation
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <RealtimeMessagingIntegrationNavigation
+    integration={
+      Immutable.Map {
+        id: 2,
+        name: "mychat",
+        type: "smooch_inside",
+        meta: Immutable.Map {
+          shopify_integration_ids: Immutable.List [
+            2,
+          ],
+          script_url: "config.gorgias.io/foo/chat/bar",
+        },
+      }
+    }
+  />
   <Container
+    className="page-container"
     fluid={true}
     tag="div"
   >
@@ -410,11 +502,6 @@ exports[`RealtimeMessagingIntegrationInstall component should display the list o
     >
       <Col
         md="8"
-        style={
-          Object {
-            "paddingLeft": 0,
-          }
-        }
         tag="div"
         widths={
           Array [
@@ -430,7 +517,9 @@ exports[`RealtimeMessagingIntegrationInstall component should display the list o
           Let's install your chat on your website.
         </p>
         <div />
-        <div>
+        <div
+          className="form"
+        >
           <Button
             block={true}
             className="mb-2"
@@ -439,6 +528,7 @@ exports[`RealtimeMessagingIntegrationInstall component should display the list o
             tag="button"
           >
             <img
+              className="shopifyLogo"
               src="test-file-stub"
             />
             Add 
@@ -446,15 +536,13 @@ exports[`RealtimeMessagingIntegrationInstall component should display the list o
              on 
             mylittleintegration
           </Button>
-          <p
-            className="text-muted text-center"
-          >
+          <p>
             Can't see your store here?
              
             <Link
               onlyActiveOnIndex={false}
               style={Object {}}
-              to="/app/integrations/shopify/new/"
+              to="/app/settings/integrations/shopify/new/"
             >
               Connect it to Gorgias
             </Link>
@@ -477,19 +565,39 @@ exports[`RealtimeMessagingIntegrationInstall component should display the list o
                
               tag:
             </p>
-            <div>
+            <div
+              className="snippet"
+            >
               <Card
                 className="p-0 mb-2"
                 tag="div"
               >
                 <Alert
                   className="m-0"
+                  closeAriaLabel="Close"
                   color="info"
                   isOpen={true}
                   tag="div"
-                  transitionAppearTimeout={150}
-                  transitionEnterTimeout={150}
-                  transitionLeaveTimeout={150}
+                  transition={
+                    Object {
+                      "appear": true,
+                      "baseClass": "fade",
+                      "baseClassActive": "show",
+                      "enter": true,
+                      "exit": true,
+                      "in": true,
+                      "mountOnEnter": false,
+                      "onEnter": [Function],
+                      "onEntered": [Function],
+                      "onEntering": [Function],
+                      "onExit": [Function],
+                      "onExited": [Function],
+                      "onExiting": [Function],
+                      "tag": "div",
+                      "timeout": 150,
+                      "unmountOnExit": true,
+                    }
+                  }
                 >
                   <pre
                     id="code-snippet"
@@ -511,6 +619,7 @@ exports[`RealtimeMessagingIntegrationInstall component should display the list o
                 </Alert>
               </Card>
               <Button
+                className="copy"
                 color="info"
                 data-clipboard-target="#code-snippet"
                 id="copy-code-snippet"

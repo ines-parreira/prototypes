@@ -5,7 +5,7 @@ exports[`Stat should render a bar chart 1`] = `
   className="stats-card mb-3"
   tag="div"
 >
-  <CardBlock
+  <CardBody
     tag="div"
   >
     <h5
@@ -36,7 +36,7 @@ exports[`Stat should render a bar chart 1`] = `
         name="stat_name"
       />
     </div>
-  </CardBlock>
+  </CardBody>
 </Card>
 `;
 
@@ -45,7 +45,7 @@ exports[`Stat should render a key metrics chart 1`] = `
   className="stats-card mb-3"
   tag="div"
 >
-  <CardBlock
+  <CardBody
     tag="div"
   >
     <h5
@@ -76,7 +76,7 @@ exports[`Stat should render a key metrics chart 1`] = `
         name="stat_name"
       />
     </div>
-  </CardBlock>
+  </CardBody>
 </Card>
 `;
 
@@ -85,7 +85,7 @@ exports[`Stat should render a line chart 1`] = `
   className="stats-card mb-3"
   tag="div"
 >
-  <CardBlock
+  <CardBody
     tag="div"
   >
     <h5
@@ -116,7 +116,7 @@ exports[`Stat should render a line chart 1`] = `
         name="stat_name"
       />
     </div>
-  </CardBlock>
+  </CardBody>
 </Card>
 `;
 
@@ -125,7 +125,7 @@ exports[`Stat should render a table chart 1`] = `
   className="stats-card mb-3"
   tag="div"
 >
-  <CardBlock
+  <CardBody
     tag="div"
   >
     <h5
@@ -156,6 +156,6 @@ exports[`Stat should render a table chart 1`] = `
         name="stat_name"
       />
     </div>
-  </CardBlock>
+  </CardBody>
 </Card>
 `;

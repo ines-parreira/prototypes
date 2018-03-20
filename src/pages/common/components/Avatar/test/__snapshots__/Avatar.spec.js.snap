@@ -2,7 +2,7 @@
 
 exports[`Avatar component should render default with no props 1`] = `
 <div
-  className=""
+  className="component"
   style={
     Object {
       "height": "50px",
@@ -11,6 +11,7 @@ exports[`Avatar component should render default with no props 1`] = `
   }
 >
   <div
+    className="initials"
     style={
       Object {
         "fontSize": "20.833333333333336px",
@@ -24,7 +25,7 @@ exports[`Avatar component should render default with no props 1`] = `
 
 exports[`Avatar component should render only the initials 1`] = `
 <div
-  className=""
+  className="component"
   style={
     Object {
       "height": "50px",
@@ -33,6 +34,7 @@ exports[`Avatar component should render only the initials 1`] = `
   }
 >
   <div
+    className="initials"
     style={
       Object {
         "fontSize": "20.833333333333336px",
@@ -48,7 +50,7 @@ exports[`Avatar component should render only the initials 1`] = `
 
 exports[`Avatar component should render with className 1`] = `
 <div
-  className="marie-curie"
+  className="component marie-curie"
   style={
     Object {
       "height": "50px",
@@ -57,6 +59,7 @@ exports[`Avatar component should render with className 1`] = `
   }
 >
   <div
+    className="initials"
     style={
       Object {
         "fontSize": "20.833333333333336px",

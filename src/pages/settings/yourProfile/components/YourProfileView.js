@@ -4,7 +4,10 @@ import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
 import _noop from 'lodash/noop'
 import moment from 'moment-timezone'
-import {Alert, Form, FormGroup, FormText, Button, Label, Row, Col} from 'reactstrap'
+import {
+    Alert, Container,
+    Form, FormGroup, FormText, Button, Label, Row, Col
+} from 'reactstrap'
 
 import {AVAILABLE_LANGUAGES} from './../../../../config'
 
@@ -13,6 +16,7 @@ import RichField from '../../../common/forms/RichField'
 import InputField from '../../../common/forms/InputField'
 import Avatar from '../../../common/components/Avatar'
 import FileField from '../../../common/forms/FileField'
+import PageHeader from '../../../common/components/PageHeader'
 
 const defaultContent = {
     name: '',
@@ -90,165 +94,160 @@ class YourProfileView extends React.Component {
         const hasSignature = currentUser.get('signature_text') || currentUser.get('signature_html')
 
         return (
-            <div>
-                <h1>
-                    <i className="fa fa-fw fa-user blue mr-2"/>
-                    Your profile
-                </h1>
-
-                <p>
-                    Update your profile information.
-                </p>
-
-                <Form
-                    className="mb-4"
-                    onSubmit={this._handleSubmit}
-                >
-                    <Row>
-                        <Col md="9">
-                            <InputField
-                                type="text"
-                                name="name"
-                                label="Your name"
-                                placeholder="John Doe"
-                                required
-                                value={this.state.name}
-                                onChange={name => this.setState({name})}
-                            />
-                            <InputField
-                                type="email"
-                                name="email"
-                                label="Your email"
-                                placeholder="john.doe@acme.com"
-                                required
-                                value={this.state.email}
-                                onChange={email => this.setState({email})}
-                            />
-                            <InputField
-                                type="select"
-                                name="timezone"
-                                label="Timezone"
-                                value={this.state.timezone}
-                                onChange={timezone => this.setState({timezone})}
-                            >
-                                {
-                                    moment.tz.names().map((name, idx) => <option key={idx} value={name}>{name}</option>)
-                                }
-                            </InputField>
-                            <InputField
-                                type="select"
-                                name="language"
-                                label="Language"
-                                help="Changing the language also changes the time format"
-                                value={this.state.language}
-                                onChange={language => this.setState({language})}
-                            >
-                                {
-                                    AVAILABLE_LANGUAGES.map((locale, idx) => (
-                                        <option
-                                            key={idx}
-                                            value={locale.localeName}
-                                        >
-                                            {locale.displayName}
-                                        </option>
-                                    ))
-                                }
-                            </InputField>
-                            {hasSignature ?
-                                <RichField
-                                    name="signature"
-                                    label={[
-                                        <Label key="label">Signature</Label>,
-                                        <Alert key="alert" color="warning" className="font-weight-normal">
-                                            <i className="fa fa-info-circle"/>{' '}
-                                            Personal signatures are now in read-only and will be soon removed.{' '}
-                                            <strong>Signatures are now customizable in each email integration.</strong>
-                                        </Alert>
-                                    ]}
-                                    readOnly
-                                    value={{
-                                        text: currentUser.get('signature_text'),
-                                        html: currentUser.get('signature_html')
-                                    }}
-                                    onChange={_noop}
-                                />
-                                : null
-                            }
-                        </Col>
-                        <Col md="3" xs="12">
-
-                            <FormGroup>
-                                <Label className="control-label">
-                                    Profile picture
-                                </Label>
-
-                                <div>
-                                    <Avatar
-                                        email={this.state.email}
-                                        name={this.state.name}
-                                        size="100"
-                                        url={this.state.profilePictureUrl}
-                                    />
-                                </div>
-
-                                <br/>
-
-                                <FileField
-                                    returnFiles={false}
-                                    noPreview={true}
-                                    onChange={(data) => this.setState({profilePictureUrl: data})}
-                                    uploadType="profile_picture"
-                                />
-
-                                <FormText color="muted">
-                                    The image must be square and weight less than 500kB.<br/>
-                                    If you don't want to upload your picture here, but have a <a href="https://en.gravatar.com/" target="_blank" rel="noopener noreferrer">Gravatar</a>{' '}
-                                    account, we'll use it.
-                                </FormText>
-                            </FormGroup>
-                        </Col>
-                    </Row>
-
-                    <Button
-                        type="submit"
-                        color="primary"
-                        className={classnames({
-                            'btn-loading': loadingUser,
-                        })}
-                        disabled={loadingUser}
+            <div className="full-width">
+                <PageHeader title="Your profile"/>
+                    <Container fluid className="page-container">
+                    <p>Update your profile information.</p>
+                    <Form
+                        className="mb-4"
+                        onSubmit={this._handleSubmit}
                     >
-                        Save
-                    </Button>
-                </Form>
+                        <Row>
+                            <Col md="9">
+                                <InputField
+                                    type="text"
+                                    name="name"
+                                    label="Your name"
+                                    placeholder="John Doe"
+                                    required
+                                    value={this.state.name}
+                                    onChange={name => this.setState({name})}
+                                />
+                                <InputField
+                                    type="email"
+                                    name="email"
+                                    label="Your email"
+                                    placeholder="john.doe@acme.com"
+                                    required
+                                    value={this.state.email}
+                                    onChange={email => this.setState({email})}
+                                />
+                                <InputField
+                                    type="select"
+                                    name="timezone"
+                                    label="Timezone"
+                                    value={this.state.timezone}
+                                    onChange={timezone => this.setState({timezone})}
+                                >
+                                    {
+                                        moment.tz.names().map((name, idx) => <option key={idx} value={name}>{name}</option>)
+                                    }
+                                </InputField>
+                                <InputField
+                                    type="select"
+                                    name="language"
+                                    label="Language"
+                                    help="Changing the language also changes the time format"
+                                    value={this.state.language}
+                                    onChange={language => this.setState({language})}
+                                >
+                                    {
+                                        AVAILABLE_LANGUAGES.map((locale, idx) => (
+                                            <option
+                                                key={idx}
+                                                value={locale.localeName}
+                                            >
+                                                {locale.displayName}
+                                            </option>
+                                        ))
+                                    }
+                                </InputField>
+                                {hasSignature ?
+                                    <RichField
+                                        name="signature"
+                                        label={[
+                                            <Label key="label">Signature</Label>,
+                                            <Alert key="alert" color="warning" className="font-weight-normal">
+                                                <i className="fa fa-info-circle"/>{' '}
+                                                Personal signatures are now in read-only and will be soon removed.{' '}
+                                                <strong>Signatures are now customizable in each email integration.</strong>
+                                            </Alert>
+                                        ]}
+                                        readOnly
+                                        value={{
+                                            text: currentUser.get('signature_text'),
+                                            html: currentUser.get('signature_html')
+                                        }}
+                                        onChange={_noop}
+                                    />
+                                    : null
+                                }
+                            </Col>
+                            <Col md="3" xs="12">
 
-                <h4>
-                    Preferences
-                </h4>
+                                <FormGroup>
+                                    <Label className="control-label">
+                                        Profile picture
+                                    </Label>
 
-                <form onSubmit={this._savePreferences}>
-                    <FormGroup>
-                        <BooleanField
-                            name="show_macros"
-                            type="checkbox"
-                            label="Display macros by default on emails"
-                            value={this.state.preferences.get('show_macros')}
-                            onChange={value => this.setState({preferences: this.state.preferences.set('show_macros', value)})}
-                        />
-                    </FormGroup>
+                                    <div>
+                                        <Avatar
+                                            email={this.state.email}
+                                            name={this.state.name}
+                                            size="100"
+                                            url={this.state.profilePictureUrl}
+                                        />
+                                    </div>
 
-                    <div>
+                                    <br/>
+
+                                    <FileField
+                                        returnFiles={false}
+                                        noPreview={true}
+                                        onChange={(data) => this.setState({profilePictureUrl: data})}
+                                        uploadType="profile_picture"
+                                    />
+
+                                    <FormText color="muted">
+                                        The image must be square and weight less than 500kB.<br/>
+                                        If you don't want to upload your picture here, but have a <a href="https://en.gravatar.com/" target="_blank" rel="noopener noreferrer">Gravatar</a>{' '}
+                                        account, we'll use it.
+                                    </FormText>
+                                </FormGroup>
+                            </Col>
+                        </Row>
+
                         <Button
                             type="submit"
-                            color="primary"
+                            color="success"
                             className={classnames({
-                                'btn-loading': this.state.loadingPreferences,
+                                'btn-loading': loadingUser,
                             })}
-                            disabled={this.state.loadingPreferences}
+                            disabled={loadingUser}
                         >
-                            Save preferences
+                            Save your profile
                         </Button>
-                    </div>
-                </form>
+                    </Form>
+
+                    <h4>
+                        Preferences
+                    </h4>
+
+                    <form onSubmit={this._savePreferences}>
+                        <FormGroup>
+                            <BooleanField
+                                name="show_macros"
+                                type="checkbox"
+                                label="Display macros by default on emails"
+                                value={this.state.preferences.get('show_macros')}
+                                onChange={value => this.setState({preferences: this.state.preferences.set('show_macros', value)})}
+                            />
+                        </FormGroup>
+
+                        <div>
+                            <Button
+                                type="submit"
+                                color="success"
+                                className={classnames({
+                                    'btn-loading': this.state.loadingPreferences,
+                                })}
+                                disabled={this.state.loadingPreferences}
+                            >
+                                Save preferences
+                            </Button>
+                        </div>
+                    </form>
+                </Container>
             </div>
         )
     }

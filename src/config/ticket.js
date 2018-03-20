@@ -263,6 +263,7 @@ export const acceptsOnlyImages = (sourceType) => {
  * Return an icon for any message source type, message channel or integration type
  * @param sourceType
  * @returns {*}
+ * TODO replace sourceTypeToIcon with SourceIcon component, for material-icons transition.
  */
 export const sourceTypeToIcon = (sourceType) => {
     switch (sourceType) {

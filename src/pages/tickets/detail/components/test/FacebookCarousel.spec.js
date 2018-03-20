@@ -96,7 +96,7 @@ describe('FacebookCarousel component', () => {
 
         expect(mount(
             <FacebookCarousel data={data} />
-        ).find('CardBlock').length).toBe(2)
+        ).find('CardBody').length).toBe(2)
     })
 
     it('should have two buttons', () => {

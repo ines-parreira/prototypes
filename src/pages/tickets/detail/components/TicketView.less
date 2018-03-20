@@ -1,18 +1,21 @@
-@import "../../../../../css/new/mixins";
+@import '~css/new/colors';
+@import '~css/new/mixins';
 
 :local .page {
-  &:not(.history-displayed) {
-    display: flex;
-    flex-direction: column;
-    max-height: 100%;
-  }
+  display: flex;
+  flex-direction: column;
+  flex-grow: 100;
+  height: 100%;
+  position: relative;
+  max-height: 100%;
 
   .viewersBanner {
-    @padding-sides: 28px;
+    @padding-sides: 30px;
 
-    background-color: #f3a60b;
-    color: white;
+    background-color: @collisionColor;
+    color: @indigo;
     padding: 6px @padding-sides;
+    font-size: 14px;
     overflow: hidden;
     transition: all .1s linear;
 
@@ -24,14 +27,57 @@
   }
 
   .newMessageForm {
+    border: 1px solid @darkQuartz;
+    border-radius: 2px;
+    margin-left: -10px;
+    margin-right: -10px;
+
     @media @mobiles {
       margin: 0 -16px;
-
-      :global .TicketSubmitButtons {
-        margin-left: 16px;
-        margin-right: 16px;
-        text-align: right;
-      }
     }
+  }
+
+  .separator {
+    border-bottom: 1px solid @darkQuartz;
+  }
+
+  .ticketContent {
+    overflow: auto;
+    padding: 0 30px 18px;
+    flex-shrink: 1;
+
+    @media @mobiles {
+      padding: 16px;
+    }
+
+    /* extra bottom padding on touchscreen devices,
+    * for the onscreen keyboard
+    */
+    @media (pointer: coarse) {
+      padding-bottom: 14rem;
+    }
+
+    &.historyDisplayed {
+      flex-shrink: 0;
+    }
+  }
+
+  .historyButtonContainer {
+    padding: 0 10px 0 2em;
+  }
+
+  .headerContainer {
+    position: relative;
+    z-index: 2;
+    padding-top: .5em;
+
+    box-shadow: 0 2px 6px  rgba(21, 32, 101, .07);
+  }
+
+  .timeline {
+    padding: 12px 20px 0;
+    background: @quartz;
+
+    box-shadow: inset 0 -2px 2px rgba(21, 32, 101, .1);
   }
 }

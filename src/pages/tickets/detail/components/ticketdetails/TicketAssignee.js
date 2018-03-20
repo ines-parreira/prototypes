@@ -1,8 +1,9 @@
 import React, {PropTypes} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
+import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
-import {ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input} from 'reactstrap'
+import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Input} from 'reactstrap'
 import _isUndefined from 'lodash/isUndefined'
 
 import * as currentUserSelectors from '../../../../../state/currentUser/selectors'
@@ -10,6 +11,8 @@ import * as usersSelectors from '../../../../../state/users/selectors'
 
 import shortcutManager from '../../../../../services/shortcutManager'
 import {AgentLabel} from '../../../../common/utils/labels'
+
+import headerCss from '../TicketHeader.less'
 
 @connect((state) => {
     return {
@@ -24,10 +27,16 @@ export default class TicketAssignee extends React.Component {
         currentUser: ImmutablePropTypes.map.isRequired,
         direction: PropTypes.string.isRequired,
         setAgent: PropTypes.func.isRequired,
+        email: PropTypes.string,
+        profilePictureUrl: PropTypes.string,
+        className: PropTypes.string,
+        transparent: PropTypes.bool,
     }
 
     static defaultProps = {
         direction: 'left',
+        email: '',
+        transparent: false,
     }
 
     constructor(props) {
@@ -58,7 +67,7 @@ export default class TicketAssignee extends React.Component {
             },
             CLOSE_ASSIGNEE: {
                 key: 'esc',
-                action: () => this._toggle(false)
+                action: () => this._toggle(null, false)
             }
         })
     }
@@ -69,11 +78,15 @@ export default class TicketAssignee extends React.Component {
     }
 
     _selectAgent = (agent) => {
-        this.props.setAgent({id: agent.get('id'), name: agent.get('name')})
+        this.props.setAgent({
+            id: agent.get('id'),
+            name: agent.get('name'),
+            email: agent.get('email'),
+        })
         this.setState({search: ''})
     }
 
-    _toggle = (visible) => {
+    _toggle = (e, visible) => {
         const opens = !_isUndefined(visible) ? visible : !this.state.dropdownOpen
 
         this.setState({
@@ -146,7 +159,11 @@ export default class TicketAssignee extends React.Component {
                             type="button"
                             onClick={() => this._selectAgent(agent)}
                         >
-                            {agent.get('name')}
+                            <AgentLabel
+                                name={agent.get('name')}
+                                email={agent.get('email')}
+                                profilePictureUrl={agent.getIn(['meta', 'profile_picture_url'])}
+                            />
                         </DropdownItem>
                     )
                 })
@@ -168,7 +185,10 @@ export default class TicketAssignee extends React.Component {
                     type="button"
                     onClick={this._clearAgent}
                 >
-                    <span className="text-warning">Clear assignee</span>
+                    <i className="icon material-icons">
+                        clear
+                    </i>
+                    Clear assignee
                 </DropdownItem>
             )
         }
@@ -177,55 +197,71 @@ export default class TicketAssignee extends React.Component {
     }
 
     render() {
-        const {currentAssignee, direction} = this.props
+        const {currentAssignee, direction, email, profilePictureUrl, className, transparent} = this.props
 
         return (
-            <div className="d-inline-block">
-                <ButtonDropdown
-                    className="d-inline-block"
-                    isOpen={this.state.dropdownOpen}
-                    toggle={this._toggle}
+            <Dropdown
+                className={className}
+                isOpen={this.state.dropdownOpen}
+                toggle={this._toggle}
+            >
+                <DropdownToggle
+                    color="secondary"
+                    type="button"
+                    className={classnames(headerCss.headerButton, {
+                        'btn-transparent': transparent
+                    })}
+                    caret
                 >
-                    <DropdownToggle
-                        color="link"
-                        type="button"
-                        className="p-0"
+                    {
+                        currentAssignee ? (
+                                <AgentLabel
+                                    name={currentAssignee}
+                                    email={email}
+                                    profilePictureUrl={profilePictureUrl}
+                                    maxWidth="100"
+                                />
+                            ) : (
+                                <span>
+                                    Unassigned
+                                </span>
+                            )
+                    }
+                </DropdownToggle>
+                <DropdownMenu
+                    right={direction === 'right'}
+                    style={{width: '190px'}}
+                >
+                    <DropdownItem header>
+                        ASSIGN TO:
+                    </DropdownItem>
+
+                    <DropdownItem
+                        header
+                        className="dropdown-item-input"
                     >
                         {
-                            currentAssignee ? (
-                                    <AgentLabel name={currentAssignee} maxWidth="100" />
-                                ) : (
-                                    <span className="text-muted">
-                                        Unassigned
-                                    </span>
-                                )
-                        }
-                    </DropdownToggle>
-                    <DropdownMenu
-                        right={direction === 'right'}
-                        style={{width: '230px'}}
-                    >
-                        <DropdownItem
-                            header
-                            className="dropdown-item-input"
-                        >
-                            <div className="mb-2">Assign to:</div>
-                            {
-                                this.state.dropdownOpen && ( // rebuild input on each opening so "autoFocus" works
+                            // rebuild input on each opening so "autoFocus" works
+                            this.state.dropdownOpen && (
+                                <div className="input-icon input-icon-right">
+                                    <i className="icon material-icons md-2">
+                                        search
+                                    </i>
+
                                     <Input
                                         placeholder="Search agents..."
                                         autoFocus
                                         value={this.state.search}
                                         onChange={e => this._search(e.target.value)}
                                     />
-                                )
-                            }
-                        </DropdownItem>
-                        <DropdownItem divider />
-                        {this._displayMenu()}
-                    </DropdownMenu>
-                </ButtonDropdown>
-            </div>
+                                </div>
+                            )
+                        }
+                    </DropdownItem>
+                    <DropdownItem divider />
+                    {this._displayMenu()}
+                </DropdownMenu>
+            </Dropdown>
         )
     }
 }

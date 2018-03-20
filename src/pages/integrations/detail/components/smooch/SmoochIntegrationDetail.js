@@ -5,16 +5,19 @@ import classNames from 'classnames'
 import _isEmpty from 'lodash/isEmpty'
 import _pick from 'lodash/pick'
 import {
-    Form,
     Button,
     Breadcrumb,
     BreadcrumbItem,
+    Container,
+    Form,
 } from 'reactstrap'
 
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import InputField from '../../../../common/forms/InputField'
 
 import Loader from '../../../../common/components/Loader'
+import PageHeader from '../../../../common/components/PageHeader'
+import RealtimeMessagingIntegrationNavigation from '../../../common/RealtimeMessagingIntegrationNavigation'
 
 class SmoochIntegrationDetail extends React.Component {
     constructor(props) {
@@ -101,107 +104,111 @@ class SmoochIntegrationDetail extends React.Component {
         const ctaIsLoading = isSubmitting || authenticationRequired
 
         if (loading.get('integration')) {
-            return <Loader />
+            return <Loader/>
         }
 
         return (
-            <div>
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link to="/app/integrations">Integrations</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        <Link to="/app/integrations/smooch">Smooch</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active={!isUpdate}>
-                        {isUpdate ? integration.get('name') : 'Add'}
-                    </BreadcrumbItem>
-                    {
-                        isUpdate && (
-                            <BreadcrumbItem active>
-                                Overview
-                            </BreadcrumbItem>
-                        )
-                    }
-                </Breadcrumb>
-
-                <h1>{isUpdate ? integration.get('name') : 'Add integration'}</h1>
-
-                <Form onSubmit={this._handleSubmit}>
-                    {
-                        isUpdate && (
-                            <InputField
-                                type="text"
-                                name="name"
-                                label="Smooch app name"
-                                placeholder="The name of your Smooch app"
-                                value={this.state.name}
-                                onChange={(name) => this.setState({name})}
-                                required
-                            />
-                        )
-                    }
-
-                    <div>
-                        <Button
-                            type="submit"
-                            color="primary"
-                            className={classNames({
-                                'btn-loading': ctaIsLoading,
-                            })}
-                            disabled={ctaIsLoading}
-                        >
-                            {isUpdate ? 'Save changes' : 'Connect my Smooch'}
-                        </Button>
-
-                        {
-                            !authenticationRequired && isUpdate && isActive && (
-                                <Button
-                                    type="button"
-                                    color="warning"
-                                    outline
-                                    className={classNames('ml-2', {
-                                        'btn-loading': isSubmitting,
-                                    })}
-                                    disabled={isSubmitting}
-                                    onClick={() => actions.deactivateIntegration(integration.get('id'))}
-                                >
-                                    Deactivate
-                                </Button>
-                            )
-                        }
-
-                        {
-                            !authenticationRequired && isUpdate && !isActive && (
-                                <Button
-                                    type="button"
-                                    color="success"
-                                    className={classNames('ml-2', {
-                                        'btn-loading': isSubmitting,
-                                    })}
-                                    disabled={isSubmitting}
-                                    onClick={() => actions.activateIntegration(integration.get('id'))}
-                                >
-                                    Re-activate
-                                </Button>
-                            )
-                        }
-
+            <div className="full-width">
+                <PageHeader title={(
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations">Integrations</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations/smooch">Smooch</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active={!isUpdate}>
+                            {isUpdate ? integration.get('name') : 'Add'}
+                        </BreadcrumbItem>
                         {
                             isUpdate && (
-                                <ConfirmButton
-                                    className="pull-right"
-                                    color="danger"
-                                    outline
-                                    confirm={() => actions.deleteIntegration(integration)}
-                                    content="Are you sure you want to delete this integration?"
-                                >
-                                    Delete
-                                </ConfirmButton>
+                                <BreadcrumbItem active>
+                                    Overview
+                                </BreadcrumbItem>
                             )
                         }
-                    </div>
-                </Form>
+                    </Breadcrumb>
+                )}/>
+
+                <RealtimeMessagingIntegrationNavigation integration={integration}/>
+
+                <Container fluid className="page-container">
+                    <Form onSubmit={this._handleSubmit}>
+                        {
+                            isUpdate && (
+                                <InputField
+                                    type="text"
+                                    name="name"
+                                    label="Smooch app name"
+                                    placeholder="The name of your Smooch app"
+                                    value={this.state.name}
+                                    onChange={(name) => this.setState({name})}
+                                    required
+                                />
+                            )
+                        }
+
+                        <div>
+                            <Button
+                                type="submit"
+                                color="success"
+                                className={classNames({
+                                    'btn-loading': ctaIsLoading,
+                                })}
+                                disabled={ctaIsLoading}
+                            >
+                                {isUpdate ? 'Save changes' : 'Connect my Smooch'}
+                            </Button>
+
+                            {
+                                !authenticationRequired && isUpdate && isActive && (
+                                    <Button
+                                        type="button"
+                                        color="warning"
+                                        outline
+                                        className={classNames('ml-2', {
+                                            'btn-loading': isSubmitting,
+                                        })}
+                                        disabled={isSubmitting}
+                                        onClick={() => actions.deactivateIntegration(integration.get('id'))}
+                                    >
+                                        Deactivate
+                                    </Button>
+                                )
+                            }
+
+                            {
+                                !authenticationRequired && isUpdate && !isActive && (
+                                    <Button
+                                        type="button"
+                                        color="success"
+                                        className={classNames('ml-2', {
+                                            'btn-loading': isSubmitting,
+                                        })}
+                                        disabled={isSubmitting}
+                                        onClick={() => actions.activateIntegration(integration.get('id'))}
+                                    >
+                                        Re-activate
+                                    </Button>
+                                )
+                            }
+
+                            {
+                                isUpdate && (
+                                    <ConfirmButton
+                                        className="float-right"
+                                        color="danger"
+                                        outline
+                                        confirm={() => actions.deleteIntegration(integration)}
+                                        content="Are you sure you want to delete this integration?"
+                                    >
+                                        Delete
+                                    </ConfirmButton>
+                                )
+                            }
+                        </div>
+                    </Form>
+                </Container>
             </div>
         )
     }

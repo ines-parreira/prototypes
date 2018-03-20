@@ -38,10 +38,10 @@ describe('TicketMessageActions component', () => {
     })
 
     it('should display actions titles', () => {
-        const action1Button = component.find('.ticket-message-actions-item button').at(0)
+        const action1Button = component.find('button').at(0)
         expect(action1Button.text()).toBe('action1')
 
-        const action3Button = component.find('.ticket-message-actions-item button').at(2)
+        const action3Button = component.find('button').at(2)
         expect(action3Button).toIncludeText('action3')
     })
 })

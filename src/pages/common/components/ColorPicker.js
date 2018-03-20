@@ -3,7 +3,7 @@ import _uniqueId from 'lodash/uniqueId'
 import {
     Button,
     Popover,
-    PopoverContent,
+    PopoverBody,
     Input,
 } from 'reactstrap'
 
@@ -86,7 +86,7 @@ export default class ColorPicker extends Component {
                     target={this.uniqueId}
                     toggle={this._togglePopup}
                 >
-                    <PopoverContent className={css['popover-content']}>
+                    <PopoverBody className={css['popover-content']}>
                         <div className={css.popup}>
                             {
                                 colors.map((color) => {
@@ -103,14 +103,14 @@ export default class ColorPicker extends Component {
                                 })
                             }
                             <Input
-                                size="sm"
+                                bsSize="sm"
                                 className={css.input}
                                 value={value}
                                 onChange={this._handleChange}
                                 placeholder="ex: #eeeeee"
                             />
                         </div>
-                    </PopoverContent>
+                    </PopoverBody>
                 </Popover>
             </div>
         )

@@ -1,0 +1,73 @@
+@import '~css/new/colors';
+@import '~css/new/util';
+
+:local .component {
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 0;
+
+  :global(.card-body),
+  :global(.card-footer) {
+    padding-left: 28px;
+    padding-right: 28px;
+    background-color: @quartz;
+  }
+
+  :global(.card-footer) {
+    border-width: 1px 0;
+    border-style: solid;
+    border-color: @darkQuartz;
+  }
+
+  .subtitle {
+    color: @indigo;
+    font-weight: bold;
+    font-size: 11px;
+    letter-spacing: .6px;
+  }
+}
+
+.filter-topbar-content,
+.filter-topbar-actions {
+  padding: .8em 1.6em;
+}
+
+.filter-topbar-content {
+  position: relative;
+}
+
+.view-filters-item {
+  .clearfix;
+}
+
+.CallExpression {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 12px;
+
+  > * {
+    margin-right: 8px;
+  }
+
+  .remove {
+    opacity: 0;
+    transition: all .2s linear;
+  }
+
+  &:hover > .remove {
+    opacity: 1;
+  }
+}
+
+// hide the last operator label
+.filter-topbar-content > .view-filters-item > .view-filters-item .OperatorLabel {
+  cursor: default !important;
+}
+
+.filter-topbar-content > .view-filters-item > .view-filters-item:last-child .OperatorLabel {
+  display: none;
+}
+

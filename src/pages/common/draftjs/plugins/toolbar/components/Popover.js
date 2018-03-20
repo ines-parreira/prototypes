@@ -71,14 +71,19 @@ class Popover extends React.Component {
 
         return (
             <span className={css['popover-wrapper']}>
-                <i
-                    onMouseUp={this._open}
-                    title={this.props.name}
-                    className={classnames('fa fa-fw', this.props.icon, css.button, {
+                <button
+                    type="button"
+                    className={classnames(css.button, 'btn btn-secondary btn-transparent', {
                         [css.active]: isActive,
                         [css.disabled]: isDisabled,
                     })}
-                />
+                    onMouseUp={this._open}
+                    title={this.props.name}
+                >
+                    <i className="material-icons">
+                        {this.props.icon}
+                    </i>
+                </button>
                 <div
                     onClick={this._onClick}
                     className={classnames(className, css.popover, {

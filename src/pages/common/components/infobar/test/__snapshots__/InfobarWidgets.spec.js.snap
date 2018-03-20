@@ -242,7 +242,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
       }
     >
       <div
-        className="widgets-list"
+        className="widgets-list component"
       >
         <DragWrapper
           actions={
@@ -513,18 +513,18 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                   }
                 >
                   <Card
-                    className="wrapper transparent draggable"
+                    className="component wrapper transparent draggable"
                     tag="div"
                   >
                     <div
-                      className="wrapper transparent draggable card"
+                      className="component wrapper transparent draggable card"
                     >
-                      <CardBlock
+                      <CardBody
                         className="content"
                         tag="div"
                       >
                         <div
-                          className="content card-block"
+                          className="content card-body"
                         >
                           <DragWrapper
                             actions={
@@ -748,30 +748,32 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                   }
                                 >
                                   <Card
-                                    className="can-drop draggable"
+                                    className="component can-drop draggable"
                                     data-key=""
                                     tag="div"
                                   >
                                     <div
-                                      className="can-drop draggable card"
+                                      className="component can-drop draggable card"
                                       data-key=""
                                     >
-                                      <CardBlock
+                                      <CardBody
                                         className="header clearfix"
                                         id="card-widget-1"
                                         tag="div"
                                       >
                                         <div
-                                          className="header clearfix card-block"
+                                          className="header clearfix card-body"
                                           id="card-widget-1"
                                         >
                                           <span
-                                            className="dropdown-icon clickable"
+                                            className="dropdown-icon clickable text-faded"
                                             onClick={[Function]}
                                           >
                                             <i
-                                              className="fa fa-fw fa-caret-down"
-                                            />
+                                              className="material-icons md-2"
+                                            >
+                                              keyboard_arrow_up
+                                            </i>
                                           </span>
                                           <span>
                                             Foo container
@@ -780,19 +782,26 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                             className="tools"
                                           />
                                           <Popover
+                                            delay={
+                                              Object {
+                                                "hide": 0,
+                                                "show": 0,
+                                              }
+                                            }
                                             isOpen={false}
                                             placement="left"
+                                            placementPrefix="bs-popover"
                                             target="card-widget-1"
                                             toggle={[Function]}
                                           />
                                         </div>
-                                      </CardBlock>
-                                      <CardBlock
+                                      </CardBody>
+                                      <CardBody
                                         className="content"
                                         tag="div"
                                       >
                                         <div
-                                          className="content card-block"
+                                          className="content card-body"
                                         >
                                           <DragWrapper
                                             actions={
@@ -968,8 +977,15 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                                       1
                                                     </span>
                                                     <Popover
+                                                      delay={
+                                                        Object {
+                                                          "hide": 0,
+                                                          "show": 0,
+                                                        }
+                                                      }
                                                       isOpen={false}
                                                       placement="left"
+                                                      placementPrefix="bs-popover"
                                                       target="field-widget-2"
                                                       toggle={[Function]}
                                                     />
@@ -979,7 +995,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                             </div>
                                           </DragWrapper>
                                         </div>
-                                      </CardBlock>
+                                      </CardBody>
                                     </div>
                                   </Card>
                                 </CardInfobarWidget>
@@ -987,7 +1003,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                             </div>
                           </DragWrapper>
                         </div>
-                      </CardBlock>
+                      </CardBody>
                     </div>
                   </Card>
                 </WrapperInfobarWidget>
@@ -1239,18 +1255,18 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                   }
                 >
                   <Card
-                    className="wrapper transparent draggable"
+                    className="component wrapper transparent draggable"
                     tag="div"
                   >
                     <div
-                      className="wrapper transparent draggable card"
+                      className="component wrapper transparent draggable card"
                     >
-                      <CardBlock
+                      <CardBody
                         className="content"
                         tag="div"
                       >
                         <div
-                          className="content card-block"
+                          className="content card-body"
                         >
                           <DragWrapper
                             actions={
@@ -1472,30 +1488,32 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                   }
                                 >
                                   <Card
-                                    className="can-drop draggable"
+                                    className="component can-drop draggable"
                                     data-key=""
                                     tag="div"
                                   >
                                     <div
-                                      className="can-drop draggable card"
+                                      className="component can-drop draggable card"
                                       data-key=""
                                     >
-                                      <CardBlock
+                                      <CardBody
                                         className="header clearfix"
                                         id="card-widget-3"
                                         tag="div"
                                       >
                                         <div
-                                          className="header clearfix card-block"
+                                          className="header clearfix card-body"
                                           id="card-widget-3"
                                         >
                                           <span
-                                            className="dropdown-icon clickable"
+                                            className="dropdown-icon clickable text-faded"
                                             onClick={[Function]}
                                           >
                                             <i
-                                              className="fa fa-fw fa-caret-down"
-                                            />
+                                              className="material-icons md-2"
+                                            >
+                                              keyboard_arrow_up
+                                            </i>
                                           </span>
                                           <span>
                                             Bar container
@@ -1504,19 +1522,26 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                             className="tools"
                                           />
                                           <Popover
+                                            delay={
+                                              Object {
+                                                "hide": 0,
+                                                "show": 0,
+                                              }
+                                            }
                                             isOpen={false}
                                             placement="left"
+                                            placementPrefix="bs-popover"
                                             target="card-widget-3"
                                             toggle={[Function]}
                                           />
                                         </div>
-                                      </CardBlock>
-                                      <CardBlock
+                                      </CardBody>
+                                      <CardBody
                                         className="content"
                                         tag="div"
                                       >
                                         <div
-                                          className="content card-block"
+                                          className="content card-body"
                                         >
                                           <DragWrapper
                                             actions={
@@ -1690,8 +1715,15 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                                       2
                                                     </span>
                                                     <Popover
+                                                      delay={
+                                                        Object {
+                                                          "hide": 0,
+                                                          "show": 0,
+                                                        }
+                                                      }
                                                       isOpen={false}
                                                       placement="left"
+                                                      placementPrefix="bs-popover"
                                                       target="field-widget-4"
                                                       toggle={[Function]}
                                                     />
@@ -1701,7 +1733,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                             </div>
                                           </DragWrapper>
                                         </div>
-                                      </CardBlock>
+                                      </CardBody>
                                     </div>
                                   </Card>
                                 </CardInfobarWidget>
@@ -1709,7 +1741,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                             </div>
                           </DragWrapper>
                         </div>
-                      </CardBlock>
+                      </CardBody>
                     </div>
                   </Card>
                 </WrapperInfobarWidget>
@@ -1965,7 +1997,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
       }
     >
       <div
-        className="widgets-list editing"
+        className="widgets-list component editing"
       >
         <DragWrapper
           actions={
@@ -2263,35 +2295,37 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                     }
                   >
                     <Card
-                      className="wrapper transparent draggable"
+                      className="component wrapper transparent draggable"
                       tag="div"
                     >
                       <div
-                        className="wrapper transparent draggable card"
+                        className="component wrapper transparent draggable card"
                       >
-                        <CardBlock
+                        <CardBody
                           className="header clearfix"
                           tag="div"
                         >
                           <div
-                            className="header clearfix card-block"
+                            className="header clearfix card-body"
                           >
                             <span
                               className="tools"
                             >
                               <i
-                                className="fa fa-fw fa-close text-danger clickable"
+                                className="material-icons text-danger clickable"
                                 onClick={[Function]}
-                              />
+                              >
+                                close
+                              </i>
                             </span>
                           </div>
-                        </CardBlock>
-                        <CardBlock
+                        </CardBody>
+                        <CardBody
                           className="content"
                           tag="div"
                         >
                           <div
-                            className="content card-block"
+                            className="content card-body"
                           >
                             <DragWrapper
                               actions={
@@ -2542,21 +2576,21 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                       }
                                     >
                                       <Card
-                                        className="can-drop draggable"
+                                        className="component can-drop draggable"
                                         data-key=""
                                         tag="div"
                                       >
                                         <div
-                                          className="can-drop draggable card"
+                                          className="component can-drop draggable card"
                                           data-key=""
                                         >
-                                          <CardBlock
+                                          <CardBody
                                             className="header clearfix"
                                             id="card-widget-5"
                                             tag="div"
                                           >
                                             <div
-                                              className="header clearfix card-block"
+                                              className="header clearfix card-body"
                                               id="card-widget-5"
                                             >
                                               <span>
@@ -2567,29 +2601,40 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                               >
                                                 <span>
                                                   <i
-                                                    className="fa fa-fw fa-cog text-faded clickable"
+                                                    className="material-icons text-faded clickable"
                                                     onClick={[Function]}
-                                                  />
+                                                  >
+                                                    settings
+                                                  </i>
                                                   <i
-                                                    className="fa fa-fw fa-close text-danger clickable"
+                                                    className="material-icons text-danger clickable"
                                                     onClick={[Function]}
-                                                  />
+                                                  >
+                                                    close
+                                                  </i>
                                                 </span>
                                               </span>
                                               <Popover
+                                                delay={
+                                                  Object {
+                                                    "hide": 0,
+                                                    "show": 0,
+                                                  }
+                                                }
                                                 isOpen={false}
                                                 placement="left"
+                                                placementPrefix="bs-popover"
                                                 target="card-widget-5"
                                                 toggle={[Function]}
                                               />
                                             </div>
-                                          </CardBlock>
-                                          <CardBlock
+                                          </CardBody>
+                                          <CardBody
                                             className="content"
                                             tag="div"
                                           >
                                             <div
-                                              className="content card-block"
+                                              className="content card-body"
                                             >
                                               <DragWrapper
                                                 actions={
@@ -2795,13 +2840,22 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                             className="tools"
                                                           >
                                                             <i
-                                                              className="fa fa-fw fa-close text-danger clickable"
+                                                              className="material-icons text-danger clickable"
                                                               onClick={[Function]}
-                                                            />
+                                                            >
+                                                              close
+                                                            </i>
                                                           </span>
                                                           <Popover
+                                                            delay={
+                                                              Object {
+                                                                "hide": 0,
+                                                                "show": 0,
+                                                              }
+                                                            }
                                                             isOpen={false}
                                                             placement="left"
+                                                            placementPrefix="bs-popover"
                                                             target="field-widget-6"
                                                             toggle={[Function]}
                                                           />
@@ -2812,7 +2866,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                 </ReactSortable>
                                               </DragWrapper>
                                             </div>
-                                          </CardBlock>
+                                          </CardBody>
                                         </div>
                                       </Card>
                                     </CardInfobarWidget>
@@ -2821,7 +2875,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                               </ReactSortable>
                             </DragWrapper>
                           </div>
-                        </CardBlock>
+                        </CardBody>
                       </div>
                     </Card>
                   </WrapperInfobarWidget>
@@ -3073,35 +3127,37 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                     }
                   >
                     <Card
-                      className="wrapper transparent draggable"
+                      className="component wrapper transparent draggable"
                       tag="div"
                     >
                       <div
-                        className="wrapper transparent draggable card"
+                        className="component wrapper transparent draggable card"
                       >
-                        <CardBlock
+                        <CardBody
                           className="header clearfix"
                           tag="div"
                         >
                           <div
-                            className="header clearfix card-block"
+                            className="header clearfix card-body"
                           >
                             <span
                               className="tools"
                             >
                               <i
-                                className="fa fa-fw fa-close text-danger clickable"
+                                className="material-icons text-danger clickable"
                                 onClick={[Function]}
-                              />
+                              >
+                                close
+                              </i>
                             </span>
                           </div>
-                        </CardBlock>
-                        <CardBlock
+                        </CardBody>
+                        <CardBody
                           className="content"
                           tag="div"
                         >
                           <div
-                            className="content card-block"
+                            className="content card-body"
                           >
                             <DragWrapper
                               actions={
@@ -3350,21 +3406,21 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                       }
                                     >
                                       <Card
-                                        className="can-drop draggable"
+                                        className="component can-drop draggable"
                                         data-key=""
                                         tag="div"
                                       >
                                         <div
-                                          className="can-drop draggable card"
+                                          className="component can-drop draggable card"
                                           data-key=""
                                         >
-                                          <CardBlock
+                                          <CardBody
                                             className="header clearfix"
                                             id="card-widget-7"
                                             tag="div"
                                           >
                                             <div
-                                              className="header clearfix card-block"
+                                              className="header clearfix card-body"
                                               id="card-widget-7"
                                             >
                                               <span>
@@ -3375,29 +3431,40 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                               >
                                                 <span>
                                                   <i
-                                                    className="fa fa-fw fa-cog text-faded clickable"
+                                                    className="material-icons text-faded clickable"
                                                     onClick={[Function]}
-                                                  />
+                                                  >
+                                                    settings
+                                                  </i>
                                                   <i
-                                                    className="fa fa-fw fa-close text-danger clickable"
+                                                    className="material-icons text-danger clickable"
                                                     onClick={[Function]}
-                                                  />
+                                                  >
+                                                    close
+                                                  </i>
                                                 </span>
                                               </span>
                                               <Popover
+                                                delay={
+                                                  Object {
+                                                    "hide": 0,
+                                                    "show": 0,
+                                                  }
+                                                }
                                                 isOpen={false}
                                                 placement="left"
+                                                placementPrefix="bs-popover"
                                                 target="card-widget-7"
                                                 toggle={[Function]}
                                               />
                                             </div>
-                                          </CardBlock>
-                                          <CardBlock
+                                          </CardBody>
+                                          <CardBody
                                             className="content"
                                             tag="div"
                                           >
                                             <div
-                                              className="content card-block"
+                                              className="content card-body"
                                             >
                                               <DragWrapper
                                                 actions={
@@ -3601,13 +3668,22 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                             className="tools"
                                                           >
                                                             <i
-                                                              className="fa fa-fw fa-close text-danger clickable"
+                                                              className="material-icons text-danger clickable"
                                                               onClick={[Function]}
-                                                            />
+                                                            >
+                                                              close
+                                                            </i>
                                                           </span>
                                                           <Popover
+                                                            delay={
+                                                              Object {
+                                                                "hide": 0,
+                                                                "show": 0,
+                                                              }
+                                                            }
                                                             isOpen={false}
                                                             placement="left"
+                                                            placementPrefix="bs-popover"
                                                             target="field-widget-8"
                                                             toggle={[Function]}
                                                           />
@@ -3618,7 +3694,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                 </ReactSortable>
                                               </DragWrapper>
                                             </div>
-                                          </CardBlock>
+                                          </CardBody>
                                         </div>
                                       </Card>
                                     </CardInfobarWidget>
@@ -3627,7 +3703,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                               </ReactSortable>
                             </DragWrapper>
                           </div>
-                        </CardBlock>
+                        </CardBody>
                       </div>
                     </Card>
                   </WrapperInfobarWidget>
@@ -3800,34 +3876,36 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                   }
                 >
                   <Card
-                    className="wrapper transparent draggable"
+                    className="component placeholder wrapper transparent draggable"
                     tag="div"
                   >
                     <div
-                      className="wrapper transparent draggable card"
+                      className="component placeholder wrapper transparent draggable card"
                     >
-                      <CardBlock
+                      <CardBody
                         className="clearfix"
                         tag="div"
                       >
                         <div
-                          className="clearfix card-block"
+                          className="clearfix card-body"
                         >
                           <span
                             className="tools"
                           >
                             <i
-                              className="fa fa-fw fa-close text-danger clickable"
+                              className="material-icons text-danger clickable"
                               onClick={[Function]}
-                            />
+                            >
+                              close
+                            </i>
                           </span>
                           <h5
-                            className=""
+                            className="title"
                           >
                             Widget for Recharge data
                           </h5>
                         </div>
-                      </CardBlock>
+                      </CardBody>
                     </div>
                   </Card>
                 </PlaceholderWidget>

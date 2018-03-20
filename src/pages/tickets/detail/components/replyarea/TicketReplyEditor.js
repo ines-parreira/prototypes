@@ -45,6 +45,8 @@ import type {attachmentType} from '../../../../../types'
 import type {agentsType} from '../../../../../state/agents/types'
 import type {Node} from 'react'
 
+import css from './TicketReplyEditor.less'
+
 type richAreaType = {
     state: {
         editorState: EditorState
@@ -306,25 +308,26 @@ export class TicketReplyEditor extends React.Component<Props, State> {
             suggestions: agents
         }
 
+        const attachmentLoading = newMessage.getIn(['_internal', 'loading', 'addAttachment'])
+
         const toolbarProps: toolbarPropsType = {
             buttons: [
                 <div className="attachment" key="attachments">
                     <label
                         htmlFor="attachments-input"
                         className="m-0"
+                        title="Add attachment"
                     >
                         {
-                            newMessage.getIn(['_internal', 'loading', 'addAttachment'])
+                            attachmentLoading
                                 ? (
-                                    <i className="fa fa-fw fa-circle-o-notch fa-spin"/>
+                                    <i className="icon material-icons md-spin">
+                                        refresh
+                                    </i>
                                 ) : (
-                                    <i
-                                        className={classnames('fa fa-fw', {
-                                            'fa-paperclip': !newMessageAcceptsOnlyImages,
-                                            'fa-file-image-o': newMessageAcceptsOnlyImages,
-                                        })}
-                                        title="Add attachment"
-                                    />
+                                    <i className="material-icons">
+                                        {newMessageAcceptsOnlyImages ? 'insert_photo' : 'attach_file'}
+                                    </i>
                                 )
                         }
                     </label>
@@ -366,7 +369,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
         const isAlert = cantWriteTextBecauseOfAttachments
 
         return (
-            <div className={classnames('TicketReplyEditor', {'is-alert': isAlert})}>
+            <div className={classnames(css.component, {[css.isAlert]: isAlert})}>
                 <RichField
                     ref={
                         // $FlowFixMe

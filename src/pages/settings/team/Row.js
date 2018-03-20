@@ -19,7 +19,7 @@ export default class Row extends React.Component {
                 <td className="link-full-td">
                     <Link to={editLink}>
                         <div>
-                            <b className="hidden-sm-down mr-2">{agent.get('name')} {' '}</b>
+                            <b className="d-none d-md-inline-block mr-2">{agent.get('name')} {' '}</b>
                             <span className="text-faded">
                                 {agent.get('email')}
                             </span>

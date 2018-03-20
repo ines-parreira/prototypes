@@ -22,13 +22,13 @@ const macrosInitial = fromJS({
     items: []
 })
 
-export default (state: Map<*,*> = macrosInitial, action: actionType): Map<*,*> => {
+export default (state: Map<*, *> = macrosInitial, action: actionType): Map<*, *> => {
     switch (action.type) {
-        case constants.CLOSE_MODAL:
-            return state.set('isModalOpen', false)
-
         case constants.OPEN_MODAL:
             return state.set('isModalOpen', true)
+
+        case constants.CLOSE_MODAL:
+            return state.set('isModalOpen', false)
 
         case constants.CREATE_MACRO_SUCCESS:
             search.add(action.resp)

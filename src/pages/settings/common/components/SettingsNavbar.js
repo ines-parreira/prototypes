@@ -21,6 +21,7 @@ export default class SettingsNavbar extends React.Component {
 
         const categories = [{
             name: 'You',
+            icon: 'person',
             links: [{
                 to: 'profile',
                 text: 'Your profile'
@@ -30,14 +31,20 @@ export default class SettingsNavbar extends React.Component {
             }, {
                 to: 'api',
                 text: 'REST API',
-                className: 'hidden-sm-down',
+                className: 'd-none d-md-block',
             }]
         }, {
             name: 'General',
+            icon: 'settings',
             links: [{
+                requiredRole: 'admin',
+                to: 'integrations',
+                text: 'Integrations',
+                className: 'd-none d-md-block',
+            }, {
                 to: 'rules',
                 text: 'Rules',
-                className: 'hidden-sm-down',
+                className: 'd-none d-md-block',
             }, {
                 requiredRole: 'admin',
                 to: 'team',
@@ -45,18 +52,18 @@ export default class SettingsNavbar extends React.Component {
             }, {
                 requiredRole: 'admin',
                 to: 'billing',
-                text: 'Billing',
-                className: 'hidden-sm-down',
+                text: 'Billing & Usage',
+                className: 'd-none d-md-block',
             }, {
                 requiredRole: 'admin',
                 to: 'manage-tags',
                 text: 'Tags',
-                className: 'hidden-sm-down',
+                className: 'd-none d-md-block',
             }, {
                 requiredRole: 'admin',
                 to: 'import-data',
                 text: 'Import data',
-                className: 'hidden-sm-down'
+                className: 'd-none d-md-block'
             }]
         }]
 
@@ -66,19 +73,19 @@ export default class SettingsNavbar extends React.Component {
                 requiredRole: 'admin',
                 to: 'requests',
                 text: 'Requests',
-                className: 'hidden-sm-down',
+                className: 'd-none d-md-block hidden-sm-down',
             })
         }
 
         return (
             <div>
                 {
-                    categories.map(({name, links}, index) => (
+                    categories.map(({name, icon, links}, index) => (
                         <div
                             className="item"
                             key={index}
                         >
-                            <h4>{name}</h4>
+                            <h4><i className="material-icons">{icon}</i> {name}</h4>
 
                             <div className="menu">
                                 {

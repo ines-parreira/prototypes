@@ -53,7 +53,8 @@ type State = {
 export default class RichField extends InputField<Props, State> {
     static defaultProps = {
         allowExternalChanges: false,
-        signature: false
+        signature: false,
+        type: 'text',
     }
 
     constructor(props: Props) {

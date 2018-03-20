@@ -37,7 +37,7 @@ describe('TicketAttachments component', () => {
         })
 
         it('should display all attachments', () => {
-            expect(component.find('.attachments-item').length).toBe(attachments.size)
+            expect(component.find('.item').length).toBe(attachments.size)
         })
 
         it('should set a preview on the first attachment', () => {
@@ -52,7 +52,7 @@ describe('TicketAttachments component', () => {
         })
 
         it('should not show the remove button', () => {
-            expect(component.find('.attachments-item-remove')).not.toBePresent()
+            expect(component.find('.itemRemove')).not.toBePresent()
         })
     })
 
@@ -70,7 +70,7 @@ describe('TicketAttachments component', () => {
         })
 
         it('should show the remove button', () => {
-            expect(component.find('.attachments-item-remove')).toBePresent()
+            expect(component.find('.itemRemove')).toBePresent()
         })
     })
 
@@ -107,7 +107,7 @@ describe('TicketAttachments component', () => {
         })
 
         it('image should open the lightbox', () => {
-            component.find('.attachments-item').at(0).simulate('click', {
+            component.find('.item').at(0).simulate('click', {
                 preventDefault: _noop
             })
 
@@ -115,7 +115,7 @@ describe('TicketAttachments component', () => {
         })
 
         it('not-image should not open the lightbox', () => {
-            component.find('.attachments-item').at(1).simulate('click', {
+            component.find('.item').at(1).simulate('click', {
                 preventDefault: _noop
             })
 

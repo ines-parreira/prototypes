@@ -5,9 +5,11 @@ exports[`TicketSnooze should render an icon with a tooltip 1`] = `
   className="d-inline-block mr-3"
 >
   <i
-    className="fa fa-lg fa-clock-o text-primary"
+    className="icon material-icons md-2"
     id="ticket-header-snooze-icon"
-  />
+  >
+    snooze
+  </i>
   <Tooltip
     delay={0}
     placement="top"

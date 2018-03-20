@@ -80,6 +80,7 @@ exports[`ast Widget should render MultiSelectField (containsAll operator) 1`] = 
   style={
     Object {
       "display": "inline-block",
+      "paddingBottom": "2px",
       "verticalAlign": "top",
     }
   }

@@ -2,596 +2,590 @@
 
 exports[`BillingPlans component should display a custom plan 1`] = `
 <div
-  className="mb-4"
+  className="full-width"
 >
-  <h4>
-    Plans
-  </h4>
-  <Row
-    className="mb-3"
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            className="section"
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/billing"
+          >
+            Billing & Usage
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          Plans
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
     tag="div"
   >
-    <Col
-      sm="12"
+    <CardDeck
+      className="mb-5"
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
+    >
+      <Plan
+        callToAction={null}
+        features={null}
+        isCurrentPlan={true}
+        isFeatured={false}
+        isTrialing={false}
+        isUpdating={false}
+        onClick={[Function]}
+        plan={
+          Immutable.Map {
+            public: true,
+            name: "custom plan",
+            free_tickets: 100,
+            currencySign: "$",
+            integrations: 10,
+          }
+        }
+        showFooter={true}
+      />
+    </CardDeck>
+    <div
+      style={
+        Object {
+          "maxWidth": 900,
+        }
       }
     >
-      <CardDeck
+      <h3
+        className="mb-4"
+      >
+        Frequently asked questions
+      </h3>
+      <Row
+        className="faq"
         tag="div"
       >
-        <Card
-          className="text-center"
-          outline={true}
+        <Col
+          sm={6}
           tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
         >
-          <CardBlock
-            tag="div"
-          >
-            <CardTitle
-              tag="h4"
-            >
-              custom plan
-            </CardTitle>
-            <div
-              className="mb-4 mt-3"
-            >
-              <h3>
-                <em>
-                  $
-                </em>
-              </h3>
-              per 
-            </div>
-            <div>
-              <strong>
-                Includes:
-              </strong>
-            </div>
-            <div>
-              Unlimited agents
-            </div>
-            <div>
-              <strong>
-                100
-              </strong>
-               tickets included
-            </div>
-            <div>
-              <span>
-                <strong>
-                  + 
-                  $
-                  NaN
-                </strong>
-                 per 
-                100
-                 tickets 
-              </span>
-              <a
-                id="additional-tickets-tooltip-custom"
-              >
-                <i
-                  className="fa fa-question-circle"
-                />
-              </a>
-              <Tooltip
-                delay={0}
-                target="additional-tickets-tooltip-custom"
-              >
-                If you reply to more tickets than included in your plan this is the additional cost per 100 tickets.
-              </Tooltip>
-            </div>
-            <div
-              className="mb-3"
-            >
-              <strong>
-                10
-              </strong>
-               integrations
-            </div>
-            <Button
-              className=""
-              color="secondary"
-              disabled={true}
-              onClick={[Function]}
-              outline={true}
-              tag="button"
-            >
-              Your current plan
-            </Button>
-          </CardBlock>
-        </Card>
-      </CardDeck>
-    </Col>
-  </Row>
-  <div>
-    <p>
-      <strong>
-        Are all tickets counted? What about spam?
-      </strong>
-    </p>
-    We bill for a ticket only if your team uses Gorgias to send replies to customers. Specifically we bill you if the ticket:
-    <ul>
-      <li>
-        Has at least 1 reply sent using the helpdesk by a team member (agent).
-      </li>
-      <li>
-        Or is sent using an automatic reply (using the Rules).
-      </li>
-    </ul>
-    <p>
-      <strong>
-        Note:
-      </strong>
-       Tickets that are imported into Gorgias from Facebook, Gmail, etc.. are not billed.
-    </p>
-  </div>
+          <dl>
+            <dt>
+              What's a ticket?
+            </dt>
+            <dd>
+              A ticket is a conversation with a customer, on any channel. It can be on email, phone, chat, etc.
+              <br />
+              Usage only includes tickets that contain a response sent from Gorgias.
+            </dd>
+            <dt>
+              Do I need to pay for all tickets received?
+            </dt>
+            <dd>
+              No! You only pay for tickets that contain a response sent from Gorgias.
+            </dd>
+            <dt>
+              Do I need to pay extra for chat?
+            </dt>
+            <dd>
+              No, all channels are included. You can connect as many chat widgets, facebook pages, and email addresses as you want.
+            </dd>
+          </dl>
+        </Col>
+        <Col
+          sm={6}
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <dl>
+            <dt>
+              I don’t know how many tickets I get per month. Can you help?
+            </dt>
+            <dd>
+              Sure. You probably receive about 1,000 tickets for each agent in your team. So if you’re paying for 5 seats with your current helpdesk, you’d pay for 5,000 tickets with Gorgias.
+            </dd>
+            <dt>
+              What level of support is included in my plan?
+            </dt>
+            <dd>
+              We provide all our customers with the same level of support. We're available 9am-7pm PST, over live chat & email.
+            </dd>
+            <dt>
+              I need help integrating an app with Gorgias. Is that included in my plan?
+            </dt>
+            <dd>
+              Yes. We're happy to help you add your own integrations at no additional cost.
+            </dd>
+          </dl>
+        </Col>
+      </Row>
+    </div>
+  </Container>
 </div>
 `;
 
 exports[`BillingPlans component should display matching current plan 1`] = `
 <div
-  className="mb-4"
+  className="full-width"
 >
-  <h4>
-    Plans
-  </h4>
-  <Row
-    className="mb-3"
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            className="section"
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/billing"
+          >
+            Billing & Usage
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          Plans
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
     tag="div"
   >
-    <Col
-      sm="12"
+    <CardDeck
+      className="mb-5"
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
+    >
+      <Plan
+        callToAction={null}
+        features={null}
+        isCurrentPlan={true}
+        isFeatured={false}
+        isTrialing={false}
+        isUpdating={false}
+        onClick={[Function]}
+        plan={
+          Immutable.Map {
+            public: true,
+            name: "my plan",
+            free_tickets: 100,
+            currencySign: "$",
+            integrations: 10,
+          }
+        }
+        showFooter={true}
+      />
+      <Plan
+        callToAction={
+          <Button
+            color="link"
+            onClick={[Function]}
+            tag="button"
+          >
+            Contact Us
+          </Button>
+        }
+        features={
+          <ul>
+            <li>
+              <i
+                className="material-icons feature-icon"
+              >
+                all_inclusive
+              </i>
+               
+              <strong>
+                Unlimited
+              </strong>
+               agents
+            </li>
+            <li>
+              <i
+                className="material-icons feature-icon"
+              >
+                arrow_downward
+              </i>
+               
+              Discounted prices for volumes of
+              <strong>
+                10, 000+
+              </strong>
+               tickets
+            </li>
+            <li>
+              <i
+                className="material-icons feature-icon"
+              >
+                beach_access
+              </i>
+               
+              Premium support
+            </li>
+          </ul>
+        }
+        isCurrentPlan={false}
+        isFeatured={false}
+        isTrialing={false}
+        isUpdating={false}
+        onClick={null}
+        plan={
+          Immutable.Map {
+            name: "Enterprise",
+          }
+        }
+        showFooter={true}
+      />
+    </CardDeck>
+    <div
+      style={
+        Object {
+          "maxWidth": 900,
+        }
       }
     >
-      <CardDeck
+      <h3
+        className="mb-4"
+      >
+        Frequently asked questions
+      </h3>
+      <Row
+        className="faq"
         tag="div"
       >
-        <Card
-          className="text-center"
-          outline={true}
+        <Col
+          sm={6}
           tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
         >
-          <CardBlock
-            tag="div"
-          >
-            <CardTitle
-              tag="h4"
-            >
-              my plan
-            </CardTitle>
-            <div
-              className="mb-4 mt-3"
-            >
-              <h3>
-                <em>
-                  $
-                </em>
-              </h3>
-              per 
-            </div>
-            <div>
-              <strong>
-                Includes:
-              </strong>
-            </div>
-            <div>
-              Unlimited agents
-            </div>
-            <div>
-              <strong>
-                100
-              </strong>
-               tickets included
-            </div>
-            <div>
-              <span>
-                <strong>
-                  + 
-                  $
-                  NaN
-                </strong>
-                 per 
-                100
-                 tickets 
-              </span>
-              <a
-                id="additional-tickets-tooltip-plan1"
-              >
-                <i
-                  className="fa fa-question-circle"
-                />
-              </a>
-              <Tooltip
-                delay={0}
-                target="additional-tickets-tooltip-plan1"
-              >
-                If you reply to more tickets than included in your plan this is the additional cost per 100 tickets.
-              </Tooltip>
-            </div>
-            <div
-              className="mb-3"
-            >
-              <strong>
-                10
-              </strong>
-               integrations
-            </div>
-            <Button
-              className=""
-              color="secondary"
-              disabled={true}
-              onClick={[Function]}
-              outline={true}
-              tag="button"
-            >
-              Your current plan
-            </Button>
-          </CardBlock>
-        </Card>
-        <Card
-          className="text-center"
-          outline={true}
+          <dl>
+            <dt>
+              What's a ticket?
+            </dt>
+            <dd>
+              A ticket is a conversation with a customer, on any channel. It can be on email, phone, chat, etc.
+              <br />
+              Usage only includes tickets that contain a response sent from Gorgias.
+            </dd>
+            <dt>
+              Do I need to pay for all tickets received?
+            </dt>
+            <dd>
+              No! You only pay for tickets that contain a response sent from Gorgias.
+            </dd>
+            <dt>
+              Do I need to pay extra for chat?
+            </dt>
+            <dd>
+              No, all channels are included. You can connect as many chat widgets, facebook pages, and email addresses as you want.
+            </dd>
+          </dl>
+        </Col>
+        <Col
+          sm={6}
           tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
         >
-          <CardBlock
-            tag="div"
-          >
-            <CardTitle
-              tag="h4"
-            >
-              Enterprise Plan
-            </CardTitle>
-            <div
-              className="mb-4 mt-3"
-            >
-              <h3>
-                Contact us
-              </h3>
-              Billed annually
-            </div>
-            <div>
-              <strong>
-                Includes:
-              </strong>
-            </div>
-            <div>
-              Unlimited agents
-            </div>
-            <div>
-              Discounted prices for volumes of 
-              <strong>
-                10,000+
-              </strong>
-               tickets.
-            </div>
-            <div
-              className="mb-3"
-            >
-              Premium support
-            </div>
-            <Button
-              color="info"
-              onClick={[Function]}
-              outline={true}
-              tag="button"
-            >
-              Contact Us
-            </Button>
-          </CardBlock>
-        </Card>
-      </CardDeck>
-    </Col>
-  </Row>
-  <div>
-    <p>
-      <strong>
-        Are all tickets counted? What about spam?
-      </strong>
-    </p>
-    We bill for a ticket only if your team uses Gorgias to send replies to customers. Specifically we bill you if the ticket:
-    <ul>
-      <li>
-        Has at least 1 reply sent using the helpdesk by a team member (agent).
-      </li>
-      <li>
-        Or is sent using an automatic reply (using the Rules).
-      </li>
-    </ul>
-    <p>
-      <strong>
-        Note:
-      </strong>
-       Tickets that are imported into Gorgias from Facebook, Gmail, etc.. are not billed.
-    </p>
-  </div>
+          <dl>
+            <dt>
+              I don’t know how many tickets I get per month. Can you help?
+            </dt>
+            <dd>
+              Sure. You probably receive about 1,000 tickets for each agent in your team. So if you’re paying for 5 seats with your current helpdesk, you’d pay for 5,000 tickets with Gorgias.
+            </dd>
+            <dt>
+              What level of support is included in my plan?
+            </dt>
+            <dd>
+              We provide all our customers with the same level of support. We're available 9am-7pm PST, over live chat & email.
+            </dd>
+            <dt>
+              I need help integrating an app with Gorgias. Is that included in my plan?
+            </dt>
+            <dd>
+              Yes. We're happy to help you add your own integrations at no additional cost.
+            </dd>
+          </dl>
+        </Col>
+      </Row>
+    </div>
+  </Container>
 </div>
 `;
 
 exports[`BillingPlans component should display multiple plans 1`] = `
 <div
-  className="mb-4"
+  className="full-width"
 >
-  <h4>
-    Plans
-  </h4>
-  <Row
-    className="mb-3"
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            className="section"
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/billing"
+          >
+            Billing & Usage
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          Plans
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
     tag="div"
   >
-    <Col
-      sm="12"
+    <CardDeck
+      className="mb-5"
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
+    >
+      <Plan
+        callToAction={null}
+        features={null}
+        isCurrentPlan={true}
+        isFeatured={false}
+        isTrialing={false}
+        isUpdating={false}
+        onClick={[Function]}
+        plan={
+          Immutable.Map {
+            public: true,
+            name: "my plan",
+            free_tickets: 100,
+            currencySign: "$",
+            integrations: 10,
+          }
+        }
+        showFooter={true}
+      />
+      <Plan
+        callToAction={null}
+        features={null}
+        isCurrentPlan={false}
+        isFeatured={true}
+        isTrialing={false}
+        isUpdating={false}
+        onClick={[Function]}
+        plan={
+          Immutable.Map {
+            public: true,
+            name: "my second plan",
+            free_tickets: 1000,
+            currencySign: "$",
+            integrations: 100,
+          }
+        }
+        showFooter={true}
+      />
+      <Plan
+        callToAction={
+          <Button
+            color="link"
+            onClick={[Function]}
+            tag="button"
+          >
+            Contact Us
+          </Button>
+        }
+        features={
+          <ul>
+            <li>
+              <i
+                className="material-icons feature-icon"
+              >
+                all_inclusive
+              </i>
+               
+              <strong>
+                Unlimited
+              </strong>
+               agents
+            </li>
+            <li>
+              <i
+                className="material-icons feature-icon"
+              >
+                arrow_downward
+              </i>
+               
+              Discounted prices for volumes of
+              <strong>
+                10, 000+
+              </strong>
+               tickets
+            </li>
+            <li>
+              <i
+                className="material-icons feature-icon"
+              >
+                beach_access
+              </i>
+               
+              Premium support
+            </li>
+          </ul>
+        }
+        isCurrentPlan={false}
+        isFeatured={false}
+        isTrialing={false}
+        isUpdating={false}
+        onClick={null}
+        plan={
+          Immutable.Map {
+            name: "Enterprise",
+          }
+        }
+        showFooter={true}
+      />
+    </CardDeck>
+    <div
+      style={
+        Object {
+          "maxWidth": 900,
+        }
       }
     >
-      <CardDeck
+      <h3
+        className="mb-4"
+      >
+        Frequently asked questions
+      </h3>
+      <Row
+        className="faq"
         tag="div"
       >
-        <Card
-          className="text-center"
-          outline={true}
+        <Col
+          sm={6}
           tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
         >
-          <CardBlock
-            tag="div"
-          >
-            <CardTitle
-              tag="h4"
-            >
-              my plan
-            </CardTitle>
-            <div
-              className="mb-4 mt-3"
-            >
-              <h3>
-                <em>
-                  $
-                </em>
-              </h3>
-              per 
-            </div>
-            <div>
-              <strong>
-                Includes:
-              </strong>
-            </div>
-            <div>
-              Unlimited agents
-            </div>
-            <div>
-              <strong>
-                100
-              </strong>
-               tickets included
-            </div>
-            <div>
-              <span>
-                <strong>
-                  + 
-                  $
-                  NaN
-                </strong>
-                 per 
-                100
-                 tickets 
-              </span>
-              <a
-                id="additional-tickets-tooltip-plan1"
-              >
-                <i
-                  className="fa fa-question-circle"
-                />
-              </a>
-              <Tooltip
-                delay={0}
-                target="additional-tickets-tooltip-plan1"
-              >
-                If you reply to more tickets than included in your plan this is the additional cost per 100 tickets.
-              </Tooltip>
-            </div>
-            <div
-              className="mb-3"
-            >
-              <strong>
-                10
-              </strong>
-               integrations
-            </div>
-            <Button
-              className=""
-              color="secondary"
-              disabled={true}
-              onClick={[Function]}
-              outline={true}
-              tag="button"
-            >
-              Your current plan
-            </Button>
-          </CardBlock>
-        </Card>
-        <Card
-          className="text-center"
-          outline={true}
+          <dl>
+            <dt>
+              What's a ticket?
+            </dt>
+            <dd>
+              A ticket is a conversation with a customer, on any channel. It can be on email, phone, chat, etc.
+              <br />
+              Usage only includes tickets that contain a response sent from Gorgias.
+            </dd>
+            <dt>
+              Do I need to pay for all tickets received?
+            </dt>
+            <dd>
+              No! You only pay for tickets that contain a response sent from Gorgias.
+            </dd>
+            <dt>
+              Do I need to pay extra for chat?
+            </dt>
+            <dd>
+              No, all channels are included. You can connect as many chat widgets, facebook pages, and email addresses as you want.
+            </dd>
+          </dl>
+        </Col>
+        <Col
+          sm={6}
           tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
         >
-          <CardBlock
-            tag="div"
-          >
-            <CardTitle
-              tag="h4"
-            >
-              my second plan
-            </CardTitle>
-            <div
-              className="mb-4 mt-3"
-            >
-              <h3>
-                <em>
-                  $
-                </em>
-              </h3>
-              per 
-            </div>
-            <div>
-              <strong>
-                Includes:
-              </strong>
-            </div>
-            <div>
-              Unlimited agents
-            </div>
-            <div>
-              <strong>
-                1000
-              </strong>
-               tickets included
-            </div>
-            <div>
-              <span>
-                <strong>
-                  + 
-                  $
-                  NaN
-                </strong>
-                 per 
-                100
-                 tickets 
-              </span>
-              <a
-                id="additional-tickets-tooltip-plan2"
-              >
-                <i
-                  className="fa fa-question-circle"
-                />
-              </a>
-              <Tooltip
-                delay={0}
-                target="additional-tickets-tooltip-plan2"
-              >
-                If you reply to more tickets than included in your plan this is the additional cost per 100 tickets.
-              </Tooltip>
-            </div>
-            <div
-              className="mb-3"
-            >
-              <strong>
-                100
-              </strong>
-               integrations
-            </div>
-            <Button
-              className=""
-              color="info"
-              disabled={false}
-              onClick={[Function]}
-              outline={true}
-              tag="button"
-            >
-              Switch to my second plan
-            </Button>
-          </CardBlock>
-        </Card>
-        <Card
-          className="text-center"
-          outline={true}
-          tag="div"
-        >
-          <CardBlock
-            tag="div"
-          >
-            <CardTitle
-              tag="h4"
-            >
-              Enterprise Plan
-            </CardTitle>
-            <div
-              className="mb-4 mt-3"
-            >
-              <h3>
-                Contact us
-              </h3>
-              Billed annually
-            </div>
-            <div>
-              <strong>
-                Includes:
-              </strong>
-            </div>
-            <div>
-              Unlimited agents
-            </div>
-            <div>
-              Discounted prices for volumes of 
-              <strong>
-                10,000+
-              </strong>
-               tickets.
-            </div>
-            <div
-              className="mb-3"
-            >
-              Premium support
-            </div>
-            <Button
-              color="info"
-              onClick={[Function]}
-              outline={true}
-              tag="button"
-            >
-              Contact Us
-            </Button>
-          </CardBlock>
-        </Card>
-      </CardDeck>
-    </Col>
-  </Row>
-  <div>
-    <p>
-      <strong>
-        Are all tickets counted? What about spam?
-      </strong>
-    </p>
-    We bill for a ticket only if your team uses Gorgias to send replies to customers. Specifically we bill you if the ticket:
-    <ul>
-      <li>
-        Has at least 1 reply sent using the helpdesk by a team member (agent).
-      </li>
-      <li>
-        Or is sent using an automatic reply (using the Rules).
-      </li>
-    </ul>
-    <p>
-      <strong>
-        Note:
-      </strong>
-       Tickets that are imported into Gorgias from Facebook, Gmail, etc.. are not billed.
-    </p>
-  </div>
+          <dl>
+            <dt>
+              I don’t know how many tickets I get per month. Can you help?
+            </dt>
+            <dd>
+              Sure. You probably receive about 1,000 tickets for each agent in your team. So if you’re paying for 5 seats with your current helpdesk, you’d pay for 5,000 tickets with Gorgias.
+            </dd>
+            <dt>
+              What level of support is included in my plan?
+            </dt>
+            <dd>
+              We provide all our customers with the same level of support. We're available 9am-7pm PST, over live chat & email.
+            </dd>
+            <dt>
+              I need help integrating an app with Gorgias. Is that included in my plan?
+            </dt>
+            <dd>
+              Yes. We're happy to help you add your own integrations at no additional cost.
+            </dd>
+          </dl>
+        </Col>
+      </Row>
+    </div>
+  </Container>
 </div>
 `;
 
@@ -615,137 +609,348 @@ exports[`BillingPlans component should load with empty props 1`] = `
   updateSubscription={[Function]}
 >
   <div
-    className="mb-4"
+    className="full-width"
   >
-    <h4>
-      Plans
-    </h4>
-    <Row
-      className="mb-3"
+    <PageHeader
+      title={
+        <Breadcrumb
+          tag="ol"
+        >
+          <BreadcrumbItem
+            tag="li"
+          >
+            <Link
+              className="section"
+              onlyActiveOnIndex={false}
+              style={Object {}}
+              to="/app/settings/billing"
+            >
+              Billing & Usage
+            </Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem
+            tag="li"
+          >
+            Plans
+          </BreadcrumbItem>
+        </Breadcrumb>
+      }
+    >
+      <div
+        className="d-flex align-items-center justify-content-between flex-wrap page-header"
+      >
+        <Breadcrumb
+          tag="ol"
+        >
+          <ol
+            className="breadcrumb"
+          >
+            <BreadcrumbItem
+              tag="li"
+            >
+              <li
+                className="breadcrumb-item"
+              >
+                <Link
+                  className="section"
+                  onlyActiveOnIndex={false}
+                  style={Object {}}
+                  to="/app/settings/billing"
+                >
+                  <a
+                    className="section"
+                    onClick={[Function]}
+                    style={Object {}}
+                  >
+                    Billing & Usage
+                  </a>
+                </Link>
+              </li>
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              tag="li"
+            >
+              <li
+                className="breadcrumb-item"
+              >
+                Plans
+              </li>
+            </BreadcrumbItem>
+          </ol>
+        </Breadcrumb>
+      </div>
+    </PageHeader>
+    <Container
+      className="page-container"
+      fluid={true}
       tag="div"
     >
       <div
-        className="mb-3 row"
+        className="page-container container-fluid"
       >
-        <Col
-          sm="12"
+        <CardDeck
+          className="mb-5"
           tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
         >
           <div
-            className="col col-sm-12"
+            className="mb-5 card-deck"
           >
-            <CardDeck
-              tag="div"
-            >
-              <div
-                className="card-deck"
-              >
-                <Card
-                  className="text-center"
-                  outline={true}
-                  tag="div"
+            <Plan
+              callToAction={
+                <Button
+                  color="link"
+                  onClick={[Function]}
+                  tag="button"
                 >
-                  <div
-                    className="text-center card"
+                  Contact Us
+                </Button>
+              }
+              features={
+                <ul>
+                  <li>
+                    <i
+                      className="material-icons feature-icon"
+                    >
+                      all_inclusive
+                    </i>
+                     
+                    <strong>
+                      Unlimited
+                    </strong>
+                     agents
+                  </li>
+                  <li>
+                    <i
+                      className="material-icons feature-icon"
+                    >
+                      arrow_downward
+                    </i>
+                     
+                    Discounted prices for volumes of
+                    <strong>
+                      10, 000+
+                    </strong>
+                     tickets
+                  </li>
+                  <li>
+                    <i
+                      className="material-icons feature-icon"
+                    >
+                      beach_access
+                    </i>
+                     
+                    Premium support
+                  </li>
+                </ul>
+              }
+              isCurrentPlan={false}
+              isFeatured={false}
+              isTrialing={false}
+              isUpdating={false}
+              onClick={null}
+              plan={
+                Immutable.Map {
+                  name: "Enterprise",
+                }
+              }
+              showFooter={true}
+            >
+              <Card
+                className="plan plan-Enterprise"
+                outline={true}
+                tag="div"
+              >
+                <div
+                  className="plan plan-Enterprise card"
+                >
+                  <CardHeader
+                    className="plan-header"
+                    tag="div"
                   >
-                    <CardBlock
-                      tag="div"
+                    <div
+                      className="plan-header card-header"
                     >
                       <div
-                        className="card-block"
+                        className="header-text"
                       >
-                        <CardTitle
-                          tag="h4"
-                        >
-                          <h4
-                            className="card-title"
-                          >
-                            Enterprise Plan
-                          </h4>
-                        </CardTitle>
-                        <div
-                          className="mb-4 mt-3"
-                        >
-                          <h3>
-                            Contact us
-                          </h3>
-                          Billed annually
-                        </div>
-                        <div>
-                          <strong>
-                            Includes:
-                          </strong>
-                        </div>
-                        <div>
-                          Unlimited agents
-                        </div>
-                        <div>
-                          Discounted prices for volumes of 
-                          <strong>
-                            10,000+
-                          </strong>
-                           tickets.
-                        </div>
-                        <div
-                          className="mb-3"
-                        >
-                          Premium support
-                        </div>
-                        <Button
-                          color="info"
-                          onClick={[Function]}
-                          outline={true}
-                          tag="button"
-                        >
-                          <button
-                            className="btn btn-outline-info"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            Contact Us
-                          </button>
-                        </Button>
+                        <strong>
+                          Enterprise
+                        </strong>
                       </div>
-                    </CardBlock>
-                  </div>
-                </Card>
-              </div>
-            </CardDeck>
+                    </div>
+                  </CardHeader>
+                  <CardBody
+                    tag="div"
+                  >
+                    <div
+                      className="card-body"
+                    >
+                      <ul>
+                        <li>
+                          <i
+                            className="material-icons feature-icon"
+                          >
+                            all_inclusive
+                          </i>
+                           
+                          <strong>
+                            Unlimited
+                          </strong>
+                           agents
+                        </li>
+                        <li>
+                          <i
+                            className="material-icons feature-icon"
+                          >
+                            arrow_downward
+                          </i>
+                           
+                          Discounted prices for volumes of
+                          <strong>
+                            10, 000+
+                          </strong>
+                           tickets
+                        </li>
+                        <li>
+                          <i
+                            className="material-icons feature-icon"
+                          >
+                            beach_access
+                          </i>
+                           
+                          Premium support
+                        </li>
+                      </ul>
+                    </div>
+                  </CardBody>
+                  <CardFooter
+                    tag="div"
+                  >
+                    <div
+                      className="card-footer"
+                    >
+                      <Button
+                        color="link"
+                        onClick={[Function]}
+                        tag="button"
+                      >
+                        <button
+                          className="btn btn-link"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          Contact Us
+                        </button>
+                      </Button>
+                    </div>
+                  </CardFooter>
+                </div>
+              </Card>
+            </Plan>
           </div>
-        </Col>
+        </CardDeck>
+        <div
+          style={
+            Object {
+              "maxWidth": 900,
+            }
+          }
+        >
+          <h3
+            className="mb-4"
+          >
+            Frequently asked questions
+          </h3>
+          <Row
+            className="faq"
+            tag="div"
+          >
+            <div
+              className="faq row"
+            >
+              <Col
+                sm={6}
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <div
+                  className="col col-sm-6"
+                >
+                  <dl>
+                    <dt>
+                      What's a ticket?
+                    </dt>
+                    <dd>
+                      A ticket is a conversation with a customer, on any channel. It can be on email, phone, chat, etc.
+                      <br />
+                      Usage only includes tickets that contain a response sent from Gorgias.
+                    </dd>
+                    <dt>
+                      Do I need to pay for all tickets received?
+                    </dt>
+                    <dd>
+                      No! You only pay for tickets that contain a response sent from Gorgias.
+                    </dd>
+                    <dt>
+                      Do I need to pay extra for chat?
+                    </dt>
+                    <dd>
+                      No, all channels are included. You can connect as many chat widgets, facebook pages, and email addresses as you want.
+                    </dd>
+                  </dl>
+                </div>
+              </Col>
+              <Col
+                sm={6}
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <div
+                  className="col col-sm-6"
+                >
+                  <dl>
+                    <dt>
+                      I don’t know how many tickets I get per month. Can you help?
+                    </dt>
+                    <dd>
+                      Sure. You probably receive about 1,000 tickets for each agent in your team. So if you’re paying for 5 seats with your current helpdesk, you’d pay for 5,000 tickets with Gorgias.
+                    </dd>
+                    <dt>
+                      What level of support is included in my plan?
+                    </dt>
+                    <dd>
+                      We provide all our customers with the same level of support. We're available 9am-7pm PST, over live chat & email.
+                    </dd>
+                    <dt>
+                      I need help integrating an app with Gorgias. Is that included in my plan?
+                    </dt>
+                    <dd>
+                      Yes. We're happy to help you add your own integrations at no additional cost.
+                    </dd>
+                  </dl>
+                </div>
+              </Col>
+            </div>
+          </Row>
+        </div>
       </div>
-    </Row>
-    <div>
-      <p>
-        <strong>
-          Are all tickets counted? What about spam?
-        </strong>
-      </p>
-      We bill for a ticket only if your team uses Gorgias to send replies to customers. Specifically we bill you if the ticket:
-      <ul>
-        <li>
-          Has at least 1 reply sent using the helpdesk by a team member (agent).
-        </li>
-        <li>
-          Or is sent using an automatic reply (using the Rules).
-        </li>
-      </ul>
-      <p>
-        <strong>
-          Note:
-        </strong>
-         Tickets that are imported into Gorgias from Facebook, Gmail, etc.. are not billed.
-      </p>
-    </div>
+    </Container>
   </div>
 </BillingPlans>
 `;

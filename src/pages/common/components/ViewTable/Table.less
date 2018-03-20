@@ -1,3 +1,5 @@
+@import '../../../../../css/new/colors';
+
 :local .table {
   tr {
     td {
@@ -17,19 +19,19 @@
     }
 
     &.has-cursor {
-      box-shadow: inset 2px 0 0 #0B8EF7;
+      box-shadow: inset 4px 0 0 #0B8EF7;
     }
   }
 
   .viewers {
-    @size: 26px;
+    @size: 30px;
     position: absolute;
     left: 0;
     top: 0;
-    color: white;
+    color: @indigo;
     width: 0;
     height: 0;
-    border-top: @size solid #f3a60b;
+    border-top: @size solid @collisionColor;
     border-right: @size solid transparent;
 
     i {
@@ -39,4 +41,8 @@
       font-size: 11px;
     }
   }
+}
+
+:local .pagination {
+  margin-left: -10px;
 }

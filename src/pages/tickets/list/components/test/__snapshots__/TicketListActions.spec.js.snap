@@ -2,7 +2,7 @@
 
 exports[`TicketListActions component should display options for agents assignations 1`] = `
 <div
-  className="d-inline-flex align-items-center hidden-sm-down"
+  className="d-none d-md-inline-flex align-items-center"
 >
   <div
     className="d-inline-flex align-items-center"
@@ -24,11 +24,12 @@ exports[`TicketListActions component should display options for agents assignati
         aria-haspopup={true}
         caret={true}
         color="secondary"
-        data-toggle="dropdown"
         disabled={false}
         type="button"
       />
       <DropdownMenu
+        flip={true}
+        right={true}
         tag="div"
       >
         <DropdownItem
@@ -36,7 +37,7 @@ exports[`TicketListActions component should display options for agents assignati
           tag="button"
           toggle={true}
         >
-          Set status
+          SET STATUS
         </DropdownItem>
         <DropdownItem
           onClick={[Function]}
@@ -67,11 +68,11 @@ exports[`TicketListActions component should display options for agents assignati
         aria-haspopup={true}
         caret={true}
         color="secondary"
-        data-toggle="dropdown"
         disabled={false}
         type="button"
       />
       <DropdownMenu
+        flip={true}
         right={true}
         style={
           Object {
@@ -81,17 +82,18 @@ exports[`TicketListActions component should display options for agents assignati
         tag="div"
       >
         <DropdownItem
-          className="dropdown-item-input"
+          className="mb-2"
           header={true}
           tag="button"
           toggle={true}
         >
-          <div
-            className="mb-2"
-          >
-            Assign to:
-          </div>
+          ASSIGN TO:
         </DropdownItem>
+        <DropdownItem
+          className="dropdown-item-input"
+          tag="button"
+          toggle={true}
+        />
         <DropdownItem
           divider={true}
           tag="button"
@@ -155,7 +157,6 @@ exports[`TicketListActions component should display options for agents assignati
         aria-haspopup={true}
         caret={true}
         color="secondary"
-        data-toggle="dropdown"
         disabled={false}
         type="button"
       >
@@ -163,6 +164,7 @@ exports[`TicketListActions component should display options for agents assignati
       </DropdownToggle>
       <DropdownMenu
         disabled={false}
+        flip={true}
         right={true}
         style={
           Object {
@@ -172,17 +174,18 @@ exports[`TicketListActions component should display options for agents assignati
         tag="div"
       >
         <DropdownItem
-          className="dropdown-item-input"
+          className="mb-2"
           header={true}
           tag="button"
           toggle={true}
         >
-          <div
-            className="mb-2"
-          >
-            Add tag:
-          </div>
+          ADD TAG:
         </DropdownItem>
+        <DropdownItem
+          className="dropdown-item-input"
+          tag="button"
+          toggle={true}
+        />
         <DropdownItem
           divider={true}
           tag="button"
@@ -197,7 +200,6 @@ exports[`TicketListActions component should display options for agents assignati
         aria-haspopup={true}
         caret={true}
         color="secondary"
-        data-toggle="dropdown"
         disabled={false}
         id="bulk-more-button"
         type="button"
@@ -205,6 +207,7 @@ exports[`TicketListActions component should display options for agents assignati
         More
       </DropdownToggle>
       <DropdownMenu
+        flip={true}
         right={true}
         tag="div"
       >
@@ -233,17 +236,24 @@ exports[`TicketListActions component should display options for agents assignati
       </DropdownMenu>
     </UncontrolledButtonDropdown>
     <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
       isOpen={false}
       placement="bottom"
+      placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
     >
-      <PopoverTitle
+      <PopoverHeader
         tag="h3"
       >
         Are you sure?
-      </PopoverTitle>
-      <PopoverContent
+      </PopoverHeader>
+      <PopoverBody
         tag="div"
       >
         <p>
@@ -263,20 +273,27 @@ exports[`TicketListActions component should display options for agents assignati
         >
           Confirm
         </Button>
-      </PopoverContent>
+      </PopoverBody>
     </Popover>
     <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
       isOpen={false}
       placement="bottom"
+      placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
     >
-      <PopoverTitle
+      <PopoverHeader
         tag="h3"
       >
         Are you sure?
-      </PopoverTitle>
-      <PopoverContent
+      </PopoverHeader>
+      <PopoverBody
         tag="div"
       >
         <p>
@@ -295,7 +312,7 @@ exports[`TicketListActions component should display options for agents assignati
         >
           Confirm
         </Button>
-      </PopoverContent>
+      </PopoverBody>
     </Popover>
   </div>
 </div>
@@ -303,7 +320,7 @@ exports[`TicketListActions component should display options for agents assignati
 
 exports[`TicketListActions component should display special actions for trash view 1`] = `
 <div
-  className="d-inline-flex align-items-center hidden-sm-down"
+  className="d-none d-md-inline-flex align-items-center"
 >
   <div
     className="d-inline-flex align-items-center"
@@ -325,11 +342,12 @@ exports[`TicketListActions component should display special actions for trash vi
         aria-haspopup={true}
         caret={true}
         color="secondary"
-        data-toggle="dropdown"
         disabled={true}
         type="button"
       />
       <DropdownMenu
+        flip={true}
+        right={true}
         tag="div"
       >
         <DropdownItem
@@ -337,7 +355,7 @@ exports[`TicketListActions component should display special actions for trash vi
           tag="button"
           toggle={true}
         >
-          Set status
+          SET STATUS
         </DropdownItem>
         <DropdownItem
           onClick={[Function]}
@@ -368,11 +386,11 @@ exports[`TicketListActions component should display special actions for trash vi
         aria-haspopup={true}
         caret={true}
         color="secondary"
-        data-toggle="dropdown"
         disabled={true}
         type="button"
       />
       <DropdownMenu
+        flip={true}
         right={true}
         style={
           Object {
@@ -382,17 +400,18 @@ exports[`TicketListActions component should display special actions for trash vi
         tag="div"
       >
         <DropdownItem
-          className="dropdown-item-input"
+          className="mb-2"
           header={true}
           tag="button"
           toggle={true}
         >
-          <div
-            className="mb-2"
-          >
-            Assign to:
-          </div>
+          ASSIGN TO:
         </DropdownItem>
+        <DropdownItem
+          className="dropdown-item-input"
+          tag="button"
+          toggle={true}
+        />
         <DropdownItem
           divider={true}
           tag="button"
@@ -439,7 +458,6 @@ exports[`TicketListActions component should display special actions for trash vi
         aria-haspopup={true}
         caret={true}
         color="secondary"
-        data-toggle="dropdown"
         disabled={true}
         type="button"
       >
@@ -447,6 +465,7 @@ exports[`TicketListActions component should display special actions for trash vi
       </DropdownToggle>
       <DropdownMenu
         disabled={true}
+        flip={true}
         right={true}
         style={
           Object {
@@ -456,17 +475,18 @@ exports[`TicketListActions component should display special actions for trash vi
         tag="div"
       >
         <DropdownItem
-          className="dropdown-item-input"
+          className="mb-2"
           header={true}
           tag="button"
           toggle={true}
         >
-          <div
-            className="mb-2"
-          >
-            Add tag:
-          </div>
+          ADD TAG:
         </DropdownItem>
+        <DropdownItem
+          className="dropdown-item-input"
+          tag="button"
+          toggle={true}
+        />
         <DropdownItem
           divider={true}
           tag="button"
@@ -481,7 +501,6 @@ exports[`TicketListActions component should display special actions for trash vi
         aria-haspopup={true}
         caret={true}
         color="secondary"
-        data-toggle="dropdown"
         disabled={true}
         id="bulk-more-button"
         type="button"
@@ -489,6 +508,7 @@ exports[`TicketListActions component should display special actions for trash vi
         More
       </DropdownToggle>
       <DropdownMenu
+        flip={true}
         right={true}
         tag="div"
       >
@@ -525,17 +545,24 @@ exports[`TicketListActions component should display special actions for trash vi
       </DropdownMenu>
     </UncontrolledButtonDropdown>
     <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
       isOpen={false}
       placement="bottom"
+      placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
     >
-      <PopoverTitle
+      <PopoverHeader
         tag="h3"
       >
         Are you sure?
-      </PopoverTitle>
-      <PopoverContent
+      </PopoverHeader>
+      <PopoverBody
         tag="div"
       >
         <p>
@@ -554,20 +581,27 @@ exports[`TicketListActions component should display special actions for trash vi
         >
           Confirm
         </Button>
-      </PopoverContent>
+      </PopoverBody>
     </Popover>
     <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
       isOpen={false}
       placement="bottom"
+      placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
     >
-      <PopoverTitle
+      <PopoverHeader
         tag="h3"
       >
         Are you sure?
-      </PopoverTitle>
-      <PopoverContent
+      </PopoverHeader>
+      <PopoverBody
         tag="div"
       >
         <p>
@@ -585,7 +619,7 @@ exports[`TicketListActions component should display special actions for trash vi
         >
           Confirm
         </Button>
-      </PopoverContent>
+      </PopoverBody>
     </Popover>
   </div>
 </div>
@@ -593,7 +627,7 @@ exports[`TicketListActions component should display special actions for trash vi
 
 exports[`TicketListActions component should display when nothing is selected 1`] = `
 <div
-  className="d-inline-flex align-items-center hidden-sm-down"
+  className="d-none d-md-inline-flex align-items-center"
 >
   <div
     className="d-inline-flex align-items-center"
@@ -615,11 +649,12 @@ exports[`TicketListActions component should display when nothing is selected 1`]
         aria-haspopup={true}
         caret={true}
         color="secondary"
-        data-toggle="dropdown"
         disabled={true}
         type="button"
       />
       <DropdownMenu
+        flip={true}
+        right={true}
         tag="div"
       >
         <DropdownItem
@@ -627,7 +662,7 @@ exports[`TicketListActions component should display when nothing is selected 1`]
           tag="button"
           toggle={true}
         >
-          Set status
+          SET STATUS
         </DropdownItem>
         <DropdownItem
           onClick={[Function]}
@@ -658,11 +693,11 @@ exports[`TicketListActions component should display when nothing is selected 1`]
         aria-haspopup={true}
         caret={true}
         color="secondary"
-        data-toggle="dropdown"
         disabled={true}
         type="button"
       />
       <DropdownMenu
+        flip={true}
         right={true}
         style={
           Object {
@@ -672,17 +707,18 @@ exports[`TicketListActions component should display when nothing is selected 1`]
         tag="div"
       >
         <DropdownItem
-          className="dropdown-item-input"
+          className="mb-2"
           header={true}
           tag="button"
           toggle={true}
         >
-          <div
-            className="mb-2"
-          >
-            Assign to:
-          </div>
+          ASSIGN TO:
         </DropdownItem>
+        <DropdownItem
+          className="dropdown-item-input"
+          tag="button"
+          toggle={true}
+        />
         <DropdownItem
           divider={true}
           tag="button"
@@ -729,7 +765,6 @@ exports[`TicketListActions component should display when nothing is selected 1`]
         aria-haspopup={true}
         caret={true}
         color="secondary"
-        data-toggle="dropdown"
         disabled={true}
         type="button"
       >
@@ -737,6 +772,7 @@ exports[`TicketListActions component should display when nothing is selected 1`]
       </DropdownToggle>
       <DropdownMenu
         disabled={true}
+        flip={true}
         right={true}
         style={
           Object {
@@ -746,17 +782,18 @@ exports[`TicketListActions component should display when nothing is selected 1`]
         tag="div"
       >
         <DropdownItem
-          className="dropdown-item-input"
+          className="mb-2"
           header={true}
           tag="button"
           toggle={true}
         >
-          <div
-            className="mb-2"
-          >
-            Add tag:
-          </div>
+          ADD TAG:
         </DropdownItem>
+        <DropdownItem
+          className="dropdown-item-input"
+          tag="button"
+          toggle={true}
+        />
         <DropdownItem
           divider={true}
           tag="button"
@@ -771,7 +808,6 @@ exports[`TicketListActions component should display when nothing is selected 1`]
         aria-haspopup={true}
         caret={true}
         color="secondary"
-        data-toggle="dropdown"
         disabled={true}
         id="bulk-more-button"
         type="button"
@@ -779,6 +815,7 @@ exports[`TicketListActions component should display when nothing is selected 1`]
         More
       </DropdownToggle>
       <DropdownMenu
+        flip={true}
         right={true}
         tag="div"
       >
@@ -807,17 +844,24 @@ exports[`TicketListActions component should display when nothing is selected 1`]
       </DropdownMenu>
     </UncontrolledButtonDropdown>
     <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
       isOpen={false}
       placement="bottom"
+      placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
     >
-      <PopoverTitle
+      <PopoverHeader
         tag="h3"
       >
         Are you sure?
-      </PopoverTitle>
-      <PopoverContent
+      </PopoverHeader>
+      <PopoverBody
         tag="div"
       >
         <p>
@@ -836,20 +880,27 @@ exports[`TicketListActions component should display when nothing is selected 1`]
         >
           Confirm
         </Button>
-      </PopoverContent>
+      </PopoverBody>
     </Popover>
     <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
       isOpen={false}
       placement="bottom"
+      placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
     >
-      <PopoverTitle
+      <PopoverHeader
         tag="h3"
       >
         Are you sure?
-      </PopoverTitle>
-      <PopoverContent
+      </PopoverHeader>
+      <PopoverBody
         tag="div"
       >
         <p>
@@ -867,7 +918,7 @@ exports[`TicketListActions component should display when nothing is selected 1`]
         >
           Confirm
         </Button>
-      </PopoverContent>
+      </PopoverBody>
     </Popover>
   </div>
 </div>
@@ -875,7 +926,7 @@ exports[`TicketListActions component should display when nothing is selected 1`]
 
 exports[`TicketListActions component should display when some tickets are selected 1`] = `
 <div
-  className="d-inline-flex align-items-center hidden-sm-down"
+  className="d-none d-md-inline-flex align-items-center"
 >
   <div
     className="d-inline-flex align-items-center"
@@ -897,11 +948,12 @@ exports[`TicketListActions component should display when some tickets are select
         aria-haspopup={true}
         caret={true}
         color="secondary"
-        data-toggle="dropdown"
         disabled={false}
         type="button"
       />
       <DropdownMenu
+        flip={true}
+        right={true}
         tag="div"
       >
         <DropdownItem
@@ -909,7 +961,7 @@ exports[`TicketListActions component should display when some tickets are select
           tag="button"
           toggle={true}
         >
-          Set status
+          SET STATUS
         </DropdownItem>
         <DropdownItem
           onClick={[Function]}
@@ -940,11 +992,11 @@ exports[`TicketListActions component should display when some tickets are select
         aria-haspopup={true}
         caret={true}
         color="secondary"
-        data-toggle="dropdown"
         disabled={false}
         type="button"
       />
       <DropdownMenu
+        flip={true}
         right={true}
         style={
           Object {
@@ -954,17 +1006,18 @@ exports[`TicketListActions component should display when some tickets are select
         tag="div"
       >
         <DropdownItem
-          className="dropdown-item-input"
+          className="mb-2"
           header={true}
           tag="button"
           toggle={true}
         >
-          <div
-            className="mb-2"
-          >
-            Assign to:
-          </div>
+          ASSIGN TO:
         </DropdownItem>
+        <DropdownItem
+          className="dropdown-item-input"
+          tag="button"
+          toggle={true}
+        />
         <DropdownItem
           divider={true}
           tag="button"
@@ -1011,7 +1064,6 @@ exports[`TicketListActions component should display when some tickets are select
         aria-haspopup={true}
         caret={true}
         color="secondary"
-        data-toggle="dropdown"
         disabled={false}
         type="button"
       >
@@ -1019,6 +1071,7 @@ exports[`TicketListActions component should display when some tickets are select
       </DropdownToggle>
       <DropdownMenu
         disabled={false}
+        flip={true}
         right={true}
         style={
           Object {
@@ -1028,17 +1081,18 @@ exports[`TicketListActions component should display when some tickets are select
         tag="div"
       >
         <DropdownItem
-          className="dropdown-item-input"
+          className="mb-2"
           header={true}
           tag="button"
           toggle={true}
         >
-          <div
-            className="mb-2"
-          >
-            Add tag:
-          </div>
+          ADD TAG:
         </DropdownItem>
+        <DropdownItem
+          className="dropdown-item-input"
+          tag="button"
+          toggle={true}
+        />
         <DropdownItem
           divider={true}
           tag="button"
@@ -1053,7 +1107,6 @@ exports[`TicketListActions component should display when some tickets are select
         aria-haspopup={true}
         caret={true}
         color="secondary"
-        data-toggle="dropdown"
         disabled={false}
         id="bulk-more-button"
         type="button"
@@ -1061,6 +1114,7 @@ exports[`TicketListActions component should display when some tickets are select
         More
       </DropdownToggle>
       <DropdownMenu
+        flip={true}
         right={true}
         tag="div"
       >
@@ -1089,17 +1143,24 @@ exports[`TicketListActions component should display when some tickets are select
       </DropdownMenu>
     </UncontrolledButtonDropdown>
     <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
       isOpen={false}
       placement="bottom"
+      placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
     >
-      <PopoverTitle
+      <PopoverHeader
         tag="h3"
       >
         Are you sure?
-      </PopoverTitle>
-      <PopoverContent
+      </PopoverHeader>
+      <PopoverBody
         tag="div"
       >
         <p>
@@ -1119,20 +1180,27 @@ exports[`TicketListActions component should display when some tickets are select
         >
           Confirm
         </Button>
-      </PopoverContent>
+      </PopoverBody>
     </Popover>
     <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
       isOpen={false}
       placement="bottom"
+      placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
     >
-      <PopoverTitle
+      <PopoverHeader
         tag="h3"
       >
         Are you sure?
-      </PopoverTitle>
-      <PopoverContent
+      </PopoverHeader>
+      <PopoverBody
         tag="div"
       >
         <p>
@@ -1151,7 +1219,7 @@ exports[`TicketListActions component should display when some tickets are select
         >
           Confirm
         </Button>
-      </PopoverContent>
+      </PopoverBody>
     </Popover>
   </div>
 </div>

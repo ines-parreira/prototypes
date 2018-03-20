@@ -1,0 +1,118 @@
+@import '../../../../../css/new/mixins';
+@import '../colors';
+
+.plan {
+  margin-top: 9px;
+  max-width: 268px;
+  min-width: 220px;
+  min-height: 330px;
+  box-shadow: 0 2px 3px 0 #15206533;
+
+  .plan-header {
+    color: #fff;
+    border-bottom: 0;
+    height: 90px;
+    strong {
+      font-size: 20px;
+    }
+    span {
+      font-size: 17px;
+    }
+  }
+
+  .header-text {
+    line-height: 68px;
+  }
+
+  .card-body {
+    padding-left: 20px;
+    ul {
+      list-style: none;
+      padding-left: 0;
+      padding-top: 20px;
+      li {
+        margin-bottom: 11px;
+      }
+    }
+  }
+
+  .feature-icon {
+    width: 29px;
+    height: 29px;
+    border-radius: 50%;
+    font-size: 17px;
+    padding-top: 6px;
+    padding-left: 6px;
+    margin-right: 9px;
+  }
+
+  .card-footer {
+    background-color: #fff;
+    text-align: center;
+  }
+}
+
+.featured {
+  margin-top: 0;
+  border: 2px solid #143498;
+  min-height: 432px;
+}
+
+.featured-header {
+  height: 105px;
+}
+
+.featured-header-title {
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+}
+
+.plan-Basic {
+  .card-header {
+    background-color: @basic;
+  }
+  .feature-icon {
+    color: @basic;
+    background-color: #EDF4FF;
+  }
+}
+
+.plan-Pro {
+  .card-header {
+    background-color: @pro;
+  }
+  .feature-icon {
+    color: @pro;
+    background-color: #E7EAF4;
+  }
+}
+
+.plan-Advanced {
+  .card-header {
+    background-color: @advanced;
+  }
+  .feature-icon {
+    color: @advanced !important;
+    background-color: #EAFBF6 !important;
+  }
+}
+
+.plan-Enterprise, .plan-Custom {
+  .card-header {
+    background-color: @enterprise;
+    color: @pro;
+    text-align: center;
+  }
+  .feature-icon {
+    color: #fdd25a;
+    background-color: #FFF8E6;
+  }
+}
+
+.plan-Custom {
+  .card-header {
+    text-align: left;
+  }
+}

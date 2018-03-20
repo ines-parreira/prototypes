@@ -3,7 +3,7 @@ import moment from 'moment'
 import {fromJS} from 'immutable'
 import classnamesBind from 'classnames/bind'
 import {isArray as _isArray} from 'lodash'
-import {Popover, PopoverContent} from 'reactstrap'
+import {Button, Popover, PopoverBody} from 'reactstrap'
 
 import * as infobarActions from './../../../../state/infobar/actions'
 
@@ -12,11 +12,12 @@ import TicketMessageBody from './TicketMessageBody'
 import TicketAttachments from './replyarea/TicketAttachments'
 import {displayUserNameFromSource} from '../../common/utils'
 import {formatDatetime} from './../../../../utils'
-import {DatetimeLabel, AgentLabel} from '../../../common/utils/labels'
-import {getValuePropFromSourceType, isForwardedMessage} from '../../../../state/ticket/utils'
+import {AgentLabel, DatetimeLabel} from '../../../common/utils/labels'
+import {isForwardedMessage} from '../../../../state/ticket/utils'
 import HardWarning from './HardWarning'
-import {sourceTypeToIcon} from './../../../../config/ticket'
+import Avatar from '../../../common/components/Avatar'
 import {scrollToReactNode} from '../../../common/utils/keyboard'
+import SourceIcon from '../../../common/components/SourceIcon'
 
 import Tooltip from '../../../common/components/Tooltip'
 
@@ -46,9 +47,18 @@ export default class TicketMessage extends React.Component {
     }
 
     renderAttachment(message) {
-        if (message.attachments) {
+        const attachments = fromJS(message.attachments || [])
+        if (attachments.size) {
             return (
-                <TicketAttachments attachments={fromJS(message.attachments)}/>
+                <div className="pt-4">
+                    <span className={css.attachmentsLabel}>
+                        <i className="icon mr-1 material-icons">
+                            attachment
+                        </i>
+                        New media files
+                    </span>
+                    <TicketAttachments attachments={attachments}/>
+                </div>
             )
         }
         return null
@@ -82,10 +92,6 @@ export default class TicketMessage extends React.Component {
     }
 
     renderSource(message) {
-        if (!message.public) {
-            return null
-        }
-
         const source = Object.assign({
             type: '',
             from: {},
@@ -93,40 +99,19 @@ export default class TicketMessage extends React.Component {
         }, message.source)
         const iconLabel = isForwardedMessage(message) ? 'email-forward' : source.type
 
-        let legend = ''
-        const hasLegend = !source.type.startsWith('facebook')
-            && !source.type.startsWith('instagram')
-            && source.type !== 'chat'
-            && source.type !== 'api'
-            && source.type !== 'system-message'
-
-        if (!source.from) {
-            if (['aircall', 'phone'].includes(source.type)) {
-                legend = 'Unknown number'
-            }
-        } else if (hasLegend) {
-            legend = `${source.from[getValuePropFromSourceType(source.type)]}`
-        }
-
         const id = `info-${message.id}`
 
         return (
             <div>
                 <span
-                    className={classnames('text-faded', 'clickable', css.source)}
+                    className={classnames('clickable', css.source)}
                     onClick={this._toggleInfoDropdown}
                 >
-                    <i
+                    <SourceIcon
                         id={id}
-                        className={`${sourceTypeToIcon(iconLabel)} uncolored`}
+                        type={iconLabel}
+                        className="uncolored"
                     />
-                    {
-                        hasLegend && (
-                            <span className="hidden-sm-down ml-1">
-                                {legend}
-                            </span>
-                        )
-                    }
                 </span>
                 <Popover
                     placement="bottom"
@@ -134,9 +119,9 @@ export default class TicketMessage extends React.Component {
                     isOpen={this.state.infoDropdownOpen}
                     toggle={this._toggleInfoDropdown}
                 >
-                    <PopoverContent>
-                        <div className="ticket-message-source-details">
-                            <ul className="item">
+                    <PopoverBody>
+                        <div className={css.sourceDetails}>
+                            <ul>
                                 {this.renderSourceList(source, 'From', 'from')}
                                 {this.renderSourceList(source, 'To', 'to')}
                                 {this.renderSourceList(source, 'Cc', 'cc')}
@@ -153,7 +138,7 @@ export default class TicketMessage extends React.Component {
                                 </li>
                             </ul>
                         </div>
-                    </PopoverContent>
+                    </PopoverBody>
                 </Popover>
             </div>
         )
@@ -181,7 +166,7 @@ export default class TicketMessage extends React.Component {
             widgets.push(
                 <span
                     key="from-widget"
-                    className="hidden-sm-down ticket-message-from"
+                    className={classnames(css.from, 'd-none d-md-inline-block')}
                 >
                     from <a target="_blank" href={message.meta.current_page}>
                         {displayString}
@@ -236,9 +221,9 @@ export default class TicketMessage extends React.Component {
             widgets.push(
                 <span
                     key="via-widget"
-                    className="hidden-sm-down ticket-message-from"
+                    className="d-none d-md-inline-block ticket-message-from"
                 >
-                    sent via a <b><i className="fa fa-fw fa-cog mr-1" /> Rule</b>
+                    sent via a <b><i className="fa fa-fw fa-cog mr-1"/> Rule</b>
                 </span>
             )
         }
@@ -257,9 +242,13 @@ export default class TicketMessage extends React.Component {
                     key="hide-widget"
                     className="hidden-sm-down ticket-message-from"
                 >
-                    <a onClick={() => this._toggleHideComment(shouldHide)}>
+                    <Button
+                        color="link"
+                        className="font-weight-normal"
+                        onClick={() => this._toggleHideComment(shouldHide)}
+                    >
                         {shouldHide ? 'hide comment' : 'unhide comment'}
-                    </a>
+                    </Button>
                 </span>
             )
         }
@@ -341,73 +330,72 @@ export default class TicketMessage extends React.Component {
 
         const className = classnames('ticket-message', css.component,
             {
-                'ticket-message-agent': message.from_agent,
-                internal: !message.public,
-                appear,
+                [css.fromAgent]: message.from_agent,
+                [css.internal]: !message.public,
+                [css.appear]: appear,
                 'ticket-message-loading': loading
             }
         )
 
+        const sender = fromJS(message.sender || {})
+
         return (
             <div className={className}>
-                {
-                    !loading && error && this._renderActionFailed()
-                }
-                {
-                    !loading && message.failed_datetime && this._renderMessageNotSent()
-                }
-                <div className={classnames('ticket-message-header', css.header)}>
-                    <div className="ticket-message-header-details">
-                        {message.from_agent && <AgentLabel />}
-
-                        {
-                            message.sender.name
-                            && (
-                                <span className="ticket-message-author">
-                                    {message.sender.name}
-                                </span>
-                            )
-                        }
-
-                        {this.renderSource(message)}
-                        {this.renderMeta(message)}
-                    </div>
-                    <span
-                        className="text-faded pull-right"
-                        style={{
-                            fontWeight: '600',
-                            fontSize: '13px'
-                        }}
-                    >
-                        {
-                            message.from_agent && isLastReadMessage && (
-                                <span>
-                                    <i
-                                        id="read-status"
-                                        className="fa fa-check mr-2"
-                                    />
-                                    <Tooltip
-                                        placement="top"
-                                        target="read-status"
-                                    >
-                                        Seen by customer{' '}
-                                        {formatDatetime(message.opened_datetime, timezone).toLowerCase()}
-                                    </Tooltip>
-                                </span>
-                            )
-                        }
-                        <DatetimeLabel
-                            dateTime={message.created_datetime}
-                            settings={{
-                                position: 'top left'
-                            }}
-                            timezone={timezone}
-                        />
-                    </span>
+                <div className={css.avatar}>
+                    <Avatar
+                        email={sender.get('email')}
+                        name={sender.get('name')}
+                        url={sender.getIn(['meta', 'profile_picture_url'])}
+                        size="36"
+                    />
                 </div>
-                <TicketMessageBody message={message} />
-                {this.renderAttachment(message)}
-                <TicketMessageActions message={message} />
+                <div className="flex-grow">
+                    {
+                        !loading && error && this._renderActionFailed()
+                    }
+                    {
+                        !loading && message.failed_datetime && this._renderMessageNotSent()
+                    }
+                    <div className={css.header}>
+                        <div className={css.headerDetails}>
+                            <div className={classnames(css.author, {
+                                isAgent: message.from_agent
+                            })}>
+                                {message.from_agent && <AgentLabel className={css.agentIcon}/>}
+                                {sender.get('name')}
+                            </div>
+
+                            {this.renderSource(message)}
+                            {this.renderMeta(message)}
+                        </div>
+                        <span className={classnames(css.date, 'text-faded float-right')}>
+                            {
+                                message.from_agent && isLastReadMessage && (
+                                    <span>
+                                        <i
+                                            id="read-status"
+                                            className="fa fa-check mr-2"
+                                        />
+                                        <Tooltip
+                                            placement="top"
+                                            target="read-status"
+                                        >
+                                            Seen by customer{' '}
+                                            {formatDatetime(message.opened_datetime, timezone).toLowerCase()}
+                                        </Tooltip>
+                                    </span>
+                                )
+                            }
+                            <DatetimeLabel
+                                dateTime={message.created_datetime}
+                                timezone={timezone}
+                            />
+                        </span>
+                    </div>
+                    <TicketMessageBody message={message}/>
+                    {this.renderAttachment(message)}
+                    <TicketMessageActions message={message}/>
+                </div>
             </div>
         )
     }

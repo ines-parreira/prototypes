@@ -1,9 +1,66 @@
+@import '~css/new/colors';
+
+.notification--status(@color, @lighten: 36%, @icon) {
+  background-color: lighten(@color, @lighten);
+  box-shadow:
+    0 2px 6px 0 rgba(21, 32, 101, 0.2),
+    inset 0 0 0 1px lighten(@color, 29%);
+
+  color: @color;
+
+  &:before {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 100%;
+    border-radius: 3px;
+    box-shadow: inset 5px 0 0 0 @color;
+
+    pointer-events: none;
+  }
+
+  .notification-icon:before {
+    content: @icon;
+  }
+}
+
 :local .container {
     width: 480px !important;
 
     .notification {
-        box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.2);
         border-radius: 3px;
+        background-color: #fff;
+
         color: #292b2c;
+        font-family: 'Inter UI', sans-serif;
     }
+
+    .notification-icon {
+      display: table-cell;
+      padding-left: 20px;
+
+      font-size: 23px;
+      vertical-align: middle;
+    }
+
+    .notification--success {
+      .notification--status(@green, 49%, 'check_circle');
+    }
+
+    .notification--info {
+      .notification--status(@blue, 35%, 'info_outline');
+    }
+
+    .notification--warning {
+      .notification--status(@orange, 32%, 'warning');
+    }
+
+    .notification--error {
+      .notification--status(@red, 36%, 'error');
+    }
+
+    .notification--loading {
+      .notification--status(@yellow, 50%, 'refresh');
+    }
+
 }

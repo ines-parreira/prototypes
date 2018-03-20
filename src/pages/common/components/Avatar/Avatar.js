@@ -14,7 +14,9 @@ type Props = {
     size: number,
     url: string,
     className?: string,
+    style?: Object,
     google?: boolean,
+    badgeColor?: string,
 }
 
 type State = {
@@ -27,7 +29,8 @@ export default class Avatar extends React.Component<Props, State> {
         email: '',
         name: '',
         size: 50,
-        google: false
+        google: false,
+        style: '',
     }
 
     constructor(props: Props) {
@@ -58,8 +61,8 @@ export default class Avatar extends React.Component<Props, State> {
             size: props.size,
             google: props.google
         })
-        .then((imageUrl) => this.setState({imageUrl}))
-        .catch(() => this.setState({imageUrl: ''}))
+            .then((imageUrl) => this.setState({imageUrl}))
+            .catch(() => this.setState({imageUrl: ''}))
     }, 500)
 
     _getInitials = (name: string) => {
@@ -82,7 +85,9 @@ export default class Avatar extends React.Component<Props, State> {
         const {
             name,
             size,
-            className
+            className,
+            style,
+            badgeColor
         } = this.props
 
         return (
@@ -90,7 +95,8 @@ export default class Avatar extends React.Component<Props, State> {
                 className={classnames(css.component, className)}
                 style={{
                     width: `${String(size)}px`,
-                    height: `${String(size)}px`
+                    height: `${String(size)}px`,
+                    ...style
                 }}
             >
                 <div
@@ -103,6 +109,14 @@ export default class Avatar extends React.Component<Props, State> {
                         {this._getInitials(name)}
                     </span>
                 </div>
+                {
+                    badgeColor &&
+                    <div
+                        className={css.badge}
+                        style={{backgroundColor: badgeColor}}
+                    >
+                    </div>
+                }
 
                 {
                     this.state.imageUrl &&

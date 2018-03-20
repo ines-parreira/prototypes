@@ -8,19 +8,19 @@ export default [
     {
         key: 'bold',
         name: 'Bold',
-        icon: 'fa-bold',
+        icon: 'format_bold',
         style: 'BOLD'
     },
     {
         key: 'italic',
         name: 'Italic',
-        icon: 'fa-italic',
+        icon: 'format_italic',
         style: 'ITALIC'
     },
     {
         key: 'underline',
         name: 'Underline',
-        icon: 'fa-underline',
+        icon: 'format_underline',
         style: 'UNDERLINE'
     },
     {

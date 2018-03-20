@@ -3,6 +3,7 @@ import {
     UncontrolledDropdown,
     DropdownMenu,
     DropdownItem,
+    DropdownToggle,
     Badge,
 } from 'reactstrap'
 import classnames from 'classnames'
@@ -195,10 +196,10 @@ export default class MultiSelectField extends Component {
 
                         return (
                             <Badge
-                                className="tag"
+                                className={css.tag}
                                 style={{
                                     color: tagColor,
-                                    margin: '0.25em 0',
+                                    margin: '0.25em 0.25em 0 0.25em',
                                 }}
                                 key={index}
                             >
@@ -217,24 +218,29 @@ export default class MultiSelectField extends Component {
                         )
                     })}
                     <div className={css['input-container']}>
-                        <input
-                            ref="input"
-                            className={`${css.input} ml-2`}
-                            placeholder={`Add ${plural}...`}
-                            value={input}
-                            onFocus={() => {
-                                this.setState({optionsOpen: true})
-                            }}
-                            onBlur={(event) => {
-                                this._stopPropagation(event)
-                                this.setState({optionsOpen: false})
-                            }}
-                            onKeyDown={this._onInputKeyDown}
-                            onChange={this._onInputChange}
-                        />
                         <UncontrolledDropdown
                             isOpen={optionsOpen && (!hasNoFilteredOptions || !!input)}
                         >
+                            <DropdownToggle
+                                tag="div"
+                                data-toggle="dropdown"
+                            >
+                                <input
+                                    ref="input"
+                                    className={`${css.input} ml-2`}
+                                    placeholder={`Add ${plural}...`}
+                                    value={input}
+                                    onFocus={() => {
+                                        this.setState({optionsOpen: true})
+                                    }}
+                                    onBlur={(event) => {
+                                        this._stopPropagation(event)
+                                        this.setState({optionsOpen: false})
+                                    }}
+                                    onKeyDown={this._onInputKeyDown}
+                                    onChange={this._onInputChange}
+                                />
+                            </DropdownToggle>
                             <DropdownMenu
                                 className={css.options}
                             >

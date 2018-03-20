@@ -2,18 +2,20 @@
 
 exports[`TicketMacros component should display an empty state if there's no macros 1`] = `
 <div
-  className="TicketMacros"
+  className="component"
 >
   <a
-    className="clear-macros"
+    className="clearMacros"
     id="clear-macro-button"
     onClick={[Function]}
   >
     <i
-      className="fa fa-fw fa-close hidden-sm-down"
-    />
+      className="material-icons d-none d-md-inline-block"
+    >
+      close
+    </i>
     <Button
-      className="hidden-md-up"
+      className="d-md-none"
       color="secondary"
       size="sm"
       tag="button"
@@ -54,18 +56,20 @@ exports[`TicketMacros component should display an empty state if there's no macr
 
 exports[`TicketMacros component should display another empty state if there's no macros matching the searchQuery 1`] = `
 <div
-  className="TicketMacros"
+  className="component"
 >
   <a
-    className="clear-macros"
+    className="clearMacros"
     id="clear-macro-button"
     onClick={[Function]}
   >
     <i
-      className="fa fa-fw fa-close hidden-sm-down"
-    />
+      className="material-icons d-none d-md-inline-block"
+    >
+      close
+    </i>
     <Button
-      className="hidden-md-up"
+      className="d-md-none"
       color="secondary"
       size="sm"
       tag="button"
@@ -111,18 +115,20 @@ exports[`TicketMacros component should display another empty state if there's no
 
 exports[`TicketMacros component should display macros list, and selected macro 1`] = `
 <div
-  className="TicketMacros"
+  className="component"
 >
   <a
-    className="clear-macros"
+    className="clearMacros"
     id="clear-macro-button"
     onClick={[Function]}
   >
     <i
-      className="fa fa-fw fa-close hidden-sm-down"
-    />
+      className="material-icons d-none d-md-inline-block"
+    >
+      close
+    </i>
     <Button
-      className="hidden-md-up"
+      className="d-md-none"
       color="secondary"
       size="sm"
       tag="button"
@@ -141,20 +147,10 @@ exports[`TicketMacros component should display macros list, and selected macro 1
     </Tooltip>
   </a>
   <div
-    className="d-flex"
-    style={
-      Object {
-        "height": "100%",
-      }
-    }
+    className="content"
   >
     <div
-      className="macro-list"
-      style={
-        Object {
-          "width": "35%",
-        }
-      }
+      className="macroList macro-list"
     >
       <div
         className="macro-item"
@@ -180,15 +176,127 @@ exports[`TicketMacros component should display macros list, and selected macro 1
       </div>
     </div>
     <div
-      className="macro-preview-container"
+      className="previewContainer"
     >
-      <a
-        className="btn btn-secondary manage-macros"
-        onClick={[Function]}
+      <Dropdown
+        addonType={false}
+        dropup={false}
+        inNavbar={false}
+        isOpen={false}
+        nav={false}
+        toggle={[Function]}
       >
-        Manage macros
-      </a>
+        <DropdownToggle
+          aria-haspopup={true}
+          caret={true}
+          className="manageMacros"
+          color="secondary"
+          id="deleteMacroTarget"
+        >
+          <i
+            className="material-icons"
+          >
+            settings
+          </i>
+        </DropdownToggle>
+        <DropdownMenu
+          flip={true}
+          tag="div"
+        >
+          <DropdownItem
+            className="cursor-pointer"
+            onClick={[Function]}
+            tag="button"
+            toggle={true}
+          >
+            <i
+              className="material-icons"
+            >
+              settings
+            </i>
+             Manage macros
+          </DropdownItem>
+          <DropdownItem
+            className="cursor-pointer"
+            onClick={[Function]}
+            tag="button"
+            toggle={true}
+          >
+            <i
+              className="material-icons"
+            >
+              mode_edit
+            </i>
+             Edit macro
+          </DropdownItem>
+          <DropdownItem
+            className="cursor-pointer"
+            onClick={[Function]}
+            tag="button"
+            toggle={true}
+          >
+            <i
+              className="material-icons"
+            >
+              add
+            </i>
+             Create new macro
+          </DropdownItem>
+          <DropdownItem
+            className="cursor-pointer"
+            id="deleteButtonMenuItem"
+            onClick={[Function]}
+            tag="button"
+            toggle={true}
+          >
+            <i
+              className="material-icons text-danger"
+            >
+              delete
+            </i>
+             Delete macro
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
+      <Popover
+        delay={
+          Object {
+            "hide": 0,
+            "show": 0,
+          }
+        }
+        isOpen={false}
+        placement="bottom"
+        placementPrefix="bs-popover"
+        target="deleteMacroTarget"
+        toggle={[Function]}
+      >
+        <PopoverBody
+          tag="div"
+        >
+          <p>
+            Are you sure you want to delete '
+            '?
+          </p>
+          <Button
+            color="danger"
+            onClick={[Function]}
+            tag="button"
+          >
+            Delete macro
+          </Button>
+          <Button
+            className="float-right"
+            color="secondary"
+            onClick={[Function]}
+            tag="button"
+          >
+            Cancel
+          </Button>
+        </PopoverBody>
+      </Popover>
       <Preview
+        className="preview"
         displayHTML={true}
         macro={
           Immutable.Map {
@@ -196,6 +304,7 @@ exports[`TicketMacros component should display macros list, and selected macro 1
         }
       />
     </div>
+    <Connect(MacroContainer) />
   </div>
 </div>
 `;

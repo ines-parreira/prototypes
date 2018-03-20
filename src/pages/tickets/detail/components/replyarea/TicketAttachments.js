@@ -1,16 +1,18 @@
 import React from 'react'
-import classNames from 'classnames'
+import classnames from 'classnames'
 import Lightbox from 'react-images'
 import type {List} from 'immutable'
 
 import {fileIconFromContentType} from '../../../common/utils'
 import shortcutManager from '../../../../../services/shortcutManager'
 
+import css from './TicketAttachments.less'
 
 type Props = {
     attachments: List<*>,
     removable: boolean,
-    deleteAttachment: ({}) => void
+    deleteAttachment: ({}) => void,
+    className?: string,
 }
 
 type State = {
@@ -26,8 +28,10 @@ export default class TicketAttachments extends React.Component<Props, State> {
 
     renderAttachmentIcon = (contentType) => {
         return (
-            <div className="attachments-item-meta-type">
-                <i className={`fa fa-fw ${fileIconFromContentType(contentType)}`} />
+            <div className={css.metaType}>
+                <i className="material-icons md-2">
+                    {fileIconFromContentType(contentType)}
+                </i>
             </div>
         )
     }
@@ -44,9 +48,11 @@ export default class TicketAttachments extends React.Component<Props, State> {
         if (this.props.removable) {
             return (
                 <i
-                    className="attachments-item-remove fa fa-fw fa-close"
+                    className={classnames(css.itemRemove, 'material-icons')}
                     onClick={(e) => this.removeAttachment(idx, e)}
-                />
+                >
+                    close
+                </i>
             )
         }
 
@@ -100,7 +106,7 @@ export default class TicketAttachments extends React.Component<Props, State> {
     }
 
     render() {
-        const {attachments} = this.props
+        const {attachments, className} = this.props
         const {currentImage, isLightboxOpen} = this.state
 
         if (attachments.isEmpty()) {
@@ -112,11 +118,13 @@ export default class TicketAttachments extends React.Component<Props, State> {
         const publicAttachments = attachments.filter((attachment) => attachment.get('public') !== false)
 
         return (
-            <div className="attachments">
+            <div className={classnames(css.component, className)}>
                 {
                     failedAttachments.size > 0 && (
                         <div className="mb-2">
-                            <i className='fa fa-warning mr-1'/>
+                            <i className="material-icons mr-1">
+                                warning
+                            </i>
                             {' '}There is {`${failedAttachments.size}`} attachment(s) to this message which we{' '}
                             couldn't download.
                         </div>
@@ -128,15 +136,15 @@ export default class TicketAttachments extends React.Component<Props, State> {
                             <a
                                 href={attachment.get('url') || '#'}
                                 target="_blank"
-                                className={classNames('attachments-item', {
-                                    'attachments-item-has-preview': this.isImage(attachment)
+                                className={classnames(css.item, {
+                                    [css.hasPreview]: this.isImage(attachment)
                                 })}
                                 key={idx}
                                 style={this.setImagePreview(attachment)}
                                 onClick={(e) => this.openLightbox(e, attachment, images)}
                             >
-                                <div className="attachments-item-meta">
-                                    <div className="attachments-item-meta-name">
+                                <div className={css.itemMeta}>
+                                    <div className={css.metaName}>
                                         {attachment.get('name')}
                                     </div>
 

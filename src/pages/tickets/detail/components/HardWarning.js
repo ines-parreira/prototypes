@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {Button, Card, CardBlock} from 'reactstrap'
+import {Button, Card, CardBody} from 'reactstrap'
 
 import Tooltip from '../../../common/components/Tooltip'
 
@@ -151,7 +151,7 @@ class HardWarning extends React.Component {
             <div className={css.component}>
                 <div className={css.dimmer} />
                 <Card>
-                    <CardBlock>
+                    <CardBody>
                         <div className="text-danger mb-3">{error}</div>
 
                         <div>
@@ -183,7 +183,7 @@ class HardWarning extends React.Component {
                             {forceButton}
                             {cancelButton}
                         </div>
-                    </CardBlock>
+                    </CardBody>
                 </Card>
             </div>
         )

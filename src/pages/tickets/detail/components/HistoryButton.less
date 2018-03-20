@@ -1,0 +1,20 @@
+:local .component {
+  position: relative;
+  transition: 0.2s opacity;
+
+  &:disabled {
+    opacity: 0.5;
+    //transition: 0.2s opacity;
+    pointer-events: none;
+  }
+
+  .iconArrowDown,
+  &:hover .iconHistory {
+    display: none;
+  }
+
+  &:hover .iconArrowDown {
+    display: block;
+  }
+
+}

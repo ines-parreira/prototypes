@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
+import classnames from 'classnames'
 
 import {getActionTemplate} from './../../../../../utils'
 
@@ -9,6 +10,7 @@ import {getIconUrl, getIconFromUrl} from './../../../../../state/integrations/he
 import InputField from '../../../../common/forms/InputField'
 import BooleanField from '../../../../common/forms/BooleanField'
 
+import css from './TicketReplyAction.less'
 
 export default class TicketReplyAction extends React.Component {
     setListDictValue(arg, value, category) {
@@ -51,7 +53,7 @@ export default class TicketReplyAction extends React.Component {
                 }
                 {
                     args.map((arg, key) => (
-                        <div key={key} className="arg-input">
+                        <div key={key} className={css.argInput}>
                             <div className="mr-3">{arg.get('key')}</div>
                             <InputField
                                 type="text"
@@ -80,7 +82,7 @@ export default class TicketReplyAction extends React.Component {
 
                         if (inputConfig && inputConfig.type === 'checkbox') {
                             return (
-                                <div key={key} className="arg-input">
+                                <div key={key} className={css.argInput}>
                                     <BooleanField
                                         {...inputConfig}
                                         value={value}
@@ -94,7 +96,7 @@ export default class TicketReplyAction extends React.Component {
                         }
 
                         return (
-                            <div key={key} className="arg-input">
+                            <div key={key} className={css.argInput}>
                                 <InputField
                                     {...inputConfig}
                                     value={value}
@@ -140,7 +142,7 @@ export default class TicketReplyAction extends React.Component {
 
             if (shouldDisplayArgs) {
                 argsComponent = (
-                    <div className="args-wrapper mt-2">
+                    <div className={classnames(css.argsWrapper)}>
                         {this.renderListDictArgs('Headers', headersArgs, 'headers')}
                         {this.renderListDictArgs('URL Parameters', paramsArgs, 'params')}
                         {this.renderListDictArgs('Form Data', formData, 'form')}
@@ -152,7 +154,7 @@ export default class TicketReplyAction extends React.Component {
 
             if (args && !args.isEmpty()) {
                 argsComponent = (
-                    <div className="args-wrapper mt-2">
+                    <div className={classnames(css.argsWrapper)}>
                         {this.renderArgs(args)}
                     </div>
                 )
@@ -162,19 +164,21 @@ export default class TicketReplyAction extends React.Component {
         const notes = getActionTemplate(action.get('name')).notes
 
         return (
-            <div className="TicketReplyAction">
-                <div className="title">
+            <div className={css.component}>
+                <div className={css.title}>
                     {
                         !!type && (
-                            <img className="action-logo" role="presentation" src={icon} />
+                            <img className={css.actionLogo} role="presentation" src={icon} />
                         )
                     }
                     <span>{action.get('title')}</span>
                 </div>
                 <i
-                    className="fa fa-fw fa-close text-danger close-icon"
+                    className={classnames(css.closeIcon, 'material-icons text-danger')}
                     onClick={() => remove(this.props.index, ticketId)}
-                />
+                >
+                    close
+                </i>
                 {argsComponent}
                 {
                     !!notes && (

@@ -12,18 +12,18 @@ export const getIntegrationsState = (state: stateType) => state.integrations || 
 
 export const getIntegrations = createSelector(
     [getIntegrationsState],
-    state => state.get('integrations', fromJS([]))
+    (state) => state.get('integrations', fromJS([]))
 )
 
 export const getActiveIntegrations = createSelector(
     [getIntegrations],
-    state => state.filter(i => !i.get('deactivated_datetime'))
+    (state) => state.filter((i) => !i.get('deactivated_datetime'))
 )
 
 export const getIntegrationById = (id: number) => createSelector(
     [getIntegrations],
     (integrations) => {
-        return integrations.find(integration => integration.get('id', '').toString() === (id || '').toString())
+        return integrations.find((integration) => integration.get('id', '').toString() === (id || '').toString())
             || fromJS({})
     }
 )
@@ -38,34 +38,34 @@ export const getIntegrationsByTypes = (types: typesType) => createSelector(
             types = [types]
         }
 
-        return integrations.filter(integration => types.includes(integration.get('type')))
+        return integrations.filter((integration) => types.includes(integration.get('type')))
     }
 )
 
 export const getFacebookIntegrations = createSelector(
     [getIntegrations],
-    state => state
-        .filter(integration => integration.get('type') === 'facebook')
+    (state) => state
+        .filter((integration) => integration.get('type') === 'facebook')
         .sort((a, b) => compare(a.getIn(['facebook', 'name']), b.getIn(['facebook', 'name'])))
 )
 
 export const getFacebookOnboardingPages = createSelector(
     [getIntegrationsState],
-    state => state.getIn(['extra', 'facebook', 'onboardingPages']) || fromJS([])
+    (state) => state.getIn(['extra', 'facebook', 'onboardingPages']) || fromJS([])
 )
 
 export const getEmailIntegrations = createSelector(
     [getIntegrations],
-    state => state.filter(integration => ['email', 'gmail'].includes(integration.get('type')))
+    (state) => state.filter((integration) => ['email', 'gmail'].includes(integration.get('type')))
 )
 
 // return email and gmail integrations formatted as channel
 export const getChannels = createSelector(
-    [state => state, getEmailIntegrations],
+    [(state) => state, getEmailIntegrations],
     (state, integrations) => {
         const nestedReplace = require('../ticket/utils').nestedReplace
 
-        return integrations.map(integration => {
+        return integrations.map((integration) => {
             let type = integration.get('type')
 
             if (integration.get('type') === 'gmail') {
@@ -86,27 +86,27 @@ export const getChannels = createSelector(
 
 export const getChannelsByType = (type: string) => createSelector(
     [getChannels],
-    state => state.filter(integration => integration.get('type') === type)
+    (state) => state.filter((integration) => integration.get('type') === type)
 )
 
 export const getChannelByTypeAndAddress = (type: string, address: string) => createSelector(
     [getChannels],
-    channels => channels.filter((channel) => channel.get('type') === type && channel.get('address') === address).first() || fromJS({})
+    (channels) => channels.filter((channel) => channel.get('type') === type && channel.get('address') === address).first() || fromJS({})
 )
 
 export const getChannelSignature = (type: string, address: string) => createSelector(
     [getChannelByTypeAndAddress(type, address)],
-    channel => channel.get('signature') || fromJS({})
+    (channel) => channel.get('signature') || fromJS({})
 )
 
 export const getAuthData = (type: string) => createSelector(
     [getIntegrationsState],
-    state => state.getIn(['authentication', type], fromJS({}))
+    (state) => state.getIn(['authentication', type], fromJS({}))
 )
 
 export const getRedirectUri = (type: string) => createSelector(
     [getAuthData(type)],
-    state => state.get('redirect_uri', '')
+    (state) => state.get('redirect_uri', '')
 )
 
 export const makeGetRedirectUri = (state: stateType) => (type: string) => getRedirectUri(type)(state)
@@ -126,14 +126,14 @@ export const getMessagingIntegrations = createSelector(
 
 export const hasIntegrationOfTypes = (types: typesType) => createSelector(
     [getIntegrationsByTypes(types)],
-    integrations => !integrations.isEmpty()
+    (integrations) => !integrations.isEmpty()
 )
 
 export const makeHasIntegrationOfTypes = (state: stateType) => (types: typesType) => hasIntegrationOfTypes(types)(state)
 
 export const getIntegrationExtra = (type: string) => createSelector(
     [getIntegrationsState],
-    state => state.getIn(['extra', type]) || fromJS({})
+    (state) => state.getIn(['extra', type]) || fromJS({})
 )
 
 export const getShopifyIntegrationsWithoutChat = (state: stateType) => {

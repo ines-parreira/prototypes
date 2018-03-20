@@ -38,6 +38,11 @@ export const getLoading = createImmutableSelector(
     state => state.getIn(['_internal', 'loading']) || fromJS({})
 )
 
+export const getDisplayHistory = createImmutableSelector(
+    [getTicketState],
+    state => state.getIn(['_internal', 'displayHistory'])
+)
+
 // in props usage
 // ex: isMerging: isLoading('merge')(state)
 export const isLoading = name => createSelector(

@@ -1,0 +1,84 @@
+@import '~css/new/colors';
+@import '~css/new/mixins';
+
+:local .component {
+  .metaType {
+    position: absolute;
+    bottom: .8em;
+    left: .8em;
+  }
+
+  .itemRemove {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    width: auto;
+    height: auto;
+    padding: .5rem;
+
+    line-height: 1;
+    font-size: 12px;
+
+    &:hover,
+    &:active {
+      background: #000 !important;
+
+      color: #fff;
+    }
+  }
+
+  .item {
+    display: inline-block;
+    overflow: hidden;
+    width: 120px;
+    height: 80px;
+    margin-right: .8em;
+    background-color: @quartz;
+    background-size: cover;
+    border-radius: 3px;
+    border: 1px solid @darkQuartz2;
+
+    vertical-align: top;
+
+    &:last-item {
+      margin-right: 0;
+    }
+
+    &:hover .itemMeta {
+      opacity: 1;
+    }
+  }
+
+  .itemMeta {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding: .8em;
+    transition: all .3s;
+
+    color: #000;
+    font-size: 10px;
+
+    @media @mobiles {
+      opacity: 1 !important;
+    }
+  }
+
+  .hasPreview .itemMeta {
+    background: fade(#333, 90%);
+    opacity: 0;
+
+    color: #fff;
+  }
+
+  .metaName {
+    overflow: hidden;
+    /* two lines of text max
+    */
+    max-height: 2.4em;
+
+    line-height: 1.2;
+  }
+
+}

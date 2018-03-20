@@ -16,6 +16,9 @@ const vendorsBundleFile = __PRODUCTION__ ? `${HASH}.vendors.min.js` : 'vendors.j
 
 const pathinfo = !__PRODUCTION__
 const devtool = __PRODUCTION__ ? 'source-map' : 'eval'
+const cssLoaderOptions = {
+    sourceMap: true
+}
 const devServer = {
     contentBase: buildDir,
     host: '0.0.0.0',
@@ -100,8 +103,14 @@ module.exports = (env = {}) => {
                     use: ExtractTextPlugin.extract({
                         fallback: 'style-loader',
                         use: [
-                            'css-loader',
-                            'less-loader'
+                            {
+                                loader: 'css-loader',
+                                options: cssLoaderOptions
+                            },
+                            {
+                                loader: 'less-loader',
+                                options: cssLoaderOptions
+                            }
                         ]
                     })
                 },
@@ -131,6 +140,11 @@ module.exports = (env = {}) => {
             new webpack.ProvidePlugin({
                 Tether: 'tether',
             }),
-        ]
+        ],
+        resolve: {
+            alias: {
+                css: `${srcDir}/css/`
+            }
+        }
     }
 }

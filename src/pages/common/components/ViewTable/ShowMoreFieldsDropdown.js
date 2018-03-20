@@ -38,21 +38,19 @@ class ShowMoreFieldsDropdown extends React.Component {
                 }}
             >
                 <DropdownToggle
-                    className="hidden-sm-down"
+                    className="d-none d-md-inline-block text-secondary"
                     color="link"
                     type="button"
-                    style={{
-                        paddingTop: '2px',
-                    }}
+                    caret
                 >
-                    <i className="fa fa-fw fa-table" />
+                    <i className="icon material-icons md-2">view_column</i>
                 </DropdownToggle>
                 <DropdownMenu right>
                     <DropdownItem
                         className="pb-2"
                         header
                     >
-                        Columns
+                        COLUMNS
                     </DropdownItem>
                     {
                         this.props.fields

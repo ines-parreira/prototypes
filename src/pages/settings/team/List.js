@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import {
     Button,
+    Container,
     Table,
 } from 'reactstrap'
 
@@ -14,6 +15,7 @@ import Row from './Row'
 
 import * as actions from '../../../state/agents/actions'
 import * as selectors from '../../../state/agents/selectors'
+import PageHeader from '../../common/components/PageHeader'
 
 @connect((state) => {
     return {
@@ -50,16 +52,12 @@ export default class List extends React.Component {
         const {agents, pagination} = this.props
 
         if (this.state.isFetching) {
-            return <Loader />
+            return <Loader/>
         }
 
         return (
-            <div>
-                <div className="d-flex align-items-center justify-content-between mb-3">
-                    <h1>
-                        <i className="fa fa-fw fa-users blue mr-2" />
-                        Team members
-                    </h1>
+            <div className="full-width">
+                <PageHeader title="Team members">
                     <Button
                         tag={Link}
                         color="success"
@@ -67,16 +65,17 @@ export default class List extends React.Component {
                     >
                         Add team member
                     </Button>
-                </div>
+                </PageHeader>
 
-                <p>
-                    Manage team members for your Gorgias account. Team members can view tickets and respond to them.
-                </p>
-                <p>
-                    You can <strong>add as many team members as you want</strong>, at no additional cost.
-                </p>
-                <Table hover>
-                    <tbody>
+                <Container fluid className="page-container">
+                    <p>
+                        Manage team members for your Gorgias account. Team members can view tickets and respond to them.
+                    </p>
+                    <p>
+                        You can <strong>add as many team members as you want</strong>, at no additional cost.
+                    </p>
+                    <Table hover>
+                        <tbody>
                         {
                             agents.map((agent) => {
                                 return (
@@ -87,14 +86,15 @@ export default class List extends React.Component {
                                 )
                             })
                         }
-                    </tbody>
-                </Table>
+                        </tbody>
+                    </Table>
 
-                <Pagination
-                    pageCount={pagination.get('nb_pages') || 1}
-                    currentPage={pagination.get('page') || 1}
-                    onChange={this._fetchPage}
-                />
+                    <Pagination
+                        pageCount={pagination.get('nb_pages') || 1}
+                        currentPage={pagination.get('page') || 1}
+                        onChange={this._fetchPage}
+                    />
+                </Container>
             </div>
         )
     }

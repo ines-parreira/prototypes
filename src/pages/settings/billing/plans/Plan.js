@@ -1,0 +1,125 @@
+// @flow
+
+import React from 'react'
+import {Card, Button, CardBody, CardHeader, CardFooter} from 'reactstrap'
+import Tooltip from '../../../common/components/Tooltip'
+import './Plan.less'
+import classnames from 'classnames'
+
+type Props = {
+    callToAction?: Node,
+    features?: Node,
+    isCurrentPlan?: boolean,
+    isFeatured?: boolean,
+    isTrialing?: boolean,
+    isUpdating?: boolean,
+    onClick?: Function,
+    plan: Object,
+    showFooter?: boolean,
+}
+
+export class Plan extends React.Component<Props> {
+    static defaultProps = {
+        callToAction: null,
+        features: null,
+        isCurrentPlan: false,
+        isFeatured: false,
+        isTrialing: false,
+        isUpdating: false,
+        onClick: null,
+        showFooter: true,
+    }
+
+    render() {
+        const {plan, isUpdating, isCurrentPlan, isTrialing, isFeatured, features, showFooter, callToAction} = this.props
+        const planSentencePrefix = isTrialing ? 'Choose' : 'Switch to'
+        const costMultiplier = 100
+        const costPerTicket = plan.get('cost_per_ticket') * costMultiplier
+        const planName = plan.get('name')
+        const planId = plan.get('id')
+        const planInterval = plan.get('interval') === 'month' ? 'mo' : 'year'
+        return (
+            <Card
+                className={classnames('plan', `plan-${planName}`, {featured: isFeatured})}
+                outline
+            >
+                <CardHeader className={classnames('plan-header', {'featured-header': isFeatured})}>
+                    {isFeatured && (
+                        <div className="featured-header-title">Recommended Plan</div>
+                    )}
+                    <div className="header-text">
+                        <strong>{planName}</strong>
+
+                        {plan.get('amount') && (
+                            <span className="float-right">
+                                {plan.get('currencySign')}{plan.get('amount')}/{planInterval}
+                            </span>
+                        )}
+                    </div>
+                </CardHeader>
+                <CardBody>
+                    {features ? features : (
+                        <ul>
+                            <li>
+                                <i className="material-icons feature-icon">
+                                    all_inclusive
+                                </i>
+                                {' '}
+                                <strong>Unlimited</strong> agents
+                            </li>
+                            <li>
+                                <i className="material-icons feature-icon">
+                                    playlist_add_check
+                                </i>
+                                {' '}
+                                <strong>{plan.get('free_tickets')}</strong> tickets included
+                            </li>
+                            <li>
+                                <i className="material-icons feature-icon">
+                                    playlist_add
+                                </i>
+                                {' '}
+                                <strong>
+                                    + {plan.get('currencySign')}{costPerTicket}
+                                </strong> per {costMultiplier} tickets
+                                {' '}
+                                <a id={`additional-tickets-tooltip-${planId}`}>
+                                    <i className="material-icons text-muted">info_outline</i>
+                                </a>
+                                <Tooltip target={`additional-tickets-tooltip-${planId}`}>
+                                    If you reply to more tickets than included in your plan
+                                    this is the additional cost per 100 tickets.
+                                </Tooltip>
+                            </li>
+                            <li>
+                                <i className="material-icons feature-icon">
+                                    extension
+                                </i>
+                                {' '}
+                                <strong>{plan.get('integrations')}</strong> integrations
+                            </li>
+                        </ul>
+                    )}
+                </CardBody>
+                {showFooter && (
+                    <CardFooter>
+                        {callToAction ? callToAction : (
+                            <Button
+                                className={classnames({'btn-loading': isUpdating})}
+                                color='link'
+                                disabled={!isTrialing && (isCurrentPlan || isUpdating)}
+                                onClick={this.props.onClick}
+                            >
+                                {isTrialing ? (
+                                    `Choose ${plan.get('name')} plan`
+                                ) : (
+                                    isCurrentPlan ? 'Your current plan' : `${planSentencePrefix} ${plan.get('name')} plan`
+                                )}
+                            </Button>
+                        )}
+                    </CardFooter>
+                )}
+            </Card>
+        )
+    }
+}

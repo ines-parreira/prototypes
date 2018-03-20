@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {Badge, Card, CardBlock, Button, Popover, PopoverTitle, PopoverContent} from 'reactstrap'
+import {Badge, Card, CardBody, Button, Popover, PopoverHeader, PopoverBody} from 'reactstrap'
 
 import ToggleButton from '../../../../common/components/ToggleButton'
 
@@ -89,10 +89,10 @@ class RuleRow extends React.Component {
                         target={toggleId}
                         toggle={this._toggleConfirmation}
                     >
-                        <PopoverTitle>
+                        <PopoverHeader>
                             Are you sure?
-                        </PopoverTitle>
-                        <PopoverContent>
+                        </PopoverHeader>
+                        <PopoverBody>
                             <p>
                                 Are you sure you want to deactivate this rule?
                             </p>
@@ -104,7 +104,7 @@ class RuleRow extends React.Component {
                             >
                                 Confirm
                             </Button>
-                        </PopoverContent>
+                        </PopoverBody>
                     </Popover>
                 </td>
             </tr>
@@ -118,13 +118,13 @@ class RuleRow extends React.Component {
             <tr key={rule.get('id')}>
                 <td colSpan="100">
                     <Card>
-                        <CardBlock>
+                        <CardBody>
                             <RuleItem
                                 rule={rule}
                                 actions={actions}
                                 toggleOpening={this.props.toggleOpening}
                             />
-                        </CardBlock>
+                        </CardBody>
                     </Card>
                 </td>
             </tr>

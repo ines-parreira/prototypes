@@ -5,8 +5,8 @@ import {
     Form,
     Button,
     Popover,
-    PopoverTitle,
-    PopoverContent,
+    PopoverHeader,
+    PopoverBody,
 } from 'reactstrap'
 
 import InputField from '../../common/forms/InputField'
@@ -218,8 +218,8 @@ export class Row extends Component {
                             target={`remove-button-${row.get('id')}`}
                             toggle={this._toggleRemoveConfirmation}
                         >
-                            <PopoverTitle>Are you sure?</PopoverTitle>
-                            <PopoverContent>
+                            <PopoverHeader>Are you sure?</PopoverHeader>
+                            <PopoverBody>
                                 <p>
                                     Are you sure you want to delete this tag?{' '}
                                     <b>It will be removed from all tickets</b>.
@@ -231,7 +231,7 @@ export class Row extends Component {
                                 >
                                     Confirm
                                 </Button>
-                            </PopoverContent>
+                            </PopoverBody>
                         </Popover>
                     </div>
                 </td>

@@ -3,12 +3,13 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import ImportDataList from './ImportDataList'
-import {Alert} from 'reactstrap'
+import {Alert, Container} from 'reactstrap'
 
 import * as integrationSelectors from './../../../state/integrations/selectors'
 import * as accountSelectors from './../../../state/currentAccount/selectors'
 
 import * as integrationActions from './../../../state/integrations/actions'
+import PageHeader from '../../common/components/PageHeader'
 
 @connect((state) => {
     return {
@@ -84,30 +85,33 @@ export default class ImportDataContainer extends React.Component {
         const {isAllowedToCreate} = this.props
 
         return (
-            <div>
-                <div className="mb-3">
-                    <h1>
-                        <i className="fa fa-cloud-download blue icon mr-2"/>
-                        Import data
-                    </h1>
-                    <p>
-                        Import data from your previous helpdesk in Gorgias.
-                    </p>
-                    {
-                        !isAllowedToCreate && (
-                            <Alert color="danger">
-                                <i className="fa fa-exclamation-circle mr-2" />
-                                <strong> This feature is not available for accounts on Free Trial. </strong>
-                                To import data in Gorgias, upgrade your <Link
-                                to="/app/settings/billing" className="alert-link">plan</Link>.
-                            </Alert>
-                        )
-                    }
-                    {
-                        this._renderIntegration()
-                    }
-                </div>
-                <ImportDataList/>
+            <div className="full-width">
+                <PageHeader title="Import data"/>
+                <Container fluid className="page-container">
+                    <div className="mb-3">
+                        <p>
+                            Import data (one way) from your current helpdesk into Gorgias.
+                            Note: The import is performed one time only and will not sync your tickets continuously.
+                        </p>
+                        {
+                            !isAllowedToCreate && (
+                                <Alert color="warning">
+                                    <i className="material-icons md-2">warning</i>{' '}
+                                    Import operations <strong>consume a lot of resources</strong> which is why this
+                                    feature is <strong>not</strong> available for accounts during their <strong>free
+                                    trial</strong>.
+                                    <br/>
+                                    To import data in Gorgias, please subscribe to a <Link
+                                    to="/app/settings/billing" className="alert-link">paid plan</Link>.
+                                </Alert>
+                            )
+                        }
+                        {
+                            this._renderIntegration()
+                        }
+                    </div>
+                    <ImportDataList/>
+                </Container>
             </div>
         )
     }

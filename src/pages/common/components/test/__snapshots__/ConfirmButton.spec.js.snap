@@ -15,17 +15,24 @@ exports[`ConfirmButton component should match snapshot 1`] = `
     type="button"
   />
   <Popover
+    delay={
+      Object {
+        "hide": 0,
+        "show": 0,
+      }
+    }
     isOpen={false}
     placement="bottom"
+    placementPrefix="bs-popover"
     target="confirm-button-1"
     toggle={[Function]}
   >
-    <PopoverTitle
+    <PopoverHeader
       tag="h3"
     >
       Are you sure?
-    </PopoverTitle>
-    <PopoverContent
+    </PopoverHeader>
+    <PopoverBody
       tag="div"
     >
       <p />
@@ -37,7 +44,7 @@ exports[`ConfirmButton component should match snapshot 1`] = `
       >
         Confirm
       </Button>
-    </PopoverContent>
+    </PopoverBody>
   </Popover>
 </div>
 `;

@@ -1,14 +1,13 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
+import classnames from 'classnames'
 import TimelineTicket from './TimelineTicket'
+
+import css from './Timeline.less'
 
 export default class Timeline extends React.Component {
     render() {
-        const {userHistory, isDisplayed, revert, displayAll} = this.props
-
-        if (!isDisplayed) {
-            return null
-        }
+        const {userHistory, revert, displayAll, className} = this.props
 
         if (!userHistory.get('hasHistory') && !displayAll) {
             return null
@@ -21,26 +20,24 @@ export default class Timeline extends React.Component {
         }
 
         return (
-            <div className="Timeline">
-                <div className="body">
-                    {
-                        history.map((obj) => {
-                            // if it is a ticket
-                            if (obj.get('channel')) {
-                                return (
-                                    <TimelineTicket
-                                        key={obj.get('id')}
-                                        ticket={obj}
-                                        isCurrent={this.props.currentTicketId === obj.get('id')}
-                                        actions={this.props.actions}
-                                    />
-                                )
-                            }
+            <div className={classnames(css.component, className)}>
+                {
+                    history.map((obj) => {
+                        // if it is a ticket
+                        if (obj.get('channel')) {
+                            return (
+                                <TimelineTicket
+                                    key={obj.get('id')}
+                                    ticket={obj}
+                                    isCurrent={this.props.currentTicketId === obj.get('id')}
+                                    actions={this.props.actions}
+                                />
+                            )
+                        }
 
-                            return null
-                        }).toList()
-                    }
-                </div>
+                        return null
+                    }).toList()
+                }
             </div>
         )
     }
@@ -48,16 +45,15 @@ export default class Timeline extends React.Component {
 
 Timeline.propTypes = {
     userHistory: PropTypes.object.isRequired,
-    isDisplayed: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
     currentTicketId: PropTypes.number,
     revert: PropTypes.bool.isRequired,
     displayAll: PropTypes.bool.isRequired,
+    className: PropTypes.string,
 }
 
 Timeline.defaultProps = {
     userHistory: fromJS({}),
-    isDisplayed: false,
     actions: {},
     currentTicketId: 0,
     revert: false,

@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
-import {Button} from 'reactstrap'
+import {Button, } from 'reactstrap'
 import _capitalize from 'lodash/capitalize'
 
 import {humanizeString} from '../../../../../utils'
@@ -28,7 +28,8 @@ export default class Left extends React.Component {
             <Button
                 className="btn-frozen"
                 tag="div"
-                color="info"
+                size="sm"
+                color="primary"
             >
                 {field ? field.get('title') : _capitalize(humanizeString(suffixPath))}
             </Button>

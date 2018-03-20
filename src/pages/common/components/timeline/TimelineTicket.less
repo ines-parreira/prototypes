@@ -1,0 +1,62 @@
+@import '~css/new/colors';
+
+:local .component {
+  background-color: @quartz;
+  border-color: #d3d5e2;
+  box-shadow: 0 1px 1px fade(@darkQuartz, 90%);
+
+  cursor: pointer;
+
+  &,
+  &:hover {
+    color: @grey;
+  }
+
+  &:hover {
+    background-color: @lightQuartz;
+  }
+
+  &.current {
+    background-color: #fff;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 20px;
+  }
+
+  .body {
+    padding: 14px 10px;
+  }
+
+  .meta {
+    width: 25%;
+    max-width: 130px;
+    flex-shrink: 0;
+    padding-right: 16px;
+
+    font-size: 12px;
+  }
+
+  .details {
+    flex-grow: 1;
+    overflow: hidden;
+  }
+
+  .subject,
+  .excerpt {
+    white-space: nowrap;
+    overflow: hidden;
+    margin: 0;
+    text-overflow: ellipsis;
+  }
+
+  .subject {
+    color: @indigo;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .excerpt {
+    font-size: 13px;
+  }
+}

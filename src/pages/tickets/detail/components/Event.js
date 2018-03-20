@@ -3,7 +3,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
-import {Card, CardBlock, Button} from 'reactstrap'
+import {Card, CardBody, Button} from 'reactstrap'
 import _capitalize from 'lodash/capitalize'
 
 import {getActionByName} from '../../../../config/actions'
@@ -230,15 +230,13 @@ export default class Event extends React.Component {
                         </Button>
                     </div>
 
-                    <div className={classnames('ticket-message-time', css.date)}>
-                        <DatetimeLabel
-                            dateTime={event.get('created_datetime')}
-                            settings={{
-                                position: 'top left'
-                            }}
-                            timezone={currentUser.get('timezone')}
-                        />
-                    </div>
+                    <DatetimeLabel
+                        dateTime={event.get('created_datetime')}
+                        settings={{
+                            position: 'top left'
+                        }}
+                        timezone={currentUser.get('timezone')}
+                    />
                 </div>
 
                 <Card
@@ -246,9 +244,9 @@ export default class Event extends React.Component {
                         [css.hidden]: !this.state.showDetails,
                     })}
                 >
-                    <CardBlock>
+                    <CardBody>
                         {this._renderDetails(isError, event.get('data'))}
-                    </CardBlock>
+                    </CardBody>
                 </Card>
             </div>
         )

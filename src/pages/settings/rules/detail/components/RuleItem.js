@@ -138,7 +138,7 @@ class RuleItem extends React.Component {
                         Cancel changes
                     </ConfirmButton>
                 </div>
-                <div className="pull-right">
+                <div>
                     {
                         isDeactivated ? (
                                 <Button
@@ -201,9 +201,10 @@ class RuleItem extends React.Component {
                         placeholder="Name"
                         size="md"
                         update={name => this.setState({title: name})}
+                        className="font-weight-bold"
                     />
                     <i
-                        className="fa fa-fw fa-close clickable pull-right"
+                        className="fa fa-fw fa-close clickable"
                         onClick={this.props.toggleOpening}
                     />
                 </div>

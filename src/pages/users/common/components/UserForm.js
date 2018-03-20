@@ -259,7 +259,7 @@ class UserForm extends React.Component {
                     />
                 </div>
 
-                <div className="pull-right">
+                <div className="float-right">
                     <Button
                         type="submit"
                         color="primary"

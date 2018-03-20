@@ -1,5 +1,34 @@
-:local {
-  .divider {
+@import '~css/new/colors';
+
+:local .component {
+  max-width: 85% !important;
+
+  div[class^="container"] {
+    width: 100%;
+  }
+
+  .body {
+    padding: 0;
+  }
+
+  .content {
+    // height of screen minus modal header, modal footer and vertical margin
+    height: ~"calc(100vh - 190px)";
+    overflow: auto;
+  }
+
+  .list,
+  .footer {
+    background-color: @quartz;
+  }
+
+  .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .list,
+  .primaryAction {
     position: relative;
 
     &::after {
@@ -12,10 +41,10 @@
       position: absolute;
       background: #eceeef;
     }
+  }
 
-    &.footer::after {
-      top: -15px;
-      height: ~"calc(100% + 30px)";
-    }
+  .primaryAction::after {
+    top: -16px;
+    height: ~"calc(100% + 30px)";
   }
 }

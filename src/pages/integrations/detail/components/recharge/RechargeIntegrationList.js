@@ -117,7 +117,7 @@ export default class RechargeIntegrationList extends React.Component {
             }
 
             const isDisabled = int.get('deactivated_datetime')
-            const editLink = `/app/integrations/recharge/${int.get('id')}`
+            const editLink = `/app/settings/integrations/recharge/${int.get('id')}`
 
             return (
                 <tr key={int.get('id')}>
@@ -143,7 +143,7 @@ export default class RechargeIntegrationList extends React.Component {
                 longTypeDescription={longTypeDescription}
                 integrationType="recharge"
                 integrations={integrations.filter((v) => v.get('type') === 'recharge')}
-                createIntegration={() => browserHistory.push('/app/integrations/recharge/new')}
+                createIntegration={() => browserHistory.push('/app/settings/integrations/recharge/new')}
                 createIntegrationButtonText="Add Recharge"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}

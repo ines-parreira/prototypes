@@ -2,7 +2,7 @@ import React from 'react'
 import {mount, shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {BillingPlans} from '../BillingPlans'
+import {BillingPlans} from '../plans/BillingPlans'
 
 describe('BillingPlans component', () => {
     it('should load with empty props', () => {

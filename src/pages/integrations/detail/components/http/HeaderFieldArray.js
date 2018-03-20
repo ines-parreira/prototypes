@@ -68,7 +68,7 @@ export default class HeaderFieldArray extends React.Component {
                             </Col>
                             <Col xs="2">
                                 <Button
-                                    className="pull-right"
+                                    className="float-right"
                                     color="danger"
                                     type="button"
                                     onClick={() => this._remove(index)}

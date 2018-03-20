@@ -2,13 +2,18 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
-import {Breadcrumb, BreadcrumbItem, Button, Form, FormGroup, Popover, PopoverContent, PopoverTitle} from 'reactstrap'
 import _pick from 'lodash/pick'
 import {browserHistory, Link} from 'react-router'
+import {
+    Breadcrumb, BreadcrumbItem, Button, Container,
+    Form, FormGroup,
+    Popover, PopoverBody, PopoverHeader
+} from 'reactstrap'
 
 import {createRequest, deleteRequest, updateRequest} from '../../../state/requests/actions'
 import {getRequests} from '../../../state/requests/selectors'
 import InputField from '../../common/forms/InputField'
+import PageHeader from '../../common/components/PageHeader'
 
 type Props = {
     requests: Array<*>,
@@ -112,97 +117,97 @@ export class ManageRequestItem extends React.Component<Props, State> {
         const samples = request ? request.get('samples', '').split('\n') : []
 
         return (
-            <div>
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link to="/app/settings/requests">Manage Requests</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>
-                        {isUpdate ? `Edit ${name}` : 'Create Request'}
-                    </BreadcrumbItem>
-                </Breadcrumb>
+            <div className="full-width">
+                <PageHeader title={(
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/requests">Manage Requests</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>
+                            {isUpdate ? `Edit ${name}` : 'Create Request'}
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                )}/>
 
-                <h1 className="mb-3">
-                    {isUpdate ? `Edit '${name}' request` : 'Create Request'}
-                </h1>
-
-                <Form onSubmit={this._onSubmit}>
-                    <InputField
-                        type="text"
-                        name="name"
-                        label="Name"
-                        value={this.state.name}
-                        onChange={(value) => this.setState({name: value})}
-                        placeholder="Refund policy"
-                        help="The request name will appear on the ticket (similar to tags). Try to keep it short and simple."
-                        required
-                    />
-                    <InputField
-                        type="textarea"
-                        rows={samples.length + 2}
-                        name="samples"
-                        label="Sample statements"
-                        help="One example sentence per line. For best results: keep them short (5-10 words), as many and as variate as possible. Note that we ignore: order of words, case of the text, common words (Ex: the, and, etc..) and punctuation."
-                        value={this.state.samples}
-                        onChange={(value) => this.setState({samples: value})}
-                        required
-                    />
-                    <FormGroup>
-                        <Button
-                            type="submit"
-                            color="primary"
-                            className={classnames('mr-2', {
-                                'btn-loading': this.state.isSubmitting,
-                            })}
-                            disabled={this.state.isSubmitting}
-                        >
-                            {isUpdate ? 'Update Request' : 'Create Request'}
-                        </Button>
-                        {
-                            isUpdate && (
-                                <span>
-                                    <Button
-                                        id="deleteRequest-agent-button"
-                                        type="button"
-                                        color="danger"
-                                        outline
-                                        onClick={this._toggleDeleteConfirmation}
-                                        className={classnames('pull-right', {
-                                            'btn-loading': this.state.isDeleting,
-                                        })}
-                                        disabled={this.state.isDeleting}
-                                    >
-                                        Delete Request
-                                    </Button>
-                                    <Popover
-                                        placement="left"
-                                        isOpen={this.state.askDeleteConfirmation}
-                                        target="deleteRequest-agent-button"
-                                        toggle={this._toggleDeleteConfirmation}
-                                    >
-                                        <PopoverTitle>Are you sure?</PopoverTitle>
-                                        <PopoverContent>
-                                            <p>
-                                                You are about to <b>deleteRequest</b> this request. This action is{' '}
-                                                <b>irreversible</b>. You will lose all the training data that this request collected.
-                                            </p>
-                                            <Button
-                                                type="submit"
-                                                color="danger"
-                                                onClick={() => {
-                                                    this._toggleDeleteConfirmation()
-                                                    this._deleteRequest()
-                                                }}
-                                            >
-                                                Confirm
-                                            </Button>
-                                        </PopoverContent>
-                                    </Popover>
-                                </span>
-                            )
-                        }
-                    </FormGroup>
-                </Form>
+                <Container fluid className="page-container">
+                    <Form onSubmit={this._onSubmit}>
+                        <InputField
+                            type="text"
+                            name="name"
+                            label="Name"
+                            value={this.state.name}
+                            onChange={(value) => this.setState({name: value})}
+                            placeholder="Refund policy"
+                            help="The request name will appear on the ticket (similar to tags). Try to keep it short and simple."
+                            required
+                        />
+                        <InputField
+                            type="textarea"
+                            rows={samples.length + 2}
+                            name="samples"
+                            label="Sample statements"
+                            help="One example sentence per line. For best results: keep them short (5-10 words), as many and as variate as possible. Note that we ignore: order of words, case of the text, common words (Ex: the, and, etc..) and punctuation."
+                            value={this.state.samples}
+                            onChange={(value) => this.setState({samples: value})}
+                            required
+                        />
+                        <FormGroup>
+                            <Button
+                                type="submit"
+                                color="primary"
+                                className={classnames('mr-2', {
+                                    'btn-loading': this.state.isSubmitting,
+                                })}
+                                disabled={this.state.isSubmitting}
+                            >
+                                {isUpdate ? 'Update Request' : 'Create Request'}
+                            </Button>
+                            {
+                                isUpdate && (
+                                    <span>
+                                        <Button
+                                            id="deleteRequest-agent-button"
+                                            type="button"
+                                            color="danger"
+                                            outline
+                                            onClick={this._toggleDeleteConfirmation}
+                                            className={classnames('pull-right', {
+                                                'btn-loading': this.state.isDeleting,
+                                            })}
+                                            disabled={this.state.isDeleting}
+                                        >
+                                            Delete Request
+                                        </Button>
+                                        <Popover
+                                            placement="left"
+                                            isOpen={this.state.askDeleteConfirmation}
+                                            target="deleteRequest-agent-button"
+                                            toggle={this._toggleDeleteConfirmation}
+                                        >
+                                            <PopoverHeader>Are you sure?</PopoverHeader>
+                                            <PopoverBody>
+                                                <p>
+                                                    You are about to <b>deleteRequest</b> this request. This action is{' '}
+                                                    <b>irreversible</b>. You will lose all the training data that this request collected.
+                                                </p>
+                                                <Button
+                                                    type="submit"
+                                                    color="danger"
+                                                    onClick={() => {
+                                                        this._toggleDeleteConfirmation()
+                                                        this._deleteRequest()
+                                                    }}
+                                                >
+                                                    Confirm
+                                                </Button>
+                                            </PopoverBody>
+                                        </Popover>
+                                    </span>
+                                )
+                            }
+                        </FormGroup>
+                    </Form>
+                </Container>
             </div>
         )
     }

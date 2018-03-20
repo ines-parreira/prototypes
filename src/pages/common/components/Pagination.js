@@ -6,6 +6,7 @@ export default class Pagination extends React.Component {
         onChange: PropTypes.func.isRequired,
         pageCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
         currentPage: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+        className: PropTypes.string,
     }
 
     _handlePageClick = ({selected}) => {
@@ -22,6 +23,7 @@ export default class Pagination extends React.Component {
     render() {
         const {
             onChange, // eslint-disable-line
+            className,
             ...properties,
         } = this.props
 
@@ -36,13 +38,13 @@ export default class Pagination extends React.Component {
 
         return (
             <ReactPaginate
-                previousLabel={<i className="fa fa-fw fa-angle-left" />}
-                nextLabel={<i className="fa fa-fw fa-angle-right" />}
+                previousLabel={<i className="material-icons md-2">keyboard_arrow_left</i>}
+                nextLabel={<i className="material-icons md-2">keyboard_arrow_right</i>}
                 pageCount={10}
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={2}
                 onPageChange={this._handlePageClick}
-                containerClassName={'pagination'}
+                containerClassName={`pagination ${className}`}
                 breakClassName={'page-item'}
                 breakLabel={<a className="page-link">...</a>}
                 pageClassName={'page-item'}

@@ -68,7 +68,7 @@ export default class IntegrationNavbarContainer extends React.Component {
                                         return (
                                             <Link
                                                 key={pageConfig.value}
-                                                to={`/app/integrations/${integrationType}/${integrationId}/${pageConfig.value}`}
+                                                to={`/app/settings/integrations/${integrationType}/${integrationId}/${pageConfig.value}`}
                                                 className={classname('item', {'active': extra === pageConfig.value})}
                                                 title={pageConfig.label}
                                             >

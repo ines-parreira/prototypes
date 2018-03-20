@@ -9,37 +9,42 @@ export const getCurrentAccountState = (state: stateType) => state.currentAccount
 
 export const getCurrentAccountMeta = createSelector(
     [getCurrentAccountState],
-    state => state.get('meta') || fromJS({})
+    (state) => state.get('meta') || fromJS({})
 )
 
 export const getAccountStatus = createSelector(
     [getCurrentAccountState],
-    state => state.get('status') || fromJS({})
+    (state) => state.get('status') || fromJS({})
 )
 
 export const isAccountActive = createSelector(
     [getAccountStatus],
-    state => state.get('status') === 'active'
+    (state) => state.get('status') === 'active'
 )
 
 export const getCurrentSubscription = createSelector(
     [getCurrentAccountState],
-    state => state.get('current_subscription') || fromJS({})
+    (state) => state.get('current_subscription') || fromJS({})
+)
+
+export const isTrialing = createSelector(
+    [getCurrentSubscription],
+    (state) => state.get('status') === 'trialing'
 )
 
 export const hasCreditCard = createSelector(
     [getCurrentAccountMeta],
-    state => state.get('hasCreditCard', false)
+    (state) => state.get('hasCreditCard', false)
 )
 
 export const shouldPayWithShopify = createSelector(
     [getCurrentAccountMeta],
-    state => state.get('should_pay_with_shopify', false)
+    (state) => state.get('should_pay_with_shopify') || false
 )
 
 export const getShopifyBillingStatus = createSelector(
     [getCurrentAccountMeta],
-    state => {
+    (state) => {
         const billingMeta = state.get('shopify_billing') || fromJS({})
         if (billingMeta.get('active')) {
             return 'active'
@@ -67,6 +72,6 @@ export const getChatSettings = createSelector(
     [getCurrentAccountState],
     (account) => {
         const settings = account.get('settings') || fromJS([])
-        return settings.find(setting => setting.get('type') === 'chat') || fromJS({})
+        return settings.find((setting) => setting.get('type') === 'chat') || fromJS({})
     }
 )

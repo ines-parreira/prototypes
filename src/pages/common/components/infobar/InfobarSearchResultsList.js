@@ -1,8 +1,10 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
-import {Card, CardBlock, Badge} from 'reactstrap'
+import {Card, CardBody, CardTitle, Badge} from 'reactstrap'
 
 import {getDisplayName} from '../../../../state/users/helpers'
+
+import css from './Infobar.less'
 
 export default class InfobarSearchResultsList extends React.Component {
     render() {
@@ -13,13 +15,15 @@ export default class InfobarSearchResultsList extends React.Component {
         }
 
         return (
-            <div className="InfobarSearchResultsList">
-                <h2>Users</h2>
+            <div>
+                <CardTitle className={css.cardTitle}>
+                    Users found:
+                </CardTitle>
                 <div className="mt-3">
                     {
                         searchResults.map((user, idx) => {
                             const isDefaultUser = user.get('id') === defaultUserId
-                            const className = classnames('InfobarSearchResultsDetail mb-2', {
+                            const className = classnames('clickable mb-2', {
                                 'current-user': isDefaultUser
                             })
 
@@ -29,9 +33,9 @@ export default class InfobarSearchResultsList extends React.Component {
                                     key={idx}
                                     onClick={() => this.props.onUserClick(user)}
                                 >
-                                    <CardBlock>
+                                    <CardBody>
                                         {
-                                            <h5 className="m-0">
+                                            <span className={classnames(css.subtitle, 'd-block mb-1 text-truncate')}>
                                                 {getDisplayName(user)}
                                                 {
                                                     isDefaultUser && (
@@ -43,14 +47,16 @@ export default class InfobarSearchResultsList extends React.Component {
                                                         </Badge>
                                                     )
                                                 }
-                                            </h5>
+                                            </span>
                                         }
                                         {
                                             user.get('email') && (
-                                                <div className="mt-2">{user.get('email')}</div>
+                                                <div className={classnames(css.detail, 'd-block text-truncate')}>
+                                                    {user.get('email')}
+                                                </div>
                                             )
                                         }
-                                    </CardBlock>
+                                    </CardBody>
                                 </Card>
                             )
                         })

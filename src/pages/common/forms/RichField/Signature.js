@@ -8,6 +8,7 @@ import * as newMessageSelectors from '../../../../state/newMessage/selectors'
 import * as currentUserSelectors from '../../../../state/currentUser/selectors'
 import * as newMessageActions from '../../../../state/newMessage/actions'
 import * as responseUtils from '../../../../state/newMessage/responseUtils'
+import Ellipsis from '../../components/Ellipsis'
 
 type Props = {
     addSignature: typeof newMessageActions.addSignature,
@@ -72,14 +73,10 @@ class Signature extends React.Component<Props, State> {
         }
 
         return (
-            <button
-                type="button"
-                className="btn-more"
+            <Ellipsis
                 title="Show signature"
                 onClick={this._addResponseSignature}
-            >
-                <i className="fa fa-fw fa-ellipsis-h" />
-            </button>
+            />
         )
     }
 }

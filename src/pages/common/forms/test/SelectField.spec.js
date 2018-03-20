@@ -2,6 +2,18 @@ import React from 'react'
 import {shallow, mount} from 'enzyme'
 import _noop from 'lodash/noop'
 
+// refs are not passed by enzyme to popper.js
+// https://github.com/facebook/react/issues/9244
+// https://github.com/facebook/react/issues/7371
+jest.mock('popper.js', () => {
+    return () => {
+        return {
+            scheduleUpdate: jest.fn(),
+            destroy: jest.fn(),
+        }
+    }
+})
+
 import SelectField from '../SelectField'
 
 describe('SelectField', () => {

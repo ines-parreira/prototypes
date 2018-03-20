@@ -38,7 +38,7 @@ class Table extends Component {
         const sortedRows = rows.get('items')
 
         return (
-            <table className="main-table view-table">
+            <table className="view-table">
                 <thead>
                     <tr>
                         <td

@@ -21,14 +21,15 @@
     "postinstall": "npm run dll",
     "build": "(export NODE_ENV=production; npm run dll -- -p; webpack -p)",
     "serve": "webpack-dev-server --progress",
-    "serve-maps": "webpack-dev-server --progress -d"
+    "serve-maps": "webpack-dev-server --progress --debug --devtool source-map --output-pathinfo"
   },
   "author": "Alex Plugaru <alex@gorgias.io>",
   "license": "UNLICENSED",
   "dependencies": {
+    "@mikeljames/draft-js-drag-n-drop-upload-plugin": "^2.0.1",
     "array-includes": "^3.0.2",
     "axios": "^0.13.1",
-    "bootstrap": "^4.0.0-alpha.6",
+    "bootstrap": "^4.0.0",
     "chart.js": "^2.6.0",
     "classnames": "^2.2.5",
     "clipboard": "^1.5.16",
@@ -36,7 +37,6 @@
     "draft-convert": "^2.0.1",
     "draft-js": "^0.10.4",
     "draft-js-block-breakout-plugin": "^2.0.1",
-    "@mikeljames/draft-js-drag-n-drop-upload-plugin": "^2.0.1",
     "draft-js-plugins-editor": "^2.0.4",
     "draft-js-resizeable-plugin": "^2.0.1",
     "elasticlunr": "^0.9.5",
@@ -45,6 +45,7 @@
     "esprima": "^2.7.3",
     "find-with-regex": "^1.0.2",
     "font-awesome": "^4.7.0",
+    "identity-obj-proxy": "^3.0.0",
     "immutable": "^3.8.1",
     "jsonp": "^0.2.1",
     "less": "^2.7.2",
@@ -62,7 +63,6 @@
     "react-addons-transition-group": "^15.4.1",
     "react-bootstrap-daterangepicker": "^3.2.2",
     "react-chartjs-2": "^2.6.1",
-    "react-credit-card": "^0.20.0",
     "react-document-title": "^2.0.2",
     "react-dom": "^15.3.2",
     "react-images": "^0.5.5",
@@ -72,7 +72,7 @@
     "react-router": "^3.0.0",
     "react-select": "1.0.0-beta14",
     "react-slick": "^0.14.11",
-    "reactstrap": "^4.8.0",
+    "reactstrap": "5.0.0-beta",
     "reapop": "^1.1.1",
     "reapop-theme-wybo": "^0.4.1",
     "redux": "^3.6.0",
@@ -134,7 +134,7 @@
     ],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/g/static/private/js/test/__mocks__/fileMock.js",
-      "\\.(css|less)$": "<rootDir>/g/static/private/js/test/__mocks__/styleMock.js"
+      "\\.(css|less)$": "identity-obj-proxy"
     },
     "setupTestFrameworkScriptFile": "./node_modules/jest-enzyme/lib/index.js",
     "setupFiles": [

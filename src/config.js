@@ -830,4 +830,4 @@ export const TIMES_BEFORE_SPLIT = [
  */
 export const MAX_HEADER_LENGTH = 1000
 
-export const DEFAULT_TAG_COLOR = '#0693E3'
+export const DEFAULT_TAG_COLOR = '#8088D6'

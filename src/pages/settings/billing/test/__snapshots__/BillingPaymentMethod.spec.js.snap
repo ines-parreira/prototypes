@@ -27,34 +27,55 @@ exports[`BillingPaymentMethod Shopify should render a button 1`] = `
     className="mb-5"
   >
     <h4>
-      Payment method
-    </h4>
-    <div
-      id="activate-shopify-billing-button"
-      style={
-        Object {
-          "display": "inline-block",
-        }
-      }
-    >
-      <Button
-        className=""
-        color="success"
-        disabled={false}
-        href="/integrations/shopify/billing/activate/"
-        onClick={[Function]}
-        tag="a"
+      <i
+        className="material-icons"
       >
-        <a
-          className="btn btn-success"
-          disabled={false}
-          href="/integrations/shopify/billing/activate/"
-          onClick={[Function]}
+        credit_card
+      </i>
+       Payment method
+    </h4>
+    <Card
+      tag="div"
+    >
+      <div
+        className="card"
+      >
+        <CardBody
+          tag="div"
         >
-          Activate billing with Shopify and pay $12
-        </a>
-      </Button>
-    </div>
+          <div
+            className="card-body"
+          >
+            <div
+              id="activate-shopify-billing-button"
+              style={
+                Object {
+                  "display": "inline-block",
+                }
+              }
+            >
+              <Button
+                className=""
+                color="success"
+                disabled={false}
+                href="/integrations/shopify/billing/activate/"
+                onClick={[Function]}
+                tag="a"
+              >
+                <a
+                  className="btn btn-success"
+                  disabled={false}
+                  href="/integrations/shopify/billing/activate/"
+                  onClick={[Function]}
+                >
+                  Activate billing with Shopify and pay $12
+                </a>
+              </Button>
+            </div>
+          </div>
+        </CardBody>
+      </div>
+    </Card>
   </div>
 </BillingPaymentMethod>
 `;
@@ -64,17 +85,40 @@ exports[`BillingPaymentMethod Shopify should render a button to reactivate billi
   className="mb-5"
 >
   <h4>
-    Payment method
+    <i
+      className="material-icons"
+    >
+      credit_card
+    </i>
+     Payment method
   </h4>
-  <Button
-    className=""
-    color="success"
-    href="/integrations/shopify/billing/activate/"
-    onClick={[Function]}
-    tag="a"
+  <Card
+    tag="div"
   >
-    Reactivate billing with Shopify
-  </Button>
+    <CardBody
+      tag="div"
+    >
+      <div>
+        <i
+          className="material-icons text-warning md-2"
+        >
+          warning
+        </i>
+         
+        Billing with Shopify is inactive. Please reactivate to avoid account cancellation.
+         
+        <Button
+          className="float-right"
+          color="success"
+          href="/integrations/shopify/billing/activate/"
+          onClick={[Function]}
+          tag="a"
+        >
+          Reactivate billing with Shopify
+        </Button>
+      </div>
+    </CardBody>
+  </Card>
 </div>
 `;
 
@@ -83,33 +127,46 @@ exports[`BillingPaymentMethod Shopify should render a disabled button 1`] = `
   className="mb-5"
 >
   <h4>
-    Payment method
+    <i
+      className="material-icons"
+    >
+      credit_card
+    </i>
+     Payment method
   </h4>
-  <div
-    id="activate-shopify-billing-button"
-    style={
-      Object {
-        "display": "inline-block",
-      }
-    }
+  <Card
+    tag="div"
   >
-    <Button
-      className=""
-      color="success"
-      disabled={true}
-      href="/integrations/shopify/billing/activate/"
-      onClick={[Function]}
-      tag="a"
+    <CardBody
+      tag="div"
     >
-      Activate billing with Shopify
-    </Button>
-    <UncontrolledTooltip
-      placement="top"
-      target="activate-shopify-billing-button"
-    >
-      Select a plan before activating Shopify billing
-    </UncontrolledTooltip>
-  </div>
+      <div
+        id="activate-shopify-billing-button"
+        style={
+          Object {
+            "display": "inline-block",
+          }
+        }
+      >
+        <Button
+          className=""
+          color="success"
+          disabled={true}
+          href="/integrations/shopify/billing/activate/"
+          onClick={[Function]}
+          tag="a"
+        >
+          Activate billing with Shopify
+        </Button>
+        <UncontrolledTooltip
+          placement="top"
+          target="activate-shopify-billing-button"
+        >
+          Select a plan before activating Shopify billing
+        </UncontrolledTooltip>
+      </div>
+    </CardBody>
+  </Card>
 </div>
 `;
 
@@ -138,13 +195,40 @@ exports[`BillingPaymentMethod Shopify should render an active status 1`] = `
     className="mb-5"
   >
     <h4>
-      Payment method
+      <i
+        className="material-icons"
+      >
+        credit_card
+      </i>
+       Payment method
     </h4>
-    <p
-      className="mt-2 mb-2"
+    <Card
+      tag="div"
     >
-      Payment with Shopify activated.
-    </p>
+      <div
+        className="card"
+      >
+        <CardBody
+          tag="div"
+        >
+          <div
+            className="card-body"
+          >
+            <p
+              className="mt-2 mb-2"
+            >
+              <i
+                className="material-icons text-success md-2"
+              >
+                check_circle
+              </i>
+               
+              Payment with Shopify is active. You're all set.
+            </p>
+          </div>
+        </CardBody>
+      </div>
+    </Card>
   </div>
 </BillingPaymentMethod>
 `;
@@ -173,48 +257,121 @@ exports[`BillingPaymentMethod Stripe should render a button 1`] = `
     className="mb-5"
   >
     <h4>
-      Payment method
+      <i
+        className="material-icons"
+      >
+        credit_card
+      </i>
+       Payment method
     </h4>
-    <div>
-      <p
-        className="mt-2 mb-2"
-      >
-        No credit card registered
-      </p>
+    <Card
+      tag="div"
+    >
       <div
-        id="add-credit-card-button"
-        style={
-          Object {
-            "display": "inline-block",
-          }
-        }
+        className="card"
       >
-        <Button
-          color="success"
-          disabled={false}
-          tag={[Function]}
-          to="/app/settings/billing/add-credit-card"
+        <CardBody
+          tag="div"
         >
-          <Link
-            className="btn btn-success"
-            disabled={false}
-            onClick={[Function]}
-            onlyActiveOnIndex={false}
-            style={Object {}}
-            to="/app/settings/billing/add-credit-card"
+          <div
+            className="card-body"
           >
-            <a
-              className="btn btn-success"
-              disabled={false}
-              onClick={[Function]}
-              style={Object {}}
+            <Row
+              tag="div"
             >
-              Add Credit Card
-            </a>
-          </Link>
-        </Button>
+              <div
+                className="row"
+              >
+                <Col
+                  sm={4}
+                  tag="div"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                >
+                  <div
+                    className="col col-sm-4"
+                  >
+                    <div
+                      style={
+                        Object {
+                          "paddingTop": 8,
+                        }
+                      }
+                    >
+                      No credit card registered
+                    </div>
+                  </div>
+                </Col>
+                <Col
+                  className="text-right"
+                  sm={
+                    Object {
+                      "offset": 4,
+                      "size": 4,
+                    }
+                  }
+                  tag="div"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                >
+                  <div
+                    className="text-right col col-sm-4 offset-sm-4"
+                  >
+                    <div
+                      id="add-credit-card-button"
+                      style={
+                        Object {
+                          "display": "inline-block",
+                        }
+                      }
+                    >
+                      <Button
+                        color="success"
+                        disabled={false}
+                        tag={[Function]}
+                        to="/app/settings/billing/add-credit-card"
+                      >
+                        <Link
+                          className="btn btn-success"
+                          disabled={false}
+                          onClick={[Function]}
+                          onlyActiveOnIndex={false}
+                          style={Object {}}
+                          to="/app/settings/billing/add-credit-card"
+                        >
+                          <a
+                            className="btn btn-success"
+                            disabled={false}
+                            onClick={[Function]}
+                            style={Object {}}
+                          >
+                            Add credit card
+                          </a>
+                        </Link>
+                      </Button>
+                    </div>
+                  </div>
+                </Col>
+              </div>
+            </Row>
+          </div>
+        </CardBody>
       </div>
-    </div>
+    </Card>
   </div>
 </BillingPaymentMethod>
 `;
@@ -247,49 +404,124 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
     className="mb-5"
   >
     <h4>
-      Payment method
+      <i
+        className="material-icons"
+      >
+        credit_card
+      </i>
+       Payment method
     </h4>
-    <div>
-      <p
-        className="mt-2 mb-2"
+    <Card
+      tag="div"
+    >
+      <div
+        className="card"
       >
-        <span>
-          Visa
-           ending in 
-          <strong>
-            4242
-             
-          </strong>
-          and expiring on 
-          <em>
-            9
-            /
-            2017
-          </em>
-        </span>
-      </p>
-      <Button
-        color="secondary"
-        tag={[Function]}
-        to="/app/settings/billing/update-credit-card"
-      >
-        <Link
-          className="btn btn-secondary"
-          onClick={[Function]}
-          onlyActiveOnIndex={false}
-          style={Object {}}
-          to="/app/settings/billing/update-credit-card"
+        <CardBody
+          tag="div"
         >
-          <a
-            className="btn btn-secondary"
-            onClick={[Function]}
-            style={Object {}}
+          <div
+            className="card-body"
           >
-            Update Credit Card
-          </a>
-        </Link>
-      </Button>
-    </div>
+            <Row
+              tag="div"
+            >
+              <div
+                className="row"
+              >
+                <Col
+                  sm={4}
+                  tag="div"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                >
+                  <div
+                    className="col col-sm-4"
+                  >
+                    <div
+                      style={
+                        Object {
+                          "paddingTop": 8,
+                        }
+                      }
+                    >
+                      <span>
+                        Visa
+                         ending in 
+                        <strong>
+                          4242
+                           
+                        </strong>
+                      </span>
+                      <span>
+                        will expire on 
+                        <em>
+                          9
+                          /
+                          2017
+                        </em>
+                      </span>
+                    </div>
+                  </div>
+                </Col>
+                <Col
+                  className="text-right"
+                  sm={
+                    Object {
+                      "offset": 4,
+                      "size": 4,
+                    }
+                  }
+                  tag="div"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                >
+                  <div
+                    className="text-right col col-sm-4 offset-sm-4"
+                  >
+                    <Button
+                      color="secondary"
+                      tag={[Function]}
+                      to="/app/settings/billing/update-credit-card"
+                    >
+                      <Link
+                        className="btn btn-secondary"
+                        onClick={[Function]}
+                        onlyActiveOnIndex={false}
+                        style={Object {}}
+                        to="/app/settings/billing/update-credit-card"
+                      >
+                        <a
+                          className="btn btn-secondary"
+                          onClick={[Function]}
+                          style={Object {}}
+                        >
+                          Update credit card
+                        </a>
+                      </Link>
+                    </Button>
+                  </div>
+                </Col>
+              </div>
+            </Row>
+          </div>
+        </CardBody>
+      </div>
+    </Card>
   </div>
 </BillingPaymentMethod>
 `;
@@ -299,38 +531,91 @@ exports[`BillingPaymentMethod Stripe should render a disabled button 1`] = `
   className="mb-5"
 >
   <h4>
-    Payment method
+    <i
+      className="material-icons"
+    >
+      credit_card
+    </i>
+     Payment method
   </h4>
-  <div>
-    <p
-      className="mt-2 mb-2"
+  <Card
+    tag="div"
+  >
+    <CardBody
+      tag="div"
     >
-      No credit card registered
-    </p>
-    <div
-      id="add-credit-card-button"
-      style={
-        Object {
-          "display": "inline-block",
-        }
-      }
-    >
-      <Button
-        color="success"
-        disabled={true}
-        tag={[Function]}
-        to="/app/settings/billing/add-credit-card"
+      <Row
+        tag="div"
       >
-        Add Credit Card
-      </Button>
-      <UncontrolledTooltip
-        placement="top"
-        target="add-credit-card-button"
-      >
-        Select a plan before adding a credit card
-      </UncontrolledTooltip>
-    </div>
-  </div>
+        <Col
+          sm={4}
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <div
+            style={
+              Object {
+                "paddingTop": 8,
+              }
+            }
+          >
+            No credit card registered
+          </div>
+        </Col>
+        <Col
+          className="text-right"
+          sm={
+            Object {
+              "offset": 4,
+              "size": 4,
+            }
+          }
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <div
+            id="add-credit-card-button"
+            style={
+              Object {
+                "display": "inline-block",
+              }
+            }
+          >
+            <Button
+              color="success"
+              disabled={true}
+              tag={[Function]}
+              to="/app/settings/billing/add-credit-card"
+            >
+              Add credit card
+            </Button>
+            <UncontrolledTooltip
+              placement="top"
+              target="add-credit-card-button"
+            >
+              Select a plan before adding a credit card
+            </UncontrolledTooltip>
+          </div>
+        </Col>
+      </Row>
+    </CardBody>
+  </Card>
 </div>
 `;
 

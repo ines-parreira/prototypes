@@ -2,6 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import * as labels from '../labels'
+import Avatar from '../../components/Avatar/Avatar'
 
 /* DatetimeLabel uses Math.random.
  * Mock it to always return the same data.
@@ -22,31 +23,40 @@ describe('components utils : labels', () => {
                 {
                     type: 'created',
                     value: '2016-01-15',
-                    expected: <labels.DatetimeLabel dateTime="2016-01-15" />
+                    expected: <labels.DatetimeLabel dateTime="2016-01-15"/>
                 },
                 {
                     type: 'status',
                     value: 'open',
-                    expected: <labels.StatusLabel status="open" />
+                    expected: <labels.StatusLabel status="open"/>
                 },
                 {
                     type: 'assignee',
                     value: {
-                        name: 'Mario'
+                        name: 'Mario',
+                        email: 'mario@gorgias.io',
                     },
-                    expected: <labels.AgentLabel name="Mario" />
+                    expected: (<div>
+                        <Avatar
+                            name="Mario"
+                            email="mario@gorgias.io"
+                            size={26}
+                            className="d-inline-block mr-2"
+                        />
+                        <div className="d-inline-block">Mario</div>
+                    </div>)
                 },
                 {
                     type: 'requester',
                     value: {
                         name: 'Luigi'
                     },
-                    expected: <labels.UserLabel user="Luigi" />
+                    expected: <labels.UserLabel user="Luigi"/>
                 },
                 {
                     type: 'channel',
                     value: 'email',
-                    expected: <labels.ChannelLabel channel="email" />
+                    expected: <labels.ChannelLabel channel="email"/>
                 },
                 {
                     type: 'thisshouldreturnnull',

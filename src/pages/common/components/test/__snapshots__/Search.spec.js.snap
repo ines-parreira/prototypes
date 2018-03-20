@@ -9,56 +9,41 @@ exports[`Search component handle change function 1`] = `
   style={Object {}}
 >
   <div
-    className=""
+    className="component input-icon"
     style={Object {}}
   >
-    <InputGroup
-      tag="div"
+    <i
+      className="icon icon material-icons md-2"
     >
-      <div
-        className="input-group"
-      >
-        <Input
-          disabled={false}
-          onChange={[Function]}
-          placeholder="Search..."
-          style={
-            Object {
-              "zIndex": 1,
-            }
+      search
+    </i>
+    <Input
+      className="input"
+      disabled={false}
+      onChange={[Function]}
+      placeholder="Search..."
+      style={
+        Object {
+          "zIndex": 1,
+        }
+      }
+      type="text"
+      value="text"
+    >
+      <input
+        className="input form-control"
+        disabled={false}
+        onChange={[Function]}
+        placeholder="Search..."
+        style={
+          Object {
+            "zIndex": 1,
           }
-          tag="p"
-          type="text"
-          value="text"
-        >
-          <input
-            className="form-control"
-            disabled={false}
-            onChange={[Function]}
-            placeholder="Search..."
-            style={
-              Object {
-                "zIndex": 1,
-              }
-            }
-            type="text"
-            value="text"
-          />
-        </Input>
-        <InputGroupAddon
-          className="hidden-sm-down"
-          tag="div"
-        >
-          <div
-            className="hidden-sm-down input-group-addon"
-          >
-            <i
-              className="fa fa-fw fa-search"
-            />
-          </div>
-        </InputGroupAddon>
-      </div>
-    </InputGroup>
+        }
+        type="text"
+        value="text"
+      />
+    </Input>
   </div>
 </Search>
 `;
@@ -72,56 +57,41 @@ exports[`Search component reset function 1`] = `
   style={Object {}}
 >
   <div
-    className=""
+    className="component input-icon"
     style={Object {}}
   >
-    <InputGroup
-      tag="div"
+    <i
+      className="icon icon material-icons md-2"
     >
-      <div
-        className="input-group"
-      >
-        <Input
-          disabled={false}
-          onChange={[Function]}
-          placeholder="Search..."
-          style={
-            Object {
-              "zIndex": 1,
-            }
+      search
+    </i>
+    <Input
+      className="input"
+      disabled={false}
+      onChange={[Function]}
+      placeholder="Search..."
+      style={
+        Object {
+          "zIndex": 1,
+        }
+      }
+      type="text"
+      value="text"
+    >
+      <input
+        className="input form-control"
+        disabled={false}
+        onChange={[Function]}
+        placeholder="Search..."
+        style={
+          Object {
+            "zIndex": 1,
           }
-          tag="p"
-          type="text"
-          value="text"
-        >
-          <input
-            className="form-control"
-            disabled={false}
-            onChange={[Function]}
-            placeholder="Search..."
-            style={
-              Object {
-                "zIndex": 1,
-              }
-            }
-            type="text"
-            value="text"
-          />
-        </Input>
-        <InputGroupAddon
-          className="hidden-sm-down"
-          tag="div"
-        >
-          <div
-            className="hidden-sm-down input-group-addon"
-          >
-            <i
-              className="fa fa-fw fa-search"
-            />
-          </div>
-        </InputGroupAddon>
-      </div>
-    </InputGroup>
+        }
+        type="text"
+        value="text"
+      />
+    </Input>
   </div>
 </Search>
 `;
@@ -135,56 +105,41 @@ exports[`Search component reset function 2`] = `
   style={Object {}}
 >
   <div
-    className=""
+    className="component input-icon"
     style={Object {}}
   >
-    <InputGroup
-      tag="div"
+    <i
+      className="icon icon material-icons md-2"
     >
-      <div
-        className="input-group"
-      >
-        <Input
-          disabled={false}
-          onChange={[Function]}
-          placeholder="Search..."
-          style={
-            Object {
-              "zIndex": 1,
-            }
+      search
+    </i>
+    <Input
+      className="input"
+      disabled={false}
+      onChange={[Function]}
+      placeholder="Search..."
+      style={
+        Object {
+          "zIndex": 1,
+        }
+      }
+      type="text"
+      value=""
+    >
+      <input
+        className="input form-control"
+        disabled={false}
+        onChange={[Function]}
+        placeholder="Search..."
+        style={
+          Object {
+            "zIndex": 1,
           }
-          tag="p"
-          type="text"
-          value=""
-        >
-          <input
-            className="form-control"
-            disabled={false}
-            onChange={[Function]}
-            placeholder="Search..."
-            style={
-              Object {
-                "zIndex": 1,
-              }
-            }
-            type="text"
-            value=""
-          />
-        </Input>
-        <InputGroupAddon
-          className="hidden-sm-down"
-          tag="div"
-        >
-          <div
-            className="hidden-sm-down input-group-addon"
-          >
-            <i
-              className="fa fa-fw fa-search"
-            />
-          </div>
-        </InputGroupAddon>
-      </div>
-    </InputGroup>
+        }
+        type="text"
+        value=""
+      />
+    </Input>
   </div>
 </Search>
 `;

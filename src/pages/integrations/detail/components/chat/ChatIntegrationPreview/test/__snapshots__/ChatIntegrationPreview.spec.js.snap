@@ -1,19 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ChatIntegrationPreview should display the properties correctly 1`] = `
-<div>
-  <div />
-  <div>
+<div
+  className="preview"
+>
+  <div
+    className="titlebar"
+  />
+  <div
+    className="dialog"
+  >
     <div
+      className="header"
       style={
         Object {
           "backgroundColor": "#9DA8B8",
         }
       }
     >
-      <div>
+      <div
+        className="agents"
+      >
         <div
-          className=""
+          className="agent first"
           style={
             Object {
               "borderColor": "#9DA8B8",
@@ -25,7 +34,7 @@ exports[`ChatIntegrationPreview should display the properties correctly 1`] = `
           />
         </div>
         <div
-          className=""
+          className="agent middle"
           style={
             Object {
               "borderColor": "#9DA8B8",
@@ -37,7 +46,7 @@ exports[`ChatIntegrationPreview should display the properties correctly 1`] = `
           />
         </div>
         <div
-          className=""
+          className="agent last"
           style={
             Object {
               "borderColor": "#9DA8B8",
@@ -49,18 +58,26 @@ exports[`ChatIntegrationPreview should display the properties correctly 1`] = `
           />
         </div>
       </div>
-      <div>
-        <div>
+      <div
+        className="details"
+      >
+        <div
+          className="appName"
+        >
           My little chat integration
         </div>
-        <div>
+        <div
+          className="introductionText"
+        >
            
         </div>
       </div>
     </div>
-    <div>
+    <div
+      className="content"
+    >
       <div
-        className=""
+        className="bubble primary firstMessageOfAppUser"
         style={
           Object {
             "backgroundColor": "#456789",
@@ -70,7 +87,7 @@ exports[`ChatIntegrationPreview should display the properties correctly 1`] = `
         Hey there
       </div>
       <div
-        className=""
+        className="bubble primary lastMessage"
         style={
           Object {
             "backgroundColor": "#456789",
@@ -79,37 +96,52 @@ exports[`ChatIntegrationPreview should display the properties correctly 1`] = `
       >
         I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
       </div>
-      <div>
+      <div
+        className="user"
+      >
         Charles
       </div>
       <div
-        className=""
+        className="bubble firstMessageOfAppMaker"
       >
         Sure, what's your email / order number?
       </div>
     </div>
-    <div>
+    <div
+      className="poweredby"
+    >
       Powered by Gorgias
     </div>
-    <div>
-      <div>
+    <div
+      className="footer"
+    >
+      <div
+        className="placeholder"
+      >
         input
       </div>
       <i
-        className=""
+        className="icon camera"
       />
     </div>
   </div>
   <div
+    className="button"
     style={
       Object {
         "backgroundColor": "#123456",
       }
     }
   >
-    <div>
-      <i />
-      <div />
+    <div
+      className="iconWrapper"
+    >
+      <i
+        className="icon"
+      />
+      <div
+        className="shadow"
+      />
     </div>
   </div>
 </div>

@@ -15,6 +15,7 @@ import * as currentUserSelectors from '../../../state/currentUser/selectors'
 
 import ToggleButton from '../../../pages/common/components/ToggleButton'
 import './Navbar.less'
+import Avatar from './Avatar/Avatar'
 
 // A <Link /> with some default styles
 const NavLink = (props) => {
@@ -50,12 +51,9 @@ const mainMenu = [{
     url: '/app/users',
     label: 'Users',
 }, {
-    url: '/app/integrations',
-    label: 'Integrations',
-}, {
     url: '/app/stats',
     label: 'Statistics',
-    className: 'hidden-sm-down',
+    className: 'd-none d-md-block',
 }, {
     url: '/app/settings',
     label: 'Settings',
@@ -117,11 +115,15 @@ export default class Navbar extends React.Component {
                     'hidden-panel': !this.props.isOpenedPanel,
                 })}
             >
-                <UncontrolledDropdown className="nav-dropdown">
-                    <DropdownToggle>
+                <UncontrolledDropdown
+                    className="nav-dropdown"
+                >
+                    <DropdownToggle color="transparent">
                         <div>
-                            <div style={{fontSize: '18px'}}>{this.state.title}</div>
-                            <i className="fa fa-caret-down" />
+                            {this.state.title}
+                            <i className="material-icons md-2">
+                                more_vert
+                            </i>
                         </div>
                     </DropdownToggle>
                     <DropdownMenu>
@@ -151,25 +153,31 @@ export default class Navbar extends React.Component {
                 </div>
 
                 <UncontrolledDropdown
-                    className="nav-dropdown"
-                    dropup
+                    className="nav-dropdown dropup"
                 >
-                    <DropdownToggle>
+                    <DropdownToggle color="transparent" style={{overflow: 'hidden'}}>
                         <div>
                             <span>
-                                <i
-                                    className="fa fa-circle mr-2"
-                                    style={{color: availableForChat ? '#2DCF57' : '#FF9600'}}
-                                />
                                 {currentUser.get('name')}
+                                <Avatar
+                                    name={currentUser.get('name')}
+                                    email={currentUser.get('email')}
+                                    url={currentUser.getIn(['meta', 'profile_picture_url'])}
+                                    size={36}
+                                    style={{
+                                        position: 'absolute',
+                                        bottom: '12px',
+                                        right: '18px',
+                                    }}
+                                    badgeColor={availableForChat ? '#24d69d' : '#FF9600'}
+                                />
                             </span>
-                            <i className="fa fa-ellipsis-h" />
                         </div>
                     </DropdownToggle>
                     <DropdownMenu>
                         <DropdownItem tag="a"
-                            className="mt-2"
-                            toggle={false}
+                                      className="mt-2"
+                                      toggle={false}
                         >
                             <div className="d-flex justify-content-between align-items-center">
                                 <div>
@@ -183,7 +191,7 @@ export default class Navbar extends React.Component {
                                 </div>
                             </div>
                         </DropdownItem>
-                        <DropdownItem divider />
+                        <DropdownItem divider/>
                         <DropdownItem
                             tag={NavLink}
                             to="/app/settings/profile"
@@ -191,7 +199,7 @@ export default class Navbar extends React.Component {
                                 this._closePanel()
                             }}
                         >
-                            <i className="fa fa-fw fa-user mr-2" />
+                            <i className="material-icons mr-2">person</i>
                             Your profile
                         </DropdownItem>
                         <DropdownItem
@@ -199,7 +207,7 @@ export default class Navbar extends React.Component {
                             href="http://docs.gorgias.io/"
                             target="_blank"
                         >
-                            <i className="fa fa-fw fa-book mr-2" />
+                            <i className="material-icons mr-2">help</i>
                             Documentation
                         </DropdownItem>
                         <DropdownItem
@@ -208,14 +216,14 @@ export default class Navbar extends React.Component {
                                 shortcutManager.triggerAction('KeyboardHelp', 'SHOW_HELP')
                             }}
                         >
-                            <i className="fa fa-fw fa-keyboard-o mr-2" />
+                            <i className="material-icons mr-2">keyboard</i>
                             Keyboard shortcuts
                         </DropdownItem>
                         <DropdownItem
                             tag="a"
                             href="/logout"
                         >
-                            <i className="fa fa-fw fa-sign-out mr-2" />
+                            <i className="material-icons mr-2">exit_to_app</i>
                             Log out
                         </DropdownItem>
                     </DropdownMenu>

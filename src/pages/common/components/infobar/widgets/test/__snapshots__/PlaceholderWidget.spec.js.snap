@@ -2,10 +2,10 @@
 
 exports[`PlaceholderWidget component should display the integration name if the widget is for an HTTP integration 1`] = `
 <Card
-  className="wrapper transparent draggable"
+  className="component placeholder wrapper transparent draggable"
   tag="div"
 >
-  <CardBlock
+  <CardBody
     className="clearfix"
     tag="div"
   >
@@ -13,25 +13,27 @@ exports[`PlaceholderWidget component should display the integration name if the 
       className="tools"
     >
       <i
-        className="fa fa-fw fa-close text-danger clickable"
+        className="material-icons text-danger clickable"
         onClick={[Function]}
-      />
+      >
+        close
+      </i>
     </span>
     <h5
-      className=""
+      className="title"
     >
       Widget for my little integration http data
     </h5>
-  </CardBlock>
+  </CardBody>
 </Card>
 `;
 
 exports[`PlaceholderWidget component should display the integration type if the widget is not for an HTTP integration 1`] = `
 <Card
-  className="wrapper transparent draggable"
+  className="component placeholder wrapper transparent draggable"
   tag="div"
 >
-  <CardBlock
+  <CardBody
     className="clearfix"
     tag="div"
   >
@@ -39,15 +41,17 @@ exports[`PlaceholderWidget component should display the integration type if the 
       className="tools"
     >
       <i
-        className="fa fa-fw fa-close text-danger clickable"
+        className="material-icons text-danger clickable"
         onClick={[Function]}
-      />
+      >
+        close
+      </i>
     </span>
     <h5
-      className=""
+      className="title"
     >
       Widget for Shopify data
     </h5>
-  </CardBlock>
+  </CardBody>
 </Card>
 `;

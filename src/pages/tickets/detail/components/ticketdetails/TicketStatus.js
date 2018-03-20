@@ -5,6 +5,7 @@ import {Button} from 'reactstrap'
 import Tooltip from '../../../../common/components/Tooltip'
 
 import css from './TicketStatus.less'
+import headerCss from '../TicketHeader.less'
 
 export default class TicketStatus extends React.Component {
     render() {
@@ -17,15 +18,20 @@ export default class TicketStatus extends React.Component {
                 <Button
                     type="button"
                     id="change-status-button"
-                    className={classnames('d-inline-block', css.button)}
+                    className={classnames(headerCss.headerButton, 'font-weight-medium', {
+                        [css.closed]: !toClose
+                    })}
                     color={toClose ? 'secondary' : 'success'}
                     onClick={() => setQuickStatus(currentStatus)}
                 >
                     <i
-                        className={classnames('fa fa-fw fa-check mr-1', {
-                            [css.alone]: !toClose,
+                        className={classnames(css.icon, 'material-icons', {
+                            ['md-2 mr-1']: toClose,
+                            ['md-3']: !toClose,
                         })}
-                    />
+                    >
+                        check
+                    </i>
                     {toClose && 'Close'}
                 </Button>
                 <Tooltip

@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
-import {Card, CardBlock, Popover, PopoverContent} from 'reactstrap'
+import {Card, CardBody, Popover, PopoverBody} from 'reactstrap'
 
 import {renderTemplate} from '../../../utils/template'
 import DragWrapper from '../../dragging/WidgetsDragWrapper'
@@ -97,12 +97,12 @@ class CardInfobarWidget extends React.Component {
                 target={this.uniqueId}
                 toggle={this._togglePopup}
             >
-                <PopoverContent>
+                <PopoverBody>
                     <TooltipWidgetEditCard
                         {...this.props}
                         actions={editing.actions}
                     />
-                </PopoverContent>
+                </PopoverBody>
             </Popover>
         )
     }
@@ -187,7 +187,7 @@ class CardInfobarWidget extends React.Component {
                 {
                     ((template.get('title') && !isTransparent) || isEditing)
                     && (
-                        <CardBlock
+                        <CardBody
                             id={this.uniqueId}
                             className="header clearfix"
                         >
@@ -196,10 +196,12 @@ class CardInfobarWidget extends React.Component {
                                 && shouldDisplayCardContent
                                 && (
                                     <span
-                                        className="dropdown-icon clickable"
+                                        className="dropdown-icon clickable text-faded"
                                         onClick={this._toggleCardExpand}
                                     >
-                                        <i className="fa fa-fw fa-caret-down" />
+                                        <i className="material-icons md-2">
+                                            keyboard_arrow_up
+                                        </i>
                                     </span>
                                 )
                             }
@@ -215,23 +217,27 @@ class CardInfobarWidget extends React.Component {
                                     && (
                                         <span>
                                             <i
-                                                className="fa fa-fw fa-cog text-faded clickable"
+                                                className="material-icons text-faded clickable"
                                                 onClick={this._startWidgetEdition}
-                                            />
+                                            >
+                                                settings
+                                            </i>
                                             <i
-                                                className="fa fa-fw fa-close text-danger clickable"
+                                                className="material-icons text-danger clickable"
                                                 onClick={isParentList ? this._deleteList : this._deleteCard}
-                                            />
+                                            >
+                                                close
+                                            </i>
                                         </span>
                                     )
                                 }
                             </span>
                             {this._renderTooltip()}
                             {!!AfterTitle && <AfterTitle {...this.props} />}
-                        </CardBlock>
+                        </CardBody>
                     )
                 }
-                <CardBlock
+                <CardBody
                     className={classnames('content', {
                         hidden: !shouldDisplayCardContent,
                     })}
@@ -288,7 +294,7 @@ class CardInfobarWidget extends React.Component {
                                 )
                             )
                     }
-                </CardBlock>
+                </CardBody>
             </Card>
         )
 

@@ -48,7 +48,7 @@ export default class HttpIntegrationList extends React.Component {
 
             const isDisabled = int.get('deactivated_datetime')
 
-            const editLink = `/app/integrations/http/${int.get('id')}`
+            const editLink = `/app/settings/integrations/http/${int.get('id')}`
 
             return (
                 <tr key={int.get('id')}>
@@ -56,7 +56,7 @@ export default class HttpIntegrationList extends React.Component {
                         <Link to={editLink}>
                             <div>
                                 <b className="mr-2">{int.get('name')}</b>
-                                <span className="text-faded hidden-sm-down">
+                                <span className="text-faded d-none d-md-inline">
                                     {_truncate(int.get('description'), {length: 100})}
                                 </span>
                             </div>
@@ -77,7 +77,7 @@ export default class HttpIntegrationList extends React.Component {
                 integrationType="http"
                 integrations={integrations.filter((v) => v.get('type') === 'http')}
                 longTypeDescription={longTypeDescription}
-                createIntegration={() => browserHistory.push('/app/integrations/http/new')}
+                createIntegration={() => browserHistory.push('/app/settings/integrations/http/new')}
                 createIntegrationButtonText="Add HTTP integration"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}

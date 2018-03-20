@@ -281,7 +281,8 @@ export default class Widget extends React.Component {
                 return <MultiSelectField
                     style={{
                         display: 'inline-block',
-                        verticalAlign: 'top'
+                        verticalAlign: 'top',
+                        paddingBottom: '2px'
                     }}
                     values={widget.value}
                     singular="word"

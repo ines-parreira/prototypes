@@ -49,7 +49,7 @@ export default class AddLink extends React.Component {
     render() {
         return (
             <Popover
-                icon="fa-link"
+                icon="link"
                 name={this.props.action.name}
                 isActive={this.props.isActive}
                 isDisabled={this.props.isDisabled}

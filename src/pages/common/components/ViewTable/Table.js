@@ -162,6 +162,7 @@ export default class Table extends React.Component<Props, State> {
                 pageCount={pagination.get('nb_pages') || 1}
                 currentPage={pagination.get('page') || 1}
                 onChange={this._pageChange}
+                className={classnames(css.pagination, 'pagination-transparent')}
             />
         )
     }
@@ -221,11 +222,11 @@ export default class Table extends React.Component<Props, State> {
 
         return (
             <div>
-                <table className={classnames(css.table, 'main-table view-table')}>
+                <table className={classnames(css.table, 'view-table')}>
                     <thead>
                         <tr>
                             <td
-                                className="cell-wrapper cell-short clickable hidden-sm-down"
+                                className="cell-wrapper cell-short clickable d-none d-md-table-cell"
                                 onClick={this._toggleSelectAll}
                             >
                                 <input

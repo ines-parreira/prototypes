@@ -1,0 +1,29 @@
+@import '~css/new/mixins';
+@import '~css/new/colors';
+
+:local .component {
+  padding: 1px 10px 5px;
+  background: #fff;
+
+  @media @mobiles {
+    padding-top: 6px;
+  }
+
+  .editableTitle {
+    color: @indigo;
+    font-size: 20px;
+  }
+
+  .assignee {
+    :global(> .btn) {
+      padding-top: .2em;
+      padding-bottom: .2em;
+    }
+  }
+
+  .headerButton {
+    height: 2.4em;
+    display: inline-flex;
+    align-items: center;
+  }
+}

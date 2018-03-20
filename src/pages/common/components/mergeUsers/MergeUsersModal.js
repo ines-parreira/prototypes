@@ -125,7 +125,6 @@ class MergeUsersModal extends React.Component {
             <Modal
                 isOpen={this.props.isOpen}
                 onClose={this._toggle}
-                className="MergeUsersModal"
                 size="lg"
                 header="Merge users"
             >
@@ -245,7 +244,7 @@ class MergeUsersModal extends React.Component {
                         />
                     </div>
 
-                    <div className="pull-right buttons-bar">
+                    <div className="float-right buttons-bar">
                         <Button
                             color="secondary"
                             type="button"

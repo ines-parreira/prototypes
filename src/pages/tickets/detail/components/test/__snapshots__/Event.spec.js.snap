@@ -2,19 +2,25 @@
 
 exports[`Event component should display correctly a failed event for a Recharge Charge action 1`] = `
 <div
-  className=""
+  className="component"
 >
-  <div>
-    <div>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
       <div
-        className=""
+        className="icon danger"
         title="Fail"
       >
         <i
           className="fa fa-fw fa-close"
         />
       </div>
-      <span>
+      <span
+        className="actionName"
+      >
         Skip charge
          
          
@@ -25,16 +31,22 @@ exports[`Event component should display correctly a failed event for a Recharge 
           8
         </a>
       </span>
-      <span>
+      <span
+        className="equalFiller"
+      >
         on
       </span>
-      <span>
+      <span
+        className="actionName"
+      >
         Recharge
          (
         my-store
         )
       </span>
-      <span>
+      <span
+        className="filler"
+      >
         by
       </span>
       <AgentLabel
@@ -49,24 +61,20 @@ exports[`Event component should display correctly a failed event for a Recharge 
         (details)
       </Button>
     </div>
-    <div
-      className="ticket-message-time"
-    >
-      <DatetimeLabel
-        dateTime="2017-12-07T01:01:34.502206+00:00"
-        settings={
-          Object {
-            "position": "top left",
-          }
+    <DatetimeLabel
+      dateTime="2017-12-07T01:01:34.502206+00:00"
+      settings={
+        Object {
+          "position": "top left",
         }
-      />
-    </div>
+      }
+    />
   </div>
   <Card
-    className="undefined"
+    className="details hidden"
     tag="div"
   >
-    <CardBlock
+    <CardBody
       tag="div"
     >
       <div>
@@ -96,26 +104,32 @@ exports[`Event component should display correctly a failed event for a Recharge 
           </div>
         </div>
       </div>
-    </CardBlock>
+    </CardBody>
   </Card>
 </div>
 `;
 
 exports[`Event component should display correctly a failed event for a Recharge Subscription action 1`] = `
 <div
-  className=""
+  className="component"
 >
-  <div>
-    <div>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
       <div
-        className=""
+        className="icon danger"
         title="Fail"
       >
         <i
           className="fa fa-fw fa-close"
         />
       </div>
-      <span>
+      <span
+        className="actionName"
+      >
         Cancel subscription
          
          
@@ -126,16 +140,22 @@ exports[`Event component should display correctly a failed event for a Recharge 
           6
         </a>
       </span>
-      <span>
+      <span
+        className="equalFiller"
+      >
         on
       </span>
-      <span>
+      <span
+        className="actionName"
+      >
         Recharge
          (
         my-store
         )
       </span>
-      <span>
+      <span
+        className="filler"
+      >
         by
       </span>
       <AgentLabel
@@ -150,24 +170,20 @@ exports[`Event component should display correctly a failed event for a Recharge 
         (details)
       </Button>
     </div>
-    <div
-      className="ticket-message-time"
-    >
-      <DatetimeLabel
-        dateTime="2017-12-07T01:01:34.502206+00:00"
-        settings={
-          Object {
-            "position": "top left",
-          }
+    <DatetimeLabel
+      dateTime="2017-12-07T01:01:34.502206+00:00"
+      settings={
+        Object {
+          "position": "top left",
         }
-      />
-    </div>
+      }
+    />
   </div>
   <Card
-    className="undefined"
+    className="details hidden"
     tag="div"
   >
-    <CardBlock
+    <CardBody
       tag="div"
     >
       <div>
@@ -190,26 +206,32 @@ exports[`Event component should display correctly a failed event for a Recharge 
           </div>
         </div>
       </div>
-    </CardBlock>
+    </CardBody>
   </Card>
 </div>
 `;
 
 exports[`Event component should display correctly a failed event for a Shopify Item action 1`] = `
 <div
-  className=""
+  className="component"
 >
-  <div>
-    <div>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
       <div
-        className=""
+        className="icon danger"
         title="Fail"
       >
         <i
           className="fa fa-fw fa-close"
         />
       </div>
-      <span>
+      <span
+        className="actionName"
+      >
         Refund item
          
          
@@ -220,16 +242,22 @@ exports[`Event component should display correctly a failed event for a Shopify I
           2 × Beautiful butterfly
         </a>
       </span>
-      <span>
+      <span
+        className="equalFiller"
+      >
         on
       </span>
-      <span>
+      <span
+        className="actionName"
+      >
         Shopify
          (
         my-store
         )
       </span>
-      <span>
+      <span
+        className="filler"
+      >
         by
       </span>
       <AgentLabel
@@ -244,24 +272,20 @@ exports[`Event component should display correctly a failed event for a Shopify I
         (details)
       </Button>
     </div>
-    <div
-      className="ticket-message-time"
-    >
-      <DatetimeLabel
-        dateTime="2017-12-07T01:01:34.502206+00:00"
-        settings={
-          Object {
-            "position": "top left",
-          }
+    <DatetimeLabel
+      dateTime="2017-12-07T01:01:34.502206+00:00"
+      settings={
+        Object {
+          "position": "top left",
         }
-      />
-    </div>
+      }
+    />
   </div>
   <Card
-    className="undefined"
+    className="details hidden"
     tag="div"
   >
-    <CardBlock
+    <CardBody
       tag="div"
     >
       <div>
@@ -298,26 +322,32 @@ exports[`Event component should display correctly a failed event for a Shopify I
           </div>
         </div>
       </div>
-    </CardBlock>
+    </CardBody>
   </Card>
 </div>
 `;
 
 exports[`Event component should display correctly a failed event for a Shopify Order action 1`] = `
 <div
-  className=""
+  className="component"
 >
-  <div>
-    <div>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
       <div
-        className=""
+        className="icon danger"
         title="Fail"
       >
         <i
           className="fa fa-fw fa-close"
         />
       </div>
-      <span>
+      <span
+        className="actionName"
+      >
         Full refund order
          
          
@@ -328,16 +358,22 @@ exports[`Event component should display correctly a failed event for a Shopify O
           #1234
         </a>
       </span>
-      <span>
+      <span
+        className="equalFiller"
+      >
         on
       </span>
-      <span>
+      <span
+        className="actionName"
+      >
         Shopify
          (
         my-store
         )
       </span>
-      <span>
+      <span
+        className="filler"
+      >
         by
       </span>
       <AgentLabel
@@ -352,24 +388,20 @@ exports[`Event component should display correctly a failed event for a Shopify O
         (details)
       </Button>
     </div>
-    <div
-      className="ticket-message-time"
-    >
-      <DatetimeLabel
-        dateTime="2017-12-07T01:01:34.502206+00:00"
-        settings={
-          Object {
-            "position": "top left",
-          }
+    <DatetimeLabel
+      dateTime="2017-12-07T01:01:34.502206+00:00"
+      settings={
+        Object {
+          "position": "top left",
         }
-      />
-    </div>
+      }
+    />
   </div>
   <Card
-    className="undefined"
+    className="details hidden"
     tag="div"
   >
-    <CardBlock
+    <CardBody
       tag="div"
     >
       <div>
@@ -392,26 +424,32 @@ exports[`Event component should display correctly a failed event for a Shopify O
           </div>
         </div>
       </div>
-    </CardBlock>
+    </CardBody>
   </Card>
 </div>
 `;
 
 exports[`Event component should display correctly a successful event for a Recharge Charge action 1`] = `
 <div
-  className=""
+  className="component"
 >
-  <div>
-    <div>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
       <div
-        className="undefined"
+        className="icon success"
         title="Success"
       >
         <i
           className="fa fa-fw fa-check"
         />
       </div>
-      <span>
+      <span
+        className="actionName"
+      >
         Skip charge
          
          
@@ -422,16 +460,22 @@ exports[`Event component should display correctly a successful event for a Recha
           8
         </a>
       </span>
-      <span>
+      <span
+        className="equalFiller"
+      >
         on
       </span>
-      <span>
+      <span
+        className="actionName"
+      >
         Recharge
          (
         my-store
         )
       </span>
-      <span>
+      <span
+        className="filler"
+      >
         by
       </span>
       <AgentLabel
@@ -446,24 +490,20 @@ exports[`Event component should display correctly a successful event for a Recha
         (details)
       </Button>
     </div>
-    <div
-      className="ticket-message-time"
-    >
-      <DatetimeLabel
-        dateTime="2017-12-07T01:01:34.502206+00:00"
-        settings={
-          Object {
-            "position": "top left",
-          }
+    <DatetimeLabel
+      dateTime="2017-12-07T01:01:34.502206+00:00"
+      settings={
+        Object {
+          "position": "top left",
         }
-      />
-    </div>
+      }
+    />
   </div>
   <Card
-    className="undefined"
+    className="details hidden"
     tag="div"
   >
-    <CardBlock
+    <CardBody
       tag="div"
     >
       <div>
@@ -484,26 +524,32 @@ exports[`Event component should display correctly a successful event for a Recha
           </div>
         </div>
       </div>
-    </CardBlock>
+    </CardBody>
   </Card>
 </div>
 `;
 
 exports[`Event component should display correctly a successful event for a Recharge Subscription action 1`] = `
 <div
-  className=""
+  className="component"
 >
-  <div>
-    <div>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
       <div
-        className="undefined"
+        className="icon success"
         title="Success"
       >
         <i
           className="fa fa-fw fa-check"
         />
       </div>
-      <span>
+      <span
+        className="actionName"
+      >
         Cancel subscription
          
          
@@ -514,16 +560,22 @@ exports[`Event component should display correctly a successful event for a Recha
           6
         </a>
       </span>
-      <span>
+      <span
+        className="equalFiller"
+      >
         on
       </span>
-      <span>
+      <span
+        className="actionName"
+      >
         Recharge
          (
         my-store
         )
       </span>
-      <span>
+      <span
+        className="filler"
+      >
         by
       </span>
       <AgentLabel
@@ -538,24 +590,20 @@ exports[`Event component should display correctly a successful event for a Recha
         (details)
       </Button>
     </div>
-    <div
-      className="ticket-message-time"
-    >
-      <DatetimeLabel
-        dateTime="2017-12-07T01:01:34.502206+00:00"
-        settings={
-          Object {
-            "position": "top left",
-          }
+    <DatetimeLabel
+      dateTime="2017-12-07T01:01:34.502206+00:00"
+      settings={
+        Object {
+          "position": "top left",
         }
-      />
-    </div>
+      }
+    />
   </div>
   <Card
-    className="undefined"
+    className="details hidden"
     tag="div"
   >
-    <CardBlock
+    <CardBody
       tag="div"
     >
       <div>
@@ -569,26 +617,32 @@ exports[`Event component should display correctly a successful event for a Recha
           </div>
         </div>
       </div>
-    </CardBlock>
+    </CardBody>
   </Card>
 </div>
 `;
 
 exports[`Event component should display correctly a successful event for a Shopify Item action 1`] = `
 <div
-  className=""
+  className="component"
 >
-  <div>
-    <div>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
       <div
-        className="undefined"
+        className="icon success"
         title="Success"
       >
         <i
           className="fa fa-fw fa-check"
         />
       </div>
-      <span>
+      <span
+        className="actionName"
+      >
         Refund item
          
          
@@ -599,16 +653,22 @@ exports[`Event component should display correctly a successful event for a Shopi
           2 × Beautiful butterfly
         </a>
       </span>
-      <span>
+      <span
+        className="equalFiller"
+      >
         on
       </span>
-      <span>
+      <span
+        className="actionName"
+      >
         Shopify
          (
         my-store
         )
       </span>
-      <span>
+      <span
+        className="filler"
+      >
         by
       </span>
       <AgentLabel
@@ -623,24 +683,20 @@ exports[`Event component should display correctly a successful event for a Shopi
         (details)
       </Button>
     </div>
-    <div
-      className="ticket-message-time"
-    >
-      <DatetimeLabel
-        dateTime="2017-12-07T01:01:34.502206+00:00"
-        settings={
-          Object {
-            "position": "top left",
-          }
+    <DatetimeLabel
+      dateTime="2017-12-07T01:01:34.502206+00:00"
+      settings={
+        Object {
+          "position": "top left",
         }
-      />
-    </div>
+      }
+    />
   </div>
   <Card
-    className="undefined"
+    className="details hidden"
     tag="div"
   >
-    <CardBlock
+    <CardBody
       tag="div"
     >
       <div>
@@ -668,26 +724,32 @@ exports[`Event component should display correctly a successful event for a Shopi
           </div>
         </div>
       </div>
-    </CardBlock>
+    </CardBody>
   </Card>
 </div>
 `;
 
 exports[`Event component should display correctly a successful event for a Shopify Order action 1`] = `
 <div
-  className=""
+  className="component"
 >
-  <div>
-    <div>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
       <div
-        className="undefined"
+        className="icon success"
         title="Success"
       >
         <i
           className="fa fa-fw fa-check"
         />
       </div>
-      <span>
+      <span
+        className="actionName"
+      >
         Full refund order
          
          
@@ -698,16 +760,22 @@ exports[`Event component should display correctly a successful event for a Shopi
           #1234
         </a>
       </span>
-      <span>
+      <span
+        className="equalFiller"
+      >
         on
       </span>
-      <span>
+      <span
+        className="actionName"
+      >
         Shopify
          (
         my-store
         )
       </span>
-      <span>
+      <span
+        className="filler"
+      >
         by
       </span>
       <AgentLabel
@@ -722,24 +790,20 @@ exports[`Event component should display correctly a successful event for a Shopi
         (details)
       </Button>
     </div>
-    <div
-      className="ticket-message-time"
-    >
-      <DatetimeLabel
-        dateTime="2017-12-07T01:01:34.502206+00:00"
-        settings={
-          Object {
-            "position": "top left",
-          }
+    <DatetimeLabel
+      dateTime="2017-12-07T01:01:34.502206+00:00"
+      settings={
+        Object {
+          "position": "top left",
         }
-      />
-    </div>
+      }
+    />
   </div>
   <Card
-    className="undefined"
+    className="details hidden"
     tag="div"
   >
-    <CardBlock
+    <CardBody
       tag="div"
     >
       <div>
@@ -753,7 +817,7 @@ exports[`Event component should display correctly a successful event for a Shopi
           </div>
         </div>
       </div>
-    </CardBlock>
+    </CardBody>
   </Card>
 </div>
 `;

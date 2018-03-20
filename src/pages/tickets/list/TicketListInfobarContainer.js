@@ -75,7 +75,7 @@ class TicketListInfobarContainer extends React.Component<Props> {
 
                     <div className={css.buttons}>
                         <Link
-                            to="/app/integrations/email"
+                            to="/app/settings/integrations/email"
                             className={css.button}
                             onClick={() => {
                                 segmentTracker.logEvent(segmentTracker.EVENTS.ONBOARDING_WIDGET_CLICKED, {
@@ -92,7 +92,7 @@ class TicketListInfobarContainer extends React.Component<Props> {
                             <div>Receive 1st email</div>
                         </Link>
                         <Link
-                            to="/app/integrations/smooch_inside"
+                            to="/app/settings/integrations/smooch_inside"
                             className={css.button}
                             onClick={() => {
                                 segmentTracker.logEvent(segmentTracker.EVENTS.ONBOARDING_WIDGET_CLICKED, {
@@ -109,7 +109,7 @@ class TicketListInfobarContainer extends React.Component<Props> {
                             <div>Connect a chat</div>
                         </Link>
                         <Link
-                            to="/app/integrations/facebook"
+                            to="/app/settings/integrations/facebook"
                             className={css.button}
                             onClick={() => {
                                 segmentTracker.logEvent(segmentTracker.EVENTS.ONBOARDING_WIDGET_CLICKED, {

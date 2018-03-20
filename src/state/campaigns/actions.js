@@ -13,7 +13,7 @@ export function createCampaign(campaign, integration) {
             .then((data) => {
                 onUpdateSuccess(dispatch, integration.toJS(), null, true)
                 return dispatch(fetchIntegration(integration.get('id'), integration.get('type'))).then(() => {
-                    browserHistory.push(`/app/integrations/${integration.get('type')}/${integration.get('id')}/campaigns/${data.id}`)
+                    browserHistory.push(`/app/settings/integrations/${integration.get('type')}/${integration.get('id')}/campaigns/${data.id}`)
                 })
 
             }, (error) => {

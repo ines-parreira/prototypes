@@ -29,6 +29,7 @@ class RecentChatsItem extends React.Component {
         const isActive = isCurrentlyOnTicket(recentTicket.get('id'))
         const linkClasses = classnames('item', {
             active: isActive,
+            focused: isActive,
             'has-something-new': recentTicket.get('is_unread') && !isActive,
         })
 

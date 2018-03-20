@@ -18,10 +18,10 @@ export default class TicketTrash extends React.Component {
 
         return (
             <div className="d-inline-block mr-3">
-                <i
-                    id="ticket-header-trash-icon"
-                    className="fa fa-trash text-danger"
-                />
+                <i id="ticket-header-trash-icon"
+                   className="icon material-icons md-2 text-danger">
+                    delete
+                </i>
                 <Tooltip
                     placement="top"
                     target="ticket-header-trash-icon"

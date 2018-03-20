@@ -51,7 +51,7 @@ export default class Select extends React.Component {
                 style={{
                     display: 'inline-block',
                     verticalAlign: 'middle',
-                    paddingBottom: '3px',
+                    paddingBottom: '2px',
                 }}
             >
                 <SelectField

@@ -5,6 +5,7 @@ import {
     Dropdown,
     DropdownMenu,
     DropdownItem,
+    DropdownToggle,
 } from 'reactstrap'
 
 import Search from '../Search'
@@ -206,6 +207,7 @@ class FilterDropdown extends React.Component {
                 isOpen
                 toggle={this.props.toggleDropdown}
             >
+                <DropdownToggle tag="span"></DropdownToggle>
                 <DropdownMenu
                     style={style}
                 >

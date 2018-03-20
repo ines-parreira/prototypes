@@ -1,10 +1,13 @@
 import React, {PropTypes} from 'react'
 import {browserHistory} from 'react-router'
 import classnames from 'classnames'
-import {Card, CardBlock} from 'reactstrap'
+import {Card, CardBody} from 'reactstrap'
 
 import {StatusLabel, AgentLabel, DatetimeLabel} from '../../utils/labels'
 import {stripHTML} from '../../../../utils'
+
+import css from './TimelineTicket.less'
+import SourceIcon from '../SourceIcon'
 
 export default class TimelineTicket extends React.Component {
     _goToTicket = (e) => {
@@ -35,37 +38,37 @@ export default class TimelineTicket extends React.Component {
 
         return (
             <Card
-                className={classnames('TimelineTicket', {current: this.props.isCurrent})}
+                className={classnames(css.component, {[css.current]: this.props.isCurrent})}
                 onClick={this._goToTicket}
                 tag="a"
                 href={`/app/ticket/${ticket.get('id')}`}
             >
-                <CardBlock>
-                    <div>
-                        <h5 className="mb-1">
-                            {subject}
-                        </h5>
-                        <div>
-                            {ticket.get('excerpt')}
-                        </div>
-                    </div>
-                    <div>
+                <CardBody className={classnames(css.body, 'd-flex')}>
+                    <div className={css.meta}>
+                        <StatusLabel
+                            status={ticket.get('status')}
+                            className="mb-2 mr-2"
+                        />
+                        <DatetimeLabel
+                            dateTime={ticket.get('created_datetime')}
+                        />
                         {assigneeName && (
                             <AgentLabel name={assigneeName}/>
                         )}
                     </div>
-                    <div>
-                        <StatusLabel status={ticket.get('status')}/>
-                    </div>
-                    <div>
-                        <DatetimeLabel
-                            dateTime={ticket.get('created_datetime')}
-                            settings={{
-                                position: 'top left'
-                            }}
+                    <div className={classnames(css.details)}>
+                        <SourceIcon
+                            type={ticket.get('channel')}
+                            className="uncolored mr-2 float-right"
                         />
+                        <h5 className={classnames(css.subject, 'mb-1')}>
+                            {subject}
+                        </h5>
+                        <div className={classnames(css.excerpt, 'mb-2')}>
+                            {ticket.get('excerpt')}
+                        </div>
                     </div>
-                </CardBlock>
+                </CardBody>
             </Card>
         )
     }

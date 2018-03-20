@@ -20,6 +20,8 @@ import ViewTable from '../../common/components/ViewTable/Page'
 import type {Map, List} from 'immutable'
 import type {reactRouterLocation, reactRouterRoute} from '../../../types'
 
+import css from './TicketListContainer.less'
+
 type Props = {
     activeView: Map<*,*>,
     hasActiveView: boolean,
@@ -85,6 +87,7 @@ class TicketListContainer extends React.Component<Props, State> {
                     }}
                 >
                     <ViewTable
+                        className={css.table}
                         type="ticket"
                         items={tickets}
                         isUpdate={isUpdate}
@@ -95,7 +98,7 @@ class TicketListContainer extends React.Component<Props, State> {
                             <div className="d-inline-flex align-items-center">
                                 <Button
                                     tag={Link}
-                                    color="primary"
+                                    color="success"
                                     to="/app/ticket/new"
                                 >
                                     Create ticket

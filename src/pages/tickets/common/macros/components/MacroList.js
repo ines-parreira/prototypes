@@ -10,6 +10,8 @@ import {getActionTemplate} from '../../../../../utils'
 
 import * as search from '../../../../../state/macro/search'
 
+import css from './MacroList.less'
+
 export default class MacroList extends React.Component {
     static propTypes = {
         macros: PropTypes.object.isRequired,
@@ -128,7 +130,7 @@ export default class MacroList extends React.Component {
 
         return (
             <div>
-                <div className="macro-list p-0">
+                <div className="macro-list">
                     <div
                         className="mt-3 mb-2"
                         style={{
@@ -140,7 +142,7 @@ export default class MacroList extends React.Component {
                             onChange={e => this._handleSearch(e.target.value)}
                             placeholder="Search macros by name, tags or body..."
                             autoFocus={true}
-                            className="shortcuts-enable"
+                            className={classnames(css.search, 'shortcuts-enable')}
                         />
                     </div>
                     {macros.map((macro) => {

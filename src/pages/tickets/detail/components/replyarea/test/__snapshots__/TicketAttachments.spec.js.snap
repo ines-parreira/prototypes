@@ -2,14 +2,16 @@
 
 exports[`TicketAttachments component private should display an error message if there's private attachments 1`] = `
 <div
-  className="attachments"
+  className="component"
 >
   <div
     className="mb-2"
   >
     <i
-      className="fa fa-warning mr-1"
-    />
+      className="material-icons mr-1"
+    >
+      warning
+    </i>
      
     There is 
     3
@@ -60,14 +62,16 @@ exports[`TicketAttachments component private should display an error message if 
 
 exports[`TicketAttachments component private should display both an error message and attachments 1`] = `
 <div
-  className="attachments"
+  className="component"
 >
   <div
     className="mb-2"
   >
     <i
-      className="fa fa-warning mr-1"
-    />
+      className="material-icons mr-1"
+    >
+      warning
+    </i>
      
     There is 
     1
@@ -76,7 +80,7 @@ exports[`TicketAttachments component private should display both an error messag
     couldn't download.
   </div>
   <a
-    className="attachments-item attachments-item-has-preview"
+    className="item hasPreview"
     href="bar"
     onClick={[Function]}
     style={
@@ -87,24 +91,26 @@ exports[`TicketAttachments component private should display both an error messag
     target="_blank"
   >
     <div
-      className="attachments-item-meta"
+      className="itemMeta"
     >
       <div
-        className="attachments-item-meta-name"
+        className="metaName"
       >
         foo
       </div>
       <div
-        className="attachments-item-meta-type"
+        className="metaType"
       >
         <i
-          className="fa fa-fw fa-file-image-o"
-        />
+          className="material-icons md-2"
+        >
+          photo_library
+        </i>
       </div>
     </div>
   </a>
   <a
-    className="attachments-item attachments-item-has-preview"
+    className="item hasPreview"
     href="foo"
     onClick={[Function]}
     style={
@@ -115,19 +121,21 @@ exports[`TicketAttachments component private should display both an error messag
     target="_blank"
   >
     <div
-      className="attachments-item-meta"
+      className="itemMeta"
     >
       <div
-        className="attachments-item-meta-name"
+        className="metaName"
       >
         baz
       </div>
       <div
-        className="attachments-item-meta-type"
+        className="metaType"
       >
         <i
-          className="fa fa-fw fa-file-image-o"
-        />
+          className="material-icons md-2"
+        >
+          photo_library
+        </i>
       </div>
     </div>
   </a>
@@ -174,10 +182,10 @@ exports[`TicketAttachments component private should display both an error messag
 
 exports[`TicketAttachments component read-only should match snapshot 1`] = `
 <div
-  className="attachments"
+  className="component"
 >
   <a
-    className="attachments-item attachments-item-has-preview"
+    className="item hasPreview"
     href="bar"
     onClick={[Function]}
     style={
@@ -188,43 +196,47 @@ exports[`TicketAttachments component read-only should match snapshot 1`] = `
     target="_blank"
   >
     <div
-      className="attachments-item-meta"
+      className="itemMeta"
     >
       <div
-        className="attachments-item-meta-name"
+        className="metaName"
       >
         foo
       </div>
       <div
-        className="attachments-item-meta-type"
+        className="metaType"
       >
         <i
-          className="fa fa-fw fa-file-image-o"
-        />
+          className="material-icons md-2"
+        >
+          photo_library
+        </i>
       </div>
     </div>
   </a>
   <a
-    className="attachments-item"
+    className="item"
     href="foo"
     onClick={[Function]}
     style={null}
     target="_blank"
   >
     <div
-      className="attachments-item-meta"
+      className="itemMeta"
     >
       <div
-        className="attachments-item-meta-name"
+        className="metaName"
       >
         bar
       </div>
       <div
-        className="attachments-item-meta-type"
+        className="metaType"
       >
         <i
-          className="fa fa-fw fa-file-text-o"
-        />
+          className="material-icons md-2"
+        >
+          library_books
+        </i>
       </div>
     </div>
   </a>

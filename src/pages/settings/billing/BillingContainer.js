@@ -1,13 +1,13 @@
+import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, browserHistory} from 'react-router'
-import React, {Component, PropTypes} from 'react'
+import {Container} from 'reactstrap'
 
-import BillingCurrentSubscription from './BillingCurrentSubscription'
-import BillingPlans from './BillingPlans'
 import BillingUsage from './BillingUsage'
 import BillingPaymentMethod from './BillingPaymentMethod'
 import BillingInvoices from './BillingInvoices'
 import {notify} from '../../../state/notifications/actions'
+import PageHeader from '../../common/components/PageHeader'
 
 @withRouter
 @connect(null, {notify})
@@ -38,17 +38,13 @@ export default class BillingContainer extends Component {
 
     render() {
         return (
-            <div>
-                <h1>
-                    <i className="fa fa-fw fa-credit-card blue mr-2" />
-                    Billing
-                </h1>
-
-                <BillingCurrentSubscription />
-                <BillingPlans />
-                <BillingUsage />
-                <BillingPaymentMethod />
-                <BillingInvoices />
+            <div className="full-width">
+                <PageHeader title="Billing & Usage"/>
+                <Container fluid className="page-container">
+                    <BillingUsage/>
+                    <BillingPaymentMethod/>
+                    <BillingInvoices/>
+                </Container>
             </div>
         )
     }

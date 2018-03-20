@@ -110,7 +110,7 @@ class ViewNavbarView extends Component {
         // we use this to build urls
         const objectName = getPluralObjectName(viewType)
 
-        const settingButtonClass = classnames(css['setting-button'], {
+        const settingButtonClass = classnames(css.settingButton, {
             [css.active]: hasEditMode
         })
 
@@ -120,6 +120,9 @@ class ViewNavbarView extends Component {
             <div>
                 <div className="item">
                     <h4>
+                        <i className="icon material-icons">
+                            view_list
+                        </i>
                         Views
                         <span
                             onClick={this._toggleHasEditMode}
@@ -128,14 +131,13 @@ class ViewNavbarView extends Component {
                             <span id="navbar-views-settings">
                                 {isLoading
                                     ? (
-                                        <i className="fa fa-fw fa-circle-o-notch fa-spin"/>
+                                        <i className="material-icons md-spin">
+                                            refresh
+                                        </i>
                                     ) : (
-                                        <i
-                                            className={classnames('hidden-sm-down fa fa-fw', {
-                                                'fa-cog': !hasEditMode,
-                                                'fa-close': hasEditMode
-                                            })}
-                                        />
+                                        <i className="d-none d-md-inline-block material-icons">
+                                            {hasEditMode ? 'close' : 'settings'}
+                                        </i>
                                     )
                                 }
                             </span>
@@ -160,10 +162,12 @@ class ViewNavbarView extends Component {
                                 : (
                                     displayedViews.map((view) => {
                                         const isCurrentView = activeView.get('id') === view.get('id')
+                                        const isFocused = window.location.pathname.startsWith(`/app/tickets/${view.get('id')}/`)
 
                                         const key = `${view.get('slug')}-${view.get('id')}`
                                         let classes = classnames('item', {
                                             active: isCurrentView,
+                                            focused: isFocused,
                                         })
 
                                         const viewCount = this.props.getViewCount(view.get('id'))

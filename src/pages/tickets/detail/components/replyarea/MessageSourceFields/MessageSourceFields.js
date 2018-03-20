@@ -20,6 +20,8 @@ import _uniq from 'lodash/uniq'
 import _difference from 'lodash/difference'
 import _xor from 'lodash/xor'
 
+import css from './MessageSourceFields.less'
+
 class MessageSourceFields extends React.Component {
     state = {
         displayedFields: [], // optional fields that are displayed
@@ -110,9 +112,9 @@ class MessageSourceFields extends React.Component {
                         return (
                             <div
                                 key={prop}
-                                className="message-source-field"
+                                className={css.sourceField}
                             >
-                                <span className="label">{_upperFirst(prop)}: </span>
+                                <span className={css.label}>{_upperFirst(prop)}: </span>
                                 <ReceiversSelectField
                                     parentId={parentId}
                                     sourceType={sourceType}
@@ -135,9 +137,9 @@ class MessageSourceFields extends React.Component {
                     from && (
                         <div
                             key="from"
-                            className="message-source-field"
+                            className={css.sourceField}
                         >
-                            <span className="label">From: </span>
+                            <span className={css.label}>From: </span>
                             <SenderSelectField
                                 channels={accountChannels}
                                 value={from.address}
@@ -151,12 +153,12 @@ class MessageSourceFields extends React.Component {
                 {
                     // display buttons for optional fields
                     !!remainingOptionalFields.length && (
-                        <div className="optional-fields">
+                        <div className={css.optionalFields}>
                             {
                                 remainingOptionalFields.map((prop, index) => (
                                     <span key={prop}>
                                         <span
-                                            className="optional-field"
+                                            className="clickable"
                                             onClick={(e) => {
                                                 e.stopPropagation() // prevent the edit window from closing
                                                 this._toggleOptionalField(prop)
@@ -181,11 +183,11 @@ class MessageSourceFields extends React.Component {
         const allDisplayedNames = allRecipients.toJS().map((v) => displayUserNameFromSource(v, sourceType))
 
         return (
-            <div className="message-source-field">
-                <span className="label">To: </span>
+            <div className={css.sourceField}>
+                <span className={css.label}>To: </span>
                 <span
-                    className={classnames('receivers-list', {
-                        editable: canOpen,
+                    className={classnames('mt-1', {
+                        clickable: canOpen,
                     })}
                 >
                     {allDisplayedNames.join(', ')}
@@ -196,7 +198,7 @@ class MessageSourceFields extends React.Component {
 
     render() {
         return (
-            <div className="message-source-fields">
+            <div className={css.component}>
                 {this.props.isOpen ? this._renderOpened() : this._renderClosed()}
             </div>
         )

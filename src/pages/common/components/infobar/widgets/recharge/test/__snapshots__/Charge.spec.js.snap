@@ -14,7 +14,7 @@ exports[`Charge BeforeContent should aggregate line_items by subscriptions 1`] =
       className="field-value"
     >
       <Badge
-        color="default"
+        color="secondary"
         pill={false}
         tag="span"
       />
@@ -23,8 +23,9 @@ exports[`Charge BeforeContent should aggregate line_items by subscriptions 1`] =
   <div
     className="card"
   >
-    <div
-      className="header clearfix card-block"
+    <CardBody
+      className="header clearfix"
+      tag="div"
     >
       <a
         target="_blank"
@@ -42,9 +43,10 @@ exports[`Charge BeforeContent should aggregate line_items by subscriptions 1`] =
           }
         }
       />
-    </div>
-    <div
-      className="content card-block"
+    </CardBody>
+    <CardBody
+      className="content"
+      tag="div"
     >
       <span>
         foo
@@ -58,13 +60,14 @@ exports[`Charge BeforeContent should aggregate line_items by subscriptions 1`] =
         5
         )
       </span>
-    </div>
+    </CardBody>
   </div>
   <div
     className="card"
   >
-    <div
-      className="header clearfix card-block"
+    <CardBody
+      className="header clearfix"
+      tag="div"
     >
       <a
         target="_blank"
@@ -82,9 +85,10 @@ exports[`Charge BeforeContent should aggregate line_items by subscriptions 1`] =
           }
         }
       />
-    </div>
-    <div
-      className="content card-block"
+    </CardBody>
+    <CardBody
+      className="content"
+      tag="div"
     >
       <span>
         baz
@@ -92,7 +96,7 @@ exports[`Charge BeforeContent should aggregate line_items by subscriptions 1`] =
         1
         )
       </span>
-    </div>
+    </CardBody>
   </div>
 </div>
 `;
@@ -111,7 +115,7 @@ exports[`Charge BeforeContent should display default color if there's no matchin
       className="field-value"
     >
       <Badge
-        color="default"
+        color="secondary"
         pill={false}
         tag="span"
       >

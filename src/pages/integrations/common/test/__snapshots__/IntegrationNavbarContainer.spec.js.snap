@@ -71,221 +71,202 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
               className="nav-dropdown"
             >
               <Dropdown
+                addonType={false}
                 className="nav-dropdown"
+                dropup={false}
+                inNavbar={false}
                 isOpen={false}
-                tag="div"
+                nav={false}
                 toggle={[Function]}
               >
-                <div
+                <Manager
                   className="nav-dropdown dropdown"
+                  onKeyDown={[Function]}
+                  tag="div"
                 >
-                  <DropdownToggle
-                    aria-haspopup={true}
-                    color="secondary"
-                    data-toggle="dropdown"
+                  <div
+                    className="nav-dropdown dropdown"
+                    onKeyDown={[Function]}
                   >
-                    <Button
-                      aria-expanded={false}
-                      aria-haspopup="true"
-                      className=""
-                      color="secondary"
-                      data-toggle="dropdown"
-                      onClick={[Function]}
-                      tag="button"
+                    <DropdownToggle
+                      aria-haspopup={true}
+                      color="transparent"
                     >
-                      <button
+                      <Target
                         aria-expanded={false}
-                        aria-haspopup="true"
-                        className="btn btn-secondary"
-                        data-toggle="dropdown"
+                        aria-haspopup={true}
+                        className=""
+                        color="transparent"
+                        component={[Function]}
                         onClick={[Function]}
-                        type="button"
                       >
-                        <div>
-                          <div
-                            style={
-                              Object {
-                                "fontSize": "18px",
-                              }
-                            }
-                          >
-                            Integrations
-                          </div>
-                          <i
-                            className="fa fa-caret-down"
-                          />
-                        </div>
-                      </button>
-                    </Button>
-                  </DropdownToggle>
-                  <DropdownMenu
-                    tag="div"
-                  >
-                    <div
-                      aria-hidden={true}
-                      className="dropdown-menu"
-                      role="menu"
-                      tabIndex="-1"
-                    >
-                      <DropdownItem
-                        onClick={[Function]}
-                        tag={[Function]}
-                        to="/app/tickets"
-                        toggle={true}
-                      >
-                        <NavLink
-                          className="dropdown-item"
+                        <Button
+                          aria-expanded={false}
+                          aria-haspopup={true}
+                          className=""
+                          color="transparent"
+                          innerRef={[Function]}
                           onClick={[Function]}
-                          tabIndex="0"
-                          to="/app/tickets"
+                          tag="button"
                         >
-                          <Link
-                            className="dropdown-item dropdown-item"
+                          <button
+                            aria-expanded={false}
+                            aria-haspopup={true}
+                            className="btn btn-transparent"
                             onClick={[Function]}
-                            onlyActiveOnIndex={false}
-                            style={Object {}}
+                            type="button"
+                          >
+                            <div>
+                              Integrations
+                              <i
+                                className="material-icons md-2"
+                              >
+                                more_vert
+                              </i>
+                            </div>
+                          </button>
+                        </Button>
+                      </Target>
+                    </DropdownToggle>
+                    <DropdownMenu
+                      flip={true}
+                      tag="div"
+                    >
+                      <div
+                        aria-hidden={true}
+                        className="dropdown-menu"
+                        role="menu"
+                        tabIndex="-1"
+                      >
+                        <DropdownItem
+                          onClick={[Function]}
+                          tag={[Function]}
+                          to="/app/tickets"
+                          toggle={true}
+                        >
+                          <NavLink
+                            className="dropdown-item"
+                            onClick={[Function]}
                             tabIndex="0"
                             to="/app/tickets"
                           >
-                            <a
+                            <Link
                               className="dropdown-item dropdown-item"
                               onClick={[Function]}
+                              onlyActiveOnIndex={false}
                               style={Object {}}
                               tabIndex="0"
+                              to="/app/tickets"
                             >
-                              Tickets
-                            </a>
-                          </Link>
-                        </NavLink>
-                      </DropdownItem>
-                      <DropdownItem
-                        onClick={[Function]}
-                        tag={[Function]}
-                        to="/app/users"
-                        toggle={true}
-                      >
-                        <NavLink
-                          className="dropdown-item"
+                              <a
+                                className="dropdown-item dropdown-item"
+                                onClick={[Function]}
+                                style={Object {}}
+                                tabIndex="0"
+                              >
+                                Tickets
+                              </a>
+                            </Link>
+                          </NavLink>
+                        </DropdownItem>
+                        <DropdownItem
                           onClick={[Function]}
-                          tabIndex="0"
+                          tag={[Function]}
                           to="/app/users"
+                          toggle={true}
                         >
-                          <Link
-                            className="dropdown-item dropdown-item"
+                          <NavLink
+                            className="dropdown-item"
                             onClick={[Function]}
-                            onlyActiveOnIndex={false}
-                            style={Object {}}
                             tabIndex="0"
                             to="/app/users"
                           >
-                            <a
+                            <Link
                               className="dropdown-item dropdown-item"
                               onClick={[Function]}
+                              onlyActiveOnIndex={false}
                               style={Object {}}
                               tabIndex="0"
+                              to="/app/users"
                             >
-                              Users
-                            </a>
-                          </Link>
-                        </NavLink>
-                      </DropdownItem>
-                      <DropdownItem
-                        onClick={[Function]}
-                        tag={[Function]}
-                        to="/app/integrations"
-                        toggle={true}
-                      >
-                        <NavLink
-                          className="dropdown-item"
+                              <a
+                                className="dropdown-item dropdown-item"
+                                onClick={[Function]}
+                                style={Object {}}
+                                tabIndex="0"
+                              >
+                                Users
+                              </a>
+                            </Link>
+                          </NavLink>
+                        </DropdownItem>
+                        <DropdownItem
+                          className="d-none d-md-block"
                           onClick={[Function]}
-                          tabIndex="0"
-                          to="/app/integrations"
-                        >
-                          <Link
-                            className="dropdown-item dropdown-item"
-                            onClick={[Function]}
-                            onlyActiveOnIndex={false}
-                            style={Object {}}
-                            tabIndex="0"
-                            to="/app/integrations"
-                          >
-                            <a
-                              className="dropdown-item dropdown-item"
-                              onClick={[Function]}
-                              style={Object {}}
-                              tabIndex="0"
-                            >
-                              Integrations
-                            </a>
-                          </Link>
-                        </NavLink>
-                      </DropdownItem>
-                      <DropdownItem
-                        className="hidden-sm-down"
-                        onClick={[Function]}
-                        tag={[Function]}
-                        to="/app/stats"
-                        toggle={true}
-                      >
-                        <NavLink
-                          className="hidden-sm-down dropdown-item"
-                          onClick={[Function]}
-                          tabIndex="0"
+                          tag={[Function]}
                           to="/app/stats"
+                          toggle={true}
                         >
-                          <Link
-                            className="hidden-sm-down dropdown-item dropdown-item"
+                          <NavLink
+                            className="d-none d-md-block dropdown-item"
                             onClick={[Function]}
-                            onlyActiveOnIndex={false}
-                            style={Object {}}
                             tabIndex="0"
                             to="/app/stats"
                           >
-                            <a
-                              className="hidden-sm-down dropdown-item dropdown-item"
+                            <Link
+                              className="d-none d-md-block dropdown-item dropdown-item"
                               onClick={[Function]}
+                              onlyActiveOnIndex={false}
                               style={Object {}}
                               tabIndex="0"
+                              to="/app/stats"
                             >
-                              Statistics
-                            </a>
-                          </Link>
-                        </NavLink>
-                      </DropdownItem>
-                      <DropdownItem
-                        onClick={[Function]}
-                        tag={[Function]}
-                        to="/app/settings"
-                        toggle={true}
-                      >
-                        <NavLink
-                          className="dropdown-item"
+                              <a
+                                className="d-none d-md-block dropdown-item dropdown-item"
+                                onClick={[Function]}
+                                style={Object {}}
+                                tabIndex="0"
+                              >
+                                Statistics
+                              </a>
+                            </Link>
+                          </NavLink>
+                        </DropdownItem>
+                        <DropdownItem
                           onClick={[Function]}
-                          tabIndex="0"
+                          tag={[Function]}
                           to="/app/settings"
+                          toggle={true}
                         >
-                          <Link
-                            className="dropdown-item dropdown-item"
+                          <NavLink
+                            className="dropdown-item"
                             onClick={[Function]}
-                            onlyActiveOnIndex={false}
-                            style={Object {}}
                             tabIndex="0"
                             to="/app/settings"
                           >
-                            <a
+                            <Link
                               className="dropdown-item dropdown-item"
                               onClick={[Function]}
+                              onlyActiveOnIndex={false}
                               style={Object {}}
                               tabIndex="0"
+                              to="/app/settings"
                             >
-                              Settings
-                            </a>
-                          </Link>
-                        </NavLink>
-                      </DropdownItem>
-                    </div>
-                  </DropdownMenu>
-                </div>
+                              <a
+                                className="dropdown-item dropdown-item"
+                                onClick={[Function]}
+                                style={Object {}}
+                                tabIndex="0"
+                              >
+                                Settings
+                              </a>
+                            </Link>
+                          </NavLink>
+                        </DropdownItem>
+                      </div>
+                    </DropdownMenu>
+                  </div>
+                </Manager>
               </Dropdown>
             </UncontrolledDropdown>
             <div
@@ -306,7 +287,7 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
                       onlyActiveOnIndex={false}
                       style={Object {}}
                       title="Overview"
-                      to="/app/integrations/facebook/78945/overview"
+                      to="/app/settings/integrations/facebook/78945/overview"
                     >
                       <a
                         className="item active"
@@ -322,7 +303,7 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
                       onlyActiveOnIndex={false}
                       style={Object {}}
                       title="Customer chat"
-                      to="/app/integrations/facebook/78945/customer_chat"
+                      to="/app/settings/integrations/facebook/78945/customer_chat"
                     >
                       <a
                         className="item"
@@ -338,7 +319,7 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
                       onlyActiveOnIndex={false}
                       style={Object {}}
                       title="Preferences"
-                      to="/app/integrations/facebook/78945/preferences"
+                      to="/app/settings/integrations/facebook/78945/preferences"
                     >
                       <a
                         className="item"
@@ -354,204 +335,287 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
               </div>
             </div>
             <UncontrolledDropdown
-              className="nav-dropdown"
-              dropup={true}
+              className="nav-dropdown dropup"
             >
               <Dropdown
-                className="nav-dropdown"
-                dropup={true}
+                addonType={false}
+                className="nav-dropdown dropup"
+                dropup={false}
+                inNavbar={false}
                 isOpen={false}
-                tag="div"
+                nav={false}
                 toggle={[Function]}
               >
-                <div
-                  className="nav-dropdown dropdown dropup"
+                <Manager
+                  className="nav-dropdown dropup dropdown"
+                  onKeyDown={[Function]}
+                  tag="div"
                 >
-                  <DropdownToggle
-                    aria-haspopup={true}
-                    color="secondary"
-                    data-toggle="dropdown"
+                  <div
+                    className="nav-dropdown dropup dropdown"
+                    onKeyDown={[Function]}
                   >
-                    <Button
-                      aria-expanded={false}
-                      aria-haspopup="true"
-                      className=""
-                      color="secondary"
-                      data-toggle="dropdown"
-                      onClick={[Function]}
-                      tag="button"
+                    <DropdownToggle
+                      aria-haspopup={true}
+                      color="transparent"
+                      style={
+                        Object {
+                          "overflow": "hidden",
+                        }
+                      }
                     >
-                      <button
+                      <Target
                         aria-expanded={false}
-                        aria-haspopup="true"
-                        className="btn btn-secondary"
-                        data-toggle="dropdown"
+                        aria-haspopup={true}
+                        className=""
+                        color="transparent"
+                        component={[Function]}
                         onClick={[Function]}
-                        type="button"
+                        style={
+                          Object {
+                            "overflow": "hidden",
+                          }
+                        }
                       >
-                        <div>
-                          <span>
-                            <i
-                              className="fa fa-circle mr-2"
-                              style={
-                                Object {
-                                  "color": "#2DCF57",
-                                }
-                              }
-                            />
-                          </span>
-                          <i
-                            className="fa fa-ellipsis-h"
-                          />
-                        </div>
-                      </button>
-                    </Button>
-                  </DropdownToggle>
-                  <DropdownMenu
-                    tag="div"
-                  >
-                    <div
-                      aria-hidden={true}
-                      className="dropdown-menu"
-                      role="menu"
-                      tabIndex="-1"
-                    >
-                      <DropdownItem
-                        className="mt-2"
-                        tag="a"
-                        toggle={false}
-                      >
-                        <a
-                          className="mt-2 dropdown-item"
+                        <Button
+                          aria-expanded={false}
+                          aria-haspopup={true}
+                          className=""
+                          color="transparent"
+                          innerRef={[Function]}
                           onClick={[Function]}
-                          tabIndex="0"
+                          style={
+                            Object {
+                              "overflow": "hidden",
+                            }
+                          }
+                          tag="button"
                         >
-                          <div
-                            className="d-flex justify-content-between align-items-center"
+                          <button
+                            aria-expanded={false}
+                            aria-haspopup={true}
+                            className="btn btn-transparent"
+                            onClick={[Function]}
+                            style={
+                              Object {
+                                "overflow": "hidden",
+                              }
+                            }
+                            type="button"
                           >
                             <div>
-                              Available for chat
-                            </div>
-                            <div>
-                              <ToggleButton
-                                onChange={[Function]}
-                                value={true}
-                              >
-                                <label
-                                  onClick={[Function]}
+                              <span>
+                                <Avatar
+                                  badgeColor="#24d69d"
+                                  email=""
+                                  google={false}
+                                  name=""
+                                  size={36}
+                                  style={
+                                    Object {
+                                      "bottom": "12px",
+                                      "position": "absolute",
+                                      "right": "18px",
+                                    }
+                                  }
+                                  url=""
                                 >
-                                  <input
-                                    checked={true}
-                                    readOnly={true}
-                                    type="checkbox"
-                                  />
-                                  <div />
-                                </label>
-                              </ToggleButton>
+                                  <div
+                                    className="component"
+                                    style={
+                                      Object {
+                                        "bottom": "12px",
+                                        "height": "36px",
+                                        "position": "absolute",
+                                        "right": "18px",
+                                        "width": "36px",
+                                      }
+                                    }
+                                  >
+                                    <div
+                                      className="initials"
+                                      style={
+                                        Object {
+                                          "fontSize": "15px",
+                                        }
+                                      }
+                                    >
+                                      <span />
+                                    </div>
+                                    <div
+                                      className="badge"
+                                      style={
+                                        Object {
+                                          "backgroundColor": "#24d69d",
+                                        }
+                                      }
+                                    />
+                                  </div>
+                                </Avatar>
+                              </span>
                             </div>
-                          </div>
-                        </a>
-                      </DropdownItem>
-                      <DropdownItem
-                        divider={true}
-                        tag="button"
-                        toggle={true}
+                          </button>
+                        </Button>
+                      </Target>
+                    </DropdownToggle>
+                    <DropdownMenu
+                      flip={true}
+                      tag="div"
+                    >
+                      <div
+                        aria-hidden={true}
+                        className="dropdown-menu"
+                        role="menu"
+                        tabIndex="-1"
                       >
-                        <div
-                          className="dropdown-divider"
-                          onClick={[Function]}
-                          tabIndex="-1"
-                        />
-                      </DropdownItem>
-                      <DropdownItem
-                        onClick={[Function]}
-                        tag={[Function]}
-                        to="/app/settings/profile"
-                        toggle={true}
-                      >
-                        <NavLink
-                          className="dropdown-item"
-                          onClick={[Function]}
-                          tabIndex="0"
-                          to="/app/settings/profile"
+                        <DropdownItem
+                          className="mt-2"
+                          tag="a"
+                          toggle={false}
                         >
-                          <Link
-                            className="dropdown-item dropdown-item"
+                          <a
+                            className="mt-2 dropdown-item"
                             onClick={[Function]}
-                            onlyActiveOnIndex={false}
-                            style={Object {}}
+                            tabIndex="0"
+                          >
+                            <div
+                              className="d-flex justify-content-between align-items-center"
+                            >
+                              <div>
+                                Available for chat
+                              </div>
+                              <div>
+                                <ToggleButton
+                                  onChange={[Function]}
+                                  value={true}
+                                >
+                                  <label
+                                    className="switch"
+                                    onClick={[Function]}
+                                  >
+                                    <input
+                                      checked={true}
+                                      readOnly={true}
+                                      type="checkbox"
+                                    />
+                                    <div
+                                      className="slider"
+                                    />
+                                  </label>
+                                </ToggleButton>
+                              </div>
+                            </div>
+                          </a>
+                        </DropdownItem>
+                        <DropdownItem
+                          divider={true}
+                          tag="button"
+                          toggle={true}
+                        >
+                          <div
+                            className="dropdown-divider"
+                            onClick={[Function]}
+                            tabIndex="-1"
+                          />
+                        </DropdownItem>
+                        <DropdownItem
+                          onClick={[Function]}
+                          tag={[Function]}
+                          to="/app/settings/profile"
+                          toggle={true}
+                        >
+                          <NavLink
+                            className="dropdown-item"
+                            onClick={[Function]}
                             tabIndex="0"
                             to="/app/settings/profile"
                           >
-                            <a
+                            <Link
                               className="dropdown-item dropdown-item"
                               onClick={[Function]}
+                              onlyActiveOnIndex={false}
                               style={Object {}}
                               tabIndex="0"
+                              to="/app/settings/profile"
                             >
-                              <i
-                                className="fa fa-fw fa-user mr-2"
-                              />
-                              Your profile
-                            </a>
-                          </Link>
-                        </NavLink>
-                      </DropdownItem>
-                      <DropdownItem
-                        href="http://docs.gorgias.io/"
-                        tag="a"
-                        target="_blank"
-                        toggle={true}
-                      >
-                        <a
-                          className="dropdown-item"
+                              <a
+                                className="dropdown-item dropdown-item"
+                                onClick={[Function]}
+                                style={Object {}}
+                                tabIndex="0"
+                              >
+                                <i
+                                  className="material-icons mr-2"
+                                >
+                                  person
+                                </i>
+                                Your profile
+                              </a>
+                            </Link>
+                          </NavLink>
+                        </DropdownItem>
+                        <DropdownItem
                           href="http://docs.gorgias.io/"
-                          onClick={[Function]}
-                          tabIndex="0"
+                          tag="a"
                           target="_blank"
+                          toggle={true}
                         >
-                          <i
-                            className="fa fa-fw fa-book mr-2"
-                          />
-                          Documentation
-                        </a>
-                      </DropdownItem>
-                      <DropdownItem
-                        onClick={[Function]}
-                        tag="a"
-                        toggle={true}
-                      >
-                        <a
-                          className="dropdown-item"
+                          <a
+                            className="dropdown-item"
+                            href="http://docs.gorgias.io/"
+                            onClick={[Function]}
+                            tabIndex="0"
+                            target="_blank"
+                          >
+                            <i
+                              className="material-icons mr-2"
+                            >
+                              help
+                            </i>
+                            Documentation
+                          </a>
+                        </DropdownItem>
+                        <DropdownItem
                           onClick={[Function]}
-                          tabIndex="0"
+                          tag="a"
+                          toggle={true}
                         >
-                          <i
-                            className="fa fa-fw fa-keyboard-o mr-2"
-                          />
-                          Keyboard shortcuts
-                        </a>
-                      </DropdownItem>
-                      <DropdownItem
-                        href="/logout"
-                        tag="a"
-                        toggle={true}
-                      >
-                        <a
-                          className="dropdown-item"
+                          <a
+                            className="dropdown-item"
+                            onClick={[Function]}
+                            tabIndex="0"
+                          >
+                            <i
+                              className="material-icons mr-2"
+                            >
+                              keyboard
+                            </i>
+                            Keyboard shortcuts
+                          </a>
+                        </DropdownItem>
+                        <DropdownItem
                           href="/logout"
-                          onClick={[Function]}
-                          tabIndex="0"
+                          tag="a"
+                          toggle={true}
                         >
-                          <i
-                            className="fa fa-fw fa-sign-out mr-2"
-                          />
-                          Log out
-                        </a>
-                      </DropdownItem>
-                    </div>
-                  </DropdownMenu>
-                </div>
+                          <a
+                            className="dropdown-item"
+                            href="/logout"
+                            onClick={[Function]}
+                            tabIndex="0"
+                          >
+                            <i
+                              className="material-icons mr-2"
+                            >
+                              exit_to_app
+                            </i>
+                            Log out
+                          </a>
+                        </DropdownItem>
+                      </div>
+                    </DropdownMenu>
+                  </div>
+                </Manager>
               </Dropdown>
             </UncontrolledDropdown>
           </div>
@@ -630,221 +694,202 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
               className="nav-dropdown"
             >
               <Dropdown
+                addonType={false}
                 className="nav-dropdown"
+                dropup={false}
+                inNavbar={false}
                 isOpen={false}
-                tag="div"
+                nav={false}
                 toggle={[Function]}
               >
-                <div
+                <Manager
                   className="nav-dropdown dropdown"
+                  onKeyDown={[Function]}
+                  tag="div"
                 >
-                  <DropdownToggle
-                    aria-haspopup={true}
-                    color="secondary"
-                    data-toggle="dropdown"
+                  <div
+                    className="nav-dropdown dropdown"
+                    onKeyDown={[Function]}
                   >
-                    <Button
-                      aria-expanded={false}
-                      aria-haspopup="true"
-                      className=""
-                      color="secondary"
-                      data-toggle="dropdown"
-                      onClick={[Function]}
-                      tag="button"
+                    <DropdownToggle
+                      aria-haspopup={true}
+                      color="transparent"
                     >
-                      <button
+                      <Target
                         aria-expanded={false}
-                        aria-haspopup="true"
-                        className="btn btn-secondary"
-                        data-toggle="dropdown"
+                        aria-haspopup={true}
+                        className=""
+                        color="transparent"
+                        component={[Function]}
                         onClick={[Function]}
-                        type="button"
                       >
-                        <div>
-                          <div
-                            style={
-                              Object {
-                                "fontSize": "18px",
-                              }
-                            }
-                          >
-                            Integrations
-                          </div>
-                          <i
-                            className="fa fa-caret-down"
-                          />
-                        </div>
-                      </button>
-                    </Button>
-                  </DropdownToggle>
-                  <DropdownMenu
-                    tag="div"
-                  >
-                    <div
-                      aria-hidden={true}
-                      className="dropdown-menu"
-                      role="menu"
-                      tabIndex="-1"
-                    >
-                      <DropdownItem
-                        onClick={[Function]}
-                        tag={[Function]}
-                        to="/app/tickets"
-                        toggle={true}
-                      >
-                        <NavLink
-                          className="dropdown-item"
+                        <Button
+                          aria-expanded={false}
+                          aria-haspopup={true}
+                          className=""
+                          color="transparent"
+                          innerRef={[Function]}
                           onClick={[Function]}
-                          tabIndex="0"
-                          to="/app/tickets"
+                          tag="button"
                         >
-                          <Link
-                            className="dropdown-item dropdown-item"
+                          <button
+                            aria-expanded={false}
+                            aria-haspopup={true}
+                            className="btn btn-transparent"
                             onClick={[Function]}
-                            onlyActiveOnIndex={false}
-                            style={Object {}}
+                            type="button"
+                          >
+                            <div>
+                              Integrations
+                              <i
+                                className="material-icons md-2"
+                              >
+                                more_vert
+                              </i>
+                            </div>
+                          </button>
+                        </Button>
+                      </Target>
+                    </DropdownToggle>
+                    <DropdownMenu
+                      flip={true}
+                      tag="div"
+                    >
+                      <div
+                        aria-hidden={true}
+                        className="dropdown-menu"
+                        role="menu"
+                        tabIndex="-1"
+                      >
+                        <DropdownItem
+                          onClick={[Function]}
+                          tag={[Function]}
+                          to="/app/tickets"
+                          toggle={true}
+                        >
+                          <NavLink
+                            className="dropdown-item"
+                            onClick={[Function]}
                             tabIndex="0"
                             to="/app/tickets"
                           >
-                            <a
+                            <Link
                               className="dropdown-item dropdown-item"
                               onClick={[Function]}
+                              onlyActiveOnIndex={false}
                               style={Object {}}
                               tabIndex="0"
+                              to="/app/tickets"
                             >
-                              Tickets
-                            </a>
-                          </Link>
-                        </NavLink>
-                      </DropdownItem>
-                      <DropdownItem
-                        onClick={[Function]}
-                        tag={[Function]}
-                        to="/app/users"
-                        toggle={true}
-                      >
-                        <NavLink
-                          className="dropdown-item"
+                              <a
+                                className="dropdown-item dropdown-item"
+                                onClick={[Function]}
+                                style={Object {}}
+                                tabIndex="0"
+                              >
+                                Tickets
+                              </a>
+                            </Link>
+                          </NavLink>
+                        </DropdownItem>
+                        <DropdownItem
                           onClick={[Function]}
-                          tabIndex="0"
+                          tag={[Function]}
                           to="/app/users"
+                          toggle={true}
                         >
-                          <Link
-                            className="dropdown-item dropdown-item"
+                          <NavLink
+                            className="dropdown-item"
                             onClick={[Function]}
-                            onlyActiveOnIndex={false}
-                            style={Object {}}
                             tabIndex="0"
                             to="/app/users"
                           >
-                            <a
+                            <Link
                               className="dropdown-item dropdown-item"
                               onClick={[Function]}
+                              onlyActiveOnIndex={false}
                               style={Object {}}
                               tabIndex="0"
+                              to="/app/users"
                             >
-                              Users
-                            </a>
-                          </Link>
-                        </NavLink>
-                      </DropdownItem>
-                      <DropdownItem
-                        onClick={[Function]}
-                        tag={[Function]}
-                        to="/app/integrations"
-                        toggle={true}
-                      >
-                        <NavLink
-                          className="dropdown-item"
+                              <a
+                                className="dropdown-item dropdown-item"
+                                onClick={[Function]}
+                                style={Object {}}
+                                tabIndex="0"
+                              >
+                                Users
+                              </a>
+                            </Link>
+                          </NavLink>
+                        </DropdownItem>
+                        <DropdownItem
+                          className="d-none d-md-block"
                           onClick={[Function]}
-                          tabIndex="0"
-                          to="/app/integrations"
-                        >
-                          <Link
-                            className="dropdown-item dropdown-item"
-                            onClick={[Function]}
-                            onlyActiveOnIndex={false}
-                            style={Object {}}
-                            tabIndex="0"
-                            to="/app/integrations"
-                          >
-                            <a
-                              className="dropdown-item dropdown-item"
-                              onClick={[Function]}
-                              style={Object {}}
-                              tabIndex="0"
-                            >
-                              Integrations
-                            </a>
-                          </Link>
-                        </NavLink>
-                      </DropdownItem>
-                      <DropdownItem
-                        className="hidden-sm-down"
-                        onClick={[Function]}
-                        tag={[Function]}
-                        to="/app/stats"
-                        toggle={true}
-                      >
-                        <NavLink
-                          className="hidden-sm-down dropdown-item"
-                          onClick={[Function]}
-                          tabIndex="0"
+                          tag={[Function]}
                           to="/app/stats"
+                          toggle={true}
                         >
-                          <Link
-                            className="hidden-sm-down dropdown-item dropdown-item"
+                          <NavLink
+                            className="d-none d-md-block dropdown-item"
                             onClick={[Function]}
-                            onlyActiveOnIndex={false}
-                            style={Object {}}
                             tabIndex="0"
                             to="/app/stats"
                           >
-                            <a
-                              className="hidden-sm-down dropdown-item dropdown-item"
+                            <Link
+                              className="d-none d-md-block dropdown-item dropdown-item"
                               onClick={[Function]}
+                              onlyActiveOnIndex={false}
                               style={Object {}}
                               tabIndex="0"
+                              to="/app/stats"
                             >
-                              Statistics
-                            </a>
-                          </Link>
-                        </NavLink>
-                      </DropdownItem>
-                      <DropdownItem
-                        onClick={[Function]}
-                        tag={[Function]}
-                        to="/app/settings"
-                        toggle={true}
-                      >
-                        <NavLink
-                          className="dropdown-item"
+                              <a
+                                className="d-none d-md-block dropdown-item dropdown-item"
+                                onClick={[Function]}
+                                style={Object {}}
+                                tabIndex="0"
+                              >
+                                Statistics
+                              </a>
+                            </Link>
+                          </NavLink>
+                        </DropdownItem>
+                        <DropdownItem
                           onClick={[Function]}
-                          tabIndex="0"
+                          tag={[Function]}
                           to="/app/settings"
+                          toggle={true}
                         >
-                          <Link
-                            className="dropdown-item dropdown-item"
+                          <NavLink
+                            className="dropdown-item"
                             onClick={[Function]}
-                            onlyActiveOnIndex={false}
-                            style={Object {}}
                             tabIndex="0"
                             to="/app/settings"
                           >
-                            <a
+                            <Link
                               className="dropdown-item dropdown-item"
                               onClick={[Function]}
+                              onlyActiveOnIndex={false}
                               style={Object {}}
                               tabIndex="0"
+                              to="/app/settings"
                             >
-                              Settings
-                            </a>
-                          </Link>
-                        </NavLink>
-                      </DropdownItem>
-                    </div>
-                  </DropdownMenu>
-                </div>
+                              <a
+                                className="dropdown-item dropdown-item"
+                                onClick={[Function]}
+                                style={Object {}}
+                                tabIndex="0"
+                              >
+                                Settings
+                              </a>
+                            </Link>
+                          </NavLink>
+                        </DropdownItem>
+                      </div>
+                    </DropdownMenu>
+                  </div>
+                </Manager>
               </Dropdown>
             </UncontrolledDropdown>
             <div
@@ -865,7 +910,7 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
                       onlyActiveOnIndex={false}
                       style={Object {}}
                       title="Appearance"
-                      to="/app/integrations/smooch_inside/78945/appearance"
+                      to="/app/settings/integrations/smooch_inside/78945/appearance"
                     >
                       <a
                         className="item active"
@@ -881,7 +926,7 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
                       onlyActiveOnIndex={false}
                       style={Object {}}
                       title="Installation"
-                      to="/app/integrations/smooch_inside/78945/installation"
+                      to="/app/settings/integrations/smooch_inside/78945/installation"
                     >
                       <a
                         className="item"
@@ -897,7 +942,7 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
                       onlyActiveOnIndex={false}
                       style={Object {}}
                       title="Preferences"
-                      to="/app/integrations/smooch_inside/78945/preferences"
+                      to="/app/settings/integrations/smooch_inside/78945/preferences"
                     >
                       <a
                         className="item"
@@ -913,7 +958,7 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
                       onlyActiveOnIndex={false}
                       style={Object {}}
                       title="Campaigns"
-                      to="/app/integrations/smooch_inside/78945/campaigns"
+                      to="/app/settings/integrations/smooch_inside/78945/campaigns"
                     >
                       <a
                         className="item"
@@ -929,204 +974,287 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
               </div>
             </div>
             <UncontrolledDropdown
-              className="nav-dropdown"
-              dropup={true}
+              className="nav-dropdown dropup"
             >
               <Dropdown
-                className="nav-dropdown"
-                dropup={true}
+                addonType={false}
+                className="nav-dropdown dropup"
+                dropup={false}
+                inNavbar={false}
                 isOpen={false}
-                tag="div"
+                nav={false}
                 toggle={[Function]}
               >
-                <div
-                  className="nav-dropdown dropdown dropup"
+                <Manager
+                  className="nav-dropdown dropup dropdown"
+                  onKeyDown={[Function]}
+                  tag="div"
                 >
-                  <DropdownToggle
-                    aria-haspopup={true}
-                    color="secondary"
-                    data-toggle="dropdown"
+                  <div
+                    className="nav-dropdown dropup dropdown"
+                    onKeyDown={[Function]}
                   >
-                    <Button
-                      aria-expanded={false}
-                      aria-haspopup="true"
-                      className=""
-                      color="secondary"
-                      data-toggle="dropdown"
-                      onClick={[Function]}
-                      tag="button"
+                    <DropdownToggle
+                      aria-haspopup={true}
+                      color="transparent"
+                      style={
+                        Object {
+                          "overflow": "hidden",
+                        }
+                      }
                     >
-                      <button
+                      <Target
                         aria-expanded={false}
-                        aria-haspopup="true"
-                        className="btn btn-secondary"
-                        data-toggle="dropdown"
+                        aria-haspopup={true}
+                        className=""
+                        color="transparent"
+                        component={[Function]}
                         onClick={[Function]}
-                        type="button"
+                        style={
+                          Object {
+                            "overflow": "hidden",
+                          }
+                        }
                       >
-                        <div>
-                          <span>
-                            <i
-                              className="fa fa-circle mr-2"
-                              style={
-                                Object {
-                                  "color": "#2DCF57",
-                                }
-                              }
-                            />
-                          </span>
-                          <i
-                            className="fa fa-ellipsis-h"
-                          />
-                        </div>
-                      </button>
-                    </Button>
-                  </DropdownToggle>
-                  <DropdownMenu
-                    tag="div"
-                  >
-                    <div
-                      aria-hidden={true}
-                      className="dropdown-menu"
-                      role="menu"
-                      tabIndex="-1"
-                    >
-                      <DropdownItem
-                        className="mt-2"
-                        tag="a"
-                        toggle={false}
-                      >
-                        <a
-                          className="mt-2 dropdown-item"
+                        <Button
+                          aria-expanded={false}
+                          aria-haspopup={true}
+                          className=""
+                          color="transparent"
+                          innerRef={[Function]}
                           onClick={[Function]}
-                          tabIndex="0"
+                          style={
+                            Object {
+                              "overflow": "hidden",
+                            }
+                          }
+                          tag="button"
                         >
-                          <div
-                            className="d-flex justify-content-between align-items-center"
+                          <button
+                            aria-expanded={false}
+                            aria-haspopup={true}
+                            className="btn btn-transparent"
+                            onClick={[Function]}
+                            style={
+                              Object {
+                                "overflow": "hidden",
+                              }
+                            }
+                            type="button"
                           >
                             <div>
-                              Available for chat
-                            </div>
-                            <div>
-                              <ToggleButton
-                                onChange={[Function]}
-                                value={true}
-                              >
-                                <label
-                                  onClick={[Function]}
+                              <span>
+                                <Avatar
+                                  badgeColor="#24d69d"
+                                  email=""
+                                  google={false}
+                                  name=""
+                                  size={36}
+                                  style={
+                                    Object {
+                                      "bottom": "12px",
+                                      "position": "absolute",
+                                      "right": "18px",
+                                    }
+                                  }
+                                  url=""
                                 >
-                                  <input
-                                    checked={true}
-                                    readOnly={true}
-                                    type="checkbox"
-                                  />
-                                  <div />
-                                </label>
-                              </ToggleButton>
+                                  <div
+                                    className="component"
+                                    style={
+                                      Object {
+                                        "bottom": "12px",
+                                        "height": "36px",
+                                        "position": "absolute",
+                                        "right": "18px",
+                                        "width": "36px",
+                                      }
+                                    }
+                                  >
+                                    <div
+                                      className="initials"
+                                      style={
+                                        Object {
+                                          "fontSize": "15px",
+                                        }
+                                      }
+                                    >
+                                      <span />
+                                    </div>
+                                    <div
+                                      className="badge"
+                                      style={
+                                        Object {
+                                          "backgroundColor": "#24d69d",
+                                        }
+                                      }
+                                    />
+                                  </div>
+                                </Avatar>
+                              </span>
                             </div>
-                          </div>
-                        </a>
-                      </DropdownItem>
-                      <DropdownItem
-                        divider={true}
-                        tag="button"
-                        toggle={true}
+                          </button>
+                        </Button>
+                      </Target>
+                    </DropdownToggle>
+                    <DropdownMenu
+                      flip={true}
+                      tag="div"
+                    >
+                      <div
+                        aria-hidden={true}
+                        className="dropdown-menu"
+                        role="menu"
+                        tabIndex="-1"
                       >
-                        <div
-                          className="dropdown-divider"
-                          onClick={[Function]}
-                          tabIndex="-1"
-                        />
-                      </DropdownItem>
-                      <DropdownItem
-                        onClick={[Function]}
-                        tag={[Function]}
-                        to="/app/settings/profile"
-                        toggle={true}
-                      >
-                        <NavLink
-                          className="dropdown-item"
-                          onClick={[Function]}
-                          tabIndex="0"
-                          to="/app/settings/profile"
+                        <DropdownItem
+                          className="mt-2"
+                          tag="a"
+                          toggle={false}
                         >
-                          <Link
-                            className="dropdown-item dropdown-item"
+                          <a
+                            className="mt-2 dropdown-item"
                             onClick={[Function]}
-                            onlyActiveOnIndex={false}
-                            style={Object {}}
+                            tabIndex="0"
+                          >
+                            <div
+                              className="d-flex justify-content-between align-items-center"
+                            >
+                              <div>
+                                Available for chat
+                              </div>
+                              <div>
+                                <ToggleButton
+                                  onChange={[Function]}
+                                  value={true}
+                                >
+                                  <label
+                                    className="switch"
+                                    onClick={[Function]}
+                                  >
+                                    <input
+                                      checked={true}
+                                      readOnly={true}
+                                      type="checkbox"
+                                    />
+                                    <div
+                                      className="slider"
+                                    />
+                                  </label>
+                                </ToggleButton>
+                              </div>
+                            </div>
+                          </a>
+                        </DropdownItem>
+                        <DropdownItem
+                          divider={true}
+                          tag="button"
+                          toggle={true}
+                        >
+                          <div
+                            className="dropdown-divider"
+                            onClick={[Function]}
+                            tabIndex="-1"
+                          />
+                        </DropdownItem>
+                        <DropdownItem
+                          onClick={[Function]}
+                          tag={[Function]}
+                          to="/app/settings/profile"
+                          toggle={true}
+                        >
+                          <NavLink
+                            className="dropdown-item"
+                            onClick={[Function]}
                             tabIndex="0"
                             to="/app/settings/profile"
                           >
-                            <a
+                            <Link
                               className="dropdown-item dropdown-item"
                               onClick={[Function]}
+                              onlyActiveOnIndex={false}
                               style={Object {}}
                               tabIndex="0"
+                              to="/app/settings/profile"
                             >
-                              <i
-                                className="fa fa-fw fa-user mr-2"
-                              />
-                              Your profile
-                            </a>
-                          </Link>
-                        </NavLink>
-                      </DropdownItem>
-                      <DropdownItem
-                        href="http://docs.gorgias.io/"
-                        tag="a"
-                        target="_blank"
-                        toggle={true}
-                      >
-                        <a
-                          className="dropdown-item"
+                              <a
+                                className="dropdown-item dropdown-item"
+                                onClick={[Function]}
+                                style={Object {}}
+                                tabIndex="0"
+                              >
+                                <i
+                                  className="material-icons mr-2"
+                                >
+                                  person
+                                </i>
+                                Your profile
+                              </a>
+                            </Link>
+                          </NavLink>
+                        </DropdownItem>
+                        <DropdownItem
                           href="http://docs.gorgias.io/"
-                          onClick={[Function]}
-                          tabIndex="0"
+                          tag="a"
                           target="_blank"
+                          toggle={true}
                         >
-                          <i
-                            className="fa fa-fw fa-book mr-2"
-                          />
-                          Documentation
-                        </a>
-                      </DropdownItem>
-                      <DropdownItem
-                        onClick={[Function]}
-                        tag="a"
-                        toggle={true}
-                      >
-                        <a
-                          className="dropdown-item"
+                          <a
+                            className="dropdown-item"
+                            href="http://docs.gorgias.io/"
+                            onClick={[Function]}
+                            tabIndex="0"
+                            target="_blank"
+                          >
+                            <i
+                              className="material-icons mr-2"
+                            >
+                              help
+                            </i>
+                            Documentation
+                          </a>
+                        </DropdownItem>
+                        <DropdownItem
                           onClick={[Function]}
-                          tabIndex="0"
+                          tag="a"
+                          toggle={true}
                         >
-                          <i
-                            className="fa fa-fw fa-keyboard-o mr-2"
-                          />
-                          Keyboard shortcuts
-                        </a>
-                      </DropdownItem>
-                      <DropdownItem
-                        href="/logout"
-                        tag="a"
-                        toggle={true}
-                      >
-                        <a
-                          className="dropdown-item"
+                          <a
+                            className="dropdown-item"
+                            onClick={[Function]}
+                            tabIndex="0"
+                          >
+                            <i
+                              className="material-icons mr-2"
+                            >
+                              keyboard
+                            </i>
+                            Keyboard shortcuts
+                          </a>
+                        </DropdownItem>
+                        <DropdownItem
                           href="/logout"
-                          onClick={[Function]}
-                          tabIndex="0"
+                          tag="a"
+                          toggle={true}
                         >
-                          <i
-                            className="fa fa-fw fa-sign-out mr-2"
-                          />
-                          Log out
-                        </a>
-                      </DropdownItem>
-                    </div>
-                  </DropdownMenu>
-                </div>
+                          <a
+                            className="dropdown-item"
+                            href="/logout"
+                            onClick={[Function]}
+                            tabIndex="0"
+                          >
+                            <i
+                              className="material-icons mr-2"
+                            >
+                              exit_to_app
+                            </i>
+                            Log out
+                          </a>
+                        </DropdownItem>
+                      </div>
+                    </DropdownMenu>
+                  </div>
+                </Manager>
               </Dropdown>
             </UncontrolledDropdown>
           </div>

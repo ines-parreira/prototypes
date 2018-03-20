@@ -20,6 +20,7 @@ const chatIntegration = {
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
 
 describe('CampaignDetail component', () => {
+    let container
     let store
 
     beforeEach(() => {
@@ -40,6 +41,11 @@ describe('CampaignDetail component', () => {
                 }]
             })
         })
+
+        // reactstrap popover needs to be in the dom
+        // https://github.com/reactstrap/reactstrap/issues/818
+        container = document.createElement('div')
+        document.body.appendChild(container)
     })
 
     it('should display default value when it\'s a new campaign', () => {
@@ -83,7 +89,8 @@ describe('CampaignDetail component', () => {
                 })}
                 integration={fromJS(chatIntegration)}
                 id='my-litte-campaign-789das-ds54f6s-asd64'
-            />
+            />,
+            {attachTo: container}
         )
 
         expect(component).toMatchSnapshot()

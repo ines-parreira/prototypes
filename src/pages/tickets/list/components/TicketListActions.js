@@ -13,8 +13,8 @@ import {
     Button,
     Input,
     Popover,
-    PopoverTitle,
-    PopoverContent,
+    PopoverHeader,
+    PopoverBody,
 } from 'reactstrap'
 import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
@@ -138,23 +138,23 @@ class TicketListActions extends React.Component<Props, State> {
         return this.setState({popoverOpen})
     }
 
-    _toggleAgentsDropdown = (visible) => {
-        const opens = !_isUndefined(visible) ? visible : !this._isPopoverOpen('agents')
+    _toggleAgentsDropdown = () => {
+        const opens = !this._isPopoverOpen('agents')
         this._togglePopover(opens ? 'agents' : '')
 
         if (opens) {
-            return this.setState({agentsSearch: ''})
+            this.setState({agentsSearch: ''})
         }
     }
 
-    _toggleTagsDropdown = (visible) => {
-        const opens = !_isUndefined(visible) ? visible : !this._isPopoverOpen('tags')
+    _toggleTagsDropdown = () => {
+        const opens = !this._isPopoverOpen('tags')
         this._togglePopover(opens ? 'tags' : '')
 
         if (opens) {
             const search = ''
             this._queryTags(search)
-            return this.setState({tagsSearch: search})
+            this.setState({tagsSearch: search})
         }
     }
 
@@ -312,9 +312,9 @@ class TicketListActions extends React.Component<Props, State> {
                         color="secondary"
                         disabled={!areItemsSelected}
                     />
-                    <DropdownMenu>
+                    <DropdownMenu right>
                         <DropdownItem header>
-                            Set status
+                            SET STATUS
                         </DropdownItem>
                         <DropdownItem
                             key="open"
@@ -327,9 +327,9 @@ class TicketListActions extends React.Component<Props, State> {
                 </UncontrolledButtonDropdown>
                 <ButtonDropdown
                     className="mr-2"
+                    size="sm"
                     isOpen={this._isPopoverOpen('agents')}
                     toggle={this._toggleAgentsDropdown}
-                    size="sm"
                 >
                     <Button
                         type="button"
@@ -354,9 +354,11 @@ class TicketListActions extends React.Component<Props, State> {
                     >
                         <DropdownItem
                             header
-                            className="dropdown-item-input"
+                            className="mb-2"
                         >
-                            <div className="mb-2">Assign to:</div>
+                            ASSIGN TO:
+                        </DropdownItem>
+                        <DropdownItem className="dropdown-item-input">
                             {
                                 this._isPopoverOpen('agents') && ( // rebuild input on each opening so "autoFocus" works
                                     <Input
@@ -430,9 +432,11 @@ class TicketListActions extends React.Component<Props, State> {
                     >
                         <DropdownItem
                             header
-                            className="dropdown-item-input"
+                            className="mb-2"
                         >
-                            <div className="mb-2">Add tag:</div>
+                            ADD TAG:
+                        </DropdownItem>
+                        <DropdownItem className="dropdown-item-input">
                             {
                                 this._isPopoverOpen('tags') && ( // rebuild input on each opening so "autoFocus" works
                                     <Input
@@ -503,8 +507,8 @@ class TicketListActions extends React.Component<Props, State> {
                     target="bulk-more-button"
                     toggle={this._toggleTrashConfirmation}
                 >
-                    <PopoverTitle>Are you sure?</PopoverTitle>
-                    <PopoverContent>
+                    <PopoverHeader>Are you sure?</PopoverHeader>
+                    <PopoverBody>
                         <p>
                             Are you sure you want to delete {selectedItemsIds.size}{' '}
                             ticket{selectedItemsIds.size > 1 && 's'}?
@@ -517,7 +521,7 @@ class TicketListActions extends React.Component<Props, State> {
                         >
                             Confirm
                         </Button>
-                    </PopoverContent>
+                    </PopoverBody>
                 </Popover>
                 <Popover
                     placement="bottom"
@@ -525,8 +529,8 @@ class TicketListActions extends React.Component<Props, State> {
                     target="bulk-more-button"
                     toggle={this._toggleDeleteConfirmation}
                 >
-                    <PopoverTitle>Are you sure?</PopoverTitle>
-                    <PopoverContent>
+                    <PopoverHeader>Are you sure?</PopoverHeader>
+                    <PopoverBody>
                         <p>
                             Are you sure you want to delete {selectedItemsIds.size}{' '}
                             ticket{selectedItemsIds.size > 1 && 's'} forever?
@@ -538,7 +542,7 @@ class TicketListActions extends React.Component<Props, State> {
                         >
                             Confirm
                         </Button>
-                    </PopoverContent>
+                    </PopoverBody>
                 </Popover>
             </div>
         )
@@ -546,7 +550,7 @@ class TicketListActions extends React.Component<Props, State> {
 
     render() {
         return (
-            <div className="d-inline-flex align-items-center hidden-sm-down">
+            <div className="d-none d-md-inline-flex align-items-center">
                 {this._renderBulkActions()}
             </div>
         )

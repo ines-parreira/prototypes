@@ -5,7 +5,7 @@ import _get from 'lodash/get'
 import {
     Card,
     CardImg,
-    CardBlock,
+    CardBody,
     CardTitle,
     CardSubtitle,
     Button,
@@ -89,10 +89,10 @@ export default class FacebookCarousel extends React.Component<Props> {
                                                         src={element.image_url}
                                                         className={css.carouselImage}
                                                     />
-                                                    <CardBlock>
+                                                    <CardBody>
                                                         <CardTitle>{element.title}</CardTitle>
                                                         <CardSubtitle>{element.subtitle}</CardSubtitle>
-                                                    </CardBlock>
+                                                    </CardBody>
                                                     <ButtonGroup
                                                         vertical
                                                         className={css.buttons}

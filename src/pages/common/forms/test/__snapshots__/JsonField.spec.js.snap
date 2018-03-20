@@ -21,7 +21,6 @@ exports[`JsonField display invalid message 1`] = `
           id="id-input-2"
           onChange={[Function]}
           rows="6"
-          tag="p"
           type="textarea"
           value="{}"
         />
@@ -49,6 +48,7 @@ exports[`JsonField should render input 1`] = `
   >
     <div
       className="form-group"
+      color=""
     >
       <div
         className=""
@@ -59,6 +59,7 @@ exports[`JsonField should render input 1`] = `
         >
           <div
             className="form-group"
+            color=""
           >
             <div
               className="controls"
@@ -68,7 +69,6 @@ exports[`JsonField should render input 1`] = `
                 id="id-input-1"
                 onChange={[Function]}
                 rows="6"
-                tag="p"
                 type="textarea"
                 value="\\"value\\""
               >
@@ -77,6 +77,7 @@ exports[`JsonField should render input 1`] = `
                   id="id-input-1"
                   onChange={[Function]}
                   rows="6"
+                  type="textarea"
                   value="\\"value\\""
                 />
               </Input>

@@ -66,7 +66,7 @@ class Toolbar extends React.Component {
         return (
             <div
                 key={action.key}
-                className={classnames(css.button, {
+                className={classnames(css.button, 'btn btn-secondary btn-transparent', {
                     [css.active]: action.isActive(getEditorState),
                     [css.disabled]: isDisabled,
                 })}
@@ -78,11 +78,11 @@ class Toolbar extends React.Component {
                     }
                 }}
                 onMouseDown={this._preventDefault}
+                title={action.name}
             >
-                <i
-                    className={classnames('fa fa-fw', action.icon)}
-                    title={action.name}
-                />
+                <i className="material-icons">
+                    {action.icon}
+                </i>
             </div>
         )
     }
@@ -91,7 +91,7 @@ class Toolbar extends React.Component {
         return (
             <div
                 key={index}
-                className={css.button}
+                className={classnames(css.button, 'btn btn-secondary btn-transparent')}
             >
                 {button}
             </div>

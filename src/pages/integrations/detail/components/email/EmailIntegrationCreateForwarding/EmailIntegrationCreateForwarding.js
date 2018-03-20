@@ -6,8 +6,9 @@ import {
     Button,
     Breadcrumb,
     BreadcrumbItem,
+    Container,
     InputGroup,
-    InputGroupButton,
+    InputGroupAddon,
     Input,
 } from 'reactstrap'
 
@@ -21,6 +22,7 @@ import groups from './../../../../../../../img/integrations/google-groups.svg'
 
 import * as notificationActions from '../../../../../../state/notifications/actions'
 import * as integrationActions from '../../../../../../state/integrations/actions'
+import PageHeader from '../../../../../common/components/PageHeader'
 
 const servicesWithTutorials = [
     {
@@ -86,16 +88,16 @@ class EmailIntegrationCreateForwarding extends React.Component {
                             value={`${address.split('@')[0]}@${domain}.gorgias.io`}
                             readOnly
                         />
-                        <InputGroupButton>
+                        <InputGroupAddon addonType="append">
                             <Button
                                 id="copy-forwarding-email"
-                                color="info"
+                                color="primary"
                                 data-clipboard-target="#forwarding-email"
                             >
                                 <i className="fa fa-fw fa-files-o mr-2" />
                                 {this.state.isCopied ? 'Copied!' : 'Copy'}
                             </Button>
-                        </InputGroupButton>
+                        </InputGroupAddon>
                     </InputGroup>
                 </div>
 
@@ -123,14 +125,14 @@ class EmailIntegrationCreateForwarding extends React.Component {
 
                     <p>
                         Using GMail or G Suite?{' '}
-                        <Link to="/app/integrations/email/new">Connect your account in one click.</Link>
+                        <Link to="/app/settings/integrations/email/new">Connect your account in one click.</Link>
                     </p>
                 </div>
 
                 <Button
-                    color="primary"
+                    color="success"
                     tag={Link}
-                    to={`/app/integrations/email/${integration.get('id')}`}
+                    to={`/app/settings/integrations/email/${integration.get('id')}`}
                 >
                     I added email forwarding
                 </Button>
@@ -140,24 +142,28 @@ class EmailIntegrationCreateForwarding extends React.Component {
 
     render() {
         return (
-            <div>
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link to="/app/integrations">Integrations</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        <Link to="/app/integrations/email">Email</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>
-                        Add
-                    </BreadcrumbItem>
-                </Breadcrumb>
+            <div className="full-width">
+                <PageHeader title={(
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations">Integrations</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations/email">Email</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>
+                            Add an email address
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                )}/>
 
-                <h1>
-                    Let's setup email forwarding
-                </h1>
+                <Container fluid className="page-container">
+                    <h1>
+                        Let's setup email forwarding
+                    </h1>
 
-                {this._renderInstructions()}
+                    {this._renderInstructions()}
+                </Container>
             </div>
         )
     }

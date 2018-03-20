@@ -25,16 +25,18 @@ import * as integrationSelectors from './../../../../state/integrations/selector
 import * as integrationHelpers from './../../../../state/integrations/helpers'
 
 import {renderChatCodeSnippet, renderFacebookCodeSnippet} from './utils'
+import PageHeader from '../../../common/components/PageHeader'
+import RealtimeMessagingIntegrationNavigation from '../RealtimeMessagingIntegrationNavigation'
 
 
 type Props = {
     domain: string,
     actions: any,
     notify: ({}) => void,
-    shopifyIntegrations: List<Map<*,*>>,
-    shopifyIntegrationsWithoutChat: List<Map<*,*>>,
-    shopifyIntegrationsWithoutFacebook: List<Map<*,*>>,
-    integration: Map<*,*>,
+    shopifyIntegrations: List<Map<*, *>>,
+    shopifyIntegrationsWithoutChat: List<Map<*, *>>,
+    shopifyIntegrationsWithoutFacebook: List<Map<*, *>>,
+    integration: Map<*, *>,
 }
 
 type State = {
@@ -45,7 +47,7 @@ type State = {
 }
 
 
-class RealtimeMessagingIntegrationInstall extends React.Component<Props,State> {
+class RealtimeMessagingIntegrationInstall extends React.Component<Props, State> {
     state = {
         name: '',
         email: '',
@@ -68,7 +70,7 @@ class RealtimeMessagingIntegrationInstall extends React.Component<Props,State> {
 
         if (shopifyIntegration.getIn(['meta', 'need_scope_update'])) {
             return browserHistory.push(
-                `/app/integrations/shopify/${shopifyIntegration.get('id')}/?error=need_scope_update`
+                `/app/settings/integrations/shopify/${shopifyIntegration.get('id')}/?error=need_scope_update`
             )
         }
 
@@ -109,10 +111,12 @@ class RealtimeMessagingIntegrationInstall extends React.Component<Props,State> {
 
     _getDisplayableType = (integrationType) => {
         if (integrationType === 'smooch_inside') {
-            return 'chat'
+            return 'Chat'
+        } else if (integrationType === 'facebook') {
+            return 'Facebook, Messenger & Instagram'
         }
 
-        return integrationType
+        return capitalize(integrationType)
     }
 
     render() {
@@ -155,31 +159,30 @@ class RealtimeMessagingIntegrationInstall extends React.Component<Props,State> {
 
         return (
             <div>
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link to="/app/integrations">Integrations</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        <Link to={`/app/integrations/${integration.get('type')}`}>
-                            {capitalize(this._getDisplayableType(integration.get('type')))}
-                        </Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        {integrationName}
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>
-                        {pageTitle}
-                    </BreadcrumbItem>
-                </Breadcrumb>
+                <PageHeader title={(
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations">Integrations</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            <Link to={`/app/settings/integrations/${integration.get('type')}`}>
+                                {this._getDisplayableType(integration.get('type'))}
+                            </Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            {integrationName}
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>
+                            {pageTitle}
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                )}/>
 
-                <h1>{pageTitle}</h1>
+                <RealtimeMessagingIntegrationNavigation integration={integration}/>
 
-                <Container fluid>
+                <Container fluid className="page-container">
                     <Row>
-                        <Col
-                            md="8"
-                            style={{paddingLeft: 0}}
-                        >
+                        <Col md={isChat ? '8' : '6'}>
                             <p>{pageDescription}</p>
                             <div>
                                 {
@@ -219,7 +222,9 @@ class RealtimeMessagingIntegrationInstall extends React.Component<Props,State> {
                                             <Button
                                                 key={idx}
                                                 block
-                                                onClick={() => {this._installOnShopifyStore(integration)}}
+                                                onClick={() => {
+                                                    this._installOnShopifyStore(integration)
+                                                }}
                                                 className={classnames('mb-2', {
                                                     'btn-loading': this.state.integrationLoading === integration.get('id')
                                                 })}
@@ -237,14 +242,16 @@ class RealtimeMessagingIntegrationInstall extends React.Component<Props,State> {
                                 {
                                     !shopifyIntegrationsWithoutWidget.isEmpty()
                                         ? (
-                                            <p className="text-muted text-center">
+                                            <p>
                                                 Can't see your store here?{' '}
-                                                <Link to="/app/integrations/shopify/new/">Connect it to Gorgias</Link>
+                                                <Link to="/app/settings/integrations/shopify/new/">Connect it to
+                                                    Gorgias</Link>
                                             </p>
                                         ) : (
-                                            <p className="text-muted text-center">
+                                            <p>
                                                 You're using Shopify?{' '}
-                                                <Link to="/app/integrations/shopify/new/">Connect your store to Gorgias</Link>
+                                                <Link to="/app/settings/integrations/shopify/new/">Connect your store to
+                                                    Gorgias</Link>
                                                 {' '}and add your {integrationAlias} in one click.
                                             </p>
                                         )
@@ -253,7 +260,8 @@ class RealtimeMessagingIntegrationInstall extends React.Component<Props,State> {
 
                                 <div className="divider">OR</div>
 
-                                <Form onSubmit={() => browserHistory.push(`/app/integrations/${integration.get('type')}/${integration.get('id')}/`)}>
+                                <Form
+                                    onSubmit={() => browserHistory.push(`/app/settings/integrations/${integration.get('type')}/${integration.get('id')}/`)}>
 
                                     {
                                         !isChat ? (
@@ -282,8 +290,8 @@ class RealtimeMessagingIntegrationInstall extends React.Component<Props,State> {
                                     }
 
                                     <div className={css.snippet}>
-                                    <Card className="p-0 mb-2">
-                                        <Alert color="info" className="m-0">
+                                        <Card className="p-0 mb-2">
+                                            <Alert color="info" className="m-0">
                                             <pre
                                                 style={{
                                                     display: 'flex',
@@ -298,26 +306,26 @@ class RealtimeMessagingIntegrationInstall extends React.Component<Props,State> {
                                                         : renderFacebookCodeSnippet(integration)
                                                 }
                                             </pre>
-                                        </Alert>
-                                    </Card>
+                                            </Alert>
+                                        </Card>
 
-                                    <Button
-                                        id="copy-code-snippet"
-                                        type="button"
-                                        color="info"
-                                        className={css.copy}
-                                        data-clipboard-target="#code-snippet"
-                                    >
-                                        <i className="fa fa-fw fa-files-o mr-2" />
-                                        {this.state.isCopied ? 'Copied!' : 'Copy'}
-                                    </Button>
+                                        <Button
+                                            id="copy-code-snippet"
+                                            type="button"
+                                            color="info"
+                                            className={css.copy}
+                                            data-clipboard-target="#code-snippet"
+                                        >
+                                            <i className="fa fa-fw fa-files-o mr-2"/>
+                                            {this.state.isCopied ? 'Copied!' : 'Copy'}
+                                        </Button>
                                     </div>
                                 </Form>
                             </div>
                         </Col>
                         {
                             !isChat ? (
-                                <Col md="4">
+                                <Col md="6">
                                     <div className={css.preview}>
                                         <div className={css.titlebar}/>
                                         <img

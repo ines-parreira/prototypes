@@ -8,8 +8,8 @@ import {
     DropdownItem,
     Button,
     Popover,
-    PopoverTitle,
-    PopoverContent,
+    PopoverHeader,
+    PopoverBody,
 } from 'reactstrap'
 import _isUndefined from 'lodash/isUndefined'
 
@@ -106,8 +106,8 @@ class UserListActions extends React.Component {
                     target="bulk-more-button"
                     toggle={this._toggleDeleteConfirmation}
                 >
-                    <PopoverTitle>Are you sure?</PopoverTitle>
-                    <PopoverContent>
+                    <PopoverHeader>Are you sure?</PopoverHeader>
+                    <PopoverBody>
                         <p>
                             Are you sure you want to delete {this.props.selectedItemsIds.size}{' '}
                             user{this.props.selectedItemsIds.size > 1 && 's'}?
@@ -120,7 +120,7 @@ class UserListActions extends React.Component {
                         >
                             Confirm
                         </Button>
-                    </PopoverContent>
+                    </PopoverBody>
                 </Popover>
             </div>
         )
@@ -128,7 +128,7 @@ class UserListActions extends React.Component {
 
     render() {
         return (
-            <div className="d-inline-flex align-items-center hidden-sm-down">
+            <div className="d-none d-md-inline-flex align-items-center">
                 {this._renderBulkActions()}
             </div>
         )

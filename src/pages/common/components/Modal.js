@@ -8,12 +8,15 @@ import {
 
 export default class Modal extends React.Component {
     static propTypes = {
+        children: PropTypes.node.isRequired,
+        dismissible: PropTypes.bool.isRequired,
         isOpen: PropTypes.bool,
         onClose: PropTypes.func,
-        children: PropTypes.node.isRequired,
         header: PropTypes.node,
         footer: PropTypes.node,
-        dismissible: PropTypes.bool.isRequired,
+        headerClassName: PropTypes.string,
+        footerClassName: PropTypes.string,
+        bodyClassName: PropTypes.string,
     }
 
     static defaultProps = {
@@ -36,6 +39,9 @@ export default class Modal extends React.Component {
             header,
             footer,
             dismissible,
+            headerClassName,
+            bodyClassName,
+            footerClassName,
             ...rest,
         } = this.props
 
@@ -48,6 +54,7 @@ export default class Modal extends React.Component {
         return (
             <BootstrapModal
                 isOpen={isOpen}
+                fade={false}
                 {...toggleProps}
                 {...rest}
             >
@@ -55,17 +62,18 @@ export default class Modal extends React.Component {
                     header && (
                         <ModalHeader
                             {...toggleProps}
+                            className={headerClassName}
                         >
                             {header}
                         </ModalHeader>
                     )
                 }
-                <ModalBody>
+                <ModalBody className={bodyClassName}>
                     {children}
                 </ModalBody>
                 {
                     footer && (
-                        <ModalFooter>
+                        <ModalFooter className={footerClassName}>
                             {footer}
                         </ModalFooter>
                     )

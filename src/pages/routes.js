@@ -4,7 +4,6 @@ import App from './App'
 import IntegrationDetailContainer from './integrations/detail/IntegrationDetailContainer'
 import IntegrationListContainer from './integrations/list/IntegrationListContainer'
 import TicketDetailContainer from './tickets/detail/TicketDetailContainer'
-import IntegrationNavbarContainer from './integrations/common/IntegrationNavbarContainer'
 import TicketInfobarContainer from './tickets/detail/TicketInfobarContainer'
 import TicketSourceContainer from './tickets/detail/TicketSourceContainer'
 import TicketNavbarContainer from './tickets/common/TicketNavbarContainer'
@@ -28,6 +27,7 @@ import TicketListInfobarContainer from './tickets/list/TicketListInfobarContaine
 import UserRoleRequired from './common/components/UserRoleRequired'
 import BillingContainer from './settings/billing/BillingContainer'
 import CreditCardContainer from './settings/billing/credit-cards/CreditCard'
+import BillingPlansContainer from './settings/billing/plans/BillingPlans'
 import ManageTagsContainer from './settings/tags/ManageTags'
 import ManageRequestsContainer from './settings/requests/ManageRequests'
 import ManageRequestItemContainer from './settings/requests/ManageRequestItem'
@@ -47,7 +47,6 @@ export default (
                 navbar: TicketNavbarContainer,
                 infobar: TicketListInfobarContainer,
             }}
-            noContainerPadding // no padding in App wrapper
         />
         <Route
             path="users"
@@ -55,7 +54,6 @@ export default (
                 content: UserListContainer,
                 navbar: UserNavbarContainer
             }}
-            noContainerPadding // no padding in App wrapper
         />
         <Route
             path="users/new"
@@ -63,7 +61,6 @@ export default (
                 content: UserListContainer,
                 navbar: UserNavbarContainer
             }}
-            noContainerPadding // no padding in App wrapper
         />
         <Route
             path="users/search"
@@ -71,7 +68,6 @@ export default (
                 content: UserListContainer,
                 navbar: UserNavbarContainer
             }}
-            noContainerPadding // no padding in App wrapper
         />
         <Route
             path="users/:viewId(/:viewSlug)"
@@ -79,7 +75,6 @@ export default (
                 content: UserListContainer,
                 navbar: UserNavbarContainer
             }}
-            noContainerPadding // no padding in App wrapper
         />
         <Route
             path="user/:userId"
@@ -90,6 +85,7 @@ export default (
             }}
             noContainerWidthLimit // no width limit in App wrapper
             infobarOnMobile // show Infobar component on mobile
+            containerPadding
         />
         <Route
             path="user/:userId/edit-widgets"
@@ -100,6 +96,7 @@ export default (
             }}
             isEditingWidgets // is an edition mode route for widgets
             noContainerWidthLimit // no width limit in App wrapper
+            containerPadding
         />
         <Route
             path="ticket/:ticketId"
@@ -108,7 +105,6 @@ export default (
                 navbar: TicketNavbarContainer,
                 infobar: TicketInfobarContainer
             }}
-            noContainerPadding // no padding in App wrapper
             infobarOnMobile // show Infobar component on mobile
         />
         <Route
@@ -120,6 +116,7 @@ export default (
             }}
             noContainerWidthLimit // no width limit in App wrapper
             isEditingWidgets // is an edition mode route for widgets
+            containerPadding
         />
         <Route
             path="tickets"
@@ -128,7 +125,6 @@ export default (
                 navbar: TicketNavbarContainer,
                 infobar: TicketListInfobarContainer,
             }}
-            noContainerPadding // no padding in App wrapper
         />
         <Route
             path="tickets/new"
@@ -137,7 +133,6 @@ export default (
                 navbar: TicketNavbarContainer,
                 infobar: TicketListInfobarContainer,
             }}
-            noContainerPadding // no padding in App wrapper
         />
         <Route
             path="tickets/search"
@@ -146,7 +141,6 @@ export default (
                 navbar: TicketNavbarContainer,
                 infobar: TicketListInfobarContainer,
             }}
-            noContainerPadding // no padding in App wrapper
         />
         <Route
             path="tickets/:viewId(/:viewSlug)"
@@ -155,32 +149,14 @@ export default (
                 navbar: TicketNavbarContainer,
                 infobar: TicketListInfobarContainer,
             }}
-            noContainerPadding // no padding in App wrapper
         />
-        <Route
-            path="integrations"
-            components={{
-                content: IntegrationListContainer,
-                navbar: IntegrationNavbarContainer
-            }}
-        />
-        <Route
-            path="integrations/:integrationType"
-            components={{
-                content: IntegrationDetailContainer,
-                navbar: IntegrationNavbarContainer
-            }}
-        >
-            <Route path=":integrationId(/:extra)"/>
-            <Route path=":integrationId/:extra/:subId"/>
-        </Route>
+
         <Route
             path="stats(/:view)"
             components={{
                 content: StatsViewContainer,
                 navbar: StatsNavbarContainer
             }}
-            noContainerWidthLimit
         />
         <Route path="settings">
             <IndexRoute
@@ -190,12 +166,28 @@ export default (
                 }}
             />
             <Route
+                path="integrations"
+                components={{
+                    content: IntegrationListContainer,
+                    navbar: SettingsNavbarContainer
+                }}
+            />
+            <Route
+                path="integrations/:integrationType"
+                components={{
+                    content: IntegrationDetailContainer,
+                    navbar: SettingsNavbarContainer
+                }}
+            >
+                <Route path=":integrationId(/:extra)"/>
+                <Route path=":integrationId/:extra/:subId"/>
+            </Route>
+            <Route
                 path="rules"
                 components={{
                     content: RuleContainer,
                     navbar: SettingsNavbarContainer
                 }}
-                noContainerWidthLimit // no width limit in App wrapper
             />
             <Route
                 path="profile"
@@ -261,6 +253,13 @@ export default (
                         navbar: SettingsNavbarContainer
                     }}
                 />
+                <Route
+                    path="plans"
+                    components={{
+                        content: UserRoleRequired(BillingPlansContainer, 'admin'),
+                        navbar: SettingsNavbarContainer
+                    }}
+                />
             </Route>
             <Route
                 path="manage-tags"
@@ -307,6 +306,6 @@ export default (
                 />
             </Route>
         </Route>
-        <Route path="*" component={NoMatch}/>
+        <Route path="*" component={NoMatch} containerPadding/>
     </Route>
 )

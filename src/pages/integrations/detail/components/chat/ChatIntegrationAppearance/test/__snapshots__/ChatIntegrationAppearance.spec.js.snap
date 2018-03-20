@@ -1,42 +1,46 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ChatIntegrationAppearance component should display correctly when creating a new chat integration 1`] = `
-<div>
-  <Breadcrumb
-    tag="ol"
-  >
-    <BreadcrumbItem
-      tag="li"
-    >
-      <Link
-        onlyActiveOnIndex={false}
-        style={Object {}}
-        to="/app/integrations"
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
       >
-        Integrations
-      </Link>
-    </BreadcrumbItem>
-    <BreadcrumbItem
-      tag="li"
-    >
-      <Link
-        onlyActiveOnIndex={false}
-        style={Object {}}
-        to="/app/integrations/smooch_inside"
-      >
-        Chat
-      </Link>
-    </BreadcrumbItem>
-    <BreadcrumbItem
-      tag="li"
-    >
-      New chat integration
-    </BreadcrumbItem>
-  </Breadcrumb>
-  <h1>
-    New chat integration
-  </h1>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/smooch_inside"
+          >
+            Chat
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          New chat integration
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
   <Container
+    className="page-container"
     fluid={true}
     tag="div"
   >
@@ -44,11 +48,6 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
       tag="div"
     >
       <Col
-        style={
-          Object {
-            "paddingLeft": 0,
-          }
-        }
         tag="div"
         widths={
           Array [
@@ -61,12 +60,15 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
         }
       >
         <Form
-          className="ui form"
           onSubmit={[Function]}
           tag="form"
         >
-          <div>
-            <div>
+          <div
+            className="form"
+          >
+            <div
+              className="fieldset"
+            >
               <InputField
                 label="Chat title"
                 onChange={[Function]}
@@ -111,7 +113,7 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
           </div>
           <Button
             className=""
-            color="primary"
+            color="success"
             disabled={false}
             tag="button"
             type="submit"
@@ -153,48 +155,61 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
 `;
 
 exports[`ChatIntegrationAppearance component should display correctly when integration is loading 1`] = `
-<div>
-  <Breadcrumb
-    tag="ol"
-  >
-    <BreadcrumbItem
-      tag="li"
-    >
-      <Link
-        onlyActiveOnIndex={false}
-        style={Object {}}
-        to="/app/integrations"
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
       >
-        Integrations
-      </Link>
-    </BreadcrumbItem>
-    <BreadcrumbItem
-      tag="li"
-    >
-      <Link
-        onlyActiveOnIndex={false}
-        style={Object {}}
-        to="/app/integrations/smooch_inside"
-      >
-        Chat
-      </Link>
-    </BreadcrumbItem>
-    <BreadcrumbItem
-      tag="li"
-    >
-      hellosmoochintegration
-    </BreadcrumbItem>
-    <BreadcrumbItem
-      active={true}
-      tag="li"
-    >
-      Appearance
-    </BreadcrumbItem>
-  </Breadcrumb>
-  <h1>
-    Appearance
-  </h1>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/smooch_inside"
+          >
+            Chat
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          hellosmoochintegration
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Appearance
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <RealtimeMessagingIntegrationNavigation
+    integration={
+      Immutable.Map {
+        id: 2,
+        name: "hellosmoochintegration",
+        type: "smooch_inside",
+      }
+    }
+  />
   <Container
+    className="page-container"
     fluid={true}
     tag="div"
   >
@@ -202,11 +217,6 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
       tag="div"
     >
       <Col
-        style={
-          Object {
-            "paddingLeft": 0,
-          }
-        }
         tag="div"
         widths={
           Array [
@@ -219,12 +229,15 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
         }
       >
         <Form
-          className="ui form"
           onSubmit={[Function]}
           tag="form"
         >
-          <div>
-            <div>
+          <div
+            className="form"
+          >
+            <div
+              className="fieldset"
+            >
               <InputField
                 label="Chat title"
                 onChange={[Function]}
@@ -269,7 +282,7 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
           </div>
           <Button
             className="btn-loading"
-            color="primary"
+            color="success"
             disabled={true}
             tag="button"
             type="submit"
@@ -277,7 +290,7 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
             Save changes
           </Button>
           <ConfirmButton
-            className="pull-right"
+            className="float-right"
             color="danger"
             confirm={[Function]}
             content="Are you sure you want to delete this integration?"
@@ -327,48 +340,61 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
 `;
 
 exports[`ChatIntegrationAppearance component should display correctly when updating an existing integration 1`] = `
-<div>
-  <Breadcrumb
-    tag="ol"
-  >
-    <BreadcrumbItem
-      tag="li"
-    >
-      <Link
-        onlyActiveOnIndex={false}
-        style={Object {}}
-        to="/app/integrations"
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
       >
-        Integrations
-      </Link>
-    </BreadcrumbItem>
-    <BreadcrumbItem
-      tag="li"
-    >
-      <Link
-        onlyActiveOnIndex={false}
-        style={Object {}}
-        to="/app/integrations/smooch_inside"
-      >
-        Chat
-      </Link>
-    </BreadcrumbItem>
-    <BreadcrumbItem
-      tag="li"
-    >
-      hellosmoochintegration
-    </BreadcrumbItem>
-    <BreadcrumbItem
-      active={true}
-      tag="li"
-    >
-      Appearance
-    </BreadcrumbItem>
-  </Breadcrumb>
-  <h1>
-    Appearance
-  </h1>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/smooch_inside"
+          >
+            Chat
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          hellosmoochintegration
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Appearance
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <RealtimeMessagingIntegrationNavigation
+    integration={
+      Immutable.Map {
+        id: 2,
+        name: "hellosmoochintegration",
+        type: "smooch_inside",
+      }
+    }
+  />
   <Container
+    className="page-container"
     fluid={true}
     tag="div"
   >
@@ -376,11 +402,6 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
       tag="div"
     >
       <Col
-        style={
-          Object {
-            "paddingLeft": 0,
-          }
-        }
         tag="div"
         widths={
           Array [
@@ -393,12 +414,15 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
         }
       >
         <Form
-          className="ui form"
           onSubmit={[Function]}
           tag="form"
         >
-          <div>
-            <div>
+          <div
+            className="form"
+          >
+            <div
+              className="fieldset"
+            >
               <InputField
                 label="Chat title"
                 onChange={[Function]}
@@ -443,7 +467,7 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
           </div>
           <Button
             className=""
-            color="primary"
+            color="success"
             disabled={false}
             tag="button"
             type="submit"
@@ -451,7 +475,7 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
             Save changes
           </Button>
           <ConfirmButton
-            className="pull-right"
+            className="float-right"
             color="danger"
             confirm={[Function]}
             content="Are you sure you want to delete this integration?"

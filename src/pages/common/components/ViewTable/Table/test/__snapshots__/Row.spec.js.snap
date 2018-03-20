@@ -5,7 +5,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
   className=""
 >
   <td
-    className="cell-wrapper cell-short clickable hidden-sm-down"
+    className="cell-wrapper cell-short clickable d-none d-md-table-cell"
     onClick={[Function]}
   >
     <input
@@ -1726,15 +1726,18 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
   className=""
 >
   <td
-    className="cell-wrapper cell-short clickable hidden-sm-down"
+    className="cell-wrapper cell-short clickable d-none d-md-table-cell"
     onClick={[Function]}
   >
     <div
+      className="viewers"
       title="Acme Support, Bob Smith are viewing"
     >
       <i
-        className="fa fa-fw fa-eye"
-      />
+        className="material-icons"
+      >
+        remove_red_eye
+      </i>
     </div>
     <input
       checked={false}

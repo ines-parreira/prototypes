@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ViewTable::Page component default view 1`] = `
-<div>
+<div
+  className="page"
+>
   <div
     className="container-padding"
   >
@@ -11,8 +13,13 @@ exports[`ViewTable::Page component default view 1`] = `
       type="ticket"
     />
   </div>
+  <Connect(FilterTopbar)
+    isSearch={false}
+    isUpdate={true}
+    type="ticket"
+  />
   <div
-    className="container-padding"
+    className="table"
   >
     <Connect(Table)
       fields={

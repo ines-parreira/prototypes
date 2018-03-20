@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import _sample from 'lodash/sample'
+import classnames from 'classnames'
 
 import shortcutManager from '../../../../../services/shortcutManager'
 import keymap from '../../../../../config/shortcuts'
@@ -13,6 +14,8 @@ import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 
 import Tooltip from '../../../../common/components/Tooltip'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
+
+import css from './TicketSubmitButtons.less'
 
 /* eslint-disable react/jsx-key */
 const TIPS = [
@@ -81,13 +84,13 @@ export default class TicketSubmitButtons extends React.Component {
         const titleConfirmation = 'Are you sure you want to create a ticket with no subject?'
 
         return (
-            <div className="TicketSubmitButtons d-flex align-items-center justify-content-between">
+            <div className={classnames(css.component, 'd-flex align-items-center justify-content-between')}>
                 <div>
                     <ConfirmButton
                         id="submit-button"
                         type="submit"
                         className="mr-2"
-                        color="primary"
+                        color="success"
                         disabled={disabled}
                         tabIndex="5"
                         skip={hasTitle || isUpdating}
@@ -107,8 +110,7 @@ export default class TicketSubmitButtons extends React.Component {
                     <ConfirmButton
                         id="submit-and-close-button"
                         type="submit"
-                        color="primary"
-                        outline
+                        color="secondary"
                         disabled={disabled}
                         tabIndex="6"
                         skip={hasTitle || isUpdating}
@@ -128,14 +130,18 @@ export default class TicketSubmitButtons extends React.Component {
 
                 {
                     !isHidingTips && (
-                        <small className="pull-right text-faded hidden-sm-down">
-                            <i className="fa fa-fw fa-info-circle mr-1" />
+                        <small className="text-faded d-none d-md-inline-block">
+                            <i className="material-icons md-1 mr-1">
+                                info
+                            </i>
                             {this.tip}
                             <i
                                 id="hide-helpers-button"
-                                className="fa fa-fw fa-close cursor-pointer ml-1"
+                                className="material-icons md-1 cursor-pointer ml-1"
                                 onClick={this._hideTips}
-                            />
+                            >
+                                close
+                            </i>
                             <Tooltip
                                 placement="top"
                                 target="hide-helpers-button"

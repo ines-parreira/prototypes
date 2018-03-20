@@ -14,6 +14,7 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
     value="HTTP hook"
   />
   <Row
+    className="form-row"
     tag="div"
   >
     <Col
@@ -91,6 +92,15 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
   >
     <Label
       tag="label"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
     >
       URL Parameters
     </Label>
@@ -104,6 +114,15 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
   >
     <Label
       tag="label"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
     >
       Headers
     </Label>
@@ -117,6 +136,15 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
   >
     <Label
       tag="label"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
     >
       Body
     </Label>

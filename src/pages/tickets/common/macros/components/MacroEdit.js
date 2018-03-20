@@ -71,9 +71,12 @@ export class MacroEdit extends React.Component {
         // external actions without externalType, list of names
         const nonIntegrationActions = externalActions.filter(v => !v.integrationType)
 
+        const hasActions = (ticketActions.length  > 0)
+
         return (
-            <DropdownMenu>
-                {ticketActions.length > 0 && <DropdownItem header>Ticket actions</DropdownItem>}
+            <DropdownMenu className={css.dropdown}>
+                {hasActions && <DropdownItem header>TICKET ACTIONS</DropdownItem>}
+                {hasActions && <DropdownItem divider />}
                 {
                     ticketActions.map((action) => {
                         const actionName = action.name
@@ -88,8 +91,8 @@ export class MacroEdit extends React.Component {
                         )
                     })
                 }
-                {ticketActions.length > 0 && <DropdownItem divider />}
-                <DropdownItem header>External actions</DropdownItem>
+                {hasActions && <DropdownItem divider />}
+                <DropdownItem header>EXTERNAL ACTIONS</DropdownItem>
                 {
                     nonIntegrationActions.map((action) => {
                         const actionName = action.name
@@ -252,16 +255,17 @@ export class MacroEdit extends React.Component {
                             const key = `${index}${currentMacro.get('id')}`
 
                             return (
-                                <div key={key}>
-                                    <hr />
+                                <div key={key} className="mt-5">
                                     <div className="d-flex justify-content-between align-items-center mb-2">
                                         <div className={css.title}>
                                             {config.title}
                                         </div>
                                         <i
-                                            className="fa fa-fw fa-close text-danger clickable"
+                                            className="material-icons md-2 clickable"
                                             onClick={() => this._deleteAction(index)}
-                                        />
+                                        >
+                                            close
+                                        </i>
                                     </div>
                                     {config.content}
                                 </div>
@@ -272,7 +276,7 @@ export class MacroEdit extends React.Component {
                     <div className="mt-3">
                         <UncontrolledButtonDropdown className="mr-2">
                             <DropdownToggle
-                                color="info"
+                                color="primary"
                                 caret
                                 type="button"
                             >

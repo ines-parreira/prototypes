@@ -105,7 +105,7 @@ describe('Signature', () => {
             />
         )
 
-        expect(component.dive().find('button').exists()).toBe(true)
+        expect(component.dive().find('Ellipsis').exists()).toBe(true)
     })
 
     it('should render with only html signature', () => {
@@ -120,7 +120,7 @@ describe('Signature', () => {
             />
         )
 
-        expect(component.dive().find('button').exists()).toBe(true)
+        expect(component.dive().find('Ellipsis').exists()).toBe(true)
     })
 
     it('should render with agent\'s signature (fallback)', () => {
@@ -132,6 +132,6 @@ describe('Signature', () => {
                 editorState={editorState}
             />
         )
-        expect(component.dive().find('button').exists()).toBe(true)
+        expect(component.dive().find('Ellipsis').exists()).toBe(true)
     })
 })

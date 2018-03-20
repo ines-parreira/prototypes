@@ -1,6 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`FacebookCarousel component default props 1`] = `<div />`;
+exports[`FacebookCarousel component default props 1`] = `
+<div
+  className="carousel"
+/>
+`;
 
 exports[`FacebookCarousel component render generic template 1`] = `
 <FacebookCarousel
@@ -40,7 +44,9 @@ exports[`FacebookCarousel component render generic template 1`] = `
     ]
   }
 >
-  <div>
+  <div
+    className="carousel"
+  >
     <Slider
       arrows={true}
       infinite={false}
@@ -205,7 +211,7 @@ exports[`FacebookCarousel component render generic template 1`] = `
                 }
               >
                 <div
-                  className="slick-slide slick-active"
+                  className="slick-slide slick-active carouselCardContainer"
                   data-index={0}
                   onClick={[Function]}
                   style={
@@ -217,37 +223,39 @@ exports[`FacebookCarousel component render generic template 1`] = `
                   tabIndex="-1"
                 >
                   <Card
+                    className="carouselCard"
                     tag="div"
                   >
                     <div
-                      className="card"
+                      className="carouselCard card"
                     >
                       <CardImg
+                        className="carouselImage"
                         src="https://cdn.shopify.com/s/files/1/1632/0429/"
                         tag="img"
                         top={true}
                         width="100%"
                       >
                         <img
-                          className="card-img-top"
+                          className="carouselImage card-img-top"
                           src="https://cdn.shopify.com/s/files/1/1632/0429/"
                           width="100%"
                         />
                       </CardImg>
-                      <CardBlock
+                      <CardBody
                         tag="div"
                       >
                         <div
-                          className="card-block"
+                          className="card-body"
                         >
                           <CardTitle
-                            tag="h4"
+                            tag="h5"
                           >
-                            <h4
+                            <h5
                               className="card-title"
                             >
                               Leather saddle
-                            </h4>
+                            </h5>
                           </CardTitle>
                           <CardSubtitle
                             tag="h6"
@@ -259,14 +267,15 @@ exports[`FacebookCarousel component render generic template 1`] = `
                             </h6>
                           </CardSubtitle>
                         </div>
-                      </CardBlock>
+                      </CardBody>
                       <ButtonGroup
+                        className="buttons"
                         role="group"
                         tag="div"
                         vertical={true}
                       >
                         <div
-                          className="btn-group-vertical"
+                          className="buttons btn-group-vertical"
                           role="group"
                         >
                           <Button
@@ -376,6 +385,8 @@ exports[`FacebookCarousel component should render empty with template_type=butto
     ]
   }
 >
-  <div />
+  <div
+    className="carousel"
+  />
 </FacebookCarousel>
 `;

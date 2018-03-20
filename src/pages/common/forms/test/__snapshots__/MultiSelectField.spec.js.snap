@@ -112,17 +112,17 @@ exports[`MultiSelectField should render a multi select input with custom props 1
   style={null}
 >
   <div
-    className="undefined"
+    className="select"
     onClick={[Function]}
   >
     <Badge
       className="tag"
-      color="default"
+      color="secondary"
       pill={false}
       style={
         Object {
           "color": "#0275d8",
-          "margin": "0.25em 0",
+          "margin": "0.25em 0.25em 0 0.25em",
         }
       }
       tag="span"
@@ -137,12 +137,12 @@ exports[`MultiSelectField should render a multi select input with custom props 1
     </Badge>
     <Badge
       className="tag"
-      color="default"
+      color="secondary"
       pill={false}
       style={
         Object {
           "color": "#0275d8",
-          "margin": "0.25em 0",
+          "margin": "0.25em 0.25em 0 0.25em",
         }
       }
       tag="span"
@@ -155,24 +155,35 @@ exports[`MultiSelectField should render a multi select input with custom props 1
         />
       </span>
     </Badge>
-    <div>
-      <input
-        className="undefined ml-2"
-        onBlur={[Function]}
-        onChange={[Function]}
-        onFocus={[Function]}
-        onKeyDown={[Function]}
-        placeholder="Add tags..."
-        value=""
-      />
+    <div
+      className="input-container"
+    >
       <UncontrolledDropdown
         isOpen={false}
       >
+        <DropdownToggle
+          aria-haspopup={true}
+          color="secondary"
+          data-toggle="dropdown"
+          tag="div"
+        >
+          <input
+            className="input ml-2"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            placeholder="Add tags..."
+            value=""
+          />
+        </DropdownToggle>
         <DropdownMenu
+          className="options"
+          flip={true}
           tag="div"
         >
           <DropdownItem
-            className=""
+            className="option"
             onMouseDown={[Function]}
             onMouseEnter={[Function]}
             tag="button"
@@ -193,23 +204,34 @@ exports[`MultiSelectField should render a select input with default props 1`] = 
   style={null}
 >
   <div
-    className="undefined"
+    className="select"
     onClick={[Function]}
   >
-    <div>
-      <input
-        className="undefined ml-2"
-        onBlur={[Function]}
-        onChange={[Function]}
-        onFocus={[Function]}
-        onKeyDown={[Function]}
-        placeholder="Add items..."
-        value=""
-      />
+    <div
+      className="input-container"
+    >
       <UncontrolledDropdown
         isOpen={false}
       >
+        <DropdownToggle
+          aria-haspopup={true}
+          color="secondary"
+          data-toggle="dropdown"
+          tag="div"
+        >
+          <input
+            className="input ml-2"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            placeholder="Add items..."
+            value=""
+          />
+        </DropdownToggle>
         <DropdownMenu
+          className="options"
+          flip={true}
           tag="div"
         >
           <DropdownItem

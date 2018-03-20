@@ -1,6 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
-import {Card, CardBlock} from 'reactstrap'
+import {Card, CardBody} from 'reactstrap'
 import {templateRegex} from '../../../utils/template'
 
 import _isFunction from 'lodash/isFunction'
@@ -220,11 +220,11 @@ class Action extends React.Component {
 
         return (
             <Card className="mt-3">
-                <CardBlock>
+                <CardBody>
                     {children}
                     {!!config.note && <div className="rule-note">{config.note}</div>}
                     <Errors>{errors.map((error, id) => <div key={id}>{error}</div>)}</Errors>
-                </CardBlock>
+                </CardBody>
             </Card>
         )
     }

@@ -19,7 +19,7 @@ export default class AddEmoji extends React.Component {
     render() {
         return (
             <Popover
-                icon="fa-smile-o"
+                icon="insert_emoticon"
                 name={this.props.action.name}
                 onIconClick={this.props.functions.onClick}
                 ref={(popover) => {

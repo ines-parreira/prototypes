@@ -34,7 +34,7 @@ export default class ChatIntegrationList extends React.Component {
                 return value ? this.props.activate(integrationId) : this.props.deactivate(integrationId)
             }
 
-            const editLink = `/app/integrations/smooch_inside/${int.get('id')}/appearance`
+            const editLink = `/app/settings/integrations/smooch_inside/${int.get('id')}/appearance`
             const isDisabled = int.get('deactivated_datetime')
 
             return (
@@ -61,7 +61,7 @@ export default class ChatIntegrationList extends React.Component {
                 integrationType="smooch_inside"
                 longTypeDescription={longTypeDescription}
                 integrations={integrations.filter((v) => v.get('type') === 'smooch_inside')}
-                createIntegration={() => browserHistory.push('/app/integrations/smooch_inside/new')}
+                createIntegration={() => browserHistory.push('/app/settings/integrations/smooch_inside/new')}
                 createIntegrationButtonText="Add chat"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}

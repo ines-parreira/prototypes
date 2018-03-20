@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
-import {Card, CardBlock, Button} from 'reactstrap'
+import {Card, CardBody, Button} from 'reactstrap'
 
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
@@ -8,15 +8,15 @@ const InfobarAddIntegrationSuggestion = ({user}) => (
     <div className="widgets-list">
         <div>
             <Card className="wrapper transparent">
-                <CardBlock className="content">
+                <CardBody className="content">
                     <div>
                         <Card className="blurred">
-                            <CardBlock className="header clearfix">
+                            <CardBody className="header clearfix">
                                 <span>
                                     👤 {user.get('name') || 'Nadia'} - 4 orders
                                 </span>
-                            </CardBlock>
-                            <CardBlock className="content">
+                            </CardBody>
+                            <CardBody className="content">
                                 <div>
                                     <div className="simple-field">
                                         <span className="field-label">Spent:</span>
@@ -53,7 +53,7 @@ const InfobarAddIntegrationSuggestion = ({user}) => (
                                         <span className="field-value">email</span>
                                     </div>
                                 </div>
-                            </CardBlock>
+                            </CardBody>
                         </Card>
                         <div className="no-result-container suggestion">
                             <div
@@ -69,7 +69,7 @@ const InfobarAddIntegrationSuggestion = ({user}) => (
                             <Button
                                 tag={Link}
                                 color="info"
-                                to="/app/integrations"
+                                to="/app/settings/integrations"
                                 onClick={() => {
                                     segmentTracker.logEvent(segmentTracker.EVENTS.INFOBAR_INTEGRATION_ADD_CLICKED)
                                 }}
@@ -78,7 +78,7 @@ const InfobarAddIntegrationSuggestion = ({user}) => (
                             </Button>
                         </div>
                     </div>
-                </CardBlock>
+                </CardBody>
             </Card>
         </div>
     </div>

@@ -32,16 +32,16 @@ export function displayUserNameFromSource(user, sourceType) {
  */
 export function fileIconFromContentType(contentType) {
     if (contentType === 'application/pdf') {
-        return 'fa-file-pdf-o'
+        return 'picture_as_pdf'
     } else if (contentType.startsWith('image/')) {
-        return 'fa-file-image-o'
+        return 'photo_library'
     } else if (contentType === 'application/msword') {
-        return 'fa-file-word-o'
+        return 'library_books'
     } else if (contentType.startsWith('text/')) {
-        return 'fa-file-text-o'
+        return 'library_books'
     }
 
-    return 'fa-file-o'
+    return 'library_add'
 }
 
 /**

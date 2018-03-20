@@ -2,243 +2,268 @@
 
 exports[`ManageTags component mounts correctly 1`] = `
 <div
-  className="manage-tags-bulk"
+  className="full-width manageTagsClassName"
 >
-  <div
-    className="manage-tags d-flex justify-content-between"
+  <PageHeader
+    title="Manage tags"
   >
-    <h1>
-      <i
-        className="fa fa-fw fa-tag blue mr-2"
-      />
-      Manage tags
-    </h1>
     <div
-      className="pull-right"
+      className="manage-tags-bulk-actions"
     >
-      <div
-        className="manage-tags-bulk-actions"
-      >
-        <span>
-          <Button
-            className="mr-2"
-            color="secondary"
-            id="bulk-merge-button"
-            onClick={[Function]}
-            tag="button"
-            type="button"
+      <span>
+        <Button
+          className="mr-2"
+          color="secondary"
+          id="bulk-merge-button"
+          onClick={[Function]}
+          tag="button"
+          type="button"
+        >
+          Merge
+        </Button>
+        <Popover
+          delay={
+            Object {
+              "hide": 0,
+              "show": 0,
+            }
+          }
+          isOpen={false}
+          placement="bottom"
+          placementPrefix="bs-popover"
+          target="bulk-merge-button"
+          toggle={[Function]}
+        >
+          <PopoverHeader
+            tag="h3"
           >
-            Merge
-          </Button>
-          <Popover
-            isOpen={false}
-            placement="bottom"
-            target="bulk-merge-button"
-            toggle={[Function]}
+            Are you sure?
+          </PopoverHeader>
+          <PopoverBody
+            tag="div"
           >
-            <PopoverTitle
-              tag="h3"
+            <p>
+              You are about to merge 
+              2
+               tags into
+               
+              <b />
+              .
+              <br />
+              <b>
+                This action cannot be undone
+              </b>
+              .
+            </p>
+            <Button
+              color="success"
+              onClick={[Function]}
+              tag="button"
+              type="submit"
             >
-              Are you sure?
-            </PopoverTitle>
-            <PopoverContent
-              tag="div"
-            >
-              <p>
-                You are about to merge 
-                2
-                 tags into
-                 
-                <b />
-                .
-                <br />
-                <b>
-                  This action cannot be undone
-                </b>
-                .
-              </p>
-              <Button
-                color="success"
-                onClick={[Function]}
-                tag="button"
-                type="submit"
-              >
-                Confirm
-              </Button>
-            </PopoverContent>
-          </Popover>
-        </span>
-        <span>
-          <Button
-            className="mr-2"
-            color="secondary"
-            id="bulk-remove-button"
-            onClick={[Function]}
-            tag="button"
-            type="button"
+              Confirm
+            </Button>
+          </PopoverBody>
+        </Popover>
+      </span>
+      <span>
+        <Button
+          className="mr-2"
+          color="secondary"
+          id="bulk-remove-button"
+          onClick={[Function]}
+          tag="button"
+          type="button"
+        >
+          Delete
+        </Button>
+        <Popover
+          delay={
+            Object {
+              "hide": 0,
+              "show": 0,
+            }
+          }
+          isOpen={false}
+          placement="bottom"
+          placementPrefix="bs-popover"
+          target="bulk-remove-button"
+          toggle={[Function]}
+        >
+          <PopoverHeader
+            tag="h3"
           >
-            Delete
-          </Button>
-          <Popover
-            isOpen={false}
-            placement="bottom"
-            target="bulk-remove-button"
-            toggle={[Function]}
+            Are you sure?
+          </PopoverHeader>
+          <PopoverBody
+            tag="div"
           >
-            <PopoverTitle
-              tag="h3"
+            <p>
+              Are you sure you want to delete these tags?
+               
+              <b>
+                They will be removed from all tickets
+              </b>
+              .
+            </p>
+            <Button
+              color="success"
+              onClick={[Function]}
+              tag="button"
+              type="submit"
             >
-              Are you sure?
-            </PopoverTitle>
-            <PopoverContent
-              tag="div"
-            >
-              <p>
-                Are you sure you want to delete these tags?
-                 
-                <b>
-                  They will be removed from all tickets
-                </b>
-                .
-              </p>
-              <Button
-                color="success"
-                onClick={[Function]}
-                tag="button"
-                type="submit"
-              >
-                Confirm
-              </Button>
-            </PopoverContent>
-          </Popover>
-        </span>
-        <span>
-          <Button
-            color="primary"
-            id="create-tag-button"
-            onClick={[Function]}
-            tag="button"
-            type="button"
+              Confirm
+            </Button>
+          </PopoverBody>
+        </Popover>
+      </span>
+      <span>
+        <Button
+          color="success"
+          id="create-tag-button"
+          onClick={[Function]}
+          tag="button"
+          type="button"
+        >
+          Create tag
+        </Button>
+        <Popover
+          delay={
+            Object {
+              "hide": 0,
+              "show": 0,
+            }
+          }
+          isOpen={false}
+          placement="bottom"
+          placementPrefix="bs-popover"
+          target="create-tag-button"
+          toggle={[Function]}
+        >
+          <PopoverHeader
+            tag="h3"
           >
-            Create tag
-          </Button>
-          <Popover
-            isOpen={false}
-            placement="bottom"
-            target="create-tag-button"
-            toggle={[Function]}
+            Create a new tag
+          </PopoverHeader>
+          <PopoverBody
+            tag="div"
           >
-            <PopoverTitle
-              tag="h3"
+            <Form
+              onSubmit={[Function]}
+              tag="form"
             >
-              Create a new tag
-            </PopoverTitle>
-            <PopoverContent
-              tag="div"
-            >
-              <Form
-                onSubmit={[Function]}
-                tag="form"
+              <div
+                className="d-flex align-items-center"
               >
                 <div
-                  className="d-flex align-items-center"
+                  className="mr-2"
                 >
-                  <div
-                    className="mr-2"
-                  >
-                    <InputField
-                      autoFocus={true}
-                      inline={true}
-                      onChange={[Function]}
-                      placeholder="New tag name"
-                      required={true}
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                  <Button
-                    className=""
-                    color="success"
-                    tag="button"
-                    type="submit"
-                  >
-                    <i
-                      className="fa fa-fw fa-check"
-                    />
-                  </Button>
+                  <InputField
+                    autoFocus={true}
+                    inline={true}
+                    onChange={[Function]}
+                    placeholder="New tag name"
+                    required={true}
+                    type="text"
+                    value=""
+                  />
                 </div>
-              </Form>
-            </PopoverContent>
-          </Popover>
-        </span>
-      </div>
+                <Button
+                  className=""
+                  color="success"
+                  tag="button"
+                  type="submit"
+                >
+                  <i
+                    className="fa fa-fw fa-check"
+                  />
+                </Button>
+              </div>
+            </Form>
+          </PopoverBody>
+        </Popover>
+      </span>
     </div>
-  </div>
-  <div
-    className="manage-tags-description"
+  </PageHeader>
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
   >
-    <p>
-      You can tag tickets to keep track of topics customers are contacting you about.
-    </p>
-  </div>
-  <Table
-    columns={
-      Array [
-        Object {
-          "field": "name",
-          "title": "Tag",
-        },
-        Object {
-          "field": "usage_count",
-          "title": "Tickets",
-        },
-      ]
-    }
-    onSelectAll={[Function]}
-    onSort={[Function]}
-    refresh={[Function]}
-    reverse={true}
-    rows={
-      Immutable.Map {
-        items: Immutable.List [
-          Immutable.Map {
-            id: 1,
-            name: "refund",
+    <div
+      className="manage-tags-description"
+    >
+      <p>
+        You can tag tickets to keep track of topics customers are contacting you about. Check your tag statistics 
+        <Link
+          onlyActiveOnIndex={false}
+          style={Object {}}
+          to="/app/stats/tags"
+        >
+          here
+        </Link>
+        .
+      </p>
+    </div>
+    <Table
+      columns={
+        Array [
+          Object {
+            "field": "name",
+            "title": "Tag",
           },
-          Immutable.Map {
-            id: 2,
-            name: "billing",
+          Object {
+            "field": "usage_count",
+            "title": "Tickets",
           },
-          Immutable.Map {
-            id: 3,
-            name: "shipping",
-          },
-        ],
-        meta: Immutable.Map {
-          1: Immutable.Map {
-            selected: true,
-          },
-          2: Immutable.Map {
-            selected: true,
-          },
-        },
-        _internal: Immutable.Map {
-          pagination: Immutable.Map {
-            per_page: 30,
-            page: 1,
-            nb_pages: 1,
-            item_count: 3,
-            current_page: "/api/views/?page=1",
-          },
-        },
+        ]
       }
-    }
-    sort="usage_count"
-  />
-  <Pagination
-    currentPage={1}
-    onChange={[Function]}
-    pageCount={1}
-  />
+      onSelectAll={[Function]}
+      onSort={[Function]}
+      refresh={[Function]}
+      reverse={true}
+      rows={
+        Immutable.Map {
+          items: Immutable.List [
+            Immutable.Map {
+              id: 1,
+              name: "refund",
+            },
+            Immutable.Map {
+              id: 2,
+              name: "billing",
+            },
+            Immutable.Map {
+              id: 3,
+              name: "shipping",
+            },
+          ],
+          meta: Immutable.Map {
+            1: Immutable.Map {
+              selected: true,
+            },
+            2: Immutable.Map {
+              selected: true,
+            },
+          },
+          _internal: Immutable.Map {
+            pagination: Immutable.Map {
+              per_page: 30,
+              page: 1,
+              nb_pages: 1,
+              item_count: 3,
+              current_page: "/api/views/?page=1",
+            },
+          },
+        }
+      }
+      sort="usage_count"
+    />
+    <Pagination
+      currentPage={1}
+      onChange={[Function]}
+      pageCount={1}
+    />
+  </Container>
 </div>
 `;

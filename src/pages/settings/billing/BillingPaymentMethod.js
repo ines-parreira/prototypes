@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
-import {Button, UncontrolledTooltip} from 'reactstrap'
+import {Button, Card, CardBody, Col, Row, UncontrolledTooltip} from 'reactstrap'
 import * as billingSelectors from '../../../state/billing/selectors'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
 import {fetchPaymentMethod, fetchCreditCard} from '../../../state/billing/actions'
@@ -17,9 +17,11 @@ export class BillingPaymentMethod extends Component {
         creditCard: PropTypes.object.isRequired,
         paymentMethod: PropTypes.string.isRequired,
         paymentIsActive: PropTypes.bool.isRequired,
+        isTrialing: PropTypes.bool.isRequired,
         currentUserId: PropTypes.number.isRequired,
         currentAccountDomain: PropTypes.string.isRequired,
         shopifyBillingStatus: PropTypes.string,
+        shouldPayWithShopify: PropTypes.bool,
         subscription: PropTypes.object.isRequired,
     }
 
@@ -40,57 +42,66 @@ export class BillingPaymentMethod extends Component {
     _renderStripe() {
         const {creditCard, subscription} = this.props
         const hasNoSubscription = subscription.isEmpty()
-        let creditCardLabel = 'No credit card registered'
+        const labelPadding = 8
+        let creditCardLabel = (
+            <div style={{paddingTop: labelPadding}}>No credit card registered</div>
+        )
 
         if (!creditCard.isEmpty()) {
             creditCardLabel = (
-                <span>
-                    {creditCard.get('brand')} ending in <strong>{creditCard.get('last4')} </strong>
-                    and expiring on <em>{creditCard.get('exp_month')}/{creditCard.get('exp_year')}</em>
-                </span>
+                <div style={{paddingTop: labelPadding}}>
+                    <span>{creditCard.get('brand')} ending in <strong>{creditCard.get('last4')} </strong></span>
+                    <span>will expire on <em>{creditCard.get('exp_month')}/{creditCard.get('exp_year')}</em></span>
+                </div>
             )
         }
 
         return (
-            <div>
-                <p className="mt-2 mb-2">{creditCardLabel}</p>
-                {
-                    creditCard.isEmpty() ? (
-                        <div
-                            id="add-credit-card-button"
-                            style={{
-                                display: 'inline-block'
-                            }}
-                        >
-                            <Button
-                                tag={Link}
-                                color="success"
-                                to="/app/settings/billing/add-credit-card"
-                                disabled={hasNoSubscription}
-                            >
-                                Add Credit Card
-                            </Button>
+            <Card>
+                <CardBody>
+                    <Row>
+                        <Col sm={4}>{creditCardLabel}</Col>
+                        <Col sm={{size: 4, offset: 4}} className="text-right">
                             {
-                                hasNoSubscription ? (
-                                    <UncontrolledTooltip
-                                        placement="top"
-                                        target="add-credit-card-button"
+                                creditCard.isEmpty() ? (
+                                    <div
+                                        id="add-credit-card-button"
+                                        style={{
+                                            display: 'inline-block'
+                                        }}
                                     >
-                                        Select a plan before adding a credit card
-                                    </UncontrolledTooltip>
-                                ) : null
+                                        <Button
+                                            tag={Link}
+                                            color="success"
+                                            to="/app/settings/billing/add-credit-card"
+                                            disabled={hasNoSubscription}
+                                        >
+                                            Add credit card
+                                        </Button>
+                                        {
+                                            hasNoSubscription ? (
+                                                <UncontrolledTooltip
+                                                    placement="top"
+                                                    target="add-credit-card-button"
+                                                >
+                                                    Select a plan before adding a credit card
+                                                </UncontrolledTooltip>
+                                            ) : null
+                                        }
+                                    </div>
+                                ) : (
+                                    <Button
+                                        tag={Link}
+                                        to="/app/settings/billing/update-credit-card"
+                                    >
+                                        Update credit card
+                                    </Button>
+                                )
                             }
-                        </div>
-                    ) : (
-                        <Button
-                            tag={Link}
-                            to="/app/settings/billing/update-credit-card"
-                        >
-                            Update Credit Card
-                        </Button>
-                    )
-                }
-            </div>
+                        </Col>
+                    </Row>
+                </CardBody>
+            </Card>
         )
     }
 
@@ -109,28 +120,40 @@ export class BillingPaymentMethod extends Component {
         const {currentPlan, shopifyBillingStatus, subscription} = this.props
         const {isActivatingShopifyBilling} = this.state
         const hasNoSubscription = subscription.isEmpty()
+        let content = null
 
         switch (shopifyBillingStatus) {
             case 'active':
-                return (
+                content = (
                     <p className="mt-2 mb-2">
-                        Payment with Shopify activated.
+                        <i className="material-icons text-success md-2">check_circle</i>
+                        {' '}
+                        Payment with Shopify is active. You're all set.
                     </p>
                 )
+                break
             case 'canceled':
-                return (
-                    <Button
-                        tag="a"
-                        color="success"
-                        href="/integrations/shopify/billing/activate/"
-                        onClick={() => {
-                            this.setState({isActivatingShopifyBilling: true})
-                        }}
-                        className={classNames({'btn-loading': isActivatingShopifyBilling})}
-                    >
-                        Reactivate billing with Shopify
-                    </Button>
+                content = (
+                    <div>
+                        <i className="material-icons text-warning md-2">warning</i>
+                        {' '}
+
+                        Billing with Shopify is inactive. Please reactivate to avoid account cancellation.
+                        {' '}
+                        <Button
+                            tag="a"
+                            color="success"
+                            href="/integrations/shopify/billing/activate/"
+                            onClick={() => {
+                                this.setState({isActivatingShopifyBilling: true})
+                            }}
+                            className={classNames('float-right', {'btn-loading': isActivatingShopifyBilling})}
+                        >
+                            Reactivate billing with Shopify
+                        </Button>
+                    </div>
                 )
+                break
 
             case 'inactive': {
                 const amount = currentPlan.get('amount')
@@ -140,7 +163,7 @@ export class BillingPaymentMethod extends Component {
                     buttonLabel += ` and pay ${currentPlan.get('currencySign')}${amount}`
                 }
 
-                return (
+                content = (
                     <div
                         id="activate-shopify-billing-button"
                         style={{
@@ -169,20 +192,31 @@ export class BillingPaymentMethod extends Component {
                         }
                     </div>
                 )
+                break
             }
         }
+
+        return (
+            <Card>
+                <CardBody>{content}</CardBody>
+            </Card>
+        )
     }
 
     render() {
-        const {paymentMethod} = this.props
+        const {paymentMethod, isTrialing, shouldPayWithShopify} = this.props
 
         if (this.state.isLoading) {
             return <Loader/>
         }
 
+        if (isTrialing && !shouldPayWithShopify) {
+            return null
+        }
+
         return (
             <div className="mb-5">
-                <h4>Payment method</h4>
+                <h4><i className="material-icons">credit_card</i> Payment method</h4>
                 {paymentMethod === 'stripe' ? this._renderStripe() : this._renderShopify()}
             </div>
         )
@@ -198,6 +232,8 @@ export default connect((state) => {
         currentPlan: billingSelectors.currentPlan(state),
         paymentMethod: currentAccountSelectors.paymentMethod(state),
         shopifyBillingStatus: currentAccountSelectors.getShopifyBillingStatus(state),
+        shouldPayWithShopify: currentAccountSelectors.shouldPayWithShopify(state),
         paymentIsActive: currentAccountSelectors.paymentIsActive(state),
+        isTrialing: currentAccountSelectors.isTrialing(state),
     }
 }, {fetchPaymentMethod, fetchCreditCard})(BillingPaymentMethod)

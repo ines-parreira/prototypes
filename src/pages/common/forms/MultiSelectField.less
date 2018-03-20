@@ -1,4 +1,5 @@
-:local .select {
+:local {
+  .select {
     display: block;
     width: 100%;
     font-size: 1rem;
@@ -13,29 +14,34 @@
     padding: 0 .25rem;
 
     .input-container {
-        position: relative;
-        display: inline-block;
+      position: relative;
+      display: inline-block;
 
-        .input {
-            outline: none;
-            border: none;
-            padding: .50rem .50rem;
-        }
-        .options {
-            position: absolute;
-            z-index: 10;
-            width: 100%;
-            overflow-y: auto;
-            max-height: 200px;
-            max-width: 350px;
+      .input {
+        outline: none;
+        border: none;
+        padding: .50rem .50rem;
+      }
+      .options {
+        position: absolute;
+        z-index: 10;
+        width: 100%;
+        overflow-y: auto;
+        max-height: 200px;
+        max-width: 350px;
 
-            .option {
-                &:hover,
-                &.option--focused {
-                    background: #f2f9fe !important;
-                }
-            }
+        .option {
+          &:hover,
+          &.option--focused {
+            background: #f2f9fe !important;
+          }
         }
+      }
     }
+  }
+
+  .tag {
+    background-color: #eff1ff;
+  }
 }
 

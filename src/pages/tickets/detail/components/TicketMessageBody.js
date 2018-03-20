@@ -1,9 +1,13 @@
 // @flow
 import React from 'react'
 import linkifyStr from 'linkifyjs/string'
+import classnames from 'classnames'
 
 import {sanitizeHtmlDefault, proxifyImages} from '../../../../utils'
 import FacebookCarousel from './FacebookCarousel'
+
+import css from './TicketMessageBody.less'
+import Ellipsis from '../../../common/components/Ellipsis'
 
 type messageType = {
     body_html: string,
@@ -41,13 +45,10 @@ export default class TicketMessageBody extends React.Component<Props, State> {
             // we're ignoring whitespaces because mailgun sends stripped_html without spaces
             if (stripped.replace(/\s+/g, '') !== body.replace(/\s+/g, '')) {
                 quoteButton = (
-                    <div
-                        className="btn-more"
+                    <Ellipsis
                         title="Show full content"
                         onClick={() => this.setState({showFullBody: !this.state.showFullBody})}
-                    >
-                        <i className="fa fa-fw fa-ellipsis-h" />
-                    </div>
+                    />
                 )
             }
 
@@ -57,19 +58,15 @@ export default class TicketMessageBody extends React.Component<Props, State> {
             }
         }
 
-        let classNames = 'ticket-message-body'
-        if (!message.body_html) {
-            classNames += ' ticket-message-body-text'
-            if (body) {
-                body = linkifyStr(body)
-            }
+        if (!message.body_html && body) {
+            body = linkifyStr(body)
         }
 
         body = proxifyImages(sanitizeHtmlDefault(body), '1000x')
 
         let content = body !== 'null' && (
             <div>
-                <div dangerouslySetInnerHTML={{__html: body}} />
+                <div dangerouslySetInnerHTML={{__html: body}}/>
                 {quoteButton}
             </div>
         )
@@ -83,9 +80,9 @@ export default class TicketMessageBody extends React.Component<Props, State> {
         }
 
         return (
-            <div
-                className={classNames}
-            >
+            <div className={classnames(css.component, {
+                [css.bodyText]: message.body_html
+            })}>
                 {content}
                 {extension}
             </div>

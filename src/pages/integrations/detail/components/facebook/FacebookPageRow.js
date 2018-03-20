@@ -31,7 +31,7 @@ export default class FacebookPageRow extends React.Component {
             return null
         }
 
-        const editLink = `/app/integrations/facebook/${integration.get('id')}/overview`
+        const editLink = `/app/settings/integrations/facebook/${integration.get('id')}/overview`
 
         return (
             <tr className="FacebookPageRow">

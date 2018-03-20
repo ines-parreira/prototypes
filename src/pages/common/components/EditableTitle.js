@@ -83,10 +83,10 @@ export default class EditableTitle extends React.Component {
 
         return (
             <Input
-                getRef="title"
+                innerRef="title"
                 type="text"
                 tabIndex="1"
-                size={size}
+                bsSize={size}
                 style={style}
                 disabled={this.props.disabled}
                 className={classnames(className, css.component, {

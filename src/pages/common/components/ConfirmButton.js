@@ -4,8 +4,8 @@ import classnames from 'classnames'
 import {
     Button,
     Popover,
-    PopoverTitle,
-    PopoverContent,
+    PopoverHeader,
+    PopoverBody,
 } from 'reactstrap'
 import _get from 'lodash/get'
 import _noop from 'lodash/noop'
@@ -162,8 +162,8 @@ export default class ConfirmButton extends React.Component<Props, State> {
                     target={uid}
                     toggle={this._hideConfirmation}
                 >
-                    <PopoverTitle>{title}</PopoverTitle>
-                    <PopoverContent>
+                    <PopoverHeader>{title}</PopoverHeader>
+                    <PopoverBody>
                         <p>
                             {content}
                         </p>
@@ -175,7 +175,7 @@ export default class ConfirmButton extends React.Component<Props, State> {
                         >
                             Confirm
                         </Button>
-                    </PopoverContent>
+                    </PopoverBody>
                 </Popover>
             </div>
         )

@@ -1,7 +1,6 @@
 import React from 'react'
 import {fromJS} from 'immutable'
 import {mount} from 'enzyme'
-import InfobarWidgets from '../InfobarWidgets'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
@@ -9,8 +8,11 @@ import {Provider} from 'react-redux'
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
+import InfobarWidgets from '../InfobarWidgets'
+
 describe('InfobarWidgets component', () => {
     let store
+    let container
 
     const httpIntegrationId = 1
     const shopifyIntegrationId = 2
@@ -120,6 +122,11 @@ describe('InfobarWidgets component', () => {
                 ]
             })
         })
+
+        // reactstrap popover needs to be in the dom
+        // https://github.com/reactstrap/reactstrap/issues/818
+        container = document.createElement('div')
+        document.body.appendChild(container)
     })
 
     it('should not display anything if there\'s no widgets', () => {
@@ -145,7 +152,8 @@ describe('InfobarWidgets component', () => {
                     editing={baseEditing}
                     source={baseSource}
                 />
-            </Provider>
+            </Provider>,
+            {attachTo: container}
         )
 
         expect(component).toMatchSnapshot()
@@ -161,7 +169,8 @@ describe('InfobarWidgets component', () => {
                     editing={editing}
                     source={baseSource}
                 />
-            </Provider>
+            </Provider>,
+            {attachTo: container}
         )
 
         expect(component).toMatchSnapshot()

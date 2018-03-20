@@ -2,7 +2,7 @@
 
 exports[`TicketReplyEditor component should render empty ticket 1`] = `
 <div
-  className="TicketReplyEditor"
+  className="component"
 >
   <RichField
     alertMode={false}
@@ -32,11 +32,13 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
             <label
                   className="m-0"
                   htmlFor="attachments-input"
+                  title="Add attachment"
             >
                   <i
-                        className="fa fa-fw fa-paperclip"
-                        title="Add attachment"
-                  />
+                        className="material-icons"
+                  >
+                        attach_file
+                  </i>
             </label>
             <input
                   id="attachments-input"
@@ -49,6 +51,7 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
         ],
       }
     }
+    type="text"
     value={
       Object {
         "html": "",

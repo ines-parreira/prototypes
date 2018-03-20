@@ -5,6 +5,15 @@ import {fromJS} from 'immutable'
 import {ManageRequests} from '../ManageRequests'
 
 describe('ManageRequests component', () => {
+    let container
+
+    beforeEach(() => {
+        // reactstrap popover needs to be in the dom
+        // https://github.com/reactstrap/reactstrap/issues/818
+        container = document.createElement('div')
+        document.body.appendChild(container)
+    })
+
     it('should display loader', () => {
         const component = mount(
             <ManageRequests
@@ -20,7 +29,8 @@ describe('ManageRequests component', () => {
             <ManageRequests
                 fetchRequests={() => Promise.resolve()}
                 requests={fromJS({})}
-            />
+            />,
+            {attachTo: container}
         )
         component.setState({isFetching: false})
         expect(component).toMatchSnapshot()
@@ -40,7 +50,8 @@ describe('ManageRequests component', () => {
                         name: 'order status',
                     },
                 ])}
-            />
+            />,
+            {attachTo: container}
         )
         component.setState({isFetching: false})
         expect(component).toMatchSnapshot()

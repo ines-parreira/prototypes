@@ -3,6 +3,7 @@ import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
+import {Button} from 'reactstrap'
 
 import TicketHeader from './TicketHeader'
 import TicketBody from './TicketBody'
@@ -11,6 +12,7 @@ import Timeline from '../../../common/components/timeline/Timeline'
 import ReplyMessageChannel from './replyarea/ReplyMessageChannel'
 import TicketReplyArea from './replyarea/TicketReplyArea'
 import TicketSubmitButtons from './replyarea/TicketSubmitButtons'
+import HistoryButton from './HistoryButton'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
 import * as tagsSelectors from '../../../../state/tags/selectors'
@@ -35,7 +37,8 @@ import appCss from '../../../App.less'
         ticketBody: ticketSelectors.getBody(state),
         users: state.users,
         usersIsLoading: usersSelectors.makeIsLoading(state),
-        views: state.views
+        views: state.views,
+        isHistoryDisplayed: ticketSelectors.getDisplayHistory(state),
     }
 })
 export default class TicketView extends React.Component {
@@ -56,6 +59,7 @@ export default class TicketView extends React.Component {
         usersIsLoading: PropTypes.func.isRequired,
         setStatus: PropTypes.func.isRequired,
         view: PropTypes.object,
+        isHistoryDisplayed: PropTypes.bool
     }
 
     static defaultProps = {
@@ -79,6 +83,11 @@ export default class TicketView extends React.Component {
         }
     }
 
+    _getMainContent = () => {
+        const className = this.props.isHistoryDisplayed ? appCss['main-content'] : css.ticketContent
+        return document.getElementsByClassName(className)[0]
+    }
+
     componentDidMount() {
         // scroll to the bottom of the ticket content the first time the ticket is viewed.
         // decrease the bottom padding, to avoid scrolling to a white screen on touchscreens.
@@ -87,25 +96,19 @@ export default class TicketView extends React.Component {
         this.refs.ticketContent.scrollTop = maxScrollTop - parseInt(styles.paddingBottom)
     }
 
-    componentWillReceiveProps(nextProps) {
-        const isHistoryDisplayed = nextProps.ticket.getIn(['_internal', 'displayHistory'])
-
+    componentWillReceiveProps() {
         // save before props update if user was at bottom of the page (probably answering something)
         // if history is displayed we calculate scroll on `main-content` wrapper
-        const className = isHistoryDisplayed ? appCss['main-content'] : 'ticket-content'
-        const element = document.getElementsByClassName(className)[0]
+        const element = this._getMainContent()
         this.wasAtBottomOfPage = (element.scrollHeight - element.scrollTop) <= element.offsetHeight + 40
     }
 
     componentDidUpdate(prevProps) {
         // if ticket body (messages, events, etc.) changes but user is at bottom of the page,
         // then keep him at the bottom of the page
-        const isHistoryDisplayed = this.props.ticket.getIn(['_internal', 'displayHistory'])
-
         if (!prevProps.ticketBody.equals(this.props.ticketBody) && this.wasAtBottomOfPage) {
             // if history is displayed we set scroll on `main-content` wrapper
-            const className = isHistoryDisplayed ? appCss['main-content'] : 'ticket-content'
-            const element = document.getElementsByClassName(className)[0]
+            const element = this._getMainContent()
             element.scrollTop = element.scrollHeight
         }
     }
@@ -123,9 +126,24 @@ export default class TicketView extends React.Component {
         this.props.submit(...this.statusParams)
     }
 
+    _toggleHistory = () => {
+        const {ticket, users, actions, isHistoryDisplayed} = this.props
+        const shouldOpenHistory = ticket.get('id')
+            && users.getIn(['userHistory', 'hasHistory'])
+            && !isHistoryDisplayed
+
+        actions.ticket.toggleHistory(shouldOpenHistory)
+
+        segmentTracker.logEvent(segmentTracker.EVENTS.USER_HISTORY_TOGGLED, {
+            open: shouldOpenHistory,
+            nbOfTicketsInTimeline: users.getIn(['userHistory', 'tickets']).size,
+            channel: ticket.get('channel'),
+            nbOfMessagesInTicket: ticket.get('messages').size,
+        })
+    }
+
     _renderCollisionDetection = () => {
         const {agentsViewing, agentsTyping} = this.props
-
         const agentsViewingNotTyping = agentsViewing.filter((userId) => !agentsTyping.contains(userId))
 
         return (
@@ -138,7 +156,7 @@ export default class TicketView extends React.Component {
                     // we want to hide text during animation if there is no agents viewing
                     agentsTyping.size > 0 && (
                         <span className="mr-3">
-                            <i className="fa fa-fw fa-pencil mr-2"/>
+                            <i className="material-icons mr-2">mode_edit</i>
                             {viewsUtils.agentsTypingMessage(agentsTyping)}
                         </span>
                     )
@@ -147,7 +165,7 @@ export default class TicketView extends React.Component {
                     // we want to hide text during animation if there is no agents viewing
                     agentsViewingNotTyping.size > 0 && (
                         <span>
-                            <i className="fa fa-fw fa-eye mr-2"/>
+                            <i className="material-icons mr-2">remove_red_eye</i>
                             {viewsUtils.agentsViewingMessage(agentsViewingNotTyping)}
                         </span>
                     )
@@ -164,110 +182,74 @@ export default class TicketView extends React.Component {
             actions,
             isTicketHidden,
             setStatus,
+            isHistoryDisplayed,
         } = this.props
-
         const isCreating = !ticket.get('id')
 
-        const itemsCountInHistory = users.getIn(['userHistory', 'tickets'], fromJS([])).size
-            + users.getIn(['userHistory', 'events'], fromJS([])).size
-
-        const isHistoryDisplayed = ticket.getIn(['_internal', 'displayHistory'])
-
-        const userHistory = this.props.users.get('userHistory') || fromJS({})
-        const historyTickets = userHistory.get('tickets') || fromJS([])
-        const historyOpenedTickets = historyTickets
-            .filter(t => t.get('id') !== ticket.get('id')) // remove current ticket from history for the count
-            .filter(t => t.get('status') !== 'closed') // count only open and new tickets
-            .size
-        const hasOpenedTicketsInHistory = historyOpenedTickets > 0
-
-        const historyButtonLabel = isHistoryDisplayed
-            ? 'Hide user history'
-            : (
-                <div>
-                    <i className="fa fa-fw fa-arrow-up mr-1"/>
-                    {
-                        hasOpenedTicketsInHistory ? (
-                            <span>Show other open tickets ({historyOpenedTickets})</span>
-                        ) : (
-                            <span>Show user history ({itemsCountInHistory})</span>
-                        )
-                    }
-                </div>
-            )
-
-        const transparentHistoryButton = !ticket.get('id')
-            || !users.getIn(['userHistory', 'hasHistory'])
-            || usersIsLoading('history')
-
+        const userHistory = users.get('userHistory') || fromJS({})
         const hideHistoryButton = !ticket.get('id')
 
         return (
             <div
-                className={classnames(css.page, 'ticket-view', {
+                className={classnames(css.page, {
                     'transition out fade right': isTicketHidden,
-                    [css['history-displayed']]: isHistoryDisplayed,
                 })}
             >
-                <div
-                    className={classnames({
-                        'mt-3': isCreating,
-                    })}
-                    style={{borderBottom: '1px solid #D5D7D7'}}
-                >
+
+                <div className={classnames(css.timeline, {
+                    'd-none': !isHistoryDisplayed
+                })}>
+                    <Button
+                        color="secondary"
+                        className="btn-transparent mb-2 font-weight-medium"
+                        onClick={this._toggleHistory}
+                    >
+                        <i className="material-icons md-2 mr-2">
+                            close
+                        </i>
+                        Close ticket history
+                    </Button>
                     <Timeline
-                        actions={this.props.actions.ticket}
-                        currentTicketId={this.props.ticket.get('id')}
-                        isDisplayed={isHistoryDisplayed}
+                        actions={actions.ticket}
+                        currentTicketId={ticket.get('id')}
                         userHistory={userHistory}
+                        className="pb-4"
                     />
-                    {
-                        !hideHistoryButton && (
-                            <div className="history-btn-container hidden-sm-down">
-                                <button
-                                    className={classnames('ticket-history-btn', {
-                                        transparent: transparentHistoryButton,
-                                        rounded: isHistoryDisplayed,
-                                        highlighted: hasOpenedTicketsInHistory,
-                                    })}
-                                    onClick={() => {
-                                        const shouldOpenHistory = ticket.get('id')
-                                            && users.getIn(['userHistory', 'hasHistory'])
-                                            && !isHistoryDisplayed
+                </div>
 
-                                        actions.ticket.toggleHistory(shouldOpenHistory)
+                <div
+                    className={css.headerContainer}
+                >
+                    <div className="d-flex">
+                        <div className={classnames(css.historyButtonContainer, 'd-none d-md-flex align-items-center')}>
+                            {
+                                !hideHistoryButton && (
+                                    <HistoryButton
+                                        isHistoryDisplayed={isHistoryDisplayed}
+                                        userHistory={userHistory}
+                                        toggleHistory={this._toggleHistory}
+                                        ticket={ticket}
+                                        usersIsLoading={usersIsLoading}
+                                    />
+                                )
+                            }
+                        </div>
 
-                                        segmentTracker.logEvent(segmentTracker.EVENTS.USER_HISTORY_TOGGLED, {
-                                            open: shouldOpenHistory,
-                                            nbOfTicketsInTimeline: users.getIn(['userHistory', 'tickets']).size,
-                                            channel: ticket.get('channel'),
-                                            nbOfMessagesInTicket: ticket.get('messages').size,
-                                        })
-                                    }}
-                                >
-                                    {historyButtonLabel}
-                                </button>
-                            </div>
-                        )
-                    }
-                    {
-                        isHistoryDisplayed && (
-                            <hr/>
-                        )
-                    }
-                    <TicketHeader
-                        ticket={ticket}
-                        actions={actions}
-                        hideTicket={this.props.hideTicket}
-                    />
+                        <TicketHeader
+                            ticket={ticket}
+                            actions={actions}
+                            hideTicket={this.props.hideTicket}
+                            className="flex-grow"
+                        />
+                    </div>
 
                     {this._renderCollisionDetection()}
                 </div>
 
                 <div
-                    className={classnames('ticket-content', {
+                    className={classnames(css.ticketContent, {
+                        [css.historyDisplayed]: isHistoryDisplayed,
                         'mt-3': isCreating,
-                        'history-displayed': isHistoryDisplayed,
                     })}
                     ref="ticketContent"
                 >
@@ -281,7 +263,7 @@ export default class TicketView extends React.Component {
                     }
 
                     <form
-                        className={classnames('ticket-form', css.newMessageForm)}
+                        className={classnames('d-print-none', css.newMessageForm)}
                         onSubmit={this._handleSubmit}
                         ref="newMessageForm"
                     >
@@ -291,7 +273,6 @@ export default class TicketView extends React.Component {
 
                         <TicketReplyArea
                             actions={this.props.actions}
-                            openModal={this.props.actions.macro.openModal}
                             currentUser={this.props.currentUser}
                             users={this.props.users}
                             macros={this.props.macros}

@@ -28,6 +28,17 @@ exports[`BillingUsage component should display loader 1`] = `
 
 exports[`BillingUsage component should display price 1`] = `
 <BillingUsage
+  currentPlan={
+    Immutable.Map {
+      free_tickets: 10,
+      integrations: 5,
+    }
+  }
+  currentSubscription={
+    Immutable.Map {
+      created_datetime: "2018-01-01T10:10:10.480Z",
+    }
+  }
   currentUsage={
     Immutable.Map {
       meta: Immutable.Map {
@@ -36,94 +47,356 @@ exports[`BillingUsage component should display price 1`] = `
       },
       data: Immutable.Map {
         cost: 10,
-        extra_tickets: 10,
+        tickets: 20,
       },
     }
   }
   fetchCurrentUsage={[Function]}
 >
   <div
-    className="mb-4"
+    className="mb-5"
   >
     <h4>
-      Extra tickets cost:
-       
-      <small
-        className="text-faded"
+      <i
+        className="material-icons"
       >
-        Oct 10
-         - 
-        Oct 11
-      </small>
+        insert_chart
+      </i>
+       Usage & Plans
     </h4>
-    <Row
+    <CardGroup
       className="mb-2"
       tag="div"
     >
       <div
-        className="mb-2 row"
+        className="mb-2 card-group"
       >
-        <Col
-          sm="4"
+        <Card
+          className="current-plan undefined"
           tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
         >
           <div
-            className="col col-sm-4"
+            className="current-plan undefined card"
           >
-            <CardGroup
+            <CardBody
               tag="div"
             >
               <div
-                className="card-group"
+                className="card-body"
               >
-                <Card
-                  block={true}
-                  className="text-center"
-                  tag="div"
-                >
-                  <div
-                    className="text-center card card-block"
-                  >
-                    <h3>
-                      10
-                    </h3>
-                    <div>
-                      tickets
-                    </div>
-                  </div>
-                </Card>
-                <Card
-                  block={true}
-                  className="text-center"
-                  tag="div"
-                >
-                  <div
-                    className="text-center card card-block"
-                  >
-                    <h3>
-                      $
-                      10
-                    </h3>
-                    <div>
-                      cost
-                    </div>
-                  </div>
-                </Card>
+                <h4>
+                  undefined Plan
+                </h4>
+                <div>
+                  Your current subscription started on 
+                  <strong>
+                    Jan 01
+                  </strong>
+                  .
+                </div>
               </div>
-            </CardGroup>
+            </CardBody>
           </div>
-        </Col>
+        </Card>
+        <Card
+          className="text-center"
+          tag="div"
+        >
+          <div
+            className="text-center card"
+          >
+            <CardBody
+              tag="div"
+            >
+              <div
+                className="card-body"
+              >
+                <Row
+                  tag="div"
+                >
+                  <div
+                    className="row"
+                  >
+                    <Col
+                      sm="3"
+                      tag="div"
+                      widths={
+                        Array [
+                          "xs",
+                          "sm",
+                          "md",
+                          "lg",
+                          "xl",
+                        ]
+                      }
+                    >
+                      <div
+                        className="col col-sm-3"
+                      >
+                        <div>
+                          <div
+                            className="usage-numbers"
+                          >
+                            10
+                            /
+                            20
+                             tickets
+                             
+                            <a
+                              id="current-period"
+                            >
+                              <i
+                                className="material-icons text-muted"
+                              >
+                                info_outline
+                              </i>
+                            </a>
+                          </div>
+                          <UncontrolledTooltip
+                            target="current-period"
+                          >
+                            <Tooltip
+                              autohide={true}
+                              delay={
+                                Object {
+                                  "hide": 250,
+                                  "show": 0,
+                                }
+                              }
+                              isOpen={false}
+                              placement="top"
+                              placementPrefix="bs-tooltip"
+                              target="current-period"
+                              toggle={[Function]}
+                            />
+                          </UncontrolledTooltip>
+                          <Progress
+                            className="usage-progress"
+                            max={100}
+                            multi={true}
+                            tag="div"
+                            value={0}
+                          >
+                            <div
+                              className="usage-progress progress"
+                            >
+                              <Progress
+                                bar={true}
+                                color="primary"
+                                max={100}
+                                tag="div"
+                                value={50}
+                              >
+                                <div
+                                  aria-valuemax={100}
+                                  aria-valuemin="0"
+                                  aria-valuenow={50}
+                                  className="progress-bar bg-primary"
+                                  role="progressbar"
+                                  style={
+                                    Object {
+                                      "width": "50%",
+                                    }
+                                  }
+                                />
+                              </Progress>
+                              <Progress
+                                bar={true}
+                                color="danger"
+                                max={100}
+                                tag="div"
+                                value={50}
+                              >
+                                <div
+                                  aria-valuemax={100}
+                                  aria-valuemin="0"
+                                  aria-valuenow={50}
+                                  className="progress-bar bg-danger"
+                                  role="progressbar"
+                                  style={
+                                    Object {
+                                      "width": "50%",
+                                    }
+                                  }
+                                />
+                              </Progress>
+                            </div>
+                          </Progress>
+                          <div>
+                            $
+                            10
+                             extra cost
+                          </div>
+                        </div>
+                      </div>
+                    </Col>
+                    <Col
+                      sm="3"
+                      tag="div"
+                      widths={
+                        Array [
+                          "xs",
+                          "sm",
+                          "md",
+                          "lg",
+                          "xl",
+                        ]
+                      }
+                    >
+                      <div
+                        className="col col-sm-3"
+                      >
+                        <div>
+                          <div
+                            className="usage-numbers"
+                          >
+                            0
+                            /
+                            5
+                             
+                            <Link
+                              onlyActiveOnIndex={false}
+                              style={Object {}}
+                              to="/app/settings/integrations"
+                            >
+                              <a
+                                onClick={[Function]}
+                                style={Object {}}
+                              >
+                                integrations
+                              </a>
+                            </Link>
+                             
+                            <a
+                              id="integrations-consumed"
+                            >
+                              <i
+                                className="material-icons text-muted"
+                              >
+                                info_outline
+                              </i>
+                            </a>
+                            <UncontrolledTooltip
+                              target="integrations-consumed"
+                            >
+                              <Tooltip
+                                autohide={true}
+                                delay={
+                                  Object {
+                                    "hide": 250,
+                                    "show": 0,
+                                  }
+                                }
+                                isOpen={false}
+                                placement="top"
+                                placementPrefix="bs-tooltip"
+                                target="integrations-consumed"
+                                toggle={[Function]}
+                              />
+                            </UncontrolledTooltip>
+                          </div>
+                          <Progress
+                            className="usage-numbers"
+                            max={100}
+                            multi={true}
+                            tag="div"
+                            value={0}
+                          >
+                            <div
+                              className="usage-numbers progress"
+                            >
+                              <Progress
+                                bar={true}
+                                color="primary"
+                                max={100}
+                                tag="div"
+                                value={100}
+                              >
+                                <div
+                                  aria-valuemax={100}
+                                  aria-valuemin="0"
+                                  aria-valuenow={100}
+                                  className="progress-bar bg-primary"
+                                  role="progressbar"
+                                  style={
+                                    Object {
+                                      "width": "100%",
+                                    }
+                                  }
+                                />
+                              </Progress>
+                            </div>
+                          </Progress>
+                        </div>
+                      </div>
+                    </Col>
+                    <Col
+                      className="plan-usage-reset"
+                      sm="3"
+                      tag="div"
+                      widths={
+                        Array [
+                          "xs",
+                          "sm",
+                          "md",
+                          "lg",
+                          "xl",
+                        ]
+                      }
+                    >
+                      <div
+                        className="plan-usage-reset col col-sm-3"
+                      >
+                        <div>
+                          <strong>
+                            Usage reset on:
+                          </strong>
+                        </div>
+                        <div>
+                          Oct 11
+                        </div>
+                      </div>
+                    </Col>
+                    <Col
+                      className="plan-button"
+                      sm="3"
+                      tag="div"
+                      widths={
+                        Array [
+                          "xs",
+                          "sm",
+                          "md",
+                          "lg",
+                          "xl",
+                        ]
+                      }
+                    >
+                      <div
+                        className="plan-button col col-sm-3"
+                      >
+                        <Button
+                          color="secondary"
+                          onClick={[Function]}
+                          tag="button"
+                        >
+                          <button
+                            className="btn btn-secondary"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            Update plan
+                          </button>
+                        </Button>
+                      </div>
+                    </Col>
+                  </div>
+                </Row>
+              </div>
+            </CardBody>
+          </div>
+        </Card>
       </div>
-    </Row>
+    </CardGroup>
     <p>
       If you have any questions or if you want to unsubscribe, please contact us at 
       <a
@@ -147,6 +420,21 @@ exports[`BillingUsage component should display price 1`] = `
 
 exports[`BillingUsage component should load with empty props 1`] = `
 <BillingUsage
+  activeIntegrations={
+    Immutable.List [
+    ]
+  }
+  currentPlan={
+    Immutable.Map {
+      free_tickets: 10,
+      integrations: 5,
+    }
+  }
+  currentSubscription={
+    Immutable.Map {
+      created_datetime: "2018-01-01T10:10:10.480Z",
+    }
+  }
   currentUsage={
     Immutable.Map {
       meta: Immutable.Map {
@@ -158,84 +446,329 @@ exports[`BillingUsage component should load with empty props 1`] = `
   fetchCurrentUsage={[Function]}
 >
   <div
-    className="mb-4"
+    className="mb-5"
   >
     <h4>
-      Extra tickets cost:
-       
-      <small
-        className="text-faded"
+      <i
+        className="material-icons"
       >
-        Oct 10
-         - 
-        Oct 11
-      </small>
+        insert_chart
+      </i>
+       Usage & Plans
     </h4>
-    <Row
+    <CardGroup
       className="mb-2"
       tag="div"
     >
       <div
-        className="mb-2 row"
+        className="mb-2 card-group"
       >
-        <Col
-          sm="4"
+        <Card
+          className="current-plan undefined"
           tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
         >
           <div
-            className="col col-sm-4"
+            className="current-plan undefined card"
           >
-            <CardGroup
+            <CardBody
               tag="div"
             >
               <div
-                className="card-group"
+                className="card-body"
               >
-                <Card
-                  block={true}
-                  className="text-center"
-                  tag="div"
-                >
-                  <div
-                    className="text-center card card-block"
-                  >
-                    <h3 />
-                    <div>
-                      tickets
-                    </div>
-                  </div>
-                </Card>
-                <Card
-                  block={true}
-                  className="text-center"
-                  tag="div"
-                >
-                  <div
-                    className="text-center card card-block"
-                  >
-                    <h3>
-                      $
-                    </h3>
-                    <div>
-                      cost
-                    </div>
-                  </div>
-                </Card>
+                <h4>
+                  undefined Plan
+                </h4>
+                <div>
+                  Your current subscription started on 
+                  <strong>
+                    Jan 01
+                  </strong>
+                  .
+                </div>
               </div>
-            </CardGroup>
+            </CardBody>
           </div>
-        </Col>
+        </Card>
+        <Card
+          className="text-center"
+          tag="div"
+        >
+          <div
+            className="text-center card"
+          >
+            <CardBody
+              tag="div"
+            >
+              <div
+                className="card-body"
+              >
+                <Row
+                  tag="div"
+                >
+                  <div
+                    className="row"
+                  >
+                    <Col
+                      sm="3"
+                      tag="div"
+                      widths={
+                        Array [
+                          "xs",
+                          "sm",
+                          "md",
+                          "lg",
+                          "xl",
+                        ]
+                      }
+                    >
+                      <div
+                        className="col col-sm-3"
+                      >
+                        <div>
+                          <div
+                            className="usage-numbers"
+                          >
+                            10
+                            /
+                            0
+                             tickets
+                             
+                            <a
+                              id="current-period"
+                            >
+                              <i
+                                className="material-icons text-muted"
+                              >
+                                info_outline
+                              </i>
+                            </a>
+                          </div>
+                          <UncontrolledTooltip
+                            target="current-period"
+                          >
+                            <Tooltip
+                              autohide={true}
+                              delay={
+                                Object {
+                                  "hide": 250,
+                                  "show": 0,
+                                }
+                              }
+                              isOpen={false}
+                              placement="top"
+                              placementPrefix="bs-tooltip"
+                              target="current-period"
+                              toggle={[Function]}
+                            />
+                          </UncontrolledTooltip>
+                          <Progress
+                            className="usage-progress"
+                            max={100}
+                            multi={true}
+                            tag="div"
+                            value={0}
+                          >
+                            <div
+                              className="usage-progress progress"
+                            >
+                              <Progress
+                                bar={true}
+                                color="primary"
+                                max={100}
+                                tag="div"
+                                value={100}
+                              >
+                                <div
+                                  aria-valuemax={100}
+                                  aria-valuemin="0"
+                                  aria-valuenow={100}
+                                  className="progress-bar bg-primary"
+                                  role="progressbar"
+                                  style={
+                                    Object {
+                                      "width": "100%",
+                                    }
+                                  }
+                                />
+                              </Progress>
+                            </div>
+                          </Progress>
+                          <div>
+                            $
+                            0
+                             extra cost
+                          </div>
+                        </div>
+                      </div>
+                    </Col>
+                    <Col
+                      sm="3"
+                      tag="div"
+                      widths={
+                        Array [
+                          "xs",
+                          "sm",
+                          "md",
+                          "lg",
+                          "xl",
+                        ]
+                      }
+                    >
+                      <div
+                        className="col col-sm-3"
+                      >
+                        <div>
+                          <div
+                            className="usage-numbers"
+                          >
+                            0
+                            /
+                            5
+                             
+                            <Link
+                              onlyActiveOnIndex={false}
+                              style={Object {}}
+                              to="/app/settings/integrations"
+                            >
+                              <a
+                                onClick={[Function]}
+                                style={Object {}}
+                              >
+                                integrations
+                              </a>
+                            </Link>
+                             
+                            <a
+                              id="integrations-consumed"
+                            >
+                              <i
+                                className="material-icons text-muted"
+                              >
+                                info_outline
+                              </i>
+                            </a>
+                            <UncontrolledTooltip
+                              target="integrations-consumed"
+                            >
+                              <Tooltip
+                                autohide={true}
+                                delay={
+                                  Object {
+                                    "hide": 250,
+                                    "show": 0,
+                                  }
+                                }
+                                isOpen={false}
+                                placement="top"
+                                placementPrefix="bs-tooltip"
+                                target="integrations-consumed"
+                                toggle={[Function]}
+                              />
+                            </UncontrolledTooltip>
+                          </div>
+                          <Progress
+                            className="usage-numbers"
+                            max={100}
+                            multi={true}
+                            tag="div"
+                            value={0}
+                          >
+                            <div
+                              className="usage-numbers progress"
+                            >
+                              <Progress
+                                bar={true}
+                                color="primary"
+                                max={100}
+                                tag="div"
+                                value={100}
+                              >
+                                <div
+                                  aria-valuemax={100}
+                                  aria-valuemin="0"
+                                  aria-valuenow={100}
+                                  className="progress-bar bg-primary"
+                                  role="progressbar"
+                                  style={
+                                    Object {
+                                      "width": "100%",
+                                    }
+                                  }
+                                />
+                              </Progress>
+                            </div>
+                          </Progress>
+                        </div>
+                      </div>
+                    </Col>
+                    <Col
+                      className="plan-usage-reset"
+                      sm="3"
+                      tag="div"
+                      widths={
+                        Array [
+                          "xs",
+                          "sm",
+                          "md",
+                          "lg",
+                          "xl",
+                        ]
+                      }
+                    >
+                      <div
+                        className="plan-usage-reset col col-sm-3"
+                      >
+                        <div>
+                          <strong>
+                            Usage reset on:
+                          </strong>
+                        </div>
+                        <div>
+                          Oct 11
+                        </div>
+                      </div>
+                    </Col>
+                    <Col
+                      className="plan-button"
+                      sm="3"
+                      tag="div"
+                      widths={
+                        Array [
+                          "xs",
+                          "sm",
+                          "md",
+                          "lg",
+                          "xl",
+                        ]
+                      }
+                    >
+                      <div
+                        className="plan-button col col-sm-3"
+                      >
+                        <Button
+                          color="secondary"
+                          onClick={[Function]}
+                          tag="button"
+                        >
+                          <button
+                            className="btn btn-secondary"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            Update plan
+                          </button>
+                        </Button>
+                      </div>
+                    </Col>
+                  </div>
+                </Row>
+              </div>
+            </CardBody>
+          </div>
+        </Card>
       </div>
-    </Row>
+    </CardGroup>
     <p>
       If you have any questions or if you want to unsubscribe, please contact us at 
       <a

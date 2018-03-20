@@ -10,6 +10,15 @@ exports[`InputField should render a basic text input 1`] = `
     className="control-label"
     htmlFor="id-input-2"
     tag="label"
+    widths={
+      Array [
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+      ]
+    }
   >
     label
   </Label>
@@ -21,7 +30,6 @@ exports[`InputField should render a basic text input 1`] = `
       id="id-input-2"
       onChange={[Function]}
       placeholder="placeholder"
-      tag="p"
       type="text"
       value="value"
     />
@@ -42,7 +50,6 @@ exports[`InputField should render a help text 1`] = `
       className=""
       id="id-input-5"
       onChange={[Function]}
-      tag="p"
       type="text"
       value="value"
     />
@@ -70,7 +77,6 @@ exports[`InputField should render a hidden text input 1`] = `
       hidden={true}
       id="id-input-9"
       onChange={[Function]}
-      tag="p"
       type="text"
       value="value"
     />
@@ -80,7 +86,7 @@ exports[`InputField should render a hidden text input 1`] = `
 
 exports[`InputField should render a required text input 1`] = `
 <FormGroup
-  className="undefined"
+  className="required"
   color=""
   tag="div"
 >
@@ -92,7 +98,6 @@ exports[`InputField should render a required text input 1`] = `
       id="id-input-3"
       onChange={[Function]}
       required={true}
-      tag="p"
       type="text"
       value="value"
     />
@@ -113,14 +118,17 @@ exports[`InputField should render a text input with a right addon 1`] = `
       className=""
       id="id-input-7"
       onChange={[Function]}
-      tag="p"
       type="text"
       value="value"
     />
     <span
-      className="input-group-addon"
+      className="input-group-append"
     >
-      @rightaddon.io
+      <span
+        className="input-group-text"
+      >
+        @rightaddon.io
+      </span>
     </span>
   </div>
 </FormGroup>
@@ -139,6 +147,7 @@ exports[`InputField should render a text input with an onChange handler, and cal
   >
     <div
       className="form-group"
+      color=""
     >
       <div
         className=""
@@ -147,7 +156,6 @@ exports[`InputField should render a text input with an onChange handler, and cal
           className=""
           id="id-input-8"
           onChange={[Function]}
-          tag="p"
           type="text"
           value="value"
         >
@@ -167,7 +175,7 @@ exports[`InputField should render a text input with an onChange handler, and cal
 
 exports[`InputField should render an inline required text input 1`] = `
 <FormGroup
-  className="undefined d-inline-block"
+  className="required d-inline-block"
   color=""
   tag="div"
 >
@@ -179,7 +187,6 @@ exports[`InputField should render an inline required text input 1`] = `
       id="id-input-6"
       onChange={[Function]}
       required={true}
-      tag="p"
       type="text"
       value="value"
     />
@@ -200,7 +207,6 @@ exports[`InputField should render an inline text input 1`] = `
       className=""
       id="id-input-4"
       onChange={[Function]}
-      tag="p"
       type="text"
       value="value"
     />
@@ -221,7 +227,6 @@ exports[`InputField should render the input with an error 1`] = `
       className="form-control-danger"
       id="id-input-10"
       onChange={[Function]}
-      tag="p"
       type="text"
       value="value"
     />

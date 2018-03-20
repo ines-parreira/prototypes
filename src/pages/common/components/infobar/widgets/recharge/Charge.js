@@ -3,6 +3,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {fromJS} from 'immutable'
 import {
     Badge,
+    CardBody,
 } from 'reactstrap'
 
 import _lowerCase from 'lodash/lowerCase'
@@ -127,7 +128,7 @@ class BeforeContent extends React.Component { // eslint-disable-line
                     Object.keys(chargeSubscriptions).map((k) => {
                         return (
                             <div className="card" key={k}>
-                                <div className="header clearfix card-block">
+                                <CardBody className="header clearfix">
                                     <a target="_blank">
                                         <span>🔄 Subscription #{k}</span>
                                     </a>
@@ -135,14 +136,14 @@ class BeforeContent extends React.Component { // eslint-disable-line
                                         isEditing={isEditing}
                                         source={fromJS({charge_id: source.get('id'), subscription_id: k})}
                                     />
-                                </div>
-                                <div className="content card-block">
+                                </CardBody>
+                                <CardBody className="content">
                                 {
                                     chargeSubscriptions[k].map((item) => {
                                         return <span key={`${k}-${item.id}`}>{item.title} ({item.quantity})</span>
                                     })
                                 }
-                                </div>
+                                </CardBody>
                             </div>
                         )
                     })

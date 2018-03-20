@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react'
 import {
     DropdownMenu,
     DropdownItem,
+    DropdownToggle,
     UncontrolledDropdown,
 } from 'reactstrap'
 import classnames from 'classnames'
@@ -175,41 +176,43 @@ export default class SelectField extends Component {
 
         return (
             <div style={style}>
-                <div>
-                    <div
-                        className={`${css.select} dropdown-toggle`}
-                        onClick={this._toggleDropdown}
-                    >
-                        <span
-                            style={{
-                                minWidth: selectMinWidth,
-                                // hide the label when the input is filled
-                                // to keep the current width of the select
-                                opacity: input ? 0 : 1
-                            }}
-                            className={classnames(css.label, {
-                                [css.placeholder]: !label
-                            })}
-                        >
-                            {label || placeholder}
-                        </span>
-                        <input
-                            style={{
-                                minWidth: selectMinWidth
-                            }}
-                            className={css.input}
-                            ref="input"
-                            value={input}
-                            onChange={this._onSearchChange}
-                            onKeyDown={this._onSearchKeyDown}
-                            type="text"
-                        />
-                    </div>
-                </div>
                 <UncontrolledDropdown
                     toggle={this._toggleDropdown}
                     isOpen={optionsOpen}
                 >
+                    <DropdownToggle tag="div" data-toggle="dropdown">
+                        <div>
+                            <div
+                                className={`${css.select} dropdown-toggle`}
+                                onClick={this._toggleDropdown}
+                            >
+                                <span
+                                    style={{
+                                        minWidth: selectMinWidth,
+                                        // hide the label when the input is filled
+                                        // to keep the current width of the select
+                                        opacity: input ? 0 : 1
+                                    }}
+                                    className={classnames(css.label, {
+                                        [css.placeholder]: !label
+                                    })}
+                                >
+                                    {label || placeholder}
+                                </span>
+                                <input
+                                    style={{
+                                        minWidth: selectMinWidth
+                                    }}
+                                    className={css.input}
+                                    ref="input"
+                                    value={input}
+                                    onChange={this._onSearchChange}
+                                    onKeyDown={this._onSearchKeyDown}
+                                    type="text"
+                                />
+                            </div>
+                        </div>
+                    </DropdownToggle>
                     <DropdownMenu
                         className={css.options}
                     >

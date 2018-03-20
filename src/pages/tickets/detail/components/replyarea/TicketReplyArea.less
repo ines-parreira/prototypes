@@ -1,0 +1,45 @@
+@import '~css/new/colors';
+@import '~css/new/mixins';
+
+:local .component {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 170px;
+
+  &.macrosVisible {
+    height: 240px;
+  }
+
+  @media @mobiles {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+
+  .content {
+    position: relative;
+    display: flex;
+    flex: 1;
+  }
+
+  .search {
+    position: relative;
+    height: 40px;
+    border-bottom: 1px solid @darkQuartz;
+
+    input {
+      height: 100%;
+      border: 0;
+      padding-left: 3rem;
+    }
+  }
+
+  .searchIcon {
+    position: absolute;
+    padding: .5rem;
+    pointer-events: none;
+
+    line-height: inherit;
+  }
+}

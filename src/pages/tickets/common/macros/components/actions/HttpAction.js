@@ -90,7 +90,7 @@ export default class HttpAction extends React.Component {
                     required
                     form="macro_form"
                 />
-                <Row>
+                <Row className="form-row">
                     <Col xs="3">
                         <InputField
                             type="select"

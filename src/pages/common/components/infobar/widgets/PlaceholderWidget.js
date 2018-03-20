@@ -6,10 +6,7 @@ import _capitalize from 'lodash/capitalize'
 
 import type {Map} from 'immutable'
 
-import {
-    Card,
-    CardBlock
-} from 'reactstrap'
+import {Card, CardBody} from 'reactstrap'
 
 import * as integrationSelectors from './../../../../../state/integrations/selectors'
 
@@ -58,12 +55,14 @@ export default class PlaceholderWidget extends React.Component<Props> {
 
         return (
             <Card className={classnames(css.component, css.placeholder, 'wrapper transparent draggable')}>
-                <CardBlock className="clearfix">
+                <CardBody className="clearfix">
                     <span className="tools">
                         <i
-                            className="fa fa-fw fa-close text-danger clickable"
+                            className="material-icons text-danger clickable"
                             onClick={this._deleteWidget}
-                        />
+                        >
+                            close
+                        </i>
                     </span>
                     <h5 className={classnames(css.title)}>
                     {
@@ -72,7 +71,7 @@ export default class PlaceholderWidget extends React.Component<Props> {
                             : `Widget for ${_capitalize(this._renderWidgetType(widget.get('type')))} data`
                     }
                     </h5>
-                </CardBlock>
+                </CardBody>
             </Card>
         )
     }

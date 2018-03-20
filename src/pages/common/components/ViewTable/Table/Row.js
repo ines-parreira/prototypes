@@ -58,7 +58,7 @@ class Row extends React.Component<Props> {
                 })}
             >
                 <td
-                    className="cell-wrapper cell-short clickable hidden-sm-down"
+                    className="cell-wrapper cell-short clickable d-none d-md-table-cell"
                     onClick={this._toggleSelection}
                 >
                     {
@@ -68,7 +68,7 @@ class Row extends React.Component<Props> {
                                 className={css.viewers}
                                 title={viewsUtils.agentsViewingMessage(agentsViewing)}
                             >
-                                <i className="fa fa-fw fa-eye" />
+                                <i className="material-icons">remove_red_eye</i>
                             </div>
                         )
                     }

@@ -1,10 +1,13 @@
-@import "../../../../../css/new/colors";
+@import "~css/new/colors";
 
 :local .component {
   position: relative;
-  overflow: hidden;
-  background: darken(@blue, 3%);
-  border-radius: 5px;
+  background: @purple;
+
+  &,
+  .gravatar {
+    border-radius: 2px !important;
+  }
 
   .gravatar,
   .initials {
@@ -17,8 +20,9 @@
     align-items: center;
     justify-content: center;
 
-    color: #fff;
-    font-size: 21px;
+    color: lighten(@purple, 20%);
+    font-size: 19px;
+    font-weight: bold;
     text-align: center;
   }
 
@@ -26,5 +30,16 @@
     position: absolute;
     top: 0;
     left: 0;
+  }
+
+  .badge {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: solid 2px #1d365c;
+    position: relative;
+    bottom: 9px;
+    right: -28px;
+    z-index: 2;
   }
 }

@@ -71,10 +71,10 @@ export default class SetResponseTextAction extends React.Component {
             return (
                 <UncontrolledButtonDropdown key={index}>
                     <DropdownToggle
-                        color="link"
+                        color="secondary"
                         caret
                         type="button"
-                        style={{color: 'inherit'}}
+                        className="dropdown-toggle btn-sm mr-2"
                     >
                         {category.name}
                     </DropdownToggle>

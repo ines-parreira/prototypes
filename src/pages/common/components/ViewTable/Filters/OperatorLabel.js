@@ -16,9 +16,9 @@ export default class OperatorLabel extends React.Component {
 
         return (
             <Button
-                className="OperatorLabel btn-frozen"
+                className="OperatorLabel btn-sm btn-frozen"
                 tag="div"
-                color="warning"
+                color="clue"
             >
                 {operatorLabels[operator]}
             </Button>

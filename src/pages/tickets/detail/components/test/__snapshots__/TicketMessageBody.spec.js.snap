@@ -20,7 +20,7 @@ exports[`components TicketMessageBody html by default 1`] = `
   }
 >
   <div
-    className="ticket-message-body"
+    className="component bodyText"
   >
     <div>
       <div
@@ -55,7 +55,7 @@ exports[`components TicketMessageBody linkify body_text 1`] = `
   }
 >
   <div
-    className="ticket-message-body ticket-message-body-text"
+    className="component"
   >
     <div>
       <div
@@ -125,7 +125,7 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
   }
 >
   <div
-    className="ticket-message-body ticket-message-body-text"
+    className="component"
   >
     <div>
       <div
@@ -173,7 +173,9 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
         ]
       }
     >
-      <div>
+      <div
+        className="carousel"
+      >
         <Slider
           arrows={true}
           infinite={false}
@@ -338,7 +340,7 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
                     }
                   >
                     <div
-                      className="slick-slide slick-active"
+                      className="slick-slide slick-active carouselCardContainer"
                       data-index={0}
                       onClick={[Function]}
                       style={
@@ -350,37 +352,39 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
                       tabIndex="-1"
                     >
                       <Card
+                        className="carouselCard"
                         tag="div"
                       >
                         <div
-                          className="card"
+                          className="carouselCard card"
                         >
                           <CardImg
+                            className="carouselImage"
                             src="https://cdn.shopify.com/s/files/1/1632/0429/products"
                             tag="img"
                             top={true}
                             width="100%"
                           >
                             <img
-                              className="card-img-top"
+                              className="carouselImage card-img-top"
                               src="https://cdn.shopify.com/s/files/1/1632/0429/products"
                               width="100%"
                             />
                           </CardImg>
-                          <CardBlock
+                          <CardBody
                             tag="div"
                           >
                             <div
-                              className="card-block"
+                              className="card-body"
                             >
                               <CardTitle
-                                tag="h4"
+                                tag="h5"
                               >
-                                <h4
+                                <h5
                                   className="card-title"
                                 >
                                   Fixie bike
-                                </h4>
+                                </h5>
                               </CardTitle>
                               <CardSubtitle
                                 tag="h6"
@@ -392,14 +396,15 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
                                 </h6>
                               </CardSubtitle>
                             </div>
-                          </CardBlock>
+                          </CardBody>
                           <ButtonGroup
+                            className="buttons"
                             role="group"
                             tag="div"
                             vertical={true}
                           >
                             <div
-                              className="btn-group-vertical"
+                              className="buttons btn-group-vertical"
                               role="group"
                             >
                               <Button
@@ -508,7 +513,7 @@ exports[`components TicketMessageBody use stripped_html if available 1`] = `
   }
 >
   <div
-    className="ticket-message-body"
+    className="component bodyText"
   >
     <div>
       <div
@@ -518,15 +523,18 @@ exports[`components TicketMessageBody use stripped_html if available 1`] = `
           }
         }
       />
-      <div
-        className="btn-more"
+      <Ellipsis
         onClick={[Function]}
         title="Show full content"
       >
-        <i
-          className="fa fa-fw fa-ellipsis-h"
-        />
-      </div>
+        <div
+          className="btn-more"
+          onClick={[Function]}
+          title="Show full content"
+        >
+          …
+        </div>
+      </Ellipsis>
     </div>
   </div>
 </TicketMessageBody>
@@ -552,7 +560,7 @@ exports[`components TicketMessageBody use text when no html 1`] = `
   }
 >
   <div
-    className="ticket-message-body ticket-message-body-text"
+    className="component"
   >
     <div>
       <div
@@ -582,7 +590,7 @@ exports[`components TicketMessageBody with empty props 1`] = `
   }
 >
   <div
-    className="ticket-message-body ticket-message-body-text"
+    className="component"
   >
     <div>
       <div

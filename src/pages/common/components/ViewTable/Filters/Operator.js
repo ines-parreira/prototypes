@@ -32,6 +32,7 @@ export default class Operator extends React.Component {
                 style={{width: 'auto'}}
                 type="select"
                 value={selected}
+                bsSize="sm"
                 onChange={e => onChange(this.props.index, e.target.value)}
             >
                 {

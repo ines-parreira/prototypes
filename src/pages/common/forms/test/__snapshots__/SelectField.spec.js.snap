@@ -105,44 +105,54 @@ exports[`SelectField should render a select input with custom props 1`] = `
     }
   }
 >
-  <div>
-    <div
-      className="undefined dropdown-toggle"
-      onClick={[Function]}
-    >
-      <span
-        className=""
-        style={
-          Object {
-            "minWidth": 10,
-            "opacity": 1,
-          }
-        }
-      >
-        First
-      </span>
-      <input
-        onChange={[Function]}
-        onKeyDown={[Function]}
-        style={
-          Object {
-            "minWidth": 10,
-          }
-        }
-        type="text"
-        value=""
-      />
-    </div>
-  </div>
   <UncontrolledDropdown
     isOpen={false}
     toggle={[Function]}
   >
+    <DropdownToggle
+      aria-haspopup={true}
+      color="secondary"
+      data-toggle="dropdown"
+      tag="div"
+    >
+      <div>
+        <div
+          className="select dropdown-toggle"
+          onClick={[Function]}
+        >
+          <span
+            className="label"
+            style={
+              Object {
+                "minWidth": 10,
+                "opacity": 1,
+              }
+            }
+          >
+            First
+          </span>
+          <input
+            className="input"
+            onChange={[Function]}
+            onKeyDown={[Function]}
+            style={
+              Object {
+                "minWidth": 10,
+              }
+            }
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </DropdownToggle>
     <DropdownMenu
+      className="options"
+      flip={true}
       tag="div"
     >
       <DropdownItem
-        className="undefined"
+        className="option option--focused"
         onClick={[Function]}
         onMouseEnter={[Function]}
         tag="button"
@@ -160,40 +170,50 @@ exports[`SelectField should render a select input with default props 1`] = `
 <div
   style={Object {}}
 >
-  <div>
-    <div
-      className="undefined dropdown-toggle"
-      onClick={[Function]}
-    >
-      <span
-        className="undefined"
-        style={
-          Object {
-            "minWidth": 10,
-            "opacity": 1,
-          }
-        }
-      >
-        Select an option
-      </span>
-      <input
-        onChange={[Function]}
-        onKeyDown={[Function]}
-        style={
-          Object {
-            "minWidth": 10,
-          }
-        }
-        type="text"
-        value=""
-      />
-    </div>
-  </div>
   <UncontrolledDropdown
     isOpen={false}
     toggle={[Function]}
   >
+    <DropdownToggle
+      aria-haspopup={true}
+      color="secondary"
+      data-toggle="dropdown"
+      tag="div"
+    >
+      <div>
+        <div
+          className="select dropdown-toggle"
+          onClick={[Function]}
+        >
+          <span
+            className="label placeholder"
+            style={
+              Object {
+                "minWidth": 10,
+                "opacity": 1,
+              }
+            }
+          >
+            Select an option
+          </span>
+          <input
+            className="input"
+            onChange={[Function]}
+            onKeyDown={[Function]}
+            style={
+              Object {
+                "minWidth": 10,
+              }
+            }
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </DropdownToggle>
     <DropdownMenu
+      className="options"
+      flip={true}
       tag="div"
     >
       <DropdownItem

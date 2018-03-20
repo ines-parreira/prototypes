@@ -66,7 +66,6 @@ exports[`ast widgets IntegrationSelect should render a loading imput (no integra
 <Input
   placeholder="Loading integrations..."
   readOnly={true}
-  tag="p"
   type="text"
 />
 `;

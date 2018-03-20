@@ -12,12 +12,15 @@ exports[`FileField should display loading when loading 1`] = `
     <div
       className="d-flex align-center"
     >
-      <div>
+      <div
+        className="preview"
+      >
         <img
           src="value"
         />
       </div>
       <Button
+        className="label"
         color="secondary"
         disabled={true}
         tag="label"
@@ -33,7 +36,6 @@ exports[`FileField should display loading when loading 1`] = `
           hidden={true}
           id="id-input-5"
           onChange={[Function]}
-          tag="p"
           type="file"
         />
       </Button>
@@ -55,6 +57,7 @@ exports[`FileField should not render preview 1`] = `
       className="d-flex align-center"
     >
       <Button
+        className="label"
         color="secondary"
         disabled={false}
         tag="label"
@@ -68,7 +71,6 @@ exports[`FileField should not render preview 1`] = `
           id="id-input-4"
           onChange={[Function]}
           previewUrl="url"
-          tag="p"
           type="file"
         />
       </Button>
@@ -89,12 +91,15 @@ exports[`FileField should render a basic file input 1`] = `
     <div
       className="d-flex align-center"
     >
-      <div>
+      <div
+        className="preview"
+      >
         <img
           src="value"
         />
       </div>
       <Button
+        className="label"
         color="secondary"
         disabled={false}
         tag="label"
@@ -107,7 +112,6 @@ exports[`FileField should render a basic file input 1`] = `
           hidden={true}
           id="id-input-2"
           onChange={[Function]}
-          tag="p"
           type="file"
         />
       </Button>
@@ -128,12 +132,15 @@ exports[`FileField should render preview 1`] = `
     <div
       className="d-flex align-center"
     >
-      <div>
+      <div
+        className="preview"
+      >
         <img
           src="value"
         />
       </div>
       <Button
+        className="label"
         color="secondary"
         disabled={false}
         tag="label"
@@ -147,7 +154,6 @@ exports[`FileField should render preview 1`] = `
           id="id-input-3"
           onChange={[Function]}
           previewUrl="url"
-          tag="p"
           type="file"
         />
       </Button>

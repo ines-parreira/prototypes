@@ -45,16 +45,16 @@ export default class HeaderCell extends React.Component {
 
     _renderOrderIcon = (isOrderingField = false) => {
         const {orderDirection} = this.props
-        let className = 'fa fa-fw fa-sort'
 
         if (isOrderingField) {
-            className = classnames('fa fa-fw', {
-                'fa-sort-desc': orderDirection === 'desc',
-                'fa-sort-asc': orderDirection === 'asc',
-            })
+            return (
+                <i className="material-icons md-1">
+                    {orderDirection === 'desc' ? 'arrow_drop_down': 'arrow_drop_up'}
+                </i>
+            )
         }
 
-        return <i className={className} />
+        return null
     }
 
     render() {

@@ -42,7 +42,6 @@ class ModalNotification extends React.Component {
         return (
             <Modal
                 isOpen
-                className="MergeUsersModal"
                 size="lg"
                 onClose={this._toggle}
                 dismissible={dismissible}

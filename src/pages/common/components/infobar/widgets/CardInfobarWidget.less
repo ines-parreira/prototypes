@@ -5,7 +5,7 @@
 
   :global {
     .header {
-      padding: 10px 14px !important;
+      padding: 14px !important;
     }
 
     .header .placeholder {
@@ -49,15 +49,13 @@
     .content {
       height: auto;
       opacity: 1;
+
+      font-size: 13px;
     }
 
     .dropdown-icon {
       float: right;
       margin-left: 6px;
-
-      i {
-        width: 11px;
-      }
     }
 
     &,
@@ -82,7 +80,7 @@
     }
 
     .dropdown-icon {
-      transform: rotate(-90deg);
+      transform: rotate(-180deg);
     }
 
     .action-dropdown {
@@ -106,17 +104,10 @@
   }
 
   &:global.wrapper {
-    @wrapper-padding: 12px;
     box-sizing: content-box;
 
-    border-radius: 3px;
-    padding: @wrapper-padding @wrapper-padding 0 @wrapper-padding;
-    margin: 0 -@wrapper-padding;
+    border-radius: 0;
     transition: all .2s linear;
-
-    &:not(:last-child) {
-      margin-bottom: 12px;
-    }
 
     & > .header {
       padding-top: 0 !important;

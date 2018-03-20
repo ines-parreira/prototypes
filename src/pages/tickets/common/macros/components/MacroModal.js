@@ -144,26 +144,37 @@ export default class MacroModal extends React.Component {
             <Modal
                 isOpen={this.props.isOpen}
                 onClose={this._toggle}
-                className="MacroModal"
+                className={css.component}
+                bodyClassName={css.body}
                 size="lg"
-                header={selectionMode ? 'Macros' : 'Manage macros'}
+                header={selectionMode ? 'Macros' : 'Manage Macros'}
                 autoFocus={false}
+                footerClassName={css.footer}
                 footer={
                     <Container fluid>
                         <Row>
                             <Col
                                 xs="3"
-                                className={classnames(css.divider, css.footer)}
+                                className={classnames(css.primaryAction)}
                             >
                                 {
                                     !selectionMode && (
                                         <Button
                                             type="submit"
-                                            color="info"
+                                            color="primary"
                                             onClick={this._addNewMacro}
                                             block
                                         >
-                                            Create macro
+                                            <div className="d-flex">
+                                                <div>
+                                                    <i className="material-icons">
+                                                        add
+                                                    </i>
+                                                </div>
+                                                <div className="flex-grow">
+                                                    Create macro
+                                                </div>
+                                            </div>
                                         </Button>
                                     )
                                 }
@@ -171,7 +182,7 @@ export default class MacroModal extends React.Component {
                             <Col xs="9">
                                 {
                                     selectionMode ? (
-                                        <div className="d-inline-block pull-right">
+                                        <div className="d-inline-block float-right">
                                             <Button
                                                 type="submit"
                                                 color="primary"
@@ -182,21 +193,23 @@ export default class MacroModal extends React.Component {
                                         </div>
                                     ) : (
                                         <div>
-                                            <div className="d-inline-block">
+                                            <div className="d-inline-block float-right">
                                                 {
                                                     isUpdate && (
                                                         <ConfirmButton
-                                                            color="danger"
-                                                            outline
+                                                            color="secondary"
                                                             confirm={this._deleteMacro}
                                                             content={`Do you really want to delete the macro ${this.props.currentMacro.get('name', '')}?`}
                                                         >
+                                                            <i className="material-icons md-2 text-danger mr-2">
+                                                                delete
+                                                            </i>
                                                             Delete macro
                                                         </ConfirmButton>
                                                     )
                                                 }
                                             </div>
-                                            <div className="d-inline-block pull-right">
+                                            <div className="d-inline-block">
                                                 {
                                                     isUpdate ? (
                                                         <form id="macro_form"
@@ -204,7 +217,7 @@ export default class MacroModal extends React.Component {
                                                         >
                                                             <Button
                                                                 type="submit"
-                                                                color="primary"
+                                                                color="success"
                                                             >
                                                                 Update macro
                                                             </Button>
@@ -215,7 +228,7 @@ export default class MacroModal extends React.Component {
                                                         >
                                                             <Button
                                                                 type="submit"
-                                                                color="primary"
+                                                                color="success"
                                                             >
                                                                 Create macro
                                                             </Button>
@@ -234,7 +247,7 @@ export default class MacroModal extends React.Component {
                     <Row>
                         <Col
                             xs="3"
-                            className={css.divider}
+                            className={classnames(css.list, css.content)}
                         >
                             <MacroList
                                 macros={macros}
@@ -243,7 +256,10 @@ export default class MacroModal extends React.Component {
                                 handleClickItem={this._handleClickItem}
                             />
                         </Col>
-                        <Col xs="9">
+                        <Col
+                            xs="9"
+                            className={css.content}
+                        >
                             {
                                 selectionMode ? (
                                     <MacroPreview

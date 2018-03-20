@@ -5,6 +5,8 @@ import _max from 'lodash/max'
 
 import * as layoutSelectors from '../../../../state/layout/selectors'
 
+import css from './Infobar.less'
+
 @connect((state) => ({
     isOpenedPanel: layoutSelectors.isOpenedPanel('infobar')(state),
 }))
@@ -15,6 +17,7 @@ export default class InfobarLayout extends React.Component {
             PropTypes.array
         ]),
         isOpenedPanel: PropTypes.bool.isRequired,
+        className: PropTypes.string,
     }
 
     constructor(props) {
@@ -90,9 +93,9 @@ export default class InfobarLayout extends React.Component {
 
         return (
             <div
-                className={classnames('infobar infobar-panel', {
+                className={classnames(css.component, 'infobar infobar-panel d-print-none', {
                     'hidden-panel': !this.props.isOpenedPanel,
-                })}
+                }, this.props.className)}
                 ref="container"
                 style={style}
             >

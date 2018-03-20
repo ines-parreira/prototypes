@@ -3,7 +3,7 @@ import BarStat from './BarStat'
 import KeyMetricStat from './KeyMetricStat'
 import TableStat from './TableStat'
 import LineStat from './LineStat'
-import {Card, CardBlock} from 'reactstrap'
+import {Card, CardBody} from 'reactstrap'
 
 export default class Stat extends React.Component {
     static propTypes = {
@@ -34,12 +34,12 @@ export default class Stat extends React.Component {
 
         return (
             <Card className="stats-card mb-3">
-                <CardBlock>
+                <CardBody>
                     <h5 className="text-center">{this.props.label}</h5>
                     <div>
                         <Component {...this.props}/>
                     </div>
-                </CardBlock>
+                </CardBody>
             </Card>
         )
     }

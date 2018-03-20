@@ -59,7 +59,7 @@ _merge(defaults, {
             fontSize: 16,
             fontStyle: '600',
             fontColor: 'rgb(41, 43, 44)',
-            fontFamily: '\'Source Sans Pro\', \'Helvetica Neue\', Arial, Helvetica, sans-serif',
+            fontFamily: '\'Inter UI\', \'Helvetica Neue\', Arial, Helvetica, sans-serif',
         },
         legend: {
             labels: {
@@ -67,7 +67,7 @@ _merge(defaults, {
                 fontSize: 13.5,
                 fontStyle: '600',
                 fontColor: 'rgb(97, 97, 97)',
-                fontFamily: '\'Source Sans Pro\', \'Helvetica Neue\', Arial, Helvetica, sans-serif',
+                fontFamily: '\'Inter UI\', \'Helvetica Neue\', Arial, Helvetica, sans-serif',
             }
         },
         tooltips: {

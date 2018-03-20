@@ -1,8 +1,12 @@
 import React, {PropTypes} from 'react'
-import {Button, Table} from 'reactstrap'
 import {fromJS} from 'immutable'
 import moment from 'moment'
 import _xor from 'lodash/xor'
+import {
+    Button,
+    Container,
+    Table
+} from 'reactstrap'
 
 import Modal from '../../../../common/components/Modal'
 import PageHeader from '../../../../common/components/PageHeader'
@@ -69,80 +73,79 @@ export default class RulesView extends React.Component {
         const {actions, rules} = this.props
 
         return (
-            <div>
-                <PageHeader
-                    title="Rules"
-                    icon="tasks"
-                >
+            <div className="full-width">
+                <PageHeader title="Rules">
                     <Button
                         type="submit"
-                        color="primary"
-                        className="pull-right"
+                        color="success"
+                        className="float-right"
                         onClick={this._showForm}
                     >
                         Create new rule
                     </Button>
                 </PageHeader>
 
-                <div className="mb-3">
-                    <p>
-                        Rules provide a way to control the behavior of Gorgias during certain events or perform periodic
-                        tasks.
-                    </p>
-                    <p>
-                        For example you can automatically add a 'refund' tag on a ticket if the subject contains
-                        the text 'refund' or send a satisfaction survey after the ticket was closed for more than 48h.
-                    </p>
-                    <p>
-                        Rules are going to be executed in the order they are sorted by below.
-                    </p>
-                </div>
+                <Container fluid className="page-container">
+                    <div className="mb-3">
+                        <p>
+                            Rules provide a way to control the behavior of Gorgias during certain events or perform periodic
+                            tasks.
+                        </p>
+                        <p>
+                            For example you can automatically add a 'refund' tag on a ticket if the subject contains
+                            the text 'refund' or send a satisfaction survey after the ticket was closed for more than 48h.
+                        </p>
+                        <p>
+                            Rules are going to be executed in the order they are sorted by below.
+                        </p>
+                    </div>
 
-                {
-                    !rules.isEmpty() && (
-                        <div className="rule-category">
-                            <Table hover>
-                                <ReactSortable
-                                    tag="tbody"
-                                    options={{
-                                        sort: true,
-                                        draggable: '.draggable',
-                                        handle: '.drag-handle',
-                                        animation: 150,
-                                    }}
-                                    onChange={this._updateOrder}
-                                >
-                                    {
-                                        rules.map((rule, i) => {
-                                            const id = rule.get('id')
+                    {
+                        !rules.isEmpty() && (
+                            <div className="rule-category">
+                                <Table hover>
+                                    <ReactSortable
+                                        tag="tbody"
+                                        options={{
+                                            sort: true,
+                                            draggable: '.draggable',
+                                            handle: '.drag-handle',
+                                            animation: 150,
+                                        }}
+                                        onChange={this._updateOrder}
+                                    >
+                                        {
+                                            rules.map((rule, i) => {
+                                                const id = rule.get('id')
 
-                                            return (
-                                                <RuleRow
-                                                    actions={actions}
-                                                    key={i}
-                                                    rule={rule}
-                                                    toggleOpening={() => this._toggleRuleOpening(id)}
-                                                    isOpen={this.state.openedRules.includes(id)}
-                                                />
-                                            )
-                                        }).toList()
-                                    }
-                                </ReactSortable>
-                            </Table>
-                        </div>
-                    )
-                }
+                                                return (
+                                                    <RuleRow
+                                                        actions={actions}
+                                                        key={i}
+                                                        rule={rule}
+                                                        toggleOpening={() => this._toggleRuleOpening(id)}
+                                                        isOpen={this.state.openedRules.includes(id)}
+                                                    />
+                                                )
+                                            }).toList()
+                                        }
+                                    </ReactSortable>
+                                </Table>
+                            </div>
+                        )
+                    }
 
-                <Modal
-                    header="Create new rule"
-                    isOpen={this.state.showForm}
-                    onClose={this._hideForm}
-                >
-                    <RuleForm
-                        onSubmit={this._handleSubmit}
-                        onCancel={this._hideForm}
-                    />
-                </Modal>
+                    <Modal
+                        header="Create new rule"
+                        isOpen={this.state.showForm}
+                        onClose={this._hideForm}
+                    >
+                        <RuleForm
+                            onSubmit={this._handleSubmit}
+                            onCancel={this._hideForm}
+                        />
+                    </Modal>
+                </Container>
             </div>
         )
     }

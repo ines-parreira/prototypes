@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import _debounce from 'lodash/debounce'
 import {stats as statsConfig} from '../../config/stats'
+import {Container} from 'reactstrap'
 
 import PeriodPicker from './common/PeriodPicker'
 import PageHeader from '../common/components/PageHeader'
@@ -121,9 +122,9 @@ class StatsView extends React.Component {
         const endDatetime = moment(meta.get('end_datetime'))
 
         return (
-            <div className="stats">
+            <div className="stats full-width">
                 <PageHeader title={config.get('name')}>
-                    <div className="d-flex flex-wrap pull-right">
+                    <div className="d-flex flex-wrap float-right">
                         {config.get('filters', []).includes('agents') && (
                             <SearchableSelectField
                                 plural="agents"
@@ -158,25 +159,28 @@ class StatsView extends React.Component {
                         )}
                     </div>
                 </PageHeader>
-                {config.get('stats').map((statName, idx) => {
-                    const isCurrentStatLoading = this.state.loadings[statName]
-                    const stat = stats.get(statName)
 
-                    if (isCurrentStatLoading || !stat) {
-                        return <Loader key={idx}/>
-                    }
+                <Container fluid className="page-container">
+                    {config.get('stats').map((statName, idx) => {
+                        const isCurrentStatLoading = this.state.loadings[statName]
+                        const stat = stats.get(statName)
 
-                    const statConfig = statsConfig.get(statName)
+                        if (isCurrentStatLoading || !stat) {
+                            return <Loader key={idx}/>
+                        }
 
-                    return (
-                        <Stat
-                            key={idx}
-                            config={statConfig}
-                            meta={meta}
-                            {...stat.toObject()}
-                        />
-                    )
-                })}
+                        const statConfig = statsConfig.get(statName)
+
+                        return (
+                            <Stat
+                                key={idx}
+                                config={statConfig}
+                                meta={meta}
+                                {...stat.toObject()}
+                            />
+                        )
+                    })}
+                </Container>
             </div>
         )
     }

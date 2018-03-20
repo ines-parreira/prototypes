@@ -1,14 +1,13 @@
 import React, {PropTypes} from 'react'
-import classnames from 'classnames'
 import {Link, withRouter} from 'react-router'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
-import {Breadcrumb, BreadcrumbItem, Table, Button} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Table, Button, Container} from 'reactstrap'
 
 import NoIntegration from './NoIntegration'
-import {getIntegrationsList, getIconFromType} from '../../../../state/integrations/helpers'
+import {getIntegrationsList} from '../../../../state/integrations/helpers'
 import {notify} from '../../../../state/notifications/actions'
-import {sourceTypeToIcon} from '../../../../config/ticket'
+import PageHeader from '../../../common/components/PageHeader'
 
 /**
  * A generic component to edit integrations of a given type.
@@ -54,7 +53,7 @@ class IntegrationList extends React.Component {
             this.props.notify({
                 status: 'error',
                 message: 'Something went wrong while creating your integration. Please wait a few minutes and ' +
-                    'try again. If the problem persists, contact us at support@gorgias.io.',
+                'try again. If the problem persists, contact us at support@gorgias.io.',
             })
         }
     }
@@ -75,50 +74,33 @@ class IntegrationList extends React.Component {
 
         return (
             <div className="integrations-list">
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link to="/app/integrations">Integrations</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>
-                        {integrationTitle}
-                    </BreadcrumbItem>
-                </Breadcrumb>
-
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                    <h1 className="d-flex align-items-center m-0">
-                        {
-                            integrationConfig.get('image') ? (
-                                    <img
-                                        role="presentation"
-                                        className="mr-3"
-                                        src={getIconFromType(integrationType)}
-                                    />
-                                )
-                                : (
-                                    <i className={classnames('mr-2', sourceTypeToIcon(integrationConfig.get('type')))} />
-                                )
-                        }
-
-                        {integrationTitle}
-                    </h1>
-
+                <PageHeader title={(
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations">Integrations</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>
+                            {integrationTitle}
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                )}>
                     {
                         !this.props.createIntegrationButtonHidden && (
                             <Button
                                 type="submit"
-                                color="primary"
+                                color="success"
                                 onClick={this.onButtonClick}
                             >
                                 {createIntegrationButtonText}
                             </Button>
                         )
                     }
-                </div>
+                </PageHeader>
 
-                {longTypeDescription}
-
-                {
-                    integrations.isEmpty() ? (
+                <Container fluid className="page-container">
+                    <p>{longTypeDescription}</p>
+                    {
+                        integrations.isEmpty() ? (
                             <div className="mt-3">
                                 <NoIntegration
                                     type={integrationType}
@@ -131,11 +113,12 @@ class IntegrationList extends React.Component {
                                 hover
                             >
                                 <tbody>
-                                    {integrations.valueSeq().map(integrationToItemDisplay)}
+                                {integrations.valueSeq().map(integrationToItemDisplay)}
                                 </tbody>
                             </Table>
                         )
-                }
+                    }
+                </Container>
             </div>
         )
     }

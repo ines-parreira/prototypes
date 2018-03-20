@@ -28,8 +28,21 @@ exports[`BillingInvoices component should display invoices 1`] = `
 >
   <div>
     <h4>
-      Invoice history
+      <i
+        className="material-icons"
+      >
+        receipt
+      </i>
+       Payment history
     </h4>
+    <p>
+      The account owner will receive an invoice by email at the start of each billing period.
+      <br />
+      <strong>
+        Note:
+      </strong>
+       PDF invoices will soon be added to this list and the ability to change the billing email address.
+    </p>
     <Table
       responsiveTag="div"
       striped={true}
@@ -41,10 +54,10 @@ exports[`BillingInvoices component should display invoices 1`] = `
         <thead>
           <tr>
             <th>
-              Date
+              Status
             </th>
             <th>
-              Status
+              Date
             </th>
             <th>
               Amount
@@ -56,9 +69,6 @@ exports[`BillingInvoices component should display invoices 1`] = `
         </thead>
         <tbody>
           <tr>
-            <td>
-              June 5, 2017
-            </td>
             <td>
               <Badge
                 color="danger"
@@ -73,6 +83,9 @@ exports[`BillingInvoices component should display invoices 1`] = `
               </Badge>
             </td>
             <td>
+              June 5, 2017
+            </td>
+            <td>
               $10
                
             </td>
@@ -82,9 +95,6 @@ exports[`BillingInvoices component should display invoices 1`] = `
             </td>
           </tr>
           <tr>
-            <td>
-              June 5, 2017
-            </td>
             <td>
               <Badge
                 color="success"
@@ -97,6 +107,9 @@ exports[`BillingInvoices component should display invoices 1`] = `
                   Paid
                 </span>
               </Badge>
+            </td>
+            <td>
+              June 5, 2017
             </td>
             <td>
               $100

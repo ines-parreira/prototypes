@@ -44,7 +44,7 @@ export default class AircallIntegrationList extends React.Component {
                 integrationType="aircall"
                 longTypeDescription={longTypeDescription}
                 integrations={integrations.filter((v) => v.get('type') === 'aircall')}
-                createIntegration={() => browserHistory.push('/app/integrations/aircall/new')}
+                createIntegration={() => browserHistory.push('/app/settings/integrations/aircall/new')}
                 createIntegrationButtonText="Connect Aircall"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}

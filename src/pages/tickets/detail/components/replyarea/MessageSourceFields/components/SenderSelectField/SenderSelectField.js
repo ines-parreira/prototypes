@@ -5,7 +5,9 @@ import css from './SenderSelectField.less'
 
 const SenderSelectField = ({value, onChange, channels}) => (
     <div className={css.field}>
-        <i className={classnames('fa fa-fw fa-caret-down', css.arrow)} />
+        <i className={classnames('material-icons', css.arrow)}>
+            keyboard_arrow_down
+        </i>
         <select
             className={css.select}
             value={value}

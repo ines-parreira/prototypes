@@ -19,7 +19,7 @@ export default class InputField extends FormField {
     static propTypes = Object.assign({
         children: PropTypes.node,
         inline: PropTypes.bool,
-        placeholder: PropTypes.string,
+        placeholder: PropTypes.node,
         type: PropTypes.string.isRequired,
         rightAddon: PropTypes.string
     }, FormField.propTypes)
@@ -113,8 +113,10 @@ export default class InputField extends FormField {
                     {this._getField()}
                     {
                         rightAddon && (
-                            <span className="input-group-addon">
-                                {rightAddon}
+                            <span className="input-group-append">
+                                <span className="input-group-text">
+                                    {rightAddon}
+                                </span>
                             </span>
                         )
                     }

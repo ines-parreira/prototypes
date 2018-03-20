@@ -92,7 +92,7 @@ export default class FacebookIntegrationSetup extends React.Component {
         })
 
         actions.activateFacebookOnboardingPage(data).then(() => actions.fetchIntegrations())
-        browserHistory.push('/app/integrations/facebook')
+        browserHistory.push('/app/settings/integrations/facebook')
     }
 
     _onChange = (integration, value, id, name) => {
@@ -214,10 +214,10 @@ export default class FacebookIntegrationSetup extends React.Component {
             <div>
                 <Breadcrumb>
                     <BreadcrumbItem>
-                        <Link to="/app/integrations">Integrations</Link>
+                        <Link to="/app/settings/integrations">Integrations</Link>
                     </BreadcrumbItem>
                     <BreadcrumbItem>
-                        <Link to="/app/integrations/facebook">Facebook</Link>
+                        <Link to="/app/settings/integrations/facebook">Facebook</Link>
                     </BreadcrumbItem>
                     <BreadcrumbItem active>
                         Facebook Pages setup
@@ -238,7 +238,7 @@ export default class FacebookIntegrationSetup extends React.Component {
                     <div className="mt-3">
                         <Button
                             type="submit"
-                            color="primary"
+                            color="success"
                             className={classNames({
                                 'btn-loading': loading.get('updateIntegration'),
                             })}

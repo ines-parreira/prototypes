@@ -12,8 +12,8 @@ import {
     Button,
     Form,
     Popover,
-    PopoverTitle,
-    PopoverContent, Label,
+    PopoverHeader,
+    PopoverBody, Label,
 } from 'reactstrap'
 
 import type {OptionType, ParameterType} from './types'
@@ -246,6 +246,7 @@ export default class ActionButton extends React.Component<Props, State> {
             return (
                 <InputTag
                     key={parameter.name}
+                    className="mb-2"
                     value={actionParameters[parameter.name]}
                     {...inputAttributes}
                     onChange={(value: string | number | boolean) => {
@@ -305,8 +306,8 @@ export default class ActionButton extends React.Component<Props, State> {
                         ]
                     }}
                 >
-                    <PopoverTitle>{title}</PopoverTitle>
-                    <PopoverContent>
+                    <PopoverHeader>{title}</PopoverHeader>
+                    <PopoverBody>
                         {
                             tooltip ? (
                                 <p className={css.tooltip}>
@@ -339,7 +340,7 @@ export default class ActionButton extends React.Component<Props, State> {
                                 Confirm
                             </Button>
                         </Form>
-                    </PopoverContent>
+                    </PopoverBody>
                 </Popover>
             </Tag>
         )

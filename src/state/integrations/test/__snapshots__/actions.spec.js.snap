@@ -100,7 +100,7 @@ Array [
 ]
 `;
 
-exports[`integrations actions should do some action and redirect correctly on create email success 2`] = `"/app/integrations/email/1/forwarding"`;
+exports[`integrations actions should do some action and redirect correctly on create email success 2`] = `"/app/settings/integrations/email/1/forwarding"`;
 
 exports[`integrations actions should do some action and redirect correctly on create smooch success 1`] = `
 Array [
@@ -117,7 +117,7 @@ Array [
 ]
 `;
 
-exports[`integrations actions should do some action and redirect correctly on create smooch success 2`] = `"/app/integrations/smooch/1/overview"`;
+exports[`integrations actions should do some action and redirect correctly on create smooch success 2`] = `"/app/settings/integrations/smooch/1/overview"`;
 
 exports[`integrations actions should do some action and redirect correctly on create smooch_inside success 1`] = `
 Array [
@@ -134,4 +134,4 @@ Array [
 ]
 `;
 
-exports[`integrations actions should do some action and redirect correctly on create smooch_inside success 2`] = `"/app/integrations/smooch_inside/1/installation"`;
+exports[`integrations actions should do some action and redirect correctly on create smooch_inside success 2`] = `"/app/settings/integrations/smooch_inside/1/installation"`;

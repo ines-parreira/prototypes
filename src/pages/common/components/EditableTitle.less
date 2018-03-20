@@ -1,23 +1,15 @@
-@import "../../../../css/new/mixins";
+@import "~css/new/mixins";
 
 :local .component {
-  width: 100% !important;
-  font-weight: bold !important;
-  transition: all .2s linear !important;
+  transition: all .2s linear;
 
   .not-editable {
-    border-color: transparent !important;
-    padding-left: 0 !important;
+    border-color: transparent;
+    padding-left: 0;
   }
 
   &:global(.form-control-xl) {
-    padding: 8px 14px !important;
-    font-size: 26px !important;
-
-    @media @mobiles {
-      padding: 4px 8px !important;
-      font-size: 20px !important;
-    }
+    padding: 0 8px;
   }
 
   &:not(:hover):not(:focus):not(.edit-mode) {

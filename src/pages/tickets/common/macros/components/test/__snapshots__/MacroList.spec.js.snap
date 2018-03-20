@@ -3,7 +3,7 @@
 exports[`MacroList component should render the macro list 1`] = `
 <div>
   <div
-    className="macro-list p-0"
+    className="macro-list"
   >
     <div
       className="mt-3 mb-2"
@@ -15,10 +15,9 @@ exports[`MacroList component should render the macro list 1`] = `
     >
       <Input
         autoFocus={true}
-        className="shortcuts-enable"
+        className="search shortcuts-enable"
         onChange={[Function]}
         placeholder="Search macros by name, tags or body..."
-        tag="p"
         type="text"
         value=""
       />

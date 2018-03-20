@@ -27,12 +27,12 @@ export const fetchMacros = () => (dispatch: dispatchType): Promise<dispatchType>
 
     return axios.get('/api/macros/')
         .then((json = {}) => json.data)
-        .then(resp => {
+        .then((resp) => {
             dispatch({
                 type: constants.FETCH_MACRO_LIST_SUCCESS,
                 resp
             })
-        }, error => {
+        }, (error) => {
             return dispatch({
                 type: constants.FETCH_MACRO_LIST_ERROR,
                 error,
@@ -41,17 +41,17 @@ export const fetchMacros = () => (dispatch: dispatchType): Promise<dispatchType>
         })
 }
 
-export const createMacro = (macro: Map<*,*>) => (dispatch: dispatchType): Promise<dispatchType> => {
+export const createMacro = (macro: Map<*, *>) => (dispatch: dispatchType): Promise<dispatchType> => {
     return axios.post('/api/macros/', macro.delete('id').toJS())
         .then((json = {}) => json.data)
-        .then(resp => {
+        .then((resp) => {
             dispatch(notify({
                 status: 'success',
                 message: 'Macro created'
             }))
 
             return Promise.resolve(resp)
-        }, error => {
+        }, (error) => {
             return dispatch({
                 type: constants.CREATE_MACRO_ERROR,
                 error,
@@ -60,17 +60,17 @@ export const createMacro = (macro: Map<*,*>) => (dispatch: dispatchType): Promis
         })
 }
 
-export const updateMacro = (macro: Map<*,*>) => (dispatch: dispatchType): Promise<dispatchType> => {
+export const updateMacro = (macro: Map<*, *>) => (dispatch: dispatchType): Promise<dispatchType> => {
     return axios.put(`/api/macros/${macro.get('id')}/`, macro.toJS())
         .then((json = {}) => json.data)
-        .then(resp => {
+        .then((resp) => {
             dispatch(notify({
                 status: 'success',
                 message: 'Macro updated'
             }))
 
             return Promise.resolve(resp)
-        }, error => {
+        }, (error) => {
             return dispatch({
                 type: constants.UPDATE_MACRO_ERROR,
                 error,
@@ -82,14 +82,14 @@ export const updateMacro = (macro: Map<*,*>) => (dispatch: dispatchType): Promis
 export const deleteMacro = (macroId: string) => (dispatch: dispatchType): Promise<dispatchType> => {
     return axios.delete(`/api/macros/${macroId}/`)
         .then((json = {}) => json.data)
-        .then(resp => {
+        .then((resp) => {
             dispatch(notify({
                 status: 'success',
                 message: 'Macro deleted'
             }))
 
             return Promise.resolve(resp)
-        }, error => {
+        }, (error) => {
             return dispatch({
                 type: constants.DELETE_MACRO_ERROR,
                 error,

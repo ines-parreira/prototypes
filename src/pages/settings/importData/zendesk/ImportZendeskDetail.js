@@ -3,17 +3,13 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Button,
-    Form
-} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Button, Container, Form} from 'reactstrap'
 
 import InputField from '../../../common/forms/InputField'
 import * as integrationActions from './../../../../state/integrations/actions'
 
 import * as utils from '../../../../utils'
+import PageHeader from '../../../common/components/PageHeader'
 
 @connect(null, {
     createIntegration: integrationActions.createImportIntegration,
@@ -57,62 +53,64 @@ export default class ImportZendeskDetail extends React.Component {
 
     render() {
         return (
-            <div className="integrations-list">
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link to="/app/settings/import-data">Import data</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>
-                        Zendesk import
-                    </BreadcrumbItem>
-                </Breadcrumb>
+            <div className="full-width">
+                <PageHeader title={(
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/import-data">Import data</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>
+                            Zendesk import
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                )}/>
 
-                <h1 className="mb-3">
-                    Zendesk import
-                </h1>
+                <Container fluid className="page-container">
+                    <p>
+                        Gorgias will import (one way) up to 10.000 tickets from your Zendesk account.
+                        <br/>
+                        Note: The import is performed one time only it will not sync your tickets continuously.
+                    </p>
 
-                <p>
-                    This will import up to 10000 tickets from your Zendesk account.
-                </p>
-
-                <Form onSubmit={this._onSubmit}>
-                    <InputField
-                        type="text"
-                        name="domain"
-                        label="Zendesk subdomain"
-                        placeholder={'ex: "acme" for acme.zendesk.com'}
-                        onChange={(value) => this.setState({domain: value})}
-                        required
-                        rightAddon=".zendesk.com"
-                    />
-                    <InputField
-                        type="text"
-                        name="email"
-                        label="Login email"
-                        placeholder="The email address you use to login on your Zendesk"
-                        onChange={(value) => this.setState({email: value})}
-                        required
-                    />
-                    <InputField
-                        type="text"
-                        name="apiKey"
-                        label="API Key"
-                        placeholder=""
-                        onChange={(value) => this.setState({apiKey: value})}
-                        required
-                        help="In your Zendesk, go to Settings > Channels > API, create a new token named Gorgias Import,
+                    <Form onSubmit={this._onSubmit}>
+                        <InputField
+                            type="text"
+                            name="domain"
+                            label="Zendesk subdomain"
+                            placeholder={'ex: "acme" for acme.zendesk.com'}
+                            onChange={(value) => this.setState({domain: value})}
+                            required
+                            rightAddon=".zendesk.com"
+                        />
+                        <InputField
+                            type="text"
+                            name="email"
+                            label="Login email"
+                            placeholder="The email address you use to login on your Zendesk"
+                            onChange={(value) => this.setState({email: value})}
+                            required
+                        />
+                        <InputField
+                            type="text"
+                            name="apiKey"
+                            label="API Key"
+                            placeholder=""
+                            onChange={(value) => this.setState({apiKey: value})}
+                            required
+                            help="In your Zendesk, go to Settings > Channels > API, create a new token named Gorgias Import,
                         and copy/paste it in the field above."
-                    />
+                        />
 
-                    <Button
-                        type="submit"
-                        color="success"
-                        className={classnames({'btn-loading': this.state.isLoading})}
-                        disabled={this.state.isLoading}
-                    >
-                        Start import
-                    </Button>
-                </Form>
+                        <Button
+                            type="submit"
+                            color="success"
+                            className={classnames({'btn-loading': this.state.isLoading})}
+                            disabled={this.state.isLoading}
+                        >
+                            Start import
+                        </Button>
+                    </Form>
+                </Container>
             </div>
         )
     }

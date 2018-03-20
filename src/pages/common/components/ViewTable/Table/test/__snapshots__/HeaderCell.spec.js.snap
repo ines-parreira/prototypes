@@ -470,9 +470,6 @@ exports[`ViewTable::Table::HeaderCell sortable field cell 1`] = `
         <span>
           Created
         </span>
-        <i
-          className="fa fa-fw fa-sort"
-        />
       </div>
     </div>
   </div>

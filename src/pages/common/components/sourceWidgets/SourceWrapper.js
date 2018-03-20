@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {Link, browserHistory, withRouter} from 'react-router'
 import {fromJS} from 'immutable'
-import {Card, CardBlock} from 'reactstrap'
+import {Card, CardBody} from 'reactstrap'
 
 import {areSourcesReady, jsonToWidgets} from '../infobar/utils'
 import * as integrationsSelectors from './../../../../state/integrations/selectors'
@@ -16,7 +16,7 @@ export const WIDGET_DATA_TYPES = [
         description: (
             <div>
                 The following data comes from your{' '}
-                <Link to="/app/integrations/shopify" target="_blank"><b>Shopify stores</b></Link>.
+                <Link to="/app/settings/integrations/shopify" target="_blank"><b>Shopify stores</b></Link>.
             </div>
         )
     },
@@ -26,7 +26,7 @@ export const WIDGET_DATA_TYPES = [
         description: (
             <div>
                 The following data comes from your{' '}
-                <Link to="/app/integrations/recharge" target="_blank"><b>Recharge integrations</b></Link>.
+                <Link to="/app/settings/integrations/recharge" target="_blank"><b>Recharge integrations</b></Link>.
             </div>
         )
     },
@@ -36,7 +36,7 @@ export const WIDGET_DATA_TYPES = [
         description: (
             <div>
                 The following data comes from your{' '}
-                <Link to="/app/integrations/smooch_inside" target="_blank"><b>Chat integrations</b></Link>.
+                <Link to="/app/settings/integrations/smooch_inside" target="_blank"><b>Chat integrations</b></Link>.
             </div>
         )
     },
@@ -46,7 +46,7 @@ export const WIDGET_DATA_TYPES = [
         description: (
             <div>
                 The following data comes from your server, after you configured{' '}
-                <Link to="/app/integrations/http" target="_blank"><b>HTTP integrations</b></Link>.
+                <Link to="/app/settings/integrations/http" target="_blank"><b>HTTP integrations</b></Link>.
             </div>
         )
     },
@@ -138,13 +138,18 @@ class SourceWrapper extends React.Component {
 
         return (
             <div>
-                <h1>
+                <h3 className="mb-4">
                     Manage widgets
-                    <i
-                        className="fa fa-fw fa-close pull-right text-faded"
+
+                    <a
+                        className="clickable float-right"
                         onClick={this._leaveEditionMode}
-                    />
-                </h1>
+                    >
+                        <i className="material-icons">
+                            close
+                        </i>
+                    </a>
+                </h3>
 
                 <p>
                     Drag and drop the values below into the sidebar to preview how they will look like next to your
@@ -159,13 +164,13 @@ class SourceWrapper extends React.Component {
                                         className="data-fields"
                                         key={idx}
                                     >
-                                        <CardBlock className="header">
+                                        <CardBody className="header">
                                             <div className="title">
                                                 {widgetDataType.title}
                                                 </div>
                                             {widgetDataType.description}
-                                        </CardBlock>
-                                        <CardBlock className="content">
+                                        </CardBody>
+                                        <CardBody className="content">
                                             <SourceWidgets
                                                 source={sources}
                                                 widgets={
@@ -178,7 +183,7 @@ class SourceWrapper extends React.Component {
                                                     actions: this.props.actions.widgets
                                                 }}
                                             />
-                                        </CardBlock>
+                                        </CardBody>
                                     </Card>
                                 )
                         })

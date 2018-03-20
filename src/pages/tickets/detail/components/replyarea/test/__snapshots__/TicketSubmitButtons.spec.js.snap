@@ -2,12 +2,12 @@
 
 exports[`TicketSubmitButtons component empty ticket 1`] = `
 <div
-  className="TicketSubmitButtons d-flex align-items-center justify-content-between"
+  className="component d-flex align-items-center justify-content-between"
 >
   <div>
     <ConfirmButton
       className="mr-2"
-      color="primary"
+      color="success"
       confirm={[Function]}
       content="Are you sure you want to create a ticket with no subject?"
       disabled={true}
@@ -30,13 +30,12 @@ exports[`TicketSubmitButtons component empty ticket 1`] = `
     </Tooltip>
     <ConfirmButton
       className=""
-      color="primary"
+      color="secondary"
       confirm={[Function]}
       content="Are you sure you want to create a ticket with no subject?"
       disabled={true}
       id="submit-and-close-button"
       loading={false}
-      outline={true}
       placement="bottom"
       skip={false}
       tabIndex="6"
@@ -54,11 +53,13 @@ exports[`TicketSubmitButtons component empty ticket 1`] = `
     </Tooltip>
   </div>
   <small
-    className="pull-right text-faded hidden-sm-down"
+    className="text-faded d-none d-md-inline-block"
   >
     <i
-      className="fa fa-fw fa-info-circle mr-1"
-    />
+      className="material-icons md-1 mr-1"
+    >
+      info
+    </i>
     <span>
       Press 
       <kbd>
@@ -67,10 +68,12 @@ exports[`TicketSubmitButtons component empty ticket 1`] = `
        (right arrow) to go to next ticket
     </span>
     <i
-      className="fa fa-fw fa-close cursor-pointer ml-1"
+      className="material-icons md-1 cursor-pointer ml-1"
       id="hide-helpers-button"
       onClick={[Function]}
-    />
+    >
+      close
+    </i>
     <Tooltip
       delay={0}
       placement="top"

@@ -1,3 +1,5 @@
+@import '~css/new/colors';
+
 :local .component {
   &:global.editing {
     &:last-child {
@@ -5,25 +7,19 @@
     }
 
     .wrapper {
+      @wrapper-padding: 12px;
+      padding: @wrapper-padding;
+      margin: 0 -@wrapper-padding;
+      margin-top: 14px;
       background: #e5f0f8;
 
       &:hover {
-        background: #b7d2e6;
+        background: fade(@purple, 10%);
 
         & > .content > .header > .tools {
           opacity: 1;
         }
       }
-    }
-  }
-
-  &:global:not(.editing) {
-    .wrapper:not(:first-child) {
-      padding-top: 0;
-    }
-
-    .wrapper:not(:last-child) {
-      margin-bottom: 0;
     }
   }
 

@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
-import {Popover, PopoverContent} from 'reactstrap'
+import {Popover, PopoverBody} from 'reactstrap'
 
 import TooltipWidgetEditField from '../forms/TooltipWidgetEditField'
 
@@ -63,9 +63,11 @@ class FieldInfobarWidget extends React.Component {
         return (
             <span className="tools">
                 <i
-                    className="fa fa-fw fa-close text-danger clickable"
+                    className="material-icons text-danger clickable"
                     onClick={this._deleteField}
-                />
+                >
+                    close
+                </i>
             </span>
         )
     }
@@ -93,12 +95,12 @@ class FieldInfobarWidget extends React.Component {
                 target={this.uniqueId}
                 toggle={this._togglePopup}
             >
-                <PopoverContent>
+                <PopoverBody>
                     <TooltipWidgetEditField
                         template={template}
                         actions={editing.actions}
                     />
-                </PopoverContent>
+                </PopoverBody>
             </Popover>
         )
     }

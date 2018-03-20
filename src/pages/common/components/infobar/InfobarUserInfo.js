@@ -4,19 +4,21 @@ import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
-import {Button} from 'reactstrap'
+import {Button, Card, CardBody} from 'reactstrap'
 import Clipboard from 'clipboard'
 
 import Tooltip from '../Tooltip'
 import InfobarWidgets from './InfobarWidgets'
 import InfobarAddIntegrationSuggestion from './InfobarAddIntegrationSuggestion'
 import Avatar from './../Avatar'
+import SourceIcon from '../SourceIcon'
 import {canDrop, areSourcesReady, jsonToWidgets} from './utils'
 import {itemsWithContext} from '../../../../state/widgets/utils'
 
 import {getDisplayName} from '../../../../state/users/helpers'
 import * as integrationsSelectors from '../../../../state/integrations/selectors'
-import {sourceTypeToIcon} from '../../../../config/ticket'
+
+import css from './Infobar.less'
 
 class InfobarUserInfo extends React.Component {
     static childContextTypes = {
@@ -49,7 +51,7 @@ class InfobarUserInfo extends React.Component {
     componentWillMount() {
         this._initWidgets()
 
-        new Clipboard('.copy-address i')
+        new Clipboard('.js-clipboard-copy')
     }
 
     componentWillReceiveProps(nextProps) {
@@ -250,18 +252,23 @@ class InfobarUserInfo extends React.Component {
             return (
                 <p
                     key={idx}
-                    className="user-channel"
+                    className={css.userChannel}
                 >
-                    <i
-                        className={classnames('uncolored mr-2', sourceTypeToIcon(channel.get('type')))}
+                    <SourceIcon
+                        type={channel.get('type')}
+                        className="uncolored mr-2"
                     />
                     {addressComponent}
-                    <span className="copy-address ml-2">
+                    <span
+                        className={classnames(css.copyAddress, 'ml-2 js-clipboard-copy')}
+                        data-clipboard-target={`#${id}`}
+                    >
                         <i
                             id={`copy-icon-${idx}`}
-                            className="fa fa-fw fa-clipboard clickable"
-                            data-clipboard-target={`#${id}`}
-                        />
+                            className="material-icons"
+                        >
+                            content_copy
+                        </i>
                         <Tooltip
                             placement="top"
                             target={`copy-icon-${idx}`}
@@ -329,23 +336,29 @@ class InfobarUserInfo extends React.Component {
         const context = widgets.get('currentContext', '')
 
         return (
-            <div className="flex-vertical">
-                <div className="infobar-top">
-                    <div className="user-profile">
-                        <Avatar
-                            className="mr-3"
-                            name={user.get('name', '')}
-                            email={user.get('email', '')}
-                            google
-                        />
-                        <h2>
-                            <Link to={`/app/user/${user.get('id')}`}>
+            <div className={classnames(css.widgetsList, 'd-flex flex-column')}>
+                <Card className={css.infobarCard}>
+                    <CardBody>
+                        <div className={css.userProfile}>
+                            <Avatar
+                                className="mr-3 rounded"
+                                name={user.get('name', '')}
+                                email={user.get('email', '')}
+                                url={user.getIn(['meta', 'profile_picture_url'])}
+                                google
+                            />
+                            <Link
+                                to={`/app/user/${user.get('id')}`}
+                                className={css.displayName}
+                            >
                                 {getDisplayName(user)}
                             </Link>
-                        </h2>
-                    </div>
-                    {this._renderUserChannels(user.get('channels', fromJS([])))}
-                </div>
+                        </div>
+                        <div className={css.detail}>
+                            {this._renderUserChannels(user.get('channels', fromJS([])))}
+                        </div>
+                    </CardBody>
+                </Card>
                 {areSourcesReady(sources, context) ? this._renderWidgets() : this._renderSuggestion()}
             </div>
         )

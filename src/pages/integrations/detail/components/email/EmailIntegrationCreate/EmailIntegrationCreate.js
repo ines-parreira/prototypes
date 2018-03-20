@@ -5,6 +5,7 @@ import {Link, browserHistory, withRouter} from 'react-router'
 import _capitalize from 'lodash/capitalize'
 import classnames from 'classnames'
 import {
+    Container,
     Form,
     Button,
     Breadcrumb,
@@ -17,6 +18,7 @@ import {notify} from '../../../../../../state/notifications/actions'
 import InputField from '../../../../../common/forms/InputField'
 
 import googleLogo from './../../../../../../../../public/img/google-icon.svg'
+import PageHeader from '../../../../../common/components/PageHeader'
 
 class EmailIntegrationCreate extends React.Component {
     componentDidMount() {
@@ -63,79 +65,79 @@ class EmailIntegrationCreate extends React.Component {
         const isSubmitting = loading.get('updateIntegration')
 
         return (
-            <div>
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link to="/app/integrations">Integrations</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        <Link to="/app/integrations/email">Email</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>
-                        Add
-                    </BreadcrumbItem>
-                </Breadcrumb>
+            <div className="full-width">
+                <PageHeader title={(
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations">Integrations</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations/email">Email</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>
+                            Add an email address
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                )}/>
 
-                <h1>
-                    Add email address
-                </h1>
+                <Container fluid className="page-container">
+                    <p>Choose the type of email account you want to add.</p>
 
-                <p>Choose the type of email account you want to add.</p>
+                    <div className={css.form}>
+                        <Button
+                            tag="a"
+                            href="/integrations/gmail/auth"
+                            block
+                            className={classnames('mb-2', css.gmailButton)}
+                        >
+                            <img src={googleLogo} style={{height: '100%'}} />
+                            <div>Connect Google email account</div>
+                        </Button>
 
-                <div className={css.form}>
-                    <Button
-                        tag="a"
-                        href="/integrations/gmail/auth"
-                        block
-                        className={classnames('mb-2', css.gmailButton)}
-                    >
-                        <img src={googleLogo} style={{height: '100%'}} />
-                        <div>Connect Google email account</div>
-                    </Button>
+                        <p className="text-muted text-center">
+                            Improve email deliverability, keep your data on your Google account, import last 100 emails
+                            (optional)
+                        </p>
 
-                    <p className="text-muted text-center">
-                        Improve email deliverability, keep your data on your Google account, import last 100 emails
-                        (optional)
-                    </p>
+                        <div className="divider">OR</div>
 
-                    <div className="divider">OR</div>
+                        <Form onSubmit={this._handleSubmit}>
+                            <InputField
+                                type="text"
+                                name="name"
+                                label="Address name"
+                                placeholder={`${_capitalize(domain)} Support`}
+                                required
+                                help="The name that customers will see when they receive emails from you"
+                                value={this.state.name}
+                                onChange={value => this.setState({name: value})}
+                            />
+                            <InputField
+                                type="email"
+                                name="meta.address"
+                                label="Email address"
+                                placeholder={`support@${domain}.com`}
+                                required
+                                value={this.state.email}
+                                onChange={value => this.setState({email: value})}
+                            />
 
-                    <Form onSubmit={this._handleSubmit}>
-                        <InputField
-                            type="text"
-                            name="name"
-                            label="Address name"
-                            placeholder={`${_capitalize(domain)} Support`}
-                            required
-                            help="The name that customers will see when they receive emails from you"
-                            value={this.state.name}
-                            onChange={value => this.setState({name: value})}
-                        />
-                        <InputField
-                            type="email"
-                            name="meta.address"
-                            label="Email address"
-                            placeholder={`support@${domain}.com`}
-                            required
-                            value={this.state.email}
-                            onChange={value => this.setState({email: value})}
-                        />
-
-                        <div>
-                            <Button
-                                type="submit"
-                                block
-                                color="primary"
-                                className={classnames({
-                                    'btn-loading': isSubmitting,
-                                })}
-                                disabled={isSubmitting}
-                            >
-                                Connect this email account
-                            </Button>
-                        </div>
-                    </Form>
-                </div>
+                            <div>
+                                <Button
+                                    type="submit"
+                                    block
+                                    color="success"
+                                    className={classnames({
+                                        'btn-loading': isSubmitting,
+                                    })}
+                                    disabled={isSubmitting}
+                                >
+                                    Connect this email account
+                                </Button>
+                            </div>
+                        </Form>
+                    </div>
+                </Container>
             </div>
         )
     }

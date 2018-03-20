@@ -3,11 +3,12 @@ import {connect} from 'react-redux'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import {
-    Form,
+    Container,
     Button,
+    Form,
     Popover,
-    PopoverTitle,
-    PopoverContent,
+    PopoverHeader,
+    PopoverBody,
 } from 'reactstrap'
 
 import InputField from '../../common/forms/InputField'
@@ -19,6 +20,8 @@ import Loader from '../../common/components/Loader'
 import * as tagsActions from '../../../state/tags/actions'
 
 import * as tagsSelectors from '../../../state/tags/selectors'
+import PageHeader from '../../common/components/PageHeader'
+import {Link} from 'react-router'
 
 export class ManageTags extends Component {
     static propTypes = {
@@ -147,7 +150,7 @@ export class ManageTags extends Component {
         const {sort, reverse, isFetching, mergeTagDestination} = this.state
 
         if (isFetching) {
-            return <Loader />
+            return <Loader/>
         }
 
         // check if any items are selected
@@ -155,23 +158,13 @@ export class ManageTags extends Component {
             .filter(meta => meta.get('selected'))
             .size
 
-        const manageTagsClassName = classnames({
-            'manage-tags-bulk': selected > 0
-        })
-
         return (
-            <div className={manageTagsClassName}>
-                <div className="manage-tags d-flex justify-content-between">
-                    <h1>
-                        <i className="fa fa-fw fa-tag blue mr-2" />
-                        Manage tags
-                    </h1>
-
-                    <div className="pull-right">
-                        <div className="manage-tags-bulk-actions">
-                            {
-                                selected > 1 && (
-                                    <span>
+            <div className={classnames('full-width', {manageTagsClassName: selected > 0})}>
+                <PageHeader title="Manage tags">
+                    <div className="manage-tags-bulk-actions">
+                        {
+                            selected > 1 && (
+                                <span>
                                         <Button
                                             id="bulk-merge-button"
                                             color="secondary"
@@ -187,8 +180,8 @@ export class ManageTags extends Component {
                                             target="bulk-merge-button"
                                             toggle={this._toggleMergeConfirmation}
                                         >
-                                            <PopoverTitle>Are you sure?</PopoverTitle>
-                                            <PopoverContent>
+                                            <PopoverHeader>Are you sure?</PopoverHeader>
+                                            <PopoverBody>
                                                 <p>
                                                     You are about to merge {selected} tags into{' '}
                                                     <b>{mergeTagDestination}</b>.<br/>
@@ -201,14 +194,14 @@ export class ManageTags extends Component {
                                                 >
                                                     Confirm
                                                 </Button>
-                                            </PopoverContent>
+                                            </PopoverBody>
                                         </Popover>
                                     </span>
-                                )
-                            }
-                            {
-                                selected > 0 && (
-                                    <span>
+                            )
+                        }
+                        {
+                            selected > 0 && (
+                                <span>
                                         <Button
                                             id="bulk-remove-button"
                                             color="secondary"
@@ -224,8 +217,8 @@ export class ManageTags extends Component {
                                             target="bulk-remove-button"
                                             toggle={this._toggleRemoveConfirmation}
                                         >
-                                            <PopoverTitle>Are you sure?</PopoverTitle>
-                                            <PopoverContent>
+                                            <PopoverHeader>Are you sure?</PopoverHeader>
+                                            <PopoverBody>
                                                 <p>
                                                     Are you sure you want to delete these tags?{' '}
                                                     <b>They will be removed from all tickets</b>.
@@ -237,16 +230,16 @@ export class ManageTags extends Component {
                                                 >
                                                     Confirm
                                                 </Button>
-                                            </PopoverContent>
+                                            </PopoverBody>
                                         </Popover>
                                     </span>
-                                )
-                            }
+                            )
+                        }
 
-                            <span>
+                        <span>
                                 <Button
                                     id="create-tag-button"
-                                    color="primary"
+                                    color="success"
                                     type="button"
                                     onClick={this._toggleCreationPopup}
                                 >
@@ -258,8 +251,8 @@ export class ManageTags extends Component {
                                     target="create-tag-button"
                                     toggle={this._toggleCreationPopup}
                                 >
-                                    <PopoverTitle>Create a new tag</PopoverTitle>
-                                    <PopoverContent>
+                                    <PopoverHeader>Create a new tag</PopoverHeader>
+                                    <PopoverBody>
                                         <Form onSubmit={this._onCreate}>
                                             <div className="d-flex align-items-center">
                                                 <div className="mr-2">
@@ -280,37 +273,39 @@ export class ManageTags extends Component {
                                                         'btn-loading': tags.getIn(['_internal', 'creating']),
                                                     })}
                                                 >
-                                                    <i className="fa fa-fw fa-check" />
+                                                    <i className="fa fa-fw fa-check"/>
                                                 </Button>
                                             </div>
                                         </Form>
-                                    </PopoverContent>
+                                    </PopoverBody>
                                 </Popover>
                             </span>
-                        </div>
                     </div>
-                </div>
+                </PageHeader>
 
-                <div className="manage-tags-description">
-                    <p>
-                        You can tag tickets to keep track of topics customers are contacting you about.
-                    </p>
-                </div>
+                <Container fluid className="page-container">
+                    <div className="manage-tags-description">
+                        <p>
+                            You can tag tickets to keep track of topics customers are contacting you about.
+                            Check your tag statistics <Link to="/app/stats/tags">here</Link>.
+                        </p>
+                    </div>
 
-                <Table
-                    rows={tags}
-                    sort={sort}
-                    reverse={reverse}
-                    onSort={this._onSort}
-                    onSelectAll={selectAll}
-                    refresh={this._fetchPage}
-                />
+                    <Table
+                        rows={tags}
+                        sort={sort}
+                        reverse={reverse}
+                        onSort={this._onSort}
+                        onSelectAll={selectAll}
+                        refresh={this._fetchPage}
+                    />
 
-                <Pagination
-                    pageCount={numberPages}
-                    currentPage={currentPage}
-                    onChange={page => this.props.setPage(page)}
-                />
+                    <Pagination
+                        pageCount={numberPages}
+                        currentPage={currentPage}
+                        onChange={page => this.props.setPage(page)}
+                    />
+                </Container>
             </div>
         )
     }

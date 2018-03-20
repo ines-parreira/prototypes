@@ -6,12 +6,13 @@ import _capitalize from 'lodash/capitalize'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import {
+    Container,
     Form,
     Button,
     Breadcrumb,
     BreadcrumbItem,
     InputGroup,
-    InputGroupButton,
+    InputGroupAddon,
     Alert,
     Input,
     FormGroup,
@@ -28,6 +29,7 @@ import ConfirmButton from '../../../../../common/components/ConfirmButton'
 import InputField from '../../../../../common/forms/InputField'
 import BooleanField from '../../../../../common/forms/BooleanField'
 import RichFieldWithVariables from '../../../../../common/forms/RichFieldWithVariables'
+import PageHeader from '../../../../../common/components/PageHeader'
 
 class EmailIntegrationUpdate extends React.Component {
     constructor(props) {
@@ -143,22 +145,22 @@ class EmailIntegrationUpdate extends React.Component {
         const isImporting = status === 'started' || (importActivated && !status)
 
         const statusSentence = isImporting ? (
-                <span>
+            <span>
                     We are currently importing emails from <strong>{email}</strong> into Gorgias.
                     You can see it's progress here: <Link to="/app/tickets">All tickets</Link>
                 </span>
-            ) : (
-                <span>
+        ) : (
+            <span>
                     Completed: <b>{mailsImported}</b> emails have been imported.
                 </span>
-            )
+        )
 
         return (
             <div>
                 <h2>
                     {
                         isImporting && (
-                            <i className="fa fa-fw fa-circle-o-notch fa-spin mr-2" />
+                            <i className="fa fa-fw fa-circle-o-notch fa-spin mr-2"/>
                         )
                     }
                     Import
@@ -166,10 +168,10 @@ class EmailIntegrationUpdate extends React.Component {
                 <p>
                     {
                         importActivated ? statusSentence : (
-                                <span>
+                            <span>
                                     We will import the last <b>{GMAIL_IMPORTED_THREADS}</b> emails from <b>{email}</b> into Gorgias.
                                 </span>
-                            )
+                        )
                     }
                 </p>
                 {
@@ -232,18 +234,18 @@ class EmailIntegrationUpdate extends React.Component {
                         value={`${address.split('@')[0]}@${domain}.gorgias.io`}
                         readOnly
                     />
-                    <InputGroupButton>
+                    <InputGroupAddon addonType="append">
                         <Button
-                            color="info"
+                            color="primary"
                             data-clipboard-target="#forwarding-email"
-                            getRef={this._clipboardCopy}
+                            innerRef={this._clipboardCopy}
                         >
-                            <i className="fa fa-fw fa-files-o mr-2" />
+                            <i className="fa fa-fw fa-files-o mr-2"/>
                             {this.state.isCopied ? 'Copied!' : 'Copy'}
                         </Button>
-                    </InputGroupButton>
+                    </InputGroupAddon>
                 </InputGroup>
-                <br />
+                <br/>
                 <Alert color="info">
                     We also <strong>highly recommend</strong> you
                     {' '}
@@ -332,7 +334,7 @@ class EmailIntegrationUpdate extends React.Component {
                         error={errors.name}
 
                         value={name}
-                        onChange={(name)=> this._setName(name)}
+                        onChange={(name) => this._setName(name)}
                     />
                     {
                         isGmail && (
@@ -344,7 +346,8 @@ class EmailIntegrationUpdate extends React.Component {
                                     value={use_gmail_categories}
                                     onChange={value => this.setState({
                                         dirty: true,
-                                        use_gmail_categories: value })}
+                                        use_gmail_categories: value
+                                    })}
                                 />
                             </FormGroup>
                         )
@@ -378,7 +381,7 @@ class EmailIntegrationUpdate extends React.Component {
                     <div>
                         <Button
                             type="submit"
-                            color="primary"
+                            color="success"
                             disabled={!this.state.dirty || isSubmitting || isDeleting || hasErrors}
                             className={classNames({
                                 'btn-loading': isSubmitting,
@@ -400,12 +403,12 @@ class EmailIntegrationUpdate extends React.Component {
                         }
 
                         <ConfirmButton
-                            className="pull-right"
+                            className="float-right"
                             color="danger"
                             confirm={() => deleteIntegration(integration, 'email')}
                             content="Are you sure you want to delete this integration?"
                         >
-                            Delete email address
+                            <i className="material-icons">delete</i> Delete email address
                         </ConfirmButton>
                     </div>
                 </Form>
@@ -420,36 +423,35 @@ class EmailIntegrationUpdate extends React.Component {
         } = this.props
 
         if (loading.get('integration')) {
-            return <Loader />
+            return <Loader/>
         }
 
         return (
-            <div>
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link to="/app/integrations">Integrations</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        <Link to="/app/integrations/email">Email</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>
-                        {integration.get('name')}
-                    </BreadcrumbItem>
-                </Breadcrumb>
+            <div className="full-width">
+                <PageHeader title={(
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations">Integrations</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations/email">Email</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>
+                            {integration.get('name')}{' '}
+                            <span className="text-faded">
+                                {integration.getIn(['meta', 'address'])}
+                            </span>
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                )}/>
 
-                <h1>
-                    {integration.get('name')}
-                </h1>
+                <Container fluid className="page-container">
+                    {integration.get('type') === 'email' && this._renderInstructions()}
 
-                <p className="text-faded">
-                    {integration.getIn(['meta', 'address'])}
-                </p>
+                    {integration.get('type') === 'gmail' && this._renderImportation()}
 
-                {integration.get('type') === 'email' && this._renderInstructions()}
-
-                {integration.get('type') === 'gmail' && this._renderImportation()}
-
-                {this._renderSettings()}
+                    {this._renderSettings()}
+                </Container>
             </div>
         )
     }

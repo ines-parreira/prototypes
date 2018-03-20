@@ -11,6 +11,8 @@ import * as newMessageActions from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {getActionTemplate} from '../../../../../utils'
 
+import css from './TicketReply.less'
+
 @connect((state) => {
     return {
         isNewMessagePublic: newMessageSelectors.isNewMessagePublic(state),
@@ -35,13 +37,12 @@ export default class TicketReply extends React.Component {
         const {newMessage} = this.props
 
         return (
-            <div className="attachments-wrapper">
-                <TicketAttachments
-                    removable
-                    attachments={newMessage.getIn(['newMessage', 'attachments'], fromJS([]))}
-                    deleteAttachment={this.props.deleteAttachment}
-                />
-            </div>
+            <TicketAttachments
+                removable
+                attachments={newMessage.getIn(['newMessage', 'attachments'], fromJS([]))}
+                deleteAttachment={this.props.deleteAttachment}
+                className="p-2"
+            />
         )
     }
 
@@ -78,8 +79,8 @@ export default class TicketReply extends React.Component {
     render() {
         const {ticket, isNewMessagePublic, actions, richAreaRef} = this.props
 
-        const className = classNames('TicketReply', this.props.className, {
-            internal: !isNewMessagePublic,
+        const className = classNames(css.component, this.props.className, {
+            [css.internal]: !isNewMessagePublic,
         })
 
         return (

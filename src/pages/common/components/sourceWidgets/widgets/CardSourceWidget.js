@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import _last from 'lodash/last'
-import {Card, CardBlock} from 'reactstrap'
+import {Card, CardBody} from 'reactstrap'
 
 import DragWrapper from '../../dragging/WidgetsDragWrapper'
 import {stripLastListsFromPath} from '../../infobar/utils'
@@ -34,11 +34,11 @@ class CardSourceWidget extends React.Component {
                 className={className}
                 data-key={template.get('path')}
             >
-                <CardBlock className="header">
+                <CardBody className="header">
                     {displayedTitle}
                     {isParentList && <span className="meta"> (list)</span>}
-                </CardBlock>
-                <CardBlock className="content">
+                </CardBody>
+                <CardBody className="content">
                     <DragWrapper
                         actions={editing && editing.actions}
                         group={{
@@ -68,7 +68,7 @@ class CardSourceWidget extends React.Component {
                                 })
                         }
                     </DragWrapper>
-                </CardBlock>
+                </CardBody>
             </Card>
         )
     }

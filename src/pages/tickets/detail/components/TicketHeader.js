@@ -2,6 +2,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import moment from 'moment'
+import classnames from 'classnames'
 import {
     UncontrolledDropdown,
     DropdownToggle,
@@ -9,8 +10,8 @@ import {
     DropdownItem,
     Button,
     Popover,
-    PopoverTitle,
-    PopoverContent,
+    PopoverHeader,
+    PopoverBody,
 } from 'reactstrap'
 
 import shortcutManager from '../../../../services/shortcutManager'
@@ -26,22 +27,27 @@ import TicketTrash from './ticketdetails/TicketTrash'
 import * as ticketActions from '../../../../state/ticket/actions'
 import TicketSnoozePicker from './ticketdetails/TicketSnoozePicker'
 
+import css from './TicketHeader.less'
+
+import type {Map} from 'immutable'
 
 type Props = {
-    ticket: Object,
-    actions: Object,
+    ticket: Map<*, *>,
+    actions: {
+        ticket: typeof ticketActions,
+    },
     setTrashed: typeof ticketActions.setTrashed,
     setSpam: typeof ticketActions.setSpam,
     clearTicket: typeof ticketActions.clearTicket,
     goToNextTicket: typeof ticketActions.goToNextTicket,
-    hideTicket: () => any,
+    hideTicket: () => Promise<*>,
+    className: string
 }
 
 type State = {
     askTrashConfirmation: boolean,
     showSnoozePicker: boolean
 }
-
 
 @connect(null, {
     setTrashed: ticketActions.setTrashed,
@@ -146,15 +152,16 @@ export default class TicketHeader extends React.Component<Props, State> {
     }
 
     render() {
-        const {ticket, actions} = this.props
+        const {ticket, actions, className} = this.props
         const {showSnoozePicker} = this.state
         const isUpdate = !!ticket.get('id')
         const isTrashed = !!ticket.get('trashed_datetime')
 
         return (
-            <div className="ticket-header mb-2">
+            <div className={classnames(css.component, className)}>
                 <div className="d-flex justify-content-between align-items-center mb-2">
                     <EditableTitle
+                        className={css.editableTitle}
                         title={ticket.get('subject')}
                         placeholder="Subject"
                         update={actions.ticket.setSubject}
@@ -169,8 +176,11 @@ export default class TicketHeader extends React.Component<Props, State> {
                                     type="button"
                                     size="sm"
                                     id="ticket-actions-button"
+                                    className="btn-transparent"
                                 >
-                                    <i className="fa fa-fw fa-caret-down"/>
+                                    <i className="material-icons md-2">
+                                        more_vert
+                                    </i>
                                 </DropdownToggle>
                                 <TicketSnoozePicker
                                     datetime={ticket.get('snooze_datetime')}
@@ -183,7 +193,10 @@ export default class TicketHeader extends React.Component<Props, State> {
                                         type="button"
                                         onClick={this._toggleSnoozePicker}
                                     >
-                                        Snooze
+                                        <i className="icon material-icons">
+                                            snooze
+                                        </i>
+                                        snooze
                                     </DropdownItem>
                                     <DropdownItem
                                         type="button"
@@ -195,13 +208,32 @@ export default class TicketHeader extends React.Component<Props, State> {
                                             }, 1)
                                         }}
                                     >
-                                        Print
+                                        <i className="icon material-icons">
+                                            print
+                                        </i>
+                                        print ticket
                                     </DropdownItem>
                                     <DropdownItem
                                         type="button"
                                         onClick={this._toggleSpam}
                                     >
-                                        {ticket.get('spam') ? 'Unmark as spam' : 'Mark as spam'}
+                                        {
+                                            ticket.get('spam') ? (
+                                                <span>
+                                                    <i className="icon material-icons">
+                                                        undo
+                                                    </i>
+                                                    unmark as spam
+                                                </span>
+                                            ) : (
+                                                <span>
+                                                    <i className="icon material-icons">
+                                                        not_interested
+                                                    </i>
+                                                    mark as spam
+                                                </span>
+                                            )
+                                        }
                                     </DropdownItem>
                                     {
                                         isTrashed ? (
@@ -209,7 +241,10 @@ export default class TicketHeader extends React.Component<Props, State> {
                                                 type="button"
                                                 onClick={this._unTrashTicket}
                                             >
-                                                Undelete
+                                                <i className="icon material-icons">
+                                                    undo
+                                                </i>
+                                                undelete
                                             </DropdownItem>
                                         ) : (
                                             <DropdownItem
@@ -217,7 +252,10 @@ export default class TicketHeader extends React.Component<Props, State> {
                                                 onClick={() => this._toggleTrashConfirmation()}
                                             >
                                                 <div className="text-danger">
-                                                    Delete
+                                                    <i className="icon material-icons">
+                                                        delete
+                                                    </i>
+                                                    delete
                                                 </div>
                                                 <Popover
                                                     placement="bottom"
@@ -225,8 +263,8 @@ export default class TicketHeader extends React.Component<Props, State> {
                                                     target="ticket-actions-button"
                                                     toggle={() => this._toggleTrashConfirmation()}
                                                 >
-                                                    <PopoverTitle>Are you sure?</PopoverTitle>
-                                                    <PopoverContent>
+                                                    <PopoverHeader>Are you sure?</PopoverHeader>
+                                                    <PopoverBody>
                                                         <p>
                                                             You are about to <b>delete</b> this ticket.
                                                         </p>
@@ -238,7 +276,7 @@ export default class TicketHeader extends React.Component<Props, State> {
                                                         >
                                                             Confirm
                                                         </Button>
-                                                    </PopoverContent>
+                                                    </PopoverBody>
                                                 </Popover>
                                             </DropdownItem>
                                         )}
@@ -259,22 +297,27 @@ export default class TicketHeader extends React.Component<Props, State> {
                             )
                         }
 
-                        <TicketRequest />
+                        <TicketRequest/>
 
                         <TicketTags
                             ticketTags={ticket.get('tags')}
                             addTags={actions.ticket.addTags}
                             removeTag={actions.ticket.removeTag}
+                            transparent
                         />
                     </div>
-                    <div className="d-inline-flex">
+                    <div className="d-inline-flex align-items-center">
                         <TicketSnooze datetime={ticket.get('snooze_datetime')}/>
                         <TicketTrash trashed={isTrashed}/>
                         <TicketSpam spam={ticket.get('spam')}/>
                         <TicketAssignee
                             direction="right"
                             currentAssignee={ticket.getIn(['assignee_user', 'name'])}
+                            email={ticket.getIn(['assignee_user', 'email'])}
+                            profilePictureUrl={ticket.getIn(['assignee_user', 'meta', 'profile_picture_url'])}
                             setAgent={actions.ticket.setAgent}
+                            className={css.assignee}
+                            transparent
                         />
                     </div>
                 </div>

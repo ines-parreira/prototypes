@@ -57,13 +57,14 @@ export default class BooleanField extends InputField {
     }
 
     render() {
-        const color = this.props.error ? 'danger' : ''
+        const {className, error, required, inline, label, help} = this.props
+        const color = error ? 'danger' : ''
 
         return (
             <FormGroup
-                className={classnames({
-                    [css.required]: this.props.required,
-                    'd-inline-block': this.props.inline,
+                className={classnames(className, {
+                    [css.required]: required,
+                    'd-inline-block': inline,
                 })}
                 color={color}
                 check
@@ -75,20 +76,20 @@ export default class BooleanField extends InputField {
                 >
                     {this._getField()}
                     <span>
-                        {this.props.label}
+                        {label}
                     </span>
                 </Label>
                 {
                     this.props.error && (
                         <Errors>
-                            {this.props.error}
+                            {error}
                         </Errors>
                     )
                 }
                 {
-                    defined(this.props.help) && (
+                    defined(help) && (
                         <FormText color="muted">
-                            {this.props.help}
+                            {help}
                         </FormText>
                     )
                 }

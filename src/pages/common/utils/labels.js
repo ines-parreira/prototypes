@@ -8,11 +8,13 @@ import _isString from 'lodash/isString'
 import {Badge} from 'reactstrap'
 
 import Tooltip from '../components/Tooltip'
+import Avatar from '../components/Avatar'
 import {formatDatetime, toJS, isImmutable} from '../../../utils'
 import {sourceTypeToIcon} from '../../../config/ticket'
 
 import * as usersHelpers from '../../../state/users/helpers'
 import {DEFAULT_TAG_COLOR} from '../../../config'
+import SourceIcon from '../components/SourceIcon'
 
 /**
  * AGENT
@@ -21,10 +23,13 @@ export class AgentLabel extends React.Component {
     static propTypes = {
         name: PropTypes.string,
         maxWidth: PropTypes.string,
+        email: PropTypes.string,
+        className: PropTypes.string,
+        profilePictureUrl: PropTypes.string
     }
 
     render() {
-        const {name = '', maxWidth} = this.props
+        const {name = '', maxWidth, email = '', className = '', profilePictureUrl = ''} = this.props
         const style = {}
 
         if (maxWidth) {
@@ -32,24 +37,35 @@ export class AgentLabel extends React.Component {
         }
 
         return (
-            <span className="agent-label d-inline-flex align-items-center">
-                <Badge
-                    className="agent-id-label"
-                    color="warning"
-                >
-                    A
-                </Badge>
+            <div className={classnames('agent-label d-inline-flex align-items-center', className)}>
+                {
+                    email ? (
+                        <Avatar
+                            email={email}
+                            name={name}
+                            url={profilePictureUrl}
+                            size="26"
+                            className="agent-avatar"
+                        />
+                    ) : (
+                        <span className="material-icons md-2">
+                            account_circle
+                        </span>
+                    )
+                }
+
+
                 {
                     name && (
                         <span
-                            className="secondary-action"
+                            className="agent-name font-weight-medium"
                             style={style}
                         >
                             {name}
                         </span>
                     )
                 }
-            </span>
+            </div>
         )
     }
 }
@@ -78,7 +94,7 @@ export const TagLabel = ({decoration, children, style}) => {
 
     return (
         <Badge
-            className="tag"
+            className="badge-tag"
             style={style}
         >
             {children}
@@ -98,14 +114,14 @@ TagLabel.defaultProps = {
  * STATUS
  */
 export const StatusLabel = ({status, ...rest}) => {
-    let color = 'primary'
+    let color = 'info'
 
     switch (status) {
         case 'open':
-            color = 'secondary'
+            color = 'primary'
             break
         case 'closed':
-            color = 'success'
+            color = 'secondary'
             break
         default:
     }
@@ -114,7 +130,7 @@ export const StatusLabel = ({status, ...rest}) => {
         <Badge
             className="text-center"
             color={color}
-            style={{width: '56px'}}
+            pill
             {...rest}
         >
             {status}
@@ -129,9 +145,7 @@ StatusLabel.propTypes = {
  * CHANNEL
  */
 export const ChannelLabel = ({channel}) => (
-    <Badge color="secondary">
-        {channel}
-    </Badge>
+    <SourceIcon type={channel} className="text-secondary"/>
 )
 ChannelLabel.propTypes = {channel: PropTypes.string.isRequired}
 
@@ -150,7 +164,7 @@ export const IntegrationsDetailLabel = ({integration}) => {
 
     return (
         <span>
-            <i className={classnames('mr-2', sourceTypeToIcon(integration.get('type')))} />
+            <i className={classnames('mr-2', sourceTypeToIcon(integration.get('type')))}/>
             {label}
         </span>
     )
@@ -216,7 +230,7 @@ export class DatetimeLabel extends React.Component {
     }
 
     render() {
-        const {dateTime, timezone} = this.props
+        const {dateTime, timezone, ...rest} = this.props
 
         if (!dateTime) {
             return null
@@ -226,7 +240,7 @@ export class DatetimeLabel extends React.Component {
         const tooltipDatetime = formatDatetime(dateTime, timezone, 'L LT')
 
         return (
-            <span>
+            <span {...rest}>
                 <span id={this.id}>
                     {labelDatetime}
                 </span>
@@ -241,6 +255,7 @@ export class DatetimeLabel extends React.Component {
         )
     }
 }
+
 const mapStateToProps = (state) => ({
     timezone: state.currentUser.get('timezone'),
 })
@@ -275,19 +290,31 @@ export class RenderLabel extends React.Component {
                     />
                 )
             case 'status':
-                return <StatusLabel status={value} />
+                return <StatusLabel status={value}/>
             case 'assignee':
-                return value.get('name') ? <AgentLabel name={value.get('name')} /> : null
+                return value.isEmpty() ? null : (
+                    <div>
+                        <Avatar
+                            email={value.get('email')}
+                            name={value.get('name')}
+                            url={value.getIn(['meta', 'profile_picture_url'])}
+                            size={26}
+                            className="d-inline-block mr-2"
+                        />
+                        <div className="d-inline-block">{value.get('name')}</div>
+                    </div>
+
+                )
             case 'integrations':
                 return typeof value === 'string' ? <span>{value}</span> :
-                    <IntegrationsDetailLabel integration={value} />
+                    <IntegrationsDetailLabel integration={value}/>
             case 'requester':
-                return <UserLabel user={value} />
+                return <UserLabel user={value}/>
             case 'roles':
-                return <RoleLabel roles={isImmutable(value) ? value.toJS() : value} />
+                return <RoleLabel roles={isImmutable(value) ? value.toJS() : value}/>
             case 'via':
             case 'channel':
-                return <ChannelLabel channel={value} />
+                return <ChannelLabel channel={value}/>
             default:
                 return <span>{value}</span>
         }

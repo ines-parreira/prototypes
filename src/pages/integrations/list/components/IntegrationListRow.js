@@ -11,7 +11,7 @@ class IntegrationListRow extends React.Component {
     render() {
         const {integrationConfig, hasAnIntegration} = this.props
 
-        const nextUrl = `/app/integrations/${integrationConfig.get('type')}`
+        const nextUrl = `/app/settings/integrations/${integrationConfig.get('type')}`
 
         const isExternalLink = !!integrationConfig.get('url')
 
