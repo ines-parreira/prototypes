@@ -61,8 +61,6 @@ export class TicketRequest extends React.Component<Props, State> {
 
         const label = !request.isEmpty() ? request.get('name') : ''
 
-        console.log('hey')
-
         return (
             <div className="d-none d-md-inline-flex align-items-center flex-wrap">
                 <Dropdown
