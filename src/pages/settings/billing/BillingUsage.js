@@ -77,7 +77,7 @@ export class BillingUsage extends Component {
         return (
             <div>
                 <div className={css['usage-numbers']}>
-                    {includedTickets}/{usedTickets} tickets
+                    {usedTickets}/{includedTickets} tickets
                     {' '}
                     <a id="current-period"><i className="material-icons text-muted">info_outline</i></a>
                 </div>

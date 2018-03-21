@@ -137,9 +137,9 @@ exports[`BillingUsage component should display price 1`] = `
                           <div
                             className="usage-numbers"
                           >
-                            10
-                            /
                             20
+                            /
+                            10
                              tickets
                              
                             <a
@@ -529,9 +529,9 @@ exports[`BillingUsage component should load with empty props 1`] = `
                           <div
                             className="usage-numbers"
                           >
-                            10
-                            /
                             0
+                            /
+                            10
                              tickets
                              
                             <a
