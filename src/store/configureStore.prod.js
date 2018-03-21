@@ -11,12 +11,7 @@ const midlewares = [
     thunk,
     serverErrorHandler,
     usageLimitNotifier,
-
 ]
-
-if (window.LogRocket) {
-    midlewares.push(window.LogRocket.reduxMiddleware())
-}
 
 export default function configureStore(initialState) {
     return createStore(
