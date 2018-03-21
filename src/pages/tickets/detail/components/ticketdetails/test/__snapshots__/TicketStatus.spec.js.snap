@@ -18,13 +18,6 @@ exports[`TicketStatus component closed ticket 1`] = `
       check
     </i>
   </Button>
-  <Tooltip
-    delay={0}
-    placement="bottom"
-    target="change-status-button"
-  >
-    Reopen (press O)
-  </Tooltip>
 </div>
 `;
 
@@ -47,12 +40,5 @@ exports[`TicketStatus component open ticket 1`] = `
     </i>
     Close
   </Button>
-  <Tooltip
-    delay={0}
-    placement="bottom"
-    target="change-status-button"
-  >
-    Close (press C)
-  </Tooltip>
 </div>
 `;

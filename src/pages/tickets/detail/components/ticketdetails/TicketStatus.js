@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import classnames from 'classnames'
 import {Button} from 'reactstrap'
 
-import Tooltip from '../../../../common/components/Tooltip'
+// import Tooltip from '../../../../common/components/Tooltip'
 
 import css from './TicketStatus.less'
 import headerCss from '../TicketHeader.less'

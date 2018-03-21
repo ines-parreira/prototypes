@@ -3,8 +3,8 @@ import {connect} from 'react-redux'
 import _sample from 'lodash/sample'
 import classnames from 'classnames'
 
-import shortcutManager from '../../../../../services/shortcutManager'
-import keymap from '../../../../../config/shortcuts'
+// import shortcutManager from '../../../../../services/shortcutManager'
+// import keymap from '../../../../../config/shortcuts'
 
 import * as currentUserActions from '../../../../../state/currentUser/actions'
 

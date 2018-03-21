@@ -21,13 +21,6 @@ exports[`TicketSubmitButtons component empty ticket 1`] = `
     >
       Send
     </ConfirmButton>
-    <Tooltip
-      delay={0}
-      placement="top"
-      target="submit-button"
-    >
-      Ctrl + Enter
-    </Tooltip>
     <ConfirmButton
       className=""
       color="secondary"
@@ -44,13 +37,6 @@ exports[`TicketSubmitButtons component empty ticket 1`] = `
     >
       Send & Close
     </ConfirmButton>
-    <Tooltip
-      delay={0}
-      placement="top"
-      target="submit-and-close-button"
-    >
-      Ctrl + Shift + Enter
-    </Tooltip>
   </div>
   <small
     className="text-faded d-none d-md-inline-block"
