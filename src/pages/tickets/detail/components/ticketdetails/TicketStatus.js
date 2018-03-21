@@ -34,12 +34,14 @@ export default class TicketStatus extends React.Component {
                     </i>
                     {toClose && 'Close'}
                 </Button>
-                <Tooltip
+                {/*
+                  <Tooltip
                     placement="bottom"
                     target="change-status-button"
                 >
                     {toClose ? 'Close (press C)' : 'Reopen (press O)'}
                 </Tooltip>
+                */}
             </div>
         )
     }
