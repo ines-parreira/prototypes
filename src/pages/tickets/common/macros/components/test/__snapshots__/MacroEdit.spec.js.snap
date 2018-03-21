@@ -83,9 +83,10 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
             toggle={[Function]}
           >
             <Dropdown
+              active={false}
               addonType={false}
               className="mr-2"
-              dropup={false}
+              direction="down"
               group={true}
               inNavbar={false}
               isOpen={false}

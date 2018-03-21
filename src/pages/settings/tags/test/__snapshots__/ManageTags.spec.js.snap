@@ -28,6 +28,7 @@ exports[`ManageTags component mounts correctly 1`] = `
               "show": 0,
             }
           }
+          hideArrow={false}
           isOpen={false}
           placement="bottom"
           placementPrefix="bs-popover"
@@ -84,6 +85,7 @@ exports[`ManageTags component mounts correctly 1`] = `
               "show": 0,
             }
           }
+          hideArrow={false}
           isOpen={false}
           placement="bottom"
           placementPrefix="bs-popover"
@@ -134,6 +136,7 @@ exports[`ManageTags component mounts correctly 1`] = `
               "show": 0,
             }
           }
+          hideArrow={false}
           isOpen={false}
           placement="bottom"
           placementPrefix="bs-popover"

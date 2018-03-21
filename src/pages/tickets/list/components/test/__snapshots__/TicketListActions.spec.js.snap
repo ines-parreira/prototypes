@@ -242,6 +242,7 @@ exports[`TicketListActions component should display options for agents assignati
           "show": 0,
         }
       }
+      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
@@ -282,6 +283,7 @@ exports[`TicketListActions component should display options for agents assignati
           "show": 0,
         }
       }
+      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
@@ -551,6 +553,7 @@ exports[`TicketListActions component should display special actions for trash vi
           "show": 0,
         }
       }
+      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
@@ -590,6 +593,7 @@ exports[`TicketListActions component should display special actions for trash vi
           "show": 0,
         }
       }
+      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
@@ -850,6 +854,7 @@ exports[`TicketListActions component should display when nothing is selected 1`]
           "show": 0,
         }
       }
+      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
@@ -889,6 +894,7 @@ exports[`TicketListActions component should display when nothing is selected 1`]
           "show": 0,
         }
       }
+      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
@@ -1149,6 +1155,7 @@ exports[`TicketListActions component should display when some tickets are select
           "show": 0,
         }
       }
+      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
@@ -1189,6 +1196,7 @@ exports[`TicketListActions component should display when some tickets are select
           "show": 0,
         }
       }
+      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"

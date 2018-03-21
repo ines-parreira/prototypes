@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import classnames from 'classnames'
 import {Button} from 'reactstrap'
 
-// import Tooltip from '../../../../common/components/Tooltip'
+import Tooltip from '../../../../common/components/Tooltip'
 
 import css from './TicketStatus.less'
 import headerCss from '../TicketHeader.less'
@@ -34,14 +34,12 @@ export default class TicketStatus extends React.Component {
                     </i>
                     {toClose && 'Close'}
                 </Button>
-                {/*
-                  <Tooltip
+                <Tooltip
                     placement="bottom"
                     target="change-status-button"
                 >
                     {toClose ? 'Close (press C)' : 'Reopen (press O)'}
                 </Tooltip>
-                */}
             </div>
         )
     }

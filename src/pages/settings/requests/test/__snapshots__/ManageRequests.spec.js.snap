@@ -83,6 +83,7 @@ exports[`ManageRequests component should display requests 1`] = `
                 "show": 0,
               }
             }
+            hideArrow={false}
             isOpen={false}
             placement="bottom"
             placementPrefix="bs-popover"
@@ -302,6 +303,7 @@ exports[`ManageRequests component should display requests 1`] = `
                         "show": 0,
                       }
                     }
+                    hideArrow={false}
                     isOpen={false}
                     placement="left"
                     placementPrefix="bs-popover"
@@ -378,6 +380,7 @@ exports[`ManageRequests component should display requests 1`] = `
                         "show": 0,
                       }
                     }
+                    hideArrow={false}
                     isOpen={false}
                     placement="left"
                     placementPrefix="bs-popover"
@@ -444,6 +447,7 @@ exports[`ManageRequests component should load with empty props 1`] = `
                 "show": 0,
               }
             }
+            hideArrow={false}
             isOpen={false}
             placement="bottom"
             placementPrefix="bs-popover"

@@ -788,6 +788,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                                 "show": 0,
                                               }
                                             }
+                                            hideArrow={false}
                                             isOpen={false}
                                             placement="left"
                                             placementPrefix="bs-popover"
@@ -983,6 +984,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                                           "show": 0,
                                                         }
                                                       }
+                                                      hideArrow={false}
                                                       isOpen={false}
                                                       placement="left"
                                                       placementPrefix="bs-popover"
@@ -1528,6 +1530,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                                 "show": 0,
                                               }
                                             }
+                                            hideArrow={false}
                                             isOpen={false}
                                             placement="left"
                                             placementPrefix="bs-popover"
@@ -1721,6 +1724,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                                           "show": 0,
                                                         }
                                                       }
+                                                      hideArrow={false}
                                                       isOpen={false}
                                                       placement="left"
                                                       placementPrefix="bs-popover"
@@ -2621,6 +2625,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                     "show": 0,
                                                   }
                                                 }
+                                                hideArrow={false}
                                                 isOpen={false}
                                                 placement="left"
                                                 placementPrefix="bs-popover"
@@ -2853,6 +2858,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                                 "show": 0,
                                                               }
                                                             }
+                                                            hideArrow={false}
                                                             isOpen={false}
                                                             placement="left"
                                                             placementPrefix="bs-popover"
@@ -3451,6 +3457,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                     "show": 0,
                                                   }
                                                 }
+                                                hideArrow={false}
                                                 isOpen={false}
                                                 placement="left"
                                                 placementPrefix="bs-popover"
@@ -3681,6 +3688,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                                 "show": 0,
                                                               }
                                                             }
+                                                            hideArrow={false}
                                                             isOpen={false}
                                                             placement="left"
                                                             placementPrefix="bs-popover"

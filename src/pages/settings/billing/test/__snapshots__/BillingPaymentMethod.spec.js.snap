@@ -296,7 +296,7 @@ exports[`BillingPaymentMethod Stripe should render a button 1`] = `
                   }
                 >
                   <div
-                    className="col col-sm-4"
+                    className="col-sm-4"
                   >
                     <div
                       style={
@@ -329,7 +329,7 @@ exports[`BillingPaymentMethod Stripe should render a button 1`] = `
                   }
                 >
                   <div
-                    className="text-right col col-sm-4 offset-sm-4"
+                    className="text-right col-sm-4 offset-sm-4"
                   >
                     <div
                       id="add-credit-card-button"
@@ -443,7 +443,7 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
                   }
                 >
                   <div
-                    className="col col-sm-4"
+                    className="col-sm-4"
                   >
                     <div
                       style={
@@ -491,7 +491,7 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
                   }
                 >
                   <div
-                    className="text-right col col-sm-4 offset-sm-4"
+                    className="text-right col-sm-4 offset-sm-4"
                   >
                     <Button
                       color="secondary"

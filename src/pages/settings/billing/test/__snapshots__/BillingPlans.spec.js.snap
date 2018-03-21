@@ -882,7 +882,7 @@ exports[`BillingPlans component should load with empty props 1`] = `
                 }
               >
                 <div
-                  className="col col-sm-6"
+                  className="col-sm-6"
                 >
                   <dl>
                     <dt>
@@ -922,7 +922,7 @@ exports[`BillingPlans component should load with empty props 1`] = `
                 }
               >
                 <div
-                  className="col col-sm-6"
+                  className="col-sm-6"
                 >
                   <dl>
                     <dt>

@@ -3,8 +3,8 @@ import {connect} from 'react-redux'
 import _sample from 'lodash/sample'
 import classnames from 'classnames'
 
-// import shortcutManager from '../../../../../services/shortcutManager'
-// import keymap from '../../../../../config/shortcuts'
+import shortcutManager from '../../../../../services/shortcutManager'
+import keymap from '../../../../../config/shortcuts'
 
 import * as currentUserActions from '../../../../../state/currentUser/actions'
 
@@ -100,14 +100,12 @@ export default class TicketSubmitButtons extends React.Component {
                     >
                         Send
                     </ConfirmButton>
-                    {/*
-                     <Tooltip
+                    <Tooltip
                         placement="top"
                         target="submit-button"
                     >
                         {shortcutManager.getActionKeys(keymap.TicketDetailContainer.actions.SUBMIT_TICKET)}
                     </Tooltip>
-                    */}
 
                     <ConfirmButton
                         id="submit-and-close-button"
@@ -122,15 +120,12 @@ export default class TicketSubmitButtons extends React.Component {
                     >
                         Send &amp; Close
                     </ConfirmButton>
-                    {/*
-                     <Tooltip
+                    <Tooltip
                         placement="top"
                         target="submit-and-close-button"
                     >
                         {shortcutManager.getActionKeys(keymap.TicketDetailContainer.actions.SUBMIT_CLOSE_TICKET)}
                     </Tooltip>
-                    */}
-
                 </div>
 
                 {

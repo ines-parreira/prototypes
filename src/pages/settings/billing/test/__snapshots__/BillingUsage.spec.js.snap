@@ -131,7 +131,7 @@ exports[`BillingUsage component should display price 1`] = `
                       }
                     >
                       <div
-                        className="col col-sm-3"
+                        className="col-sm-3"
                       >
                         <div>
                           <div
@@ -163,6 +163,7 @@ exports[`BillingUsage component should display price 1`] = `
                                   "show": 0,
                                 }
                               }
+                              hideArrow={false}
                               isOpen={false}
                               placement="top"
                               placementPrefix="bs-tooltip"
@@ -244,7 +245,7 @@ exports[`BillingUsage component should display price 1`] = `
                       }
                     >
                       <div
-                        className="col col-sm-3"
+                        className="col-sm-3"
                       >
                         <div>
                           <div
@@ -287,6 +288,7 @@ exports[`BillingUsage component should display price 1`] = `
                                     "show": 0,
                                   }
                                 }
+                                hideArrow={false}
                                 isOpen={false}
                                 placement="top"
                                 placementPrefix="bs-tooltip"
@@ -345,7 +347,7 @@ exports[`BillingUsage component should display price 1`] = `
                       }
                     >
                       <div
-                        className="plan-usage-reset col col-sm-3"
+                        className="plan-usage-reset col-sm-3"
                       >
                         <div>
                           <strong>
@@ -372,7 +374,7 @@ exports[`BillingUsage component should display price 1`] = `
                       }
                     >
                       <div
-                        className="plan-button col col-sm-3"
+                        className="plan-button col-sm-3"
                       >
                         <Button
                           color="secondary"
@@ -523,7 +525,7 @@ exports[`BillingUsage component should load with empty props 1`] = `
                       }
                     >
                       <div
-                        className="col col-sm-3"
+                        className="col-sm-3"
                       >
                         <div>
                           <div
@@ -555,6 +557,7 @@ exports[`BillingUsage component should load with empty props 1`] = `
                                   "show": 0,
                                 }
                               }
+                              hideArrow={false}
                               isOpen={false}
                               placement="top"
                               placementPrefix="bs-tooltip"
@@ -616,7 +619,7 @@ exports[`BillingUsage component should load with empty props 1`] = `
                       }
                     >
                       <div
-                        className="col col-sm-3"
+                        className="col-sm-3"
                       >
                         <div>
                           <div
@@ -659,6 +662,7 @@ exports[`BillingUsage component should load with empty props 1`] = `
                                     "show": 0,
                                   }
                                 }
+                                hideArrow={false}
                                 isOpen={false}
                                 placement="top"
                                 placementPrefix="bs-tooltip"
@@ -717,7 +721,7 @@ exports[`BillingUsage component should load with empty props 1`] = `
                       }
                     >
                       <div
-                        className="plan-usage-reset col col-sm-3"
+                        className="plan-usage-reset col-sm-3"
                       >
                         <div>
                           <strong>
@@ -744,7 +748,7 @@ exports[`BillingUsage component should load with empty props 1`] = `
                       }
                     >
                       <div
-                        className="plan-button col col-sm-3"
+                        className="plan-button col-sm-3"
                       >
                         <Button
                           color="secondary"

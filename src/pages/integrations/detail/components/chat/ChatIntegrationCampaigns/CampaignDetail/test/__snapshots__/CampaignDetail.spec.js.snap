@@ -491,8 +491,9 @@ exports[`CampaignDetail component should display default value when it's a new c
                                   toggle={[Function]}
                                 >
                                   <Dropdown
+                                    active={false}
                                     addonType={false}
-                                    dropup={false}
+                                    direction="down"
                                     inNavbar={false}
                                     isOpen={false}
                                     nav={false}
@@ -758,8 +759,9 @@ exports[`CampaignDetail component should display default value when it's a new c
                         </TriggerRow>
                         <UncontrolledDropdown>
                           <Dropdown
+                            active={false}
                             addonType={false}
-                            dropup={false}
+                            direction="down"
                             inNavbar={false}
                             isOpen={false}
                             nav={false}
@@ -915,8 +917,9 @@ exports[`CampaignDetail component should display default value when it's a new c
                                 toggle={[Function]}
                               >
                                 <Dropdown
+                                  active={false}
                                   addonType={false}
-                                  dropup={false}
+                                  direction="down"
                                   inNavbar={false}
                                   isOpen={false}
                                   nav={false}
@@ -3190,8 +3193,9 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       >
                         <UncontrolledDropdown>
                           <Dropdown
+                            active={false}
                             addonType={false}
-                            dropup={false}
+                            direction="down"
                             inNavbar={false}
                             isOpen={false}
                             nav={false}
@@ -3347,8 +3351,9 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                 toggle={[Function]}
                               >
                                 <Dropdown
+                                  active={false}
                                   addonType={false}
-                                  dropup={false}
+                                  direction="down"
                                   inNavbar={false}
                                   isOpen={false}
                                   nav={false}
@@ -3577,6 +3582,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                 "show": 0,
                               }
                             }
+                            hideArrow={false}
                             isOpen={false}
                             placement="bottom right"
                             placementPrefix="bs-popover"

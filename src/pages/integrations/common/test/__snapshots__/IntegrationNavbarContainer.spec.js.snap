@@ -71,9 +71,10 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
               className="nav-dropdown"
             >
               <Dropdown
+                active={false}
                 addonType={false}
                 className="nav-dropdown"
-                dropup={false}
+                direction="down"
                 inNavbar={false}
                 isOpen={false}
                 nav={false}
@@ -338,9 +339,10 @@ exports[`IntegrationNavbarContainer should display correctly the name of Faceboo
               className="nav-dropdown dropup"
             >
               <Dropdown
+                active={false}
                 addonType={false}
                 className="nav-dropdown dropup"
-                dropup={false}
+                direction="down"
                 inNavbar={false}
                 isOpen={false}
                 nav={false}
@@ -694,9 +696,10 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
               className="nav-dropdown"
             >
               <Dropdown
+                active={false}
                 addonType={false}
                 className="nav-dropdown"
-                dropup={false}
+                direction="down"
                 inNavbar={false}
                 isOpen={false}
                 nav={false}
@@ -977,9 +980,10 @@ exports[`IntegrationNavbarContainer should display correctly the name of Smooch 
               className="nav-dropdown dropup"
             >
               <Dropdown
+                active={false}
                 addonType={false}
                 className="nav-dropdown dropup"
-                dropup={false}
+                direction="down"
                 inNavbar={false}
                 isOpen={false}
                 nav={false}

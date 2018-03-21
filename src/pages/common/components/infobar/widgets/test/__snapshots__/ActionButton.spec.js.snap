@@ -23,6 +23,7 @@ exports[`ActionButton component should display a single option with a checkbox p
         "show": 0,
       }
     }
+    hideArrow={false}
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
@@ -110,6 +111,7 @@ exports[`ActionButton component should display a single option with a number par
         "show": 0,
       }
     }
+    hideArrow={false}
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
@@ -201,6 +203,7 @@ exports[`ActionButton component should display a single option with a text param
         "show": 0,
       }
     }
+    hideArrow={false}
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
@@ -289,6 +292,7 @@ exports[`ActionButton component should display a single option with no parameter
         "show": 0,
       }
     }
+    hideArrow={false}
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
@@ -369,6 +373,7 @@ exports[`ActionButton component should display multiple options with a common pa
         "show": 0,
       }
     }
+    hideArrow={false}
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
@@ -513,6 +518,7 @@ exports[`ActionButton component should display multiple options with different p
         "show": 0,
       }
     }
+    hideArrow={false}
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
@@ -656,6 +662,7 @@ exports[`ActionButton component should display multiple options without paramete
         "show": 0,
       }
     }
+    hideArrow={false}
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"

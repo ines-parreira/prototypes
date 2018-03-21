@@ -1,4 +1,4 @@
-import{browserHistory} from 'react-router'
+import {browserHistory} from 'react-router'
 
 // jsdom does not support matchMedia
 Object.defineProperty(window, 'matchMedia', {
@@ -41,6 +41,7 @@ Object.defineProperty(window, 'localStorage', {
 
 // Mock browserHistoryAPI
 browserHistory.push = jest.fn()
+
 // Mock of the PushJS API (browser notification)
 class mockPushJS {
     constructor() {
@@ -65,4 +66,12 @@ class mockPushJS {
 
 jest.mock('push.js', () => {
     return new mockPushJS
+})
+
+Object.defineProperty(window, 'requestAnimationFrame', {
+    value: jest.fn()
+})
+
+Object.defineProperty(window, 'cancelAnimationFrame', {
+    value: jest.fn()
 })

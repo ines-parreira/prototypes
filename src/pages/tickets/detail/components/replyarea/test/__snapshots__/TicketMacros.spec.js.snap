@@ -179,8 +179,9 @@ exports[`TicketMacros component should display macros list, and selected macro 1
       className="previewContainer"
     >
       <Dropdown
+        active={false}
         addonType={false}
-        dropup={false}
+        direction="down"
         inNavbar={false}
         isOpen={false}
         nav={false}
@@ -265,6 +266,7 @@ exports[`TicketMacros component should display macros list, and selected macro 1
             "show": 0,
           }
         }
+        hideArrow={false}
         isOpen={false}
         placement="bottom"
         placementPrefix="bs-popover"
