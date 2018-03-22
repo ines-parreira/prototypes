@@ -205,8 +205,8 @@ export default class TicketMessage extends React.Component {
             const isFacebookComment = parentId === postId
             const isInstagramMedia = message.source.type === 'instagram-media'
 
-            let type = null
-            let link = null
+            let type = 'reply'
+            let link = `https://facebook.com/${messageId}`
 
             if (isFacebookPost) {
                 type = 'post'
@@ -219,21 +219,20 @@ export default class TicketMessage extends React.Component {
                 link = `https://facebook.com/${messageId}`
             }
 
-            if (type && link) {
-                widgets.push(
-                    <span
-                        key="ref-widget"
-                        className={classnames(css.from, 'd-none d-md-inline-block')}
+            widgets.push(
+                <span
+                    key="ref-widget"
+                    className={classnames(css.from, 'd-none d-md-inline-block')}
+                >
+                    go to{' '}
+                    <a
+                        target="_blank"
+                        href={link}
                     >
-                        <a
-                            target="_blank"
-                            href={link}
-                        >
-                            view on Facebook
-                        </a>
-                    </span>
-                )
-            }
+                        {type}
+                    </a>
+                </span>
+            )
         }
 
         if (message.via === 'rule') {
@@ -420,9 +419,9 @@ export default class TicketMessage extends React.Component {
 
                             {this.renderSource(message)}
                             {this.renderMeta(message)}
-                            {this.renderActions(message)}
                         </div>
                         <span className={classnames(css.date, 'text-faded float-right')}>
+                            {this.renderActions(message)}
                             {
                                 message.from_agent && isLastReadMessage && (
                                     <span>
