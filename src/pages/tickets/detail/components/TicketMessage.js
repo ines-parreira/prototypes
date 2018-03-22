@@ -3,7 +3,7 @@ import moment from 'moment'
 import {fromJS} from 'immutable'
 import classnamesBind from 'classnames/bind'
 import {isArray as _isArray} from 'lodash'
-import {Button, Popover, PopoverBody} from 'reactstrap'
+import {Popover, PopoverBody} from 'reactstrap'
 
 import * as infobarActions from './../../../../state/infobar/actions'
 
@@ -144,10 +144,28 @@ export default class TicketMessage extends React.Component {
         )
     }
 
-    _toggleHideComment = (shouldHide) => {
+    _toggleInstagramHideComment = (hide) => {
         const {message, executeAction} = this.props
 
-        executeAction(shouldHide ? 'instagramHideComment' : 'instagramUnhideComment',
+        executeAction(hide ? 'instagramHideComment' : 'instagramUnhideComment',
+            message.integration_id,
+            undefined,
+            {'comment_id': message.message_id})
+    }
+
+    _toggleFacebookHideComment = (hide) => {
+        const {message, executeAction} = this.props
+
+        executeAction(hide ? 'facebookHideComment' : 'facebookUnhideComment',
+            message.integration_id,
+            undefined,
+            {'comment_id': message.message_id})
+    }
+
+    _toggleLikeComment = (like) => {
+        const {message, executeAction} = this.props
+
+        executeAction(like ? 'facebookLikeComment' : 'facebookUnlikeComment',
             message.integration_id,
             undefined,
             {'comment_id': message.message_id})
@@ -187,7 +205,7 @@ export default class TicketMessage extends React.Component {
             const isFacebookComment = parentId === postId
             const isInstagramMedia = message.source.type === 'instagram-media'
 
-            let type = 'reply'
+            let type = null
             let link = null
 
             if (isFacebookPost) {
@@ -201,20 +219,21 @@ export default class TicketMessage extends React.Component {
                 link = `https://facebook.com/${messageId}`
             }
 
-            widgets.push(
-                <span
-                    key="ref-widget"
-                    className="hidden-sm-down ticket-message-from"
-                >
-                    go to{' '}
-                    <a
-                        target="_blank"
-                        href={link}
+            if (type && link) {
+                widgets.push(
+                    <span
+                        key="ref-widget"
+                        className={classnames(css.from, 'd-none d-md-inline-block')}
                     >
-                        {type}
-                    </a>
-                </span>
-            )
+                        <a
+                            target="_blank"
+                            href={link}
+                        >
+                            view on Facebook
+                        </a>
+                    </span>
+                )
+            }
         }
 
         if (message.via === 'rule') {
@@ -228,7 +247,23 @@ export default class TicketMessage extends React.Component {
             )
         }
 
-        if (message.source && message.source.type === 'instagram-comment') {
+        return widgets
+    }
+
+    renderActions(message) {
+        const widgets = []
+
+        if (!message.source || !message.source.type) {
+            return widgets
+        }
+
+        const isInstagramComment = message.source.type === 'instagram-comment'
+        const isFacebookComment = message.source.type === 'facebook-comment'
+        const isFromAgent = message.from_agent
+
+        // If the comment is a Facebook comment, posted by the page, then the API will never allow us to hide it.
+        // So we don't even display the `hide` button to avoid frustration.
+        if (isInstagramComment || (isFacebookComment && !isFromAgent)) {
             let hiddenDatetime = null
 
             if (message.meta && message.meta.hidden_datetime) {
@@ -239,16 +274,34 @@ export default class TicketMessage extends React.Component {
 
             widgets.push(
                 <span
-                    key="hide-widget"
-                    className="hidden-sm-down ticket-message-from"
+                    key="hide-action"
+                    className={classnames('hidden-sm-down', css.actionButton)}
+                    onClick={() => isInstagramComment
+                        ? this._toggleInstagramHideComment(shouldHide)
+                        : this._toggleFacebookHideComment(shouldHide)
+                    }
                 >
-                    <Button
-                        color="link"
-                        className="font-weight-normal"
-                        onClick={() => this._toggleHideComment(shouldHide)}
-                    >
-                        {shouldHide ? 'hide comment' : 'unhide comment'}
-                    </Button>
+                    {shouldHide ? 'Hide' : 'Unhide'}
+                </span>
+            )
+        }
+
+        if (isFacebookComment) {
+            let likedDatetime = null
+
+            if (message.meta && message.meta.liked_datetime) {
+                likedDatetime = message.meta.liked_datetime
+            }
+
+            const shouldHide = !likedDatetime
+
+            widgets.push(
+                <span
+                    key="like-action"
+                    className={classnames('hidden-sm-down', css.actionButton)}
+                    onClick={() => this._toggleLikeComment(shouldHide)}
+                >
+                    {shouldHide ? 'Like' : 'Unlike'}
                 </span>
             )
         }
@@ -367,6 +420,7 @@ export default class TicketMessage extends React.Component {
 
                             {this.renderSource(message)}
                             {this.renderMeta(message)}
+                            {this.renderActions(message)}
                         </div>
                         <span className={classnames(css.date, 'text-faded float-right')}>
                             {
