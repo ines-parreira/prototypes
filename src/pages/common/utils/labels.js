@@ -145,7 +145,7 @@ StatusLabel.propTypes = {
  * CHANNEL
  */
 export const ChannelLabel = ({channel}) => (
-    <SourceIcon type={channel} className="text-secondary"/>
+    <SourceIcon type={channel} className="text-secondary" />
 )
 ChannelLabel.propTypes = {channel: PropTypes.string.isRequired}
 

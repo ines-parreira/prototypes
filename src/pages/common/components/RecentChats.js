@@ -7,8 +7,8 @@ import Tooltip from './Tooltip'
 import {isCurrentlyOnTicket} from '../../../utils'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 
-import {sourceTypeToIcon} from '../../../config/ticket'
 import {MAX_RECENT_CHATS} from '../../../config/chats'
+import SourceIcon from './SourceIcon'
 
 class RecentChatsItem extends React.Component {
     static propTypes = {
@@ -46,7 +46,7 @@ class RecentChatsItem extends React.Component {
                 className={linkClasses}
                 title={requesterName}
             >
-                <i className={classnames('uncolored mr-2', sourceTypeToIcon(channel))} />
+                <SourceIcon type={channel} className={classnames('uncolored mr-2')}/>
                 <span>{requesterName}</span>
             </Link>
         )

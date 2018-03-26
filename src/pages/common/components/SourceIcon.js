@@ -83,7 +83,7 @@ const SourceIcon = (props: Props) => {
                     [`icon-custom icon-${icon.name}`]: icon.custom,
                     ['material-icons']: !icon.custom,
                 },
-                className
+                className,
             )}
             {...allProps}
         >
