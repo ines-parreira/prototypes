@@ -170,5 +170,20 @@ describe('components', () => {
 
             expect(component.render().find('a').prop('rel')).toBe('noreferrer noopener')
         })
+
+        it('should set new-line-interpret class', () => {
+            const component = mount(
+                <TicketMessageBody
+                    message={{
+                        body_text: 'my test \n' +
+                        'with a new line',
+                        body_html: ''
+                    }}
+                    store={mockStore()}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
     })
 })

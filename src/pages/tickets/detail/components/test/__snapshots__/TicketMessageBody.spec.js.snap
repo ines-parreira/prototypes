@@ -24,6 +24,7 @@ exports[`components TicketMessageBody html by default 1`] = `
   >
     <div>
       <div
+        className=""
         dangerouslySetInnerHTML={
           Object {
             "__html": "html",
@@ -59,6 +60,7 @@ exports[`components TicketMessageBody linkify body_text 1`] = `
   >
     <div>
       <div
+        className="new-line-interpret"
         dangerouslySetInnerHTML={
           Object {
             "__html": "text <a href=\\"http://gorgias.io/\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">http://gorgias.io/</a>",
@@ -129,6 +131,7 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
   >
     <div>
       <div
+        className="new-line-interpret"
         dangerouslySetInnerHTML={
           Object {
             "__html": "text <a href=\\"http://gorgias.io/\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">http://gorgias.io/</a>",
@@ -437,6 +440,44 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
 </TicketMessageBody>
 `;
 
+exports[`components TicketMessageBody should set new-line-interpret class 1`] = `
+<TicketMessageBody
+  message={
+    Object {
+      "body_html": "",
+      "body_text": "my test 
+    with a new line",
+    }
+  }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <div
+    className="component"
+  >
+    <div>
+      <div
+        className="new-line-interpret"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "my test 
+          with a new line",
+          }
+        }
+      />
+    </div>
+  </div>
+</TicketMessageBody>
+`;
+
 exports[`components TicketMessageBody use stripped_html if available 1`] = `
 <TicketMessageBody
   message={
@@ -463,6 +504,7 @@ exports[`components TicketMessageBody use stripped_html if available 1`] = `
   >
     <div>
       <div
+        className=""
         dangerouslySetInnerHTML={
           Object {
             "__html": "stripped html",
@@ -510,6 +552,7 @@ exports[`components TicketMessageBody use text when no html 1`] = `
   >
     <div>
       <div
+        className="new-line-interpret"
         dangerouslySetInnerHTML={
           Object {
             "__html": "text",
@@ -540,6 +583,7 @@ exports[`components TicketMessageBody with empty props 1`] = `
   >
     <div>
       <div
+        className=""
         dangerouslySetInnerHTML={
           Object {
             "__html": "",

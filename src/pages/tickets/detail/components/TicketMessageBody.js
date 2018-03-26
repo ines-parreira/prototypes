@@ -39,6 +39,8 @@ export default class TicketMessageBody extends React.Component<Props, State> {
         let body = message.body_html || message.body_text || ''
         const stripped = message.body_html && message.stripped_html ? message.stripped_html : message.stripped_text
 
+        const bodyIsOnlyText = !message.body_html && body
+
         let quoteButton = null
         if (stripped) {
             // only show quoteButton if the contents of body and stripped are different
@@ -58,7 +60,7 @@ export default class TicketMessageBody extends React.Component<Props, State> {
             }
         }
 
-        if (!message.body_html && body) {
+        if (bodyIsOnlyText) {
             body = linkifyStr(body)
         }
 
@@ -66,7 +68,10 @@ export default class TicketMessageBody extends React.Component<Props, State> {
 
         let content = body !== 'null' && (
             <div>
-                <div dangerouslySetInnerHTML={{__html: body}}/>
+                <div
+                    className={classnames({'new-line-interpret': bodyIsOnlyText})}
+                    dangerouslySetInnerHTML={{__html: body}}
+                />
                 {quoteButton}
             </div>
         )
