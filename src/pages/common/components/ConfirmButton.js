@@ -138,7 +138,7 @@ export default class ConfirmButton extends React.Component<Props, State> {
 
         const isLoading = this.state.loading || loading
 
-        const uid = `confirm-button-${id}`
+        const uid = `confirm-button-${(id || '').toString()}`
 
         return (
             <div

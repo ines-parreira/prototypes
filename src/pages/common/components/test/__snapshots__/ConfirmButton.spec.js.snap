@@ -22,6 +22,7 @@ exports[`ConfirmButton component should match snapshot 1`] = `
         "show": 0,
       }
     }
+    hideArrow={false}
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"

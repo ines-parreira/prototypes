@@ -295,7 +295,7 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
             confirm={[Function]}
             content="Are you sure you want to delete this integration?"
             disabled={false}
-            id=""
+            id="cbtn-1522177656107"
             loading={false}
             outline={true}
             placement="bottom"
@@ -480,7 +480,7 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
             confirm={[Function]}
             content="Are you sure you want to delete this integration?"
             disabled={false}
-            id=""
+            id="cbtn-1522177656107"
             loading={false}
             outline={true}
             placement="bottom"
