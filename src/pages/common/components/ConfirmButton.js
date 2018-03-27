@@ -33,7 +33,7 @@ type State = {
 
 export default class ConfirmButton extends React.Component<Props, State> {
     static defaultProps = {
-        id: `cbtn-${Date.now()}`,
+        id: '',
         type: 'button',
         className: '',
         disabled: false,
@@ -50,7 +50,7 @@ export default class ConfirmButton extends React.Component<Props, State> {
         showConfirmation: false
     }
 
-    _container: ?HTMLElement = null
+    _form: ?HTMLElement = null
     _mounted: boolean = false
 
     componentWillMount() {
@@ -62,24 +62,23 @@ export default class ConfirmButton extends React.Component<Props, State> {
     }
 
     _showConfirmation = (e: Event) => {
-        if (this.props.type === 'submit') {
-            const form: HTMLFormElement = _get(e, ['target', 'form'])
-            if (
-                !!form
-                && !form.checkValidity()
-            ) {
-                // don't show popover for invalid forms
+        const form: HTMLFormElement = _get(e, ['target', 'form'])
+        if (this.props.type === 'submit' && !!form) {
+            // don't show popover for invalid forms
+            if (!form.checkValidity()) {
                 return
             }
-        }
 
-        console.log(this.props.skip)
+            // stop real submit,
+            // we'll trigger it from the confirm button.
+            this._form = form
+            e.preventDefault()
+        }
 
         if (this.props.skip) {
-            return this.props.confirm()
+            return this._confirmAction()
         }
 
-        e.preventDefault()
         this.setState({showConfirmation: true})
     }
 
@@ -96,25 +95,28 @@ export default class ConfirmButton extends React.Component<Props, State> {
     }
 
     _confirmAction = () => {
-        this.setState({loading: true})
+        if (this.props.type === 'submit') {
+            this.setState({showConfirmation: false})
 
-        // HACK if the popover hides immediately onClick
-        // the submit event is not triggered.
-        setTimeout(this._hideConfirmation)
+            this.props.confirm()
+            // popover is outside the form,
+            // so we need to simulate the submit.
+            // _form can be null.
+            if (this._form) {
+                this._form.dispatchEvent(new Event('submit'))
+            }
+            return
+        }
+
+        this.setState({
+            loading: true,
+            showConfirmation: false
+        })
 
         Promise
             .resolve(this.props.confirm())
             .then(this._hideLoading)
             .catch(this._hideLoading)
-    }
-
-    _popoverContainer = () => {
-        if (this.props.type === 'submit' && this._container) {
-            // keep submit popovers in form
-            return this._container.closest('form')
-        }
-
-        return 'body'
     }
 
     render() {
@@ -138,14 +140,10 @@ export default class ConfirmButton extends React.Component<Props, State> {
 
         const isLoading = this.state.loading || loading
 
-        const uid = `confirm-button-${id}`
+        const uid = `confirm-button-${id || Date.now()}`
 
         return (
-            <div
-                className={classnames('d-inline-block', className)}
-                id={id}
-                ref={(container) => this._container = container}
-            >
+            <div className={classnames('d-inline-block', className)} id={id}>
                 <Button
                     id={uid}
                     type={type}
@@ -163,7 +161,6 @@ export default class ConfirmButton extends React.Component<Props, State> {
                     isOpen={showConfirmation}
                     target={uid}
                     toggle={this._hideConfirmation}
-                    container={this._popoverContainer()}
                 >
                     <PopoverHeader>{title}</PopoverHeader>
                     <PopoverBody>
@@ -172,7 +169,7 @@ export default class ConfirmButton extends React.Component<Props, State> {
                         </p>
 
                         <Button
-                            type={type}
+                            type="submit"
                             color="success"
                             onClick={this._confirmAction}
                         >

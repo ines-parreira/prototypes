@@ -15,13 +15,13 @@ exports[`ConfirmButton component should match snapshot 1`] = `
     type="button"
   />
   <Popover
-    container="body"
     delay={
       Object {
         "hide": 0,
         "show": 0,
       }
     }
+    hideArrow={false}
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
@@ -41,7 +41,7 @@ exports[`ConfirmButton component should match snapshot 1`] = `
         color="success"
         onClick={[Function]}
         tag="button"
-        type="button"
+        type="submit"
       >
         Confirm
       </Button>

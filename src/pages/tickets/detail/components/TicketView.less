@@ -31,17 +31,9 @@
     border-radius: 2px;
     margin-left: -10px;
     margin-right: -10px;
-    margin-bottom: 18px;
 
     @media @mobiles {
       margin: 0 -16px;
-    }
-
-    /* extra bottom padding on touchscreen devices,
-    * for the onscreen keyboard
-    */
-    @media (pointer: coarse) {
-      margin-bottom: 14rem;
     }
   }
 
@@ -51,11 +43,18 @@
 
   .ticketContent {
     overflow: auto;
-    padding: 0 30px;
+    padding: 0 30px 18px;
     flex-shrink: 1;
 
     @media @mobiles {
       padding: 16px;
+    }
+
+    /* extra bottom padding on touchscreen devices,
+    * for the onscreen keyboard
+    */
+    @media (pointer: coarse) {
+      padding-bottom: 14rem;
     }
 
     &.historyDisplayed {
