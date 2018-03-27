@@ -1,5 +1,6 @@
 import React from 'react'
 import {shallow, mount} from 'enzyme'
+import _noop from 'lodash/noop'
 import ConfirmButton from '../ConfirmButton'
 
 describe('ConfirmButton component', () => {
@@ -30,7 +31,7 @@ describe('ConfirmButton component', () => {
         component.find('#confirm-button-1').simulate('click', new Event('click'))
         component.find('Popover Button').simulate('click')
 
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             setTimeout(() => {
                 expect(component.state('showConfirmation')).toBe(false)
                 resolve()
@@ -52,7 +53,7 @@ describe('ConfirmButton component', () => {
         // use click() from jsdom
         component.find('#confirm-button-1').get(0).click()
 
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             setTimeout(() => {
                 expect(submit).toBeCalled()
                 resolve()

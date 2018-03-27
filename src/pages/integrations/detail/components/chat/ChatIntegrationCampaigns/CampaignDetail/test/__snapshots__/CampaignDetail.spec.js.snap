@@ -3576,7 +3576,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                             </button>
                           </Button>
                           <Popover
-                            container="body"
                             delay={
                               Object {
                                 "hide": 0,
