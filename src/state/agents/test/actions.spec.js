@@ -58,7 +58,7 @@ describe('agents actions', () => {
     })
 
     it('fetch agents', () => {
-        mockServer.onGet(/\/api\/users\/.+$/).reply(200, {data: [{id: 1}]})
+        mockServer.onGet('/api/users/').reply(200, {data: [{id: 1}]})
 
         return store.dispatch(actions.fetchPagination())
             .then(() => expect(store.getActions()).toMatchSnapshot())

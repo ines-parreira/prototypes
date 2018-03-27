@@ -73,7 +73,11 @@ export const fetchAgent = (id: string) => (dispatch: dispatchType): Promise<disp
 
 // eslint-disable-next-line
 export const fetchPagination = (page: number = 1) => (dispatch: dispatchType): Promise<dispatchType> => {
-    return axios.get('/api/users/?roles[]=admin&roles[]=agent&roles[]=staff')
+    return axios.get('/api/users/', {
+        params: {
+            roles: ['admin', 'agent', 'staff'],
+            page:  page.toString()
+        }})
         .then((json = {}) => json.data)
         .then(resp => {
             resp = toImmutable(resp)
