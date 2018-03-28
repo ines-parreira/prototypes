@@ -156,7 +156,7 @@ export class BillingUsage extends Component {
 
         const isTrialing = currentSubscription.get('status') === 'trialing'
         const planName = isTrialing ? 'Free' : currentPlan.get('name')
-        const planTitle = isTrialing ? 'Free Trial' : `${planName} Plan`
+        const planTitle = isTrialing ? 'Free Trial' : `${planName} ${currentPlan.get('interval')}ly plan`
 
         const currentSubscriptionCreated = moment(currentSubscription.get('created_datetime')).format(dateFormat)
         const currentSubscriptionTrialStart = moment(currentSubscription.get('trial_start_datetime')).format(dateFormat)

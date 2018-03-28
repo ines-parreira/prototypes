@@ -1,32 +1,29 @@
 // @flow
 
-import React from 'react'
+import React, {type Node} from 'react'
 import {Card, Button, CardBody, CardHeader, CardFooter} from 'reactstrap'
 import Tooltip from '../../../common/components/Tooltip'
 import './Plan.less'
 import classnames from 'classnames'
 
 type Props = {
+    plan: Object,
     callToAction?: Node,
     features?: Node,
     isCurrentPlan?: boolean,
     isFeatured?: boolean,
     isTrialing?: boolean,
     isUpdating?: boolean,
-    onClick?: Function,
-    plan: Object,
     showFooter?: boolean,
+    onClick?: Function,
 }
 
 export class Plan extends React.Component<Props> {
     static defaultProps = {
-        callToAction: null,
-        features: null,
         isCurrentPlan: false,
         isFeatured: false,
         isTrialing: false,
         isUpdating: false,
-        onClick: null,
         showFooter: true,
     }
 
@@ -36,8 +33,8 @@ export class Plan extends React.Component<Props> {
         const costMultiplier = 100
         const costPerTicket = plan.get('cost_per_ticket') * costMultiplier
         const planName = plan.get('name')
-        const planId = plan.get('id')
-        const planInterval = plan.get('interval') === 'month' ? 'mo' : 'year'
+        const planInterval = plan.get('interval') === 'month' ? 'mo' : 'yr'
+
         return (
             <Card
                 className={classnames('plan', `plan-${planName}`, {featured: isFeatured})}
@@ -83,10 +80,10 @@ export class Plan extends React.Component<Props> {
                                     + {plan.get('currencySign')}{costPerTicket}
                                 </strong> per {costMultiplier} tickets
                                 {' '}
-                                <a id={`additional-tickets-tooltip-${planId}`}>
+                                <a id={`additional-tickets-tooltip-${planName}`}>
                                     <i className="material-icons text-muted">info_outline</i>
                                 </a>
-                                <Tooltip target={`additional-tickets-tooltip-${planId}`}>
+                                <Tooltip target={`additional-tickets-tooltip-${planName}`}>
                                     If you reply to more tickets than included in your plan
                                     this is the additional cost per 100 tickets.
                                 </Tooltip>

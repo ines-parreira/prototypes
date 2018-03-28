@@ -30,8 +30,10 @@ exports[`BillingUsage component should display price 1`] = `
 <BillingUsage
   currentPlan={
     Immutable.Map {
+      name: "Pro",
       free_tickets: 10,
       integrations: 5,
+      interval: "month",
     }
   }
   currentSubscription={
@@ -72,11 +74,11 @@ exports[`BillingUsage component should display price 1`] = `
         className="mb-2 card-group"
       >
         <Card
-          className="current-plan undefined"
+          className="current-plan Pro"
           tag="div"
         >
           <div
-            className="current-plan undefined card"
+            className="current-plan Pro card"
           >
             <CardBody
               tag="div"
@@ -85,7 +87,7 @@ exports[`BillingUsage component should display price 1`] = `
                 className="card-body"
               >
                 <h4>
-                  undefined Plan
+                  Pro monthly plan
                 </h4>
                 <div>
                   Your current subscription started on 
@@ -428,8 +430,10 @@ exports[`BillingUsage component should load with empty props 1`] = `
   }
   currentPlan={
     Immutable.Map {
+      name: "Pro",
       free_tickets: 10,
       integrations: 5,
+      interval: "month",
     }
   }
   currentSubscription={
@@ -466,11 +470,11 @@ exports[`BillingUsage component should load with empty props 1`] = `
         className="mb-2 card-group"
       >
         <Card
-          className="current-plan undefined"
+          className="current-plan Pro"
           tag="div"
         >
           <div
-            className="current-plan undefined card"
+            className="current-plan Pro card"
           >
             <CardBody
               tag="div"
@@ -479,7 +483,7 @@ exports[`BillingUsage component should load with empty props 1`] = `
                 className="card-body"
               >
                 <h4>
-                  undefined Plan
+                  Pro monthly plan
                 </h4>
                 <div>
                   Your current subscription started on 

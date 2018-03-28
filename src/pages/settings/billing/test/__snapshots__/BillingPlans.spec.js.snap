@@ -30,17 +30,38 @@ exports[`BillingPlans component should display a custom plan 1`] = `
     }
   />
   <Container
-    className="page-container"
+    className="page-container plans-container"
     fluid={true}
     tag="div"
   >
+    <div
+      className="interval-toggle"
+    >
+      <ButtonGroup
+        role="group"
+        tag="div"
+      >
+        <Button
+          color="primary"
+          onClick={[Function]}
+          tag="button"
+        >
+          Monthly
+        </Button>
+        <Button
+          color="secondary"
+          onClick={[Function]}
+          tag="button"
+        >
+          Yearly
+        </Button>
+      </ButtonGroup>
+    </div>
     <CardDeck
-      className="mb-5"
+      className="mb-5 plans-cards"
       tag="div"
     >
       <Plan
-        callToAction={null}
-        features={null}
         isCurrentPlan={true}
         isFeatured={false}
         isTrialing={false}
@@ -58,6 +79,12 @@ exports[`BillingPlans component should display a custom plan 1`] = `
         showFooter={true}
       />
     </CardDeck>
+  </Container>
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
     <div
       style={
         Object {
@@ -92,7 +119,7 @@ exports[`BillingPlans component should display a custom plan 1`] = `
               What's a ticket?
             </dt>
             <dd>
-              A ticket is a conversation with a customer, on any channel. It can be on email, phone, chat, etc.
+              A ticket is a conversation with a customer, on any channel. It can be by email, phone, chat, etc.
               <br />
               Usage only includes tickets that contain a response sent from Gorgias.
             </dd>
@@ -107,6 +134,12 @@ exports[`BillingPlans component should display a custom plan 1`] = `
             </dt>
             <dd>
               No, all channels are included. You can connect as many chat widgets, facebook pages, and email addresses as you want.
+            </dd>
+            <dt>
+              What level of support is included in my plan?
+            </dt>
+            <dd>
+              We provide all our customers with the same level of support. We're available 9am-7pm PST, over live chat & email.
             </dd>
           </dl>
         </Col>
@@ -131,16 +164,24 @@ exports[`BillingPlans component should display a custom plan 1`] = `
               Sure. You probably receive about 1,000 tickets for each agent in your team. So if you’re paying for 5 seats with your current helpdesk, you’d pay for 5,000 tickets with Gorgias.
             </dd>
             <dt>
-              What level of support is included in my plan?
+              Can I switch between plans?
             </dt>
             <dd>
-              We provide all our customers with the same level of support. We're available 9am-7pm PST, over live chat & email.
+              Yes you can. Switching between monthly/yearly plans will 
+              <a
+                href="https://stripe.com/docs/subscriptions/upgrading-downgrading#understanding-proration"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                prorate
+              </a>
+               your subscription. See the question below for switching from yearly to monthly plans.
             </dd>
             <dt>
-              I need help integrating an app with Gorgias. Is that included in my plan?
+              Can I switch from an yearly plan to a monthly plan?
             </dt>
             <dd>
-              Yes. We're happy to help you add your own integrations at no additional cost.
+              Once you start using our annual plan, you will get a %17 discount (2 months for free). Given this discount, we don't allow switching to monthly plans until the next billing cycle begins. In practice, it means that if you subscribe to a yearly plan on 15 May, you will be able to switch to a monthly plan next year on 15 May. Make sure you send us a message before so we can make the switch for you.
             </dd>
           </dl>
         </Col>
@@ -180,33 +221,37 @@ exports[`BillingPlans component should display matching current plan 1`] = `
     }
   />
   <Container
-    className="page-container"
+    className="page-container plans-container"
     fluid={true}
     tag="div"
   >
+    <div
+      className="interval-toggle"
+    >
+      <ButtonGroup
+        role="group"
+        tag="div"
+      >
+        <Button
+          color="primary"
+          onClick={[Function]}
+          tag="button"
+        >
+          Monthly
+        </Button>
+        <Button
+          color="secondary"
+          onClick={[Function]}
+          tag="button"
+        >
+          Yearly
+        </Button>
+      </ButtonGroup>
+    </div>
     <CardDeck
-      className="mb-5"
+      className="mb-5 plans-cards"
       tag="div"
     >
-      <Plan
-        callToAction={null}
-        features={null}
-        isCurrentPlan={true}
-        isFeatured={false}
-        isTrialing={false}
-        isUpdating={false}
-        onClick={[Function]}
-        plan={
-          Immutable.Map {
-            public: true,
-            name: "my plan",
-            free_tickets: 100,
-            currencySign: "$",
-            integrations: 10,
-          }
-        }
-        showFooter={true}
-      />
       <Plan
         callToAction={
           <Button
@@ -214,7 +259,7 @@ exports[`BillingPlans component should display matching current plan 1`] = `
             onClick={[Function]}
             tag="button"
           >
-            Contact Us
+            Contact us
           </Button>
         }
         features={
@@ -238,9 +283,10 @@ exports[`BillingPlans component should display matching current plan 1`] = `
                 arrow_downward
               </i>
                
-              Discounted prices for volumes of
+              Discounted prices for volumes of 
               <strong>
-                10, 000+
+                10,000
+                +
               </strong>
                tickets
             </li>
@@ -259,7 +305,6 @@ exports[`BillingPlans component should display matching current plan 1`] = `
         isFeatured={false}
         isTrialing={false}
         isUpdating={false}
-        onClick={null}
         plan={
           Immutable.Map {
             name: "Enterprise",
@@ -268,6 +313,12 @@ exports[`BillingPlans component should display matching current plan 1`] = `
         showFooter={true}
       />
     </CardDeck>
+  </Container>
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
     <div
       style={
         Object {
@@ -302,7 +353,7 @@ exports[`BillingPlans component should display matching current plan 1`] = `
               What's a ticket?
             </dt>
             <dd>
-              A ticket is a conversation with a customer, on any channel. It can be on email, phone, chat, etc.
+              A ticket is a conversation with a customer, on any channel. It can be by email, phone, chat, etc.
               <br />
               Usage only includes tickets that contain a response sent from Gorgias.
             </dd>
@@ -317,6 +368,12 @@ exports[`BillingPlans component should display matching current plan 1`] = `
             </dt>
             <dd>
               No, all channels are included. You can connect as many chat widgets, facebook pages, and email addresses as you want.
+            </dd>
+            <dt>
+              What level of support is included in my plan?
+            </dt>
+            <dd>
+              We provide all our customers with the same level of support. We're available 9am-7pm PST, over live chat & email.
             </dd>
           </dl>
         </Col>
@@ -341,16 +398,24 @@ exports[`BillingPlans component should display matching current plan 1`] = `
               Sure. You probably receive about 1,000 tickets for each agent in your team. So if you’re paying for 5 seats with your current helpdesk, you’d pay for 5,000 tickets with Gorgias.
             </dd>
             <dt>
-              What level of support is included in my plan?
+              Can I switch between plans?
             </dt>
             <dd>
-              We provide all our customers with the same level of support. We're available 9am-7pm PST, over live chat & email.
+              Yes you can. Switching between monthly/yearly plans will 
+              <a
+                href="https://stripe.com/docs/subscriptions/upgrading-downgrading#understanding-proration"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                prorate
+              </a>
+               your subscription. See the question below for switching from yearly to monthly plans.
             </dd>
             <dt>
-              I need help integrating an app with Gorgias. Is that included in my plan?
+              Can I switch from an yearly plan to a monthly plan?
             </dt>
             <dd>
-              Yes. We're happy to help you add your own integrations at no additional cost.
+              Once you start using our annual plan, you will get a %17 discount (2 months for free). Given this discount, we don't allow switching to monthly plans until the next billing cycle begins. In practice, it means that if you subscribe to a yearly plan on 15 May, you will be able to switch to a monthly plan next year on 15 May. Make sure you send us a message before so we can make the switch for you.
             </dd>
           </dl>
         </Col>
@@ -390,52 +455,37 @@ exports[`BillingPlans component should display multiple plans 1`] = `
     }
   />
   <Container
-    className="page-container"
+    className="page-container plans-container"
     fluid={true}
     tag="div"
   >
+    <div
+      className="interval-toggle"
+    >
+      <ButtonGroup
+        role="group"
+        tag="div"
+      >
+        <Button
+          color="primary"
+          onClick={[Function]}
+          tag="button"
+        >
+          Monthly
+        </Button>
+        <Button
+          color="secondary"
+          onClick={[Function]}
+          tag="button"
+        >
+          Yearly
+        </Button>
+      </ButtonGroup>
+    </div>
     <CardDeck
-      className="mb-5"
+      className="mb-5 plans-cards"
       tag="div"
     >
-      <Plan
-        callToAction={null}
-        features={null}
-        isCurrentPlan={true}
-        isFeatured={false}
-        isTrialing={false}
-        isUpdating={false}
-        onClick={[Function]}
-        plan={
-          Immutable.Map {
-            public: true,
-            name: "my plan",
-            free_tickets: 100,
-            currencySign: "$",
-            integrations: 10,
-          }
-        }
-        showFooter={true}
-      />
-      <Plan
-        callToAction={null}
-        features={null}
-        isCurrentPlan={false}
-        isFeatured={true}
-        isTrialing={false}
-        isUpdating={false}
-        onClick={[Function]}
-        plan={
-          Immutable.Map {
-            public: true,
-            name: "my second plan",
-            free_tickets: 1000,
-            currencySign: "$",
-            integrations: 100,
-          }
-        }
-        showFooter={true}
-      />
       <Plan
         callToAction={
           <Button
@@ -443,7 +493,7 @@ exports[`BillingPlans component should display multiple plans 1`] = `
             onClick={[Function]}
             tag="button"
           >
-            Contact Us
+            Contact us
           </Button>
         }
         features={
@@ -467,9 +517,10 @@ exports[`BillingPlans component should display multiple plans 1`] = `
                 arrow_downward
               </i>
                
-              Discounted prices for volumes of
+              Discounted prices for volumes of 
               <strong>
-                10, 000+
+                10,000
+                +
               </strong>
                tickets
             </li>
@@ -488,7 +539,6 @@ exports[`BillingPlans component should display multiple plans 1`] = `
         isFeatured={false}
         isTrialing={false}
         isUpdating={false}
-        onClick={null}
         plan={
           Immutable.Map {
             name: "Enterprise",
@@ -497,6 +547,12 @@ exports[`BillingPlans component should display multiple plans 1`] = `
         showFooter={true}
       />
     </CardDeck>
+  </Container>
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
     <div
       style={
         Object {
@@ -531,7 +587,7 @@ exports[`BillingPlans component should display multiple plans 1`] = `
               What's a ticket?
             </dt>
             <dd>
-              A ticket is a conversation with a customer, on any channel. It can be on email, phone, chat, etc.
+              A ticket is a conversation with a customer, on any channel. It can be by email, phone, chat, etc.
               <br />
               Usage only includes tickets that contain a response sent from Gorgias.
             </dd>
@@ -546,6 +602,12 @@ exports[`BillingPlans component should display multiple plans 1`] = `
             </dt>
             <dd>
               No, all channels are included. You can connect as many chat widgets, facebook pages, and email addresses as you want.
+            </dd>
+            <dt>
+              What level of support is included in my plan?
+            </dt>
+            <dd>
+              We provide all our customers with the same level of support. We're available 9am-7pm PST, over live chat & email.
             </dd>
           </dl>
         </Col>
@@ -570,16 +632,24 @@ exports[`BillingPlans component should display multiple plans 1`] = `
               Sure. You probably receive about 1,000 tickets for each agent in your team. So if you’re paying for 5 seats with your current helpdesk, you’d pay for 5,000 tickets with Gorgias.
             </dd>
             <dt>
-              What level of support is included in my plan?
+              Can I switch between plans?
             </dt>
             <dd>
-              We provide all our customers with the same level of support. We're available 9am-7pm PST, over live chat & email.
+              Yes you can. Switching between monthly/yearly plans will 
+              <a
+                href="https://stripe.com/docs/subscriptions/upgrading-downgrading#understanding-proration"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                prorate
+              </a>
+               your subscription. See the question below for switching from yearly to monthly plans.
             </dd>
             <dt>
-              I need help integrating an app with Gorgias. Is that included in my plan?
+              Can I switch from an yearly plan to a monthly plan?
             </dt>
             <dd>
-              Yes. We're happy to help you add your own integrations at no additional cost.
+              Once you start using our annual plan, you will get a %17 discount (2 months for free). Given this discount, we don't allow switching to monthly plans until the next billing cycle begins. In practice, it means that if you subscribe to a yearly plan on 15 May, you will be able to switch to a monthly plan next year on 15 May. Make sure you send us a message before so we can make the switch for you.
             </dd>
           </dl>
         </Col>
@@ -681,19 +751,59 @@ exports[`BillingPlans component should load with empty props 1`] = `
       </div>
     </PageHeader>
     <Container
-      className="page-container"
+      className="page-container plans-container"
       fluid={true}
       tag="div"
     >
       <div
-        className="page-container container-fluid"
+        className="page-container plans-container container-fluid"
       >
+        <div
+          className="interval-toggle"
+        >
+          <ButtonGroup
+            role="group"
+            tag="div"
+          >
+            <div
+              className="btn-group"
+              role="group"
+            >
+              <Button
+                color="primary"
+                onClick={[Function]}
+                tag="button"
+              >
+                <button
+                  className="btn btn-primary"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  Monthly
+                </button>
+              </Button>
+              <Button
+                color="secondary"
+                onClick={[Function]}
+                tag="button"
+              >
+                <button
+                  className="btn btn-secondary"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  Yearly
+                </button>
+              </Button>
+            </div>
+          </ButtonGroup>
+        </div>
         <CardDeck
-          className="mb-5"
+          className="mb-5 plans-cards"
           tag="div"
         >
           <div
-            className="mb-5 card-deck"
+            className="mb-5 plans-cards card-deck"
           >
             <Plan
               callToAction={
@@ -702,7 +812,7 @@ exports[`BillingPlans component should load with empty props 1`] = `
                   onClick={[Function]}
                   tag="button"
                 >
-                  Contact Us
+                  Contact us
                 </Button>
               }
               features={
@@ -726,9 +836,10 @@ exports[`BillingPlans component should load with empty props 1`] = `
                       arrow_downward
                     </i>
                      
-                    Discounted prices for volumes of
+                    Discounted prices for volumes of 
                     <strong>
-                      10, 000+
+                      10,000
+                      +
                     </strong>
                      tickets
                   </li>
@@ -747,7 +858,6 @@ exports[`BillingPlans component should load with empty props 1`] = `
               isFeatured={false}
               isTrialing={false}
               isUpdating={false}
-              onClick={null}
               plan={
                 Immutable.Map {
                   name: "Enterprise",
@@ -805,9 +915,10 @@ exports[`BillingPlans component should load with empty props 1`] = `
                             arrow_downward
                           </i>
                            
-                          Discounted prices for volumes of
+                          Discounted prices for volumes of 
                           <strong>
-                            10, 000+
+                            10,000
+                            +
                           </strong>
                            tickets
                         </li>
@@ -839,7 +950,7 @@ exports[`BillingPlans component should load with empty props 1`] = `
                           onClick={[Function]}
                           type="button"
                         >
-                          Contact Us
+                          Contact us
                         </button>
                       </Button>
                     </div>
@@ -849,6 +960,16 @@ exports[`BillingPlans component should load with empty props 1`] = `
             </Plan>
           </div>
         </CardDeck>
+      </div>
+    </Container>
+    <Container
+      className="page-container"
+      fluid={true}
+      tag="div"
+    >
+      <div
+        className="page-container container-fluid"
+      >
         <div
           style={
             Object {
@@ -889,7 +1010,7 @@ exports[`BillingPlans component should load with empty props 1`] = `
                       What's a ticket?
                     </dt>
                     <dd>
-                      A ticket is a conversation with a customer, on any channel. It can be on email, phone, chat, etc.
+                      A ticket is a conversation with a customer, on any channel. It can be by email, phone, chat, etc.
                       <br />
                       Usage only includes tickets that contain a response sent from Gorgias.
                     </dd>
@@ -904,6 +1025,12 @@ exports[`BillingPlans component should load with empty props 1`] = `
                     </dt>
                     <dd>
                       No, all channels are included. You can connect as many chat widgets, facebook pages, and email addresses as you want.
+                    </dd>
+                    <dt>
+                      What level of support is included in my plan?
+                    </dt>
+                    <dd>
+                      We provide all our customers with the same level of support. We're available 9am-7pm PST, over live chat & email.
                     </dd>
                   </dl>
                 </div>
@@ -932,16 +1059,24 @@ exports[`BillingPlans component should load with empty props 1`] = `
                       Sure. You probably receive about 1,000 tickets for each agent in your team. So if you’re paying for 5 seats with your current helpdesk, you’d pay for 5,000 tickets with Gorgias.
                     </dd>
                     <dt>
-                      What level of support is included in my plan?
+                      Can I switch between plans?
                     </dt>
                     <dd>
-                      We provide all our customers with the same level of support. We're available 9am-7pm PST, over live chat & email.
+                      Yes you can. Switching between monthly/yearly plans will 
+                      <a
+                        href="https://stripe.com/docs/subscriptions/upgrading-downgrading#understanding-proration"
+                        rel="noreferrer noopener"
+                        target="_blank"
+                      >
+                        prorate
+                      </a>
+                       your subscription. See the question below for switching from yearly to monthly plans.
                     </dd>
                     <dt>
-                      I need help integrating an app with Gorgias. Is that included in my plan?
+                      Can I switch from an yearly plan to a monthly plan?
                     </dt>
                     <dd>
-                      Yes. We're happy to help you add your own integrations at no additional cost.
+                      Once you start using our annual plan, you will get a %17 discount (2 months for free). Given this discount, we don't allow switching to monthly plans until the next billing cycle begins. In practice, it means that if you subscribe to a yearly plan on 15 May, you will be able to switch to a monthly plan next year on 15 May. Make sure you send us a message before so we can make the switch for you.
                     </dd>
                   </dl>
                 </div>
