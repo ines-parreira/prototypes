@@ -15,6 +15,7 @@ exports[`ConfirmButton component should match snapshot 1`] = `
     type="button"
   />
   <Popover
+    container="body"
     delay={
       Object {
         "hide": 0,
@@ -41,7 +42,7 @@ exports[`ConfirmButton component should match snapshot 1`] = `
         color="success"
         onClick={[Function]}
         tag="button"
-        type="submit"
+        type="button"
       >
         Confirm
       </Button>

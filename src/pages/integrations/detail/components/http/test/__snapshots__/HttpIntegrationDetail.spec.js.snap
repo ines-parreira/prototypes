@@ -264,7 +264,6 @@ exports[`HttpIntegrationDetail component should display data about the integrati
           confirm={[Function]}
           content="Are you sure you want to delete this integration?"
           disabled={false}
-          id=""
           loading={false}
           placement="bottom"
           skip={false}
