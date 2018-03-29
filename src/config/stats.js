@@ -109,10 +109,12 @@ const defaultGridLines = {
 // configuration for each stat
 export const stats = fromJS({
     [TICKETS_CREATED_PER_CHANNEL]: {
-        style: 'table'
+        style: 'table',
+        downloadable: true
     },
     [TICKETS_CREATED_PER_CHANNEL_PER_DAY]: {
         style: 'bar',
+        downloadable: true,
         lines: {
             facebook: {
                 label: 'Facebook',
@@ -182,10 +184,12 @@ export const stats = fromJS({
         })
     },
     [TICKETS_CLOSED_PER_AGENT]: {
-        style: 'table'
+        style: 'table',
+        downloadable: true
     },
     [TICKETS_PER_TAG]: {
         style: 'table',
+        downloadable: true,
         callbacks:{
             cell: (line, val) => {
                 // display values of untagged tickets line in italic
@@ -198,6 +202,7 @@ export const stats = fromJS({
     },
     [TICKETS_CLOSED_PER_AGENT_PER_DAY]: {
         style: 'bar',
+        downloadable: true,
         options: (legend) => ({
             scales: {
                 xAxes: [{
@@ -231,6 +236,7 @@ export const stats = fromJS({
     },
     [SUPPORT_VOLUME]: {
         style: 'bar',
+        downloadable: true,
         lines: {
             created: {
                 label: 'Ticket created',
@@ -312,6 +318,7 @@ export const stats = fromJS({
     },
     [RESOLUTION_TIME]: {
         style: 'line',
+        downloadable: true,
         lines: {
             '50%': {
                 label: 'median',
@@ -358,6 +365,7 @@ export const stats = fromJS({
     },
     [FIRST_RESPONSE_TIME]: {
         style: 'line',
+        downloadable: true,
         lines: {
             '50%': {
                 label: 'median',

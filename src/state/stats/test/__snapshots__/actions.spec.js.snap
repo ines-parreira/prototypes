@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`actions stats download statistic should dispatch an error because download failed 1`] = `
+Array [
+  Object {
+    "error": [Error: Request failed with status code 500],
+    "reason": "Failed to download statistics",
+    "type": "FETCH_STATS_ERROR",
+  },
+]
+`;

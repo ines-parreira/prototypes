@@ -3,6 +3,7 @@ import axios from 'axios'
 import * as constants from './constants'
 
 import type {dispatchType, actionType} from '../types'
+import {saveFileAsDownloaded} from '../../utils/file'
 
 export function setMeta(meta: {} = {}): actionType {
     return {
@@ -52,3 +53,45 @@ export function fetchStat(name: string, meta: {} = {}, filters: {} = {}, label: 
             })
     }
 }
+
+/**
+ * Download a statistic
+ *
+ * @param {String} name - the name of the statistic to download
+ * @param {Object} meta - the period (datetimes)
+ * @param {Object} filters - the filters to apply on the statistics
+ * @returns {Promise}
+ */
+export function downloadStatistic(name: string, meta: {} = {}, filters: {} = {}) {
+    return (dispatch: dispatchType) => {
+        const params = {
+            responseType: 'blob',
+            ...meta,
+            filters: filters,
+        }
+        const config = {timeout: 60000 * 3}
+        return axios.post(`/api/stats/${name}/download`, params, config)
+            .then(resp => {
+                const reFilename =/filename[^;=\n]*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/
+                const contentDisposition = resp.headers['content-disposition'] || ''
+                const matches = contentDisposition.match(reFilename)
+                const filename = matches.length ? matches.pop() : `${name}.csv`
+                saveFileAsDownloaded(resp.data, filename, resp.headers['content-type'])
+
+                return {
+                    contentType: resp.headers['content-type'],
+                    data: resp.data,
+                    name: filename
+                }
+            })
+
+            .catch(error => {
+                return dispatch({
+                    type: constants.FETCH_STATS_ERROR,
+                    error,
+                    reason: 'Failed to download statistics'
+                })
+            })
+    }
+}
+

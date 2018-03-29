@@ -117,7 +117,7 @@ class StatsView extends React.Component {
     }
 
     render() {
-        const {meta, stats, config} = this.props
+        const {config, filters, meta, stats} = this.props
         const startDatetime = moment(meta.get('start_datetime'))
         const endDatetime = moment(meta.get('end_datetime'))
 
@@ -174,8 +174,10 @@ class StatsView extends React.Component {
                         return (
                             <Stat
                                 key={idx}
+                                name={statName}
                                 config={statConfig}
                                 meta={meta}
+                                filters={filters}
                                 {...stat.toObject()}
                             />
                         )

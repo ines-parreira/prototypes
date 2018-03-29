@@ -8,11 +8,15 @@ exports[`Stat should render a bar chart 1`] = `
   <CardBody
     tag="div"
   >
-    <h5
-      className="text-center"
+    <div
+      className="stat-header mb-4"
     >
-      Stat label
-    </h5>
+      <h5
+        className="text-center"
+      >
+        Stat label
+      </h5>
+    </div>
     <div>
       <BarStat
         config={
@@ -24,6 +28,8 @@ exports[`Stat should render a bar chart 1`] = `
           Immutable.Map {
           }
         }
+        downloadStatistic={[Function]}
+        downloadable={false}
         label="Stat label"
         legend={
           Immutable.Map {
@@ -34,6 +40,16 @@ exports[`Stat should render a bar chart 1`] = `
           }
         }
         name="stat_name"
+        store={
+          Object {
+            "clearActions": [Function],
+            "dispatch": [Function],
+            "getActions": [Function],
+            "getState": [Function],
+            "replaceReducer": [Function],
+            "subscribe": [Function],
+          }
+        }
       />
     </div>
   </CardBody>
@@ -48,11 +64,15 @@ exports[`Stat should render a key metrics chart 1`] = `
   <CardBody
     tag="div"
   >
-    <h5
-      className="text-center"
+    <div
+      className="stat-header mb-4"
     >
-      Stat label
-    </h5>
+      <h5
+        className="text-center"
+      >
+        Stat label
+      </h5>
+    </div>
     <div>
       <KeyMetricStat
         config={
@@ -64,6 +84,8 @@ exports[`Stat should render a key metrics chart 1`] = `
           Immutable.Map {
           }
         }
+        downloadStatistic={[Function]}
+        downloadable={false}
         label="Stat label"
         legend={
           Immutable.Map {
@@ -74,6 +96,16 @@ exports[`Stat should render a key metrics chart 1`] = `
           }
         }
         name="stat_name"
+        store={
+          Object {
+            "clearActions": [Function],
+            "dispatch": [Function],
+            "getActions": [Function],
+            "getState": [Function],
+            "replaceReducer": [Function],
+            "subscribe": [Function],
+          }
+        }
       />
     </div>
   </CardBody>
@@ -88,11 +120,15 @@ exports[`Stat should render a line chart 1`] = `
   <CardBody
     tag="div"
   >
-    <h5
-      className="text-center"
+    <div
+      className="stat-header mb-4"
     >
-      Stat label
-    </h5>
+      <h5
+        className="text-center"
+      >
+        Stat label
+      </h5>
+    </div>
     <div>
       <LineStat
         config={
@@ -104,6 +140,8 @@ exports[`Stat should render a line chart 1`] = `
           Immutable.Map {
           }
         }
+        downloadStatistic={[Function]}
+        downloadable={false}
         label="Stat label"
         legend={
           Immutable.Map {
@@ -114,6 +152,16 @@ exports[`Stat should render a line chart 1`] = `
           }
         }
         name="stat_name"
+        store={
+          Object {
+            "clearActions": [Function],
+            "dispatch": [Function],
+            "getActions": [Function],
+            "getState": [Function],
+            "replaceReducer": [Function],
+            "subscribe": [Function],
+          }
+        }
       />
     </div>
   </CardBody>
@@ -128,11 +176,15 @@ exports[`Stat should render a table chart 1`] = `
   <CardBody
     tag="div"
   >
-    <h5
-      className="text-center"
+    <div
+      className="stat-header mb-4"
     >
-      Stat label
-    </h5>
+      <h5
+        className="text-center"
+      >
+        Stat label
+      </h5>
+    </div>
     <div>
       <TableStat
         config={
@@ -144,6 +196,8 @@ exports[`Stat should render a table chart 1`] = `
           Immutable.Map {
           }
         }
+        downloadStatistic={[Function]}
+        downloadable={false}
         label="Stat label"
         legend={
           Immutable.Map {
@@ -154,6 +208,16 @@ exports[`Stat should render a table chart 1`] = `
           }
         }
         name="stat_name"
+        store={
+          Object {
+            "clearActions": [Function],
+            "dispatch": [Function],
+            "getActions": [Function],
+            "getState": [Function],
+            "replaceReducer": [Function],
+            "subscribe": [Function],
+          }
+        }
       />
     </div>
   </CardBody>
