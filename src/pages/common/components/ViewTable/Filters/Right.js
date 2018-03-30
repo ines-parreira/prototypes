@@ -11,6 +11,7 @@ import {getMessagingIntegrations} from '../../../../../state/integrations/select
 import * as viewsSelectors from '../../../../../state/views/selectors'
 
 import FilterDropdown from '../FilterDropdown'
+import DatetimePicker from '../../../forms/DatetimePicker'
 
 @connect((state) => {
     return {
@@ -99,7 +100,6 @@ export default class Right extends React.Component {
 
         let displayedValue = node.value
 
-
         if (displayedValue === '{{current_user.id}}') { // display current user variable
             displayedValue = 'Me (current user)'
         } else if (field.get('name') === 'integrations') { // display integration
@@ -120,6 +120,13 @@ export default class Right extends React.Component {
             displayedValue = `User #${displayedValue}`
         } else if (field.get('name') === 'language') { // show the display name
             displayedValue = getLanguageDisplayName(displayedValue)
+        } else if ((field.get('path') || '').endsWith('_datetime')) {
+            return (
+                <DatetimePicker
+                    datetime={displayedValue}
+                    onChange={(value) => updateFieldFilter(index, value)}
+                />
+            )
         }
 
         return (

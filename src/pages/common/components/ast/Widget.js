@@ -13,6 +13,7 @@ import MacroSelect from './widget/MacroSelect'
 import RequestSelect from './widget/RequestSelect'
 import AssigneeSelect from './widget/AssigneeSelect'
 import IntegrationSelect from './widget/IntegrationSelect'
+import DatetimePicker from '../../../common/forms/DatetimePicker'
 
 import InputField from '../../forms/InputField'
 
@@ -21,6 +22,7 @@ import TagsSelect from './widget/TagsSelect'
 import RichField from '../../forms/RichField'
 import MultiSelectField from '../../forms/MultiSelectField'
 import {collectionOperators, deprecatedOperators} from '../../../../config/rules'
+import {removeSuffix} from '../../../../utils/string'
 
 export default class Widget extends React.Component {
     static propTypes = {
@@ -155,6 +157,17 @@ export default class Widget extends React.Component {
         )
     }
 
+    _datetimeSelect = (datetime) => {
+        return (
+            <div className="widget d-inline-block">
+                <DatetimePicker
+                    datetime={datetime}
+                    onChange={this._handleChange}
+                />
+            </div>
+        )
+    }
+
     _resolveLeft(left, schemas) {
         // we need to figure out if the path contains '$ref' objects, then resolve them and update the path
         const path = []
@@ -220,7 +233,7 @@ export default class Widget extends React.Component {
 
                     widget.options.push({
                         value: key,
-                        label: _get(prop, ['meta', 'rules', 'label']) || humanizeString(key).toLowerCase(),
+                        label: _get(prop, ['meta', 'rules', 'label']) || humanizeString(removeSuffix(key, '_datetime')).toLowerCase(),
                     })
                     widget.description = prop.description
                 } else if (prop.hasOwnProperty('$ref')) {
@@ -316,6 +329,8 @@ export default class Widget extends React.Component {
                 return this._textarea(value)
             case 'rich-field':
                 return this._richField(value)
+            case 'datetime-select':
+                return this._datetimeSelect(value)
             case 'input':
             default:
                 return this._input(value)

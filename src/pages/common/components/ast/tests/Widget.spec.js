@@ -55,6 +55,26 @@ describe('ast', () => {
                 ).toMatchSnapshot()
             })
 
+            it('DatetimeSelect field', () => {
+                let leftsiblings = fromJS(['definitions', 'Ticket', 'properties', 'created_datetime'])
+                const value = '2018-03-28T21:59:32.580209'
+                const rule = fromJS({
+                    code_ast: astCodeEq
+                })
+                expect(
+                    shallow(
+                        <Widget
+                            actions={{}}
+                            value={value}
+                            leftsiblings={leftsiblings}
+                            parent={parent}
+                            rule={rule}
+                            schemas={schemas}
+                        />
+                    )
+                ).toMatchSnapshot()
+            })
+
             describe('TagsSelect', () => {
                 it('should render TagsSelect field (tags properties)', () => {
                     let leftsiblings = fromJS(['definitions', 'Ticket', 'properties', 'tags', 'name'])

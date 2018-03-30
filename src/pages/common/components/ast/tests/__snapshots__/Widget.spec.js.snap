@@ -59,6 +59,17 @@ Object {
 }
 `;
 
+exports[`ast Widget should render DatetimeSelect field 1`] = `
+<div
+  className="widget d-inline-block"
+>
+  <DatetimePicker
+    datetime="2018-03-28T21:59:32.580209"
+    onChange={[Function]}
+  />
+</div>
+`;
+
 exports[`ast Widget should render InputField (eq operator) 1`] = `
 <InputField
   inline={false}

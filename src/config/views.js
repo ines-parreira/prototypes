@@ -136,8 +136,7 @@ export const views = fromJS([{
             filter: {
                 sort: {
                     created_datetime: 'desc',
-                },
-                show: false
+                }
             }
         },
         {
@@ -147,8 +146,7 @@ export const views = fromJS([{
             filter: {
                 sort: {
                     updated_datetime: 'desc',
-                },
-                show: false
+                }
             }
         },
         {
@@ -158,8 +156,27 @@ export const views = fromJS([{
             filter: {
                 sort: {
                     last_message_datetime: 'desc',
-                },
-                show: false
+                }
+            }
+        },
+        {
+            name: 'last_received_message',
+            title: 'Last received message',
+            path: 'last_received_message_datetime',
+            filter: {
+                sort: {
+                    last_received_message_datetime: 'desc',
+                }
+            }
+        },
+        {
+            name: 'closed',
+            title: 'Closed',
+            path: 'closed_datetime',
+            filter: {
+                sort: {
+                    closed_datetime: 'desc',
+                }
             }
         },
         {

@@ -479,9 +479,9 @@ describe('global utils', () => {
         const schemas = fromJS(schemasJSON)
 
         it('should return default operator', () => {
-            expect(utils.getDefaultOperator('ticket.snooze_datetime', schemas)).toBe('isEmpty')
-            expect(utils.getDefaultOperator('ticket.language', schemas)).toBe('eq')
-            expect(utils.getDefaultOperator('ticket.channel', schemas)).toBe('eq')
+            expect(['isEmpty', 'isNotEmpty']).toContain(utils.getDefaultOperator('ticket.snooze_datetime', schemas))
+            expect(['eq', 'neq']).toContain(utils.getDefaultOperator('ticket.language', schemas))
+            expect(['eq', 'neq']).toContain(utils.getDefaultOperator('ticket.channel', schemas))
         })
     })
 

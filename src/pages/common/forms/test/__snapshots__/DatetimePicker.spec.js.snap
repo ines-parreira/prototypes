@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DatetimePicker component should display a placeholder when there's no data 1`] = `
+<Component
+  alwaysShowCalendars={true}
+  applyClass="btn-success mr-2"
+  buttonClasses={
+    Array [
+      "btn",
+    ]
+  }
+  cancelClass="btn-secondary"
+  onApply={[Function]}
+  opens="left"
+  showCustomRangeLabel={false}
+  singleDatePicker={true}
+  timePicker={true}
+  timePicker24Hour={true}
+  value={null}
+>
+  <Input
+    placeholder="Choose a date..."
+    type="text"
+    value=""
+  />
+</Component>
+`;
+
+exports[`DatetimePicker component should display the passed data 1`] = `
+<Component
+  alwaysShowCalendars={true}
+  applyClass="btn-success mr-2"
+  buttonClasses={
+    Array [
+      "btn",
+    ]
+  }
+  cancelClass="btn-secondary"
+  onApply={[Function]}
+  opens="left"
+  showCustomRangeLabel={false}
+  singleDatePicker={true}
+  timePicker={true}
+  timePicker24Hour={true}
+  value={"2012-03-21T08:32:12.045Z"}
+>
+  <Input
+    placeholder="Choose a date..."
+    type="text"
+    value="03/21/2012 1:32 AM"
+  />
+</Component>
+`;

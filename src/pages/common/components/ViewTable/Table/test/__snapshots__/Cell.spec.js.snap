@@ -198,7 +198,6 @@ Object {
                 sort: Immutable.Map {
                     created_datetime: "desc",
                 },
-                show: false,
             },
         },
         Immutable.Map {
@@ -209,7 +208,6 @@ Object {
                 sort: Immutable.Map {
                     updated_datetime: "desc",
                 },
-                show: false,
             },
         },
         Immutable.Map {
@@ -220,7 +218,26 @@ Object {
                 sort: Immutable.Map {
                     last_message_datetime: "desc",
                 },
-                show: false,
+            },
+        },
+        Immutable.Map {
+            name: "last_received_message",
+            title: "Last received message",
+            path: "last_received_message_datetime",
+            filter: Immutable.Map {
+                sort: Immutable.Map {
+                    last_received_message_datetime: "desc",
+                },
+            },
+        },
+        Immutable.Map {
+            name: "closed",
+            title: "Closed",
+            path: "closed_datetime",
+            filter: Immutable.Map {
+                sort: Immutable.Map {
+                    closed_datetime: "desc",
+                },
             },
         },
         Immutable.Map {
