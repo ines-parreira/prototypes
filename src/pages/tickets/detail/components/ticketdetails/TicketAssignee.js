@@ -13,6 +13,7 @@ import shortcutManager from '../../../../../services/shortcutManager'
 import {AgentLabel} from '../../../../common/utils/labels'
 
 import headerCss from '../TicketHeader.less'
+import {MAX_DROPDOWN_USER_AGENT} from '../../../../../config'
 
 @connect((state) => {
     return {
@@ -109,7 +110,7 @@ export default class TicketAssignee extends React.Component {
         this.setState({
             enum: this.props.agents.filter((agent) => {
                 return agent.get('name').toLowerCase().includes(search.toLowerCase())
-            }),
+            }).slice(0, MAX_DROPDOWN_USER_AGENT),
         })
     }
 
@@ -152,10 +153,10 @@ export default class TicketAssignee extends React.Component {
             )
         } else {
             options = options.concat(
-                availableAgents.map((agent, i) => {
+                availableAgents.map((agent) => {
                     return (
                         <DropdownItem
-                            key={i}
+                            key={agent.get('id')}
                             type="button"
                             onClick={() => this._selectAgent(agent)}
                         >

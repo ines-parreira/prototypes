@@ -831,3 +831,5 @@ export const TIMES_BEFORE_SPLIT = [
 export const MAX_HEADER_LENGTH = 1000
 
 export const DEFAULT_TAG_COLOR = '#8088D6'
+
+export const MAX_DROPDOWN_USER_AGENT = 15

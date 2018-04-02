@@ -31,6 +31,8 @@ import type {List, Map} from 'immutable'
 import type {currentUserType} from '../../../../state/types'
 import type {agentsType} from '../../../../state/agents/types'
 import type {viewType} from '../../../../state/views/types'
+import {MAX_DROPDOWN_USER_AGENT} from '../../../../config'
+import {AgentLabel} from '../../../common/utils/labels'
 
 type Props = {
     view: viewType,
@@ -290,7 +292,7 @@ class TicketListActions extends React.Component<Props, State> {
 
         const filteredAgents = agents.filter((agent) => {
             return agent.get('name').toLowerCase().includes(agentsSearch.toLowerCase())
-        })
+        }).slice(0, MAX_DROPDOWN_USER_AGENT)
 
         return (
             <div className="d-inline-flex align-items-center">
@@ -389,7 +391,11 @@ class TicketListActions extends React.Component<Props, State> {
                                                 })
                                             }}
                                         >
-                                            {agent.get('name')}
+                                            <AgentLabel
+                                                name={agent.get('name')}
+                                                email={agent.get('email')}
+                                                profilePictureUrl={agent.getIn(['meta', 'profile_picture_url'])}
+                                            />
                                         </DropdownItem>
                                     )
                                 })

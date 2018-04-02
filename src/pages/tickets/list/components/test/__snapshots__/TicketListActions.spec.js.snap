@@ -105,7 +105,9 @@ exports[`TicketListActions component should display options for agents assignati
           toggle={true}
           type="button"
         >
-          foo
+          <AgentLabel
+            name="foo"
+          />
         </DropdownItem>
         <DropdownItem
           onClick={[Function]}
@@ -113,7 +115,9 @@ exports[`TicketListActions component should display options for agents assignati
           toggle={true}
           type="button"
         >
-          bar
+          <AgentLabel
+            name="bar"
+          />
         </DropdownItem>
         <DropdownItem
           onClick={[Function]}
@@ -121,7 +125,9 @@ exports[`TicketListActions component should display options for agents assignati
           toggle={true}
           type="button"
         >
-          baz
+          <AgentLabel
+            name="baz"
+          />
         </DropdownItem>
         <DropdownItem
           divider={true}
