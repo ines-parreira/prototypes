@@ -3,11 +3,15 @@ import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import * as labels from '../labels'
 import Avatar from '../../components/Avatar/Avatar'
+import {mount} from 'enzyme/build/index'
+import {IntegrationsDetailLabel} from '../labels'
 
 /* DatetimeLabel uses Math.random.
  * Mock it to always return the same data.
  */
 const mockMath = Object.create(global.Math)
+const integrationJsObject = { type: 'email', name: 'common', meta: { address: 'specific' } }
+const integrationMap = fromJS(integrationJsObject)
 mockMath.random = () => 1
 global.Math = mockMath
 
@@ -62,8 +66,13 @@ describe('components utils : labels', () => {
                     type: 'thisshouldreturnnull',
                     value: undefined,
                     expected: null
+                },
+                {
+                    type: 'integrations',
+                    value: integrationJsObject,
+                    expected: <labels.IntegrationsDetailLabel integration={integrationMap}/>
                 }
-            ].forEach(element => {
+            ].forEach((element) => {
                 const renderedComponent = (
                     <labels.RenderLabel
                         field={fromJS({name: element.type})}
@@ -94,6 +103,42 @@ describe('components utils : labels', () => {
                         expect(rendered).toBe(expected)
                     }
                 })
+            })
+        })
+        describe('ValueRendered', () => {
+            it('should display the address to prevent confusion', () => {
+                const componentRuleIntegrationListTypeEmail = mount(
+                    <IntegrationsDetailLabel integration={fromJS({ type: 'email', name: 'common', meta: { address: 'specific' } })} />
+                )
+                expect(componentRuleIntegrationListTypeEmail).toMatchSnapshot()
+            })
+
+            it('should display the name because the address is empty', () => {
+                const componentRuleIntegrationListTypeEmailNoAddress = mount(
+                    <IntegrationsDetailLabel integration={fromJS({ type: 'email', name: 'common', meta: { address: '' } })} />
+                )
+                expect(componentRuleIntegrationListTypeEmailNoAddress).toMatchSnapshot()
+            })
+
+            it('should display the name because the type is facebook', () => {
+                const componentRuleIntegrationListTypeFacebook = mount(
+                    <IntegrationsDetailLabel integration={fromJS({ type: 'facebook', name: 'common', meta: { address: 'specific' } })} />
+                )
+                expect(componentRuleIntegrationListTypeFacebook).toMatchSnapshot()
+            })
+
+            it('should display name and address formatted in-lined', () => {
+                const componentRuleIntegrationListTypeMailInline = mount(
+                    <IntegrationsDetailLabel integration={fromJS({ type: 'gmail', name: 'common', address: 'inlined email' })} />
+                )
+                expect(componentRuleIntegrationListTypeMailInline).toMatchSnapshot()
+            })
+
+            it('should display name and address formatted as aircall eg: with address into parenthesis', () => {
+                const componentRuleIntegrationListTypeAircall = mount(
+                    <IntegrationsDetailLabel integration={fromJS({ type: 'aircall', name: 'common', address: 'aircall style' })} />
+                )
+                expect(componentRuleIntegrationListTypeAircall).toMatchSnapshot()
             })
         })
     })

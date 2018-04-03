@@ -155,11 +155,12 @@ ChannelLabel.propTypes = {channel: PropTypes.string.isRequired}
 export const IntegrationsDetailLabel = ({integration}) => {
     const type = integration.get('type')
     let label = integration.get('name', integration.get('address'))
+    let address = integration.get('address') || integration.getIn(['meta', 'address'])
 
-    if (['email', 'gmail'].includes(type) && integration.get('address')) {
-        label = `${integration.get('name')} <${integration.get('address')}>`
-    } else if (type === 'aircall' && integration.get('address')) {
-        label = `${integration.get('name')} (${integration.get('address')})`
+    if (['email', 'gmail'].includes(type) && address) {
+        label = `${integration.get('name')} <${address}>`
+    } else if (type === 'aircall' && address) {
+        label = `${integration.get('name')} (${address})`
     }
 
     return (

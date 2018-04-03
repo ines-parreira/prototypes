@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components utils : labels RenderLabel ValueRendered should display name and address formatted as aircall eg: with address into parenthesis 1`] = `
+<IntegrationsDetailLabel
+  integration={
+    Immutable.Map {
+      type: "aircall",
+      name: "common",
+      address: "aircall style",
+    }
+  }
+>
+  <span>
+    <i
+      className="mr-2 fa fa-fw fa-phone"
+    />
+    common (aircall style)
+  </span>
+</IntegrationsDetailLabel>
+`;
+
+exports[`components utils : labels RenderLabel ValueRendered should display name and address formatted in-lined 1`] = `
+<IntegrationsDetailLabel
+  integration={
+    Immutable.Map {
+      type: "gmail",
+      name: "common",
+      address: "inlined email",
+    }
+  }
+>
+  <span>
+    <i
+      className="mr-2 fa fa-fw fa-envelope blue"
+    />
+    common &lt;inlined email&gt;
+  </span>
+</IntegrationsDetailLabel>
+`;
+
+exports[`components utils : labels RenderLabel ValueRendered should display the address to prevent confusion 1`] = `
+<IntegrationsDetailLabel
+  integration={
+    Immutable.Map {
+      type: "email",
+      name: "common",
+      meta: Immutable.Map {
+        address: "specific",
+      },
+    }
+  }
+>
+  <span>
+    <i
+      className="mr-2 fa fa-fw fa-envelope blue"
+    />
+    common &lt;specific&gt;
+  </span>
+</IntegrationsDetailLabel>
+`;
+
+exports[`components utils : labels RenderLabel ValueRendered should display the name because the address is empty 1`] = `
+<IntegrationsDetailLabel
+  integration={
+    Immutable.Map {
+      type: "email",
+      name: "common",
+      meta: Immutable.Map {
+        address: "",
+      },
+    }
+  }
+>
+  <span>
+    <i
+      className="mr-2 fa fa-fw fa-envelope blue"
+    />
+    common
+  </span>
+</IntegrationsDetailLabel>
+`;
+
+exports[`components utils : labels RenderLabel ValueRendered should display the name because the type is facebook 1`] = `
+<IntegrationsDetailLabel
+  integration={
+    Immutable.Map {
+      type: "facebook",
+      name: "common",
+      meta: Immutable.Map {
+        address: "specific",
+      },
+    }
+  }
+>
+  <span>
+    <i
+      className="mr-2 fa fa-fw fa-facebook-square blue"
+    />
+    common
+  </span>
+</IntegrationsDetailLabel>
+`;
