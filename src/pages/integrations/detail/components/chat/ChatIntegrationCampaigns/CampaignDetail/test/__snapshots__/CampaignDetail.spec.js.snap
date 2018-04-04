@@ -3539,13 +3539,12 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       </Button>
                       <ConfirmButton
                         className="float-right"
-                        color="danger"
+                        color="secondary"
                         confirm={[Function]}
                         content="Are you sure you want to delete this campaign?"
                         disabled={false}
                         id="delete-campaign-button"
                         loading={false}
-                        outline={true}
                         placement="bottom right"
                         skip={false}
                         title="Are you sure?"
@@ -3557,21 +3556,25 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                         >
                           <Button
                             className=""
-                            color="danger"
+                            color="secondary"
                             disabled={false}
                             id="confirm-button-delete-campaign-button"
                             onClick={[Function]}
-                            outline={true}
                             tag="button"
                             type="button"
                           >
                             <button
-                              className="btn btn-outline-danger"
+                              className="btn btn-secondary"
                               disabled={false}
                               id="confirm-button-delete-campaign-button"
                               onClick={[Function]}
                               type="button"
                             >
+                              <i
+                                className="material-icons mr-1 text-danger"
+                              >
+                                delete
+                              </i>
                               Delete campaign
                             </button>
                           </Button>

@@ -1,7 +1,51 @@
-:local .setupListItem {
-  padding: 30px 10px !important;
+@import '~css/new/colors';
+@import '~css/new/mixins';
+
+:local {
+  .page {
+    margin-left: -30px;
+    margin-right: -30px;
+    padding: 1rem 30px;
+    border-bottom: 1px solid @darkQuartz2;
+  }
 
   .icon {
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    width: 30px;
+    height: 30px;
+  }
+
+  .details {
+    display: inline;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .name {
+    display: inline;
+
+    color: @indigo;
+    font-size: 17px;
+    font-weight: 500;
+  }
+
+  .settings {
+    overflow: hidden;
+    height: 0;
+    padding: 0;
+    visibility: hidden;
+    transition: all .1s ease-out;
+  }
+
+  .enabled .settings {
+    visibility: visible;
+    height: auto;
+    padding-top: 1.4rem;
+  }
+
+  .checkboxEnabled {
+    :global(label) {
+      font-weight: 500;
+    }
   }
 }

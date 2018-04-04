@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import * as IntegrationsActions from '../../../state/integrations/actions'
 import IntegrationList from './components/IntegrationList'
-import {isAllowedToCreateIntegration} from '../../../state/billing/selectors'
+import {planIntegrations, currentPlan} from '../../../state/billing/selectors'
 
 class IntegrationListContainer extends React.Component {
     componentWillMount() {
@@ -11,12 +11,13 @@ class IntegrationListContainer extends React.Component {
     }
 
     render() {
-        const {integrations, actions, isAllowedToCreate} = this.props
+        const {integrations, actions, allowedIntegrations, currentPlan} = this.props
 
         const allProps = {
             integrations,
             actions,
-            isAllowedToCreate
+            allowedIntegrations,
+            currentPlan,
         }
 
         return <IntegrationList {...allProps} />
@@ -26,13 +27,15 @@ class IntegrationListContainer extends React.Component {
 IntegrationListContainer.propTypes = {
     integrations: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
-    isAllowedToCreate: PropTypes.bool.isRequired,
+    allowedIntegrations: PropTypes.number.isRequired,
+    currentPlan: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {
     return {
         integrations: state.integrations,
-        isAllowedToCreate: isAllowedToCreateIntegration(state),
+        allowedIntegrations: planIntegrations(state),
+        currentPlan: currentPlan(state),
     }
 }
 

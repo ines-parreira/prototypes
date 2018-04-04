@@ -481,11 +481,13 @@ export default class CampaignDetail extends React.Component {
                                             id="delete-campaign-button"
                                             className="float-right"
                                             placement="bottom right"
-                                            color="danger"
-                                            outline
+                                            color="secondary"
                                             confirm={this._deleteCampaign}
                                             content="Are you sure you want to delete this campaign?"
                                         >
+                                            <i className="material-icons mr-1 text-danger">
+                                                delete
+                                            </i>
                                             Delete campaign
                                         </ConfirmButton>
                                     )

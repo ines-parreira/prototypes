@@ -1,15 +1,16 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
 import {fromJS} from 'immutable'
+import {connect} from 'react-redux'
+import {Breadcrumb, BreadcrumbItem, Button, Container, Table} from 'reactstrap'
 
 import moment from 'moment'
 
-import {Breadcrumb, BreadcrumbItem, Button, Container, Table} from 'reactstrap'
 import ToggleButton from '../../../../../common/components/ToggleButton'
-import {connect} from 'react-redux'
 
 import * as campaignActions from '../../../../../../state/campaigns/actions'
 import PageHeader from '../../../../../common/components/PageHeader'
+import ForwardIcon from '../../ForwardIcon'
 import RealtimeMessagingIntegrationNavigation from '../../../../common/RealtimeMessagingIntegrationNavigation'
 
 @connect(null, {
@@ -74,46 +75,49 @@ export default class ChatIntegrationCampaigns extends React.Component {
                     <p>Use campaigns to prompt visitors of your website to start chatting with your team.</p>
 
                     {
-                        !campaigns.isEmpty() && (
-                            <Table
-                                className="mt-3"
-                                hover
-                            >
-                                <tbody>
-                                {
-                                    campaigns.map((campaign) => {
-                                        const editLink = `/app/settings/integrations/${integration.get('type')}/${integration.get('id')}/campaigns/${campaign.get('id')}`
-
-                                        return (
-                                            <tr key={campaign.get('id')}>
-                                                <td className="link-full-td">
-                                                    <Link to={editLink}>
-                                                        <div>
-                                                            <b>{campaign.get('name')}</b>
-                                                        </div>
-                                                    </Link>
-                                                </td>
-                                                <td className="smallest align-middle">
-                                                    <ToggleButton
-                                                        value={!campaign.get('deactivated_datetime')}
-                                                        onChange={() => this.toggleCampaign(campaign)}
-                                                    />
-                                                </td>
-                                            </tr>
-                                        )
-                                    })
-                                }
-                                </tbody>
-                            </Table>
-                        )
-                    }
-
-                    {
                         campaigns.isEmpty() && (
                             <div>This integration doesn't have any campaigns yet.</div>
                         )
                     }
                 </Container>
+
+                {
+                    !campaigns.isEmpty() && (
+                        <Table
+                            className="table-integrations mt-3"
+                            hover
+                        >
+                            <tbody>
+                            {
+                                campaigns.map((campaign) => {
+                                    const editLink = `/app/settings/integrations/${integration.get('type')}/${integration.get('id')}/campaigns/${campaign.get('id')}`
+
+                                    return (
+                                        <tr key={campaign.get('id')}>
+                                            <td className="link-full-td">
+                                                <Link to={editLink}>
+                                                    <div>
+                                                        <b>{campaign.get('name')}</b>
+                                                    </div>
+                                                </Link>
+                                            </td>
+                                            <td className="smallest align-middle">
+                                                <ToggleButton
+                                                    value={!campaign.get('deactivated_datetime')}
+                                                    onChange={() => this.toggleCampaign(campaign)}
+                                                />
+                                            </td>
+                                            <td className="smallest align-middle">
+                                                <ForwardIcon href={editLink} />
+                                            </td>
+                                        </tr>
+                                    )
+                                })
+                            }
+                            </tbody>
+                        </Table>
+                    )
+                }
             </div>
         )
     }

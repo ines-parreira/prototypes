@@ -610,109 +610,157 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
           <p>
             Use campaigns to prompt visitors of your website to start chatting with your team.
           </p>
-          <Table
-            className="mt-3"
-            hover={true}
-            responsiveTag="div"
-            tag="table"
-          >
-            <table
-              className="mt-3 table table-hover"
-            >
-              <tbody>
-                <tr>
-                  <td
-                    className="link-full-td"
-                  >
-                    <Link
-                      onlyActiveOnIndex={false}
-                      style={Object {}}
-                      to="/app/settings/integrations/smooch_inside/118/campaigns/156a4d-fg68h40-sd6f4"
-                    >
-                      <a
-                        onClick={[Function]}
-                        style={Object {}}
-                      >
-                        <div>
-                          <b>
-                            Super campaign
-                          </b>
-                        </div>
-                      </a>
-                    </Link>
-                  </td>
-                  <td
-                    className="smallest align-middle"
-                  >
-                    <ToggleButton
-                      onChange={[Function]}
-                      value={true}
-                    >
-                      <label
-                        className="switch"
-                        onClick={[Function]}
-                      >
-                        <input
-                          checked={true}
-                          readOnly={true}
-                          type="checkbox"
-                        />
-                        <div
-                          className="slider"
-                        />
-                      </label>
-                    </ToggleButton>
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    className="link-full-td"
-                  >
-                    <Link
-                      onlyActiveOnIndex={false}
-                      style={Object {}}
-                      to="/app/settings/integrations/smooch_inside/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
-                    >
-                      <a
-                        onClick={[Function]}
-                        style={Object {}}
-                      >
-                        <div>
-                          <b>
-                            Not so good campaign
-                          </b>
-                        </div>
-                      </a>
-                    </Link>
-                  </td>
-                  <td
-                    className="smallest align-middle"
-                  >
-                    <ToggleButton
-                      onChange={[Function]}
-                      value={false}
-                    >
-                      <label
-                        className="switch"
-                        onClick={[Function]}
-                      >
-                        <input
-                          checked={false}
-                          readOnly={true}
-                          type="checkbox"
-                        />
-                        <div
-                          className="slider"
-                        />
-                      </label>
-                    </ToggleButton>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </Table>
         </div>
       </Container>
+      <Table
+        className="table-integrations mt-3"
+        hover={true}
+        responsiveTag="div"
+        tag="table"
+      >
+        <table
+          className="table-integrations mt-3 table table-hover"
+        >
+          <tbody>
+            <tr>
+              <td
+                className="link-full-td"
+              >
+                <Link
+                  onlyActiveOnIndex={false}
+                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/118/campaigns/156a4d-fg68h40-sd6f4"
+                >
+                  <a
+                    onClick={[Function]}
+                    style={Object {}}
+                  >
+                    <div>
+                      <b>
+                        Super campaign
+                      </b>
+                    </div>
+                  </a>
+                </Link>
+              </td>
+              <td
+                className="smallest align-middle"
+              >
+                <ToggleButton
+                  onChange={[Function]}
+                  value={true}
+                >
+                  <label
+                    className="switch"
+                    onClick={[Function]}
+                  >
+                    <input
+                      checked={true}
+                      readOnly={true}
+                      type="checkbox"
+                    />
+                    <div
+                      className="slider"
+                    />
+                  </label>
+                </ToggleButton>
+              </td>
+              <td
+                className="smallest align-middle"
+              >
+                <ForwardIcon
+                  href="/app/settings/integrations/smooch_inside/118/campaigns/156a4d-fg68h40-sd6f4"
+                >
+                  <Link
+                    onlyActiveOnIndex={false}
+                    style={Object {}}
+                    to="/app/settings/integrations/smooch_inside/118/campaigns/156a4d-fg68h40-sd6f4"
+                  >
+                    <a
+                      onClick={[Function]}
+                      style={Object {}}
+                    >
+                      <i
+                        className="material-icons md-2 align-middle icon-go-forward"
+                      >
+                        keyboard_arrow_right
+                      </i>
+                    </a>
+                  </Link>
+                </ForwardIcon>
+              </td>
+            </tr>
+            <tr>
+              <td
+                className="link-full-td"
+              >
+                <Link
+                  onlyActiveOnIndex={false}
+                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
+                >
+                  <a
+                    onClick={[Function]}
+                    style={Object {}}
+                  >
+                    <div>
+                      <b>
+                        Not so good campaign
+                      </b>
+                    </div>
+                  </a>
+                </Link>
+              </td>
+              <td
+                className="smallest align-middle"
+              >
+                <ToggleButton
+                  onChange={[Function]}
+                  value={false}
+                >
+                  <label
+                    className="switch"
+                    onClick={[Function]}
+                  >
+                    <input
+                      checked={false}
+                      readOnly={true}
+                      type="checkbox"
+                    />
+                    <div
+                      className="slider"
+                    />
+                  </label>
+                </ToggleButton>
+              </td>
+              <td
+                className="smallest align-middle"
+              >
+                <ForwardIcon
+                  href="/app/settings/integrations/smooch_inside/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
+                >
+                  <Link
+                    onlyActiveOnIndex={false}
+                    style={Object {}}
+                    to="/app/settings/integrations/smooch_inside/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
+                  >
+                    <a
+                      onClick={[Function]}
+                      style={Object {}}
+                    >
+                      <i
+                        className="material-icons md-2 align-middle icon-go-forward"
+                      >
+                        keyboard_arrow_right
+                      </i>
+                    </a>
+                  </Link>
+                </ForwardIcon>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </Table>
     </div>
   </ChatIntegrationCampaigns>
 </Connect(ChatIntegrationCampaigns)>

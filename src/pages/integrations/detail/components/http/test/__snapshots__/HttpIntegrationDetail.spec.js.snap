@@ -260,7 +260,7 @@ exports[`HttpIntegrationDetail component should display data about the integrati
         </Button>
         <ConfirmButton
           className="float-right"
-          color="danger"
+          color="secondary"
           confirm={[Function]}
           content="Are you sure you want to delete this integration?"
           disabled={false}
@@ -270,7 +270,12 @@ exports[`HttpIntegrationDetail component should display data about the integrati
           title="Are you sure?"
           type="button"
         >
-          Delete
+          <i
+            className="material-icons mr-1 text-danger"
+          >
+            delete
+          </i>
+          Delete integration
         </ConfirmButton>
       </div>
     </Form>

@@ -73,7 +73,7 @@ class IntegrationList extends React.Component {
         const integrationTitle = integrationConfig.get('title')
 
         return (
-            <div className="integrations-list">
+            <div className="w-100">
                 <PageHeader title={(
                     <Breadcrumb>
                         <BreadcrumbItem>
@@ -97,28 +97,38 @@ class IntegrationList extends React.Component {
                     }
                 </PageHeader>
 
-                <Container fluid className="page-container">
-                    <p>{longTypeDescription}</p>
+                <Container
+                    className="page-container"
+                    fluid
+                >
+                    <div className="mb-3">
+                        {longTypeDescription}
+                    </div>
+
                     {
-                        integrations.isEmpty() ? (
+                        integrations.isEmpty() && (
                             <div className="mt-3">
                                 <NoIntegration
                                     type={integrationType}
                                     loading={loading.get('integrations', false)}
                                 />
                             </div>
-                        ) : (
-                            <Table
-                                className="mt-3"
-                                hover
-                            >
-                                <tbody>
-                                {integrations.valueSeq().map(integrationToItemDisplay)}
-                                </tbody>
-                            </Table>
                         )
                     }
                 </Container>
+
+                {
+                    !integrations.isEmpty() && (
+                        <Table
+                            className="table-integrations mt-3"
+                            hover
+                        >
+                            <tbody>
+                            {integrations.valueSeq().map(integrationToItemDisplay)}
+                            </tbody>
+                        </Table>
+                    )
+                }
             </div>
         )
     }

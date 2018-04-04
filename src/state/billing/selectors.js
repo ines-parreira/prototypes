@@ -61,10 +61,15 @@ export const currentUsage = createSelector(
     (billing) => billing.get('currentUsage') || fromJS({})
 )
 
+export const planIntegrations = createSelector(
+    [currentPlan],
+    (plan) => plan.get('integrations', 0)
+)
+
 export const isAllowedToCreateIntegration = createSelector(
-    [currentPlan, getActiveIntegrations],
-    (plan, activeIntegrations) => {
-        return plan.get('integrations', 0) > activeIntegrations.size
+    [planIntegrations, getActiveIntegrations],
+    (integrations, activeIntegrations) => {
+        return integrations > activeIntegrations.size
     }
 )
 

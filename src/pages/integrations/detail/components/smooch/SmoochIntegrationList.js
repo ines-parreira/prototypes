@@ -4,6 +4,7 @@ import {Link, browserHistory, withRouter} from 'react-router'
 
 import ToggleButton from '../../../../common/components/ToggleButton'
 import IntegrationList from '../IntegrationList'
+import ForwardIcon from '../ForwardIcon'
 import * as integrationsActions from '../../../../../state/integrations/actions'
 import {notify} from '../../../../../state/notifications/actions'
 
@@ -90,6 +91,9 @@ export default class SmoochIntegrationList extends React.Component {
                             value={!isDisabled}
                             onChange={toggleIntegration}
                         />
+                    </td>
+                    <td className="smallest align-middle">
+                        <ForwardIcon href={editLink} />
                     </td>
                 </tr>
             )

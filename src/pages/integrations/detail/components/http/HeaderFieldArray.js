@@ -56,7 +56,7 @@ export default class HeaderFieldArray extends React.Component {
                                     onChange={(value) => { this._update(index, 'key', _trim(value))}}
                                 />
                             </Col>
-                            <Col xs="5">
+                            <Col className="flex-grow">
                                 <InputField
                                     type="text"
                                     name={`${header}.value`}
@@ -66,14 +66,17 @@ export default class HeaderFieldArray extends React.Component {
                                     onChange={(value) => { this._update(index, 'value', value)}}
                                 />
                             </Col>
-                            <Col xs="2">
+                            <Col xs="auto">
                                 <Button
                                     className="float-right"
-                                    color="danger"
+                                    color="secondary"
                                     type="button"
                                     onClick={() => this._remove(index)}
+                                    title="Remove header"
                                 >
-                                    Remove
+                                    <i className="material-icons md-2 text-danger">
+                                        delete
+                                    </i>
                                 </Button>
                             </Col>
                         </Row>
@@ -85,6 +88,9 @@ export default class HeaderFieldArray extends React.Component {
                     type="button"
                     onClick={this._add}
                 >
+                    <i className="material-icons mr-1">
+                        add
+                    </i>
                     Add header
                 </Button>
             </div>

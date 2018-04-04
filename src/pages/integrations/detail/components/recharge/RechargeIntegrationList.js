@@ -6,6 +6,7 @@ import Lightbox from 'react-images'
 import ToggleButton from '../../../../common/components/ToggleButton'
 import Carousel from './../../../common/Carousel'
 import IntegrationList from '../IntegrationList'
+import ForwardIcon from '../ForwardIcon'
 import * as integrationsActions from '../../../../../state/integrations/actions'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 
@@ -133,6 +134,9 @@ export default class RechargeIntegrationList extends React.Component {
                             value={!isDisabled}
                             onChange={toggleIntegration}
                         />
+                    </td>
+                    <td className="smallest align-middle">
+                        <ForwardIcon href={editLink} />
                     </td>
                 </tr>
             )

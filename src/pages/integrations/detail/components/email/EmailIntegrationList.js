@@ -1,8 +1,9 @@
 import React, {PropTypes} from 'react'
 import {Link, browserHistory} from 'react-router'
-import classNames from 'classnames'
+import classnames from 'classnames'
 import {Button} from 'reactstrap'
 
+import ForwardIcon from '../ForwardIcon'
 import IntegrationList from '../IntegrationList'
 import {getIntegrationsByTypes} from '../../../../../state/integrations/helpers'
 import gmailImg from '../../../../../../img/integrations/gmail.png'
@@ -18,6 +19,7 @@ export default class EmailIntegrationList extends React.Component {
 
     render() {
         const {integrations, loading} = this.props
+
         const longTypeDescription = (
             <span>
                 Connect your support email addresses and respond to your customers from Gorgias.
@@ -42,17 +44,12 @@ export default class EmailIntegrationList extends React.Component {
                             isGmail ? (
                                     <img
                                         src={gmailImg}
-                                        height="23"
+                                        width="22"
                                     />
                                 ) : (
-                                    <i
-                                        className="fa fa-fw fa-envelope text-muted"
-                                        style={{
-                                            fontSize: '25px',
-                                            marginTop: '-2px',
-                                            marginLeft: '-3px',
-                                        }}
-                                    />
+                                    <i className={classnames(css.icon, 'material-icons')}>
+                                        email
+                                    </i>
                                 )
                         }
                     </td>
@@ -74,7 +71,7 @@ export default class EmailIntegrationList extends React.Component {
                                         tag="a"
                                         color="success"
                                         href={`/integrations/gmail/auth?integration_id=${int.get('id')}`}
-                                        className={classNames({
+                                        className={classnames({
                                             'btn-loading': isRowSubmitting,
                                         })}
                                     >
@@ -88,7 +85,7 @@ export default class EmailIntegrationList extends React.Component {
                         {
                             !isGmail && !isForwardingOn && (
                                 <div>
-                                    <i className={classNames('fa fa-circle', css.forwardingIcon)}/>
+                                    <i className={classnames('fa fa-circle', css.forwardingIcon)}/>
                                     No recent email.{' '}
                                     <a
                                         target="_blank"
@@ -100,6 +97,9 @@ export default class EmailIntegrationList extends React.Component {
                                 </div>
                             )
                         }
+                    </td>
+                    <td className="smallest align-middle">
+                        <ForwardIcon href={editLink} />
                     </td>
                 </tr>
             )

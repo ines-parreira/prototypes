@@ -404,11 +404,14 @@ class EmailIntegrationUpdate extends React.Component {
 
                         <ConfirmButton
                             className="float-right"
-                            color="danger"
+                            color="secondary"
                             confirm={() => deleteIntegration(integration, 'email')}
                             content="Are you sure you want to delete this integration?"
                         >
-                            <i className="material-icons">delete</i> Delete email address
+                            <i className="material-icons mr-1 text-danger">
+                                delete
+                            </i>
+                            Delete email address
                         </ConfirmButton>
                     </div>
                 </Form>

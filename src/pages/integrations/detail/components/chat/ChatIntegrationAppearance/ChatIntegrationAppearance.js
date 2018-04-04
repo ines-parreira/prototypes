@@ -232,11 +232,13 @@ class ChatIntegrationAppearance extends React.Component {
                                     isUpdate && (
                                         <ConfirmButton
                                             className="float-right"
-                                            color="danger"
-                                            outline
+                                            color="secondary"
                                             confirm={() => actions.deleteIntegration(integration)}
                                             content="Are you sure you want to delete this integration?"
                                         >
+                                            <i className="material-icons mr-1 text-danger">
+                                                delete
+                                            </i>
                                             Delete chat
                                         </ConfirmButton>
                                     )

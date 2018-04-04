@@ -377,11 +377,14 @@ export default class HttpIntegrationDetail extends React.Component {
                                 isUpdate && (
                                     <ConfirmButton
                                         className="float-right"
-                                        color="danger"
+                                        color="secondary"
                                         confirm={() => actions.deleteIntegration(integration)}
                                         content="Are you sure you want to delete this integration?"
                                     >
-                                        Delete
+                                        <i className="material-icons mr-1 text-danger">
+                                            delete
+                                        </i>
+                                        Delete integration
                                     </ConfirmButton>
                                 )
                             }

@@ -291,17 +291,21 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
           </Button>
           <ConfirmButton
             className="float-right"
-            color="danger"
+            color="secondary"
             confirm={[Function]}
             content="Are you sure you want to delete this integration?"
             disabled={false}
             loading={false}
-            outline={true}
             placement="bottom"
             skip={false}
             title="Are you sure?"
             type="button"
           >
+            <i
+              className="material-icons mr-1 text-danger"
+            >
+              delete
+            </i>
             Delete chat
           </ConfirmButton>
         </Form>
@@ -475,17 +479,21 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
           </Button>
           <ConfirmButton
             className="float-right"
-            color="danger"
+            color="secondary"
             confirm={[Function]}
             content="Are you sure you want to delete this integration?"
             disabled={false}
             loading={false}
-            outline={true}
             placement="bottom"
             skip={false}
             title="Are you sure?"
             type="button"
           >
+            <i
+              className="material-icons mr-1 text-danger"
+            >
+              delete
+            </i>
             Delete chat
           </ConfirmButton>
         </Form>

@@ -1,11 +1,13 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
-import classNames from 'classnames'
+import classnames from 'classnames'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
 import {getIconFromUrl} from '../../../../state/integrations/helpers'
-import {sourceTypeToIcon} from '../../../../config/ticket'
+import SourceIcon from '../../../common/components/SourceIcon'
+
+import css from './IntegrationListRow.less'
 
 class IntegrationListRow extends React.Component {
     render() {
@@ -14,11 +16,6 @@ class IntegrationListRow extends React.Component {
         const nextUrl = `/app/settings/integrations/${integrationConfig.get('type')}`
 
         const isExternalLink = !!integrationConfig.get('url')
-
-        const buttonClasses = ['fa fa-fw', {
-            'fa-chevron-right': !isExternalLink,
-            'fa-external-link': isExternalLink,
-        }]
 
         const linkConfig = {
             to: isExternalLink ? integrationConfig.get('url') : nextUrl,
@@ -30,7 +27,7 @@ class IntegrationListRow extends React.Component {
 
         return (
             <Link
-                className="IntegrationListRow"
+                className={classnames(css.component, 'card d-flex flex-row align-items-center mb-3')}
                 onClick={() => {
                     segmentTracker.logEvent(segmentTracker.EVENTS.INTEGRATION_CLICKED, {
                         integration: integrationConfig.get('title')
@@ -38,9 +35,7 @@ class IntegrationListRow extends React.Component {
                 }}
                 {...linkConfig}
             >
-                <div
-                    style={{width: '100px'}}
-                >
+                <div className={classnames(css.icon, 'd-flex align-items-center justify-content-center')}>
                     {
                         integrationConfig.get('image') ? (
                                 <img
@@ -49,29 +44,30 @@ class IntegrationListRow extends React.Component {
                                     src={getIconFromUrl(integrationConfig.get('image'))}
                                 />
                             ) : (
-                                <i
-                                    className={sourceTypeToIcon(integrationConfig.get('type'))}
-                                    style={{
-                                        fontSize: '54px',
-                                        marginTop: '-6px',
-                                    }}
-                                />
+                                <SourceIcon type={integrationConfig.get('type')} />
                             )
                     }
                 </div>
-                <div>
-                    <h5 className="mb-1">
+                <div className="flex-grow mr-1">
+                    <h5 className={css.title}>
                         {integrationConfig.get('title')}
-                        {
-                            hasAnIntegration && (
-                                <span> ({integrationConfig.get('count')})</span>
-                            )
-                        }
                     </h5>
                     {integrationConfig.get('description')}
                 </div>
                 <div>
-                    <i className={classNames(buttonClasses)} />
+                    <div className={css.action}>
+                        {
+                            hasAnIntegration && (
+                                <span className={css.count}>
+                                    {integrationConfig.get('count')} active
+                                </span>
+                            )
+                        }
+
+                        <i className="material-icons md-1">
+                            {isExternalLink ? 'open_in_new' : 'navigate_next'}
+                        </i>
+                    </div>
                 </div>
             </Link>
         )

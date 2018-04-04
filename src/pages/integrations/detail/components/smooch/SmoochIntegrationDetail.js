@@ -10,6 +10,8 @@ import {
     BreadcrumbItem,
     Container,
     Form,
+    Row,
+    Col,
 } from 'reactstrap'
 
 import ConfirmButton from '../../../../common/components/ConfirmButton'
@@ -133,81 +135,87 @@ class SmoochIntegrationDetail extends React.Component {
                 <RealtimeMessagingIntegrationNavigation integration={integration}/>
 
                 <Container fluid className="page-container">
-                    <Form onSubmit={this._handleSubmit}>
-                        {
-                            isUpdate && (
-                                <InputField
-                                    type="text"
-                                    name="name"
-                                    label="Smooch app name"
-                                    placeholder="The name of your Smooch app"
-                                    value={this.state.name}
-                                    onChange={(name) => this.setState({name})}
-                                    required
-                                />
-                            )
-                        }
+                    <Row>
+                        <Col md="8">
+                            <Form onSubmit={this._handleSubmit}>
+                                {
+                                    isUpdate && (
+                                        <InputField
+                                            type="text"
+                                            name="name"
+                                            label="Smooch app name"
+                                            placeholder="The name of your Smooch app"
+                                            value={this.state.name}
+                                            onChange={(name) => this.setState({name})}
+                                            required
+                                        />
+                                    )
+                                }
 
-                        <div>
-                            <Button
-                                type="submit"
-                                color="success"
-                                className={classNames({
-                                    'btn-loading': ctaIsLoading,
-                                })}
-                                disabled={ctaIsLoading}
-                            >
-                                {isUpdate ? 'Save changes' : 'Connect my Smooch'}
-                            </Button>
-
-                            {
-                                !authenticationRequired && isUpdate && isActive && (
+                                <div>
                                     <Button
-                                        type="button"
-                                        color="warning"
-                                        outline
-                                        className={classNames('ml-2', {
-                                            'btn-loading': isSubmitting,
-                                        })}
-                                        disabled={isSubmitting}
-                                        onClick={() => actions.deactivateIntegration(integration.get('id'))}
-                                    >
-                                        Deactivate
-                                    </Button>
-                                )
-                            }
-
-                            {
-                                !authenticationRequired && isUpdate && !isActive && (
-                                    <Button
-                                        type="button"
+                                        type="submit"
                                         color="success"
-                                        className={classNames('ml-2', {
-                                            'btn-loading': isSubmitting,
+                                        className={classNames({
+                                            'btn-loading': ctaIsLoading,
                                         })}
-                                        disabled={isSubmitting}
-                                        onClick={() => actions.activateIntegration(integration.get('id'))}
+                                        disabled={ctaIsLoading}
                                     >
-                                        Re-activate
+                                        {isUpdate ? 'Save changes' : 'Connect my Smooch'}
                                     </Button>
-                                )
-                            }
 
-                            {
-                                isUpdate && (
-                                    <ConfirmButton
-                                        className="float-right"
-                                        color="danger"
-                                        outline
-                                        confirm={() => actions.deleteIntegration(integration)}
-                                        content="Are you sure you want to delete this integration?"
-                                    >
-                                        Delete
-                                    </ConfirmButton>
-                                )
-                            }
-                        </div>
-                    </Form>
+                                    {
+                                        !authenticationRequired && isUpdate && isActive && (
+                                            <Button
+                                                type="button"
+                                                color="warning"
+                                                outline
+                                                className={classNames('ml-2', {
+                                                    'btn-loading': isSubmitting,
+                                                })}
+                                                disabled={isSubmitting}
+                                                onClick={() => actions.deactivateIntegration(integration.get('id'))}
+                                            >
+                                                Deactivate
+                                            </Button>
+                                        )
+                                    }
+
+                                    {
+                                        !authenticationRequired && isUpdate && !isActive && (
+                                            <Button
+                                                type="button"
+                                                color="success"
+                                                className={classNames('ml-2', {
+                                                    'btn-loading': isSubmitting,
+                                                })}
+                                                disabled={isSubmitting}
+                                                onClick={() => actions.activateIntegration(integration.get('id'))}
+                                            >
+                                                Re-activate
+                                            </Button>
+                                        )
+                                    }
+
+                                    {
+                                        isUpdate && (
+                                            <ConfirmButton
+                                                className="float-right"
+                                                color="secondary"
+                                                confirm={() => actions.deleteIntegration(integration)}
+                                                content="Are you sure you want to delete this integration?"
+                                            >
+                                                <i className="material-icons mr-1 text-danger">
+                                                    delete
+                                                </i>
+                                                Delete integration
+                                            </ConfirmButton>
+                                        )
+                                    }
+                                </div>
+                            </Form>
+                        </Col>
+                    </Row>
                 </Container>
             </div>
         )

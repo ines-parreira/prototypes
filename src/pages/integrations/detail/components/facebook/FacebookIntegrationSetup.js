@@ -2,14 +2,17 @@ import React, {PropTypes} from 'react'
 import ImmutablePropsTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import {Link, browserHistory} from 'react-router'
-import classNames from 'classnames'
+import classnames from 'classnames'
 import _truncate from 'lodash/truncate'
+import _some from 'lodash/some'
 import {
     Form,
     FormGroup,
     Breadcrumb,
     BreadcrumbItem,
-    Button, Container,
+    Button,
+    Container,
+    Alert,
 } from 'reactstrap'
 
 import Loader from '../../../../common/components/Loader'
@@ -20,6 +23,9 @@ import * as integrationsSelectors from '../../../../../state/integrations/select
 
 import css from './FacebookIntegrationSetup.less'
 import PageHeader from '../../../../common/components/PageHeader'
+
+import pageIconDefault from '../../../../../../img/integrations/facebook-page.png'
+import ToggleButton from '../../../../common/components/ToggleButton'
 
 @connect((state) => {
     // Here we only want the DELETED integrations of the current_user
@@ -123,77 +129,109 @@ export default class FacebookIntegrationSetup extends React.Component {
         }
 
         return (
-            <div>
+            <div className="mb-4">
+                <p className="font-weight-medium">
+                    We found {integrations.size} pages associated with your account.{' '}
+                    Please activate the pages you want to use with Gorgias:
+                </p>
+
                 {
                     integrations.map((integration) => {
                         const id = integration.get('id')
                         const page = integration.get('facebook')
 
                         const instagramIsDisabled = !integration.getIn(['meta', 'instagram', 'id'])
+                        const pageEnabled = this._getValue(id, 'page_enabled')
 
                         return (
                             <div
                                 key={id}
-                                className="mb-5"
+                                className={classnames(css.page, {
+                                    [css.enabled]: !!pageEnabled
+                                })}
                             >
-                                <div className="d-flex align-items-center mb-3">
-                                    <img
-                                        className={classNames('image rounded mr-3', css.icon)}
-                                        alt={page.get('name')}
-                                        src={page.getIn(['picture', 'data', 'url'])}
-                                    />
-                                    <div className="d-flex flex-column">
-                                        <h3 className="header mb-1">
-                                            {page.get('name')}
-                                        </h3>
-                                        <div className="text-faded">
-                                            {_truncate(page.get('about'), {length: 100})}
+                                <div className="d-flex flex-wrap flex-md-nowrap">
+                                    <div className="mr-auto">
+                                        <div>
+                                            <img
+                                                className={classnames('image rounded mr-3 mb-2 mb-md-0', css.icon)}
+                                                src={page.getIn(['picture', 'data', 'url'], pageIconDefault)}
+                                            />
+                                            <div className={classnames(css.details, 'mr-3 text-faded')}>
+                                                <h3 className={classnames(css.name, 'mr-3')}>
+                                                    {page.get('name')}
+                                                </h3>
+                                                <span>{_truncate(page.get('about'), {length: 100})}</span>
+                                            </div>
                                         </div>
                                     </div>
+                                    <ToggleButton
+                                        value={pageEnabled}
+                                        onChange={(value) => this._onChange(integration, value, id, 'page_enabled')}
+                                    />
                                 </div>
 
-                                <div>
-                                    <FormGroup>
-                                        <BooleanField
-                                            name={`${id}.page_enabled`}
-                                            type="checkbox"
-                                            label="Enable this page"
-                                            value={this._getValue(id, 'page_enabled')}
-                                            onChange={(value) => this._onChange(integration, value, id, 'page_enabled')}
-                                        />
-                                        <BooleanField
-                                            name={`${id}.private_messages_enabled`}
-                                            type="checkbox"
-                                            label="Enable Messenger"
-                                            value={this._getValue(id, 'private_messages_enabled')}
-                                            onChange={(value) => this._onChange(integration, value, id, 'private_messages_enabled')}
-                                            disabled={!this._getValue(id, 'page_enabled')}
-                                        />
-                                        <BooleanField
-                                            name={`${id}.posts_enabled`}
-                                            type="checkbox"
-                                            label="Enable Facebook posts & comments"
-                                            value={this._getValue(id, 'posts_enabled')}
-                                            onChange={(value) => this._onChange(integration, value, id, 'posts_enabled')}
-                                            disabled={!this._getValue(id, 'page_enabled')}
-                                        />
-                                        <BooleanField
-                                            name={`${id}.instagram_comments_enabled`}
-                                            type="checkbox"
-                                            label="Enable Instagram comments"
-                                            value={this._getValue(id, 'instagram_comments_enabled')}
-                                            onChange={(value) => this._onChange(integration, value, id, 'instagram_comments_enabled')}
-                                            disabled={!this._getValue(id, 'page_enabled') || instagramIsDisabled}
-                                        />
-                                        <BooleanField
-                                            name={`${id}.import_history_enabled`}
-                                            type="checkbox"
-                                            label="Import 30 days of history (posts, comments and messages) as closed tickets"
-                                            value={this._getValue(id, 'import_history_enabled')}
-                                            onChange={(value) => this._onChange(integration, value, id, 'import_history_enabled')}
-                                            disabled={!this._getValue(id, 'page_enabled')}
-                                        />
-                                    </FormGroup>
+                                <div className={css.settings}>
+                                    <p className="font-weight-medium">
+                                        Choose the Facebook channels you want to use to communicate with your customers:
+                                    </p>
+
+                                    <div className="d-md-flex">
+                                        <FormGroup className="mr-5">
+                                            <BooleanField
+                                                name={`${id}.private_messages_enabled`}
+                                                type="checkbox"
+                                                label="Enable Messenger"
+                                                value={this._getValue(id, 'private_messages_enabled')}
+                                                onChange={(value) => this._onChange(integration, value, id, 'private_messages_enabled')}
+                                            />
+                                            <BooleanField
+                                                name={`${id}.posts_enabled`}
+                                                type="checkbox"
+                                                label="Enable Facebook posts & comments"
+                                                value={this._getValue(id, 'posts_enabled')}
+                                                onChange={(value) => this._onChange(integration, value, id, 'posts_enabled')}
+                                            />
+                                            {!instagramIsDisabled && (
+                                                <BooleanField
+                                                    name={`${id}.instagram_comments_enabled`}
+                                                    type="checkbox"
+                                                    label="Enable Instagram comments"
+                                                    value={this._getValue(id, 'instagram_comments_enabled')}
+                                                    onChange={(value) => this._onChange(integration, value, id, 'instagram_comments_enabled')}
+                                                />
+                                            )}
+                                        </FormGroup>
+                                        {instagramIsDisabled && (
+                                            <div>
+                                                <Alert
+                                                    color="warning"
+                                                    className="d-flex align-items-center"
+                                                >
+                                                    <i className="material-icons md-3 mr-3">
+                                                        warning
+                                                    </i>
+                                                    Create an Instagram account for this page and you will be able to
+                                                    enable Instagram comments.
+                                                </Alert>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <p className="font-weight-medium">
+                                        Import your Facebook data (no Instagram for now):
+                                    </p>
+                                    <div className="d-md-flex">
+                                        <FormGroup className="mr-5">
+                                            <BooleanField
+                                                name={`${id}.import_history_enabled`}
+                                                type="checkbox"
+                                                label="Import 30 days of history (posts, comments and messages) as closed tickets"
+                                                value={this._getValue(id, 'import_history_enabled')}
+                                                onChange={(value) => this._onChange(integration, value, id, 'import_history_enabled')}
+                                            />
+                                        </FormGroup>
+                                    </div>
                                 </div>
                             </div>
                         )
@@ -208,8 +246,10 @@ export default class FacebookIntegrationSetup extends React.Component {
         const {loading} = this.props
 
         if (loading.get('integration')) {
-            return <Loader />
+            return <Loader/>
         }
+
+        const pagesEnabled = _some(this.state.pages, 'page_enabled')
 
         return (
             <div className="full-width">
@@ -228,26 +268,27 @@ export default class FacebookIntegrationSetup extends React.Component {
                 )}/>
 
                 <Container fluid className="page-container">
-                    <h1>Facebook Pages setup</h1>
+                    <h1>Facebook pages setup</h1>
                     <p>
-                        One last step: choose the pages you want to manage with Gorgias.<br/>
-                        If you just wanted to update your integrations or your permissions: it's done,{' '}
-                        you can leave this page.
+                        One last step: choose the pages you want to manage with Gorgias.
+                        <br/>
+                        If you just wanted to re-activate your facebook integration or update your permissions:
+                        it's done, you can leave this page.
                     </p>
-
 
                     <Form onSubmit={this._handleSubmit}>
                         {this._renderPages()}
 
-                        <div className="mt-3">
+                        <div>
                             <Button
                                 type="submit"
                                 color="success"
-                                className={classNames({
+                                disabled={!pagesEnabled}
+                                className={classnames({
                                     'btn-loading': loading.get('updateIntegration'),
                                 })}
                             >
-                                Add Pages
+                                Save Changes
                             </Button>
                         </div>
                     </Form>

@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
 
+import ForwardIcon from '../ForwardIcon'
 import ToggleButton from '../../../../common/components/ToggleButton'
 import * as integrationsActions from '../../../../../state/integrations/actions'
 
@@ -62,6 +63,9 @@ export default class FacebookPageRow extends React.Component {
                         value={!isDisabled}
                         onChange={this._toggleIntegration}
                     />
+                </td>
+                <td className="smallest align-middle">
+                    <ForwardIcon href={editLink} />
                 </td>
             </tr>
         )

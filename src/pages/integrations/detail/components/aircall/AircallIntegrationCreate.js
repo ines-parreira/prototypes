@@ -7,10 +7,15 @@ import {
     BreadcrumbItem,
     Input,
     InputGroup,
-    InputGroupAddon
+    InputGroupAddon,
+    Container,
+    Row,
+    Col,
 } from 'reactstrap'
 import Clipboard from 'clipboard'
+
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
+import PageHeader from '../../../../common/components/PageHeader'
 
 @connect((state) => {
     return {
@@ -39,65 +44,73 @@ export default class AircallIntegrationCreate extends Component {
 
     render() {
         return (
-            <div>
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link to="/app/settings/integrations">Integrations</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        <Link to="/app/settings/integrations/aircall">Aircall</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>
-                        Connect Aircall
-                    </BreadcrumbItem>
-                </Breadcrumb>
+            <div className="full-width">
+                <PageHeader title={(
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations">Integrations</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations/aircall">Aircall</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>
+                            Connect Aircall
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                )}/>
 
-                <h3>Setup Instructions</h3>
-                <div className="mb-4">
-                    <p>
-                        Follow these instructions to connect Aircall:
-                        <ul>
-                            <li>1. Copy the webhook url below</li>
-                            <li>2. Add a Webhook integration in your Aircall account, under{' '}
-                                <a href="https://dashboard-v2.aircall.io/integrations" target="_blank"
-                                   rel="noopener noreferrer">
-                                    integrations
-                                </a>
-                            </li>
-                            <li>3. Paste the webhook url in the url field, and save</li>
-                        </ul>
-                    </p>
-                    <p>
-                        Gorgias will automatically create an Aircall integration for each of your Aircall
-                        numbers when you will receive or make a call.
-                    </p>
-                    <label>Webhook url</label>
-                    <InputGroup>
-                        <Input
-                            id="webhookUrl"
-                            type="text"
-                            value={this.props.webhookUrl}
-                            readOnly
-                        />
-                        <InputGroupAddon addonType="append">
+                <Container fluid className="page-container">
+                    <Row>
+                        <Col md="8">
+                            <h3>Setup Instructions</h3>
+                            <div className="mb-4">
+                                <p>
+                                    Follow these instructions to connect Aircall:
+                                    <ul>
+                                        <li>1. Copy the webhook url below</li>
+                                        <li>2. Add a Webhook integration in your Aircall account, under{' '}
+                                            <a href="https://dashboard-v2.aircall.io/integrations" target="_blank"
+                                            rel="noopener noreferrer">
+                                                integrations
+                                            </a>
+                                        </li>
+                                        <li>3. Paste the webhook url in the url field, and save</li>
+                                    </ul>
+                                </p>
+                                <p>
+                                    Gorgias will automatically create an Aircall integration for each of your Aircall
+                                    numbers when you will receive or make a call.
+                                </p>
+                                <label>Webhook url</label>
+                                <InputGroup>
+                                    <Input
+                                        id="webhookUrl"
+                                        type="text"
+                                        value={this.props.webhookUrl}
+                                        readOnly
+                                    />
+                                    <InputGroupAddon addonType="append">
+                                        <Button
+                                            id="copyWebhookUrl"
+                                            color="primary"
+                                            data-clipboard-target="#webhookUrl"
+                                        >
+                                            <i className="fa fa-fw fa-files-o mr-2"/>
+                                            {this.state.isCopied ? 'Copied!' : 'Copy'}
+                                        </Button>
+                                    </InputGroupAddon>
+                                </InputGroup>
+                            </div>
                             <Button
-                                id="copyWebhookUrl"
-                                color="primary"
-                                data-clipboard-target="#webhookUrl"
+                                color="success"
+                                tag={Link}
+                                to="/app/settings/integrations/aircall"
                             >
-                                <i className="fa fa-fw fa-files-o mr-2"/>
-                                {this.state.isCopied ? 'Copied!' : 'Copy'}
+                                I did it
                             </Button>
-                        </InputGroupAddon>
-                    </InputGroup>
-                </div>
-                <Button
-                    color="success"
-                    tag={Link}
-                    to="/app/settings/integrations/aircall"
-                >
-                    I did it
-                </Button>
+                        </Col>
+                    </Row>
+                </Container>
             </div>
         )
     }

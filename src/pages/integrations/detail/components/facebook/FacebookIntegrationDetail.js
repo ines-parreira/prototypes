@@ -18,7 +18,10 @@ import Loader from '../../../../common/components/Loader'
 
 import BooleanField from '../../../../common/forms/BooleanField'
 import PageHeader from '../../../../common/components/PageHeader'
+import ConfirmButton from '../../../../common/components/ConfirmButton'
 import RealtimeMessagingIntegrationNavigation from '../../../common/RealtimeMessagingIntegrationNavigation'
+
+import pageIconDefault from '../../../../../../img/integrations/facebook-page.png'
 
 export default class FacebookIntegrationDetail extends React.Component {
     state = {
@@ -91,6 +94,9 @@ export default class FacebookIntegrationDetail extends React.Component {
         if (doesntHaveInstagramPermissions) {
             disabledInstagramComponent = (
                 <Alert color="warning">
+                    <i className="material-icons md-2 mr-2">
+                        warning
+                    </i>
                     Instagram is disabled because we miss the required permissions. Please go to the{' '}
                     <Link to="/app/settings/integrations/facebook">Facebook integrations list</Link> and click on{' '}
                     Login to Facebook to update your permissions.
@@ -138,21 +144,20 @@ export default class FacebookIntegrationDetail extends React.Component {
                     <div className="d-flex align-items-center mb-3">
                         <img
                             className="image rounded mr-3"
-                            alt={page.get('name')}
-                            src={page.getIn(['picture', 'data', 'url'])}
+                            width="30"
+                            src={page.getIn(['picture', 'data', 'url'], pageIconDefault)}
                         />
-                        <div className="d-flex flex-column">
-                            <h2 className="header">
+                        <div className="text-truncate text-faded">
+                            <h2 className="d-inline mr-3 text-info">
                                 {page.get('name')}
                             </h2>
-                            <p className="text-faded">
+                            <span>
                                 {_truncate(page.get('about'), {length: 100})}
-                            </p>
+                            </span>
                         </div>
                     </div>
-                    {disabledInstagramComponent}
-                    <div>
-                        <FormGroup>
+                    <div className="d-md-flex">
+                        <FormGroup className="mr-3">
                             <BooleanField
                                 name="private_messages_enabled"
                                 type="checkbox"
@@ -183,6 +188,9 @@ export default class FacebookIntegrationDetail extends React.Component {
                                 onChange={value => this._onChange(value, 'import_history_enabled')}
                             />
                         </FormGroup>
+                        <div>
+                            {disabledInstagramComponent}
+                        </div>
                     </div>
 
                     <div>
@@ -231,16 +239,15 @@ export default class FacebookIntegrationDetail extends React.Component {
                             </span>
                             )
                         }
-                        <Button
-                            type="button"
-                            color="danger"
-                            className={classNames('float-right', {
-                                'btn-loading': false,
-                            })}
-                            onClick={() => actions.deleteIntegration(integration)}
+                        <ConfirmButton
+                            color="secondary"
+                            className="float-right"
+                            content="Are you sure you want to delete this integration?"
+                            confirm={() => actions.deleteIntegration(integration)}
                         >
-                            <i className="material-icons">delete</i> Delete this page
-                        </Button>
+                            <i className="material-icons mr-1 text-danger">delete</i>
+                            Delete this page
+                        </ConfirmButton>
                     </div>
                 </Container>
             </div>

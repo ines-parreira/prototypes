@@ -14,6 +14,9 @@ describe('billing selectors', () => {
 
     beforeEach(() => {
         state = {
+            currentAccount: fromJS({
+                current_subscription: {plan: 'free'}
+            }),
             billing: initialState.mergeDeep(billingFixtures.billingState),
             integrations: fromJS({
                 // 6 active integrations to test plan integrations limits
@@ -78,6 +81,11 @@ describe('billing selectors', () => {
             ...state,
             currentAccount: initialCurrentAccountState.set('current_subscription', fromJS({plan: 'growth-usd-1'})),
         })).toBe(true)
+    })
+
+    it('planIntegrations', () => {
+        expect(selectors.planIntegrations({})).toBe(0)
+        expect(selectors.planIntegrations(state)).toBe(15)
     })
 
     it('isAllowedToChangePlan', () => {
