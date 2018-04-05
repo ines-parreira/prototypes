@@ -4,6 +4,7 @@ import React, {type Node} from 'react'
 
 type Props = {
     title: string | Object,
+    className?: string,
     children?: Node,
 }
 
@@ -13,9 +14,9 @@ type Props = {
  */
 export default class PageHeader extends React.Component<Props> {
     render() {
-        const {title, children} = this.props
+        const {title, children, className} = this.props
         return (
-            <div className="d-flex align-items-center justify-content-between flex-wrap page-header">
+            <div className={`d-flex align-items-center justify-content-between flex-wrap page-header ${className || ''}`}>
                 {
                     typeof title === 'string'
                         ? <h1 className="d-flex align-items-center">{title}</h1>

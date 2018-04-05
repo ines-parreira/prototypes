@@ -636,12 +636,18 @@ exports[`BillingPaymentMethod Stripe should render a loader 1`] = `
 >
   <Loader
     inline={false}
+    minHeight="500px"
   >
     <div
-      className="loader-container"
+      className="container"
     >
       <div
-        className="loader-inner"
+        className="inner"
+        style={
+          Object {
+            "minHeight": "500px",
+          }
+        }
       >
         <i
           className="fa fa-fw fa-circle-o-notch fa-spin"

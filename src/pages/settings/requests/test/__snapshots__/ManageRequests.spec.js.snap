@@ -10,12 +10,18 @@ exports[`ManageRequests component should display loader 1`] = `
 >
   <Loader
     inline={false}
+    minHeight="500px"
   >
     <div
-      className="loader-container"
+      className="container"
     >
       <div
-        className="loader-inner"
+        className="inner"
+        style={
+          Object {
+            "minHeight": "500px",
+          }
+        }
       >
         <i
           className="fa fa-fw fa-circle-o-notch fa-spin"
@@ -49,7 +55,7 @@ exports[`ManageRequests component should display requests 1`] = `
       title="Manage Requests (experimental)"
     >
       <div
-        className="d-flex align-items-center justify-content-between flex-wrap page-header"
+        className="d-flex align-items-center justify-content-between flex-wrap page-header "
       >
         <h1
           className="d-flex align-items-center"
@@ -413,7 +419,7 @@ exports[`ManageRequests component should load with empty props 1`] = `
       title="Manage Requests (experimental)"
     >
       <div
-        className="d-flex align-items-center justify-content-between flex-wrap page-header"
+        className="d-flex align-items-center justify-content-between flex-wrap page-header "
       >
         <h1
           className="d-flex align-items-center"

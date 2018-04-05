@@ -2,29 +2,29 @@
 
 exports[`KeyMetricStat should render a key metrics chart 1`] = `
 <div
-  className="statistics"
+  className="metrics"
 >
   <div
-    className="statistic"
+    className="metric"
   >
     <div
       className="label"
     >
       First response time
       <span>
-        <span
+        <i
+          className="info-icon help-icon material-icons ml-2"
           id="title-median_first_response_time"
         >
-          <i
-            className="fa fa-fw fa-question-circle ml-1"
-          />
-        </span>
+          info_outline
+        </i>
         <Tooltip
           delay={0}
           placement="top"
           target="title-median_first_response_time"
         >
-          Difference between the date when the first message was received from the user and the first response of the agent. Only tickets with at least 1 response are taken into account. This doesn't take into account responses sent by the rules (median)
+          The time between the first message from a customer and the first response from an agent.
+                           Messages sent by rules are not taken into account. (median)
         </Tooltip>
       </span>
     </div>
@@ -32,52 +32,58 @@ exports[`KeyMetricStat should render a key metrics chart 1`] = `
       className="value"
     >
       37m 
-      <span>
-        <span
-          id="value-0"
-        >
-          <div
-            className="stats-difference negative"
-          >
-            <i
-              className="fa fa-fw fa-arrow-up"
-            />
-             
-            100
-            %
-          </div>
-        </span>
-        <Tooltip
-          delay={0}
-          placement="top"
-          target="value-0"
-        >
-          Compared to : Sep 05, 2017 - Sep 06, 2017
-        </Tooltip>
-      </span>
     </div>
+    <span
+      className="diff"
+      id="value-0"
+    >
+      <span
+        className="stats-difference negative"
+      >
+        <i
+          className="material-icons font-weight-bold mr-1"
+          style={
+            Object {
+              "fontSize": "15px",
+            }
+          }
+        >
+          arrow_upward
+        </i>
+        100
+        %
+      </span>
+      <Tooltip
+        delay={0}
+        placement="top"
+        target="value-0"
+      >
+        Compared to : Sep 05, 2017 - Sep 06, 2017
+      </Tooltip>
+    </span>
   </div>
   <div
-    className="statistic"
+    className="metric"
   >
     <div
       className="label"
     >
       Resolution time
       <span>
-        <span
+        <i
+          className="info-icon help-icon material-icons ml-2"
           id="title-median_resolution_time"
         >
-          <i
-            className="fa fa-fw fa-question-circle ml-1"
-          />
-        </span>
+          info_outline
+        </i>
         <Tooltip
           delay={0}
           placement="top"
           target="title-median_resolution_time"
         >
-          Difference between the date the ticket was created and when it was closed (median). Only tickets with at least 1 response are taken into account
+          The time between the first message from a customer and the moment the ticket 
+                             has been closed by an agent or a rule. Only tickets with a least one response 
+                             from an agent or a rule are taken into account. (median)
         </Tooltip>
       </span>
     </div>
@@ -85,52 +91,56 @@ exports[`KeyMetricStat should render a key metrics chart 1`] = `
       className="value"
     >
       3d 23h 
-      <span>
-        <span
-          id="value-1"
-        >
-          <div
-            className="stats-difference negative"
-          >
-            <i
-              className="fa fa-fw fa-arrow-up"
-            />
-             
-            100
-            %
-          </div>
-        </span>
-        <Tooltip
-          delay={0}
-          placement="top"
-          target="value-1"
-        >
-          Compared to : Sep 05, 2017 - Sep 06, 2017
-        </Tooltip>
-      </span>
     </div>
+    <span
+      className="diff"
+      id="value-1"
+    >
+      <span
+        className="stats-difference negative"
+      >
+        <i
+          className="material-icons font-weight-bold mr-1"
+          style={
+            Object {
+              "fontSize": "15px",
+            }
+          }
+        >
+          arrow_upward
+        </i>
+        100
+        %
+      </span>
+      <Tooltip
+        delay={0}
+        placement="top"
+        target="value-1"
+      >
+        Compared to : Sep 05, 2017 - Sep 06, 2017
+      </Tooltip>
+    </span>
   </div>
   <div
-    className="statistic"
+    className="metric"
   >
     <div
       className="label"
     >
       One-touch tickets
       <span>
-        <span
+        <i
+          className="info-icon help-icon material-icons ml-2"
           id="title-total_one_touch_tickets"
         >
-          <i
-            className="fa fa-fw fa-question-circle ml-1"
-          />
-        </span>
+          info_outline
+        </i>
         <Tooltip
           delay={0}
           placement="top"
           target="title-total_one_touch_tickets"
         >
-          Percentage of tickets that were solved with only one response from your agents
+          Percentage of tickets closed with only one response from an agent or a rule.
         </Tooltip>
       </span>
     </div>
@@ -138,27 +148,35 @@ exports[`KeyMetricStat should render a key metrics chart 1`] = `
       className="value"
     >
       20%
-      <span>
-        <span
-          id="value-2"
-        >
-          <div
-            className="stats-difference negative"
-          >
-             
-            0
-            %
-          </div>
-        </span>
-        <Tooltip
-          delay={0}
-          placement="top"
-          target="value-2"
-        >
-          Compared to : Sep 05, 2017 - Sep 06, 2017
-        </Tooltip>
-      </span>
     </div>
+    <span
+      className="diff"
+      id="value-2"
+    >
+      <span
+        className="stats-difference neutral"
+      >
+        <i
+          className="material-icons font-weight-bold mr-1"
+          style={
+            Object {
+              "fontSize": "15px",
+            }
+          }
+        >
+          arrow_forward
+        </i>
+        0
+        %
+      </span>
+      <Tooltip
+        delay={0}
+        placement="top"
+        target="value-2"
+      >
+        Compared to : Sep 05, 2017 - Sep 06, 2017
+      </Tooltip>
+    </span>
   </div>
 </div>
 `;

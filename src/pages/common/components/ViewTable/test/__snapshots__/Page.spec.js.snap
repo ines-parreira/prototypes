@@ -625,5 +625,6 @@ exports[`ViewTable::Page component default view 1`] = `
 exports[`ViewTable::Page component empty view 1`] = `
 <Loader
   inline={false}
+  minHeight="500px"
 />
 `;

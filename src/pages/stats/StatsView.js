@@ -9,7 +9,6 @@ import {Container} from 'reactstrap'
 
 import PeriodPicker from './common/PeriodPicker'
 import PageHeader from '../common/components/PageHeader'
-import Loader from '../common/components/Loader'
 import {fieldEnumSearch} from '../../state/views/actions'
 import SearchableSelectField from './common/SearchableSelectField'
 import Stat from './common/components/charts/Stat'
@@ -123,7 +122,7 @@ class StatsView extends React.Component {
 
         return (
             <div className="stats full-width">
-                <PageHeader title={config.get('name')}>
+                <PageHeader title={config.get('name')} className="mb-0">
                     <div className="d-flex flex-wrap float-right">
                         {config.get('filters', []).includes('agents') && (
                             <SearchableSelectField
@@ -160,26 +159,30 @@ class StatsView extends React.Component {
                     </div>
                 </PageHeader>
 
-                <Container fluid className="page-container">
+                <Container fluid style={{padding: 0}}>
                     {config.get('stats').map((statName, idx) => {
                         const isCurrentStatLoading = this.state.loadings[statName]
                         const stat = stats.get(statName)
-
-                        if (isCurrentStatLoading || !stat) {
-                            return <Loader key={idx}/>
+                        const isLoading = isCurrentStatLoading || !stat
+                        const statConfig = statsConfig.get(statName)
+                        let padding = '30px'
+                        const statProps = isLoading ? {} : stat.toObject()
+                        // First key metrics statistics are stuck to the top
+                        if (idx === 0 && statConfig.get('style') === 'key-metrics') {
+                            padding = '0 0 30px'
                         }
 
-                        const statConfig = statsConfig.get(statName)
-
                         return (
-                            <Stat
-                                key={idx}
-                                name={statName}
-                                config={statConfig}
-                                meta={meta}
-                                filters={filters}
-                                {...stat.toObject()}
-                            />
+                            <div style={{padding}} key={idx}>
+                                <Stat
+                                    isLoading={isLoading}
+                                    name={statName}
+                                    config={statConfig}
+                                    meta={meta}
+                                    filters={filters}
+                                    {...statProps}
+                                />
+                            </div>
                         )
                     })}
                 </Container>

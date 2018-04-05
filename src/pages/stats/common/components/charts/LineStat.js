@@ -1,7 +1,8 @@
 import React, {PropTypes} from 'react'
 import {Line} from 'react-chartjs-2'
-import {colors as colorsConfig, chartMaxHeight, chartPointRadius} from '../../../../../config/stats'
 import moment from 'moment'
+import Legend from '../Legend'
+import {colors as colorsConfig, chartMaxHeight, chartPointRadius} from '../../../../../config/stats'
 
 export default class LineStat extends React.Component {
     static propTypes = {
@@ -18,12 +19,15 @@ export default class LineStat extends React.Component {
         const isOneDayPeriod = start.format('YYYY MM DD') === end.format('YYYY MM DD')
         const datasets = data.get('lines').map((line, index) => {
             const lineName = line.get('name')
+            const {backgroundColor, label, ...lineConfig} = config.getIn(['lines', lineName]).toJS()
+
             const data = {
-                label: config.getIn(['lines', lineName, 'label']) || lineName,
+                label: label || lineName,
+                backgroundColor: backgroundColor || colorsConfig[index],
                 cubicInterpolationMode: 'default',
                 lineTension: 0,
                 data: line.get('data').toJS(),
-                backgroundColor: config.getIn(['lines', lineName, 'color']) || colorsConfig[index]
+                ...lineConfig
             }
 
             if (isOneDayPeriod) {
@@ -32,16 +36,31 @@ export default class LineStat extends React.Component {
 
             return data
         }).toArray()
+        const legendLabels = datasets.map((dataset) => ({
+            name: dataset.label,
+            backgroundColor: dataset.backgroundColor
+        }))
 
         return (
-            <Line
-                height={chartMaxHeight}
-                data={{
-                    labels: data.getIn(['axes', 'x']).toJS(),
-                    datasets: datasets
-                }}
-                options={config.get('options')(legend)}
-            />
+            <div>
+                <div className="mb-4">
+                    <Legend labels={legendLabels}/>
+                </div>
+                {
+                 // Bar chart needs to be alone inside a div otherwise it grows
+                 // indefinitely when the window is resized
+                }
+                <div>
+                    <Line
+                        height={chartMaxHeight}
+                        data={{
+                            labels: data.getIn(['axes', 'x']).toJS(),
+                            datasets: datasets
+                        }}
+                        options={config.get('options')(legend)}
+                    />
+                </div>
+            </div>
         )
     }
 }

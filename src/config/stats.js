@@ -4,6 +4,7 @@ import moment from 'moment'
 import _merge from 'lodash/merge'
 import {formatDuration} from '../pages/stats/common/utils'
 import {defaults} from 'react-chartjs-2'
+import {TagLabel} from '../pages/common/utils/labels'
 
 // Available Stats. These names should match names in `g/stats/config`
 export const OVERVIEW = 'overview'
@@ -16,30 +17,31 @@ export const TICKETS_CREATED_PER_CHANNEL_PER_DAY = 'tickets-created-per-channel-
 export const TICKETS_CLOSED_PER_AGENT = 'tickets-closed-per-agent'
 export const TICKETS_CLOSED_PER_AGENT_PER_DAY = 'tickets-closed-per-agent-per-day'
 
+const mainBlue = '#152065'
 export const colors = [
-    '#06cd96',
-    '#e88850',
-    '#466fde',
-    '#ca77b7',
-    '#e0495e',
-    '#8086d8',
-    // 30% darker
-    '#06af78',
-    '#ca6a50',
-    '#455fc0',
-    '#ac5999',
-    '#c2495e',
-    '#6a70ba',
-    // 60% darker
-    '#069172',
-    '#ac7031',
-    '#2a62a2',
-    '#8e4a7b',
-    '#a42c38',
-    '#5e639c',
+    '#abd1e9',
+    '#ffa8d9',
+    '#fec18c',
+    '#dfee90',
+    '#9ce0e0',
+    '#2292c7',
+    '#bc0017',
+    '#ff7d5a',
+    '#ff5cd6',
+    '#814db0',
+    '#1d3ba1',
+    '#8fce6e',
+    '#890095',
+    '#40048d',
+    '#35d0d3',
+    '#d700bf',
+    '#f72321',
+    '#007306',
+    '#8398cb',
+    '#24ae23',
 ]
 
-export const chartMaxHeight = 400
+export const chartMaxHeight = 360
 export const chartPointRadius = 4
 
 // Default configuration for Chart.js
@@ -62,23 +64,24 @@ _merge(defaults, {
             fontFamily: '\'Inter UI\', \'Helvetica Neue\', Arial, Helvetica, sans-serif',
         },
         legend: {
-            labels: {
-                usePointStyle: true,
-                fontSize: 13.5,
-                fontStyle: '600',
-                fontColor: 'rgb(97, 97, 97)',
-                fontFamily: '\'Inter UI\', \'Helvetica Neue\', Arial, Helvetica, sans-serif',
-            }
+            // legend is displayed separately
+            display: false,
         },
         tooltips: {
             mode: 'index',
             intersect: false,
             titleFontSize: 15,
+            titleFontColor: mainBlue,
             bodyFontSize: 14,
+            bodyFontColor: mainBlue,
             titleMarginBottom: 15,
-            bodySpacing: 7,
-            xPadding: 15,
-            yPadding: 15,
+            bodySpacing: 10,
+            xPadding: 20,
+            yPadding: 20,
+            caretPadding: 5,
+            backgroundColor: '#ffffff',
+            borderColor: '#e2e3ec',
+            borderWidth: 1
         },
         hover: {
             mode: 'index',
@@ -96,23 +99,31 @@ _merge(defaults, {
 })
 
 const defaultTicks = {
-    fontColor: 'rgba(0, 0, 0, 0.4)'
+    fontColor: '#b2bddd'
 }
 
 const defaultScaleLabel = {
-    fontColor: 'rgba(0, 0, 0, 0.4)'
+    fontColor: '#b2bddd'
 }
-
-const defaultGridLines = {
-    borderDash: [3, 6]
+const defaultXAxeGridLines = {
+    display: false,
+    drawBorder: false,
+    color: '#dfe3f1',
+}
+const defaultYAxeGridLines = {
+    drawBorder: false,
+    color: '#dfe3f1',
+    borderDash: [2, 4]
 }
 // configuration for each stat
 export const stats = fromJS({
     [TICKETS_CREATED_PER_CHANNEL]: {
+        helpText: 'Number of tickets created per channel',
         style: 'table',
         downloadable: true
     },
     [TICKETS_CREATED_PER_CHANNEL_PER_DAY]: {
+        helpText: 'Number of tickets created per channel per day',
         style: 'bar',
         downloadable: true,
         lines: {
@@ -122,19 +133,19 @@ export const stats = fromJS({
             },
             'facebook-messenger': {
                 label: 'Facebook Messenger',
-                color: '#0084ff',
+                color: '#4872db',
             },
             twitter: {
                 label: 'Twitter',
-                color: '#4099FF'
+                color: '#1787fb'
             },
             chat: {
                 label: 'Chat',
-                color: '#ca77b7'
+                color: '#ffb584'
             },
             email: {
                 label: 'Email',
-                color: '#e0495e'
+                color: '#ff5eab'
             },
             api: {
                 label: 'Gorgias API',
@@ -142,7 +153,7 @@ export const stats = fromJS({
             },
             aircall: {
                 label: 'Aircall',
-                color: '#06cd96'
+                color: '#34ba28'
             },
             phone: {
                 label: 'Phone',
@@ -162,6 +173,7 @@ export const stats = fromJS({
                     }),
                     stacked: true,
                     gridLines: {
+                        drawBorder: false,
                         display: false
                     },
                     ticks: _merge({}, defaultTicks, {
@@ -178,29 +190,47 @@ export const stats = fromJS({
                         min: 0,
                         suggestedMax: 1,
                     }),
-                    gridLines: defaultGridLines
+                    gridLines: defaultYAxeGridLines
                 }]
             }
         })
     },
     [TICKETS_CLOSED_PER_AGENT]: {
+        helpText: 'Number of tickets closed per agent. Only tickets where an agent is assigned are taken into account.',
         style: 'table',
         downloadable: true
     },
     [TICKETS_PER_TAG]: {
+        helpText: 'Number of tickets created per tag',
         style: 'table',
         downloadable: true,
-        callbacks:{
-            cell: (line, val) => {
-                // display values of untagged tickets line in italic
-                if (line.first().toLowerCase() == 'untagged tickets') {
-                    return (<i>{val}</i>)
+        callbacks: {
+            cell: (line, val, {tagColors}) => {
+                const tagName = line.first()
+
+                // current cell does not contain a tag name
+                if (tagName !== val) {
+                    return val
                 }
-                return val
+
+                if (tagName.toLowerCase() === 'untagged') {
+                    return (<i><b>{val}</b></i>)
+                }
+
+                if (!tagColors) {
+                    return val
+                }
+                return (
+                    <TagLabel decoration={tagColors.get(tagName)}>
+                        {tagName}
+                    </TagLabel>
+                )
             }
         }
     },
     [TICKETS_CLOSED_PER_AGENT_PER_DAY]: {
+        helpText: `Number of tickets closed per agent per day. 
+                   Only tickets where an agent is assigned are taken into account.`,
         style: 'bar',
         downloadable: true,
         options: (legend) => ({
@@ -211,9 +241,7 @@ export const stats = fromJS({
                         display: !!legend.getIn(['axes', 'x']),
                     }),
                     stacked: true,
-                    gridLines: {
-                        display: false
-                    },
+                    gridLines: defaultXAxeGridLines,
                     ticks: _merge({}, defaultTicks, {
                         callback: formatDateAxeCb
                     })
@@ -228,23 +256,24 @@ export const stats = fromJS({
                         suggestedMax: 1,
                         callback: formatTicketAxeCb
                     }),
-                    gridLines: defaultGridLines,
+                    gridLines: defaultYAxeGridLines,
                     stacked: true,
                 }]
             }
         })
     },
     [SUPPORT_VOLUME]: {
+        helpText: 'Number of tickets created and closed.',
         style: 'bar',
         downloadable: true,
         lines: {
             created: {
                 label: 'Ticket created',
-                color: '#ff9b53',
+                color: '#8892f2',
             },
             closed: {
                 label: 'Ticket closed',
-                color: '#06cd96'
+                color: '#a5e5ab'
             }
         },
         options: (legend) => ({
@@ -255,9 +284,7 @@ export const stats = fromJS({
                         display: !!legend.getIn(['axes', 'x']),
                     }),
                     stacked: false,
-                    gridLines: {
-                        display: false,
-                    },
+                    gridLines: defaultXAxeGridLines,
                     ticks: _merge({}, defaultTicks, {
                         callback: formatDateAxeCb
                     })
@@ -270,10 +297,9 @@ export const stats = fromJS({
                     ticks: _merge({}, defaultTicks, {
                         min: 0,
                         suggestedMax: 1,
-                        fontColor: 'rgba(0, 0, 0, 0.5)',
                         callback: formatTicketAxeCb
                     }),
-                    gridLines: defaultGridLines
+                    gridLines: defaultYAxeGridLines
                 }]
             }
         })
@@ -282,51 +308,58 @@ export const stats = fromJS({
         style: 'key-metrics',
         metrics: {
             total_new_tickets: {
-                label: 'New tickets',
-                tooltip: 'Tickets created during this period',
+                label: 'Tickets created',
+                tooltip: 'Number of ticket created.',
             },
             total_closed_tickets: {
-                label: 'Closed tickets',
-                tooltip: 'Tickets closed during this period. If a ticket was closed multiple times, ' +
-                'we only take into account the last time it was closed',
+                label: 'Tickets closed',
+                tooltip: 'Number of tickets closed. If a ticket was closed multiple times, ' +
+                'we only take into account the last time it was closed.',
             },
             total_messages_sent: {
-                tooltip: 'Total number of messages on all channels sent by agents',
+                tooltip: 'Number of messages on all channels sent by agents.',
                 label: 'Messages sent',
             },
             total_messages_received: {
-                tooltip: 'Total number of messages on all channels received from user',
+                tooltip: 'Number of messages on all channels received from user.',
                 label: 'Messages received',
             },
             median_first_response_time: {
-                tooltip: 'Difference between the date when the first message was received from ' +
-                'the user and the first response of the agent. Only tickets with at least 1 response ' +
-                'are taken into account. This doesn\'t take into account responses sent by the rules (median)',
+                tooltip: `The time between the first message from a customer and the first response from an agent.
+                 Messages sent by rules are not taken into account. (median)`,
                 label: 'First response time',
             },
             median_resolution_time: {
-                tooltip: 'Difference between the date the ticket was created and when it was closed (median). ' +
-                'Only tickets with at least 1 response are taken into account',
+                tooltip: `The time between the first message from a customer and the moment the ticket 
+                   has been closed by an agent or a rule. Only tickets with a least one response 
+                   from an agent or a rule are taken into account. (median)`,
                 label: 'Resolution time',
             },
             total_one_touch_tickets: {
-                tooltip: 'Percentage of tickets that were solved with only one response from your agents',
+                tooltip: 'Percentage of tickets closed with only one response from an agent or a rule.',
                 label: 'One-touch tickets',
             },
         }
 
     },
     [RESOLUTION_TIME]: {
+        helpText: `The time between the first message from a customer and the moment the ticket 
+                   has been closed by an agent or a rule. Only tickets with a least one response 
+                   from an agent or a rule are taken into account.`,
         style: 'line',
         downloadable: true,
         lines: {
             '50%': {
                 label: 'median',
-                color: '#466fde',
+                backgroundColor: '#ffb584',
+                borderWidth: 0,
+                borderColor: '#ffb584',
             },
             '90%': {
                 label: '95%',
-                color: '#ca77b7'
+                backgroundColor: '#ff6b80',
+                borderWidth: 0,
+                borderColor: '#ff6b80',
             }
         },
         options: (legend) => ({
@@ -341,9 +374,7 @@ export const stats = fromJS({
                         labelString: legend.getIn(['axes', 'x']),
                         display: !!legend.getIn(['axes', 'x']),
                     }),
-                    gridLines: {
-                        display: false
-                    },
+                    gridLines: defaultXAxeGridLines,
                     ticks: _merge({}, defaultTicks, {
                         callback: formatDateAxeCb
                     })
@@ -353,7 +384,7 @@ export const stats = fromJS({
                         labelString: legend.getIn(['axes', 'y']),
                         display: !!legend.getIn(['axes', 'y']),
                     }),
-                    gridLines: defaultGridLines,
+                    gridLines: defaultYAxeGridLines,
                     ticks: _merge({}, defaultTicks, {
                         min: 0,
                         suggestedMax: 1,
@@ -364,16 +395,22 @@ export const stats = fromJS({
         })
     },
     [FIRST_RESPONSE_TIME]: {
+        helpText: `The time between the first message from a customer 
+                   and the first response from an agent. Messages sent by rules are not taken into account.`,
         style: 'line',
         downloadable: true,
         lines: {
             '50%': {
                 label: 'median',
-                color: '#466fde',
+                backgroundColor: '#8892f2',
+                borderWidth: 0,
+                borderColor: '#8892f2',
             },
             '90%': {
                 label: '95%',
-                color: '#ca77b7'
+                backgroundColor: '#ff6b80',
+                borderWidth: 0,
+                borderColor: '#ff6b80',
             }
         },
         options: (legend) => ({
@@ -388,9 +425,7 @@ export const stats = fromJS({
                         labelString: legend.getIn(['axes', 'x']),
                         display: !!legend.getIn(['axes', 'x']),
                     }),
-                    gridLines: {
-                        display: false
-                    },
+                    gridLines: defaultXAxeGridLines,
                     ticks: _merge({}, defaultTicks, {
                         callback: formatDateAxeCb
                     })
@@ -400,7 +435,7 @@ export const stats = fromJS({
                         labelString: legend.getIn(['axes', 'y']),
                         display: !!legend.getIn(['axes', 'y']),
                     }),
-                    gridLines: defaultGridLines,
+                    gridLines: defaultYAxeGridLines,
                     ticks: _merge({}, defaultTicks, {
                         min: 0,
                         suggestedMax: 1,

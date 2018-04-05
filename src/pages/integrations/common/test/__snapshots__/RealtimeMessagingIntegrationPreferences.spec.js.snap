@@ -79,7 +79,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header"
+          className="d-flex align-items-center justify-content-between flex-wrap page-header "
         >
           <Breadcrumb
             tag="ol"
@@ -578,7 +578,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header"
+          className="d-flex align-items-center justify-content-between flex-wrap page-header "
         >
           <Breadcrumb
             tag="ol"
@@ -1062,7 +1062,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header"
+          className="d-flex align-items-center justify-content-between flex-wrap page-header "
         >
           <Breadcrumb
             tag="ol"

@@ -45,7 +45,7 @@ exports[`ManageRequestItem component should display a selected request 1`] = `
       }
     >
       <div
-        className="d-flex align-items-center justify-content-between flex-wrap page-header"
+        className="d-flex align-items-center justify-content-between flex-wrap page-header "
       >
         <Breadcrumb
           tag="ol"
@@ -320,7 +320,7 @@ exports[`ManageRequestItem component should display empty 1`] = `
       }
     >
       <div
-        className="d-flex align-items-center justify-content-between flex-wrap page-header"
+        className="d-flex align-items-center justify-content-between flex-wrap page-header "
       >
         <Breadcrumb
           tag="ol"

@@ -129,7 +129,7 @@ exports[`CampaignDetail component should display default value when it's a new c
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header"
+          className="d-flex align-items-center justify-content-between flex-wrap page-header "
         >
           <Breadcrumb
             tag="ol"
@@ -2905,7 +2905,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header"
+          className="d-flex align-items-center justify-content-between flex-wrap page-header "
         >
           <Breadcrumb
             tag="ol"

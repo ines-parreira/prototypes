@@ -1,20 +1,24 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React, {Component} from 'react'
+import css from './Loader.less'
+type Props = {
+    inline: boolean,
+    message?: Object | string,
+    minHeight?: string
+}
 
-export default class Loader extends React.Component {
-    static propTypes = {
-        inline: PropTypes.bool.isRequired,
-        message: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
-    }
+export default class Loader extends Component<Props> {
     static defaultProps = {
         inline: false,
+        minHeight: '500px'
     }
 
     render() {
-        const {message, inline} = this.props
+        const {message, inline, minHeight} = this.props
 
         return (
-            <div className="loader-container">
-                <div className="loader-inner">
+            <div className={css.container}>
+                <div className={css.inner} style={{minHeight}}>
                     <i className="fa fa-fw fa-circle-o-notch fa-spin" />
                     {
                         !inline && message && (

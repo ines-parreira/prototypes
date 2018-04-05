@@ -514,5 +514,6 @@ exports[`HttpIntegrationDetail component should display default if it's a new in
 exports[`HttpIntegrationDetail component should display loading state if the integration is loading 1`] = `
 <Loader
   inline={false}
+  minHeight="500px"
 />
 `;

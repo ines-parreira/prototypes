@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Legend should not render a legend (no labels, invalid labels) 1`] = `null`;
+
+exports[`Legend should not render a legend (no labels, invalid labels) 2`] = `null`;
+
+exports[`Legend should not render a legend (no labels, invalid labels) 3`] = `null`;
+
+exports[`Legend should not render a legend (no labels, invalid labels) 4`] = `null`;
+
+exports[`Legend should render a legend 1`] = `
+<div
+  className="legends"
+>
+  <span
+    className="label mr-4 mb-2"
+  >
+    <span
+      className="circle mr-2"
+      style={
+        Object {
+          "backgroundColor": "#000",
+        }
+      }
+    />
+    line 1
+  </span>
+  <span
+    className="label mr-4 mb-2"
+  >
+    <span
+      className="circle mr-2"
+      style={
+        Object {
+          "backgroundColor": "#fff",
+        }
+      }
+    />
+    line 2
+  </span>
+</div>
+`;

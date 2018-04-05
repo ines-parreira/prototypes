@@ -2,35 +2,44 @@
 
 exports[`TableStat should render a table chart 1`] = `
 <Table
+  className="table"
   hover={true}
   responsiveTag="div"
   tag="table"
 >
   <thead>
     <tr>
-      <th
-        className=""
-      >
-        TAGS
+      <th>
+        <span
+          className="cell-wrapper"
+        >
+          TAGS
+        </span>
       </th>
-      <th
-        className="text-center"
-      >
-        NEW TICKETS #
+      <th>
+        <span
+          className="cell-wrapper"
+        >
+          NEW TICKETS #
+        </span>
       </th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td
-        className=""
-      >
-        refund
+      <td>
+        <span
+          className="cell-wrapper"
+        >
+          refund
+        </span>
       </td>
-      <td
-        className="text-center"
-      >
-        42
+      <td>
+        <span
+          className="cell-wrapper"
+        >
+          42
+        </span>
       </td>
     </tr>
   </tbody>

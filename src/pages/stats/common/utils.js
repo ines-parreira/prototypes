@@ -1,6 +1,5 @@
 import React from 'react'
 import moment from 'moment'
-import classnames from 'classnames'
 import _isUndefined from 'lodash/isUndefined'
 import _isNumber from 'lodash/isNumber'
 
@@ -16,32 +15,39 @@ export const renderDifference = (label, percentage, moreIsBetter) => {
         return null
     }
 
-    let isPositive = percentage > 0
-    const colorLabel = !_isUndefined(moreIsBetter)
+    const isIncreasing = percentage > 0
+    const isDecreasing  = percentage < 0
+    const isEqual = percentage === 0
+    let icon = 'arrow_forward'
+    let colorLabel = ''
 
-    if (!moreIsBetter) {
-        isPositive = !isPositive
+    if (!_isUndefined(moreIsBetter)) {
+        if (isEqual) {
+            colorLabel = 'neutral'
+        } else if ((isIncreasing && moreIsBetter) || (isDecreasing && !moreIsBetter)) {
+            colorLabel = 'positive'
+        } else {
+            colorLabel = 'negative'
+        }
+
+    }
+
+    if (isIncreasing) {
+        icon = 'arrow_upward'
+    } else if (isDecreasing) {
+        icon = 'arrow_downward'
     }
 
     return (
-        <div
-            className={classnames('stats-difference', {
-                positive: colorLabel && isPositive,
-                negative: colorLabel && !isPositive
-            })}
-        >
-            {
-                percentage !== 0
-                && (
-                    <i
-                        className={classnames('fa fa-fw', {
-                            'fa-arrow-up': percentage > 0,
-                            'fa-arrow-down': percentage < 0
-                        })}
-                    />
-                )
-            } {label}%
-        </div>
+        <span className={`stats-difference ${colorLabel}`}>
+            <i
+                className="material-icons font-weight-bold mr-1"
+                style={{fontSize: '15px'}}
+            >
+                {icon}
+            </i>
+            {label}%
+        </span>
     )
 }
 

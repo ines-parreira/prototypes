@@ -1,7 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
-import TableStat from '../TableStat'
+import TableStat from '../TableStat/TableStat'
 import {stats as statsConfig, TICKETS_PER_TAG} from '../../../../../../config/stats'
 
 const barStat = fromJS({
@@ -27,7 +27,11 @@ describe('TableStat', () => {
     it('should render a table chart', () => {
         const config = statsConfig.find((config, key) => key === TICKETS_PER_TAG)
         const component = shallow(
-            <TableStat config={config} {...barStat.toObject()}/>
+            <TableStat
+                context={{tagColors: null}}
+                config={config}
+                {...barStat.toObject()}
+            />
         )
         expect(component).toMatchSnapshot()
     })

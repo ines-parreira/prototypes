@@ -1,0 +1,39 @@
+@import '~css/new/colors';
+
+:local {
+    .table {
+        width: 100%;
+
+        thead tr {
+            border-bottom: 1px solid @tableHeadBorder;
+
+            th {
+                border-bottom: none;
+                color: @grey;
+                font-size: 11px;
+                letter-spacing: .6px;
+                text-transform: uppercase;
+            }
+        }
+
+        tbody tr {
+            border-bottom: 1px solid @tableRowBorder;
+
+            &:hover {
+                border-bottom: 1px solid @tableRowBorderHover;
+                background: @tableRowBgHover;
+            }
+
+            td:first-child {
+                font-weight: 500;
+            }
+        }
+
+        .cell-wrapper {
+            min-height: 30px;
+            display: flex;
+            align-items: center;
+        }
+
+    }
+}

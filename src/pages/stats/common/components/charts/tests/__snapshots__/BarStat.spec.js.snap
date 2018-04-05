@@ -1,83 +1,109 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`BarStat should render a bar chart 1`] = `
-<Bar
-  data={
-    Object {
-      "datasets": Array [
-        Object {
-          "backgroundColor": "#ff9b53",
-          "data": Array [
-            23,
-            4,
-            445,
-            56,
-          ],
-          "label": "Ticket created",
-        },
-        Object {
-          "backgroundColor": "#06cd96",
-          "data": Array [
-            65,
-            45,
-            87,
-            9,
-          ],
-          "label": "Ticket closed",
-        },
-      ],
-      "labels": Array [
-        123434533,
-        123435636,
-        123456568,
-        123876542,
-      ],
-    }
-  }
-  height={400}
-  options={
-    Object {
-      "scales": Object {
-        "xAxes": Array [
+<div>
+  <div
+    className="mb-4"
+  >
+    <Legend
+      labels={
+        Array [
           Object {
-            "gridLines": Object {
-              "display": false,
-            },
-            "scaleLabel": Object {
-              "display": true,
-              "fontColor": "rgba(0, 0, 0, 0.4)",
-              "labelString": "created",
-            },
-            "stacked": false,
-            "ticks": Object {
-              "callback": [Function],
-              "fontColor": "rgba(0, 0, 0, 0.4)",
-            },
+            "backgroundColor": "#8892f2",
+            "name": "Ticket created",
           },
-        ],
-        "yAxes": Array [
           Object {
-            "gridLines": Object {
-              "borderDash": Array [
-                3,
-                6,
+            "backgroundColor": "#a5e5ab",
+            "name": "Ticket closed",
+          },
+        ]
+      }
+    />
+  </div>
+  <div>
+    <Bar
+      data={
+        Object {
+          "datasets": Array [
+            Object {
+              "backgroundColor": "#8892f2",
+              "data": Array [
+                23,
+                4,
+                445,
+                56,
               ],
+              "label": "Ticket created",
             },
-            "scaleLabel": Object {
-              "display": true,
-              "fontColor": "rgba(0, 0, 0, 0.4)",
-              "labelString": "closed",
+            Object {
+              "backgroundColor": "#a5e5ab",
+              "data": Array [
+                65,
+                45,
+                87,
+                9,
+              ],
+              "label": "Ticket closed",
             },
-            "ticks": Object {
-              "callback": [Function],
-              "fontColor": "rgba(0, 0, 0, 0.5)",
-              "min": 0,
-              "suggestedMax": 1,
-            },
+          ],
+          "labels": Array [
+            123434533,
+            123435636,
+            123456568,
+            123876542,
+          ],
+        }
+      }
+      height={360}
+      options={
+        Object {
+          "scales": Object {
+            "xAxes": Array [
+              Object {
+                "gridLines": Object {
+                  "color": "#dfe3f1",
+                  "display": false,
+                  "drawBorder": false,
+                },
+                "scaleLabel": Object {
+                  "display": true,
+                  "fontColor": "#b2bddd",
+                  "labelString": "created",
+                },
+                "stacked": false,
+                "ticks": Object {
+                  "callback": [Function],
+                  "fontColor": "#b2bddd",
+                },
+              },
+            ],
+            "yAxes": Array [
+              Object {
+                "gridLines": Object {
+                  "borderDash": Array [
+                    2,
+                    4,
+                  ],
+                  "color": "#dfe3f1",
+                  "drawBorder": false,
+                },
+                "scaleLabel": Object {
+                  "display": true,
+                  "fontColor": "#b2bddd",
+                  "labelString": "closed",
+                },
+                "ticks": Object {
+                  "callback": [Function],
+                  "fontColor": "#b2bddd",
+                  "min": 0,
+                  "suggestedMax": 1,
+                },
+              },
+            ],
           },
-        ],
-      },
-    }
-  }
-/>
+        }
+      }
+    />
+  </div>
+</div>
 `;
