@@ -46,23 +46,19 @@ describe('reducers', () => {
                                 }, {
                                     type: 'Literal',
                                     value: '2',
-                                    raw: '\'{current_user.id}\''
+                                    raw: '\'2\''
                                 }]
                             }
                         }]
                     }
                 }
             })
-            const expectedState = state.updateIn(
-                ['active', 'filters'], () => 'eq(ticket.assignee_user.id, \'3\')'
-            ).updateIn(
-                ['active', 'filters_ast', 'body', 0, 'expression', 'arguments', 1, 'value'], '', () => '3'
-            ).updateIn(['active', 'dirty'], () => true)
+
             expect(reducers(state, {
                 type: types.UPDATE_VIEW_FIELD_FILTER,
                 index: 0,
                 value: '3'
-            })).toEqual(expectedState)
+            })).toMatchSnapshot()
         })
 
         it('should update field operator of active view', () => {
@@ -103,23 +99,19 @@ describe('reducers', () => {
                                 }, {
                                     type: 'Literal',
                                     value: '2',
-                                    raw: '\'{current_user.id}\''
+                                    raw: '\'2\''
                                 }]
                             }
                         }]
                     }
                 }
             })
-            const expectedState = state.updateIn(
-                ['active', 'filters'], () => 'neq(ticket.assignee_user.id, \'2\')'
-            ).updateIn(
-                ['active', 'filters_ast', 'body', 0, 'expression', 'callee', 'name'], () => 'neq'
-            ).updateIn(['active', 'dirty'], true, () => true)
+
             expect(reducers(state, {
                 type: types.UPDATE_VIEW_FIELD_FILTER_OPERATOR,
                 index: 0,
                 operator: 'neq'
-            })).toEqual(expectedState)
+            })).toMatchSnapshot()
         })
 
         it('should create a view', () => {

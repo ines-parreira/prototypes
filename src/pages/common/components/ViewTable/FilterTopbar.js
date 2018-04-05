@@ -29,7 +29,6 @@ import * as usersSelectors from '../../../../state/users/selectors'
 import * as schemasSelectors from '../../../../state/schemas/selectors'
 
 import * as viewsConfig from '../../../../config/views'
-import {EMPTY_OPERATORS} from '../../../../config'
 
 import css from './FilterTopbar.less'
 
@@ -121,10 +120,6 @@ class FilterTopbar extends React.Component {
         const filter = {
             left,
             operator
-        }
-
-        if (!Object.keys(EMPTY_OPERATORS).includes(operator)) {
-            filter.right = '\'\''
         }
 
         this.props.addFieldFilter(field.toJS(), filter)

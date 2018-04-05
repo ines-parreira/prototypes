@@ -21,8 +21,9 @@ import {convertToHTML, humanizeString} from '../../../../utils'
 import TagsSelect from './widget/TagsSelect'
 import RichField from '../../forms/RichField'
 import MultiSelectField from '../../forms/MultiSelectField'
-import {collectionOperators, deprecatedOperators} from '../../../../config/rules'
+import {collectionOperators, deprecatedOperators, timedeltaOperators} from '../../../../config/rules'
 import {removeSuffix} from '../../../../utils/string'
+import TimedeltaPicker from '../../forms/TimedeltaPicker'
 
 export default class Widget extends React.Component {
     static propTypes = {
@@ -168,6 +169,17 @@ export default class Widget extends React.Component {
         )
     }
 
+    _timedeltaSelect = (value) => {
+        return (
+            <div className="widget d-inline-block">
+                <TimedeltaPicker
+                    value={value}
+                    onChange={this._handleChange}
+                />
+            </div>
+        )
+    }
+
     _resolveLeft(left, schemas) {
         // we need to figure out if the path contains '$ref' objects, then resolve them and update the path
         const path = []
@@ -287,6 +299,13 @@ export default class Widget extends React.Component {
             }
         }
 
+        const operatorName = rule.getIn(parent.slice(0, -3).concat(['callee', 'name']).insert(0, 'code_ast'))
+        const isOperatorRelative = timedeltaOperators.includes(operatorName)
+
+        if (widget.type === 'datetime-select' && isOperatorRelative) {
+            widget.type = 'timedelta-select'
+        }
+
         const widgetType = this.props.type || widget.type
 
         switch (widgetType) {
@@ -331,6 +350,8 @@ export default class Widget extends React.Component {
                 return this._richField(value)
             case 'datetime-select':
                 return this._datetimeSelect(value)
+            case 'timedelta-select':
+                return this._timedeltaSelect(value)
             case 'input':
             default:
                 return this._input(value)

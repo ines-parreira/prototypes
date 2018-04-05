@@ -10,8 +10,11 @@ import * as viewsActions from '../../../../../state/views/actions'
 import {getMessagingIntegrations} from '../../../../../state/integrations/selectors'
 import * as viewsSelectors from '../../../../../state/views/selectors'
 
+import {timedeltaOperators} from '../../../../../config/rules'
+
 import FilterDropdown from '../FilterDropdown'
 import DatetimePicker from '../../../forms/DatetimePicker'
+import TimedeltaPicker from '../../../forms/TimedeltaPicker'
 
 @connect((state) => {
     return {
@@ -23,6 +26,7 @@ import DatetimePicker from '../../../forms/DatetimePicker'
 })
 export default class Right extends React.Component {
     static propTypes = {
+        operator: PropTypes.object,
         areFiltersValid: PropTypes.bool.isRequired,
         config: ImmutablePropTypes.map.isRequired,
         field: ImmutablePropTypes.map,
@@ -82,7 +86,7 @@ export default class Right extends React.Component {
     }
 
     render() {
-        const {node, config, field, updateFieldFilter, updateFieldFilterOperator, index, empty} = this.props
+        const {operator, node, config, field, updateFieldFilter, updateFieldFilterOperator, index, empty} = this.props
 
         if (empty) {
             return <span />
@@ -121,6 +125,15 @@ export default class Right extends React.Component {
         } else if (field.get('name') === 'language') { // show the display name
             displayedValue = getLanguageDisplayName(displayedValue)
         } else if ((field.get('path') || '').endsWith('_datetime')) {
+            if (timedeltaOperators.includes(operator.name)) {
+                return (
+                    <TimedeltaPicker
+                        value={displayedValue}
+                        onChange={(value) => updateFieldFilter(index, value)}
+                    />
+                )
+            }
+
             return (
                 <DatetimePicker
                     datetime={displayedValue}

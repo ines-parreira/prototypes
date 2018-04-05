@@ -19,6 +19,14 @@ describe('DatetimePicker component', () => {
         expect(component).toMatchSnapshot()
     })
 
+    it('should ignore invalid passed data', () => {
+        const component = shallow(
+            <DatetimePicker datetime="7d"/>
+        )
+
+        expect(component).toMatchSnapshot()
+    })
+
     it('should extract the data from the picker correctly', () => {
         const datetime = '2012-03-21T08:32:12.045Z'
         const spy = jest.fn()

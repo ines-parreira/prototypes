@@ -7,12 +7,13 @@ import _isString from 'lodash/isString'
 import _isInteger from 'lodash/isInteger'
 
 import {OBJECT_DEFINITIONS} from './constants'
-import {getAST} from '../../utils'
-import {collectionOperators} from '../../config/rules'
+import {getAST, getFirstExpressionOfAST} from '../../utils'
+import {collectionOperators, timedeltaOperators} from '../../config/rules'
 
 import type {Map, List} from 'immutable'
 import type {schemasType} from '../../types'
-import {EMPTY_OPERATORS} from '../../config'
+import {EMPTY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
+import {isTimedelta} from '../../utils/ast'
 type argPathType = Array<?string>
 
 /**
@@ -283,24 +284,25 @@ function resolveSecondArg(callExpression: Map<*,*>, firstArgSchema: schemasType,
     }
 
     const isCollectionCallee = collectionOperators.includes(callee)
+    const isTimedeltaCallee = timedeltaOperators.includes(callee)
     const args = callExpression.getIn(['arguments', 1]) || fromJS({})
-    let cur_default = 'null'
-    let cur_value = undefined
+    let curDefault = 'null'
+    let curValue = undefined
 
     // define the current default and value
     switch (args.get('type')) {
         case 'ArrayExpression':
-            cur_default = '[]'
-            cur_value = args.get('elements').map(elem => elem.get('value')).toJS()
+            curDefault = '[]'
+            curValue = args.get('elements').map(elem => elem.get('value')).toJS()
             break
         case 'Literal':
-            cur_default = '\'\''
-            cur_value = args.get('value')
+            curDefault = '\'\''
+            curValue = args.get('value')
             break
         default:
     }
 
-    const useCurValue = !reset && !_isUndefined(cur_value) && cur_value !== ''
+    const useCurValue = !reset && !_isUndefined(curValue) && curValue !== ''
 
     if (isCollectionCallee) {
         // property has changed, so we have to reset the second argument
@@ -309,13 +311,15 @@ function resolveSecondArg(callExpression: Map<*,*>, firstArgSchema: schemasType,
         }
 
         // current value is an array so we just create the raw value
-        if (_isArray(cur_value)) {
+        if (_isArray(curValue)) {
             return `[${args.get('elements').map(elem => elem.get('raw')).toJS()}]`
         }
 
         // argument is not an array but new callee needs one
         // so we transform the current value to an array
         return `[${args.get('raw')}]`
+    } else if (isTimedeltaCallee && !isTimedelta(curValue)) {
+        return `'${TIMEDELTA_OPERATOR_DEFAULT_VALUE}'`
     }
 
     if (firstArgSchema) {
@@ -328,7 +332,7 @@ function resolveSecondArg(callExpression: Map<*,*>, firstArgSchema: schemasType,
                     if (!reset) {
                         for (const lit of possibleLiterals.slice(1)) {
                             // just leave the same value as before
-                            if (lit === cur_value) {
+                            if (lit === curValue) {
                                 return `'${lit}'`
                             }
                         }
@@ -337,10 +341,10 @@ function resolveSecondArg(callExpression: Map<*,*>, firstArgSchema: schemasType,
                 }
 
                 // $FlowFixMe
-                return useCurValue && _isString(cur_value) ? `'${cur_value}'` : '\'\''
+                return useCurValue && _isString(curValue) ? `'${curValue}'` : '\'\''
 
             case 'integer':
-                return useCurValue && _isInteger(cur_value) ? args.get('raw') : cur_default
+                return useCurValue && _isInteger(curValue) ? args.get('raw') : curDefault
 
             case 'boolean':
                 return 'true'
@@ -348,7 +352,7 @@ function resolveSecondArg(callExpression: Map<*,*>, firstArgSchema: schemasType,
         }
     }
 
-    return cur_default
+    return curDefault
 }
 
 /**
@@ -433,7 +437,7 @@ export function updateCallExpression(state: Map<*,*>, path: List<*>, schemas: sc
     }
     rawCallExpression += ')'
     // getAST will give us the whole Program, but we're only interested in the first CallExpression
-    const newCallExpression = fromJS(getAST(rawCallExpression)).getIn(['body', 0, 'expression'])
+    const newCallExpression = getFirstExpressionOfAST(getAST(rawCallExpression))
     return state.setIn(callExpressionPath, newCallExpression)
 }
 

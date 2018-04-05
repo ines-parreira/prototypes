@@ -1,0 +1,249 @@
+{
+  "loc": {
+    "end": {
+      "line": 3,
+      "column": 1
+    },
+    "start": {
+      "line": 1,
+      "column": 0
+    }
+  },
+  "body": [
+    {
+      "loc": {
+        "end": {
+          "line": 3,
+          "column": 1
+        },
+        "start": {
+          "line": 1,
+          "column": 0
+        }
+      },
+      "test": {
+        "loc": {
+          "end": {
+            "line": 1,
+            "column": 55
+          },
+          "start": {
+            "line": 1,
+            "column": 4
+          }
+        },
+        "type": "CallExpression",
+        "callee": {
+          "loc": {
+            "end": {
+              "line": 1,
+              "column": 24
+            },
+            "start": {
+              "line": 1,
+              "column": 4
+            }
+          },
+          "name": "gteTimedelta",
+          "type": "Identifier"
+        },
+        "arguments": [
+          {
+            "loc": {
+              "end": {
+                "line": 1,
+                "column": 48
+              },
+              "start": {
+                "line": 1,
+                "column": 25
+              }
+            },
+            "type": "MemberExpression",
+            "object": {
+              "loc": {
+                "end": {
+                  "line": 1,
+                  "column": 31
+                },
+                "start": {
+                  "line": 1,
+                  "column": 25
+                }
+              },
+              "name": "ticket",
+              "type": "Identifier"
+            },
+            "computed": false,
+            "property": {
+              "loc": {
+                "end": {
+                  "line": 1,
+                  "column": 48
+                },
+                "start": {
+                  "line": 1,
+                  "column": 32
+                }
+              },
+              "name": "created_datetime",
+              "type": "Identifier"
+            }
+          },
+          {
+            "loc": {
+              "end": {
+                "line": 1,
+                "column": 54
+              },
+              "start": {
+                "line": 1,
+                "column": 50
+              }
+            },
+            "raw": "'5d'",
+            "type": "Literal",
+            "value": "5d"
+          }
+        ]
+      },
+      "type": "IfStatement",
+      "alternate": null,
+      "consequent": {
+        "loc": {
+          "end": {
+            "line": 3,
+            "column": 1
+          },
+          "start": {
+            "line": 1,
+            "column": 57
+          }
+        },
+        "body": [
+          {
+            "loc": {
+              "end": {
+                "line": 2,
+                "column": 38
+              },
+              "start": {
+                "line": 2,
+                "column": 4
+              }
+            },
+            "type": "ExpressionStatement",
+            "expression": {
+              "loc": {
+                "end": {
+                  "line": 2,
+                  "column": 38
+                },
+                "start": {
+                  "line": 2,
+                  "column": 4
+                }
+              },
+              "type": "CallExpression",
+              "callee": {
+                "loc": {
+                  "end": {
+                    "line": 2,
+                    "column": 10
+                  },
+                  "start": {
+                    "line": 2,
+                    "column": 4
+                  }
+                },
+                "name": "Action",
+                "type": "Identifier"
+              },
+              "arguments": [
+                {
+                  "loc": {
+                    "end": {
+                      "line": 2,
+                      "column": 20
+                    },
+                    "start": {
+                      "line": 2,
+                      "column": 11
+                    }
+                  },
+                  "raw": "'addTags'",
+                  "type": "Literal",
+                  "value": "addTags"
+                },
+                {
+                  "loc": {
+                    "end": {
+                      "line": 2,
+                      "column": 37
+                    },
+                    "start": {
+                      "line": 2,
+                      "column": 22
+                    }
+                  },
+                  "type": "ObjectExpression",
+                  "properties": [
+                    {
+                      "key": {
+                        "loc": {
+                          "end": {
+                            "line": 2,
+                            "column": 28
+                          },
+                          "start": {
+                            "line": 2,
+                            "column": 24
+                          }
+                        },
+                        "name": "tags",
+                        "type": "Identifier"
+                      },
+                      "loc": {
+                        "end": {
+                          "line": 2,
+                          "column": 35
+                        },
+                        "start": {
+                          "line": 2,
+                          "column": 24
+                        }
+                      },
+                      "kind": "init",
+                      "type": "Property",
+                      "value": {
+                        "loc": {
+                          "end": {
+                            "line": 2,
+                            "column": 35
+                          },
+                          "start": {
+                            "line": 2,
+                            "column": 30
+                          }
+                        },
+                        "raw": "'foo'",
+                        "type": "Literal",
+                        "value": "foo"
+                      },
+                      "method": false,
+                      "computed": false,
+                      "shorthand": false
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "type": "BlockStatement"
+      }
+    }
+  ],
+  "type": "Program",
+  "sourceType": "script"
+}

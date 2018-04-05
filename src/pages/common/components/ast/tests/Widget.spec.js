@@ -5,10 +5,12 @@ import {fromJS} from 'immutable'
 import _schemas from '../../../../../fixtures/openapi'
 import _astCodeEq from './fixtures/astCodeEq'
 import _astCodeContains from './fixtures/astCodeContains'
+import _astCodeGteTimedelta from './fixtures/astCodeGteTimedelta'
 
 const schemas = fromJS(_schemas)
 const astCodeEq = fromJS(_astCodeEq)
 const astCodeContains = fromJS(_astCodeContains)
+const astCodeGteTimedelta = fromJS(_astCodeGteTimedelta)
 
 describe('ast', () => {
     describe('Widget', () => {
@@ -60,6 +62,26 @@ describe('ast', () => {
                 const value = '2018-03-28T21:59:32.580209'
                 const rule = fromJS({
                     code_ast: astCodeEq
+                })
+                expect(
+                    shallow(
+                        <Widget
+                            actions={{}}
+                            value={value}
+                            leftsiblings={leftsiblings}
+                            parent={parent}
+                            rule={rule}
+                            schemas={schemas}
+                        />
+                    )
+                ).toMatchSnapshot()
+            })
+
+            it('TimedeltaSelect field', () => {
+                let leftsiblings = fromJS(['definitions', 'Ticket', 'properties', 'created_datetime'])
+                const value = '1d'
+                const rule = fromJS({
+                    code_ast: astCodeGteTimedelta
                 })
                 expect(
                     shallow(

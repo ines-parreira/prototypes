@@ -126,3 +126,14 @@ exports[`ast Widget should render TagsSelect should render multi TagsSelect fiel
   value="hello, world, !"
 />
 `;
+
+exports[`ast Widget should render TimedeltaSelect field 1`] = `
+<div
+  className="widget d-inline-block"
+>
+  <TimedeltaPicker
+    onChange={[Function]}
+    value="1d"
+  />
+</div>
+`;

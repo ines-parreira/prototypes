@@ -1,0 +1,181 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`utils updateFilterOperator should conserve the right part if we are switching between operators of the same kind 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "arguments": Array [
+          Object {
+            "raw": "'ticket.id'",
+            "type": "Identifier",
+            "value": "ticket.id",
+          },
+          Object {
+            "loc": SourceLocation {
+              "end": Object {
+                "column": 1,
+                "line": 1,
+              },
+              "start": Position {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "raw": "1",
+            "type": "Literal",
+            "value": 1,
+          },
+        ],
+        "callee": Object {
+          "name": "lte",
+        },
+        "type": "CallExpression",
+      },
+      "type": "ExpressionStatement",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`utils updateFilterOperator should delete the right part and add another one with the default value instead if we are switching from an absolute to a relative datetime operator 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "arguments": Array [
+          Object {
+            "raw": "'ticket.created_datetime'",
+            "type": "Identifier",
+            "value": "ticket.created_datetime",
+          },
+          Object {
+            "loc": SourceLocation {
+              "end": Object {
+                "column": 4,
+                "line": 1,
+              },
+              "start": Position {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "raw": "'1d'",
+            "type": "Literal",
+            "value": "1d",
+          },
+        ],
+        "callee": Object {
+          "name": "gteTimedelta",
+        },
+        "type": "CallExpression",
+      },
+      "type": "ExpressionStatement",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`utils updateFilterOperator should delete the right part and add another one with the default value instead if we are switching from an absolute to a relative datetime operator 2`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "arguments": Array [
+          Object {
+            "raw": "'ticket.created_datetime'",
+            "type": "Identifier",
+            "value": "ticket.created_datetime",
+          },
+          Object {
+            "loc": SourceLocation {
+              "end": Object {
+                "column": 2,
+                "line": 1,
+              },
+              "start": Position {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "raw": "''",
+            "type": "Literal",
+            "value": "",
+          },
+        ],
+        "callee": Object {
+          "name": "gte",
+        },
+        "type": "CallExpression",
+      },
+      "type": "ExpressionStatement",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`utils updateFilterOperator should re-add a right part if there's none and the operator is not an empty operator 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "arguments": Array [
+          Object {
+            "raw": "'ticket.created_datetime'",
+            "type": "Identifier",
+            "value": "ticket.created_datetime",
+          },
+          Object {
+            "loc": SourceLocation {
+              "end": Object {
+                "column": 2,
+                "line": 1,
+              },
+              "start": Position {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "raw": "''",
+            "type": "Literal",
+            "value": "",
+          },
+        ],
+        "callee": Object {
+          "name": "gte",
+        },
+        "type": "CallExpression",
+      },
+      "type": "ExpressionStatement",
+    },
+  ],
+  "type": "Program",
+}
+`;
+
+exports[`utils updateFilterOperator should remove the right part of the expression if the operator is an empty operator 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "expression": Object {
+        "arguments": Array [
+          Object {
+            "raw": "'ticket.created_datetime'",
+            "type": "Identifier",
+            "value": "ticket.created_datetime",
+          },
+        ],
+        "callee": Object {
+          "name": "isEmpty",
+        },
+        "type": "CallExpression",
+      },
+      "type": "ExpressionStatement",
+    },
+  ],
+  "type": "Program",
+}
+`;

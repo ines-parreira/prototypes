@@ -62,7 +62,7 @@ export default class CallExpression extends React.Component {
         let operators = property && property.meta ? property.meta.operators : BASIC_OPERATORS
 
         const fields = config.get('fields', fromJS([]))
-        const field = fields.find(field => objectPath === `${config.get('singular')}.${fieldPath(field)}`)
+        const field = fields.find((field) => objectPath === `${config.get('singular')}.${fieldPath(field)}`)
 
         return (
             <div className="CallExpression">
@@ -77,6 +77,7 @@ export default class CallExpression extends React.Component {
                     onChange={updateOperator}
                 />
                 <Right
+                    operator={operator}
                     node={right}
                     objectPath={objectPath}
                     agents={agents}

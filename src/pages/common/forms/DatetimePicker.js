@@ -4,6 +4,7 @@ import moment from 'moment'
 import DateRangePicker from 'react-bootstrap-daterangepicker'
 
 import {Input} from 'reactstrap'
+import {stringToDatetime} from '../../../utils/date'
 
 type Props = {
     datetime: string,
@@ -18,11 +19,11 @@ type State = {
 export default class DatetimePicker extends React.Component<Props,State> {
     constructor(props: Props) {
         super(props)
-        this.state = {datetime: props.datetime ? moment(props.datetime) : null}
+        this.state = {datetime: stringToDatetime(props.datetime)}
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        this.setState({datetime: nextProps.datetime ? moment(nextProps.datetime) : null})
+        this.setState({datetime: stringToDatetime(nextProps.datetime)})
     }
 
     _handleEvent = (event: Object, picker: Object) => {

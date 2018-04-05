@@ -1,3 +1,4 @@
+// @flow
 import axios from 'axios'
 import _get from 'lodash/get'
 import _find from 'lodash/find'
@@ -52,6 +53,11 @@ export const EMPTY_OPERATORS = {
         label: 'is not empty'
     }
 }
+
+export const TIMEDELTA_OPERATOR_DEFAULT_UNIT = 'd'
+export const TIMEDELTA_OPERATOR_DEFAULT_QUANTITY = 1
+export const TIMEDELTA_OPERATOR_DEFAULT_VALUE =
+    `${TIMEDELTA_OPERATOR_DEFAULT_QUANTITY}${TIMEDELTA_OPERATOR_DEFAULT_UNIT}`
 
 /**
  * Ticket-related
@@ -435,13 +441,13 @@ export const ACTION_TEMPLATES = [
         },
         validators: [
             {
-                validate: (requester) => {
+                validate: (requester: Object) => {
                     return _find(requester.integrations, {'__integration_type__': 'shopify'})
                 },
                 error: 'This user has no Shopify data.'
             },
             {
-                validate: (requester) => {
+                validate: (requester: Object) => {
                     const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
 
                     return _get(shopifyIntegration, ['orders'])
@@ -449,7 +455,7 @@ export const ACTION_TEMPLATES = [
                 error: 'This user has no order to cancel.'
             },
             {
-                validate: (requester) => {
+                validate: (requester: Object) => {
                     const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
 
                     return _get(shopifyIntegration, ['orders', 0, 'financial_status']) !== 'fulfilled'
@@ -501,13 +507,13 @@ export const ACTION_TEMPLATES = [
         arguments: {},
         validators: [
             {
-                validate: (requester) => {
+                validate: (requester: Object) => {
                     return _find(requester.integrations, {'__integration_type__': 'shopify'})
                 },
                 error: 'This user has no Shopify data.'
             },
             {
-                validate: (requester) => {
+                validate: (requester: Object) => {
                     const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
 
                     return _get(shopifyIntegration, ['orders'])
@@ -576,13 +582,13 @@ export const ACTION_TEMPLATES = [
         },
         validators: [
             {
-                validate: (requester) => {
+                validate: (requester: Object) => {
                     return _find(requester.integrations, {'__integration_type__': 'shopify'})
                 },
                 error: 'This user has no Shopify data.'
             },
             {
-                validate: (requester) => {
+                validate: (requester: Object) => {
                     const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
 
                     return _get(shopifyIntegration, ['orders'])
@@ -590,7 +596,7 @@ export const ACTION_TEMPLATES = [
                 error: 'This user has no order to edit.'
             },
             {
-                validate: (requester) => {
+                validate: (requester: Object) => {
                     const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
 
                     return _get(shopifyIntegration, ['orders', 0, 'financial_status']) !== 'fulfilled'
@@ -610,13 +616,13 @@ export const ACTION_TEMPLATES = [
         ],
         validators: [
             {
-                validate: (requester) => {
+                validate: (requester: Object) => {
                     return _find(requester.integrations, {'__integration_type__': 'shopify'})
                 },
                 error: 'This user has no Shopify data.'
             },
             {
-                validate: (requester) => {
+                validate: (requester: Object) => {
                     const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
 
                     return _get(shopifyIntegration, ['orders'])
@@ -624,7 +630,7 @@ export const ACTION_TEMPLATES = [
                 error: 'This user has no order to refund.'
             },
             {
-                validate: (requester) => {
+                validate: (requester: Object) => {
                     const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
 
                     return !['refunded', 'accepted'].includes(_get(shopifyIntegration, ['orders', 0, 'financial_status']))
@@ -655,13 +661,13 @@ export const ACTION_TEMPLATES = [
         ],
         validators: [
             {
-                validate: (requester) => {
+                validate: (requester: Object) => {
                     return _find(requester.integrations, {'__integration_type__': 'shopify'})
                 },
                 error: 'This user has no Shopify data.'
             },
             {
-                validate: (requester) => {
+                validate: (requester: Object) => {
                     const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
 
                     return _get(shopifyIntegration, ['orders'])
@@ -669,7 +675,7 @@ export const ACTION_TEMPLATES = [
                 error: 'This user has no order to refund.'
             },
             {
-                validate: (requester) => {
+                validate: (requester: Object) => {
                     const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
 
                     return !['refunded', 'accepted'].includes(_get(shopifyIntegration, ['orders', 0, 'financial_status']))
@@ -701,13 +707,13 @@ export const ACTION_TEMPLATES = [
         ],
         validators: [
             {
-                validate: (requester) => {
+                validate: (requester: Object) => {
                     return _find(requester.integrations, {'__integration_type__': 'shopify'})
                 },
                 error: 'This user has no Shopify data.'
             },
             {
-                validate: (requester) => {
+                validate: (requester: Object) => {
                     const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
 
                     return _get(shopifyIntegration, ['orders'])
@@ -715,7 +721,7 @@ export const ACTION_TEMPLATES = [
                 error: 'This user has no order to refund.'
             },
             {
-                validate: (requester) => {
+                validate: (requester: Object) => {
                     const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
 
                     return !['refunded', 'accepted'].includes(_get(shopifyIntegration, ['orders', 0, 'financial_status']))
@@ -741,13 +747,13 @@ export const ACTION_TEMPLATES = [
         },
         validators: [
             {
-                validate: (requester) => {
+                validate: (requester: Object) => {
                     return _find(requester.integrations, {'__integration_type__': 'shopify'})
                 },
                 error: 'This user has no Shopify data.'
             },
             {
-                validate: (requester) => {
+                validate: (requester: Object) => {
                     const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
 
                     return _get(shopifyIntegration, ['orders'])
@@ -764,13 +770,13 @@ export const ACTION_TEMPLATES = [
         arguments: {},
         validators: [
             {
-                validate: (requester) => {
+                validate: (requester: Object) => {
                     return _find(requester.integrations, {'__integration_type__': 'recharge'})
                 },
                 error: 'This user has no Recharge data.'
             },
             {
-                validate: (requester) => {
+                validate: (requester: Object) => {
                     const rechargeIntegration = _find(requester.integrations, {'__integration_type__': 'recharge'})
 
                     return _get(rechargeIntegration, ['subscriptions'])
@@ -778,7 +784,7 @@ export const ACTION_TEMPLATES = [
                 error: 'This user has no subscription to cancel.'
             },
             {
-                validate: (requester) => {
+                validate: (requester: Object) => {
                     const rechargeIntegration = _find(requester.integrations, {'__integration_type__': 'recharge'})
 
                     return _get(rechargeIntegration, ['subscriptions', 0, 'cancelled_at']) === null
@@ -789,7 +795,7 @@ export const ACTION_TEMPLATES = [
     }
 ]
 
-export const DEFAULT_ACTIONS = ACTION_TEMPLATES.map(template => template.name)
+export const DEFAULT_ACTIONS = ACTION_TEMPLATES.map((template) => template.name)
 
 /*
  * Default currentUser preferences

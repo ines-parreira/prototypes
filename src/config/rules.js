@@ -1,3 +1,4 @@
+// @flow
 import {fromJS} from 'immutable'
 
 export const events = fromJS([{
@@ -28,4 +29,15 @@ export const collectionOperators = [
 export const deprecatedOperators = [
     'contains',
     'notContains'
+]
+
+export const timedeltaOperators = [
+    'gteTimedelta',
+    'lteTimedelta'
+]
+
+export const datetimeOperators = [
+    'gte',
+    'lte',
+    ...timedeltaOperators
 ]

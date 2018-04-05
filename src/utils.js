@@ -56,6 +56,8 @@ type propertyType = {
     items: {$ref: {}}
 }
 
+type datetimeType = Date | number | string
+
 
 // note that 2 letters tlds are automatically interpreted
 const tlds = 'com edu gov ru org net de jp uk br it pl in fr au ir nl info cn es cz kr ca ua eu co gr za ro biz ch se io'.split(' ')
@@ -148,7 +150,7 @@ export function isGorgiasSupportAddress(address: string): boolean {
     return /^support@[a-zA-Z0-9-]+.gorgias.io$/.test(address)
 }
 
-export function formatDatetime(datetime: Date | number | string, timezone: ?string, format: string = 'calendar'): Date | number | string {
+export function formatDatetime(datetime: datetimeType, timezone: ?string, format: string = 'calendar'): datetimeType {
     try {
         let momentDate = moment(datetime)
 
@@ -180,6 +182,10 @@ export function getAST(code: string): esprimaParse {
         console.error('Not a string:', code)
     }
     return esprima.parse(code, {loc: true})
+}
+
+export function getFirstExpressionOfAST(ast: esprimaParse): Map<*,*> {
+    return fromJS(ast).getIn(['body', 0, 'expression'])
 }
 
 export function getCode(ast: {type: string}): string {

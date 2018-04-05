@@ -347,3 +347,127 @@ Immutable.Map {
   },
 }
 `;
+
+exports[`reducers views should update field operator of active view 1`] = `
+Immutable.Map {
+  active: Immutable.Map {
+    dirty: true,
+    filters: "neq(ticket.assignee_user.id, '2')",
+    filters_ast: Immutable.Map {
+      type: "Program",
+      sourceType: "script",
+      body: Immutable.List [
+        Immutable.Map {
+          type: "ExpressionStatement",
+          expression: Immutable.Map {
+            type: "CallExpression",
+            callee: Immutable.Map {
+              type: "Identifier",
+              name: "neq",
+            },
+            arguments: Immutable.List [
+              Immutable.Map {
+                type: "MemberExpression",
+                computed: false,
+                property: Immutable.Map {
+                  type: "Identifier",
+                  name: "id",
+                },
+                object: Immutable.Map {
+                  type: "MemberExpression",
+                  computed: false,
+                  object: Immutable.Map {
+                    type: "Identifier",
+                    name: "ticket",
+                  },
+                  property: Immutable.Map {
+                    type: "Identifier",
+                    name: "assignee_user",
+                  },
+                },
+              },
+              Immutable.Map {
+                loc: SourceLocation {
+                  "end": Object {
+                    "column": 3,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 0,
+                    "line": 1,
+                  },
+                },
+                type: "Literal",
+                value: "2",
+                raw: "'2'",
+              },
+            ],
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`reducers views should update field value of active view 1`] = `
+Immutable.Map {
+  active: Immutable.Map {
+    dirty: true,
+    filters: "eq(ticket.assignee_user.id, '3')",
+    filters_ast: Immutable.Map {
+      type: "Program",
+      sourceType: "script",
+      body: Immutable.List [
+        Immutable.Map {
+          type: "ExpressionStatement",
+          expression: Immutable.Map {
+            type: "CallExpression",
+            callee: Immutable.Map {
+              type: "Identifier",
+              name: "eq",
+            },
+            arguments: Immutable.List [
+              Immutable.Map {
+                type: "MemberExpression",
+                computed: false,
+                property: Immutable.Map {
+                  type: "Identifier",
+                  name: "id",
+                },
+                object: Immutable.Map {
+                  type: "MemberExpression",
+                  computed: false,
+                  object: Immutable.Map {
+                    type: "Identifier",
+                    name: "ticket",
+                  },
+                  property: Immutable.Map {
+                    type: "Identifier",
+                    name: "assignee_user",
+                  },
+                },
+              },
+              Immutable.Map {
+                loc: SourceLocation {
+                  "end": Object {
+                    "column": 3,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 0,
+                    "line": 1,
+                  },
+                },
+                type: "Literal",
+                value: "3",
+                raw: "'3'",
+              },
+            ],
+          },
+        },
+      ],
+    },
+  },
+}
+`;

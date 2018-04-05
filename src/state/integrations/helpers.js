@@ -9,7 +9,7 @@ type integrationsType = Array<Map<*,*>>
 /**
  * Compute the number of active integrations for each type
  */
-const getIntegrationsCountPerType = (integrations = []): {} => {
+const getIntegrationsCountPerType = (integrations = []): Object => {
     return integrations
         .reduce((accumulator, item) => {
             const newAccumulator = accumulator
@@ -34,7 +34,7 @@ const getIntegrationsCountPerType = (integrations = []): {} => {
  */
 export const getIntegrationsList = (integrations: integrationsType = []): Map<*,*> => {
     const counts = getIntegrationsCountPerType(integrations)
-    return fromJS(INTEGRATION_TYPE_DESCRIPTIONS.map((typeDescription) => {
+    return fromJS(INTEGRATION_TYPE_DESCRIPTIONS.map((typeDescription : Object) => {
         let count = 0
 
         if (typeDescription.subTypes) {

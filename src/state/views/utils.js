@@ -1,26 +1,72 @@
 // @flow
 import esprima from 'esprima'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import moment from 'moment'
 import _isArray from 'lodash/isArray'
 import _isInteger from 'lodash/isInteger'
 
-import {EMPTY_OPERATORS} from '../../config'
+import {EMPTY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
 
-import type {Map} from 'immutable'
 import type {filterType, viewsStateType} from './types'
 import type {agentsType} from '../agents/types'
-import {isCurrentlyOnView} from '../../utils'
+import {getAST, getFirstExpressionOfAST, isCurrentlyOnView} from '../../utils'
+import {datetimeOperators, timedeltaOperators} from '../../config/rules'
+import {isTimedelta} from '../../utils/ast'
 
 type viewType = Map<*,*>
 type astType = Map<*,*>
 type pathType = Array<string | number>
 type nodeType = Map<*,*>
 
+
+function rawify(data: string | number | null) : string {
+    if (typeof data === 'string') {
+        return `'${data}'`
+    }
+
+    if (typeof data === 'number') {
+        return `${data}`
+    }
+
+    return '\'\''
+}
+
+
+/**
+ * Resolve the right argument of a filter being added or updated.
+ * @param callee: the operator of the filter
+ * @param currentRawValue: the current raw value of the filter, if any
+ * @returns {*}: the `right` value to set in the filter. If null, it means the filter should not have a `right` value
+ */
+function resolveSecondArg(callee: string, currentRawValue: string) : string | null {
+    const isTimedeltaCallee = timedeltaOperators.includes(callee)
+    const isDatetimeCallee = datetimeOperators.includes(callee)
+    const isEmptyCallee = Object.keys(EMPTY_OPERATORS).includes(callee)
+
+    if (isTimedeltaCallee && !isTimedelta(currentRawValue, true)) {
+        return `\'${TIMEDELTA_OPERATOR_DEFAULT_VALUE}\'`
+    } else if (!isTimedeltaCallee && isDatetimeCallee && isTimedelta(currentRawValue, true)) {
+        return '\'\''
+    } else if (isEmptyCallee) {
+        return null
+    }
+
+    return currentRawValue || '\'\''
+}
+
+function buildRawCallExpression(filter: filterType) {
+    if (filter.right === null) {
+        return `${filter.operator}(${filter.left})`
+    }
+
+    return `${filter.operator}(${filter.left}, ${filter.right})`
+}
+
 // traverse filters_ast, find all the call expressions and return a new tree
 export function addFilterAST(view: viewType, filter: filterType): Map<*,*> {
     // generate a new call expression for the new filter as a string
-    const newCallExprCode = `${filter.operator}(${filter.left}, ${filter.right})`
+    filter.right = resolveSecondArg(filter.operator, filter.right)
+    const newCallExprCode = buildRawCallExpression(filter)
     // since we only ever have AND operators just concatenate existing expressions
     const oldCode = view.get('filters') ? `${view.get('filters')} && ` : ''
     const newCode = `${oldCode}${newCallExprCode}`
@@ -66,7 +112,7 @@ function setIn(ast: astType, index: number, path: pathType, value: any): nodeTyp
 function getIn(ast: astType, index: number, path: pathType): any {
     let count = 0
 
-    function walker(node: Map<*,*>) {
+    function walker(node: Map<*,*>) : Map<*,*> | typeof undefined {
         switch (node.get('type')) {
             case 'Program':
                 return walker(node.getIn(['body', 0], fromJS({})))
@@ -104,25 +150,23 @@ function getIn(ast: astType, index: number, path: pathType): any {
 // once replaced, we return the new AST
 export function updateFilterOperator(ast: astType, index: number, operator: string): nodeType {
     let filter = getIn(ast, index, [])
-    filter = filter.setIn(['callee', 'name'], operator)
+    const rightRaw = resolveSecondArg(operator, filter.getIn(['arguments', 1, 'raw']))
 
-    if (Object.keys(EMPTY_OPERATORS).includes(operator)) {
-        // remove the second arguments (value) if the operator is an empty operator
-        filter = filter.update('arguments', args => args.delete(1))
-    } else if (filter.get('arguments').size !== 2) {
-        // add a second argument (value)
-        // if there is one arguments and the operator is NOT an empty operator
-        filter = filter.update('arguments', args => args.push(fromJS({
-            'raw': '\'\'',
-            'value': '',
-            'type': 'Literal'
-        })))
+    filter = filter
+        .setIn(['callee', 'name'], operator)
+        .update('arguments', (args) => args.delete(1))
+
+    if (rightRaw) {
+        const secondArg = getFirstExpressionOfAST(getAST(rightRaw))
+        filter = filter.update('arguments', (args) => args.push(secondArg))
     }
+
     return setIn(ast, index, [], filter)
 }
 
-export function updateFilterValue(ast: astType, index: number, value: any): nodeType {
-    return setIn(ast, index, ['arguments', 1, 'value'], value)
+export function updateFilterValue(ast: astType, index: number, value: string | number | null): nodeType {
+    let raw = rawify(value)
+    return setIn(ast, index, ['arguments', 1], getFirstExpressionOfAST(getAST(raw)))
 }
 
 /**
@@ -146,12 +190,12 @@ export function sortViews(view1: viewType, view2: viewType): number {
 }
 
 export function agentsViewingMessage(agents: agentsType): string {
-    const agentsNames = agents.map(agent => agent.get('name')).join(', ')
+    const agentsNames = agents.map((agent) => agent.get('name')).join(', ')
     return `${agentsNames} ${agents.size > 1 ? 'are' : 'is'} viewing`
 }
 
 export function agentsTypingMessage(agents: agentsType): string {
-    const agentsNames = agents.map(agent => agent.get('name')).join(', ')
+    const agentsNames = agents.map((agent) => agent.get('name')).join(', ')
     return `${agentsNames} ${agents.size > 1 ? 'are' : 'is'} typing`
 }
 
@@ -190,7 +234,7 @@ class RecentViewsStorage {
         const views = {}
         const now = moment.utc().toISOString()
 
-        recentViews.forEach(viewId => {
+        recentViews.forEach((viewId) => {
             if (_isInteger(viewId)) {
                 views[viewId] = {
                     inserted_datetime: now,

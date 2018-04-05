@@ -51,3 +51,29 @@ exports[`DatetimePicker component should display the passed data 1`] = `
   />
 </Component>
 `;
+
+exports[`DatetimePicker component should ignore invalid passed data 1`] = `
+<Component
+  alwaysShowCalendars={true}
+  applyClass="btn-success mr-2"
+  buttonClasses={
+    Array [
+      "btn",
+    ]
+  }
+  cancelClass="btn-secondary"
+  onApply={[Function]}
+  opens="left"
+  showCustomRangeLabel={false}
+  singleDatePicker={true}
+  timePicker={true}
+  timePicker24Hour={true}
+  value={null}
+>
+  <Input
+    placeholder="Choose a date..."
+    type="text"
+    value=""
+  />
+</Component>
+`;

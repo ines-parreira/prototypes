@@ -1,0 +1,173 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TimedeltaPicker component should handle quantity change 1`] = `
+Object {
+  "dropdownOpen": false,
+  "quantity": "5",
+  "unit": "d",
+}
+`;
+
+exports[`TimedeltaPicker component should handle quantity change 2`] = `
+Object {
+  "dropdownOpen": false,
+  "quantity": "10",
+  "unit": "d",
+}
+`;
+
+exports[`TimedeltaPicker component should handle unit change 1`] = `
+Object {
+  "dropdownOpen": false,
+  "quantity": 1,
+  "unit": "w",
+}
+`;
+
+exports[`TimedeltaPicker component should handle unit change 2`] = `
+Object {
+  "dropdownOpen": false,
+  "quantity": 1,
+  "unit": "m",
+}
+`;
+
+exports[`TimedeltaPicker component should ignore incorrect passed data and use default values instead 1`] = `
+<div
+  className="d-flex"
+>
+  <InputGroup
+    tag="div"
+  >
+    <Input
+      min="0"
+      onChange={[Function]}
+      style={
+        Object {
+          "width": "62px",
+        }
+      }
+      type="number"
+      value={1}
+    />
+    <InputGroupButtonDropdown
+      addonType="append"
+      isOpen={false}
+      toggle={[Function]}
+    >
+      <DropdownToggle
+        aria-haspopup={true}
+        caret={true}
+        color="secondary"
+      >
+        <span>
+          day(s)
+        </span>
+      </DropdownToggle>
+      <DropdownMenu
+        flip={true}
+        tag="div"
+      >
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+        >
+          minute(s)
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+        >
+          hour(s)
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+        >
+          day(s)
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+        >
+          week(s)
+        </DropdownItem>
+      </DropdownMenu>
+    </InputGroupButtonDropdown>
+  </InputGroup>
+</div>
+`;
+
+exports[`TimedeltaPicker component should render correct passed data 1`] = `
+<div
+  className="d-flex"
+>
+  <InputGroup
+    tag="div"
+  >
+    <Input
+      min="0"
+      onChange={[Function]}
+      style={
+        Object {
+          "width": "62px",
+        }
+      }
+      type="number"
+      value={2}
+    />
+    <InputGroupButtonDropdown
+      addonType="append"
+      isOpen={false}
+      toggle={[Function]}
+    >
+      <DropdownToggle
+        aria-haspopup={true}
+        caret={true}
+        color="secondary"
+      >
+        <span>
+          week(s)
+        </span>
+      </DropdownToggle>
+      <DropdownMenu
+        flip={true}
+        tag="div"
+      >
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+        >
+          minute(s)
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+        >
+          hour(s)
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+        >
+          day(s)
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+        >
+          week(s)
+        </DropdownItem>
+      </DropdownMenu>
+    </InputGroupButtonDropdown>
+  </InputGroup>
+</div>
+`;
