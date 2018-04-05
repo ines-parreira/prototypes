@@ -19,20 +19,21 @@ import {
 import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
 
-import shortcutManager from '../../../../services/shortcutManager'
+import shortcutManager from '../../../../../services/shortcutManager/index'
 
-import * as viewsActions from '../../../../state/views/actions'
-import * as viewsSelectors from '../../../../state/views/selectors'
-import * as macroActions from '../../../../state/macro/actions'
+import * as viewsActions from '../../../../../state/views/actions'
+import * as viewsSelectors from '../../../../../state/views/selectors'
+import * as macroActions from '../../../../../state/macro/actions'
 
-import {getAgents} from '../../../../state/users/selectors'
+import {getAgents} from '../../../../../state/users/selectors'
 
 import type {List, Map} from 'immutable'
-import type {currentUserType} from '../../../../state/types'
-import type {agentsType} from '../../../../state/agents/types'
-import type {viewType} from '../../../../state/views/types'
-import {MAX_DROPDOWN_USER_AGENT} from '../../../../config'
-import {AgentLabel} from '../../../common/utils/labels'
+import type {currentUserType} from '../../../../../state/types'
+import type {agentsType} from '../../../../../state/agents/types'
+import type {viewType} from '../../../../../state/views/types'
+import {AgentLabel} from '../../../../common/utils/labels'
+
+import css from './TicketListActions.less'
 
 type Props = {
     view: viewType,
@@ -292,7 +293,7 @@ class TicketListActions extends React.Component<Props, State> {
 
         const filteredAgents = agents.filter((agent) => {
             return agent.get('name').toLowerCase().includes(agentsSearch.toLowerCase())
-        }).slice(0, MAX_DROPDOWN_USER_AGENT)
+        })
 
         return (
             <div className="d-inline-flex align-items-center">
@@ -379,26 +380,28 @@ class TicketListActions extends React.Component<Props, State> {
                                     Could not find any agent
                                 </DropdownItem>
                             ) : (
-                                filteredAgents.map((agent) => {
-                                    return (
-                                        <DropdownItem
-                                            key={agent.get('id')}
-                                            type="button"
-                                            onClick={() => {
-                                                this._bulkUpdate('assignee_user', {
-                                                    id: agent.get('id'),
-                                                    name: agent.get('name'),
-                                                })
-                                            }}
-                                        >
-                                            <AgentLabel
-                                                name={agent.get('name')}
-                                                email={agent.get('email')}
-                                                profilePictureUrl={agent.getIn(['meta', 'profile_picture_url'])}
-                                            />
-                                        </DropdownItem>
-                                    )
-                                })
+                                <div className={css['agents-dropdown-list']}>
+                                    {filteredAgents.map((agent) => {
+                                        return (
+                                            <DropdownItem
+                                                key={agent.get('id')}
+                                                type="button"
+                                                onClick={() => {
+                                                    this._bulkUpdate('assignee_user', {
+                                                        id: agent.get('id'),
+                                                        name: agent.get('name'),
+                                                    })
+                                                }}
+                                            >
+                                                <AgentLabel
+                                                    name={agent.get('name')}
+                                                    email={agent.get('email')}
+                                                    profilePictureUrl={agent.getIn(['meta', 'profile_picture_url'])}
+                                                />
+                                            </DropdownItem>
+                                        )
+                                    })}
+                                </div>
                             )
 
                         }

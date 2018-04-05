@@ -6,14 +6,14 @@ import {connect} from 'react-redux'
 import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Input} from 'reactstrap'
 import _isUndefined from 'lodash/isUndefined'
 
-import * as currentUserSelectors from '../../../../../state/currentUser/selectors'
-import * as usersSelectors from '../../../../../state/users/selectors'
+import * as currentUserSelectors from '../../../../../../state/currentUser/selectors'
+import * as usersSelectors from '../../../../../../state/users/selectors'
 
-import shortcutManager from '../../../../../services/shortcutManager'
-import {AgentLabel} from '../../../../common/utils/labels'
+import shortcutManager from '../../../../../../services/shortcutManager/index'
+import {AgentLabel} from '../../../../../common/utils/labels'
 
-import headerCss from '../TicketHeader.less'
-import {MAX_DROPDOWN_USER_AGENT} from '../../../../../config'
+import headerCss from '../../TicketHeader.less'
+import css from './TicketAssignee.less'
 
 @connect((state) => {
     return {
@@ -110,7 +110,7 @@ export default class TicketAssignee extends React.Component {
         this.setState({
             enum: this.props.agents.filter((agent) => {
                 return agent.get('name').toLowerCase().includes(search.toLowerCase())
-            }).slice(0, MAX_DROPDOWN_USER_AGENT),
+            }),
         })
     }
 
@@ -153,21 +153,23 @@ export default class TicketAssignee extends React.Component {
             )
         } else {
             options = options.concat(
-                availableAgents.map((agent) => {
-                    return (
-                        <DropdownItem
-                            key={agent.get('id')}
-                            type="button"
-                            onClick={() => this._selectAgent(agent)}
-                        >
-                            <AgentLabel
-                                name={agent.get('name')}
-                                email={agent.get('email')}
-                                profilePictureUrl={agent.getIn(['meta', 'profile_picture_url'])}
-                            />
-                        </DropdownItem>
-                    )
-                })
+                <div className={css['agents-dropdown-list']}>
+                    {availableAgents.map((agent) => {
+                        return (
+                            <DropdownItem
+                                key={agent.get('id')}
+                                type="button"
+                                onClick={() => this._selectAgent(agent)}
+                            >
+                                <AgentLabel
+                                    name={agent.get('name')}
+                                    email={agent.get('email')}
+                                    profilePictureUrl={agent.getIn(['meta', 'profile_picture_url'])}
+                                />
+                            </DropdownItem>
+                        )
+                    })}
+                </div>
             )
         }
 
@@ -216,17 +218,17 @@ export default class TicketAssignee extends React.Component {
                 >
                     {
                         currentAssignee ? (
-                                <AgentLabel
-                                    name={currentAssignee}
-                                    email={email}
-                                    profilePictureUrl={profilePictureUrl}
-                                    maxWidth="100"
-                                />
-                            ) : (
-                                <span>
+                            <AgentLabel
+                                name={currentAssignee}
+                                email={email}
+                                profilePictureUrl={profilePictureUrl}
+                                maxWidth="100"
+                            />
+                        ) : (
+                            <span>
                                     Unassigned
                                 </span>
-                            )
+                        )
                     }
                 </DropdownToggle>
                 <DropdownMenu
@@ -259,7 +261,7 @@ export default class TicketAssignee extends React.Component {
                             )
                         }
                     </DropdownItem>
-                    <DropdownItem divider />
+                    <DropdownItem divider/>
                     {this._displayMenu()}
                 </DropdownMenu>
             </Dropdown>

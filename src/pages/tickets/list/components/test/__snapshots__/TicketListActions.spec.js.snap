@@ -99,36 +99,40 @@ exports[`TicketListActions component should display options for agents assignati
           tag="button"
           toggle={true}
         />
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-          type="button"
+        <div
+          className="agents-dropdown-list"
         >
-          <AgentLabel
-            name="foo"
-          />
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-          type="button"
-        >
-          <AgentLabel
-            name="bar"
-          />
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-          type="button"
-        >
-          <AgentLabel
-            name="baz"
-          />
-        </DropdownItem>
+          <DropdownItem
+            onClick={[Function]}
+            tag="button"
+            toggle={true}
+            type="button"
+          >
+            <AgentLabel
+              name="foo"
+            />
+          </DropdownItem>
+          <DropdownItem
+            onClick={[Function]}
+            tag="button"
+            toggle={true}
+            type="button"
+          >
+            <AgentLabel
+              name="bar"
+            />
+          </DropdownItem>
+          <DropdownItem
+            onClick={[Function]}
+            tag="button"
+            toggle={true}
+            type="button"
+          >
+            <AgentLabel
+              name="baz"
+            />
+          </DropdownItem>
+        </div>
         <DropdownItem
           divider={true}
           tag="button"
