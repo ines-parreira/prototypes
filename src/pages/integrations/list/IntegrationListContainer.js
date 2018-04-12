@@ -1,40 +1,36 @@
-import React, {PropTypes} from 'react'
+//@flow
+import React from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import * as IntegrationsActions from '../../../state/integrations/actions'
 import IntegrationList from './components/IntegrationList'
 import {planIntegrations, currentPlan} from '../../../state/billing/selectors'
+import {getActiveIntegrations} from '../../../state/integrations/selectors'
 
-class IntegrationListContainer extends React.Component {
+
+type Props = {
+    integrations: Object,
+    actions: Object,
+    allowedIntegrations: number,
+    activeIntegrations: number,
+    currentPlan: Object,
+}
+
+class IntegrationListContainer extends React.Component<Props> {
     componentWillMount() {
         this.props.actions.fetchIntegrations()
     }
 
     render() {
-        const {integrations, actions, allowedIntegrations, currentPlan} = this.props
-
-        const allProps = {
-            integrations,
-            actions,
-            allowedIntegrations,
-            currentPlan,
-        }
-
-        return <IntegrationList {...allProps} />
+        return <IntegrationList {...this.props} />
     }
-}
-
-IntegrationListContainer.propTypes = {
-    integrations: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
-    allowedIntegrations: PropTypes.number.isRequired,
-    currentPlan: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {
     return {
         integrations: state.integrations,
         allowedIntegrations: planIntegrations(state),
+        activeIntegrations: getActiveIntegrations(state).size,
         currentPlan: currentPlan(state),
     }
 }

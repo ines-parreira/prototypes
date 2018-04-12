@@ -2,7 +2,6 @@
 import React from 'react'
 import {Link} from 'react-router'
 import {Alert, Container, Row, Col} from 'reactstrap'
-import {fromJS} from 'immutable'
 
 import IntegrationListRow from './IntegrationListRow'
 import PageHeader from '../../../common/components/PageHeader'
@@ -14,12 +13,13 @@ type Props = {
     integrations: Map<*,*>,
     currentPlan: Map<*,*>,
     allowedIntegrations: number,
+    activeIntegrations: number,
 }
 
 export default class IntegrationList extends React.Component<Props> {
     _limitWarning = () => {
-        const activeIntegrations = this.props.integrations.get('integrations', fromJS([])).size
-        const remainingIntegrations = this.props.allowedIntegrations - activeIntegrations
+        const {activeIntegrations, allowedIntegrations} = this.props
+        const remainingIntegrations = allowedIntegrations - activeIntegrations
         const plural = (activeIntegrations > 1)
 
         if (remainingIntegrations > 3) {
@@ -28,7 +28,7 @@ export default class IntegrationList extends React.Component<Props> {
 
         return (
             <Alert
-                color="danger"
+                color={remainingIntegrations > 0 ? 'warning' : 'danger'}
                 className="d-flex align-items-center"
             >
                 <i className="material-icons md-3 mr-3">
