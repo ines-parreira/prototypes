@@ -25,7 +25,7 @@ class MacroSelect extends React.Component<Props> {
     _selectFirstOption = (value: string, props: Props) => {
         if (!value && !props.macros.isEmpty()) {
             const firstOption = this._getOptions(props.macros).first()
-            props.onChange(firstOption.get('value'))
+            props.onChange(firstOption.get('value').toString())
         }
     }
 
@@ -50,7 +50,7 @@ class MacroSelect extends React.Component<Props> {
             .filter((macro) => macro.get('actions')
                 .filter((action) => getActionTemplate(action.get('name')).execution === 'back')
                 .isEmpty())
-            .map((macro) => fromJS({value: macro.get('id'), label: macro.get('name')}))
+            .map((macro) => fromJS({value: macro.get('id').toString(), label: macro.get('name')}))
             .toList()
     }
 
