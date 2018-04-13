@@ -234,7 +234,7 @@ export default class RuleItem extends React.Component<Props, State> {
                                     className={css['rule-description']}
                                     type="textarea"
                                     placeholder="Description"
-                                    rows="2"
+                                    rows="1"
                                     value={this.state.description}
                                     onChange={(value) => this.setState({description: value})}
                                 />
