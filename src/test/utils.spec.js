@@ -651,5 +651,8 @@ describe('global utils', () => {
             expect(utils.sanitizeHtmlDefault('<p><!-- hola senor -->hey</p>')).toBe('<p>hey</p>')
             expect(utils.sanitizeHtmlDefault('<p><!-- hola senor -->--> hey</p>')).toBe('<p>--&gt; hey</p>')
         })
+        it('should remove all `o` - outlook tags', () => {
+            expect(utils.sanitizeHtmlDefault('<o:PixelsPerInch>96</o:PixelsPerInch>')).toBe('')
+        })
     })
 })

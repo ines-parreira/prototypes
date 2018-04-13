@@ -404,7 +404,9 @@ export function sanitizeHtmlDefault(html: string): string {
             '*': ['align', 'alt', 'bgcolor', 'border', 'class', 'color', 'colspan', 'dir',
                 'height', 'href', 'id', 'rel', 'rowspan', 'src', 'style', 'target', 'title', 'width', 'controls']
         },
-        nonTextTags: ['style', 'script', 'textarea', 'noscript', 'title'],
+        nonTextTags: ['style', 'script', 'textarea', 'noscript', 'title',
+            'o:pixelsperinch' // outlook specific tag
+        ],
         transformTags: {
             'a': sanitizeHtml.simpleTransform('a', {target: '_blank', rel: 'noreferrer noopener'})
         }
