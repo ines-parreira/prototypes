@@ -1,46 +1,56 @@
+// @flow
 import React from 'react'
+import type {List} from 'immutable'
 
 import Hoverable from '../../Hoverable'
 import Statement from './Statement'
 
 
-let BlockStatementItem = ({actions, body, rule, parent, schemas}) => (
-    <div className="BlockStatementItem">
-        <Statement
-            {...body}
-            parent={parent}
-            rule={rule}
-            schemas={schemas}
-            actions={actions}
-        />
-    </div>
-)
+class _BlockStatementItem extends React.Component<BlockStatementItemProps> {
+    render() {
+        const {actions, body, rule, parent, schemas, depth} = this.props
 
-BlockStatementItem.propTypes = {
-    rule: React.PropTypes.object.isRequired,
-    actions: React.PropTypes.object,
-    body: React.PropTypes.object,
-    parent: React.PropTypes.object,
-    schemas: React.PropTypes.object,
-}
-
-BlockStatementItem = Hoverable(BlockStatementItem)
-
-class BlockStatement extends React.Component {
-
-    _renderStatements = () => {
-        const {body, rule, actions, parent, schemas} = this.props
-
-        return body.map((bodyItem, idx) => (
-            <div className="BlockStatementItem" key={idx}>
-                <BlockStatementItem
-                    actions={actions}
-                    body={bodyItem}
+        return (
+            <div className="BlockStatementItem">
+                <Statement
+                    {...body}
+                    parent={parent}
                     rule={rule}
-                    parent={parent.push('body', idx)}
                     schemas={schemas}
+                    actions={actions}
+                    depth={depth}
                 />
             </div>
+        )
+    }
+}
+
+type BlockStatementItemProps = {
+    rule: Object,
+    actions: Object,
+    body: Object,
+    parent: List<*>,
+    schemas: Object,
+    depth: number
+}
+
+class BlockStatementItem extends Hoverable(_BlockStatementItem) {}
+
+
+export default class BlockStatement extends React.Component<BlockStatementProps> {
+    _renderStatements = () => {
+        const {body, rule, actions, parent, schemas, depth} = this.props
+
+        return body.map((bodyItem, idx) => (
+            <BlockStatementItem
+                key={idx}
+                actions={actions}
+                body={bodyItem}
+                rule={rule}
+                parent={parent.push('body', idx)}
+                schemas={schemas}
+                depth={depth}
+            />
         ))
     }
 
@@ -53,12 +63,11 @@ class BlockStatement extends React.Component {
     }
 }
 
-BlockStatement.propTypes = {
-    rule: React.PropTypes.object.isRequired,
-    actions: React.PropTypes.object.isRequired,
-    body: React.PropTypes.array.isRequired,
-    parent: React.PropTypes.object.isRequired,
-    schemas: React.PropTypes.object.isRequired,
+type BlockStatementProps = {
+    rule: Object,
+    actions: Object,
+    body: Object,
+    parent: List<*>,
+    schemas: Object,
+    depth: number
 }
-
-export default BlockStatement

@@ -21,8 +21,9 @@ export default class MultiSelectField extends Component {
         style: PropTypes.object,
         tagColor: PropTypes.string,
         values: PropTypes.array,
+        className: PropTypes.string,
 
-        onChange: PropTypes.func.isRequired
+        onChange: PropTypes.func.isRequired,
     }
 
     static defaultProps = {
@@ -181,17 +182,18 @@ export default class MultiSelectField extends Component {
     }
 
     render() {
-        const {allowCustomValues, plural, singular, values, style, tagColor} = this.props
+        const {allowCustomValues, plural, singular, values, style, tagColor, className} = this.props
         const {filteredOptions, input, optionsOpen, selectedOptionIndex} = this.state
         const hasNoFilteredOptions = filteredOptions.length === 0
+
         return (
-            <div style={style}>
+            <div className={classnames('MultiSelectField', className)} style={style}>
                 <div
-                    className={`${css.select}`}
+                    className={css.select}
                     onClick={this._focusInput}
                 >
                     {values.map((selected, index) => {
-                        let selectedOption = this.props.options.find(option => option.value === selected)
+                        let selectedOption = this.props.options.find((option) => option.value === selected)
                         const label = selectedOption ? selectedOption.label : selected
 
                         return (
@@ -206,13 +208,15 @@ export default class MultiSelectField extends Component {
                                 <span>
                                     {label}
                                     <i
-                                        className="fa fa-fw fa-close cursor-pointer ml-1"
+                                        className="material-icons ml-1"
                                         onClick={(event) => {
                                             this._stopPropagation(event)
                                             this._removeValue(selected)
                                             this._focusInput()
                                         }}
-                                    />
+                                    >
+                                        close
+                                    </i>
                                 </span>
                             </Badge>
                         )

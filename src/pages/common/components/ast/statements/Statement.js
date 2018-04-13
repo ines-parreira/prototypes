@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 import {connect} from 'react-redux'
 
@@ -6,8 +7,14 @@ import ExpressionStatement from './ExpressionStatement'
 import IfStatement from './IfStatement'
 import UnknownSyntax from '../UnknownSyntax'
 
-class Statement extends React.Component {
 
+type Props = {
+    type: string,
+    schemas: ?Object,
+    depth: number
+}
+
+class Statement extends React.Component<Props> {
     types = {
         IfStatement,
         ExpressionStatement,
@@ -15,21 +22,17 @@ class Statement extends React.Component {
     }
 
     render() {
-        const {schemas} = this.props
+        const {schemas, depth} = this.props
         const Component = this.types[this.props.type] || UnknownSyntax
         return (
             <Component
                 {...this.props}
                 schemas={schemas}
+                depth={depth}
             />
         )
     }
 
-}
-
-Statement.propTypes = {
-    type: React.PropTypes.string.isRequired,
-    schemas: React.PropTypes.object,
 }
 
 const mapStateToProps = (state) => ({

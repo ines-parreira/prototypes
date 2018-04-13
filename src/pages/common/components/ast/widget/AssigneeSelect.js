@@ -1,16 +1,25 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {fromJS} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import {Input} from 'reactstrap'
 
-import Select from './Select'
+import Select from './ReactSelect'
 
 import * as userActions from './../../../../../state/users/actions'
 import * as userSelectors from './../../../../../state/users/selectors'
 
 
-class AssigneeSelect extends React.Component {
+type Props = {
+    actions: Object,
+    onChange: (number) => void,
+    value?: string | number,
+    agents: List<Map<*,*>>,
+    className?: string
+}
+
+class AssigneeSelect extends React.Component<Props> {
     componentDidMount() {
         const {actions, agents} = this.props
 
@@ -20,10 +29,10 @@ class AssigneeSelect extends React.Component {
     }
 
     render() {
-        const {value, onChange, agents} = this.props
-        let options = fromJS([{value: '', label: 'Unassigned'}])
+        const {value, onChange, agents, className} = this.props
+        let options : List<*> = fromJS([{value: '', label: 'Unassigned'}])
 
-        agents.forEach(agent => {
+        agents.forEach((agent) => {
             options = options.push({value: agent.get('id'), label: agent.get('name')})
         })
 
@@ -39,20 +48,13 @@ class AssigneeSelect extends React.Component {
 
         return (
             <Select
+                className={className}
                 value={value}
                 onChange={onChange}
                 options={options.toJS() || []}
             />
         )
     }
-}
-
-AssigneeSelect.propTypes = {
-    actions: PropTypes.object,
-    onChange: PropTypes.func.isRequired,
-    value: PropTypes.string,
-
-    agents: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => ({

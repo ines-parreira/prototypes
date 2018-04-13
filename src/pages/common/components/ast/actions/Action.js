@@ -1,7 +1,9 @@
+// @flow
 import React from 'react'
 import classnames from 'classnames'
 import {Card, CardBody} from 'reactstrap'
 import {templateRegex} from '../../../utils/template'
+import {computeLeftPadding} from '../utils'
 
 import _isFunction from 'lodash/isFunction'
 import _isArray from 'lodash/isArray'
@@ -11,17 +13,21 @@ import Errors from '../Errors'
 
 import {isEmailList, findProperty} from '../../../../../utils'
 
-export function validateEmailList(value, schemas) {
+
+export function validateEmailList(value: string, schemas: Object) : string | void {
     let emailList = value
 
     // verify that all template variables are email addresses
     // if yes, we replace variables with valid email addresses to pass the validation
+    // else, we replace variables with an invalid email address to fail the validation
     if (templateRegex.test(value)) {
-        emailList = emailList.replace(templateRegex, (match, path) => {
+        emailList = emailList.replace(templateRegex, (match: string, path: string) : string => {
             const prop = findProperty(path, schemas, true)
             if (prop && prop.format === 'email') {
                 return 'placeholder@gorgias.io'
             }
+
+            return 'bad address'
         })
     }
 
@@ -30,13 +36,13 @@ export function validateEmailList(value, schemas) {
     }
 }
 
-export function validateBody(values) {
+export function validateBody(values: Object) : string | void {
     if (!values.body_text) {
         return 'Body must be filled'
     }
 }
 
-export function validateSendEmail(values) {
+export function validateSendEmail(values: Object) : Array<string> {
     const errors = []
 
     if (!values.body_text) {
@@ -49,7 +55,7 @@ export function validateSendEmail(values) {
     return errors
 }
 
-export function validateTags(values) {
+export function validateTags(values: Object) : string | void {
     if (!values.tags) {
         return 'Tags cannot be empty'
     }
@@ -85,18 +91,22 @@ export const actionsConfig = {
                 name: 'To',
                 placeholder: 'Don\'t forget to add a recipient!',
                 required: true,
+                widget: 'input',
                 validate: validateEmailList
             },
             cc: {
                 name: 'Cc',
+                widget: 'input',
                 validate: validateEmailList
             },
             bcc: {
                 name: 'Bcc',
+                widget: 'input',
                 validate: validateEmailList
             },
             subject: {
                 name: 'Subject',
+                widget: 'input',
             },
             body_text: {
                 hide: true
@@ -143,7 +153,8 @@ export const actionsConfig = {
         name: 'Set subject',
         args: {
             subject: {
-                name: 'Subject'
+                placeholder: 'Set subject...',
+                widget: 'input'
             }
         }
     },
@@ -155,17 +166,22 @@ export const actionsConfig = {
         compact: true,
         name: 'Assign agent'
     },
-    // sendSurvey: {
-    //     compact: true,
-    //     name: 'Send satisfaction survey'
-    // },
     trashTicket: {
         compact: true,
         name: 'Delete ticket',
     }
 }
 
-class Action extends React.Component {
+type Props = {
+    rule: Object,
+    actions: Object,
+    children: Object,
+    parent: Object,
+    value: string,
+    depth: number,
+}
+
+export default class Action extends React.Component<Props> {
     _renderBody = () => {
         const {value} = this.props
         let {children} = this.props
@@ -183,10 +199,10 @@ class Action extends React.Component {
         }
 
         const values = {}
-        let errors = null
+        let errors = []
 
         // build an object with the keys and values of the action
-        children.props.properties.forEach(property => {
+        children.props.properties.forEach((property) => {
             values[property.key.name] = property.value.value
         })
 
@@ -205,40 +221,36 @@ class Action extends React.Component {
 
         if (config.compact) {
             return [
-                <span key="children">{children}</span>,
+                <span key="children" className="compact-action">{children}</span>,
                 config.note ? <div className="rule-note" key="note">{config.note}</div> : null,
                 <Errors key="errors" inline>{errors}</Errors>,
             ]
         }
 
-        // pass the args to children so that they know how to render themselves
-        if (config.args) {
-            children = React.Children.map(children,
-                (child) => React.cloneElement(child, {config: config.args})
-            )
-        }
-
         return (
-            <Card className="mt-3">
-                <CardBody>
-                    {children}
-                    {!!config.note && <div className="rule-note">{config.note}</div>}
-                    <Errors>{errors.map((error, id) => <div key={id}>{error}</div>)}</Errors>
-                </CardBody>
-            </Card>
+            <div className="card-action">
+                <Card>
+                    <CardBody>
+                        {children}
+                        {!!config.note && <div className="rule-note">{config.note}</div>}
+                        <Errors>{errors.map((error, id) => <div key={id}>{error}</div>)}</Errors>
+                    </CardBody>
+                </Card>
+            </div>
         )
     }
 
     render() {
-        const {actions, rule, parent, value} = this.props
+        const {actions, rule, parent, value, depth} = this.props
 
         const config = actionsConfig[value] || {}
 
         return (
             <div
-                className={classnames('mb-2', {
+                className={classnames('Action', {
                     'd-flex align-items-baseline': config.compact,
                 })}
+                style={{paddingLeft: computeLeftPadding(depth)}}
             >
                 <ActionSelect
                     actions={actions}
@@ -252,15 +264,3 @@ class Action extends React.Component {
     }
 
 }
-
-Action.propTypes = {
-    rule: React.PropTypes.object.isRequired,
-    actions: React.PropTypes.object.isRequired,
-    children: React.PropTypes.oneOfType(
-        [React.PropTypes.array, React.PropTypes.element]
-    ).isRequired,
-    parent: React.PropTypes.object.isRequired,
-    value: React.PropTypes.string,
-}
-
-export default Action

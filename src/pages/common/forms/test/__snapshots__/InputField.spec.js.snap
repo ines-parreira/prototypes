@@ -2,7 +2,7 @@
 
 exports[`InputField should render a basic text input 1`] = `
 <FormGroup
-  className=""
+  className="InputField"
   color=""
   tag="div"
 >
@@ -39,7 +39,7 @@ exports[`InputField should render a basic text input 1`] = `
 
 exports[`InputField should render a help text 1`] = `
 <FormGroup
-  className=""
+  className="InputField"
   color=""
   tag="div"
 >
@@ -65,7 +65,7 @@ exports[`InputField should render a help text 1`] = `
 
 exports[`InputField should render a hidden text input 1`] = `
 <FormGroup
-  className=""
+  className="InputField"
   color=""
   tag="div"
 >
@@ -86,7 +86,7 @@ exports[`InputField should render a hidden text input 1`] = `
 
 exports[`InputField should render a required text input 1`] = `
 <FormGroup
-  className="required"
+  className="InputField required"
   color=""
   tag="div"
 >
@@ -107,7 +107,7 @@ exports[`InputField should render a required text input 1`] = `
 
 exports[`InputField should render a text input with a right addon 1`] = `
 <FormGroup
-  className=""
+  className="InputField"
   color=""
   tag="div"
 >
@@ -141,12 +141,12 @@ exports[`InputField should render a text input with an onChange handler, and cal
   value="value"
 >
   <FormGroup
-    className=""
+    className="InputField"
     color=""
     tag="div"
   >
     <div
-      className="form-group"
+      className="InputField form-group"
       color=""
     >
       <div
@@ -175,7 +175,7 @@ exports[`InputField should render a text input with an onChange handler, and cal
 
 exports[`InputField should render an inline required text input 1`] = `
 <FormGroup
-  className="required d-inline-block"
+  className="InputField required d-inline-block"
   color=""
   tag="div"
 >
@@ -196,7 +196,7 @@ exports[`InputField should render an inline required text input 1`] = `
 
 exports[`InputField should render an inline text input 1`] = `
 <FormGroup
-  className="d-inline-block"
+  className="InputField d-inline-block"
   color=""
   tag="div"
 >
@@ -216,7 +216,7 @@ exports[`InputField should render an inline text input 1`] = `
 
 exports[`InputField should render the input with an error 1`] = `
 <FormGroup
-  className=""
+  className="InputField"
   color="danger"
   tag="div"
 >

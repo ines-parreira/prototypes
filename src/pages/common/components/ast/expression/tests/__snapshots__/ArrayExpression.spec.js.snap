@@ -1,11 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ast expressions ArrayExpression should render component 1`] = `
+exports[`ast expressions ArrayExpression should display an error because the field is empty 1`] = `
 <span
   className="Literal"
 >
   <Widget
     actions={Object {}}
+    className="LiteralWidget"
     compact={true}
     config={Object {}}
     leftsiblings={Object {}}
@@ -19,6 +20,42 @@ exports[`ast expressions ArrayExpression should render component 1`] = `
         "elements",
       ]
     }
+    properties={Array []}
+    rule={Object {}}
+    schemas={Object {}}
+    value={Array []}
+  />
+  <Errors
+    belowInput={false}
+    inline={true}
+    tag="div"
+  >
+    This field cannot be empty
+  </Errors>
+</span>
+`;
+
+exports[`ast expressions ArrayExpression should render component and not display any error 1`] = `
+<span
+  className="Literal"
+>
+  <Widget
+    actions={Object {}}
+    className="LiteralWidget"
+    compact={true}
+    config={Object {}}
+    leftsiblings={Object {}}
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "test",
+        "arguments",
+        1,
+        "elements",
+      ]
+    }
+    properties={Array []}
     rule={Object {}}
     schemas={Object {}}
     value={

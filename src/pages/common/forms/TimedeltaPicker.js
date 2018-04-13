@@ -89,6 +89,7 @@ export default class TimedeltaPicker extends React.Component<Props, State> {
                         onChange={(event) => this._onQuantityChange(event.target.value)}
                         style={{width: '62px'}}
                         min="0"
+                        required
                     />
                     <InputGroupButtonDropdown
                         addonType="append"

@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Property component should display errors if the validate method of the field's config raises any 1`] = `
+<div
+  className=""
+>
+  <Widget
+    compact={false}
+    config={
+      Object {
+        "validate": [Function],
+      }
+    }
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "expression",
+        "value",
+        "value",
+      ]
+    }
+    properties={Array []}
+    schemas={
+      Object {
+        "foo": "schemas",
+      }
+    }
+    theKey={
+      Object {
+        "foo": "theKey",
+      }
+    }
+    value="foo"
+  />
+  <Errors
+    belowInput={true}
+    inline={false}
+    tag="div"
+  >
+    error!error!
+  </Errors>
+</div>
+`;
+
+exports[`Property component should not display errors if the validate method of the field's config does not raise any 1`] = `
+<div
+  className=""
+>
+  <Widget
+    compact={false}
+    config={
+      Object {
+        "validate": [Function],
+      }
+    }
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "expression",
+        "value",
+        "value",
+      ]
+    }
+    properties={Array []}
+    schemas={
+      Object {
+        "foo": "schemas",
+      }
+    }
+    theKey={
+      Object {
+        "foo": "theKey",
+      }
+    }
+    value="foo"
+  />
+</div>
+`;
+
+exports[`Property component should not display errors if there is no validate method 1`] = `
+<div
+  className=""
+>
+  <Widget
+    compact={false}
+    config={Object {}}
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "expression",
+        "value",
+        "value",
+      ]
+    }
+    properties={Array []}
+    schemas={
+      Object {
+        "foo": "schemas",
+      }
+    }
+    theKey={
+      Object {
+        "foo": "theKey",
+      }
+    }
+    value="foo"
+  />
+</div>
+`;
+
+exports[`Property component should render a compact (inline) Property 1`] = `
+<div
+  className="d-flex"
+>
+  <Widget
+    compact={true}
+    config={Object {}}
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "expression",
+        "value",
+        "value",
+      ]
+    }
+    properties={Array []}
+    schemas={
+      Object {
+        "foo": "schemas",
+      }
+    }
+    theKey={
+      Object {
+        "foo": "theKey",
+      }
+    }
+    value="foo"
+  />
+</div>
+`;

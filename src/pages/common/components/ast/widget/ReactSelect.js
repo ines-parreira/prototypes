@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React from 'react'
 import {List} from 'immutable'
 import sortBy from 'lodash/sortBy'
 import _isObject from 'lodash/isObject'
@@ -6,7 +7,14 @@ import _isObject from 'lodash/isObject'
 import 'react-select/dist/react-select.css'
 import SelectField from '../../../forms/SelectField'
 
-export default class Select extends React.Component {
+type Props = {
+    className: ?string,
+    onChange: (any) => void,
+    options: any,
+    value: any,
+}
+
+export default class Select extends React.Component<Props> {
     _getOptions = () => {
         let {options} = this.props
 
@@ -30,10 +38,10 @@ export default class Select extends React.Component {
             }
         }
         // order alphabetically
-        return sortBy(options, o => o.label.toLowerCase())
+        return sortBy(options, (o) => o.label.toLowerCase())
     }
 
-    _onChange = (value) => {
+    _onChange = (value: string) => {
         let val = value
         // We can't have boolean values so we're transforming them just before sending
         if (val === 'true') {
@@ -45,28 +53,29 @@ export default class Select extends React.Component {
     }
 
     render() {
+        const {className, value} = this.props
+        let newValue = value
+
+        if (value === true) {
+            newValue = 'true'
+        } else if (value === false) {
+            newValue = 'false'
+        }
 
         return (
             <div
                 style={{
                     display: 'inline-block',
                     verticalAlign: 'middle',
-                    paddingBottom: '2px',
                 }}
             >
                 <SelectField
-                    value={this.props.value.toString()}
+                    className={className}
+                    value={newValue}
                     onChange={this._onChange}
                     options={this._getOptions()}
                 />
             </div>
         )
     }
-}
-
-Select.propTypes = {
-    className: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
-    options: PropTypes.any.isRequired,
-    value: PropTypes.any,
 }

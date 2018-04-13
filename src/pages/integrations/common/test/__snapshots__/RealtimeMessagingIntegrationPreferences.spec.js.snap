@@ -313,12 +313,12 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                   value="We're away at the moment. Leave us your email and we'll follow up shortly."
                 >
                   <FormGroup
-                    className="required"
+                    className="InputField required"
                     color=""
                     tag="div"
                   >
                     <div
-                      className="required form-group"
+                      className="InputField required form-group"
                       color=""
                     >
                       <Label
@@ -384,12 +384,12 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                   value={86400}
                 >
                   <FormGroup
-                    className=""
+                    className="InputField"
                     color=""
                     tag="div"
                   >
                     <div
-                      className="form-group"
+                      className="InputField form-group"
                       color=""
                     >
                       <Label
@@ -797,12 +797,12 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                   value="We're away at the moment. Leave us your email and we'll follow up shortly."
                 >
                   <FormGroup
-                    className="required"
+                    className="InputField required"
                     color=""
                     tag="div"
                   >
                     <div
-                      className="required form-group"
+                      className="InputField required form-group"
                       color=""
                     >
                       <Label
@@ -868,12 +868,12 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                   value={10800}
                 >
                   <FormGroup
-                    className=""
+                    className="InputField"
                     color=""
                     tag="div"
                   >
                     <div
-                      className="form-group"
+                      className="InputField form-group"
                       color=""
                     >
                       <Label
@@ -1348,12 +1348,12 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                     value="Leave us your email in case we reply later."
                   >
                     <FormGroup
-                      className=""
+                      className="InputField"
                       color=""
                       tag="div"
                     >
                       <div
-                        className="form-group"
+                        className="InputField form-group"
                         color=""
                       >
                         <Label
@@ -1410,12 +1410,12 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                     value="Thanks! We'll email you at {email} if you leave."
                   >
                     <FormGroup
-                      className=""
+                      className="InputField"
                       color=""
                       tag="div"
                     >
                       <div
-                        className="form-group"
+                        className="InputField form-group"
                         color=""
                       >
                         <Label
@@ -1549,12 +1549,12 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                   value="We're away at the moment. Leave us your email and we'll follow up shortly."
                 >
                   <FormGroup
-                    className="required"
+                    className="InputField required"
                     color=""
                     tag="div"
                   >
                     <div
-                      className="required form-group"
+                      className="InputField required form-group"
                       color=""
                     >
                       <Label
@@ -1620,12 +1620,12 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                   value={10800}
                 >
                   <FormGroup
-                    className=""
+                    className="InputField"
                     color=""
                     tag="div"
                   >
                     <div
-                      className="form-group"
+                      className="InputField form-group"
                       color=""
                     >
                       <Label

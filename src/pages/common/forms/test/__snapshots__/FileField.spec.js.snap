@@ -2,7 +2,7 @@
 
 exports[`FileField should display loading when loading 1`] = `
 <FormGroup
-  className=""
+  className="InputField"
   color=""
   tag="div"
 >
@@ -46,7 +46,7 @@ exports[`FileField should display loading when loading 1`] = `
 
 exports[`FileField should not render preview 1`] = `
 <FormGroup
-  className=""
+  className="InputField"
   color=""
   tag="div"
 >
@@ -81,7 +81,7 @@ exports[`FileField should not render preview 1`] = `
 
 exports[`FileField should render a basic file input 1`] = `
 <FormGroup
-  className=""
+  className="InputField"
   color=""
   tag="div"
 >
@@ -122,7 +122,7 @@ exports[`FileField should render a basic file input 1`] = `
 
 exports[`FileField should render preview 1`] = `
 <FormGroup
-  className=""
+  className="InputField"
   color=""
   tag="div"
 >

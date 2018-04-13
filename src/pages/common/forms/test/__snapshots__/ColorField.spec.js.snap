@@ -2,7 +2,7 @@
 
 exports[`ColorField should render a basic color input 1`] = `
 <FormGroup
-  className=""
+  className="InputField"
   color=""
   tag="div"
 >

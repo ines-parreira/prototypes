@@ -354,12 +354,12 @@ exports[`CampaignDetail component should display default value when it's a new c
                           type="input"
                         >
                           <FormGroup
-                            className="required"
+                            className="InputField required"
                             color=""
                             tag="div"
                           >
                             <div
-                              className="required form-group"
+                              className="InputField required form-group"
                               color=""
                             >
                               <Label
@@ -529,35 +529,33 @@ exports[`CampaignDetail component should display default value when it's a new c
                                               data-toggle="dropdown"
                                               onClick={[Function]}
                                             >
-                                              <div>
-                                                <div
-                                                  className="select dropdown-toggle"
-                                                  onClick={[Function]}
+                                              <div
+                                                className="select dropdown-toggle"
+                                                onClick={[Function]}
+                                              >
+                                                <span
+                                                  className="label"
+                                                  style={
+                                                    Object {
+                                                      "minWidth": 10,
+                                                      "opacity": 1,
+                                                    }
+                                                  }
                                                 >
-                                                  <span
-                                                    className="label"
-                                                    style={
-                                                      Object {
-                                                        "minWidth": 10,
-                                                        "opacity": 1,
-                                                      }
+                                                  is
+                                                </span>
+                                                <input
+                                                  className="input"
+                                                  onChange={[Function]}
+                                                  onKeyDown={[Function]}
+                                                  style={
+                                                    Object {
+                                                      "minWidth": 10,
                                                     }
-                                                  >
-                                                    is
-                                                  </span>
-                                                  <input
-                                                    className="input"
-                                                    onChange={[Function]}
-                                                    onKeyDown={[Function]}
-                                                    style={
-                                                      Object {
-                                                        "minWidth": 10,
-                                                      }
-                                                    }
-                                                    type="text"
-                                                    value=""
-                                                  />
-                                                </div>
+                                                  }
+                                                  type="text"
+                                                  value=""
+                                                />
                                               </div>
                                             </div>
                                           </Target>
@@ -718,12 +716,12 @@ exports[`CampaignDetail component should display default value when it's a new c
                                 value=""
                               >
                                 <FormGroup
-                                  className=""
+                                  className="InputField"
                                   color=""
                                   tag="div"
                                 >
                                   <div
-                                    className="form-group"
+                                    className="InputField form-group"
                                     color=""
                                   >
                                     <div
@@ -955,35 +953,33 @@ exports[`CampaignDetail component should display default value when it's a new c
                                             data-toggle="dropdown"
                                             onClick={[Function]}
                                           >
-                                            <div>
-                                              <div
-                                                className="select dropdown-toggle"
-                                                onClick={[Function]}
+                                            <div
+                                              className="select dropdown-toggle"
+                                              onClick={[Function]}
+                                            >
+                                              <span
+                                                className="label"
+                                                style={
+                                                  Object {
+                                                    "minWidth": 10,
+                                                    "opacity": 1,
+                                                  }
+                                                }
                                               >
-                                                <span
-                                                  className="label"
-                                                  style={
-                                                    Object {
-                                                      "minWidth": 10,
-                                                      "opacity": 1,
-                                                    }
+                                                Random agent
+                                              </span>
+                                              <input
+                                                className="input"
+                                                onChange={[Function]}
+                                                onKeyDown={[Function]}
+                                                style={
+                                                  Object {
+                                                    "minWidth": 10,
                                                   }
-                                                >
-                                                  Random agent
-                                                </span>
-                                                <input
-                                                  className="input"
-                                                  onChange={[Function]}
-                                                  onKeyDown={[Function]}
-                                                  style={
-                                                    Object {
-                                                      "minWidth": 10,
-                                                    }
-                                                  }
-                                                  type="text"
-                                                  value=""
-                                                />
-                                              </div>
+                                                }
+                                                type="text"
+                                                value=""
+                                              />
                                             </div>
                                           </div>
                                         </Target>
@@ -1116,12 +1112,12 @@ exports[`CampaignDetail component should display default value when it's a new c
                           }
                         >
                           <FormGroup
-                            className="required"
+                            className="InputField required"
                             color=""
                             tag="div"
                           >
                             <div
-                              className="required form-group"
+                              className="InputField required form-group"
                               color=""
                             >
                               <div
@@ -3129,12 +3125,12 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                           value=""
                         >
                           <FormGroup
-                            className="required"
+                            className="InputField required"
                             color=""
                             tag="div"
                           >
                             <div
-                              className="required form-group"
+                              className="InputField required form-group"
                               color=""
                             >
                               <Label
@@ -3389,35 +3385,33 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                             data-toggle="dropdown"
                                             onClick={[Function]}
                                           >
-                                            <div>
-                                              <div
-                                                className="select dropdown-toggle"
-                                                onClick={[Function]}
+                                            <div
+                                              className="select dropdown-toggle"
+                                              onClick={[Function]}
+                                            >
+                                              <span
+                                                className="label"
+                                                style={
+                                                  Object {
+                                                    "minWidth": 10,
+                                                    "opacity": 1,
+                                                  }
+                                                }
                                               >
-                                                <span
-                                                  className="label"
-                                                  style={
-                                                    Object {
-                                                      "minWidth": 10,
-                                                      "opacity": 1,
-                                                    }
+                                                Random agent
+                                              </span>
+                                              <input
+                                                className="input"
+                                                onChange={[Function]}
+                                                onKeyDown={[Function]}
+                                                style={
+                                                  Object {
+                                                    "minWidth": 10,
                                                   }
-                                                >
-                                                  Random agent
-                                                </span>
-                                                <input
-                                                  className="input"
-                                                  onChange={[Function]}
-                                                  onKeyDown={[Function]}
-                                                  style={
-                                                    Object {
-                                                      "minWidth": 10,
-                                                    }
-                                                  }
-                                                  type="text"
-                                                  value=""
-                                                />
-                                              </div>
+                                                }
+                                                type="text"
+                                                value=""
+                                              />
                                             </div>
                                           </div>
                                         </Target>

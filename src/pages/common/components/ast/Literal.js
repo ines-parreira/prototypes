@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React from 'react'
 
 import Errors from './Errors'
 import Widget from './Widget'
@@ -10,7 +11,18 @@ import {EMPTY_OPERATORS} from '../../../../config'
  value: string | boolean | null | number | RegExp;
  }
  */
-const Literal = ({value, rule, actions, parent, leftsiblings, schemas, callee}) => {
+
+type Props = {
+    callee?: Object,
+    rule: Object,
+    actions: Object,
+    leftsiblings: Object,
+    parent: Object,
+    schemas: Object,
+    value: number | string | boolean
+}
+
+const Literal = ({value, rule, actions, parent, leftsiblings, schemas, callee} : Props) => {
     const parentNew = parent.push('value')
     const operator = callee && callee.name ? callee.name : ''
     const hasEmptyOperator = Object.keys(EMPTY_OPERATORS).includes(operator)
@@ -28,6 +40,7 @@ const Literal = ({value, rule, actions, parent, leftsiblings, schemas, callee}) 
                 actions={actions}
                 schemas={schemas}
                 leftsiblings={leftsiblings}
+                className="LiteralWidget"
                 compact
             />
             {
@@ -37,16 +50,6 @@ const Literal = ({value, rule, actions, parent, leftsiblings, schemas, callee}) 
             }
         </span>
     )
-}
-
-Literal.propTypes = {
-    callee: PropTypes.object,
-    rule: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
-    leftsiblings: PropTypes.object.isRequired,
-    parent: PropTypes.object.isRequired,
-    schemas: PropTypes.object.isRequired,
-    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.bool]).isRequired,
 }
 
 export default Literal

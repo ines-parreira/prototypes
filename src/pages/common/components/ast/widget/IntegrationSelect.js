@@ -34,11 +34,11 @@ export default class IntegrationSelect extends Component {
         const field = fromJS({name: 'integrations'})
         let options = fromJS([])
 
-        integrations.forEach(inte => {
+        integrations.forEach((integration) => {
             options = options.push({
-                value: inte.get('id'),
-                text: inte.get('name'),
-                label: <RenderLabel field={field} value={inte}/>,
+                value: integration.get('id'),
+                text: integration.get('name'),
+                label: <RenderLabel field={field} value={integration}/>,
             })
         })
 

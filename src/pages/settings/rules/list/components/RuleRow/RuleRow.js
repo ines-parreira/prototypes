@@ -1,10 +1,13 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {Badge, Card, CardBody, Button, Popover, PopoverHeader, PopoverBody} from 'reactstrap'
+import classnames from 'classnames'
+import {Badge, Button, Popover, PopoverHeader, PopoverBody} from 'reactstrap'
 
-import ToggleButton from '../../../../common/components/ToggleButton'
+import ToggleButton from '../../../../../common/components/ToggleButton'
 
-import RuleItem from '../../detail/components/RuleItem'
+import RuleItem from '../../../detail/components/RuleItem'
+
+import * as css from './RuleRow.less'
 
 class RuleRow extends React.Component {
     state = {
@@ -45,15 +48,15 @@ class RuleRow extends React.Component {
             <tr
                 key={rule.get('id')}
                 data-id={rule.get('id')} // dragging info
-                className="draggable"
+                className={classnames('draggable', css.row)}
             >
                 <td className="smallest align-middle">
-                    <i
-                        className="fa fa-fw fa-bars fa-lg text-faded drag-handle"
-                        style={{cursor: 'move'}}
-                    />
+                    <i className={classnames('material-icons text-faded drag-handle', css.dragHandle)}>
+                        drag_handle
+                    </i>
                 </td>
-                <td className="link-full-td">
+
+                <td className={classnames('link-full-td', css['middle-column'])}>
                     <a onClick={this.props.toggleOpening}>
                         <div>
                             <span className="mr-2">
@@ -64,7 +67,7 @@ class RuleRow extends React.Component {
                                             className="ml-2"
                                             color="danger"
                                         >
-                                            <i className="fa fa-fw fa-exclamation-triangle mr-2" />
+                                            <i className="fa fa-fw fa-exclamation-triangle mr-2"/>
                                             SYSTEM
                                         </Badge>
                                     )
@@ -76,6 +79,7 @@ class RuleRow extends React.Component {
                         </div>
                     </a>
                 </td>
+
                 <td className="smallest align-middle">
                     <div id={toggleId}>
                         <ToggleButton
@@ -112,22 +116,14 @@ class RuleRow extends React.Component {
     }
 
     _renderOpened = () => {
-        const {rule, actions} = this.props
+        const {rule, actions, toggleOpening} = this.props
 
         return (
-            <tr key={rule.get('id')}>
-                <td colSpan="100">
-                    <Card>
-                        <CardBody>
-                            <RuleItem
-                                rule={rule}
-                                actions={actions}
-                                toggleOpening={this.props.toggleOpening}
-                            />
-                        </CardBody>
-                    </Card>
-                </td>
-            </tr>
+            <RuleItem
+                rule={rule}
+                actions={actions}
+                toggleOpening={toggleOpening}
+            />
         )
     }
 

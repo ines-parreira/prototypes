@@ -1,9 +1,12 @@
+// @flow
 import React from 'react'
 import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 
 import Hoverable from '../../Hoverable'
+import {computeLeftPadding} from '../utils'
 
-class AddActionOrIfStatement extends React.Component {
+
+class AddActionOrIfStatement extends React.Component<Props> {
     _addAction = () => {
         const actionNode = {
             type: 'ExpressionStatement',
@@ -75,15 +78,14 @@ class AddActionOrIfStatement extends React.Component {
     }
 
     render() {
-        const {title} = this.props
+        const {title, depth} = this.props
 
         return (
-            <UncontrolledButtonDropdown>
+            <UncontrolledButtonDropdown style={{paddingLeft: computeLeftPadding(depth)}}>
                 <DropdownToggle
-                    caret
+                    className="ControlStructureButton"
                     type="button"
-                    className="mr-1"
-                    color="info"
+                    caret
                 >
                     {title}
                 </DropdownToggle>
@@ -106,11 +108,12 @@ class AddActionOrIfStatement extends React.Component {
     }
 }
 
-AddActionOrIfStatement.propTypes = {
-    rule: React.PropTypes.object.isRequired,
-    actions: React.PropTypes.object.isRequired,
-    parent: React.PropTypes.object.isRequired,
-    title: React.PropTypes.string.isRequired,
+type Props = {
+    rule: Object,
+    actions: Object,
+    parent: Object,
+    title: string,
+    depth: number
 }
 
 AddActionOrIfStatement.contextTypes = {

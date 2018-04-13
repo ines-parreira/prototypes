@@ -15,7 +15,7 @@ describe('Action', () => {
                 'email@example.com, {{ticket.receiver.email}}, email@example.com',
                 '{{ticket.assignee_user.email}}, {{ticket.receiver.email}}, email2@example.com,'
             ]
-            valid.forEach(input => {
+            valid.forEach((input) => {
                 expect(validateEmailList(input, schemas)).toBeFalsy()
             })
         })
@@ -28,7 +28,7 @@ describe('Action', () => {
                 'email@example.com, {{ticket.created_datetime}}, email2@example.com',
                 '{{message.from_agent}}, {{ticket.receiver.email}}, email2@example.com,'
             ]
-            invalid.forEach(input => {
+            invalid.forEach((input) => {
                 expect(validateEmailList(input, schemas)).toBeTruthy()
             })
         })
@@ -61,7 +61,7 @@ describe('Action', () => {
                 bcc: 'emai@example.com'
             }]
 
-            emails.forEach(email => {
+            emails.forEach((email) => {
                 expect(validateSendEmail(email, schemas)).toEqual([])
             })
         })
@@ -77,7 +77,7 @@ describe('Action', () => {
                 bcc: 'email@example.com'
             }]
 
-            emails.forEach(email => {
+            emails.forEach((email) => {
                 const result = validateSendEmail(email, schemas)
                 expect(result).toBeInstanceOf(Array)
                 expect(result.length > 0).toBe(true)

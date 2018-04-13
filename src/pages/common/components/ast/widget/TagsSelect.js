@@ -6,10 +6,11 @@ import MultiSelectField from '../../../forms/MultiSelectField'
 import SelectField from '../../../forms/SelectField'
 
 type Props = {
-    tags?: Object,
-    value?: string,
+    tags: ?Object,
+    value: ?string,
     onChange: Function,
-    multiple?: boolean,
+    multiple: ?boolean,
+    className: ?string
 }
 
 export class TagsSelect extends Component<Props> {
@@ -29,12 +30,12 @@ export class TagsSelect extends Component<Props> {
     }
 
     render() {
-        const {multiple, tags, value} = this.props
+        const {multiple, tags, value, className} = this.props
         const style = {
             display: 'inline-block',
             verticalAlign: 'top'
         }
-        const options = tags.map(tag => {
+        const options = tags.map((tag) => {
             return {
                 label: tag.get('name'),
                 value: tag.get('name')
@@ -46,7 +47,7 @@ export class TagsSelect extends Component<Props> {
             // this component is used to select tags for `add tags` and `set tags` actions
             // in this case, these functions have a (comma separated) list of tags as a string
             if (_isString(value)) {
-                values = value.split(',').filter(value => value !== '')
+                values = value.split(',').filter((value) => value !== '')
             }
 
             return (
@@ -58,6 +59,7 @@ export class TagsSelect extends Component<Props> {
                     singular="tag"
                     style={style}
                     values={values}
+                    className={className}
                 />
             )
         }
@@ -71,6 +73,7 @@ export class TagsSelect extends Component<Props> {
                 singular="tag"
                 style={style}
                 value={values}
+                className={className}
             />
         )
     }

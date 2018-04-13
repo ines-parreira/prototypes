@@ -4,6 +4,20 @@ import {ACTION_DEFAULT_STATE} from '../../../../state/rules/constants'
 import {updateCallExpression, getObjectExpression} from '../../../../state/rules/utils'
 import {getCode, getAST, toJS, toImmutable} from '../../../../utils'
 
+
+export const BASIC_PADDING = 59
+export const PADDING_STEP = 15
+
+/**
+ * Compute the left padding of rules elements.
+ * @param depth: the nesting level of the element
+ * @returns {string}: the string to use as paddingLeft style
+ */
+export function computeLeftPadding(depth: number) {
+    return `${BASIC_PADDING + depth * PADDING_STEP}px`
+}
+
+
 /* Given a WrappingNode construct a list that contains the path of all the leaves inside the tree.
 
  Ex:

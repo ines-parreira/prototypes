@@ -134,7 +134,7 @@ export function isEmailList(string: string, delimiter: string = ','): boolean {
         addresses.pop()
     }
 
-    return addresses.every(address => isEmail(address.trim()))
+    return addresses.every((address) => isEmail(address.trim()))
 }
 
 /**

@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Literal component should display an error because the value is empty 1`] = `
+<span
+  className="Literal"
+>
+  <Widget
+    actions={
+      Object {
+        "foo": "actions",
+      }
+    }
+    className="LiteralWidget"
+    compact={true}
+    config={Object {}}
+    leftsiblings={
+      Object {
+        "foo": "leftsiblings",
+      }
+    }
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "test",
+        "value",
+      ]
+    }
+    properties={Array []}
+    rule={
+      Immutable.Map {
+        foo: "rule",
+      }
+    }
+    schemas={
+      Object {
+        "foo": "schemas",
+      }
+    }
+    value=""
+  />
+  <Errors
+    belowInput={false}
+    inline={true}
+    tag="div"
+  >
+    This field cannot be empty
+  </Errors>
+</span>
+`;
+
+exports[`Literal component should not display an error because the value is not empty 1`] = `
+<span
+  className="Literal"
+>
+  <Widget
+    actions={
+      Object {
+        "foo": "actions",
+      }
+    }
+    className="LiteralWidget"
+    compact={true}
+    config={Object {}}
+    leftsiblings={
+      Object {
+        "foo": "leftsiblings",
+      }
+    }
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "test",
+        "value",
+      ]
+    }
+    properties={Array []}
+    rule={
+      Immutable.Map {
+        foo: "rule",
+      }
+    }
+    schemas={
+      Object {
+        "foo": "schemas",
+      }
+    }
+    value="hey"
+  />
+</span>
+`;
+
+exports[`Literal component should return null because the operator is an empty operator 1`] = `null`;

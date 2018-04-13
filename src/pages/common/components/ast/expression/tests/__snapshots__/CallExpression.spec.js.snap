@@ -1,0 +1,554 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CallExpression component Action call should render 1`] = `
+<div>
+  <Action
+    actions={
+      Object {
+        "foo": "actions",
+      }
+    }
+    depth={0}
+    leftsiblings={
+      Immutable.List [
+        "actions",
+      ]
+    }
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "expression",
+        "arguments",
+        0,
+      ]
+    }
+    rule={
+      Object {
+        "foo": "rule",
+      }
+    }
+    schemas={
+      Object {
+        "foo": "schemas",
+      }
+    }
+  >
+    <ObjectExpression
+      actions={
+        Object {
+          "foo": "actions",
+        }
+      }
+      className="ActionWidget"
+      leftsiblings={
+        Immutable.List [
+          "actions",
+          undefined,
+        ]
+      }
+      parent={
+        Immutable.List [
+          "body",
+          0,
+          "expression",
+          "arguments",
+          1,
+        ]
+      }
+      rule={
+        Object {
+          "foo": "rule",
+        }
+      }
+      schemas={
+        Object {
+          "foo": "schemas",
+        }
+      }
+    />
+  </Action>
+</div>
+`;
+
+exports[`CallExpression component test condition should not render delete widget because the expression is not the only line of the test condition and the expression is not hovered 1`] = `
+<span>
+  <Expression
+    0="a"
+    actions={
+      Object {
+        "foo": "actions",
+      }
+    }
+    className="IdentifierDropdown"
+    leftsiblings={
+      Immutable.List [
+        "definitions",
+      ]
+    }
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "test",
+        "left",
+        "arguments",
+        0,
+      ]
+    }
+    rule={
+      Object {
+        "foo": "rule",
+      }
+    }
+    schemas={
+      Object {
+        "foo": "schemas",
+      }
+    }
+  />
+  <Expression
+    actions={
+      Object {
+        "foo": "actions",
+      }
+    }
+    className="OperatorDropdown"
+    leftsiblings={
+      Immutable.List [
+        "definitions",
+        "",
+        "properties",
+        "meta",
+        "operators",
+      ]
+    }
+    name="eq"
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "test",
+        "left",
+        "callee",
+      ]
+    }
+    rule={
+      Object {
+        "foo": "rule",
+      }
+    }
+    schemas={
+      Object {
+        "foo": "schemas",
+      }
+    }
+    type="Identifier"
+  />
+  <Expression
+    actions={
+      Object {
+        "foo": "actions",
+      }
+    }
+    callee={
+      Object {
+        "name": "eq",
+        "type": "Identifier",
+      }
+    }
+    leftsiblings={
+      Immutable.List [
+        "definitions",
+        "",
+        "properties",
+      ]
+    }
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "test",
+        "left",
+        "arguments",
+        1,
+      ]
+    }
+    rule={
+      Object {
+        "foo": "rule",
+      }
+    }
+    schemas={
+      Object {
+        "foo": "schemas",
+      }
+    }
+  />
+</span>
+`;
+
+exports[`CallExpression component test condition should not render delete widget because the expression is the only line of the test condition 1`] = `
+<span>
+  <Expression
+    0="a"
+    actions={
+      Object {
+        "foo": "actions",
+      }
+    }
+    className="IdentifierDropdown"
+    leftsiblings={
+      Immutable.List [
+        "definitions",
+      ]
+    }
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "test",
+        "arguments",
+        0,
+      ]
+    }
+    rule={
+      Object {
+        "foo": "rule",
+      }
+    }
+    schemas={
+      Object {
+        "foo": "schemas",
+      }
+    }
+  />
+  <Expression
+    actions={
+      Object {
+        "foo": "actions",
+      }
+    }
+    className="OperatorDropdown"
+    leftsiblings={
+      Immutable.List [
+        "definitions",
+        "",
+        "properties",
+        "meta",
+        "operators",
+      ]
+    }
+    name="eq"
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "test",
+        "callee",
+      ]
+    }
+    rule={
+      Object {
+        "foo": "rule",
+      }
+    }
+    schemas={
+      Object {
+        "foo": "schemas",
+      }
+    }
+    type="Identifier"
+  />
+  <Expression
+    actions={
+      Object {
+        "foo": "actions",
+      }
+    }
+    callee={
+      Object {
+        "name": "eq",
+        "type": "Identifier",
+      }
+    }
+    leftsiblings={
+      Immutable.List [
+        "definitions",
+        "",
+        "properties",
+      ]
+    }
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "test",
+        "arguments",
+        1,
+      ]
+    }
+    rule={
+      Object {
+        "foo": "rule",
+      }
+    }
+    schemas={
+      Object {
+        "foo": "schemas",
+      }
+    }
+  />
+</span>
+`;
+
+exports[`CallExpression component test condition should not render delete widget because the expression is the only line of the test condition 2`] = `
+<span>
+  <Expression
+    0="a"
+    actions={
+      Object {
+        "foo": "actions",
+      }
+    }
+    className="IdentifierDropdown"
+    leftsiblings={
+      Immutable.List [
+        "definitions",
+      ]
+    }
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "test",
+        "arguments",
+        0,
+      ]
+    }
+    rule={
+      Object {
+        "foo": "rule",
+      }
+    }
+    schemas={
+      Object {
+        "foo": "schemas",
+      }
+    }
+  />
+  <Expression
+    actions={
+      Object {
+        "foo": "actions",
+      }
+    }
+    className="OperatorDropdown"
+    leftsiblings={
+      Immutable.List [
+        "definitions",
+        "",
+        "properties",
+        "meta",
+        "operators",
+      ]
+    }
+    name="eq"
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "test",
+        "callee",
+      ]
+    }
+    rule={
+      Object {
+        "foo": "rule",
+      }
+    }
+    schemas={
+      Object {
+        "foo": "schemas",
+      }
+    }
+    type="Identifier"
+  />
+  <Expression
+    actions={
+      Object {
+        "foo": "actions",
+      }
+    }
+    callee={
+      Object {
+        "name": "eq",
+        "type": "Identifier",
+      }
+    }
+    leftsiblings={
+      Immutable.List [
+        "definitions",
+        "",
+        "properties",
+      ]
+    }
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "test",
+        "arguments",
+        1,
+      ]
+    }
+    rule={
+      Object {
+        "foo": "rule",
+      }
+    }
+    schemas={
+      Object {
+        "foo": "schemas",
+      }
+    }
+  />
+</span>
+`;
+
+exports[`CallExpression component test condition should render delete widget because the expression is not the only line of the test condition and the expression is hovered 1`] = `
+<span>
+  <Expression
+    0="a"
+    actions={
+      Object {
+        "foo": "actions",
+      }
+    }
+    className="IdentifierDropdown"
+    leftsiblings={
+      Immutable.List [
+        "definitions",
+      ]
+    }
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "test",
+        "left",
+        "arguments",
+        0,
+      ]
+    }
+    rule={
+      Object {
+        "foo": "rule",
+      }
+    }
+    schemas={
+      Object {
+        "foo": "schemas",
+      }
+    }
+  />
+  <Expression
+    actions={
+      Object {
+        "foo": "actions",
+      }
+    }
+    className="OperatorDropdown"
+    leftsiblings={
+      Immutable.List [
+        "definitions",
+        "",
+        "properties",
+        "meta",
+        "operators",
+      ]
+    }
+    name="eq"
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "test",
+        "left",
+        "callee",
+      ]
+    }
+    rule={
+      Object {
+        "foo": "rule",
+      }
+    }
+    schemas={
+      Object {
+        "foo": "schemas",
+      }
+    }
+    type="Identifier"
+  />
+  <Expression
+    actions={
+      Object {
+        "foo": "actions",
+      }
+    }
+    callee={
+      Object {
+        "name": "eq",
+        "type": "Identifier",
+      }
+    }
+    leftsiblings={
+      Immutable.List [
+        "definitions",
+        "",
+        "properties",
+      ]
+    }
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "test",
+        "left",
+        "arguments",
+        1,
+      ]
+    }
+    rule={
+      Object {
+        "foo": "rule",
+      }
+    }
+    schemas={
+      Object {
+        "foo": "schemas",
+      }
+    }
+  />
+  <DeleteBinaryExpression
+    actions={
+      Object {
+        "foo": "actions",
+      }
+    }
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "test",
+        "left",
+      ]
+    }
+    rule={
+      Object {
+        "foo": "rule",
+      }
+    }
+  />
+</span>
+`;

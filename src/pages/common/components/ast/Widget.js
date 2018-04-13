@@ -1,6 +1,7 @@
+// @flow
 import React from 'react'
 
-import {List} from 'immutable'
+import {List, Map} from 'immutable'
 import drop from 'lodash/drop'
 import _get from 'lodash/get'
 import _isArray from 'lodash/isArray'
@@ -8,7 +9,6 @@ import _isUndefined from 'lodash/isUndefined'
 
 import Select from './widget/ReactSelect'
 import StatusSelect from './widget/StatusSelect'
-import PrioritySelect from './widget/PrioritySelect'
 import MacroSelect from './widget/MacroSelect'
 import RequestSelect from './widget/RequestSelect'
 import AssigneeSelect from './widget/AssigneeSelect'
@@ -25,26 +25,32 @@ import {collectionOperators, deprecatedOperators, timedeltaOperators} from '../.
 import {removeSuffix} from '../../../../utils/string'
 import TimedeltaPicker from '../../forms/TimedeltaPicker'
 
-export default class Widget extends React.Component {
-    static propTypes = {
-        rule: React.PropTypes.object,
-        value: React.PropTypes.any,
-        parent: React.PropTypes.object,
-        schemas: React.PropTypes.object,
-        actions: React.PropTypes.object,
-        type: React.PropTypes.string,
-        leftsiblings: React.PropTypes.object,
-        compact: React.PropTypes.bool,
 
-        config: React.PropTypes.object,
-        properties: React.PropTypes.array,
-    }
+type Props = {
+    rule: Object,
+    value: any,
+    parent: List<*>,
+    schemas?: Object,
+    actions: Object,
+    leftsiblings?: Object,
+    config: Object,
+    properties: Array<*>,
+    className?: string,
+    compact?: boolean
+}
 
+type State = {
+    textFieldPropIndex: number,
+    textFieldParent: Array<string>
+}
+
+export default class Widget extends React.Component<Props, State> {
     static defaultProps = {
-        config: {}
+        config: {},
+        properties: []
     }
 
-    constructor(props) {
+    constructor(props: Props) {
         super(props)
         const {config, parent, properties} = props
 
@@ -52,14 +58,14 @@ export default class Widget extends React.Component {
         // We get the property of the text field if the current field is a rich field and has a text version.
         // E.g: current field is: `sendEmail.body_html`. We get `sendEmail.body_text` property
         // to automatically update its value when the html version changes.
-        if (config.widget === 'rich-field' && config.textField) {
+        if (config.widget === 'rich-field' && config.textField && properties) {
             this.state = this._getTextField(config, parent, properties)
         }
     }
 
-    _getTextField = (config, parent, properties) => {
+    _getTextField = (config: Object, parent: List<*>, properties: Array<*>) : Object => {
         const textFieldParent = parent.slice(0, -3)
-        const textFieldPropIndex = properties.findIndex(property => {
+        const textFieldPropIndex = properties.findIndex((property) => {
             return property.key.name === config.textField
         })
         return {
@@ -68,7 +74,7 @@ export default class Widget extends React.Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         const {config, parent, properties} = nextProps
         // update text field state when props changes
         if (config.widget === 'rich-field' && config.textField) {
@@ -76,42 +82,46 @@ export default class Widget extends React.Component {
         }
     }
 
-    _handleChange = (value) => {
+    _handleChange = (value: any) => {
         const {actions, parent} = this.props
 
+        let newValue = value
+
         // transform the array of string to an array of AST Literal object
-        if (_isArray(value)) {
-            value = value.map((val) => ({
+        if (_isArray(newValue)) {
+            newValue = newValue.map((val) => ({
                 type: 'Literal',
                 raw: `'${val}'`,
                 value: val
             }))
         }
 
-        return actions.modifyCodeAST(parent, value, 'UPDATE')
+        return actions.modifyCodeAST(parent, newValue, 'UPDATE')
     }
 
-    _input = (value) => {
-        const {config = {}} = this.props
+    _input = (value: any) => {
+        const {config = {}, className, compact} = this.props
 
         return (
             <InputField
+                className={className}
                 type="text"
                 label={config.name}
                 value={value}
                 onChange={this._handleChange}
                 placeholder={config.placeholder || ''}
                 required={config.required || false}
-                inline={this.props.compact || false}
+                inline={compact || false}
             />
         )
     }
 
-    _textarea = (value) => {
-        const {config = {}} = this.props
+    _textarea = (value: any) => {
+        const {config = {}, className} = this.props
 
         return (
             <InputField
+                className={className}
                 type="textarea"
                 rows="8"
                 label={config.name}
@@ -123,7 +133,7 @@ export default class Widget extends React.Component {
         )
     }
 
-    _onRichFieldChange = (editorState) => {
+    _onRichFieldChange = (editorState: Object) => {
         const contentState = editorState.getCurrentContent()
         const {actions, parent} = this.props
         const {textFieldParent} = this.state
@@ -136,7 +146,7 @@ export default class Widget extends React.Component {
         return actions.modifyCodeAST(parent, convertToHTML(contentState), 'UPDATE')
     }
 
-    _richField = (html) => {
+    _richField = (html: any) => {
         const {config = {}, properties} = this.props
         const {textFieldPropIndex} = this.state
         const value = {
@@ -158,7 +168,7 @@ export default class Widget extends React.Component {
         )
     }
 
-    _datetimeSelect = (datetime) => {
+    _datetimeSelect = (datetime: any) => {
         return (
             <div className="widget d-inline-block">
                 <DatetimePicker
@@ -169,7 +179,7 @@ export default class Widget extends React.Component {
         )
     }
 
-    _timedeltaSelect = (value) => {
+    _timedeltaSelect = (value: any) => {
         return (
             <div className="widget d-inline-block">
                 <TimedeltaPicker
@@ -180,7 +190,7 @@ export default class Widget extends React.Component {
         )
     }
 
-    _resolveLeft(left, schemas) {
+    _resolveLeft(left: List<*>, schemas: Map<*,*>) {
         // we need to figure out if the path contains '$ref' objects, then resolve them and update the path
         const path = []
         for (const item of left.toJS()) {
@@ -208,7 +218,7 @@ export default class Widget extends React.Component {
     }
 
     render() {
-        const {leftsiblings, schemas, value, rule, parent} = this.props
+        const {leftsiblings, schemas, value, rule, parent, className, config} = this.props
 
         // todo should depend on triggers (should be described in schemas)
         const rootObjects = ['ticket', 'message']
@@ -219,18 +229,17 @@ export default class Widget extends React.Component {
 
         const left = this._resolveLeft(leftsiblings, schemas)
         // widget data used for rendering
-        const widget = {
-            type: 'select',
-            value,
-            description: '',
-            options: [],
-        }
+        const widget = {}
+        widget.type = 'select'
+        widget.value = value
+        widget.description = ''
+        widget.options = []
 
         if (left.size === 1 && left.get(0) === 'definitions') {
             // we are at the root here, only allow some values
             widget.options = rootObjects
         } else if (left.last() === 'properties') {
-            // are special because they are defining the props
+            // properties are special because they are defining the props
             // that available on the top level objects: ticket, event, etc..
             const props = schemas.getIn(left).toJS()
             for (const key of Object.keys(props)) {
@@ -272,7 +281,11 @@ export default class Widget extends React.Component {
                 widget.options = operators.toJS()
             }
         } else if (left.first() === 'actions') {
-            widget.type = `${left.last()}-select`
+            if (config.widget) {
+                widget.type = config.widget
+            } else {
+                widget.type = `${left.last()}-select`
+            }
         } else {
             // all other properties
             const right = schemas.getIn(left)
@@ -306,14 +319,12 @@ export default class Widget extends React.Component {
             widget.type = 'timedelta-select'
         }
 
-        const widgetType = this.props.type || widget.type
-
-        switch (widgetType) {
+        switch (widget.type) {
             case 'multi-select':
                 return <MultiSelectField
+                    className={className}
                     style={{
                         display: 'inline-block',
-                        verticalAlign: 'top',
                         paddingBottom: '2px'
                     }}
                     values={widget.value}
@@ -323,27 +334,26 @@ export default class Widget extends React.Component {
                     onChange={this._handleChange}
                 />
             case 'select':
-                return <Select {...widget} onChange={this._handleChange}/>
+                return <Select {...widget} className={className} onChange={this._handleChange}/>
             case 'status-select':
-                return <StatusSelect {...widget} onChange={this._handleChange}/>
+                return <StatusSelect {...widget} className={className} onChange={this._handleChange}/>
             case 'tags-select':
                 return (
                     <TagsSelect
                         {...widget}
+                        className={className}
                         onChange={this._handleChange}
                         multiple={_isUndefined(widget.multiple) ? true : widget.multiple}
                     />
                 )
-            case 'priority-select':
-                return <PrioritySelect {...widget} onChange={this._handleChange}/>
             case 'macro-select':
-                return <MacroSelect {...widget} onChange={this._handleChange}/>
+                return <MacroSelect {...widget} className={className} onChange={this._handleChange}/>
             case 'request-select':
-                return <RequestSelect {...widget} onChange={this._handleChange}/>
+                return <RequestSelect {...widget} className={className} onChange={this._handleChange}/>
             case 'assignee_user-select':
-                return <AssigneeSelect {...widget} onChange={this._handleChange}/>
+                return <AssigneeSelect {...widget} className={className} onChange={this._handleChange}/>
             case 'integration-select':
-                return <IntegrationSelect {...widget} onChange={this._handleChange}/>
+                return <IntegrationSelect {...widget} className={className} onChange={this._handleChange}/>
             case 'textarea':
                 return this._textarea(value)
             case 'rich-field':

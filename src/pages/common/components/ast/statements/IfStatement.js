@@ -3,173 +3,201 @@ import React from 'react'
 import {AddActionOrIfStatement, AddLogicalCondition, DeleteBlockStatementItem} from '../operations'
 import Expression from '../expression/Expression'
 import Statement from './Statement'
+import {computeLeftPadding} from '../utils'
+import classnames from 'classnames'
 
 /**
  * Test Expression of the IF Statement
- *
- * @param actions
- * @param rule
- * @param parent
- * @param schemas
- * @param test
- * @constructor
  */
-let TestExpression = ({actions, rule, parent, schemas, test}) => (
-    <div className="test">
-        <DeleteBlockStatementItem
-            parent={parent}
-            rule={rule}
-            actions={actions}
-        />
-        <AddLogicalCondition
-            actions={actions}
-            rule={rule}
-            parent={parent.push('test')}
-            title="IF"
-            hoverableClassName="d-inline-flex"
-        />
-        <Expression
-            {...test}
-            parent={parent.push('test')}
-            rule={rule}
-            actions={actions}
-            schemas={schemas}
-        />
-    </div>
-)
+class TestExpression extends React.Component<TestExpressionProps> {
+    render() {
+        const {actions, rule, parent, schemas, test, depth, isHovered, onMouseEnter, onMouseLeave} = this.props
 
-TestExpression.propTypes = {
-    actions: React.PropTypes.object.isRequired,
-    rule: React.PropTypes.object.isRequired,
-    parent: React.PropTypes.object.isRequired,
-    schemas: React.PropTypes.object.isRequired,
-    test: React.PropTypes.object.isRequired,
+        return (
+            <div
+                className="test"
+                style={{paddingLeft: computeLeftPadding(depth)}}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
+            >
+                <DeleteBlockStatementItem
+                    parent={parent}
+                    rule={rule}
+                    actions={actions}
+                    isDisplayed={isHovered}
+                />
+                <AddLogicalCondition
+                    actions={actions}
+                    rule={rule}
+                    parent={parent.push('test')}
+                    title="IF"
+                    hoverableClassName="d-inline-flex"
+                />
+                <Expression
+                    {...test}
+                    parent={parent.push('test')}
+                    rule={rule}
+                    actions={actions}
+                    schemas={schemas}
+                    className="IdentifierDropdown"
+                />
+            </div>
+        )
+    }
+}
+
+type TestExpressionProps = {
+    actions: Object,
+    rule: Object,
+    parent: Object,
+    schemas: Object,
+    test: Object,
+    depth: number,
+    onMouseEnter: () => void,
+    onMouseLeave: () => void,
+    isHovered: boolean,
 }
 
 /**
  * Consequent Component of the IF Statement
- *
- * @param actions
- * @param consequent
- * @param rule
- * @param parent
- * @param schemas
- * @constructor
  */
-let ConsequentStatement = ({actions, consequent, rule, parent, schemas}) => (
-    <div className="consequent">
-        <AddActionOrIfStatement
-            actions={actions}
-            rule={rule}
-            parent={parent.push('consequent')}
-            title="THEN"
-            hoverableClassName="d-inline-flex"
-        />
-        <Statement
-            {...consequent}
-            parent={parent.push('consequent')}
-            rule={rule}
-            actions={actions}
-            schemas={schemas}
-        />
-    </div>
-)
+class ConsequentStatement extends React.Component<ConsequentStatementProps> {
+    render() {
+        const {actions, consequent, rule, parent, schemas, depth} = this.props
 
-ConsequentStatement.propTypes = {
-    rule: React.PropTypes.object.isRequired,
-    actions: React.PropTypes.object.isRequired,
-    consequent: React.PropTypes.object.isRequired,
-    parent: React.PropTypes.object.isRequired,
-    schemas: React.PropTypes.object.isRequired,
+        return (
+            <div className="consequent">
+                <AddActionOrIfStatement
+                    actions={actions}
+                    rule={rule}
+                    parent={parent.push('consequent')}
+                    title="THEN"
+                    hoverableClassName="d-inline-flex"
+                    depth={depth}
+                />
+                <Statement
+                    {...consequent}
+                    parent={parent.push('consequent')}
+                    rule={rule}
+                    actions={actions}
+                    schemas={schemas}
+                    depth={depth + 1}
+                />
+            </div>
+        )
+    }
+}
+
+type ConsequentStatementProps = {
+    rule: Object,
+    actions: Object,
+    consequent: Object,
+    parent: Object,
+    schemas: Object,
+    depth: number,
 }
 
 /**
  * Alternate Component of the IF Statement
- *
- * @param actions
- * @param alternate
- * @param rule
- * @param parent
- * @param schemas
- * @constructor
  */
-let AlternateStatement = ({actions, alternate, rule, parent, schemas}) => (
-    <div className="alternate">
-        <AddActionOrIfStatement
-            actions={actions}
-            rule={rule}
-            parent={parent.push('alternate')}
-            title="ELSE"
-            hoverableClassName="d-inline-flex"
-        />
-        <Statement
-            {...alternate}
-            parent={parent.push('alternate')}
-            rule={rule}
-            actions={actions}
-            schemas={schemas}
-        />
-    </div>
-)
 
-AlternateStatement.propTypes = {
-    rule: React.PropTypes.object.isRequired,
-    actions: React.PropTypes.object.isRequired,
-    alternate: React.PropTypes.object.isRequired,
-    parent: React.PropTypes.object.isRequired,
-    schemas: React.PropTypes.object.isRequired,
+class AlternateStatement extends React.Component<AlternateStatementProps> {
+    render() {
+        const {actions, alternate, rule, parent, schemas, depth} = this.props
+
+        return (
+            <div className="alternate">
+                <AddActionOrIfStatement
+                    actions={actions}
+                    rule={rule}
+                    parent={parent.push('alternate')}
+                    title="ELSE"
+                    hoverableClassName="d-inline-flex"
+                    depth={depth}
+                />
+                <Statement
+                    {...alternate}
+                    parent={parent.push('alternate')}
+                    rule={rule}
+                    actions={actions}
+                    schemas={schemas}
+                    depth={depth + 1}
+                />
+            </div>
+        )
+    }
 }
+
+type AlternateStatementProps = {
+    rule: Object,
+    actions: Object,
+    alternate: Object,
+    parent: Object,
+    schemas: Object,
+    depth: number,
+}
+
+
 
 /**
  * IF Statement Component
- *
- * @param actions
- * @param alternate {Statement}
- * @param consequent {Statement}
- * @param rule
- * @param parent
- * @param schemas
- * @param test {Expression}
- * @constructor
  */
-const IfStatement = ({actions, alternate, consequent, rule, parent, schemas, test}) => {
-    const _alternate = alternate || {type: 'BlockStatement', body: []}
 
-    return (
-        <div className="IfStatement">
-            <TestExpression
-                actions={actions}
-                rule={rule}
-                parent={parent}
-                schemas={schemas}
-                test={test}
-            />
-            <ConsequentStatement
-                actions={actions}
-                consequent={consequent}
-                rule={rule}
-                parent={parent}
-                schemas={schemas}
-            />
-            <AlternateStatement
-                actions={actions}
-                alternate={_alternate}
-                rule={rule}
-                parent={parent}
-                schemas={schemas}
-            />
-        </div>
-    )
+type IfStatementProps = {
+    rule: ?Object,
+    test: ?Object,
+    consequent: ?Object,
+    alternate: ?Object,
+    parent: ?Object,
+    schemas: ?Object,
+    actions: ?Object,
+    depth: number,
 }
 
-IfStatement.propTypes = {
-    rule: React.PropTypes.object,
-    test: React.PropTypes.object,
-    consequent: React.PropTypes.object,
-    alternate: React.PropTypes.object,
-    parent: React.PropTypes.object,
-    schemas: React.PropTypes.object,
-    actions: React.PropTypes.object,
+type IfStatementState = {
+    isHovered: boolean
 }
 
-export default IfStatement
+export default class IfStatement extends React.Component<IfStatementProps, IfStatementState> {
+    state = {
+        isHovered: false
+    }
+
+    render() {
+        const {actions, alternate, consequent, rule, parent, schemas, test, depth} = this.props
+        const {isHovered} = this.state
+        const _alternate = alternate || {type: 'BlockStatement', body: []}
+
+        return (
+            <div className={classnames('IfStatement', {hovered: isHovered})}>
+                <TestExpression
+                    actions={actions}
+                    rule={rule}
+                    parent={parent}
+                    schemas={schemas}
+                    test={test}
+                    depth={depth}
+                    onMouseEnter={() => this.setState({isHovered: true})}
+                    onMouseLeave={() => this.setState({isHovered: false})}
+                    isHovered={isHovered}
+                />
+                <ConsequentStatement
+                    actions={actions}
+                    consequent={consequent}
+                    rule={rule}
+                    parent={parent}
+                    schemas={schemas}
+                    depth={depth}
+                />
+                <AlternateStatement
+                    actions={actions}
+                    alternate={_alternate}
+                    rule={rule}
+                    parent={parent}
+                    schemas={schemas}
+                    depth={depth}
+                />
+            </div>
+        )
+    }
+}

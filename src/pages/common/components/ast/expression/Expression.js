@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 
 import LogicalExpression from './LogicalExpression'
@@ -10,7 +11,12 @@ import ArrayExpression from './ArrayExpression'
 import ObjectExpression from './ObjectExpression'
 import UnknownSyntax from '../UnknownSyntax'
 
-class Expression extends React.Component {
+
+type Props = {
+    type: string
+}
+
+export default class Expression extends React.Component<Props> {
 
     types = {
         BinaryExpression,
@@ -29,9 +35,3 @@ class Expression extends React.Component {
     }
 
 }
-
-Expression.propTypes = {
-    type: React.PropTypes.string.isRequired,
-}
-
-export default Expression

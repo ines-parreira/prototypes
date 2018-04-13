@@ -2,16 +2,16 @@
 import {fromJS} from 'immutable'
 
 export const events = fromJS([{
-    label: 'Ticket created',
+    label: 'ticket created',
     value: 'ticket-created',
 }, {
-    label: 'Ticket updated',
+    label: 'ticket updated',
     value: 'ticket-updated',
 }, {
-    label: 'Ticket assigned',
+    label: 'ticket assigned',
     value: 'ticket-assigned',
 }, {
-    label: 'New message in ticket',
+    label: 'new message in ticket',
     value: 'ticket-message-created',
 }])
 

@@ -1,10 +1,20 @@
+// @flow
 import React from 'react'
+import type {Map} from 'immutable'
 import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 
 import {actionsConfig} from './Action'
 
-class ActionSelect extends React.Component {
-    _handleClick = (value) => {
+
+type Props = {
+    rule: Map<*,*>,
+    actions: Object,
+    parent: Object,
+    value: string,
+}
+
+export default class ActionSelect extends React.Component<Props> {
+    _handleClick = (value: string) => {
         const {actions, parent} = this.props
         actions.modifyCodeAST(parent, value, 'UPDATE')
     }
@@ -16,12 +26,11 @@ class ActionSelect extends React.Component {
         const label = selectedActionName || value || 'Select action'
 
         return (
-            <UncontrolledButtonDropdown>
+            <UncontrolledButtonDropdown className="ActionSelect">
                 <DropdownToggle
-                    caret
                     className="mr-1"
-                    color="success"
                     type="button"
+                    caret
                 >
                     {label}
                 </DropdownToggle>
@@ -51,12 +60,3 @@ class ActionSelect extends React.Component {
     }
 
 }
-
-ActionSelect.propTypes = {
-    rule: React.PropTypes.object.isRequired,
-    actions: React.PropTypes.object.isRequired,
-    parent: React.PropTypes.object.isRequired,
-    value: React.PropTypes.string,
-}
-
-export default ActionSelect

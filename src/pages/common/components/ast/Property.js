@@ -1,6 +1,9 @@
+// @flow
 import React from 'react'
 import classnames from 'classnames'
 import _isFunction from 'lodash/isFunction'
+
+import type {List} from 'immutable'
 
 import Widget from './Widget'
 import Errors from './Errors'
@@ -13,16 +16,18 @@ import Errors from './Errors'
  kind: "init" | "get" | "set";
  }
  */
-export default class Property extends React.Component {
-    static propTypes = {
-        compact: React.PropTypes.bool.isRequired,
-        parent: React.PropTypes.object.isRequired,
-        schemas: React.PropTypes.object.isRequired,
-        theKey: React.PropTypes.object.isRequired,
-        value: React.PropTypes.object.isRequired,
-        config: React.PropTypes.object,
-    }
+type Props = {
+    compact: boolean,
+    parent: List<*>,
+    schemas: Object,
+    theKey: Object,
+    value: Object,
+    config?: Object,
+    actions: Object,
+    rule: Object
+}
 
+export default class Property extends React.Component<Props> {
     static defaultProps = {
         compact: false,
     }
@@ -45,10 +50,12 @@ export default class Property extends React.Component {
                 <Widget
                     {...this.props}
                     value={value.value}
-                    type={config.widget}
+                    config={config}
                     parent={parent.push('value', 'value')}
                 />
-                <Errors belowInput>{errors}</Errors>
+                {
+                    errors ? <Errors belowInput>{errors}</Errors> : null
+                }
             </div>
         )
     }

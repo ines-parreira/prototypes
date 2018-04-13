@@ -1,0 +1,29 @@
+@import '~css/new/colors';
+
+:local {
+  .row {
+    &:first-child {
+      box-shadow: inset 0 -1px 0 0 @darkQuartz2, inset 0 1px 0 0 @darkQuartz2;
+    }
+
+    box-shadow: inset 0 -1px 0 0 @darkQuartz2;
+
+    .middle-column {
+      cursor: pointer;
+    }
+
+    &:hover {
+      background: @quartz !important;
+    }
+
+    td {
+      border: none;
+    }
+  }
+
+  .dragHandle {
+    font-size: large;
+    margin-left: 10px;
+    cursor: move;
+  }
+}

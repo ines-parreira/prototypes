@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button} from 'reactstrap'
+import type {Map, List} from 'immutable'
 
 import Widget from './Widget'
 
@@ -9,45 +9,33 @@ import Widget from './Widget'
  name: string;
  }
  */
-const Identifier = ({name, parent, rule, actions, schemas, leftsiblings}) => {
-    const parentNew = parent.push('name')
 
-    switch (name) {
-        case 'Action':
-            return (
-                <Button
-                    type="button"
-                    color="warning"
-                    className="d-inline"
-                >
-                    Take action
-                </Button>
-            )
-        case 'list_of_actions':
-            return <span />
-        default:
-            return (
-                <span className="Identifier">
-                    <Widget
-                        value={name}
-                        parent={parentNew}
-                        rule={rule}
-                        actions={actions}
-                        leftsiblings={leftsiblings}
-                        schemas={schemas}
-                    />
-                </span>
-            )
-    }
+type Props = {
+    rule: Map<*,*>,
+    actions: Object,
+    leftsiblings: Object,
+    name: string,
+    parent: List<*>,
+    schemas: Object,
+    className?: string
 }
 
-Identifier.propTypes = {
-    rule: React.PropTypes.object.isRequired,
-    actions: React.PropTypes.object.isRequired,
-    leftsiblings: React.PropTypes.object.isRequired,
-    name: React.PropTypes.string.isRequired,
-    parent: React.PropTypes.object.isRequired,
-    schemas: React.PropTypes.object.isRequired,
+const Identifier = ({name, parent, rule, actions, schemas, leftsiblings, className} : Props) => {
+    const parentNew = parent.push('name')
+
+    return (
+        <span className="Identifier">
+            <Widget
+                className={className}
+                value={name}
+                parent={parentNew}
+                rule={rule}
+                actions={actions}
+                leftsiblings={leftsiblings}
+                schemas={schemas}
+            />
+        </span>
+    )
 }
 
 export default Identifier

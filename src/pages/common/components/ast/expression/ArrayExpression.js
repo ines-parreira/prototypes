@@ -1,22 +1,24 @@
-import React, {Component, PropTypes} from 'react'
+// @flow
+import React from 'react'
 
 import Errors from '../Errors'
 import Widget from '../Widget'
 
-export default class ArrayExpression extends Component {
-    static propTypes = {
-        actions: PropTypes.object.isRequired,
-        elements: PropTypes.array.isRequired,
-        leftsiblings: PropTypes.object.isRequired,
-        parent: PropTypes.object.isRequired,
-        rule: PropTypes.object.isRequired,
-        schemas: PropTypes.object.isRequired,
-    }
 
+type Props = {
+    actions: Object,
+    elements: Array<*>,
+    leftsiblings: Object,
+    parent: Object,
+    rule: Object,
+    schemas: Object
+}
+
+export default class ArrayExpression extends React.Component<Props> {
     render() {
         const {actions, elements, leftsiblings, parent, rule, schemas} = this.props
         const parentNew = parent.push('elements')
-        const value = elements.filter(elem => ![undefined, null, ''].includes(elem.value)).map(elem => elem.value)
+        const value = elements.filter((elem) => ![undefined, null, ''].includes(elem.value)).map((elem) => elem.value)
 
         return (
             <span className="Literal">
@@ -27,6 +29,7 @@ export default class ArrayExpression extends Component {
                     actions={actions}
                     schemas={schemas}
                     leftsiblings={leftsiblings}
+                    className="LiteralWidget"
                     compact
                 />
                 {value.length === 0 && (

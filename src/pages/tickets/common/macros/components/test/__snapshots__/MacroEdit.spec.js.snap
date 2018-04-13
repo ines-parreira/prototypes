@@ -38,12 +38,12 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
           value="Pizza Pepperoni"
         >
           <FormGroup
-            className="required"
+            className="InputField required"
             color=""
             tag="div"
           >
             <div
-              className="required form-group"
+              className="InputField required form-group"
               color=""
             >
               <div

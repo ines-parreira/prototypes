@@ -117,8 +117,6 @@ export default class FacebookIntegrationDetail extends React.Component {
             return <Loader />
         }
 
-        console.log('reload')
-
         return (
             <div className="full-width">
                 <PageHeader title={(

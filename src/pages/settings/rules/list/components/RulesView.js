@@ -12,7 +12,7 @@ import Modal from '../../../../common/components/Modal'
 import PageHeader from '../../../../common/components/PageHeader'
 
 import RuleForm from './RuleForm'
-import RuleRow from './RuleRow'
+import RuleRow from './RuleRow/RuleRow'
 import ReactSortable from '../../../../common/components/dragging/ReactSortable'
 import {getAST, getCode} from '../../../../../utils'
 
@@ -88,64 +88,72 @@ export default class RulesView extends React.Component {
                 <Container fluid className="page-container">
                     <div className="mb-3">
                         <p>
-                            Rules provide a way to control the behavior of Gorgias during certain events or perform periodic
-                            tasks.
+                            Rules provide a way to automatically perform actions on tickets, like tagging, assigning{' '}
+                            or even responding.
                         </p>
+
                         <p>
-                            For example you can automatically add a 'refund' tag on a ticket if the subject contains
-                            the text 'refund' or send a satisfaction survey after the ticket was closed for more than 48h.
+                            Learn more about how to setup rules{' '}
+                            <a
+                                href="https://docs.gorgias.io/tickets/rules"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                            >
+                                in our docs
+                            </a>.
                         </p>
+
                         <p>
                             Rules are going to be executed in the order they are sorted by below.
                         </p>
                     </div>
-
-                    {
-                        !rules.isEmpty() && (
-                            <div className="rule-category">
-                                <Table hover>
-                                    <ReactSortable
-                                        tag="tbody"
-                                        options={{
-                                            sort: true,
-                                            draggable: '.draggable',
-                                            handle: '.drag-handle',
-                                            animation: 150,
-                                        }}
-                                        onChange={this._updateOrder}
-                                    >
-                                        {
-                                            rules.map((rule, i) => {
-                                                const id = rule.get('id')
-
-                                                return (
-                                                    <RuleRow
-                                                        actions={actions}
-                                                        key={i}
-                                                        rule={rule}
-                                                        toggleOpening={() => this._toggleRuleOpening(id)}
-                                                        isOpen={this.state.openedRules.includes(id)}
-                                                    />
-                                                )
-                                            }).toList()
-                                        }
-                                    </ReactSortable>
-                                </Table>
-                            </div>
-                        )
-                    }
-
-                    <Modal
-                        header="Create new rule"
-                        isOpen={this.state.showForm}
-                        onClose={this._hideForm}
-                    >
-                        <RuleForm
-                            onSubmit={this._handleSubmit}
-                            onCancel={this._hideForm}
-                        />
-                    </Modal>
                 </Container>
+
+                {
+                    !rules.isEmpty() && (
+                        <div className="rule-category">
+                            <Table hover>
+                                <ReactSortable
+                                    tag="tbody"
+                                    options={{
+                                        sort: true,
+                                        draggable: '.draggable',
+                                        handle: '.drag-handle',
+                                        animation: 150,
+                                    }}
+                                    onChange={this._updateOrder}
+                                >
+                                    {
+                                        rules.map((rule, i) => {
+                                            const id = rule.get('id')
+
+                                            return (
+                                                <RuleRow
+                                                    actions={actions}
+                                                    key={i}
+                                                    rule={rule}
+                                                    toggleOpening={() => this._toggleRuleOpening(id)}
+                                                    isOpen={this.state.openedRules.includes(id)}
+                                                />
+                                            )
+                                        }).toList()
+                                    }
+                                </ReactSortable>
+                            </Table>
+                        </div>
+                    )
+                }
+
+                <Modal
+                    header="Create new rule"
+                    isOpen={this.state.showForm}
+                    onClose={this._hideForm}
+                >
+                    <RuleForm
+                        onSubmit={this._handleSubmit}
+                        onCancel={this._hideForm}
+                    />
+                </Modal>
             </div>
         )
     }

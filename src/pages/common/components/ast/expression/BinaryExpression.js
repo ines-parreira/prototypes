@@ -35,6 +35,7 @@ const BinaryExpression = ({ operator, left, right, rule, actions, schemas, paren
                     rule={rule}
                     actions={actions}
                     leftsiblings={leftsiblings}
+                    className="IdentifierDropdown"
                 />
             </span>
             <span className="operator">
@@ -45,6 +46,7 @@ const BinaryExpression = ({ operator, left, right, rule, actions, schemas, paren
                     actions={actions}
                     schemas={schemas}
                     leftsiblings={leftsiblings2}
+                    className="OperatorDropdown"
                 />
             </span>
             <span className="right">
@@ -55,6 +57,7 @@ const BinaryExpression = ({ operator, left, right, rule, actions, schemas, paren
                     actions={actions}
                     schemas={schemas}
                     leftsiblings={leftsiblings3}
+                    className="IdentifierDropdown"
                 />
             </span>
         </span>

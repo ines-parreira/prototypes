@@ -115,35 +115,33 @@ exports[`SelectField should render a select input with custom props 1`] = `
       data-toggle="dropdown"
       tag="div"
     >
-      <div>
-        <div
-          className="select dropdown-toggle"
-          onClick={[Function]}
+      <div
+        className="select dropdown-toggle"
+        onClick={[Function]}
+      >
+        <span
+          className="label"
+          style={
+            Object {
+              "minWidth": 10,
+              "opacity": 1,
+            }
+          }
         >
-          <span
-            className="label"
-            style={
-              Object {
-                "minWidth": 10,
-                "opacity": 1,
-              }
+          First
+        </span>
+        <input
+          className="input"
+          onChange={[Function]}
+          onKeyDown={[Function]}
+          style={
+            Object {
+              "minWidth": 10,
             }
-          >
-            First
-          </span>
-          <input
-            className="input"
-            onChange={[Function]}
-            onKeyDown={[Function]}
-            style={
-              Object {
-                "minWidth": 10,
-              }
-            }
-            type="text"
-            value=""
-          />
-        </div>
+          }
+          type="text"
+          value=""
+        />
       </div>
     </DropdownToggle>
     <DropdownMenu
@@ -180,35 +178,33 @@ exports[`SelectField should render a select input with default props 1`] = `
       data-toggle="dropdown"
       tag="div"
     >
-      <div>
-        <div
-          className="select dropdown-toggle"
-          onClick={[Function]}
+      <div
+        className="select dropdown-toggle"
+        onClick={[Function]}
+      >
+        <span
+          className="label placeholder"
+          style={
+            Object {
+              "minWidth": 10,
+              "opacity": 1,
+            }
+          }
         >
-          <span
-            className="label placeholder"
-            style={
-              Object {
-                "minWidth": 10,
-                "opacity": 1,
-              }
+          Select an option
+        </span>
+        <input
+          className="input"
+          onChange={[Function]}
+          onKeyDown={[Function]}
+          style={
+            Object {
+              "minWidth": 10,
             }
-          >
-            Select an option
-          </span>
-          <input
-            className="input"
-            onChange={[Function]}
-            onKeyDown={[Function]}
-            style={
-              Object {
-                "minWidth": 10,
-              }
-            }
-            type="text"
-            value=""
-          />
-        </div>
+          }
+          type="text"
+          value=""
+        />
       </div>
     </DropdownToggle>
     <DropdownMenu

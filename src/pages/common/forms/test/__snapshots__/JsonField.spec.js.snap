@@ -2,7 +2,7 @@
 
 exports[`JsonField display invalid message 1`] = `
 <FormGroup
-  className=""
+  className="InputField"
   color=""
   tag="div"
 >
@@ -42,12 +42,12 @@ exports[`JsonField should render input 1`] = `
   value="value"
 >
   <FormGroup
-    className=""
+    className="InputField"
     color=""
     tag="div"
   >
     <div
-      className="form-group"
+      className="InputField form-group"
       color=""
     >
       <div

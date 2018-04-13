@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Expression component should render UnknownSyntax because the passed type is invalid, and pass all props to child 1`] = `
+<UnknownSyntax
+  foo="bar"
+  type="unknownType"
+/>
+`;
+
+exports[`Expression component should the valid Expression component matching the passed type because it is a valid one 1`] = `
+<Literal
+  foo="bar"
+  type="Literal"
+/>
+`;

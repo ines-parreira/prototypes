@@ -72,8 +72,6 @@ export default class ConfirmButton extends React.Component<Props, State> {
             }
         }
 
-        console.log(this.props.skip)
-
         if (this.props.skip) {
             return this.props.confirm()
         }

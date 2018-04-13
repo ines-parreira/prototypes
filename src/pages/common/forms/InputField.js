@@ -21,11 +21,11 @@ export default class InputField extends FormField {
         inline: PropTypes.bool,
         placeholder: PropTypes.node,
         type: PropTypes.string.isRequired,
-        rightAddon: PropTypes.string
+        rightAddon: PropTypes.string,
     }, FormField.propTypes)
 
     static defaultProps = {
-        type: 'text',
+        type: 'text'
     }
 
     componentWillMount() {
@@ -52,6 +52,7 @@ export default class InputField extends FormField {
             label, // eslint-disable-line
             name, // eslint-disable-line
             onChange, // eslint-disable-line
+            className, // eslint-disable-line
             ...rest,
         } = this.props
 
@@ -78,6 +79,7 @@ export default class InputField extends FormField {
             label,
             rightAddon,
             help,
+            className,
         } = this.props
 
         const color = error ? 'danger' : ''
@@ -93,9 +95,9 @@ export default class InputField extends FormField {
 
         return (
             <FormGroup
-                className={classnames({
+                className={classnames('InputField', className, {
                     [css.required]: required,
-                    'd-inline-block': inline,
+                    'd-inline-block': inline
                 })}
                 color={color}
             >

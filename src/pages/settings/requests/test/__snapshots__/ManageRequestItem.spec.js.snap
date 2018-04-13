@@ -114,12 +114,12 @@ exports[`ManageRequestItem component should display a selected request 1`] = `
               value="b"
             >
               <FormGroup
-                className="required"
+                className="InputField required"
                 color=""
                 tag="div"
               >
                 <div
-                  className="required form-group"
+                  className="InputField required form-group"
                   color=""
                 >
                   <Label
@@ -189,12 +189,12 @@ exports[`ManageRequestItem component should display a selected request 1`] = `
               type="textarea"
             >
               <FormGroup
-                className="required"
+                className="InputField required"
                 color=""
                 tag="div"
               >
                 <div
-                  className="required form-group"
+                  className="InputField required form-group"
                   color=""
                 >
                   <Label
@@ -389,12 +389,12 @@ exports[`ManageRequestItem component should display empty 1`] = `
               value=""
             >
               <FormGroup
-                className="required"
+                className="InputField required"
                 color=""
                 tag="div"
               >
                 <div
-                  className="required form-group"
+                  className="InputField required form-group"
                   color=""
                 >
                   <Label
@@ -465,12 +465,12 @@ exports[`ManageRequestItem component should display empty 1`] = `
               value=""
             >
               <FormGroup
-                className="required"
+                className="InputField required"
                 color=""
                 tag="div"
               >
                 <div
-                  className="required form-group"
+                  className="InputField required form-group"
                   color=""
                 >
                   <Label

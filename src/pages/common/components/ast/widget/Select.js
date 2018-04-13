@@ -1,10 +1,16 @@
-import React, {PropTypes} from 'react'
-
+// @flow
+import React from 'react'
 import {List, Map, fromJS} from 'immutable'
-
 import InputField from '../../../forms/InputField'
 
-class Select extends React.Component {
+
+type Props = {
+    onChange: () => void,
+    options: Array<*> | List<*>,
+    value: any
+}
+
+export default class Select extends React.Component<Props> {
     _getOptions = () => {
         const {options} = this.props
 
@@ -16,7 +22,7 @@ class Select extends React.Component {
 
                 if (!immutableOptions.isEmpty() && Map.isMap(immutableOptions.get(0))) {
                     // if options is of format: [{value: v, label: l}, {value: v, label: l}]
-                    immutableOptions.map(option => _options.push(option.toJS()))
+                    immutableOptions.map((option) => _options.push(option.toJS()))
                 } else {
                     // if options is of format: [value, value, value]
                     immutableOptions.map((option) => _options.push({value: option, label: option}))
@@ -28,7 +34,7 @@ class Select extends React.Component {
     }
 
     render() {
-        const {className, onChange, value} = this.props
+        const {onChange, value} = this.props
         const options = this._getOptions()
 
         return (
@@ -36,7 +42,6 @@ class Select extends React.Component {
                 type="select"
                 value={value}
                 onChange={onChange}
-                className={className}
                 inline
             >
                 {
@@ -52,14 +57,4 @@ class Select extends React.Component {
             </InputField>
         )
     }
-
 }
-
-Select.propTypes = {
-    className: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
-    options: PropTypes.any.isRequired,
-    value: PropTypes.any,
-}
-
-export default Select

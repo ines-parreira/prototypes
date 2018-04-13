@@ -72,7 +72,7 @@ export class RequestSelect extends React.Component<Props, State> {
         return (
             <Select
                 value={value}
-                onChange={(value) => onChange(Number.parseInt(value))}
+                onChange={(value) => onChange(parseInt(value))}
                 options={options.toJS()}
             />
         )

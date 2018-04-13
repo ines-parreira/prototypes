@@ -38,6 +38,7 @@ const MemberExpression = ({object, property, rule, actions, parent, leftsiblings
                 actions={actions}
                 schemas={schemas}
                 leftsiblings={leftsiblings}
+                className="IdentifierDropdown"
             />
             <Expression
                 {...property}
@@ -46,6 +47,7 @@ const MemberExpression = ({object, property, rule, actions, parent, leftsiblings
                 actions={actions}
                 leftsiblings={left}
                 schemas={schemas}
+                className="IdentifierDropdown"
             />
         </span>
     )

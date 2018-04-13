@@ -1,48 +1,61 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {fromJS} from 'immutable'
+import {fromJS, List} from 'immutable'
 import {Input} from 'reactstrap'
 
 import {getActionTemplate} from './../../../../../utils'
 
-import Select from './Select'
+import Select from './ReactSelect'
 
 import * as macroActions from './../../../../../state/macro/actions'
 import {getMacros} from './../../../../../state/macro/selectors'
 
 
-class MacroSelect extends React.Component {
+type Props = {
+    actions: Object,
+    onChange: (any) => void,
+    value: string,
+    macros: Object,
+    className: ?string
+}
+
+class MacroSelect extends React.Component<Props> {
+    _selectFirstOption = (value: string, props: Props) => {
+        if (!value && !props.macros.isEmpty()) {
+            const firstOption = this._getOptions(props.macros).first()
+            props.onChange(firstOption.get('value'))
+        }
+    }
+
     componentDidMount() {
-        const {actions, macros} = this.props
+        const {actions, macros, value} = this.props
 
         if (macros.isEmpty()) {
             actions.fetchMacros()
+        } else {
+            this._selectFirstOption(value, this.props)
         }
     }
 
     // Update the rule with the first macro when macros are fetched
     componentWillReceiveProps(nextProps) {
-        const {value, onChange} = this.props
-
-        if (!value && !nextProps.macros.isEmpty()) {
-            const firstOption = this._getOptions(nextProps.macros).first()
-            onChange(firstOption.get('value').toString())
-        }
+        this._selectFirstOption(this.props.value, nextProps)
     }
 
-    _getOptions = (macros = fromJS({})) => {
+    _getOptions = (macros = fromJS({})) : List<*> => {
         // Filter out macros with external actions
         return macros
-            .filter(macro => macro.get('actions')
-                .filter(action => getActionTemplate(action.get('name')).execution === 'back')
+            .filter((macro) => macro.get('actions')
+                .filter((action) => getActionTemplate(action.get('name')).execution === 'back')
                 .isEmpty())
-            .map(macro => fromJS({value: macro.get('id'), label: macro.get('name')}))
+            .map((macro) => fromJS({value: macro.get('id'), label: macro.get('name')}))
             .toList()
     }
 
     render() {
-        const {value, onChange, macros} = this.props
+        const {value, onChange, macros, className} = this.props
         const options = this._getOptions(macros)
 
         if (options.isEmpty()) {
@@ -57,20 +70,13 @@ class MacroSelect extends React.Component {
 
         return (
             <Select
+                className={className}
                 value={value}
                 onChange={onChange}
                 options={options.toJS()}
             />
         )
     }
-}
-
-MacroSelect.propTypes = {
-    actions: PropTypes.object,
-    onChange: PropTypes.func.isRequired,
-    value: PropTypes.string,
-
-    macros: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => ({

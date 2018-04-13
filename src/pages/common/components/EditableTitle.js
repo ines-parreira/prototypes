@@ -70,7 +70,12 @@ export default class EditableTitle extends React.Component {
     })
 
     _onChange = (e) => {
-        this.setState({value: e.target.value})
+        const value = e.target.value
+        this.setState({value})
+
+        if (this.props.onChange) {
+            this.props.onChange(value)
+        }
     }
 
     _onBlur = ({target: {value}}) => {
@@ -119,6 +124,7 @@ EditableTitle.propTypes = {
     disabled: PropTypes.bool,
     style: PropTypes.object.isRequired,
     forceEditMode: PropTypes.bool,
+    onChange: PropTypes.func
 }
 
 

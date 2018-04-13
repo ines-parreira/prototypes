@@ -2,7 +2,7 @@
 
 exports[`RichField display alert 1`] = `
 <FormGroup
-  className=""
+  className="InputField"
   color=""
   tag="div"
 >
@@ -46,7 +46,7 @@ exports[`RichField display alert 1`] = `
 
 exports[`RichField should render a MentionSuggestions component to the DOM if in internal-note mode 1`] = `
 <FormGroup
-  className=""
+  className="InputField"
   color=""
   tag="div"
 >
@@ -291,7 +291,7 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
 
 exports[`RichField should render a basic input 1`] = `
 <FormGroup
-  className=""
+  className="InputField"
   color=""
   tag="div"
 >

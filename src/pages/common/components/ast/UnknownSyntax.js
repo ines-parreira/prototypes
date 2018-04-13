@@ -1,7 +1,12 @@
+// @flow
 import React from 'react'
 import {Badge} from 'reactstrap'
 
-const UnknownSyntax = ({type}) => (
+type Props = {
+    type: string
+}
+
+const UnknownSyntax = ({type}: Props) => (
     <Badge
         className="unknownstatement"
         color="danger"
@@ -9,9 +14,5 @@ const UnknownSyntax = ({type}) => (
         Unknown {type}
     </Badge>
 )
-
-UnknownSyntax.propTypes = {
-    type: React.PropTypes.string.isRequired,
-}
 
 export default UnknownSyntax

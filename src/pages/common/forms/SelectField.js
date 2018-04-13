@@ -25,6 +25,7 @@ export default class SelectField extends Component {
         value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 
         onChange: PropTypes.func.isRequired,
+        className: PropTypes.string
     }
 
     static defaultProps = {
@@ -51,7 +52,7 @@ export default class SelectField extends Component {
 
     componentWillReceiveProps(nextProps, nextState) {
         const hasNewOptions = this.props.options.length !== nextProps.options.length ||
-            !!nextProps.options.filter(option => !this.props.options.includes(option))
+            !!nextProps.options.filter((option) => !this.props.options.includes(option))
 
         if (this.props.value !== nextProps.value || hasNewOptions) {
             this.setState({
@@ -158,9 +159,9 @@ export default class SelectField extends Component {
     }
 
     render() {
-        const {allowCustomValue, value, singular, style, placeholder} = this.props
+        const {allowCustomValue, value, singular, style, placeholder, className, options} = this.props
         const {filteredOptions, input, optionsOpen, selectedOptionIndex} = this.state
-        const selectedOption = this.props.options.find(option => option.value === value)
+        const selectedOption = options.find((option) => option.value === value)
         const hasNoFilteredOptions = filteredOptions.length === 0
         let label = selectedOption ? selectedOption.label : null
 
@@ -180,37 +181,35 @@ export default class SelectField extends Component {
                     toggle={this._toggleDropdown}
                     isOpen={optionsOpen}
                 >
-                    <DropdownToggle tag="div" data-toggle="dropdown">
-                        <div>
-                            <div
-                                className={`${css.select} dropdown-toggle`}
-                                onClick={this._toggleDropdown}
+                    <DropdownToggle tag="div" data-toggle="dropdown" className={className}>
+                        <div
+                            className={`${css.select} dropdown-toggle`}
+                            onClick={this._toggleDropdown}
+                        >
+                            <span
+                                style={{
+                                    minWidth: selectMinWidth,
+                                    // hide the label when the input is filled
+                                    // to keep the current width of the select
+                                    opacity: input ? 0 : 1
+                                }}
+                                className={classnames(css.label, {
+                                    [css.placeholder]: !label
+                                })}
                             >
-                                <span
-                                    style={{
-                                        minWidth: selectMinWidth,
-                                        // hide the label when the input is filled
-                                        // to keep the current width of the select
-                                        opacity: input ? 0 : 1
-                                    }}
-                                    className={classnames(css.label, {
-                                        [css.placeholder]: !label
-                                    })}
-                                >
-                                    {label || placeholder}
-                                </span>
-                                <input
-                                    style={{
-                                        minWidth: selectMinWidth
-                                    }}
-                                    className={css.input}
-                                    ref="input"
-                                    value={input}
-                                    onChange={this._onSearchChange}
-                                    onKeyDown={this._onSearchKeyDown}
-                                    type="text"
-                                />
-                            </div>
+                                {label || placeholder}
+                            </span>
+                            <input
+                                style={{
+                                    minWidth: selectMinWidth
+                                }}
+                                className={css.input}
+                                ref="input"
+                                value={input}
+                                onChange={this._onSearchChange}
+                                onKeyDown={this._onSearchKeyDown}
+                                type="text"
+                            />
                         </div>
                     </DropdownToggle>
                     <DropdownMenu

@@ -42,6 +42,7 @@ exports[`TimedeltaPicker component should ignore incorrect passed data and use d
     <Input
       min="0"
       onChange={[Function]}
+      required={true}
       style={
         Object {
           "width": "62px",
@@ -112,6 +113,7 @@ exports[`TimedeltaPicker component should render correct passed data 1`] = `
     <Input
       min="0"
       onChange={[Function]}
+      required={true}
       style={
         Object {
           "width": "62px",

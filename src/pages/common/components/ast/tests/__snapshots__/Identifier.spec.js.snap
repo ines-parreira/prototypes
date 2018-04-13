@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Identifier component should render 1`] = `
+<span
+  className="Identifier"
+>
+  <Widget
+    actions={
+      Object {
+        "foo": "actions",
+      }
+    }
+    className="foo"
+    config={Object {}}
+    leftsiblings={
+      Object {
+        "foo": "leftsiblings",
+      }
+    }
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "expression",
+        "name",
+      ]
+    }
+    properties={Array []}
+    rule={
+      Immutable.Map {
+        foo: "rule",
+      }
+    }
+    value="eq"
+  />
+</span>
+`;

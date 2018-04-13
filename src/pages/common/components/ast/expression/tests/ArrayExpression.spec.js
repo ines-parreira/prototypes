@@ -6,7 +6,7 @@ import ArrayExpression from '../ArrayExpression'
 describe('ast', () => {
     describe('expressions', () => {
         describe('ArrayExpression', () => {
-            it('should render component', () => {
+            it('should render component and not display any error', () => {
                 const parent = fromJS(['body', 0, 'test', 'arguments', 1])
                 const elements = [{
                     value: 'hello',
@@ -18,6 +18,23 @@ describe('ast', () => {
                         <ArrayExpression
                             actions={{}}
                             elements={elements}
+                            leftsiblings={{}}
+                            parent={parent}
+                            rule={{}}
+                            schemas={{}}
+                        />
+                    )
+                ).toMatchSnapshot()
+            })
+
+            it('should display an error because the field is empty', () => {
+                const parent = fromJS(['body', 0, 'test', 'arguments', 1])
+
+                expect(
+                    shallow(
+                        <ArrayExpression
+                            actions={{}}
+                            elements={[]}
                             leftsiblings={{}}
                             parent={parent}
                             rule={{}}

@@ -109,6 +109,7 @@ Object {
 
 exports[`MultiSelectField should render a multi select input with custom props 1`] = `
 <div
+  className="MultiSelectField"
   style={null}
 >
   <div
@@ -130,9 +131,11 @@ exports[`MultiSelectField should render a multi select input with custom props 1
       <span>
         First
         <i
-          className="fa fa-fw fa-close cursor-pointer ml-1"
+          className="material-icons ml-1"
           onClick={[Function]}
-        />
+        >
+          close
+        </i>
       </span>
     </Badge>
     <Badge
@@ -150,9 +153,11 @@ exports[`MultiSelectField should render a multi select input with custom props 1
       <span>
         Third
         <i
-          className="fa fa-fw fa-close cursor-pointer ml-1"
+          className="material-icons ml-1"
           onClick={[Function]}
-        />
+        >
+          close
+        </i>
       </span>
     </Badge>
     <div
@@ -201,6 +206,7 @@ exports[`MultiSelectField should render a multi select input with custom props 1
 
 exports[`MultiSelectField should render a select input with default props 1`] = `
 <div
+  className="MultiSelectField"
   style={null}
 >
   <div

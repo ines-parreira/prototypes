@@ -117,10 +117,9 @@ export default class AddLogicalCondition extends React.Component {
         return (
             <UncontrolledButtonDropdown>
                 <DropdownToggle
-                    caret
+                    className="ControlStructureButton"
                     type="button"
-                    color="info"
-                    className="mr-1"
+                    caret
                 >
                     {title}
                 </DropdownToggle>

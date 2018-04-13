@@ -1,0 +1,195 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ActionSelect component should render all actions for system rules 1`] = `
+<UncontrolledButtonDropdown
+  className="ActionSelect"
+>
+  <DropdownToggle
+    aria-haspopup={true}
+    caret={true}
+    className="mr-1"
+    color="secondary"
+    type="button"
+  >
+    Add tags
+  </DropdownToggle>
+  <DropdownMenu
+    flip={true}
+    tag="div"
+  >
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Deliver message
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Send email
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Reply to ticket
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Apply macro
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Add tags
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Set tags
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Set subject
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Set status
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Assign agent
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Delete ticket
+    </DropdownItem>
+  </DropdownMenu>
+</UncontrolledButtonDropdown>
+`;
+
+exports[`ActionSelect component should render all non-system actions for non-system rules 1`] = `
+<UncontrolledButtonDropdown
+  className="ActionSelect"
+>
+  <DropdownToggle
+    aria-haspopup={true}
+    caret={true}
+    className="mr-1"
+    color="secondary"
+    type="button"
+  >
+    Add tags
+  </DropdownToggle>
+  <DropdownMenu
+    flip={true}
+    tag="div"
+  >
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Send email
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Reply to ticket
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Apply macro
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Add tags
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Set tags
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Set subject
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Set status
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Assign agent
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Delete ticket
+    </DropdownItem>
+  </DropdownMenu>
+</UncontrolledButtonDropdown>
+`;
