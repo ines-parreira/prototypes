@@ -9,6 +9,7 @@ type Props = {
     actions: Object,
     parent: Object,
     isDisplayed: boolean,
+    type: string
 }
 
 export default class DeleteBlockStatementItem extends React.Component<Props> {
@@ -18,14 +19,10 @@ export default class DeleteBlockStatementItem extends React.Component<Props> {
     }
 
     render() {
-        const {isDisplayed, parent} = this.props
+        const {isDisplayed, parent, type} = this.props
         const display = isDisplayed ? 'block' : 'none'
 
-        let label = 'Delete this block'
-
-        if (parent.last() === 'expression') {
-            label = 'Delete this action'
-        }
+        let label = `Delete this ${type}`
 
         const uniqueId = parent.toJS().join('-')
 

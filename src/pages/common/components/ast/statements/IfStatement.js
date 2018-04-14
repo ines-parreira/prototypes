@@ -25,6 +25,7 @@ class TestExpression extends React.Component<TestExpressionProps> {
                     rule={rule}
                     actions={actions}
                     isDisplayed={isHovered}
+                    type="block"
                 />
                 <AddLogicalCondition
                     actions={actions}

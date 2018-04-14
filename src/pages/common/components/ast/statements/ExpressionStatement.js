@@ -30,10 +30,11 @@ class ExpressionStatement extends React.Component<Props> {
         return (
             <div className={classnames('ExpressionStatement', {hovered})}>
                 <DeleteBlockStatementItem
-                    parent={parentNew}
+                    parent={parent}
                     rule={rule}
                     actions={actions}
                     isDisplayed={hovered}
+                    type="action"
                 />
                 <Expression
                     {...expression}
