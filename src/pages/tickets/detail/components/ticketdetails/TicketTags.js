@@ -152,7 +152,7 @@ export class TicketTags extends React.Component {
             <div className="d-none d-md-inline-flex align-items-center flex-wrap ml-2">
                 {
                     ticketTags
-                        .sort((a, b) => a.get('name').toLowerCase() > b.get('name').toLowerCase() ? 1 : -1)
+                        .sort((a, b) => a.get('name').toLowerCase() > b.get('name').toLowerCase())
                         .map((tag, i) => (
                             <TagLabel
                                 key={i}

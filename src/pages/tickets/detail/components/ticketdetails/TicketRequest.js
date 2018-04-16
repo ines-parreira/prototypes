@@ -62,7 +62,7 @@ export class TicketRequest extends React.Component<Props, State> {
         const label = !request.isEmpty() ? request.get('name') : ''
 
         return (
-            <div className="d-none d-md-inline-flex align-items-center flex-wrap">
+            <div className="d-none d-md-inline-flex flex-wrap">
                 <Dropdown
                     id="ticket-request"
                     isOpen={this.state.dropdownOpen}

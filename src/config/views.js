@@ -256,6 +256,7 @@ export const views = fromJS([{
                     <div className="d-flex">
                         {
                             item.get('tags', fromJS([]))
+                                .sort((a, b) => a.get('name').toLowerCase() > b.get('name').toLowerCase())
                                 .map((tag) => (
                                     <TagLabel
                                         key={tag.get('id')}

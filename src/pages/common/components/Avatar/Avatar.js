@@ -1,10 +1,9 @@
 // @flow
 import React from 'react'
 import classnames from 'classnames'
-import _debounce from 'lodash/debounce'
 import _isEqual from 'lodash/isEqual'
 
-import {userPictureUrl} from './utils'
+import {userPicture, userPictureFromCache} from './utils'
 
 import css from './Avatar.less'
 
@@ -13,14 +12,15 @@ type Props = {
     name: string,
     size: number,
     url: string,
+    google: boolean,
     className?: string,
     style?: Object,
-    google?: boolean,
     badgeColor?: string,
 }
 
 type State = {
-    imageUrl: string
+    imageUrl: ?string,
+    isCached: boolean,
 }
 
 export default class Avatar extends React.Component<Props, State> {
@@ -36,12 +36,10 @@ export default class Avatar extends React.Component<Props, State> {
     constructor(props: Props) {
         super()
 
-        this.state = {
-            imageUrl: props.url
-        }
+        this.state = this._getDefaultState(props)
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this._setImageUrl(this.props)
     }
 
@@ -51,19 +49,37 @@ export default class Avatar extends React.Component<Props, State> {
         }
     }
 
-    _setImageUrl = _debounce((props) => {
+    _getDefaultState = (props: Props) => {
+        const cached = userPictureFromCache(props.email)
+        let imageUrl = cached.url
+        let isCached = cached.isCached
+
         if (props.url) {
-            return this.setState({imageUrl: props.url})
+            imageUrl = props.url
+            isCached = !!props.url
         }
 
-        return userPictureUrl({
+        return {
+            imageUrl,
+            isCached
+        }
+    }
+
+    _setImageUrl = (props: Props) => {
+        if (this.state.isCached) {
+            return this.setState(this._getDefaultState(props))
+        }
+
+        return userPicture({
             email: props.email,
             size: props.size,
             google: props.google
         })
-            .then((imageUrl) => this.setState({imageUrl}))
-            .catch(() => this.setState({imageUrl: ''}))
-    }, 500)
+        .then((image) => this.setState({
+            imageUrl: image.url,
+            isCached: image.isCached
+        }))
+    }
 
     _getInitials = (name: string) => {
         if (!name) {

@@ -159,7 +159,7 @@ export default class TicketHeader extends React.Component<Props, State> {
 
         return (
             <div className={classnames(css.component, className)}>
-                <div className="d-flex justify-content-between align-items-center mb-2">
+                <div className="d-flex justify-content-between mb-2">
                     <EditableTitle
                         className={css.editableTitle}
                         title={ticket.get('subject')}
@@ -306,7 +306,7 @@ export default class TicketHeader extends React.Component<Props, State> {
                             transparent
                         />
                     </div>
-                    <div className="d-inline-flex align-items-center">
+                    <div className="d-inline-flex">
                         <TicketSnooze datetime={ticket.get('snooze_datetime')}/>
                         <TicketTrash trashed={isTrashed}/>
                         <TicketSpam spam={ticket.get('spam')}/>

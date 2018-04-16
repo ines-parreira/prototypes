@@ -37,18 +37,47 @@ function getGoogleUrl(email: string) {
     })
 }
 
-export function userPictureUrl({email = '', size = 50, google = false}: userPictureParamsType = {}): Promise<string> {
-    const cleanEmail = (email || '').toLowerCase().trim()
-    if (!cleanEmail) {
-        return Promise.resolve('')
+const avatarCache = {}
+
+function cleanEmail (email): string {
+    return (email || '').toLowerCase().trim()
+}
+
+export function userPictureFromCache(email: string): {isCached: boolean, url?: string} {
+    return avatarCache[cleanEmail(email)] || {isCached: false}
+}
+
+export function userPicture({email = '', size = 50, google = false}: userPictureParamsType = {}): Promise<{
+    url: string,
+    isCached: boolean,
+}> {
+    const mail = cleanEmail(email)
+    if (!mail) {
+        return Promise.resolve({
+            url: '',
+            isCached: false
+        })
     }
 
-    return getGravatarUrl(cleanEmail, size)
+    return getGravatarUrl(mail, size)
         .catch(() => {
             if (google) {
-                return getGoogleUrl(cleanEmail)
+                return getGoogleUrl(mail)
             }
 
-            return ''
+            return Promise.reject()
+        })
+        .then((url) => {
+            // add to cache
+            avatarCache[mail] = {
+                isCached: true,
+                url,
+            }
+
+            return avatarCache[mail]
+        })
+        .catch(() => {
+            avatarCache[mail] = {isCached: true}
+            return avatarCache[mail]
         })
 }

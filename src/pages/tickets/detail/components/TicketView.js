@@ -221,9 +221,9 @@ export default class TicketView extends React.Component {
                     className={css.headerContainer}
                 >
                     <div className="d-flex">
-                        <div className={classnames(css.historyButtonContainer, 'd-none d-md-flex align-items-center')}>
-                            {
-                                !hideHistoryButton && (
+                        {
+                            !hideHistoryButton && (
+                                <div className={classnames(css.historyButtonContainer, 'd-none d-md-flex align-items-center')}>
                                     <HistoryButton
                                         isHistoryDisplayed={isHistoryDisplayed}
                                         userHistory={userHistory}
@@ -231,9 +231,9 @@ export default class TicketView extends React.Component {
                                         ticket={ticket}
                                         usersIsLoading={usersIsLoading}
                                     />
-                                )
-                            }
-                        </div>
+                                </div>
+                            )
+                        }
 
                         <TicketHeader
                             ticket={ticket}

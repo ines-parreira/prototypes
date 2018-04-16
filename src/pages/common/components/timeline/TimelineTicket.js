@@ -51,6 +51,7 @@ export default class TimelineTicket extends React.Component {
                         />
                         <DatetimeLabel
                             dateTime={ticket.get('created_datetime')}
+                            className="d-block mb-1"
                         />
                         {assigneeName && (
                             <AgentLabel name={assigneeName}/>

@@ -1,5 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Avatar component should render avatar from cache 1`] = `
+<div
+  className="component"
+  style={
+    Object {
+      "height": "50px",
+      "width": "50px",
+    }
+  }
+>
+  <div
+    className="initials"
+    style={
+      Object {
+        "fontSize": "20.833333333333336px",
+      }
+    }
+  >
+    <span />
+  </div>
+  <img
+    className="gravatar"
+    src="https://www.gravatar.com/avatar/b0603c6a6734698e0b93b1350c6c8286?d=404&s=50"
+  />
+</div>
+`;
+
 exports[`Avatar component should render default with no props 1`] = `
 <div
   className="component"

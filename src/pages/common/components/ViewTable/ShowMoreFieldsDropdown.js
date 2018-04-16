@@ -61,9 +61,8 @@ class ShowMoreFieldsDropdown extends React.Component {
                                 return (
                                     <DropdownItem
                                         key={field.get('name')}
-                                        type="button"
-                                        className="pt-1 pb-1"
-                                        style={{height: '28px'}}
+                                        tag="label"
+                                        className="pt-1 pb-1 mb-0"
                                         toggle={false}
                                         disabled={isMandatory}
                                     >
@@ -71,7 +70,6 @@ class ShowMoreFieldsDropdown extends React.Component {
                                             value={isChecked}
                                             onChange={value => this._setFieldVisibility(field.get('name'), value)}
                                             label={field.get('title')}
-                                            inline
                                             disabled={isMandatory}
                                         />
                                     </DropdownItem>

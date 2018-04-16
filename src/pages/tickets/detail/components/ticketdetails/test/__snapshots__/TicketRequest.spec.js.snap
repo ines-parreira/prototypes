@@ -4,7 +4,7 @@ exports[`TicketRequest component should be null if not development 1`] = `null`;
 
 exports[`TicketRequest component should display empty dropdown 1`] = `
 <div
-  className="d-none d-md-inline-flex align-items-center flex-wrap"
+  className="d-none d-md-inline-flex flex-wrap"
 >
   <Dropdown
     active={false}
@@ -59,7 +59,7 @@ exports[`TicketRequest component should display empty dropdown 1`] = `
 
 exports[`TicketRequest component should display requests 1`] = `
 <div
-  className="d-none d-md-inline-flex align-items-center flex-wrap"
+  className="d-none d-md-inline-flex flex-wrap"
 >
   <Dropdown
     active={false}

@@ -28,6 +28,13 @@
     &:hover {
       background: darken(@lightYellow, 3%);
     }
+
+    :global {
+      .text-faded,
+      .gorgias-mention {
+        color: darken(@darkGrey, 10%) !important;
+      }
+    }
   }
 
   &.appear {

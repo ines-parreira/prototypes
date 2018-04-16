@@ -1,6 +1,7 @@
 import React from 'react'
 import {shallow, mount} from 'enzyme'
 
+import {userPicture} from '../utils'
 import Avatar from '../Avatar'
 
 describe('Avatar component', () => {
@@ -32,5 +33,13 @@ describe('Avatar component', () => {
             />
         )
         expect(component.find('img')).toHaveProp('src', '/marie/curie')
+    })
+
+    it('should render avatar from cache', () => {
+        return userPicture({email: 'alex@gorgias.io'})
+            .then(() => {
+                const component = shallow(<Avatar email="alex@gorgias.io"/>)
+                return expect(component).toMatchSnapshot()
+            })
     })
 })
