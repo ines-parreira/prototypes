@@ -129,15 +129,15 @@ export const stats = fromJS({
         lines: {
             facebook: {
                 label: 'Facebook',
-                color: '#466fde',
+                color: '#4872db',
             },
             'facebook-messenger': {
                 label: 'Facebook Messenger',
-                color: '#4872db',
+                color: '#1787fb',
             },
             twitter: {
                 label: 'Twitter',
-                color: '#1787fb'
+                color: '#00aced'
             },
             chat: {
                 label: 'Chat',
