@@ -5,6 +5,7 @@ import Expression from '../expression/Expression'
 import Statement from './Statement'
 import {computeLeftPadding} from '../utils'
 import classnames from 'classnames'
+import Foldable from '../Foldable'
 
 /**
  * Test Expression of the IF Statement
@@ -62,32 +63,6 @@ type TestExpressionProps = {
 /**
  * Consequent Component of the IF Statement
  */
-class ConsequentStatement extends React.Component<ConsequentStatementProps> {
-    render() {
-        const {actions, consequent, rule, parent, schemas, depth} = this.props
-
-        return (
-            <div className="consequent">
-                <AddActionOrIfStatement
-                    actions={actions}
-                    rule={rule}
-                    parent={parent.push('consequent')}
-                    title="THEN"
-                    hoverableClassName="d-inline-flex"
-                    depth={depth}
-                />
-                <Statement
-                    {...consequent}
-                    parent={parent.push('consequent')}
-                    rule={rule}
-                    actions={actions}
-                    schemas={schemas}
-                    depth={depth + 1}
-                />
-            </div>
-        )
-    }
-}
 
 type ConsequentStatementProps = {
     rule: Object,
@@ -96,6 +71,38 @@ type ConsequentStatementProps = {
     parent: Object,
     schemas: Object,
     depth: number,
+}
+
+class ConsequentStatement extends React.Component<ConsequentStatementProps> {
+    render() {
+        const {actions, consequent, rule, parent, schemas, depth} = this.props
+
+        return (
+            <div className="consequent">
+                <Foldable
+                    label={(
+                        <AddActionOrIfStatement
+                            actions={actions}
+                            rule={rule}
+                            parent={parent.push('consequent')}
+                            title="THEN"
+                            hoverableClassName="d-inline-flex"
+                            depth={depth}
+                        />
+                    )}
+                >
+                    <Statement
+                        {...consequent}
+                        parent={parent.push('consequent')}
+                        rule={rule}
+                        actions={actions}
+                        schemas={schemas}
+                        depth={depth + 1}
+                    />
+                </Foldable>
+            </div>
+        )
+    }
 }
 
 /**
@@ -108,22 +115,27 @@ class AlternateStatement extends React.Component<AlternateStatementProps> {
 
         return (
             <div className="alternate">
-                <AddActionOrIfStatement
-                    actions={actions}
-                    rule={rule}
-                    parent={parent.push('alternate')}
-                    title="ELSE"
-                    hoverableClassName="d-inline-flex"
-                    depth={depth}
-                />
-                <Statement
-                    {...alternate}
-                    parent={parent.push('alternate')}
-                    rule={rule}
-                    actions={actions}
-                    schemas={schemas}
-                    depth={depth + 1}
-                />
+                <Foldable
+                    label={(
+                        <AddActionOrIfStatement
+                            actions={actions}
+                            rule={rule}
+                            parent={parent.push('alternate')}
+                            title="ELSE"
+                            hoverableClassName="d-inline-flex"
+                            depth={depth}
+                        />
+                    )}
+                >
+                    <Statement
+                        {...alternate}
+                        parent={parent.push('alternate')}
+                        rule={rule}
+                        actions={actions}
+                        schemas={schemas}
+                        depth={depth + 1}
+                    />
+                </Foldable>
             </div>
         )
     }

@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Foldable component should render closed 1`] = `
+<div
+  className="container closed"
+>
+  <div
+    className="icon-wrapper closed"
+    onClick={[Function]}
+  >
+    <i
+      className="material-icons"
+    >
+      keyboard_arrow_right
+    </i>
+  </div>
+  <div>
+    my label
+  </div>
+  <div
+    className="dots-wrapper"
+    onClick={[Function]}
+  >
+    •••
+  </div>
+</div>
+`;
+
+exports[`Foldable component should render open 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="icon-wrapper"
+    onClick={[Function]}
+  >
+    <i
+      className="material-icons"
+    >
+      keyboard_arrow_down
+    </i>
+  </div>
+  <div>
+    my label
+  </div>
+  <div>
+    <div>
+      my children
+    </div>
+  </div>
+</div>
+`;
