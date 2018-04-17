@@ -20,6 +20,7 @@ import {
 } from '../../utils'
 import {
     buildPartialUpdateFromAction,
+    getSourceTypeOfResponse,
     nestedReplace,
 } from './utils'
 
@@ -465,6 +466,12 @@ export const fetchTicket = (ticketId) => (dispatch) => {
 
             dispatch(newMessageActions.initializeMessageDraft())
 
+            const sourceTypeOfResponse = getSourceTypeOfResponse(resp.messages)
+
+            if (sourceTypeOfResponse === 'instagram-comment') {
+                dispatch(newMessageActions.prepare(sourceTypeOfResponse))
+            }
+
             // Notify the server that we viewed this ticket
             socketManager.send('ticket-viewed', ticketId)
 
@@ -482,7 +489,7 @@ export const fetchTicket = (ticketId) => (dispatch) => {
  * Fetch the next or the previous ticket immediately
  * but wait for the Promise (`promise` argument) to be resolved to display it
  *
- * @param {Integer} ticketId - the id of the ticket from which we want the next or the previous ticket
+ * @param {number} ticketId - the id of the ticket from which we want the next or the previous ticket
  * @param {String} direction - `next` or `prev` to get the ticket after or before the current ticket
  * @param {String} cursor - the value of the attribute of the ticket used to sort tickets in the current view
  * @param {String} promise - promise to resolve before displaying the ticket fetched
@@ -492,7 +499,7 @@ export const _goToNextOrPrevTicket = (ticketId: number, direction: string, promi
     return (dispatch: dispatchType<Promise>, getState: getStateType) => {
         if (!promise) {
             // we do not display the loading state if there is a promise to resolve
-            // because we want to do it discreetly: while something else is happenning.
+            // because we want to do it discreetly: while something else is happening.
             dispatch({
                 type: types.FETCH_TICKET_START,
             })
@@ -545,6 +552,12 @@ export const _goToNextOrPrevTicket = (ticketId: number, direction: string, promi
                     })
 
                     dispatch(newMessageActions.initializeMessageDraft())
+
+                    const sourceTypeOfResponse = getSourceTypeOfResponse(ticket.messages)
+
+                    if (sourceTypeOfResponse === 'instagram-comment') {
+                        dispatch(newMessageActions.prepare(sourceTypeOfResponse))
+                    }
 
                     // Notify the server that we viewed this ticket
                     socketManager.send('ticket-viewed', ticket.id)

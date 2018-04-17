@@ -19,3 +19,12 @@ export const stringToDatetime = (data: string) : moment | null => {
 
     return datetime
 }
+
+/**
+ * Return moment.now()
+ *
+ * We encapsulate it here so that it's easy to mock during tests.
+ */
+export const getMomentNow = () => {
+    return moment.now()
+}

@@ -1,6 +1,7 @@
 // @flow
 import {browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
+import {ContentState} from 'draft-js'
 
 import socketManager from '../../services/socketManager'
 
@@ -17,9 +18,9 @@ import {notify} from '../notifications/actions'
 import * as macroActions from '../macro/actions'
 import * as ticketActions from '../ticket/actions'
 import {renderTemplate} from '../../pages/common/utils/template'
-import {convertToHTML} from '../../utils'
 
 import {
+    convertToHTML,
     getActionTemplate,
     uploadFiles,
     toJS,
@@ -31,6 +32,7 @@ import {
     receiversStateFromValue,
     getNewMessageSender,
     getLastSameSourceTypeMessage,
+    getSourceTypeOfResponse,
 } from '../ticket/utils'
 
 import * as integrationSelectors from '../integrations/selectors'
@@ -43,6 +45,8 @@ import {AGENT_TYPING_STARTED, AGENT_TYPING_STOPPED} from '../../config/socketCon
 import type {Map, List} from 'immutable'
 import type {dispatchType, getStateType, currentUserType} from '../types'
 import type {attachmentType} from '../../types'
+import {getMomentNow} from '../../utils/date'
+
 type userType = {
     id: string,
     email?: string,
@@ -167,6 +171,7 @@ export const setResponseText = (args: Map<*,*> = fromJS({})) => (dispatch: dispa
             socketManager.send(AGENT_TYPING_STOPPED, ticketId)
         }
     }
+
     // should have the same params in state/ticket/actions/applyMacroAction
     return dispatch({
         type: constants.SET_RESPONSE_TEXT,
@@ -318,6 +323,33 @@ export const prepare = (sourceType: string) => (dispatch: dispatchType, getState
             ))
             dispatch(prepareDefault(sourceType))
 
+            break
+        }
+        case 'instagram-comment': {
+            // If we're preparing a new Instagram comment message, we want to insert a mention of format `@username `
+            // with the user name of the requester
+            dispatch(prepareDefault(sourceType))
+            const newState = getState()
+            const newMessageState = selectors.getNewMessageState(newState)
+            const receiverName = newMessageState.getIn(['newMessage', 'source', 'to', 0, 'name'], '')
+            const contentState = newMessageState.getIn(['state', 'contentState'])
+
+            // If there's already text in the contentState, or there's no receiver's name, we don't want to add the
+            // mention
+            if ((contentState && contentState.hasText()) || !receiverName) {
+                return
+            }
+
+            const newContentState = ContentState.createFromText(`@${receiverName} `)
+            const newSelectionState = responseUtils.selectionAfter(newContentState.getBlocksAsArray())
+
+            dispatch(setResponseText(fromJS({
+                contentState: newContentState,
+                selectionState: newSelectionState,
+                dirty: true,
+                forceFocus: true,
+                forceUpdate: true
+            })))
             break
         }
         default: {
@@ -522,11 +554,12 @@ function onMessageSent(dispatch: dispatchType) {
 /**
  * @param action: A parameter to decide on what to do when an action failed. (Retry/ignore/cancel, etc.)
  */
-export function submitTicketMessage(status: ?string, macroActions: ?macroActionsType, action: ?string, resetMessage: boolean = true, retryMessage: Map<*,*>) {
+export function submitTicketMessage(status: ?string, macroActions: ?macroActionsType, action: ?string,
+                                    resetMessage: boolean = true, retryMessage: Map<*,*>) {
     return (dispatch: dispatchType, getState: getStateType): submitTicketMessageType => {
         const {ticket, currentUser, newMessage} = getState()
         // temporary message id
-        let messageId = Date.now()
+        let messageId = getMomentNow()
         let messageToSend: newMessageType
 
         // message already parsed
@@ -606,23 +639,31 @@ export function submitTicketMessage(status: ?string, macroActions: ?macroActions
 
         return promise
             .then((json = {}) => json.data)
-            .then(resp => {
+            .then((resp) => {
                 let state = getState()
                 let {ticket: _ticket} = state
 
                 // if we changed the displayed ticket (e.g. submit and close), we dont want to change the state.
                 if (!(resp.ticket_id !== _ticket.get('id') && _ticket.get('id'))) {
+                    const messages = ticketSelectors.getMessages(state)
+
                     dispatch({
                         type: constants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_SUCCESS,
                         resetMessage,
                         resp,
-                        messages: ticketSelectors.getMessages(state),
+                        messages,
                         messageId,
                     })
+
+                    const sourceTypeOfResponse = getSourceTypeOfResponse(messages)
+
+                    if (sourceTypeOfResponse === 'instagram-comment') {
+                        dispatch(prepare(sourceTypeOfResponse))
+                    }
                 }
 
                 return Promise.resolve(resp)
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: constants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
                     error,
@@ -666,7 +707,7 @@ export function submitTicket(ticket: Map<*,*>, status: ?string, macroActions: ?m
 
         return axios.post('/api/tickets/', ticketToSend)
             .then((json = {}) => json.data)
-            .then(resp => {
+            .then((resp) => {
                 onMessageSent(dispatch)
 
                 browserHistory.push(`/app/ticket/${resp.id}`)
@@ -694,7 +735,7 @@ export function submitTicket(ticket: Map<*,*>, status: ?string, macroActions: ?m
                 dispatch(resetReceiversAndSender)
 
                 return Promise.resolve(resp)
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: constants.NEW_MESSAGE_SUBMIT_TICKET_ERROR,
                     error,

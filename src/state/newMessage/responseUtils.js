@@ -246,7 +246,7 @@ export const addCache = (context: contextType): contextType => {
  * @param blocks
  * @private
  */
-const _selectionAfter = (blocks: Array<{key: string, text: string}>): ?SelectionState => {
+export const selectionAfter = (blocks: Array<{key: string, text: string}>): ?SelectionState => {
     if (blocks && blocks.length) {
         // we only want the last block, we put the selection after it
         const block = blocks.slice(-1)[0]
@@ -274,7 +274,7 @@ export const addSignature = (contentState: ?Object, signature: Object): any => {
 
     // using contentState.getSelectionAfter inserts the signature at the start,
     // when the content is loaded from cache.
-    const selectionState = _selectionAfter(contentState.getBlocksAsArray()) || contentState.getSelectionAfter()
+    const selectionState = selectionAfter(contentState.getBlocksAsArray()) || contentState.getSelectionAfter()
     // add the signature contentState at the end of the existing content
     return Modifier.replaceWithFragment(contentState, selectionState, signatureContentState.getBlockMap())
 }
@@ -351,7 +351,7 @@ export const applyMacro = (context: contextType): contextType => {
             blocks = left.concat(blocks)
 
             // Set the selection just after the macro content was inserted
-            context.selectionState = _selectionAfter(blocks)
+            context.selectionState = selectionAfter(blocks)
 
             // => [1, 2, 'a', 'b', 3, 4, 5]
             blocks = blocks.concat(right)
@@ -359,11 +359,11 @@ export const applyMacro = (context: contextType): contextType => {
             blocks = currBlocks.concat(blocks)
 
             // selection should be at the end here because we had no selection before
-            context.selectionState = _selectionAfter(blocks)
+            context.selectionState = selectionAfter(blocks)
         }
     } else {
         // selection should be at the end here because no content means no selection
-        context.selectionState = _selectionAfter(blocks)
+        context.selectionState = selectionAfter(blocks)
     }
 
     context.contentState = ContentState.createFromBlockArray(blocks)

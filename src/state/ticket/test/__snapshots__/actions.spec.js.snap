@@ -309,6 +309,136 @@ Object {
 }
 `;
 
+exports[`ticket actions fetchTicket existing instagram ticket 1`] = `
+Array [
+  Object {
+    "type": "FETCH_TICKET_START",
+  },
+  Object {
+    "ticketId": 1,
+    "type": "MARK_CHAT_AS_READ",
+  },
+  Object {
+    "resp": Object {
+      "id": 1,
+      "messages": Array [
+        Object {
+          "source": Object {
+            "type": "instagram-comment",
+          },
+        },
+      ],
+    },
+    "ticketId": 1,
+    "type": "FETCH_TICKET_SUCCESS",
+  },
+  Object {
+    "resp": Object {
+      "id": 1,
+      "messages": Array [
+        Object {
+          "source": Object {
+            "type": "instagram-comment",
+          },
+        },
+      ],
+    },
+    "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
+  },
+  Object {
+    "appliedMacro": null,
+    "args": Immutable.Map {
+},
+    "currentUser": Immutable.Map {
+      id: 1,
+},
+    "forceFocus": false,
+    "forceUpdate": false,
+    "fromMacro": false,
+    "signature": Immutable.Map {
+},
+    "ticket": Immutable.Map {
+      trashed_datetime: null,
+      channel: "email",
+      priority: "normal",
+      spam: false,
+      subject: "",
+      messages: Immutable.List [
+      ],
+      via: "helpdesk",
+      receiver: null,
+      state: Immutable.Map {
+            dirty: false,
+            latestEventDatetime: null,
+            appliedMacro: null,
+      },
+      status: "open",
+      sender: null,
+      tags: Immutable.List [
+      ],
+      events: Immutable.List [
+      ],
+      assignee_user: null,
+      id: 1,
+      _internal: Immutable.Map {
+            displayHistory: false,
+            shouldDisplayHistoryOnNextPage: false,
+            loading: Immutable.Map {
+                  fetchTicket: false,
+                  deleteMessage: false,
+            },
+            pendingMessages: Immutable.List [
+            ],
+      },
+      requester: null,
+},
+    "ticketId": 1,
+    "type": "setResponseText",
+  },
+  Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
+  },
+  Object {
+    "subject": "",
+    "type": "NEW_MESSAGE_SET_SUBJECT",
+  },
+  Object {
+    "messages": Immutable.List [
+],
+    "sourceType": "instagram-comment",
+    "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
+  },
+  Object {
+    "extra": Object {},
+    "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+]
+`;
+
 exports[`ticket actions fetchTicket existing ticket 1`] = `
 Array [
   Object {
@@ -321,6 +451,7 @@ Array [
   Object {
     "resp": Object {
       "id": 1,
+      "messages": Array [],
     },
     "ticketId": 1,
     "type": "FETCH_TICKET_SUCCESS",
@@ -328,6 +459,7 @@ Array [
   Object {
     "resp": Object {
       "id": 1,
+      "messages": Array [],
     },
     "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
   },
@@ -478,6 +610,7 @@ Array [
   Object {
     "resp": Object {
       "id": 2,
+      "messages": Array [],
       "requesterId": 1,
     },
     "ticketId": 2,
@@ -486,6 +619,7 @@ Array [
   Object {
     "resp": Object {
       "id": 2,
+      "messages": Array [],
       "requesterId": 1,
     },
     "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
@@ -555,11 +689,22 @@ Array [
 ]
 `;
 
-exports[`ticket actions goToNextTicket() should fetch next ticket and wait for promise to be resolved to go to this ticket 1`] = `
+exports[`ticket actions goToNextTicket() should fetch next ticket and go to this ticket, and prepare new message correctly as the ticket is an instagram ticket 1`] = `
 Array [
+  Object {
+    "type": "FETCH_TICKET_START",
+  },
   Object {
     "resp": Object {
       "id": 2,
+      "messages": Array [
+        Object {
+          "source": Object {
+            "type": "instagram-comment",
+          },
+        },
+      ],
+      "requesterId": 1,
     },
     "ticketId": 2,
     "type": "FETCH_TICKET_SUCCESS",
@@ -567,6 +712,122 @@ Array [
   Object {
     "resp": Object {
       "id": 2,
+      "messages": Array [
+        Object {
+          "source": Object {
+            "type": "instagram-comment",
+          },
+        },
+      ],
+      "requesterId": 1,
+    },
+    "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
+  },
+  Object {
+    "appliedMacro": null,
+    "args": Immutable.Map {
+},
+    "currentUser": undefined,
+    "forceFocus": false,
+    "forceUpdate": false,
+    "fromMacro": false,
+    "signature": Immutable.Map {
+},
+    "ticket": Immutable.Map {
+      trashed_datetime: null,
+      channel: "email",
+      priority: "normal",
+      spam: false,
+      subject: "",
+      messages: Immutable.List [
+      ],
+      via: "helpdesk",
+      receiver: null,
+      state: Immutable.Map {
+            dirty: false,
+            latestEventDatetime: null,
+            appliedMacro: null,
+      },
+      status: "open",
+      sender: null,
+      tags: Immutable.List [
+      ],
+      events: Immutable.List [
+      ],
+      assignee_user: null,
+      _internal: Immutable.Map {
+            displayHistory: false,
+            shouldDisplayHistoryOnNextPage: false,
+            loading: Immutable.Map {
+                  fetchTicket: false,
+                  deleteMessage: false,
+            },
+            pendingMessages: Immutable.List [
+            ],
+      },
+      requester: null,
+},
+    "ticketId": undefined,
+    "type": "setResponseText",
+  },
+  Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
+  },
+  Object {
+    "subject": "",
+    "type": "NEW_MESSAGE_SET_SUBJECT",
+  },
+  Object {
+    "messages": Immutable.List [
+],
+    "sourceType": "instagram-comment",
+    "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
+  },
+  Object {
+    "extra": Object {},
+    "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+]
+`;
+
+exports[`ticket actions goToNextTicket() should fetch next ticket and wait for promise to be resolved to go to this ticket 1`] = `
+Array [
+  Object {
+    "resp": Object {
+      "id": 2,
+      "messages": Array [],
+    },
+    "ticketId": 2,
+    "type": "FETCH_TICKET_SUCCESS",
+  },
+  Object {
+    "resp": Object {
+      "id": 2,
+      "messages": Array [],
     },
     "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
   },
@@ -659,6 +920,7 @@ Array [
   Object {
     "resp": Object {
       "id": 1,
+      "messages": Array [],
       "requesterId": 1,
     },
     "ticketId": 1,
@@ -667,6 +929,7 @@ Array [
   Object {
     "resp": Object {
       "id": 1,
+      "messages": Array [],
       "requesterId": 1,
     },
     "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
@@ -736,11 +999,22 @@ Array [
 ]
 `;
 
-exports[`ticket actions goToPrevTicket() should fetch previous ticket and wait for promise to be resolved to go to this ticket 1`] = `
+exports[`ticket actions goToPrevTicket() should fetch previous ticket and go to this ticket, and prepare new message correctly as the ticket is an instagram ticket 1`] = `
 Array [
+  Object {
+    "type": "FETCH_TICKET_START",
+  },
   Object {
     "resp": Object {
       "id": 1,
+      "messages": Array [
+        Object {
+          "source": Object {
+            "type": "instagram-comment",
+          },
+        },
+      ],
+      "requesterId": 1,
     },
     "ticketId": 1,
     "type": "FETCH_TICKET_SUCCESS",
@@ -748,6 +1022,122 @@ Array [
   Object {
     "resp": Object {
       "id": 1,
+      "messages": Array [
+        Object {
+          "source": Object {
+            "type": "instagram-comment",
+          },
+        },
+      ],
+      "requesterId": 1,
+    },
+    "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
+  },
+  Object {
+    "appliedMacro": null,
+    "args": Immutable.Map {
+},
+    "currentUser": undefined,
+    "forceFocus": false,
+    "forceUpdate": false,
+    "fromMacro": false,
+    "signature": Immutable.Map {
+},
+    "ticket": Immutable.Map {
+      trashed_datetime: null,
+      channel: "email",
+      priority: "normal",
+      spam: false,
+      subject: "",
+      messages: Immutable.List [
+      ],
+      via: "helpdesk",
+      receiver: null,
+      state: Immutable.Map {
+            dirty: false,
+            latestEventDatetime: null,
+            appliedMacro: null,
+      },
+      status: "open",
+      sender: null,
+      tags: Immutable.List [
+      ],
+      events: Immutable.List [
+      ],
+      assignee_user: null,
+      _internal: Immutable.Map {
+            displayHistory: false,
+            shouldDisplayHistoryOnNextPage: false,
+            loading: Immutable.Map {
+                  fetchTicket: false,
+                  deleteMessage: false,
+            },
+            pendingMessages: Immutable.List [
+            ],
+      },
+      requester: null,
+},
+    "ticketId": undefined,
+    "type": "setResponseText",
+  },
+  Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
+  },
+  Object {
+    "subject": "",
+    "type": "NEW_MESSAGE_SET_SUBJECT",
+  },
+  Object {
+    "messages": Immutable.List [
+],
+    "sourceType": "instagram-comment",
+    "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
+  },
+  Object {
+    "extra": Object {},
+    "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+]
+`;
+
+exports[`ticket actions goToPrevTicket() should fetch previous ticket and wait for promise to be resolved to go to this ticket 1`] = `
+Array [
+  Object {
+    "resp": Object {
+      "id": 1,
+      "messages": Array [],
+    },
+    "ticketId": 1,
+    "type": "FETCH_TICKET_SUCCESS",
+  },
+  Object {
+    "resp": Object {
+      "id": 1,
+      "messages": Array [],
     },
     "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
   },

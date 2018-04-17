@@ -2,15 +2,18 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {ContentState} from 'draft-js'
 import {fromJS} from 'immutable'
+import axios from 'axios'
+import MockAdapter from 'axios-mock-adapter'
 
 import * as actions from '../actions'
 import * as types from '../constants'
 import {initialState} from '../reducers'
+import {initialState as ticketInitialState} from '../../ticket/reducers'
 
 import {integrationsState} from '../../../fixtures/integrations'
 import * as integrationSelectors from '../../integrations/selectors'
 import {getPreferredChannel,} from '../../ticket/utils'
-import {smoochTicket, emailTicket} from '../../ticket/test/fixtures'
+import {smoochTicket, emailTicket, instagramMedia} from '../../ticket/test/fixtures'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -253,10 +256,54 @@ describe('actions', () => {
                 expect(expectedActions).toMatchSnapshot()
             })
 
+            describe('instagram comment', () => {
+                it('should not add prefix if there is no receiver name', () => {
+                    store = mockStore({
+                        ticket: instagramMedia,
+                        newMessage: initialState
+                    })
+                    store.dispatch(actions.prepare('instagram-comment'))
+                    const expectedActions = store.getActions()
+
+                    expect(expectedActions).toMatchSnapshot()
+                })
+
+                it('should not add prefix if there is text already', () => {
+                    let newMessage = initialState
+                    newMessage = newMessage
+                        .setIn(['newMessage', 'source', 'to'], fromJS([{address: 'as6d5as', name: 'instauser'}]))
+                        .setIn(['state', 'contentState'], ContentState.createFromText('foo'))
+
+                    store = mockStore({
+                        ticket: instagramMedia,
+                        newMessage
+                    })
+                    store.dispatch(actions.prepare('instagram-comment'))
+                    const expectedActions = store.getActions()
+
+                    expect(expectedActions).toMatchSnapshot()
+                })
+
+                it('should add prefix', () => {
+                    let newMessage = initialState
+                    newMessage = newMessage
+                        .setIn(['newMessage', 'source', 'to'], fromJS([{address: 'as6d5as', name: 'instauser'}]))
+
+                    store = mockStore({
+                        ticket: instagramMedia,
+                        newMessage
+                    })
+                    store.dispatch(actions.prepare('instagram-comment'))
+                    const expectedActions = store.getActions()
+
+                    expect(expectedActions).toMatchSnapshot()
+                })
+            })
+
             it('other types', () => {
                 const sourceTypes = ['email', 'chat', 'facebook-comment', 'facebook-message']
 
-                sourceTypes.forEach(sourceType => {
+                sourceTypes.forEach((sourceType) => {
                     store = mockStore({
                         ticket: emailTicket,
                         newMessage: initialState
@@ -458,6 +505,60 @@ describe('actions', () => {
                 store.dispatch(actions.addSignature(contentState, signature))
 
                 expect(store.getActions()).toMatchSnapshot()
+            })
+        })
+
+        describe('submitTicketMessage()', () => {
+            let mockServer
+
+            beforeEach(() => {
+                mockServer = new MockAdapter(axios)
+            })
+
+            it('should submit new message', () => {
+                mockServer.onPost('/api/tickets/12/messages/').reply(201, {ticket_id: 12, messages: []})
+                store = mockStore({
+                    ticket: ticketInitialState.set('id', 12),
+                    newMessage: initialState,
+                    currentUser: fromJS({
+                        id: 1,
+                        name: 'foo'
+                    })
+                })
+
+                store.dispatch(actions.submitTicketMessage()).then(() => {
+                    expect(store.getActions()).toMatchSnapshot()
+                })
+            })
+
+            it('should prepare next new message after we submitted an instagram comment', () => {
+                mockServer.onPost('/api/tickets/12/messages/').reply(201, {
+                    ticket_id: 12,
+                    messages: [{
+                        source: {
+                            type: 'instagram-comment'
+                        }
+                    }]
+                })
+
+                store = mockStore({
+                    ticket: instagramMedia.set('id', 12),
+                    newMessage: initialState
+                        .setIn(['newMessage', 'source'], fromJS({
+                            type: 'instagram-comment',
+                            to: [{
+                                name: 'messagereceiver'
+                            }]
+                        })),
+                    currentUser: fromJS({
+                        id: 1,
+                        name: 'foo'
+                    })
+                })
+
+                store.dispatch(actions.submitTicketMessage()).then(() => {
+                    expect(store.getActions()).toMatchSnapshot()
+                })
             })
         })
     })

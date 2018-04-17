@@ -156,6 +156,378 @@ Array [
 ]
 `;
 
+exports[`actions new message prepare() instagram comment should add prefix 1`] = `
+Array [
+  Object {
+    "subject": "",
+    "type": "NEW_MESSAGE_SET_SUBJECT",
+  },
+  Object {
+    "messages": Immutable.List [
+      Immutable.Map {
+            source: Immutable.Map {
+                  type: "instagram-media",
+                  from: Immutable.Map {
+                        address: "1232353100194770",
+                        name: "myinstagrampage",
+                  },
+                  to: Immutable.List [
+                        Immutable.Map {
+                              address: "a4sd684a6sd4a5sd",
+                              name: "instagramuser",
+                        },
+                  ],
+                  extra: Immutable.Map {
+                        media_id: "519388858269125_626477354226941",
+                        permalink: "https://instagram.com/foobar",
+                  },
+            },
+            id: 153,
+            from_agent: true,
+      },
+      Immutable.Map {
+            source: Immutable.Map {
+                  type: "instagram-comment",
+                  from: Immutable.Map {
+                        address: "a4sd684a6sd4a5sd",
+                        name: "instagramuser",
+                  },
+                  to: Immutable.List [
+                        Immutable.Map {
+                              address: "1232353100194770",
+                              name: "myinstagrampage",
+                        },
+                  ],
+                  extra: Immutable.Map {
+                        media_id: "519388858269125_626477354226941",
+                  },
+            },
+            id: 189,
+            from_agent: false,
+      },
+],
+    "sourceType": "instagram-comment",
+    "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
+  },
+  Object {
+    "extra": Object {},
+    "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+  Object {
+    "appliedMacro": undefined,
+    "args": Immutable.Map {
+      contentState: Object {
+            "blockMap": Object {
+              "someRandomKey": Object {
+                "characterList": Array [
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                ],
+                "data": Object {},
+                "depth": 0,
+                "key": "someRandomKey",
+                "text": "@instauser ",
+                "type": "unstyled",
+              },
+            },
+            "entityMap": Object {
+              "__add": [Function],
+              "__create": [Function],
+              "__get": [Function],
+              "__getLastCreatedEntityKey": [Function],
+              "__mergeData": [Function],
+              "__replaceData": [Function],
+              "add": [Function],
+              "create": [Function],
+              "get": [Function],
+              "getLastCreatedEntityKey": [Function],
+              "mergeData": [Function],
+              "replaceData": [Function],
+            },
+            "selectionAfter": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+            "selectionBefore": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+          },
+      selectionState: Object {
+            "anchorKey": "someRandomKey",
+            "anchorOffset": 11,
+            "focusKey": "someRandomKey",
+            "focusOffset": 11,
+            "hasFocus": false,
+            "isBackward": false,
+          },
+      dirty: true,
+      forceFocus: true,
+      forceUpdate: true,
+},
+    "currentUser": undefined,
+    "forceFocus": true,
+    "forceUpdate": true,
+    "fromMacro": false,
+    "signature": Immutable.Map {
+},
+    "ticket": Immutable.Map {
+      messages: Immutable.List [
+            Immutable.Map {
+                  source: Immutable.Map {
+                        type: "instagram-media",
+                        from: Immutable.Map {
+                              address: "1232353100194770",
+                              name: "myinstagrampage",
+                        },
+                        to: Immutable.List [
+                              Immutable.Map {
+                                    address: "a4sd684a6sd4a5sd",
+                                    name: "instagramuser",
+                              },
+                        ],
+                        extra: Immutable.Map {
+                              media_id: "519388858269125_626477354226941",
+                              permalink: "https://instagram.com/foobar",
+                        },
+                  },
+                  id: 153,
+                  from_agent: true,
+            },
+            Immutable.Map {
+                  source: Immutable.Map {
+                        type: "instagram-comment",
+                        from: Immutable.Map {
+                              address: "a4sd684a6sd4a5sd",
+                              name: "instagramuser",
+                        },
+                        to: Immutable.List [
+                              Immutable.Map {
+                                    address: "1232353100194770",
+                                    name: "myinstagrampage",
+                              },
+                        ],
+                        extra: Immutable.Map {
+                              media_id: "519388858269125_626477354226941",
+                        },
+                  },
+                  id: 189,
+                  from_agent: false,
+            },
+      ],
+},
+    "ticketId": undefined,
+    "type": "setResponseText",
+  },
+]
+`;
+
+exports[`actions new message prepare() instagram comment should not add prefix if there is no receiver name 1`] = `
+Array [
+  Object {
+    "subject": "",
+    "type": "NEW_MESSAGE_SET_SUBJECT",
+  },
+  Object {
+    "messages": Immutable.List [
+      Immutable.Map {
+            source: Immutable.Map {
+                  type: "instagram-media",
+                  from: Immutable.Map {
+                        address: "1232353100194770",
+                        name: "myinstagrampage",
+                  },
+                  to: Immutable.List [
+                        Immutable.Map {
+                              address: "a4sd684a6sd4a5sd",
+                              name: "instagramuser",
+                        },
+                  ],
+                  extra: Immutable.Map {
+                        media_id: "519388858269125_626477354226941",
+                        permalink: "https://instagram.com/foobar",
+                  },
+            },
+            id: 153,
+            from_agent: true,
+      },
+      Immutable.Map {
+            source: Immutable.Map {
+                  type: "instagram-comment",
+                  from: Immutable.Map {
+                        address: "a4sd684a6sd4a5sd",
+                        name: "instagramuser",
+                  },
+                  to: Immutable.List [
+                        Immutable.Map {
+                              address: "1232353100194770",
+                              name: "myinstagrampage",
+                        },
+                  ],
+                  extra: Immutable.Map {
+                        media_id: "519388858269125_626477354226941",
+                  },
+            },
+            id: 189,
+            from_agent: false,
+      },
+],
+    "sourceType": "instagram-comment",
+    "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
+  },
+  Object {
+    "extra": Object {},
+    "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+]
+`;
+
+exports[`actions new message prepare() instagram comment should not add prefix if there is text already 1`] = `
+Array [
+  Object {
+    "subject": "",
+    "type": "NEW_MESSAGE_SET_SUBJECT",
+  },
+  Object {
+    "messages": Immutable.List [
+      Immutable.Map {
+            source: Immutable.Map {
+                  type: "instagram-media",
+                  from: Immutable.Map {
+                        address: "1232353100194770",
+                        name: "myinstagrampage",
+                  },
+                  to: Immutable.List [
+                        Immutable.Map {
+                              address: "a4sd684a6sd4a5sd",
+                              name: "instagramuser",
+                        },
+                  ],
+                  extra: Immutable.Map {
+                        media_id: "519388858269125_626477354226941",
+                        permalink: "https://instagram.com/foobar",
+                  },
+            },
+            id: 153,
+            from_agent: true,
+      },
+      Immutable.Map {
+            source: Immutable.Map {
+                  type: "instagram-comment",
+                  from: Immutable.Map {
+                        address: "a4sd684a6sd4a5sd",
+                        name: "instagramuser",
+                  },
+                  to: Immutable.List [
+                        Immutable.Map {
+                              address: "1232353100194770",
+                              name: "myinstagrampage",
+                        },
+                  ],
+                  extra: Immutable.Map {
+                        media_id: "519388858269125_626477354226941",
+                  },
+            },
+            id: 189,
+            from_agent: false,
+      },
+],
+    "sourceType": "instagram-comment",
+    "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
+  },
+  Object {
+    "extra": Object {},
+    "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+]
+`;
+
 exports[`actions new message prepare() other types 1`] = `
 Array [
   Object {
@@ -1056,6 +1428,608 @@ Array [
   Object {
     "subject": "hello world",
     "type": "NEW_MESSAGE_SET_SUBJECT",
+  },
+]
+`;
+
+exports[`actions new message submitTicketMessage() should prepare next new message after we submitted an instagram comment 1`] = `
+Array [
+  Object {
+    "message": Object {
+      "attachments": Array [],
+      "body_html": "",
+      "body_text": "",
+      "channel": "email",
+      "from_agent": true,
+      "macros": Array [],
+      "mention_ids": Array [],
+      "public": true,
+      "sender": Immutable.Map {
+        id: 1,
+        name: "foo",
+},
+      "source": Object {
+        "extra": Object {
+          "media_id": "519388858269125_626477354226941",
+        },
+        "to": Array [
+          Object {
+            "name": "messagereceiver",
+          },
+        ],
+        "type": "instagram-comment",
+      },
+      "subject": "",
+      "via": "helpdesk",
+    },
+    "messageId": "nowTimestamp",
+    "messages": Immutable.List [
+      Immutable.Map {
+            source: Immutable.Map {
+                  type: "instagram-media",
+                  from: Immutable.Map {
+                        address: "1232353100194770",
+                        name: "myinstagrampage",
+                  },
+                  to: Immutable.List [
+                        Immutable.Map {
+                              address: "a4sd684a6sd4a5sd",
+                              name: "instagramuser",
+                        },
+                  ],
+                  extra: Immutable.Map {
+                        media_id: "519388858269125_626477354226941",
+                        permalink: "https://instagram.com/foobar",
+                  },
+            },
+            id: 153,
+            from_agent: true,
+      },
+      Immutable.Map {
+            source: Immutable.Map {
+                  type: "instagram-comment",
+                  from: Immutable.Map {
+                        address: "a4sd684a6sd4a5sd",
+                        name: "instagramuser",
+                  },
+                  to: Immutable.List [
+                        Immutable.Map {
+                              address: "1232353100194770",
+                              name: "myinstagrampage",
+                        },
+                  ],
+                  extra: Immutable.Map {
+                        media_id: "519388858269125_626477354226941",
+                  },
+            },
+            id: 189,
+            from_agent: false,
+      },
+],
+    "resetMessage": true,
+    "retry": false,
+    "status": undefined,
+    "type": "NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START",
+  },
+  Object {
+    "macro": undefined,
+    "type": "APPLY_MACRO",
+  },
+  Object {
+    "appliedMacro": undefined,
+    "args": Immutable.Map {
+      forceFocus: true,
+      forceUpdate: true,
+},
+    "currentUser": Immutable.Map {
+      id: 1,
+      name: "foo",
+},
+    "forceFocus": true,
+    "forceUpdate": true,
+    "fromMacro": false,
+    "signature": Immutable.Map {
+},
+    "ticket": Immutable.Map {
+      messages: Immutable.List [
+            Immutable.Map {
+                  source: Immutable.Map {
+                        type: "instagram-media",
+                        from: Immutable.Map {
+                              address: "1232353100194770",
+                              name: "myinstagrampage",
+                        },
+                        to: Immutable.List [
+                              Immutable.Map {
+                                    address: "a4sd684a6sd4a5sd",
+                                    name: "instagramuser",
+                              },
+                        ],
+                        extra: Immutable.Map {
+                              media_id: "519388858269125_626477354226941",
+                              permalink: "https://instagram.com/foobar",
+                        },
+                  },
+                  id: 153,
+                  from_agent: true,
+            },
+            Immutable.Map {
+                  source: Immutable.Map {
+                        type: "instagram-comment",
+                        from: Immutable.Map {
+                              address: "a4sd684a6sd4a5sd",
+                              name: "instagramuser",
+                        },
+                        to: Immutable.List [
+                              Immutable.Map {
+                                    address: "1232353100194770",
+                                    name: "myinstagrampage",
+                              },
+                        ],
+                        extra: Immutable.Map {
+                              media_id: "519388858269125_626477354226941",
+                        },
+                  },
+                  id: 189,
+                  from_agent: false,
+            },
+      ],
+      id: 12,
+},
+    "ticketId": 12,
+    "type": "setResponseText",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [
+        Object {
+          "address": "a4sd684a6sd4a5sd",
+          "name": "instagramuser",
+        },
+      ],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+      name: "myinstagrampage",
+      address: "1232353100194770",
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+  Object {
+    "messageId": "nowTimestamp",
+    "messages": Immutable.List [
+      Immutable.Map {
+            source: Immutable.Map {
+                  type: "instagram-media",
+                  from: Immutable.Map {
+                        address: "1232353100194770",
+                        name: "myinstagrampage",
+                  },
+                  to: Immutable.List [
+                        Immutable.Map {
+                              address: "a4sd684a6sd4a5sd",
+                              name: "instagramuser",
+                        },
+                  ],
+                  extra: Immutable.Map {
+                        media_id: "519388858269125_626477354226941",
+                        permalink: "https://instagram.com/foobar",
+                  },
+            },
+            id: 153,
+            from_agent: true,
+      },
+      Immutable.Map {
+            source: Immutable.Map {
+                  type: "instagram-comment",
+                  from: Immutable.Map {
+                        address: "a4sd684a6sd4a5sd",
+                        name: "instagramuser",
+                  },
+                  to: Immutable.List [
+                        Immutable.Map {
+                              address: "1232353100194770",
+                              name: "myinstagrampage",
+                        },
+                  ],
+                  extra: Immutable.Map {
+                        media_id: "519388858269125_626477354226941",
+                  },
+            },
+            id: 189,
+            from_agent: false,
+      },
+],
+    "resetMessage": true,
+    "resp": Object {
+      "messages": Array [
+        Object {
+          "source": Object {
+            "type": "instagram-comment",
+          },
+        },
+      ],
+      "ticket_id": 12,
+    },
+    "type": "NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_SUCCESS",
+  },
+  Object {
+    "subject": "",
+    "type": "NEW_MESSAGE_SET_SUBJECT",
+  },
+  Object {
+    "messages": Immutable.List [
+      Immutable.Map {
+            source: Immutable.Map {
+                  type: "instagram-media",
+                  from: Immutable.Map {
+                        address: "1232353100194770",
+                        name: "myinstagrampage",
+                  },
+                  to: Immutable.List [
+                        Immutable.Map {
+                              address: "a4sd684a6sd4a5sd",
+                              name: "instagramuser",
+                        },
+                  ],
+                  extra: Immutable.Map {
+                        media_id: "519388858269125_626477354226941",
+                        permalink: "https://instagram.com/foobar",
+                  },
+            },
+            id: 153,
+            from_agent: true,
+      },
+      Immutable.Map {
+            source: Immutable.Map {
+                  type: "instagram-comment",
+                  from: Immutable.Map {
+                        address: "a4sd684a6sd4a5sd",
+                        name: "instagramuser",
+                  },
+                  to: Immutable.List [
+                        Immutable.Map {
+                              address: "1232353100194770",
+                              name: "myinstagrampage",
+                        },
+                  ],
+                  extra: Immutable.Map {
+                        media_id: "519388858269125_626477354226941",
+                  },
+            },
+            id: 189,
+            from_agent: false,
+      },
+],
+    "sourceType": "instagram-comment",
+    "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
+  },
+  Object {
+    "extra": Object {},
+    "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [
+        Object {
+          "address": "a4sd684a6sd4a5sd",
+          "name": "instagramuser",
+        },
+      ],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+      name: "myinstagrampage",
+      address: "1232353100194770",
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+  Object {
+    "appliedMacro": undefined,
+    "args": Immutable.Map {
+      contentState: Object {
+            "blockMap": Object {
+              "someRandomKey": Object {
+                "characterList": Array [
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                ],
+                "data": Object {},
+                "depth": 0,
+                "key": "someRandomKey",
+                "text": "@messagereceiver ",
+                "type": "unstyled",
+              },
+            },
+            "entityMap": Object {
+              "__add": [Function],
+              "__create": [Function],
+              "__get": [Function],
+              "__getLastCreatedEntityKey": [Function],
+              "__mergeData": [Function],
+              "__replaceData": [Function],
+              "add": [Function],
+              "create": [Function],
+              "get": [Function],
+              "getLastCreatedEntityKey": [Function],
+              "mergeData": [Function],
+              "replaceData": [Function],
+            },
+            "selectionAfter": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+            "selectionBefore": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+          },
+      selectionState: Object {
+            "anchorKey": "someRandomKey",
+            "anchorOffset": 17,
+            "focusKey": "someRandomKey",
+            "focusOffset": 17,
+            "hasFocus": false,
+            "isBackward": false,
+          },
+      dirty: true,
+      forceFocus: true,
+      forceUpdate: true,
+},
+    "currentUser": Immutable.Map {
+      id: 1,
+      name: "foo",
+},
+    "forceFocus": true,
+    "forceUpdate": true,
+    "fromMacro": false,
+    "signature": Immutable.Map {
+},
+    "ticket": Immutable.Map {
+      messages: Immutable.List [
+            Immutable.Map {
+                  source: Immutable.Map {
+                        type: "instagram-media",
+                        from: Immutable.Map {
+                              address: "1232353100194770",
+                              name: "myinstagrampage",
+                        },
+                        to: Immutable.List [
+                              Immutable.Map {
+                                    address: "a4sd684a6sd4a5sd",
+                                    name: "instagramuser",
+                              },
+                        ],
+                        extra: Immutable.Map {
+                              media_id: "519388858269125_626477354226941",
+                              permalink: "https://instagram.com/foobar",
+                        },
+                  },
+                  id: 153,
+                  from_agent: true,
+            },
+            Immutable.Map {
+                  source: Immutable.Map {
+                        type: "instagram-comment",
+                        from: Immutable.Map {
+                              address: "a4sd684a6sd4a5sd",
+                              name: "instagramuser",
+                        },
+                        to: Immutable.List [
+                              Immutable.Map {
+                                    address: "1232353100194770",
+                                    name: "myinstagrampage",
+                              },
+                        ],
+                        extra: Immutable.Map {
+                              media_id: "519388858269125_626477354226941",
+                        },
+                  },
+                  id: 189,
+                  from_agent: false,
+            },
+      ],
+      id: 12,
+},
+    "ticketId": 12,
+    "type": "setResponseText",
+  },
+]
+`;
+
+exports[`actions new message submitTicketMessage() should submit new message 1`] = `
+Array [
+  Object {
+    "message": Object {
+      "attachments": Array [],
+      "body_html": "<br>",
+      "body_text": "",
+      "channel": "email",
+      "from_agent": true,
+      "macros": Array [],
+      "mention_ids": Array [],
+      "public": true,
+      "sender": Immutable.Map {
+        id: 1,
+        name: "foo",
+},
+      "source": Object {
+        "bcc": Array [],
+        "cc": Array [],
+        "from": Object {},
+        "to": Array [],
+        "type": "email",
+      },
+      "subject": "",
+      "via": "helpdesk",
+    },
+    "messageId": "nowTimestamp",
+    "messages": Immutable.List [
+],
+    "resetMessage": true,
+    "retry": false,
+    "status": undefined,
+    "type": "NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START",
+  },
+  Object {
+    "macro": undefined,
+    "type": "APPLY_MACRO",
+  },
+  Object {
+    "appliedMacro": null,
+    "args": Immutable.Map {
+      forceFocus: true,
+      forceUpdate: true,
+},
+    "currentUser": Immutable.Map {
+      id: 1,
+      name: "foo",
+},
+    "forceFocus": true,
+    "forceUpdate": true,
+    "fromMacro": false,
+    "signature": Immutable.Map {
+},
+    "ticket": Immutable.Map {
+      trashed_datetime: null,
+      channel: "email",
+      priority: "normal",
+      spam: false,
+      subject: "",
+      messages: Immutable.List [
+      ],
+      via: "helpdesk",
+      receiver: null,
+      state: Immutable.Map {
+            dirty: false,
+            latestEventDatetime: null,
+            appliedMacro: null,
+      },
+      status: "open",
+      sender: null,
+      tags: Immutable.List [
+      ],
+      events: Immutable.List [
+      ],
+      assignee_user: null,
+      id: 12,
+      _internal: Immutable.Map {
+            displayHistory: false,
+            shouldDisplayHistoryOnNextPage: false,
+            loading: Immutable.Map {
+                  fetchTicket: false,
+                  deleteMessage: false,
+            },
+            pendingMessages: Immutable.List [
+            ],
+      },
+      requester: null,
+},
+    "ticketId": 12,
+    "type": "setResponseText",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+  Object {
+    "messageId": "nowTimestamp",
+    "messages": Immutable.List [
+],
+    "resetMessage": true,
+    "resp": Object {
+      "messages": Array [],
+      "ticket_id": 12,
+    },
+    "type": "NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_SUCCESS",
   },
 ]
 `;

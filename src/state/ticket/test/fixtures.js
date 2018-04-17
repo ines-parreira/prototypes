@@ -123,3 +123,45 @@ export const facebookPost = fromJS({
         },
     ]
 })
+
+export const instagramMedia = fromJS({
+    messages: [
+        {
+            source: {
+                type: 'instagram-media',
+                from: {
+                    address: '1232353100194770',
+                    name: 'myinstagrampage'
+                },
+                to: [{
+                    address: 'a4sd684a6sd4a5sd',
+                    name: 'instagramuser'
+                }],
+                extra: {
+                    media_id: '519388858269125_626477354226941',
+                    permalink: 'https://instagram.com/foobar'
+                }
+            },
+            id: 153,
+            from_agent: true
+        },
+        {
+            source: {
+                type: 'instagram-comment',
+                from: {
+                    address: 'a4sd684a6sd4a5sd',
+                    name: 'instagramuser'
+                },
+                to: [{
+                    address: '1232353100194770',
+                    name: 'myinstagrampage'
+                }],
+                extra: {
+                    media_id: '519388858269125_626477354226941'
+                }
+            },
+            id: 189,
+            from_agent: false
+        },
+    ]
+})

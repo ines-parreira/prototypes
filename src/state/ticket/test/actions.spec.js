@@ -341,7 +341,17 @@ describe('ticket actions', () => {
         })
 
         it('existing ticket', () => {
-            mockServer.onGet('/api/tickets/1/').reply(200, {id: 1})
+            mockServer.onGet('/api/tickets/1/').reply(200, {id: 1, messages: []})
+            store = mockStore({
+                ticket: initialState.set('id', 1),
+                currentUser: fromJS({id: 1}),
+            })
+            return store.dispatch(actions.fetchTicket(1))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+
+        it('existing instagram ticket', () => {
+            mockServer.onGet('/api/tickets/1/').reply(200, {id: 1, messages: [{source: {type: 'instagram-comment'}}]})
             store = mockStore({
                 ticket: initialState.set('id', 1),
                 currentUser: fromJS({id: 1}),
@@ -417,7 +427,7 @@ describe('ticket actions', () => {
         })
 
         it('should fetch next ticket and go to this ticket', (done) => {
-            const ticket = {id: 2, requesterId: 1}
+            const ticket = {id: 2, requesterId: 1, messages: []}
             mockServer.onPut('/api/views/1/tickets/1/next').reply(200, ticket)
             store = mockStore({
                 ticket: initialState,
@@ -435,8 +445,26 @@ describe('ticket actions', () => {
             })
         })
 
+        it('should fetch next ticket and go to this ticket, and prepare new message correctly as the ticket is an ' +
+            'instagram ticket', (done) => {
+            const ticket = {id: 2, requesterId: 1, messages: [{source: {type: 'instagram-comment'}}]}
+            mockServer.onPut('/api/views/1/tickets/1/next').reply(200, ticket)
+            store = mockStore({
+                ticket: initialState,
+                views: fromJS({active: {id: 1}})
+            })
+
+            const fetchTicketPromise = store.dispatch(actions.goToNextTicket(1))
+
+            fetchTicketPromise.then(() => {
+                expect(store.getActions()).toMatchSnapshot()
+                expect(browserHistory.push).toHaveBeenCalledWith('/app/ticket/2')
+                done()
+            })
+        })
+
         it('should fetch next ticket and wait for promise to be resolved to go to this ticket', (done) => {
-            mockServer.onPut('/api/views/1/tickets/1/next').reply(200, {id: 2})
+            mockServer.onPut('/api/views/1/tickets/1/next').reply(200, {id: 2, messages: []})
             store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {id: 1}})
@@ -444,8 +472,6 @@ describe('ticket actions', () => {
 
             const promise = Promise.resolve()
             const fetchTicketPromise = store.dispatch(actions.goToNextTicket(1, promise))
-
-            expect(store.getActions()).toEqual([])
 
             fetchTicketPromise.then(() => {
                 expect(store.getActions()).toMatchSnapshot()
@@ -483,7 +509,27 @@ describe('ticket actions', () => {
         })
 
         it('should fetch previous ticket and go to this ticket', (done) => {
-            const ticket = {id: 1, requesterId: 1}
+            const ticket = {id: 1, requesterId: 1, messages: []}
+            mockServer.onPut('/api/views/1/tickets/2/prev').reply(200, ticket)
+            store = mockStore({
+                ticket: initialState,
+                views: fromJS({active: {id: 1}})
+            })
+
+            const fetchTicketPromise = store.dispatch(actions.goToPrevTicket(2))
+
+            expect(store.getActions()).not.toEqual([])
+
+            fetchTicketPromise.then(() => {
+                expect(store.getActions()).toMatchSnapshot()
+                expect(browserHistory.push).toHaveBeenCalledWith('/app/ticket/1')
+                done()
+            })
+        })
+
+        it('should fetch previous ticket and go to this ticket, and prepare new message correctly as the ticket is ' +
+            'an instagram ticket', (done) => {
+            const ticket = {id: 1, requesterId: 1, messages: [{source: {type: 'instagram-comment'}}]}
             mockServer.onPut('/api/views/1/tickets/2/prev').reply(200, ticket)
             store = mockStore({
                 ticket: initialState,
@@ -502,7 +548,7 @@ describe('ticket actions', () => {
         })
 
         it('should fetch previous ticket and wait for promise to be resolved to go to this ticket', (done) => {
-            mockServer.onPut('/api/views/1/tickets/2/prev').reply(200, {id: 1})
+            mockServer.onPut('/api/views/1/tickets/2/prev').reply(200, {id: 1, messages: []})
             store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {id: 1}})

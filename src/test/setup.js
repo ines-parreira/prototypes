@@ -68,6 +68,11 @@ jest.mock('push.js', () => {
     return new mockPushJS
 })
 
+jest.mock('../utils/date', () => ({
+    ...require.requireActual('../utils/date'),
+    getMomentNow: jest.fn(() => 'nowTimestamp')
+}))
+
 Object.defineProperty(window, 'requestAnimationFrame', {
     value: jest.fn()
 })
