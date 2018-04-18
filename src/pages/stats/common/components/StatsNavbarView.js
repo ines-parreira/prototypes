@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router'
+import {views} from '../../../../config/stats'
 
 export default class StatsNavbarView extends React.Component {
     render() {
@@ -7,34 +8,18 @@ export default class StatsNavbarView extends React.Component {
             <div>
                 <div className="item">
                     <div className="menu">
-                        <Link
-                            className="item"
-                            to="/app/stats"
-                            activeClassName="active"
-                        >
-                            Overview
-                        </Link>
-                        <Link
-                            className="item"
-                            to="/app/stats/tags"
-                            activeClassName="active"
-                        >
-                            Tags
-                        </Link>
-                        <Link
-                            className="item"
-                            to="/app/stats/agents"
-                            activeClassName="active"
-                        >
-                            Agents
-                        </Link>
-                        <Link
-                            className="item"
-                            to="/app/stats/channels"
-                            activeClassName="active"
-                        >
-                            Channels
-                        </Link>
+                        {views.map((view) => {
+                            return (
+                                <Link
+                                    key={view.get('name')}
+                                    className="item"
+                                    to={`/app/stats/${view.get('link')}`}
+                                    activeClassName="active"
+                                >
+                                    {view.get('name')}
+                                </Link>
+                            )
+                        })}
                     </div>
                 </div>
             </div>

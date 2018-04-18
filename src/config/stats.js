@@ -2,6 +2,7 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import moment from 'moment'
 import _merge from 'lodash/merge'
+import _isString from 'lodash/isString'
 import {formatDuration} from '../pages/stats/common/utils'
 import {defaults} from 'react-chartjs-2'
 import {TagLabel} from '../pages/common/utils/labels'
@@ -16,6 +17,7 @@ export const TICKETS_CREATED_PER_CHANNEL = 'tickets-created-per-channel'
 export const TICKETS_CREATED_PER_CHANNEL_PER_DAY = 'tickets-created-per-channel-per-day'
 export const TICKETS_CLOSED_PER_AGENT = 'tickets-closed-per-agent'
 export const TICKETS_CLOSED_PER_AGENT_PER_DAY = 'tickets-closed-per-agent-per-day'
+export const MESSAGES_SENT_PER_MACRO = 'messages-sent-per-macro'
 
 const mainBlue = '#152065'
 export const colors = [
@@ -117,6 +119,20 @@ const defaultYAxeGridLines = {
 }
 // configuration for each stat
 export const stats = fromJS({
+    [MESSAGES_SENT_PER_MACRO]: {
+        helpText: 'Number of messages sent by an agent or a rule per macro',
+        style: 'table',
+        downloadable: true,
+        callbacks: {
+            cell: (line, val) => {
+                if (_isString(val) && val.toLowerCase() === 'without macro') {
+                    return (<i><b>{val}</b></i>)
+                }
+
+                return val
+            }
+        }
+    },
     [TICKETS_CREATED_PER_CHANNEL]: {
         helpText: 'Number of tickets created per channel',
         style: 'table',
@@ -198,7 +214,16 @@ export const stats = fromJS({
     [TICKETS_CLOSED_PER_AGENT]: {
         helpText: 'Number of tickets closed per agent. Only tickets where an agent is assigned are taken into account.',
         style: 'table',
-        downloadable: true
+        downloadable: true,
+        callbacks: {
+            cell: (line, val) => {
+                if (_isString(val) && val.toLowerCase() === 'unassigned') {
+                    return (<i><b>{val}</b></i>)
+                }
+
+                return val
+            }
+        }
     },
     [TICKETS_PER_TAG]: {
         helpText: 'Number of tickets created per tag',
@@ -475,6 +500,8 @@ export const views = fromJS({
     overview: {
         name: 'Overview',
         filters: ['channels', 'agents', 'tags', 'date'],
+        // default view available at `app/stats/`
+        link: '',
         stats: [
             OVERVIEW,
             SUPPORT_VOLUME,
@@ -484,14 +511,16 @@ export const views = fromJS({
     },
     tags: {
         name: 'Tags',
-        filters: ['date'],
+        filters: ['channels', 'date'],
+        link: 'tags',
         stats: [
             TICKETS_PER_TAG,
         ]
     },
     channels: {
         name: 'Channels',
-        filters: ['date'],
+        filters: ['channels', 'date'],
+        link: 'channels',
         stats: [
             TICKETS_CREATED_PER_CHANNEL_PER_DAY,
             TICKETS_CREATED_PER_CHANNEL,
@@ -499,10 +528,19 @@ export const views = fromJS({
     },
     agents: {
         name: 'Agents',
-        filters: ['date'],
+        filters: ['channels', 'date'],
+        link: 'agents',
         stats: [
             TICKETS_CLOSED_PER_AGENT_PER_DAY,
             TICKETS_CLOSED_PER_AGENT
         ]
-    }
+    },
+    macros: {
+        name: 'Macros',
+        filters: ['channels', 'date'],
+        link: 'macros',
+        stats: [
+            MESSAGES_SENT_PER_MACRO
+        ]
+    },
 })

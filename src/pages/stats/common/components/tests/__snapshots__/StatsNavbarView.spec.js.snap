@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StatsNavbarView should render 1`] = `
+<div>
+  <div
+    className="item"
+  >
+    <div
+      className="menu"
+    >
+      <Link
+        activeClassName="active"
+        className="item"
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/stats/"
+      >
+        Overview
+      </Link>
+      <Link
+        activeClassName="active"
+        className="item"
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/stats/tags"
+      >
+        Tags
+      </Link>
+      <Link
+        activeClassName="active"
+        className="item"
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/stats/channels"
+      >
+        Channels
+      </Link>
+      <Link
+        activeClassName="active"
+        className="item"
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/stats/agents"
+      >
+        Agents
+      </Link>
+      <Link
+        activeClassName="active"
+        className="item"
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/stats/macros"
+      >
+        Macros
+      </Link>
+    </div>
+  </div>
+</div>
+`;
