@@ -16,9 +16,9 @@ import {
     BreadcrumbItem,
 } from 'reactstrap'
 
-import {AVAILABLE_HTTP_METHODS} from '../../../../../config'
+import {AVAILABLE_HTTP_METHODS, FORM_CONTENT_TYPE, JSON_CONTENT_TYPE} from '../../../../../config'
 import Loader from '../../../../common/components/Loader'
-import HeaderFieldArray from './HeaderFieldArray'
+import ObjectListField from './ObjectListField'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 
 import InputField from '../../../../common/forms/InputField'
@@ -31,8 +31,8 @@ export const defaultContent = {
     type: 'http',
     http: {
         method: 'GET',
-        request_content_type: 'application/json',
-        response_content_type: 'application/json',
+        request_content_type: JSON_CONTENT_TYPE,
+        response_content_type: JSON_CONTENT_TYPE,
         triggers: {
             'ticket-created': true,
             'ticket-updated': true
@@ -59,7 +59,7 @@ export default class HttpIntegrationDetail extends React.Component {
         ticketCreated: defaultContent.http.triggers['ticket-created'],
         ticketUpdated: defaultContent.http.triggers['ticket-updated'],
         headers: [],
-        form: undefined
+        form: ''
     }
 
     constructor(props) {
@@ -89,6 +89,11 @@ export default class HttpIntegrationDetail extends React.Component {
     }
 
     _getIntegration = (integration) => {
+        let isJsonBody = integration.getIn(['http', 'request_content_type']) === JSON_CONTENT_TYPE
+        let formData = toJS(integration.getIn(['http', 'form']))
+        if (!isJsonBody) {
+            formData = this._objectToParameters(formData)
+        }
         return {
             name: integration.get('name'),
             description: integration.get('description') || '',
@@ -101,13 +106,27 @@ export default class HttpIntegrationDetail extends React.Component {
             responseContentType: integration.getIn(['http', 'response_content_type']),
             ticketCreated: integration.getIn(['http', 'triggers', 'ticket-created']),
             ticketUpdated: integration.getIn(['http', 'triggers', 'ticket-updated']),
-            form: toJS(integration.getIn(['http', 'form']))
+            form: formData
         }
     }
 
     _isSubmitting = () => {
         const {loading, integration} = this.props
         return loading.get('updateIntegration') === integration.get('id', true)
+    }
+
+    _onRequestContentTypeChange(value) {
+        if (value !== JSON_CONTENT_TYPE) {
+            this.setState({
+                form: this._objectToParameters(this.state.form),
+                requestContentType: value
+            })
+        } else {
+            this.setState({
+                form: this._parametersToObject(this.state.form),
+                requestContentType: value
+            })
+        }
     }
 
     /**
@@ -160,7 +179,12 @@ export default class HttpIntegrationDetail extends React.Component {
         doc.http.response_content_type = this.state.responseContentType
         doc.http.triggers['ticket-created'] = this.state.ticketCreated
         doc.http.triggers['ticket-updated'] = this.state.ticketUpdated
-        doc.http.form = this.state.form
+
+        if (this.state.requestContentType === JSON_CONTENT_TYPE) {
+            doc.http.form = this.state.form
+        } else {
+            doc.http.form = this._parametersToObject(this.state.form)
+        }
 
         // if update, set ids for server
         if (this.props.isUpdate) {
@@ -179,7 +203,7 @@ export default class HttpIntegrationDetail extends React.Component {
         const isActive = !integration.get('deactivated_datetime')
 
         if (loading.get('integration')) {
-            return <Loader />
+            return <Loader/>
         }
 
         return (
@@ -219,7 +243,7 @@ export default class HttpIntegrationDetail extends React.Component {
                             name="name"
                             label="Integration name"
                             value={this.state.name}
-                            onChange={value => this.setState({name: value})}
+                            onChange={(value) => this.setState({name: value})}
                             required
                         />
                         <InputField
@@ -227,7 +251,7 @@ export default class HttpIntegrationDetail extends React.Component {
                             name="description"
                             label="Description"
                             value={this.state.description}
-                            onChange={value => this.setState({description: value})}
+                            onChange={(value) => this.setState({description: value})}
                         />
                         <FormGroup>
                             <Label className="control-label">Triggers</Label>
@@ -241,14 +265,14 @@ export default class HttpIntegrationDetail extends React.Component {
                                 type="checkbox"
                                 label="Ticket created"
                                 value={this.state.ticketCreated}
-                                onChange={value => this.setState({ticketCreated: value})}
+                                onChange={(value) => this.setState({ticketCreated: value})}
                             />
                             <BooleanField
                                 name="http.triggers.ticket-updated"
                                 type="checkbox"
                                 label="Ticket updated"
                                 value={this.state.ticketUpdated}
-                                onChange={value => this.setState({ticketUpdated: value})}
+                                onChange={(value) => this.setState({ticketUpdated: value})}
                             />
                         </FormGroup>
                         <InputField
@@ -264,18 +288,19 @@ export default class HttpIntegrationDetail extends React.Component {
                                 <div>
                                     You can use <code>{'{{ticket.requester.email}}'}</code> to pass the email of the
                                     ticket requester. See
-                                    other <a href="http://api.gorgias.io/#/definitions/User" target="_blank" rel="noopener noreferrer">vars</a>.
+                                    other <a href="http://api.gorgias.io/#/definitions/User" target="_blank"
+                                             rel="noopener noreferrer">vars</a>.
                                 </div>
                             )}
                             value={this.state.url}
-                            onChange={value => this.setState({url: value})}
+                            onChange={(value) => this.setState({url: value})}
                         />
                         <InputField
                             type="select"
                             name="http.method"
                             label="HTTP Method"
                             value={this.state.method}
-                            onChange={value => this.setState({method: value})}
+                            onChange={(value) => this.setState({method: value})}
                             required
                         >
                             {
@@ -289,43 +314,61 @@ export default class HttpIntegrationDetail extends React.Component {
                                 )
                             }
                         </InputField>
-                        <InputField
-                            type="select"
-                            name="http.request_content_type"
-                            label="Request content type"
-                            required
-                            value={this.state.requestContentType}
-                            onChange={value => this.setState({requestContentType: value})}
-                        >
-                            <option value="application/json">application/json</option>
-                        </InputField>
+                        {
+                            this.state.method !== 'GET' && (
+                                <InputField
+                                    type="select"
+                                    name="http.request_content_type"
+                                    label="Request content type"
+                                    required
+                                    value={this.state.requestContentType}
+                                    onChange={(value) => this._onRequestContentTypeChange(value)}
+                                >
+                                    <option value={JSON_CONTENT_TYPE}>{JSON_CONTENT_TYPE}</option>
+                                    <option value={FORM_CONTENT_TYPE}>{FORM_CONTENT_TYPE}</option>
+                                </InputField>
+                            )
+                        }
                         <InputField
                             type="select"
                             name="http.response_content_type"
                             label="Response content type"
                             value={this.state.responseContentType}
-                            onChange={value => this.setState({responseContentType: value})}
+                            onChange={(value) => this.setState({responseContentType: value})}
                             required
                         >
-                            <option value="application/json">application/json</option>
+                            <option value={JSON_CONTENT_TYPE}>{JSON_CONTENT_TYPE}</option>
                         </InputField>
                         <FormGroup>
-                            <HeaderFieldArray
+                            <ObjectListField
                                 name="http.headers"
+                                title="Header"
                                 fields={this.state.headers}
-                                onChange={value => this.setState({headers: value})}
+                                onChange={(value) => this.setState({headers: value})}
                             />
                         </FormGroup>
 
                         {
                             this.state.method !== 'GET' && (
-                                <JsonField
-                                    name="http.form"
-                                    label="Request Body (JSON)"
-                                    rows="8"
-                                    value={this.state.form}
-                                    onChange={value => this.setState({form: value})}
-                                />
+                                this.state.requestContentType === JSON_CONTENT_TYPE ? (
+                                    <JsonField
+                                        name="http.form"
+                                        label="Request Body (JSON)"
+                                        rows="8"
+                                        value={this.state.form}
+                                        onChange={(value) => this.setState({form: value})}
+                                    />
+                                ) : (
+                                    <FormGroup>
+                                        <ObjectListField
+                                            name="http.form"
+                                            title="Param"
+                                            fields={this.state.form}
+                                            onChange={(value) => this.setState({form: value})}
+                                        />
+                                    </FormGroup>
+                                )
+
                             )
                         }
 

@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 import _trim from 'lodash/trim'
 import _clone from 'lodash/clone'
@@ -5,11 +6,13 @@ import {Row, Col, Button} from 'reactstrap'
 
 import InputField from '../../../../common/forms/InputField'
 
-export default class HeaderFieldArray extends React.Component {
-    static propTypes = {
-        fields: React.PropTypes.array,
-        onChange: React.PropTypes.func,
-    }
+type Props = {
+    title: string,
+    fields: Array<any>,
+    onChange: (fields: Array<any>) => *,
+}
+
+export default class ObjectListField extends React.Component<Props> {
 
     _add = () => {
         return this.props.onChange(_clone(this.props.fields).concat([{
@@ -18,14 +21,14 @@ export default class HeaderFieldArray extends React.Component {
         }]))
     }
 
-    _update = (index, key, value) => {
+    _update = (index: number, key: string, value: string) => {
         const fields = _clone(this.props.fields)
         fields[index][key] = value
 
         return this.props.onChange(fields)
     }
 
-    _remove = (index) => {
+    _remove = (index: number) => {
         const fields = _clone(this.props.fields)
         fields.splice(index, 1)
         return this.props.onChange(fields)
@@ -36,9 +39,9 @@ export default class HeaderFieldArray extends React.Component {
 
         return (
             <div>
-                <label>Headers</label>
+                <label>{`${this.props.title}s`}</label>
                 {
-                    !fields.length && <p>No header</p>
+                    !fields.length && <p>{`No ${this.props.title}`}</p>
                 }
                 {
                     fields.map((header, index) =>
@@ -72,7 +75,7 @@ export default class HeaderFieldArray extends React.Component {
                                     color="secondary"
                                     type="button"
                                     onClick={() => this._remove(index)}
-                                    title="Remove header"
+                                    title={`Remove ${this.props.title}`}
                                 >
                                     <i className="material-icons md-2 text-danger">
                                         delete
@@ -91,7 +94,7 @@ export default class HeaderFieldArray extends React.Component {
                     <i className="material-icons mr-1">
                         add
                     </i>
-                    Add header
+                    {`Add ${this.props.title}`}
                 </Button>
             </div>
         )

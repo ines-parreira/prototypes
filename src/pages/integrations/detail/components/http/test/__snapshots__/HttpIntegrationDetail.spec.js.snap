@@ -188,6 +188,11 @@ exports[`HttpIntegrationDetail component should display data about the integrati
         >
           application/json
         </option>
+        <option
+          value="application/x-www-form-urlencoded"
+        >
+          application/x-www-form-urlencoded
+        </option>
       </InputField>
       <InputField
         label="Response content type"
@@ -206,7 +211,7 @@ exports[`HttpIntegrationDetail component should display data about the integrati
       <FormGroup
         tag="div"
       >
-        <HeaderFieldArray
+        <ObjectListField
           fields={
             Array [
               Object {
@@ -221,6 +226,7 @@ exports[`HttpIntegrationDetail component should display data about the integrati
           }
           name="http.headers"
           onChange={[Function]}
+          title="Header"
         />
       </FormGroup>
       <JsonField
@@ -459,20 +465,6 @@ exports[`HttpIntegrationDetail component should display default if it's a new in
         </option>
       </InputField>
       <InputField
-        label="Request content type"
-        name="http.request_content_type"
-        onChange={[Function]}
-        required={true}
-        type="select"
-        value="application/json"
-      >
-        <option
-          value="application/json"
-        >
-          application/json
-        </option>
-      </InputField>
-      <InputField
         label="Response content type"
         name="http.response_content_type"
         onChange={[Function]}
@@ -489,10 +481,11 @@ exports[`HttpIntegrationDetail component should display default if it's a new in
       <FormGroup
         tag="div"
       >
-        <HeaderFieldArray
+        <ObjectListField
           fields={Array []}
           name="http.headers"
           onChange={[Function]}
+          title="Header"
         />
       </FormGroup>
       <div>
