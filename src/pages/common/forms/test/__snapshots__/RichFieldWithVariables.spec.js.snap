@@ -109,6 +109,14 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
         >
           Email
         </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Bio
+        </DropdownItem>
       </DropdownMenu>
     </UncontrolledButtonDropdown>
   </div>

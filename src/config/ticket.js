@@ -55,6 +55,10 @@ export const VARIABLES = [{
         name: 'Email',
         fullName: 'Current agent email',
         value: 'current_user.email',
+    }, {
+        name: 'Bio',
+        fullName: 'Current agent bio',
+        value: 'current_user.bio',
     }],
 }, {
     type: 'shopify',

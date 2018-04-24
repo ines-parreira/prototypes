@@ -87,6 +87,7 @@ export const currentUser = {
     active: true,
     deactivated_datetime: null,
     name: 'Alex Plugaru',
+    bio: 'CTO',
     auths: [
         {
             data: {

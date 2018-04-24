@@ -17,10 +17,12 @@ import InputField from '../../../common/forms/InputField'
 import Avatar from '../../../common/components/Avatar'
 import FileField from '../../../common/forms/FileField'
 import PageHeader from '../../../common/components/PageHeader'
+import {Link} from 'react-router'
 
 const defaultContent = {
     name: '',
     email: '',
+    bio: '',
     timezone: '',
     language: ''
 }
@@ -96,7 +98,7 @@ class YourProfileView extends React.Component {
         return (
             <div className="full-width">
                 <PageHeader title="Your profile"/>
-                    <Container fluid className="page-container">
+                <Container fluid className="page-container">
                     <p>Update your profile information.</p>
                     <Form
                         className="mb-4"
@@ -121,6 +123,22 @@ class YourProfileView extends React.Component {
                                     required
                                     value={this.state.email}
                                     onChange={email => this.setState({email})}
+                                />
+                                <InputField
+                                    type="text"
+                                    name="bio"
+                                    label="Your bio"
+                                    help={
+                                        <span>
+                                            Your bio can be used in signatures as a variable. Admins can set up
+                                            signatures{' '}
+                                            <Link to="/app/settings/integrations/email">
+                                                in each email integration
+                                            </Link>
+                                        </span>
+                                    }
+                                    value={this.state.bio}
+                                    onChange={bio => this.setState({bio})}
                                 />
                                 <InputField
                                     type="select"

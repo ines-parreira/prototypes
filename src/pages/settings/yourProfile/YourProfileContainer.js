@@ -25,7 +25,7 @@ class YourProfileContainer extends React.Component {
 
         if (!currentUser.delete('_internal').isEmpty()) {
             prunedCurrentUser = fromJS(_pick(
-                currentUser.toJS(), ['name', 'email', 'timezone', 'language', 'signature_text', 'signature_html', 'settings', 'meta']
+                currentUser.toJS(), ['name', 'email', 'bio', 'timezone', 'language', 'signature_text', 'signature_html', 'settings', 'meta']
             ))
         }
 
