@@ -15,6 +15,7 @@ import {fetchUser} from '../state/users/actions'
 import {injectInterceptor} from '../utils/axios'
 
 import * as layoutSelectors from '../state/layout/selectors'
+import * as viewsSelectors from '../state/views/selectors'
 
 import * as segmentTracker from '../store/middlewares/segmentTracker'
 import KeyboardHelp from './common/components/KeyboardHelp'
@@ -50,6 +51,7 @@ type Props = {
     openPanel: typeof layoutActions.openPanel,
     closePanels: typeof layoutActions.closePanels,
     updateAccountSuccess: typeof currentAccountActions.updateAccountSuccess,
+    gotoActiveView: typeof viewsActions.gotoActiveView,
 
     openedPanel?: string,
 
@@ -81,7 +83,14 @@ class App extends React.Component<Props> {
     }
 
     componentDidMount() {
-        shortcutManager.bind('App')
+        shortcutManager.bind('App', {
+            GO_VIEW: {
+                action: (e) => {
+                    e.preventDefault()
+                    this.props.gotoActiveView()
+                }
+            },
+        })
         segmentTracker.identifyUser(this.props.currentUser.toJS())
     }
 
@@ -195,6 +204,7 @@ function mapStateToProps(state, ownProps) {
         currentAccount: state.currentAccount,
         notifications: state.notifications,
         openedPanel: layoutSelectors.getCurrentOpenedPanel(state),
+        activeView: viewsSelectors.getActiveView(state),
         currentRoute: utils.currentRoute(ownProps.routes),
     }
 }
@@ -206,4 +216,5 @@ export default connect(mapStateToProps, {
     openPanel: layoutActions.openPanel,
     closePanels: layoutActions.closePanels,
     updateAccountSuccess: currentAccountActions.updateAccountSuccess,
+    gotoActiveView: viewsActions.gotoActiveView,
 })(App)

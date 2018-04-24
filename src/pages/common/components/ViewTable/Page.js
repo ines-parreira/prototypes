@@ -21,12 +21,12 @@ import css from './Page.less'
 @withRouter
 @connect((state, ownProps) => {
     const config = viewsConfig.getConfigByName(ownProps.type)
-    const currentPage = ownProps.location.query.page || 1
+    const currentPage = parseInt(ownProps.location.query.page) || 1
 
     return {
         activeView: viewsSelectors.getActiveView(state),
         config,
-        currentPage: currentPage.toString(),
+        currentPage,
         getView: viewsSelectors.makeGetView(state),
         getViewIdToDisplay: viewsSelectors.makeGetViewIdToDisplay(state),
         hasActiveView: viewsSelectors.hasActiveViewOfType(config.get('type'))(state),
@@ -41,7 +41,7 @@ export default class Page extends React.Component {
         ActionsComponent: PropTypes.func,
         activeView: ImmutablePropTypes.map.isRequired,
         config: ImmutablePropTypes.map.isRequired,
-        currentPage: PropTypes.string.isRequired,
+        currentPage: PropTypes.number.isRequired,
         fetchPage: PropTypes.func.isRequired,
         getViewIdToDisplay: PropTypes.func.isRequired,
         getView: PropTypes.func.isRequired,

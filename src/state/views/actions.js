@@ -13,7 +13,7 @@ import {notify} from '../notifications/actions'
 import {fetchUsers} from '../users/actions'
 import socketManager from '../../services/socketManager'
 import {getPluralObjectName, getHashOfObj, isCurrentlyOnTicket, isCurrentlyOnView} from '../../utils'
-import {shouldUpdateView} from './utils'
+import {shouldUpdateView, activeViewUrl} from './utils'
 
 import type {Map, List} from 'immutable'
 import type {dispatchType, getStateType, thunkActionType} from '../types'
@@ -568,3 +568,18 @@ export const updateRecentViews = (viewIds) => ({
     type: types.UPDATE_RECENT_VIEWS,
     viewIds
 })
+
+/**
+ * Go to the parent view
+ */
+export const gotoActiveView = () => (dispatch: dispatchType, getState: getStateType) => {
+    const state = getState()
+    const activeView = viewsSelectors.getActiveView(state)
+    const pagination = viewsSelectors.getPagination(state)
+    const currentLocation = browserHistory.getCurrentLocation()
+    const newUrl = activeViewUrl(activeView, currentLocation, pagination)
+
+    browserHistory.push(newUrl)
+
+    dispatch({type: types.GOTO_ACTIVE_VIEW})
+}

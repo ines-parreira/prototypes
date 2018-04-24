@@ -1,7 +1,7 @@
 import * as utils from '../utils'
 import moment from 'moment'
 import {fromJS} from 'immutable'
-import {updateFilterOperator} from '../utils'
+import {updateFilterOperator, activeViewUrl} from '../utils'
 
 describe('utils', () => {
     describe('RecentViewStorage', () => {
@@ -169,6 +169,91 @@ describe('utils', () => {
             const res = updateFilterOperator(ast, 0, 'lte')
 
             expect(res.toJS()).toMatchSnapshot()
+        })
+    })
+
+    describe('activeViewUrl', () => {
+        it('should return index url with no active view', () => {
+            const url = activeViewUrl(fromJS({}), {pathname: '/app/ticket/1'}, fromJS({}))
+            expect(url).toBe('/app')
+        })
+
+        it('should return the ticket list url', () => {
+            const url = activeViewUrl(fromJS({
+                type: 'ticket-list',
+                id: '1'
+            }), {
+                pathname: '/app/ticket/1',
+                search: ''
+            }, fromJS({}))
+            expect(url).toBe('/app/tickets/1')
+        })
+
+        it('should return the user list url', () => {
+            const url = activeViewUrl(fromJS({
+                type: 'user-list',
+                id: '2'
+            }), {
+                pathname: '/app/user/2',
+                search: ''
+            }, fromJS({}))
+            expect(url).toBe('/app/users/2')
+        })
+
+        it('should return the same url when on a different item type', () => {
+            const url = activeViewUrl(fromJS({
+                type: 'user-list',
+                id: '2'
+            }), {
+                pathname: '/app/ticket/1',
+                search: ''
+            }, fromJS({}))
+            expect(url).toBe('/app/ticket/1')
+        })
+
+        it('should return the same url when on an unsupported url', () => {
+            const url = activeViewUrl(fromJS({
+                type: 'user-list',
+                id: '2'
+            }), {
+                pathname: '/app/pizza-pepperoni',
+                search: ''
+            }, fromJS({}))
+            expect(url).toBe('/app/pizza-pepperoni')
+        })
+
+        it('should keep the url search query', () => {
+            const url = activeViewUrl(fromJS({
+                type: 'user-list',
+                id: '2'
+            }), {
+                pathname: '/app/pizza-pepperoni',
+                search: '?pizza=pepperoni'
+            }, fromJS({}))
+            expect(url).toBe('/app/pizza-pepperoni?pizza=pepperoni')
+        })
+
+        it('should return the tickets search url and page number', () => {
+            const url = activeViewUrl(fromJS({
+                type: 'ticket-list',
+                id: '1',
+                search: 'pizza'
+            }), {
+                pathname: '/app/ticket/1',
+                search: ''
+            }, fromJS({page: 2}))
+            expect(url).toBe('/app/tickets/search?q=pizza&page=2')
+        })
+
+        it('should return the page number', () => {
+            const url = activeViewUrl(fromJS({
+                type: 'ticket-list',
+                id: '1',
+            }), {
+                pathname: '/app/ticket/1',
+                search: ''
+            }, fromJS({page: 2}))
+            expect(url).toBe('/app/tickets/1?page=2')
         })
     })
 })

@@ -49,7 +49,7 @@ describe('ViewTable::Page', () => {
     describe('connect HOC', () => {
         it('pass correct currentPage prop when page change in url', () => {
             const component = shallow(<Page {...minProps} />).dive()
-            expect(component.props()).toHaveProperty('currentPage', '1')
+            expect(component.props()).toHaveProperty('currentPage', 1)
             component.setProps({
                 location: {
                     query: {
@@ -57,7 +57,7 @@ describe('ViewTable::Page', () => {
                     }
                 },
             })
-            expect(component.props()).toHaveProperty('currentPage', '2')
+            expect(component.props()).toHaveProperty('currentPage', 2)
         })
     })
 
@@ -84,9 +84,9 @@ describe('ViewTable::Page', () => {
         it('fetch page when page changes', () => {
             const component = shallow(<Page {...minProps} />).dive().dive()
             component.setProps({
-                currentPage: '2',
+                currentPage: 2,
             })
-            expect(viewsActions.fetchPage).toBeCalledWith('2')
+            expect(viewsActions.fetchPage).toBeCalledWith(2)
         })
 
         it('change view when entering search mode', () => {

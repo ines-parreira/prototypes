@@ -12,14 +12,10 @@ export default {
                     browserHistory.push('/app')
                 }
             },
-            // GO_VIEW: {
-            //     key: 'g v',
-            //     description: 'Go to the current view.',
-            //     action: (e) => {
-            //         e.preventDefault()
-            //         browserHistory.push('/app')
-            //     }
-            // }
+            GO_VIEW: {
+                key: 'g v',
+                description: 'Go to the current view.',
+            }
         }
     },
     View: {

@@ -74,8 +74,13 @@ export default class Header extends React.Component {
         const {config} = this.props
 
         if (searchQuery) {
-            // add search to view and ask page of view (will return search result)
-            browserHistory.push(`/app/${config.get('routeList')}/search?q=${encodeURIComponent(searchQuery)}`)
+            // only if searchquery changed.
+            // Search triggers a change event on mount, because of forcedQuery,
+            // removing other querystrings from the url (eg. &page=1).
+            if (this._searchQuery() !== searchQuery) {
+                // add search to view and ask page of view (will return search result)
+                browserHistory.push(`/app/${config.get('routeList')}/search?q=${encodeURIComponent(searchQuery)}`)
+            }
         } else {
             // set the previous view back
             browserHistory.push(this._goBackUrl())

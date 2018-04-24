@@ -18,6 +18,11 @@ type astType = Map<*,*>
 type pathType = Array<string | number>
 type nodeType = Map<*,*>
 
+type currentLocationType = {
+    pathname: string,
+    search: string
+}
+
 
 function rawify(data: string | number | null) : string {
     if (typeof data === 'string') {
@@ -267,4 +272,66 @@ export const recentViewsStorage = new RecentViewsStorage()
  */
 export const shouldUpdateView = (viewId: string, viewsState: viewsStateType): boolean => {
     return !['search', 'new', '0', 0].includes(viewId) && isCurrentlyOnView(viewId, viewsState)
+}
+
+function getViewTypeUrl(viewType: string): ?{detail: string, list: string} {
+    const typeMap = {
+        'ticket-list': {
+            detail: 'ticket',
+            list: 'tickets',
+        },
+        'user-list': {
+            detail: 'user',
+            list: 'users',
+        }
+    }
+
+    return typeMap[viewType] || null
+}
+
+/**
+ * Map view type to individual item route
+ * @param view
+ * @param currentLocation
+ * @param pagination
+ * @returns {string}
+ */
+export function activeViewUrl(view: viewType, currentLocation: currentLocationType, pagination: Map<*,*>): string {
+    const viewType = view.get('type', '')
+    const viewId = view.get('id')
+    const viewSearch = view.get('search')
+    const typeUrl = getViewTypeUrl(viewType)
+    const page = pagination.get('page', 1)
+    const query = []
+    // default to index route
+    let url = '/app'
+
+    if (typeUrl) {
+        // check if we're on a view-type item page
+        if (currentLocation.pathname.includes(`/${typeUrl.detail}/`)) {
+            url += `/${typeUrl.list}`
+            if (viewSearch) {
+                query.push(`q=${viewSearch}`)
+
+                url += '/search'
+            } else {
+                url += `/${viewId}`
+            }
+
+            if (page > 1) {
+                query.push(`page=${page}`)
+            }
+
+            if (query.length) {
+                url += `?${query.join('&')}`
+            }
+        } else {
+            // we're on an unsupported view-type item,
+            // or on a different page type (eg. list).
+            // stay where you are
+            url = `${currentLocation.pathname}${currentLocation.search}`
+        }
+    }
+
+    return url
 }

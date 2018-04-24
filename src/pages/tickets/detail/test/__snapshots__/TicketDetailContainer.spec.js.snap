@@ -66,6 +66,7 @@ exports[`TicketDetailContainer component should render container for new ticket 
             "fetchViews": [Function],
             "fetchVisibleViewsCounts": [Function],
             "fieldEnumSearch": [Function],
+            "gotoActiveView": [Function],
             "handleViewsCount": [Function],
             "removeFieldFilter": [Function],
             "resetView": [Function],
