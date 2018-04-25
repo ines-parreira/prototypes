@@ -9,7 +9,7 @@ exports[`BarStat should render a bar chart 1`] = `
       labels={
         Array [
           Object {
-            "backgroundColor": "#8892f2",
+            "backgroundColor": "#ffb584",
             "name": "Ticket created",
           },
           Object {
@@ -26,7 +26,7 @@ exports[`BarStat should render a bar chart 1`] = `
         Object {
           "datasets": Array [
             Object {
-              "backgroundColor": "#8892f2",
+              "backgroundColor": "#ffb584",
               "data": Array [
                 23,
                 4,

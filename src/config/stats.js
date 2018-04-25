@@ -288,13 +288,17 @@ export const stats = fromJS({
         })
     },
     [SUPPORT_VOLUME]: {
-        helpText: 'Number of tickets created and closed.',
+        helpText: 'Number of tickets created, replied by agents and closed.',
         style: 'bar',
         downloadable: true,
         lines: {
             created: {
                 label: 'Ticket created',
-                color: '#8892f2',
+                color: '#ffb584',
+            },
+            replied: {
+                label: 'Ticket replied',
+                color: '#8892f2'
             },
             closed: {
                 label: 'Ticket closed',
@@ -335,6 +339,10 @@ export const stats = fromJS({
             total_new_tickets: {
                 label: 'Tickets created',
                 tooltip: 'Number of ticket created.',
+            },
+            total_replied_tickets: {
+                label: 'Tickets replied',
+                tooltip: 'Number of ticket replied.',
             },
             total_closed_tickets: {
                 label: 'Tickets closed',
