@@ -338,11 +338,11 @@ export const stats = fromJS({
         metrics: {
             total_new_tickets: {
                 label: 'Tickets created',
-                tooltip: 'Number of ticket created.',
+                tooltip: 'Number of tickets created.',
             },
             total_replied_tickets: {
                 label: 'Tickets replied',
-                tooltip: 'Number of ticket replied.',
+                tooltip: 'Number of tickets replied by agents.',
             },
             total_closed_tickets: {
                 label: 'Tickets closed',
