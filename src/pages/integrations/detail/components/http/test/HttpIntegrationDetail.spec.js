@@ -107,4 +107,47 @@ describe('HttpIntegrationDetail component', () => {
 
         expect(component).toMatchSnapshot()
     })
+
+    it('should display data with url-encoded format', () => {
+        const component = shallow(
+            <HttpIntegrationDetail
+                integration={fromJS({
+                    id: 1,
+                    type: 'http',
+                    name: 'my little integration',
+                    description: 'just a small integration, which is very practical and friendly',
+                    http: {
+                        headers: {
+                            'Authorization': 'Bearer a57sd4as6d4',
+                            'Foo': 'bar'
+                        },
+                        url: 'http://httpbin.org/post',
+                        method: 'POST',
+                        request_content_type: 'application/x-www-form-urlencoded',
+                        response_content_type: 'application/json',
+                        triggers: {
+                            'ticket-created': true,
+                            'ticket-updated': false
+                        },
+                        form: {
+                            foo: 'bar',
+                            baz: 'foo'
+                        }
+                    }
+                })}
+                isUpdate={true}
+                actions={{
+                    deactivateIntegration: () => {},
+                    activateIntegration: () => {},
+                    deleteIntegration: () => {},
+                    updateOrCreateIntegration: () => {},
+                }}
+                loading={fromJS({integration: false})}
+            />
+        )
+
+        expect(component).toMatchSnapshot()
+    })
+
+
 })

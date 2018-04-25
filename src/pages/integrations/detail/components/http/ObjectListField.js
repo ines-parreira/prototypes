@@ -8,6 +8,7 @@ import InputField from '../../../../common/forms/InputField'
 
 type Props = {
     title: string,
+    fieldName: string,
     fields: Array<any>,
     onChange: (fields: Array<any>) => *,
 }
@@ -39,9 +40,9 @@ export default class ObjectListField extends React.Component<Props> {
 
         return (
             <div>
-                <label>{`${this.props.title}s`}</label>
+                <label className="control-label">{`${this.props.title}s`}</label>
                 {
-                    !fields.length && <p>{`No ${this.props.title}`}</p>
+                    !fields.length && <p>{`No ${this.props.fieldName}`}</p>
                 }
                 {
                     fields.map((header, index) =>
@@ -75,7 +76,7 @@ export default class ObjectListField extends React.Component<Props> {
                                     color="secondary"
                                     type="button"
                                     onClick={() => this._remove(index)}
-                                    title={`Remove ${this.props.title}`}
+                                    title={`Remove ${this.props.fieldName}`}
                                 >
                                     <i className="material-icons md-2 text-danger">
                                         delete
@@ -94,7 +95,7 @@ export default class ObjectListField extends React.Component<Props> {
                     <i className="material-icons mr-1">
                         add
                     </i>
-                    {`Add ${this.props.title}`}
+                    {`Add ${this.props.fieldName}`}
                 </Button>
             </div>
         )

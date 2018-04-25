@@ -1,0 +1,127 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ObjectListField component should display the field as empty 1`] = `
+<div>
+  <label
+    className="control-label"
+  >
+    Form fields
+  </label>
+  <p>
+    No field
+  </p>
+  <Button
+    color="secondary"
+    onClick={[Function]}
+    size="sm"
+    tag="button"
+    type="button"
+  >
+    <i
+      className="material-icons mr-1"
+    >
+      add
+    </i>
+    Add field
+  </Button>
+</div>
+`;
+
+exports[`ObjectListField component should display the field with items 1`] = `
+<div>
+  <label
+    className="control-label"
+  >
+    Form fields
+  </label>
+  <Row
+    className="mb-3 form-row"
+    tag="div"
+  >
+    <Col
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+      xs="5"
+    >
+      <InputField
+        name="[object Object].key"
+        onChange={[Function]}
+        placeholder="Key"
+        required={true}
+        type="text"
+      />
+    </Col>
+    <Col
+      className="flex-grow"
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+    >
+      <InputField
+        name="[object Object].value"
+        onChange={[Function]}
+        placeholder="Value"
+        required={true}
+        type="text"
+      />
+    </Col>
+    <Col
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+      xs="auto"
+    >
+      <Button
+        className="float-right"
+        color="secondary"
+        onClick={[Function]}
+        tag="button"
+        title="Remove field"
+        type="button"
+      >
+        <i
+          className="material-icons md-2 text-danger"
+        >
+          delete
+        </i>
+      </Button>
+    </Col>
+  </Row>
+  <Button
+    color="secondary"
+    onClick={[Function]}
+    size="sm"
+    tag="button"
+    type="button"
+  >
+    <i
+      className="material-icons mr-1"
+    >
+      add
+    </i>
+    Add field
+  </Button>
+</div>
+`;

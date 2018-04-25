@@ -343,6 +343,7 @@ export default class HttpIntegrationDetail extends React.Component {
                             <ObjectListField
                                 name="http.headers"
                                 title="Header"
+                                fieldName="header"
                                 fields={this.state.headers}
                                 onChange={(value) => this.setState({headers: value})}
                             />
@@ -362,7 +363,8 @@ export default class HttpIntegrationDetail extends React.Component {
                                     <FormGroup>
                                         <ObjectListField
                                             name="http.form"
-                                            title="Param"
+                                            fieldName="field"
+                                            title="Form field"
                                             fields={this.state.form}
                                             onChange={(value) => this.setState({form: value})}
                                         />
