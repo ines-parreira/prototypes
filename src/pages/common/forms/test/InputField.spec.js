@@ -96,6 +96,25 @@ describe('InputField', () => {
         expect(valueStorage).toEqual(newValue)
     })
 
+    it('should render a number input with an onChange handler, and call this handler on change', () => {
+        const onChangeSpy = jest.fn()
+
+        const component = mount(
+            <InputField
+                {...minProps}
+                type="number"
+                value="value"
+                onChange={onChangeSpy}
+            />
+        )
+        expect(component).toMatchSnapshot()
+
+        const newValue = '12'
+        component.find('input').simulate('change', {target: {value: newValue}})
+
+        expect(onChangeSpy).toHaveBeenCalledWith(parseFloat(newValue))
+    })
+
     it('should render a hidden text input', () => {
         const component = shallow(
             <InputField

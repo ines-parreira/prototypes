@@ -50,13 +50,13 @@ export default class SelectField extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps, nextState) {
+    componentWillReceiveProps(nextProps) {
         const hasNewOptions = this.props.options.length !== nextProps.options.length ||
             !!nextProps.options.filter((option) => !this.props.options.includes(option))
 
         if (this.props.value !== nextProps.value || hasNewOptions) {
             this.setState({
-                filteredOptions: this._filterOptions(nextProps.options, nextProps.value, nextState.input)
+                filteredOptions: this._filterOptions(nextProps.options, nextProps.value, this.state.input)
             })
         }
     }

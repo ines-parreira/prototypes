@@ -99,13 +99,13 @@ export default class Widget extends React.Component<Props, State> {
         return actions.modifyCodeAST(parent, newValue, 'UPDATE')
     }
 
-    _input = (value: any) => {
+    _input = (value: any, type: string = 'text') => {
         const {config = {}, className, compact} = this.props
 
         return (
             <InputField
                 className={className}
-                type="text"
+                type={type}
                 label={config.name}
                 value={value}
                 onChange={this._handleChange}
@@ -362,6 +362,8 @@ export default class Widget extends React.Component<Props, State> {
                 return this._datetimeSelect(value)
             case 'timedelta-select':
                 return this._timedeltaSelect(value)
+            case 'number-input':
+                return this._input(value, 'number')
             case 'input':
             default:
                 return this._input(value)

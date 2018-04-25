@@ -33,8 +33,18 @@ export default class InputField extends FormField {
     }
 
     _onChange = (e) => {
-        const value = e.target.value
-        this.props.onChange(value)
+        const {type, onChange} = this.props
+        let value = e.target.value
+
+        if (type === 'number') {
+            let numberValue = parseFloat(value)
+
+            if (!isNaN(numberValue)) {
+                value = numberValue
+            }
+        }
+
+        onChange(value)
     }
 
     _getId = () => {

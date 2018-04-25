@@ -8,7 +8,7 @@ import _isInteger from 'lodash/isInteger'
 
 import {OBJECT_DEFINITIONS} from './constants'
 import {getAST, getFirstExpressionOfAST} from '../../utils'
-import {collectionOperators, timedeltaOperators} from '../../config/rules'
+import {collectionOperators, deprecatedOperators, timedeltaOperators} from '../../config/rules'
 
 import type {Map, List} from 'immutable'
 import type {schemasType} from '../../types'
@@ -252,9 +252,11 @@ function resolveFirstArg(callExpression: Map<*,*>, stopPath: List<*>, schemas: s
 function resolveCallee(callExpression: Map<*,*>, firstArgSchema: schemasType): string {
     const oldCallee = callExpression.getIn(['callee', 'name'], '')
     let callee = oldCallee
+
     if (firstArgSchema && firstArgSchema.getIn(['meta', 'operators'])) {
         const operators = Object.keys(firstArgSchema.getIn(['meta', 'operators']).toJS())
-        callee = operators[0]
+        callee = operators.filter((op) => !deprecatedOperators.includes(op))[0]
+
         for (const op of operators) {
             // just leave the same operator as before
             if (op === oldCallee) {

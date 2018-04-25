@@ -51,13 +51,13 @@ export default class MultiSelectField extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps, nextState) {
+    componentWillReceiveProps(nextProps) {
         const hasNewOptions = this.props.options.length !== nextProps.options.length ||
             !!nextProps.options.filter(option => !this.props.options.includes(option))
 
         if (this.props.values.length !== nextProps.values.length || hasNewOptions) {
             this.setState({
-                filteredOptions: this._filterOptions(nextProps.options, nextProps.values, nextState.input)
+                filteredOptions: this._filterOptions(nextProps.options, nextProps.values, this.state.input)
             })
         }
     }

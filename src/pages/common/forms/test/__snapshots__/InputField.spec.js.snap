@@ -75,13 +75,52 @@ exports[`InputField should render a hidden text input 1`] = `
     <Input
       className=""
       hidden={true}
-      id="id-input-9"
+      id="id-input-10"
       onChange={[Function]}
       type="text"
       value="value"
     />
   </div>
 </FormGroup>
+`;
+
+exports[`InputField should render a number input with an onChange handler, and call this handler on change 1`] = `
+<InputField
+  onChange={[Function]}
+  type="number"
+  value="value"
+>
+  <FormGroup
+    className="InputField"
+    color=""
+    tag="div"
+  >
+    <div
+      className="InputField form-group"
+      color=""
+    >
+      <div
+        className=""
+      >
+        <Input
+          className=""
+          id="id-input-9"
+          onChange={[Function]}
+          type="number"
+          value="value"
+        >
+          <input
+            className="form-control"
+            id="id-input-9"
+            onChange={[Function]}
+            type="number"
+            value="value"
+          />
+        </Input>
+      </div>
+    </div>
+  </FormGroup>
+</InputField>
 `;
 
 exports[`InputField should render a required text input 1`] = `
@@ -225,7 +264,7 @@ exports[`InputField should render the input with an error 1`] = `
   >
     <Input
       className="form-control-danger"
-      id="id-input-10"
+      id="id-input-11"
       onChange={[Function]}
       type="text"
       value="value"
