@@ -207,11 +207,25 @@ export default class Navbar extends React.Component {
                             href="http://docs.gorgias.io/"
                             target="_blank"
                         >
-                            <i className="material-icons mr-2">help</i>
+                            <i className="material-icons mr-2" title="Helpcenter">help</i>
                             Documentation
                         </DropdownItem>
                         <DropdownItem
-                            tag="a"
+                            tag="div"
+                            toggle={false}
+                        >
+                            <noticeable-widget
+                                id="custom-eye-catching-animation"
+                                access-token={window.NOTICEABLE_ACCESS_TOKEN}
+                                project-id={window.NOTICEABLE_PROJECT_ID}
+                                white-label="true"
+                            >
+                                <a title="New features, bug-fixes, scheduled maintenance and other announcements.">
+                                    What's new?
+                                </a>
+                            </noticeable-widget>
+                        </DropdownItem>
+                        <DropdownItem
                             onClick={() => {
                                 shortcutManager.triggerAction('KeyboardHelp', 'SHOW_HELP')
                             }}
