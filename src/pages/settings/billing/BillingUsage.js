@@ -163,7 +163,6 @@ export class BillingUsage extends Component {
         const currentSubscriptionTrialEnd = moment(currentSubscription.get('trial_end_datetime')).format(dateFormat)
         const periodEnd = moment(currentUsage.getIn(['meta', 'end_datetime'])).format(dateFormat)
 
-
         return (
             <div className="mb-5">
                 <h4>
@@ -171,7 +170,7 @@ export class BillingUsage extends Component {
                 </h4>
 
                 <CardGroup className="mb-2">
-                    <Card className={classnames(css['current-plan'], css[planName])}>
+                    <Card className={classnames(css['current-plan'], css[planName] || css['Default'])}>
                         <CardBody>
                             <h4>{planTitle}</h4>
                             {isTrialing ? (
