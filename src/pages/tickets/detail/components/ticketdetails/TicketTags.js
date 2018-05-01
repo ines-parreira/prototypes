@@ -13,6 +13,10 @@ import headerCss from '../TicketHeader.less'
 import css from './TicketTags.less'
 import classnames from 'classnames'
 
+
+const LIMIT_TAGS_SEARCH = 15
+
+
 export class TicketTags extends React.Component {
     state = {
         dropdownOpen: false,
@@ -77,7 +81,7 @@ export class TicketTags extends React.Component {
         this.setState({isLoading: true})
 
         const field = fromJS({
-            filter: {type: 'tag'}
+            filter: {type: 'tag', size: LIMIT_TAGS_SEARCH}
         })
 
         this.props.fieldEnumSearch(field, search)

@@ -38,7 +38,7 @@ export class ManageTags extends Component {
     }
 
     state = {
-        sort: 'usage_count',
+        sort: 'usage',
         reverse: true,
         newTag: '',
         showCreationPopup: false,

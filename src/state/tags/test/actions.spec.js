@@ -63,7 +63,7 @@ describe('tags actions', () => {
                     expect(params).toMatchSnapshot()
                     return [200]
                 })
-            return store.dispatch(actions.fetchTags(1, 'usage_count', false))
+            return store.dispatch(actions.fetchTags(1, 'usage', false))
         })
 
         it('fetch list also sorts', () => {

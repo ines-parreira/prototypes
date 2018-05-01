@@ -104,7 +104,7 @@ Table.defaultProps = {
         field: 'name',
     }, {
         title: 'Tickets',
-        field: 'usage_count',
+        field: 'usage',
     }]
 }
 

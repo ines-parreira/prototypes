@@ -2724,7 +2724,7 @@
           },
           "description": "A JSON field that is used to decorate the tag with color and/or and icon."
         },
-        "usage_count": {
+        "usage": {
           "type": "integer",
           "format": "int32",
           "description": "Number of tickets this tag is attached to."

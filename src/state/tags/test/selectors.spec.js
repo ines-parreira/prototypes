@@ -19,7 +19,7 @@ describe('tags selectors', () => {
                             name: 'refund',
                             decoration: null,
                             user_id: 2,
-                            usage_count: 60,
+                            usage: 60,
                             created_datetime: '2017-08-16T16:54:49'
                         },
                         {
@@ -27,7 +27,7 @@ describe('tags selectors', () => {
                             name: 'billing',
                             decoration: null,
                             user_id: 2,
-                            usage_count: 30,
+                            usage: 30,
                             created_datetime: '2017-08-16T16:54:49'
                         },
                     ],

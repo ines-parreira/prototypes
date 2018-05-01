@@ -216,7 +216,7 @@ exports[`ManageTags component mounts correctly 1`] = `
             "title": "Tag",
           },
           Object {
-            "field": "usage_count",
+            "field": "usage",
             "title": "Tickets",
           },
         ]
@@ -260,7 +260,7 @@ exports[`ManageTags component mounts correctly 1`] = `
           },
         }
       }
-      sort="usage_count"
+      sort="usage"
     />
     <Pagination
       currentPage={1}

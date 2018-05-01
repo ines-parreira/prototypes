@@ -27,7 +27,7 @@ export function addTags(tags: Array<string> | string) {
     }
 }
 
-export function fetchTags(page: ?number, sort: string = 'usage_count', reverse: boolean = true): thunkActionType {
+export function fetchTags(page: ?number, sort: string = 'usage', reverse: boolean = true): thunkActionType {
     return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
         dispatch({
             type: constants.FETCH_TAG_LIST_START

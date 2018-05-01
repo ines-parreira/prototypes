@@ -8,14 +8,6 @@ import {TicketTags} from '../TicketTags'
 describe('TicketTags component', () => {
     let component
 
-    const tags = [
-        { name: 'tag1' },
-        { name: 'tag2' },
-        { name: 'tag3' },
-        { name: 'tag4' },
-        { name: 'tag5' }
-    ]
-
     const ticketTags = fromJS([
         { name: 'tag1' },
         { name: 'tag5' }
@@ -24,7 +16,6 @@ describe('TicketTags component', () => {
     beforeAll(() => {
         component = shallow(
             <TicketTags
-                tags={tags}
                 ticketTags={ticketTags}
                 addTags={_noop}
                 removeTag={_noop}

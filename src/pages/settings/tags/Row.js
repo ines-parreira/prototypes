@@ -186,7 +186,7 @@ export class Row extends Component {
 
                 <td className="smallest">
                     <div className="cell-wrapper justify-content-center">
-                        {row.get('usage_count')}
+                        {row.get('usage')}
                     </div>
                 </td>
 

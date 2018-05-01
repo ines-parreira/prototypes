@@ -63,7 +63,7 @@ Array [
 
 exports[`tags actions fetchTags params change page 1`] = `
 Object {
-  "order_by": "usage_count",
+  "order_by": "usage",
   "order_dir": "desc",
   "page": 1,
 }
@@ -71,7 +71,7 @@ Object {
 
 exports[`tags actions fetchTags params change reverse 1`] = `
 Object {
-  "order_by": "usage_count",
+  "order_by": "usage",
   "order_dir": "asc",
   "page": 1,
 }

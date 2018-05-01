@@ -74,4 +74,7 @@ g/static/*/_build/*
 # docker-compose env_file
 .env
 
+# linters and other code inspection tools
+.mypy_cache/
+
 db_fixtures
