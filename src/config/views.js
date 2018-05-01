@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 
 import * as ticketConfig from './ticket'
 import TICKET_LANGUAGES from './ticketLanguages'
-import {stripHTML, getLanguageDisplayName, formatDatetime} from '../utils'
+import {stripHTML, getLanguageDisplayName} from '../utils'
 import {TagLabel} from '../pages/common/utils/labels'
 
 import _isUndefined from 'lodash/isUndefined'
@@ -193,17 +193,17 @@ export const views = fromJS([{
     cell: (fieldName, item) => {
         switch (fieldName) {
             case 'created':
-                return item.get('created_datetime')
+                return item.get('created_datetime') || ''
             case 'updated':
-                return item.get('updated_datetime')
+                return item.get('updated_datetime') || ''
             case 'closed':
-                return item.get('closed_datetime')
+                return item.get('closed_datetime') || ''
             case 'snooze':
-                return item.get('snooze_datetime')
+                return item.get('snooze_datetime') || ''
             case 'last_message':
-                return item.get('last_message_datetime')
+                return item.get('last_message_datetime') || ''
             case 'last_received_message':
-                return item.get('last_received_message_datetime')
+                return item.get('last_received_message_datetime') || ''
             case 'requester':
                 return item.get('requester') || fromJS({})
             case 'assignee':
