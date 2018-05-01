@@ -197,13 +197,13 @@ export const views = fromJS([{
             case 'updated':
                 return item.get('updated_datetime')
             case 'closed':
-                return item.get('closed_datetime') ? formatDatetime(item.get('closed_datetime')) : ''
+                return item.get('closed_datetime')
             case 'snooze':
-                return item.get('snooze_datetime') ? formatDatetime(item.get('snooze_datetime')) : ''
+                return item.get('snooze_datetime')
             case 'last_message':
-                return item.get('last_message_datetime') ? formatDatetime(item.get('last_message_datetime')) : ''
+                return item.get('last_message_datetime')
             case 'last_received_message':
-                return item.get('last_received_message_datetime') ? formatDatetime(item.get('last_received_message_datetime')) : ''
+                return item.get('last_received_message_datetime')
             case 'requester':
                 return item.get('requester') || fromJS({})
             case 'assignee':
