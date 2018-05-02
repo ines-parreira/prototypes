@@ -62,7 +62,7 @@ exports[`TimedeltaPicker component should ignore incorrect passed data and use d
         color="secondary"
       >
         <span>
-          day(s)
+          day(s) ago
         </span>
       </DropdownToggle>
       <DropdownMenu
@@ -74,28 +74,28 @@ exports[`TimedeltaPicker component should ignore incorrect passed data and use d
           tag="button"
           toggle={true}
         >
-          minute(s)
+          minute(s) ago
         </DropdownItem>
         <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
         >
-          hour(s)
+          hour(s) ago
         </DropdownItem>
         <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
         >
-          day(s)
+          day(s) ago
         </DropdownItem>
         <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
         >
-          week(s)
+          week(s) ago
         </DropdownItem>
       </DropdownMenu>
     </InputGroupButtonDropdown>
@@ -133,7 +133,7 @@ exports[`TimedeltaPicker component should render correct passed data 1`] = `
         color="secondary"
       >
         <span>
-          week(s)
+          week(s) ago
         </span>
       </DropdownToggle>
       <DropdownMenu
@@ -145,28 +145,28 @@ exports[`TimedeltaPicker component should render correct passed data 1`] = `
           tag="button"
           toggle={true}
         >
-          minute(s)
+          minute(s) ago
         </DropdownItem>
         <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
         >
-          hour(s)
+          hour(s) ago
         </DropdownItem>
         <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
         >
-          day(s)
+          day(s) ago
         </DropdownItem>
         <DropdownItem
           onClick={[Function]}
           tag="button"
           toggle={true}
         >
-          week(s)
+          week(s) ago
         </DropdownItem>
       </DropdownMenu>
     </InputGroupButtonDropdown>

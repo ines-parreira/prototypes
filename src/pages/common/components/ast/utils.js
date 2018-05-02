@@ -172,6 +172,10 @@ export const updateCodeAst = (schemas, ast, path, value, operation) => {
         }
     }
 
+    if (operation === 'UPDATE_IF_STATEMENT') {
+        newAst = ast.setIn(path, fromJS(Object.assign({}, ...ast.getIn(path).toJS(), value)))
+    }
+
     // fallback if new ast is null/undefined
     // this should not happen
     if (!newAst) {

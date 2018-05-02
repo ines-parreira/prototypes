@@ -301,11 +301,14 @@ export function getDefaultOperator(field: string, schemas: schemasType): ?string
         return null
     }
 
-    // return the first operator defined in the meta of the field
+    // return the default operator defined in the meta of the field, or the first if there's no default
     if (prop.meta && prop.meta.operators) {
         const operators = Object.keys(prop.meta.operators)
 
         if (operators.length) {
+            if (prop.meta.defaultOperator) {
+                return operators.find((operatorName) => operatorName === prop.meta.defaultOperator)
+            }
             return operators[0]
         }
     }

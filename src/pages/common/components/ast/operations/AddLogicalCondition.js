@@ -1,18 +1,18 @@
+// @flow
 import React from 'react'
+import type {List} from 'immutable'
 import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Button} from 'reactstrap'
 
 import Hoverable from '../../Hoverable'
 
-@Hoverable
-export default class AddLogicalCondition extends React.Component {
-    static propTypes = {
-        rule: React.PropTypes.object.isRequired,
-        actions: React.PropTypes.object.isRequired,
-        parent: React.PropTypes.object.isRequired,
-        statementOperator: React.PropTypes.string,
-        title: React.PropTypes.string.isRequired,
-    }
+type Props = {
+    rule: Object,
+    actions: Object,
+    parent: List<*>,
+    title: string
+}
 
+export class AddLogicalCondition extends React.Component<Props> {
     static contextTypes = {
         hovered: React.PropTypes.bool,
     }
@@ -91,6 +91,29 @@ export default class AddLogicalCondition extends React.Component {
         actions.modifyCodeAST(parent, actionNode, 'UPDATE_LOGICAL_OPERATOR')
     }
 
+    /**
+     * Add an `else` block to the current `if` statement
+     */
+    _handleElseClick = () => {
+        const actionNode = {
+            alternate: {
+                type: 'BlockStatement',
+                body: []
+            }
+        }
+
+        const {actions, parent} = this.props
+        actions.modifyCodeAST(parent.pop(), actionNode, 'UPDATE_IF_STATEMENT')
+    }
+
+    /**
+     * Delete the current `if` statement
+     */
+    _deleteIfStatement = () => {
+        const {actions, parent} = this.props
+        actions.modifyCodeAST(parent.pop(), null, 'DELETE')
+    }
+
     render() {
         const {title, actions, parent} = this.props
 
@@ -98,6 +121,7 @@ export default class AddLogicalCondition extends React.Component {
         // '&&' if first operator is an AND, '||' if it is a OR and null if there is no operator
         // (test with only one condition)
         const condition = actions.getCondition(parent)
+        const ifStatement = actions.getCondition(parent.pop())
         const statementOperator = condition.get('operator') || null
 
         // if there is no condition, display a button that will create it
@@ -146,8 +170,28 @@ export default class AddLogicalCondition extends React.Component {
                             </DropdownItem>
                         )
                     }
+                    {
+                        // allow ELSE only if there is no `else` yet in the if statement
+                        !ifStatement.get('alternate') && (
+                            <DropdownItem
+                                type="button"
+                                onClick={() => this._handleElseClick()}
+                            >
+                                Add <b>ELSE</b> statement
+                            </DropdownItem>
+                        )
+                    }
+                    <DropdownItem
+                        type="button"
+                        onClick={() => this._deleteIfStatement()}
+                    >
+                        <i className="material-icons red mr-1">delete</i>
+                        Delete node
+                    </DropdownItem>
                 </DropdownMenu>
             </UncontrolledButtonDropdown>
         )
     }
 }
+
+export default Hoverable(AddLogicalCondition)

@@ -124,6 +124,7 @@ class AlternateStatement extends React.Component<AlternateStatementProps> {
                             title="ELSE"
                             hoverableClassName="d-inline-flex"
                             depth={depth}
+                            removable
                         />
                     )}
                 >
@@ -179,7 +180,6 @@ export default class IfStatement extends React.Component<IfStatementProps, IfSta
     render() {
         const {actions, alternate, consequent, rule, parent, schemas, test, depth} = this.props
         const {isHovered} = this.state
-        const _alternate = alternate || {type: 'BlockStatement', body: []}
 
         return (
             <div className={classnames('IfStatement', {hovered: isHovered})}>
@@ -202,14 +202,18 @@ export default class IfStatement extends React.Component<IfStatementProps, IfSta
                     schemas={schemas}
                     depth={depth}
                 />
-                <AlternateStatement
-                    actions={actions}
-                    alternate={_alternate}
-                    rule={rule}
-                    parent={parent}
-                    schemas={schemas}
-                    depth={depth}
-                />
+                {
+                    alternate && (
+                        <AlternateStatement
+                            actions={actions}
+                            alternate={alternate}
+                            rule={rule}
+                            parent={parent}
+                            schemas={schemas}
+                            depth={depth}
+                        />
+                    )
+                }
             </div>
         )
     }

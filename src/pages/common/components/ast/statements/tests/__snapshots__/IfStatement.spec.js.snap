@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IfStatement component should not render alternate because there is none 1`] = `
+<div
+  className="IfStatement"
+>
+  <TestExpression
+    isHovered={false}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+  />
+  <ConsequentStatement />
+</div>
+`;
+
+exports[`IfStatement component should render alternate because there is one 1`] = `
+<div
+  className="IfStatement"
+>
+  <TestExpression
+    isHovered={false}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+  />
+  <ConsequentStatement />
+  <AlternateStatement
+    alternate={
+      Object {
+        "foo": "bar",
+      }
+    }
+  />
+</div>
+`;

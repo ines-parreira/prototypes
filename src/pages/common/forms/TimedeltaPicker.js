@@ -20,10 +20,10 @@ type State = {
 }
 
 const UNITS = [
-    {label: 'minute(s)', value: 'm'},
-    {label: 'hour(s)', value: 'h'},
-    {label: 'day(s)', value: 'd'},
-    {label: 'week(s)', value: 'w'},
+    {label: 'minute(s) ago', value: 'm'},
+    {label: 'hour(s) ago', value: 'h'},
+    {label: 'day(s) ago', value: 'd'},
+    {label: 'week(s) ago', value: 'w'},
 ]
 
 

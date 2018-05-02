@@ -1,0 +1,237 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddLogicalCondition component should not render an option to add ELSE because there is already an ELSE 1`] = `
+<UncontrolledButtonDropdown>
+  <DropdownToggle
+    aria-haspopup={true}
+    caret={true}
+    className="ControlStructureButton"
+    color="secondary"
+    type="button"
+  >
+    bar
+  </DropdownToggle>
+  <DropdownMenu
+    flip={true}
+    tag="div"
+  >
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Add 
+      <b>
+        AND
+      </b>
+       condition
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Add 
+      <b>
+        OR
+      </b>
+       condition
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      <i
+        className="material-icons red mr-1"
+      >
+        delete
+      </i>
+      Delete node
+    </DropdownItem>
+  </DropdownMenu>
+</UncontrolledButtonDropdown>
+`;
+
+exports[`AddLogicalCondition component should render an option to add AND because existing operator is already AND  1`] = `
+<UncontrolledButtonDropdown>
+  <DropdownToggle
+    aria-haspopup={true}
+    caret={true}
+    className="ControlStructureButton"
+    color="secondary"
+    type="button"
+  >
+    bar
+  </DropdownToggle>
+  <DropdownMenu
+    flip={true}
+    tag="div"
+  >
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Add 
+      <b>
+        AND
+      </b>
+       condition
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Add 
+      <b>
+        ELSE
+      </b>
+       statement
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      <i
+        className="material-icons red mr-1"
+      >
+        delete
+      </i>
+      Delete node
+    </DropdownItem>
+  </DropdownMenu>
+</UncontrolledButtonDropdown>
+`;
+
+exports[`AddLogicalCondition component should render an option to add OR because existing operator is already OR  1`] = `
+<UncontrolledButtonDropdown>
+  <DropdownToggle
+    aria-haspopup={true}
+    caret={true}
+    className="ControlStructureButton"
+    color="secondary"
+    type="button"
+  >
+    bar
+  </DropdownToggle>
+  <DropdownMenu
+    flip={true}
+    tag="div"
+  >
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Add 
+      <b>
+        OR
+      </b>
+       condition
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Add 
+      <b>
+        ELSE
+      </b>
+       statement
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      <i
+        className="material-icons red mr-1"
+      >
+        delete
+      </i>
+      Delete node
+    </DropdownItem>
+  </DropdownMenu>
+</UncontrolledButtonDropdown>
+`;
+
+exports[`AddLogicalCondition component should render empty condition 1`] = `
+<UncontrolledButtonDropdown>
+  <DropdownToggle
+    aria-haspopup={true}
+    caret={true}
+    className="ControlStructureButton"
+    color="secondary"
+    type="button"
+  >
+    bar
+  </DropdownToggle>
+  <DropdownMenu
+    flip={true}
+    tag="div"
+  >
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Add 
+      <b>
+        AND
+      </b>
+       condition
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Add 
+      <b>
+        OR
+      </b>
+       condition
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Add 
+      <b>
+        ELSE
+      </b>
+       statement
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      <i
+        className="material-icons red mr-1"
+      >
+        delete
+      </i>
+      Delete node
+    </DropdownItem>
+  </DropdownMenu>
+</UncontrolledButtonDropdown>
+`;

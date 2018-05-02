@@ -249,21 +249,25 @@ function resolveFirstArg(callExpression: Map<*,*>, stopPath: List<*>, schemas: s
  * @param firstArgSchema - schema of the first argument of the callExpression that is used to get possible vals
  * @returns {String} The new callee.
  */
-function resolveCallee(callExpression: Map<*,*>, firstArgSchema: schemasType): string {
+export function resolveCallee(callExpression: Map<*,*>, firstArgSchema: schemasType): string {
     const oldCallee = callExpression.getIn(['callee', 'name'], '')
     let callee = oldCallee
 
     if (firstArgSchema && firstArgSchema.getIn(['meta', 'operators'])) {
         const operators = Object.keys(firstArgSchema.getIn(['meta', 'operators']).toJS())
-        callee = operators.filter((op) => !deprecatedOperators.includes(op))[0]
 
-        for (const op of operators) {
-            // just leave the same operator as before
-            if (op === oldCallee) {
-                return op
-            }
+        callee = operators.find((operator) => operator === oldCallee)
+
+        const defaultOperator = firstArgSchema.getIn(['meta', 'defaultOperator'])
+        if (!callee && defaultOperator && !deprecatedOperators.includes(defaultOperator)) {
+            callee = operators.find((operator) => operator === defaultOperator)
+        }
+
+        if (!callee) {
+            callee = operators.filter((op) => !deprecatedOperators.includes(op))[0]
         }
     }
+
     return callee
 }
 

@@ -52,6 +52,7 @@ class MacroSelect extends React.Component<Props> {
                 .isEmpty())
             .map((macro) => fromJS({value: macro.get('id').toString(), label: macro.get('name')}))
             .toList()
+            .sortBy((macro) => (macro.get('label') || '').toLowerCase())
     }
 
     render() {

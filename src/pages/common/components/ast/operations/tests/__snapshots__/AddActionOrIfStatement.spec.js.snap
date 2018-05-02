@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddActionOrIfStatement component should render 1`] = `
+<UncontrolledButtonDropdown
+  style={
+    Object {
+      "paddingLeft": "74px",
+    }
+  }
+>
+  <DropdownToggle
+    aria-haspopup={true}
+    caret={true}
+    className="ControlStructureButton"
+    color="secondary"
+    type="button"
+  >
+    IF
+  </DropdownToggle>
+  <DropdownMenu
+    flip={true}
+    tag="div"
+  >
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Action
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      "IF" statement
+    </DropdownItem>
+  </DropdownMenu>
+</UncontrolledButtonDropdown>
+`;
+
+exports[`AddActionOrIfStatement component should render a button to delete the block when it is allowed to delete itself 1`] = `
+<UncontrolledButtonDropdown
+  style={
+    Object {
+      "paddingLeft": "74px",
+    }
+  }
+>
+  <DropdownToggle
+    aria-haspopup={true}
+    caret={true}
+    className="ControlStructureButton"
+    color="secondary"
+    type="button"
+  >
+    IF
+  </DropdownToggle>
+  <DropdownMenu
+    flip={true}
+    tag="div"
+  >
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Action
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      "IF" statement
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      <i
+        className="material-icons red mr-1"
+      >
+        delete
+      </i>
+      Delete node
+    </DropdownItem>
+  </DropdownMenu>
+</UncontrolledButtonDropdown>
+`;

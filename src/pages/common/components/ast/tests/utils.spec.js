@@ -98,6 +98,22 @@ describe('ast', () => {
                         expect(newAst).toMatchSnapshot()
                     })
                 })
+
+                describe('update if statement', () => {
+                    it('should add else block to if statement', () => {
+                        const baseAst = astCodeEq.deleteIn(['body', 0, 'alternate'])
+                        const path = fromJS(['body', 0])
+                        const value = {
+                            alternate: {
+                                type: 'BlockStatement',
+                                body: []
+                            }
+                        }
+
+                        let newAst = updateCodeAst(schemas, baseAst, path, value, 'UPDATE_IF_STATEMENT')
+                        expect(newAst).toMatchSnapshot()
+                    })
+                })
             })
         })
     })

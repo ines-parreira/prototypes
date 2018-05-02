@@ -27,7 +27,7 @@ Object {
               "line": 2,
             },
             "start": Position {
-              "column": 37,
+              "column": 36,
               "line": 1,
             },
           },
@@ -49,7 +49,7 @@ Object {
               "computed": false,
               "loc": WrappingSourceLocation {
                 "end": Object {
-                  "column": 23,
+                  "column": 29,
                   "line": 1,
                 },
                 "start": Object {
@@ -74,7 +74,7 @@ Object {
               "property": Object {
                 "loc": SourceLocation {
                   "end": Object {
-                    "column": 23,
+                    "column": 29,
                     "line": 1,
                   },
                   "start": Position {
@@ -82,7 +82,7 @@ Object {
                     "line": 1,
                   },
                 },
-                "name": "channel",
+                "name": "sent_datetime",
                 "type": "Identifier",
               },
               "type": "MemberExpression",
@@ -90,17 +90,17 @@ Object {
             Object {
               "loc": SourceLocation {
                 "end": Object {
-                  "column": 34,
+                  "column": 33,
                   "line": 1,
                 },
                 "start": Position {
-                  "column": 25,
+                  "column": 31,
                   "line": 1,
                 },
               },
-              "raw": "'aircall'",
+              "raw": "''",
               "type": "Literal",
-              "value": "aircall",
+              "value": "",
             },
           ],
           "callee": Object {
@@ -114,12 +114,12 @@ Object {
                 "line": 1,
               },
             },
-            "name": "neq",
+            "name": "lte",
             "type": "Identifier",
           },
           "loc": WrappingSourceLocation {
             "end": Object {
-              "column": 35,
+              "column": 34,
               "line": 1,
             },
             "start": Object {
@@ -145,7 +145,7 @@ Object {
     "sourceType": "script",
     "type": "Program",
   },
-  "code": "if (neq(message.channel, 'aircall')) {
+  "code": "if (lte(message.sent_datetime, '')) {
 } else {
 }",
 }
@@ -1898,6 +1898,157 @@ Object {
     "type": "Program",
   },
   "code": "if (containsAll(ticket.subject, ['hello'])) {
+} else {
+}",
+}
+`;
+
+exports[`ast utils updateCodeAst CallExpression changed update if statement should add else block to if statement 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "alternate": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 3,
+            },
+            "start": Position {
+              "column": 7,
+              "line": 2,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "consequent": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 2,
+            },
+            "start": Position {
+              "column": 33,
+              "line": 1,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "loc": SourceLocation {
+          "end": Object {
+            "column": 1,
+            "line": 3,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "test": Object {
+          "arguments": Array [
+            Object {
+              "computed": false,
+              "loc": WrappingSourceLocation {
+                "end": Object {
+                  "column": 21,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+              },
+              "object": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 13,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 7,
+                    "line": 1,
+                  },
+                },
+                "name": "ticket",
+                "type": "Identifier",
+              },
+              "property": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 21,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 14,
+                    "line": 1,
+                  },
+                },
+                "name": "subject",
+                "type": "Identifier",
+              },
+              "type": "MemberExpression",
+            },
+            Object {
+              "loc": SourceLocation {
+                "end": Object {
+                  "column": 30,
+                  "line": 1,
+                },
+                "start": Position {
+                  "column": 23,
+                  "line": 1,
+                },
+              },
+              "raw": "'hello'",
+              "type": "Literal",
+              "value": "hello",
+            },
+          ],
+          "callee": Object {
+            "loc": SourceLocation {
+              "end": Object {
+                "column": 6,
+                "line": 1,
+              },
+              "start": Position {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "eq",
+            "type": "Identifier",
+          },
+          "loc": WrappingSourceLocation {
+            "end": Object {
+              "column": 31,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "type": "CallExpression",
+        },
+        "type": "IfStatement",
+      },
+    ],
+    "loc": SourceLocation {
+      "end": Object {
+        "column": 1,
+        "line": 3,
+      },
+      "start": Position {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "sourceType": "script",
+    "type": "Program",
+  },
+  "code": "if (eq(ticket.subject, 'hello')) {
 } else {
 }",
 }
