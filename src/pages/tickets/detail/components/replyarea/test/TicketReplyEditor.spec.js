@@ -36,7 +36,6 @@ describe('TicketReplyEditor component', () => {
             sender: null,
             requester: null,
             receiver: null,
-            priority: 'normal',
             tags: [],
             trashed_datetime: null
         })

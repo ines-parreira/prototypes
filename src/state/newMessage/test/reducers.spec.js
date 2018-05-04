@@ -353,7 +353,6 @@ describe('New message reducers', () => {
             sender: null,
             requester: null,
             receiver: null,
-            priority: 'normal',
             tags: [],
             trashed_datetime: null
         })

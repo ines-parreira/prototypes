@@ -1,6 +1,5 @@
 export const ticket = {
     channel: 'email',
-    priority: 'normal',
     meta: null,
     last_received_message_datetime: null,
     subject: 'Great ticket',

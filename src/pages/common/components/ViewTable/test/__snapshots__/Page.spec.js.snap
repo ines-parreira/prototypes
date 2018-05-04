@@ -61,7 +61,6 @@ exports[`ViewTable::Page component default view 1`] = `
         Immutable.List [
           Immutable.Map {
             channel: "email",
-            priority: "normal",
             meta: null,
             last_received_message_datetime: null,
             subject: "Great ticket",
