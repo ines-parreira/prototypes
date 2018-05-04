@@ -157,6 +157,7 @@ exports[`ViewTable::Table default view 1`] = `
         item={
           Immutable.Map {
             channel: "email",
+            priority: "normal",
             meta: null,
             last_received_message_datetime: null,
             subject: "Great ticket",
@@ -765,6 +766,7 @@ exports[`ViewTable::Table empty view 1`] = `
         item={
           Immutable.Map {
             channel: "email",
+            priority: "normal",
             meta: null,
             last_received_message_datetime: null,
             subject: "Great ticket",

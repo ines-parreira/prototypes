@@ -1973,6 +1973,7 @@ Array [
     "ticket": Immutable.Map {
       trashed_datetime: null,
       channel: "email",
+      priority: "normal",
       spam: false,
       subject: "",
       messages: Immutable.List [

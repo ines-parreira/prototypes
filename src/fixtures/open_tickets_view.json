@@ -129,6 +129,14 @@
   "display_order": 4,
   "fields": [
     {
+      "type": "priority",
+      "name": "priority",
+      "title": "Priority",
+      "visible": true,
+      "display_order": -1,
+      "width": 60
+    },
+    {
       "type": "composite",
       "name": "ticket-details",
       "title": "Details",

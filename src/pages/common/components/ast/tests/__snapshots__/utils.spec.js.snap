@@ -27,7 +27,7 @@ Object {
               "line": 2,
             },
             "start": Position {
-              "column": 47,
+              "column": 36,
               "line": 1,
             },
           },
@@ -49,22 +49,22 @@ Object {
               "computed": false,
               "loc": WrappingSourceLocation {
                 "end": Object {
-                  "column": 38,
+                  "column": 29,
                   "line": 1,
                 },
                 "start": Object {
-                  "column": 17,
+                  "column": 8,
                   "line": 1,
                 },
               },
               "object": Object {
                 "loc": SourceLocation {
                   "end": Object {
-                    "column": 24,
+                    "column": 15,
                     "line": 1,
                   },
                   "start": Position {
-                    "column": 17,
+                    "column": 8,
                     "line": 1,
                   },
                 },
@@ -74,11 +74,11 @@ Object {
               "property": Object {
                 "loc": SourceLocation {
                   "end": Object {
-                    "column": 38,
+                    "column": 29,
                     "line": 1,
                   },
                   "start": Position {
-                    "column": 25,
+                    "column": 16,
                     "line": 1,
                   },
                 },
@@ -90,23 +90,23 @@ Object {
             Object {
               "loc": SourceLocation {
                 "end": Object {
-                  "column": 44,
+                  "column": 33,
                   "line": 1,
                 },
                 "start": Position {
-                  "column": 40,
+                  "column": 31,
                   "line": 1,
                 },
               },
-              "raw": "'1d'",
+              "raw": "''",
               "type": "Literal",
-              "value": "1d",
+              "value": "",
             },
           ],
           "callee": Object {
             "loc": SourceLocation {
               "end": Object {
-                "column": 16,
+                "column": 7,
                 "line": 1,
               },
               "start": Position {
@@ -114,12 +114,12 @@ Object {
                 "line": 1,
               },
             },
-            "name": "lteTimedelta",
+            "name": "lte",
             "type": "Identifier",
           },
           "loc": WrappingSourceLocation {
             "end": Object {
-              "column": 45,
+              "column": 34,
               "line": 1,
             },
             "start": Object {
@@ -145,7 +145,7 @@ Object {
     "sourceType": "script",
     "type": "Program",
   },
-  "code": "if (lteTimedelta(message.sent_datetime, '1d')) {
+  "code": "if (lte(message.sent_datetime, '')) {
 } else {
 }",
 }
@@ -659,7 +659,7 @@ Object {
               "line": 2,
             },
             "start": Position {
-              "column": 33,
+              "column": 34,
               "line": 1,
             },
           },
@@ -681,22 +681,22 @@ Object {
               "computed": false,
               "loc": WrappingSourceLocation {
                 "end": Object {
-                  "column": 24,
+                  "column": 25,
                   "line": 1,
                 },
                 "start": Object {
-                  "column": 7,
+                  "column": 8,
                   "line": 1,
                 },
               },
               "object": Object {
                 "loc": SourceLocation {
                   "end": Object {
-                    "column": 13,
+                    "column": 14,
                     "line": 1,
                   },
                   "start": Position {
-                    "column": 7,
+                    "column": 8,
                     "line": 1,
                   },
                 },
@@ -706,11 +706,11 @@ Object {
               "property": Object {
                 "loc": SourceLocation {
                   "end": Object {
-                    "column": 24,
+                    "column": 25,
                     "line": 1,
                   },
                   "start": Position {
-                    "column": 14,
+                    "column": 15,
                     "line": 1,
                   },
                 },
@@ -722,11 +722,11 @@ Object {
             Object {
               "loc": SourceLocation {
                 "end": Object {
-                  "column": 30,
+                  "column": 31,
                   "line": 1,
                 },
                 "start": Position {
-                  "column": 26,
+                  "column": 27,
                   "line": 1,
                 },
               },
@@ -738,7 +738,7 @@ Object {
           "callee": Object {
             "loc": SourceLocation {
               "end": Object {
-                "column": 6,
+                "column": 7,
                 "line": 1,
               },
               "start": Position {
@@ -746,12 +746,12 @@ Object {
                 "line": 1,
               },
             },
-            "name": "eq",
+            "name": "neq",
             "type": "Identifier",
           },
           "loc": WrappingSourceLocation {
             "end": Object {
-              "column": 31,
+              "column": 32,
               "line": 1,
             },
             "start": Object {
@@ -777,7 +777,7 @@ Object {
     "sourceType": "script",
     "type": "Program",
   },
-  "code": "if (eq(ticket.from_agent, true)) {
+  "code": "if (neq(ticket.from_agent, true)) {
 } else {
 }",
 }

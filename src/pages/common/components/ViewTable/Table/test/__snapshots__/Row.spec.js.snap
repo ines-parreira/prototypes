@@ -23,6 +23,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
     item={
       Immutable.Map {
         channel: "email",
+        priority: "normal",
         meta: null,
         last_received_message_datetime: null,
         subject: "Great ticket",
@@ -588,6 +589,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
     item={
       Immutable.Map {
         channel: "email",
+        priority: "normal",
         meta: null,
         last_received_message_datetime: null,
         subject: "Great ticket",
@@ -1160,6 +1162,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
     item={
       Immutable.Map {
         channel: "email",
+        priority: "normal",
         meta: null,
         last_received_message_datetime: null,
         subject: "Great ticket",
@@ -1751,6 +1754,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
     item={
       Immutable.Map {
         channel: "email",
+        priority: "normal",
         meta: null,
         last_received_message_datetime: null,
         subject: "Great ticket",
@@ -2316,6 +2320,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
     item={
       Immutable.Map {
         channel: "email",
+        priority: "normal",
         meta: null,
         last_received_message_datetime: null,
         subject: "Great ticket",
@@ -2888,6 +2893,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
     item={
       Immutable.Map {
         channel: "email",
+        priority: "normal",
         meta: null,
         last_received_message_datetime: null,
         subject: "Great ticket",

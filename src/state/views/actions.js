@@ -367,6 +367,9 @@ export function bulkUpdate(activeView: viewType, ids: List<*>, key: string, valu
                         ? `${ids.size} tickets have been assigned to ${value.name}.`
                         : `${ids.size} tickets have been unassigned.`
                     break
+                case 'priority':
+                    successMessage = `${ids.size} tickets have been marked as ${value} priority.`
+                    break
                 case 'macro':
                     successMessage = `Macro successfully applied to ${ids.size} tickets.`
                     break
