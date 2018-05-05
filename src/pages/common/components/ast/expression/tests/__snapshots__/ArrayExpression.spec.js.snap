@@ -4,11 +4,10 @@ exports[`ast expressions ArrayExpression should display an error because the fie
 <span
   className="Literal"
 >
-  <Widget
+  <Connect(Widget)
     actions={Object {}}
     className="LiteralWidget"
     compact={true}
-    config={Object {}}
     leftsiblings={Object {}}
     parent={
       Immutable.List [
@@ -20,7 +19,6 @@ exports[`ast expressions ArrayExpression should display an error because the fie
         "elements",
       ]
     }
-    properties={Array []}
     rule={Object {}}
     schemas={Object {}}
     value={Array []}
@@ -39,11 +37,10 @@ exports[`ast expressions ArrayExpression should render component and not display
 <span
   className="Literal"
 >
-  <Widget
+  <Connect(Widget)
     actions={Object {}}
     className="LiteralWidget"
     compact={true}
-    config={Object {}}
     leftsiblings={Object {}}
     parent={
       Immutable.List [
@@ -55,7 +52,6 @@ exports[`ast expressions ArrayExpression should render component and not display
         "elements",
       ]
     }
-    properties={Array []}
     rule={Object {}}
     schemas={Object {}}
     value={

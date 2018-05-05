@@ -1,0 +1,502 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RuleItem component should render 1`] = `
+<tr
+  className="container undefined"
+  data-id={17}
+>
+  <td
+    colSpan="3"
+  >
+    <div>
+      <div
+        className=""
+      >
+        <i
+          className="material-icons"
+          onClick={[Function]}
+        >
+          keyboard_arrow_down
+        </i>
+      </div>
+      <div
+        className=""
+      >
+        <div
+          className="d-flex justify-content-between align-items-center mb-1"
+        >
+          <EditableTitle
+            className="font-weight-bold"
+            onChange={[Function]}
+            placeholder="Name"
+            size="md"
+            style={Object {}}
+            title=""
+            update={[Function]}
+          />
+        </div>
+        <FormGroup
+          className="mb-0"
+          tag="div"
+        >
+          <InputField
+            onChange={[Function]}
+            placeholder="Description"
+            rows="1"
+            type="textarea"
+            value=""
+          />
+        </FormGroup>
+      </div>
+      <div
+        className=""
+      >
+        <div
+          id="rule-toggle-17"
+        >
+          <ToggleButton
+            onChange={[Function]}
+            value={true}
+          />
+        </div>
+        <Popover
+          delay={
+            Object {
+              "hide": 0,
+              "show": 0,
+            }
+          }
+          hideArrow={false}
+          isOpen={false}
+          placement="left"
+          placementPrefix="bs-popover"
+          target="rule-toggle-17"
+          toggle={[Function]}
+        >
+          <PopoverHeader
+            tag="h3"
+          >
+            Are you sure?
+          </PopoverHeader>
+          <PopoverBody
+            tag="div"
+          >
+            <p>
+              Are you sure you want to deactivate this rule?
+            </p>
+            <Button
+              color="success"
+              onClick={[Function]}
+              tag="button"
+              type="submit"
+            >
+              Confirm
+            </Button>
+          </PopoverBody>
+        </Popover>
+      </div>
+    </div>
+    <div>
+      <div
+        className="full-width"
+      >
+        <Form
+          id="rule-form"
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <FormGroup
+            className="mb-1"
+            tag="div"
+          >
+            <div>
+              <div>
+                WHEN
+              </div>
+              <MultiSelectField
+                allowCustomValues={false}
+                onChange={[Function]}
+                options={
+                  Array [
+                    Object {
+                      "label": "ticket created",
+                      "value": "ticket-created",
+                    },
+                    Object {
+                      "label": "ticket updated",
+                      "value": "ticket-updated",
+                    },
+                    Object {
+                      "label": "ticket assigned",
+                      "value": "ticket-assigned",
+                    },
+                    Object {
+                      "label": "new message in ticket",
+                      "value": "ticket-message-created",
+                    },
+                  ]
+                }
+                plural="events"
+                singular="event"
+                style={null}
+                tagColor="#0275d8"
+                values={
+                  Array [
+                    "ticket-updated",
+                  ]
+                }
+              />
+            </div>
+            <Program
+              actions={
+                Object {
+                  "getCondition": [Function],
+                  "modifyCodeAST": [Function],
+                }
+              }
+              rule={
+                Immutable.Map {
+                  id: 17,
+                  title: "my rule",
+                  code_ast: Immutable.Map {
+                  },
+                }
+              }
+              triggers={
+                Array [
+                  "ticket-updated",
+                ]
+              }
+            />
+          </FormGroup>
+        </Form>
+      </div>
+    </div>
+    <div>
+      <div>
+        <div>
+          <UncontrolledButtonDropdown
+            className="mr-2"
+          >
+            <Button
+              color="success"
+              disabled={false}
+              form="rule-form"
+              tag="button"
+              type="submit"
+            >
+              Save rule
+            </Button>
+            <DropdownToggle
+              aria-haspopup={true}
+              caret={true}
+              color="success"
+              type="button"
+            />
+            <DropdownMenu
+              flip={true}
+              right={true}
+              tag="div"
+            >
+              <DropdownItem
+                disabled={false}
+                onClick={[Function]}
+                tag="button"
+                toggle={true}
+                type="button"
+              >
+                Save as new rule
+              </DropdownItem>
+            </DropdownMenu>
+          </UncontrolledButtonDropdown>
+          <ConfirmButton
+            className=""
+            color="secondary"
+            confirm={[Function]}
+            content="Are you sure you want to reset this rule?"
+            disabled={false}
+            loading={false}
+            placement="bottom"
+            skip={false}
+            title="Are you sure?"
+            type="button"
+          >
+            Discard changes
+          </ConfirmButton>
+        </div>
+        <div>
+          <ConfirmButton
+            className="ml-2"
+            color="secondary"
+            confirm={[Function]}
+            content="Are you sure you want to delete this rule?"
+            disabled={false}
+            loading={false}
+            placement="bottom"
+            skip={false}
+            title="Are you sure?"
+            type="button"
+          >
+            <i
+              className="material-icons"
+            >
+              delete
+            </i>
+            Delete rule
+          </ConfirmButton>
+        </div>
+      </div>
+    </div>
+  </td>
+</tr>
+`;
+
+exports[`RuleItem component should render errors when there is no trigger selected 1`] = `
+<tr
+  className="container undefined"
+  data-id={17}
+>
+  <td
+    colSpan="3"
+  >
+    <div>
+      <div
+        className=""
+      >
+        <i
+          className="material-icons"
+          onClick={[Function]}
+        >
+          keyboard_arrow_down
+        </i>
+      </div>
+      <div
+        className=""
+      >
+        <div
+          className="d-flex justify-content-between align-items-center mb-1"
+        >
+          <EditableTitle
+            className="font-weight-bold"
+            onChange={[Function]}
+            placeholder="Name"
+            size="md"
+            style={Object {}}
+            title=""
+            update={[Function]}
+          />
+        </div>
+        <FormGroup
+          className="mb-0"
+          tag="div"
+        >
+          <InputField
+            onChange={[Function]}
+            placeholder="Description"
+            rows="1"
+            type="textarea"
+            value=""
+          />
+        </FormGroup>
+      </div>
+      <div
+        className=""
+      >
+        <div
+          id="rule-toggle-17"
+        >
+          <ToggleButton
+            onChange={[Function]}
+            value={true}
+          />
+        </div>
+        <Popover
+          delay={
+            Object {
+              "hide": 0,
+              "show": 0,
+            }
+          }
+          hideArrow={false}
+          isOpen={false}
+          placement="left"
+          placementPrefix="bs-popover"
+          target="rule-toggle-17"
+          toggle={[Function]}
+        >
+          <PopoverHeader
+            tag="h3"
+          >
+            Are you sure?
+          </PopoverHeader>
+          <PopoverBody
+            tag="div"
+          >
+            <p>
+              Are you sure you want to deactivate this rule?
+            </p>
+            <Button
+              color="success"
+              onClick={[Function]}
+              tag="button"
+              type="submit"
+            >
+              Confirm
+            </Button>
+          </PopoverBody>
+        </Popover>
+      </div>
+    </div>
+    <div>
+      <div
+        className="full-width"
+      >
+        <Form
+          id="rule-form"
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <FormGroup
+            className="mb-1"
+            tag="div"
+          >
+            <div>
+              <div>
+                WHEN
+              </div>
+              <MultiSelectField
+                allowCustomValues={false}
+                onChange={[Function]}
+                options={
+                  Array [
+                    Object {
+                      "label": "ticket created",
+                      "value": "ticket-created",
+                    },
+                    Object {
+                      "label": "ticket updated",
+                      "value": "ticket-updated",
+                    },
+                    Object {
+                      "label": "ticket assigned",
+                      "value": "ticket-assigned",
+                    },
+                    Object {
+                      "label": "new message in ticket",
+                      "value": "ticket-message-created",
+                    },
+                  ]
+                }
+                plural="events"
+                singular="event"
+                style={null}
+                tagColor="#0275d8"
+                values={Array []}
+              />
+              <Errors
+                belowInput={false}
+                inline={true}
+                tag="div"
+              >
+                You need to select at least one trigger
+              </Errors>
+            </div>
+            <Program
+              actions={
+                Object {
+                  "getCondition": [Function],
+                  "modifyCodeAST": [Function],
+                }
+              }
+              rule={
+                Immutable.Map {
+                  id: 17,
+                  title: "my rule",
+                  code_ast: Immutable.Map {
+                  },
+                }
+              }
+              triggers={Array []}
+            />
+          </FormGroup>
+        </Form>
+      </div>
+    </div>
+    <div>
+      <div>
+        <div>
+          <UncontrolledButtonDropdown
+            className="mr-2"
+          >
+            <Button
+              color="success"
+              disabled={true}
+              form="rule-form"
+              tag="button"
+              type="submit"
+            >
+              Save rule
+            </Button>
+            <DropdownToggle
+              aria-haspopup={true}
+              caret={true}
+              color="success"
+              type="button"
+            />
+            <DropdownMenu
+              flip={true}
+              right={true}
+              tag="div"
+            >
+              <DropdownItem
+                disabled={true}
+                onClick={[Function]}
+                tag="button"
+                toggle={true}
+                type="button"
+              >
+                Save as new rule
+              </DropdownItem>
+            </DropdownMenu>
+          </UncontrolledButtonDropdown>
+          <ConfirmButton
+            className=""
+            color="secondary"
+            confirm={[Function]}
+            content="Are you sure you want to reset this rule?"
+            disabled={false}
+            loading={false}
+            placement="bottom"
+            skip={false}
+            title="Are you sure?"
+            type="button"
+          >
+            Discard changes
+          </ConfirmButton>
+        </div>
+        <div>
+          <ConfirmButton
+            className="ml-2"
+            color="secondary"
+            confirm={[Function]}
+            content="Are you sure you want to delete this rule?"
+            disabled={false}
+            loading={false}
+            placement="bottom"
+            skip={false}
+            title="Are you sure?"
+            type="button"
+          >
+            <i
+              className="material-icons"
+            >
+              delete
+            </i>
+            Delete rule
+          </ConfirmButton>
+        </div>
+      </div>
+    </div>
+  </td>
+</tr>
+`;

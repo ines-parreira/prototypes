@@ -1,5 +1,6 @@
-import React, {PropTypes} from 'react'
-import {fromJS} from 'immutable'
+// @flow
+import React from 'react'
+import {fromJS, List} from 'immutable'
 import moment from 'moment'
 import _xor from 'lodash/xor'
 import {
@@ -16,7 +17,23 @@ import RuleRow from './RuleRow/RuleRow'
 import ReactSortable from '../../../../common/components/dragging/ReactSortable'
 import {getAST, getCode} from '../../../../../utils'
 
-export default class RulesView extends React.Component {
+
+type Props = {
+    rules: List<*>,
+    actions: Object
+
+}
+
+type State = {
+    showForm: boolean,
+    openedRules: []
+}
+
+export default class RulesView extends React.Component<Props, State> {
+    static defaultProps = {
+        rules: fromJS([]),
+    }
+
     state = {
         showForm: false,
         openedRules: [],
@@ -34,7 +51,7 @@ export default class RulesView extends React.Component {
         this.setState({showForm: false})
     }
 
-    _handleSubmit = (values) => {
+    _handleSubmit = (values: Object) => {
         // add some default values for the rule
         values.event_types = 'ticket-created'
         values.code = ''
@@ -46,19 +63,17 @@ export default class RulesView extends React.Component {
                 this._hideForm()
 
                 // when new rule is created, open it immediately
-                if (rule) {
-                    this._toggleRuleOpening(rule.id)
-                }
+                this._toggleRuleOpening(rule.id)
             })
     }
 
-    _toggleRuleOpening = (id) => {
+    _toggleRuleOpening = (id: number) => {
         this.setState({
             openedRules: _xor(this.state.openedRules, [id])
         })
     }
 
-    _updateOrder = (orders) => {
+    _updateOrder = (orders: Object) => {
         const priorities = orders.map((id, index) => {
             return {
                 id: parseInt(id),
@@ -124,15 +139,15 @@ export default class RulesView extends React.Component {
                                     onChange={this._updateOrder}
                                 >
                                     {
-                                        rules.map((rule, i) => {
+                                        rules.map((rule) => {
                                             const id = rule.get('id')
 
                                             return (
                                                 <RuleRow
                                                     actions={actions}
-                                                    key={i}
+                                                    key={id}
                                                     rule={rule}
-                                                    toggleOpening={() => this._toggleRuleOpening(id)}
+                                                    toggleOpening={this._toggleRuleOpening}
                                                     isOpen={this.state.openedRules.includes(id)}
                                                 />
                                             )
@@ -157,13 +172,4 @@ export default class RulesView extends React.Component {
             </div>
         )
     }
-}
-
-RulesView.propTypes = {
-    actions: PropTypes.object,
-    rules: PropTypes.object,
-}
-
-RulesView.defaultProps = {
-    rules: fromJS([]),
 }

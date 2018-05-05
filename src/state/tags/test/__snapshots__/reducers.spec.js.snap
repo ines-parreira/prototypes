@@ -61,7 +61,12 @@ Object {
   "_internal": Object {
     "creating": false,
   },
-  "items": Array [],
+  "items": Array [
+    Object {
+      "foo": "bar",
+      "id": 1,
+    },
+  ],
   "meta": Object {},
 }
 `;

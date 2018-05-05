@@ -4,7 +4,7 @@ exports[`Literal component should display an error because the value is empty 1`
 <span
   className="Literal"
 >
-  <Widget
+  <Connect(Widget)
     actions={
       Object {
         "foo": "actions",
@@ -12,7 +12,6 @@ exports[`Literal component should display an error because the value is empty 1`
     }
     className="LiteralWidget"
     compact={true}
-    config={Object {}}
     leftsiblings={
       Object {
         "foo": "leftsiblings",
@@ -26,7 +25,6 @@ exports[`Literal component should display an error because the value is empty 1`
         "value",
       ]
     }
-    properties={Array []}
     rule={
       Immutable.Map {
         foo: "rule",
@@ -53,7 +51,7 @@ exports[`Literal component should not display an error because the value is not 
 <span
   className="Literal"
 >
-  <Widget
+  <Connect(Widget)
     actions={
       Object {
         "foo": "actions",
@@ -61,7 +59,6 @@ exports[`Literal component should not display an error because the value is not 
     }
     className="LiteralWidget"
     compact={true}
-    config={Object {}}
     leftsiblings={
       Object {
         "foo": "leftsiblings",
@@ -75,7 +72,6 @@ exports[`Literal component should not display an error because the value is not 
         "value",
       ]
     }
-    properties={Array []}
     rule={
       Immutable.Map {
         foo: "rule",

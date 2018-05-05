@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React from 'react'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 import {Badge, Button, Popover, PopoverHeader, PopoverBody} from 'reactstrap'
@@ -9,7 +10,20 @@ import RuleItem from '../../../detail/components/RuleItem'
 
 import * as css from './RuleRow.less'
 
-class RuleRow extends React.Component {
+
+type Props = {
+    actions: Object,
+    currentUser: Object,
+    rule: Object,
+    toggleOpening: (number) => void,
+    isOpen: boolean,
+}
+
+type State = {
+    showConfirmation: boolean
+}
+
+class RuleRow extends React.Component<Props, State> {
     state = {
         showConfirmation: false
     }
@@ -57,7 +71,7 @@ class RuleRow extends React.Component {
                 </td>
 
                 <td className={classnames('link-full-td', css['middle-column'])}>
-                    <a onClick={this.props.toggleOpening}>
+                    <a onClick={() => this.props.toggleOpening(rule.get('id'))}>
                         <div>
                             <span className="mr-2">
                                 <b>{rule.get('title')}</b>
@@ -134,14 +148,6 @@ class RuleRow extends React.Component {
 
         return this._renderClosed()
     }
-}
-
-RuleRow.propTypes = {
-    actions: PropTypes.object.isRequired,
-    currentUser: PropTypes.object,
-    rule: PropTypes.object.isRequired,
-    toggleOpening: PropTypes.func.isRequired,
-    isOpen: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = (state) => ({

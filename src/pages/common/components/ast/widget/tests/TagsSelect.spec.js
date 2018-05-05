@@ -19,6 +19,9 @@ describe('ast', () => {
                 name: 'question',
             }])
             let store = null
+            const actions = {
+                create: jest.fn()
+            }
 
             beforeEach(() => {
                 store = mockStore({
@@ -60,6 +63,7 @@ describe('ast', () => {
                             value={['billing', 'bugs']}
                             multiple={true}
                             onChange={onChangeSpy}
+                            actions={actions}
                         />
                     ).instance()
 
@@ -76,6 +80,7 @@ describe('ast', () => {
                             value={'billing, bugs'}
                             multiple={true}
                             onChange={onChangeSpy}
+                            actions={actions}
                         />
                     ).instance()
 
@@ -103,6 +108,7 @@ describe('ast', () => {
                         value={'billing'}
                         multiple={false}
                         onChange={onChange}
+                        actions={actions}
                     />
                 ).instance()
 

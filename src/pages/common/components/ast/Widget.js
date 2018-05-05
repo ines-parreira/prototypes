@@ -1,5 +1,6 @@
 // @flow
 import React from 'react'
+import {connect} from 'react-redux'
 
 import {List, Map} from 'immutable'
 import drop from 'lodash/drop'
@@ -19,11 +20,12 @@ import InputField from '../../forms/InputField'
 
 import {convertToHTML, humanizeString} from '../../../../utils'
 import TagsSelect from './widget/TagsSelect'
-import RichField from '../../forms/RichField'
 import MultiSelectField from '../../forms/MultiSelectField'
 import {collectionOperators, deprecatedOperators, timedeltaOperators} from '../../../../config/rules'
 import {removeSuffix} from '../../../../utils/string'
 import TimedeltaPicker from '../../forms/TimedeltaPicker'
+import RichFieldWithVariables from '../../forms/RichFieldWithVariables'
+import {makeHasIntegrationOfTypes} from '../../../../state/integrations/selectors'
 
 
 type Props = {
@@ -36,7 +38,8 @@ type Props = {
     config: Object,
     properties: Array<*>,
     className?: string,
-    compact?: boolean
+    compact?: boolean,
+    hasIntegrationOfTypes: (string) => boolean
 }
 
 type State = {
@@ -44,7 +47,7 @@ type State = {
     textFieldParent: Array<string>
 }
 
-export default class Widget extends React.Component<Props, State> {
+export class Widget extends React.Component<Props, State> {
     static defaultProps = {
         config: {},
         properties: []
@@ -147,15 +150,25 @@ export default class Widget extends React.Component<Props, State> {
     }
 
     _richField = (html: any) => {
-        const {config = {}, properties} = this.props
+        const {config = {}, properties, hasIntegrationOfTypes} = this.props
         const {textFieldPropIndex} = this.state
         const value = {
             text: properties[textFieldPropIndex].value.value,
             html: html,
         }
 
+        const variableTypes = ['current_user', 'ticket.requester']
+
+        if (hasIntegrationOfTypes('shopify')) {
+            variableTypes.push('shopify')
+        }
+
+        if (hasIntegrationOfTypes('recharge')) {
+            variableTypes.push('recharge')
+        }
+
         return (
-            <RichField
+            <RichFieldWithVariables
                 allowExternalChanges
                 type="text"
                 rows="8"
@@ -164,6 +177,7 @@ export default class Widget extends React.Component<Props, State> {
                 onChange={this._onRichFieldChange}
                 placeholder={config.placeholder || ''}
                 required={config.required || false}
+                variableTypes={variableTypes}
             />
         )
     }
@@ -370,3 +384,11 @@ export default class Widget extends React.Component<Props, State> {
         }
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        hasIntegrationOfTypes: makeHasIntegrationOfTypes(state)
+    }
+}
+
+export default connect(mapStateToProps)(Widget)

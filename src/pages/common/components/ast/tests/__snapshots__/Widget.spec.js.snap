@@ -1,5 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ast Widget TagsSelect should render TagsSelect field (tags properties) 1`] = `
+<Connect(TagsSelect)
+  description="Name of the tag. Keep it simple, a short 1 word tag is the best. The tag names are case sensitive."
+  multiple={false}
+  onChange={[Function]}
+  options={Array []}
+  type="tags-select"
+  value="tag"
+/>
+`;
+
+exports[`ast Widget TagsSelect should render multi TagsSelect field (addTags action) 1`] = `
+<Connect(TagsSelect)
+  description=""
+  multiple={true}
+  onChange={[Function]}
+  options={Array []}
+  type="tags-select"
+  value="hello, world, !"
+/>
+`;
+
 exports[`ast Widget should handle change AST ExpressionArray value 1`] = `
 Object {
   "calls": Array [
@@ -104,25 +126,28 @@ exports[`ast Widget should render MultiSelectField (containsAll operator) 1`] = 
 />
 `;
 
-exports[`ast Widget should render TagsSelect should render TagsSelect field (tags properties) 1`] = `
-<Connect(TagsSelect)
-  description="Name of the tag. Keep it simple, a short 1 word tag is the best. The tag names are case sensitive."
-  multiple={false}
+exports[`ast Widget should render RichFieldWithVariables 1`] = `
+<RichFieldWithVariables
+  allowExternalChanges={true}
   onChange={[Function]}
-  options={Array []}
-  type="tags-select"
-  value="tag"
-/>
-`;
-
-exports[`ast Widget should render TagsSelect should render multi TagsSelect field (addTags action) 1`] = `
-<Connect(TagsSelect)
-  description=""
-  multiple={true}
-  onChange={[Function]}
-  options={Array []}
-  type="tags-select"
-  value="hello, world, !"
+  placeholder=""
+  required={false}
+  rows="8"
+  type="text"
+  value={
+    Object {
+      "html": "hello my good lad",
+      "text": "foo bar",
+    }
+  }
+  variableTypes={
+    Array [
+      "current_user",
+      "ticket.requester",
+      "shopify",
+      "recharge",
+    ]
+  }
 />
 `;
 

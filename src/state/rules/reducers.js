@@ -31,14 +31,14 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
         case constants.ACTIVATE_RULE: {
             return state.updateIn(
                 ['rules', action.id.toString()],
-                r => r.set('deactivated_datetime', null)
+                (rule) => rule.set('deactivated_datetime', null)
             )
         }
 
         case constants.DEACTIVATE_RULE: {
             return state.updateIn(
                 ['rules', action.id.toString()],
-                r => r.set('deactivated_datetime', (new Date()).toISOString())
+                (rule) => rule.set('deactivated_datetime', (new Date()).toISOString())
             )
         }
 
@@ -115,8 +115,11 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
         }
 
         case constants.UPDATE_RULE_SUCCESS: {
-            return state.update('rules', rules => rules.set(action.ruleId.toString(), action.rule))
+            return state.update('rules', (rules) => rules.set(action.ruleId.toString(), action.rule))
         }
+
+        case constants.RESET_RULE_SUCCESS:
+            return state.setIn(['rules', action.rule.id.toString()], fromJS(action.rule))
 
         default:
             return state

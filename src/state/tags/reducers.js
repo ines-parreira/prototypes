@@ -68,6 +68,10 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
             return state.setIn(['_internal', 'creating'], true)
 
         case constants.CREATE_TAG_SUCCESS:
+            return state
+                .setIn(['_internal', 'creating'], false)
+                .update('items', (items) => items.push(fromJS(action.tag)))
+
         case constants.CREATE_TAG_ERROR:
             return state.setIn(['_internal', 'creating'], false)
 

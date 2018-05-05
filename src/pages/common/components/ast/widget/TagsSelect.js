@@ -1,16 +1,19 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 import _isString from 'lodash/isString'
 
 import MultiSelectField from '../../../forms/MultiSelectField'
 import SelectField from '../../../forms/SelectField'
+import * as TagsActions from '../../../../../state/tags/actions'
 
 type Props = {
     tags: ?Object,
     value: ?string,
     onChange: Function,
     multiple: ?boolean,
-    className: ?string
+    className: ?string,
+    actions: Object
 }
 
 export class TagsSelect extends Component<Props> {
@@ -20,7 +23,14 @@ export class TagsSelect extends Component<Props> {
     }
 
     _onChange = (val) => {
-        const {multiple, value} = this.props
+        const {multiple, value, tags, actions} = this.props
+        const existingTagNames = tags.map((tag) => tag.get('name')).toJS()
+
+        val.forEach((newTag) => {
+            if (!existingTagNames.includes(newTag)) {
+                actions.create({name: newTag})
+            }
+        })
 
         if (multiple && _isString(value)) {
             this.props.onChange(val.join(','))
@@ -78,10 +88,18 @@ export class TagsSelect extends Component<Props> {
         )
     }
 }
+
 function mapStateToProps(state) {
     return {
         tags: state.tags.get('items')
     }
 }
 
-export default connect(mapStateToProps)(TagsSelect)
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(TagsActions, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TagsSelect)

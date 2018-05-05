@@ -4,14 +4,13 @@ exports[`Identifier component should render 1`] = `
 <span
   className="Identifier"
 >
-  <Widget
+  <Connect(Widget)
     actions={
       Object {
         "foo": "actions",
       }
     }
     className="foo"
-    config={Object {}}
     leftsiblings={
       Object {
         "foo": "leftsiblings",
@@ -25,7 +24,6 @@ exports[`Identifier component should render 1`] = `
         "name",
       ]
     }
-    properties={Array []}
     rule={
       Immutable.Map {
         foo: "rule",

@@ -134,6 +134,7 @@ describe('tags reducers', () => {
                 initialState,
                 {
                     type: types.CREATE_TAG_SUCCESS,
+                    tag: {id: 1, foo: 'bar'}
                 }
             ).toJS()
         ).toMatchSnapshot()

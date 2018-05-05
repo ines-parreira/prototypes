@@ -2,7 +2,15 @@
 import React from 'react'
 import classnames from 'classnames'
 import {fromJS, Map} from 'immutable'
-import {Button, Form as BootstrapForm, FormGroup, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
+import {
+    Button, DropdownItem, DropdownMenu, DropdownToggle,
+    Form as BootstrapForm,
+    FormGroup,
+    Popover,
+    PopoverBody,
+    PopoverHeader,
+    UncontrolledButtonDropdown
+} from 'reactstrap'
 
 import InputField from '../../../../../common/forms/InputField'
 import SelectField from '../../../../../common/forms/MultiSelectField'
@@ -23,7 +31,7 @@ import ToggleButton from '../../../../../common/components/ToggleButton'
 type Props = {
     rule: Map<*,*>,
     actions: Object,
-    toggleOpening: () => void,
+    toggleOpening: (number) => void,
 }
 
 type State = {
@@ -71,7 +79,9 @@ export default class RuleItem extends React.Component<Props, State> {
         return this.state.eventTypes.length > 0
     }
 
-    _handleSubmit = () => {
+    _handleSubmit = (event: Event) => {
+        event.preventDefault()
+
         const {actions, rule} = this.props
 
         this.setState({isSubmitting: true})
@@ -94,7 +104,10 @@ export default class RuleItem extends React.Component<Props, State> {
         this.setState({isResetting: true})
         return actions.rules.reset(rule.get('id'))
             .then(() => {
-                this.setState({isResetting: false})
+                this.setState({
+                    isResetting: false,
+                    eventTypes: rulesHelpers.eventTypes(rule),
+                })
             })
     }
 
@@ -143,25 +156,62 @@ export default class RuleItem extends React.Component<Props, State> {
         }
     }
 
-    _renderButtons() {
-        const {rule} = this.props
+    _saveAsNewRule = () => {
+        const {actions, rule} = this.props
 
+        this.setState({isSubmitting: true})
+        if (this._canSubmit()) {
+            let title = this.state.title
+
+            if (title === rule.get('title')) {
+                title = `${title} - copy`
+            }
+
+            return actions.rules.create({
+                description: this.state.description,
+                event_types: this.state.eventTypes.join(','),
+                title: title,
+                code: rule.get('code'),
+                code_ast: rule.get('code_ast'),
+            }).then(({rule: newRule}) => {
+                this.setState({isSubmitting: false})
+
+                this._handleReset() // reset this rule, as we only want the last changes in the new rule
+                this.props.toggleOpening(rule.get('id')) // close this rule...
+                this.props.toggleOpening(newRule.id)  // ...and open the new one
+            })
+        }
+    }
+
+    _renderButtons() {
         return (
             <div className={css['buttons-container']}>
                 <div>
-                    <ConfirmButton
-                        className="mr-2"
-                        color="success"
-                        type="submit"
-                        skip={rule.get('type') === 'user'}
-                        loading={this.state.isSubmitting}
-                        confirm={this._handleSubmit}
-                        disabled={this.state.isSubmitting || !this._canSubmit()}
-                        form="rule-form"
-                        content="You're about to modify a system rule, this may prevent you from sending messages to your customers. Are you sure?"
-                    >
-                        Save rule
-                    </ConfirmButton>
+                    <UncontrolledButtonDropdown className="mr-2">
+                        <Button
+                            color="success"
+                            type="submit"
+                            disabled={this.state.isSubmitting || !this._canSubmit()}
+                            form="rule-form"
+                        >
+                            Save rule
+                        </Button>
+                        <DropdownToggle
+                            caret
+                            type="button"
+                            color="success"
+                        />
+                        <DropdownMenu right>
+                            <DropdownItem
+                                key="open"
+                                type="button"
+                                disabled={this.state.isSubmitting || !this._canSubmit()}
+                                onClick={this._saveAsNewRule}
+                            >
+                                Save as new rule
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </UncontrolledButtonDropdown>
                     <ConfirmButton
                         color="secondary"
                         loading={this.state.isResetting}
@@ -172,20 +222,16 @@ export default class RuleItem extends React.Component<Props, State> {
                     </ConfirmButton>
                 </div>
                 <div>
-                    {
-                        rule.get('type') !== 'system' && (
-                            <ConfirmButton
-                                color="secondary"
-                                className={classnames('ml-2', css['delete-button'])}
-                                loading={this.state.isDeleting}
-                                confirm={this._handleRemove}
-                                content="Are you sure you want to delete this rule?"
-                            >
-                                <i className="material-icons">delete</i>
-                                Delete rule
-                            </ConfirmButton>
-                        )
-                    }
+                    <ConfirmButton
+                        color="secondary"
+                        className={classnames('ml-2', css['delete-button'])}
+                        loading={this.state.isDeleting}
+                        confirm={this._handleRemove}
+                        content="Are you sure you want to delete this rule?"
+                    >
+                        <i className="material-icons">delete</i>
+                        Delete rule
+                    </ConfirmButton>
                 </div>
             </div>
         )
@@ -214,7 +260,7 @@ export default class RuleItem extends React.Component<Props, State> {
                         <div className={classnames(css.col, classnames(css['left-col']))}>
                             <i
                                 className={classnames('material-icons', css.closeRuleIcon)}
-                                onClick={() => this.props.toggleOpening()}
+                                onClick={() => this.props.toggleOpening(rule.get('id'))}
                             >
                                 keyboard_arrow_down
                             </i>

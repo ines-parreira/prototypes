@@ -4,7 +4,7 @@ exports[`Property component should display errors if the validate method of the 
 <div
   className=""
 >
-  <Widget
+  <Connect(Widget)
     compact={false}
     config={
       Object {
@@ -20,7 +20,6 @@ exports[`Property component should display errors if the validate method of the 
         "value",
       ]
     }
-    properties={Array []}
     schemas={
       Object {
         "foo": "schemas",
@@ -47,7 +46,7 @@ exports[`Property component should not display errors if the validate method of 
 <div
   className=""
 >
-  <Widget
+  <Connect(Widget)
     compact={false}
     config={
       Object {
@@ -63,7 +62,6 @@ exports[`Property component should not display errors if the validate method of 
         "value",
       ]
     }
-    properties={Array []}
     schemas={
       Object {
         "foo": "schemas",
@@ -83,7 +81,7 @@ exports[`Property component should not display errors if there is no validate me
 <div
   className=""
 >
-  <Widget
+  <Connect(Widget)
     compact={false}
     config={Object {}}
     parent={
@@ -95,7 +93,6 @@ exports[`Property component should not display errors if there is no validate me
         "value",
       ]
     }
-    properties={Array []}
     schemas={
       Object {
         "foo": "schemas",
@@ -115,7 +112,7 @@ exports[`Property component should render a compact (inline) Property 1`] = `
 <div
   className="d-flex"
 >
-  <Widget
+  <Connect(Widget)
     compact={true}
     config={Object {}}
     parent={
@@ -127,7 +124,6 @@ exports[`Property component should render a compact (inline) Property 1`] = `
         "value",
       ]
     }
-    properties={Array []}
     schemas={
       Object {
         "foo": "schemas",

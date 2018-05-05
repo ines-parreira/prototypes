@@ -54,7 +54,7 @@ export const fail = (error: {} = {}, reason: string) => ({
 
 /**
  * Create a rule
- * @param data
+ * @param data: the data of the rule to create
  */
 export const create = (data: ruleType) => (dispatch: dispatchType): Promise<dispatchType> => {
     return axios.post('/api/rules/', data)
@@ -116,7 +116,7 @@ export const activate = (id: string) => (dispatch: dispatchType): Promise<dispat
                 type: constants.ACTIVATE_RULE,
                 id,
             }))
-        }, error => {
+        }, (error) => {
             return dispatch(fail(error, 'Unable to activate the rule'))
         })
 )
@@ -173,17 +173,11 @@ export const remove = (id: string) => (dispatch: dispatchType): Promise<dispatch
 export const reset = (id: string) => (dispatch: dispatchType): Promise<dispatchType> => (
     axios.get(`/api/rules/${id}`)
         .then((json = {}) => json.data)
-        .then(response => {
-            dispatch({
+        .then((response) => {
+            return dispatch({
                 type: constants.RESET_RULE_SUCCESS,
-                ruleId: id
+                rule: response
             })
-            return dispatch(modifyCodeAST(
-                id,
-                List([]),
-                response.code_ast || constants.DEFAULT_STATEMENT,
-                'UPDATE'
-            ))
         })
 )
 
