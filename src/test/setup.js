@@ -1,5 +1,4 @@
 import {browserHistory} from 'react-router'
-import {getMomentUtcISOString} from '../utils/date'
 
 // jsdom does not support matchMedia
 Object.defineProperty(window, 'matchMedia', {
