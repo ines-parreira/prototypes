@@ -26,6 +26,7 @@ import * as css from './RuleItem.less'
 
 import {toJS} from '../../../../../../utils'
 import ToggleButton from '../../../../../common/components/ToggleButton'
+import {getMomentUtcISOString} from '../../../../../../utils/date'
 
 
 type Props = {
@@ -173,6 +174,7 @@ export default class RuleItem extends React.Component<Props, State> {
                 title: title,
                 code: rule.get('code'),
                 code_ast: rule.get('code_ast'),
+                deactivated_datetime: getMomentUtcISOString()
             }).then(({rule: newRule}) => {
                 this.setState({isSubmitting: false})
 

@@ -2,6 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import RuleItem from '../RuleItem'
+import {getMomentUtcISOString} from '../../../../../../../utils/date'
 
 
 const commonProps = {
@@ -13,7 +14,8 @@ const commonProps = {
     actions: {
         rules: {
             modifyCodeAst: jest.fn(),
-            create: jest.fn(() => Promise.resolve({rule: {id: 12}}))
+            create: jest.fn(() => Promise.resolve({rule: {id: 12}})),
+            reset: jest.fn(() => Promise.resolve())
         }
     },
     toggleOpening: jest.fn()
@@ -70,6 +72,7 @@ describe('RuleItem component', () => {
                     title: `${commonProps.rule.get('title')} - copy`,
                     code: commonProps.rule.get('code'),
                     code_ast: commonProps.rule.get('code_ast'),
+                    deactivated_datetime: getMomentUtcISOString()
                 })
                 expect(toggleOpeningSpy).toHaveBeenCalledWith(17) // old rule
                 expect(toggleOpeningSpy).toHaveBeenCalledWith(12) // new rule
@@ -100,6 +103,7 @@ describe('RuleItem component', () => {
                     title,
                     code: commonProps.rule.get('code'),
                     code_ast: commonProps.rule.get('code_ast'),
+                    deactivated_datetime: getMomentUtcISOString()
                 })
                 expect(toggleOpeningSpy).toHaveBeenCalledWith(17) // old rule
                 expect(toggleOpeningSpy).toHaveBeenCalledWith(12) // new rule

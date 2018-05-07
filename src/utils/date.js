@@ -28,3 +28,12 @@ export const stringToDatetime = (data: string) : moment | null => {
 export const getMomentNow = () => {
     return moment.now()
 }
+
+/**
+ * Return moment.utc().toISOString()
+ *
+ * We encapsulate it here so that it's easy to mock during tests.
+ */
+export const getMomentUtcISOString = () => {
+    return moment.utc().toISOString()
+}
