@@ -18,7 +18,6 @@ describe('tags selectors', () => {
                             id: 1,
                             name: 'refund',
                             decoration: null,
-                            user_id: 2,
                             usage: 60,
                             created_datetime: '2017-08-16T16:54:49'
                         },
@@ -26,7 +25,6 @@ describe('tags selectors', () => {
                             id: 2,
                             name: 'billing',
                             decoration: null,
-                            user_id: 2,
                             usage: 30,
                             created_datetime: '2017-08-16T16:54:49'
                         },
