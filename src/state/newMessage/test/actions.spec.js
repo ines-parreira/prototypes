@@ -363,13 +363,10 @@ describe('actions', () => {
                 expect(socketManager.send.mock.calls.length).toBe(0)
             })
 
-            it('should not send a typing event when the content is only the user\'s signature', () => {
+            it('should not send a typing event when the reply area only contains a signature', () => {
                 store = mockStore({
                     newMessage: initialState,
                     ticket: fromJS({id: 1}),
-                    currentUser: fromJS({
-                        signature_text: 'signature'
-                    }),
                     users: fromJS({
                         agents: [{
                             id: 1

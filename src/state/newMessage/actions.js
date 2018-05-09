@@ -417,16 +417,7 @@ export function prepareTicketDataToSend(dispatch: dispatchType, getState: getSta
         if (sourceType === 'email' && !newMessage.getIn(['state', 'signatureAdded'], false)) {
             const state = getState()
             const contentState = newMessage.getIn(['state', 'contentState'])
-            let signature = selectors.getNewMessageSignature(state)
-
-            // TODO(@LouisBarranqueiro): remove this when users switched to email integration signatures
-            if (!signature.get('text')) {
-                signature = fromJS({
-                    text: currentUser.get('signature_text'),
-                    html: currentUser.get('signature_html')
-                })
-            }
-
+            const signature = selectors.getNewMessageSignature(state)
             const newContentState = responseUtils.addSignature(contentState, signature)
             const bodyText = newContentState ? newContentState.getPlainText() : ''
             const bodyHtml = newContentState ? convertToHTML(newContentState) : ''

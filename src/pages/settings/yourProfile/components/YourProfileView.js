@@ -2,17 +2,14 @@ import React, {PropTypes} from 'react'
 import classnames from 'classnames'
 import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
-import _noop from 'lodash/noop'
 import moment from 'moment-timezone'
 import {
-    Alert, Container,
-    Form, FormGroup, FormText, Button, Label, Row, Col
+    Container, Form, FormGroup, FormText, Button, Label, Row, Col
 } from 'reactstrap'
 
 import {AVAILABLE_LANGUAGES} from './../../../../config'
 
 import BooleanField from '../../../common/forms/BooleanField'
-import RichField from '../../../common/forms/RichField'
 import InputField from '../../../common/forms/InputField'
 import Avatar from '../../../common/components/Avatar'
 import FileField from '../../../common/forms/FileField'
@@ -91,9 +88,8 @@ class YourProfileView extends React.Component {
     }
 
     render() {
-        const {isLoading, currentUser} = this.props
+        const {isLoading} = this.props
         const loadingUser = isLoading && !this.state.loadingPreferences
-        const hasSignature = currentUser.get('signature_text') || currentUser.get('signature_html')
 
         return (
             <div className="full-width">
@@ -170,26 +166,6 @@ class YourProfileView extends React.Component {
                                         ))
                                     }
                                 </InputField>
-                                {hasSignature ?
-                                    <RichField
-                                        name="signature"
-                                        label={[
-                                            <Label key="label">Signature</Label>,
-                                            <Alert key="alert" color="warning" className="font-weight-normal">
-                                                <i className="fa fa-info-circle"/>{' '}
-                                                Personal signatures are now in read-only and will be soon removed.{' '}
-                                                <strong>Signatures are now customizable in each email integration.</strong>
-                                            </Alert>
-                                        ]}
-                                        readOnly
-                                        value={{
-                                            text: currentUser.get('signature_text'),
-                                            html: currentUser.get('signature_html')
-                                        }}
-                                        onChange={_noop}
-                                    />
-                                    : null
-                                }
                             </Col>
                             <Col md="3" xs="12">
 

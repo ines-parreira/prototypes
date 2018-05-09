@@ -46,8 +46,6 @@ describe('Signature', () => {
             }),
             currentUser: fromJS({
                 first_name: 'Steve',
-                signature_text: 'best regards, steve',
-                signature_html: 'best regards, <strong>steve</strong>'
             }),
             newMessage,
             ticket: fromJS({})
@@ -120,18 +118,6 @@ describe('Signature', () => {
             />
         )
 
-        expect(component.dive().find('Ellipsis').exists()).toBe(true)
-    })
-
-    it('should render with agent\'s signature (fallback)', () => {
-        initialState.integrations = initialState.integrations.setIn(['integrations', 0, 'meta', 'signature'], fromJS({}))
-
-        const component = shallow(
-            <Signature
-                store={mockStore(initialState)}
-                editorState={editorState}
-            />
-        )
         expect(component.dive().find('Ellipsis').exists()).toBe(true)
     })
 })

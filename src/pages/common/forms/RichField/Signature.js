@@ -1,11 +1,9 @@
 // @flow
 import React from 'react'
 import {connect} from 'react-redux'
-import {fromJS} from 'immutable'
 import {EditorState} from 'draft-js'
 
 import * as newMessageSelectors from '../../../../state/newMessage/selectors'
-import * as currentUserSelectors from '../../../../state/currentUser/selectors'
 import * as newMessageActions from '../../../../state/newMessage/actions'
 import * as responseUtils from '../../../../state/newMessage/responseUtils'
 import Ellipsis from '../../components/Ellipsis'
@@ -82,17 +80,7 @@ class Signature extends React.Component<Props, State> {
 }
 
 function mapStateToProps(state) {
-    const newMessageType = newMessageSelectors.getNewMessageType(state)
     let signature = newMessageSelectors.getNewMessageSignature(state)
-
-    // TODO(@LouisBarranqueiro): remove this when users switched to email integration signatures
-    if (!signature.get('text') && newMessageType.startsWith('email')) {
-        const currentUser = currentUserSelectors.getCurrentUser(state)
-        signature = fromJS({
-            text: currentUser.get('signature_text'),
-            html: currentUser.get('signature_html')
-        })
-    }
 
     return {
         signature,

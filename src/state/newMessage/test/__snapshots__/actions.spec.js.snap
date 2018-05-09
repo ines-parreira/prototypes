@@ -1030,7 +1030,7 @@ Array [
 ]
 `;
 
-exports[`actions new message setResponseText() should not send a typing event when the content is only the user's signature 1`] = `
+exports[`actions new message setResponseText() should not send a typing event when the reply area only contains a signature 1`] = `
 Array [
   Object {
     "appliedMacro": undefined,
@@ -1115,9 +1115,7 @@ Array [
             },
           },
 },
-    "currentUser": Immutable.Map {
-      signature_text: "signature",
-},
+    "currentUser": undefined,
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,

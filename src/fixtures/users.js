@@ -160,9 +160,7 @@ export const currentUser = {
             }
         }
     ],
-    signature_html: null,
     created_datetime: '2016-12-22T19:36:12.487448+00:00',
-    signature_text: null,
     country: 'US',
     language: 'en',
     timezone: 'EST',

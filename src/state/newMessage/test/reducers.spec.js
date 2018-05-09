@@ -242,10 +242,6 @@ describe('New message reducers', () => {
                 args: fromJS({
                     contentState: ContentState.createFromText('Hello')
                 }),
-                currentUser: fromJS({
-                    signature_text: 'Cruel World!',
-                    signature_html: '<a href="#">Cruel World!</a>',
-                })
             }
 
             expect(reducer(
