@@ -9,12 +9,13 @@ import _defaults from 'lodash/defaults'
 
 import {
     Button,
+    ButtonGroup,
     Breadcrumb,
     BreadcrumbItem,
     Container,
     Form,
     Row,
-    Col
+    Col,
 } from 'reactstrap'
 
 import * as integrationSelectors from './../../../../../../state/integrations/selectors'
@@ -29,12 +30,14 @@ import ColorField from '../../../../../common/forms/ColorField'
 import css from './ChatIntegrationAppearance.less'
 import PageHeader from '../../../../../common/components/PageHeader'
 import RealtimeMessagingIntegrationNavigation from '../../../../common/RealtimeMessagingIntegrationNavigation'
+import BooleanField from '../../../../../common/forms/BooleanField'
 
 export const defaultContent = {
     type: 'smooch_inside',
     name: '',
     introductionText: 'What can we do for you?',
     offlineIntroductionText: 'We\'re away!',
+    offlineStatusEnabled: true,
     inputPlaceholder: 'Type a message...',
     mainColor: '#0d87dd',
     conversationColor: '#0d87dd',
@@ -85,8 +88,9 @@ class ChatIntegrationAppearance extends React.Component {
             name: integration.get('name'),
             introductionText: integration.getIn(['decoration', 'introduction_text']),
             offlineIntroductionText: integration.getIn(['decoration', 'offline_introduction_text']),
+            offlineStatusEnabled: integration.getIn(['meta', 'offline_status', 'enabled']),
             inputPlaceholder: integration.getIn(['decoration', 'input_placeholder']),
-            mainColor: integration.getIn(['decoration', 'main_color'], integration.getIn(['decoration', 'header_color'])), // todo(@martin): remove this fallback when everybody has migrated to the new design (latest: Nov. 1, 2017)
+            mainColor: integration.getIn(['decoration', 'main_color']),
             conversationColor: integration.getIn(['decoration', 'conversation_color']),
         }, defaultContent)
     }
@@ -106,6 +110,9 @@ class ChatIntegrationAppearance extends React.Component {
             introduction_text: this.state.introductionText,
             offline_introduction_text: this.state.offlineIntroductionText,
         }
+
+        const existingMeta = this.props.integration.get('meta') || fromJS({})
+        form.meta = existingMeta.setIn(['offline_status', 'enabled'], this.state.offlineStatusEnabled).toJS()
 
         // if update, set ids for server
         if (this.props.isUpdate) {
@@ -170,7 +177,7 @@ class ChatIntegrationAppearance extends React.Component {
                                             type="text"
                                             label="Chat title"
                                             value={this.state.name}
-                                            onChange={value => this.setState({name: value})}
+                                            onChange={(value) => this.setState({name: value})}
                                             placeholder="Ex: Company Support"
                                             required
                                         />
@@ -179,7 +186,7 @@ class ChatIntegrationAppearance extends React.Component {
                                             type="text"
                                             value={this.state.introductionText}
                                             onFocus={() => this.setState({isOnline: true})}
-                                            onChange={value => this.setState({introductionText: value})}
+                                            onChange={(value) => this.setState({introductionText: value})}
                                             label="Introduction text"
                                         />
 
@@ -189,28 +196,40 @@ class ChatIntegrationAppearance extends React.Component {
                                             onFocus={() => {
                                                 this.setState({isOnline: false})
                                             }}
-                                            onChange={value => {
+                                            onChange={(value) => {
                                                 this.setState({offlineIntroductionText: value})
                                             }}
                                             label="Away introduction text"
                                         />
 
+                                        <BooleanField
+                                            className="mb-3"
+                                            name="offlineStatusEnabled"
+                                            type="checkbox"
+                                            label="Chat should turn grey when agents are away"
+                                            value={this.state.offlineStatusEnabled}
+                                            onChange={(value) => this.setState({
+                                                isOnline: false,
+                                                offlineStatusEnabled: value
+                                            })}
+                                        />
+
                                         <InputField
                                             type="text"
                                             value={this.state.inputPlaceholder}
-                                            onChange={value => this.setState({inputPlaceholder: value})}
+                                            onChange={(value) => this.setState({inputPlaceholder: value})}
                                             label="Input placeholder"
                                         />
 
                                         <ColorField
                                             value={this.state.mainColor}
-                                            onChange={value => this.setState({mainColor: value})}
+                                            onChange={(value) => this.setState({mainColor: value})}
                                             label="Main color"
                                         />
 
                                         <ColorField
                                             value={this.state.conversationColor}
-                                            onChange={value => this.setState({conversationColor: value})}
+                                            onChange={(value) => this.setState({conversationColor: value})}
                                             label="Conversation color"
                                         />
 
@@ -246,11 +265,33 @@ class ChatIntegrationAppearance extends React.Component {
                             </Form>
                         </Col>
                         <Col className="p-0">
+                            <div
+                                className="d-flex justify-content-center align-items-center"
+                                style={{width: '30em'}}  // same width as the preview
+                            >
+                                <ButtonGroup className="mb-3">
+                                    <Button
+                                        type="button"
+                                        color={this.state.isOnline ? 'info' : 'secondary'}
+                                        onClick={() => this.setState({isOnline: true})}
+                                    >
+                                        Preview Online
+                                    </Button>
+                                    <Button
+                                        type="button"
+                                        color={!this.state.isOnline ? 'info' : 'secondary'}
+                                        onClick={() => this.setState({isOnline: false})}
+                                    >
+                                        Preview Away
+                                    </Button>
+                                </ButtonGroup>
+                            </div>
                             <ChatIntegrationPreview
                                 currentUser={currentUser}
                                 name={this.state.name}
                                 introductionText={this.state.introductionText}
                                 offlineIntroductionText={this.state.offlineIntroductionText}
+                                offlineStatusEnabled={this.state.offlineStatusEnabled}
                                 inputPlaceholder={this.state.inputPlaceholder}
                                 mainColor={this.state.mainColor}
                                 conversationColor={this.state.conversationColor}

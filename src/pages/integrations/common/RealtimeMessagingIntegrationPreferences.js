@@ -192,7 +192,7 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
                                             type="checkbox"
                                             label="Enable email capture"
                                             value={emailCaptureEnabled}
-                                            onChange={value => this.setState({emailCaptureEnabled: value})}
+                                            onChange={(value) => this.setState({emailCaptureEnabled: value})}
                                         />
                                     </div>
 

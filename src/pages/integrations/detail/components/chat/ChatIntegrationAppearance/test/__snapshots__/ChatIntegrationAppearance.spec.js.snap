@@ -91,6 +91,14 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
                 type="text"
                 value="We're away!"
               />
+              <BooleanField
+                className="mb-3"
+                label="Chat should turn grey when agents are away"
+                name="offlineStatusEnabled"
+                onChange={[Function]}
+                type="checkbox"
+                value={true}
+              />
               <InputField
                 label="Input placeholder"
                 onChange={[Function]}
@@ -135,6 +143,37 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
           ]
         }
       >
+        <div
+          className="d-flex justify-content-center align-items-center"
+          style={
+            Object {
+              "width": "30em",
+            }
+          }
+        >
+          <ButtonGroup
+            className="mb-3"
+            role="group"
+            tag="div"
+          >
+            <Button
+              color="info"
+              onClick={[Function]}
+              tag="button"
+              type="button"
+            >
+              Preview Online
+            </Button>
+            <Button
+              color="secondary"
+              onClick={[Function]}
+              tag="button"
+              type="button"
+            >
+              Preview Away
+            </Button>
+          </ButtonGroup>
+        </div>
         <ChatIntegrationPreview
           conversationColor="#0d87dd"
           currentUser={
@@ -147,6 +186,7 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
           mainColor="#0d87dd"
           name=""
           offlineIntroductionText="We're away!"
+          offlineStatusEnabled={true}
         />
       </Col>
     </Row>
@@ -260,6 +300,14 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
                 type="text"
                 value="We're away!"
               />
+              <BooleanField
+                className="mb-3"
+                label="Chat should turn grey when agents are away"
+                name="offlineStatusEnabled"
+                onChange={[Function]}
+                type="checkbox"
+                value={true}
+              />
               <InputField
                 label="Input placeholder"
                 onChange={[Function]}
@@ -323,6 +371,37 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
           ]
         }
       >
+        <div
+          className="d-flex justify-content-center align-items-center"
+          style={
+            Object {
+              "width": "30em",
+            }
+          }
+        >
+          <ButtonGroup
+            className="mb-3"
+            role="group"
+            tag="div"
+          >
+            <Button
+              color="info"
+              onClick={[Function]}
+              tag="button"
+              type="button"
+            >
+              Preview Online
+            </Button>
+            <Button
+              color="secondary"
+              onClick={[Function]}
+              tag="button"
+              type="button"
+            >
+              Preview Away
+            </Button>
+          </ButtonGroup>
+        </div>
         <ChatIntegrationPreview
           conversationColor="#0d87dd"
           currentUser={
@@ -335,6 +414,7 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
           mainColor="#0d87dd"
           name=""
           offlineIntroductionText="We're away!"
+          offlineStatusEnabled={true}
         />
       </Col>
     </Row>
@@ -448,6 +528,14 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
                 type="text"
                 value="We're away!"
               />
+              <BooleanField
+                className="mb-3"
+                label="Chat should turn grey when agents are away"
+                name="offlineStatusEnabled"
+                onChange={[Function]}
+                type="checkbox"
+                value={true}
+              />
               <InputField
                 label="Input placeholder"
                 onChange={[Function]}
@@ -511,6 +599,37 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
           ]
         }
       >
+        <div
+          className="d-flex justify-content-center align-items-center"
+          style={
+            Object {
+              "width": "30em",
+            }
+          }
+        >
+          <ButtonGroup
+            className="mb-3"
+            role="group"
+            tag="div"
+          >
+            <Button
+              color="info"
+              onClick={[Function]}
+              tag="button"
+              type="button"
+            >
+              Preview Online
+            </Button>
+            <Button
+              color="secondary"
+              onClick={[Function]}
+              tag="button"
+              type="button"
+            >
+              Preview Away
+            </Button>
+          </ButtonGroup>
+        </div>
         <ChatIntegrationPreview
           conversationColor="#0d87dd"
           currentUser={
@@ -523,6 +642,7 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
           mainColor="#0d87dd"
           name=""
           offlineIntroductionText="We're away!"
+          offlineStatusEnabled={true}
         />
       </Col>
     </Row>

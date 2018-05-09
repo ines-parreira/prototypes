@@ -8,6 +8,7 @@ const ChatIntegrationPreview = ({
     currentUser,
     introductionText,
     offlineIntroductionText,
+    offlineStatusEnabled,
     inputPlaceholder,
     mainColor,
     conversationColor,
@@ -21,6 +22,14 @@ const ChatIntegrationPreview = ({
     }
 
     const offlineColor = '#9DA8B8'
+    const shouldHeaderDisplayOnline = isOnline || !offlineStatusEnabled
+
+    const statusMarker = (
+        <div className={classnames({
+            [css.onlineMarker]: isOnline,
+            [css.offlineMarker]: !isOnline
+        })}/>
+    )
 
     return (
         <div className={css.preview}>
@@ -28,29 +37,29 @@ const ChatIntegrationPreview = ({
             <div className={css.dialog}>
                 <div
                     className={css.header}
-                    style={_bgColor(isOnline ? mainColor : offlineColor)}
+                    style={_bgColor(shouldHeaderDisplayOnline ? mainColor : offlineColor)}
                 >
                     <div className={css.agents}>
                         <div
                             className={classnames(css.agent, css.first)}
-                            style={{borderColor: isOnline ? mainColor : offlineColor}}
+                            style={{borderColor: shouldHeaderDisplayOnline ? mainColor : offlineColor}}
                         >
                             <i className="fa fa-user"/>
-                            {isOnline && <div className={css.onlineMarker}/>}
+                            {statusMarker}
                         </div>
                         <div
                             className={classnames(css.agent, css.middle)}
-                            style={{borderColor: isOnline ? mainColor : offlineColor}}
+                            style={{borderColor: shouldHeaderDisplayOnline ? mainColor : offlineColor}}
                         >
                             <i className="fa fa-user"/>
-                            {isOnline && <div className={css.onlineMarker}/>}
+                            {statusMarker}
                         </div>
                         <div
                             className={classnames(css.agent, css.last)}
-                            style={{borderColor: isOnline ? mainColor : offlineColor}}
+                            style={{borderColor: shouldHeaderDisplayOnline ? mainColor : offlineColor}}
                         >
                             <i className="fa fa-user"/>
-                            {isOnline && <div className={css.onlineMarker}/>}
+                            {statusMarker}
                         </div>
                     </div>
 
@@ -118,6 +127,7 @@ ChatIntegrationPreview.propTypes = {
     currentUser: PropTypes.object.isRequired,
     introductionText: PropTypes.string,
     offlineIntroductionText: PropTypes.string,
+    offlineStatusEnabled: PropTypes.bool,
     headerText: PropTypes.string,
     inputPlaceholder: PropTypes.string,
     mainColor: PropTypes.string,

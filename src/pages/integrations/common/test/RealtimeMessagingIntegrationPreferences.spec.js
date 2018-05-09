@@ -124,7 +124,7 @@ describe('RealtimeMessagingIntegrationPreferences component', () => {
                             trigger_text: 'We\'re away, leave us your email and we\'ll respond shortly.',
                             thanks_text: 'Thanks {email}! We\'ll get back to you shortly.',
                         }
-                    }
+                    },
                 }
             }
         }
@@ -170,7 +170,7 @@ describe('RealtimeMessagingIntegrationPreferences component', () => {
                             trigger_text: 'baz',
                             thanks_text: 'boo',
                         }
-                    }
+                    },
                 }
             }
         }
