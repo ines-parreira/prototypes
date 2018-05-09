@@ -12,7 +12,7 @@ import * as integrationsActions from '../../../../../state/integrations/actions'
     activate: integrationsActions.activateIntegration,
     deactivate: integrationsActions.deactivateIntegration,
 })
-export default class HttpIntegrationList extends React.Component {
+export default class HTTPIntegrationList extends React.Component {
     static propTypes = {
         integrations: PropTypes.object.isRequired,
         loading: PropTypes.object.isRequired,

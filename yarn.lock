@@ -3200,6 +3200,10 @@ https-browserify@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-0.0.1.tgz#3f91365cabe60b77ed0ebba24b454e3e09d95a82"
 
+httpstatus@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/httpstatus/-/httpstatus-1.0.0.tgz#3038982d9b4d9706c777cb88789f450c13bffba9"
+
 hyphenate-style-name@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/hyphenate-style-name/-/hyphenate-style-name-1.0.2.tgz#31160a36930adaf1fc04c6074f7eb41465d4ec4b"

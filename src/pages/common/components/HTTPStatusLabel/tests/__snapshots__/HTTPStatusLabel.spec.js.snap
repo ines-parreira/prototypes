@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HTTPStatusLabel should render a danger label for 4xx HTTP status code 1`] = `
+<Badge
+  color="danger"
+  pill={false}
+  tag="span"
+>
+  400
+   
+  BAD REQUEST
+</Badge>
+`;
+
+exports[`HTTPStatusLabel should render a danger label for 5xx HTTP status code 1`] = `
+<Badge
+  color="danger"
+  pill={false}
+  tag="span"
+>
+  500
+   
+  INTERNAL SERVER ERROR
+</Badge>
+`;
+
+exports[`HTTPStatusLabel should render a primary label for 3xx HTTP status code 1`] = `
+<Badge
+  color="primary"
+  pill={false}
+  tag="span"
+>
+  300
+   
+  MULTIPLE CHOICES
+</Badge>
+`;
+
+exports[`HTTPStatusLabel should render a secondary label for 1xx HTTP status code 1`] = `
+<Badge
+  color="secondary"
+  pill={false}
+  tag="span"
+>
+  100
+   
+  CONTINUE
+</Badge>
+`;
+
+exports[`HTTPStatusLabel should render a secondary label for unknown HTTP status code 1`] = `
+<Badge
+  color="secondary"
+  pill={false}
+  tag="span"
+>
+  78
+   
+  UNKNOWN HTTP STATUS CODE
+</Badge>
+`;
+
+exports[`HTTPStatusLabel should render a success label for 2xx HTTP status code 1`] = `
+<Badge
+  color="success"
+  pill={false}
+  tag="span"
+>
+  200
+   
+  OK
+</Badge>
+`;

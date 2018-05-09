@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HTTPIntegrationEventItem should render its name with an empty label because it has no value and children 1`] = `
+<div
+  className="mt-1"
+>
+  <b
+    className="mr-1"
+  >
+    foo
+    :
+  </b>
+  <span
+    className="text-black"
+  >
+    empty
+  </span>
+</div>
+`;
+
+exports[`HTTPIntegrationEventItem should render its name with an empty label because its value equals \`null\` (even with a children) 1`] = `
+<div
+  className="mt-1"
+>
+  <b
+    className="mr-1"
+  >
+    foo
+    :
+  </b>
+  <span
+    className="text-black"
+  >
+    empty
+  </span>
+</div>
+`;
+
+exports[`HTTPIntegrationEventItem should render its name with an empty label because its value equals \`null\` 1`] = `
+<div
+  className="mt-1"
+>
+  <b
+    className="mr-1"
+  >
+    foo
+    :
+  </b>
+  <span
+    className="text-black"
+  >
+    empty
+  </span>
+</div>
+`;
+
+exports[`HTTPIntegrationEventItem should render its name with its children 1`] = `
+<div
+  className="mt-1"
+>
+  <b
+    className="mr-1"
+  >
+    foo
+    :
+  </b>
+  <span>
+    bar
+  </span>
+</div>
+`;
+
+exports[`HTTPIntegrationEventItem should render its name with its children instead of displaying its value 1`] = `
+<div
+  className="mt-1"
+>
+  <b
+    className="mr-1"
+  >
+    foo
+    :
+  </b>
+  <span>
+    bar
+  </span>
+</div>
+`;

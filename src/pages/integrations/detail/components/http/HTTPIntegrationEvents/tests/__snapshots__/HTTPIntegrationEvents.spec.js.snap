@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HTTPIntegrationEvents component should render a loader because the component has no events 1`] = `
+<Loader
+  inline={false}
+  minHeight="500px"
+/>
+`;
+
+exports[`HTTPIntegrationEvents component should render a loader while the component is fetching events 1`] = `
+<Loader
+  inline={false}
+  minHeight="500px"
+/>
+`;
+
+exports[`HTTPIntegrationEvents component should render events 1`] = `
+<div>
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <p>
+      Shows the latest HTTP requests sent by this integration with their responses. This page is useful to see if this integration works correctly.
+    </p>
+  </Container>
+  <br />
+  <Table
+    className="view-table table-integrations"
+    hover={true}
+    responsiveTag="div"
+    tag="table"
+  >
+    <thead>
+      <tr>
+        <th>
+          Method
+        </th>
+        <th>
+          URL
+        </th>
+        <th>
+          Status code
+        </th>
+        <th>
+          Sent
+        </th>
+        <th />
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td
+          className="link-full-td"
+        >
+          <Link
+            className="disabled"
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/http/undefined/events/undefined"
+          >
+            <div>
+              GET
+            </div>
+          </Link>
+        </td>
+        <td
+          className="link-full-td"
+        >
+          <Link
+            className="disabled"
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/http/undefined/events/undefined"
+          >
+            <div>
+              https://api.gorgias.io
+            </div>
+          </Link>
+        </td>
+        <td
+          className="link-full-td"
+        >
+          <Link
+            className="disabled"
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/http/undefined/events/undefined"
+          >
+            <div>
+              <HTTPStatusLabel />
+            </div>
+          </Link>
+        </td>
+        <td
+          className="link-full-td"
+        >
+          <Link
+            className="disabled"
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/http/undefined/events/undefined"
+          >
+            <div>
+              <DatetimeLabel
+                dateTime="nowTimestamp"
+              />
+            </div>
+          </Link>
+        </td>
+        <td
+          className="smallest align-middle"
+        >
+          <ForwardIcon
+            href="/app/settings/integrations/http/undefined/events/undefined"
+          />
+        </td>
+      </tr>
+    </tbody>
+  </Table>
+</div>
+`;
+
+exports[`HTTPIntegrationEvents container should render a HTTPIntegrationEvents component with props from the Redux store 1`] = `
+<HTTPIntegrationEvents
+  events={
+    Immutable.List [
+      Immutable.Map {
+        created_datetime: "nowTimestamp",
+        request: Immutable.Map {
+          method: "GET",
+          url: "https://api.gorgias.io",
+          status: 200,
+          headers: Immutable.Map {
+            headersKey1: "headersValue1",
+          },
+          params: Immutable.Map {
+            paramKey1: "paramValue1",
+          },
+          body: Immutable.Map {
+            bodyKey1: "bodyValue1",
+          },
+        },
+      },
+    ]
+  }
+  fetchEvents={[Function]}
+  integrationId="1"
+/>
+`;

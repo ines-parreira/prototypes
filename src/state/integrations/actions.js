@@ -393,3 +393,4 @@ export function activateFacebookOnboardingPage(data: Array<{}>) {
             })
     }
 }
+

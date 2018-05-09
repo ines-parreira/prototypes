@@ -1,12 +1,32 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
-import HttpIntegrationDetail from '../HttpIntegrationDetail'
+import HTTPIntegrationOverview from '../'
 
-describe('HttpIntegrationDetail component', () => {
+const actions = {
+    deactivateIntegration: () => {},
+    activateIntegration: () => {},
+    deleteIntegration: () => {},
+    updateOrCreateIntegration: () => {},
+}
+
+describe('HTTPIntegrationOverview', () => {
+    it('should display default values because there is no integration (creation)', () => {
+        const component = shallow(
+            <HTTPIntegrationOverview
+                integration={fromJS({})}
+                isUpdate={false}
+                actions={actions}
+                loading={fromJS({integration: false})}
+            />
+        )
+
+        expect(component).toMatchSnapshot()
+    })
+
     it('should display data about the integration', () => {
         const component = shallow(
-            <HttpIntegrationDetail
+            <HTTPIntegrationOverview
                 integration={fromJS({
                     id: 1,
                     type: 'http',
@@ -34,12 +54,7 @@ describe('HttpIntegrationDetail component', () => {
                     }
                 })}
                 isUpdate={true}
-                actions={{
-                    deactivateIntegration: () => {},
-                    activateIntegration: () => {},
-                    deleteIntegration: () => {},
-                    updateOrCreateIntegration: () => {},
-                }}
+                actions={actions}
                 loading={fromJS({integration: false})}
             />
         )
@@ -47,27 +62,9 @@ describe('HttpIntegrationDetail component', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should display default if it\'s a new integration', () => {
+    it('should display loading state because the integration is loading', () => {
         const component = shallow(
-            <HttpIntegrationDetail
-                integration={fromJS({})}
-                isUpdate={false}
-                actions={{
-                    deactivateIntegration: () => {},
-                    activateIntegration: () => {},
-                    deleteIntegration: () => {},
-                    updateOrCreateIntegration: () => {},
-                }}
-                loading={fromJS({integration: false})}
-            />
-        )
-
-        expect(component).toMatchSnapshot()
-    })
-
-    it('should display loading state if the integration is loading', () => {
-        const component = shallow(
-            <HttpIntegrationDetail
+            <HTTPIntegrationOverview
                 integration={fromJS({
                     id: 1,
                     type: 'http',
@@ -95,12 +92,7 @@ describe('HttpIntegrationDetail component', () => {
                     }
                 })}
                 isUpdate={false}
-                actions={{
-                    deactivateIntegration: () => {},
-                    activateIntegration: () => {},
-                    deleteIntegration: () => {},
-                    updateOrCreateIntegration: () => {},
-                }}
+                actions={actions}
                 loading={fromJS({integration: true})}
             />
         )
@@ -110,7 +102,7 @@ describe('HttpIntegrationDetail component', () => {
 
     it('should display data with url-encoded format', () => {
         const component = shallow(
-            <HttpIntegrationDetail
+            <HTTPIntegrationOverview
                 integration={fromJS({
                     id: 1,
                     type: 'http',
@@ -136,18 +128,11 @@ describe('HttpIntegrationDetail component', () => {
                     }
                 })}
                 isUpdate={true}
-                actions={{
-                    deactivateIntegration: () => {},
-                    activateIntegration: () => {},
-                    deleteIntegration: () => {},
-                    updateOrCreateIntegration: () => {},
-                }}
+                actions={actions}
                 loading={fromJS({integration: false})}
             />
         )
 
         expect(component).toMatchSnapshot()
     })
-
-
 })

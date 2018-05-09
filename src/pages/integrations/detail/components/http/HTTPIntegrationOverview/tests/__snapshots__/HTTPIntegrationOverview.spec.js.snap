@@ -1,45 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`HttpIntegrationDetail component should display data about the integration 1`] = `
+exports[`HTTPIntegrationOverview should display data about the integration 1`] = `
 <div
   className="full-width"
 >
-  <PageHeader
-    title={
-      <Breadcrumb
-        tag="ol"
-      >
-        <BreadcrumbItem
-          tag="li"
-        >
-          <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
-        >
-          <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
-            to="/app/settings/integrations/http"
-          >
-            HTTP
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          my little integration
-        </BreadcrumbItem>
-      </Breadcrumb>
-    }
-  />
   <Container
     className="page-container"
     fluid={true}
@@ -290,46 +254,10 @@ exports[`HttpIntegrationDetail component should display data about the integrati
 </div>
 `;
 
-exports[`HttpIntegrationDetail component should display data with url-encoded format 1`] = `
+exports[`HTTPIntegrationOverview should display data with url-encoded format 1`] = `
 <div
   className="full-width"
 >
-  <PageHeader
-    title={
-      <Breadcrumb
-        tag="ol"
-      >
-        <BreadcrumbItem
-          tag="li"
-        >
-          <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
-        >
-          <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
-            to="/app/settings/integrations/http"
-          >
-            HTTP
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          my little integration
-        </BreadcrumbItem>
-      </Breadcrumb>
-    }
-  />
   <Container
     className="page-container"
     fluid={true}
@@ -587,46 +515,10 @@ exports[`HttpIntegrationDetail component should display data with url-encoded fo
 </div>
 `;
 
-exports[`HttpIntegrationDetail component should display default if it's a new integration 1`] = `
+exports[`HTTPIntegrationOverview should display default values because there is no integration (creation) 1`] = `
 <div
   className="full-width"
 >
-  <PageHeader
-    title={
-      <Breadcrumb
-        tag="ol"
-      >
-        <BreadcrumbItem
-          tag="li"
-        >
-          <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
-        >
-          <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
-            to="/app/settings/integrations/http"
-          >
-            HTTP
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Add new HTTP integration
-        </BreadcrumbItem>
-      </Breadcrumb>
-    }
-  />
   <Container
     className="page-container"
     fluid={true}
@@ -803,7 +695,7 @@ exports[`HttpIntegrationDetail component should display default if it's a new in
 </div>
 `;
 
-exports[`HttpIntegrationDetail component should display loading state if the integration is loading 1`] = `
+exports[`HTTPIntegrationOverview should display loading state because the integration is loading 1`] = `
 <Loader
   inline={false}
   minHeight="500px"

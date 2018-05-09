@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HTTPIntegrationEventParams should not render the component because it has no params 1`] = `null`;
+
+exports[`HTTPIntegrationEventParams should render the given params 1`] = `
+<ul>
+  <li>
+    <b
+      className="mr-1"
+    >
+      params1
+      :
+    </b>
+    <span
+      className="text-black"
+    >
+      value1
+    </span>
+  </li>
+  <li>
+    <b
+      className="mr-1"
+    >
+      params2
+      :
+    </b>
+    <span
+      className="text-black"
+    >
+      value2
+    </span>
+  </li>
+  <li>
+    <b
+      className="mr-1"
+    >
+      params3
+      :
+    </b>
+    <span
+      className="text-black"
+    >
+      value3
+    </span>
+  </li>
+</ul>
+`;

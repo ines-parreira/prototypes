@@ -16,8 +16,7 @@ import FacebookIntegrationList from './components/facebook/FacebookIntegrationLi
 import FacebookIntegrationSetup from './components/facebook/FacebookIntegrationSetup'
 import FacebookIntegrationLogin from './components/facebook/FacebookIntegrationLogin'
 
-import HttpIntegrationList from './components/http/HttpIntegrationList'
-import HttpIntegrationDetail from './components/http/HttpIntegrationDetail'
+import HTTPIntegrationList from './components/http/HTTPIntegrationList'
 
 import ChatIntegrationList from './components/chat/ChatIntegrationList'
 import ChatIntegrationAppearance from './components/chat/ChatIntegrationAppearance'
@@ -39,6 +38,10 @@ import EmailIntegrationCreate from './components/email/EmailIntegrationCreate/in
 import EmailIntegrationCreateForwarding from './components/email/EmailIntegrationCreateForwarding/index'
 import ChatIntegrationCampaigns from './components/chat/ChatIntegrationCampaigns/ChatIntegrationCampaigns'
 import CampaignDetail from './components/chat/ChatIntegrationCampaigns/CampaignDetail/CampaignDetail'
+import HTTPIntegrationOverview from './components/http/HTTPIntegrationOverview/HTTPIntegrationOverview'
+import HTTPIntegrationEvents from './components/http/HTTPIntegrationEvents'
+import HTTPIntegrationEvent from './components/http/HTTPIntegrationEvent'
+import HTTPIntegrationLayout from './components/http/HTTPIntegrationLayout/HTTPIntegrationLayout'
 
 
 class IntegrationDetailContainer extends React.Component {
@@ -198,18 +201,52 @@ class IntegrationDetailContainer extends React.Component {
 
             case 'http':
                 if (isDetail) {
+                    if (params.extra === 'events') {
+                        if (params.subId) {
+                            return (
+                                <HTTPIntegrationLayout
+                                    integration={integration}
+                                    isUpdate={isUpdate}
+                                    urlParams={params}
+                                >
+                                    <HTTPIntegrationEvent
+                                        integrationId={params.integrationId}
+                                        eventId={params.subId}
+                                    />
+                                </HTTPIntegrationLayout>
+                            )
+                        }
+
+                        return (
+                            <HTTPIntegrationLayout
+                                integration={integration}
+                                isUpdate={isUpdate}
+                                urlParams={params}
+                            >
+                                <HTTPIntegrationEvents integrationId={params.integrationId}/>
+                            </HTTPIntegrationLayout>
+
+                        )
+                    }
+
                     return (
-                        <HttpIntegrationDetail
-                            actions={actions}
-                            integration={commonProps.integration}
+                        <HTTPIntegrationLayout
+                            integration={integration}
                             isUpdate={isUpdate}
-                            loading={commonProps.loading}
-                        />
+                            urlParams={params}
+                        >
+                            <HTTPIntegrationOverview
+                                actions={actions}
+                                integration={commonProps.integration}
+                                isUpdate={isUpdate}
+                                loading={commonProps.loading}
+                            />
+                        </HTTPIntegrationLayout>
                     )
                 }
 
                 return (
-                    <HttpIntegrationList
+                    <HTTPIntegrationList
                         actions={actions}
                         integrations={commonProps.integrations}
                         loading={commonProps.loading}

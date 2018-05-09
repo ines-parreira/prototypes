@@ -6,6 +6,7 @@ import agentsReducer from './agents/reducers'
 import billingReducer from './billing/reducers'
 import currentAccountReducer from './currentAccount/reducers'
 import currentUserReducer from './currentUser/reducers'
+import HTTPIntegrationEventsReducer from './HTTPIntegrationEvents/reducers'
 import infobarReducer from './infobar/reducers'
 import integrationsReducer from './integrations/reducers'
 import layoutReducer from './layout/reducers'
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
     currentUser: currentUserReducer,
     infobar: infobarReducer,
     integrations: integrationsReducer,
+    HTTPIntegrationEvents: HTTPIntegrationEventsReducer,
     layout: layoutReducer,
     macros: macrosReducer,
     requests: requestsReducer,

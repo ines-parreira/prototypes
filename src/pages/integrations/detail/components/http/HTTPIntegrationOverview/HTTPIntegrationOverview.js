@@ -1,5 +1,4 @@
 import React, {PropTypes} from 'react'
-import {Link} from 'react-router'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import _merge from 'lodash/merge'
@@ -12,20 +11,17 @@ import {
     FormText,
     Label,
     Button,
-    Breadcrumb,
-    BreadcrumbItem,
 } from 'reactstrap'
 
-import {AVAILABLE_HTTP_METHODS, FORM_CONTENT_TYPE, JSON_CONTENT_TYPE} from '../../../../../config'
-import Loader from '../../../../common/components/Loader'
-import ObjectListField from './ObjectListField'
-import ConfirmButton from '../../../../common/components/ConfirmButton'
+import {AVAILABLE_HTTP_METHODS, FORM_CONTENT_TYPE, JSON_CONTENT_TYPE} from '../../../../../../config'
+import Loader from '../../../../../common/components/Loader'
+import ObjectListField from '../ObjectListField'
+import ConfirmButton from '../../../../../common/components/ConfirmButton'
 
-import InputField from '../../../../common/forms/InputField'
-import BooleanField from '../../../../common/forms/BooleanField'
-import JsonField from '../../../../common/forms/JsonField'
-import {toJS, validateWebhookURL, validateWebhookURLToPattern} from '../../../../../utils'
-import PageHeader from '../../../../common/components/PageHeader'
+import InputField from '../../../../../common/forms/InputField'
+import BooleanField from '../../../../../common/forms/BooleanField'
+import JsonField from '../../../../../common/forms/JsonField'
+import {toJS, validateWebhookURL, validateWebhookURLToPattern} from '../../../../../../utils'
 
 export const defaultContent = {
     type: 'http',
@@ -40,7 +36,7 @@ export const defaultContent = {
     }
 }
 
-export default class HttpIntegrationDetail extends React.Component {
+export default class HTTPIntegrationOverview extends React.Component {
     static propTypes = {
         integration: PropTypes.object.isRequired,
         isUpdate: PropTypes.bool.isRequired,
@@ -208,22 +204,6 @@ export default class HttpIntegrationDetail extends React.Component {
 
         return (
             <div className="full-width">
-                <PageHeader
-                    title={(
-                        <Breadcrumb>
-                            <BreadcrumbItem>
-                                <Link to="/app/settings/integrations">Integrations</Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>
-                                <Link to="/app/settings/integrations/http">HTTP</Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem active>
-                                {isUpdate ? integration.get('name') : 'Add new HTTP integration'}
-                            </BreadcrumbItem>
-                        </Breadcrumb>
-                    )}
-                />
-
                 <Container fluid className="page-container">
                     <p>
                         Add the details about the HTTP integration you want to add below. If you need help, you can

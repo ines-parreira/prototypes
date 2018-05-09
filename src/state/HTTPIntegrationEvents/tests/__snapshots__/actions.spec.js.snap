@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HTTPIntegrationEvents actions fetchHTTPIntegrationEvent should fetch events and dispatch ERROR action 1`] = `
+Array [
+  Object {
+    "error": [Error: Request failed with status code 500],
+    "reason": "Failed to fetch event",
+    "type": "ERROR",
+  },
+]
+`;
+
+exports[`HTTPIntegrationEvents actions fetchHTTPIntegrationEvent should fetch events and dispatch FETCH_HTTP_INTEGRATION_EVENT_SUCCESS action 1`] = `
+Array [
+  Object {
+    "event": Object {
+      "id": 2,
+    },
+    "type": "FETCH_HTTP_INTEGRATION_EVENT_SUCCESS",
+  },
+]
+`;
+
+exports[`HTTPIntegrationEvents actions fetchHTTPIntegrationEvents should fetch events and dispatch ERROR action 1`] = `
+Array [
+  Object {
+    "error": [Error: Request failed with status code 500],
+    "reason": "Failed to fetch events.",
+    "type": "ERROR",
+  },
+]
+`;
+
+exports[`HTTPIntegrationEvents actions fetchHTTPIntegrationEvents should fetch events and dispatch FETCH_HTTP_INTEGRATION_EVENT_SUCCESS action 1`] = `
+Array [
+  Object {
+    "events": Array [
+      Object {
+        "id": 1,
+      },
+      Object {
+        "id": 2,
+      },
+    ],
+    "type": "FETCH_HTTP_INTEGRATION_EVENTS_SUCCESS",
+  },
+]
+`;

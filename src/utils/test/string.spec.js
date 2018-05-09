@@ -1,4 +1,4 @@
-import {removeSuffix} from '../string'
+import {countLines, removeSuffix} from '../string'
 
 describe('string util', () => {
     describe('removeSuffix', () => {
@@ -16,6 +16,20 @@ describe('string util', () => {
 
         it('should remove the suffix from the data if the data ends with the suffix', () => {
             expect(removeSuffix('foobar', 'bar')).toEqual('foo')
+        })
+    })
+
+    describe('countLines', () => {
+        it('should return 0 because given values are not string', () => {
+            expect(countLines(undefined)).toEqual(0)
+            expect(countLines(null)).toEqual(0)
+            expect(countLines([])).toEqual(0)
+            expect(countLines({})).toEqual(0)
+            expect(countLines(12)).toEqual(0)
+        })
+
+        it('should return the number of lines in the given text', () => {
+            expect(countLines('\n1\n2\n3')).toEqual(4)
         })
     })
 })

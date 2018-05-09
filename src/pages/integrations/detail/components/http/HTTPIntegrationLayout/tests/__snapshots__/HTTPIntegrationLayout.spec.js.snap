@@ -1,0 +1,282 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HTTPIntegrationLayout should render layout for a new HTTP integration 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/http"
+          >
+            HTTP
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Add new HTTP integration
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <span>
+    children
+  </span>
+</div>
+`;
+
+exports[`HTTPIntegrationLayout should render the layout of an event page of a HTTP integration 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/http"
+          >
+            HTTP
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={false}
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/http/1"
+          >
+            Backend integration
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={false}
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/http/1/events"
+          >
+            Logs
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          #
+          2
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <SecondaryNavbar>
+    <Link
+      activeClassName="disabled"
+      className="nav-link"
+      onlyActiveOnIndex={false}
+      style={Object {}}
+      to="/app/settings/integrations/http/1"
+    >
+      Settings
+    </Link>
+    <Link
+      activeClassName="disabled"
+      className="nav-link"
+      onlyActiveOnIndex={false}
+      style={Object {}}
+      to="/app/settings/integrations/http/1/events"
+    >
+      Logs
+    </Link>
+  </SecondaryNavbar>
+  <span>
+    children
+  </span>
+</div>
+`;
+
+exports[`HTTPIntegrationLayout should render the layout of the events page of a HTTP integration 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/http"
+          >
+            HTTP
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={false}
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/http/1"
+          >
+            Backend integration
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Logs
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <SecondaryNavbar>
+    <Link
+      activeClassName="disabled"
+      className="nav-link"
+      onlyActiveOnIndex={false}
+      style={Object {}}
+      to="/app/settings/integrations/http/1"
+    >
+      Settings
+    </Link>
+    <Link
+      activeClassName="disabled"
+      className="nav-link"
+      onlyActiveOnIndex={false}
+      style={Object {}}
+      to="/app/settings/integrations/http/1/events"
+    >
+      Logs
+    </Link>
+  </SecondaryNavbar>
+  <span>
+    children
+  </span>
+</div>
+`;
+
+exports[`HTTPIntegrationLayout should render the layout of the settings page of a HTTP integration 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/http"
+          >
+            HTTP
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Backend integration
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <SecondaryNavbar>
+    <Link
+      activeClassName="disabled"
+      className="nav-link"
+      onlyActiveOnIndex={false}
+      style={Object {}}
+      to="/app/settings/integrations/http/1"
+    >
+      Settings
+    </Link>
+    <Link
+      activeClassName="disabled"
+      className="nav-link"
+      onlyActiveOnIndex={false}
+      style={Object {}}
+      to="/app/settings/integrations/http/1/events"
+    >
+      Logs
+    </Link>
+  </SecondaryNavbar>
+  <span>
+    children
+  </span>
+</div>
+`;
