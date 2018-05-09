@@ -63,7 +63,7 @@ export class HTTPIntegrationEvent extends Component<Props, State> {
         const responseHeaders = response.get('headers')
         const requestParams = request.get('params') || null
         const requestBody = request.get('body')
-        const responseBody = response.get('body') || null
+        let responseBody = response.get('body') || null
         let requestJSONBody = null
         let requestFormBody = null
 
@@ -71,6 +71,14 @@ export class HTTPIntegrationEvent extends Component<Props, State> {
             requestJSONBody = JSON.stringify(JSON.parse(requestBody), undefined, 4)
         } catch (err) {
             requestFormBody = requestBody
+        }
+
+        if (responseBody) {
+            try {
+                responseBody = JSON.stringify(JSON.parse(responseBody), undefined, 4)
+            } catch (err) {
+                // ignore parsing error
+            }
         }
 
         return (

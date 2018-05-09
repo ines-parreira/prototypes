@@ -288,13 +288,17 @@ exports[`HTTPIntegrationEvent component should render the data of HTTP request (
         </HTTPIntegrationEventItem>
         <HTTPIntegrationEventItem
           name="Body"
-          value="{\\"bodyKey1\\":\\"bodyValue1\\"}"
+          value="{
+            \\"bodyKey1\\": \\"bodyValue1\\"
+        }"
         >
           <InputField
             readOnly={true}
-            rows={1}
+            rows={3}
             type="textarea"
-            value="{\\"bodyKey1\\":\\"bodyValue1\\"}"
+            value="{
+              \\"bodyKey1\\": \\"bodyValue1\\"
+          }"
           />
         </HTTPIntegrationEventItem>
       </Container>
