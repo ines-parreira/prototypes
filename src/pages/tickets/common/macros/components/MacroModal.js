@@ -43,6 +43,10 @@ export default class MacroModal extends React.Component {
             open: true,
             name: 'macros',
         })
+
+        if (this.props.macros.isEmpty()) {
+            this._addNewMacro()
+        }
     }
 
     componentWillReceiveProps(nextProps) {

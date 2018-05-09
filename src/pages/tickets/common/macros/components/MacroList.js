@@ -141,7 +141,7 @@ export default class MacroList extends React.Component {
                             value={this.state.searchQuery}
                             onChange={e => this._handleSearch(e.target.value)}
                             placeholder="Search macros by name, tags or body..."
-                            autoFocus={true}
+                            autoFocus={!this.props.macros.isEmpty()}
                             className={classnames(css.search, 'shortcuts-enable')}
                         />
                     </div>

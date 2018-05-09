@@ -51,6 +51,7 @@ exports[`TicketMacros component should display an empty state if there's no macr
       Create a new macro
     </Button>
   </div>
+  <Connect(MacroContainer) />
 </div>
 `;
 
@@ -110,6 +111,7 @@ exports[`TicketMacros component should display another empty state if there's no
       Create a new macro
     </Button>
   </div>
+  <Connect(MacroContainer) />
 </div>
 `;
 
@@ -306,7 +308,7 @@ exports[`TicketMacros component should display macros list, and selected macro 1
         }
       />
     </div>
-    <Connect(MacroContainer) />
   </div>
+  <Connect(MacroContainer) />
 </div>
 `;

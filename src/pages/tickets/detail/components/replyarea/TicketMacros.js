@@ -191,8 +191,6 @@ export default class TicketMacros extends React.Component<Props, State> {
                         className={css.preview}
                     />
                 </div>
-
-                <MacroContainer selectedMacroIdOnOpen={this.props.selectedMacroId}/>
             </div>
         )
 
@@ -247,6 +245,8 @@ export default class TicketMacros extends React.Component<Props, State> {
                 }
 
                 {content}
+
+                <MacroContainer selectedMacroIdOnOpen={this.props.selectedMacroId}/>
             </div>
         )
     }
