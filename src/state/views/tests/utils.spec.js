@@ -26,16 +26,13 @@ describe('utils', () => {
             it('should get recent views', () => {
                 localStorage.setItem('recentViews', JSON.stringify([1, 2]))
 
-                const beforeGetDt = moment.utc()
+                const beforeGetDt = moment.utc().subtract(1, 's')
                 const views = utils.recentViewsStorage.get()
-                const now = moment.utc().add(10, 's')
+                const now = moment.utc().add(1, 's')
 
                 expect(Object.keys(views)).toEqual(['1', '2'])
-                console.error('beforeGetDt', beforeGetDt)
-                console.error('now', now)
+
                 Object.values(views).forEach((view) => {
-                    console.log('updated_datetime', view.updated_datetime)
-                    console.log('inserted_datetime', view.inserted_datetime)
                     expect(moment(view.updated_datetime).isBetween(beforeGetDt, now)).toBe(true)
                     expect(moment(view.inserted_datetime).isBetween(beforeGetDt, now)).toBe(true)
                 })
