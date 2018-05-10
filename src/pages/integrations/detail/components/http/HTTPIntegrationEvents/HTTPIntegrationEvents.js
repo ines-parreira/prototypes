@@ -72,7 +72,7 @@ export class HTTPIntegrationEvents extends Component<Props, State> {
                 <td className="link-full-td">
                     <Link to={editLink} className="disabled">
                         <div>
-                            <HTTPStatusLabel statusCode={event.get('status')}/>
+                            <HTTPStatusLabel statusCode={event.get('status_code')}/>
                         </div>
                     </Link>
                 </td>

@@ -117,7 +117,7 @@ export class HTTPIntegrationEvent extends Component<Props, State> {
                         <Container fluid>
                             <h2 className='mb-4'>Response</h2>
                             <HTTPItem name="Status code">
-                                <HTTPStatusLabel statusCode={event.get('status')}/>
+                                <HTTPStatusLabel statusCode={event.get('status_code')}/>
                             </HTTPItem>
                             <HTTPItem name="Headers">
                                 <HTTPParams params={responseHeaders}/>
