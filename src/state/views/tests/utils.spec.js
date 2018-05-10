@@ -32,10 +32,10 @@ describe('utils', () => {
 
                 expect(Object.keys(views)).toEqual(['1', '2'])
 
-                for (let view in views) {
+                Object.values(views).forEach((view) => {
                     expect(moment(view.updated_datetime).isBetween(beforeGetDt, now)).toBe(true)
                     expect(moment(view.inserted_datetime).isBetween(beforeGetDt, now)).toBe(true)
-                }
+                })
             })
         })
 
