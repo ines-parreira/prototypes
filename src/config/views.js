@@ -343,6 +343,8 @@ export const views = fromJS([{
     ],
     cell: (fieldName, item) => {
         switch (fieldName) {
+            case 'name':
+                return item.get('name') || `Customer #${item.get('id')}`
             case 'created':
                 return item.get('created_datetime')
             case 'updated':

@@ -93,6 +93,7 @@ describe('Config: views', () => {
                     },
                     user: {
                         roles: 'object',
+                        name: 'string',
                     }
                 }
 

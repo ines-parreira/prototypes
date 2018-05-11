@@ -12,7 +12,7 @@ import TicketMessageBody from './TicketMessageBody'
 import TicketAttachments from './replyarea/TicketAttachments'
 import {displayUserNameFromSource} from '../../common/utils'
 import {formatDatetime} from './../../../../utils'
-import {AgentLabel, DatetimeLabel} from '../../../common/utils/labels'
+import {AgentLabel, DatetimeLabel, UserLabel} from '../../../common/utils/labels'
 import {isForwardedMessage} from '../../../../state/ticket/utils'
 import HardWarning from './HardWarning'
 import Avatar from '../../../common/components/Avatar'
@@ -413,8 +413,11 @@ export default class TicketMessage extends React.Component {
                             <div className={classnames(css.author, {
                                 isAgent: message.from_agent
                             })}>
-                                {message.from_agent && <AgentLabel className={css.agentIcon}/>}
-                                {sender.get('name')}
+                                {
+                                    message.from_agent
+                                      ? <AgentLabel name={sender.get('name')} className={css.agentIcon} />
+                                      : <UserLabel user={sender} />
+                                }
                             </div>
 
                             {this.renderSource(message)}

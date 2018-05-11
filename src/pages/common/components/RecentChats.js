@@ -23,7 +23,9 @@ class RecentChatsItem extends React.Component {
     render() {
         const {recentTicket, position} = this.props
         const channel = recentTicket.get('channel')
-        const requesterName = recentTicket.get('requester_name')
+        const requesterID = recentTicket.get('requester_id')
+        // If no user name nor ticket subject exists, then we'll display a user's id
+        const requesterName = recentTicket.get('requester_name') || `Customer #${requesterID}`
 
         // is the current link active or not?
         const isActive = isCurrentlyOnTicket(recentTicket.get('id'))

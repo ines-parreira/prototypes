@@ -13,10 +13,10 @@ export const getDisplayName = (user: {name: string, id: string}): string => {
     // TODO toImmutable should always return a map.
     // if not an immutable map
     if (!isImmutable(user)) {
-        return user || 'Unknown user'
+        return user || 'Unknown customer'
     }
 
     user = user.set('name', _trim(user.get('name')))
 
-    return user.get('name') || user.get('email') || (user.get('id') ? `User #${user.get('id')}` : 'Unknown user')
+    return user.get('name') || user.get('email') || (user.get('id') ? `Customer #${user.get('id')}` : 'Unknown customer')
 }
