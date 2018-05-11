@@ -79,7 +79,96 @@ Array [
 ]
 `;
 
-exports[`actions new message prepare() email-forward 1`] = `
+exports[`actions new message prepare() email-forward should not set an attachment in the newMessage if it is already there 1`] = `
+Array [
+  Object {
+    "subject": "Fwd: ",
+    "type": "NEW_MESSAGE_SET_SUBJECT",
+  },
+  Object {
+    "messages": Immutable.List [
+      Immutable.Map {
+            source: Immutable.Map {
+                  to: Immutable.List [
+                        Immutable.Map {
+                              name: "Marc",
+                              address: "marc.wall@gmail.com",
+                        },
+                        Immutable.Map {
+                              name: "Acme Support",
+                              address: "support@acme.gorgias.io",
+                        },
+                  ],
+                  from: Immutable.Map {
+                        name: "Steve Frizeli",
+                        address: "marie.curie@gmail.com",
+                  },
+                  type: "chat",
+            },
+            id: 151,
+            from_agent: false,
+            attachments: Immutable.List [
+                  Immutable.Map {
+                        url: "foo",
+                  },
+                  Immutable.Map {
+                        url: "bar",
+                  },
+            ],
+      },
+      Immutable.Map {
+            source: Immutable.Map {
+                  cc: Immutable.List [
+                  ],
+                  to: Immutable.List [
+                        Immutable.Map {
+                              name: "Steve Frizeli",
+                              address: "steve.frizeli@gmail.com",
+                        },
+                  ],
+                  from: Immutable.Map {
+                        name: "Acme Support",
+                        address: "support@acme.gorgias.io",
+                  },
+                  type: "email",
+            },
+            id: 152,
+            from_agent: true,
+      },
+],
+    "sourceType": "email",
+    "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
+  },
+  Object {
+    "extra": Object {
+      "forward": true,
+    },
+    "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
+  },
+  Object {
+    "sender": Immutable.Map {
+      name: "Acme Support",
+      address: "support@acme.gorgias.io",
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+  Object {
+    "receivers": Object {},
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "resp": Array [
+      Object {
+        "url": "bar",
+      },
+    ],
+    "type": "NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS",
+  },
+]
+`;
+
+exports[`actions new message prepare() email-forward should prepare an email forward 1`] = `
 Array [
   Object {
     "subject": "Fwd: ",
@@ -151,6 +240,112 @@ Array [
   },
   Object {
     "resp": Array [],
+    "type": "NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS",
+  },
+]
+`;
+
+exports[`actions new message prepare() email-forward should set all attachments of the ticket as attachment of the newMessage 1`] = `
+Array [
+  Object {
+    "subject": "Fwd: ",
+    "type": "NEW_MESSAGE_SET_SUBJECT",
+  },
+  Object {
+    "messages": Immutable.List [
+      Immutable.Map {
+            source: Immutable.Map {
+                  to: Immutable.List [
+                        Immutable.Map {
+                              name: "Marc",
+                              address: "marc.wall@gmail.com",
+                        },
+                        Immutable.Map {
+                              name: "Acme Support",
+                              address: "support@acme.gorgias.io",
+                        },
+                  ],
+                  from: Immutable.Map {
+                        name: "Steve Frizeli",
+                        address: "marie.curie@gmail.com",
+                  },
+                  type: "chat",
+            },
+            id: 151,
+            from_agent: false,
+            attachments: Immutable.List [
+                  Immutable.Map {
+                        url: "foo",
+                  },
+                  Immutable.Map {
+                        url: "bar",
+                  },
+            ],
+      },
+      Immutable.Map {
+            source: Immutable.Map {
+                  cc: Immutable.List [
+                  ],
+                  to: Immutable.List [
+                        Immutable.Map {
+                              name: "Steve Frizeli",
+                              address: "steve.frizeli@gmail.com",
+                        },
+                  ],
+                  from: Immutable.Map {
+                        name: "Acme Support",
+                        address: "support@acme.gorgias.io",
+                  },
+                  type: "email",
+            },
+            id: 152,
+            from_agent: true,
+            attachments: Immutable.List [
+                  Immutable.Map {
+                        url: "baz",
+                  },
+                  Immutable.Map {
+                        url: "far",
+                  },
+            ],
+      },
+],
+    "sourceType": "email",
+    "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
+  },
+  Object {
+    "extra": Object {
+      "forward": true,
+    },
+    "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
+  },
+  Object {
+    "sender": Immutable.Map {
+      name: "Acme Support",
+      address: "support@acme.gorgias.io",
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+  Object {
+    "receivers": Object {},
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "resp": Array [
+      Object {
+        "url": "foo",
+      },
+      Object {
+        "url": "bar",
+      },
+      Object {
+        "url": "baz",
+      },
+      Object {
+        "url": "far",
+      },
+    ],
     "type": "NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS",
   },
 ]

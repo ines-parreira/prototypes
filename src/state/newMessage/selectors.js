@@ -13,14 +13,14 @@ export const getNewMessageState = (state: stateType): Map<*,*> => state.newMessa
 
 export const getLoading = createImmutableSelector(
     [getNewMessageState],
-    state => state.getIn(['_internal', 'loading']) || fromJS({})
+    (state) => state.getIn(['_internal', 'loading']) || fromJS({})
 )
 
 // in props usage
 // ex: isMerging: isLoading('merge')(state)
 export const isLoading = (name: string) => createSelector(
     [getLoading],
-    loading => loading.get(name, false)
+    (loading) => loading.get(name, false)
 )
 
 // in component usage
@@ -29,49 +29,54 @@ export const makeIsLoading = (state: stateType) => (name: string): boolean => is
 
 export const isDirty = createSelector(
     [getNewMessageState],
-    state => state.getIn(['state', 'dirty'], false)
+    (state) => state.getIn(['state', 'dirty'], false)
 )
 
 export const isCacheAdded = createSelector(
     [getNewMessageState],
-    state => state.getIn(['state', 'cacheAdded'], false)
+    (state) => state.getIn(['state', 'cacheAdded'], false)
 )
 
 export const getNewMessage = createImmutableSelector(
     [getNewMessageState],
-    state => state.get('newMessage') || fromJS({})
+    (state) => state.get('newMessage') || fromJS({})
 )
 
 export const getNewMessageContentState = createImmutableSelector(
     [getNewMessageState],
-    state => state.getIn(['state', 'contentState'])
+    (state) => state.getIn(['state', 'contentState'])
 )
 
 export const getNewMessageType = createSelector(
     [getNewMessage],
-    state => state.getIn(['source', 'type']) || 'email'
+    (state) => state.getIn(['source', 'type']) || 'email'
 )
 
 export const getNewMessageChannel = createSelector(
     [getNewMessage],
-    state => state.get('channel') || 'email'
+    (state) => state.get('channel') || 'email'
 )
 
 export const getNewMessageSource = createImmutableSelector(
     [getNewMessage],
-    state => state.get('source') || fromJS({})
+    (state) => state.get('source') || fromJS({})
+)
+
+export const getNewMessageAttachments = createImmutableSelector(
+    [getNewMessage],
+    (state) => state.get('attachments') || fromJS([])
 )
 
 export const isNewMessagePublic = createImmutableSelector(
     [getNewMessage],
-    state => state.get('public') || false
+    (state) => state.get('public') || false
 )
 
 export const isForward = (() => {
     const isForwardedMessage = require('../ticket/utils').isForwardedMessage
     return createSelector(
         [getNewMessage],
-        message => isForwardedMessage(message)
+        (message) => isForwardedMessage(message)
     )
 })()
 
@@ -80,7 +85,7 @@ export const isForward = (() => {
 // ex: newMessageTo: getNewMessageSourceProperty('to')(state)
 export const getNewMessageSourceProperty = (property: string) => createImmutableSelector(
     [getNewMessageSource],
-    state => state.get(property) || fromJS({})
+    (state) => state.get(property) || fromJS({})
 )
 
 // in component usage

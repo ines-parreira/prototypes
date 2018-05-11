@@ -140,5 +140,27 @@ describe('selectors', () => {
                 expect(selectors.getNewMessageSignature(state)).toEqualImmutable(fromJS({}))
             })
         })
+
+        describe('getNewMessageAttachments()', () => {
+            beforeEach(() => {
+                state = {
+                    newMessage: initialState,
+                }
+            })
+
+            it('should return the attachments of the new message', () => {
+                const attachments = fromJS([{url: 'foo'}, {url: 'bar'}])
+                state.newMessage = state.newMessage.setIn(['newMessage', 'attachments'], attachments)
+
+                expect(selectors.getNewMessageAttachments(state)).toEqualImmutable(attachments)
+            })
+
+            it('should return an empty immutable list because the new message has no attachments', () => {
+                const attachments = null
+                state.newMessage = state.newMessage.setIn(['newMessage', 'attachments'], attachments)
+
+                expect(selectors.getNewMessageAttachments(state)).toEqualImmutable(fromJS([]))
+            })
+        })
     })
 })

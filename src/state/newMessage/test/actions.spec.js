@@ -43,9 +43,8 @@ describe('actions', () => {
                 newMessage: initialState,
             })
             store.dispatch(actions.setSender())
-            const expectedActions = store.getActions()
 
-            expect(expectedActions).toMatchSnapshot()
+            expect(store.getActions()).toMatchSnapshot()
         })
 
         it('dispatch setSender - `from` field from last message from agent (chat, messenger)', () => {
@@ -60,9 +59,8 @@ describe('actions', () => {
                 newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'chat'),
             })
             store.dispatch(actions.setSender())
-            const expectedActions = store.getActions()
 
-            expect(expectedActions).toEqual([{
+            expect(store.getActions()).toEqual([{
                 type: types.NEW_MESSAGE_SET_SENDER,
                 sender: expectedSender
             }])
@@ -82,9 +80,8 @@ describe('actions', () => {
                 newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'chat'),
             })
             store.dispatch(actions.setSender())
-            const expectedActions = store.getActions()
 
-            expect(expectedActions).toEqual([{
+            expect(store.getActions()).toEqual([{
                 type: types.NEW_MESSAGE_SET_SENDER,
                 sender: expectedSender
             }])
@@ -104,9 +101,8 @@ describe('actions', () => {
                 newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
             })
             store.dispatch(actions.setSender())
-            const expectedActions = store.getActions()
 
-            expect(expectedActions).toEqual([{
+            expect(store.getActions()).toEqual([{
                 type: types.NEW_MESSAGE_SET_SENDER,
                 sender: expectedSender
             }])
@@ -124,9 +120,8 @@ describe('actions', () => {
                 newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
             })
             store.dispatch(actions.setSender())
-            const expectedActions = store.getActions()
 
-            expect(expectedActions).toEqual([{
+            expect(store.getActions()).toEqual([{
                 type: types.NEW_MESSAGE_SET_SENDER,
                 sender: expectedSender
             }])
@@ -146,9 +141,8 @@ describe('actions', () => {
                 newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
             })
             store.dispatch(actions.setSender())
-            const expectedActions = store.getActions()
 
-            expect(expectedActions).toEqual([{
+            expect(store.getActions()).toEqual([{
                 type: types.NEW_MESSAGE_SET_SENDER,
                 sender: expectedSender
             }])
@@ -173,9 +167,8 @@ describe('actions', () => {
                 newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
             })
             store.dispatch(actions.setSender())
-            const expectedActions = store.getActions()
 
-            expect(expectedActions).toEqual([{
+            expect(store.getActions()).toEqual([{
                 type: types.NEW_MESSAGE_SET_SENDER,
                 sender: expectedSender
             }])
@@ -195,9 +188,8 @@ describe('actions', () => {
                 newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
             })
             store.dispatch(actions.setSender())
-            const expectedActions = store.getActions()
 
-            expect(expectedActions).toEqual([{
+            expect(store.getActions()).toEqual([{
                 type: types.NEW_MESSAGE_SET_SENDER,
                 sender: expectedSender
             }])
@@ -210,9 +202,8 @@ describe('actions', () => {
                 newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'internal-note'),
             })
             store.dispatch(actions.setSender())
-            const expectedActions = store.getActions()
 
-            expect(expectedActions).toEqual([{
+            expect(store.getActions()).toEqual([{
                 type: types.NEW_MESSAGE_SET_SENDER,
                 sender: fromJS({
                     name: '',
@@ -228,9 +219,8 @@ describe('actions', () => {
                     newMessage: initialState
                 })
                 store.dispatch(actions.setSubject())
-                const expectedActions = store.getActions()
 
-                expect(expectedActions).toMatchSnapshot()
+                expect(store.getActions()).toMatchSnapshot()
             })
 
             it('given value', () => {
@@ -238,22 +228,50 @@ describe('actions', () => {
                     newMessage: initialState
                 })
                 store.dispatch(actions.setSubject('hello world'))
-                const expectedActions = store.getActions()
 
-                expect(expectedActions).toMatchSnapshot()
+                expect(store.getActions()).toMatchSnapshot()
             })
         })
 
         describe('prepare()', () => {
-            it('email-forward', () => {
-                store = mockStore({
-                    ticket: emailTicket,
-                    newMessage: initialState
-                })
-                store.dispatch(actions.prepare('email-forward'))
-                const expectedActions = store.getActions()
+            describe('email-forward', () => {
+                it('should prepare an email forward', () => {
+                    store = mockStore({
+                        ticket: emailTicket,
+                        newMessage: initialState
+                    })
+                    store.dispatch(actions.prepare('email-forward'))
 
-                expect(expectedActions).toMatchSnapshot()
+                    expect(store.getActions()).toMatchSnapshot()
+                })
+
+                it('should set all attachments of the ticket as attachment of the newMessage', () => {
+                    const attachments = fromJS([{url: 'foo'}, {url: 'bar'}])
+                    const attachments2 = fromJS([{url: 'baz'}, {url: 'far'}])
+
+                    store = mockStore({
+                        ticket: emailTicket
+                            .setIn(['messages', 0, 'attachments'], attachments)
+                            .setIn(['messages', 1, 'attachments'], attachments2),
+                        newMessage: initialState
+                    })
+                    store.dispatch(actions.prepare('email-forward'))
+
+                    expect(store.getActions()).toMatchSnapshot()
+                })
+
+                it('should not set an attachment in the newMessage if it is already there', () => {
+                    const attachments = fromJS([{url: 'foo'}, {url: 'bar'}])
+                    const newMessageAttachments = fromJS([{url: 'foo'}])
+
+                    store = mockStore({
+                        ticket: emailTicket.setIn(['messages', 0, 'attachments'], attachments),
+                        newMessage: initialState.setIn(['newMessage', 'attachments'], newMessageAttachments)
+                    })
+                    store.dispatch(actions.prepare('email-forward'))
+
+                    expect(store.getActions()).toMatchSnapshot()
+                })
             })
 
             describe('instagram comment', () => {
@@ -263,9 +281,8 @@ describe('actions', () => {
                         newMessage: initialState
                     })
                     store.dispatch(actions.prepare('instagram-comment'))
-                    const expectedActions = store.getActions()
 
-                    expect(expectedActions).toMatchSnapshot()
+                    expect(store.getActions()).toMatchSnapshot()
                 })
 
                 it('should not add prefix if there is text already', () => {
@@ -279,9 +296,8 @@ describe('actions', () => {
                         newMessage
                     })
                     store.dispatch(actions.prepare('instagram-comment'))
-                    const expectedActions = store.getActions()
 
-                    expect(expectedActions).toMatchSnapshot()
+                    expect(store.getActions()).toMatchSnapshot()
                 })
 
                 it('should add prefix', () => {
@@ -294,9 +310,8 @@ describe('actions', () => {
                         newMessage
                     })
                     store.dispatch(actions.prepare('instagram-comment'))
-                    const expectedActions = store.getActions()
 
-                    expect(expectedActions).toMatchSnapshot()
+                    expect(store.getActions()).toMatchSnapshot()
                 })
             })
 

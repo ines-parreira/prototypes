@@ -288,7 +288,19 @@ export const prepare = (sourceType: string) => (dispatch: dispatchType, getState
     switch (sourceType) {
         case 'email-forward': {
             const currentTicket = ticketSelectors.getTicket(state)
-            const attachments = toJS(ticketSelectors.getLastMessage(state).get('attachments') || fromJS([]))
+            const messages = ticketSelectors.getMessages(state)
+            let attachments = []
+
+            messages.forEach((message) => {
+                attachments = attachments.concat(toJS(message.get('attachments') || fromJS([])))
+            })
+
+            const currentAttachments = selectors.getNewMessageAttachments(state)
+            const currentAttachmentsUrls = currentAttachments.map((attachment) => attachment.get('url'))
+
+            // Filter out all attachments already present in the state, to avoid setting them again when changing
+            // the source type to `email-forward` multiple times
+            attachments = attachments.filter((attachment) => !currentAttachmentsUrls.includes(attachment.url))
 
             dispatch(setSubject(`Fwd: ${currentTicket.get('subject', '')}`))
             dispatch(setSourceType('email'))
