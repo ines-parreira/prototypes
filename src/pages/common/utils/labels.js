@@ -285,6 +285,7 @@ export class RenderLabel extends React.Component {
             case 'created':
             case 'updated':
             case 'last_message':
+            case 'closed':
                 return (
                     <DatetimeLabel
                         dateTime={value}
