@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InfobarWidgetsEditionTools component should render widgets edition tools disabled because the widgets are not dirty 1`] = `
+<div>
+  <Button
+    className="mr-2"
+    color="success"
+    disabled={true}
+    onClick={[Function]}
+    tag="button"
+    type="button"
+  >
+    Save changes
+  </Button>
+  <Button
+    className=""
+    color="secondary"
+    disabled={true}
+    onClick={[Function]}
+    tag="button"
+    type="button"
+  >
+    Cancel
+  </Button>
+</div>
+`;
+
+exports[`InfobarWidgetsEditionTools component should render widgets edition tools enabled because the widgets are dirty and not being saved 1`] = `
+<div>
+  <Button
+    className="mr-2"
+    color="success"
+    disabled={false}
+    onClick={[Function]}
+    tag="button"
+    type="button"
+  >
+    Save changes
+  </Button>
+  <Button
+    className=""
+    color="secondary"
+    disabled={false}
+    onClick={[Function]}
+    tag="button"
+    type="button"
+  >
+    Cancel
+  </Button>
+</div>
+`;
+
+exports[`InfobarWidgetsEditionTools component should render widgets edition tools loading and disabled, because the widgets are being saved 1`] = `
+<div>
+  <Button
+    className="mr-2 btn-loading"
+    color="success"
+    disabled={true}
+    onClick={[Function]}
+    tag="button"
+    type="button"
+  >
+    Save changes
+  </Button>
+  <Button
+    className="btn-loading"
+    color="secondary"
+    disabled={true}
+    onClick={[Function]}
+    tag="button"
+    type="button"
+  >
+    Cancel
+  </Button>
+</div>
+`;

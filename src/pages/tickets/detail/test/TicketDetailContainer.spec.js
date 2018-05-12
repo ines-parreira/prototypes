@@ -53,28 +53,13 @@ jest.mock('../../../../state/ticket/actions', () => {
         clearTicket: jest.fn(() => _identity),
         setRequester: jest.fn(() => () => Promise.resolve()),
         setStatus: jest.fn((status, callback) => () => callback()),
-        goToNextTicket: jest.fn(() => () => Promise.resolve)
+        goToNextTicket: jest.fn(() => () => Promise.resolve),
+        findAndSetRequester: jest.fn(() => () => Promise.resolve),
     }
 })
 
 describe('TicketDetailContainer component', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     const minProps = {
-        store: mockStore({
-            ticket: fromJS({
-                messages: [],
-            }),
-            newMessage: fromJS({
-                newMessage: {
-                    source: {
-                        to: []
-                    }
-                }
-            })
-        }),
         router: {
             ...browserHistory,
             setRouteLeaveHook: _noop,
@@ -89,6 +74,22 @@ describe('TicketDetailContainer component', () => {
         },
         route: {},
     }
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+        minProps.store = mockStore({
+            ticket: fromJS({
+                messages: [],
+            }),
+            newMessage: fromJS({
+                newMessage: {
+                    source: {
+                        to: []
+                    }
+                }
+            })
+        })
+    })
 
     it('should render container for new ticket', () => {
         const component = shallow(<TicketDetailContainer {...minProps} />).dive().dive()
@@ -252,5 +253,235 @@ describe('TicketDetailContainer component', () => {
         component.setProps({ticket: ticket.set('updated_datetime', moment())})
 
         expect(ticketsActions.updateCursor).not.toHaveBeenCalled()
+    })
+
+    it('should try to set the first recipient as requester because this ticket is new and the recipients have changed ' +
+        'from no recipients to one recipient', () => {
+        const component = shallow(
+            <TicketDetailContainer
+                {...minProps}
+            />
+        ).dive().dive()
+
+        component.setProps({
+            newMessageSource: fromJS({
+                to: [{
+                    name: 'foo',
+                    address: 'foo@gorgias.io'
+                }]
+            })
+        })
+
+        expect(ticketActions.findAndSetRequester).toBeCalledWith('foo@gorgias.io')
+    })
+
+    it('should try to set the first recipient as requester because this ticket is new and the recipients have changed ' +
+        'from multiple recipients to one recipient', () => {
+        const component = shallow(
+            <TicketDetailContainer
+                {...minProps}
+                store={mockStore({
+                    ticket: fromJS({
+                        messages: [],
+                    }),
+                    newMessage: fromJS({
+                        newMessage: {
+                            source: {
+                                to: [{
+                                    name: 'foo',
+                                    address: 'foo@gorgias.io'
+                                }, {
+                                    name: 'bar',
+                                    address: 'bar@gorgias.io'
+                                }]
+                            }
+                        }
+                    })
+                })}
+            />
+        ).dive().dive()
+
+        component.setProps({
+            newMessageSource: fromJS({
+                to: [{
+                    name: 'foo',
+                    address: 'foo@gorgias.io'
+                }]
+            })
+        })
+
+        expect(ticketActions.findAndSetRequester).toBeCalledWith('foo@gorgias.io')
+    })
+
+    it('should not try to set the first recipient as requester because event though this ticket is new and the ' +
+        'recipients have changed from multiple recipients to one recipient, this is the same requester', () => {
+        const component = shallow(
+            <TicketDetailContainer
+                {...minProps}
+                store={mockStore({
+                    ticket: fromJS({
+                        messages: [],
+                        requester: {
+                            name: 'foo',
+                            email: 'foo@gorgias.io',
+                            channels: [{
+                                type: 'email',
+                                address: 'foo@gorgias.io'
+                            }]
+                        }
+                    }),
+                    newMessage: fromJS({
+                        newMessage: {
+                            source: {
+                                to: [{
+                                    name: 'foo',
+                                    address: 'foo@gorgias.io'
+                                }, {
+                                    name: 'bar',
+                                    address: 'bar@gorgias.io'
+                                }]
+                            }
+                        }
+                    })
+                })}
+            />
+        ).dive().dive()
+
+        component.setProps({
+            newMessageSource: fromJS({
+                to: [{
+                    name: 'foo',
+                    address: 'foo@gorgias.io'
+                }]
+            })
+        })
+
+        expect(ticketActions.findAndSetRequester).not.toHaveBeenCalled()
+    })
+
+    it('should not try to set the first recipient as requester because the only recipient is in the `cc` field, and ' +
+        'not in the `to` field', () => {
+        const component = shallow(
+            <TicketDetailContainer
+                {...minProps}
+                store={mockStore({
+                    ticket: fromJS({
+                        messages: [],
+                        requester: {
+                            name: 'foo',
+                            email: 'foo@gorgias.io',
+                            channels: [{
+                                type: 'email',
+                                address: 'foo@gorgias.io'
+                            }]
+                        }
+                    }),
+                    newMessage: fromJS({
+                        newMessage: {
+                            source: {
+                                to: [{
+                                    name: 'foo',
+                                    address: 'foo@gorgias.io'
+                                }, {
+                                    name: 'bar',
+                                    address: 'bar@gorgias.io'
+                                }]
+                            }
+                        }
+                    })
+                })}
+            />
+        ).dive().dive()
+
+        component.setProps({
+            newMessageSource: fromJS({
+                to: [{
+                    name: 'foo',
+                    address: 'foo@gorgias.io'
+                }]
+            })
+        })
+
+        expect(ticketActions.findAndSetRequester).not.toHaveBeenCalled()
+    })
+
+    it('should set the requester to null because the ticket is new and the recipients have been removed', () => {
+        const component = shallow(
+            <TicketDetailContainer
+                {...minProps}
+                store={mockStore({
+                    ticket: fromJS({
+                        messages: [],
+                    }),
+                    newMessage: fromJS({
+                        newMessage: {
+                            source: {
+                                to: [{
+                                    name: 'foo',
+                                    address: 'foo@gorgias.io'
+                                }]
+                            }
+                        }
+                    })
+                })}
+            />
+        ).dive().dive()
+
+        component.setProps({newMessageSource: fromJS({to: []})})
+
+        expect(ticketActions.setRequester).toBeCalledWith(null)
+    })
+
+    it('should set the requester as first recipient because the ticket is new and the requester has changed', () => {
+        const component = shallow(
+            <TicketDetailContainer
+                {...minProps}
+                store={mockStore({
+                    ticket: fromJS({
+                        messages: [],
+                    }),
+                    newMessage: fromJS({
+                        newMessage: {
+                            source: {
+                                cc: [{
+                                    name: 'cc',
+                                    address: 'cc@gorgias.io'
+                                }],
+                                bcc: [{
+                                    name: 'bcc',
+                                    address: 'bcc@gorgias.io'
+                                }]
+                            }
+                        }
+                    })
+                })}
+            />
+        ).dive().dive()
+
+        component.setProps({
+            ticket: fromJS({
+                requester: {
+                    id: 1,
+                    name: 'foo',
+                    email: 'foo@gorgias.io'
+                }
+            }),
+        })
+
+        // This operation shouldn't modify the existing cc and bcc
+        expect(newMessageActions.setReceivers).toBeCalledWith({
+            to: [{
+                name: 'foo',
+                address: 'foo@gorgias.io'
+            }],
+            cc: [{
+                name: 'cc',
+                address: 'cc@gorgias.io'
+            }],
+            bcc: [{
+                name: 'bcc',
+                address: 'bcc@gorgias.io'
+            }],
+        })
     })
 })

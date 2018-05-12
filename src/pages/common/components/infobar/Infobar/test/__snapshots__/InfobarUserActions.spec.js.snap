@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InfobarUserActions component should not render "merge" button because there is no user to merge the selected user with 1`] = `
+<div
+  className="float-right d-none d-md-block"
+>
+  <ConfirmButton
+    className="mr-2"
+    confirm={[Function]}
+    content="Are you sure you want to set  as requester?"
+    disabled={false}
+    loading={false}
+    placement="bottom"
+    skip={false}
+    title="Change ticket requester"
+    type="button"
+  >
+    Set as requester
+  </ConfirmButton>
+</div>
+`;
+
+exports[`InfobarUserActions component should not render "set as requester" button because the agent is not on a ticket 1`] = `
+<div
+  className="float-right d-none d-md-block"
+>
+  <Button
+    color="secondary"
+    onClick={[Function]}
+    tag="button"
+    type="submit"
+  >
+    Merge
+  </Button>
+</div>
+`;
+
+exports[`InfobarUserActions component should not render "set as requester" nor "merge" buttons because the users are the same 1`] = `
+<div
+  className="float-right d-none d-md-block"
+/>
+`;
+
+exports[`InfobarUserActions component should render "set as requester" and "merge" button 1`] = `
+<div
+  className="float-right d-none d-md-block"
+>
+  <ConfirmButton
+    className="mr-2"
+    confirm={[Function]}
+    content="Are you sure you want to set  as requester?"
+    disabled={false}
+    loading={false}
+    placement="bottom"
+    skip={false}
+    title="Change ticket requester"
+    type="button"
+  >
+    Set as requester
+  </ConfirmButton>
+  <Button
+    color="secondary"
+    onClick={[Function]}
+    tag="button"
+    type="submit"
+  >
+    Merge
+  </Button>
+</div>
+`;

@@ -3,34 +3,32 @@ import React from 'react'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
 import {browserHistory, withRouter} from 'react-router'
-import {fromJS} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import {Button} from 'reactstrap'
 import _noop from 'lodash/noop'
 
-import {areSourcesReady} from './utils'
-import {isCurrentlyOnTicket} from '../../../../utils'
+import {areSourcesReady} from '../utils'
 
-import * as infobarActions from '../../../../state/infobar/actions'
-import * as usersActions from '../../../../state/users/actions'
-import * as ticketActions from '../../../../state/ticket/actions'
+import * as infobarActions from '../../../../../state/infobar/actions'
+import * as usersActions from '../../../../../state/users/actions'
+import * as ticketActions from '../../../../../state/ticket/actions'
 
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
+import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
 
-import Loader from '../Loader'
-import Tooltip from '../Tooltip'
-import ConfirmButton from '../ConfirmButton'
-import InfobarLayout from './InfobarLayout'
-import InfobarUserInfo from './InfobarUserInfo'
-import MergeUsersContainer from './../mergeUsers/MergeUsersContainer'
-import InfobarSearchResultsList from './InfobarSearchResultsList'
-import Search from '../Search'
+import Loader from '../../Loader/index'
+import Tooltip from '../../Tooltip'
+import InfobarLayout from '../InfobarLayout'
+import InfobarUserInfo from '../InfobarUserInfo'
+import MergeUsersContainer from '../../mergeUsers/MergeUsersContainer'
+import InfobarSearchResultsList from '../InfobarSearchResultsList'
+import Search from '../../Search'
 
-import css from './Infobar.less'
+import css from '../Infobar.less'
 
-import type {Map, List} from 'immutable'
-import type {reactRouterLocation} from '../../../../types'
-import {startEditionMode, stopEditionMode, submitWidgets} from '../../../../state/widgets/actions'
-import {fetchPreviewUser} from '../../../../state/infobar/actions'
+import type {reactRouterLocation} from '../../../../../types'
+import {startEditionMode, stopEditionMode, submitWidgets} from '../../../../../state/widgets/actions'
+import InfobarWidgetsEditionTools from './InfobarWidgetsEditionTools'
+import InfobarUserActions from './InfobarUserActions'
 
 type Props = {
     actions: {
@@ -40,12 +38,12 @@ type Props = {
             submitWidgets: typeof submitWidgets
         },
         infobar: {
-            fetchPreviewUser: typeof fetchPreviewUser
+            fetchPreviewUser: typeof infobarActions.fetchPreviewUser
         }
     },
     context: string,
     identifier: string,
-    infobar: {},
+    infobar: Object,
     isRouteEditingWidgets: boolean,
     sources: Map<*, *>,
     user: Map<*, *>,
@@ -70,7 +68,7 @@ type State = {
     suggestedUser: Map<*, *>,
 }
 
-class Infobar extends React.Component<Props, State> {
+export class Infobar extends React.Component<Props, State> {
     static defaultProps = {
         user: fromJS({}),
     }
@@ -95,12 +93,12 @@ class Infobar extends React.Component<Props, State> {
         this._updateSimilarUser(this.props)
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         if (this.props.identifier !== nextProps.identifier) {
             this._resetSearch()
         }
 
-        const isEditingParam = !!nextProps.isRouteEditingWidgets
+        const isEditingParam = nextProps.isRouteEditingWidgets
         const isEditing = nextProps.widgets.getIn(['_internal', 'isEditing'])
 
         if (isEditingParam && !isEditing) {
@@ -116,10 +114,10 @@ class Infobar extends React.Component<Props, State> {
         }
     }
 
-    _updateSimilarUser = (props) => {
+    _updateSimilarUser = (props: Props) => {
         this.setState({suggestedUser: fromJS({})})
 
-        if (props.user.isEmpty()) {
+        if (props.user.isEmpty() || !props.user.get('id')) {
             return
         }
 
@@ -140,7 +138,7 @@ class Infobar extends React.Component<Props, State> {
         })
     }
 
-    _mode = (state = this.state) => {
+    _mode = (state : State = this.state) => {
         // the following succession of conditions is in a particular order
         // which is important for the good display of each of those
         // /!\ do not mix it without testing it carefully
@@ -168,7 +166,7 @@ class Infobar extends React.Component<Props, State> {
         return this.props.widgets.getIn(['_internal', 'isEditing']) && this.props.isRouteEditingWidgets
     }
 
-    _toggleEditionMode = (isEditing) => {
+    _toggleEditionMode = (isEditing: boolean) => {
         const {identifier, context, location} = this.props
 
         if (!identifier) {
@@ -182,87 +180,7 @@ class Infobar extends React.Component<Props, State> {
         }
     }
 
-    _saveWidgets = () => {
-        const {actions, widgets} = this.props
-        const editedItems = widgets.getIn(['_internal', 'editedItems'], fromJS([])).toJS()
-        actions.widgets.submitWidgets(editedItems)
-    }
-
-    _cancelWidgetsUpdates = () => {
-        const {actions, context} = this.props
-        actions.widgets.startEditionMode(context)
-    }
-
-    _renderWidgetsEditionTools = () => {
-        const {widgets} = this.props
-
-        const isDirty = widgets.getIn(['_internal', 'isDirty'])
-        const isSavingWidgets = widgets.getIn(['_internal', 'loading', 'saving'])
-
-        return (
-            <div className={css.footer}>
-                <Button
-                    type="button"
-                    color="success"
-                    className={classnames('mr-2', {
-                        'btn-loading': isSavingWidgets,
-                    })}
-                    disabled={isSavingWidgets || !isDirty}
-                    onClick={this._saveWidgets}
-                >
-                    Save changes
-                </Button>
-                <Button
-                    type="button"
-                    color="secondary"
-                    className={classnames({
-                        'btn-loading': isSavingWidgets,
-                    })}
-                    disabled={isSavingWidgets || !isDirty}
-                    onClick={this._cancelWidgetsUpdates}
-                >
-                    Cancel
-                </Button>
-            </div>
-        )
-    }
-
-    _renderUserActions = () => {
-        const ticketId = this.props.sources.getIn(['ticket', 'id'])
-        const requester = this.props.sources.getIn(['ticket', 'requester', 'name']) || ''
-        const newRequester = this.state.selectedUser.get('name') || ''
-
-        return (
-            <div className="float-right d-none d-md-block">
-                {
-                    isCurrentlyOnTicket(ticketId) && ( // do not display on user profile
-                        <ConfirmButton
-                            className="mr-2"
-                            title="Change ticket requester"
-                            content={`Are you use you want to set ${newRequester} as the requester instead of ${requester}?`}
-                            confirm={this._setRequester}
-                        >
-                            Set as requester
-                        </ConfirmButton>
-                    )
-                }
-
-                <Button
-                    type="submit"
-                    onClick={() => {
-                        this.setState({showMergeUserModal: true})
-                        segmentTracker.logEvent(segmentTracker.EVENTS.USER_MERGE_CLICK, {
-                            location: 'user searched in infobar',
-                        })
-                    }}
-                >
-                    Merge
-                </Button>
-            </div>
-        )
-    }
-
-    _onSearch = (query) => {
+    _onSearch = (query: string) => {
         if (query) {
             this.setState({isSearching: true})
             this.props.search(query).then(({resp}) => {
@@ -323,7 +241,7 @@ class Infobar extends React.Component<Props, State> {
             .then(this._returnToCurrentUserProfile)
     }
 
-    _renderUserInfo = (user) => {
+    _renderUserInfo = (user: Map<*,*>) => {
         const isEditing = this._isEditing()
 
         const sources = this.props.sources
@@ -346,6 +264,7 @@ class Infobar extends React.Component<Props, State> {
         const {
             actions,
             sources,
+            user
         } = this.props
 
         const mode = this._mode()
@@ -355,8 +274,6 @@ class Infobar extends React.Component<Props, State> {
         }
 
         if (mode === 'selected') {
-            const hasDestinationUser = !this.props.user.isEmpty()
-
             return (
                 <div>
                     <div className="mb-3">
@@ -367,17 +284,19 @@ class Infobar extends React.Component<Props, State> {
                             <i className="fa fa-fw fa-arrow-left mr-2"/>
                             Back
                         </Button>
-                        {
-                            hasDestinationUser
-                            && this.state.selectedUser.get('id') !== this.props.user.get('id')
-                            && this._renderUserActions()
-                        }
+                        <InfobarUserActions
+                            user={user}
+                            sources={sources}
+                            selectedUser={this.state.selectedUser}
+                            toggleMergeUserModal={(showMergeUserModal: boolean) => this.setState({showMergeUserModal})}
+                            setRequester={this._setRequester}
+                        />
                     </div>
                     {this._renderUserInfo(this.state.selectedUser)}
                     <MergeUsersContainer
                         isTicketContext={!sources.get('ticket', fromJS({})).isEmpty()}
                         display={this.state.showMergeUserModal}
-                        destinationUser={this.props.user}
+                        destinationUser={user}
                         sourceUser={this.state.selectedUser}
                         onSuccess={() => {
                             this._fetchUserHistory()
@@ -434,7 +353,7 @@ class Infobar extends React.Component<Props, State> {
 
         return (
             <div>
-                {this._renderUserInfo(this.props.user)}
+                {this._renderUserInfo(user)}
                 {
                     displaySuggestedUser && (
                         <div className="d-none d-md-block">
@@ -465,7 +384,7 @@ class Infobar extends React.Component<Props, State> {
                                 <MergeUsersContainer
                                     isTicketContext={!sources.get('ticket', fromJS({})).isEmpty()}
                                     display={this.state.showMergeUserModal}
-                                    destinationUser={this.props.user}
+                                    destinationUser={user}
                                     sourceUser={this.state.suggestedUser}
                                     onSuccess={this._fetchUserHistory}
                                     onClose={() => {
@@ -539,7 +458,13 @@ class Infobar extends React.Component<Props, State> {
                         {this._renderContent()}
                     </div>
                 </div>
-                {isEditing && this._renderWidgetsEditionTools()}
+                {isEditing && (
+                    <InfobarWidgetsEditionTools
+                        actions={this.props.actions.widgets}
+                        widgets={widgets}
+                        context={context}
+                    />
+                )}
             </InfobarLayout>
         )
     }

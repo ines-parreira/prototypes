@@ -5,6 +5,9 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 
+import _merge from 'lodash/merge'
+import _pick from 'lodash/pick'
+
 import shortcutManager from '../../../services/shortcutManager'
 import DocumentTitle from 'react-document-title'
 import TicketView from './components/TicketView'
@@ -41,6 +44,7 @@ import {updateMessageText} from './components/replyarea/TicketReplyEditor'
         tickets: state.tickets,
         isTicketDirty: ticketSelectors.isDirty(state),
         canSendMessage: currentAccountSelectors.isAccountActive(state) && newMessageSelectors.isReady(state),
+        newMessageSource: newMessageSelectors.getNewMessageSource(state)
     }
 }, (dispatch) => {
     return {
@@ -80,6 +84,7 @@ export default class TicketDetailContainer extends React.Component {
         users: PropTypes.object,
         pagination: ImmutablePropTypes.map.isRequired,
         activeUser: PropTypes.object,
+        newMessageSource: PropTypes.object,
 
         routing: PropTypes.object,
 
@@ -133,11 +138,23 @@ export default class TicketDetailContainer extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         const nextTicket = nextProps.ticket
+        const nextRequester = nextTicket.get('requester') || fromJS({})
         const nextParams = nextProps.params
         const nextUsers = nextProps.users
+        const prevRecipients = this.props.newMessageSource.get('to') || fromJS([])
+        const nextRecipients = nextProps.newMessageSource.get('to') || fromJS([])
+
         const ticketIdParamChanged = nextParams.ticketId !== this.props.params.ticketId
         const nextTicketIsNew = nextParams.ticketId === 'new'
         const nextTicketIdParamMatchesNextTicket = nextTicket.get('id', '').toString() === nextParams.ticketId
+        const requesterHasChanged = this.props.ticket.getIn(['requester', 'id']) !== nextRequester.get('id')
+
+        const hasRequester = !nextRequester.isEmpty()
+
+        const recipientsHaveBeenRemoved = !prevRecipients.isEmpty() && nextRecipients.isEmpty()
+        const recipientsHaveChanged = !prevRecipients.equals(nextRecipients)
+
+        const onlyOneRecipient = nextRecipients.size === 1
 
         if (!nextTicketIsNew && nextTicket.get('requester') && !nextUsers.getIn(['userHistory', 'triedLoading'])) {
             const requesterId = nextTicket.getIn(['requester', 'id'])
@@ -190,6 +207,53 @@ export default class TicketDetailContainer extends React.Component {
         // its position in the view has maybe changed.
         if (nextTicket.get('id') && nextTicket.get('id') !== this.props.ticket.get('id')) {
             this.props.updateActiveViewCursor(nextTicket.get(this.props.activeView.get('order_by')))
+        }
+
+        // When we're on a new ticket, the recipients have changed, and there's now exactly one recipient,
+        // set this recipient as requester of the ticket
+        const shouldSetFirstRecipientAsRequester = recipientsHaveChanged && onlyOneRecipient
+
+        if (nextTicketIsNew && shouldSetFirstRecipientAsRequester) {
+            const recipient = nextRecipients.first()
+            let shouldSetRequester = true
+
+            // The recipient address may be in the channels of the requester, and not be his user.email address, so
+            // to be sure we are not re-setting the same user as requester, we need to check every channel of the
+            // current requester.
+
+            if (nextRequester && !nextRequester.isEmpty()) {
+                (nextRequester.get('channels') || fromJS([])).forEach((channel) => {
+                    if (channel.get('type') === 'email' && channel.get('address') === recipient.get('address')) {
+                        shouldSetRequester = false
+                    }
+                })
+            }
+
+            if (shouldSetRequester) {
+                this.props.actions.ticket.findAndSetRequester(recipient.get('address'))
+            }
+        }
+
+        // When we're on a new ticket and the agent has removed the receivers of the new message, empty the
+        // requester of the ticket
+        if (nextTicketIsNew && recipientsHaveBeenRemoved) {
+            this.props.actions.ticket.setRequester(null)
+        }
+
+        // When we're on a new ticket and the agent set a requester, set this requester's default email address
+        // as recipient of the new message
+        if (nextTicketIsNew && requesterHasChanged && hasRequester) {
+            const newReceivers = _merge(
+                _pick(nextProps.newMessageSource.toJS(), newMessageSelectors.getReceiversProperties()),
+                {
+                    to: [{
+                        name: nextTicket.getIn(['requester', 'name']),
+                        address: nextTicket.getIn(['requester', 'email'])
+                    }]
+                }
+            )
+
+            this.props.actions.newMessage.setReceivers(newReceivers)
         }
     }
 

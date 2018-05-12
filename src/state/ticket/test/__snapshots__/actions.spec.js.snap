@@ -594,6 +594,21 @@ Array [
 ]
 `;
 
+exports[`ticket actions findAndSetRequester should set the requester because there is exactly one user matching this email address 1`] = `
+Array [
+  Object {
+    "args": Immutable.Map {
+      requester: Immutable.Map {
+            id: 1,
+            name: "foo",
+            email: "foo@gorgias.io",
+      },
+},
+    "type": "setRequester",
+  },
+]
+`;
+
 exports[`ticket actions goToNextTicket() should fetch next ticket and go to the active view because there is no ticket 1`] = `
 Array [
   Object {

@@ -25,10 +25,11 @@ import {
 } from './utils'
 
 import socketManager from '../../services/socketManager'
-import type {dispatchType, getStateType} from '../types'
+import type {dispatchType, getStateType, thunkActionType} from '../types'
 import {getCustomerMessages} from './selectors'
 import {markChatAsRead} from '../chats/actions'
 import * as ticketsSelectors from '../tickets/selectors'
+
 
 export const mergeTicket = (ticket) => (dispatch, getState) => {
     ticket = fromJS(ticket)
@@ -251,6 +252,10 @@ export const setRequester = (requester) => (dispatch) => {
         type: types.SET_REQUESTER,
         args: fromJS({requester}),
     })
+
+    if (!requester || requester.isEmpty()) {
+        return Promise.resolve()
+    }
 
     socketManager.join('user', requester.get('id'))
 
@@ -700,3 +705,30 @@ export function deleteTicketPendingMessage(message) {
         message
     }
 }
+
+/**
+ * Search a user by email, and then fetch it and set it as requester of the current ticket.
+ * @param email: the email of the user we want to set as requester
+ */
+export const findAndSetRequester = (email: string): thunkActionType => (
+    (dispatch: dispatchType): Promise<dispatchType> => {
+        return axios.post('/api/search/', {type: 'user_profile', query: email})
+            .then((json = {}) => json.data)
+            .then((resp): Promise<dispatchType> => {
+                if (resp.data.length !== 1) {
+                    // We can't do anything if we are not sure which user should be set as requester.
+                    // We don't want to log an error here, as this may be expected if the agent is sending an email
+                    // to a new user.
+                    return Promise.resolve()
+                }
+
+                const user = resp.data[0]
+
+                return axios.get(`/api/users/${user.id}/`)
+                    .then((json = {}) => json.data)
+                    .then((resp): Promise<dispatchType> => {
+                        return dispatch(setRequester(fromJS(resp)))
+                    })
+            })
+    }
+)
