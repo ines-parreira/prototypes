@@ -2,13 +2,13 @@
 #### Connects to #
 
 #### Features:
-- 
+-
 
-#### Fixs:
-- 
+#### Fixes:
+-
 
 #### Questions:
-- 
+-
 
 #### Testing:
 - `git checkout [branch-name]`
