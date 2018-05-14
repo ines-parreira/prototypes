@@ -1,6 +1,7 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 import _noop from 'lodash/noop'
+import {EditorState, ContentState} from 'draft-js'
 
 import RichField from '../RichField'
 
@@ -38,6 +39,31 @@ describe('RichField', () => {
                 mentionProps={{canAddMention: true}}
                 />
         )
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should render immutable variable', () => {
+        const component = mount(
+            <RichField
+                value={{text: 'text {{current_user.name}}', html: 'html {{current_user.name}}'}}
+                onChange={_noop}
+                />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should render mutable variable', () => {
+        const component = mount(
+            <RichField
+                value={{text: 'text', html: 'html'}}
+                onChange={_noop}
+                />
+        )
+
+        // simulate typed text
+        const editorState = EditorState.createWithContent(ContentState.createFromText('{{current_user.name}}'))
+        component.instance()._setEditorState(editorState)
+
         expect(component).toMatchSnapshot()
     })
 })
