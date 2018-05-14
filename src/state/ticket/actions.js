@@ -712,7 +712,7 @@ export function deleteTicketPendingMessage(message) {
  */
 export const findAndSetRequester = (email: string): thunkActionType => (
     (dispatch: dispatchType): Promise<dispatchType> => {
-        return axios.post('/api/search/', {type: 'user_profile', query: email})
+        return axios.post('/api/search/', {type: 'user_channel_email', query: email})
             .then((json = {}) => json.data)
             .then((resp): Promise<dispatchType> => {
                 if (resp.data.length !== 1) {
@@ -722,9 +722,9 @@ export const findAndSetRequester = (email: string): thunkActionType => (
                     return Promise.resolve()
                 }
 
-                const user = resp.data[0]
+                const channel = resp.data[0]
 
-                return axios.get(`/api/users/${user.id}/`)
+                return axios.get(`/api/users/${channel.user.id}/`)
                     .then((json = {}) => json.data)
                     .then((resp): Promise<dispatchType> => {
                         return dispatch(setRequester(fromJS(resp)))

@@ -581,7 +581,7 @@ describe('ticket actions', () => {
         })
 
         it('should not set the requester because we found too many users matching this email address', () => {
-            mockServer.onPost('/api/search/').reply(200, {data: [{id: 1}, {id: 2}]})
+            mockServer.onPost('/api/search/').reply(200, {data: [{user: {id: 1}}, {user: {id: 2}}]})
             store = mockStore({
                 ticket: initialState
             })
@@ -593,7 +593,7 @@ describe('ticket actions', () => {
 
         it('should set the requester because there is exactly one user matching this email address', () => {
             mockServer
-                .onPost('/api/search/').reply(200, {data: [{id: 1}]})
+                .onPost('/api/search/').reply(200, {data: [{user: {id: 1}}]})
                 .onGet('/api/users/1/').reply(200, {id: 1, name: 'foo', email: 'foo@gorgias.io'})
             store = mockStore({
                 ticket: initialState
