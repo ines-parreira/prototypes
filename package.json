@@ -35,7 +35,7 @@
     "clipboard": "^1.5.16",
     "decorate-component-with-props": "^1.0.2",
     "draft-convert": "^2.0.1",
-    "draft-js": "^0.10.4",
+    "draft-js": "^0.10.5",
     "draft-js-block-breakout-plugin": "^2.0.1",
     "draft-js-plugins-editor": "^2.0.4",
     "draft-js-resizeable-plugin": "^2.0.1",

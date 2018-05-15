@@ -3,6 +3,7 @@ import classnames from 'classnames'
 
 import Tooltip from '../../../components/Tooltip'
 import {linkify} from '../../../../../utils'
+import {setVariableEditable} from './utils'
 
 import * as integrationsHelpers from '../../../../../state/integrations/helpers'
 
@@ -18,15 +19,39 @@ export const variable = {
             }, callback
         )
     },
-    component: ({children, entityKey, contentState}) => { // eslint-disable-line
+    component: ({offsetKey, children, entityKey, getEditorState, contentState, setEditorState}) => { // eslint-disable-line
         const entity = contentState.getEntity(entityKey).getData()
-        const {fullName, type, integration} = entity
+        const {fullName, type, integration, immutable} = entity
         const entityIsIntegration = type && integration
         let title = fullName
 
         if (entityIsIntegration) {
             const config = integrationsHelpers.getIntegrationConfig(type)
             title = `${config.title}: ${title}`
+        }
+
+        const _preventDefault = (e) => {
+            // don't steal focus when clicking the edit button
+            e.preventDefault()
+        }
+
+        const _makeVariableEditable = (e) => {
+            _preventDefault(e)
+
+            return setVariableEditable({
+                entityKey,
+                offsetKey,
+                getEditorState,
+                setEditorState
+            })
+        }
+
+        if (!immutable) {
+            return (
+                <span className="d-inline text-primary">
+                    {children}
+                </span>
+            )
         }
 
         return (
@@ -40,15 +65,28 @@ export const variable = {
                     })}
                     contentEditable={false}
                 >
-                    {
-                        entityIsIntegration && (
-                            <img
-                                className="badge-variable-icon"
-                                src={integrationsHelpers.getIconFromType(type)}
-                            />
-                        )
-                    }
-                    {fullName}
+                    <div onDoubleClick={_makeVariableEditable}>
+                        <span className="badge-variable-content">
+                            {
+                                entityIsIntegration && (
+                                    <img
+                                        className="badge-variable-icon"
+                                        src={integrationsHelpers.getIconFromType(type)}
+                                    />
+                                )
+                            }
+                            {fullName}
+                        </span>
+                    </div>
+                    <button
+                        type="button"
+                        title="Edit variable"
+                        className="variable-edit-btn btn btn-sm"
+                        onClick={_makeVariableEditable}
+                        onMouseDown={_preventDefault}
+                    >
+                        <i className="material-icons">create</i>
+                    </button>
                 </div>
                 <div
                     className="hidden"
