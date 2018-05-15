@@ -6,7 +6,7 @@ import {
     DropdownItem, Label,
 } from 'reactstrap'
 
-import {attachEntitiesToVariables} from '../draftjs/plugins/toolbar/utils'
+import {attachImmutableEntitiesToVariables} from '../draftjs/plugins/toolbar/utils'
 import RichField from './RichField'
 import {insertText} from '../../../utils'
 import {getVariables} from '../../../config/ticket'
@@ -31,7 +31,7 @@ export default class RichFieldWithVariables extends Component<Props> {
         editorState = insertText(editorState, text)
         // transform inserted variable in badge
         // we do it on insertion so we do not have focus/cursor position errors
-        editorState = attachEntitiesToVariables(editorState, true)
+        editorState = attachImmutableEntitiesToVariables(editorState)
         this.richArea._setEditorState(editorState)
     }
 

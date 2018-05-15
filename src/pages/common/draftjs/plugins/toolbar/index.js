@@ -4,7 +4,7 @@ import createStore from './createStore'
 import decorators from './decorators'
 import {
     getToolbarActions,
-    attachEntitiesToVariables,
+    attachImmutableEntitiesToVariables,
 } from './utils'
 import Toolbar from './Toolbar'
 import Image from './components/Image'
@@ -50,7 +50,7 @@ const toolbarPlugin = (config = {}) => {
         },
         onChange: (editorState) => {
             // transform variables in badges
-            let newEditorState = attachEntitiesToVariables(editorState)
+            let newEditorState = attachImmutableEntitiesToVariables(editorState)
 
             // DO NOT FORCE SELECTION in this `onChange` function otherwise is focuses in the editor on each change
 
