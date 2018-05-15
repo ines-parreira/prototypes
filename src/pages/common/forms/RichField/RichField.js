@@ -20,8 +20,6 @@ import InputField from '../InputField'
 import {convertFromHTML, convertToHTML, removeMentions} from '../../../../utils'
 import {scrollToReactNode} from '../../../common/utils/keyboard'
 
-import {attachEntitiesToVariables} from '../../draftjs/plugins/toolbar/utils'
-
 import Signature from './Signature'
 
 import 'draft-js/dist/Draft.css'
@@ -93,8 +91,7 @@ export default class RichField extends InputField<Props, State> {
             isDragging: false,
             mentionSuggestions: fromJS([]),
             canAddMention: false,
-            isFocused: false,
-            contentLoaded: false,
+            isFocused: false
         }
 
         if (this.props.mentionProps) {
@@ -170,9 +167,6 @@ export default class RichField extends InputField<Props, State> {
                 }
             })
         }
-
-        // immutable variables on first load
-        editorState = attachEntitiesToVariables(editorState, true)
 
         this.setState({editorState}, callback)
     }

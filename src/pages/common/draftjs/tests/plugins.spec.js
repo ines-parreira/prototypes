@@ -14,7 +14,7 @@ import {
     link as linkDecorator,
     foundUrl as foundUrlDecorator
 } from '../plugins/toolbar/decorators'
-import {attachEntitiesToVariables} from '../plugins/toolbar/utils'
+import {attachImmutableEntitiesToVariables} from '../plugins/toolbar/utils'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
@@ -83,7 +83,7 @@ describe('DraftJS display entities', () => {
         const composite = utils.getCompositeDecorator(variableDecorator)
         const text = 'variable {{current_user.name}} and {{ticket.requester.email}}'
         let editorState = utils.editorStateFromHtml(text)
-        editorState = attachEntitiesToVariables(editorState)
+        editorState = attachImmutableEntitiesToVariables(editorState)
         const positions = [{start: 9, length: 21}, {start: 35, length: 26}]
 
         const contentState = editorState.getCurrentContent()

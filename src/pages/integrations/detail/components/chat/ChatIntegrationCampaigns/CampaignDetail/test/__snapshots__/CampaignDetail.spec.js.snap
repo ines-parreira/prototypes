@@ -1815,11 +1815,6 @@ exports[`CampaignDetail component should display default value when it's a new c
                                               <div
                                                 className="public-DraftEditorPlaceholder-inner"
                                                 id="placeholder-someRandomKey"
-                                                style={
-                                                  Object {
-                                                    "whiteSpace": "pre-wrap",
-                                                  }
-                                                }
                                               >
                                                 Write your message
                                               </div>
@@ -2117,7 +2112,6 @@ exports[`CampaignDetail component should display default value when it's a new c
                                                           "type": "unstyled",
                                                         }
                                                       }
-                                                      blockStyleFn={[Function]}
                                                       contentState={
                                                         Object {
                                                           "blockMap": Object {

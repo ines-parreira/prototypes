@@ -21,8 +21,6 @@ import {getOtherAgents} from '../../../../../state/users/selectors'
 
 import {notify} from '../../../../../state/notifications/actions'
 
-import {attachEntitiesToVariables} from '../../../../common/draftjs/plugins/toolbar/utils'
-
 const dndPlugin = createDndUploadPlugin()
 
 // Those are the source type which can send either text or attachment, but not both; they also cannot send more
@@ -283,7 +281,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
         if (!this.richArea) {
             return
         }
-        this.richArea._setEditorState(attachEntitiesToVariables(editorState))
+        this.richArea._setEditorState(editorState)
     }
 
     _onEditorChange = (editorState: EditorState) => {
