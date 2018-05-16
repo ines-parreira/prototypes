@@ -1,3 +1,4 @@
+// @flow
 import React, {PropTypes} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import classnames from 'classnames'
@@ -14,6 +15,25 @@ import {AgentLabel} from '../../../../../common/utils/labels'
 
 import headerCss from '../../TicketHeader.less'
 import css from './TicketAssignee.less'
+import {setAgent} from '../../../../../../state/ticket/actions'
+
+type Props = {
+    agents: Object,
+    currentAssignee?: string,
+    currentUser: Map<*,*>,
+    direction: string,
+    setAgent: typeof setAgent,
+    email?: string,
+    profilePictureUrl?: string,
+    className?: string,
+    transparent?: boolean,
+}
+
+type State = {
+    dropdownOpen: boolean,
+    enum: Object,
+    search: string
+}
 
 @connect((state) => {
     return {
@@ -21,7 +41,7 @@ import css from './TicketAssignee.less'
         currentUser: currentUserSelectors.getCurrentUser(state),
     }
 })
-export default class TicketAssignee extends React.Component {
+export default class TicketAssignee extends React.Component<Props, State> {
     static propTypes = {
         agents: PropTypes.object.isRequired,
         currentAssignee: PropTypes.string,
@@ -40,7 +60,7 @@ export default class TicketAssignee extends React.Component {
         transparent: false,
     }
 
-    constructor(props) {
+    constructor(props: Props) {
         super(props)
         this.state = {
             dropdownOpen: false,
@@ -78,16 +98,17 @@ export default class TicketAssignee extends React.Component {
         this.setState({search: ''})
     }
 
-    _selectAgent = (agent) => {
+    _selectAgent = (agent: Object) => {
         this.props.setAgent({
             id: agent.get('id'),
             name: agent.get('name'),
             email: agent.get('email'),
+            meta: agent.get('meta')
         })
         this.setState({search: ''})
     }
 
-    _toggle = (e, visible) => {
+    _toggle = (e?: any, visible?: boolean) => {
         const opens = !_isUndefined(visible) ? visible : !this.state.dropdownOpen
 
         this.setState({
@@ -101,12 +122,12 @@ export default class TicketAssignee extends React.Component {
         }
     }
 
-    _search = (search) => {
+    _search = (search: string) => {
         this.setState({search})
         this._filterResults(search)
     }
 
-    _filterResults = (search) => {
+    _filterResults = (search: string) => {
         this.setState({
             enum: this.props.agents.filter((agent) => {
                 return agent.get('name').toLowerCase().includes(search.toLowerCase())
