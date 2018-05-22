@@ -21,9 +21,7 @@ describe('reducers', () => {
         it('receive data', () => {
             const resp = {
                 name: 'overview',
-                data: {
-                    hello: 'world'
-                },
+                data: [1, 2, 3],
                 meta: {
                     start_datetime: 'now'
                 }
@@ -37,9 +35,7 @@ describe('reducers', () => {
                         resp,
                     }
                 ).get('overview')
-            ).toEqualImmutable(
-                fromJS(resp.data)
-            )
+            ).toMatchSnapshot()
         })
 
         it('set meta', () => {

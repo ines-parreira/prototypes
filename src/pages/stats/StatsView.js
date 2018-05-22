@@ -178,7 +178,6 @@ class StatsView extends React.Component {
                                     isLoading={isLoading}
                                     name={statName}
                                     config={statConfig}
-                                    meta={meta}
                                     filters={filters}
                                     {...statProps}
                                 />

@@ -16,7 +16,10 @@ export const initialState = fromJS({
 export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
     switch (action.type) {
         case constants.FETCH_STATS_SUCCESS:
-            return state.set(action.name, fromJS(action.resp.data))
+            return state.set(action.name, fromJS({
+                'meta': action.resp.meta,
+                ...action.resp.data
+            }))
 
         case constants.SET_STATS_META:
             return state.setIn(['_internal', 'meta'], fromJS(action.meta))
