@@ -157,7 +157,7 @@ class HardWarning extends React.Component {
                         <div>
                             {
                                 messageActions.map((action, idx) => {
-                                    if (action.status === 'error' && action.response.msg) {
+                                    if (action.status === 'error' && action.response && action.response.msg) {
                                         const template = getActionTemplate(action.name)
 
                                         const transformedMsg = stripErrorMessage(action.response.msg)
