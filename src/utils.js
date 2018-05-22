@@ -33,10 +33,12 @@ import TICKET_LANGUAGES from './config/ticketLanguages'
 
 import {ACTION_TEMPLATES} from './config'
 import {availableVariables} from './config/rules'
+import {AUTHORIZED_NOTIFICATION_TYPES} from './state/notifications/actions'
 
 // types
 import type {Map, Iterable} from 'immutable'
 import type {viewsStateType} from './state/views/types'
+import type {notificationType} from './state/notifications/actions'
 import type {
     actionTemplateType,
     attachmentType,
@@ -55,6 +57,7 @@ type propertyType = {
     meta: {},
     items: {$ref: {}}
 }
+type systemMessage = ['success' | 'error' | 'warning' | 'info' | 'loading', string]
 
 type datetimeType = Date | number | string
 
@@ -1108,4 +1111,12 @@ export function unescapeTemplateVars(string: string): string {
     return string.replace(reg, (_, match) => {
         return `{{${match}}}`
     })
+}
+
+export const transformSystemMessagesToNotifications = (systemMessages: Array<systemMessage>):
+                                                      Array<notificationType> => {
+    return systemMessages.map((systemMessage) => ({
+        status: AUTHORIZED_NOTIFICATION_TYPES.indexOf(systemMessage[0]) > -1 ? systemMessage[0] : 'info',
+        message: systemMessage[1],
+    }))
 }

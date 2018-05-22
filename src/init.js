@@ -5,6 +5,8 @@ import includes from 'array-includes'
 
 import configureStore from './store/configureStore'
 import {recentViewsStorage} from './state/views/utils'
+import {transformSystemMessagesToNotifications} from './utils'
+import {notify} from './state/notifications/actions'
 
 // Polyfills
 Array.prototype.includes = Array.prototype.includes || includes // eslint-disable-line no-extend-native
@@ -46,3 +48,6 @@ if (recentViews) {
 }
 
 export const store = configureStore(toImmutableProps(initialState))
+
+// Dispatch system messages as notifications
+transformSystemMessagesToNotifications(window.SYSTEM_MESSAGES || []).forEach((notification) => {store.dispatch(notify(notification))})

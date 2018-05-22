@@ -13,7 +13,7 @@ import {
 import type {dispatchType, getStateType} from '../types'
 // TODO(@ghinda): use existing array for status when flow implements it
 // https://github.com/facebook/flow/issues/961
-type notificationType = {
+export type notificationType = {
     status: 'success' | 'error' | 'warning' | 'info' | 'loading',
     message: string,
     id?: ?string,
@@ -22,7 +22,7 @@ type notificationType = {
     closeOnNext?: boolean
 }
 
-const AUTHORIZED_NOTIFICATION_TYPES = [
+export const AUTHORIZED_NOTIFICATION_TYPES = [
     'success',
     'error',
     'warning',

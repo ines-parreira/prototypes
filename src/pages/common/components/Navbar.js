@@ -235,7 +235,7 @@ export default class Navbar extends React.Component {
                         </DropdownItem>
                         <DropdownItem
                             tag="a"
-                            href="/logout"
+                            href={`/logout?csrf-token=${window.CSRF_TOKEN}`}
                         >
                             <i className="material-icons mr-2">exit_to_app</i>
                             Log out
