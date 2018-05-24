@@ -109,8 +109,8 @@ export class UserAuditList extends React.Component<Props, State> {
                 <PageHeader title="Audit logs">
                     <div className="d-flex flex-wrap float-right">
                         <SearchableSelectField
-                            plural="agents"
-                            singular="agent"
+                            plural="team members"
+                            singular="team member"
                             items={userIdOptions}
                             input={this._makeInputControl('user_ids')}
                         />
@@ -187,7 +187,7 @@ export class UserAuditList extends React.Component<Props, State> {
                                 <thead>
                                 <tr>
                                     <th>Team member</th>
-                                    <th>Action</th>
+                                    <th>Event</th>
                                     <th>Object</th>
                                     <th>Date</th>
                                 </tr>
