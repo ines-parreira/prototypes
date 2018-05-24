@@ -11,23 +11,18 @@ export default class RealtimeMessagingIntegrationNavigation extends React.Compon
     _renderChat() {
         const integrationId = this.props.integration.get('id')
         const baseURL = `/app/settings/integrations/smooch_inside/${integrationId}`
-        const linkProps = {
-            className: 'nav-link',
-            activeClassName: 'disabled'
-
-        }
         return (
             <SecondaryNavbar>
-                <Link to={`${baseURL}/appearance`} {...linkProps}>
+                <Link to={`${baseURL}/appearance`}>
                     Appearance
                 </Link>
-                <Link to={`${baseURL}/installation`} {...linkProps}>
+                <Link to={`${baseURL}/installation`}>
                     Installation
                 </Link>
-                <Link to={`${baseURL}/preferences`} {...linkProps}>
+                <Link to={`${baseURL}/preferences`}>
                     Preferences
                 </Link>
-                <Link to={`${baseURL}/campaigns`} {...linkProps}>
+                <Link to={`${baseURL}/campaigns`}>
                     Campaigns
                 </Link>
             </SecondaryNavbar>
@@ -37,20 +32,15 @@ export default class RealtimeMessagingIntegrationNavigation extends React.Compon
     _renderFacebook() {
         const integrationId = this.props.integration.get('id')
         const baseURL = `/app/settings/integrations/facebook/${integrationId}`
-        const linkProps = {
-            className: 'nav-link',
-            activeClassName: 'disabled'
-
-        }
         return (
             <SecondaryNavbar>
-                <Link to={`${baseURL}/overview`} {...linkProps}>
+                <Link to={`${baseURL}/overview`}>
                     Overview
                 </Link>
-                <Link to={`${baseURL}/customer_chat`} {...linkProps}>
+                <Link to={`${baseURL}/customer_chat`}>
                     Customer chat
                 </Link>
-                <Link to={`${baseURL}/preferences`} {...linkProps}>
+                <Link to={`${baseURL}/preferences`}>
                     Preferences
                 </Link>
             </SecondaryNavbar>
@@ -60,17 +50,12 @@ export default class RealtimeMessagingIntegrationNavigation extends React.Compon
     _renderSmooch() {
         const integrationId = this.props.integration.get('id')
         const baseURL = `/app/settings/integrations/smooch/${integrationId}`
-        const linkProps = {
-            className: 'nav-link',
-            activeClassName: 'disabled'
-
-        }
         return (
             <SecondaryNavbar>
-                <Link to={`${baseURL}/overview`} {...linkProps}>
+                <Link to={`${baseURL}/overview`}>
                     Overview
                 </Link>
-                <Link to={`${baseURL}/preferences`} {...linkProps}>
+                <Link to={`${baseURL}/preferences`}>
                     Preferences
                 </Link>
             </SecondaryNavbar>

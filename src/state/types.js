@@ -20,6 +20,7 @@ export type stateType = {
     ticket: Map<*,*>,
     tickets: Map<*,*>,
     users: Map<*,*>,
+    usersAudit: Map<*,*>,
     views: Map<*,*>,
     widgets: Map<*,*>,
 }

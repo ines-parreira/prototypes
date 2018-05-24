@@ -16,6 +16,7 @@ import Row from './Row'
 import * as actions from '../../../state/agents/actions'
 import * as selectors from '../../../state/agents/selectors'
 import PageHeader from '../../common/components/PageHeader'
+import SecondaryNavbar from '../../common/components/SecondaryNavbar/SecondaryNavbar'
 
 @connect((state) => {
     return {
@@ -51,6 +52,7 @@ export default class List extends React.Component {
     render() {
         const {agents, pagination} = this.props
 
+
         if (this.state.isFetching) {
             return <Loader/>
         }
@@ -66,6 +68,11 @@ export default class List extends React.Component {
                         Add team member
                     </Button>
                 </PageHeader>
+
+                <SecondaryNavbar>
+                    <Link to="/app/settings/team">Team</Link>
+                    <Link to="/app/settings/audit/">Audit logs</Link>
+                </SecondaryNavbar>
 
                 <Container fluid className="page-container">
                     <p>

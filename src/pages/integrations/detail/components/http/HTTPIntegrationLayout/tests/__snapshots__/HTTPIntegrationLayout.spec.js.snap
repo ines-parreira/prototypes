@@ -113,8 +113,6 @@ exports[`HTTPIntegrationLayout should render the layout of an event page of a HT
   />
   <SecondaryNavbar>
     <Link
-      activeClassName="disabled"
-      className="nav-link"
       onlyActiveOnIndex={false}
       style={Object {}}
       to="/app/settings/integrations/http/1"
@@ -122,8 +120,6 @@ exports[`HTTPIntegrationLayout should render the layout of an event page of a HT
       Settings
     </Link>
     <Link
-      activeClassName="disabled"
-      className="nav-link"
       onlyActiveOnIndex={false}
       style={Object {}}
       to="/app/settings/integrations/http/1/events"
@@ -191,8 +187,6 @@ exports[`HTTPIntegrationLayout should render the layout of the events page of a 
   />
   <SecondaryNavbar>
     <Link
-      activeClassName="disabled"
-      className="nav-link"
       onlyActiveOnIndex={false}
       style={Object {}}
       to="/app/settings/integrations/http/1"
@@ -200,8 +194,6 @@ exports[`HTTPIntegrationLayout should render the layout of the events page of a 
       Settings
     </Link>
     <Link
-      activeClassName="disabled"
-      className="nav-link"
       onlyActiveOnIndex={false}
       style={Object {}}
       to="/app/settings/integrations/http/1/events"
@@ -257,8 +249,6 @@ exports[`HTTPIntegrationLayout should render the layout of the settings page of 
   />
   <SecondaryNavbar>
     <Link
-      activeClassName="disabled"
-      className="nav-link"
       onlyActiveOnIndex={false}
       style={Object {}}
       to="/app/settings/integrations/http/1"
@@ -266,8 +256,6 @@ exports[`HTTPIntegrationLayout should render the layout of the settings page of 
       Settings
     </Link>
     <Link
-      activeClassName="disabled"
-      className="nav-link"
       onlyActiveOnIndex={false}
       style={Object {}}
       to="/app/settings/integrations/http/1/events"

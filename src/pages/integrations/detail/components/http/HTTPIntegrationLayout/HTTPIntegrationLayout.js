@@ -20,10 +20,6 @@ export default class HTTPIntegrationLayout extends Component<Props> {
         const {children, integration, isUpdate, urlParams} = this.props
         const integrationsUrl = '/app/settings/integrations'
         const integrationId = integration.get('id')
-        const linkProps = {
-            className: 'nav-link',
-            activeClassName: 'disabled'
-        }
         const isOnEventsPage = urlParams.extra === 'events'
         const eventId = urlParams.subId
         const HTTPIntegrationUrl = `${integrationsUrl}/http`
@@ -67,18 +63,8 @@ export default class HTTPIntegrationLayout extends Component<Props> {
                 />
                 {isUpdate ?
                     <SecondaryNavbar>
-                        <Link
-                            to={`${integrationsUrl}/http/${integrationId}`}
-                            {...linkProps}
-                        >
-                            Settings
-                        </Link>
-                        <Link
-                            to={`${integrationsUrl}/http/${integrationId}/events`}
-                            {...linkProps}
-                        >
-                            Logs
-                        </Link>
+                        <Link to={`${integrationsUrl}/http/${integrationId}`}>Settings</Link>
+                        <Link to={`${integrationsUrl}/http/${integrationId}/events`}>Logs</Link>
                     </SecondaryNavbar>
                     :
                     null

@@ -1,4 +1,5 @@
 import {browserHistory} from 'react-router'
+import mockMoment from 'moment'
 
 // jsdom does not support matchMedia
 Object.defineProperty(window, 'matchMedia', {
@@ -70,6 +71,7 @@ jest.mock('push.js', () => {
 
 jest.mock('../utils/date', () => ({
     ...require.requireActual('../utils/date'),
+    getMoment: jest.fn(() => mockMoment('2018-10-01T00:00:00Z')),
     getMomentNow: jest.fn(() => 'nowTimestamp'),
     getMomentUtcISOString: jest.fn(() => '2018-05-07T18:02:46.039Z')
 }))

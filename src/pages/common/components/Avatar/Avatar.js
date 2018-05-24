@@ -30,7 +30,7 @@ export default class Avatar extends React.Component<Props, State> {
         name: '',
         size: 50,
         google: false,
-        style: '',
+        style: {},
     }
 
     constructor(props: Props) {

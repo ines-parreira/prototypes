@@ -35,6 +35,7 @@ import ImportDataContainer from './settings/importData/ImportDataContainer'
 import ImportZendeskDetail from './settings/importData/zendesk/ImportZendeskDetail'
 
 import * as Team from './settings/team'
+import UserAuditList from './settings/team/UsersAudit/UserAuditList'
 
 export default (
     <Route
@@ -207,6 +208,13 @@ export default (
                 path="api"
                 components={{
                     content: APIView,
+                    navbar: SettingsNavbarContainer
+                }}
+            />
+            <Route
+                path="audit"
+                components={{
+                    content: UserRoleRequired(UserAuditList, 'admin'),
                     navbar: SettingsNavbarContainer
                 }}
             />

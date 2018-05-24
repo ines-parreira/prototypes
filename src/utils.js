@@ -47,15 +47,15 @@ import type {
     reactRouterRoute
 } from './types'
 
-type userType = {roles: Array<string | {name: string}>} | Map<*, *>
+type userType = { roles: Array<string | { name: string }> } | Map<*, *>
 type messageType = {
     created_datetime: Date,
-    source: {type: string}
+    source: { type: string }
 }
 type propertyType = {
     type: string,
     meta: {},
-    items: {$ref: {}}
+    items: { $ref: {} }
 }
 type systemMessage = ['success' | 'error' | 'warning' | 'info' | 'loading', string]
 
@@ -187,11 +187,11 @@ export function getAST(code: string): esprimaParse {
     return esprima.parse(code, {loc: true})
 }
 
-export function getFirstExpressionOfAST(ast: esprimaParse): Map<*,*> {
+export function getFirstExpressionOfAST(ast: esprimaParse): Map<*, *> {
     return fromJS(ast).getIn(['body', 0, 'expression'])
 }
 
-export function getCode(ast: {type: string}): string {
+export function getCode(ast: { type: string }): string {
     if (!_isString(ast.type)) {
         console.error('Not an AST:', ast)
     }
@@ -648,7 +648,7 @@ export function insertText(editorState: EditorState, text: string): EditorState 
  * @param value
  * @returns {EditorState}
  */
-export function removeMentions(editorState: EditorState, value: {text: string, html: string}): EditorState {
+export function removeMentions(editorState: EditorState, value: { text: string, html: string }): EditorState {
 
     // use convertFromHTML/fromText to create a new content state w/o mention
     // because mentions are not present in the html/text of the body
@@ -901,7 +901,7 @@ export function humanizeString(text: string): string {
     return _.chain(text)
         .trim('.-_')
         .replace(/([A-Z])/g, ' $1')
-        .replace(/[_.\s]+/g, ' ')
+        .replace(/[-_.\s]+/g, ' ')
         .toLower()
         .upperFirst()
         .value()
@@ -975,7 +975,7 @@ const _valuesDeep = (obj: {}): {} => {
  * "
  * @param incomingError server error
  */
-export const errorToChildren = (incomingError: {response: {data: {error: {data: {}}}}}): ?string => {
+export const errorToChildren = (incomingError: { response: { data: { error: { data: {} } } } }): ?string => {
     const error = _get(incomingError, 'response.data.error', {})
     const {data} = error
     const hasErrors = !!data

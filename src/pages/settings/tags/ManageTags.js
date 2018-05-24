@@ -301,6 +301,7 @@ export class ManageTags extends Component {
                     />
 
                     <Pagination
+                        className="pagination-transparent"
                         pageCount={numberPages}
                         currentPage={currentPage}
                         onChange={page => this.props.setPage(page)}

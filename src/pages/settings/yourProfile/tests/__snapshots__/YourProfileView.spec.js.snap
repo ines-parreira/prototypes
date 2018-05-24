@@ -3146,7 +3146,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                 google={false}
                 name="Alex Plugaru"
                 size="100"
-                style=""
+                style={Object {}}
                 url=""
               />
             </div>

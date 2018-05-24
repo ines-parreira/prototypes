@@ -263,6 +263,7 @@ exports[`ManageTags component mounts correctly 1`] = `
       sort="usage"
     />
     <Pagination
+      className="pagination-transparent"
       currentPage={1}
       onChange={[Function]}
       pageCount={1}

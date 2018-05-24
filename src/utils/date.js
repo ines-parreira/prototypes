@@ -6,7 +6,7 @@ import moment from 'moment'
  * @param data: the string representing a datetime
  * @returns {moment, null}: the moment object or null
  */
-export const stringToDatetime = (data: string) : moment | null => {
+export const stringToDatetime = (data: string): moment | null => {
     let datetime = null
 
     if (data) {
@@ -18,6 +18,15 @@ export const stringToDatetime = (data: string) : moment | null => {
     }
 
     return datetime
+}
+
+/**
+ * Return moment()
+ *
+ * We encapsulate it here so that it's easy to mock during tests.
+ */
+export const getMoment = () => {
+    return moment()
 }
 
 /**

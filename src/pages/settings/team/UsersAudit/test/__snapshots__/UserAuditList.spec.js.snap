@@ -1,0 +1,272 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserAuditList component mounts correctly 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title="Audit logs"
+  >
+    <div
+      className="d-flex flex-wrap float-right"
+    >
+      <SearchableSelectField
+        input={
+          Object {
+            "onChange": [Function],
+            "value": Array [],
+          }
+        }
+        isDisabled={false}
+        items={
+          Immutable.List [
+          ]
+        }
+        plural="agents"
+        singular="agent"
+      />
+      <SearchableSelectField
+        input={
+          Object {
+            "onChange": [Function],
+            "value": Array [],
+          }
+        }
+        isDisabled={false}
+        items={
+          Immutable.List [
+            Object {
+              "label": "Ticket",
+              "value": "Ticket",
+            },
+            Object {
+              "label": "Macro",
+              "value": "Macro",
+            },
+          ]
+        }
+        plural="objects"
+        singular="object"
+      />
+      <SearchableSelectField
+        input={
+          Object {
+            "onChange": [Function],
+            "value": Array [],
+          }
+        }
+        isDisabled={false}
+        items={
+          Immutable.List [
+            Object {
+              "label": "Ticket created",
+              "value": "ticket-created",
+            },
+            Object {
+              "label": "Ticket updated",
+              "value": "ticket-updated",
+            },
+            Object {
+              "label": "Ticket deleted",
+              "value": "ticket-deleted",
+            },
+            Object {
+              "label": "Macro created",
+              "value": "macro-created",
+            },
+          ]
+        }
+        plural="events"
+        singular="event"
+      />
+      <DatePicker
+        applyClass="btn-success mr-2"
+        buttonClasses={
+          Array [
+            "btn",
+          ]
+        }
+        cancelClass="btn-secondary"
+        endDate={"2018-01-05T00:00:00.000Z"}
+        isOpen={false}
+        minDate={"2018-07-03T07:00:00.000Z"}
+        onApply={[Function]}
+        onHide={null}
+        opens="left"
+        ranges={
+          Object {
+            "Last 30 days": Array [
+              "2018-09-01T07:00:00.000Z",
+              "2018-10-01T06:59:59.999Z",
+            ],
+            "Last 60 days": Array [
+              "2018-08-02T07:00:00.000Z",
+              "2018-10-01T06:59:59.999Z",
+            ],
+            "Last 7 days": Array [
+              "2018-09-24T07:00:00.000Z",
+              "2018-10-01T06:59:59.999Z",
+            ],
+            "Last 90 days": Array [
+              "2018-07-03T07:00:00.000Z",
+              "2018-10-01T06:59:59.999Z",
+            ],
+            "Today": Array [
+              "2018-09-30T07:00:00.000Z",
+              "2018-10-01T06:59:59.999Z",
+            ],
+          }
+        }
+        showCustomRangeLabel={false}
+        singleDatePicker={false}
+        startDate={"2017-12-30T00:00:00.000Z"}
+        timePicker={true}
+      >
+        <Button
+          className="selected-date-range-btn"
+          color="secondary"
+          disabled={false}
+          tag="button"
+          type="button"
+        >
+          <i
+            className="fa fa-fw fa-calendar mr-2"
+          />
+          <span>
+            December 29, 2017 5:00 PM
+             - 
+            January 4, 2018 5:00 PM
+          </span>
+          <i
+            className="fa fa-fw fa-caret-down"
+          />
+        </Button>
+      </DatePicker>
+    </div>
+  </PageHeader>
+  <SecondaryNavbar>
+    <Link
+      onlyActiveOnIndex={false}
+      style={Object {}}
+      to="/app/settings/team"
+    >
+      Team
+    </Link>
+    <Link
+      onlyActiveOnIndex={false}
+      style={Object {}}
+      to="/app/settings/audit/"
+    >
+      Audit logs
+    </Link>
+  </SecondaryNavbar>
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <div
+      className="manage-requests-description"
+    >
+      <p>
+        User audit logs display recent actions performed by team members in Gorgias.
+      </p>
+      <Alert
+        closeAriaLabel="Close"
+        color="info"
+        isOpen={true}
+        tag="div"
+        transition={
+          Object {
+            "appear": true,
+            "baseClass": "fade",
+            "baseClassActive": "show",
+            "enter": true,
+            "exit": true,
+            "in": true,
+            "mountOnEnter": false,
+            "onEnter": [Function],
+            "onEntered": [Function],
+            "onEntering": [Function],
+            "onExit": [Function],
+            "onExited": [Function],
+            "onExiting": [Function],
+            "tag": "div",
+            "timeout": 150,
+            "unmountOnExit": true,
+          }
+        }
+      >
+        This section is still under development, more details will be added to the list in the future. We'd love to hear your feedback!
+      </Alert>
+    </div>
+    <div>
+      <Table
+        responsiveTag="div"
+        tag="table"
+      >
+        <thead>
+          <tr>
+            <th>
+              Team member
+            </th>
+            <th>
+              Action
+            </th>
+            <th>
+              Object
+            </th>
+            <th>
+              Date
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <Connect(UserAuditRow)
+            eventItem={
+              Immutable.Map {
+                id: 1,
+                type: "ticket-created",
+                object_type: "Ticket",
+                object_id: 111,
+                user_id: 1,
+                created_datetime: "2018-01-01T00:00:00.000Z",
+              }
+            }
+          />
+          <Connect(UserAuditRow)
+            eventItem={
+              Immutable.Map {
+                id: 2,
+                type: "macro-created",
+                object_type: "Macro",
+                object_id: 11,
+                user_id: 1,
+                created_datetime: "2018-01-02T00:00:00.000Z",
+              }
+            }
+          />
+          <Connect(UserAuditRow)
+            eventItem={
+              Immutable.Map {
+                id: 3,
+                type: "ticket-updated",
+                object_type: "Ticket",
+                object_id: 1,
+                user_id: 2,
+                created_datetime: "2018-01-03T00:00:00.000Z",
+              }
+            }
+          />
+        </tbody>
+      </Table>
+      <Pagination
+        className="pagination-transparent"
+        currentPage={1}
+        onChange={[Function]}
+        pageCount={1}
+      />
+    </div>
+  </Container>
+</div>
+`;

@@ -1,12 +1,12 @@
 // @flow
-import React, {Component} from 'react'
+import React, {Component, type Node} from 'react'
 import DateRangePicker from 'react-bootstrap-daterangepicker'
 import _pick from 'lodash/pick'
 
 type Props = {
     applyClass: ?string,
     buttonClasses: ?Array<string>,
-    children: ?string,
+    children: ?Node,
     cancelClass: ?string,
     isOpen: boolean,
     minDate: ?Object,
@@ -18,12 +18,13 @@ type Props = {
     singleDatePicker: ?boolean,
     startDate: ?Object,
     timePicker: ?boolean,
-    toggle: Function
+    toggle?: Function
 }
 
 export default class DatePicker extends Component<Props> {
     static defaultProps = {
-        onHide: null
+        onHide: null,
+        showCustomRangeLabel: false
     }
 
     componentWillReceiveProps(nextProps: Props) {
@@ -61,7 +62,9 @@ export default class DatePicker extends Component<Props> {
 
     _onEvent = (event: Object) => {
         if (event.type === 'hide') {
-            this.props.toggle()
+            if (this.props.toggle) {
+                this.props.toggle()
+            }
 
             if (this.props.onHide) {
                 this.props.onHide()

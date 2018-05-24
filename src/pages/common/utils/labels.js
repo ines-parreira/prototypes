@@ -145,7 +145,7 @@ StatusLabel.propTypes = {
  * CHANNEL
  */
 export const ChannelLabel = ({channel}) => (
-    <SourceIcon type={channel} className="text-secondary" />
+    <SourceIcon type={channel} className="text-secondary"/>
 )
 ChannelLabel.propTypes = {channel: PropTypes.string.isRequired}
 
@@ -222,6 +222,7 @@ RoleLabel.propTypes = {roles: PropTypes.oneOfType([PropTypes.array, PropTypes.ob
 export class DatetimeLabel extends React.Component {
     static propTypes = {
         dateTime: PropTypes.string,
+        labelFormat: PropTypes.string,
         timezone: PropTypes.string,
     }
 
@@ -231,13 +232,13 @@ export class DatetimeLabel extends React.Component {
     }
 
     render() {
-        const {dateTime, timezone, ...rest} = this.props
+        const {dateTime, labelFormat, timezone, ...rest} = this.props
 
         if (!dateTime) {
             return null
         }
 
-        const labelDatetime = formatDatetime(dateTime, timezone)
+        const labelDatetime = formatDatetime(dateTime, timezone, labelFormat)
         const tooltipDatetime = formatDatetime(dateTime, timezone, 'L LT')
 
         return (

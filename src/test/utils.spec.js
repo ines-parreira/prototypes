@@ -384,6 +384,10 @@ describe('global utils', () => {
             {
                 value: 'helper hello',
                 expect: 'Helper hello'
+            },
+            {
+                value: 'ticket-created',
+                expect: 'Ticket created'
             }
         ]
 
