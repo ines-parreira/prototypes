@@ -138,11 +138,11 @@ export default class RichField extends InputField<Props, State> {
         return this.state.isFocused
     }
 
-    _didHTMLChanged = (html?: string) => {
+    _didHTMLChanged = (html: string) => {
         return convertToHTML(this.state.editorState.getCurrentContent()) !== html
     }
 
-    _updateEditorState = (value: {html?: string, text: string}, callback?: () => any) => {
+    _updateEditorState = (value: {html: string, text: string}, callback?: () => any) => {
         // if incoming value is the same as the current one, don't update the current one
         if (!this._didHTMLChanged(value.html)) {
             return
@@ -194,16 +194,6 @@ export default class RichField extends InputField<Props, State> {
         if (handleDroppedFiles) {
             return handleDroppedFiles(...args)
         }
-    }
-
-    _handlePastedText = (text: string, html?: string) => {
-        // manually convert pasted text/html with draft-convert to preserve newlines and empty blocks.
-        // by default draft-js's convertFromHTML tries to clean-up the html, and remove extra newlines.
-        // https://github.com/facebook/draft-js/issues/231
-        this._updateEditorState({text, html})
-        // draft-js-plugins-editor requires `handled`, instead of `true` like the native draft-js instance,
-        // to prevent the default behavior.
-        return 'handled'
     }
 
     _onChange = (editorState: EditorState) => {
@@ -297,7 +287,6 @@ export default class RichField extends InputField<Props, State> {
                                 plugins={this.plugins}
                                 handleKeyCommand={this._handleKeyCommand}
                                 handleDroppedFiles={this._handleDroppedFiles}
-                                handlePastedText={this._handlePastedText}
                                 readOnly={displayOnly}
                                 placeholder={this.state.placeholder}
                                 ref={(editor) => {

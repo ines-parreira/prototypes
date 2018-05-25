@@ -218,7 +218,6 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
           }
           handleDroppedFiles={[Function]}
           handleKeyCommand={[Function]}
-          handlePastedText={[Function]}
           onBlur={[Function]}
           onChange={[Function]}
           onFocus={[Function]}
@@ -464,7 +463,6 @@ exports[`RichField should render a basic input 1`] = `
           }
           handleDroppedFiles={[Function]}
           handleKeyCommand={[Function]}
-          handlePastedText={[Function]}
           onBlur={[Function]}
           onChange={[Function]}
           onFocus={[Function]}
@@ -1003,7 +1001,6 @@ exports[`RichField should render immutable variable 1`] = `
               }
               handleDroppedFiles={[Function]}
               handleKeyCommand={[Function]}
-              handlePastedText={[Function]}
               onBlur={[Function]}
               onChange={[Function]}
               onFocus={[Function]}
@@ -1544,7 +1541,6 @@ exports[`RichField should render immutable variable 1`] = `
                 }
                 handleDroppedFiles={[Function]}
                 handleKeyCommand={[Function]}
-                handlePastedText={[Function]}
                 handleReturn={[Function]}
                 keyBindingFn={[Function]}
                 onBlur={[Function]}
@@ -3946,7 +3942,6 @@ exports[`RichField should render mutable variable 1`] = `
               }
               handleDroppedFiles={[Function]}
               handleKeyCommand={[Function]}
-              handlePastedText={[Function]}
               onBlur={[Function]}
               onChange={[Function]}
               onFocus={[Function]}
@@ -4394,7 +4389,6 @@ exports[`RichField should render mutable variable 1`] = `
                 }
                 handleDroppedFiles={[Function]}
                 handleKeyCommand={[Function]}
-                handlePastedText={[Function]}
                 handleReturn={[Function]}
                 keyBindingFn={[Function]}
                 onBlur={[Function]}

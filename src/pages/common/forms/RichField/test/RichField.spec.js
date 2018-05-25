@@ -2,7 +2,6 @@ import React from 'react'
 import {shallow, mount} from 'enzyme'
 import _noop from 'lodash/noop'
 import {EditorState, ContentState} from 'draft-js'
-import {convertToHTML} from 'draft-convert'
 
 import RichField from '../RichField'
 
@@ -66,23 +65,5 @@ describe('RichField', () => {
         component.instance()._setEditorState(editorState)
 
         expect(component).toMatchSnapshot()
-    })
-
-    it('should keep newlines in pasted text', () => {
-        const component = mount(
-            <RichField
-                value={{text: 'text', html: 'html'}}
-                onChange={_noop}
-                />
-        )
-        const text = 'a\n\nb\n\nc'
-        const html = '<div>a<br><br>b<br><br>c</div>'
-
-        // simulate pasted text
-        component.instance()._handlePastedText(text, html)
-
-        const convertedHTML = convertToHTML(component.state('editorState').getCurrentContent())
-
-        expect(convertedHTML).toBe('<p>a<br/><br/>b<br/><br/>c</p>')
     })
 })
