@@ -89,26 +89,18 @@ exports[`UserAuditList component mounts correctly 1`] = `
         cancelClass="btn-secondary"
         endDate={"2018-01-05T00:00:00.000Z"}
         isOpen={false}
-        minDate={"2018-07-03T07:00:00.000Z"}
+        minDate={"2018-09-24T07:00:00.000Z"}
         onApply={[Function]}
         onHide={null}
         opens="left"
         ranges={
           Object {
-            "Last 30 days": Array [
-              "2018-09-01T07:00:00.000Z",
-              "2018-10-01T06:59:59.999Z",
-            ],
-            "Last 60 days": Array [
-              "2018-08-02T07:00:00.000Z",
+            "Last 3 days": Array [
+              "2018-09-28T07:00:00.000Z",
               "2018-10-01T06:59:59.999Z",
             ],
             "Last 7 days": Array [
               "2018-09-24T07:00:00.000Z",
-              "2018-10-01T06:59:59.999Z",
-            ],
-            "Last 90 days": Array [
-              "2018-07-03T07:00:00.000Z",
               "2018-10-01T06:59:59.999Z",
             ],
             "Today": Array [

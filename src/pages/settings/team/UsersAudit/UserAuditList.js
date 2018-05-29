@@ -60,7 +60,7 @@ export class UserAuditList extends React.Component<Props, State> {
     state = {
         isFetching: false,
         isDatePickerOpen: false,
-        start_datetime: _someDaysAgoStartOfDay(7).format(),
+        start_datetime: _startOfToday().format(),
         end_datetime: _endOfToday().format(),
     }
 
@@ -138,13 +138,11 @@ export class UserAuditList extends React.Component<Props, State> {
                             singleDatePicker={false}
                             startDate={moment(start_datetime)}
                             endDate={moment(end_datetime)}
-                            minDate={_someDaysAgoStartOfDay(90)}
+                            minDate={_someDaysAgoStartOfDay(7)}
                             ranges={{
                                 'Today': [_startOfToday(), _endOfToday()],
+                                'Last 3 days': [_someDaysAgoStartOfDay(3), _endOfToday()],
                                 'Last 7 days': [_someDaysAgoStartOfDay(7), _endOfToday()],
-                                'Last 30 days': [_someDaysAgoStartOfDay(30), _endOfToday()],
-                                'Last 60 days': [_someDaysAgoStartOfDay(60), _endOfToday()],
-                                'Last 90 days': [_someDaysAgoStartOfDay(90), _endOfToday()],
                             }}
                         >
                             <Button
