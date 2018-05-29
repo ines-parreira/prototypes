@@ -105,14 +105,17 @@ class Preview extends React.Component {
 
         return (
             <div className={css.macroData}>
-                <strong className="text-muted mr-2">
+                <strong className="text-muted mr-2 align-middle">
                     Assign to:
                 </strong>
                 <span
                     key={`action-assign-${setAssigneeAction.id}`}
                     className="ticket-owner-btn ticket-details-item"
                 >
-                    <AgentLabel name={setAssigneeAction.getIn(['arguments', 'assignee_user', 'name'])} />
+                    <AgentLabel
+                        className="align-middle"
+                        name={setAssigneeAction.getIn(['arguments', 'assignee_user', 'name'])}
+                    />
                 </span>
             </div>
         )

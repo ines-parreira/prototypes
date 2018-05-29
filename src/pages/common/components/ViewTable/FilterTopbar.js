@@ -237,7 +237,9 @@ class FilterTopbar extends React.Component {
                             {
                                 (isSystemView || isSearch) ? (
                                     <span>
-                                        <i className="fa fa-fw fa-info-circle mr-2"/>
+                                        <i className="material-icons mr-2">
+                                            info
+                                        </i>
                                         This view cannot be saved
                                     </span>
                                 ) : (

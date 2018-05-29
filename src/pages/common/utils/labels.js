@@ -16,6 +16,8 @@ import * as usersHelpers from '../../../state/users/helpers'
 import {DEFAULT_TAG_COLOR} from '../../../config'
 import SourceIcon from '../components/SourceIcon'
 
+import css from './labels.less'
+
 /**
  * AGENT
  */
@@ -37,7 +39,7 @@ export class AgentLabel extends React.Component {
         }
 
         return (
-            <div className={classnames('agent-label d-inline-flex align-items-center', className)}>
+            <div className={classnames(css.AgentLabel, 'd-inline-flex align-items-center', className)}>
                 {
                     email ? (
                         <Avatar
@@ -45,7 +47,7 @@ export class AgentLabel extends React.Component {
                             name={name}
                             url={profilePictureUrl}
                             size="26"
-                            className="agent-avatar"
+                            className={css.avatar}
                         />
                     ) : (
                         <span className="material-icons md-2">
@@ -58,7 +60,7 @@ export class AgentLabel extends React.Component {
                 {
                     name && (
                         <span
-                            className="agent-name font-weight-medium"
+                            className={classnames(css.name, 'font-weight-medium')}
                             style={style}
                         >
                             {name}

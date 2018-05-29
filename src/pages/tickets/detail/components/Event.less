@@ -1,33 +1,32 @@
+@import '~css/new/colors';
+
 :local .component {
   display: flex;
   flex-direction: column;
   position: relative;
   padding: 18px 0 18px 18px;
-  margin-left: 9px;
+  margin-left: 15px;
 
   &::before {
     content: '';
-    height: 100%;
     position: absolute;
-    border-left: 1px solid #DCDDDE;
     left: 0;
     top: 0;
-  }
-
-  &::after {
-    content: '';
-    width: 11px;
-    height: 11px;
-    position: absolute;
-    left: -5px;
-    border: 1px solid #DCDDDE;
-    top: 22px;
-    border-radius: 50%;
-    background-color: white;
+    height: 100%;
+    border-left: 1px solid @darkQuartz;
   }
 
   &.last::before {
     height: 30px;
+  }
+
+  .date {
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .more {
+    line-height: 1;
   }
 
   .event {
@@ -40,25 +39,28 @@
       align-items: center;
 
       .icon {
-        @size: 17px;
+        @size: 20px;
+        position: relative;
         display: flex;
+        flex-shrink: 0;
         align-items: center;
         justify-content: center;
         width: @size;
         height: @size;
-        margin-right: 6px;
-        font-size: 13px;
-        border-radius: 3px;
+        margin-left: -27px;
+        margin-right: 28px;
+        border-radius: 50%;
+        background-color: @indigo;
+
+        font-size: 14px;
         color: white;
-        position: relative;
-        flex-shrink: 0;
 
         &.success {
-          background-color: #2DCF57;
+          background-color: @green;
         }
 
         &.danger {
-          background-color: #f2484a;
+          background-color: @red;
         }
       }
 
@@ -80,9 +82,6 @@
 
   .details {
     margin-top: 12px;
-
-    &.hidden {
-      display: none;
-    }
+    margin-left: 3px;
   }
 }

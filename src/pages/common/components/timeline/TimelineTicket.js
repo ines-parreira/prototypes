@@ -60,7 +60,7 @@ export default class TimelineTicket extends React.Component {
                     <div className={classnames(css.details)}>
                         <SourceIcon
                             type={ticket.get('channel')}
-                            className="uncolored mr-2 float-right"
+                            className={classnames(css.icon, 'uncolored')}
                         />
                         <h5 className={classnames(css.subject, 'mb-1')}>
                             {subject}

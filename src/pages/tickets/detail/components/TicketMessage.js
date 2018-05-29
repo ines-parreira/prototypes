@@ -464,7 +464,7 @@ TicketMessage.propTypes = {
     lastMessageDatetimeAfterMount: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
     setStatus: PropTypes.func.isRequired,
-    executeAction: PropTypes.func.isRequired,
+    executeAction: PropTypes.func,
     isLastReadMessage: PropTypes.bool,
     hasCursor: PropTypes.bool,
 }

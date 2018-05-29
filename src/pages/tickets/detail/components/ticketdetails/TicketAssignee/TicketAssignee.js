@@ -13,7 +13,6 @@ import * as usersSelectors from '../../../../../../state/users/selectors'
 import shortcutManager from '../../../../../../services/shortcutManager/index'
 import {AgentLabel} from '../../../../../common/utils/labels'
 
-import headerCss from '../../TicketHeader.less'
 import css from './TicketAssignee.less'
 import {setAgent} from '../../../../../../state/ticket/actions'
 
@@ -174,7 +173,10 @@ export default class TicketAssignee extends React.Component<Props, State> {
             )
         } else {
             options = options.concat(
-                <div className={css['agents-dropdown-list']}>
+                <div
+                    key="availableAgents"
+                    className={css.agents}
+                >
                     {availableAgents.map((agent) => {
                         return (
                             <DropdownItem
@@ -222,6 +224,7 @@ export default class TicketAssignee extends React.Component<Props, State> {
 
     render() {
         const {currentAssignee, direction, email, profilePictureUrl, className, transparent} = this.props
+        const hasPicture = !!(email || profilePictureUrl)
 
         return (
             <Dropdown
@@ -232,8 +235,9 @@ export default class TicketAssignee extends React.Component<Props, State> {
                 <DropdownToggle
                     color="secondary"
                     type="button"
-                    className={classnames(headerCss.headerButton, {
-                        'btn-transparent': transparent
+                    className={classnames(css.toggle, {
+                        'btn-transparent': transparent,
+                        [css.hasPicture]: hasPicture
                     })}
                     caret
                 >
@@ -243,12 +247,13 @@ export default class TicketAssignee extends React.Component<Props, State> {
                                 name={currentAssignee}
                                 email={email}
                                 profilePictureUrl={profilePictureUrl}
+                                className={css.label}
                                 maxWidth="100"
                             />
                         ) : (
                             <span>
-                                    Unassigned
-                                </span>
+                                Unassigned
+                            </span>
                         )
                     }
                 </DropdownToggle>

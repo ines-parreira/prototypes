@@ -50,16 +50,16 @@ const HistoryButton = (props: Props) => {
             {
                 isHistoryDisplayed
                     ? (
-                        <i className="material-icons md-2">
+                        <i className={classnames(css.icon, 'material-icons md-2')}>
                             arrow_upward
                         </i>
                     )
                     : (
                         <span>
-                        <i className={classnames(css.iconHistory, 'material-icons md-2')}>
+                        <i className={classnames(css.icon, css.iconHistory, 'material-icons md-2')}>
                             history
                         </i>
-                        <i className={classnames(css.iconArrowDown, 'material-icons md-2')}>
+                        <i className={classnames(css.icon, css.iconArrowDown, 'material-icons md-2')}>
                             arrow_downward
                         </i>
                     </span>

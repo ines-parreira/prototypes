@@ -10,19 +10,57 @@
   max-height: 100%;
 
   .viewersBanner {
-    @padding-sides: 30px;
+    @padding-sides: 38px;
 
-    background-color: @collisionColor;
-    color: @indigo;
-    padding: 6px @padding-sides;
-    font-size: 14px;
     overflow: hidden;
+    background-color: @collisionColor;
+    box-shadow: inset 0 3px 2px darken(@collisionColor, 8%);
+    padding: 6px @padding-sides;
     transition: all .1s linear;
+
+    color: @indigo;
+    font-size: 14px;
 
     &.hidden {
       height: 0;
       padding: 0 @padding-sides;
+
       color: transparent;
+    }
+
+    .icon {
+      width: 1.2em;
+      margin-right: 2.2em;
+
+      text-align: center;
+    }
+
+    .collisionLabel {
+      display: inline-block;
+      width: 4.4em;
+
+      line-height: normal;
+    }
+
+    .collisionCategory {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .collisionAgent {
+      margin-left: 1em;
+    }
+  }
+
+  .bothCollisions .collisionCategory {
+    margin-right: 2.4em;
+
+    .icon {
+      margin-right: .8em;
+    }
+
+    .collisionAgent {
+      margin-left: .4em;
     }
   }
 
@@ -53,6 +91,10 @@
     overflow: auto;
     padding: 0 30px;
     flex-shrink: 1;
+
+    &:focus {
+      outline: 0;
+    }
 
     @media @mobiles {
       padding: 16px;

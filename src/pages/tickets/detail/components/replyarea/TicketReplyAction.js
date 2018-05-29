@@ -186,7 +186,9 @@ export default class TicketReplyAction extends React.Component {
                             {
                                 notes.map((note, idx) => (
                                     <div key={idx} className="text-light-black">
-                                        <i className="fa fa-fw fa-info-circle" />
+                                        <i className="material-icons">
+                                            info
+                                        </i>
                                         {note}
                                     </div>
                                 ))

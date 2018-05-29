@@ -178,6 +178,8 @@ export default class Event extends React.Component {
             >
                 <div className={css.event}>
                     <div className={css.content}>
+
+
                         <div
                             className={classnames(css.icon, {
                                 [css.danger]: isError,
@@ -185,12 +187,9 @@ export default class Event extends React.Component {
                             })}
                             title={isError ? 'Fail' : 'Success'}
                         >
-                            <i
-                                className={classnames('fa fa-fw', {
-                                    'fa-close': isError,
-                                    'fa-check': isSuccess,
-                                })}
-                            />
+                            <i className="material-icons">
+                                {isError ? 'close' : 'check'}
+                            </i>
                         </div>
 
                         <span className={css.actionName}>
@@ -223,10 +222,13 @@ export default class Event extends React.Component {
 
                         <Button
                             color="link"
-                            className="ml-1 p-0"
+                            className={css.more}
                             onClick={() => this.setState({showDetails: !this.state.showDetails})}
+                            title="More details"
                         >
-                            (details)
+                            <i className="material-icons md-2">
+                                {this.state.showDetails ? 'expand_less' : 'expand_more'}
+                            </i>
                         </Button>
                     </div>
 
@@ -236,12 +238,13 @@ export default class Event extends React.Component {
                             position: 'top left'
                         }}
                         timezone={currentUser.get('timezone')}
+                        className={classnames(css.date, 'text-faded')}
                     />
                 </div>
 
                 <Card
                     className={classnames(css.details, {
-                        [css.hidden]: !this.state.showDetails,
+                        'd-none': !this.state.showDetails,
                     })}
                 >
                     <CardBody>

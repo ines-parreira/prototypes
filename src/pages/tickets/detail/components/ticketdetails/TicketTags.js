@@ -9,7 +9,6 @@ import shortcutManager from '../../../../../services/shortcutManager'
 import {TagLabel} from '../../../../common/utils/labels'
 import {fieldEnumSearch} from '../../../../../state/views/actions'
 
-import headerCss from '../TicketHeader.less'
 import css from './TicketTags.less'
 import classnames from 'classnames'
 
@@ -165,7 +164,9 @@ export class TicketTags extends React.Component {
                                 <span>
                                     {tag.get('name')}
                                     <i
-                                        className="material-icons cursor-pointer ml-1"
+                                        className={classnames(css.remove,
+                                            'material-icons cursor-pointer ml-1'
+                                        )}
                                         onClick={() => removeTag(tag.get('name'))}
                                     >
                                         close
@@ -184,16 +185,17 @@ export class TicketTags extends React.Component {
                     <DropdownToggle
                         color="secondary"
                         type="button"
-                        className={classnames(headerCss.headerButton, {
+                        size="sm"
+                        className={classnames({
                             'btn-transparent': transparent
                         })}
                     >
-                        <i className="material-icons md-1">
+                        <i className="material-icons md-1 align-middle">
                             add
                         </i>
                         {
                             !ticketTags.size && (
-                                <strong className="align-middle">add tags</strong>
+                                <strong className="ml-1 align-middle">add tags</strong>
                             )
                         }
                     </DropdownToggle>

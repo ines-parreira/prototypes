@@ -1015,7 +1015,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                                 name="John"
                                               >
                                                 <div
-                                                  className="agent-label d-inline-flex align-items-center"
+                                                  className="AgentLabel d-inline-flex align-items-center"
                                                 >
                                                   <span
                                                     className="material-icons md-2"
@@ -1023,7 +1023,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                                     account_circle
                                                   </span>
                                                   <span
-                                                    className="agent-name font-weight-medium"
+                                                    className="name font-weight-medium"
                                                     style={
                                                       Object {
                                                         "maxWidth": "100px",
@@ -1056,7 +1056,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                                 name="Doe"
                                               >
                                                 <div
-                                                  className="agent-label d-inline-flex align-items-center"
+                                                  className="AgentLabel d-inline-flex align-items-center"
                                                 >
                                                   <span
                                                     className="material-icons md-2"
@@ -1064,7 +1064,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                                     account_circle
                                                   </span>
                                                   <span
-                                                    className="agent-name font-weight-medium"
+                                                    className="name font-weight-medium"
                                                     style={
                                                       Object {
                                                         "maxWidth": "100px",
@@ -3453,7 +3453,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                                 name="John"
                                               >
                                                 <div
-                                                  className="agent-label d-inline-flex align-items-center"
+                                                  className="AgentLabel d-inline-flex align-items-center"
                                                 >
                                                   <span
                                                     className="material-icons md-2"
@@ -3461,7 +3461,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                                     account_circle
                                                   </span>
                                                   <span
-                                                    className="agent-name font-weight-medium"
+                                                    className="name font-weight-medium"
                                                     style={
                                                       Object {
                                                         "maxWidth": "100px",
@@ -3494,7 +3494,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                                 name="Doe"
                                               >
                                                 <div
-                                                  className="agent-label d-inline-flex align-items-center"
+                                                  className="AgentLabel d-inline-flex align-items-center"
                                                 >
                                                   <span
                                                     className="material-icons md-2"
@@ -3502,7 +3502,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                                     account_circle
                                                   </span>
                                                   <span
-                                                    className="agent-name font-weight-medium"
+                                                    className="name font-weight-medium"
                                                     style={
                                                       Object {
                                                         "maxWidth": "100px",

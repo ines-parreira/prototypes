@@ -8,6 +8,7 @@ import {Button} from 'reactstrap'
 import TicketHeader from './TicketHeader'
 import TicketBody from './TicketBody'
 
+import {AgentLabel} from '../../../common/utils/labels'
 import Timeline from '../../../common/components/timeline/Timeline'
 import ReplyMessageChannel from './replyarea/ReplyMessageChannel'
 import TicketReplyArea from './replyarea/TicketReplyArea'
@@ -18,8 +19,6 @@ import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 import * as tagsSelectors from '../../../../state/tags/selectors'
 import * as usersSelectors from '../../../../state/users/selectors'
 import * as ticketSelectors from '../../../../state/ticket/selectors'
-
-import * as viewsUtils from '../../../../state/views/utils'
 
 import css from './TicketView.less'
 import appCss from '../../../App.less'
@@ -94,6 +93,8 @@ export default class TicketView extends React.Component {
         const styles = window.getComputedStyle(this.refs.ticketContent)
         const maxScrollTop = this.refs.ticketContent.scrollHeight - this.refs.ticketContent.clientHeight
         this.refs.ticketContent.scrollTop = maxScrollTop - parseInt(styles.paddingBottom)
+        // focus ticket content so we can keyboard scroll
+        this.refs.ticketContent.focus()
     }
 
     componentWillReceiveProps() {
@@ -145,29 +146,55 @@ export default class TicketView extends React.Component {
     _renderCollisionDetection = () => {
         const {agentsViewing, agentsTyping} = this.props
         const agentsViewingNotTyping = agentsViewing.filter((userId) => !agentsTyping.contains(userId))
+        const hasBoth = agentsTyping.size > 0 && agentsViewingNotTyping.size > 0
 
         return (
             <div
                 className={classnames(css.viewersBanner, {
                     [css.hidden]: agentsViewing.size <= 0 && agentsTyping.size <= 0,
+                    [css.bothCollisions]: hasBoth
                 })}
             >
                 {
                     // we want to hide text during animation if there is no agents viewing
                     agentsTyping.size > 0 && (
-                        <span className="mr-3">
-                            <i className="material-icons mr-2">mode_edit</i>
-                            {viewsUtils.agentsTypingMessage(agentsTyping)}
-                        </span>
+                        <div className={css.collisionCategory}>
+                            <i className={classnames(css.icon, 'material-icons')}>mode_edit</i>
+
+                            <div className={css.collisionLabel}>
+                                Typing:
+                            </div>
+
+                            {agentsTyping.map((agent, index) => (
+                                <AgentLabel
+                                    key={index}
+                                    name={agent.get('name')}
+                                    email={agent.get('email')}
+                                    className={css.collisionAgent}
+                                />
+                            ))}
+                        </div>
                     )
                 }
                 {
                     // we want to hide text during animation if there is no agents viewing
                     agentsViewingNotTyping.size > 0 && (
-                        <span>
-                            <i className="material-icons mr-2">remove_red_eye</i>
-                            {viewsUtils.agentsViewingMessage(agentsViewingNotTyping)}
-                        </span>
+                        <div className={css.collisionCategory}>
+                            <i className={classnames(css.icon, 'material-icons')}>remove_red_eye</i>
+
+                            <div className={css.collisionLabel}>
+                                Viewing:
+                            </div>
+
+                            {agentsViewingNotTyping.map((agent, index) => (
+                                <AgentLabel
+                                    key={index}
+                                    name={agent.get('name')}
+                                    email={agent.get('email')}
+                                    className={css.collisionAgent}
+                                />
+                            ))}
+                        </div>
                     )
                 }
             </div>
@@ -252,6 +279,7 @@ export default class TicketView extends React.Component {
                         'mt-3': isCreating,
                     })}
                     ref="ticketContent"
+                    tabIndex="1"
                 >
                     {
                         !isCreating && (

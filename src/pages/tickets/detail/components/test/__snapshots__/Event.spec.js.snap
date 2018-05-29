@@ -15,8 +15,10 @@ exports[`Event component should display correctly a failed event for a Recharge 
         title="Fail"
       >
         <i
-          className="fa fa-fw fa-close"
-        />
+          className="material-icons"
+        >
+          close
+        </i>
       </div>
       <span
         className="actionName"
@@ -53,15 +55,21 @@ exports[`Event component should display correctly a failed event for a Recharge 
         name="Acme Support"
       />
       <Button
-        className="ml-1 p-0"
+        className="more"
         color="link"
         onClick={[Function]}
         tag="button"
+        title="More details"
       >
-        (details)
+        <i
+          className="material-icons md-2"
+        >
+          expand_more
+        </i>
       </Button>
     </div>
     <DatetimeLabel
+      className="date text-faded"
       dateTime="2017-12-07T01:01:34.502206+00:00"
       settings={
         Object {
@@ -71,7 +79,7 @@ exports[`Event component should display correctly a failed event for a Recharge 
     />
   </div>
   <Card
-    className="details hidden"
+    className="details d-none"
     tag="div"
   >
     <CardBody
@@ -124,8 +132,10 @@ exports[`Event component should display correctly a failed event for a Recharge 
         title="Fail"
       >
         <i
-          className="fa fa-fw fa-close"
-        />
+          className="material-icons"
+        >
+          close
+        </i>
       </div>
       <span
         className="actionName"
@@ -162,15 +172,21 @@ exports[`Event component should display correctly a failed event for a Recharge 
         name="Acme Support"
       />
       <Button
-        className="ml-1 p-0"
+        className="more"
         color="link"
         onClick={[Function]}
         tag="button"
+        title="More details"
       >
-        (details)
+        <i
+          className="material-icons md-2"
+        >
+          expand_more
+        </i>
       </Button>
     </div>
     <DatetimeLabel
+      className="date text-faded"
       dateTime="2017-12-07T01:01:34.502206+00:00"
       settings={
         Object {
@@ -180,7 +196,7 @@ exports[`Event component should display correctly a failed event for a Recharge 
     />
   </div>
   <Card
-    className="details hidden"
+    className="details d-none"
     tag="div"
   >
     <CardBody
@@ -226,8 +242,10 @@ exports[`Event component should display correctly a failed event for a Shopify I
         title="Fail"
       >
         <i
-          className="fa fa-fw fa-close"
-        />
+          className="material-icons"
+        >
+          close
+        </i>
       </div>
       <span
         className="actionName"
@@ -264,15 +282,21 @@ exports[`Event component should display correctly a failed event for a Shopify I
         name="Acme Support"
       />
       <Button
-        className="ml-1 p-0"
+        className="more"
         color="link"
         onClick={[Function]}
         tag="button"
+        title="More details"
       >
-        (details)
+        <i
+          className="material-icons md-2"
+        >
+          expand_more
+        </i>
       </Button>
     </div>
     <DatetimeLabel
+      className="date text-faded"
       dateTime="2017-12-07T01:01:34.502206+00:00"
       settings={
         Object {
@@ -282,7 +306,7 @@ exports[`Event component should display correctly a failed event for a Shopify I
     />
   </div>
   <Card
-    className="details hidden"
+    className="details d-none"
     tag="div"
   >
     <CardBody
@@ -342,8 +366,10 @@ exports[`Event component should display correctly a failed event for a Shopify O
         title="Fail"
       >
         <i
-          className="fa fa-fw fa-close"
-        />
+          className="material-icons"
+        >
+          close
+        </i>
       </div>
       <span
         className="actionName"
@@ -380,15 +406,21 @@ exports[`Event component should display correctly a failed event for a Shopify O
         name="Acme Support"
       />
       <Button
-        className="ml-1 p-0"
+        className="more"
         color="link"
         onClick={[Function]}
         tag="button"
+        title="More details"
       >
-        (details)
+        <i
+          className="material-icons md-2"
+        >
+          expand_more
+        </i>
       </Button>
     </div>
     <DatetimeLabel
+      className="date text-faded"
       dateTime="2017-12-07T01:01:34.502206+00:00"
       settings={
         Object {
@@ -398,7 +430,7 @@ exports[`Event component should display correctly a failed event for a Shopify O
     />
   </div>
   <Card
-    className="details hidden"
+    className="details d-none"
     tag="div"
   >
     <CardBody
@@ -444,8 +476,10 @@ exports[`Event component should display correctly a successful event for a Recha
         title="Success"
       >
         <i
-          className="fa fa-fw fa-check"
-        />
+          className="material-icons"
+        >
+          check
+        </i>
       </div>
       <span
         className="actionName"
@@ -482,15 +516,21 @@ exports[`Event component should display correctly a successful event for a Recha
         name="Acme Support"
       />
       <Button
-        className="ml-1 p-0"
+        className="more"
         color="link"
         onClick={[Function]}
         tag="button"
+        title="More details"
       >
-        (details)
+        <i
+          className="material-icons md-2"
+        >
+          expand_more
+        </i>
       </Button>
     </div>
     <DatetimeLabel
+      className="date text-faded"
       dateTime="2017-12-07T01:01:34.502206+00:00"
       settings={
         Object {
@@ -500,7 +540,7 @@ exports[`Event component should display correctly a successful event for a Recha
     />
   </div>
   <Card
-    className="details hidden"
+    className="details d-none"
     tag="div"
   >
     <CardBody
@@ -544,8 +584,10 @@ exports[`Event component should display correctly a successful event for a Recha
         title="Success"
       >
         <i
-          className="fa fa-fw fa-check"
-        />
+          className="material-icons"
+        >
+          check
+        </i>
       </div>
       <span
         className="actionName"
@@ -582,15 +624,21 @@ exports[`Event component should display correctly a successful event for a Recha
         name="Acme Support"
       />
       <Button
-        className="ml-1 p-0"
+        className="more"
         color="link"
         onClick={[Function]}
         tag="button"
+        title="More details"
       >
-        (details)
+        <i
+          className="material-icons md-2"
+        >
+          expand_more
+        </i>
       </Button>
     </div>
     <DatetimeLabel
+      className="date text-faded"
       dateTime="2017-12-07T01:01:34.502206+00:00"
       settings={
         Object {
@@ -600,7 +648,7 @@ exports[`Event component should display correctly a successful event for a Recha
     />
   </div>
   <Card
-    className="details hidden"
+    className="details d-none"
     tag="div"
   >
     <CardBody
@@ -637,8 +685,10 @@ exports[`Event component should display correctly a successful event for a Shopi
         title="Success"
       >
         <i
-          className="fa fa-fw fa-check"
-        />
+          className="material-icons"
+        >
+          check
+        </i>
       </div>
       <span
         className="actionName"
@@ -675,15 +725,21 @@ exports[`Event component should display correctly a successful event for a Shopi
         name="Acme Support"
       />
       <Button
-        className="ml-1 p-0"
+        className="more"
         color="link"
         onClick={[Function]}
         tag="button"
+        title="More details"
       >
-        (details)
+        <i
+          className="material-icons md-2"
+        >
+          expand_more
+        </i>
       </Button>
     </div>
     <DatetimeLabel
+      className="date text-faded"
       dateTime="2017-12-07T01:01:34.502206+00:00"
       settings={
         Object {
@@ -693,7 +749,7 @@ exports[`Event component should display correctly a successful event for a Shopi
     />
   </div>
   <Card
-    className="details hidden"
+    className="details d-none"
     tag="div"
   >
     <CardBody
@@ -744,8 +800,10 @@ exports[`Event component should display correctly a successful event for a Shopi
         title="Success"
       >
         <i
-          className="fa fa-fw fa-check"
-        />
+          className="material-icons"
+        >
+          check
+        </i>
       </div>
       <span
         className="actionName"
@@ -782,15 +840,21 @@ exports[`Event component should display correctly a successful event for a Shopi
         name="Acme Support"
       />
       <Button
-        className="ml-1 p-0"
+        className="more"
         color="link"
         onClick={[Function]}
         tag="button"
+        title="More details"
       >
-        (details)
+        <i
+          className="material-icons md-2"
+        >
+          expand_more
+        </i>
       </Button>
     </div>
     <DatetimeLabel
+      className="date text-faded"
       dateTime="2017-12-07T01:01:34.502206+00:00"
       settings={
         Object {
@@ -800,7 +864,7 @@ exports[`Event component should display correctly a successful event for a Shopi
     />
   </div>
   <Card
-    className="details hidden"
+    className="details d-none"
     tag="div"
   >
     <CardBody
