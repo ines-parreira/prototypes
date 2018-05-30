@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import _isEqual from 'lodash/isEqual'
 
-import {ContentState, EditorState, RichUtils} from 'draft-js'
+import {ContentState, EditorState, RichUtils, Modifier} from 'draft-js'
 import Editor, {composeDecorators} from 'draft-js-plugins-editor'
 // TODO switch to official source when published
 // https://github.com/draft-js-plugins/draft-js-plugins/issues/755
@@ -138,11 +138,22 @@ export default class RichField extends InputField<Props, State> {
         return this.state.isFocused
     }
 
-    _didHTMLChanged = (html: string) => {
+    _didHTMLChanged = (html?: string) => {
         return convertToHTML(this.state.editorState.getCurrentContent()) !== html
     }
 
-    _updateEditorState = (value: {html: string, text: string}, callback?: () => any) => {
+    _getContentState = (text: string, html?: string): ContentState => {
+        let contentState = ContentState.createFromText('')
+        if (html) {
+            contentState = convertFromHTML(html)
+        } else if (text) {
+            contentState = ContentState.createFromText(text)
+        }
+
+        return contentState
+    }
+
+    _updateEditorState = (value: {html?: string, text: string}, callback?: () => any) => {
         // if incoming value is the same as the current one, don't update the current one
         if (!this._didHTMLChanged(value.html)) {
             return
@@ -151,12 +162,7 @@ export default class RichField extends InputField<Props, State> {
         let {editorState} = this.state
 
         // generate a content state from incoming value
-        let contentState = ContentState.createFromText('')
-        if (value.html) {
-            contentState = convertFromHTML(value.html)
-        } else if (value.text) {
-            contentState = ContentState.createFromText(value.text)
-        }
+        const contentState = this._getContentState(value.text, value.html)
 
         // set content state in editor state
         editorState = EditorState.push(editorState, contentState)
@@ -194,6 +200,33 @@ export default class RichField extends InputField<Props, State> {
         if (handleDroppedFiles) {
             return handleDroppedFiles(...args)
         }
+    }
+
+    _handlePastedText = (text: string, html?: string, editorState: EditorState) => {
+        // detect content copied from draft-js itself, and don't convert it.
+        // fixes issues with doubling newlines
+        // https://github.com/gorgias/gorgias/pull/3373#issuecomment-392855428
+        // use the same method as draft-js to detect draft-js-content
+        // https://github.com/facebook/draft-js/blob/0ce20bcc6ac18b24b06945d54f1a4a692eee8cc9/src/component/handlers/edit/editOnPaste.js#L123
+        if (html && html.indexOf(this.editor.getEditorKey()) !== -1) {
+            return 'not-handled'
+        }
+
+        // manually convert pasted text/html with draft-convert to preserve newlines and empty blocks.
+        // by default draft-js's convertFromHTML tries to clean-up the html, and remove extra newlines.
+        // https://github.com/facebook/draft-js/issues/231
+        const contentState = Modifier.replaceWithFragment(
+            editorState.getCurrentContent(),
+            editorState.getSelection(),
+            this._getContentState(text, html).getBlockMap()
+        )
+
+        const newEditorState = EditorState.push(editorState, contentState)
+        this._onChange(newEditorState)
+
+        // draft-js-plugins-editor requires `handled`, instead of `true` like the native draft-js instance,
+        // to prevent the default behavior.
+        return 'handled'
     }
 
     _onChange = (editorState: EditorState) => {
@@ -287,6 +320,7 @@ export default class RichField extends InputField<Props, State> {
                                 plugins={this.plugins}
                                 handleKeyCommand={this._handleKeyCommand}
                                 handleDroppedFiles={this._handleDroppedFiles}
+                                handlePastedText={this._handlePastedText}
                                 readOnly={displayOnly}
                                 placeholder={this.state.placeholder}
                                 ref={(editor) => {
