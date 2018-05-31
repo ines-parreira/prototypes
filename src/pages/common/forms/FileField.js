@@ -16,7 +16,7 @@ export class FileField extends InputField {
     static propTypes = Object.assign({
         noPreview: PropTypes.bool.isRequired,
         returnFiles: PropTypes.bool.isRequired,
-        uploadType: PropTypes.string.isRequired,
+        uploadType: PropTypes.string,
     }, InputField.propTypes)
 
     static defaultProps = {
