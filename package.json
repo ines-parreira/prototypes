@@ -33,6 +33,7 @@
     "chart.js": "^2.6.0",
     "classnames": "^2.2.5",
     "clipboard": "^1.5.16",
+    "crypto": "^1.0.1",
     "decorate-component-with-props": "^1.0.2",
     "draft-convert": "^2.1.2",
     "draft-js": "^0.10.5",
@@ -83,7 +84,8 @@
     "sanitize-html": "^1.13.0",
     "slick-carousel": "^1.6.0",
     "socket.io-client": "^1.7.2",
-    "sortablejs": "gorgias/Sortable"
+    "sortablejs": "gorgias/Sortable",
+    "urlsafe-base64": "^1.0.0"
   },
   "devDependencies": {
     "axios-mock-adapter": "^1.6.1",

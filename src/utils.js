@@ -22,30 +22,25 @@ import escodegen from 'escodegen'
 import moment from 'moment-timezone'
 import linkifyhtml from 'linkifyjs/html'
 import sanitizeHtml from 'sanitize-html'
-import {Modifier, EditorState, ContentState} from 'draft-js'
-import {convertToHTML as _convertToHTML, convertFromHTML as _convertFromHTML} from 'draft-convert'
+import {ContentState, EditorState, Modifier} from 'draft-js'
+import {convertFromHTML as _convertFromHTML, convertToHTML as _convertToHTML} from 'draft-convert'
+// types
+import type {Iterable, Map} from 'immutable'
 // $FlowFixMe: will be fixed with immutable 4.x
 import Immutable, {fromJS} from 'immutable'
 import md5 from 'md5'
+import crypto from 'crypto'
+import URLSafeBase64 from 'urlsafe-base64'
 import linkifyIt from 'linkify-it'
 import htmlparser from 'htmlparser2'
 import TICKET_LANGUAGES from './config/ticketLanguages'
 
 import {ACTION_TEMPLATES} from './config'
 import {availableVariables} from './config/rules'
-import {AUTHORIZED_NOTIFICATION_TYPES} from './state/notifications/actions'
-
-// types
-import type {Map, Iterable} from 'immutable'
-import type {viewsStateType} from './state/views/types'
 import type {notificationType} from './state/notifications/actions'
-import type {
-    actionTemplateType,
-    attachmentType,
-    schemasType,
-    esprimaParse,
-    reactRouterRoute
-} from './types'
+import {AUTHORIZED_NOTIFICATION_TYPES} from './state/notifications/actions'
+import type {viewsStateType} from './state/views/types'
+import type {actionTemplateType, attachmentType, esprimaParse, reactRouterRoute, schemasType} from './types'
 
 type userType = { roles: Array<string | { name: string }> } | Map<*, *>
 type messageType = {
@@ -419,6 +414,18 @@ export function sanitizeHtmlDefault(html: string): string {
     })
 }
 
+const _proxyImageSignedURL = (url: string): string => {
+    if (!window.IMAGE_PROXY_PUBLIC_SIGN_KEY) {
+        throw new Error('window.IMAGE_PROXY_PUBLIC_SIGN_KEY is not defined')
+    }
+    //  The "s{signature}" option specifies an optional base64 encoded HMAC used to sign the remote URL in the request.
+    // The HMAC key used to verify signatures is provided to the imageproxy server on startup.
+    // https://godoc.org/willnorris.com/go/imageproxy#hdr-Signature
+    return 's' + URLSafeBase64.encode(
+        crypto.createHmac('sha256', window.IMAGE_PROXY_PUBLIC_SIGN_KEY).update(url).digest()
+    )
+}
+
 /**
  * Append a proxy URL before the images src so we can control their width and protect our agents privacy
  *
@@ -433,6 +440,7 @@ export const proxifyImages = (html: string, format: string = '1000x'): string =>
     if (!window.IMAGE_PROXY_URL) {
         throw new Error('window.IMAGE_PROXY_URL is not defined')
     }
+
 
     const selfClosing = ['img', 'br', 'hr', 'area', 'base', 'basefont', 'input', 'link', 'meta']
 
@@ -450,7 +458,18 @@ export const proxifyImages = (html: string, format: string = '1000x'): string =>
             attributesKeys.forEach((k) => {
                 let v = attributes[k]
                 if (name === 'img' && k === 'src') {
-                    v = `${window.IMAGE_PROXY_URL}${format}/${attributes.src}`
+                    try {
+                        const url = new URL(attributes.src)
+                        let escapedURL = `${url.origin}${url.pathname}`
+                        if (url.search) {
+                            // url.search always starts with `?` so we need to make sure we remove it before encoding
+                            escapedURL += `?${encodeURIComponent(url.search.substr(1))}`
+                        }
+
+                        v = `${window.IMAGE_PROXY_URL}${format},${_proxyImageSignedURL(escapedURL)}/${escapedURL}`
+                    } catch (error) {
+                        console.error(error)
+                    }
                 }
                 attributePairs.push(`${k}="${v}"`)
             })
@@ -1114,7 +1133,7 @@ export function unescapeTemplateVars(string: string): string {
 }
 
 export const transformSystemMessagesToNotifications = (systemMessages: Array<systemMessage>):
-                                                      Array<notificationType> => {
+    Array<notificationType> => {
     return systemMessages.map((systemMessage) => ({
         status: AUTHORIZED_NOTIFICATION_TYPES.indexOf(systemMessage[0]) > -1 ? systemMessage[0] : 'info',
         message: systemMessage[1],

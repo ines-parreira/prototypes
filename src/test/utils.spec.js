@@ -496,6 +496,7 @@ describe('global utils', () => {
     describe('proxifyImages', () => {
         beforeEach(() => {
             window.IMAGE_PROXY_URL = 'http://proxy-url/'
+            window.IMAGE_PROXY_PUBLIC_SIGN_KEY = 'test-key'
         })
 
         it('should not touch html with not img', () => {
@@ -503,11 +504,11 @@ describe('global utils', () => {
         })
 
         it('should work with no format', () => {
-            expect(utils.proxifyImages('<img src="hello" />')).toMatchSnapshot()
+            expect(utils.proxifyImages('<img src="http://gorgias.io/hello" />')).toMatchSnapshot()
         })
 
         it('should work with format', () => {
-            expect(utils.proxifyImages('<img src="hello" />'), '100x100').toMatchSnapshot()
+            expect(utils.proxifyImages('<img src="http://gorgias.io/hello" />', '100x100')).toMatchSnapshot()
         })
 
         it('should raise if IMAGE_PROXY_URL is not defined', () => {
@@ -517,6 +518,18 @@ describe('global utils', () => {
 
         it('should work with no src', () => {
             expect(utils.proxifyImages('<img alt="no-src" />')).toMatchSnapshot()
+        })
+
+        it('should work with direct image', () => {
+            expect(utils.proxifyImages('<img src="http://gorgias.io/image.jpg" />')).toMatchSnapshot()
+        })
+
+        it('should work with pathname', () => {
+            expect(utils.proxifyImages('<img src="http://gorgias.io/test/x.jpg" />')).toMatchSnapshot()
+        })
+
+        it('should work with search query', () => {
+            expect(utils.proxifyImages('<img src="http://gorgias.io/test/x.jpg?x=123&y=456#123" />')).toMatchSnapshot()
         })
 
         it('should work with self closing', () => {
@@ -529,7 +542,7 @@ describe('global utils', () => {
 <span>xxxxxsp <span>inside <span>inside a span</span></span> </span>
 <uknown-tag>11233</uknown-tag>
 <img alt="no-src">
-<img src="some-image" alt="bla ">
+<img src="http://some-image" alt="bla ">
 <strong><img src="image2"></strong>
 </div>
 `)).toMatchSnapshot()
