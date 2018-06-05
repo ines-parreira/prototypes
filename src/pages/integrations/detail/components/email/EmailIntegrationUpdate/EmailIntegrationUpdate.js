@@ -31,6 +31,7 @@ import BooleanField from '../../../../../common/forms/BooleanField'
 import RichFieldWithVariables from '../../../../../common/forms/RichFieldWithVariables'
 import PageHeader from '../../../../../common/components/PageHeader'
 
+
 class EmailIntegrationUpdate extends React.Component {
     constructor(props) {
         super(props)

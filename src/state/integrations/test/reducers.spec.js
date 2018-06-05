@@ -8,14 +8,14 @@ const state = {
     integrations: fromJS(integrationsState),
 }
 
-describe('integrations selectors', () => {
+describe('integrations reducers', () => {
     it('should handle DELETE_INTEGRATION_SUCCESS', () => {
         const action = {
             type: types.DELETE_INTEGRATION_SUCCESS,
             id: getEmailIntegrations(state).getIn([0, 'id'])
         }
         const newState = reducers(state.integrations, action)
-        const expected = getIntegrationsState(state).update('integrations', integrations => (
+        const expected = getIntegrationsState(state).update('integrations', (integrations) => (
             integrations.valueSeq().filter(int => int.get('id') !== action.id).toList()
         )).setIn(['state', 'loading', 'delete'], false)
 
@@ -25,6 +25,17 @@ describe('integrations selectors', () => {
     it('should handle DELETE_INTEGRATION_ERROR', () => {
         const newState = reducers(state.integrations, {type: types.DELETE_INTEGRATION_ERROR})
         const expected = getIntegrationsState(state).setIn(['state', 'loading', 'delete'], false)
+        expect(newState).toEqual(expected)
+    })
+
+    it('should set integration.meta.verified to true on EMAIL_INTEGRATION_VERIFIED', () => {
+        const newState = reducers(state.integrations, {
+            type: types.EMAIL_INTEGRATION_VERIFIED,
+            integrationId: getIntegrationsState(state).getIn(['integrations', 0, 'id'])
+        })
+        const expected = getIntegrationsState(state)
+            .setIn(['integration', 'meta', 'verified'], true)
+            .setIn(['integrations', 0, 'meta', 'verified'], true)
         expect(newState).toEqual(expected)
     })
 })

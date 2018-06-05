@@ -67,18 +67,6 @@ Array [
 ]
 `;
 
-exports[`actions new message dispatch setSender - with address 1`] = `
-Array [
-  Object {
-    "sender": Immutable.Map {
-      name: "Acme Support",
-      address: "support@acme.gorgias.io",
-},
-    "type": "NEW_MESSAGE_SET_SENDER",
-  },
-]
-`;
-
 exports[`actions new message prepare() email-forward should not set an attachment in the newMessage if it is already there 1`] = `
 Array [
   Object {
@@ -410,13 +398,20 @@ Array [
   },
   Object {
     "receivers": Object {
-      "to": Array [],
+      "to": Array [
+        Object {
+          "address": "a4sd684a6sd4a5sd",
+          "name": "instagramuser",
+        },
+      ],
     },
     "replaceAll": true,
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
   Object {
     "sender": Immutable.Map {
+      name: "myinstagrampage",
+      address: "1232353100194770",
 },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
@@ -638,13 +633,20 @@ Array [
   },
   Object {
     "receivers": Object {
-      "to": Array [],
+      "to": Array [
+        Object {
+          "address": "a4sd684a6sd4a5sd",
+          "name": "instagramuser",
+        },
+      ],
     },
     "replaceAll": true,
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
   Object {
     "sender": Immutable.Map {
+      name: "myinstagrampage",
+      address: "1232353100194770",
 },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
@@ -710,13 +712,20 @@ Array [
   },
   Object {
     "receivers": Object {
-      "to": Array [],
+      "to": Array [
+        Object {
+          "address": "a4sd684a6sd4a5sd",
+          "name": "instagramuser",
+        },
+      ],
     },
     "replaceAll": true,
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
   Object {
     "sender": Immutable.Map {
+      name: "myinstagrampage",
+      address: "1232353100194770",
 },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
@@ -1037,79 +1046,6 @@ Array [
 
 exports[`actions new message setResponseText() should always pass the args to the reducer 1`] = `
 Array [
-  Object {
-    "subject": "",
-    "type": "NEW_MESSAGE_SET_SUBJECT",
-  },
-  Object {
-    "messages": Immutable.List [
-      Immutable.Map {
-            source: Immutable.Map {
-                  to: Immutable.List [
-                        Immutable.Map {
-                              name: "Marc",
-                              address: "marc.wall@gmail.com",
-                        },
-                        Immutable.Map {
-                              name: "Acme Support",
-                              address: "support@acme.gorgias.io",
-                        },
-                  ],
-                  from: Immutable.Map {
-                        name: "Steve Frizeli",
-                        address: "marie.curie@gmail.com",
-                  },
-                  type: "chat",
-            },
-            id: 151,
-            from_agent: false,
-      },
-      Immutable.Map {
-            source: Immutable.Map {
-                  cc: Immutable.List [
-                  ],
-                  to: Immutable.List [
-                        Immutable.Map {
-                              name: "Steve Frizeli",
-                              address: "steve.frizeli@gmail.com",
-                        },
-                  ],
-                  from: Immutable.Map {
-                        name: "Acme Support",
-                        address: "support@acme.gorgias.io",
-                  },
-                  type: "email",
-            },
-            id: 152,
-            from_agent: true,
-      },
-],
-    "sourceType": "facebook-message",
-    "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
-  },
-  Object {
-    "extra": Object {},
-    "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
-  },
-  Object {
-    "receivers": Object {
-      "to": Array [
-        Object {
-          "address": "steve.frizeli@gmail.com",
-          "name": "Steve Frizeli",
-        },
-      ],
-    },
-    "replaceAll": true,
-    "type": "NEW_MESSAGE_SET_RECEIVERS",
-  },
-  Object {
-    "sender": Immutable.Map {
-      name: "Acme Support",
-      address: "support@acme.gorgias.io",
-},
-    "type": "NEW_MESSAGE_SET_SENDER",
-  },
   Object {
     "appliedMacro": undefined,
     "args": Immutable.Map {
@@ -1603,6 +1539,18 @@ Array [
 },
     "ticketId": 1,
     "type": "setResponseText",
+  },
+]
+`;
+
+exports[`actions new message setSender action with address 1`] = `
+Array [
+  Object {
+    "sender": Immutable.Map {
+      name: "Acme Support",
+      address: "support@acme.gorgias.io",
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
   },
 ]
 `;
@@ -2210,6 +2158,8 @@ Array [
   },
   Object {
     "sender": Immutable.Map {
+      name: "Acme Support",
+      address: "support@acme.gorgias.io",
 },
     "type": "NEW_MESSAGE_SET_SENDER",
   },

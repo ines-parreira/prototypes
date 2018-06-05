@@ -183,7 +183,8 @@ export const integrationsState = {
                 signature: {
                     text: 'cheers, {{current_user.first_name}}',
                     html: 'cheers, <strong>{{current_user.first_name}}</strong>'
-                }
+                },
+                verified: true
             },
             facebook: null,
             http: null,
@@ -207,12 +208,38 @@ export const integrationsState = {
             mappings: [],
             meta: {
                 address: 'contact@acme.com',
-                preferred: true
+                preferred: true,
+                verified: true
             },
             facebook: null,
             http: null,
             deactivated_datetime: null,
             name: 'Acme Contact',
+            user: {
+                id: 2
+            },
+            uri: '/api/integrations/1/',
+            decoration: null,
+            locked_datetime: null,
+            created_datetime: '2017-02-07T06:07:43.481450+00:00',
+            connections: [],
+            type: 'email',
+            id: 5,
+            description: null,
+            updated_datetime: '2017-02-07T06:07:43.481517+00:00',
+            smooch: null
+        }, {
+            deleted_datetime: null,
+            mappings: [],
+            meta: {
+                address: 'unverified@gorgias.io',
+                preferred: true,
+                verified: false
+            },
+            facebook: null,
+            http: null,
+            deactivated_datetime: null,
+            name: 'Acme Unverified',
             user: {
                 id: 2
             },

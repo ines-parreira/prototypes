@@ -1,7 +1,14 @@
 import {
-    getIntegrationsState, getIntegrations, getEmailIntegrations, getChannels,
-    getShopifyIntegrationsWithoutChat, getChatIntegrationCampaigns, getChatIntegrationCampaignById, getChannelByTypeAndAddress,
-    getChannelSignature
+    getIntegrationsState,
+    getIntegrations,
+    getEmailIntegrations,
+    getChannels,
+    getShopifyIntegrationsWithoutChat,
+    getChatIntegrationCampaigns,
+    getChatIntegrationCampaignById,
+    getChannelByTypeAndAddress,
+    getChannelSignature,
+    getCurrentIntegration
 } from '../selectors'
 import {integrationsState} from '../../../fixtures/integrations'
 import {fromJS} from 'immutable'
@@ -178,6 +185,31 @@ describe('integrations selectors', () => {
             const res = getChatIntegrationCampaignById(3, 'una-campagnita-123')(state)
 
             expect(res.toJS()).toEqual(expectedCampaign)
+        })
+    })
+
+    describe('getCurrentIntegration selector', () => {
+        it('should return fromJS({}) because there is no current integration', () => {
+            const state = {
+                integrations: fromJS({
+                    integrations: [{id: 1}, {id: 2}],
+                    integration: null
+                })
+            }
+
+            expect(getCurrentIntegration(state).toJS()).toEqual({})
+        })
+
+        it('should return the current integration', () => {
+            const currentIntegration = {id: 3}
+            const state = {
+                integrations: fromJS({
+                    integrations: [{id: 1}, {id: 2}],
+                    integration: currentIntegration
+                })
+            }
+
+            expect(getCurrentIntegration(state).toJS()).toEqual(currentIntegration)
         })
     })
 })

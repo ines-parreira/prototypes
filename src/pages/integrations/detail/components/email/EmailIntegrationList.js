@@ -28,17 +28,17 @@ export default class EmailIntegrationList extends React.Component {
 
         const isSubmitting = loading.get('updateIntegration')
 
-        const integrationToItemDisplay = (int) => {
-            const active = !int.get('deactivated_datetime')
-            const isRowSubmitting = isSubmitting === int.get('id')
-            const isGmail = int.get('type') === 'gmail'
+        const integrationToItemDisplay = (integration) => {
+            const active = !integration.get('deactivated_datetime')
+            const isRowSubmitting = isSubmitting === integration.get('id')
+            const isGmail = integration.get('type') === 'gmail'
 
-            const isForwardingOn = int.getIn(['meta', 'is_forwarding_on'])
+            const isVerified = integration.getIn(['meta', 'verified'], true)
 
-            const editLink = `/app/settings/integrations/email/${int.get('id')}`
+            let editLink = `/app/settings/integrations/email/${integration.get('id')}${isVerified ? '' : '/verification'}`
 
             return (
-                <tr key={int.get('id')}>
+                <tr key={integration.get('id')}>
                     <td className="smallest">
                         {
                             isGmail ? (
@@ -56,9 +56,9 @@ export default class EmailIntegrationList extends React.Component {
                     <td className="link-full-td">
                         <Link to={editLink}>
                             <div>
-                                <b className="mr-2">{int.get('name')}</b>
+                                <b className="mr-2">{integration.get('name')}</b>
                                 <span className="text-faded">
-                                    {int.getIn(['meta', 'address'])}
+                                    {integration.getIn(['meta', 'address'])}
                                 </span>
                             </div>
                         </Link>
@@ -70,7 +70,7 @@ export default class EmailIntegrationList extends React.Component {
                                     <Button
                                         tag="a"
                                         color="success"
-                                        href={`/integrations/gmail/auth?integration_id=${int.get('id')}`}
+                                        href={`/integrations/gmail/auth?integration_id=${integration.get('id')}`}
                                         className={classnames({
                                             'btn-loading': isRowSubmitting,
                                         })}
@@ -81,19 +81,13 @@ export default class EmailIntegrationList extends React.Component {
                             }
                         </div>
                     </td>
+
                     <td className="smallest align-middle">
                         {
-                            !isGmail && !isForwardingOn && (
+                            !isGmail && !isVerified && (
                                 <div>
-                                    <i className={classnames('fa fa-circle', css.forwardingIcon)}/>
-                                    No recent email.{' '}
-                                    <a
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        href="http://docs.gorgias.io/general/how-to-set-up-email-forwarding"
-                                    >
-                                        Is forwarding on?
-                                    </a>
+                                    <i className={classnames('material-icons mr-2 red')}>close</i>
+                                    Not verified
                                 </div>
                             )
                         }

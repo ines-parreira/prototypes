@@ -15,6 +15,11 @@ export const getIntegrations = createSelector(
     (state) => state.get('integrations', fromJS([]))
 )
 
+export const getCurrentIntegration = createSelector(
+    [getIntegrationsState],
+    (state) => state.get('integration') || fromJS({})
+)
+
 export const getActiveIntegrations = createSelector(
     [getIntegrations],
     (state) => state.filter((i) => !i.get('deactivated_datetime'))
@@ -78,7 +83,8 @@ export const getChannels = createSelector(
                 name: integration.get('name'),
                 address: integration.getIn(['meta', 'address']),
                 preferred: integration.getIn(['meta', 'preferred']),
-                signature: nestedReplace(integration.getIn(['meta', 'signature']), state)
+                signature: nestedReplace(integration.getIn(['meta', 'signature']), state),
+                verified: integration.get('type') !== 'email' || integration.getIn(['meta', 'verified'], true) // todo(@martin): change default to false
             })
         })
     }

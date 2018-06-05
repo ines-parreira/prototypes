@@ -11,10 +11,10 @@ import * as currentAccountConstants from '../state/currentAccount/constants'
 import * as socketConstants from './socketConstants'
 
 import {isCurrentlyOnTicket} from '../utils'
-import {SID_UPDATED} from './socketConstants'
 
 import {store as reduxStore} from '../init'
 import {MAX_RECENT_CHATS} from './chats'
+import {onVerify} from '../state/integrations/actions'
 
 /**
  * Events that can be sent to server via socket
@@ -118,6 +118,15 @@ export const joinEvents = [{
         return {
             clientId: window.CLIENT_ID,
             dataType: 'View',
+            data: parseInt(id),
+        }
+    },
+}, {
+    name: 'integration',
+    dataToSend: function (id) {
+        return {
+            clientId: window.CLIENT_ID,
+            dataType: 'Integration',
             data: parseInt(id),
         }
     },
@@ -255,7 +264,7 @@ export const receivedEvents = [{
         })
     },
 }, {
-    name: SID_UPDATED,
+    name: socketConstants.SID_UPDATED,
     onReceive: function () {
         return this.send(socketConstants.SID_UPDATED)
     },
@@ -295,6 +304,11 @@ export const receivedEvents = [{
         }
 
         return reduxStore.dispatch(chatsActions.addChat(ticket, false))
+    }
+}, {
+    name: socketConstants.EMAIL_INTEGRATION_VERIFIED,
+    onReceive: function(json) {
+        onVerify(reduxStore.dispatch, json.integration_id)
     }
 }
 ]

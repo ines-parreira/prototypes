@@ -9,6 +9,7 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 
 import * as actions from '../actions'
 import {initialState} from '../reducers'
+import {initialState as newMessageState} from '../../newMessage/reducers'
 import {findAndSetRequester} from '../actions'
 
 jest.addMatchers(immutableMatchers)
@@ -80,7 +81,9 @@ describe('ticket actions', () => {
                 ticket: fromJS({
                     id: 1,
                     messages: [],
-                })
+                }),
+                newMessage: newMessageState
+                    .setIn(['newMessage', 'source', 'type'])
             })
 
             return store.dispatch(actions.mergeTicket(ticket))

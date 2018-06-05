@@ -1,6 +1,8 @@
-import React, {PropTypes} from 'react'
-import {Link, withRouter} from 'react-router'
+// @flow
+import React from 'react'
+import {Link, withRouter, browserHistory} from 'react-router'
 import Clipboard from 'clipboard'
+import classnames from 'classnames'
 import {connect} from 'react-redux'
 import {
     Button,
@@ -23,6 +25,7 @@ import groups from './../../../../../../../img/integrations/google-groups.svg'
 import * as notificationActions from '../../../../../../state/notifications/actions'
 import * as integrationActions from '../../../../../../state/integrations/actions'
 import PageHeader from '../../../../../common/components/PageHeader'
+import type {dispatchType} from '../../../../../../state/types'
 
 const servicesWithTutorials = [
     {
@@ -52,9 +55,24 @@ const servicesWithTutorials = [
     }
 ]
 
-class EmailIntegrationCreateForwarding extends React.Component {
+type Props = {
+    domain: string,
+    notify: (Object) => void,
+    sendVerificationEmail: () => Promise<dispatchType>,
+    integration: Object,
+    actions: Object,
+    location: Object,
+}
+
+type State = {
+    isCopied: boolean,
+    isLoading: boolean
+}
+
+export class EmailIntegrationCreateForwarding extends React.Component<Props, State> {
     state = {
         isCopied: false,
+        isLoading: false,
     }
 
     componentDidUpdate() {
@@ -70,8 +88,18 @@ class EmailIntegrationCreateForwarding extends React.Component {
         }
     }
 
+    _onSubmit = () => {
+        const {integration} = this.props
+        this.setState({isLoading: true})
+        this.props.sendVerificationEmail().then(() => {
+            this.setState({isLoading: false})
+            browserHistory.push(`/app/settings/integrations/email/${integration.get('id')}/verification`)
+        })
+    }
+
     _renderInstructions = () => {
         const {domain, integration} = this.props
+        const {isLoading} = this.state
         const address = integration.getIn(['meta', 'address'], '')
 
         return (
@@ -131,16 +159,22 @@ class EmailIntegrationCreateForwarding extends React.Component {
 
                 <Button
                     color="success"
+                    disabled={isLoading}
                     tag={Link}
-                    to={`/app/settings/integrations/email/${integration.get('id')}`}
+                    onClick={this._onSubmit}
+                    className={classnames({
+                        'btn-loading': isLoading
+                    })}
                 >
-                    I added email forwarding
+                    Verify email forwarding
                 </Button>
             </div>
         )
     }
 
     render() {
+        const {integration} = this.props
+
         return (
             <div className="full-width">
                 <PageHeader title={(
@@ -152,7 +186,10 @@ class EmailIntegrationCreateForwarding extends React.Component {
                             <Link to="/app/settings/integrations/email">Email</Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem active>
-                            Add an email address
+                            {integration.get('name')}{' '}
+                            <span className="text-faded">
+                                {integration.getIn(['meta', 'address'])}
+                            </span>
                         </BreadcrumbItem>
                     </Breadcrumb>
                 )}/>
@@ -169,14 +206,6 @@ class EmailIntegrationCreateForwarding extends React.Component {
     }
 }
 
-EmailIntegrationCreateForwarding.propTypes = {
-    domain: PropTypes.string.isRequired,
-    notify: PropTypes.func.isRequired,
-    integration: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
-}
-
 
 const mapStateToProps = (state) => {
     return {
@@ -185,7 +214,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-    importEmails: integrationActions.importEmails,
+    sendVerificationEmail: integrationActions.sendVerificationEmail,
     notify: notificationActions.notify,
 }
 

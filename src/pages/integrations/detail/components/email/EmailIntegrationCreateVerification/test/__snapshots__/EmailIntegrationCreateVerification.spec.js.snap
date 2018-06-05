@@ -1,0 +1,147 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EmailIntegrationCreateVerification component should render 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/email"
+          >
+            Email
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          my integration
+           
+          <span
+            className="text-faded"
+          >
+            myintegration@gorgias.io
+          </span>
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <h1>
+      <i
+        className="material-icons"
+      />
+      Verification in progress...
+    </h1>
+    <div>
+      <Alert
+        className="mb-4"
+        closeAriaLabel="Close"
+        color="info"
+        isOpen={true}
+        tag="div"
+        transition={
+          Object {
+            "appear": true,
+            "baseClass": "fade",
+            "baseClassActive": "show",
+            "enter": true,
+            "exit": true,
+            "in": true,
+            "mountOnEnter": false,
+            "onEnter": [Function],
+            "onEntered": [Function],
+            "onEntering": [Function],
+            "onExit": [Function],
+            "onExited": [Function],
+            "onExiting": [Function],
+            "tag": "div",
+            "timeout": 150,
+            "unmountOnExit": true,
+          }
+        }
+      >
+        <i
+          className="fa fa-refresh fa-spin mr-2"
+        />
+        We're waiting to receive your verification email.
+      </Alert>
+      <p>
+        If you haven't set up the forwarding yet, you'll find the instructions
+         
+        <Link
+          onlyActiveOnIndex={false}
+          style={Object {}}
+          to="/app/settings/integrations/email/1/forwarding"
+        >
+          there
+        </Link>
+        .
+        <br />
+        If you have setup forwarding after having received the verification email, click on the button
+         
+        below to re-send it.
+      </p>
+      <Button
+        className=""
+        color="secondary"
+        disabled={false}
+        onClick={[Function]}
+        tag="button"
+        type="button"
+      >
+        <i
+          className="material-icons"
+        >
+          mail
+        </i>
+         
+        Re-send verification email
+      </Button>
+      <ConfirmButton
+        className="float-right"
+        color="secondary"
+        confirm={[Function]}
+        content="Are you sure you want to delete this integration?"
+        disabled={false}
+        loading={false}
+        placement="bottom"
+        skip={false}
+        title="Are you sure?"
+        type="button"
+      >
+        <i
+          className="material-icons mr-1 text-danger"
+        >
+          delete
+        </i>
+        Delete email address
+      </ConfirmButton>
+    </div>
+  </Container>
+</div>
+`;

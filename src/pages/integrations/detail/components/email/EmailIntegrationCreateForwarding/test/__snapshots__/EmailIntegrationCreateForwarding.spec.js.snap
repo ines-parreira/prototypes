@@ -1,0 +1,407 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EmailIntegrationCreateForwarding component should render -copied!- button because the email address has just been copied 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/email"
+          >
+            Email
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          my integration
+           
+          <span
+            className="text-faded"
+          >
+            myintegration@gorgias.io
+          </span>
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <h1>
+      Let's setup email forwarding
+    </h1>
+    <div>
+      <div
+        className="mb-4"
+      >
+        <p>
+          Forward emails from 
+          <b>
+            myintegration@gorgias.io
+          </b>
+           to the address below.
+        </p>
+        <InputGroup
+          tag="div"
+        >
+          <Input
+            id="forwarding-email"
+            readOnly={true}
+            type="text"
+            value="myintegration@undefined.gorgias.io"
+          />
+          <InputGroupAddon
+            addonType="append"
+            tag="div"
+          >
+            <Button
+              color="primary"
+              data-clipboard-target="#forwarding-email"
+              id="copy-forwarding-email"
+              tag="button"
+            >
+              <i
+                className="fa fa-fw fa-files-o mr-2"
+              />
+              Copied!
+            </Button>
+          </InputGroupAddon>
+        </InputGroup>
+      </div>
+      <div
+        className="mb-4"
+      >
+        <p>
+          Below are some handful tutorial to setup email forwarding depending on your email provider:
+        </p>
+        <div
+          className="d-flex flex-wrap"
+        >
+          <Button
+            className="forwardingCard"
+            color="secondary"
+            href="http://docs.gorgias.io/general/how-to-set-up-email-forwarding#G_Suite_Groups"
+            size="lg"
+            tag="a"
+            target="_blank"
+          >
+            <img
+              src="test-file-stub"
+            />
+            <div>
+              Google Groups
+            </div>
+          </Button>
+          <Button
+            className="forwardingCard"
+            color="secondary"
+            href="http://docs.gorgias.io/general/how-to-set-up-email-forwarding#Outlook.com"
+            size="lg"
+            tag="a"
+            target="_blank"
+          >
+            <img
+              src="test-file-stub"
+            />
+            <div>
+              Outlook
+            </div>
+          </Button>
+          <Button
+            className="forwardingCard"
+            color="secondary"
+            href="http://docs.gorgias.io/general/how-to-set-up-email-forwarding#Office_365"
+            size="lg"
+            tag="a"
+            target="_blank"
+          >
+            <img
+              src="test-file-stub"
+            />
+            <div>
+              Office 365
+            </div>
+          </Button>
+          <Button
+            className="forwardingCard"
+            color="secondary"
+            href="http://docs.gorgias.io/general/how-to-set-up-email-forwarding#Microsoft_Exchange"
+            size="lg"
+            tag="a"
+            target="_blank"
+          >
+            <img
+              src="test-file-stub"
+            />
+            <div>
+              Microsoft Exchange
+            </div>
+          </Button>
+          <Button
+            className="forwardingCard"
+            color="secondary"
+            href="http://docs.gorgias.io/general/how-to-set-up-email-forwarding#Zoho_Mail"
+            size="lg"
+            tag="a"
+            target="_blank"
+          >
+            <img
+              src="test-file-stub"
+            />
+            <div>
+              Zoho Mail
+            </div>
+          </Button>
+        </div>
+        <p>
+          Using GMail or G Suite?
+           
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/email/new"
+          >
+            Connect your account in one click.
+          </Link>
+        </p>
+      </div>
+      <Button
+        className=""
+        color="success"
+        disabled={false}
+        onClick={[Function]}
+        tag={[Function]}
+      >
+        Verify email forwarding
+      </Button>
+    </div>
+  </Container>
+</div>
+`;
+
+exports[`EmailIntegrationCreateForwarding component should render 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/email"
+          >
+            Email
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          my integration
+           
+          <span
+            className="text-faded"
+          >
+            myintegration@gorgias.io
+          </span>
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <h1>
+      Let's setup email forwarding
+    </h1>
+    <div>
+      <div
+        className="mb-4"
+      >
+        <p>
+          Forward emails from 
+          <b>
+            myintegration@gorgias.io
+          </b>
+           to the address below.
+        </p>
+        <InputGroup
+          tag="div"
+        >
+          <Input
+            id="forwarding-email"
+            readOnly={true}
+            type="text"
+            value="myintegration@undefined.gorgias.io"
+          />
+          <InputGroupAddon
+            addonType="append"
+            tag="div"
+          >
+            <Button
+              color="primary"
+              data-clipboard-target="#forwarding-email"
+              id="copy-forwarding-email"
+              tag="button"
+            >
+              <i
+                className="fa fa-fw fa-files-o mr-2"
+              />
+              Copy
+            </Button>
+          </InputGroupAddon>
+        </InputGroup>
+      </div>
+      <div
+        className="mb-4"
+      >
+        <p>
+          Below are some handful tutorial to setup email forwarding depending on your email provider:
+        </p>
+        <div
+          className="d-flex flex-wrap"
+        >
+          <Button
+            className="forwardingCard"
+            color="secondary"
+            href="http://docs.gorgias.io/general/how-to-set-up-email-forwarding#G_Suite_Groups"
+            size="lg"
+            tag="a"
+            target="_blank"
+          >
+            <img
+              src="test-file-stub"
+            />
+            <div>
+              Google Groups
+            </div>
+          </Button>
+          <Button
+            className="forwardingCard"
+            color="secondary"
+            href="http://docs.gorgias.io/general/how-to-set-up-email-forwarding#Outlook.com"
+            size="lg"
+            tag="a"
+            target="_blank"
+          >
+            <img
+              src="test-file-stub"
+            />
+            <div>
+              Outlook
+            </div>
+          </Button>
+          <Button
+            className="forwardingCard"
+            color="secondary"
+            href="http://docs.gorgias.io/general/how-to-set-up-email-forwarding#Office_365"
+            size="lg"
+            tag="a"
+            target="_blank"
+          >
+            <img
+              src="test-file-stub"
+            />
+            <div>
+              Office 365
+            </div>
+          </Button>
+          <Button
+            className="forwardingCard"
+            color="secondary"
+            href="http://docs.gorgias.io/general/how-to-set-up-email-forwarding#Microsoft_Exchange"
+            size="lg"
+            tag="a"
+            target="_blank"
+          >
+            <img
+              src="test-file-stub"
+            />
+            <div>
+              Microsoft Exchange
+            </div>
+          </Button>
+          <Button
+            className="forwardingCard"
+            color="secondary"
+            href="http://docs.gorgias.io/general/how-to-set-up-email-forwarding#Zoho_Mail"
+            size="lg"
+            tag="a"
+            target="_blank"
+          >
+            <img
+              src="test-file-stub"
+            />
+            <div>
+              Zoho Mail
+            </div>
+          </Button>
+        </div>
+        <p>
+          Using GMail or G Suite?
+           
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/email/new"
+          >
+            Connect your account in one click.
+          </Link>
+        </p>
+      </div>
+      <Button
+        className=""
+        color="success"
+        disabled={false}
+        onClick={[Function]}
+        tag={[Function]}
+      >
+        Verify email forwarding
+      </Button>
+    </div>
+  </Container>
+</div>
+`;

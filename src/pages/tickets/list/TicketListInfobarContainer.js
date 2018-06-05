@@ -36,11 +36,11 @@ class TicketListInfobarContainer extends React.Component<Props> {
     render() {
         const {agents, currentUser, emailIntegrations, hasIntegrationsOfTypes} = this.props
 
-        const hasReceivedEmail = emailIntegrations
-            .filter(integration => !integration.getIn(['meta', 'address']).endsWith('.gorgias.io')) // remove generated gorgias addresses
-            .some(integration => {
+        const hasVerifiedEmailIntegration = emailIntegrations
+            .filter((integration) => !integration.getIn(['meta', 'address']).endsWith('.gorgias.io')) // remove generated gorgias addresses
+            .some((integration) => {
                 // gmail is connected or forwarding is on
-                return integration.get('type') === 'gmail' || integration.getIn(['meta', 'is_forwarding_on'])
+                return integration.get('type') === 'gmail' || integration.getIn(['meta', 'verified'])
             })
 
         const hasConnectedFacebook = hasIntegrationsOfTypes('facebook')
@@ -79,17 +79,17 @@ class TicketListInfobarContainer extends React.Component<Props> {
                             className={css.button}
                             onClick={() => {
                                 segmentTracker.logEvent(segmentTracker.EVENTS.ONBOARDING_WIDGET_CLICKED, {
-                                    name: 'Receive 1st email',
+                                    name: 'Connect an email address',
                                 })
                             }}
                         >
                             <i
                                 className={classnames('fa fa-fw fa-check-circle', {
-                                    'text-success': hasReceivedEmail,
-                                    'text-faded': !hasReceivedEmail,
+                                    'text-success': hasVerifiedEmailIntegration,
+                                    'text-faded': !hasVerifiedEmailIntegration,
                                 })}
                             />
-                            <div>Receive 1st email</div>
+                            <div>Connect an email address</div>
                         </Link>
                         <Link
                             to="/app/settings/integrations/smooch_inside"

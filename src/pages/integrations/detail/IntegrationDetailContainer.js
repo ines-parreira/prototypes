@@ -36,6 +36,7 @@ import EmailIntegrationList from './components/email/EmailIntegrationList'
 import EmailIntegrationUpdate from './components/email/EmailIntegrationUpdate/index'
 import EmailIntegrationCreate from './components/email/EmailIntegrationCreate/index'
 import EmailIntegrationCreateForwarding from './components/email/EmailIntegrationCreateForwarding/index'
+import EmailIntegrationCreateVerification from './components/email/EmailIntegrationCreateVerification'
 import ChatIntegrationCampaigns from './components/chat/ChatIntegrationCampaigns/ChatIntegrationCampaigns'
 import CampaignDetail from './components/chat/ChatIntegrationCampaigns/CampaignDetail/CampaignDetail'
 import HTTPIntegrationOverview from './components/http/HTTPIntegrationOverview/HTTPIntegrationOverview'
@@ -74,6 +75,7 @@ class IntegrationDetailContainer extends React.Component {
         const isUpdate = isDetail && params.integrationId !== 'new'
         const isSetup = params.integrationId === 'setup'
         const isForwarding = params.extra === 'forwarding'
+        const isVerification = params.extra === 'verification'
         let integration = integrations.get('integration', fromJS({}))
 
         // clear cached integration
@@ -112,7 +114,15 @@ class IntegrationDetailContainer extends React.Component {
                                 <EmailIntegrationCreateForwarding
                                     actions={actions}
                                     integration={commonProps.integration}
-                                    loading={commonProps.loading}
+                                />
+                            )
+                        }
+
+                        if (isVerification) {
+                            return (
+                                <EmailIntegrationCreateVerification
+                                    actions={actions}
+                                    integration={commonProps.integration}
                                 />
                             )
                         }

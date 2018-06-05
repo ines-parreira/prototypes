@@ -36,180 +36,212 @@ describe('actions', () => {
         const channels = integrationSelectors.getChannels({integrations: fromJS(integrationsState)})
         let store
 
-        it('dispatch setSender - with address', () => {
-            store = mockStore({
-                integrations: fromJS(integrationsState),
-                ticket: emailTicket,
-                newMessage: initialState,
-            })
-            store.dispatch(actions.setSender())
-
-            expect(store.getActions()).toMatchSnapshot()
-        })
-
-        it('dispatch setSender - `from` field from last message from agent (chat, messenger)', () => {
-            const from = smoochTicket.getIn(['messages', 1, 'source', 'from'])
-            const expectedSender = fromJS({
-                name: from.get('name'),
-                address: from.get('address'),
-            })
-            store = mockStore({
-                integrations: fromJS(integrationsState),
-                ticket: smoochTicket,
-                newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'chat'),
-            })
-            store.dispatch(actions.setSender())
-
-            expect(store.getActions()).toEqual([{
-                type: types.NEW_MESSAGE_SET_SENDER,
-                sender: expectedSender
-            }])
-        })
-
-        it('dispatch setSender - `to` field from last message from customer (chat, messenger)', () => {
-            // delete last message from agent
-            const _smoochTicket = smoochTicket.deleteIn(['messages', 1])
-            const from = _smoochTicket.getIn(['messages', 0, 'source', 'to', 0])
-            const expectedSender = fromJS({
-                name: from.get('name'),
-                address: from.get('address'),
-            })
-            store = mockStore({
-                integrations: fromJS(integrationsState),
-                ticket: _smoochTicket,
-                newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'chat'),
-            })
-            store.dispatch(actions.setSender())
-
-            expect(store.getActions()).toEqual([{
-                type: types.NEW_MESSAGE_SET_SENDER,
-                sender: expectedSender
-            }])
-        })
-
-        it('dispatch setSender - preferred channel', () => {
-            // remove messages, to simulate a new ticket
-            const _emailTicket = emailTicket.set('messages', fromJS([]))
-            const preferred = getPreferredChannel('email', channels)
-            const expectedSender = fromJS({
-                name: preferred.get('name'),
-                address: preferred.get('address'),
-            })
-            store = mockStore({
-                integrations: fromJS(integrationsState),
-                ticket: _emailTicket,
-                newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
-            })
-            store.dispatch(actions.setSender())
-
-            expect(store.getActions()).toEqual([{
-                type: types.NEW_MESSAGE_SET_SENDER,
-                sender: expectedSender
-            }])
-        })
-
-        it('dispatch setSender - `from` field from last message from agent', () => {
-            const from = emailTicket.getIn(['messages', 1, 'source', 'from'])
-            const expectedSender = fromJS({
-                name: from.get('name'),
-                address: from.get('address'),
-            })
-            store = mockStore({
-                integrations: fromJS(integrationsState),
-                ticket: emailTicket,
-                newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
-            })
-            store.dispatch(actions.setSender())
-
-            expect(store.getActions()).toEqual([{
-                type: types.NEW_MESSAGE_SET_SENDER,
-                sender: expectedSender
-            }])
-        })
-
-        it('dispatch setSender - `to` field from last message from customer (email found in `to`)', () => {
-            // delete last message from agent
-            const _emailTicket = emailTicket.deleteIn(['messages', 1])
-            const from = _emailTicket.getIn(['messages', 0, 'source', 'to', 1])
-            const expectedSender = fromJS({
-                name: from.get('name'),
-                address: from.get('address'),
-            })
-            store = mockStore({
-                integrations: fromJS(integrationsState),
-                ticket: _emailTicket,
-                newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
-            })
-            store.dispatch(actions.setSender())
-
-            expect(store.getActions()).toEqual([{
-                type: types.NEW_MESSAGE_SET_SENDER,
-                sender: expectedSender
-            }])
-        })
-
-        it('should return channel in `cc` field from last message from customer (email found in `cc`)', () => {
-            // delete last message from agent
-            // and move `To` addresses in `Cc` and remove `To` addresses
-            const _emailTicket = emailTicket.deleteIn(['messages', 1])
-                .updateIn(['messages', 0, 'source'], source => {
-                    return source.set('cc', source.get('to'))
-                        .set('to', fromJS([]))
+        describe('setSender action', () => {
+            it('with address', () => {
+                store = mockStore({
+                    integrations: fromJS(integrationsState),
+                    ticket: emailTicket,
+                    newMessage: initialState,
                 })
-            const from = _emailTicket.getIn(['messages', 0, 'source', 'cc', 1])
-            const expectedSender = fromJS({
-                name: from.get('name'),
-                address: from.get('address'),
-            })
-            store = mockStore({
-                integrations: fromJS(integrationsState),
-                ticket: _emailTicket,
-                newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
-            })
-            store.dispatch(actions.setSender())
+                store.dispatch(actions.setSender())
 
-            expect(store.getActions()).toEqual([{
-                type: types.NEW_MESSAGE_SET_SENDER,
-                sender: expectedSender
-            }])
-        })
-
-        it('dispatch setSender - preferred email (email not found in `to`)', () => {
-            // remove address that can match
-            const _emailTicket = emailTicket.deleteIn(['messages', 1])
-            const from = getPreferredChannel('email', channels)
-            const expectedSender = fromJS({
-                name: from.get('name'),
-                address: from.get('address'),
+                expect(store.getActions()).toMatchSnapshot()
             })
-            store = mockStore({
-                integrations: fromJS(integrationsState),
-                ticket: _emailTicket,
-                newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
-            })
-            store.dispatch(actions.setSender())
 
-            expect(store.getActions()).toEqual([{
-                type: types.NEW_MESSAGE_SET_SENDER,
-                sender: expectedSender
-            }])
-        })
-
-        it('dispatch setSender - empty name and address (internal-note)', () => {
-            store = mockStore({
-                integrations: fromJS(integrationsState),
-                ticket: emailTicket,
-                newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'internal-note'),
-            })
-            store.dispatch(actions.setSender())
-
-            expect(store.getActions()).toEqual([{
-                type: types.NEW_MESSAGE_SET_SENDER,
-                sender: fromJS({
-                    name: '',
-                    address: ''
+            it('`from` field from last message from agent (chat, messenger)', () => {
+                const from = smoochTicket.getIn(['messages', 1, 'source', 'from'])
+                const expectedSender = fromJS({
+                    name: from.get('name'),
+                    address: from.get('address'),
                 })
-            }])
+                store = mockStore({
+                    integrations: fromJS(integrationsState),
+                    ticket: smoochTicket,
+                    newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'chat'),
+                })
+                store.dispatch(actions.setSender())
+
+                expect(store.getActions()).toEqual([{
+                    type: types.NEW_MESSAGE_SET_SENDER,
+                    sender: expectedSender
+                }])
+            })
+
+            it('`to` field from last message from customer (chat, messenger)', () => {
+                const _smoochTicket = smoochTicket.deleteIn(['messages', 1])  // delete last message from agent
+                const from = _smoochTicket.getIn(['messages', 0, 'source', 'to', 0])
+                const expectedSender = fromJS({
+                    name: from.get('name'),
+                    address: from.get('address'),
+                })
+                store = mockStore({
+                    integrations: fromJS(integrationsState),
+                    ticket: _smoochTicket,
+                    newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'chat'),
+                })
+                store.dispatch(actions.setSender())
+
+                expect(store.getActions()).toEqual([{
+                    type: types.NEW_MESSAGE_SET_SENDER,
+                    sender: expectedSender
+                }])
+            })
+
+            it('preferred channel', () => {
+                // remove messages, to simulate a new ticket
+                const _emailTicket = emailTicket.set('messages', fromJS([]))
+                const preferred = getPreferredChannel('email', channels)
+                const expectedSender = fromJS({
+                    name: preferred.get('name'),
+                    address: preferred.get('address'),
+                })
+                store = mockStore({
+                    integrations: fromJS(integrationsState),
+                    ticket: _emailTicket,
+                    newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
+                })
+                store.dispatch(actions.setSender())
+
+                expect(store.getActions()).toEqual([{
+                    type: types.NEW_MESSAGE_SET_SENDER,
+                    sender: expectedSender
+                }])
+            })
+
+            it('`from` field from last message from agent', () => {
+                const from = emailTicket.getIn(['messages', 1, 'source', 'from'])
+                const expectedSender = fromJS({
+                    name: from.get('name'),
+                    address: from.get('address'),
+                })
+                store = mockStore({
+                    integrations: fromJS(integrationsState),
+                    ticket: emailTicket,
+                    newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
+                })
+                store.dispatch(actions.setSender())
+
+                expect(store.getActions()).toEqual([{
+                    type: types.NEW_MESSAGE_SET_SENDER,
+                    sender: expectedSender
+                }])
+            })
+
+            it('`to` field from last message from customer (email found in `to`)', () => {
+                // delete last message from agent
+                const _emailTicket = emailTicket.deleteIn(['messages', 1])
+                const from = _emailTicket.getIn(['messages', 0, 'source', 'to', 1])
+                const expectedSender = fromJS({
+                    name: from.get('name'),
+                    address: from.get('address'),
+                })
+                store = mockStore({
+                    integrations: fromJS(integrationsState),
+                    ticket: _emailTicket,
+                    newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
+                })
+                store.dispatch(actions.setSender())
+
+                expect(store.getActions()).toEqual([{
+                    type: types.NEW_MESSAGE_SET_SENDER,
+                    sender: expectedSender
+                }])
+            })
+
+            it('should return channel in `cc` field from last message from customer (email found in `cc`)', () => {
+                // delete last message from agent
+                // and move `To` addresses in `Cc` and remove `To` addresses
+                const _emailTicket = emailTicket.deleteIn(['messages', 1])
+                    .updateIn(['messages', 0, 'source'], source => {
+                        return source.set('cc', source.get('to'))
+                            .set('to', fromJS([]))
+                    })
+                const from = _emailTicket.getIn(['messages', 0, 'source', 'cc', 1])
+                const expectedSender = fromJS({
+                    name: from.get('name'),
+                    address: from.get('address'),
+                })
+                store = mockStore({
+                    integrations: fromJS(integrationsState),
+                    ticket: _emailTicket,
+                    newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
+                })
+                store.dispatch(actions.setSender())
+
+                expect(store.getActions()).toEqual([{
+                    type: types.NEW_MESSAGE_SET_SENDER,
+                    sender: expectedSender
+                }])
+            })
+
+            it('preferred email (email not found in `to`)', () => {
+                // remove address that can match
+                const _emailTicket = emailTicket.deleteIn(['messages', 1])
+                const from = getPreferredChannel('email', channels)
+                const expectedSender = fromJS({
+                    name: from.get('name'),
+                    address: from.get('address'),
+                })
+                store = mockStore({
+                    integrations: fromJS(integrationsState),
+                    ticket: _emailTicket,
+                    newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
+                })
+                store.dispatch(actions.setSender())
+
+                expect(store.getActions()).toEqual([{
+                    type: types.NEW_MESSAGE_SET_SENDER,
+                    sender: expectedSender
+                }])
+            })
+
+            it('empty name and address (internal-note)', () => {
+                store = mockStore({
+                    integrations: fromJS(integrationsState),
+                    ticket: emailTicket,
+                    newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'internal-note'),
+                })
+                store.dispatch(actions.setSender())
+
+                expect(store.getActions()).toEqual([{
+                    type: types.NEW_MESSAGE_SET_SENDER,
+                    sender: fromJS({
+                        name: '',
+                        address: ''
+                    })
+                }])
+            })
+
+            it('should reject any channel which is not verified and replace it with any verified channel', () => {
+                const unverifiedChannel = integrationsState.integrations
+                    .find((integration) => integration.meta.verified === false)
+
+                const _emailTicket = emailTicket
+                    .deleteIn(['messages', 1])  // delete last message from agent
+                    .setIn(['messages', 0, 'source', 'to', 0], fromJS({
+                        name: unverifiedChannel.name,
+                        address: unverifiedChannel.address
+                    }))
+
+                store = mockStore({
+                    integrations: fromJS(integrationsState),
+                    ticket: _emailTicket,
+                    newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
+                })
+                store.dispatch(actions.setSender())
+
+                const storeActions = store.getActions()
+
+                expect(storeActions.length).toEqual(1)
+
+                const setSenderAction = storeActions[0]
+                const sender = setSenderAction.sender
+                const senderChannel = integrationsState.integrations
+                    .find((integration) => integration.meta.address === sender.get('address'))
+
+                expect(senderChannel.meta.verified).toBe(true)
+                expect(senderChannel.meta.address).not.toEqual(unverifiedChannel.address)
+            })
         })
 
         describe('setSubject()', () => {
@@ -238,7 +270,8 @@ describe('actions', () => {
                 it('should prepare an email forward', () => {
                     store = mockStore({
                         ticket: emailTicket,
-                        newMessage: initialState
+                        newMessage: initialState,
+                        integrations: fromJS(integrationsState)
                     })
                     store.dispatch(actions.prepare('email-forward'))
 
@@ -253,7 +286,8 @@ describe('actions', () => {
                         ticket: emailTicket
                             .setIn(['messages', 0, 'attachments'], attachments)
                             .setIn(['messages', 1, 'attachments'], attachments2),
-                        newMessage: initialState
+                        newMessage: initialState,
+                        integrations: fromJS(integrationsState)
                     })
                     store.dispatch(actions.prepare('email-forward'))
 
@@ -266,7 +300,8 @@ describe('actions', () => {
 
                     store = mockStore({
                         ticket: emailTicket.setIn(['messages', 0, 'attachments'], attachments),
-                        newMessage: initialState.setIn(['newMessage', 'attachments'], newMessageAttachments)
+                        newMessage: initialState.setIn(['newMessage', 'attachments'], newMessageAttachments),
+                        integrations: fromJS(integrationsState)
                     })
                     store.dispatch(actions.prepare('email-forward'))
 
@@ -279,6 +314,7 @@ describe('actions', () => {
                     store = mockStore({
                         ticket: instagramMedia,
                         newMessage: initialState
+                            .setIn(['newMessage', 'source', 'type'], 'instagram-comment')
                     })
                     store.dispatch(actions.prepare('instagram-comment'))
 
@@ -288,6 +324,7 @@ describe('actions', () => {
                 it('should not add prefix if there is text already', () => {
                     let newMessage = initialState
                     newMessage = newMessage
+                        .setIn(['newMessage', 'source', 'type'], 'instagram-comment')
                         .setIn(['newMessage', 'source', 'to'], fromJS([{address: 'as6d5as', name: 'instauser'}]))
                         .setIn(['state', 'contentState'], ContentState.createFromText('foo'))
 
@@ -303,6 +340,7 @@ describe('actions', () => {
                 it('should add prefix', () => {
                     let newMessage = initialState
                     newMessage = newMessage
+                        .setIn(['newMessage', 'source', 'type'], 'instagram-comment')
                         .setIn(['newMessage', 'source', 'to'], fromJS([{address: 'as6d5as', name: 'instauser'}]))
 
                     store = mockStore({
@@ -321,7 +359,8 @@ describe('actions', () => {
                 sourceTypes.forEach((sourceType) => {
                     store = mockStore({
                         ticket: emailTicket,
-                        newMessage: initialState
+                        newMessage: initialState,
+                        integrations: fromJS(integrationsState)
                     })
                     store.dispatch(actions.prepare(sourceType))
 
@@ -338,8 +377,12 @@ describe('actions', () => {
             })
 
             it('should always pass the args to the reducer', () => {
-                const contentState = ContentState.createFromText('foo')
+                store = mockStore({
+                    ticket: emailTicket,
+                    newMessage: initialState
+                })
 
+                const contentState = ContentState.createFromText('foo')
                 store.dispatch(actions.setResponseText(fromJS({contentState})))
 
                 expect(store.getActions()).toMatchSnapshot()
@@ -535,7 +578,8 @@ describe('actions', () => {
                     currentUser: fromJS({
                         id: 1,
                         name: 'foo'
-                    })
+                    }),
+                    integrations: fromJS(integrationsState)
                 })
 
                 store.dispatch(actions.submitTicketMessage()).then(() => {
@@ -565,7 +609,8 @@ describe('actions', () => {
                     currentUser: fromJS({
                         id: 1,
                         name: 'foo'
-                    })
+                    }),
+                    integrations: fromJS(integrationsState)
                 })
 
                 store.dispatch(actions.submitTicketMessage()).then(() => {

@@ -135,3 +135,14 @@ Array [
 `;
 
 exports[`integrations actions should do some action and redirect correctly on create smooch_inside success 2`] = `"/app/settings/integrations/smooch_inside/1/installation"`;
+
+exports[`integrations actions verifyEmailIntegration action should dispatch an EMAIL_INTEGRATION_VERIFIED action on error 1`] = `Array []`;
+
+exports[`integrations actions verifyEmailIntegration action should dispatch an EMAIL_INTEGRATION_VERIFIED action on success 1`] = `
+Array [
+  Object {
+    "integrationId": 1,
+    "type": "EMAIL_INTEGRATION_VERIFIED",
+  },
+]
+`;

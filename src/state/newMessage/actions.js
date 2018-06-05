@@ -227,14 +227,26 @@ export const setSender = (sender: ?string) => (dispatch: dispatchType, getState:
     const {ticket} = state
     const channels = integrationSelectors.getChannels(state)
     const sourceType = selectors.getNewMessageType(state)
-    let _sender = null
+    let _sender = fromJS({})
 
     if (sender) {
-        _sender = channels.find(channel => channel.get('address') === sender)
+        _sender = channels.find((channel) => channel.get('address') === sender) || fromJS({})
     }
 
-    if (!_sender) {
-        _sender = getNewMessageSender(ticket, sourceType, channels)
+    if (_sender.isEmpty()) {
+        _sender = getNewMessageSender(ticket, sourceType, channels) || fromJS({})
+
+        if (!_sender.isEmpty() && sourceType === 'email') {
+            _sender = channels.find((channel) => channel.get('address') === _sender.get('address')) || fromJS({})
+        }
+    }
+
+    if (!_sender.isEmpty() && _sender.get('type') === 'email' && !_sender.get('verified')) {
+        dispatch(notify({
+            status: 'error',
+            message: `You cannot send messages using ${_sender.get('address')}, because this address is not verified yet.`
+        }))
+        _sender = channels.find((channel) => channel.get('verified') === true) || fromJS({})
     }
 
     if (!_sender.isEmpty()) {
@@ -646,7 +658,7 @@ export function submitTicketMessage(status: ?string, macroActions: ?macroActions
                 let state = getState()
                 let {ticket: _ticket} = state
 
-                // if we changed the displayed ticket (e.g. submit and close), we dont want to change the state.
+                // if we changed the displayed ticket (e.g. submit and close), we don't want to change the state.
                 if (!(resp.ticket_id !== _ticket.get('id') && _ticket.get('id'))) {
                     const messages = ticketSelectors.getMessages(state)
 

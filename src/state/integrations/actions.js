@@ -11,6 +11,7 @@ import {notify} from '../notifications/actions'
 
 import type {Map} from 'immutable'
 import type {dispatchType, getStateType} from '../types'
+import {getCurrentIntegration} from './selectors'
 type integrationType = {
     type: string,
     id: string
@@ -30,7 +31,7 @@ export function fetchIntegrations(withDeleted: boolean = false) {
 
         return axios.get('/api/integrations/', {params})
             .then((json = {}) => json.data)
-            .then(resp => {
+            .then((resp) => {
                 const newResp = resp
 
                 if (newResp) {
@@ -41,7 +42,7 @@ export function fetchIntegrations(withDeleted: boolean = false) {
                     type: constants.FETCH_INTEGRATIONS_SUCCESS,
                     resp: newResp
                 })
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: constants.FETCH_INTEGRATIONS_ERROR,
                     error,
@@ -394,3 +395,50 @@ export function activateFacebookOnboardingPage(data: Array<{}>) {
     }
 }
 
+export function onVerify(dispatch: dispatchType, integrationId: number): Promise<dispatchType> {
+    dispatch(notify({
+        status: 'success',
+        message: 'Integration verified successfully'
+    }))
+    return dispatch({
+        type: constants.EMAIL_INTEGRATION_VERIFIED,
+        integrationId
+    })
+}
+
+export function verifyEmailIntegration(token: string) {
+    return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
+        const state = getState()
+        const integration = getCurrentIntegration(state)
+
+        return axios.post(`/api/integrations/${integration.get('id')}/verify/`, {token})
+            .then(() => {
+                return onVerify(dispatch, integration.get('id'))
+            }, (error) => {
+                return dispatch(notify({
+                    status: 'error',
+                    message: fromJS(error.response).getIn(['data', 'error', 'msg'])
+                }))
+            })
+    }
+}
+
+export function sendVerificationEmail() {
+    return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
+        const state = getState()
+        const integration = getCurrentIntegration(state)
+
+        return axios.post(`/api/integrations/${integration.get('id')}/send-verification-email/`)
+            .then(() => {
+                dispatch(notify({
+                    status: 'success',
+                    message: 'The verification email has been re-sent!'
+                }))
+            }, (error) => {
+                dispatch(notify({
+                    status: 'error',
+                    message: fromJS(error.response).getIn(['data', 'error', 'msg'])
+                }))
+            })
+    }
+}

@@ -146,4 +146,22 @@ describe('integrations actions', () => {
         return store.dispatch(actions.deleteIntegration(integration))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
+
+    describe('verifyEmailIntegration action', () => {
+        it('should dispatch an EMAIL_INTEGRATION_VERIFIED action on success', () => {
+            store = mockStore({integrations: fromJS({integration: {id: 1}})})
+            mockServer.onPost('/api/integrations/1/verify/').reply(201)
+
+            return store.dispatch(actions.verifyEmailIntegration('foo'))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+
+        it('should dispatch an EMAIL_INTEGRATION_VERIFIED action on error', () => {
+            store = mockStore({integrations: fromJS({integration: {id: 1}})})
+            mockServer.onPost('/api/integrations/1/verify/').reply(400)
+
+            return store.dispatch(actions.verifyEmailIntegration('foo'))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+    })
 })

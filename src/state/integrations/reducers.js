@@ -57,8 +57,8 @@ export default (state: Map<*,*> = initialState, action: defaultActionType): Map<
 
         case constants.FETCH_INTEGRATIONS_SUCCESS: {
             const integrations = fromJS(action.resp.data)
-                .sortBy(inte => inte.get('name'))
-                .sortBy(inte => moment(inte.get('deactivated_datetime')))
+                .sortBy((integration) => integration.get('name'))
+                .sortBy((integration) => moment(integration.get('deactivated_datetime')))
             return state.set('integrations', integrations)
                 .setIn(['state', 'loading', 'integrations'], false)
         }
@@ -80,8 +80,8 @@ export default (state: Map<*,*> = initialState, action: defaultActionType): Map<
             return state.setIn(['state', 'loading', 'delete'], action.id)
 
         case constants.DELETE_INTEGRATION_SUCCESS:
-            return state.update('integrations', integrations => (
-                integrations.valueSeq().filter(int => int.get('id') !== action.id).toList()
+            return state.update('integrations', (integrations) => (
+                integrations.valueSeq().filter((integration) => integration.get('id') !== action.id).toList()
             )).setIn(['state', 'loading', 'delete'], false)
 
         case constants.DELETE_INTEGRATION_ERROR:
@@ -101,6 +101,17 @@ export default (state: Map<*,*> = initialState, action: defaultActionType): Map<
         case constants.TEST_HTTP_INTEGRATION_SUCCESS:
             return state.setIn(['integration', 'testing'], fromJS(action.response))
                 .setIn(['state', 'loading', 'testing'], false)
+
+        case constants.EMAIL_INTEGRATION_VERIFIED: {
+            const integrations = state.get('integrations')
+
+            return state
+                .setIn(['integration', 'meta', 'verified'], true)
+                .set('integrations', integrations.update(
+                    integrations.findIndex((integration) => integration.get('id') === action.integrationId),
+                    (integration) => integration.setIn(['meta', 'verified'], true))
+                )
+        }
 
         default:
             return state
