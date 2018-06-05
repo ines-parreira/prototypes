@@ -81,11 +81,11 @@ exports[`TicketAttachments component private should display both an error messag
   </div>
   <a
     className="item hasPreview"
-    href="bar"
+    href="http://gorgias.io/bar"
     onClick={[Function]}
     style={
       Object {
-        "backgroundImage": "url(http://image-proxy/120x80/bar)",
+        "backgroundImage": "url(http://proxy-url/120x80,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar)",
       }
     }
     target="_blank"
@@ -111,11 +111,11 @@ exports[`TicketAttachments component private should display both an error messag
   </a>
   <a
     className="item hasPreview"
-    href="foo"
+    href="http://gorgias.io/foo"
     onClick={[Function]}
     style={
       Object {
-        "backgroundImage": "url(http://image-proxy/120x80/foo)",
+        "backgroundImage": "url(http://proxy-url/120x80,sSfpnD-PAiV-KrmrNl6gZ9Cq7eu50_7Sd3bZqOar3Jt4/http://gorgias.io/foo)",
       }
     }
     target="_blank"
@@ -149,15 +149,15 @@ exports[`TicketAttachments component private should display both an error messag
       Array [
         Object {
           "caption": "foo",
-          "src": "bar",
+          "src": "http://gorgias.io/bar",
         },
         Object {
           "caption": "bar",
-          "src": "baz",
+          "src": "https://gorgias.io/baz",
         },
         Object {
           "caption": "baz",
-          "src": "foo",
+          "src": "http://gorgias.io/foo",
         },
       ]
     }
@@ -186,11 +186,11 @@ exports[`TicketAttachments component read-only should match snapshot 1`] = `
 >
   <a
     className="item hasPreview"
-    href="bar"
+    href="http://gorgias.io/bar"
     onClick={[Function]}
     style={
       Object {
-        "backgroundImage": "url(http://image-proxy/120x80/bar)",
+        "backgroundImage": "url(http://proxy-url/120x80,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar)",
       }
     }
     target="_blank"
@@ -250,7 +250,7 @@ exports[`TicketAttachments component read-only should match snapshot 1`] = `
       Array [
         Object {
           "caption": "foo",
-          "src": "bar",
+          "src": "http://gorgias.io/bar",
         },
       ]
     }

@@ -7,6 +7,7 @@ import {fileIconFromContentType} from '../../../common/utils'
 import shortcutManager from '../../../../../services/shortcutManager'
 
 import css from './TicketAttachments.less'
+import {proxifyURL} from '../../../../../utils'
 
 type Props = {
     attachments: List<*>,
@@ -68,13 +69,14 @@ export default class TicketAttachments extends React.Component<Props, State> {
             return null
         }
 
-        if (!window.IMAGE_PROXY_URL) {
-            throw new Error('window.IMAGE_PROXY_URL is not defined')
+        try {
+            return {
+                backgroundImage: `url(${proxifyURL(attachment.get('url'), '120x80')})`
+            }
+        } catch (error) {
+            return null
         }
 
-        return {
-            backgroundImage: `url(${window.IMAGE_PROXY_URL}120x80/${attachment.get('url')})`
-        }
     }
 
     openLightbox = (e, attachment, images) => {

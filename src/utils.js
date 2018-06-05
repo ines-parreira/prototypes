@@ -426,6 +426,17 @@ const _proxyImageSignedURL = (url: string): string => {
     )
 }
 
+export const proxifyURL = (urlStr: string, format: string): string => {
+    const url = new URL(urlStr)
+    let escapedURL = `${url.origin}${url.pathname}`
+    if (url.search) {
+        // url.search always starts with `?` so we need to make sure we remove it before encoding
+        escapedURL += `?${encodeURIComponent(url.search.substr(1))}`
+    }
+
+    return `${window.IMAGE_PROXY_URL}${format},${_proxyImageSignedURL(escapedURL)}/${escapedURL}`
+}
+
 /**
  * Append a proxy URL before the images src so we can control their width and protect our agents privacy
  *
@@ -459,14 +470,7 @@ export const proxifyImages = (html: string, format: string = '1000x'): string =>
                 let v = attributes[k]
                 if (name === 'img' && k === 'src') {
                     try {
-                        const url = new URL(attributes.src)
-                        let escapedURL = `${url.origin}${url.pathname}`
-                        if (url.search) {
-                            // url.search always starts with `?` so we need to make sure we remove it before encoding
-                            escapedURL += `?${encodeURIComponent(url.search.substr(1))}`
-                        }
-
-                        v = `${window.IMAGE_PROXY_URL}${format},${_proxyImageSignedURL(escapedURL)}/${escapedURL}`
+                        v = proxifyURL(attributes.src, format)
                     } catch (error) {
                         console.error(error)
                     }

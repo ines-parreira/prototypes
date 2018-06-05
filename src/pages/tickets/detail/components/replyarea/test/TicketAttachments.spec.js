@@ -1,23 +1,27 @@
 import React from 'react'
-import {shallow, mount} from 'enzyme'
+import {mount, shallow} from 'enzyme'
 import _noop from 'lodash/noop'
 // aphrodite is required by react-images
 import {StyleSheetTestUtils} from 'aphrodite'
 
 import {fromJS} from 'immutable'
 import TicketAttachments from '../TicketAttachments'
+import {proxifyURL} from '../../../../../../utils'
 
 describe('TicketAttachments component', () => {
     // attachments is an immutable list of pojos
     const attachments = fromJS([{
         name: 'foo',
         content_type: 'image/png',
-        url: 'bar'
+        url: 'http://gorgias.io/bar'
     }, {
         name: 'bar',
         content_type: 'text/html',
         url: 'foo'
     }])
+
+    window.IMAGE_PROXY_URL = 'http://proxy-url/'
+    window.IMAGE_PROXY_PUBLIC_SIGN_KEY = 'test-key'
 
     describe('read-only', () => {
         let component
@@ -43,7 +47,7 @@ describe('TicketAttachments component', () => {
         it('should set a preview on the first attachment', () => {
             expect(component.children().at(0)).toHaveStyle(
                 'backgroundImage',
-                `url(${window.IMAGE_PROXY_URL}120x80/bar)`
+                `url(${proxifyURL('http://gorgias.io/bar', '120x80')})`
             )
         })
 
@@ -103,7 +107,7 @@ describe('TicketAttachments component', () => {
                 isLightboxOpen: true
             })
 
-            expect(document.body.querySelector('img').src).toBe('bar')
+            expect(document.body.querySelector('img').src).toBe('http://gorgias.io/bar')
         })
 
         it('image should open the lightbox', () => {
@@ -156,17 +160,17 @@ describe('TicketAttachments component', () => {
                     attachments={fromJS([{
                         name: 'foo',
                         content_type: 'image/png',
-                        url: 'bar',
+                        url: 'http://gorgias.io/bar',
                         public: true
                     }, {
                         name: 'bar',
                         content_type: 'image/png',
-                        url: 'baz',
+                        url: 'https://gorgias.io/baz',
                         public: false
                     }, {
                         name: 'baz',
                         content_type: 'image/png',
-                        url: 'foo',
+                        url: 'http://gorgias.io/foo',
                         public: true
                     }])}
                     deleteAttachment={_noop}
