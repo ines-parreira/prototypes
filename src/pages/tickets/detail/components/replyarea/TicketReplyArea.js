@@ -43,18 +43,6 @@ export class TicketReplyArea extends React.Component {
         search.populate(this.props.macros)
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        const macrosIds = this._getMacrosIds()
-
-        // when macros change because of a search then select first one
-        const shouldSelectFirstMacro = !macrosIds.isEmpty()
-            && this.state.searchQuery !== prevState.searchQuery
-
-        if (shouldSelectFirstMacro) {
-            this.setState({selectedMacroId: macrosIds.first()})
-        }
-    }
-
     componentWillReceiveProps(nextProps) {
         this._showMacrosDefault(nextProps)
     }
@@ -89,21 +77,21 @@ export class TicketReplyArea extends React.Component {
         // don't toggle macros
         if (
             // if show_macros preference is false
-        !showMacros
-        // macros where already shown
-        || this.state.isMacroDisplayInitialized
-        // cache wasn't added yet
-        || !nextProps.cacheAdded
-        // message is not email
-        || nextProps.newMessageType !== 'email'
-        // editor has text
-        || hasText
-        // editor is focused.
-        // fixes issues caused by the debounced setResponseText,
-        // that causes the contentState to be set with a delay.
-        || editorFocused
-        // or manually changed macro visibility
-        || nextProps.macros.get('visible') !== this.props.macros.get('visible')
+            !showMacros
+            // macros where already shown
+            || this.state.isMacroDisplayInitialized
+            // cache wasn't added yet
+            || !nextProps.cacheAdded
+            // message is not email
+            || nextProps.newMessageType !== 'email'
+            // editor has text
+            || hasText
+            // editor is focused.
+            // fixes issues caused by the debounced setResponseText,
+            // that causes the contentState to be set with a delay.
+            || editorFocused
+            // or manually changed macro visibility
+            || nextProps.macros.get('visible') !== this.props.macros.get('visible')
         ) {
             return
         }
@@ -183,10 +171,30 @@ export class TicketReplyArea extends React.Component {
     _setMacrosVisible = (v) => this.props.actions.macro.setMacrosVisible(v)
 
     _handleSearch = (query) => {
-        this.setState({searchQuery: query})
+        let searchedMacrosIds = this.state.searchedMacrosIds
+        let selectedMacroId = this.state.selectedMacroId
         if (!!query) {
-            this.setState({searchedMacrosIds: fromJS(search.search(query))})
+            searchedMacrosIds = fromJS(search.search(query))
         }
+        // manually send new values,
+        // because state is not updated yet.
+        const macrosIds = this._getMacrosIds(this.props, {
+            searchQuery: query,
+            searchedMacrosIds,
+        })
+
+        // when macros change because of a search then select first one
+        const shouldSelectFirstMacro = !macrosIds.isEmpty()
+            && this.state.searchQuery !== query
+        if (shouldSelectFirstMacro) {
+            selectedMacroId = macrosIds.first()
+        }
+
+        this.setState({
+            searchQuery: query,
+            searchedMacrosIds,
+            selectedMacroId,
+        })
     }
 
     // scroll in macro list until currently selected macro
