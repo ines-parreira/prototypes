@@ -407,10 +407,13 @@ export const replaceVariables = (argument, state, notify) => {
     let ticketState = state.ticket
     let currentUserState = state.currentUser
 
-    // If there's a var of format `ticket.requester.integrations.XXX`, then it's a dynamic variable.
-    // Else, it would be `ticket.requester.integrations[XXX]`.
-    let variables = argument.match(/{{ticket.requester.integrations.[\w\d\]\[._-]+\|?([\w_]+\([^(]*\))?}}/g)
-    let newArgument = argument
+    // If there's a var of format `ticket.customer.integrations.XXX`, then it's a dynamic variable.
+    // Else, it would be `ticket.customer.integrations[XXX]`.
+    // TODO(customers-migration): remove this line when we set `ticket.customer` on new ticket
+    let newArgument = argument.replace(/\{\{ticket\.customer/g, '{{ticket.requester')
+        .replace(/\{\{ticket\.requester\.data/g, '{{ticket.requester.customer')
+    // TODO(customers-migration): remove `requester` when it is deprecated.
+    let variables = newArgument.match(/{{ticket\.(requester|customer)\.integrations.[\w\d\]\[._-]+\|?([\w_]+\([^(]*\))?}}/g)
 
     if (variables) {
         // If a variable is a dynamic variable, we try to replace `integrations.{type}` with

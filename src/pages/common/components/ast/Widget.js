@@ -157,7 +157,7 @@ export class Widget extends React.Component<Props, State> {
             html: html,
         }
 
-        const variableTypes = ['current_user', 'ticket.requester']
+        const variableTypes = ['current_user', 'ticket.customer']
 
         if (hasIntegrationOfTypes('shopify')) {
             variableTypes.push('shopify')

@@ -534,7 +534,7 @@ export const ACTION_TEMPLATES = [
             address1: {
                 label: 'Address (1)',
                 type: 'string',
-                default: '{{ticket.requester.integrations.shopify.orders[0].shipping_address.address1}}',
+                default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.address1}}',
                 editable: true,
                 required: false,
                 display_order: 1
@@ -542,7 +542,7 @@ export const ACTION_TEMPLATES = [
             address2: {
                 label: 'Address (2)',
                 type: 'string',
-                default: '{{ticket.requester.integrations.shopify.orders[0].shipping_address.address2}}',
+                default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.address2}}',
                 editable: true,
                 required: false,
                 display_order: 2
@@ -550,7 +550,7 @@ export const ACTION_TEMPLATES = [
             city: {
                 label: 'City',
                 type: 'string',
-                default: '{{ticket.requester.integrations.shopify.orders[0].shipping_address.city}}',
+                default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.city}}',
                 editable: true,
                 required: false,
                 display_order: 3
@@ -558,7 +558,7 @@ export const ACTION_TEMPLATES = [
             zip: {
                 label: 'Zip',
                 type: 'string',
-                default: '{{ticket.requester.integrations.shopify.orders[0].shipping_address.zip}}',
+                default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.zip}}',
                 editable: true,
                 required: false,
                 display_order: 4
@@ -566,7 +566,7 @@ export const ACTION_TEMPLATES = [
             province: {
                 label: 'State/Province',
                 type: 'string',
-                default: '{{ticket.requester.integrations.shopify.orders[0].shipping_address.province}}',
+                default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.province}}',
                 editable: true,
                 required: false,
                 display_order: 5
@@ -574,7 +574,7 @@ export const ACTION_TEMPLATES = [
             country: {
                 label: 'Country',
                 type: 'string',
-                default: '{{ticket.requester.integrations.shopify.orders[0].shipping_address.country}}',
+                default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.country}}',
                 editable: true,
                 required: false,
                 display_order: 6
@@ -692,7 +692,7 @@ export const ACTION_TEMPLATES = [
         arguments: {
             amount: {
                 label: 'Amount',
-                default: '{{ticket.requester.integrations.shopify.orders[0].total_price}}',
+                default: '{{ticket.customer.integrations.shopify.orders[0].total_price}}',
                 editable: true,
                 required: true,
                 display_order: 1,
@@ -739,7 +739,7 @@ export const ACTION_TEMPLATES = [
             note: {
                 label: 'Note',
                 type: 'string',
-                default: '{{ticket.requester.integrations.shopify.orders[0].note}}',
+                default: '{{ticket.customer.integrations.shopify.orders[0].note}}',
                 editable: true,
                 required: false,  // can be nulled
                 display_order: 1

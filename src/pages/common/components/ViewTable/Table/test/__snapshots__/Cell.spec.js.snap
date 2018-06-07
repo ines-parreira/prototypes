@@ -88,7 +88,7 @@ Object {
         Immutable.Map {
             name: "requester",
             title: "Requester",
-            path: "requester.id",
+            path: "customer.id",
             filter: Immutable.Map {
                 type: "user",
             },

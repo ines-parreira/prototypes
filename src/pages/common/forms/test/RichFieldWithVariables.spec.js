@@ -9,7 +9,7 @@ describe('RichFieldWithVariables', () => {
             <RichFieldWithVariables
                 value={{text: 'text', html: 'html'}}
                 onChange={_noop}
-                variableTypes={['ticket.requester', 'current_user']}
+                variableTypes={['ticket.customer', 'current_user']}
             />
         )
         expect(component).toMatchSnapshot()

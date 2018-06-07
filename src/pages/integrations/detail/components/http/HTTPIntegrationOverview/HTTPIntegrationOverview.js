@@ -261,13 +261,13 @@ export default class HTTPIntegrationOverview extends React.Component {
                             name="http.url"
                             label="URL"
                             title='Example: https://company.com/api'
-                            placeholder="https://company.com/api/users?email={{ticket.requester.email}}"
+                            placeholder="https://company.com/api/users?email={{ticket.customer.email}}"
                             required
                             pattern={validateWebhookURLToPattern(this.state.url)}
                             help={(
                                 <div>
-                                    You can use <code>{'{{ticket.requester.email}}'}</code> to pass the email of the
-                                    ticket requester. See
+                                    You can use <code>{'{{ticket.customer.email}}'}</code> to pass the email of the
+                                    ticket customer. See
                                     other <a href="http://api.gorgias.io/#/definitions/User" target="_blank"
                                              rel="noopener noreferrer">vars</a>.
                                 </div>

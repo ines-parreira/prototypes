@@ -87,9 +87,9 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
           <div>
             You can use 
             <code>
-              {{ticket.requester.email}}
+              {{ticket.customer.email}}
             </code>
-             to pass the email of the ticket requester. See other 
+             to pass the email of the ticket customer. See other 
             <a
               href="http://api.gorgias.io/#/definitions/User"
               rel="noopener noreferrer"
@@ -104,7 +104,7 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
         name="http.url"
         onChange={[Function]}
         pattern="$a"
-        placeholder="https://company.com/api/users?email={{ticket.requester.email}}"
+        placeholder="https://company.com/api/users?email={{ticket.customer.email}}"
         required={true}
         title="Example: https://company.com/api"
         type="url"
@@ -341,9 +341,9 @@ exports[`HTTPIntegrationOverview should display data with url-encoded format 1`]
           <div>
             You can use 
             <code>
-              {{ticket.requester.email}}
+              {{ticket.customer.email}}
             </code>
-             to pass the email of the ticket requester. See other 
+             to pass the email of the ticket customer. See other 
             <a
               href="http://api.gorgias.io/#/definitions/User"
               rel="noopener noreferrer"
@@ -358,7 +358,7 @@ exports[`HTTPIntegrationOverview should display data with url-encoded format 1`]
         name="http.url"
         onChange={[Function]}
         pattern="$a"
-        placeholder="https://company.com/api/users?email={{ticket.requester.email}}"
+        placeholder="https://company.com/api/users?email={{ticket.customer.email}}"
         required={true}
         title="Example: https://company.com/api"
         type="url"
@@ -602,9 +602,9 @@ exports[`HTTPIntegrationOverview should display default values because there is 
           <div>
             You can use 
             <code>
-              {{ticket.requester.email}}
+              {{ticket.customer.email}}
             </code>
-             to pass the email of the ticket requester. See other 
+             to pass the email of the ticket customer. See other 
             <a
               href="http://api.gorgias.io/#/definitions/User"
               rel="noopener noreferrer"
@@ -619,7 +619,7 @@ exports[`HTTPIntegrationOverview should display default values because there is 
         name="http.url"
         onChange={[Function]}
         pattern="*"
-        placeholder="https://company.com/api/users?email={{ticket.requester.email}}"
+        placeholder="https://company.com/api/users?email={{ticket.customer.email}}"
         required={true}
         title="Example: https://company.com/api"
         type="url"

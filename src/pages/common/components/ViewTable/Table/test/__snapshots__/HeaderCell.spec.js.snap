@@ -80,7 +80,7 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
             Immutable.Map {
               name: "requester",
               title: "Requester",
-              path: "requester.id",
+              path: "customer.id",
               filter: Immutable.Map {
                 type: "user",
               },
@@ -280,7 +280,7 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
           Immutable.Map {
             name: "requester",
             title: "Requester",
-            path: "requester.id",
+            path: "customer.id",
             filter: Immutable.Map {
               type: "user",
             },

@@ -143,7 +143,7 @@ exports[`ast Widget should render RichFieldWithVariables 1`] = `
   variableTypes={
     Array [
       "current_user",
-      "ticket.requester",
+      "ticket.customer",
       "shopify",
       "recharge",
     ]

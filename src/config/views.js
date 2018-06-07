@@ -95,7 +95,7 @@ export const views = fromJS([{
         {
             name: 'requester',
             title: 'Requester',
-            path: 'requester.id',
+            path: 'customer.id',
             filter: {
                 type: 'user',
             },

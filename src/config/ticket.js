@@ -18,23 +18,23 @@ export const USABLE_SOURCE_TYPES = ['email', 'chat', 'facebook-messenger', 'face
 // available variables in macros
 export const VARIABLES = [{
     name: 'Ticket requester',
-    type: 'ticket.requester',
+    type: 'ticket.customer',
     children: [{
         name: 'First name',
         fullName: 'Requester first name',
-        value: 'ticket.requester.firstname',
+        value: 'ticket.customer.firstname',
     }, {
         name: 'Last name',
         fullName: 'Requester last name',
-        value: 'ticket.requester.lastname',
+        value: 'ticket.customer.lastname',
     }, {
         name: 'Full name',
         fullName: 'Requester full name',
-        value: 'ticket.requester.name',
+        value: 'ticket.customer.name',
     }, {
         name: 'Email',
         fullName: 'Requester email',
-        value: 'ticket.requester.email',
+        value: 'ticket.customer.email',
     }],
 }, {
     name: 'Current agent',
@@ -66,6 +66,62 @@ export const VARIABLES = [{
     integration: true,
     children: [{
         name: 'Last order\'s number',
+        value: 'ticket.customer.integrations.shopify.orders[0].name',
+    }, {
+        name: 'Tracking url of last order',
+        value: 'ticket.customer.integrations.shopify.orders[0].fulfillments[0].tracking_url',
+    }, {
+        name: 'Tracking number of last order',
+        value: 'ticket.customer.integrations.shopify.orders[0].fulfillments[0].tracking_number',
+    }, {
+        name: 'Delivery status of last order',
+        value: 'ticket.customer.integrations.shopify.orders[0].fulfillments[0].shipment_status',
+    }, {
+        name: 'Status URL of last order',
+        value: 'ticket.customer.integrations.shopify.orders[0].order_status_url',
+    }, {
+        name: 'Shipping date of last order',
+        value: 'ticket.customer.integrations.shopify.orders[0].fulfillments[0].created_at|datetime_format("MMMM Do YYYY")'
+    }, {
+        name: 'Destination country of last order',
+        value: 'ticket.customer.integrations.shopify.orders[0].shipping_address.country'
+    }]
+}, {
+    type: 'recharge',
+    integration: true,
+    name: 'Recharge',
+    children: [{
+        name: 'Customer\'s hash',
+        value: 'ticket.customer.integrations.recharge.customer.hash',
+    }]
+}]
+
+// previously available variables in macros: still displayed as variables but are not available in dropdowns anymore
+export const PREVIOUS_VARIABLES = [{
+    name: 'Ticket requester',
+    type: 'ticket.requester',
+    children: [{
+        name: 'First name',
+        fullName: 'Requester first name',
+        value: 'ticket.requester.firstname',
+    }, {
+        name: 'Last name',
+        fullName: 'Requester last name',
+        value: 'ticket.requester.lastname',
+    }, {
+        name: 'Full name',
+        fullName: 'Requester full name',
+        value: 'ticket.requester.name',
+    }, {
+        name: 'Email',
+        fullName: 'Requester email',
+        value: 'ticket.requester.email',
+    }],
+}, {
+    type: 'shopify',
+    name: 'Shopify',
+    children: [{
+        name: 'Last order\'s number',
         value: 'ticket.requester.integrations.shopify.orders[0].name',
     }, {
         name: 'Tracking url of last order',
@@ -85,22 +141,7 @@ export const VARIABLES = [{
     }, {
         name: 'Destination country of last order',
         value: 'ticket.requester.integrations.shopify.orders[0].shipping_address.country'
-    }]
-}, {
-    type: 'recharge',
-    integration: true,
-    name: 'Recharge',
-    children: [{
-        name: 'Customer\'s hash',
-        value: 'ticket.requester.integrations.recharge.customer.hash',
-    }]
-}]
-
-// previously available variables in macros: still displayed as variables but are not available in dropdowns anymore
-export const PREVIOUS_VARIABLES = [{
-    type: 'shopify',
-    name: 'Shopify',
-    children: [{
+    }, {
         name: 'Last order\'s number',
         value: 'ticket.requester.integrations.shopify.orders[0].order_number',
     }, {
@@ -110,6 +151,14 @@ export const PREVIOUS_VARIABLES = [{
         name: 'Tracking numbers of last order',
         value: 'ticket.requester.integrations.shopify.orders[0].fulfillments[0].tracking_numbers',
     }],
+}, {
+    type: 'recharge',
+    integration: true,
+    name: 'Recharge',
+    children: [{
+        name: 'Customer\'s hash',
+        value: 'ticket.requester.integrations.recharge.customer.hash',
+    }]
 }]
 
 /**
