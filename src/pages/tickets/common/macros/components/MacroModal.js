@@ -234,7 +234,7 @@ export default class MacroModal extends React.Component {
                                                                 type="submit"
                                                                 color="success"
                                                             >
-                                                                Create macro
+                                                                Save new macro
                                                             </Button>
                                                         </form>
                                                     )}
