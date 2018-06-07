@@ -242,6 +242,41 @@ describe('actions', () => {
                 expect(senderChannel.meta.verified).toBe(true)
                 expect(senderChannel.meta.address).not.toEqual(unverifiedChannel.address)
             })
+
+            it('should use any verified channel if there is no matching channel', () => {
+                const unexistingChannel = {
+                    name: 'an integration which does not exist',
+                    address: 'notexist@gorgi.us'
+                }
+                const _emailTicket = emailTicket
+                    .setIn(['messages', 0, 'source', 'to'], fromJS([{
+                        name: unexistingChannel.name,
+                        address: unexistingChannel.address
+                    }]))
+                    .setIn(['messages', 1, 'source', 'from'], fromJS({
+                        name: unexistingChannel.name,
+                        address: unexistingChannel.address
+                    }))
+
+                store = mockStore({
+                    integrations: fromJS(integrationsState),
+                    ticket: _emailTicket,
+                    newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
+                })
+                store.dispatch(actions.setSender())
+
+                const storeActions = store.getActions()
+
+                expect(storeActions.length).toEqual(1)
+
+                const setSenderAction = storeActions[0]
+                const sender = setSenderAction.sender
+                const senderChannel = integrationsState.integrations
+                    .find((integration) => integration.meta.address === sender.get('address'))
+
+                expect(senderChannel.meta.verified).toBe(true)
+                expect(senderChannel.meta.address).not.toEqual(unexistingChannel.address)
+            })
         })
 
         describe('setSubject()', () => {

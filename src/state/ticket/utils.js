@@ -287,10 +287,21 @@ export function getNewMessageSender(ticket, newMessageSourceType, channels) {
         return preferredChannel
     }
 
+    // If we don't find a channel, we use the preferred channel
+    let sender = preferredChannel
+
     // last message sent by the customer
     // from address of last message or preferred channel of the same type
     if (lastMessage.get('from_agent', false)) {
-        return lastMessage.getIn(['source', 'from'], preferredChannel)
+        sender = lastMessage.getIn(['source', 'from']) || preferredChannel
+
+        if (!sender.isEmpty() && newMessageSourceType === 'email') {
+            sender = channels.find(
+                (channel) => channel.get('address') === sender.get('address') && ['email', 'gmail'].includes(channel.get('type'))
+            ) || preferredChannel
+        }
+
+        return sender
     }
 
     // last message sent by an agent
@@ -305,8 +316,7 @@ export function getNewMessageSender(ticket, newMessageSourceType, channels) {
         }
     }
 
-    // no channels found so, we use the preferred channel
-    return preferredChannel
+    return sender
 }
 
 /**

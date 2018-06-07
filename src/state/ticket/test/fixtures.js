@@ -57,7 +57,7 @@ export const emailTicket = fromJS({
                 name: 'Steve Frizeli',
                 address: 'marie.curie@gmail.com'
             },
-            type: 'chat'
+            type: 'email'
         },
         id: 151,
         from_agent: false

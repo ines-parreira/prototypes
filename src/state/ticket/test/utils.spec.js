@@ -313,7 +313,8 @@ describe('ticket utils', () => {
         })
 
         it('should return `from` field from last message from agent', () => {
-            const expected = emailTicket.getIn(['messages', 1, 'source', 'from'])
+            const from = emailTicket.getIn(['messages', 1, 'source', 'from'])
+            const expected = channels.find((channel) => channel.get('address') === from.get('address'))
             expect(getNewMessageSender(emailTicket, 'email', channels))
                 .toEqualImmutable(expected)
         })
@@ -321,7 +322,8 @@ describe('ticket utils', () => {
         it('should return channel in `to` field from last message from customer (email found in `to`)', () => {
             // delete last message from agent
             const _emailTicket = emailTicket.deleteIn(['messages', 1])
-            const expected = _emailTicket.getIn(['messages', 0, 'source', 'to', 1])
+            const to = _emailTicket.getIn(['messages', 0, 'source', 'to', 1])
+            const expected = channels.find((channel) => channel.get('address') === to.get('address'))
             expect(getNewMessageSender(emailTicket, 'email', channels))
                 .toEqualImmutable(expected)
         })
@@ -334,14 +336,24 @@ describe('ticket utils', () => {
                     return source.set('cc', source.get('to'))
                         .set('to', fromJS([]))
                 })
-            const expected = _emailTicket.getIn(['messages', 0, 'source', 'cc', 1])
+            const cc = _emailTicket.getIn(['messages', 0, 'source', 'cc', 1])
+            const expected = channels.find((channel) => channel.get('address') === cc.get('address'))
             expect(getNewMessageSender(emailTicket, 'email', channels))
                 .toEqualImmutable(expected)
         })
 
-        it('should return preferred email (email not found in `to`)', () => {
+        it('should return preferred email (email in `from` does not match any integration)', () => {
             // remove address that can match
-            const _emailTicket = emailTicket.deleteIn(['messages', 1])
+            const _emailTicket = emailTicket
+                .setIn(['messages', 1, 'source', 'from'], fromJS({'name': 'foo', 'address': 'unknown@gorgias.io'}))
+            const expected = getPreferredChannel('email', channels)
+            expect(getNewMessageSender(_emailTicket, 'email', channels))
+                .toEqualImmutable(expected)
+        })
+
+        it('should return preferred email (email not found in `from`)', () => {
+            // remove address that can match
+            const _emailTicket = emailTicket.deleteIn(['messages', 0])
             const expected = getPreferredChannel('email', channels)
             expect(getNewMessageSender(_emailTicket, 'email', channels))
                 .toEqualImmutable(expected)

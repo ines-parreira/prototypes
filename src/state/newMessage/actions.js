@@ -235,10 +235,6 @@ export const setSender = (sender: ?string) => (dispatch: dispatchType, getState:
 
     if (_sender.isEmpty()) {
         _sender = getNewMessageSender(ticket, sourceType, channels) || fromJS({})
-
-        if (!_sender.isEmpty() && sourceType === 'email') {
-            _sender = channels.find((channel) => channel.get('address') === _sender.get('address')) || fromJS({})
-        }
     }
 
     if (!_sender.isEmpty() && _sender.get('type') === 'email' && !_sender.get('verified')) {
@@ -246,7 +242,9 @@ export const setSender = (sender: ?string) => (dispatch: dispatchType, getState:
             status: 'error',
             message: `You cannot send messages using ${_sender.get('address')}, because this address is not verified yet.`
         }))
-        _sender = channels.find((channel) => channel.get('verified') === true) || fromJS({})
+        _sender = channels.find(
+            (channel) => channel.get('verified') === true && ['email', 'gmail'].includes(channel.type)
+        ) || fromJS({})
     }
 
     if (!_sender.isEmpty()) {

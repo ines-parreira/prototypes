@@ -61,7 +61,8 @@ export const integrationsState = {
                 signature: {
                     text: 'cheers, {{current_user.first_name}}',
                     html: 'cheers, <strong>{{current_user.first_name}}</strong>'
-                }
+                },
+                verified: true
             },
             facebook: null,
             http: null,
