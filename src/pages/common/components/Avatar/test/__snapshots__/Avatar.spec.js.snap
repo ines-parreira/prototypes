@@ -2,7 +2,7 @@
 
 exports[`Avatar component should render avatar from cache 1`] = `
 <div
-  className="component"
+  className="component hasImage"
   style={
     Object {
       "height": "50px",

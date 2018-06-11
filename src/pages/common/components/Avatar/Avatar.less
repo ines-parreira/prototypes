@@ -4,6 +4,14 @@
   position: relative;
   background: @purple;
 
+  &.hasImage {
+    background: transparent;
+  }
+
+  &.hasImage .initials {
+    display: none;
+  }
+
   &,
   .gravatar {
     border-radius: 2px !important;
@@ -26,6 +34,7 @@
     text-align: center;
   }
 
+
   .gravatar {
     position: absolute;
     top: 0;
@@ -33,13 +42,13 @@
   }
 
   .badge {
+    position: absolute;
+    bottom: -6px;
+    right: -7px;
+    z-index: 2;
     width: 15px;
     height: 15px;
     border-radius: 50%;
     border: solid 2px #1d365c;
-    position: relative;
-    bottom: 9px;
-    right: -28px;
-    z-index: 2;
   }
 }

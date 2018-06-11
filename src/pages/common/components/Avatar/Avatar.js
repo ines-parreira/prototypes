@@ -108,7 +108,9 @@ export default class Avatar extends React.Component<Props, State> {
 
         return (
             <div
-                className={classnames(css.component, className)}
+                className={classnames(css.component, {
+                    [css.hasImage]: !!this.state.imageUrl
+                }, className)}
                 style={{
                     width: `${String(size)}px`,
                     height: `${String(size)}px`,
@@ -125,14 +127,6 @@ export default class Avatar extends React.Component<Props, State> {
                         {this._getInitials(name)}
                     </span>
                 </div>
-                {
-                    badgeColor &&
-                    <div
-                        className={css.badge}
-                        style={{backgroundColor: badgeColor}}
-                    >
-                    </div>
-                }
 
                 {
                     this.state.imageUrl &&
@@ -140,6 +134,14 @@ export default class Avatar extends React.Component<Props, State> {
                         src={this.state.imageUrl}
                         className={css.gravatar}
                     />
+                }
+                {
+                    badgeColor &&
+                    <div
+                        className={css.badge}
+                        style={{backgroundColor: badgeColor}}
+                    >
+                    </div>
                 }
             </div>
         )
