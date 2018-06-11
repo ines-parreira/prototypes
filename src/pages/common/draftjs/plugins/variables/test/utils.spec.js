@@ -5,7 +5,7 @@ import {setVariableEditable, attachEntitiesToVariables} from '../utils'
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
 
-describe('Toolbar utils', () => {
+describe('Variables plugin utils', () => {
     describe('attachEntitiesToVariables', () => {
         it('should contain editable variable', () => {
             const contentState = ContentState.createFromText('{{current_user.name}}')

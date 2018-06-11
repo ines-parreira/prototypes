@@ -247,13 +247,8 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
                     "component": [Function],
                     "strategy": [Function],
                   },
-                  Object {
-                    "component": [Function],
-                    "strategy": [Function],
-                  },
                 ],
                 "initialize": [Function],
-                "onChange": [Function],
               },
               Object {
                 "MentionSuggestions": [Function],
@@ -275,6 +270,18 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
                 "onEscape": [Function],
                 "onTab": [Function],
                 "onUpArrow": [Function],
+              },
+              Object {
+                "onChange": [Function],
+              },
+              Object {
+                "decorators": Array [
+                  Object {
+                    "component": [Function],
+                    "strategy": [Function],
+                  },
+                ],
+                "onChange": [Function],
               },
             ]
           }
@@ -493,13 +500,8 @@ exports[`RichField should render a basic input 1`] = `
                     "component": [Function],
                     "strategy": [Function],
                   },
-                  Object {
-                    "component": [Function],
-                    "strategy": [Function],
-                  },
                 ],
                 "initialize": [Function],
-                "onChange": [Function],
               },
               Object {
                 "MentionSuggestions": [Function],
@@ -521,6 +523,18 @@ exports[`RichField should render a basic input 1`] = `
                 "onEscape": [Function],
                 "onTab": [Function],
                 "onUpArrow": [Function],
+              },
+              Object {
+                "onChange": [Function],
+              },
+              Object {
+                "decorators": Array [
+                  Object {
+                    "component": [Function],
+                    "strategy": [Function],
+                  },
+                ],
+                "onChange": [Function],
               },
             ]
           }
@@ -795,7 +809,7 @@ exports[`RichField should render immutable variable 1`] = `
                           "start": 0,
                         },
                         Object {
-                          "decoratorKey": "0-0.0",
+                          "decoratorKey": "0-4.0",
                           "end": 26,
                           "leaves": Array [
                             Object {
@@ -1032,13 +1046,8 @@ exports[`RichField should render immutable variable 1`] = `
                         "component": [Function],
                         "strategy": [Function],
                       },
-                      Object {
-                        "component": [Function],
-                        "strategy": [Function],
-                      },
                     ],
                     "initialize": [Function],
-                    "onChange": [Function],
                   },
                   Object {
                     "MentionSuggestions": [Function],
@@ -1060,6 +1069,18 @@ exports[`RichField should render immutable variable 1`] = `
                     "onEscape": [Function],
                     "onTab": [Function],
                     "onUpArrow": [Function],
+                  },
+                  Object {
+                    "onChange": [Function],
+                  },
+                  Object {
+                    "decorators": Array [
+                      Object {
+                        "component": [Function],
+                        "strategy": [Function],
+                      },
+                    ],
+                    "onChange": [Function],
                   },
                 ]
               }
@@ -1336,7 +1357,7 @@ exports[`RichField should render immutable variable 1`] = `
                             "start": 0,
                           },
                           Object {
-                            "decoratorKey": "0-0.0",
+                            "decoratorKey": "0-4.0",
                             "end": 26,
                             "leaves": Array [
                               Object {
@@ -1579,13 +1600,8 @@ exports[`RichField should render immutable variable 1`] = `
                           "component": [Function],
                           "strategy": [Function],
                         },
-                        Object {
-                          "component": [Function],
-                          "strategy": [Function],
-                        },
                       ],
                       "initialize": [Function],
-                      "onChange": [Function],
                     },
                     Object {
                       "MentionSuggestions": [Function],
@@ -1607,6 +1623,18 @@ exports[`RichField should render immutable variable 1`] = `
                       "onEscape": [Function],
                       "onTab": [Function],
                       "onUpArrow": [Function],
+                    },
+                    Object {
+                      "onChange": [Function],
+                    },
+                    Object {
+                      "decorators": Array [
+                        Object {
+                          "component": [Function],
+                          "strategy": [Function],
+                        },
+                      ],
+                      "onChange": [Function],
                     },
                   ]
                 }
@@ -1946,7 +1974,7 @@ exports[`RichField should render immutable variable 1`] = `
                                     "start": 0,
                                   },
                                   Object {
-                                    "decoratorKey": "0-0.0",
+                                    "decoratorKey": "0-4.0",
                                     "end": 26,
                                     "leaves": Array [
                                       Object {
@@ -2505,7 +2533,7 @@ exports[`RichField should render immutable variable 1`] = `
                                     "start": 0,
                                   },
                                   Object {
-                                    "decoratorKey": "0-0.0",
+                                    "decoratorKey": "0-4.0",
                                     "end": 26,
                                     "leaves": Array [
                                       Object {
@@ -3745,9 +3773,9 @@ exports[`RichField should render mutable variable 1`] = `
                       },
                       "selectionBefore": Object {
                         "anchorKey": "123",
-                        "anchorOffset": 21,
+                        "anchorOffset": 0,
                         "focusKey": "123",
-                        "focusOffset": 21,
+                        "focusOffset": 0,
                         "hasFocus": false,
                         "isBackward": false,
                       },
@@ -3783,7 +3811,7 @@ exports[`RichField should render mutable variable 1`] = `
                     "directionMap": Object {
                       "123": "LTR",
                     },
-                    "forceSelection": true,
+                    "forceSelection": false,
                     "inCompositionMode": false,
                     "inlineStyleOverride": null,
                     "lastChangeType": "attach-entity-variables",
@@ -3800,7 +3828,7 @@ exports[`RichField should render mutable variable 1`] = `
                     "treeMap": Object {
                       "123": Array [
                         Object {
-                          "decoratorKey": "0-0.0",
+                          "decoratorKey": "0-4.0",
                           "end": 21,
                           "leaves": Array [
                             Object {
@@ -3975,13 +4003,8 @@ exports[`RichField should render mutable variable 1`] = `
                         "component": [Function],
                         "strategy": [Function],
                       },
-                      Object {
-                        "component": [Function],
-                        "strategy": [Function],
-                      },
                     ],
                     "initialize": [Function],
-                    "onChange": [Function],
                   },
                   Object {
                     "MentionSuggestions": [Function],
@@ -4003,6 +4026,18 @@ exports[`RichField should render mutable variable 1`] = `
                     "onEscape": [Function],
                     "onTab": [Function],
                     "onUpArrow": [Function],
+                  },
+                  Object {
+                    "onChange": [Function],
+                  },
+                  Object {
+                    "decorators": Array [
+                      Object {
+                        "component": [Function],
+                        "strategy": [Function],
+                      },
+                    ],
+                    "onChange": [Function],
                   },
                 ]
               }
@@ -4193,9 +4228,9 @@ exports[`RichField should render mutable variable 1`] = `
                         },
                         "selectionBefore": Object {
                           "anchorKey": "123",
-                          "anchorOffset": 21,
+                          "anchorOffset": 0,
                           "focusKey": "123",
-                          "focusOffset": 21,
+                          "focusOffset": 0,
                           "hasFocus": false,
                           "isBackward": false,
                         },
@@ -4231,7 +4266,7 @@ exports[`RichField should render mutable variable 1`] = `
                       "directionMap": Object {
                         "123": "LTR",
                       },
-                      "forceSelection": true,
+                      "forceSelection": false,
                       "inCompositionMode": false,
                       "inlineStyleOverride": null,
                       "lastChangeType": "attach-entity-variables",
@@ -4248,7 +4283,7 @@ exports[`RichField should render mutable variable 1`] = `
                       "treeMap": Object {
                         "123": Array [
                           Object {
-                            "decoratorKey": "0-0.0",
+                            "decoratorKey": "0-4.0",
                             "end": 21,
                             "leaves": Array [
                               Object {
@@ -4429,13 +4464,8 @@ exports[`RichField should render mutable variable 1`] = `
                           "component": [Function],
                           "strategy": [Function],
                         },
-                        Object {
-                          "component": [Function],
-                          "strategy": [Function],
-                        },
                       ],
                       "initialize": [Function],
-                      "onChange": [Function],
                     },
                     Object {
                       "MentionSuggestions": [Function],
@@ -4457,6 +4487,18 @@ exports[`RichField should render mutable variable 1`] = `
                       "onEscape": [Function],
                       "onTab": [Function],
                       "onUpArrow": [Function],
+                    },
+                    Object {
+                      "onChange": [Function],
+                    },
+                    Object {
+                      "decorators": Array [
+                        Object {
+                          "component": [Function],
+                          "strategy": [Function],
+                        },
+                      ],
+                      "onChange": [Function],
                     },
                   ]
                 }
@@ -4710,9 +4752,9 @@ exports[`RichField should render mutable variable 1`] = `
                                 },
                                 "selectionBefore": Object {
                                   "anchorKey": "123",
-                                  "anchorOffset": 21,
+                                  "anchorOffset": 0,
                                   "focusKey": "123",
-                                  "focusOffset": 21,
+                                  "focusOffset": 0,
                                   "hasFocus": false,
                                   "isBackward": false,
                                 },
@@ -4748,7 +4790,7 @@ exports[`RichField should render mutable variable 1`] = `
                               "directionMap": Object {
                                 "123": "LTR",
                               },
-                              "forceSelection": true,
+                              "forceSelection": false,
                               "inCompositionMode": false,
                               "inlineStyleOverride": null,
                               "lastChangeType": "attach-entity-variables",
@@ -4765,7 +4807,7 @@ exports[`RichField should render mutable variable 1`] = `
                               "treeMap": Object {
                                 "123": Array [
                                   Object {
-                                    "decoratorKey": "0-0.0",
+                                    "decoratorKey": "0-4.0",
                                     "end": 21,
                                     "leaves": Array [
                                       Object {
@@ -5137,9 +5179,9 @@ exports[`RichField should render mutable variable 1`] = `
                                   },
                                   "selectionBefore": Object {
                                     "anchorKey": "123",
-                                    "anchorOffset": 21,
+                                    "anchorOffset": 0,
                                     "focusKey": "123",
-                                    "focusOffset": 21,
+                                    "focusOffset": 0,
                                     "hasFocus": false,
                                     "isBackward": false,
                                   },
@@ -5196,7 +5238,7 @@ exports[`RichField should render mutable variable 1`] = `
                                 }
                               }
                               direction="LTR"
-                              forceSelection={true}
+                              forceSelection={false}
                               offsetKey="123-0-0"
                               selection={
                                 Object {
@@ -5211,7 +5253,7 @@ exports[`RichField should render mutable variable 1`] = `
                               tree={
                                 Immutable.List [
                                   Object {
-                                    "decoratorKey": "0-0.0",
+                                    "decoratorKey": "0-4.0",
                                     "end": 21,
                                     "leaves": Array [
                                       Object {
@@ -5350,9 +5392,9 @@ exports[`RichField should render mutable variable 1`] = `
                                       },
                                       "selectionBefore": Object {
                                         "anchorKey": "123",
-                                        "anchorOffset": 21,
+                                        "anchorOffset": 0,
                                         "focusKey": "123",
-                                        "focusOffset": 21,
+                                        "focusOffset": 0,
                                         "hasFocus": false,
                                         "isBackward": false,
                                       },
@@ -5485,9 +5527,9 @@ exports[`RichField should render mutable variable 1`] = `
                                         },
                                         "selectionBefore": Object {
                                           "anchorKey": "123",
-                                          "anchorOffset": 21,
+                                          "anchorOffset": 0,
                                           "focusKey": "123",
-                                          "focusOffset": 21,
+                                          "focusOffset": 0,
                                           "hasFocus": false,
                                           "isBackward": false,
                                         },
@@ -5619,7 +5661,7 @@ exports[`RichField should render mutable variable 1`] = `
                                             },
                                           }
                                         }
-                                        forceSelection={true}
+                                        forceSelection={false}
                                         isLast={true}
                                         offsetKey="123-0-0"
                                         selection={

@@ -1328,13 +1328,8 @@ exports[`CampaignDetail component should display default value when it's a new c
                                                 "component": [Function],
                                                 "strategy": [Function],
                                               },
-                                              Object {
-                                                "component": [Function],
-                                                "strategy": [Function],
-                                              },
                                             ],
                                             "initialize": [Function],
-                                            "onChange": [Function],
                                           },
                                           Object {
                                             "MentionSuggestions": [Function],
@@ -1356,6 +1351,18 @@ exports[`CampaignDetail component should display default value when it's a new c
                                             "onEscape": [Function],
                                             "onTab": [Function],
                                             "onUpArrow": [Function],
+                                          },
+                                          Object {
+                                            "onChange": [Function],
+                                          },
+                                          Object {
+                                            "decorators": Array [
+                                              Object {
+                                                "component": [Function],
+                                                "strategy": [Function],
+                                              },
+                                            ],
+                                            "onChange": [Function],
                                           },
                                         ]
                                       }
@@ -1614,13 +1621,8 @@ exports[`CampaignDetail component should display default value when it's a new c
                                                   "component": [Function],
                                                   "strategy": [Function],
                                                 },
-                                                Object {
-                                                  "component": [Function],
-                                                  "strategy": [Function],
-                                                },
                                               ],
                                               "initialize": [Function],
-                                              "onChange": [Function],
                                             },
                                             Object {
                                               "MentionSuggestions": [Function],
@@ -1642,6 +1644,18 @@ exports[`CampaignDetail component should display default value when it's a new c
                                               "onEscape": [Function],
                                               "onTab": [Function],
                                               "onUpArrow": [Function],
+                                            },
+                                            Object {
+                                              "onChange": [Function],
+                                            },
+                                            Object {
+                                              "decorators": Array [
+                                                Object {
+                                                  "component": [Function],
+                                                  "strategy": [Function],
+                                                },
+                                              ],
+                                              "onChange": [Function],
                                             },
                                           ]
                                         }

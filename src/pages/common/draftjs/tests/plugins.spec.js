@@ -10,11 +10,11 @@ import {convertFromHTML} from '../../../../utils'
 
 import createToolbarPlugin from '../plugins/toolbar'
 import {
-    variable as variableDecorator,
     link as linkDecorator,
     foundUrl as foundUrlDecorator
 } from '../plugins/toolbar/decorators'
-import {attachEntitiesToVariables} from '../plugins/toolbar/utils'
+import {variable as variableDecorator} from '../plugins/variables/decorators'
+import {attachEntitiesToVariables} from '../plugins/variables/utils'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')

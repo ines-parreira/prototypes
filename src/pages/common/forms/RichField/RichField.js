@@ -15,12 +15,14 @@ import createResizeablePlugin from 'draft-js-resizeable-plugin'
 import createToolbarPlugin from '../../draftjs/plugins/toolbar'
 
 import createMentionPlugin, {suggestionsFilter} from '../../draftjs/plugins/mentions'
+import createConnectedLinksPlugin from '../../draftjs/plugins/connectedLinks'
+import createVariablesPlugin from '../../draftjs/plugins/variables'
 
 import InputField from '../InputField'
 import {convertFromHTML, convertToHTML, removeMentions} from '../../../../utils'
 import {scrollToReactNode} from '../../../common/utils/keyboard'
 
-import {attachEntitiesToVariables} from '../../draftjs/plugins/toolbar/utils'
+import {attachEntitiesToVariables} from '../../draftjs/plugins/variables/utils'
 
 import Signature from './Signature'
 
@@ -75,13 +77,17 @@ export default class RichField extends InputField<Props, State> {
         this.toolbarPlugin = createToolbarPlugin({imageDecorator})
 
         this.mentionPlugin = createMentionPlugin()
+        this.connectedLinksPlugin = createConnectedLinksPlugin()
+        this.variablesPlugin = createVariablesPlugin()
 
         this.plugins = [
             this.dndPlugin,
             this.blockBreakoutPlugin,
             this.resizeablePlugin,
             this.toolbarPlugin,
-            this.mentionPlugin
+            this.mentionPlugin,
+            this.connectedLinksPlugin,
+            this.variablesPlugin,
         ]
 
         let editorState = EditorState.createEmpty()
@@ -167,16 +173,6 @@ export default class RichField extends InputField<Props, State> {
         // set content state in editor state
         editorState = EditorState.push(editorState, contentState)
 
-        // trigger plugins onChange when we force a new editor state via this function
-        // comes from Editor internal onChange function https://github.com/draft-js-plugins/draft-js-plugins/blob/55eb3b845d7e776a10def7f388624cf4c9879f5a/draft-js-plugins-editor/src/Editor/index.js#L92
-        if (this.editor) {
-            this.editor.resolvePlugins().forEach((plugin) => {
-                if (plugin.onChange) {
-                    editorState = plugin.onChange(editorState, this.editor.getPluginMethods())
-                }
-            })
-        }
-
         // immutable variables on first load
         editorState = attachEntitiesToVariables(editorState, true)
 
@@ -229,7 +225,24 @@ export default class RichField extends InputField<Props, State> {
         return 'handled'
     }
 
+    _runPlugins = (editorState: EditorState) => {
+        // run plugins onChange on the editor state
+        // comes from Editor internal onChange function https://github.com/draft-js-plugins/draft-js-plugins/blob/55eb3b845d7e776a10def7f388624cf4c9879f5a/draft-js-plugins-editor/src/Editor/index.js#L92
+        if (this.editor) {
+            this.editor.resolvePlugins().forEach((plugin) => {
+                if (plugin.onChange) {
+                    editorState = plugin.onChange(editorState, this.editor.getPluginMethods())
+                }
+            })
+        }
+
+        return editorState
+    }
+
     _onChange = (editorState: EditorState) => {
+        // run plugins
+        editorState = this._runPlugins(editorState)
+
         this.setState({editorState}, () => {
             // notify the parent of the new editor state
             this.props.onChange(editorState)

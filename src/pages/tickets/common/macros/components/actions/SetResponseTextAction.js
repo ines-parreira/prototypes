@@ -7,7 +7,7 @@ import {
     DropdownItem,
 } from 'reactstrap'
 
-import {attachEntitiesToVariables} from '../../../../../common/draftjs/plugins/toolbar/utils'
+import {attachEntitiesToVariables} from '../../../../../common/draftjs/plugins/variables/utils'
 
 import * as integrationsSelectors from '../../../../../../state/integrations/selectors'
 

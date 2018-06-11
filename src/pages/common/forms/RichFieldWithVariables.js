@@ -6,7 +6,7 @@ import {
     DropdownItem, Label,
 } from 'reactstrap'
 
-import {attachEntitiesToVariables} from '../draftjs/plugins/toolbar/utils'
+import {attachEntitiesToVariables} from '../draftjs/plugins/variables/utils'
 import RichField from './RichField'
 import {insertText} from '../../../utils'
 import {getVariables} from '../../../config/ticket'
