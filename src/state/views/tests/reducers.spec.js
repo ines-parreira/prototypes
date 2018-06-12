@@ -181,7 +181,7 @@ describe('reducers', () => {
                 2: 234,
                 3: 78,
             }
-            const beforeActionDt = moment.utc()
+            const beforeActionDt = moment.utc().subtract(10, 's')
 
             state = reducers(state, {
                 type: types.UPDATE_COUNTS,
@@ -191,7 +191,7 @@ describe('reducers', () => {
             // should update view counts
             expect(state.get('counts').toJS()).toEqual(counts)
 
-            const now = moment.utc().add(3, 's')
+            const now = moment.utc().add(10, 's')
             const recentViews = selectors.getRecentViews({views: state}).toJS()
             // should update when these view counts were updated for each recent views
             expect(recentViews).not.toEqual({})
