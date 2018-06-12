@@ -395,17 +395,17 @@ describe('replace variables', () => {
             }
         })
 
-        const variable = 'ticket.requester.integrations.shopify.customer.foo'
+        const variable = 'ticket.customer.integrations.shopify.customer.foo'
 
         const logs = []
         const dispatch = (arg) => logs.push(arg)
 
-        const newArg = 'Hello {{ticket.requester.integration.shopify.customer.name}}, ' +
-            'what is your {{ticket.requester.integrations.shopify.customer.foo}}?'
+        const newArg = 'Hello {{ticket.customer.integration.shopify.customer.name}}, ' +
+            'what is your {{ticket.customer.integrations.shopify.customer.foo}}?'
 
         const res = replaceIntegrationVariables('shopify', ticketState, variable, newArg, dispatch)
 
-        expect(res).toEqual('Hello {{ticket.requester.integration.shopify.customer.name}}, ' +
+        expect(res).toEqual('Hello {{ticket.customer.integration.shopify.customer.name}}, ' +
             'what is your {{}}?')
         expect(logs.length).toEqual(1)
     })
@@ -424,18 +424,18 @@ describe('replace variables', () => {
             }
         })
 
-        const variable = 'ticket.requester.integrations.shopify.customer.foo'
+        const variable = 'ticket.customer.integrations.shopify.customer.foo'
 
         const logs = []
         const dispatch = (arg) => logs.push(arg)
 
-        const newArg = 'Hello {{ticket.requester.integration.shopify.customer.name}}, ' +
-            'what is your {{ticket.requester.integrations.shopify.customer.foo}}?'
+        const newArg = 'Hello {{ticket.customer.integration.shopify.customer.name}}, ' +
+            'what is your {{ticket.customer.integrations.shopify.customer.foo}}?'
 
         const res = replaceIntegrationVariables('shopify', ticketState, variable, newArg, dispatch)
 
-        expect(res).toEqual('Hello {{ticket.requester.integration.shopify.customer.name}}, ' +
-            'what is your {{ticket.requester.integrations[15].customer.foo}}?')
+        expect(res).toEqual('Hello {{ticket.customer.integration.shopify.customer.name}}, ' +
+            'what is your {{ticket.customer.integrations[15].customer.foo}}?')
         expect(logs.length).toEqual(0)
     })
 
@@ -459,18 +459,18 @@ describe('replace variables', () => {
             }
         })
 
-        const variable = 'ticket.requester.integrations.shopify.customer.foo'
+        const variable = 'ticket.customer.integrations.shopify.customer.foo'
 
         const logs = []
         const dispatch = (arg) => logs.push(arg)
 
-        const newArg = 'Hello {{ticket.requester.integration.shopify.customer.name}}, ' +
-            'what is your {{ticket.requester.integrations.shopify.customer.foo}}?'
+        const newArg = 'Hello {{ticket.customer.integration.shopify.customer.name}}, ' +
+            'what is your {{ticket.customer.integrations.shopify.customer.foo}}?'
 
         const res = replaceIntegrationVariables('shopify', ticketState, variable, newArg, dispatch)
 
-        expect(res).toEqual('Hello {{ticket.requester.integration.shopify.customer.name}}, ' +
-            'what is your {{ticket.requester.integrations[15].customer.foo}}?')
+        expect(res).toEqual('Hello {{ticket.customer.integration.shopify.customer.name}}, ' +
+            'what is your {{ticket.customer.integrations[15].customer.foo}}?')
         expect(logs.length).toEqual(0)
     })
 
@@ -503,18 +503,18 @@ describe('replace variables', () => {
             }
         })
 
-        const variable = 'ticket.requester.integrations.shopify.customer.foo'
+        const variable = 'ticket.customer.integrations.shopify.customer.foo'
 
         const logs = []
         const dispatch = (arg) => logs.push(arg)
 
-        const newArg = 'Hello {{ticket.requester.integration.shopify.customer.name}}, ' +
-            'what is your {{ticket.requester.integrations.shopify.customer.foo}}?'
+        const newArg = 'Hello {{ticket.customer.integration.shopify.customer.name}}, ' +
+            'what is your {{ticket.customer.integrations.shopify.customer.foo}}?'
 
         const res = replaceIntegrationVariables('shopify', ticketState, variable, newArg, dispatch)
 
-        expect(res).toEqual('Hello {{ticket.requester.integration.shopify.customer.name}}, ' +
-            'what is your {{ticket.requester.integrations[16].customer.foo}}?')
+        expect(res).toEqual('Hello {{ticket.customer.integration.shopify.customer.name}}, ' +
+            'what is your {{ticket.customer.integrations[16].customer.foo}}?')
         expect(logs.length).toEqual(0)
     })
 
@@ -532,16 +532,16 @@ describe('replace variables', () => {
             }
         })
 
-        const variable = 'ticket.requester.integrations.shopify.customer.foo'
+        const variable = 'ticket.customer.integrations.shopify.customer.foo'
 
         const logs = []
         const dispatch = (arg) => logs.push(arg)
 
-        const newArg = '{{ticket.requester.integrations.shopify.customer.foo|datetime_format("MM")}}'
+        const newArg = '{{ticket.customer.integrations.shopify.customer.foo|datetime_format("MM")}}'
 
         const res = replaceIntegrationVariables('shopify', ticketState, variable, newArg, dispatch)
 
-        expect(res).toEqual('{{ticket.requester.integrations[15].customer.foo|datetime_format("MM")}}')
+        expect(res).toEqual('{{ticket.customer.integrations[15].customer.foo|datetime_format("MM")}}')
         expect(logs.length).toEqual(0)
     })
 })

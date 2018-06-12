@@ -37,7 +37,7 @@ class AfterTitle extends React.Component<AfterTitleProps> {
             //         }, {
             //             name: 'code',
             //             type: 'text',
-            //             defaultValue: 'HELLO123' // {{ticket.requester.name}}{{ticket.id}}
+            //             defaultValue: 'HELLO123' // {{ticket.customer.name}}{{ticket.id}}
             //         }]
             //     }],
             //     title: (

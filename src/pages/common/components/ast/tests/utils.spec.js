@@ -80,7 +80,7 @@ describe('ast', () => {
                     })
 
                     it('should update property and reset value (middle attribute changed', () => {
-                        // E.g: ticket.subject -> ticket.requester.email -> ticket.from_agent
+                        // E.g: ticket.subject -> ticket.customer.email -> ticket.from_agent
                         let path = fromJS(['body', 0, 'test', 'arguments', 0, 'property', 'name'])
                         let newAst = updateCodeAst(schemas, astCodeEq, path, 'subject', 'UPDATE')
                         expect(newAst).toMatchSnapshot()

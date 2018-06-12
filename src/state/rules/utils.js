@@ -76,7 +76,7 @@ function partialPath(memberExpression: ?Map<*,*>, stopPath: List<*>): Array<?str
 }
 
 /**
- * Since we only have paths like: `ticket.requester` we need to resolve them to the path in the `schemas`
+ * Since we only have paths like: `ticket.customer` we need to resolve them to the path in the `schemas`
  *
  * @param leftPath - firstArg path
  * @param schemas - OpenAPI schema
@@ -231,7 +231,7 @@ function resolveFirstArg(callExpression: Map<*,*>, stopPath: List<*>, schemas: s
     const memberExpression = callExpression.getIn(['arguments', 0])
 
     // Get a partial path of the `memberExpression` based on the stopPath.
-    // Ex: `ticket.requester.email` -> `ticket.sender` (meaning that `requester` prop changed)
+    // Ex: `ticket.customer.email` -> `ticket.sender` (meaning that `customer` prop changed)
     const firstArg = partialPath(memberExpression, stopPath)
     // Since eq(ticket.sender, '') is valid, but doesn't make any sense, we need to generate a sane `firstArg` by
     // looking at the schema and selecting the first valid property that supports operations.

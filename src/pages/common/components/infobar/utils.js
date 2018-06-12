@@ -87,7 +87,7 @@ export function stripLastListsFromPath(path = []) {
 
 /**
  * Return true if passed absolute path is a root source
- * Ex : ticket.requester.customer
+ * Ex : ticket.customer.data
  * @param group (= absolute path OR 'root')
  * @returns {*}
  */

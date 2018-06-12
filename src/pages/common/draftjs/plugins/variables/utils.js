@@ -7,7 +7,7 @@ import {templateRegex} from '../../../utils/template'
 import * as ticketConfig from '../../../../../config/ticket'
 
 /**
- * Transform variables (ex: {ticket.requester.name}) in visual tag
+ * Transform variables (ex: {ticket.customer.name}) in visual tag
  * Inspired by https://github.com/draft-js-plugins/draft-js-plugins/blob/48937265675faeb2fb6b9ca623f6424d75dc2fb2/draft-js-emoji-plugin/src/modifiers/attachImmutableEntitiesToEmojis.js
  * @param editorState
  * @param immutable

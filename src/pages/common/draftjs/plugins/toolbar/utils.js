@@ -65,4 +65,3 @@ export const getToolbarActions = () => {
         return updatedAction
     })
 }
-

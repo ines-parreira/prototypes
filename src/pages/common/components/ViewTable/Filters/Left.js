@@ -16,7 +16,7 @@ export default class Left extends React.Component {
     render() {
         const {view, objectPath} = this.props
 
-        // just remove the first object name. Ex: ticket.requester.id ==> requester.id
+        // just remove the first object name. Ex: ticket.customer.id ==> customer.id
         const suffixPath = objectPath.split('.').slice(1).join('.')
 
         // now find our field and return it's title

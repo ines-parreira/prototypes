@@ -248,12 +248,12 @@ export function resolvePropertyName(name: string = ''): string {
 /**
  * Find API spec data of the last property of the given field
  *
- * @param {String} field the field path. E.g: ticket.requester.id
+ * @param {String} field the field path. E.g: ticket.customer.id
  * @param {Object} schemas OpenID Schemas
  * @param {Boolean} alwaysRef always use `$ref` of each property to resolve field
  *     E.g:
  *      true: return properties of `User.id` because `requester` is a `User`
- *      false: return properties of `ticket.requester.id` field
+ *      false: return properties of `ticket.customer.id` field
  * @returns {Object} API spec data of the last property
  */
 export function findProperty(field: string, schemas: schemasType, alwaysRef: boolean = false): ?propertyType {
@@ -532,7 +532,7 @@ export function slugify(string: string): string {
  * runs the callback on the new string, then removes the uid.
  * Required for supporting links ending with variables (eg. www.google.com/{{ticket.id}}).
  *
- * @param {String} field the field path. E.g: ticket.requester.id
+ * @param {String} field the field path. E.g: ticket.customer.id
  * @param {Function} function to run on the string
  * @returns {String} parsed string with removed uids
  */
@@ -1122,8 +1122,8 @@ export const openChat = (e: Event) => {
 /**
  * Unescape template variables from a string
  *
- * Input: `send email to %7B%7Bticket.requester.email%7D%7D`
- * Output: `send email to {{ticket.requester.email}}`
+ * Input: `send email to %7B%7Bticket.customer.email%7D%7D`
+ * Output: `send email to {{ticket.customer.email}}`
  */
 export function unescapeTemplateVars(string: string): string {
     // `%7B%7B` : {{

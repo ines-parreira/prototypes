@@ -470,8 +470,8 @@ describe('global utils', () => {
         })
 
         it('should find property (not always use ref)', () => {
-            expect(utils.findProperty('ticket.requester.id', schemas))
-                .toEqual(schemas.getIn(['definitions', 'User', 'properties', 'id']).toJS())
+            expect(utils.findProperty('ticket.customer.id', schemas))
+                .toEqual(schemas.getIn(['definitions', 'Ticket', 'properties', 'customer']).toJS())
             expect(utils.findProperty('message.source.from.address', schemas))
                 .toEqual(schemas.getIn(['definitions', 'SourceAddress', 'properties', 'address']).toJS())
             expect(utils.findProperty('ticket.tags.name', schemas))
@@ -646,8 +646,8 @@ describe('global utils', () => {
 
     describe('unescape template variables', () => {
         it('should ONLY unescape template variables', () => {
-            expect(utils.unescapeTemplateVars('%7Bh%7B%7Bello%7D%7D %7B%7Bticket.requester.email%7D%7D %7B%7Bmessage.from_agent%7D%7D %7B%7Bevent.type%7D%7D %7B%7Buser.email%7D%7D'))
-                .toEqual('%7Bh%7B%7Bello%7D%7D {{ticket.requester.email}} {{message.from_agent}} {{event.type}} {{user.email}}')
+            expect(utils.unescapeTemplateVars('%7Bh%7B%7Bello%7D%7D %7B%7Bticket.customer.email%7D%7D %7B%7Bmessage.from_agent%7D%7D %7B%7Bevent.type%7D%7D %7B%7Buser.email%7D%7D'))
+                .toEqual('%7Bh%7B%7Bello%7D%7D {{ticket.customer.email}} {{message.from_agent}} {{event.type}} {{user.email}}')
         })
 
         it('should NOT unescape variables (invalid template variables)', () => {

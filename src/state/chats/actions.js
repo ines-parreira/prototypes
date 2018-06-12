@@ -29,7 +29,7 @@ export const addChat = (ticket: Object, notify: boolean = true) => (dispatch: di
         type: constants.ADD_CHAT,
         ticket: ticket
     })
-
+    // TODO(customers-migration): use `customer_name` and `customer_email`
     if (notify) {
         browserNotification.newMessage({
             title: ticket.requester_name,

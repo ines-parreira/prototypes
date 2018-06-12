@@ -51,7 +51,7 @@ export function getSourcePathFromContext(context: contextType, type: string = ''
 
 /**
  * Return context and type of widget for passed source path (path on wrapper)
- * @param sourcePath - path of wrapper (ticket.requester.customer, etc.)
+ * @param sourcePath - path of wrapper (ticket.customer.data, etc.)
  * @returns {{context: string, type: string}}
  */
 export function getContextFromSourcePath(sourcePath: Array<string>): contextFromSourcePathType {
