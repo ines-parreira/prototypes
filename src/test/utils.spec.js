@@ -665,10 +665,10 @@ describe('global utils', () => {
             expect(utils.sanitizeHtmlDefault(12)).toBe(12)
         })
 
-        it('should remove all comments of html', () => {
+        it('should remove comments from html', () => {
             expect(utils.sanitizeHtmlDefault('<p><!-->hey</p>')).toBe('<p>hey</p>')
-            expect(utils.sanitizeHtmlDefault('<p><!--[if IE9]>hey</p>')).toBe('<p>hey</p>')
-            expect(utils.sanitizeHtmlDefault('<p><!--[if IE9]>hey<![endif]--></p>')).toBe('<p>hey</p>')
+            expect(utils.sanitizeHtmlDefault('<p><!--[if IE9]>hey</p>')).toBe('<p></p>')
+            expect(utils.sanitizeHtmlDefault('<p><!--[if IE9]>hey<![endif]--></p>')).toBe('<p></p>')
             expect(utils.sanitizeHtmlDefault('<p><!-- hola senor -->hey</p>')).toBe('<p>hey</p>')
             expect(utils.sanitizeHtmlDefault('<p><!-- hola senor -->--> hey</p>')).toBe('<p>--&gt; hey</p>')
         })

@@ -393,8 +393,8 @@ export function sanitizeHtmlDefault(html: string): string {
         return html
     }
 
-    // Remove all HTML comments
-    const sanitizedHtml = html.replace(/<\!((\-\-.*?)|(.*?\-\-))\>/g, '')
+    // Remove broken HTML comment, valid comments will be removed below
+    const sanitizedHtml = html.replace('<!-->', '')
 
     return sanitizeHtml(sanitizedHtml, {
         allowedTags: ['h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
