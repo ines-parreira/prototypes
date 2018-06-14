@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import classnames from 'classnames'
 import _capitalize from 'lodash/capitalize'
-import {UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap'
 
 import shortcutManager from '../../../services/shortcutManager'
 
@@ -84,6 +84,13 @@ export default class Navbar extends React.Component {
         closePanel: PropTypes.func.isRequired,
     }
 
+    constructor() {
+        super()
+        this.state = {
+            bottomDropdownOpen: false
+        }
+    }
+
     getChildContext() {
         return {
             closePanel: this._closePanel,
@@ -98,6 +105,12 @@ export default class Navbar extends React.Component {
 
     _closePanel = () => {
         return this.props.closePanels()
+    }
+
+    _toggleBottomDropdown = () => {
+        this.setState((prevState) => ({
+            bottomDropdownOpen: !prevState.bottomDropdownOpen
+        }))
     }
 
     _updateShowChatPreferences = () => {
@@ -152,8 +165,10 @@ export default class Navbar extends React.Component {
                     {this.props.children}
                 </div>
 
-                <UncontrolledDropdown
+                <Dropdown
                     className="nav-dropdown dropup"
+                    toggle={this._toggleBottomDropdown}
+                    isOpen={this.state.bottomDropdownOpen}
                 >
                     <DropdownToggle color="transparent" style={{overflow: 'hidden'}}>
                         <div>
@@ -214,16 +229,18 @@ export default class Navbar extends React.Component {
                             tag="div"
                             toggle={false}
                         >
-                            <noticeable-widget
-                                id="custom-eye-catching-animation"
-                                access-token={window.NOTICEABLE_ACCESS_TOKEN}
-                                project-id={window.NOTICEABLE_PROJECT_ID}
-                                white-label="true"
-                            >
-                                <a title="New features, bug-fixes, scheduled maintenance and other announcements.">
-                                    What's new?
-                                </a>
-                            </noticeable-widget>
+                            {this.state.bottomDropdownOpen && (
+                                <noticeable-widget
+                                    id="custom-eye-catching-animation"
+                                    access-token={window.NOTICEABLE_ACCESS_TOKEN}
+                                    project-id={window.NOTICEABLE_PROJECT_ID}
+                                    white-label="true"
+                                >
+                                    <a title="New features, bug-fixes, scheduled maintenance and other announcements.">
+                                        What's new?
+                                    </a>
+                                </noticeable-widget>
+                            )}
                         </DropdownItem>
                         <DropdownItem
                             onClick={() => {
@@ -241,7 +258,7 @@ export default class Navbar extends React.Component {
                             Log out
                         </DropdownItem>
                     </DropdownMenu>
-                </UncontrolledDropdown>
+                </Dropdown>
             </div>
         )
     }
