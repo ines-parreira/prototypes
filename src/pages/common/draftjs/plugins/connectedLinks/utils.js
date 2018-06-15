@@ -1,7 +1,60 @@
+// @flow
 import {EditorState} from 'draft-js'
 
+const hasProtocol = (url: string): boolean => {
+    return url.indexOf('//') === 0 || url.includes('://')
+}
+
+const matchProtocols = [
+    'http:',
+    'https:',
+]
+
+export const parseUrl = (url: string = '', target: string = ''): string => {
+    url = url.trim()
+    // only parse in the browser
+    if (typeof window.document === 'undefined') {
+        return url
+    }
+
+    // add http, if url doesn't include protocol.
+    // required so we can change protocol with a.protocol = ''.
+    // using // relative-protocol does not work.
+    if (!hasProtocol(url)) {
+        url = `http://${url}`
+    }
+
+    const a = document.createElement('a')
+    a.href = url
+
+    // mimic target url protocol and www subdomain,
+    // so not-exact urls match (eg. google.com, www.google.com, http://google.com).
+    if (target) {
+        const targetUrl = document.createElement('a')
+        targetUrl.href = target
+
+        const subdomain = 'www'
+        // target has www, but not url
+        const targetParts = targetUrl.hostname.split('.')
+        const urlParts = a.hostname.split('.')
+        if (
+            targetParts[0] === subdomain
+            && urlParts[0] !== subdomain
+        ) {
+            a.hostname = `www.${a.hostname}`
+        }
+
+        // only supported protocols
+        if (matchProtocols.includes(targetUrl.protocol)) {
+            a.protocol = targetUrl.protocol
+        }
+    }
+
+    return a.href
+}
+
 // connected links have the same text and href
-export const setConnectedLinks = (editorState) => {
+export const setConnectedLinks = (editorState: EditorState): EditorState => {
     const contentState = editorState.getCurrentContent()
     const blocks = contentState.getBlockMap()
     let newContentState = contentState
@@ -22,10 +75,11 @@ export const setConnectedLinks = (editorState) => {
                 const entity = newContentState.getEntity(entityKey)
                 const {url, connected} = entity.get('data')
                 let newEntityData = {}
+
                 if (connected) {
                     // link is already connected, update its url.
-                    newEntityData.url = value
-                } else if (value === url) {
+                    newEntityData.url = parseUrl(value)
+                } else if (parseUrl(url) === parseUrl(value, url)) {
                     // link is not connected, but href and text are the same.
                     // set it as connected.
                     newEntityData.connected = true
