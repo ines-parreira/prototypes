@@ -56,8 +56,6 @@ export default class SetResponseTextAction extends React.Component {
         )
     }
 
-    _insertVariable = (variable) => this._insertText(`{{${variable}}}`)
-
     _renderInsertVariable = () => {
         const {hasIntegrationOfTypes} = this.props
 
@@ -86,7 +84,7 @@ export default class SetResponseTextAction extends React.Component {
                                         key={indexVariable}
                                         type="button"
                                         onClick={() => {
-                                            this._insertVariable(variable.value)
+                                            this._insertText(variable.value)
                                         }}
                                     >
                                         {variable.name}

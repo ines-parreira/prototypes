@@ -22,19 +22,19 @@ export const VARIABLES = [{
     children: [{
         name: 'First name',
         fullName: 'Requester first name',
-        value: 'ticket.customer.firstname',
+        value: '{{ticket.customer.firstname}}',
     }, {
         name: 'Last name',
         fullName: 'Requester last name',
-        value: 'ticket.customer.lastname',
+        value: '{{ticket.customer.lastname}}',
     }, {
         name: 'Full name',
         fullName: 'Requester full name',
-        value: 'ticket.customer.name',
+        value: '{{ticket.customer.name}}',
     }, {
         name: 'Email',
         fullName: 'Requester email',
-        value: 'ticket.customer.email',
+        value: '{{ticket.customer.email}}',
     }],
 }, {
     name: 'Current agent',
@@ -42,23 +42,23 @@ export const VARIABLES = [{
     children: [{
         name: 'First name',
         fullName: 'Current agent first name',
-        value: 'current_user.firstname',
+        value: '{{current_user.firstname}}',
     }, {
         name: 'Last name',
         fullName: 'Current agent last name',
-        value: 'current_user.lastname',
+        value: '{{current_user.lastname}}',
     }, {
         name: 'Full name',
         fullName: 'Current agent full name',
-        value: 'current_user.name',
+        value: '{{current_user.name}}',
     }, {
         name: 'Email',
         fullName: 'Current agent email',
-        value: 'current_user.email',
+        value: '{{current_user.email}}',
     }, {
         name: 'Bio',
         fullName: 'Current agent bio',
-        value: 'current_user.bio',
+        value: '{{current_user.bio}}',
     }],
 }, {
     type: 'shopify',
@@ -66,25 +66,31 @@ export const VARIABLES = [{
     integration: true,
     children: [{
         name: 'Last order\'s number',
-        value: 'ticket.customer.integrations.shopify.orders[0].name',
+        value: '{{ticket.customer.integrations.shopify.orders[0].name}}',
+    }, {
+        name: 'Last order\'s date',
+        value: '{{ticket.customer.integrations.shopify.orders[0].created_at|datetime_format("MMMM Do YYYY")}}',
     }, {
         name: 'Tracking url of last order',
-        value: 'ticket.customer.integrations.shopify.orders[0].fulfillments[0].tracking_url',
+        value: '{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].tracking_url}}',
     }, {
         name: 'Tracking number of last order',
-        value: 'ticket.customer.integrations.shopify.orders[0].fulfillments[0].tracking_number',
+        value: '{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].tracking_number}}',
     }, {
         name: 'Delivery status of last order',
-        value: 'ticket.customer.integrations.shopify.orders[0].fulfillments[0].shipment_status',
+        value: '{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].shipment_status}}',
     }, {
         name: 'Status URL of last order',
-        value: 'ticket.customer.integrations.shopify.orders[0].order_status_url',
+        value: '{{ticket.customer.integrations.shopify.orders[0].order_status_url}}',
     }, {
         name: 'Shipping date of last order',
-        value: 'ticket.customer.integrations.shopify.orders[0].fulfillments[0].created_at|datetime_format("MMMM Do YYYY")'
+        value: '{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].created_at|datetime_format("MMMM Do YYYY")}}'
     }, {
         name: 'Destination country of last order',
-        value: 'ticket.customer.integrations.shopify.orders[0].shipping_address.country'
+        value: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.country}}'
+    }, {
+        name: 'Last order\'s shipping address',
+        value: '{{ticket.requester.integrations.shopify.customer.default_address.address1}} {{ticket.requester.integrations.shopify.customer.default_address.address2}}, {{ticket.requester.integrations.shopify.customer.default_address.zip}} {{ticket.requester.integrations.shopify.customer.default_address.city}} {{ticket.requester.integrations.shopify.customer.default_address.province}}',
     }]
 }, {
     type: 'recharge',
@@ -92,8 +98,30 @@ export const VARIABLES = [{
     name: 'Recharge',
     children: [{
         name: 'Customer\'s hash',
-        value: 'ticket.customer.integrations.recharge.customer.hash',
+        value: '{{ticket.customer.integrations.recharge.customer.hash}}',
     }]
+}]
+
+// variables used in some other variables, but which are never available to use on their own
+export const HIDDEN_VARIABLES = [{
+    type: 'shopify',
+    name: 'Shopify',
+    children: [{
+        name: 'Address 1',
+        value: '{{ticket.requester.integrations.shopify.customer.default_address.address1}}'
+    }, {
+        name: 'Address 2',
+        value: '{{ticket.requester.integrations.shopify.customer.default_address.address2}}'
+    }, {
+        name: 'Zip code',
+        value: '{{ticket.requester.integrations.shopify.customer.default_address.zip}}'
+    }, {
+        name: 'City',
+        value: '{{ticket.requester.integrations.shopify.customer.default_address.city}}'
+    }, {
+        name: 'Province',
+        value: '{{ticket.requester.integrations.shopify.customer.default_address.province}}'
+    }],
 }]
 
 // previously available variables in macros: still displayed as variables but are not available in dropdowns anymore
@@ -103,53 +131,68 @@ export const PREVIOUS_VARIABLES = [{
     children: [{
         name: 'First name',
         fullName: 'Requester first name',
-        value: 'ticket.requester.firstname',
+        value: '{{ticket.requester.firstname}}',
     }, {
         name: 'Last name',
         fullName: 'Requester last name',
-        value: 'ticket.requester.lastname',
+        value: '{{ticket.requester.lastname}}',
     }, {
         name: 'Full name',
         fullName: 'Requester full name',
-        value: 'ticket.requester.name',
+        value: '{{ticket.requester.name}}',
     }, {
         name: 'Email',
         fullName: 'Requester email',
-        value: 'ticket.requester.email',
+        value: '{{ticket.requester.email}}',
     }],
 }, {
     type: 'shopify',
     name: 'Shopify',
     children: [{
         name: 'Last order\'s number',
-        value: 'ticket.requester.integrations.shopify.orders[0].name',
+        value: '{{ticket.requester.integrations.shopify.orders[0].name}}',
     }, {
         name: 'Tracking url of last order',
-        value: 'ticket.requester.integrations.shopify.orders[0].fulfillments[0].tracking_url',
+        value: '{{ticket.requester.integrations.shopify.orders[0].fulfillments[0].tracking_url}}',
     }, {
         name: 'Tracking number of last order',
-        value: 'ticket.requester.integrations.shopify.orders[0].fulfillments[0].tracking_number',
+        value: '{{ticket.requester.integrations.shopify.orders[0].fulfillments[0].tracking_number}}',
     }, {
         name: 'Delivery status of last order',
-        value: 'ticket.requester.integrations.shopify.orders[0].fulfillments[0].shipment_status',
+        value: '{{ticket.requester.integrations.shopify.orders[0].fulfillments[0].shipment_status}}',
     }, {
         name: 'Status URL of last order',
-        value: 'ticket.requester.integrations.shopify.orders[0].order_status_url',
+        value: '{{ticket.requester.integrations.shopify.orders[0].order_status_url}}',
     }, {
         name: 'Shipping date of last order',
-        value: 'ticket.requester.integrations.shopify.orders[0].fulfillments[0].created_at|datetime_format("MMMM Do YYYY")'
+        value: '{{ticket.requester.integrations.shopify.orders[0].fulfillments[0].created_at|datetime_format("MMMM Do YYYY")}}'
     }, {
         name: 'Destination country of last order',
-        value: 'ticket.requester.integrations.shopify.orders[0].shipping_address.country'
+        value: '{{ticket.requester.integrations.shopify.orders[0].shipping_address.country}}'
     }, {
         name: 'Last order\'s number',
-        value: 'ticket.requester.integrations.shopify.orders[0].order_number',
+        value: '{{ticket.requester.integrations.shopify.orders[0].order_number}}',
     }, {
         name: 'Tracking urls of last order',
-        value: 'ticket.requester.integrations.shopify.orders[0].fulfillments[0].tracking_urls',
+        value: '{{ticket.requester.integrations.shopify.orders[0].fulfillments[0].tracking_urls}}',
     }, {
         name: 'Tracking numbers of last order',
-        value: 'ticket.requester.integrations.shopify.orders[0].fulfillments[0].tracking_numbers',
+        value: '{{ticket.requester.integrations.shopify.orders[0].fulfillments[0].tracking_numbers}}',
+    }, {
+        name: 'Address 1',
+        value: '{{ticket.requester.integrations.shopify.customer.default_address.address1}}'
+    }, {
+        name: 'Address 2',
+        value: '{{ticket.requester.integrations.shopify.customer.default_address.address2}}'
+    }, {
+        name: 'Zip code',
+        value: '{{ticket.requester.integrations.shopify.customer.default_address.zip}}'
+    }, {
+        name: 'City',
+        value: '{{ticket.requester.integrations.shopify.customer.default_address.city}}'
+    }, {
+        name: 'Province',
+        value: '{{ticket.requester.integrations.shopify.customer.default_address.province}}'
     }],
 }, {
     type: 'recharge',
@@ -157,7 +200,7 @@ export const PREVIOUS_VARIABLES = [{
     name: 'Recharge',
     children: [{
         name: 'Customer\'s hash',
-        value: 'ticket.requester.integrations.recharge.customer.hash',
+        value: '{{ticket.requester.integrations.recharge.customer.hash}}',
     }]
 }]
 
@@ -408,6 +451,10 @@ export const getVariablesList = (variablesList = VARIABLES) => {
  */
 export const getVariableWithValue = (value) => {
     const variables = getVariablesList()
+    const hiddenVariables = getVariablesList(HIDDEN_VARIABLES)
     const previousVariables = getVariablesList(PREVIOUS_VARIABLES)
-    return _find(variables, {value}) || _find(previousVariables, {value})
+
+    return _find(variables, {value})
+        || _find(previousVariables, {value})
+        || _find(hiddenVariables, {value})
 }

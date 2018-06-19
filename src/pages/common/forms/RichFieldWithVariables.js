@@ -66,7 +66,7 @@ export default class RichFieldWithVariables extends Component<Props> {
                                         key={indexVariable}
                                         type="button"
                                         onClick={() => {
-                                            this._insertText(`{{${variable.value}}}`)
+                                            this._insertText(variable.value)
                                         }}
                                     >
                                         {variable.name}

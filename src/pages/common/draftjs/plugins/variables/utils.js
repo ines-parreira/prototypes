@@ -1,7 +1,6 @@
 import {EditorState, SelectionState, Modifier} from 'draft-js'
 import findWithRegex from 'find-with-regex'
 import _get from 'lodash/get'
-import _trim from 'lodash/trim'
 
 import {templateRegex} from '../../../utils/template'
 import * as ticketConfig from '../../../../../config/ticket'
@@ -77,7 +76,7 @@ export const attachEntitiesToVariables = (editorState, immutable = false) => {
                 .set('anchorOffset', start)
                 .set('focusOffset', end)
             const value = plainText.substring(start, end)
-            const variable = ticketConfig.getVariableWithValue(_trim(value, '{}'))
+            const variable = ticketConfig.getVariableWithValue(value)
 
             if (!variable) {
                 return
