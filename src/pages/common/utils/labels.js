@@ -314,7 +314,7 @@ export class RenderLabel extends React.Component {
             case 'integrations':
                 return typeof value === 'string' ? <span>{value}</span> :
                     <IntegrationsDetailLabel integration={value}/>
-            case 'requester':
+            case 'customer':
                 return <UserLabel user={value}/>
             case 'roles':
                 return <RoleLabel roles={isImmutable(value) ? value.toJS() : value}/>

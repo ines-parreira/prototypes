@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 import {withRouter} from 'react-router'
 import classnames from 'classnames'
 import _get from 'lodash/get'
+import _intersection from 'lodash/intersection'
 
 import Loader from '../Loader'
 import Header from './Header'
@@ -124,7 +125,7 @@ export default class Page extends React.Component {
 
     _renderTable = () => {
         const {ActionsComponent, type, items, config, isSearch, activeView} = this.props
-
+        const activeViewFields = activeView.get('fields', fromJS([]))
         const displayedFields = config.get('fields', fromJS([]))
             .filter(field => {
                 // display field if mandatory from config
@@ -133,6 +134,10 @@ export default class Page extends React.Component {
                 }
 
                 // display field if present in active view fields list
+                // TODO(customers-migration): remove this when `requester` attribute will not be available anymore in view filter
+                if (field.get('name') === 'customer') {
+                    return _intersection(activeViewFields.toJS(), ['customer', 'requester']).length > 0
+                }
                 return activeView.get('fields', fromJS([])).contains(field.get('name'))
             })
 

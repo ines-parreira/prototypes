@@ -131,7 +131,7 @@ class FilterDropdown extends React.Component {
             if (field.get('name') === 'tags') {
                 // display tags as tags
                 renderValue = value.get('name')
-            } else if (field.get('name') === 'requester') {
+            } else if (field.get('name') === 'customer') {
                 renderValue = usersHelpers.getDisplayName(value)
             } else if (field.get('name') === 'language') {
                 renderValue = getLanguageDisplayName(value)

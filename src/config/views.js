@@ -93,7 +93,7 @@ export const views = fromJS([{
             }
         },
         {
-            name: 'requester',
+            name: 'customer',
             title: 'Requester',
             path: 'customer.id',
             filter: {
@@ -204,8 +204,8 @@ export const views = fromJS([{
                 return item.get('last_message_datetime') || ''
             case 'last_received_message':
                 return item.get('last_received_message_datetime') || ''
-            case 'requester':
-                return item.get('requester') || fromJS({})
+            case 'customer':
+                return item.get('customer') || fromJS({})
             case 'assignee':
                 return item.get('assignee_user') || fromJS({})
             case 'language': {
@@ -280,7 +280,7 @@ export const views = fromJS([{
     },
     newView: () => {
         return baseView().merge({
-            fields: ['details', 'channel', 'assignee', 'status', 'requester', 'created', 'last_message'],
+            fields: ['details', 'channel', 'assignee', 'status', 'customer', 'created', 'last_message'],
             type: 'ticket-list',
             order_by: 'last_message_datetime',
         })
@@ -289,7 +289,7 @@ export const views = fromJS([{
         return baseView().merge({
             name: `Search "${query}"`,
             search: query,
-            fields: ['details', 'channel', 'assignee', 'status', 'requester', 'created', 'last_message'],
+            fields: ['details', 'channel', 'assignee', 'status', 'customer', 'created', 'last_message'],
             type: 'ticket-list',
             order_by: 'last_message_datetime',
         })
