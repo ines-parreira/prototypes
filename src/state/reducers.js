@@ -1,6 +1,7 @@
 import {combineReducers} from 'redux'
 import {reducer as notificationsReducer} from 'reapop'
 
+import authsReducer from './auths/reducers'
 import chatsReducer from './chats/reducers'
 import agentsReducer from './agents/reducers'
 import billingReducer from './billing/reducers'
@@ -25,6 +26,7 @@ import viewsReducer from './views/reducers'
 import widgetsReducer from './widgets/reducers'
 
 const rootReducer = combineReducers({
+    auths: authsReducer,
     chats: chatsReducer,
     agents: agentsReducer,
     billing: billingReducer,

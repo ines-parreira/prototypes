@@ -1,30 +1,40 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
 import Clipboard from 'clipboard'
 import {FormGroup, Container, Label, InputGroup, Button, Input, InputGroupAddon} from 'reactstrap'
 
 import * as currentUserSelectors from '../../../state/currentUser/selectors'
+import * as authsSelectors from '../../../state/auths/selectors'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
+import {fetchCurrentAuths} from '../../../state/auths/actions'
 import PageHeader from '../../common/components/PageHeader'
+
+
+type Props = {
+    apiKey: string,
+    domain: string,
+    email: string,
+    fetchCurrentAuths: typeof fetchCurrentAuths,
+}
+
+type State = {
+    isCopiedapiKey: boolean,
+    isCopiedemail: boolean,
+    isCopiedurl: boolean,
+}
 
 @connect((state) => {
     return {
-        apiKey: currentUserSelectors.getApiKey(state),
+        apiKey: authsSelectors.getApiKey(state),
         email: currentUserSelectors.getCurrentUser(state).get('email'),
         domain: currentAccountSelectors.getCurrentAccountState(state).get('domain'),
     }
-})
-export default class APIView extends React.Component {
-    static propTypes = {
-        domain: PropTypes.string.isRequired,
-        email: PropTypes.string.isRequired,
-        apiKey: PropTypes.string.isRequired
-    }
-
+}, {fetchCurrentAuths})
+export default class APIView extends React.Component<Props, State> {
     state = {
-        isCopiedurl: false,
-        isCopiedemail: false,
         isCopiedapiKey: false,
+        isCopiedemail: false,
+        isCopiedurl: false,
     }
 
     componentWillMount() {
@@ -41,6 +51,8 @@ export default class APIView extends React.Component {
     }
 
     componentDidMount() {
+        this.props.fetchCurrentAuths()
+
         const clipboard = new Clipboard('.copyBtn')
 
         clipboard.on('success', (e) => {
