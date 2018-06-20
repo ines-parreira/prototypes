@@ -8,14 +8,17 @@ import BillingPaymentMethod from './BillingPaymentMethod'
 import BillingInvoices from './BillingInvoices'
 import {notify} from '../../../state/notifications/actions'
 import PageHeader from '../../common/components/PageHeader'
+import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
 
 @withRouter
-@connect(null, {notify})
-export default class BillingContainer extends Component {
+export class BillingContainer extends Component {
     static propTypes = {
         // Router
-        notify: PropTypes.func.isRequired,
         location: PropTypes.object.isRequired,
+        // history: PropTypes.object.isRequired,
+
+        notify: PropTypes.func.isRequired,
+        currentSubscription: PropTypes.object.isRequired,
     }
 
     componentDidMount() {
@@ -34,6 +37,12 @@ export default class BillingContainer extends Component {
             // remove notification from url
             browserHistory.push(window.location.pathname)
         }
+
+        const {currentSubscription} = this.props
+        if (currentSubscription.isEmpty()) {
+            browserHistory.push('/app/settings/billing/plans')
+        }
+
     }
 
     render() {
@@ -49,3 +58,10 @@ export default class BillingContainer extends Component {
         )
     }
 }
+
+export default connect((state) => {
+    const currentSubscription = currentAccountSelectors.getCurrentSubscription(state)
+    return {
+        currentSubscription,
+    }
+}, {notify})(BillingContainer)

@@ -145,12 +145,64 @@ export class BillingUsage extends Component {
         )
     }
 
-
     render() {
-        const {currentUsage, currentSubscription, currentPlan} = this.props
+        const {currentSubscription} = this.props
+
         if (this.state.isLoading) {
             return <Loader/>
         }
+
+        return (
+            <div className="mb-5">
+                <h4>
+                    <i className="material-icons">insert_chart</i> Usage & Plans
+                </h4>
+
+                {currentSubscription.isEmpty() ? this._render_no_subscription() : this._render_active_subscription()}
+
+                <p>
+                    If you have any questions or if you want to unsubscribe, please
+                    contact us at <a href="mailto:support@gorgias.io">support@gorgias.io</a> or
+                    {' '}
+                    <a href="" onClick={openChat}>Live Chat</a>.
+                </p>
+            </div>
+        )
+    }
+
+    _render_no_subscription() {
+        return (
+            <CardGroup className="mb-2">
+                <Card className={classnames(css['current-plan'], css['Missing'])}>
+                    <CardBody>
+                        <h4>No plan active plan</h4>
+                        <div>
+                            Please select a plan before updating you payment method.
+                        </div>
+                    </CardBody>
+                </Card>
+                <Card className="text-center">
+                    <CardBody>
+                        <Row>
+                            <Col sm={{ size: 4, offset: 8 }} className={css['plan-button']} >
+                                <Button
+                                    color='secondary'
+                                    onClick={() => {
+                                        browserHistory.push('/app/settings/billing/plans')
+                                    }}
+                                >
+                                    Choose Plan
+                                </Button>
+                            </Col>
+                        </Row>
+                    </CardBody>
+                </Card>
+            </CardGroup>
+        )
+    }
+
+    _render_active_subscription() {
+        const {currentUsage, currentSubscription, currentPlan} = this.props
 
         const dateFormat = 'MMM DD'
 
@@ -164,58 +216,46 @@ export class BillingUsage extends Component {
         const periodEnd = moment(currentUsage.getIn(['meta', 'end_datetime'])).format(dateFormat)
 
         return (
-            <div className="mb-5">
-                <h4>
-                    <i className="material-icons">insert_chart</i> Usage & Plans
-                </h4>
-
-                <CardGroup className="mb-2">
-                    <Card className={classnames(css['current-plan'], css[planName] || css['Default'])}>
-                        <CardBody>
-                            <h4>{planTitle}</h4>
-                            {isTrialing ? (
-                                <div>
-                                    Your free trial started on <strong>{currentSubscriptionTrialStart}</strong> and
-                                    {' '}
-                                    will expire on <strong>{currentSubscriptionTrialEnd}</strong>
-                                </div>
-                            ) : (
-                                <div>
-                                    Your current subscription started on <strong>{currentSubscriptionCreated}</strong>.
-                                </div>
-                            )}
-                        </CardBody>
-                    </Card>
-                    <Card className="text-center">
-                        <CardBody>
-                            <Row>
-                                <Col sm="3">{this._renderTicketUsage()}</Col>
-                                <Col sm="3">{this._renderIntegrationUsage()}</Col>
-                                <Col sm="3" className={css['plan-usage-reset']}>
-                                    <div><strong>Usage reset on:</strong></div>
-                                    <div>{periodEnd}</div>
-                                </Col>
-                                <Col sm="3" className={css['plan-button']}>
-                                    <Button
-                                        color={isTrialing ? 'primary' : 'secondary'}
-                                        onClick={() => {
-                                            browserHistory.push('/app/settings/billing/plans')
-                                        }}
-                                    >
-                                        {isTrialing ? 'Choose plan' : 'Update plan'}
-                                    </Button>
-                                </Col>
-                            </Row>
-                        </CardBody>
-                    </Card>
-                </CardGroup>
-                <p>
-                    If you have any questions or if you want to unsubscribe, please
-                    contact us at <a href="mailto:support@gorgias.io">support@gorgias.io</a> or
-                    {' '}
-                    <a href="" onClick={openChat}>Live Chat</a>.
-                </p>
-            </div>
+            <CardGroup className="mb-2">
+                <Card className={classnames(css['current-plan'], css[planName] || css['Default'])}>
+                    <CardBody>
+                        <h4>{planTitle}</h4>
+                        {isTrialing ? (
+                            <div>
+                                Your free trial started on <strong>{currentSubscriptionTrialStart}</strong> and
+                                {' '}
+                                will expire on <strong>{currentSubscriptionTrialEnd}</strong>
+                            </div>
+                        ) : (
+                            <div>
+                                Your current subscription started on <strong>{currentSubscriptionCreated}</strong>.
+                            </div>
+                        )}
+                    </CardBody>
+                </Card>
+                <Card className="text-center">
+                    <CardBody>
+                        <Row>
+                            <Col sm="3">{this._renderTicketUsage()}</Col>
+                            <Col sm="3">{this._renderIntegrationUsage()}</Col>
+                            <Col sm="3" className={css['plan-usage-reset']}>
+                                <div><strong>Usage reset on:</strong></div>
+                                <div>{periodEnd}</div>
+                            </Col>
+                            <Col sm="3" className={css['plan-button']}>
+                                <Button
+                                    color={isTrialing ? 'primary' : 'secondary'}
+                                    onClick={() => {
+                                        browserHistory.push('/app/settings/billing/plans')
+                                    }}
+                                >
+                                    {isTrialing ? 'Choose plan' : 'Update plan'}
+                                </Button>
+                            </Col>
+                        </Row>
+                    </CardBody>
+                </Card>
+            </CardGroup>
         )
     }
 }
