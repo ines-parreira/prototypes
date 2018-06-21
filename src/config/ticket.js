@@ -90,7 +90,7 @@ export const VARIABLES = [{
         value: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.country}}'
     }, {
         name: 'Last order\'s shipping address',
-        value: '{{ticket.requester.integrations.shopify.customer.default_address.address1}} {{ticket.requester.integrations.shopify.customer.default_address.address2}}, {{ticket.requester.integrations.shopify.customer.default_address.zip}} {{ticket.requester.integrations.shopify.customer.default_address.city}} {{ticket.requester.integrations.shopify.customer.default_address.province}}',
+        value: '{{ticket.customer.integrations.shopify.customer.default_address.address1}} {{ticket.customer.integrations.shopify.customer.default_address.address2}}, {{ticket.customer.integrations.shopify.customer.default_address.zip}} {{ticket.customer.integrations.shopify.customer.default_address.city}} {{ticket.customer.integrations.shopify.customer.default_address.province}}',
     }]
 }, {
     type: 'recharge',
@@ -108,19 +108,19 @@ export const HIDDEN_VARIABLES = [{
     name: 'Shopify',
     children: [{
         name: 'Address 1',
-        value: '{{ticket.requester.integrations.shopify.customer.default_address.address1}}'
+        value: '{{ticket.customer.integrations.shopify.customer.default_address.address1}}'
     }, {
         name: 'Address 2',
-        value: '{{ticket.requester.integrations.shopify.customer.default_address.address2}}'
+        value: '{{ticket.customer.integrations.shopify.customer.default_address.address2}}'
     }, {
         name: 'Zip code',
-        value: '{{ticket.requester.integrations.shopify.customer.default_address.zip}}'
+        value: '{{ticket.customer.integrations.shopify.customer.default_address.zip}}'
     }, {
         name: 'City',
-        value: '{{ticket.requester.integrations.shopify.customer.default_address.city}}'
+        value: '{{ticket.customer.integrations.shopify.customer.default_address.city}}'
     }, {
         name: 'Province',
-        value: '{{ticket.requester.integrations.shopify.customer.default_address.province}}'
+        value: '{{ticket.customer.integrations.shopify.customer.default_address.province}}'
     }],
 }]
 
