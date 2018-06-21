@@ -84,7 +84,7 @@ export const getChannels = createSelector(
                 address: integration.getIn(['meta', 'address']),
                 preferred: integration.getIn(['meta', 'preferred']),
                 signature: nestedReplace(integration.getIn(['meta', 'signature']), state),
-                verified: integration.get('type') !== 'email' || integration.getIn(['meta', 'verified'], true) // todo(@martin): change default to false
+                verified: integration.get('type') !== 'email' || integration.getIn(['meta', 'verified'], false)
             })
         })
     }
