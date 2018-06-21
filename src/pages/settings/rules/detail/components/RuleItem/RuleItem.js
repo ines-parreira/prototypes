@@ -253,6 +253,7 @@ export default class RuleItem extends React.Component<Props, State> {
 
         return (
             <tr
+                id={rule.get('id')}
                 key={rule.get('id')}
                 data-id={rule.get('id')} // dragging info
                 className={`container ${css.container}`}

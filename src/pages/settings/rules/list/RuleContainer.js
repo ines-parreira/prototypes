@@ -1,4 +1,5 @@
 import {connect} from 'react-redux'
+import {withRouter} from 'react-router'
 
 import {bindActionCreators} from 'redux'
 
@@ -24,4 +25,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RulesView)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RulesView))

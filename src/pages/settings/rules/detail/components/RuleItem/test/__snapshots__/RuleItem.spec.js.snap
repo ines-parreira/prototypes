@@ -4,6 +4,7 @@ exports[`RuleItem component should render 1`] = `
 <tr
   className="container undefined"
   data-id={17}
+  id={17}
 >
   <td
     colSpan="3"
@@ -255,6 +256,7 @@ exports[`RuleItem component should render errors when there is no trigger select
 <tr
   className="container undefined"
   data-id={17}
+  id={17}
 >
   <td
     colSpan="3"

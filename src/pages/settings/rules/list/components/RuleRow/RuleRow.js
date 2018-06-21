@@ -60,6 +60,7 @@ class RuleRow extends React.Component<Props, State> {
 
         return (
             <tr
+                id={rule.get('id')}
                 key={rule.get('id')}
                 data-id={rule.get('id')} // dragging info
                 className={classnames('draggable', css.row)}

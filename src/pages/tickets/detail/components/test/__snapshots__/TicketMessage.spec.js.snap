@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TicketMessage component should add a -sent via rule- label because the message was sent by a rule 1`] = `
+<div
+  className="ticket-message component internal"
+>
+  <div
+    className="avatar"
+  >
+    <Avatar
+      email=""
+      google={false}
+      name=""
+      size="36"
+      style={Object {}}
+      url=""
+    />
+  </div>
+  <div
+    className="body"
+  >
+    <div
+      className="header"
+    >
+      <div
+        className="headerDetails"
+      >
+        <div
+          className="author"
+        >
+          <UserLabel
+            user={
+              Immutable.Map {
+              }
+            }
+          />
+        </div>
+        <div>
+          <span
+            className="clickable source"
+            onClick={[Function]}
+          >
+            <SourceIcon
+              className="uncolored"
+              id="info-undefined"
+              type=""
+            />
+          </span>
+          <Popover
+            delay={
+              Object {
+                "hide": 0,
+                "show": 0,
+              }
+            }
+            hideArrow={false}
+            isOpen={false}
+            placement="bottom"
+            placementPrefix="bs-popover"
+            target="info-undefined"
+            toggle={[Function]}
+          >
+            <PopoverBody
+              tag="div"
+            >
+              <div
+                className="sourceDetails"
+              >
+                <ul>
+                  <li>
+                    <span
+                      className="text-faded"
+                    >
+                      From
+                      :
+                    </span>
+                    <strong />
+                  </li>
+                  <li>
+                    <span
+                      className="text-faded"
+                    >
+                      Send via:
+                    </span>
+                    <strong />
+                  </li>
+                  <li>
+                    <span
+                      className="text-faded"
+                    >
+                      Date:
+                    </span>
+                    <strong />
+                  </li>
+                </ul>
+              </div>
+            </PopoverBody>
+          </Popover>
+        </div>
+        <span
+          className="from d-none d-md-inline-block"
+        >
+          sent via a
+           
+          <b>
+            <Link
+              onlyActiveOnIndex={false}
+              style={Object {}}
+              tag="a"
+              to="/app/settings/rules?ruleId=4"
+            >
+              <i
+                className="fa fa-fw fa-cog mr-1"
+              />
+              Rule
+            </Link>
+          </b>
+        </span>
+      </div>
+      <span
+        className="date text-faded float-right"
+      >
+        <DatetimeLabel />
+      </span>
+    </div>
+    <TicketMessageBody
+      message={
+        Object {
+          "rule_id": 4,
+          "via": "rule",
+        }
+      }
+    />
+    <TicketMessageActions
+      message={
+        Object {
+          "rule_id": 4,
+          "via": "rule",
+        }
+      }
+    />
+  </div>
+</div>
+`;

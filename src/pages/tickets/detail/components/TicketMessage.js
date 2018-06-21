@@ -23,13 +23,11 @@ import Tooltip from '../../../common/components/Tooltip'
 
 import css from './TicketMessage.less'
 import {connect} from 'react-redux'
+import {Link} from 'react-router'
 
 const classnames = classnamesBind.bind(css)
 
-@connect(null, {
-    executeAction: infobarActions.executeAction
-})
-export default class TicketMessage extends React.Component {
+export class TicketMessage extends React.Component {
     state = {
         infoDropdownOpen: false,
     }
@@ -239,9 +237,18 @@ export default class TicketMessage extends React.Component {
             widgets.push(
                 <span
                     key="via-widget"
-                    className="d-none d-md-inline-block ticket-message-from"
+                    className={classnames(css.from, 'd-none d-md-inline-block')}
                 >
-                    sent via a <b><i className="fa fa-fw fa-cog mr-1"/> Rule</b>
+                    sent via a{' '}
+                    <b>
+                        <Link
+                            tag="a"
+                            to={`/app/settings/rules?ruleId=${message.rule_id}`}
+                        >
+                            <i className="fa fa-fw fa-cog mr-1"/>
+                            Rule
+                        </Link>
+                    </b>
                 </span>
             )
         }
@@ -468,3 +475,5 @@ TicketMessage.propTypes = {
     isLastReadMessage: PropTypes.bool,
     hasCursor: PropTypes.bool,
 }
+
+export default connect(null, {executeAction: infobarActions.executeAction})(TicketMessage)

@@ -20,13 +20,16 @@ import {getAST, getCode} from '../../../../../utils'
 
 type Props = {
     rules: List<*>,
-    actions: Object
+    actions: Object,
 
+    // Router
+    location: Object,
 }
 
 type State = {
     showForm: boolean,
-    openedRules: []
+    openedRules: [],
+    hasScrolled: boolean
 }
 
 export default class RulesView extends React.Component<Props, State> {
@@ -37,10 +40,34 @@ export default class RulesView extends React.Component<Props, State> {
     state = {
         showForm: false,
         openedRules: [],
+        hasScrolled: false
     }
 
     componentWillMount() {
+        const {location} = this.props
+        const ruleId = location.query.ruleId
+
+        if (ruleId) {
+            this._toggleRuleOpening(parseInt(ruleId))
+        }
+
         this.props.actions.rules.fetchRules()
+    }
+
+    componentWillReceiveProps(nextProps: Props) {
+        const {location} = this.props
+        const {hasScrolled} = this.state
+        const ruleId = location.query.ruleId
+
+        if (ruleId && !nextProps.rules.isEmpty() && !hasScrolled) {
+            this.setState({hasScrolled: true}, () => {
+                const elt = document.getElementById(ruleId)
+
+                if (elt) {
+                    elt.scrollIntoView()
+                }
+            })
+        }
     }
 
     _showForm = () => {
