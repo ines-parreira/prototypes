@@ -18,11 +18,6 @@ export const getTicket = createImmutableSelector(
         .delete('state') || fromJS({})
 )
 
-export const getCustomer = createImmutableSelector(
-    [getTicketState],
-    state => state.getIn(['requester', 'customer']) || fromJS({})
-)
-
 export const getIntegrationsData = createSelector(
     [getTicketState],
     state => state.getIn(['requester', 'integrations']) || fromJS({})
