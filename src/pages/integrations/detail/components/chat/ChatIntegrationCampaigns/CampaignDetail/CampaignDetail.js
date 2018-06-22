@@ -25,7 +25,7 @@ import ConfirmButton from '../../../../../../common/components/ConfirmButton'
 import {AgentLabel} from '../../../../../../common/utils/labels'
 
 import CampaignPreview from './../CampaignPreview/CampaignPreview'
-import {convertToHTML} from '../../../../../../../utils'
+import {convertToHTML, sanitizeHtmlDefault} from '../../../../../../../utils'
 
 import {CAMPAIGNS_TRIGGER_KEYS, GRAVATAR_URL_TEMPLATE} from '../../../../../../../config/campaigns'
 import PageHeader from '../../../../../../common/components/PageHeader'
@@ -172,18 +172,7 @@ class TriggerRow extends React.Component {
 }
 
 
-@connect((state, props) => {
-    return {
-        campaign: integrationsSelectors.getChatIntegrationCampaignById(props.integration.get('id'), props.id)(state),
-        agents: userSelectors.getAgents(state)
-    }
-}, {
-    createCampaign: campaignActions.createCampaign,
-    updateCampaign: campaignActions.updateCampaign,
-    deleteCampaign: campaignActions.deleteCampaign,
-    notify
-})
-export default class CampaignDetail extends React.Component {
+export class CampaignDetail extends React.Component {
     static propTypes = {
         id: PropTypes.string.isRequired,
         integration: PropTypes.object.isRequired,
@@ -496,7 +485,7 @@ export default class CampaignDetail extends React.Component {
                         </Col>
                         <Col>
                             <CampaignPreview
-                                html={message.get('html')}
+                                html={sanitizeHtmlDefault(message.get('html'))}
                                 mainColor={integration.getIn(['decoration', 'main_color'])}
                                 authorName={message.getIn(['author', 'name'])}
                                 authorAvatarUrl={message.getIn(['author', 'avatar_url'])}
@@ -508,3 +497,15 @@ export default class CampaignDetail extends React.Component {
         )
     }
 }
+
+export default connect((state, props) => {
+    return {
+        campaign: integrationsSelectors.getChatIntegrationCampaignById(props.integration.get('id'), props.id)(state),
+        agents: userSelectors.getAgents(state)
+    }
+}, {
+    createCampaign: campaignActions.createCampaign,
+    updateCampaign: campaignActions.updateCampaign,
+    deleteCampaign: campaignActions.deleteCampaign,
+    notify
+})(CampaignDetail)
