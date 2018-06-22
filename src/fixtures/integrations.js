@@ -98,7 +98,7 @@ export const integrationsState = {
             deleted_datetime: null,
             mappings: [{
                 source_key: 'args.bayaname',
-                destination_key: 'customer.data.surname',
+                destination_key: 'requester.customer.surname',
                 order: 0,
                 id: 2
             }
@@ -138,7 +138,7 @@ export const integrationsState = {
             deleted_datetime: null,
             mappings: [{
                 source_key: 'args.name',
-                destination_key: 'customer.data.name',
+                destination_key: 'requester.customer.name',
                 order: 0,
                 id: 1
             }],
