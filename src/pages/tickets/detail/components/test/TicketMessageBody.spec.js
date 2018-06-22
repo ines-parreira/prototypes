@@ -64,12 +64,55 @@ describe('components', () => {
             expect(component).toMatchSnapshot()
         })
 
-        it('linkify body_text', () => {
+        it('should linkify body_text', () => {
             const component = mount(
                 <TicketMessageBody
                     message={{
                         body_text: 'text http://gorgias.io/',
                         body_html: ''
+                    }}
+                    store={mockStore()}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should linkify body_html', () => {
+            const component = mount(
+                <TicketMessageBody
+                    message={{
+                        body_text: 'text http://gorgias.io/',
+                        body_html: 'html http://gorgias.io/'
+                    }}
+                    store={mockStore()}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should linkify invalid body_html', () => {
+            const component = mount(
+                <TicketMessageBody
+                    message={{
+                        body_text: 'text http://gorgias.io/',
+                        body_html: `
+                            <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional //EN">
+                            <!doctype html>
+                            <html>
+                                <head>
+                                    <title>Pepperoni</title>
+                                    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+                                </head>
+                                <table>
+                                    http://gorgias.io
+                                <body>
+                                    <![CDATA[pizza]]>
+                                    <a href="https://gorgias.io">gorgias.io</a>
+                                </body>
+                            </html>
+                        `
                     }}
                     store={mockStore()}
                 />

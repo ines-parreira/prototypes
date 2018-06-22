@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
-import linkifyStr from 'linkifyjs/string'
+import linkifyString from 'linkifyjs/string'
+import linkifyHtml from 'linkifyjs/html'
 import classnames from 'classnames'
 
 import {sanitizeHtmlDefault, proxifyImages} from '../../../../utils'
@@ -35,7 +36,6 @@ export default class TicketMessageBody extends React.Component<Props, State> {
 
     render() {
         const {message} = this.props
-
         let body = message.body_html || message.body_text || ''
         const stripped = message.body_html && message.stripped_html ? message.stripped_html : message.stripped_text
 
@@ -60,11 +60,19 @@ export default class TicketMessageBody extends React.Component<Props, State> {
             }
         }
 
-        if (bodyIsOnlyText) {
-            body = linkifyStr(body)
+        body = proxifyImages(sanitizeHtmlDefault(body), '1000x')
+
+        const linkifyOptions = {
+            attributes: {
+                rel: 'noreferrer noopener'
+            }
         }
 
-        body = proxifyImages(sanitizeHtmlDefault(body), '1000x')
+        if (bodyIsOnlyText) {
+            body = linkifyString(body, linkifyOptions)
+        } else {
+            body = linkifyHtml(body, linkifyOptions)
+        }
 
         let content = body !== 'null' && (
             <div>

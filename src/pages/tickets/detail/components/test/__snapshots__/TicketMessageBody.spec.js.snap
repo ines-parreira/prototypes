@@ -36,42 +36,6 @@ exports[`components TicketMessageBody html by default 1`] = `
 </TicketMessageBody>
 `;
 
-exports[`components TicketMessageBody linkify body_text 1`] = `
-<TicketMessageBody
-  message={
-    Object {
-      "body_html": "",
-      "body_text": "text http://gorgias.io/",
-    }
-  }
-  store={
-    Object {
-      "clearActions": [Function],
-      "dispatch": [Function],
-      "getActions": [Function],
-      "getState": [Function],
-      "replaceReducer": [Function],
-      "subscribe": [Function],
-    }
-  }
->
-  <div
-    className="component"
-  >
-    <div>
-      <div
-        className="new-line-interpret"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "text <a href=\\"http://gorgias.io/\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">http://gorgias.io/</a>",
-          }
-        }
-      />
-    </div>
-  </div>
-</TicketMessageBody>
-`;
-
 exports[`components TicketMessageBody should display the Facebook carousel if there's matching metadata 1`] = `
 <TicketMessageBody
   message={
@@ -436,6 +400,144 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
         </Slider>
       </div>
     </FacebookCarousel>
+  </div>
+</TicketMessageBody>
+`;
+
+exports[`components TicketMessageBody should linkify body_html 1`] = `
+<TicketMessageBody
+  message={
+    Object {
+      "body_html": "html http://gorgias.io/",
+      "body_text": "text http://gorgias.io/",
+    }
+  }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <div
+    className="component bodyText"
+  >
+    <div>
+      <div
+        className=""
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "html <a href=\\"http://gorgias.io/\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">http://gorgias.io/</a>",
+          }
+        }
+      />
+    </div>
+  </div>
+</TicketMessageBody>
+`;
+
+exports[`components TicketMessageBody should linkify body_text 1`] = `
+<TicketMessageBody
+  message={
+    Object {
+      "body_html": "",
+      "body_text": "text http://gorgias.io/",
+    }
+  }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <div
+    className="component"
+  >
+    <div>
+      <div
+        className="new-line-interpret"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "text <a href=\\"http://gorgias.io/\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">http://gorgias.io/</a>",
+          }
+        }
+      />
+    </div>
+  </div>
+</TicketMessageBody>
+`;
+
+exports[`components TicketMessageBody should linkify invalid body_html 1`] = `
+<TicketMessageBody
+  message={
+    Object {
+      "body_html": "
+                                <!DOCTYPE HTML PUBLIC \\"-//W3C//DTD HTML 4.01 Transitional //EN\\">
+                                <!doctype html>
+                                <html>
+                                    <head>
+                                        <title>Pepperoni</title>
+                                        <meta http-equiv=\\"Content-Type\\" content=\\"text/html; charset=utf-8\\" />
+                                    </head>
+                                    <table>
+                                        http://gorgias.io
+                                    <body>
+                                        <![CDATA[pizza]]>
+                                        <a href=\\"https://gorgias.io\\">gorgias.io</a>
+                                    </body>
+                                </html>
+                            ",
+      "body_text": "text http://gorgias.io/",
+    }
+  }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <div
+    className="component bodyText"
+  >
+    <div>
+      <div
+        className=""
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "
+                                      
+                                      
+                                      
+                                          
+                                              
+                                              
+                                          
+                                          <table>
+                                              <a href=\\"http://gorgias.io\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">http://gorgias.io</a>
+                                          
+                                              
+                                              <a href=\\"https://gorgias.io\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">gorgias.io</a>
+                                          
+                                      </table>
+                                  ",
+          }
+        }
+      />
+    </div>
   </div>
 </TicketMessageBody>
 `;
