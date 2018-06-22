@@ -141,7 +141,7 @@ export function fetchUserHistory(userId: number, options: {successCondition?: (T
             userId,
         })
 
-        return axios.get(`/api/users/${userId}/tickets/?type=requested`)
+        return axios.get(`/api/users/${userId}/tickets/?type=customer`)
             .then((json = {}) => json.data)
             .then(resp => {
                 const state = getState()

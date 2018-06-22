@@ -79,7 +79,7 @@ describe('users actions', () => {
     })
 
     it('fetch user history', () => {
-        mockServer.onGet('/api/users/2/tickets/?type=requested').reply(200, {data: [{id: 1}]})
+        mockServer.onGet('/api/users/2/tickets/?type=customer').reply(200, {data: [{id: 1}]})
 
         return store.dispatch(actions.fetchUserHistory(2))
             .then(() => expect(store.getActions()).toMatchSnapshot())
