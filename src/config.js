@@ -84,11 +84,11 @@ export const TICKET_STATUSES = ['open', 'closed']
  */
 export const DEFAULT_SOURCE_PATHS = {
     ticket: {
-        custom: ['ticket', 'requester', 'customer'],
+        custom: ['ticket', 'customer', 'data'],
         integrations: ['ticket', 'requester', 'integrations']
     },
     user: {
-        custom: ['user', 'customer'],
+        custom: ['user', 'data'],
         integrations: ['user', 'integrations']
     }
 }

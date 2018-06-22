@@ -20,6 +20,13 @@ describe('ticket selectors', () => {
                             '2': {name: 'integration 2'}
                         },
                     },
+                    customer: {
+                        data: {id: 1},
+                        integrations: {
+                            '1': {name: 'integration 1'},
+                            '2': {name: 'integration 2'}
+                        },
+                    },
                     messages: [ // deliberately not ordered
                         {
                             id: 2,
@@ -100,11 +107,6 @@ describe('ticket selectors', () => {
         const expected = state.ticket.delete('_internal').delete('state')
         expect(selectors.getTicket(state)).toEqualImmutable(expected)
         expect(selectors.getTicket({})).toEqualImmutable(fromJS({}))
-    })
-
-    it('getCustomer', () => {
-        expect(selectors.getCustomer(state)).toEqualImmutable(state.ticket.getIn(['requester', 'customer']))
-        expect(selectors.getCustomer({})).toEqualImmutable(fromJS({}))
     })
 
     it('getIntegrationsData', () => {
