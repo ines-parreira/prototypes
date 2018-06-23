@@ -53,20 +53,20 @@ export function isUppercase(string) {
 
 /**
  * Return true if passed customer data is valid (Immutable Map, etc.)
- * @param data
+ * @param customer
  * @returns {boolean}
  */
-export const isCustomerDataValid = (data) => {
-    return !!data && utils.isImmutable(data)
+export const isCustomerDataValid = (customer) => {
+    return !!customer && utils.isImmutable(customer)
 }
 
 /**
  * Return true if passed customer data is valid and not empty
- * @param data
+ * @param customer
  * @returns {boolean}
  */
-export const isCustomerDataPresent = (data) => {
-    return isCustomerDataValid(data) && !data.isEmpty()
+export const isCustomerDataPresent = (customer) => {
+    return isCustomerDataValid(customer) && !customer.isEmpty()
 }
 
 /**
@@ -157,7 +157,7 @@ export function areSourcesReady(sources, context, everySources = false) {
 
     return sourcePaths[condition]((sourcePath) => {
         // we remove the first property of the source origin path since we are searching directly in the source
-        // ex : we transform ticket.customer.data into ['requester', 'customer']
+        // ex : we transform ticket.requester.customer into ['requester', 'customer']
         const immutableSourcePath = sourcePath.slice(1)
 
         const sourceData = currentSource.getIn(immutableSourcePath, fromJS({}))

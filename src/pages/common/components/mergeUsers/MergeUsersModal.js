@@ -21,7 +21,7 @@ import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 const defaultContent = {
     name: '',
     email: '',
-    data: {},
+    customer: {},
     channels: []
 }
 
@@ -97,20 +97,20 @@ class MergeUsersModal extends React.Component {
         const {destinationUser, sourceUser, isLoading, requiredAddresses} = this.props
         const primaryEmail = this.state.email
 
-        let baseCustomerData = destinationUser.get('data') || fromJS({})
+        let baseCustomer = destinationUser.get('customer') || fromJS({})
 
-        if (isCustomerDataValid(baseCustomerData)) {
-            baseCustomerData = baseCustomerData.delete('_shopify')
+        if (isCustomerDataValid(baseCustomer)) {
+            baseCustomer = baseCustomer.delete('_shopify')
         }
 
-        baseCustomerData = isCustomerDataPresent(baseCustomerData) ? baseCustomerData.toJS() : {}
-        let mergeCustomerData = sourceUser.get('data') || fromJS({})
+        baseCustomer = isCustomerDataPresent(baseCustomer) ? baseCustomer.toJS() : {}
+        let mergeCustomer = sourceUser.get('customer') || fromJS({})
 
-        if (isCustomerDataValid(mergeCustomerData)) {
-            mergeCustomerData = mergeCustomerData.delete('_shopify')
+        if (isCustomerDataValid(mergeCustomer)) {
+            mergeCustomer = mergeCustomer.delete('_shopify')
         }
 
-        mergeCustomerData = isCustomerDataPresent(mergeCustomerData) ? mergeCustomerData.toJS() : {}
+        mergeCustomer = isCustomerDataPresent(mergeCustomer) ? mergeCustomer.toJS() : {}
 
         const allChannels = destinationUser.get('channels').toJS().concat(sourceUser.get('channels').toJS())
 
@@ -228,19 +228,19 @@ class MergeUsersModal extends React.Component {
                         />
                         <BinaryChoiceField
                             label="Customer data"
-                            name="user.data"
+                            name="user.customer"
                             options={[
                                 {
-                                    label: <JSONTree data={fromJS(baseCustomerData)} />,
-                                    value: baseCustomerData
+                                    label: <JSONTree data={fromJS(baseCustomer)} />,
+                                    value: baseCustomer
                                 },
                                 {
-                                    label: <JSONTree data={fromJS(mergeCustomerData)} />,
-                                    value: mergeCustomerData
+                                    label: <JSONTree data={fromJS(mergeCustomer)} />,
+                                    value: mergeCustomer
                                 }
                             ]}
-                            value={_omit(this.state.data, ['_shopify'])}
-                            onChange={data => this.setState({data})}
+                            value={_omit(this.state.customer, ['_shopify'])}
+                            onChange={customer => this.setState({customer})}
                         />
                     </div>
 

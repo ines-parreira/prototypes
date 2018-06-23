@@ -70,8 +70,8 @@ describe('widgets infobar utils', () => {
         const correct = [
             fromJS({
                 ticket: {
-                    customer: {
-                        data: {
+                    requester: {
+                        customer: {
                             name: 'hello'
                         }
                     }
@@ -79,8 +79,8 @@ describe('widgets infobar utils', () => {
             }),
             fromJS({
                 ticket: {
-                    customer: {
-                        data: {
+                    requester: {
+                        customer: {
                             age: 33,
                             list: [
                                 'hello'

@@ -600,7 +600,7 @@ export function submitTicketMessage(status: ?string, macroActions: ?macroActions
                 const template = getActionTemplate(messageAction.get('name'))
 
                 if (template.validators) {
-                    // We can't just have a fallback in the get, in case ticket.requester.data === null
+                    // We can't just have a fallback in the get, in case ticket.requester.customer === null
                     const requester = (ticket.getIn(['requester']) || fromJS({})).toJS()
 
                     for (const validator of template.validators) {
