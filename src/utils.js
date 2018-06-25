@@ -252,7 +252,7 @@ export function resolvePropertyName(name: string = ''): string {
  * @param {Object} schemas OpenID Schemas
  * @param {Boolean} alwaysRef always use `$ref` of each property to resolve field
  *     E.g:
- *      true: return properties of `User.id` because `requester` is a `User`
+ *      true: return properties of `User.id` because `customer` is a `User`
  *      false: return properties of `ticket.customer.id` field
  * @returns {Object} API spec data of the last property
  */

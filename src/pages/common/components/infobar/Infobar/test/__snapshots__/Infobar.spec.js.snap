@@ -64,7 +64,7 @@ exports[`Infobar component should render current user with suggested user 1`] = 
           sources={
             Immutable.Map {
               ticket: Immutable.Map {
-                requester: Immutable.Map {
+                customer: Immutable.Map {
                   id: 2,
                 },
               },
@@ -99,7 +99,7 @@ exports[`Infobar component should render current user with suggested user 1`] = 
               Is this the same person?
             </h4>
             <p>
-              'We have found someone similar to the requester of this ticket. If it is the same person, merge them together to get a unified view of this user.
+              'We have found someone similar to the customer of this ticket. If it is the same person, merge them together to get a unified view of this user.
             </p>
             <div
               style={
@@ -136,7 +136,7 @@ exports[`Infobar component should render current user with suggested user 1`] = 
               sources={
                 Immutable.Map {
                   ticket: Immutable.Map {
-                    requester: Immutable.Map {
+                    customer: Immutable.Map {
                       id: 10,
                     },
                   },
@@ -459,11 +459,11 @@ exports[`Infobar component should render selected user 1`] = `
                 id: 7,
               }
             }
-            setRequester={[Function]}
+            setCustomer={[Function]}
             sources={
               Immutable.Map {
                 ticket: Immutable.Map {
-                  requester: Immutable.Map {
+                  customer: Immutable.Map {
                     id: 2,
                   },
                 },
@@ -493,7 +493,7 @@ exports[`Infobar component should render selected user 1`] = `
           sources={
             Immutable.Map {
               ticket: Immutable.Map {
-                requester: Immutable.Map {
+                customer: Immutable.Map {
                   id: 7,
                 },
               },
@@ -601,7 +601,7 @@ exports[`Infobar component should render ticket context 1`] = `
           sources={
             Immutable.Map {
               ticket: Immutable.Map {
-                requester: Immutable.Map {
+                customer: Immutable.Map {
                   id: 2,
                 },
               },
@@ -693,7 +693,7 @@ exports[`Infobar component should render user context 1`] = `
           sources={
             Immutable.Map {
               ticket: Immutable.Map {
-                requester: Immutable.Map {
+                customer: Immutable.Map {
                   id: 2,
                 },
               },
@@ -785,7 +785,7 @@ exports[`Infobar component should render widgets edition mode 1`] = `
           sources={
             Immutable.Map {
               ticket: Immutable.Map {
-                requester: Immutable.Map {
+                customer: Immutable.Map {
                   id: 2,
                 },
               },

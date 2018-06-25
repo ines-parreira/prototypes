@@ -51,7 +51,7 @@ describe('components utils : labels', () => {
                     </div>)
                 },
                 {
-                    type: 'requester',
+                    type: 'customer',
                     value: {
                         name: 'Luigi'
                     },

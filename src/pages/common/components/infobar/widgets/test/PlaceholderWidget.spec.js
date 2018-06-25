@@ -14,7 +14,7 @@ describe('PlaceholderWidget component', () => {
     const integrationId = 1
 
     const baseTemplate = fromJS({
-        path: ['ticket', 'requester', 'integrations', integrationId],
+        path: ['ticket', 'customer', 'integrations', integrationId],
         templatePath: '0.template'
     })
 

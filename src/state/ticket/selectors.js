@@ -20,7 +20,7 @@ export const getTicket = createImmutableSelector(
 
 export const getIntegrationsData = createSelector(
     [getTicketState],
-    state => state.getIn(['requester', 'integrations']) || fromJS({})
+    state => state.getIn(['customer', 'integrations']) || fromJS({})
 )
 
 export const getIntegrationDataByIntegrationId = integrationId => createSelector(

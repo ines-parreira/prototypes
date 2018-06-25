@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 import {Link, withRouter} from 'react-router'
+import {fromJS} from 'immutable'
 
 import Tooltip from './Tooltip'
 import {isCurrentlyOnTicket} from '../../../utils'
@@ -23,11 +24,10 @@ class RecentChatsItem extends React.Component {
     render() {
         const {recentTicket, position} = this.props
         const channel = recentTicket.get('channel')
-        const requesterID = recentTicket.get('requester_id')
+        const customer = recentTicket.get('customer') || fromJS({})
+        const customerID = customer.get('id')
         // If no user name nor ticket subject exists, then we'll display a user's id
-        const requesterDisplayName = recentTicket.get('requester_name') || recentTicket.get('requester_email')
-            || `Customer #${requesterID}`
-
+        const customerName = customer.get('name') || customer.get('email') || `Customer #${customerID}`
         // is the current link active or not?
         const isActive = isCurrentlyOnTicket(recentTicket.get('id'))
         const linkClasses = classnames('item', {
@@ -47,10 +47,10 @@ class RecentChatsItem extends React.Component {
                 }}
                 to={`/app/ticket/${recentTicket.get('id')}`}
                 className={linkClasses}
-                title={requesterDisplayName}
+                title={customerName}
             >
                 <SourceIcon type={channel} className={classnames('uncolored mr-2')}/>
-                <span>{requesterDisplayName}</span>
+                <span>{customerName}</span>
             </Link>
         )
     }

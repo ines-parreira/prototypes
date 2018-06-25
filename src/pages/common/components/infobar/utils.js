@@ -157,7 +157,7 @@ export function areSourcesReady(sources, context, everySources = false) {
 
     return sourcePaths[condition]((sourcePath) => {
         // we remove the first property of the source origin path since we are searching directly in the source
-        // ex : we transform ticket.customer.data into ['requester', 'customer']
+        // ex : we transform ticket.customer.data into ['customer', 'data']
         const immutableSourcePath = sourcePath.slice(1)
 
         const sourceData = currentSource.getIn(immutableSourcePath, fromJS({}))

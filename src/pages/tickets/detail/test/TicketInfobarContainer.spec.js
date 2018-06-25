@@ -41,19 +41,19 @@ describe('TicketInfobarContainer component', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should disable widget editing new tickets without requester', () => {
+    it('should disable widget editing new tickets without customer', () => {
         const component = shallow(<TicketInfobarContainer {...minProps} />).dive().dive()
 
         expect(component.prop('user')).toBeImmutable(fromJS({}))
     })
 
-    it('should allow widget editing new tickets with requester', () => {
+    it('should allow widget editing new tickets with customer', () => {
         const ticket = fromJS({
-            requester: {name: 'Pizza Pepperoni'}
+            customer: {name: 'Pizza Pepperoni'}
         })
         const component = shallow(<TicketInfobarContainer {...minProps} />).dive().dive()
         component.setProps({ticket})
 
-        expect(component.prop('user')).toBeImmutable(ticket.get('requester'))
+        expect(component.prop('user')).toBeImmutable(ticket.get('customer'))
     })
 })

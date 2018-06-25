@@ -9,7 +9,7 @@ import _last from 'lodash/last'
 import _isUndefined from 'lodash/isUndefined'
 import * as integrationsSelectors from './../integrations/selectors'
 
-import {getSources, getSourcesWithRequester} from '../widgets/selectors'
+import {getSources, getSourcesWithCustomer} from '../widgets/selectors'
 
 import type {Map} from 'immutable'
 import type {dispatchType, getStateType} from '../types'
@@ -155,7 +155,7 @@ export function drop(eventType: 'add' | 'update', targetParentTemplatePath: stri
             source.get('ticket')
             && _isUndefined(source.getIn(['ticket', 'id']))
         ) {
-            source = getSourcesWithRequester(state)
+            source = getSourcesWithCustomer(state)
         }
 
         dispatch({

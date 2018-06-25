@@ -1,6 +1,6 @@
 import {
     getContext, getSources,
-    getSourcesWithRequester,
+    getSourcesWithCustomer,
     getWidgets,
     getWidgetsState,
     getWidgetsWithContext, hasWidgets,
@@ -211,11 +211,11 @@ describe('widgets selectors', () => {
         })
     })
 
-    describe('getSourcesWithRequester', () => {
-        it('should return the ticket requester because it exists', () => {
+    describe('getSourcesWithCustomer', () => {
+        it('should return the ticket customer because it exists', () => {
             const expectedResult = fromJS({
                 ticket: {
-                    requester: {
+                    customer: {
                         id: 1,
                         name: 'foo'
                     }
@@ -225,10 +225,10 @@ describe('widgets selectors', () => {
 
             const ticket = expectedResult.get('ticket')
 
-            expect(getSourcesWithRequester({ticket})).toEqualImmutable(expectedResult)
+            expect(getSourcesWithCustomer({ticket})).toEqualImmutable(expectedResult)
         })
 
-        it('should set the user in the ticket requester and return it because there is no ticket', () => {
+        it('should set the user in the ticket customer and return it because there is no ticket', () => {
             const state = {
                 ticket: {},
                 users: fromJS({
@@ -241,7 +241,7 @@ describe('widgets selectors', () => {
 
             const expectedResult = fromJS({
                 ticket: {
-                    requester: {
+                    customer: {
                         id: 1,
                         name: 'foo'
                     }
@@ -252,10 +252,10 @@ describe('widgets selectors', () => {
                 }
             })
 
-            expect(getSourcesWithRequester(state)).toEqualImmutable(expectedResult)
+            expect(getSourcesWithCustomer(state)).toEqualImmutable(expectedResult)
         })
 
-        it('should set the user in the ticket requester and return it because the ticket has no requester', () => {
+        it('should set the user in the ticket customer and return it because the ticket has no customer', () => {
             const state = {
                 ticket: fromJS({
                     id: 1,
@@ -273,7 +273,7 @@ describe('widgets selectors', () => {
                 ticket: {
                     id: 1,
                     subject: 'foo',
-                    requester: {
+                    customer: {
                         id: 2,
                         name: 'bar'
                     }
@@ -284,7 +284,7 @@ describe('widgets selectors', () => {
                 }
             })
 
-            expect(getSourcesWithRequester(state)).toEqualImmutable(expectedResult)
+            expect(getSourcesWithCustomer(state)).toEqualImmutable(expectedResult)
         })
     })
 

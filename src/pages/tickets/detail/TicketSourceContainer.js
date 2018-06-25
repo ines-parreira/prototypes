@@ -6,20 +6,20 @@ import * as TicketActions from '../../../state/ticket/actions'
 import * as UserActions from '../../../state/users/actions'
 
 import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper'
-import {getSourcesWithRequester} from '../../../state/widgets/selectors'
+import {getSourcesWithCustomer} from '../../../state/widgets/selectors'
 
 class TicketSourceContainer extends React.Component {
     componentWillMount() {
         const {actions, params, location, sources} = this.props
         actions.ticket.fetchTicket(params.ticketId)
 
-        // load requester
-        if (location.query.requester) {
-            const userId = parseInt(location.query.requester)
+        // load customer
+        if (location.query.customer) {
+            const userId = parseInt(location.query.customer)
             if (
                 params.ticketId === 'new' &&
-                location.query.requester &&
-                sources.getIn(['ticket', 'requester', 'id']) !== userId
+                location.query.customer &&
+                sources.getIn(['ticket', 'customer', 'id']) !== userId
             ) {
                 actions.user.fetchUser(userId)
             }
@@ -62,7 +62,7 @@ function mapStateToProps(state) {
     return {
         ticket: state.ticket,
         widgets: state.widgets,
-        sources: getSourcesWithRequester(state),
+        sources: getSourcesWithCustomer(state),
     }
 }
 

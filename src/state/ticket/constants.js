@@ -30,7 +30,7 @@ export const SET_AGENT = 'setAssignee'
 export const SET_SUBJECT = 'setSubject'
 export const SET_SNOOZE = 'setSnooze'
 
-export const SET_REQUESTER = 'setRequester'
+export const SET_CUSTOMER = 'setCustomer'
 
 export const REMOVE_TICKET_TAG = 'REMOVE_TICKET_TAG'
 export const SET_TICKET_MESSAGE_REQUEST = 'SET_TICKET_MESSAGE_REQUEST'
@@ -57,4 +57,4 @@ export const DISPLAY_HISTORY_ON_NEXT_PAGE = 'DISPLAY_HISTORY_ON_NEXT_PAGE'
 
 // Merge events from sockets updates coming from server
 export const MERGE_TICKET = 'MERGE_TICKET'
-export const MERGE_REQUESTER = 'MERGE_REQUESTER'
+export const MERGE_CUSTOMER = 'MERGE_CUSTOMER'

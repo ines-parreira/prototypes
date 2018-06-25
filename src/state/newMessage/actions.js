@@ -349,7 +349,7 @@ export const prepare = (sourceType: string) => (dispatch: dispatchType, getState
         }
         case 'instagram-comment': {
             // If we're preparing a new Instagram comment message, we want to insert a mention of format `@username `
-            // with the user name of the requester
+            // with the user name of the customer
             dispatch(prepareDefault(sourceType))
             const newState = getState()
             const newMessageState = selectors.getNewMessageState(newState)
@@ -382,12 +382,12 @@ export const prepare = (sourceType: string) => (dispatch: dispatchType, getState
 }
 
 /**
- * Only getting potential requesters and calling a callback
+ * Only getting potential customers and calling a callback
  * No reducer action after that
  * @param query
  * @returns {function(*)}
  */
-export const updatePotentialRequesters = (query: string) => (dispatch: dispatchType): Promise<dispatchType> => (
+export const updatePotentialCustomers = (query: string) => (dispatch: dispatchType): Promise<dispatchType> => (
     axios.post('/api/search/', {
         type: 'user_channel_email',
         query
@@ -600,11 +600,10 @@ export function submitTicketMessage(status: ?string, macroActions: ?macroActions
                 const template = getActionTemplate(messageAction.get('name'))
 
                 if (template.validators) {
-                    // We can't just have a fallback in the get, in case ticket.requester.data === null
-                    const requester = (ticket.getIn(['requester']) || fromJS({})).toJS()
-
+                    // We can't just have a fallback in the get, in case ticket.customer.data === null
+                    const customer = (ticket.getIn(['customer']) || fromJS({})).toJS()
                     for (const validator of template.validators) {
-                        const res = validator.validate(requester)
+                        const res = validator.validate(customer)
 
                         if (!res) {
                             return dispatch({

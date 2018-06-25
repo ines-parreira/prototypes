@@ -141,7 +141,7 @@ export const joinEvents = [{
 export const receivedEvents = [{
     name: 'user-updated',
     onReceive: function (json) {
-        return this.dispatch(ticketActions.mergeRequester(json.user))
+        return this.dispatch(ticketActions.mergeCustomer(json.user))
     },
 }, {
     name: 'user-location-updated',

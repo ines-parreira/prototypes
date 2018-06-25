@@ -9,7 +9,7 @@ import {
     receiversValueFromState,
     receiversStateFromValue
 } from '../../../../../../../state/ticket/utils'
-import {updatePotentialRequesters} from '../../../../../../../state/newMessage/actions'
+import {updatePotentialCustomers} from '../../../../../../../state/newMessage/actions'
 
 import MultiSelectAsyncField from './MultiSelectAsyncField/index'
 
@@ -17,7 +17,7 @@ class ReceiversSelectField extends React.Component {
     static propTypes = {
         value: PropTypes.array.isRequired,
         onChange: PropTypes.func.isRequired,
-        updatePotentialRequesters: PropTypes.func.isRequired,
+        updatePotentialCustomers: PropTypes.func.isRequired,
 
         disabled: PropTypes.bool.isRequired, // whether the dropdown should allow user interactions or not
         parentId: PropTypes.string.isRequired, // the id of the parent object, to check if the field needs to be repopulated
@@ -49,7 +49,7 @@ class ReceiversSelectField extends React.Component {
             callback([])
         }
 
-        this.props.updatePotentialRequesters(queryText)
+        this.props.updatePotentialCustomers(queryText)
             .then((data) => {
                 callback(this._valueFromState(data))
             })
@@ -82,7 +82,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    updatePotentialRequesters: bindActionCreators(updatePotentialRequesters, dispatch),
+    updatePotentialCustomers: bindActionCreators(updatePotentialCustomers, dispatch),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReceiversSelectField)

@@ -51,10 +51,10 @@ jest.mock('../../../../state/ticket/actions', () => {
     return {
         fetchTicket: jest.fn(() => _identity),
         clearTicket: jest.fn(() => _identity),
-        setRequester: jest.fn(() => () => Promise.resolve()),
+        setCustomer: jest.fn(() => () => Promise.resolve()),
         setStatus: jest.fn((status, callback) => () => callback()),
         goToNextTicket: jest.fn(() => () => Promise.resolve),
-        findAndSetRequester: jest.fn(() => () => Promise.resolve),
+        findAndSetCustomer: jest.fn(() => () => Promise.resolve),
     }
 })
 
@@ -104,7 +104,7 @@ describe('TicketDetailContainer component', () => {
     it('should fetch user details from url', () => {
         const router = _merge(
             {...minProps.router},
-            {location: {query: {requester:'1'}}}
+            {location: {query: {customer:'1'}}}
         )
 
         shallow(
@@ -117,7 +117,7 @@ describe('TicketDetailContainer component', () => {
         expect(userActions.fetchUser).toBeCalledWith(1)
     })
 
-    it('should set activeUser as requester', () => {
+    it('should set activeUser as customer', () => {
         const activeUser = fromJS({
             id: 1,
             name: 'Pizza Pepperoni',
@@ -128,13 +128,13 @@ describe('TicketDetailContainer component', () => {
             <TicketDetailContainer
                 {...minProps}
                 params={{userId: '1'}}
-                location={{query: {requester:'1'}}}
+                location={{query: {customer:'1'}}}
                 />
         ).dive().dive()
 
         component.setProps({activeUser})
 
-        expect(ticketActions.setRequester).toBeCalledWith(
+        expect(ticketActions.setCustomer).toBeCalledWith(
             activeUser.set('address', activeUser.get('email'))
         )
     })
@@ -209,7 +209,7 @@ describe('TicketDetailContainer component', () => {
         const component = shallow(
             <TicketDetailContainer
                 {...minProps}
-                location={{query: {requester:'1'}}}
+                location={{query: {customer:'1'}}}
                 />
         ).dive().dive()
 
@@ -230,7 +230,7 @@ describe('TicketDetailContainer component', () => {
             <TicketDetailContainer
                 {...minProps}
                 params={{userId: '1'}}
-                location={{query: {requester:'1'}}}
+                location={{query: {customer:'1'}}}
                 />
         ).dive().dive()
         component.setProps({activeView: activeView})
@@ -247,7 +247,7 @@ describe('TicketDetailContainer component', () => {
                 {...minProps}
                 activeView={activeView}
                 params={{userId: '1'}}
-                location={{query: {requester:'1'}}}
+                location={{query: {customer:'1'}}}
                 />
         ).dive().dive()
         component.setProps({ticket: ticket.set('updated_datetime', moment())})
@@ -255,7 +255,7 @@ describe('TicketDetailContainer component', () => {
         expect(ticketsActions.updateCursor).not.toHaveBeenCalled()
     })
 
-    it('should try to set the first recipient as requester because this ticket is new and the recipients have changed ' +
+    it('should try to set the first recipient as customer because this ticket is new and the recipients have changed ' +
         'from no recipients to one recipient', () => {
         const component = shallow(
             <TicketDetailContainer
@@ -272,10 +272,10 @@ describe('TicketDetailContainer component', () => {
             })
         })
 
-        expect(ticketActions.findAndSetRequester).toBeCalledWith('foo@gorgias.io')
+        expect(ticketActions.findAndSetCustomer).toBeCalledWith('foo@gorgias.io')
     })
 
-    it('should try to set the first recipient as requester because this ticket is new and the recipients have changed ' +
+    it('should try to set the first recipient as customer because this ticket is new and the recipients have changed ' +
         'from multiple recipients to one recipient', () => {
         const component = shallow(
             <TicketDetailContainer
@@ -310,18 +310,18 @@ describe('TicketDetailContainer component', () => {
             })
         })
 
-        expect(ticketActions.findAndSetRequester).toBeCalledWith('foo@gorgias.io')
+        expect(ticketActions.findAndSetCustomer).toBeCalledWith('foo@gorgias.io')
     })
 
-    it('should not try to set the first recipient as requester because event though this ticket is new and the ' +
-        'recipients have changed from multiple recipients to one recipient, this is the same requester', () => {
+    it('should not try to set the first recipient as customer because event though this ticket is new and the ' +
+        'recipients have changed from multiple recipients to one recipient, this is the same customer', () => {
         const component = shallow(
             <TicketDetailContainer
                 {...minProps}
                 store={mockStore({
                     ticket: fromJS({
                         messages: [],
-                        requester: {
+                        customer: {
                             name: 'foo',
                             email: 'foo@gorgias.io',
                             channels: [{
@@ -356,10 +356,10 @@ describe('TicketDetailContainer component', () => {
             })
         })
 
-        expect(ticketActions.findAndSetRequester).not.toHaveBeenCalled()
+        expect(ticketActions.findAndSetCustomer).not.toHaveBeenCalled()
     })
 
-    it('should not try to set the first recipient as requester because the only recipient is in the `cc` field, and ' +
+    it('should not try to set the first recipient as customer because the only recipient is in the `cc` field, and ' +
         'not in the `to` field', () => {
         const component = shallow(
             <TicketDetailContainer
@@ -367,7 +367,7 @@ describe('TicketDetailContainer component', () => {
                 store={mockStore({
                     ticket: fromJS({
                         messages: [],
-                        requester: {
+                        customer: {
                             name: 'foo',
                             email: 'foo@gorgias.io',
                             channels: [{
@@ -402,10 +402,10 @@ describe('TicketDetailContainer component', () => {
             })
         })
 
-        expect(ticketActions.findAndSetRequester).not.toHaveBeenCalled()
+        expect(ticketActions.findAndSetCustomer).not.toHaveBeenCalled()
     })
 
-    it('should set the requester to null because the ticket is new and the recipients have been removed', () => {
+    it('should set the customer to null because the ticket is new and the recipients have been removed', () => {
         const component = shallow(
             <TicketDetailContainer
                 {...minProps}
@@ -429,10 +429,10 @@ describe('TicketDetailContainer component', () => {
 
         component.setProps({newMessageSource: fromJS({to: []})})
 
-        expect(ticketActions.setRequester).toBeCalledWith(null)
+        expect(ticketActions.setCustomer).toBeCalledWith(null)
     })
 
-    it('should set the requester as first recipient because the ticket is new and the requester has changed', () => {
+    it('should set the customer as first recipient because the ticket is new and the customer has changed', () => {
         const component = shallow(
             <TicketDetailContainer
                 {...minProps}
@@ -460,7 +460,7 @@ describe('TicketDetailContainer component', () => {
 
         component.setProps({
             ticket: fromJS({
-                requester: {
+                customer: {
                     id: 1,
                     name: 'foo',
                     email: 'foo@gorgias.io'

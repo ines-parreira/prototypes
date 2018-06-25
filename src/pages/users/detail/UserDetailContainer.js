@@ -103,7 +103,7 @@ class UserDetailContainer extends React.Component {
                     <div>
                         <Link
                             className="btn btn-secondary mr-2"
-                            to={`/app/ticket/new?requester=${activeUser.get('id')}`}
+                            to={`/app/ticket/new?customer=${activeUser.get('id')}`}
                         >
                             Create ticket
                         </Link>

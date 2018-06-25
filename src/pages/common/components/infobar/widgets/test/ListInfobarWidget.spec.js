@@ -8,11 +8,11 @@ import * as ticketFixtures from '../../../../../../fixtures/ticket'
 import ListInfobarWidget from '../ListInfobarWidget'
 
 describe('Infobar::Widgets::ListInfobarWidget', () => {
-    const source = fromJS(ticketFixtures.ticket.requester.integrations['5'].orders)
+    const source = fromJS(ticketFixtures.ticket.customer.integrations['5'].orders)
     const widget = fromJS(widgetsFixtures.shopifyWidget)
     const template = widget.getIn(['template', 'widgets', 1])
         .set('templatePath', '0.template.widgets.1')
-        .set('absolutePath', ['ticket', 'requester', 'integrations', '5', 'orders'])
+        .set('absolutePath', ['ticket', 'customer', 'integrations', '5', 'orders'])
 
     const minProps = {
         isEditing: false,

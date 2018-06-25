@@ -51,7 +51,7 @@ type Props = {
     fetchUserHistory: typeof usersActions.fetchUserHistory,
     search: typeof infobarActions.search,
     searchSimilarUser: typeof infobarActions.similarUser,
-    setRequester: typeof ticketActions.setRequester,
+    setCustomer: typeof ticketActions.setCustomer,
 
     // react-router
     location: reactRouterLocation,
@@ -236,8 +236,8 @@ export class Infobar extends React.Component<Props, State> {
         }
     }
 
-    _setRequester = () => {
-        return this.props.setRequester(this.state.selectedUser)
+    _setCustomer = () => {
+        return this.props.setCustomer(this.state.selectedUser)
             .then(this._returnToCurrentUserProfile)
     }
 
@@ -245,7 +245,7 @@ export class Infobar extends React.Component<Props, State> {
         const isEditing = this._isEditing()
 
         const sources = this.props.sources
-            .setIn(['ticket', 'requester'], user)
+            .setIn(['ticket', 'customer'], user)
             .set('user', user)
 
         return (
@@ -289,7 +289,7 @@ export class Infobar extends React.Component<Props, State> {
                             sources={sources}
                             selectedUser={this.state.selectedUser}
                             toggleMergeUserModal={(showMergeUserModal: boolean) => this.setState({showMergeUserModal})}
-                            setRequester={this._setRequester}
+                            setCustomer={this._setCustomer}
                         />
                     </div>
                     {this._renderUserInfo(this.state.selectedUser)}
@@ -311,7 +311,7 @@ export class Infobar extends React.Component<Props, State> {
         }
 
         if (mode === 'results') {
-            const defaultUserId = sources.getIn(['ticket', 'requester', 'id']) || sources.getIn(['user', 'id'])
+            const defaultUserId = sources.getIn(['ticket', 'customer', 'id']) || sources.getIn(['user', 'id'])
 
             return (
                 <div>
@@ -361,7 +361,7 @@ export class Infobar extends React.Component<Props, State> {
                             <div className={classnames(css.suggestedUser)}>
                                 <h4>Is this the same person?</h4>
                                 <p>
-                                    'We have found someone similar to the requester of this ticket. If it is the same
+                                    'We have found someone similar to the customer of this ticket. If it is the same
                                     person, merge them together to get a unified view of this user.
                                 </p>
                                 <div style={{marginBottom: '30px'}}>
@@ -474,5 +474,5 @@ export default withRouter(connect(null, {
     fetchUserHistory: usersActions.fetchUserHistory,
     search: infobarActions.search,
     searchSimilarUser: infobarActions.similarUser,
-    setRequester: ticketActions.setRequester,
+    setCustomer: ticketActions.setCustomer,
 })(Infobar))

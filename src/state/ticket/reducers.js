@@ -31,7 +31,7 @@ export const initialState = fromJS({
     status: 'open',
     spam: false,
     sender: null,
-    requester: null,
+    customer: null,
     receiver: null,
     priority: 'normal',
     tags: [],
@@ -192,9 +192,9 @@ export default (state = initialState, action) => {
             return state.set('subject', subject)
         }
 
-        case types.SET_REQUESTER: {
-            const requester = action.args.get('requester')
-            return state.set('requester', requester)
+        case types.SET_CUSTOMER: {
+            const customer = action.args.get('customer')
+            return state.set('customer', customer)
         }
 
         case types.SET_SNOOZE: {
@@ -267,8 +267,8 @@ export default (state = initialState, action) => {
             return state.setIn(['_internal', 'shouldDisplayHistoryOnNextPage'], action.state)
 
         case userTypes.MERGE_USERS_SUCCESS: {
-            if (action.resp && state.getIn(['requester', 'id']) === action.resp.id) {
-                return state.set('requester', fromJS(action.resp))
+            if (action.resp && state.getIn(['customer', 'id']) === action.resp.id) {
+                return state.set('customer', fromJS(action.resp))
             }
             return state
         }
@@ -306,16 +306,16 @@ export default (state = initialState, action) => {
             return newState
         }
 
-        case types.MERGE_REQUESTER: {
+        case types.MERGE_CUSTOMER: {
             const {user} = action
             const userData = fromJS(user)
 
-            // if received user data does not concern current requester of ticket, do nothing
-            if (userData.get('id') !== state.getIn(['requester', 'id'])) {
+            // if received user data does not concern current customer of ticket, do nothing
+            if (userData.get('id') !== state.getIn(['customer', 'id'])) {
                 return state
             }
 
-            return state.set('requester', userData)
+            return state.set('customer', userData)
         }
 
         case types.DELETE_TICKET_PENDING_MESSAGE: {

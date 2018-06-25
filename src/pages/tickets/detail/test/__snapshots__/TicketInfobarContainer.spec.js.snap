@@ -41,7 +41,7 @@ exports[`TicketInfobarContainer component should render infobar for new ticket 1
   sources={
     Immutable.Map {
       ticket: Immutable.Map {
-        requester: Immutable.Map {
+        customer: Immutable.Map {
         },
       },
       user: Immutable.Map {

@@ -84,7 +84,7 @@ Array [
             pendingMessages: Immutable.List [
             ],
       },
-      requester: null,
+      customer: null,
 },
     "ticketId": 1,
     "type": "setResponseText",
@@ -131,7 +131,7 @@ Array [
             pendingMessages: Immutable.List [
             ],
       },
-      requester: null,
+      customer: null,
 },
     "ticketId": 1,
     "type": "addTags",
@@ -219,7 +219,7 @@ Object {
         pendingMessages: Immutable.List [
         ],
     },
-    requester: null,
+    customer: null,
 },
   "ticketId": 1,
   "type": "setResponseText",
@@ -390,7 +390,7 @@ Array [
             pendingMessages: Immutable.List [
             ],
       },
-      requester: null,
+      customer: null,
 },
     "ticketId": 1,
     "type": "setResponseText",
@@ -508,7 +508,7 @@ Array [
             pendingMessages: Immutable.List [
             ],
       },
-      requester: null,
+      customer: null,
 },
     "ticketId": 1,
     "type": "setResponseText",
@@ -575,7 +575,7 @@ Array [
             pendingMessages: Immutable.List [
             ],
       },
-      requester: null,
+      customer: null,
 },
     "ticketId": undefined,
     "type": "setResponseText",
@@ -594,17 +594,17 @@ Array [
 ]
 `;
 
-exports[`ticket actions findAndSetRequester should set the requester because there is exactly one user matching this email address 1`] = `
+exports[`ticket actions findAndSetCustomer should set the customer because there is exactly one user matching this email address 1`] = `
 Array [
   Object {
     "args": Immutable.Map {
-      requester: Immutable.Map {
+      customer: Immutable.Map {
             id: 1,
             name: "foo",
             email: "foo@gorgias.io",
       },
 },
-    "type": "setRequester",
+    "type": "setCustomer",
   },
 ]
 `;
@@ -624,18 +624,18 @@ Array [
   },
   Object {
     "resp": Object {
+      "customerId": 1,
       "id": 2,
       "messages": Array [],
-      "requesterId": 1,
     },
     "ticketId": 2,
     "type": "FETCH_TICKET_SUCCESS",
   },
   Object {
     "resp": Object {
+      "customerId": 1,
       "id": 2,
       "messages": Array [],
-      "requesterId": 1,
     },
     "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
   },
@@ -681,7 +681,7 @@ Array [
             pendingMessages: Immutable.List [
             ],
       },
-      requester: null,
+      customer: null,
 },
     "ticketId": undefined,
     "type": "setResponseText",
@@ -711,6 +711,7 @@ Array [
   },
   Object {
     "resp": Object {
+      "customerId": 1,
       "id": 2,
       "messages": Array [
         Object {
@@ -719,13 +720,13 @@ Array [
           },
         },
       ],
-      "requesterId": 1,
     },
     "ticketId": 2,
     "type": "FETCH_TICKET_SUCCESS",
   },
   Object {
     "resp": Object {
+      "customerId": 1,
       "id": 2,
       "messages": Array [
         Object {
@@ -734,7 +735,6 @@ Array [
           },
         },
       ],
-      "requesterId": 1,
     },
     "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
   },
@@ -780,7 +780,7 @@ Array [
             pendingMessages: Immutable.List [
             ],
       },
-      requester: null,
+      customer: null,
 },
     "ticketId": undefined,
     "type": "setResponseText",
@@ -888,7 +888,7 @@ Array [
             pendingMessages: Immutable.List [
             ],
       },
-      requester: null,
+      customer: null,
 },
     "ticketId": undefined,
     "type": "setResponseText",
@@ -934,18 +934,18 @@ Array [
   },
   Object {
     "resp": Object {
+      "customerId": 1,
       "id": 1,
       "messages": Array [],
-      "requesterId": 1,
     },
     "ticketId": 1,
     "type": "FETCH_TICKET_SUCCESS",
   },
   Object {
     "resp": Object {
+      "customerId": 1,
       "id": 1,
       "messages": Array [],
-      "requesterId": 1,
     },
     "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
   },
@@ -991,7 +991,7 @@ Array [
             pendingMessages: Immutable.List [
             ],
       },
-      requester: null,
+      customer: null,
 },
     "ticketId": undefined,
     "type": "setResponseText",
@@ -1021,6 +1021,7 @@ Array [
   },
   Object {
     "resp": Object {
+      "customerId": 1,
       "id": 1,
       "messages": Array [
         Object {
@@ -1029,13 +1030,13 @@ Array [
           },
         },
       ],
-      "requesterId": 1,
     },
     "ticketId": 1,
     "type": "FETCH_TICKET_SUCCESS",
   },
   Object {
     "resp": Object {
+      "customerId": 1,
       "id": 1,
       "messages": Array [
         Object {
@@ -1044,7 +1045,6 @@ Array [
           },
         },
       ],
-      "requesterId": 1,
     },
     "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
   },
@@ -1090,7 +1090,7 @@ Array [
             pendingMessages: Immutable.List [
             ],
       },
-      requester: null,
+      customer: null,
 },
     "ticketId": undefined,
     "type": "setResponseText",
@@ -1198,7 +1198,7 @@ Array [
             pendingMessages: Immutable.List [
             ],
       },
-      requester: null,
+      customer: null,
 },
     "ticketId": undefined,
     "type": "setResponseText",
@@ -1231,10 +1231,10 @@ Array [
 
 exports[`ticket actions handleMessageActionError 1`] = `Array []`;
 
-exports[`ticket actions mergeRequester 1`] = `
+exports[`ticket actions mergeCustomer 1`] = `
 Array [
   Object {
-    "type": "MERGE_REQUESTER",
+    "type": "MERGE_CUSTOMER",
     "user": Object {
       "id": 1,
     },
@@ -1259,10 +1259,10 @@ Array [
                   channel: "email",
             },
       ],
-      requester: Immutable.Map {
+      customer: Immutable.Map {
             id: 1,
-            customer: Immutable.Map {
-                  id: 1,
+            data: Immutable.Map {
+                  hello: "world!",
             },
       },
 },
@@ -1280,10 +1280,10 @@ Array [
                   channel: "email",
             },
       ],
-      requester: Immutable.Map {
+      customer: Immutable.Map {
             id: 1,
-            customer: Immutable.Map {
-                  id: 1,
+            data: Immutable.Map {
+                  hello: "world!",
             },
       },
 },
@@ -1337,26 +1337,26 @@ Array [
 ]
 `;
 
+exports[`ticket actions setCustomer 1`] = `
+Array [
+  Object {
+    "args": Immutable.Map {
+      customer: Immutable.Map {
+            id: 1,
+            custom: true,
+      },
+},
+    "type": "setCustomer",
+  },
+]
+`;
+
 exports[`ticket actions setRequest 1`] = `
 Array [
   Object {
     "messageId": 1,
     "requestId": 1,
     "type": "SET_TICKET_MESSAGE_REQUEST",
-  },
-]
-`;
-
-exports[`ticket actions setRequester 1`] = `
-Array [
-  Object {
-    "args": Immutable.Map {
-      requester: Immutable.Map {
-            id: 1,
-            custom: true,
-      },
-},
-    "type": "setRequester",
   },
 ]
 `;

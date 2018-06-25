@@ -44,10 +44,10 @@ export const getSources = (state: stateType) => {
     })
 }
 
-export const getSourcesWithRequester = createSelector(
+export const getSourcesWithCustomer = createSelector(
     [getSources],
     (state) => {
-        return !state.getIn(['ticket', 'requester']) ? state.setIn(['ticket', 'requester'], state.get('user')) : state
+        return !state.getIn(['ticket', 'customer']) ? state.setIn(['ticket', 'customer'], state.get('user')) : state
     }
 )
 

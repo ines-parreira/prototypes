@@ -94,7 +94,7 @@ describe('widgets infobar utils', () => {
         const incorrect = [
             fromJS({
                 ticket: {
-                    requester: {}
+                    customer: {}
                 }
             }),
             fromJS({

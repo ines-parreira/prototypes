@@ -13,7 +13,7 @@ export const view = {
     fields: [
         'details',
         'tags',
-        'requester',
+        'customer',
         'created'
     ],
     type: 'ticket-list',

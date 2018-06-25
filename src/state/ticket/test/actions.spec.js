@@ -10,7 +10,7 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import * as actions from '../actions'
 import {initialState} from '../reducers'
 import {initialState as newMessageState} from '../../newMessage/reducers'
-import {findAndSetRequester} from '../actions'
+import {findAndSetCustomer} from '../actions'
 
 jest.addMatchers(immutableMatchers)
 
@@ -64,9 +64,9 @@ describe('ticket actions', () => {
             body_html: '<div>hello</div>',
             channel: 'email',
         }],
-        requester: {
+        customer: {
             id: 1,
-            customer: {id: 1},
+            data: {hello: 'world!'},
         },
     }
 
@@ -91,8 +91,8 @@ describe('ticket actions', () => {
         })
     })
 
-    it('mergeRequester', () => {
-        store.dispatch(actions.mergeRequester({id: 1}))
+    it('mergeCustomer', () => {
+        store.dispatch(actions.mergeCustomer({id: 1}))
         return expect(store.getActions()).toMatchSnapshot()
     })
 
@@ -258,9 +258,9 @@ describe('ticket actions', () => {
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('setRequester', () => {
+    it('setCustomer', () => {
         mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
-        return store.dispatch(actions.setRequester(fromJS({id: 1, custom: true})))
+        return store.dispatch(actions.setCustomer(fromJS({id: 1, custom: true})))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
@@ -431,7 +431,7 @@ describe('ticket actions', () => {
         })
 
         it('should fetch next ticket and go to this ticket', (done) => {
-            const ticket = {id: 2, requesterId: 1, messages: []}
+            const ticket = {id: 2, customerId: 1, messages: []}
             mockServer.onPut('/api/views/1/tickets/1/next').reply(200, ticket)
             store = mockStore({
                 ticket: initialState,
@@ -451,7 +451,7 @@ describe('ticket actions', () => {
 
         it('should fetch next ticket and go to this ticket, and prepare new message correctly as the ticket is an ' +
             'instagram ticket', (done) => {
-            const ticket = {id: 2, requesterId: 1, messages: [{source: {type: 'instagram-comment'}}]}
+            const ticket = {id: 2, customerId: 1, messages: [{source: {type: 'instagram-comment'}}]}
             mockServer.onPut('/api/views/1/tickets/1/next').reply(200, ticket)
             store = mockStore({
                 ticket: initialState,
@@ -513,7 +513,7 @@ describe('ticket actions', () => {
         })
 
         it('should fetch previous ticket and go to this ticket', (done) => {
-            const ticket = {id: 1, requesterId: 1, messages: []}
+            const ticket = {id: 1, customerId: 1, messages: []}
             mockServer.onPut('/api/views/1/tickets/2/prev').reply(200, ticket)
             store = mockStore({
                 ticket: initialState,
@@ -533,7 +533,7 @@ describe('ticket actions', () => {
 
         it('should fetch previous ticket and go to this ticket, and prepare new message correctly as the ticket is ' +
             'an instagram ticket', (done) => {
-            const ticket = {id: 1, requesterId: 1, messages: [{source: {type: 'instagram-comment'}}]}
+            const ticket = {id: 1, customerId: 1, messages: [{source: {type: 'instagram-comment'}}]}
             mockServer.onPut('/api/views/1/tickets/2/prev').reply(200, ticket)
             store = mockStore({
                 ticket: initialState,
@@ -571,30 +571,30 @@ describe('ticket actions', () => {
         })
     })
 
-    describe('findAndSetRequester', () => {
-        it('should not set the requester because we did not find any user with this email address', () => {
+    describe('findAndSetCustomer', () => {
+        it('should not set the customer because we did not find any user with this email address', () => {
             mockServer.onPost('/api/search/').reply(200, {data: []})
             store = mockStore({
                 ticket: initialState
             })
 
-            store.dispatch(findAndSetRequester('foo@gorgias.io')).then(() => {
+            store.dispatch(findAndSetCustomer('foo@gorgias.io')).then(() => {
                 expect(store.getActions()).toEqual([])
             })
         })
 
-        it('should not set the requester because we found too many users matching this email address', () => {
+        it('should not set the customer because we found too many users matching this email address', () => {
             mockServer.onPost('/api/search/').reply(200, {data: [{user: {id: 1}}, {user: {id: 2}}]})
             store = mockStore({
                 ticket: initialState
             })
 
-            store.dispatch(findAndSetRequester('foo@gorgias.io')).then(() => {
+            store.dispatch(findAndSetCustomer('foo@gorgias.io')).then(() => {
                 expect(store.getActions()).toEqual([])
             })
         })
 
-        it('should set the requester because there is exactly one user matching this email address', () => {
+        it('should set the customer because there is exactly one user matching this email address', () => {
             mockServer
                 .onPost('/api/search/').reply(200, {data: [{user: {id: 1}}]})
                 .onGet('/api/users/1/').reply(200, {id: 1, name: 'foo', email: 'foo@gorgias.io'})
@@ -602,7 +602,7 @@ describe('ticket actions', () => {
                 ticket: initialState
             })
 
-            store.dispatch(findAndSetRequester('foo@gorgias.io')).then(() => {
+            store.dispatch(findAndSetCustomer('foo@gorgias.io')).then(() => {
                 expect(store.getActions()).toMatchSnapshot()
             })
         })

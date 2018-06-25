@@ -21,7 +21,7 @@ const commonProps = {
     isRouteEditingWidgets: false,
     sources: fromJS({
         ticket: {
-            requester: {
+            customer: {
                 id: 2
             }
         },
@@ -40,7 +40,7 @@ const commonProps = {
     fetchUserHistory: jest.fn(() => Promise.resolve()),
     search: jest.fn(() => Promise.resolve({resp: {data: []}})),
     searchSimilarUser: jest.fn(() => Promise.resolve({user: {id: 4}})),
-    setRequester: jest.fn(() => Promise.resolve()),
+    setCustomer: jest.fn(() => Promise.resolve()),
     location: {
         search: 'searchQuery'
     }

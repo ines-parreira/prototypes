@@ -329,7 +329,7 @@ Object {
               "line": 2,
             },
             "start": Position {
-              "column": 36,
+              "column": 46,
               "line": 1,
             },
           },
@@ -351,11 +351,11 @@ Object {
               "computed": false,
               "loc": WrappingSourceLocation {
                 "end": Object {
-                  "column": 29,
+                  "column": 39,
                   "line": 1,
                 },
                 "start": Object {
-                  "column": 7,
+                  "column": 19,
                   "line": 1,
                 },
               },
@@ -363,22 +363,22 @@ Object {
                 "computed": false,
                 "loc": WrappingSourceLocation {
                   "end": Object {
-                    "column": 23,
+                    "column": 34,
                     "line": 1,
                   },
                   "start": Object {
-                    "column": 7,
+                    "column": 19,
                     "line": 1,
                   },
                 },
                 "object": Object {
                   "loc": SourceLocation {
                     "end": Object {
-                      "column": 13,
+                      "column": 25,
                       "line": 1,
                     },
                     "start": Position {
-                      "column": 7,
+                      "column": 19,
                       "line": 1,
                     },
                   },
@@ -388,15 +388,15 @@ Object {
                 "property": Object {
                   "loc": SourceLocation {
                     "end": Object {
-                      "column": 23,
+                      "column": 34,
                       "line": 1,
                     },
                     "start": Position {
-                      "column": 14,
+                      "column": 26,
                       "line": 1,
                     },
                   },
-                  "name": "requester",
+                  "name": "customer",
                   "type": "Identifier",
                 },
                 "type": "MemberExpression",
@@ -404,39 +404,38 @@ Object {
               "property": Object {
                 "loc": SourceLocation {
                   "end": Object {
-                    "column": 29,
+                    "column": 39,
                     "line": 1,
                   },
                   "start": Position {
-                    "column": 24,
+                    "column": 35,
                     "line": 1,
                   },
                 },
-                "name": "email",
+                "name": "data",
                 "type": "Identifier",
               },
               "type": "MemberExpression",
             },
             Object {
+              "elements": Array [],
               "loc": SourceLocation {
                 "end": Object {
-                  "column": 33,
+                  "column": 43,
                   "line": 1,
                 },
                 "start": Position {
-                  "column": 31,
+                  "column": 41,
                   "line": 1,
                 },
               },
-              "raw": "''",
-              "type": "Literal",
-              "value": "",
+              "type": "ArrayExpression",
             },
           ],
           "callee": Object {
             "loc": SourceLocation {
               "end": Object {
-                "column": 6,
+                "column": 18,
                 "line": 1,
               },
               "start": Position {
@@ -444,12 +443,12 @@ Object {
                 "line": 1,
               },
             },
-            "name": "eq",
+            "name": "notContainsAny",
             "type": "Identifier",
           },
           "loc": WrappingSourceLocation {
             "end": Object {
-              "column": 34,
+              "column": 44,
               "line": 1,
             },
             "start": Object {
@@ -475,7 +474,7 @@ Object {
     "sourceType": "script",
     "type": "Program",
   },
-  "code": "if (eq(ticket.requester.email, '')) {
+  "code": "if (notContainsAny(ticket.customer.data, [])) {
 } else {
 }",
 }

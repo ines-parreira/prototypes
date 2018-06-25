@@ -2144,7 +2144,7 @@ Array [
             pendingMessages: Immutable.List [
             ],
       },
-      requester: null,
+      customer: null,
 },
     "ticketId": 12,
     "type": "setResponseText",

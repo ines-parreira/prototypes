@@ -120,7 +120,7 @@ export default class Right extends React.Component {
                     <UserLabel user={assignee} />
                 )
             }
-        } else if (field.get('name') === 'customer') { // display requester
+        } else if (field.get('name') === 'customer') { // display customer
             displayedValue = `Customer #${displayedValue}`
         } else if (field.get('name') === 'language') { // show the display name
             displayedValue = getLanguageDisplayName(displayedValue)

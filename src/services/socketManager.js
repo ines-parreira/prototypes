@@ -154,8 +154,8 @@ class SocketManager {
      * Dispatch action to store
      * Throttled to prevent a too high frequency of state refresh
      * @example
-     * // triggers mergeRequester in ticket actions
-     * socketManagerInstance.dispatch(ticketActions.mergeRequester(json.user))
+     * // triggers mergeCustomer in ticket actions
+     * socketManagerInstance.dispatch(ticketActions.mergeCustomer(json.user))
      * @type {Function}
      */
     dispatch = _throttle((data) => {

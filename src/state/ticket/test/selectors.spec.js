@@ -13,13 +13,6 @@ describe('ticket selectors', () => {
         state = {
             ticket: initialState
                 .mergeDeep({
-                    requester: {
-                        customer: {id: 1},
-                        integrations: {
-                            '1': {name: 'integration 1'},
-                            '2': {name: 'integration 2'}
-                        },
-                    },
                     customer: {
                         data: {id: 1},
                         integrations: {
@@ -110,13 +103,13 @@ describe('ticket selectors', () => {
     })
 
     it('getIntegrationsData', () => {
-        expect(selectors.getIntegrationsData(state)).toEqualImmutable(state.ticket.getIn(['requester', 'integrations']))
+        expect(selectors.getIntegrationsData(state)).toEqualImmutable(state.ticket.getIn(['customer', 'integrations']))
         expect(selectors.getIntegrationsData({})).toEqualImmutable(fromJS({}))
     })
 
     it('getIntegrationDataByIntegrationId', () => {
-        expect(selectors.getIntegrationDataByIntegrationId(1)(state)).toEqualImmutable(state.ticket.getIn(['requester', 'integrations', '1']))
-        expect(selectors.getIntegrationDataByIntegrationId('1')(state)).toEqualImmutable(state.ticket.getIn(['requester', 'integrations', '1']))
+        expect(selectors.getIntegrationDataByIntegrationId(1)(state)).toEqualImmutable(state.ticket.getIn(['customer', 'integrations', '1']))
+        expect(selectors.getIntegrationDataByIntegrationId('1')(state)).toEqualImmutable(state.ticket.getIn(['customer', 'integrations', '1']))
         expect(selectors.getIntegrationDataByIntegrationId('unknown')(state)).toEqualImmutable(fromJS({}))
         expect(selectors.getIntegrationDataByIntegrationId('unknown')({})).toEqualImmutable(fromJS({}))
     })

@@ -7,7 +7,7 @@ exports[`InfobarUserActions component should not render "merge" button because t
   <ConfirmButton
     className="mr-2"
     confirm={[Function]}
-    content="Are you sure you want to set  as requester?"
+    content="Are you sure you want to set  as customer?"
     disabled={false}
     loading={false}
     placement="bottom"
@@ -20,7 +20,7 @@ exports[`InfobarUserActions component should not render "merge" button because t
 </div>
 `;
 
-exports[`InfobarUserActions component should not render "set as requester" button because the agent is not on a ticket 1`] = `
+exports[`InfobarUserActions component should not render "set as customer" button because the agent is not on a ticket 1`] = `
 <div
   className="float-right d-none d-md-block"
 >
@@ -35,20 +35,20 @@ exports[`InfobarUserActions component should not render "set as requester" butto
 </div>
 `;
 
-exports[`InfobarUserActions component should not render "set as requester" nor "merge" buttons because the users are the same 1`] = `
+exports[`InfobarUserActions component should not render "set as customer" nor "merge" buttons because the users are the same 1`] = `
 <div
   className="float-right d-none d-md-block"
 />
 `;
 
-exports[`InfobarUserActions component should render "set as requester" and "merge" button 1`] = `
+exports[`InfobarUserActions component should render "set as customer" and "merge" button 1`] = `
 <div
   className="float-right d-none d-md-block"
 >
   <ConfirmButton
     className="mr-2"
     confirm={[Function]}
-    content="Are you sure you want to set  as requester?"
+    content="Are you sure you want to set  as customer?"
     disabled={false}
     loading={false}
     placement="bottom"

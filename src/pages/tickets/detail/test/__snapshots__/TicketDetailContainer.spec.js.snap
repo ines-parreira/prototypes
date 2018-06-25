@@ -43,9 +43,9 @@ exports[`TicketDetailContainer component should render container for new ticket 
           "ticket": Object {
             "clearTicket": [Function],
             "fetchTicket": [Function],
-            "findAndSetRequester": [Function],
+            "findAndSetCustomer": [Function],
             "goToNextTicket": [Function],
-            "setRequester": [Function],
+            "setCustomer": [Function],
             "setStatus": [Function],
           },
           "user": Object {

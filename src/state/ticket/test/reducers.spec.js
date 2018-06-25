@@ -158,9 +158,9 @@ describe('ticket reducers', () => {
                 body_html: '<div>hello</div>',
                 channel: 'email',
             }],
-            requester: {
+            customer: {
                 id: 1,
-                customer: {id: 1},
+                data: {hello: 'world!'},
             },
         }
 
@@ -417,14 +417,17 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('set requester', () => {
+    it('set customer', () => {
         expect(
             reducer(
                 initialState,
                 {
-                    type: types.SET_REQUESTER,
+                    type: types.SET_CUSTOMER,
                     args: fromJS({
-                        requester: {id: 1},
+                        customer: {
+                            id: 1,
+                            data: {hello: 'world!'},
+                        },
                     })
                 }
             ).toJS()
@@ -649,7 +652,7 @@ describe('ticket reducers', () => {
 
     it('merge users', () => {
         // success
-        // should do nothing since there is no requester in state for now
+        // should do nothing since there is no customer in state for now
         expect(
             reducer(
                 initialState,
@@ -663,12 +666,12 @@ describe('ticket reducers', () => {
             ).toJS()
         ).toMatchSnapshot()
 
-        // should replace requester
+        // should replace customer
         expect(
             reducer(
                 initialState
                     .mergeDeep({
-                        requester: {
+                        customer: {
                             id: 1,
                             name: 'Romain',
                         },
@@ -701,9 +704,9 @@ describe('ticket reducers', () => {
                 channel: 'email',
                 created_datetime: '2017-07-28T22:00:00',
             }],
-            requester: {
+            customer: {
                 id: 1,
-                customer: {id: 1},
+                data: {hello: 'world!'},
             },
         }
 
@@ -741,13 +744,13 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('merge requester', () => {
-        // should do nothing since there is no requester in state for now
+    it('merge customer', () => {
+        // should do nothing since there is no customer in state for now
         expect(
             reducer(
                 initialState,
                 {
-                    type: types.MERGE_REQUESTER,
+                    type: types.MERGE_CUSTOMER,
                     user: {
                         id: 1,
                         name: 'Alex',
@@ -756,18 +759,18 @@ describe('ticket reducers', () => {
             ).toJS()
         ).toMatchSnapshot()
 
-        // should replace requester
+        // should replace customer
         expect(
             reducer(
                 initialState
                     .mergeDeep({
-                        requester: {
+                        customer: {
                             id: 1,
                             name: 'Romain',
                         },
                     }),
                 {
-                    type: types.MERGE_REQUESTER,
+                    type: types.MERGE_CUSTOMER,
                     user: {
                         id: 1,
                         name: 'Alex',

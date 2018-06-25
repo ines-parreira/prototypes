@@ -85,7 +85,7 @@ export const TICKET_STATUSES = ['open', 'closed']
 export const DEFAULT_SOURCE_PATHS = {
     ticket: {
         custom: ['ticket', 'customer', 'data'],
-        integrations: ['ticket', 'requester', 'integrations']
+        integrations: ['ticket', 'customer', 'integrations']
     },
     user: {
         custom: ['user', 'data'],
@@ -441,22 +441,22 @@ export const ACTION_TEMPLATES = [
         },
         validators: [
             {
-                validate: (requester: Object) => {
-                    return _find(requester.integrations, {'__integration_type__': 'shopify'})
+                validate: (customer: Object) => {
+                    return _find(customer.integrations, {'__integration_type__': 'shopify'})
                 },
                 error: 'This user has no Shopify data.'
             },
             {
-                validate: (requester: Object) => {
-                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+                validate: (customer: Object) => {
+                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
 
                     return _get(shopifyIntegration, ['orders'])
                 },
                 error: 'This user has no order to cancel.'
             },
             {
-                validate: (requester: Object) => {
-                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+                validate: (customer: Object) => {
+                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
 
                     return _get(shopifyIntegration, ['orders', 0, 'financial_status']) !== 'fulfilled'
                 },
@@ -507,14 +507,14 @@ export const ACTION_TEMPLATES = [
         arguments: {},
         validators: [
             {
-                validate: (requester: Object) => {
-                    return _find(requester.integrations, {'__integration_type__': 'shopify'})
+                validate: (customer: Object) => {
+                    return _find(customer.integrations, {'__integration_type__': 'shopify'})
                 },
                 error: 'This user has no Shopify data.'
             },
             {
-                validate: (requester: Object) => {
-                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+                validate: (customer: Object) => {
+                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
 
                     return _get(shopifyIntegration, ['orders'])
                 },
@@ -582,22 +582,22 @@ export const ACTION_TEMPLATES = [
         },
         validators: [
             {
-                validate: (requester: Object) => {
-                    return _find(requester.integrations, {'__integration_type__': 'shopify'})
+                validate: (customer: Object) => {
+                    return _find(customer.integrations, {'__integration_type__': 'shopify'})
                 },
                 error: 'This user has no Shopify data.'
             },
             {
-                validate: (requester: Object) => {
-                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+                validate: (customer: Object) => {
+                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
 
                     return _get(shopifyIntegration, ['orders'])
                 },
                 error: 'This user has no order to edit.'
             },
             {
-                validate: (requester: Object) => {
-                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+                validate: (customer: Object) => {
+                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
 
                     return _get(shopifyIntegration, ['orders', 0, 'financial_status']) !== 'fulfilled'
                 },
@@ -616,22 +616,22 @@ export const ACTION_TEMPLATES = [
         ],
         validators: [
             {
-                validate: (requester: Object) => {
-                    return _find(requester.integrations, {'__integration_type__': 'shopify'})
+                validate: (customer: Object) => {
+                    return _find(customer.integrations, {'__integration_type__': 'shopify'})
                 },
                 error: 'This user has no Shopify data.'
             },
             {
-                validate: (requester: Object) => {
-                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+                validate: (customer: Object) => {
+                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
 
                     return _get(shopifyIntegration, ['orders'])
                 },
                 error: 'This user has no order to refund.'
             },
             {
-                validate: (requester: Object) => {
-                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+                validate: (customer: Object) => {
+                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
 
                     return !['refunded', 'accepted'].includes(_get(shopifyIntegration, ['orders', 0, 'financial_status']))
                 },
@@ -661,22 +661,22 @@ export const ACTION_TEMPLATES = [
         ],
         validators: [
             {
-                validate: (requester: Object) => {
-                    return _find(requester.integrations, {'__integration_type__': 'shopify'})
+                validate: (customer: Object) => {
+                    return _find(customer.integrations, {'__integration_type__': 'shopify'})
                 },
                 error: 'This user has no Shopify data.'
             },
             {
-                validate: (requester: Object) => {
-                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+                validate: (customer: Object) => {
+                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
 
                     return _get(shopifyIntegration, ['orders'])
                 },
                 error: 'This user has no order to refund.'
             },
             {
-                validate: (requester: Object) => {
-                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+                validate: (customer: Object) => {
+                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
 
                     return !['refunded', 'accepted'].includes(_get(shopifyIntegration, ['orders', 0, 'financial_status']))
                 },
@@ -707,22 +707,22 @@ export const ACTION_TEMPLATES = [
         ],
         validators: [
             {
-                validate: (requester: Object) => {
-                    return _find(requester.integrations, {'__integration_type__': 'shopify'})
+                validate: (customer: Object) => {
+                    return _find(customer.integrations, {'__integration_type__': 'shopify'})
                 },
                 error: 'This user has no Shopify data.'
             },
             {
-                validate: (requester: Object) => {
-                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+                validate: (customer: Object) => {
+                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
 
                     return _get(shopifyIntegration, ['orders'])
                 },
                 error: 'This user has no order to refund.'
             },
             {
-                validate: (requester: Object) => {
-                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+                validate: (customer: Object) => {
+                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
 
                     return !['refunded', 'accepted'].includes(_get(shopifyIntegration, ['orders', 0, 'financial_status']))
                 },
@@ -747,14 +747,14 @@ export const ACTION_TEMPLATES = [
         },
         validators: [
             {
-                validate: (requester: Object) => {
-                    return _find(requester.integrations, {'__integration_type__': 'shopify'})
+                validate: (customer: Object) => {
+                    return _find(customer.integrations, {'__integration_type__': 'shopify'})
                 },
                 error: 'This user has no Shopify data.'
             },
             {
-                validate: (requester: Object) => {
-                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+                validate: (customer: Object) => {
+                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
 
                     return _get(shopifyIntegration, ['orders'])
                 },
@@ -770,22 +770,22 @@ export const ACTION_TEMPLATES = [
         arguments: {},
         validators: [
             {
-                validate: (requester: Object) => {
-                    return _find(requester.integrations, {'__integration_type__': 'recharge'})
+                validate: (customer: Object) => {
+                    return _find(customer.integrations, {'__integration_type__': 'recharge'})
                 },
                 error: 'This user has no Recharge data.'
             },
             {
-                validate: (requester: Object) => {
-                    const rechargeIntegration = _find(requester.integrations, {'__integration_type__': 'recharge'})
+                validate: (customer: Object) => {
+                    const rechargeIntegration = _find(customer.integrations, {'__integration_type__': 'recharge'})
 
                     return _get(rechargeIntegration, ['subscriptions'])
                 },
                 error: 'This user has no subscription to cancel.'
             },
             {
-                validate: (requester: Object) => {
-                    const rechargeIntegration = _find(requester.integrations, {'__integration_type__': 'recharge'})
+                validate: (customer: Object) => {
+                    const rechargeIntegration = _find(customer.integrations, {'__integration_type__': 'recharge'})
 
                     return _get(rechargeIntegration, ['subscriptions', 0, 'cancelled_at']) === null
                 },

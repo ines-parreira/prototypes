@@ -30,17 +30,17 @@ describe('InfobarWidgets component', () => {
 
     let baseSource = fromJS({
         ticket: {
-            requester: {
+            customer: {
                 integrations: {}
             }
         }
     })
 
     baseSource = baseSource.setIn(
-        ['ticket', 'requester', 'integrations', httpIntegrationId.toString()],
+        ['ticket', 'customer', 'integrations', httpIntegrationId.toString()],
         fromJS({foo: httpIntegrationId.toString()}))
     baseSource = baseSource.setIn(
-        ['ticket', 'requester', 'integrations', shopifyIntegrationId.toString()],
+        ['ticket', 'customer', 'integrations', shopifyIntegrationId.toString()],
         fromJS({bar: shopifyIntegrationId.toString()}))
 
     const baseWidgets = fromJS([{

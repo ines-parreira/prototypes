@@ -4,9 +4,11 @@ exports[`actions chats addChat() should add chat with notifications 1`] = `
 Array [
   Object {
     "ticket": Object {
+      "customer": Object {
+        "name": "Mark Frizeli",
+      },
       "id": 1,
       "last_message_body_text": "Hi",
-      "requester_name": "Mark Frizeli",
     },
     "type": "ADD_CHAT",
   },
@@ -29,9 +31,11 @@ exports[`actions chats addChat() should add chat without notifications 1`] = `
 Array [
   Object {
     "ticket": Object {
+      "customer": Object {
+        "name": "Mark Frizeli",
+      },
       "id": 1,
       "last_message_body_text": "Hi",
-      "requester_name": "Mark Frizeli",
     },
     "type": "ADD_CHAT",
   },
@@ -75,9 +79,11 @@ Array [
   Object {
     "tickets": Array [
       Object {
+        "customer": Object {
+          "name": "Mark Frizeli",
+        },
         "id": 1,
         "last_message_body_text": "Hi",
-        "requester_name": "Mark Frizeli",
       },
     ],
     "type": "SET_CHATS",

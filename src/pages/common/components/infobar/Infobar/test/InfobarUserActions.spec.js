@@ -19,7 +19,7 @@ const commonProps = {
         id: 3
     }),
     toggleMergeUserModal: () => {},
-    setRequester: () => {}
+    setCustomer: () => {}
 }
 
 jest.mock('../../../../../../utils', () => ({
@@ -27,7 +27,7 @@ jest.mock('../../../../../../utils', () => ({
 }))
 
 describe('InfobarUserActions component', () => {
-    it('should not render "set as requester" button because the agent is not on a ticket', () => {
+    it('should not render "set as customer" button because the agent is not on a ticket', () => {
         const component = shallow(
             <InfobarUserActions
                 {...commonProps}
@@ -42,7 +42,7 @@ describe('InfobarUserActions component', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should not render "set as requester" nor "merge" buttons because the users are the same', () => {
+    it('should not render "set as customer" nor "merge" buttons because the users are the same', () => {
         const component = shallow(
             <InfobarUserActions
                 {...commonProps}
@@ -64,7 +64,7 @@ describe('InfobarUserActions component', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should render "set as requester" and "merge" button', () => {
+    it('should render "set as customer" and "merge" button', () => {
         const component = shallow(
             <InfobarUserActions
                 {...commonProps}

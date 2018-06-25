@@ -13,38 +13,38 @@ type Props = {
     sources: Map<*,*>,
     selectedUser: Map<*,*>,
     toggleMergeUserModal: (boolean) => void,
-    setRequester: () => void,
+    setCustomer: () => void,
 }
 
 export default class InfobarUserActions extends React.Component<Props> {
     render() {
         const {
             sources, user, selectedUser,
-            toggleMergeUserModal, setRequester
+            toggleMergeUserModal, setCustomer
         } = this.props
 
         const ticketId = sources.getIn(['ticket', 'id'])
-        const requester = sources.getIn(['ticket', 'requester', 'name']) || ''
-        const hasRequester = !(sources.getIn(['ticket', 'requester']) || fromJS({})).isEmpty()
-        const newRequester = selectedUser.get('name') || ''
+        const customer = sources.getIn(['ticket', 'customer', 'name']) || ''
+        const hasCustomer = !(sources.getIn(['ticket', 'customer']) || fromJS({})).isEmpty()
+        const newCustomer = selectedUser.get('name') || ''
         const hasDestinationUser = !user.isEmpty()
 
         const isDifferentUser = hasDestinationUser && selectedUser.get('id') !== user.get('id')
-        const canSetAsRequester = isCurrentlyOnTicket(ticketId) && (isDifferentUser || !hasDestinationUser)
+        const canSetAsCustomer = isCurrentlyOnTicket(ticketId) && (isDifferentUser || !hasDestinationUser)
 
-        const message = hasRequester
-            ? `Are you sure you want to set ${newRequester} as requester instead of ${requester}?`
-            : `Are you sure you want to set ${newRequester} as requester?`
+        const message = hasCustomer
+            ? `Are you sure you want to set ${newCustomer} as customer instead of ${customer}?`
+            : `Are you sure you want to set ${newCustomer} as customer?`
 
         return (
             <div className="float-right d-none d-md-block">
                 {
-                    canSetAsRequester ? ( // do not display on user profile
+                    canSetAsCustomer ? ( // do not display on user profile
                         <ConfirmButton
                             className="mr-2"
                             title="Change ticket requester"
                             content={message}
-                            confirm={setRequester}
+                            confirm={setCustomer}
                         >
                             Set as requester
                         </ConfirmButton>

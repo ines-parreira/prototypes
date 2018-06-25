@@ -73,9 +73,9 @@ export const mergeTicket = (ticket) => (dispatch, getState) => {
     return Promise.resolve(mergeDispatch)
 }
 
-export const mergeRequester = (user) => {
+export const mergeCustomer = (user) => {
     return {
-        type: types.MERGE_REQUESTER,
+        type: types.MERGE_CUSTOMER,
         user,
     }
 }
@@ -247,21 +247,21 @@ export const setAgent = (assigneeUser) => (dispatch, getState) => {
     return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setAssignee', getState())))
 }
 
-export const setRequester = (requester) => (dispatch) => {
+export const setCustomer = (customer) => (dispatch) => {
     dispatch({
-        type: types.SET_REQUESTER,
-        args: fromJS({requester}),
+        type: types.SET_CUSTOMER,
+        args: fromJS({customer}),
     })
 
-    if (!requester || requester.isEmpty()) {
+    if (!customer || customer.isEmpty()) {
         return Promise.resolve()
     }
 
-    socketManager.join('user', requester.get('id'))
+    socketManager.join('user', customer.get('id'))
 
     return dispatch(ticketPartialUpdate({
-        requester: fromJS({
-            id: requester.get('id')
+        customer: fromJS({
+            id: customer.get('id')
         })
     }))
 }
@@ -446,14 +446,14 @@ export const fetchTicket = (ticketId) => (dispatch) => {
                 return Promise.resolve()
             }
 
-            const requesterId = fromJS(resp).getIn(['requester', 'id'])
+            const customerId = fromJS(resp).getIn(['customer', 'id'])
 
             if (ticketId) {
                 socketManager.join('ticket', ticketId)
             }
 
-            if (requesterId) {
-                socketManager.join('user', requesterId)
+            if (customerId) {
+                socketManager.join('user', customerId)
             }
 
             // dispatch for ticket reducer branch
@@ -535,14 +535,14 @@ export const _goToNextOrPrevTicket = (ticketId: number, direction: string, promi
                         return
                     }
 
-                    const requesterId = fromJS(ticket).getIn(['requester', 'id'])
+                    const customerId = fromJS(ticket).getIn(['customer', 'id'])
 
                     if (ticketId) {
                         socketManager.join('ticket', ticket.id)
                     }
 
-                    if (requesterId) {
-                        socketManager.join('user', requesterId)
+                    if (customerId) {
+                        socketManager.join('user', customerId)
                     }
 
                     dispatch({
@@ -707,16 +707,16 @@ export function deleteTicketPendingMessage(message) {
 }
 
 /**
- * Search a user by email, and then fetch it and set it as requester of the current ticket.
- * @param email: the email of the user we want to set as requester
+ * Search a user by email, and then fetch it and set it as customer of the current ticket.
+ * @param email: the email of the user we want to set as customer
  */
-export const findAndSetRequester = (email: string): thunkActionType => (
+export const findAndSetCustomer = (email: string): thunkActionType => (
     (dispatch: dispatchType): Promise<dispatchType> => {
         return axios.post('/api/search/', {type: 'user_channel_email', query: email})
             .then((json = {}) => json.data)
             .then((resp): Promise<dispatchType> => {
                 if (resp.data.length !== 1) {
-                    // We can't do anything if we are not sure which user should be set as requester.
+                    // We can't do anything if we are not sure which user should be set as customer.
                     // We don't want to log an error here, as this may be expected if the agent is sending an email
                     // to a new user.
                     return Promise.resolve()
@@ -727,7 +727,7 @@ export const findAndSetRequester = (email: string): thunkActionType => (
                 return axios.get(`/api/users/${channel.user.id}/`)
                     .then((json = {}) => json.data)
                     .then((resp): Promise<dispatchType> => {
-                        return dispatch(setRequester(fromJS(resp)))
+                        return dispatch(setCustomer(fromJS(resp)))
                     })
             })
     }

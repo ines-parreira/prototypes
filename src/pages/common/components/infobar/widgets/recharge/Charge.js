@@ -157,7 +157,7 @@ class BeforeContent extends React.Component { // eslint-disable-line
 //     return {
 //         getIntegrationData: (integrationId, customerId) => {
 //             // Here we don't know if we're in a ticket- or user- context.
-//             // So we get both data from the ticket.requester and the active user, and if any match
+//             // So we get both data from the ticket.customer and the active user, and if any match
 //             // the subscription's customer_id, then it means it's the correct data.
 //             const ticketData = ticketSelectors.getIntegrationDataByIntegrationId(integrationId)(state)
 //             const userData = userSelectors.getActiveUserIntegrationDataByIntegrationId(integrationId)(state)

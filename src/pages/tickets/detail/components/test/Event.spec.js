@@ -62,7 +62,7 @@ describe('Event component', () => {
 
         store = mockStore({
             ticket: fromJS({
-                requester: {
+                customer: {
                     integrations: integrationsData
                 }
             }),

@@ -7,7 +7,7 @@ import {withRouter} from 'react-router'
 
 import * as WidgetActions from '../../../state/widgets/actions'
 import * as InfobarActions from '../../../state/infobar/actions'
-import {getSourcesWithRequester} from '../../../state/widgets/selectors'
+import {getSourcesWithCustomer} from '../../../state/widgets/selectors'
 
 class TicketInfobarContainer extends React.Component {
     componentWillMount() {
@@ -29,7 +29,7 @@ class TicketInfobarContainer extends React.Component {
         } = this.props
 
         // the || is used to replace null
-        const user = sources.getIn(['ticket', 'requester']) || fromJS({})
+        const user = sources.getIn(['ticket', 'customer']) || fromJS({})
 
         return (
             <Infobar
@@ -65,7 +65,7 @@ function mapStateToProps(state) {
         infobar: state.infobar,
         ticket: state.ticket,
         widgets: state.widgets,
-        sources: getSourcesWithRequester(state),
+        sources: getSourcesWithCustomer(state),
     }
 }
 

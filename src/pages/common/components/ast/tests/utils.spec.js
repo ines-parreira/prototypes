@@ -84,7 +84,7 @@ describe('ast', () => {
                         let path = fromJS(['body', 0, 'test', 'arguments', 0, 'property', 'name'])
                         let newAst = updateCodeAst(schemas, astCodeEq, path, 'subject', 'UPDATE')
                         expect(newAst).toMatchSnapshot()
-                        newAst = updateCodeAst(schemas, fromJS(newAst.ast), path, 'requester', 'UPDATE')
+                        newAst = updateCodeAst(schemas, fromJS(newAst.ast), path, 'customer', 'UPDATE')
                         expect(newAst).toMatchSnapshot()
                         path = fromJS(['body', 0, 'test', 'arguments', 0, 'object', 'property', 'name'])
                         newAst = updateCodeAst(schemas, fromJS(newAst.ast), path, 'from_agent', 'UPDATE')

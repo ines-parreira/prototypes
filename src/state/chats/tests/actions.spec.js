@@ -42,7 +42,9 @@ describe('actions', () => {
             it('should add chats with notifications', () => {
                 const chats = [{
                     id: 1,
-                    requester_name: 'Mark Frizeli',
+                    customer: {
+                        name: 'Mark Frizeli'
+                    },
                     last_message_body_text: 'Hi'
                 }]
                 store.dispatch(actions.setChats(chats))
@@ -58,7 +60,9 @@ describe('actions', () => {
 
             const chat = {
                 id: 1,
-                requester_name: 'Mark Frizeli',
+                customer: {
+                    name: 'Mark Frizeli'
+                },
                 last_message_body_text: 'Hi'
             }
 

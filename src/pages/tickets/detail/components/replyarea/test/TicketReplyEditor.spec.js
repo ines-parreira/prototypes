@@ -34,7 +34,7 @@ describe('TicketReplyEditor component', () => {
             status: 'open',
             spam: false,
             sender: null,
-            requester: null,
+            customer: null,
             receiver: null,
             priority: 'normal',
             tags: [],

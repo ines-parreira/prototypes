@@ -122,10 +122,10 @@ export default class TicketDetailContainer extends React.Component {
         this.props.actions.ticket.clearTicket()
         this.props.actions.ticket.fetchTicket(this.props.params.ticketId)
 
-        const userId = parseInt(this.props.location.query.requester)
+        const userId = parseInt(this.props.location.query.customer)
         if (
             this.props.params.ticketId === 'new' &&
-            this.props.location.query.requester &&
+            this.props.location.query.customer &&
             this.props.activeUser.get('id') !== userId
         ) {
             this.props.actions.user.fetchUser(userId)
@@ -138,7 +138,7 @@ export default class TicketDetailContainer extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         const nextTicket = nextProps.ticket
-        const nextRequester = nextTicket.get('requester') || fromJS({})
+        const nextCustomer = nextTicket.get('customer') || fromJS({})
         const nextParams = nextProps.params
         const nextUsers = nextProps.users
         const prevRecipients = this.props.newMessageSource.get('to') || fromJS([])
@@ -147,26 +147,26 @@ export default class TicketDetailContainer extends React.Component {
         const ticketIdParamChanged = nextParams.ticketId !== this.props.params.ticketId
         const nextTicketIsNew = nextParams.ticketId === 'new'
         const nextTicketIdParamMatchesNextTicket = nextTicket.get('id', '').toString() === nextParams.ticketId
-        const requesterHasChanged = this.props.ticket.getIn(['requester', 'id']) !== nextRequester.get('id')
+        const customerHasChanged = this.props.ticket.getIn(['customer', 'id']) !== nextCustomer.get('id')
 
-        const hasRequester = !nextRequester.isEmpty()
+        const hasCustomer = !nextCustomer.isEmpty()
 
         const recipientsHaveBeenRemoved = !prevRecipients.isEmpty() && nextRecipients.isEmpty()
         const recipientsHaveChanged = !prevRecipients.equals(nextRecipients)
 
         const onlyOneRecipient = nextRecipients.size === 1
 
-        if (!nextTicketIsNew && nextTicket.get('requester') && !nextUsers.getIn(['userHistory', 'triedLoading'])) {
-            const requesterId = nextTicket.getIn(['requester', 'id'])
+        if (!nextTicketIsNew && nextTicket.get('customer') && !nextUsers.getIn(['userHistory', 'triedLoading'])) {
+            const customerId = nextTicket.getIn(['customer', 'id'])
 
-            if (!requesterId) {
+            if (!customerId) {
                 return
             }
 
-            // Fetch the ticket's requester history (tickets + events).
-            this.props.actions.user.fetchUserHistory(requesterId, {
+            // Fetch the ticket's customer history (tickets + events).
+            this.props.actions.user.fetchUserHistory(customerId, {
                 successCondition: (state) => {
-                    return state.ticket.getIn(['requester', 'id']) === requesterId
+                    return state.ticket.getIn(['customer', 'id']) === customerId
                 }
             })
         }
@@ -181,20 +181,20 @@ export default class TicketDetailContainer extends React.Component {
             this._showTicket()
         }
 
-        // set requester and receiver from query
+        // set customer and receiver from query
         // map default channel (email) to address, for the receivers select.
         const receiver = nextProps.activeUser.set('address', nextProps.activeUser.get('email'))
-        const requester = this.props.ticket.get('requester') || fromJS({})
+        const customer = this.props.ticket.get('customer') || fromJS({})
 
         if (
             nextTicketIsNew &&
-            nextProps.location.query.requester &&
-            nextProps.activeUser.get('id') === parseInt(nextProps.location.query.requester) &&
-            !requester.equals(receiver)
+            nextProps.location.query.customer &&
+            nextProps.activeUser.get('id') === parseInt(nextProps.location.query.customer) &&
+            !customer.equals(receiver)
         ) {
-            // set requester on ticket
+            // set customer on ticket
             // (to show in infobar and be used in macros)
-            this.props.actions.ticket.setRequester(receiver).then(() => {
+            this.props.actions.ticket.setCustomer(receiver).then(() => {
                 // set in receivers selector
                 return this.props.actions.newMessage.setReceivers({
                     to: [receiver.toJS()]
@@ -210,45 +210,45 @@ export default class TicketDetailContainer extends React.Component {
         }
 
         // When we're on a new ticket, the recipients have changed, and there's now exactly one recipient,
-        // set this recipient as requester of the ticket
-        const shouldSetFirstRecipientAsRequester = recipientsHaveChanged && onlyOneRecipient
+        // set this recipient as customer of the ticket
+        const shouldSetFirstRecipientAsCustomer = recipientsHaveChanged && onlyOneRecipient
 
-        if (nextTicketIsNew && shouldSetFirstRecipientAsRequester) {
+        if (nextTicketIsNew && shouldSetFirstRecipientAsCustomer) {
             const recipient = nextRecipients.first()
-            let shouldSetRequester = true
+            let shouldSetCustomer = true
 
-            // The recipient address may be in the channels of the requester, and not be his user.email address, so
-            // to be sure we are not re-setting the same user as requester, we need to check every channel of the
-            // current requester.
+            // The recipient address may be in the channels of the customer, and not be his user.email address, so
+            // to be sure we are not re-setting the same user as customer, we need to check every channel of the
+            // current customer.
 
-            if (nextRequester && !nextRequester.isEmpty()) {
-                (nextRequester.get('channels') || fromJS([])).forEach((channel) => {
+            if (nextCustomer && !nextCustomer.isEmpty()) {
+                (nextCustomer.get('channels') || fromJS([])).forEach((channel) => {
                     if (channel.get('type') === 'email' && channel.get('address') === recipient.get('address')) {
-                        shouldSetRequester = false
+                        shouldSetCustomer = false
                     }
                 })
             }
 
-            if (shouldSetRequester) {
-                this.props.actions.ticket.findAndSetRequester(recipient.get('address'))
+            if (shouldSetCustomer) {
+                this.props.actions.ticket.findAndSetCustomer(recipient.get('address'))
             }
         }
 
         // When we're on a new ticket and the agent has removed the receivers of the new message, empty the
-        // requester of the ticket
+        // customer of the ticket
         if (nextTicketIsNew && recipientsHaveBeenRemoved) {
-            this.props.actions.ticket.setRequester(null)
+            this.props.actions.ticket.setCustomer(null)
         }
 
-        // When we're on a new ticket and the agent set a requester, set this requester's default email address
+        // When we're on a new ticket and the agent set a customer, set this customer's default email address
         // as recipient of the new message
-        if (nextTicketIsNew && requesterHasChanged && hasRequester) {
+        if (nextTicketIsNew && customerHasChanged && hasCustomer) {
             const newReceivers = _merge(
                 _pick(nextProps.newMessageSource.toJS(), newMessageSelectors.getReceiversProperties()),
                 {
                     to: [{
-                        name: nextTicket.getIn(['requester', 'name']),
-                        address: nextTicket.getIn(['requester', 'email'])
+                        name: nextTicket.getIn(['customer', 'name']),
+                        address: nextTicket.getIn(['customer', 'email'])
                     }]
                 }
             )
@@ -270,14 +270,14 @@ export default class TicketDetailContainer extends React.Component {
 
         // leaving ticket and request user from socket io
         const ticketId = this.props.params.ticketId
-        const requesterId = this.props.ticket.getIn(['requester', 'id'])
+        const customerId = this.props.ticket.getIn(['customer', 'id'])
 
         if (ticketId && ticketId !== 'new') {
             socketManager.leave('ticket', ticketId)
         }
 
-        if (requesterId) {
-            socketManager.leave('user', requesterId)
+        if (customerId) {
+            socketManager.leave('user', customerId)
         }
 
         this.props.actions.ticket.clearTicket()
@@ -353,7 +353,7 @@ export default class TicketDetailContainer extends React.Component {
             const sender = {id: this.props.currentUser.get('id')}
             ticket = ticket.mergeDeep({
                 sender,
-                requester: receiver,
+                customer: receiver,
                 receiver,
                 newMessage: {
                     sender

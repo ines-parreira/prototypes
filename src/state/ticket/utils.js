@@ -69,7 +69,7 @@ export function isSupportAddress(addressToTest = '', supportAddresses = fromJS([
 }
 
 /**
- * Return value prop from sender/requester that is used to identify a user depending on the source type
+ * Return value prop from sender/customer that is used to identify a user depending on the source type
  * @param sourceType
  */
 export function getValuePropFromSourceType(sourceType) {
@@ -128,20 +128,20 @@ export function guessReceiversFromTicket(ticket, newMessageSourceType, channels 
         ret.cc = cc
     }
 
-    // if no `to` has been found in messages, try to pick it from requester channels
+    // if no `to` has been found in messages, try to pick it from customer channels
     if (ret.to.length === 0) {
         // if selected type needs a `to` field
         if (!ticketConfig.isSystemType(newMessageSourceType)) {
             const newMessageChannel = ticketConfig.sourceTypeToChannel(newMessageSourceType, messages)
-            const requesterChannel = ticket.getIn(['requester', 'channels'], fromJS([]))
+            const customerChannel = ticket.getIn(['customer', 'channels'], fromJS([]))
                 .filter(channel => channel.get('type') === newMessageChannel) // keep only matching channels
                 .sortBy(channel => !channel.get('preferred')) // preferred channel is now first of the list
                 .first()
 
-            if (requesterChannel) {
+            if (customerChannel) {
                 const receivers = fromJS([{
-                    name: ticket.getIn(['requester', 'name']) || '',
-                    address: requesterChannel.get(getValuePropFromSourceType(newMessageSourceType)) || '',
+                    name: ticket.getIn(['customer', 'name']) || '',
+                    address: customerChannel.get(getValuePropFromSourceType(newMessageSourceType)) || '',
                 }])
                 ret.to = cleanReceivers(receivers).toJS()
             }
@@ -377,7 +377,7 @@ export const renderObject = (argument, context) => {
 
 export const replaceIntegrationVariables = (integrationType, ticketState, variable, newArgument, notify) => {
     let integrations = ticketState
-        .getIn(['requester', 'integrations'], fromJS([]))
+        .getIn(['customer', 'integrations'], fromJS([]))
         .filter((integration) => {
             return integration.get('__integration_type__') === integrationType
         })
@@ -409,11 +409,8 @@ export const replaceVariables = (argument, state, notify) => {
 
     // If there's a var of format `ticket.customer.integrations.XXX`, then it's a dynamic variable.
     // Else, it would be `ticket.customer.integrations[XXX]`.
-    // TODO(customers-migration): remove this line when we set `ticket.customer` on new ticket
-    let newArgument = argument.replace(/\{\{ticket\.customer/g, '{{ticket.requester')
-        .replace(/\{\{ticket\.requester\.data/g, '{{ticket.requester.customer')
-    // TODO(customers-migration): remove `requester` when it is deprecated.
-    let variables = newArgument.match(/{{ticket\.(requester|customer)\.integrations.[\w\d\]\[._-]+\|?([\w_]+\([^(]*\))?}}/g)
+    let newArgument = argument
+    let variables = argument.match(/{{ticket\.customer\.integrations.[\w\d\]\[._-]+\|?([\w_]+\([^(]*\))?}}/g)
 
     if (variables) {
         // If a variable is a dynamic variable, we try to replace `integrations.{type}` with

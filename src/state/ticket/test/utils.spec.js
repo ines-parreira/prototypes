@@ -45,7 +45,7 @@ const users = {
 }
 
 const ticket = fromJS({
-    requester: {
+    customer: {
         name: 'Patrick',
         channels: [
             {
@@ -167,7 +167,7 @@ const channels = getChannels({integrations: fromJS(integrationsState)})
 describe('ticket utils', () => {
     describe('guessReceiversFromTicket', () => {
         it('guess receivers empty', () => {
-            const updatedTicket = ticket.delete('messages').delete('requester')
+            const updatedTicket = ticket.delete('messages').delete('customer')
             const receivers = guessReceiversFromTicket(updatedTicket, 'email')
 
             expect(receivers).toEqual({
@@ -215,13 +215,13 @@ describe('ticket utils', () => {
             })
         })
 
-        it('guess receivers from requester email', () => {
+        it('guess receivers from customer email', () => {
             const updatedTicket = ticket.delete('messages')
             const receivers = guessReceiversFromTicket(updatedTicket, 'email')
 
             const receiver = {
                 ...users.email[2],
-                name: updatedTicket.getIn(['requester', 'name'])
+                name: updatedTicket.getIn(['customer', 'name'])
             }
 
             expect(receivers).toEqual({
@@ -229,13 +229,13 @@ describe('ticket utils', () => {
             })
         })
 
-        it('guess receivers from requester chat', () => {
+        it('guess receivers from customer chat', () => {
             const updatedTicket = ticket.delete('messages')
             const receivers = guessReceiversFromTicket(updatedTicket, 'chat')
 
             const receiver = {
                 ...users.chat[0],
-                name: updatedTicket.getIn(['requester', 'name'])
+                name: updatedTicket.getIn(['customer', 'name'])
             }
 
             expect(receivers).toEqual({
@@ -383,7 +383,7 @@ describe('ticket utils', () => {
 describe('replace variables', () => {
     it('should return empty value if no matching integration', () => {
         const ticketState = fromJS({
-            requester: {
+            customer: {
                 integrations: {
                     15: {
                         __integration_type__: 'weirdtype',
@@ -412,7 +412,7 @@ describe('replace variables', () => {
 
     it('should update the Shopify variable with the correct integrations id', () => {
         const ticketState = fromJS({
-            requester: {
+            customer: {
                 integrations: {
                     15: {
                         __integration_type__: 'shopify',
@@ -441,7 +441,7 @@ describe('replace variables', () => {
 
     it('should take data from first of multiple Shopify integrations', () => {
         const ticketState = fromJS({
-            requester: {
+            customer: {
                 integrations: {
                     15: {
                         __integration_type__: 'shopify',
@@ -476,7 +476,7 @@ describe('replace variables', () => {
 
     it('should take data from most recent of multiple Shopify integrations updates based on updated_at info', () => {
         const ticketState = fromJS({
-            requester: {
+            customer: {
                 integrations: {
                     15: {
                         __integration_type__: 'shopify',
@@ -520,7 +520,7 @@ describe('replace variables', () => {
 
     it('should work with filters', () => {
         const ticketState = fromJS({
-            requester: {
+            customer: {
                 integrations: {
                     15: {
                         __integration_type__: 'shopify',
