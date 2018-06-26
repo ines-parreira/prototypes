@@ -104,6 +104,16 @@ export const joinEvents = [{
         return this.send(socketConstants.AGENT_TYPING_STOPPED, id)
     }
 }, {
+    name:  'customer',
+    dataToSend: function (id) {
+        return {
+            clientId: window.CLIENT_ID,
+            dataType: 'Customer',
+            data: parseInt(id),
+        }
+    },
+}, {
+    // TODO(customer-migration): remove this event when we removed `user` rooms in the back-end
     name: 'user',
     dataToSend: function (id) {
         return {
@@ -139,6 +149,12 @@ export const joinEvents = [{
  * @enum onReceive function executed when this event is received (bound to SocketManager instance)
  */
 export const receivedEvents = [{
+    name: 'customer-updated',
+    onReceive: function (json) {
+        return this.dispatch(ticketActions.mergeCustomer(json.customer))
+    },
+}, {
+    // TODO(customer-migration): remove this event when the back-end sends `customer-updated` events
     name: 'user-updated',
     onReceive: function (json) {
         return this.dispatch(ticketActions.mergeCustomer(json.user))

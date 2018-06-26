@@ -258,6 +258,7 @@ export const setCustomer = (customer) => (dispatch) => {
     }
 
     socketManager.join('user', customer.get('id'))
+    socketManager.join('customer', customer.get('id'))
 
     return dispatch(ticketPartialUpdate({
         customer: fromJS({
@@ -454,6 +455,7 @@ export const fetchTicket = (ticketId) => (dispatch) => {
 
             if (customerId) {
                 socketManager.join('user', customerId)
+                socketManager.join('customer', customerId)
             }
 
             // dispatch for ticket reducer branch
@@ -543,6 +545,7 @@ export const _goToNextOrPrevTicket = (ticketId: number, direction: string, promi
 
                     if (customerId) {
                         socketManager.join('user', customerId)
+                        socketManager.join('customer', customerId)
                     }
 
                     dispatch({

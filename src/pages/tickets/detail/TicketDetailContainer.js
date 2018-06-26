@@ -278,6 +278,7 @@ export default class TicketDetailContainer extends React.Component {
 
         if (customerId) {
             socketManager.leave('user', customerId)
+            socketManager.leave('customer', customerId)
         }
 
         this.props.actions.ticket.clearTicket()
