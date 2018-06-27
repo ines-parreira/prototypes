@@ -257,7 +257,6 @@ export const setCustomer = (customer) => (dispatch) => {
         return Promise.resolve()
     }
 
-    socketManager.join('user', customer.get('id'))
     socketManager.join('customer', customer.get('id'))
 
     return dispatch(ticketPartialUpdate({
@@ -454,7 +453,6 @@ export const fetchTicket = (ticketId) => (dispatch) => {
             }
 
             if (customerId) {
-                socketManager.join('user', customerId)
                 socketManager.join('customer', customerId)
             }
 
@@ -544,7 +542,6 @@ export const _goToNextOrPrevTicket = (ticketId: number, direction: string, promi
                     }
 
                     if (customerId) {
-                        socketManager.join('user', customerId)
                         socketManager.join('customer', customerId)
                     }
 

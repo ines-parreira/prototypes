@@ -113,16 +113,6 @@ export const joinEvents = [{
         }
     },
 }, {
-    // TODO(customer-migration): remove this event when we removed `user` rooms in the back-end
-    name: 'user',
-    dataToSend: function (id) {
-        return {
-            clientId: window.CLIENT_ID,
-            dataType: 'User',
-            data: parseInt(id),
-        }
-    },
-}, {
     name: 'view',
     dataToSend: function (id) {
         return {
@@ -152,12 +142,6 @@ export const receivedEvents = [{
     name: 'customer-updated',
     onReceive: function (json) {
         return this.dispatch(ticketActions.mergeCustomer(json.customer))
-    },
-}, {
-    // TODO(customer-migration): remove this event when the back-end sends `customer-updated` events
-    name: 'user-updated',
-    onReceive: function (json) {
-        return this.dispatch(ticketActions.mergeCustomer(json.user))
     },
 }, {
     name: 'user-location-updated',
