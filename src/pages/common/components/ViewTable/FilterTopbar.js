@@ -320,23 +320,25 @@ class FilterTopbar extends React.Component {
                                 </Button>
                             )}
                         </div>
-                        {!isSearch && (
-                            <ConfirmButton
-                                content={(
-                                    <span>
+                        {!isSearch && !isSystemView ? (
+                                <ConfirmButton
+                                    content={(
+                                        <span>
                                         You are about to <b>delete</b> this view for <b>all users</b>.
                                     </span>
-                                )}
-                                confirm={() => {
-                                    return this.props.deleteView(activeView)
-                                }}
-                            >
-                                <i className="material-icons md-2 mr-2 text-danger">
-                                    delete
-                                </i>
-                                Delete view
-                            </ConfirmButton>
-                        )}
+                                    )}
+                                    confirm={() => {
+                                        return this.props.deleteView(activeView)
+                                    }}
+                                >
+                                    <i className="material-icons md-2 mr-2 text-danger">
+                                        delete
+                                    </i>
+                                    Delete view
+                                </ConfirmButton>
+                            )
+                            : null
+                        }
                     </div>
                 </CardFooter>
             </Card>
