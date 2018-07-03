@@ -381,7 +381,7 @@ InfobarUserInfo.defaultProps = {
 }
 
 const mapStateToProps = (state) => ({
-    hasIntegrations: !integrationsSelectors.getIntegrationsByTypes(['http', 'shopify', 'recharge'])(state).isEmpty(),
+    hasIntegrations: !integrationsSelectors.getIntegrationsByTypes(['http', 'shopify', 'recharge', 'smile'])(state).isEmpty(),
 })
 
 export default connect(mapStateToProps)(InfobarUserInfo)

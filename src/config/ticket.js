@@ -100,6 +100,23 @@ export const VARIABLES = [{
         name: 'Customer\'s hash',
         value: '{{ticket.customer.integrations.recharge.customer.hash}}',
     }]
+}, {
+    type: 'smile',
+    integration: true,
+    name: 'Smile',
+    children: [{
+        name: 'Points balance',
+        value: '{{ticket.customer.integrations.smile.customer.points_balance}}',
+    }, {
+        name: 'Referral URL',
+        value: '{{ticket.customer.integrations.smile.customer.referral_url}}',
+    }, {
+        name: 'Customer state',
+        value: '{{ticket.customer.integrations.smile.customer.state}}',
+    }, {
+        name: 'Vip tier',
+        value: '{{ticket.customer.integrations.smile.customer.vip_tier.name}}',
+    }]
 }]
 
 // variables used in some other variables, but which are never available to use on their own

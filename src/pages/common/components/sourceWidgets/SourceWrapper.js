@@ -31,6 +31,16 @@ export const WIDGET_DATA_TYPES = [
         )
     },
     {
+        type: 'smile',
+        title: 'Smile data',
+        description: (
+            <div>
+                The following data comes from your{' '}
+                <Link to="/app/settings/integrations/smile" target="_blank"><b>Smile integrations</b></Link>.
+            </div>
+        )
+    },
+    {
         type: 'smooch_inside',
         title: 'Chat data',
         description: (

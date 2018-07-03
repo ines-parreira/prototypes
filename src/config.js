@@ -253,6 +253,12 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         title: 'Smooch',
         description: 'Connect your own Smooch to Gorgias',
         image: 'integrations/smooch.png',
+    },
+    {
+        type: 'smile',
+        title: 'Smile',
+        description: 'Display customer points and activity. Insert point balance or referral url in macros.',
+        image: 'integrations/smile.svg',
     }
 ]
 

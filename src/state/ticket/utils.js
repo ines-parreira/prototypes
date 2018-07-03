@@ -416,13 +416,11 @@ export const replaceVariables = (argument, state, notify) => {
         // If a variable is a dynamic variable, we try to replace `integrations.{type}` with
         // `integrations[correct-integration-id]`.
         variables.forEach((variable) => {
-            if (variable.includes('integrations.shopify')) {
-                newArgument = replaceIntegrationVariables('shopify', ticketState, variable, newArgument, notify)
-            }
-
-            if (variable.includes('integrations.recharge')) {
-                newArgument = replaceIntegrationVariables('recharge', ticketState, variable, newArgument, notify)
-            }
+            ['shopify', 'recharge', 'smile'].forEach((integrationType) => {
+                if (variable.includes('integrations.' + integrationType)) {
+                    newArgument = replaceIntegrationVariables(integrationType, ticketState, variable, newArgument, notify)
+                }
+            })
         })
     }
 

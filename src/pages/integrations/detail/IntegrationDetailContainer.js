@@ -32,6 +32,9 @@ import ShopifyIntegrationDetail from './components/shopify/ShopifyIntegrationDet
 import RechargeIntegrationList from './components/recharge/RechargeIntegrationList'
 import RechargeIntegrationDetail from './components/recharge/RechargeIntegrationDetail'
 
+import SmileIntegrationList from './components/smile/SmileIntegrationList'
+import SmileIntegrationDetail from './components/smile/SmileIntegrationDetail'
+
 import EmailIntegrationList from './components/email/EmailIntegrationList'
 import EmailIntegrationUpdate from './components/email/EmailIntegrationUpdate/index'
 import EmailIntegrationCreate from './components/email/EmailIntegrationCreate/index'
@@ -396,6 +399,28 @@ class IntegrationDetailContainer extends React.Component {
                         loading={commonProps.loading}
                     />
                 )
+
+            case 'smile':
+                if (isDetail) {
+                    return (
+                        <SmileIntegrationDetail
+                            actions={actions}
+                            integration={commonProps.integration}
+                            isUpdate={isUpdate}
+                            loading={commonProps.loading}
+                            redirectUri={redirectUri}
+                        />
+                    )
+                }
+
+                return (
+                    <SmileIntegrationList
+                        actions={actions}
+                        integrations={commonProps.integrations}
+                        loading={commonProps.loading}
+                    />
+                )
+
 
             default:
                 return null
