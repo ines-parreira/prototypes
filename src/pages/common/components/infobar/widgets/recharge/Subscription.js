@@ -158,7 +158,7 @@ class TitleWrapper extends React.Component { // eslint-disable-line
 
         return (
             <a
-                href={`https://shopifysubscriptions.com/customers/${customerHash}/subscriptions/items/${source.get('id')}/`}
+                href={`https://shopifysubscriptions.com/customers/${customerHash}/subscriptions/${source.get('id')}/`}
                 target="_blank"
             >
                 {children}
