@@ -17,9 +17,8 @@ import InputField from '../../../common/forms/InputField'
 
 const defaultContent = {
     name: '',
-    role: 'user',
     roles: [{
-        name: 'agent',
+        name: 'user',
     }],
     email: [{address: ''}],
     twitter: [{address: ''}],
@@ -102,15 +101,11 @@ class UserForm extends React.Component {
             }
         })
 
-        // display a role even if the user can have multiple ones
-        const roles = doc.roles || []
-        doc.role = roles.length ? roles[0].name : 'user'
-
         return doc
     }
 
     _formToDoc = (form = fromJS({})) => {
-        const {user, isUserStaff} = this.props
+        const {user, isUpdate} = this.props
 
         let initialChannels = user.get('channels', fromJS([]))
         // put aside channels of currently edited types
@@ -137,13 +132,8 @@ class UserForm extends React.Component {
         // set form channels
         doc = doc.set('channels', channels)
 
-        const formRole = doc.get('role')
-        doc = doc.delete('role')
-        // if user is staff, do not override is roles
-        if (!isUserStaff) {
-            // set roles as array
-            doc = doc
-                .set('roles', fromJS([{name: formRole}]))
+        if (isUpdate) {
+            doc = doc.delete('roles')
         }
 
         return doc
@@ -186,7 +176,7 @@ class UserForm extends React.Component {
     }
 
     render() {
-        const {isUpdate, isUserStaff} = this.props
+        const {isUpdate} = this.props
         const invalid = Object.keys(this.state.errors).length > 0
 
         return (
@@ -202,30 +192,9 @@ class UserForm extends React.Component {
                         value={this.state.name}
                         onChange={name => this._updateField({name})}
                     />
-
-                    {
-                        isUserStaff ? (
-                                <p>This user is a <b>Gorgias Staff</b> member</p>
-                            ) : (
-                                <InputField
-                                    type="select"
-                                    name="role"
-                                    label="Role"
-                                    required
-                                    value={this.state.role}
-                                    onChange={role => this._updateField({role})}
-                                >
-                                    <option value="user">User</option>
-                                    <option value="agent">Agent</option>
-                                    <option value="admin">Admin</option>
-                                </InputField>
-                            )
-                    }
-
                     <p>
                         <b>Please set below at least one contact information for this user :</b>
                     </p>
-
                     <UserChannelFieldArray
                         name="email"
                         type="email"
@@ -236,17 +205,6 @@ class UserForm extends React.Component {
                         fields={this.state.email}
                         onChange={email => this._updateField({email})}
                     />
-
-                    <UserChannelFieldArray
-                        name="twitter"
-                        label="Twitter accounts"
-                        placeholder="johnSnow"
-                        addLabel="Add a Twitter account"
-                        meta={{}}
-                        fields={this.state.twitter}
-                        onChange={twitter => this._updateField({twitter})}
-                    />
-
                     <UserChannelFieldArray
                         name="phone"
                         label="Phone numbers"
@@ -256,6 +214,15 @@ class UserForm extends React.Component {
                         fields={this.state.phone}
                         onChange={phone => this._updateField({phone})}
                         errors={this.state.errors.phone}
+                    />
+                    <UserChannelFieldArray
+                        name="twitter"
+                        label="Twitter accounts"
+                        placeholder="johnSnow"
+                        addLabel="Add a Twitter account"
+                        meta={{}}
+                        fields={this.state.twitter}
+                        onChange={twitter => this._updateField({twitter})}
                     />
                 </div>
 
@@ -293,7 +260,6 @@ const mapStateToProps = (state, ownProps) => {
     const user = ownProps.user || fromJS({})
     return {
         isUpdate: !_isUndefined(user.get('id')),
-        isUserStaff: !!user.get('roles', fromJS([])).find(role => role.get('name') === 'staff', null, false)
     }
 }
 

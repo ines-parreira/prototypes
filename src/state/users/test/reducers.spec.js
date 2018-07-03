@@ -31,7 +31,7 @@ describe('users reducers', () => {
             reducer(
                 initialState, {
                     type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
-                    viewType: 'user-list',
+                    viewType: 'customer-list',
                     data: resp
                 }
             )
@@ -359,7 +359,7 @@ describe('users reducers', () => {
                     }),
                 {
                     type: viewTypes.BULK_DELETE_SUCCESS,
-                    viewType: 'user-list',
+                    viewType: 'customer-list',
                     ids: [1, 2]
                 }
             )

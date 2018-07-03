@@ -200,7 +200,7 @@ export const getRecentViews = createSelector(
 )
 
 export const getVisibleViewIds = () => createSelector(
-    [getViewsByType('ticket-list'), getViewsByType('user-list')],
+    [getViewsByType('ticket-list'), getViewsByType('customer-list')],
     (ticketViews, userViews) => {
         const views = ticketViews.concat(userViews).filter((v) => !v.get('hide'))
         return views.map((v) => v.get('id'))

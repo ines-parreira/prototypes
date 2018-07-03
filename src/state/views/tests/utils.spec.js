@@ -189,9 +189,9 @@ describe('utils', () => {
             expect(url).toBe('/app/tickets/1')
         })
 
-        it('should return the user list url', () => {
+        it('should return the customer list url', () => {
             const url = activeViewUrl(fromJS({
-                type: 'user-list',
+                type: 'customer-list',
                 id: '2'
             }), {
                 pathname: '/app/user/2',
@@ -202,7 +202,7 @@ describe('utils', () => {
 
         it('should return the same url when on a different item type', () => {
             const url = activeViewUrl(fromJS({
-                type: 'user-list',
+                type: 'customer-list',
                 id: '2'
             }), {
                 pathname: '/app/ticket/1',
@@ -213,7 +213,7 @@ describe('utils', () => {
 
         it('should return the same url when on an unsupported url', () => {
             const url = activeViewUrl(fromJS({
-                type: 'user-list',
+                type: 'customer-list',
                 id: '2'
             }), {
                 pathname: '/app/pizza-pepperoni',
@@ -224,7 +224,7 @@ describe('utils', () => {
 
         it('should keep the url search query', () => {
             const url = activeViewUrl(fromJS({
-                type: 'user-list',
+                type: 'customer-list',
                 id: '2'
             }), {
                 pathname: '/app/pizza-pepperoni',

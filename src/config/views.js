@@ -296,7 +296,7 @@ export const views = fromJS([{
     },
 }, {
     name: 'user',
-    type: 'user-list',
+    type: 'customer-list',
     routeItem: 'user',
     routeList: 'users',
     api: 'users',
@@ -311,14 +311,6 @@ export const views = fromJS([{
         {
             name: 'email',
             title: 'Email',
-        },
-        {
-            name: 'roles',
-            title: 'Role',
-            path: 'roles.name',
-            filter: {
-                enum: ['user', 'agent', 'admin'],
-            }
         },
         {
             name: 'created',
@@ -349,8 +341,6 @@ export const views = fromJS([{
                 return item.get('created_datetime')
             case 'updated':
                 return item.get('updated_datetime')
-            case 'roles':
-                return item.get('roles', fromJS([]))
             default: {
                 return defaultCell(fieldName, item)
             }
@@ -358,16 +348,16 @@ export const views = fromJS([{
     },
     newView: () => {
         return baseView().merge({
-            fields: ['name', 'email', 'roles', 'created'],
-            type: 'user-list',
+            fields: ['name', 'email', 'created'],
+            type: 'customer-list',
         })
     },
     searchView: (query) => {
         return baseView().merge({
             name: `Search "${query}"`,
             search: query,
-            fields: ['name', 'email', 'roles', 'created'],
-            type: 'user-list',
+            fields: ['name', 'email', 'created'],
+            type: 'customer-list',
         })
     },
 }])
