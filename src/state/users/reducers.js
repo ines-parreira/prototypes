@@ -39,7 +39,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
 
     switch (action.type) {
         case viewsConstants.FETCH_LIST_VIEW_SUCCESS: {
-            if (action.viewType !== 'customer-list') {
+            if (action.viewType !== 'user-list') {
                 return state
             }
 
@@ -167,7 +167,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
         }
 
         case viewsConstants.BULK_DELETE_SUCCESS: {
-            if (action.viewType !== 'customer-list') {
+            if (action.viewType !== 'user-list') {
                 return state
             }
 

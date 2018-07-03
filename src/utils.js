@@ -826,15 +826,10 @@ export const isCurrentlyOnView = (viewId: string = '', viewsState: viewsStateTyp
 
 /**
  * return plural object name of a given view type
- * @param {String} viewType E.g: customer-list, ticket-list
+ * @param {String} viewType E.g: user-list, ticket-list
  * @returns {String} plural object name E.g: users, tickets
  */
 export function getPluralObjectName(viewType: string): string {
-    // TODO(customers-migration): remove this when we updated the routes of the web app
-    if (viewType === 'customer-list') {
-        return 'users'
-    }
-
     return viewType.replace('-list', 's')
 }
 

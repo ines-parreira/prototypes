@@ -447,7 +447,7 @@ export function bulkDelete(activeView: viewType, ids: List<*>): thunkActionType 
                 })
 
                 // refetch agents and admins list if it comes from users view
-                if (activeViewType === 'customer-list') {
+                if (activeViewType === 'user-list') {
                     dispatch(fetchUsers(['agent', 'admin']))
                 }
 
