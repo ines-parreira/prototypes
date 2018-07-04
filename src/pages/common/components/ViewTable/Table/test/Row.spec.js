@@ -5,7 +5,7 @@ import {fromJS} from 'immutable'
 import configureStore from '../../../../../../store/configureStore'
 import * as viewsConfig from '../../../../../../config/views'
 import * as ticketFixtures from '../../../../../../fixtures/ticket'
-import * as usersFixtures from '../../../../../../fixtures/users'
+import * as agentsFixtures from '../../../../../../fixtures/agents'
 import * as viewsActions from '../../../../../../state/views/actions'
 import Row from '../Row'
 
@@ -53,9 +53,9 @@ describe('ViewTable::Table::Row', () => {
             <Row
                 {...minProps}
                 store={configureStore({
-                    users: fromJS({
-                        agents: usersFixtures.agents,
-                        agentsLocation: usersFixtures.agentsLocation,
+                    agents: fromJS({
+                        all: agentsFixtures.agents,
+                        locations: agentsFixtures.locations,
                     })
                 })}
                 item={fromJS(ticketFixtures.ticket).set('id', 1)}

@@ -14,7 +14,7 @@ import {
 import InputField from '../../../../../../common/forms/InputField'
 import SelectField from '../../../../../../common/forms/SelectField'
 
-import * as userSelectors from './../../../../../../../state/users/selectors'
+import * as agentSelectors from './../../../../../../../state/agents/selectors'
 import * as integrationsSelectors from './../../../../../../../state/integrations/selectors'
 import * as campaignActions from './../../../../../../../state/campaigns/actions'
 import {notify} from './../../../../../../../state/notifications/actions'
@@ -501,7 +501,7 @@ export class CampaignDetail extends React.Component {
 export default connect((state, props) => {
     return {
         campaign: integrationsSelectors.getChatIntegrationCampaignById(props.integration.get('id'), props.id)(state),
-        agents: userSelectors.getAgents(state)
+        agents: agentSelectors.getAgents(state)
     }
 }, {
     createCampaign: campaignActions.createCampaign,

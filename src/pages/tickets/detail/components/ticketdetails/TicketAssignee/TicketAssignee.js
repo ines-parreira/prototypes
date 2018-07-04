@@ -8,7 +8,7 @@ import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Input} from 'react
 import _isUndefined from 'lodash/isUndefined'
 
 import * as currentUserSelectors from '../../../../../../state/currentUser/selectors'
-import * as usersSelectors from '../../../../../../state/users/selectors'
+import * as agentSelectors from '../../../../../../state/agents/selectors'
 
 import shortcutManager from '../../../../../../services/shortcutManager/index'
 import {AgentLabel} from '../../../../../common/utils/labels'
@@ -36,7 +36,7 @@ type State = {
 
 @connect((state) => {
     return {
-        agents: usersSelectors.getAgents(state),
+        agents: agentSelectors.getAgents(state),
         currentUser: currentUserSelectors.getCurrentUser(state),
     }
 })

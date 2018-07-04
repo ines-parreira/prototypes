@@ -1,7 +1,42 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`agents reducers create agent 1`] = `
+Object {
+  "all": Array [
+    Object {
+      "id": 1,
+      "name": "Romain",
+    },
+  ],
+  "locations": Object {},
+  "pagination": Object {},
+  "typingStatuses": Object {},
+}
+`;
+
+exports[`agents reducers delete agent 1`] = `
+Object {
+  "agents": Array [
+    Object {
+      "id": 1,
+      "name": "Romain",
+    },
+    Object {
+      "id": 2,
+      "name": "John",
+    },
+  ],
+  "all": Array [],
+  "locations": Object {},
+  "pagination": Object {},
+  "typingStatuses": Object {},
+}
+`;
+
 exports[`agents reducers fetch agents pagination 1`] = `
 Immutable.Map {
+  all: Immutable.List [
+  ],
   pagination: Immutable.Map {
     data: Immutable.List [
       Immutable.Map {
@@ -16,5 +51,138 @@ Immutable.Map {
       page: 1,
     },
   },
+  locations: Immutable.Map {
+  },
+  typingStatuses: Immutable.Map {
+  },
+}
+`;
+
+exports[`agents reducers fetch users (agents) 1`] = `
+Immutable.Map {
+  all: Immutable.List [
+  ],
+  pagination: Immutable.Map {
+  },
+  locations: Immutable.Map {
+  },
+  typingStatuses: Immutable.Map {
+  },
+}
+`;
+
+exports[`agents reducers fetch users (agents) 2`] = `
+Immutable.Map {
+  all: Immutable.List [
+  ],
+  pagination: Immutable.Map {
+  },
+  locations: Immutable.Map {
+  },
+  typingStatuses: Immutable.Map {
+  },
+}
+`;
+
+exports[`agents reducers fetch users (agents) 3`] = `
+Immutable.Map {
+  all: Immutable.List [
+    Immutable.Map {
+      id: 1,
+    },
+    Immutable.Map {
+      id: 2,
+    },
+  ],
+  pagination: Immutable.Map {
+  },
+  locations: Immutable.Map {
+  },
+  typingStatuses: Immutable.Map {
+  },
+}
+`;
+
+exports[`agents reducers set agents location 1`] = `
+Object {
+  "all": Array [],
+  "locations": Array [
+    Object {
+      "ticket": "1",
+      "users": Array [
+        "1",
+        "2",
+      ],
+    },
+    Object {
+      "ticket": "2",
+      "users": Array [
+        "1",
+      ],
+    },
+  ],
+  "pagination": Object {},
+  "typingStatuses": Object {},
+}
+`;
+
+exports[`agents reducers set agents typing status 1`] = `
+Object {
+  "all": Array [],
+  "locations": Object {},
+  "pagination": Object {},
+  "typingStatuses": Array [
+    Object {
+      "ticket": "1",
+      "users": Array [
+        "1",
+        "2",
+      ],
+    },
+    Object {
+      "ticket": "2",
+      "users": Array [
+        "1",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`agents reducers update agent 1`] = `
+Object {
+  "agents": Array [
+    Object {
+      "id": 1,
+      "name": "Romain",
+    },
+    Object {
+      "id": 2,
+      "name": "John",
+    },
+  ],
+  "all": Array [],
+  "locations": Object {},
+  "pagination": Object {},
+  "typingStatuses": Object {},
+}
+`;
+
+exports[`agents reducers update agent 2`] = `
+Object {
+  "agents": Array [
+    Object {
+      "id": 1,
+      "name": "Romain",
+    },
+    Object {
+      "id": 2,
+      "name": "John",
+    },
+  ],
+  "all": Array [],
+  "locations": Object {},
+  "pagination": Object {},
+  "typingStatuses": Object {},
 }
 `;

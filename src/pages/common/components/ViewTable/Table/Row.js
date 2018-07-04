@@ -9,7 +9,7 @@ import {scrollToReactNode} from '../../../utils/keyboard'
 
 import css from '../Table.less'
 
-import * as usersSelectors from '../../../../../state/users/selectors'
+import * as agentSelectors from '../../../../../state/agents/selectors'
 import * as viewsActions from '../../../../../state/views/actions'
 
 import * as viewsUtils from '../../../../../state/views/utils'
@@ -25,7 +25,7 @@ type Props = {
     type: string,
 
     toggleSelection: typeof viewsActions.toggleSelection,
-    getAgentsViewing: typeof usersSelectors.makeGetOtherAgentsOnTicket,
+    getAgentsViewing: typeof agentSelectors.makeGetOtherAgentsOnTicket,
 }
 
 class Row extends React.Component<Props> {
@@ -95,7 +95,7 @@ class Row extends React.Component<Props> {
 
 export default connect((state) => {
     return {
-        getAgentsViewing: usersSelectors.makeGetOtherAgentsOnTicket(state),
+        getAgentsViewing: agentSelectors.makeGetOtherAgentsOnTicket(state),
     }
 }, {
     toggleSelection: viewsActions.toggleSelection,

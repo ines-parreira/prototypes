@@ -23,13 +23,6 @@ describe('users actions', () => {
         mockServer = new MockAdapter(axios)
     })
 
-    it('fetch users', () => {
-        mockServer.onGet('/api/users/').reply(200, {data: [{id: 1}]})
-
-        return store.dispatch(actions.fetchUsers())
-            .then(() => expect(store.getActions()).toMatchSnapshot())
-    })
-
     it('fetch user', () => {
         mockServer.onGet('/api/users/2/').reply(200, {data: {id: 2}})
 

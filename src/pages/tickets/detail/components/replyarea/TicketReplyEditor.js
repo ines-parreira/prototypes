@@ -17,7 +17,7 @@ import {isRichType, acceptsOnlyImages, canLeaveInternalNote} from '../../../../.
 import * as macroActions from '../../../../../state/macro/actions'
 import * as newMessageActions from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
-import {getOtherAgents} from '../../../../../state/users/selectors'
+import {getOtherAgents} from '../../../../../state/agents/selectors'
 
 import {notify} from '../../../../../state/notifications/actions'
 

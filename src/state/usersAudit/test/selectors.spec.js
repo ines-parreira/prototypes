@@ -39,8 +39,8 @@ describe('users audit selectors', () => {
                     page: 1
                 }
             }),
-            users: fromJS({
-                agents: [{id: 1}, {id: 2}]
+            agents: fromJS({
+                all: [{id: 1}, {id: 2}]
             }),
         }
     })

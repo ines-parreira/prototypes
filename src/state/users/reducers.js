@@ -1,11 +1,6 @@
 // @flow
 import {fromJS} from 'immutable'
-import _isEqual from 'lodash/isEqual'
-
-import {isAgent} from '../../utils'
-
 import * as constants from './constants'
-import * as agentsConstants from '../agents/constants'
 import * as ticketConstants from '../ticket/constants'
 import * as viewsConstants from '../views/constants'
 
@@ -15,15 +10,12 @@ import type {actionType} from '../types'
 export const initialState = fromJS({
     active: {},
     items: [],
-    agents: [],  // Note both admins and 'simple' agents are considered agents.
     userHistory: {
         triedLoading: false,
         hasHistory: false,
         tickets: [],
         events: []
     },
-    agentsLocation: {},
-    agentsTypingStatus: {},
     _internal: {
         loading: {
             history: false,
@@ -46,18 +38,6 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
             const payload = action.data
 
             return state.set('items', fromJS(payload.data))
-        }
-
-        // THE FOLLOWING FUNCTION IS ONLY USED TO FETCH AGENTS AND ADMINS
-        case constants.FETCH_USER_LIST_SUCCESS: {
-            let newState = state
-
-            // This is a bit lame but that's the proper definition of an agent.
-            if (_isEqual(action.roles, ['agent', 'admin'])) {
-                newState = newState.set('agents', fromJS(action.resp.data))
-            }
-
-            return newState
         }
 
         case constants.FETCH_USER_START: {
@@ -98,25 +78,6 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
                 }
             }
 
-            const existingAgentIndex = newState.get('agents')
-                .findIndex(user => user.get('id') === responseUser.get('id'))
-
-            // if is an agent, add/update in list of agents
-            if (isAgent(responseUser)) {
-                if (~existingAgentIndex) {
-                    newState = newState.setIn(['agents', existingAgentIndex], responseUser)
-                } else {
-                    newState = newState.update('agents', agents => agents.push(responseUser))
-                }
-            } else {
-                // otherwise remove him
-                if (~existingAgentIndex) {
-                    newState = newState.update('agents', (agents) => {
-                        return agents.filter(user => user.get('id') !== responseUser.get('id'))
-                    })
-                }
-            }
-
             return newState.setIn(['_internal', 'loading', 'submitUser'], false)
         }
 
@@ -128,7 +89,6 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
             return state
                 .merge({
                     items: state.get('items').filter(item => item.get('id') !== action.userId),
-                    agents: state.get('agents').filter(item => item.get('id') !== action.userId)
                 })
         }
 
@@ -191,34 +151,6 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
             }
 
             return newState
-        }
-
-        case constants.SET_AGENTS_LOCATION: {
-            return state.set('agentsLocation', fromJS(action.data))
-        }
-
-        case constants.SET_AGENTS_TYPING_STATUS: {
-            return state.set('agentsTypingStatus', fromJS(action.data))
-        }
-
-        case agentsConstants.CREATE_AGENT_SUCCESS: {
-            return state.update('agents', agents => agents.push(action.resp))
-        }
-
-        case agentsConstants.UPDATE_AGENT_SUCCESS: {
-            const agent = action.resp
-
-            const existingAgentIndex = state.get('agents').findIndex(user => user.get('id') === agent.get('id'))
-
-            if (!~existingAgentIndex) {
-                return state
-            }
-
-            return state.setIn(['agents', existingAgentIndex], agent)
-        }
-
-        case agentsConstants.DELETE_AGENT_SUCCESS: {
-            return state.update('agents', agents => agents.filter(user => String(user.get('id')) !== String(action.id)))
         }
 
         default:

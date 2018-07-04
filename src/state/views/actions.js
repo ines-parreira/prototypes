@@ -10,7 +10,6 @@ import * as viewsSelectors from './selectors'
 import * as viewsConfig from '../../config/views'
 import * as socketConstants from '../../config/socketConstants'
 import {notify} from '../notifications/actions'
-import {fetchUsers} from '../users/actions'
 import socketManager from '../../services/socketManager'
 import {getPluralObjectName, getHashOfObj, isCurrentlyOnTicket, isCurrentlyOnView} from '../../utils'
 import {shouldUpdateView, activeViewUrl} from './utils'
@@ -445,11 +444,6 @@ export function bulkDelete(activeView: viewType, ids: List<*>): thunkActionType 
                     viewType: activeViewType,
                     ids
                 })
-
-                // refetch agents and admins list if it comes from users view
-                if (activeViewType === 'customer-list') {
-                    dispatch(fetchUsers(['agent', 'admin']))
-                }
 
                 notification.status = 'success'
                 notification.message = `${ids.size} ${viewConfig.get('plural')} successfully deleted!`

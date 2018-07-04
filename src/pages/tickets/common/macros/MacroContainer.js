@@ -6,7 +6,7 @@ import {fromJS} from 'immutable'
 import MacroModal from './components/MacroModal'
 import * as ViewsActions from '../../../../state/views/actions'
 import * as MacroActions from '../../../../state/macro/actions'
-import {getAgents} from '../../../../state/users/selectors'
+import {getAgents} from '../../../../state/agents/selectors'
 import {isMacrosModalOpen, getMacrosOrderedByName} from '../../../../state/macro/selectors'
 
 

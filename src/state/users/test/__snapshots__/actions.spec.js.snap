@@ -93,25 +93,6 @@ Array [
 ]
 `;
 
-exports[`users actions fetch users 1`] = `
-Array [
-  Object {
-    "type": "FETCH_USER_LIST_START",
-  },
-  Object {
-    "resp": Object {
-      "data": Array [
-        Object {
-          "id": 1,
-        },
-      ],
-    },
-    "roles": undefined,
-    "type": "FETCH_USER_LIST_SUCCESS",
-  },
-]
-`;
-
 exports[`users actions merge users 1`] = `
 Array [
   Object {
@@ -129,7 +110,6 @@ Array [
   },
 ]
 `;
-
 
 exports[`users actions update user 1`] = `
 Array [

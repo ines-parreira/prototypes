@@ -7,8 +7,8 @@ import {Input} from 'reactstrap'
 
 import Select from './ReactSelect'
 
-import * as userActions from './../../../../../state/users/actions'
-import * as userSelectors from './../../../../../state/users/selectors'
+import * as userActions from './../../../../../state/agents/actions'
+import * as agentSelectors from './../../../../../state/agents/selectors'
 
 
 type Props = {
@@ -58,7 +58,7 @@ class AssigneeSelect extends React.Component<Props> {
 }
 
 const mapStateToProps = (state) => ({
-    agents: userSelectors.getAgents(state)
+    agents: agentSelectors.getAgents(state)
 })
 
 const mapDispatchToProps = (dispatch) => ({

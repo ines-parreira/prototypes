@@ -6,38 +6,6 @@ import {notify} from '../notifications/actions'
 
 import type {dispatchType, stateType, getStateType} from '../types'
 
-// THE FOLLOWING FUNCTION IS ONLY USED TO FETCH AGENTS AND ADMINS
-// SHOULD BE UPDATED TO AN AGENTS SPECIFIC REDUCER
-export function fetchUsers(roles: Array<string>) {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
-        dispatch({
-            type: types.FETCH_USER_LIST_START
-        })
-
-        let rolesParam = ''
-
-        if (roles && roles instanceof Array) {
-            rolesParam = `?roles[]=${roles.join('&roles[]=')}`
-        }
-
-        return axios.get(`/api/users/${rolesParam}`)
-            .then((json = {}) => json.data)
-            .then(resp => {
-                dispatch({
-                    type: types.FETCH_USER_LIST_SUCCESS,
-                    resp,
-                    roles
-                })
-            }, error => {
-                return dispatch({
-                    type: types.FETCH_USER_LIST_ERROR,
-                    error,
-                    reason: 'Failed to fetch users'
-                })
-            })
-    }
-}
-
 export function fetchUser(userId: number) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         const isCurrentUser = userId === 0
@@ -202,13 +170,3 @@ export function mergeUsers(baseUserId: number, mergeUserId: number, data: {}) {
 }
 
 export const clearUser = () => ({type: types.CLEAR_USER})
-
-export const setAgentsLocation = (locations: {}) => ({
-    type: types.SET_AGENTS_LOCATION,
-    data: locations,
-})
-
-export const setAgentsTypingStatus = (locations: {}) => ({
-    type: types.SET_AGENTS_TYPING_STATUS,
-    data: locations,
-})

@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
 import type {stateType} from '../types'
 import {humanizeString} from '../../utils'
-import {getAgents} from '../users/selectors'
+import {getAgents} from '../agents/selectors'
 
 export const getUsersAuditState = (state: stateType) => state.usersAudit || fromJS({})
 

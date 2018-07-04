@@ -25,7 +25,7 @@ import * as viewsActions from '../../../../../state/views/actions'
 import * as viewsSelectors from '../../../../../state/views/selectors'
 import * as macroActions from '../../../../../state/macro/actions'
 
-import {getAgents} from '../../../../../state/users/selectors'
+import {getAgents} from '../../../../../state/agents/selectors'
 
 import type {List, Map} from 'immutable'
 import type {currentUserType} from '../../../../../state/types'

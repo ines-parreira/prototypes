@@ -37,7 +37,7 @@ import {
 
 import * as integrationSelectors from '../integrations/selectors'
 import * as ticketSelectors from '../ticket/selectors'
-import * as usersSelectors from '../users/selectors'
+import * as agentSelectors from '../agents/selectors'
 import * as selectors from './selectors'
 import * as responseUtils from './responseUtils'
 import {AGENT_TYPING_STARTED, AGENT_TYPING_STOPPED} from '../../config/socketConstants'
@@ -166,7 +166,7 @@ export const setResponseText = (args: Map<*,*> = fromJS({})) => (dispatch: dispa
             && newMessage.getIn(['newMessage', 'source', 'type']) !== 'internal-note'
         ) {
             _throttledIsTyping(ticketId)
-        } else if (usersSelectors.isAgentTypingOnTicket(ticketId)(state)) {
+        } else if (agentSelectors.isAgentTypingOnTicket(ticketId)(state)) {
             _throttledIsTyping.cancel()
             socketManager.send(AGENT_TYPING_STOPPED, ticketId)
         }

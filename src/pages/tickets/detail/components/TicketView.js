@@ -18,6 +18,7 @@ import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
 import * as tagsSelectors from '../../../../state/tags/selectors'
 import * as usersSelectors from '../../../../state/users/selectors'
+import * as agentSelectors from '../../../../state/agents/selectors'
 import * as ticketSelectors from '../../../../state/ticket/selectors'
 
 import css from './TicketView.less'
@@ -25,9 +26,9 @@ import appCss from '../../../App.less'
 
 @connect((state) => {
     return {
-        agents: usersSelectors.getAgents(state),
-        agentsViewing: usersSelectors.getOtherAgentsOnTicket(state.ticket.get('id'))(state),
-        agentsTyping: usersSelectors.getOtherAgentsTypingOnTicket(state.ticket.get('id'))(state),
+        agents: agentSelectors.getAgents(state),
+        agentsViewing: agentSelectors.getOtherAgentsOnTicket(state.ticket.get('id'))(state),
+        agentsTyping: agentSelectors.getOtherAgentsTypingOnTicket(state.ticket.get('id'))(state),
         currentUser: state.currentUser,
         macros: state.macros,
         routing: state.routing,

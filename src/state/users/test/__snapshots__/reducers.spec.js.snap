@@ -10,8 +10,6 @@ Immutable.Map {
       name: "Julien",
     },
   ],
-  agents: Immutable.List [
-  ],
   userHistory: Immutable.Map {
     triedLoading: false,
     hasHistory: false,
@@ -19,10 +17,6 @@ Immutable.Map {
     ],
     events: Immutable.List [
     ],
-  },
-  agentsLocation: Immutable.Map {
-  },
-  agentsTypingStatus: Immutable.Map {
   },
   _internal: Immutable.Map {
     loading: Immutable.Map {
@@ -46,9 +40,6 @@ Object {
     },
   },
   "active": Object {},
-  "agents": Array [],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -70,67 +61,6 @@ Object {
     },
   },
   "active": Object {},
-  "agents": Array [],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
-  "items": Array [],
-  "userHistory": Object {
-    "events": Array [],
-    "hasHistory": false,
-    "tickets": Array [],
-    "triedLoading": false,
-  },
-}
-`;
-
-exports[`users reducers create agent 1`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
-      "active": false,
-      "history": false,
-      "merge": false,
-      "submitUser": false,
-    },
-  },
-  "active": Object {},
-  "agents": Array [
-    Object {
-      "id": 1,
-      "name": "Romain",
-    },
-  ],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
-  "items": Array [],
-  "userHistory": Object {
-    "events": Array [],
-    "hasHistory": false,
-    "tickets": Array [],
-    "triedLoading": false,
-  },
-}
-`;
-
-exports[`users reducers delete agent 1`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
-      "active": false,
-      "history": false,
-      "merge": false,
-      "submitUser": false,
-    },
-  },
-  "active": Object {},
-  "agents": Array [
-    Object {
-      "id": 1,
-      "name": "Romain",
-    },
-  ],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -150,11 +80,6 @@ Immutable.Map {
       id: 1,
     },
   ],
-  agents: Immutable.List [
-    Immutable.Map {
-      id: 1,
-    },
-  ],
   userHistory: Immutable.Map {
     triedLoading: false,
     hasHistory: false,
@@ -162,10 +87,6 @@ Immutable.Map {
     ],
     events: Immutable.List [
     ],
-  },
-  agentsLocation: Immutable.Map {
-  },
-  agentsTypingStatus: Immutable.Map {
   },
   _internal: Immutable.Map {
     loading: Immutable.Map {
@@ -190,8 +111,6 @@ Immutable.Map {
       name: "Romain",
     },
   ],
-  agents: Immutable.List [
-  ],
   userHistory: Immutable.Map {
     triedLoading: false,
     hasHistory: false,
@@ -199,10 +118,6 @@ Immutable.Map {
     ],
     events: Immutable.List [
     ],
-  },
-  agentsLocation: Immutable.Map {
-  },
-  agentsTypingStatus: Immutable.Map {
   },
   _internal: Immutable.Map {
     loading: Immutable.Map {
@@ -221,8 +136,6 @@ Immutable.Map {
   },
   items: Immutable.List [
   ],
-  agents: Immutable.List [
-  ],
   userHistory: Immutable.Map {
     triedLoading: false,
     hasHistory: false,
@@ -230,10 +143,6 @@ Immutable.Map {
     ],
     events: Immutable.List [
     ],
-  },
-  agentsLocation: Immutable.Map {
-  },
-  agentsTypingStatus: Immutable.Map {
   },
   _internal: Immutable.Map {
     loading: Immutable.Map {
@@ -257,9 +166,6 @@ Object {
     },
   },
   "active": Object {},
-  "agents": Array [],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -283,9 +189,6 @@ Object {
   "active": Object {
     "id": 1,
   },
-  "agents": Array [],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -307,9 +210,6 @@ Object {
     },
   },
   "active": Object {},
-  "agents": Array [],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -331,9 +231,6 @@ Object {
     },
   },
   "active": Object {},
-  "agents": Array [],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -355,9 +252,6 @@ Object {
     },
   },
   "active": Object {},
-  "agents": Array [],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -386,9 +280,6 @@ Object {
     },
   },
   "active": Object {},
-  "agents": Array [],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -414,114 +305,12 @@ Object {
     },
   },
   "active": Object {},
-  "agents": Array [],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
     "hasHistory": false,
     "tickets": Object {},
     "triedLoading": false,
-  },
-}
-`;
-
-exports[`users reducers fetch users (agents) 1`] = `
-Immutable.Map {
-  active: Immutable.Map {
-  },
-  items: Immutable.List [
-  ],
-  agents: Immutable.List [
-  ],
-  userHistory: Immutable.Map {
-    triedLoading: false,
-    hasHistory: false,
-    tickets: Immutable.List [
-    ],
-    events: Immutable.List [
-    ],
-  },
-  agentsLocation: Immutable.Map {
-  },
-  agentsTypingStatus: Immutable.Map {
-  },
-  _internal: Immutable.Map {
-    loading: Immutable.Map {
-      history: false,
-      active: false,
-      submitUser: false,
-      merge: false,
-    },
-  },
-}
-`;
-
-exports[`users reducers fetch users (agents) 2`] = `
-Immutable.Map {
-  active: Immutable.Map {
-  },
-  items: Immutable.List [
-  ],
-  agents: Immutable.List [
-  ],
-  userHistory: Immutable.Map {
-    triedLoading: false,
-    hasHistory: false,
-    tickets: Immutable.List [
-    ],
-    events: Immutable.List [
-    ],
-  },
-  agentsLocation: Immutable.Map {
-  },
-  agentsTypingStatus: Immutable.Map {
-  },
-  _internal: Immutable.Map {
-    loading: Immutable.Map {
-      history: false,
-      active: false,
-      submitUser: false,
-      merge: false,
-    },
-  },
-}
-`;
-
-exports[`users reducers fetch users (agents) 3`] = `
-Immutable.Map {
-  active: Immutable.Map {
-  },
-  items: Immutable.List [
-  ],
-  agents: Immutable.List [
-    Immutable.Map {
-      id: 1,
-    },
-    Immutable.Map {
-      id: 2,
-    },
-  ],
-  userHistory: Immutable.Map {
-    triedLoading: false,
-    hasHistory: false,
-    tickets: Immutable.List [
-    ],
-    events: Immutable.List [
-    ],
-  },
-  agentsLocation: Immutable.Map {
-  },
-  agentsTypingStatus: Immutable.Map {
-  },
-  _internal: Immutable.Map {
-    loading: Immutable.Map {
-      history: false,
-      active: false,
-      submitUser: false,
-      merge: false,
-    },
   },
 }
 `;
@@ -537,9 +326,6 @@ Object {
     },
   },
   "active": Object {},
-  "agents": Array [],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -564,9 +350,6 @@ Object {
     "id": 1,
     "name": "Alex",
   },
-  "agents": Array [],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -591,85 +374,6 @@ Object {
     "id": 1,
     "name": "Romain",
   },
-  "agents": Array [],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
-  "items": Array [],
-  "userHistory": Object {
-    "events": Array [],
-    "hasHistory": false,
-    "tickets": Array [],
-    "triedLoading": false,
-  },
-}
-`;
-
-exports[`users reducers set agents location 1`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
-      "active": false,
-      "history": false,
-      "merge": false,
-      "submitUser": false,
-    },
-  },
-  "active": Object {},
-  "agents": Array [],
-  "agentsLocation": Array [
-    Object {
-      "ticket": "1",
-      "users": Array [
-        "1",
-        "2",
-      ],
-    },
-    Object {
-      "ticket": "2",
-      "users": Array [
-        "1",
-      ],
-    },
-  ],
-  "agentsTypingStatus": Object {},
-  "items": Array [],
-  "userHistory": Object {
-    "events": Array [],
-    "hasHistory": false,
-    "tickets": Array [],
-    "triedLoading": false,
-  },
-}
-`;
-
-exports[`users reducers set agents typing status 1`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
-      "active": false,
-      "history": false,
-      "merge": false,
-      "submitUser": false,
-    },
-  },
-  "active": Object {},
-  "agents": Array [],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Array [
-    Object {
-      "ticket": "1",
-      "users": Array [
-        "1",
-        "2",
-      ],
-    },
-    Object {
-      "ticket": "2",
-      "users": Array [
-        "1",
-      ],
-    },
-  ],
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -691,9 +395,6 @@ Object {
     },
   },
   "active": Object {},
-  "agents": Array [],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -718,9 +419,6 @@ Object {
     "id": 1,
     "name": "Alex",
   },
-  "agents": Array [],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
   "items": Array [
     Object {
       "id": 1,
@@ -750,9 +448,6 @@ Object {
     "id": 1,
     "name": "Romain",
   },
-  "agents": Array [],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
   "items": Array [
     Object {
       "id": 1,
@@ -778,201 +473,7 @@ Object {
       "submitUser": false,
     },
   },
-  "active": Object {
-    "id": 1,
-    "name": "Alex",
-    "roles": Array [
-      Object {
-        "name": "agent",
-      },
-    ],
-  },
-  "agents": Array [
-    Object {
-      "id": 1,
-      "name": "Alex",
-      "roles": Array [
-        Object {
-          "name": "agent",
-        },
-      ],
-    },
-  ],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
-  "items": Array [
-    Object {
-      "id": 1,
-      "name": "Alex",
-      "roles": Array [
-        Object {
-          "name": "agent",
-        },
-      ],
-    },
-  ],
-  "userHistory": Object {
-    "events": Array [],
-    "hasHistory": false,
-    "tickets": Array [],
-    "triedLoading": false,
-  },
-}
-`;
-
-exports[`users reducers submit user 5`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
-      "active": false,
-      "history": false,
-      "merge": false,
-      "submitUser": false,
-    },
-  },
-  "active": Object {
-    "id": 1,
-    "name": "Romain",
-  },
-  "agents": Array [
-    Object {
-      "name": "Alex",
-      "roles": Array [
-        Object {
-          "name": "agent",
-        },
-      ],
-    },
-  ],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
-  "items": Array [
-    Object {
-      "id": 1,
-      "name": "Romain",
-    },
-  ],
-  "userHistory": Object {
-    "events": Array [],
-    "hasHistory": false,
-    "tickets": Array [],
-    "triedLoading": false,
-  },
-}
-`;
-
-exports[`users reducers submit user 6`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
-      "active": false,
-      "history": false,
-      "merge": false,
-      "submitUser": false,
-    },
-  },
-  "active": Object {
-    "id": 1,
-    "name": "Alex",
-  },
-  "agents": Array [],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
-  "items": Array [
-    Object {
-      "id": 1,
-      "name": "Alex",
-    },
-  ],
-  "userHistory": Object {
-    "events": Array [],
-    "hasHistory": false,
-    "tickets": Array [],
-    "triedLoading": false,
-  },
-}
-`;
-
-exports[`users reducers submit user 7`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
-      "active": false,
-      "history": false,
-      "merge": false,
-      "submitUser": false,
-    },
-  },
   "active": Object {},
-  "agents": Array [],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
-  "items": Array [],
-  "userHistory": Object {
-    "events": Array [],
-    "hasHistory": false,
-    "tickets": Array [],
-    "triedLoading": false,
-  },
-}
-`;
-
-exports[`users reducers update agent 1`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
-      "active": false,
-      "history": false,
-      "merge": false,
-      "submitUser": false,
-    },
-  },
-  "active": Object {},
-  "agents": Array [
-    Object {
-      "id": 1,
-      "name": "Alex",
-    },
-    Object {
-      "id": 2,
-      "name": "John",
-    },
-  ],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
-  "items": Array [],
-  "userHistory": Object {
-    "events": Array [],
-    "hasHistory": false,
-    "tickets": Array [],
-    "triedLoading": false,
-  },
-}
-`;
-
-exports[`users reducers update agent 2`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
-      "active": false,
-      "history": false,
-      "merge": false,
-      "submitUser": false,
-    },
-  },
-  "active": Object {},
-  "agents": Array [
-    Object {
-      "id": 1,
-      "name": "Romain",
-    },
-    Object {
-      "id": 2,
-      "name": "John",
-    },
-  ],
-  "agentsLocation": Object {},
-  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],

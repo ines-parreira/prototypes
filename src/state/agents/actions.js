@@ -1,13 +1,43 @@
 // @flow
 import axios from 'axios'
 
-import {toJS, toImmutable} from '../../utils'
+import {toImmutable, toJS} from '../../utils'
 import {notify} from '../notifications/actions'
 import * as constants from './constants'
 
 import type {Map} from 'immutable'
 import type {dispatchType} from '../types'
 type agentType = {}
+
+export function fetchUsers(roles: Array<string>) {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
+        dispatch({
+            type: constants.FETCH_USER_LIST_START
+        })
+
+        let rolesParam = ''
+
+        if (roles && roles instanceof Array) {
+            rolesParam = `?roles[]=${roles.join('&roles[]=')}`
+        }
+
+        return axios.get(`/api/users/${rolesParam}`)
+            .then((json = {}) => json.data)
+            .then(resp => {
+                dispatch({
+                    type: constants.FETCH_USER_LIST_SUCCESS,
+                    resp,
+                    roles
+                })
+            }, error => {
+                return dispatch({
+                    type: constants.FETCH_USER_LIST_ERROR,
+                    error,
+                    reason: 'Failed to fetch users'
+                })
+            })
+    }
+}
 
 export const createAgent = (agent: agentType) => (dispatch: dispatchType): Promise<dispatchType> => {
     agent = toJS(agent)
@@ -136,3 +166,13 @@ export const updateAgent = (id: string, agent: agentType) => (dispatch: dispatch
             })
         })
 }
+
+export const setAgentsLocations = (locations: {}) => ({
+    type: constants.SET_AGENTS_LOCATIONS,
+    data: locations,
+})
+
+export const setAgentsTypingStatuses = (locations: {}) => ({
+    type: constants.SET_AGENTS_TYPING_STATUSES,
+    data: locations,
+})

@@ -11,7 +11,7 @@ import InfobarLayout from '../../common/components/infobar/InfobarLayout'
 
 import * as integrationsSelectors from '../../../state/integrations/selectors'
 import * as currentUserSelectors from '../../../state/currentUser/selectors'
-import * as usersSelectors from '../../../state/users/selectors'
+import * as agentSelectors from '../../../state/agents/selectors'
 
 import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 
@@ -158,7 +158,7 @@ class TicketListInfobarContainer extends React.Component<Props> {
 
 const mapStateToProps = (state) => {
     return {
-        agents: usersSelectors.getAgents(state),
+        agents: agentSelectors.getAgents(state),
         currentUser: currentUserSelectors.getCurrentUser(state),
         emailIntegrations: integrationsSelectors.getEmailIntegrations(state),
         hasIntegrationsOfTypes: integrationsSelectors.makeHasIntegrationOfTypes(state),

@@ -22,8 +22,8 @@ describe('TicketListActions component', () => {
         }
     })
 
-    const usersStore = fromJS({
-        agents: []
+    const agentsStore = fromJS({
+        all: []
     })
 
     let store
@@ -32,7 +32,7 @@ describe('TicketListActions component', () => {
         store = mockStore({
             currentUser: currentUserStore,
             views: viewsStore,
-            users: usersStore
+            agents: agentsStore
         })
     })
 
@@ -62,8 +62,8 @@ describe('TicketListActions component', () => {
         store = mockStore({
             currentUser: currentUserStore,
             views: viewsStore,
-            users: fromJS({
-                agents: [
+            agents: fromJS({
+                all: [
                     {id: 4, name: 'foo'},
                     {id: 5, name: 'bar'},
                     {id: 6, name: 'baz'},
@@ -90,7 +90,7 @@ describe('TicketListActions component', () => {
                     name: 'Trash'
                 }
             }),
-            users: usersStore,
+            agents: agentsStore,
         })
 
         const component = shallow(

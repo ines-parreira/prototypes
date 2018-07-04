@@ -25,7 +25,7 @@ import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
 import * as viewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
-import * as usersSelectors from '../../../../state/users/selectors'
+import * as agentSelectors from '../../../../state/agents/selectors'
 import * as schemasSelectors from '../../../../state/schemas/selectors'
 
 import * as viewsConfig from '../../../../config/views'
@@ -348,7 +348,7 @@ class FilterTopbar extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        agents: usersSelectors.getAgents(state),
+        agents: agentSelectors.getAgents(state),
         activeView: viewsSelectors.getActiveView(state),
         areFiltersValid: viewsSelectors.areFiltersValid(state),
         config: viewsConfig.getConfigByName(ownProps.type),

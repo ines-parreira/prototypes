@@ -427,8 +427,8 @@ describe('actions', () => {
                 store = mockStore({
                     newMessage: initialState,
                     ticket: fromJS({id: 1}),
-                    users: fromJS({
-                        agents: [{
+                    agents: fromJS({
+                        all: [{
                             id: 1
                         }]
                     })
@@ -460,8 +460,8 @@ describe('actions', () => {
                 store = mockStore({
                     newMessage: initialState,
                     ticket: fromJS({id: 1}),
-                    users: fromJS({
-                        agents: [{
+                    agents: fromJS({
+                        all: [{
                             id: 1
                         }]
                     })
@@ -479,13 +479,13 @@ describe('actions', () => {
                 store = mockStore({
                     newMessage: initialState,
                     ticket: fromJS({id: 1}),
-                    users: fromJS({
-                        agentsTypingStatus: {
+                    agents: fromJS({
+                        typingStatuses: {
                             1: {
                                 Ticket: [1]
                             }
                         },
-                        agents: [{
+                        all: [{
                             id: 1
                         }]
                     }),
@@ -507,9 +507,9 @@ describe('actions', () => {
                 store = mockStore({
                     newMessage: initialState,
                     ticket: fromJS({id: 1}),
-                    users: fromJS({
-                        agentsTypingStatus: {},
-                        agents: [{
+                    agents: fromJS({
+                        typingStatuses: {},
+                        all: [{
                             id: 1
                         }]
                     }),

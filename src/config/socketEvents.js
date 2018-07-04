@@ -1,6 +1,6 @@
 import * as ticketActions from '../state/ticket/actions'
 import * as infobarActions from '../state/infobar/actions'
-import * as usersActions from '../state/users/actions'
+import * as agentsActions from '../state/agents/actions'
 import * as viewsActions from '../state/views/actions'
 import * as chatsActions from '../state/chats/actions'
 
@@ -146,12 +146,12 @@ export const receivedEvents = [{
 }, {
     name: 'user-location-updated',
     onReceive: function (json) {
-        return this.dispatch(usersActions.setAgentsLocation(json.locations))
+        return this.dispatch(agentsActions.setAgentsLocations(json.locations))
     },
 }, {
     name: 'user-typing-status-updated',
     onReceive: function (json) {
-        return this.dispatch(usersActions.setAgentsTypingStatus(json.locations))
+        return this.dispatch(agentsActions.setAgentsTypingStatuses(json.locations))
     },
 }, {
     name: 'ticket-updated',
