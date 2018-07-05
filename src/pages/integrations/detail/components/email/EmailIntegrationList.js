@@ -35,7 +35,7 @@ export default class EmailIntegrationList extends React.Component {
 
             const isVerified = integration.getIn(['meta', 'verified'], true)
 
-            let editLink = `/app/settings/integrations/email/${integration.get('id')}${isVerified ? '' : '/verification'}`
+            let editLink = `/app/settings/integrations/email/${integration.get('id')}${isVerified || isGmail ? '' : '/verification'}`
 
             return (
                 <tr key={integration.get('id')}>
