@@ -7,7 +7,7 @@ import {browserHistory} from 'react-router'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import * as userActions from '../../../../state/users/actions'
+import * as customersActions from '../../../../state/customers/actions'
 import * as newMessageActions from '../../../../state/newMessage/actions'
 import * as ticketActions from '../../../../state/ticket/actions'
 
@@ -18,12 +18,12 @@ import moment from 'moment'
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-jest.mock('../../../../state/users/actions', () => {
+jest.mock('../../../../state/customers/actions', () => {
     const _identity = require('lodash/identity')
 
     return {
-        fetchUser: jest.fn(() => _identity),
-        fetchUsers: jest.fn(() => _identity),
+        fetchCustomer: jest.fn(() => _identity),
+        fetchCustomers: jest.fn(() => _identity),
     }
 })
 
@@ -101,7 +101,7 @@ describe('TicketDetailContainer component', () => {
         expect(component.prop('title')).toBe('New ticket')
     })
 
-    it('should fetch user details from url', () => {
+    it('should fetch customer details from url', () => {
         const router = _merge(
             {...minProps.router},
             {location: {query: {customer:'1'}}}
@@ -114,7 +114,7 @@ describe('TicketDetailContainer component', () => {
                 />
         ).dive().dive()
 
-        expect(userActions.fetchUser).toBeCalledWith(1)
+        expect(customersActions.fetchCustomer).toBeCalledWith(1)
     })
 
     it('should set activeUser as customer', () => {

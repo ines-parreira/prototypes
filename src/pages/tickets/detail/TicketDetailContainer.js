@@ -15,7 +15,7 @@ import Loader from '../../common/components/Loader'
 import * as ViewsActions from '../../../state/views/actions'
 import * as TicketActions from '../../../state/ticket/actions'
 import * as MacroActions from '../../../state/macro/actions'
-import * as UserActions from '../../../state/users/actions'
+import * as customersActions from '../../../state/customers/actions'
 import * as TagActions from '../../../state/tags/actions'
 import * as ticketsActions from '../../../state/tickets/actions'
 import socketManager from '../../../services/socketManager'
@@ -26,18 +26,18 @@ import * as currentAccountSelectors from '../../../state/currentAccount/selector
 import * as newMessageSelectors from '../../../state/newMessage/selectors'
 import * as viewsSelectors from '../../../state/views/selectors'
 import * as ticketSelectors from '../../../state/ticket/selectors'
-import * as userSelectors from '../../../state/users/selectors'
+import * as customersSelectors from '../../../state/customers/selectors'
 import {updateMessageText} from './components/replyarea/TicketReplyEditor'
 
 @withRouter
 @connect((state) => {
     return {
         activeView: viewsSelectors.getActiveView(state),
-        activeUser: userSelectors.getActiveUser(state),
+        activeUser: customersSelectors.getActiveCustomer(state),
         currentUser: state.currentUser,
         macros: state.macros,
         pagination: viewsSelectors.getPagination(state),
-        users: state.users,
+        users: customersSelectors.getCustomersState(state),
         routing: state.routing,
         ticket: state.ticket,
         newMessage: state.newMessage,
@@ -52,7 +52,7 @@ import {updateMessageText} from './components/replyarea/TicketReplyEditor'
             macro: bindActionCreators(MacroActions, dispatch),
             tag: bindActionCreators(TagActions, dispatch),
             ticket: bindActionCreators(TicketActions, dispatch),
-            user: bindActionCreators(UserActions, dispatch),
+            customers: bindActionCreators(customersActions, dispatch),
             views: bindActionCreators(ViewsActions, dispatch),
             newMessage: bindActionCreators(newMessageActions, dispatch),
         },
@@ -121,13 +121,13 @@ export default class TicketDetailContainer extends React.Component {
         this.props.actions.ticket.clearTicket()
         this.props.actions.ticket.fetchTicket(this.props.params.ticketId)
 
-        const userId = parseInt(this.props.location.query.customer)
+        const customerId = parseInt(this.props.location.query.customer)
         if (
             this.props.params.ticketId === 'new' &&
             this.props.location.query.customer &&
-            this.props.activeUser.get('id') !== userId
+            this.props.activeUser.get('id') !== customerId
         ) {
-            this.props.actions.user.fetchUser(userId)
+            this.props.actions.customers.fetchCustomer(customerId)
         }
     }
 
@@ -155,7 +155,7 @@ export default class TicketDetailContainer extends React.Component {
 
         const onlyOneRecipient = nextRecipients.size === 1
 
-        if (!nextTicketIsNew && nextTicket.get('customer') && !nextUsers.getIn(['userHistory', 'triedLoading'])) {
+        if (!nextTicketIsNew && nextTicket.get('customer') && !nextUsers.getIn(['customerHistory', 'triedLoading'])) {
             const customerId = nextTicket.getIn(['customer', 'id'])
 
             if (!customerId) {
@@ -163,7 +163,7 @@ export default class TicketDetailContainer extends React.Component {
             }
 
             // Fetch the ticket's customer history (tickets + events).
-            this.props.actions.user.fetchUserHistory(customerId, {
+            this.props.actions.customers.fetchCustomerHistory(customerId, {
                 successCondition: (state) => {
                     return state.ticket.getIn(['customer', 'id']) === customerId
                 }

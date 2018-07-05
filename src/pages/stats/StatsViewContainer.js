@@ -4,7 +4,7 @@ import _upperFirst from 'lodash/upperFirst'
 
 import StatsView from './StatsView'
 import * as statsActions from '../../state/stats/actions'
-import {getDisplayName} from '../../state/users/helpers'
+import {getDisplayName} from '../../state/customers/helpers'
 import {getAgents} from '../../state/agents/selectors'
 import {getTags} from '../../state/tags/selectors'
 import {views as statViewsConfig} from '../../config/stats'

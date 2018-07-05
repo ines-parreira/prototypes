@@ -11,7 +11,6 @@ import * as utils from '../utils'
 import * as layoutActions from '../state/layout/actions'
 import * as viewsActions from '../state/views/actions'
 import * as currentAccountActions from '../state/currentAccount/actions'
-import {fetchUser} from '../state/users/actions'
 import {injectInterceptor} from '../utils/axios'
 
 import * as layoutSelectors from '../state/layout/selectors'
@@ -45,7 +44,6 @@ type Props = {
         infobarOnMobile?: boolean,
         containerPadding?: boolean,
     },
-    fetchUser: typeof fetchUser,
     injectInterceptor: typeof injectInterceptor,
     fetchVisibleViewsCounts: typeof viewsActions.fetchVisibleViewsCounts,
     openPanel: typeof layoutActions.openPanel,
@@ -210,7 +208,6 @@ function mapStateToProps(state, ownProps) {
 }
 
 export default connect(mapStateToProps, {
-    fetchUser,
     injectInterceptor: injectInterceptor,
     fetchVisibleViewsCounts: viewsActions.fetchVisibleViewsCounts,
     openPanel: layoutActions.openPanel,

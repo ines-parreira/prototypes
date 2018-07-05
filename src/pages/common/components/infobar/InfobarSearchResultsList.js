@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import classnames from 'classnames'
 import {Card, CardBody, CardTitle, Badge} from 'reactstrap'
 
-import {getDisplayName} from '../../../../state/users/helpers'
+import {getDisplayName} from '../../../../state/customers/helpers'
 
 import css from './Infobar.less'
 

@@ -7,7 +7,7 @@ import * as types from '../constants'
 
 jest.addMatchers(immutableMatchers)
 
-describe('users reducers', () => {
+describe('customers reducers', () => {
     it('initial state', () => {
         expect(reducer(undefined, {})).toEqualImmutable(initialState)
     })
@@ -47,13 +47,13 @@ describe('users reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('fetch user', () => {
+    it('fetch customer', () => {
         // start
         expect(
             reducer(
                 initialState,
                 {
-                    type: types.FETCH_USER_START,
+                    type: types.FETCH_CUSTOMER_START,
                 }
             ).toJS()
         ).toMatchSnapshot()
@@ -63,7 +63,7 @@ describe('users reducers', () => {
             reducer(
                 initialState,
                 {
-                    type: types.FETCH_USER_SUCCESS,
+                    type: types.FETCH_CUSTOMER_SUCCESS,
                     resp: {id: 1},
                 }
             ).toJS()
@@ -74,25 +74,25 @@ describe('users reducers', () => {
             reducer(
                 initialState,
                 {
-                    type: types.FETCH_USER_ERROR,
+                    type: types.FETCH_CUSTOMER_ERROR,
                 }
             ).toJS()
         ).toMatchSnapshot()
     })
 
-    it('submit user', () => {
+    it('submit customer', () => {
         // start
         expect(
             reducer(
                 initialState,
                 {
-                    type: types.SUBMIT_USER_START,
+                    type: types.SUBMIT_CUSTOMER_START,
                 }
             ).toJS()
         ).toMatchSnapshot()
 
         // success
-        // update user
+        // update customer
         expect(
             reducer(
                 initialState
@@ -101,7 +101,7 @@ describe('users reducers', () => {
                         active: {id: 1, name: 'Romain'},
                     }),
                 {
-                    type: types.SUBMIT_USER_SUCCESS,
+                    type: types.SUBMIT_CUSTOMER_START,
                     resp: {
                         id: 1,
                         name: 'Alex',
@@ -111,7 +111,7 @@ describe('users reducers', () => {
             ).toJS()
         ).toMatchSnapshot()
 
-        // create user
+        // create customer
         expect(
             reducer(
                 initialState
@@ -120,7 +120,7 @@ describe('users reducers', () => {
                         active: {id: 1, name: 'Romain'},
                     }),
                 {
-                    type: types.SUBMIT_USER_SUCCESS,
+                    type: types.SUBMIT_CUSTOMER_START,
                     resp: {
                         name: 'Alex',
                     },
@@ -134,13 +134,13 @@ describe('users reducers', () => {
             reducer(
                 initialState,
                 {
-                    type: types.SUBMIT_USER_ERROR,
+                    type: types.SUBMIT_CUSTOMER_ERROR,
                 }
             ).toJS()
         ).toMatchSnapshot()
     })
 
-    it('delete user', () => {
+    it('delete customer', () => {
         expect(
             reducer(
                 initialState
@@ -148,20 +148,20 @@ describe('users reducers', () => {
                         items: [{id: 1}, {id: 2}],
                     }),
                 {
-                    type: types.DELETE_USER_SUCCESS,
-                    userId: 2,
+                    type: types.DELETE_CUSTOMER_SUCCESS,
+                    customerId: 2,
                 }
             )
         ).toMatchSnapshot()
     })
 
-    it('fetch user history', () => {
+    it('fetch customer history', () => {
         // start
         expect(
             reducer(
                 initialState,
                 {
-                    type: types.FETCH_USER_HISTORY_START,
+                    type: types.FETCH_CUSTOMER_HISTORY_START,
                 }
             ).toJS()
         ).toMatchSnapshot()
@@ -171,7 +171,7 @@ describe('users reducers', () => {
             reducer(
                 initialState,
                 {
-                    type: types.FETCH_USER_HISTORY_SUCCESS,
+                    type: types.FETCH_CUSTOMER_HISTORY_SUCCESS,
                     resp: {
                         meta: {
                             item_count: 2,
@@ -187,7 +187,7 @@ describe('users reducers', () => {
             reducer(
                 initialState,
                 {
-                    type: types.FETCH_USER_HISTORY_SUCCESS,
+                    type: types.FETCH_CUSTOMER_HISTORY_SUCCESS,
                     resp: {
                         meta: {
                             item_count: 1,
@@ -203,7 +203,7 @@ describe('users reducers', () => {
             reducer(
                 initialState,
                 {
-                    type: types.FETCH_USER_HISTORY_ERROR,
+                    type: types.FETCH_CUSTOMER_HISTORY_ERROR,
                 }
             ).toJS()
         ).toMatchSnapshot()
@@ -220,7 +220,7 @@ describe('users reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('clear user', () => {
+    it('clear customer', () => {
         expect(
             reducer(
                 initialState
@@ -228,7 +228,7 @@ describe('users reducers', () => {
                         active: {id: 1, name: 'Romain'},
                     }),
                 {
-                    type: types.CLEAR_USER,
+                    type: types.CLEAR_CUSTOMER,
                 }
             ).toJS()
         ).toMatchSnapshot()
@@ -264,13 +264,13 @@ describe('users reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('merge users', () => {
+    it('merge customers', () => {
         // start
         expect(
             reducer(
                 initialState,
                 {
-                    type: types.MERGE_USERS_START,
+                    type: types.MERGE_CUSTOMERS_START,
                 }
             ).toJS()
         ).toMatchSnapshot()
@@ -283,7 +283,7 @@ describe('users reducers', () => {
                         active: {id: 1, name: 'Romain'},
                     }),
                 {
-                    type: types.MERGE_USERS_SUCCESS,
+                    type: types.MERGE_CUSTOMERS_SUCCESS,
                     resp: {id: 1, name: 'Alex'},
                 }
             ).toJS()
@@ -297,7 +297,7 @@ describe('users reducers', () => {
                         active: {id: 1, name: 'Romain'},
                     }),
                 {
-                    type: types.MERGE_USERS_ERROR,
+                    type: types.MERGE_CUSTOMERS_ERROR,
                 }
             ).toJS()
         ).toMatchSnapshot()

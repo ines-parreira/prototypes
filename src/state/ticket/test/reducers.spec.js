@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 
 import reducer, {initialState} from '../reducers'
 import * as newMessageTypes from '../../newMessage/constants'
-import * as userTypes from '../../users/constants'
+import * as userTypes from '../../customers/constants'
 import * as types from '../constants'
 import * as ticketFixtures from '../../../fixtures/ticket'
 
@@ -657,7 +657,7 @@ describe('ticket reducers', () => {
             reducer(
                 initialState,
                 {
-                    type: userTypes.MERGE_USERS_SUCCESS,
+                    type: userTypes.MERGE_CUSTOMERS_SUCCESS,
                     resp: {
                         id: 1,
                         name: 'Alex',
@@ -677,7 +677,7 @@ describe('ticket reducers', () => {
                         },
                     }),
                 {
-                    type: userTypes.MERGE_USERS_SUCCESS,
+                    type: userTypes.MERGE_CUSTOMERS_SUCCESS,
                     resp: {
                         id: 1,
                         name: 'Alex',

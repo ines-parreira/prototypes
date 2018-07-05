@@ -17,12 +17,13 @@ import HistoryButton from './HistoryButton'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
 import * as tagsSelectors from '../../../../state/tags/selectors'
-import * as usersSelectors from '../../../../state/users/selectors'
+import * as usersSelectors from '../../../../state/customers/selectors'
 import * as agentSelectors from '../../../../state/agents/selectors'
 import * as ticketSelectors from '../../../../state/ticket/selectors'
 
 import css from './TicketView.less'
 import appCss from '../../../App.less'
+import {getCustomersState} from '../../../../state/customers/selectors'
 
 @connect((state) => {
     return {
@@ -35,7 +36,7 @@ import appCss from '../../../App.less'
         tags: tagsSelectors.getTags(state),
         ticket: state.ticket,
         ticketBody: ticketSelectors.getBody(state),
-        users: state.users,
+        users: getCustomersState(state),
         usersIsLoading: usersSelectors.makeIsLoading(state),
         views: state.views,
         isHistoryDisplayed: ticketSelectors.getDisplayHistory(state),
@@ -131,14 +132,14 @@ export default class TicketView extends React.Component {
     _toggleHistory = () => {
         const {ticket, users, actions, isHistoryDisplayed} = this.props
         const shouldOpenHistory = ticket.get('id')
-            && users.getIn(['userHistory', 'hasHistory'])
+            && users.getIn(['customerHistory', 'hasHistory'])
             && !isHistoryDisplayed
 
         actions.ticket.toggleHistory(shouldOpenHistory)
 
         segmentTracker.logEvent(segmentTracker.EVENTS.USER_HISTORY_TOGGLED, {
             open: shouldOpenHistory,
-            nbOfTicketsInTimeline: users.getIn(['userHistory', 'tickets']).size,
+            nbOfTicketsInTimeline: users.getIn(['customerHistory', 'tickets']).size,
             channel: ticket.get('channel'),
             nbOfMessagesInTicket: ticket.get('messages').size,
         })
@@ -214,7 +215,7 @@ export default class TicketView extends React.Component {
         } = this.props
         const isCreating = !ticket.get('id')
 
-        const userHistory = users.get('userHistory') || fromJS({})
+        const customerHistory = users.get('customerHistory') || fromJS({})
         const hideHistoryButton = !ticket.get('id')
 
         return (
@@ -240,7 +241,7 @@ export default class TicketView extends React.Component {
                     <Timeline
                         actions={actions.ticket}
                         currentTicketId={ticket.get('id')}
-                        userHistory={userHistory}
+                        customerHistory={customerHistory}
                         className="pb-4"
                     />
                 </div>
@@ -254,7 +255,7 @@ export default class TicketView extends React.Component {
                                 <div className={classnames(css.historyButtonContainer, 'd-none d-md-flex align-items-center')}>
                                     <HistoryButton
                                         isHistoryDisplayed={isHistoryDisplayed}
-                                        userHistory={userHistory}
+                                        customerHistory={customerHistory}
                                         toggleHistory={this._toggleHistory}
                                         ticket={ticket}
                                         usersIsLoading={usersIsLoading}

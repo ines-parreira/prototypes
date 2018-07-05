@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`customers actions create customer 1`] = `
+Array [
+  Object {
+    "type": "SUBMIT_CUSTOMER_START",
+  },
+  Object {
+    "isUpdate": false,
+    "resp": Object {
+      "data": Object {
+        "email": "alex@gorgias.io",
+        "name": "Alex",
+        "role": "agent",
+      },
+    },
+    "type": "SUBMIT_CUSTOMER_SUCCESS",
+  },
+]
+`;
+
+exports[`customers actions delete customer 1`] = `
+Array [
+  Object {
+    "type": "DELETE_CUSTOMER_START",
+  },
+  Object {
+    "customerId": 2,
+    "resp": undefined,
+    "type": "DELETE_CUSTOMER_SUCCESS",
+  },
+]
+`;
+
+exports[`customers actions fetch customer 1`] = `
+Array [
+  Object {
+    "type": "FETCH_CUSTOMER_START",
+  },
+  Object {
+    "resp": Object {
+      "data": Object {
+        "id": 2,
+      },
+    },
+    "type": "FETCH_CUSTOMER_SUCCESS",
+  },
+]
+`;
+
+exports[`customers actions fetch customer history 1`] = `
+Array [
+  Object {
+    "type": "FETCH_CUSTOMER_HISTORY_START",
+  },
+  Object {
+    "resp": Object {
+      "data": Array [
+        Object {
+          "id": 1,
+        },
+      ],
+    },
+    "type": "FETCH_CUSTOMER_HISTORY_SUCCESS",
+  },
+]
+`;
+
+exports[`customers actions fetch customer history 2`] = `
+Array [
+  Object {
+    "type": "FETCH_CUSTOMER_HISTORY_START",
+  },
+]
+`;
+
+exports[`customers actions merge customers 1`] = `
+Array [
+  Object {
+    "type": "MERGE_CUSTOMERS_START",
+  },
+  Object {
+    "resp": Object {
+      "data": Array [
+        Object {
+          "id": 1,
+        },
+      ],
+    },
+    "type": "MERGE_CUSTOMERS_SUCCESS",
+  },
+]
+`;
+
+exports[`customers actions update customer 1`] = `
+Array [
+  Object {
+    "type": "SUBMIT_CUSTOMER_START",
+  },
+  Object {
+    "isUpdate": true,
+    "resp": Object {
+      "data": Object {
+        "email": "alex@gorgias.io",
+        "id": 2,
+        "name": "Alex",
+        "role": "agent",
+      },
+    },
+    "type": "SUBMIT_CUSTOMER_SUCCESS",
+  },
+]
+`;

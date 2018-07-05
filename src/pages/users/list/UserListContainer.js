@@ -6,7 +6,7 @@ import {Button} from 'reactstrap'
 
 import {compactInteger} from '../../../utils'
 import {isCreationUrl, isSearchUrl} from '../../common/utils/url'
-import {getUsers} from '../../../state/users/selectors'
+import {getCustomers} from '../../../state/customers/selectors'
 
 import * as viewsActions from '../../../state/views/actions'
 import * as viewsSelectors from '../../../state/views/selectors'
@@ -124,7 +124,7 @@ const mapStateToProps = (state, ownProps) => {
     return {
         activeView: viewsSelectors.getActiveView(state),
         hasActiveView: viewsSelectors.hasActiveView(state),
-        users: getUsers(state),
+        users: getCustomers(state),
         urlViewId,
         views: state.views,
     }

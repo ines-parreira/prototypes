@@ -1,12 +1,10 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
-import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import * as UsersActions from './../../../../state/users/actions'
-import * as InfobarActions from './../../../../state/infobar/actions'
+import {mergeCustomers} from '../../../../state/customers/actions'
 import MergeUsersModal from './MergeUsersModal'
 
-import {makeIsLoading} from './../../../../state/users/selectors'
+import {makeIsLoading} from '../../../../state/customers/selectors'
 import {getMessages} from './../../../../state/ticket/selectors'
 
 class MergeUsersContainer extends React.Component {
@@ -15,7 +13,7 @@ class MergeUsersContainer extends React.Component {
             destinationUser,
             sourceUser,
             display,
-            actions,
+            mergeCustomers,
             onClose,
             usersIsLoading,
             isTicketContext,
@@ -49,7 +47,7 @@ class MergeUsersContainer extends React.Component {
                 destinationUser={destinationUser}
                 sourceUser={sourceUser}
                 toggleModal={onClose}
-                mergeUsers={actions.users.mergeUsers}
+                mergeCustomers={mergeCustomers}
                 isLoading={usersIsLoading('merge')}
                 requiredAddresses={fromJS(requiredAddresses).toSet().filter((address) => address)}
                 onSuccess={onSuccess}
@@ -68,7 +66,7 @@ MergeUsersContainer.propTypes = {
     destinationUser: PropTypes.object.isRequired,
     sourceUser: PropTypes.object.isRequired,
     display: PropTypes.bool.isRequired,
-    actions: PropTypes.object.isRequired,
+    mergeCustomers: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
     usersIsLoading: PropTypes.func.isRequired,
     onSuccess: PropTypes.func,
@@ -84,13 +82,4 @@ function mapStateToProps(state) {
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: {
-            infobar: bindActionCreators(InfobarActions, dispatch),
-            users: bindActionCreators(UsersActions, dispatch)
-        },
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(MergeUsersContainer)
+export default connect(mapStateToProps, {mergeCustomers})(MergeUsersContainer)

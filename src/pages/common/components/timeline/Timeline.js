@@ -7,13 +7,13 @@ import css from './Timeline.less'
 
 export default class Timeline extends React.Component {
     render() {
-        const {userHistory, revert, displayAll, className} = this.props
+        const {customerHistory, revert, displayAll, className} = this.props
 
-        if (!userHistory.get('hasHistory') && !displayAll) {
+        if (!customerHistory.get('hasHistory') && !displayAll) {
             return null
         }
 
-        let history = userHistory.get('tickets', fromJS([]))
+        let history = customerHistory.get('tickets', fromJS([]))
 
         if (revert) {
             history = history.reverse()
@@ -44,7 +44,7 @@ export default class Timeline extends React.Component {
 }
 
 Timeline.propTypes = {
-    userHistory: PropTypes.object.isRequired,
+    customerHistory: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     currentTicketId: PropTypes.number,
     revert: PropTypes.bool.isRequired,
@@ -53,7 +53,7 @@ Timeline.propTypes = {
 }
 
 Timeline.defaultProps = {
-    userHistory: fromJS({}),
+    customerHistory: fromJS({}),
     actions: {},
     currentTicketId: 0,
     revert: false,

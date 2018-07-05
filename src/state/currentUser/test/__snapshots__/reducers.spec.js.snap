@@ -37,31 +37,6 @@ Object {
 }
 `;
 
-exports[`current user reducers fetch current user 1`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
-      "currentUser": true,
-      "settings": Object {},
-    },
-  },
-  "settings": Array [],
-}
-`;
-
-exports[`current user reducers fetch current user 2`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
-      "currentUser": false,
-    },
-  },
-  "email": "alex@gorgias.io",
-  "id": 1,
-  "name": "Alex",
-}
-`;
-
 exports[`current user reducers submit current user 1`] = `
 Object {
   "_internal": Object {

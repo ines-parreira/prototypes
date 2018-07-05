@@ -1,9 +1,9 @@
 import React, {PropTypes} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import * as WidgetsActions from '../../../state/widgets/actions'
-import * as TicketActions from '../../../state/ticket/actions'
-import * as UserActions from '../../../state/users/actions'
+import * as widgetsActions from '../../../state/widgets/actions'
+import * as ticketActions from '../../../state/ticket/actions'
+import * as customersActions from '../../../state/customers/actions'
 
 import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper'
 import {getSourcesWithCustomer} from '../../../state/widgets/selectors'
@@ -15,13 +15,13 @@ class TicketSourceContainer extends React.Component {
 
         // load customer
         if (location.query.customer) {
-            const userId = parseInt(location.query.customer)
+            const customerId = parseInt(location.query.customer)
             if (
                 params.ticketId === 'new' &&
                 location.query.customer &&
-                sources.getIn(['ticket', 'customer', 'id']) !== userId
+                sources.getIn(['ticket', 'customer', 'id']) !== customerId
             ) {
-                actions.user.fetchUser(userId)
+                actions.customers.fetchCustomer(customerId)
             }
         }
     }
@@ -69,9 +69,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         actions: {
-            ticket: bindActionCreators(TicketActions, dispatch),
-            widgets: bindActionCreators(WidgetsActions, dispatch),
-            user: bindActionCreators(UserActions, dispatch),
+            ticket: bindActionCreators(ticketActions, dispatch),
+            widgets: bindActionCreators(widgetsActions, dispatch),
+            customers: bindActionCreators(customersActions, dispatch),
         }
     }
 }

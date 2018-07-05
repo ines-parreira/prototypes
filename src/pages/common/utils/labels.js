@@ -12,7 +12,7 @@ import Avatar from '../components/Avatar'
 import {formatDatetime, toJS, isImmutable} from '../../../utils'
 import {sourceTypeToIcon} from '../../../config/ticket'
 
-import * as usersHelpers from '../../../state/users/helpers'
+import * as usersHelpers from '../../../state/customers/helpers'
 import {DEFAULT_TAG_COLOR} from '../../../config'
 import SourceIcon from '../components/SourceIcon'
 

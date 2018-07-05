@@ -3,7 +3,7 @@ import {fromJS, Map} from 'immutable'
 import {createSelector} from 'reselect'
 import {itemsWithContext} from './utils'
 
-import {getActiveUser} from '../users/selectors'
+import {getActiveCustomer} from '../customers/selectors'
 
 import type {stateType} from '../types'
 import type {contextType} from './types'
@@ -40,7 +40,7 @@ export const hasWidgetsWithContext = (context: contextType) => createSelector(
 export const getSources = (state: stateType) => {
     return fromJS({
         ticket: state.ticket,
-        user: getActiveUser(state)
+        user: getActiveCustomer(state)
     })
 }
 

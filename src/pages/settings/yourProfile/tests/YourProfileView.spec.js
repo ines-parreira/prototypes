@@ -4,9 +4,7 @@ import {shallow} from 'enzyme'
 import {currentUser} from '../../../../fixtures/users'
 import {fromJS} from 'immutable'
 
-const actions = {
-    submitUser: jest.fn()
-}
+const mockUpdateCurrentUser = jest.fn()
 
 describe('YourProfileView', () => {
     beforeEach(() => {
@@ -17,7 +15,7 @@ describe('YourProfileView', () => {
         it('should render current user profile form', () => {
             const component = shallow(
                 <YourProfileView
-                    actions={actions}
+                    updateCurrentUser={mockUpdateCurrentUser}
                     currentUser={fromJS(currentUser)}
                     submitSetting={jest.fn()}
                     preferences={fromJS({data: {}})}
@@ -32,7 +30,7 @@ describe('YourProfileView', () => {
         it('should submit user data', () => {
             const component = shallow(
                 <YourProfileView
-                    actions={actions}
+                    updateCurrentUser={mockUpdateCurrentUser}
                     currentUser={fromJS(currentUser)}
                     submitSetting={jest.fn()}
                     preferences={fromJS({data: {}})}
@@ -40,7 +38,7 @@ describe('YourProfileView', () => {
             ).instance()
 
             component._handleSubmit({preventDefault: jest.fn()})
-            expect(actions.submitUser.mock).toMatchSnapshot()
+            expect(mockUpdateCurrentUser.mock.calls).toMatchSnapshot()
         })
     })
 
@@ -53,7 +51,7 @@ describe('YourProfileView', () => {
 
             const component = shallow(
                 <YourProfileView
-                    actions={actions}
+                    updateCurrentUser={mockUpdateCurrentUser}
                     currentUser={fromJS(currentUser)}
                     submitSetting={submitSetting}
                     preferences={fromJS({data: {foo: 'bar'}})}
@@ -71,7 +69,7 @@ describe('YourProfileView', () => {
     describe('_getForm', () => {
         it('should return default values because `currentUser` is empty', () => {
             const props = {
-                actions,
+                updateCurrentUser: mockUpdateCurrentUser,
                 currentUser: fromJS({}),
                 submitSetting: jest.fn(),
                 preferences: fromJS({data: {}})
@@ -85,7 +83,7 @@ describe('YourProfileView', () => {
 
         it('should return form values because `currentUser` is not empty', () => {
             const props = {
-                actions,
+                updateCurrentUser: mockUpdateCurrentUser,
                 currentUser: fromJS(currentUser),
                 submitSetting: jest.fn(),
                 preferences: fromJS({data: {}})

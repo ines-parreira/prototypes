@@ -199,15 +199,15 @@ describe('widgets selectors', () => {
     describe('getSources', () => {
         it('should return the sources from the state', () => {
             const ticket = fromJS({foo: 'bar'})
-            const user = fromJS({id: 1, name: 'foo'})
+            const customer = fromJS({id: 1, name: 'foo'})
             const state = {
                 ticket: ticket,
-                users: fromJS({
-                    active: user
+                customers: fromJS({
+                    active: customer
                 })
             }
 
-            expect(getSources(state)).toEqualImmutable(fromJS({ticket, user}))
+            expect(getSources(state)).toEqualImmutable(fromJS({ticket, user: customer}))
         })
     })
 
@@ -228,10 +228,10 @@ describe('widgets selectors', () => {
             expect(getSourcesWithCustomer({ticket})).toEqualImmutable(expectedResult)
         })
 
-        it('should set the user in the ticket customer and return it because there is no ticket', () => {
+        it('should set the customer in the ticket customer and return it because there is no ticket', () => {
             const state = {
                 ticket: {},
-                users: fromJS({
+                customers: fromJS({
                     active: {
                         id: 1,
                         name: 'foo'
@@ -255,13 +255,13 @@ describe('widgets selectors', () => {
             expect(getSourcesWithCustomer(state)).toEqualImmutable(expectedResult)
         })
 
-        it('should set the user in the ticket customer and return it because the ticket has no customer', () => {
+        it('should set the customer in the ticket customer and return it because the ticket has no customer', () => {
             const state = {
                 ticket: fromJS({
                     id: 1,
                     subject: 'foo'
                 }),
-                users: fromJS({
+                customers: fromJS({
                     active: {
                         id: 2,
                         name: 'bar'

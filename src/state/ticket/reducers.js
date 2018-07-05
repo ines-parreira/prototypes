@@ -1,7 +1,7 @@
 import {fromJS} from 'immutable'
 
 import * as types from './constants'
-import * as userTypes from './../users/constants'
+import * as userTypes from '../customers/constants'
 import ticketReplyCache from '../newMessage/ticketReplyCache'
 import * as newMessageTypes from '../newMessage/constants'
 import {getPendingMessageIndex} from './utils'
@@ -266,7 +266,7 @@ export default (state = initialState, action) => {
         case types.DISPLAY_HISTORY_ON_NEXT_PAGE:
             return state.setIn(['_internal', 'shouldDisplayHistoryOnNextPage'], action.state)
 
-        case userTypes.MERGE_USERS_SUCCESS: {
+        case userTypes.MERGE_CUSTOMERS_SUCCESS: {
             if (action.resp && state.getIn(['customer', 'id']) === action.resp.id) {
                 return state.set('customer', fromJS(action.resp))
             }

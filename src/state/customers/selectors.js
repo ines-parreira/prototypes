@@ -4,11 +4,16 @@ import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
 import type {stateType} from '../types'
 
-export const getUsersState = (state: stateType) => state.users || fromJS({})
+export const getCustomersState = (state: stateType) => state.customers || fromJS({})
 
 export const getLoading = createSelector(
-    [getUsersState],
+    [getCustomersState],
     (state: Map<*,*>) => state.getIn(['_internal', 'loading']) || fromJS({})
+)
+
+export const getCustomerHistory = createSelector(
+    [getCustomersState],
+    (state: Map<*,*>) => state.get('customerHistory') || fromJS({})
 )
 
 // in props usage
@@ -22,28 +27,28 @@ export const isLoading = (name: string) => createSelector(
 // ex: isLoading: makeIsLoading(state)   then : const isMerging = isLoading('merge')
 export const makeIsLoading = (state: stateType) => (name: string): boolean => isLoading(name)(state)
 
-export const getUsers = createSelector(
-    [getUsersState],
+export const getCustomers = createSelector(
+    [getCustomersState],
     (state: Map<*,*>) => state.get('items') || fromJS([])
 )
 
-export const getActiveUser = createSelector(
-    [getUsersState],
+export const getActiveCustomer = createSelector(
+    [getCustomersState],
     (state: Map<*,*>) => state.get('active') || fromJS({})
 )
 
-export const getActiveUserId = createSelector(
-    [getActiveUser],
-    (activeUser: Map<*,*>) => activeUser.get('id')
+export const getActiveCustomerId = createSelector(
+    [getActiveCustomer],
+    (activeCustomer: Map<*,*>) => activeCustomer.get('id')
 )
 
-export const getActiveUserIntegrationData = createSelector(
-    [getActiveUser],
-    (activeUser: Map<*,*>) => activeUser.get('integrations') || fromJS([])
+export const getActiveCustomerIntegrationData = createSelector(
+    [getActiveCustomer],
+    (activeCustomer: Map<*,*>) => activeCustomer.get('integrations') || fromJS([])
 )
 
-export const getActiveUserIntegrationDataByIntegrationId = (integrationId: string) => createSelector(
-    [getActiveUserIntegrationData],
+export const getActiveCustomerIntegrationDataByIntegrationId = (integrationId: string) => createSelector(
+    [getActiveCustomerIntegrationData],
     (data: Map<*,*>) => data.get(String(integrationId)) || fromJS({})
 )
 

@@ -1,5 +1,4 @@
 // @flow
-import * as userConstants from '../users/constants'
 import * as constants from './constants'
 import {fromJS} from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
@@ -24,31 +23,23 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
     }
 
     switch (action.type) {
-        case userConstants.FETCH_CURRENT_USER_START:
-        case userConstants.SUBMIT_CURRENT_USER_START:
+        case constants.SUBMIT_CURRENT_USER_START:
         case constants.CHANGE_PASSWORD_START:
             return state.setIn(['_internal', 'loading', 'currentUser'], true)
+
+        case constants.CHANGE_PASSWORD_ERROR:
+        case constants.SUBMIT_CURRENT_USER_ERROR:
+            return state.setIn(['_internal', 'loading', 'currentUser'], false)
+
+        case constants.SUBMIT_CURRENT_USER_SUCCESS:
+        case constants.CHANGE_PASSWORD_SUCCESS:
+            return fromJS(action.resp).setIn(['_internal', 'loading', 'currentUser'], false)
 
         case constants.SUBMIT_SETTING_START:
             return state.setIn(['_internal', 'loading', 'settings', action.settingType], true)
 
-        case userConstants.FETCH_CURRENT_USER_SUCCESS:
-            return fromJS(action.resp).setIn(['_internal', 'loading', 'currentUser'], false)
-
-        case userConstants.SUBMIT_CURRENT_USER_SUCCESS:
-        case constants.CHANGE_PASSWORD_SUCCESS:
-            return fromJS(action.resp).setIn(['_internal', 'loading', 'currentUser'], false)
-
-        case constants.CHANGE_PASSWORD_ERROR:
-            return state.setIn(['_internal', 'loading', 'currentUser'], false)
-
-        case userConstants.SUBMIT_CURRENT_USER_ERROR: {
-            return state.setIn(['_internal', 'loading', 'currentUser'], false)
-        }
-
-        case constants.SUBMIT_SETTING_ERROR: {
+        case constants.SUBMIT_SETTING_ERROR:
             return state.setIn(['_internal', 'loading', 'settings', action.settingType], false)
-        }
 
         case constants.SUBMIT_SETTING_SUCCESS: {
             const newState = state.setIn(['_internal', 'loading', 'settings', action.settingType], false)

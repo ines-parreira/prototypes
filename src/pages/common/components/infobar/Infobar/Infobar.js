@@ -10,7 +10,7 @@ import _noop from 'lodash/noop'
 import {areSourcesReady} from '../utils'
 
 import * as infobarActions from '../../../../../state/infobar/actions'
-import * as usersActions from '../../../../../state/users/actions'
+import * as customersActions from '../../../../../state/customers/actions'
 import * as ticketActions from '../../../../../state/ticket/actions'
 
 import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
@@ -48,7 +48,7 @@ type Props = {
     sources: Map<*, *>,
     user: Map<*, *>,
     widgets: Map<*, *>,
-    fetchUserHistory: typeof usersActions.fetchUserHistory,
+    fetchCustomerHistory: typeof customersActions.fetchCustomerHistory,
     search: typeof infobarActions.search,
     searchSimilarUser: typeof infobarActions.similarUser,
     setCustomer: typeof ticketActions.setCustomer,
@@ -196,7 +196,7 @@ export class Infobar extends React.Component<Props, State> {
         }
     }
 
-    _fetchUserHistory = () => {
+    _fetchCustomerHistory = () => {
         if (this.props.user.isEmpty()) {
             return
         }
@@ -205,7 +205,7 @@ export class Infobar extends React.Component<Props, State> {
 
         // wait 1.5s before fetching user history after merge (merge can take some time and is async)
         setTimeout(() => {
-            this.props.fetchUserHistory(askedUserId, {
+            this.props.fetchCustomerHistory(askedUserId, {
                 successCondition: () => {
                     return this.props.user.get('id').toString() === askedUserId.toString()
                 }
@@ -299,7 +299,7 @@ export class Infobar extends React.Component<Props, State> {
                         destinationUser={user}
                         sourceUser={this.state.selectedUser}
                         onSuccess={() => {
-                            this._fetchUserHistory()
+                            this._fetchCustomerHistory()
                             this._returnToCurrentUserProfile()
                         }}
                         onClose={() => {
@@ -386,7 +386,7 @@ export class Infobar extends React.Component<Props, State> {
                                     display={this.state.showMergeUserModal}
                                     destinationUser={user}
                                     sourceUser={this.state.suggestedUser}
-                                    onSuccess={this._fetchUserHistory}
+                                    onSuccess={this._fetchCustomerHistory}
                                     onClose={() => {
                                         this.setState({showMergeUserModal: false})
                                     }}
@@ -471,7 +471,7 @@ export class Infobar extends React.Component<Props, State> {
 }
 
 export default withRouter(connect(null, {
-    fetchUserHistory: usersActions.fetchUserHistory,
+    fetchCustomerHistory: customersActions.fetchCustomerHistory,
     search: infobarActions.search,
     searchSimilarUser: infobarActions.similarUser,
     setCustomer: ticketActions.setCustomer,

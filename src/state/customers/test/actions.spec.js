@@ -14,30 +14,23 @@ jest.mock('../../notifications/actions', () => {
     }
 })
 
-describe('users actions', () => {
+describe('customers actions', () => {
     let store
     let mockServer
 
     beforeEach(() => {
-        store = mockStore({users: initialState})
+        store = mockStore({customers: initialState})
         mockServer = new MockAdapter(axios)
     })
 
-    it('fetch user', () => {
+    it('fetch customer', () => {
         mockServer.onGet('/api/users/2/').reply(200, {data: {id: 2}})
 
-        return store.dispatch(actions.fetchUser(2))
+        return store.dispatch(actions.fetchCustomer(2))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('fetch current user', () => {
-        mockServer.onGet('/api/users/0/').reply(200, {data: {id: 12}})
-
-        return store.dispatch(actions.fetchUser(0))
-            .then(() => expect(store.getActions()).toMatchSnapshot())
-    })
-
-    it('create user', () => {
+    it('create customer', () => {
         const data = {
             name: 'Alex',
             email: 'alex@gorgias.io',
@@ -46,11 +39,11 @@ describe('users actions', () => {
 
         mockServer.onPost('/api/users/').reply(200, {data})
 
-        return store.dispatch(actions.submitUser(data))
+        return store.dispatch(actions.submitCustomer(data))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('update user', () => {
+    it('update customer', () => {
         const data = {
             id: 2,
             name: 'Alex',
@@ -60,37 +53,37 @@ describe('users actions', () => {
 
         mockServer.onPut('/api/users/2/').reply(200, {data})
 
-        return store.dispatch(actions.submitUser(data, data.id))
+        return store.dispatch(actions.submitCustomer(data, data.id))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('delete user', () => {
+    it('delete customer', () => {
         mockServer.onDelete('/api/users/2/').reply(200)
 
-        return store.dispatch(actions.deleteUser(2))
+        return store.dispatch(actions.deleteCustomer(2))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('fetch user history', () => {
+    it('fetch customer history', () => {
         mockServer.onGet('/api/users/2/tickets/?type=customer').reply(200, {data: [{id: 1}]})
 
-        return store.dispatch(actions.fetchUserHistory(2))
+        return store.dispatch(actions.fetchCustomerHistory(2))
             .then(() => expect(store.getActions()).toMatchSnapshot())
             .then(() => {
                 store.clearActions()
 
                 store
-                    .dispatch(actions.fetchUserHistory(2, {
+                    .dispatch(actions.fetchCustomerHistory(2, {
                         successCondition: () => false,
                     }))
                     .then(() => expect(store.getActions()).toMatchSnapshot())
             })
     })
 
-    it('merge users', () => {
+    it('merge customers', () => {
         mockServer.onPut('/api/users/2/merge/3/').reply(200, {data: [{id: 1}]})
 
-        return store.dispatch(actions.mergeUsers(2, 3))
+        return store.dispatch(actions.mergeCustomers(2, 3))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 })

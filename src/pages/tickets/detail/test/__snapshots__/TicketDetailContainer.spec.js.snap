@@ -10,6 +10,10 @@ exports[`TicketDetailContainer component should render container for new ticket 
     <Connect(TicketView)
       actions={
         Object {
+          "customers": Object {
+            "fetchCustomer": [Function],
+            "fetchCustomers": [Function],
+          },
           "macro": Object {
             "closeModal": [Function],
             "createMacro": [Function],
@@ -47,10 +51,6 @@ exports[`TicketDetailContainer component should render container for new ticket 
             "goToNextTicket": [Function],
             "setCustomer": [Function],
             "setStatus": [Function],
-          },
-          "user": Object {
-            "fetchUser": [Function],
-            "fetchUsers": [Function],
           },
           "views": Object {
             "addFieldFilter": [Function],

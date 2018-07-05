@@ -35,6 +35,37 @@ export const changePassword = (oldPassword: string, newPassword: string) => ((di
         })
 })
 
+export function updateCurrentUser(data: {}) {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
+        dispatch({
+            type: constants.SUBMIT_CURRENT_USER_START
+        })
+
+        return axios.put('/api/users/0/', data)
+            .then((json = {}) => json.data)
+            .then(resp => {
+                dispatch({
+                    type: constants.SUBMIT_CURRENT_USER_SUCCESS,
+                    resp
+                })
+
+                dispatch(notify({
+                    status: 'success',
+                    message: 'User successfully updated'
+                }))
+
+                return resp
+            }, error => {
+                return dispatch({
+                    type: constants.SUBMIT_CURRENT_USER_ERROR,
+                    error,
+                    verbose: true,
+                    reason: 'Failed to update user'
+                })
+            })
+    }
+}
+
 export function submitSetting(data: {id?: string, type: string, data: Object}, notification: boolean) {
     return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType | {}> => {
         const isUpdate = !!data.id

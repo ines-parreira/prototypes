@@ -1,33 +1,33 @@
 import React, {PropTypes} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import * as WidgetsActions from '../../../state/widgets/actions'
-import * as UsersActions from '../../../state/users/actions'
+import * as widgetsActions from '../../../state/widgets/actions'
+import * as customersActions from '../../../state/customers/actions'
 
 import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper'
 
-import {getActiveUserId} from '../../../state/users/selectors'
+import {getActiveCustomerId} from '../../../state/customers/selectors'
 import {getSources} from '../../../state/widgets/selectors'
 
 class UserSourceContainer extends React.Component {
     componentWillMount() {
         const {actions, params} = this.props
-        actions.users.fetchUser(params.userId)
+        actions.customers.fetchCustomer(params.userId)
     }
 
     render() {
         const {
             widgets,
             actions,
-            activeUserId,
+            activeCustomerId,
             sources,
         } = this.props
 
-        if (!activeUserId) {
+        if (!activeCustomerId) {
             return null
         }
 
-        const identifier = activeUserId.toString()
+        const identifier = activeCustomerId.toString()
 
         return (
             <SourceWrapper
@@ -46,13 +46,13 @@ UserSourceContainer.propTypes = {
     widgets: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     sources: PropTypes.object.isRequired,
-    activeUserId: PropTypes.number,
+    activeCustomerId: PropTypes.number,
 }
 
 function mapStateToProps(state) {
     return {
         widgets: state.widgets,
-        activeUserId: getActiveUserId(state),
+        activeCustomerId: getActiveCustomerId(state),
         sources: getSources(state),
     }
 }
@@ -60,8 +60,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         actions: {
-            users: bindActionCreators(UsersActions, dispatch),
-            widgets: bindActionCreators(WidgetsActions, dispatch)
+            customers: bindActionCreators(customersActions, dispatch),
+            widgets: bindActionCreators(widgetsActions, dispatch)
         }
     }
 }

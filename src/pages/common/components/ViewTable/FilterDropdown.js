@@ -14,7 +14,7 @@ import {resolveLiteral, isImmutable, fieldPath, getLanguageDisplayName} from '..
 import {fieldEnumSearch} from '../../../../state/views/actions'
 
 import * as schemasSelectors from '../../../../state/schemas/selectors'
-import * as usersHelpers from '../../../../state/users/helpers'
+import * as usersHelpers from '../../../../state/customers/helpers'
 
 class FilterDropdown extends React.Component {
     state = {

@@ -22,28 +22,20 @@ Object {
 `;
 
 exports[`YourProfileView _handleSubmit should submit user data 1`] = `
-Object {
-  "calls": Array [
-    Array [
-      Object {
-        "bio": "CTO",
-        "email": "alex@gorgias.io",
-        "language": "en",
-        "meta": Object {
-          "profile_picture_url": undefined,
-        },
-        "name": "Alex Plugaru",
-        "timezone": "EST",
-      },
-      0,
-    ],
-  ],
-  "instances": Array [
+Array [
+  Array [
     Object {
-      "submitUser": [Function],
+      "bio": "CTO",
+      "email": "alex@gorgias.io",
+      "language": "en",
+      "meta": Object {
+        "profile_picture_url": undefined,
+      },
+      "name": "Alex Plugaru",
+      "timezone": "EST",
     },
   ],
-}
+]
 `;
 
 exports[`YourProfileView render should render current user profile form 1`] = `

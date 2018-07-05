@@ -7,7 +7,7 @@ import css from './HistoryButton.less'
 
 type Props = {
     isHistoryDisplayed: boolean,
-    userHistory: Map<*, *>,
+    customerHistory: Map<*, *>,
     toggleHistory: () => void,
     usersIsLoading: (T: string) => boolean,
     ticket: Map<*, *>,
@@ -16,20 +16,20 @@ type Props = {
 const HistoryButton = (props: Props) => {
     const {
         isHistoryDisplayed,
-        userHistory,
+        customerHistory,
         toggleHistory,
         usersIsLoading,
         ticket,
     } = props
 
-    const ticketHistory = userHistory.get('tickets') || fromJS([])
+    const ticketHistory = customerHistory.get('tickets') || fromJS([])
     const ticketHistoryCount = ticketHistory.filter((t) => t.get('id') !== ticket.get('id')).size
 
     // $FlowFixMe
-    // const eventHistoryCount = userHistory.get('events', fromJS([])).size
+    // const eventHistoryCount = customerHistory.get('events', fromJS([])).size
     // const itemsCountInHistory = ticketHistoryCount + eventHistoryCount
 
-    const historyTickets = userHistory.get('tickets') || fromJS([])
+    const historyTickets = customerHistory.get('tickets') || fromJS([])
     const historyOpenedTickets = historyTickets
     // remove current ticket from history for the count
         .filter((t) => t.get('id') !== ticket.get('id'))
@@ -38,7 +38,7 @@ const HistoryButton = (props: Props) => {
     const count = historyOpenedTickets.size > 0 ? historyOpenedTickets.size : ticketHistoryCount
 
     const buttonDisabled = !ticket.get('id')
-        || !userHistory.get('hasHistory')
+        || !customerHistory.get('hasHistory')
         || usersIsLoading('history')
 
     return (

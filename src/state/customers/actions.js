@@ -6,43 +6,40 @@ import {notify} from '../notifications/actions'
 
 import type {dispatchType, stateType, getStateType} from '../types'
 
-export function fetchUser(userId: number) {
+export function fetchCustomer(customerId: number) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
-        const isCurrentUser = userId === 0
-
         dispatch({
-            type: isCurrentUser ? types.FETCH_CURRENT_USER_START : types.FETCH_USER_START
+            type: types.FETCH_CUSTOMER_START
         })
 
-        return axios.get(`/api/users/${userId}/`)
+        return axios.get(`/api/users/${customerId}/`)
             .then((json = {}) => json.data)
             .then(resp => {
                 return dispatch({
-                    type: isCurrentUser ? types.FETCH_CURRENT_USER_SUCCESS : types.FETCH_USER_SUCCESS,
+                    type: types.FETCH_CUSTOMER_SUCCESS,
                     resp
                 })
             }, error => {
                 return dispatch({
-                    type: isCurrentUser ? types.FETCH_CURRENT_USER_ERROR : types.FETCH_USER_ERROR,
+                    type: types.FETCH_CUSTOMER_ERROR,
                     error,
-                    reason: 'Failed to fetch user'
+                    reason: 'Failed to fetch customer'
                 })
             })
     }
 }
 
-export function submitUser(data: {}, userId: number) {
+export function submitCustomer(data: {}, customerId: number) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
-        const isCurrentUser = userId === 0
-        const isUpdate = !_isUndefined(userId)
+        const isUpdate = !_isUndefined(customerId)
         let promise
 
         dispatch({
-            type: isCurrentUser ? types.SUBMIT_CURRENT_USER_START : types.SUBMIT_USER_START
+            type: types.SUBMIT_CUSTOMER_START
         })
 
         if (isUpdate) {
-            promise = axios.put(`/api/users/${userId}/`, data)
+            promise = axios.put(`/api/users/${customerId}/`, data)
         } else {
             promise = axios.post('/api/users/', data)
         }
@@ -51,65 +48,64 @@ export function submitUser(data: {}, userId: number) {
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
-                    type: isCurrentUser ? types.SUBMIT_CURRENT_USER_SUCCESS : types.SUBMIT_USER_SUCCESS,
+                    type: types.SUBMIT_CUSTOMER_SUCCESS,
                     isUpdate,
                     resp
                 })
 
                 dispatch(notify({
                     status: 'success',
-                    message: `User successfully ${isUpdate ? 'updated' : 'created'}`
+                    message: `Customer successfully ${isUpdate ? 'updated' : 'created'}`
                 }))
 
                 return resp
             }, error => {
                 return dispatch({
-                    type: isCurrentUser ? types.SUBMIT_CURRENT_USER_ERROR : types.SUBMIT_USER_ERROR,
+                    type: types.SUBMIT_CUSTOMER_ERROR,
                     error,
                     verbose: true,
-                    reason: `Failed to ${isUpdate ? 'update' : 'create'} user`
+                    reason: `Failed to ${isUpdate ? 'update' : 'create'} customer`
                 })
             })
     }
 }
 
-export function deleteUser(userId: number) {
+export function deleteCustomer(customerId: number) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
-            type: types.DELETE_USER_START
+            type: types.DELETE_CUSTOMER_START
         })
 
-        return axios.delete(`/api/users/${userId}/`)
+        return axios.delete(`/api/users/${customerId}/`)
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
-                    type: types.DELETE_USER_SUCCESS,
-                    userId,
+                    type: types.DELETE_CUSTOMER_SUCCESS,
+                    customerId,
                     resp
                 })
 
                 dispatch(notify({
                     status: 'success',
-                    message: 'User successfully deleted'
+                    message: 'Customer successfully deleted'
                 }))
             }, error => {
                 return dispatch({
-                    type: types.DELETE_USER_ERROR,
+                    type: types.DELETE_CUSTOMER_ERROR,
                     error,
-                    reason: 'Failed to update the user'
+                    reason: 'Failed to update the customer'
                 })
             })
     }
 }
 
-export function fetchUserHistory(userId: number, options: {successCondition?: (T: stateType) => boolean} = {}) {
+export function fetchCustomerHistory(customerId: number, options: {successCondition?: (T: stateType) => boolean} = {}) {
     return (dispatch: dispatchType, getState: getStateType) => {
         dispatch({
-            type: types.FETCH_USER_HISTORY_START,
-            userId,
+            type: types.FETCH_CUSTOMER_HISTORY_START
         })
 
-        return axios.get(`/api/users/${userId}/tickets/?type=customer`)
+        return axios.get(`/api/users/${customerId}/tickets/?type=customer`)
             .then((json = {}) => json.data)
             .then(resp => {
                 const state = getState()
@@ -121,8 +117,7 @@ export function fetchUserHistory(userId: number, options: {successCondition?: (T
 
                 if (shouldTriggerSuccess) {
                     dispatch({
-                        type: types.FETCH_USER_HISTORY_SUCCESS,
-                        userId,
+                        type: types.FETCH_CUSTOMER_HISTORY_SUCCESS,
                         resp
                     })
                 }
@@ -130,43 +125,43 @@ export function fetchUserHistory(userId: number, options: {successCondition?: (T
                 return Promise.resolve(resp)
             }, error => {
                 return dispatch({
-                    type: types.FETCH_USER_HISTORY_ERROR,
+                    type: types.FETCH_CUSTOMER_HISTORY_ERROR,
                     error,
-                    reason: 'Couldn\'t fetch user\'s tickets. Please try again in a few minutes.'
+                    reason: 'Couldn\'t fetch customer\'s tickets. Please try again in a few minutes.'
                 })
             })
     }
 }
 
-export function mergeUsers(baseUserId: number, mergeUserId: number, data: {}) {
+export function mergeCustomers(baseCustomerId: number, mergeCustomerId: number, data: {}) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
-            type: types.MERGE_USERS_START
+            type: types.MERGE_CUSTOMERS_START
         })
 
-        return axios.put(`/api/users/${baseUserId}/merge/${mergeUserId}/`, data)
+        return axios.put(`/api/users/${baseCustomerId}/merge/${mergeCustomerId}/`, data)
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
-                    type: types.MERGE_USERS_SUCCESS,
+                    type: types.MERGE_CUSTOMERS_SUCCESS,
                     resp
                 })
 
                 dispatch(notify({
                     status: 'success',
-                    message: 'Users successfully merged.'
+                    message: 'Customers successfully merged.'
                 }))
 
                 return Promise.resolve(resp)
             }, error => {
                 return dispatch({
-                    type: types.MERGE_USERS_ERROR,
+                    type: types.MERGE_CUSTOMERS_ERROR,
                     error,
                     verbose: true,
-                    reason: 'Couldn\'t merge users. Please try again in a few minutes.'
+                    reason: 'Couldn\'t merge customers. Please try again in a few minutes.'
                 })
             })
     }
 }
 
-export const clearUser = () => ({type: types.CLEAR_USER})
+export const clearCustomer = () => ({type: types.CLEAR_CUSTOMER})

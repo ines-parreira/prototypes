@@ -10,7 +10,7 @@ import type {actionType} from '../types'
 export const initialState = fromJS({
     active: {},
     items: [],
-    userHistory: {
+    customerHistory: {
         triedLoading: false,
         hasHistory: false,
         tickets: [],
@@ -20,7 +20,6 @@ export const initialState = fromJS({
         loading: {
             history: false,
             active: false,
-            submitUser: false,
             merge: false
         }
     }
@@ -40,89 +39,81 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
             return state.set('items', fromJS(payload.data))
         }
 
-        case constants.FETCH_USER_START: {
+        case constants.FETCH_CUSTOMER_START: {
             return state
                 .set('active', fromJS({}))
                 .setIn(['_internal', 'loading', 'active'], true)
         }
 
-        case constants.FETCH_USER_SUCCESS: {
+        case constants.FETCH_CUSTOMER_SUCCESS: {
             return state
                 .set('active', fromJS(action.resp))
                 .setIn(['_internal', 'loading', 'active'], false)
         }
 
-        case constants.FETCH_USER_ERROR: {
+        case constants.FETCH_CUSTOMER_ERROR: {
             return state.setIn(['_internal', 'loading', 'active'], false)
         }
 
-        case constants.SUBMIT_USER_START: {
-            return state.setIn(['_internal', 'loading', 'submitUser'], true)
-        }
-
-        case constants.SUBMIT_USER_SUCCESS: {
+        case constants.SUBMIT_CUSTOMER_SUCCESS: {
             let newState = state
-            const responseUser = fromJS(action.resp)
+            const customer = fromJS(action.resp)
 
             if (action.isUpdate) {
-                const userId = responseUser.get('id')
+                const customerId = customer.get('id')
 
-                // if updated user is in current items list, update it
+                // if updated customer is in current items list, update it
                 newState = newState.set('items',
-                    items.set(items.findIndex(item => item.get('id') === userId), responseUser)
+                    items.set(items.findIndex(item => item.get('id') === customerId), customer)
                 )
 
-                // if updated user is the active one, update the active one
-                if (userId === state.getIn(['active', 'id'])) {
-                    newState = newState.set('active', responseUser)
+                // if updated customer is the active one, update the active one
+                if (customerId === state.getIn(['active', 'id'])) {
+                    newState = newState.set('active', customer)
                 }
-            }
-
-            return newState.setIn(['_internal', 'loading', 'submitUser'], false)
-        }
-
-        case constants.SUBMIT_USER_ERROR: {
-            return state.setIn(['_internal', 'loading', 'submitUser'], false)
-        }
-
-        case constants.DELETE_USER_SUCCESS: {
-            return state
-                .merge({
-                    items: state.get('items').filter(item => item.get('id') !== action.userId),
-                })
-        }
-
-        case constants.FETCH_USER_HISTORY_START: {
-            return state
-                .setIn(['userHistory', 'triedLoading'], true)
-                .setIn(['_internal', 'loading', 'history'], true)
-        }
-
-        case constants.FETCH_USER_HISTORY_SUCCESS: {
-            const hasHistory = action.resp.meta.item_count > 1
-
-            return state
-                .setIn(['userHistory', 'tickets'], fromJS(action.resp.data))
-                .setIn(['_internal', 'loading', 'history'], false)
-                .setIn(['userHistory', 'hasHistory'], hasHistory)
-        }
-
-        case ticketConstants.CLEAR_TICKET:
-        case constants.FETCH_USER_HISTORY_ERROR: {
-            let newState = state
-                .setIn(['_internal', 'loading', 'history'], false)
-                .setIn(['userHistory', 'triedLoading'], false)
-
-            if (!action.shouldDisplayHistoryOnNextPage) {
-                newState = newState
-                    .setIn(['userHistory', 'tickets'], fromJS({}))
-                    .setIn(['userHistory', 'hasHistory'], false)
             }
 
             return newState
         }
 
-        case constants.CLEAR_USER: {
+        case constants.DELETE_CUSTOMER_SUCCESS: {
+            return state
+                .merge({
+                    items: state.get('items').filter(item => item.get('id') !== action.customerId),
+                })
+        }
+
+        case constants.FETCH_CUSTOMER_HISTORY_START: {
+            return state
+                .setIn(['customerHistory', 'triedLoading'], true)
+                .setIn(['_internal', 'loading', 'history'], true)
+        }
+
+        case constants.FETCH_CUSTOMER_HISTORY_SUCCESS: {
+            const hasHistory = action.resp.meta.item_count > 1
+
+            return state
+                .setIn(['customerHistory', 'tickets'], fromJS(action.resp.data))
+                .setIn(['_internal', 'loading', 'history'], false)
+                .setIn(['customerHistory', 'hasHistory'], hasHistory)
+        }
+
+        case ticketConstants.CLEAR_TICKET:
+        case constants.FETCH_CUSTOMER_HISTORY_ERROR: {
+            let newState = state
+                .setIn(['_internal', 'loading', 'history'], false)
+                .setIn(['customerHistory', 'triedLoading'], false)
+
+            if (!action.shouldDisplayHistoryOnNextPage) {
+                newState = newState
+                    .setIn(['customerHistory', 'tickets'], fromJS({}))
+                    .setIn(['customerHistory', 'hasHistory'], false)
+            }
+
+            return newState
+        }
+
+        case constants.CLEAR_CUSTOMER: {
             return state.set('active', fromJS({}))
         }
 
@@ -138,12 +129,12 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
             return state.set('items', newItems)
         }
 
-        case constants.MERGE_USERS_START: {
+        case constants.MERGE_CUSTOMERS_START: {
             return state.setIn(['_internal', 'loading', 'merge'], true)
         }
 
-        case constants.MERGE_USERS_ERROR:
-        case constants.MERGE_USERS_SUCCESS: {
+        case constants.MERGE_CUSTOMERS_ERROR:
+        case constants.MERGE_CUSTOMERS_SUCCESS: {
             let newState = state.setIn(['_internal', 'loading', 'merge'], false)
 
             if (action.resp && state.getIn(['active', 'id']) === action.resp.id) {

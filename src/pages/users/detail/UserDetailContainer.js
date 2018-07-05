@@ -5,15 +5,15 @@ import {fromJS} from 'immutable'
 import {Button} from 'reactstrap'
 import {Link} from 'react-router'
 
-import * as UsersActions from '../../../state/users/actions'
+import * as customersActions from '../../../state/customers/actions'
 
 import Loader from '../../common/components/Loader'
 import UserForm from '../common/components/UserForm'
 import Timeline from '../../common/components/timeline/Timeline'
 import Modal from '../../common/components/Modal'
 
-import {getActiveUser, makeIsLoading} from '../../../state/users/selectors'
-import * as usersHelpers from '../../../state/users/helpers'
+import {getCustomerHistory, getActiveCustomer, makeIsLoading} from '../../../state/customers/selectors'
+import * as usersHelpers from '../../../state/customers/helpers'
 
 class UserDetailContainer extends React.Component {
     constructor(props) {
@@ -26,50 +26,50 @@ class UserDetailContainer extends React.Component {
 
     componentWillMount() {
         const {params} = this.props
-        this._fetchUser(params.userId)
+        this._fetchCustomer(params.userId)
     }
 
     componentWillReceiveProps(nextProps) {
         const {params, actions} = this.props
 
         if (nextProps.params.userId !== params.userId) {
-            actions.clearUser()
-            this._fetchUser(nextProps.params.userId)
+            actions.clearCustomer()
+            this._fetchCustomer(nextProps.params.userId)
         }
     }
 
     componentWillUnmount() {
-        this.props.actions.clearUser()
+        this.props.actions.clearCustomer()
     }
 
-    _fetchUser = (id) => {
+    _fetchCustomer = (id) => {
         const {actions} = this.props
 
-        actions.fetchUser(id).then(() => actions.fetchUserHistory(id, {
+        actions.fetchCustomer(id).then(() => actions.fetchCustomerHistory(id, {
             successCondition(state) {
                 // its OK to be based on active user since the history is fetched when the user is already fetched
-                return getActiveUser(state).get('id', '').toString() === id.toString()
+                return getActiveCustomer(state).get('id', '').toString() === id.toString()
             }
         }))
     }
 
     _renderTimeline = () => {
-        const {users, usersIsLoading} = this.props
+        const {customerHistory, usersIsLoading} = this.props
 
         if (usersIsLoading('history')) {
             return <Loader message="Loading history..." />
         }
 
-        const historyLength = users.getIn(['userHistory', 'tickets'], fromJS([])).size
+        const historyLength = customerHistory.get('tickets', fromJS([])).size
 
-        if (users.getIn(['userHistory', 'triedLoading'], true) && !historyLength) {
+        if (customerHistory.get('triedLoading', true) && !historyLength) {
             return <p>The user has no activity recorded</p>
         }
 
         return (
             <div className="mt-4 mb-4">
                 <Timeline
-                    userHistory={this.props.users.get('userHistory')}
+                    customerHistory={customerHistory}
                     revert
                     displayAll
                 />
@@ -141,7 +141,7 @@ UserDetailContainer.propTypes = {
     }).isRequired,
 
     activeUser: PropTypes.object.isRequired,
-    users: PropTypes.object.isRequired,
+    customerHistory: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
 
     actions: PropTypes.object.isRequired,
@@ -150,8 +150,8 @@ UserDetailContainer.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        activeUser: getActiveUser(state),
-        users: state.users,
+        activeUser: getActiveCustomer(state),
+        customerHistory: getCustomerHistory(state),
         currentUser: state.currentUser,
         usersIsLoading: makeIsLoading(state),
     }
@@ -159,7 +159,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(UsersActions, dispatch)
+        actions: bindActionCreators(customersActions, dispatch)
     }
 }
 

@@ -11,7 +11,7 @@ import _clone from 'lodash/clone'
 import _isError from 'lodash/isError'
 import {Form, Button} from 'reactstrap'
 
-import {submitUser} from '../../../../state/users/actions'
+import {submitCustomer} from '../../../../state/customers/actions'
 import UserChannelFieldArray from './UserChannelFieldArray'
 import InputField from '../../../common/forms/InputField'
 
@@ -265,7 +265,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onSubmit: bindActionCreators(submitUser, dispatch),
+        onSubmit: bindActionCreators(submitCustomer, dispatch),
     }
 }
 

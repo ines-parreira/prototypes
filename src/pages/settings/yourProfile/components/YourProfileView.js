@@ -71,7 +71,7 @@ class YourProfileView extends React.Component {
             }
         )
 
-        return this.props.actions.submitUser(normalizedValues, 0)
+        return this.props.updateCurrentUser(normalizedValues)
     }
 
     _savePreferences = (e) => {
@@ -248,7 +248,7 @@ class YourProfileView extends React.Component {
 }
 
 YourProfileView.propTypes = {
-    actions: PropTypes.object.isRequired,
+    updateCurrentUser: PropTypes.func.isRequired,
     currentUser: PropTypes.object.isRequired,
     submitSetting: PropTypes.func.isRequired,
     preferences: PropTypes.object.isRequired,

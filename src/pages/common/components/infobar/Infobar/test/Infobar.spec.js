@@ -37,7 +37,7 @@ const commonProps = {
             isEditing: false
         }
     }),
-    fetchUserHistory: jest.fn(() => Promise.resolve()),
+    fetchCustomerHistory: jest.fn(() => Promise.resolve()),
     search: jest.fn(() => Promise.resolve({resp: {data: []}})),
     searchSimilarUser: jest.fn(() => Promise.resolve({user: {id: 4}})),
     setCustomer: jest.fn(() => Promise.resolve()),

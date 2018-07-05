@@ -2,7 +2,6 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
 import reducer, {initialState} from '../reducers'
-import * as userTypes from '../../users/constants'
 import * as types from '../constants'
 
 jest.addMatchers(immutableMatchers)
@@ -16,40 +15,13 @@ describe('current user reducers', () => {
         expect(reducer(undefined, {})).toEqualImmutable(initialState)
     })
 
-    it('fetch current user', () => {
-        // start
-        expect(
-            reducer(
-                initialState,
-                {
-                    type: userTypes.FETCH_CURRENT_USER_START,
-                }
-            ).toJS()
-        ).toMatchSnapshot()
-
-        // success
-        expect(
-            reducer(
-                initialState,
-                {
-                    type: userTypes.FETCH_CURRENT_USER_SUCCESS,
-                    resp: {
-                        id: 1,
-                        name: 'Alex',
-                        email: 'alex@gorgias.io',
-                    },
-                }
-            ).toJS()
-        ).toMatchSnapshot()
-    })
-
     it('submit current user', () => {
         // start
         expect(
             reducer(
                 initialState,
                 {
-                    type: userTypes.SUBMIT_CURRENT_USER_START,
+                    type: types.SUBMIT_CURRENT_USER_START,
                 }
             ).toJS()
         ).toMatchSnapshot()
@@ -59,7 +31,7 @@ describe('current user reducers', () => {
             reducer(
                 initialState,
                 {
-                    type: userTypes.SUBMIT_CURRENT_USER_SUCCESS,
+                    type: types.SUBMIT_CURRENT_USER_SUCCESS,
                     resp: {
                         id: 1,
                         name: 'Alex',
@@ -74,7 +46,7 @@ describe('current user reducers', () => {
             reducer(
                 initialState,
                 {
-                    type: userTypes.SUBMIT_CURRENT_USER_ERROR,
+                    type: types.SUBMIT_CURRENT_USER_ERROR,
                 }
             ).toJS()
         ).toMatchSnapshot()

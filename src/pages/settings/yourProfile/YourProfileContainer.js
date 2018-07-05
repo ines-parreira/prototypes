@@ -4,8 +4,7 @@ import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import {pick as _pick} from 'lodash'
 
-import * as UserActions from '../../../state/users/actions'
-import {submitSetting} from '../../../state/currentUser/actions'
+import {submitSetting, updateCurrentUser} from '../../../state/currentUser/actions'
 import YourProfileView from './components/YourProfileView'
 
 import {getPreferences} from '../../../state/currentUser/selectors'
@@ -33,7 +32,7 @@ class YourProfileContainer extends React.Component {
             <YourProfileView
                 currentUser={prunedCurrentUser}
                 isLoading={currentUser.getIn(['_internal', 'loading', 'currentUser'])}
-                actions={this.props.actions}
+                updateCurrentUser={this.props.updateCurrentUser}
                 submitSetting={this.props.submitSetting}
                 preferences={this.props.preferences}
             />
@@ -43,7 +42,7 @@ class YourProfileContainer extends React.Component {
 
 YourProfileContainer.propTypes = {
     currentUser: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
+    updateCurrentUser: PropTypes.func.isRequired,
     submitSetting: PropTypes.func.isRequired,
     preferences: PropTypes.object.isRequired
 }
@@ -57,8 +56,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(UserActions, dispatch),
-        submitSetting: bindActionCreators(submitSetting, dispatch)
+        updateCurrentUser: bindActionCreators(updateCurrentUser, dispatch),
+        submitSetting: bindActionCreators(submitSetting, dispatch),
     }
 }
 

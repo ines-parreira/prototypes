@@ -6,7 +6,7 @@ import Infobar from '../../common/components/infobar/Infobar'
 import * as WidgetActions from '../../../state/widgets/actions'
 import * as InfobarActions from '../../../state/infobar/actions'
 
-import {getActiveUser, getActiveUserId} from '../../../state/users/selectors'
+import {getActiveCustomer, getActiveCustomerId} from '../../../state/customers/selectors'
 import {getSources} from '../../../state/widgets/selectors'
 
 class UserInfobarContainer extends React.Component {
@@ -23,16 +23,16 @@ class UserInfobarContainer extends React.Component {
             widgets,
             route,
             infobar,
-            activeUser,
+            activeCustomer,
             sources,
-            activeUserId,
+            activeCustomerId,
         } = this.props
 
-        if (!activeUserId) {
+        if (!activeCustomerId) {
             return null
         }
 
-        const identifier = activeUserId.toString()
+        const identifier = activeCustomerId.toString()
 
         return (
             <Infobar
@@ -41,7 +41,7 @@ class UserInfobarContainer extends React.Component {
                 sources={sources}
                 isRouteEditingWidgets={!!route.isEditingWidgets}
                 identifier={identifier}
-                user={activeUser}
+                user={activeCustomer}
                 widgets={widgets}
                 context="user"
             />
@@ -53,18 +53,18 @@ UserInfobarContainer.propTypes = {
     actions: PropTypes.object.isRequired,
     infobar: PropTypes.object.isRequired,
     route: PropTypes.object.isRequired,
-    activeUser: PropTypes.object.isRequired,
+    activeCustomer: PropTypes.object.isRequired,
     widgets: PropTypes.object.isRequired,
     sources: PropTypes.object.isRequired,
-    activeUserId: PropTypes.number,
+    activeCustomerId: PropTypes.number,
 }
 
 function mapStateToProps(state) {
     return {
         infobar: state.infobar,
         widgets: state.widgets,
-        activeUser: getActiveUser(state),
-        activeUserId: getActiveUserId(state),
+        activeCustomer: getActiveCustomer(state),
+        activeCustomerId: getActiveCustomerId(state),
         sources: getSources(state),
     }
 }

@@ -160,7 +160,7 @@ class BeforeContent extends React.Component { // eslint-disable-line
 //             // So we get both data from the ticket.customer and the active user, and if any match
 //             // the subscription's customer_id, then it means it's the correct data.
 //             const ticketData = ticketSelectors.getIntegrationDataByIntegrationId(integrationId)(state)
-//             const userData = userSelectors.getActiveUserIntegrationDataByIntegrationId(integrationId)(state)
+//             const userData = userSelectors.getActiveCustomerIntegrationDataByIntegrationId(integrationId)(state)
 //
 //             if (ticketData.getIn(['customer', 'id']) === customerId) {
 //                 return ticketData

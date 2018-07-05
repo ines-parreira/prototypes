@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`users reducers bulk delete 1`] = `
+exports[`customers reducers bulk delete 1`] = `
 Immutable.Map {
   active: Immutable.Map {
   },
@@ -10,7 +10,7 @@ Immutable.Map {
       name: "Julien",
     },
   ],
-  userHistory: Immutable.Map {
+  customerHistory: Immutable.Map {
     triedLoading: false,
     hasHistory: false,
     tickets: Immutable.List [
@@ -22,56 +22,53 @@ Immutable.Map {
     loading: Immutable.Map {
       history: false,
       active: false,
-      submitUser: false,
       merge: false,
     },
   },
 }
 `;
 
-exports[`users reducers clear ticket 1`] = `
+exports[`customers reducers clear customer 1`] = `
 Object {
   "_internal": Object {
     "loading": Object {
       "active": false,
       "history": false,
       "merge": false,
-      "submitUser": false,
     },
   },
   "active": Object {},
-  "items": Array [],
-  "userHistory": Object {
-    "events": Array [],
-    "hasHistory": false,
-    "tickets": Object {},
-    "triedLoading": false,
-  },
-}
-`;
-
-exports[`users reducers clear user 1`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
-      "active": false,
-      "history": false,
-      "merge": false,
-      "submitUser": false,
-    },
-  },
-  "active": Object {},
-  "items": Array [],
-  "userHistory": Object {
+  "customerHistory": Object {
     "events": Array [],
     "hasHistory": false,
     "tickets": Array [],
     "triedLoading": false,
   },
+  "items": Array [],
 }
 `;
 
-exports[`users reducers delete user 1`] = `
+exports[`customers reducers clear ticket 1`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "active": false,
+      "history": false,
+      "merge": false,
+    },
+  },
+  "active": Object {},
+  "customerHistory": Object {
+    "events": Array [],
+    "hasHistory": false,
+    "tickets": Object {},
+    "triedLoading": false,
+  },
+  "items": Array [],
+}
+`;
+
+exports[`customers reducers delete customer 1`] = `
 Immutable.Map {
   active: Immutable.Map {
   },
@@ -80,7 +77,7 @@ Immutable.Map {
       id: 1,
     },
   ],
-  userHistory: Immutable.Map {
+  customerHistory: Immutable.Map {
     triedLoading: false,
     hasHistory: false,
     tickets: Immutable.List [
@@ -92,168 +89,105 @@ Immutable.Map {
     loading: Immutable.Map {
       history: false,
       active: false,
-      submitUser: false,
       merge: false,
     },
   },
 }
 `;
 
-exports[`users reducers fetch list 1`] = `
-Immutable.Map {
-  active: Immutable.Map {
-  },
-  items: Immutable.List [
-    Immutable.Map {
-      name: "Alex",
-    },
-    Immutable.Map {
-      name: "Romain",
-    },
-  ],
-  userHistory: Immutable.Map {
-    triedLoading: false,
-    hasHistory: false,
-    tickets: Immutable.List [
-    ],
-    events: Immutable.List [
-    ],
-  },
-  _internal: Immutable.Map {
-    loading: Immutable.Map {
-      history: false,
-      active: false,
-      submitUser: false,
-      merge: false,
-    },
-  },
-}
-`;
-
-exports[`users reducers fetch list 2`] = `
-Immutable.Map {
-  active: Immutable.Map {
-  },
-  items: Immutable.List [
-  ],
-  userHistory: Immutable.Map {
-    triedLoading: false,
-    hasHistory: false,
-    tickets: Immutable.List [
-    ],
-    events: Immutable.List [
-    ],
-  },
-  _internal: Immutable.Map {
-    loading: Immutable.Map {
-      history: false,
-      active: false,
-      submitUser: false,
-      merge: false,
-    },
-  },
-}
-`;
-
-exports[`users reducers fetch user 1`] = `
+exports[`customers reducers fetch customer 1`] = `
 Object {
   "_internal": Object {
     "loading": Object {
       "active": true,
       "history": false,
       "merge": false,
-      "submitUser": false,
     },
   },
   "active": Object {},
-  "items": Array [],
-  "userHistory": Object {
+  "customerHistory": Object {
     "events": Array [],
     "hasHistory": false,
     "tickets": Array [],
     "triedLoading": false,
   },
+  "items": Array [],
 }
 `;
 
-exports[`users reducers fetch user 2`] = `
+exports[`customers reducers fetch customer 2`] = `
 Object {
   "_internal": Object {
     "loading": Object {
       "active": false,
       "history": false,
       "merge": false,
-      "submitUser": false,
     },
   },
   "active": Object {
     "id": 1,
   },
-  "items": Array [],
-  "userHistory": Object {
+  "customerHistory": Object {
     "events": Array [],
     "hasHistory": false,
     "tickets": Array [],
     "triedLoading": false,
   },
+  "items": Array [],
 }
 `;
 
-exports[`users reducers fetch user 3`] = `
+exports[`customers reducers fetch customer 3`] = `
 Object {
   "_internal": Object {
     "loading": Object {
       "active": false,
       "history": false,
       "merge": false,
-      "submitUser": false,
     },
   },
   "active": Object {},
-  "items": Array [],
-  "userHistory": Object {
+  "customerHistory": Object {
     "events": Array [],
     "hasHistory": false,
     "tickets": Array [],
     "triedLoading": false,
   },
+  "items": Array [],
 }
 `;
 
-exports[`users reducers fetch user history 1`] = `
+exports[`customers reducers fetch customer history 1`] = `
 Object {
   "_internal": Object {
     "loading": Object {
       "active": false,
       "history": true,
       "merge": false,
-      "submitUser": false,
     },
   },
   "active": Object {},
-  "items": Array [],
-  "userHistory": Object {
+  "customerHistory": Object {
     "events": Array [],
     "hasHistory": false,
     "tickets": Array [],
     "triedLoading": true,
   },
+  "items": Array [],
 }
 `;
 
-exports[`users reducers fetch user history 2`] = `
+exports[`customers reducers fetch customer history 2`] = `
 Object {
   "_internal": Object {
     "loading": Object {
       "active": false,
       "history": false,
       "merge": false,
-      "submitUser": false,
     },
   },
   "active": Object {},
-  "items": Array [],
-  "userHistory": Object {
+  "customerHistory": Object {
     "events": Array [],
     "hasHistory": true,
     "tickets": Array [
@@ -266,22 +200,21 @@ Object {
     ],
     "triedLoading": false,
   },
+  "items": Array [],
 }
 `;
 
-exports[`users reducers fetch user history 3`] = `
+exports[`customers reducers fetch customer history 3`] = `
 Object {
   "_internal": Object {
     "loading": Object {
       "active": false,
       "history": false,
       "merge": false,
-      "submitUser": false,
     },
   },
   "active": Object {},
-  "items": Array [],
-  "userHistory": Object {
+  "customerHistory": Object {
     "events": Array [],
     "hasHistory": false,
     "tickets": Array [
@@ -291,162 +224,188 @@ Object {
     ],
     "triedLoading": false,
   },
+  "items": Array [],
 }
 `;
 
-exports[`users reducers fetch user history 4`] = `
+exports[`customers reducers fetch customer history 4`] = `
 Object {
   "_internal": Object {
     "loading": Object {
       "active": false,
       "history": false,
       "merge": false,
-      "submitUser": false,
     },
   },
   "active": Object {},
-  "items": Array [],
-  "userHistory": Object {
+  "customerHistory": Object {
     "events": Array [],
     "hasHistory": false,
     "tickets": Object {},
     "triedLoading": false,
   },
+  "items": Array [],
 }
 `;
 
-exports[`users reducers merge users 1`] = `
+exports[`customers reducers fetch list 1`] = `
+Immutable.Map {
+  active: Immutable.Map {
+  },
+  items: Immutable.List [
+    Immutable.Map {
+      name: "Alex",
+    },
+    Immutable.Map {
+      name: "Romain",
+    },
+  ],
+  customerHistory: Immutable.Map {
+    triedLoading: false,
+    hasHistory: false,
+    tickets: Immutable.List [
+    ],
+    events: Immutable.List [
+    ],
+  },
+  _internal: Immutable.Map {
+    loading: Immutable.Map {
+      history: false,
+      active: false,
+      merge: false,
+    },
+  },
+}
+`;
+
+exports[`customers reducers fetch list 2`] = `
+Immutable.Map {
+  active: Immutable.Map {
+  },
+  items: Immutable.List [
+  ],
+  customerHistory: Immutable.Map {
+    triedLoading: false,
+    hasHistory: false,
+    tickets: Immutable.List [
+    ],
+    events: Immutable.List [
+    ],
+  },
+  _internal: Immutable.Map {
+    loading: Immutable.Map {
+      history: false,
+      active: false,
+      merge: false,
+    },
+  },
+}
+`;
+
+exports[`customers reducers merge customers 1`] = `
 Object {
   "_internal": Object {
     "loading": Object {
       "active": false,
       "history": false,
       "merge": true,
-      "submitUser": false,
     },
   },
   "active": Object {},
-  "items": Array [],
-  "userHistory": Object {
+  "customerHistory": Object {
     "events": Array [],
     "hasHistory": false,
     "tickets": Array [],
     "triedLoading": false,
   },
+  "items": Array [],
 }
 `;
 
-exports[`users reducers merge users 2`] = `
+exports[`customers reducers merge customers 2`] = `
 Object {
   "_internal": Object {
     "loading": Object {
       "active": false,
       "history": false,
       "merge": false,
-      "submitUser": false,
     },
   },
   "active": Object {
     "id": 1,
     "name": "Alex",
   },
-  "items": Array [],
-  "userHistory": Object {
+  "customerHistory": Object {
     "events": Array [],
     "hasHistory": false,
     "tickets": Array [],
     "triedLoading": false,
   },
+  "items": Array [],
 }
 `;
 
-exports[`users reducers merge users 3`] = `
+exports[`customers reducers merge customers 3`] = `
 Object {
   "_internal": Object {
     "loading": Object {
       "active": false,
       "history": false,
       "merge": false,
-      "submitUser": false,
     },
   },
   "active": Object {
     "id": 1,
     "name": "Romain",
   },
-  "items": Array [],
-  "userHistory": Object {
+  "customerHistory": Object {
     "events": Array [],
     "hasHistory": false,
     "tickets": Array [],
     "triedLoading": false,
   },
+  "items": Array [],
 }
 `;
 
-exports[`users reducers submit user 1`] = `
+exports[`customers reducers submit customer 1`] = `
 Object {
   "_internal": Object {
     "loading": Object {
       "active": false,
       "history": false,
       "merge": false,
-      "submitUser": true,
     },
   },
   "active": Object {},
+  "customerHistory": Object {
+    "events": Array [],
+    "hasHistory": false,
+    "tickets": Array [],
+    "triedLoading": false,
+  },
   "items": Array [],
-  "userHistory": Object {
-    "events": Array [],
-    "hasHistory": false,
-    "tickets": Array [],
-    "triedLoading": false,
-  },
 }
 `;
 
-exports[`users reducers submit user 2`] = `
+exports[`customers reducers submit customer 2`] = `
 Object {
   "_internal": Object {
     "loading": Object {
       "active": false,
       "history": false,
       "merge": false,
-      "submitUser": false,
-    },
-  },
-  "active": Object {
-    "id": 1,
-    "name": "Alex",
-  },
-  "items": Array [
-    Object {
-      "id": 1,
-      "name": "Alex",
-    },
-  ],
-  "userHistory": Object {
-    "events": Array [],
-    "hasHistory": false,
-    "tickets": Array [],
-    "triedLoading": false,
-  },
-}
-`;
-
-exports[`users reducers submit user 3`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
-      "active": false,
-      "history": false,
-      "merge": false,
-      "submitUser": false,
     },
   },
   "active": Object {
     "id": 1,
     "name": "Romain",
+  },
+  "customerHistory": Object {
+    "events": Array [],
+    "hasHistory": false,
+    "tickets": Array [],
+    "triedLoading": false,
   },
   "items": Array [
     Object {
@@ -454,32 +413,53 @@ Object {
       "name": "Romain",
     },
   ],
-  "userHistory": Object {
-    "events": Array [],
-    "hasHistory": false,
-    "tickets": Array [],
-    "triedLoading": false,
-  },
 }
 `;
 
-exports[`users reducers submit user 4`] = `
+exports[`customers reducers submit customer 3`] = `
 Object {
   "_internal": Object {
     "loading": Object {
       "active": false,
       "history": false,
       "merge": false,
-      "submitUser": false,
     },
   },
-  "active": Object {},
-  "items": Array [],
-  "userHistory": Object {
+  "active": Object {
+    "id": 1,
+    "name": "Romain",
+  },
+  "customerHistory": Object {
     "events": Array [],
     "hasHistory": false,
     "tickets": Array [],
     "triedLoading": false,
   },
+  "items": Array [
+    Object {
+      "id": 1,
+      "name": "Romain",
+    },
+  ],
+}
+`;
+
+exports[`customers reducers submit customer 4`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "active": false,
+      "history": false,
+      "merge": false,
+    },
+  },
+  "active": Object {},
+  "customerHistory": Object {
+    "events": Array [],
+    "hasHistory": false,
+    "tickets": Array [],
+    "triedLoading": false,
+  },
+  "items": Array [],
 }
 `;

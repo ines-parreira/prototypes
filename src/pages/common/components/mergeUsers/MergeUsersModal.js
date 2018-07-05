@@ -58,7 +58,7 @@ class MergeUsersModal extends React.Component {
             user: _pick(this.state, Object.keys(defaultContent))
         }
 
-        return this.props.mergeUsers(
+        return this.props.mergeCustomers(
             this.props.destinationUser.get('id'),
             this.props.sourceUser.get('id'),
             data.user
@@ -272,7 +272,7 @@ class MergeUsersModal extends React.Component {
 MergeUsersModal.propTypes = {
     destinationUser: PropTypes.object.isRequired,
     sourceUser: PropTypes.object.isRequired,
-    mergeUsers: PropTypes.func.isRequired,
+    mergeCustomers: PropTypes.func.isRequired,
     toggleModal: PropTypes.func.isRequired,
     onSuccess: PropTypes.func,
     isOpen: PropTypes.bool.isRequired,

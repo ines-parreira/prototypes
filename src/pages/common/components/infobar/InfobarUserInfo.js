@@ -15,7 +15,7 @@ import SourceIcon from '../SourceIcon'
 import {canDrop, areSourcesReady, jsonToWidgets} from './utils'
 import {itemsWithContext} from '../../../../state/widgets/utils'
 
-import {getDisplayName} from '../../../../state/users/helpers'
+import {getDisplayName} from '../../../../state/customers/helpers'
 import * as integrationsSelectors from '../../../../state/integrations/selectors'
 
 import css from './Infobar.less'

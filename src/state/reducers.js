@@ -20,7 +20,7 @@ import statsReducer from './stats/reducers'
 import tagsReducer from './tags/reducers'
 import ticketReducer from './ticket/reducers'
 import ticketsReducer from './tickets/reducers'
-import usersReducer from './users/reducers'
+import customersReducer from './customers/reducers'
 import usersAuditReducer from './usersAudit/reducers'
 import viewsReducer from './views/reducers'
 import widgetsReducer from './widgets/reducers'
@@ -46,7 +46,7 @@ const rootReducer = combineReducers({
     tags: tagsReducer,
     ticket: ticketReducer,
     tickets: ticketsReducer,
-    users: usersReducer,
+    customers: customersReducer,
     usersAudit: usersAuditReducer,
     views: viewsReducer,
     widgets: widgetsReducer,

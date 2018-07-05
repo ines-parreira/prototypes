@@ -2,7 +2,7 @@ import {fromJS} from 'immutable'
 
 import * as helpers from '../helpers'
 
-describe('users helpers', () => {
+describe('customers helpers', () => {
     it('getDisplayName', () => {
         const name = 'Cedric'
         const email = 'cedric@gmail.com'
