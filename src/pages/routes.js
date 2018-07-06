@@ -9,11 +9,11 @@ import TicketSourceContainer from './tickets/detail/TicketSourceContainer'
 import TicketNavbarContainer from './tickets/common/TicketNavbarContainer'
 import TicketListContainer from './tickets/list/TicketListContainer'
 import RuleContainer from './settings/rules/list/RuleContainer'
-import UserListContainer from './users/list/UserListContainer'
-import UserNavbarContainer from './users/common/UserNavbarContainer'
-import UserDetailContainer from './users/detail/UserDetailContainer'
-import UserSourceContainer from './users/detail/UserSourceContainer'
-import UserInfobarContainer from './users/detail/UserInfobarContainer'
+import CustomerListContainer from './customers/list/CustomerListContainer'
+import CustomerNavbarContainer from './customers/common/CustomerNavbarContainer'
+import CustomerDetailContainer from './customers/detail/CustomerDetailContainer'
+import CustomerSourceContainer from './customers/detail/CustomerSourceContainer'
+import CustomerInfobarContainer from './customers/detail/CustomerInfobarContainer'
 import StatsViewContainer from './stats/StatsViewContainer'
 
 import YourProfileContainer from './settings/yourProfile/YourProfileContainer'
@@ -50,50 +50,101 @@ export default (
             }}
         />
         <Route
-            path="users"
+            path="customers"
             components={{
-                content: UserListContainer,
-                navbar: UserNavbarContainer
+                content: CustomerListContainer,
+                navbar: CustomerNavbarContainer
             }}
         />
         <Route
-            path="users/new"
+            path="customers/new"
             components={{
-                content: UserListContainer,
-                navbar: UserNavbarContainer
+                content: CustomerListContainer,
+                navbar: CustomerNavbarContainer
             }}
         />
         <Route
-            path="users/search"
+            path="customers/search"
             components={{
-                content: UserListContainer,
-                navbar: UserNavbarContainer
+                content: CustomerListContainer,
+                navbar: CustomerNavbarContainer
             }}
         />
         <Route
-            path="users/:viewId(/:viewSlug)"
+            path="customers/:viewId(/:viewSlug)"
             components={{
-                content: UserListContainer,
-                navbar: UserNavbarContainer
+                content: CustomerListContainer,
+                navbar: CustomerNavbarContainer
             }}
         />
         <Route
-            path="user/:userId"
+            path="customer/:customerId"
             components={{
-                content: UserDetailContainer,
-                navbar: UserNavbarContainer,
-                infobar: UserInfobarContainer
+                content: CustomerDetailContainer,
+                navbar: CustomerNavbarContainer,
+                infobar: CustomerInfobarContainer
             }}
             noContainerWidthLimit // no width limit in App wrapper
             infobarOnMobile // show Infobar component on mobile
             containerPadding
         />
         <Route
-            path="user/:userId/edit-widgets"
+            path="customer/:customerId/edit-widgets"
             components={{
-                content: UserSourceContainer,
-                navbar: UserNavbarContainer,
-                infobar: UserInfobarContainer
+                content: CustomerSourceContainer,
+                navbar: CustomerNavbarContainer,
+                infobar: CustomerInfobarContainer
+            }}
+            isEditingWidgets // is an edition mode route for widgets
+            noContainerWidthLimit // no width limit in App wrapper
+            containerPadding
+        />
+        {/* TODO(customers-migration): Remove these routes when we updated all routes in our app */}
+        <Route
+            path="users"
+            components={{
+                content: CustomerListContainer,
+                navbar: CustomerNavbarContainer
+            }}
+        />
+        <Route
+            path="users/new"
+            components={{
+                content: CustomerListContainer,
+                navbar: CustomerNavbarContainer
+            }}
+        />
+        <Route
+            path="users/search"
+            components={{
+                content: CustomerListContainer,
+                navbar: CustomerNavbarContainer
+            }}
+        />
+        <Route
+            path="users/:viewId(/:viewSlug)"
+            components={{
+                content: CustomerListContainer,
+                navbar: CustomerNavbarContainer
+            }}
+        />
+        <Route
+            path="user/:customerId"
+            components={{
+                content: CustomerDetailContainer,
+                navbar: CustomerNavbarContainer,
+                infobar: CustomerInfobarContainer
+            }}
+            noContainerWidthLimit // no width limit in App wrapper
+            infobarOnMobile // show Infobar component on mobile
+            containerPadding
+        />
+        <Route
+            path="user/:customerId/edit-widgets"
+            components={{
+                content: CustomerSourceContainer,
+                navbar: CustomerNavbarContainer,
+                infobar: CustomerInfobarContainer
             }}
             isEditingWidgets // is an edition mode route for widgets
             noContainerWidthLimit // no width limit in App wrapper

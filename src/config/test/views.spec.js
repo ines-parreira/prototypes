@@ -4,7 +4,7 @@ import _isObject from 'lodash/isObject'
 import * as viewsConfig from '../views'
 
 import * as ticketFixtures from '../../fixtures/ticket'
-import * as userFixtures from '../../fixtures/users'
+import {customer} from '../../fixtures/customer'
 
 global.console.error = jest.fn()
 
@@ -46,7 +46,7 @@ describe('Config: views', () => {
 
         const fixtures = {
             ticket: ticketFixtures.ticket,
-            user: userFixtures.user,
+            customer
         }
 
         views.forEach((viewConfig) => {
@@ -91,14 +91,12 @@ describe('Config: views', () => {
                         customer: 'object', // user (then passed to RenderLabel)
                         assignee: 'object', // user (then passed to RenderLabel)
                     },
-                    user: {
-                        roles: 'object',
+                    customer: {
                         name: 'string',
                     }
                 }
 
                 const fieldNames = viewConfig.get('fields').map(field => field.get('name'))
-
                 const cellFunction = viewConfig.get('cell')
 
                 // check that each field renders the correct type once passed through the cell() function

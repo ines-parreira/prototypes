@@ -348,7 +348,7 @@ class InfobarUserInfo extends React.Component {
                                 google
                             />
                             <Link
-                                to={`/app/user/${user.get('id')}`}
+                                to={`/app/customer/${user.get('id')}`}
                                 className={css.displayName}
                             >
                                 {getDisplayName(user)}

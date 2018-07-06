@@ -11,32 +11,32 @@ import {getCustomers} from '../../../state/customers/selectors'
 import * as viewsActions from '../../../state/views/actions'
 import * as viewsSelectors from '../../../state/views/selectors'
 
-import UserListActions from './components/UserListActions'
+import CustomerListActions from './components/CustomerListActions'
 import ViewTable from '../../common/components/ViewTable/Page'
 
-import UserForm from '../common/components/UserForm'
+import CustomerForm from '../common/components/CustomerForm'
 import Modal from '../../common/components/Modal'
 
-class UserListContainer extends React.Component {
+class CustomerListContainer extends React.Component {
     state = {
         isSearch: false,
         isUpdate: true,
-        isUserFormOpen: false,
+        isCustomerFormOpen: false,
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({
-            isSearch: isSearchUrl(nextProps.location.pathname, 'users'),
-            isUpdate: !isCreationUrl(nextProps.location.pathname, 'users')
+            isSearch: isSearchUrl(nextProps.location.pathname, 'users') || isSearchUrl(nextProps.location.pathname, 'customers'),
+            isUpdate: !isCreationUrl(nextProps.location.pathname, 'users') && !isCreationUrl(nextProps.location.pathname, 'customers')
         })
     }
 
     _openModal = () => {
-        this.setState({isUserFormOpen: true})
+        this.setState({isCustomerFormOpen: true})
     }
 
     _closeModal = () => {
-        this.setState({isUserFormOpen: false})
+        this.setState({isCustomerFormOpen: false})
     }
 
     _fetchView = () => {
@@ -45,7 +45,7 @@ class UserListContainer extends React.Component {
 
     render() {
         const {isSearch, isUpdate} = this.state
-        const {users, urlViewId, activeView, hasActiveView} = this.props
+        const {customers, urlViewId, activeView, hasActiveView} = this.props
         let title = 'Loading...'
 
         if (!isUpdate) {
@@ -72,12 +72,12 @@ class UserListContainer extends React.Component {
                     }}
                 >
                     <ViewTable
-                        type="user"
-                        items={users}
+                        type="customer"
+                        items={customers}
                         isUpdate={isUpdate}
                         isSearch={isSearch}
                         urlViewId={urlViewId}
-                        ActionsComponent={UserListActions}
+                        ActionsComponent={CustomerListActions}
                         viewButtons={(
                             <div className="d-inline-flex align-items-center">
                                 <Button
@@ -85,15 +85,15 @@ class UserListContainer extends React.Component {
                                     color="primary"
                                     onClick={this._openModal}
                                 >
-                                    Add user
+                                    Add customer
                                 </Button>
 
                                 <Modal
-                                    isOpen={this.state.isUserFormOpen}
+                                    isOpen={this.state.isCustomerFormOpen}
                                     onClose={this._closeModal}
-                                    header="Add user"
+                                    header="Add customer"
                                 >
-                                    <UserForm
+                                    <CustomerForm
                                         closeModal={this._closeModal}
                                         onSuccess={this._fetchView}
                                     />
@@ -107,13 +107,13 @@ class UserListContainer extends React.Component {
     }
 }
 
-UserListContainer.propTypes = {
+CustomerListContainer.propTypes = {
     activeView: ImmutablePropTypes.map.isRequired,
     hasActiveView: PropTypes.bool.isRequired,
     location: PropTypes.object,
     params: PropTypes.object,
     urlViewId: PropTypes.string,
-    users: PropTypes.object.isRequired,
+    customers: PropTypes.object.isRequired,
     views: PropTypes.object.isRequired,
     fetchPage: PropTypes.func.isRequired,
 }
@@ -124,7 +124,7 @@ const mapStateToProps = (state, ownProps) => {
     return {
         activeView: viewsSelectors.getActiveView(state),
         hasActiveView: viewsSelectors.hasActiveView(state),
-        users: getCustomers(state),
+        customers: getCustomers(state),
         urlViewId,
         views: state.views,
     }
@@ -134,4 +134,4 @@ const mapDispatchToProps = {
     fetchPage: viewsActions.fetchPage,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserListContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(CustomerListContainer)

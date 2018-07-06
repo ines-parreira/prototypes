@@ -807,6 +807,7 @@ export const isCurrentlyOnView = (viewId: string = '', viewsState: viewsStateTyp
     const prefix = [
         '/app/tickets',
         '/app/users',
+        '/app/customers',
     ]
 
     let urls = prefix.map(p => `${p}/${viewId}`)
@@ -830,11 +831,6 @@ export const isCurrentlyOnView = (viewId: string = '', viewsState: viewsStateTyp
  * @returns {String} plural object name E.g: users, tickets
  */
 export function getPluralObjectName(viewType: string): string {
-    // TODO(customers-migration): remove this when we updated the routes of the web app
-    if (viewType === 'customer-list') {
-        return 'users'
-    }
-
     return viewType.replace('-list', 's')
 }
 

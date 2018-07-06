@@ -48,8 +48,8 @@ const mainMenu = [{
     url: '/app/tickets',
     label: 'Tickets',
 }, {
-    url: '/app/users',
-    label: 'Users',
+    url: '/app/customers',
+    label: 'Customers',
 }, {
     url: '/app/stats',
     label: 'Statistics',

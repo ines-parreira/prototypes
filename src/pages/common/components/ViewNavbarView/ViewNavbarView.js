@@ -27,7 +27,7 @@ class ViewNavbarView extends Component {
         activeView: PropTypes.object.isRequired,
         viewType: PropTypes.oneOf(['ticket-list', 'customer-list']).isRequired,
         settings: PropTypes.object,
-        settingType: PropTypes.oneOf(['ticket-views', 'user-views']).isRequired,
+        settingType: PropTypes.oneOf(['ticket-views', 'customer-views']).isRequired,
         isLoading: PropTypes.bool.isRequired,
         fetchPage: PropTypes.func.isRequired,
         getViewCount: PropTypes.func.isRequired,

@@ -8,14 +8,14 @@ import {Link} from 'react-router'
 import * as customersActions from '../../../state/customers/actions'
 
 import Loader from '../../common/components/Loader'
-import UserForm from '../common/components/UserForm'
+import CustomerForm from '../common/components/CustomerForm'
 import Timeline from '../../common/components/timeline/Timeline'
 import Modal from '../../common/components/Modal'
 
 import {getCustomerHistory, getActiveCustomer, makeIsLoading} from '../../../state/customers/selectors'
 import * as usersHelpers from '../../../state/customers/helpers'
 
-class UserDetailContainer extends React.Component {
+class CustomerDetailContainer extends React.Component {
     constructor(props) {
         super(props)
 
@@ -26,15 +26,15 @@ class UserDetailContainer extends React.Component {
 
     componentWillMount() {
         const {params} = this.props
-        this._fetchCustomer(params.userId)
+        this._fetchCustomer(params.customerId)
     }
 
     componentWillReceiveProps(nextProps) {
         const {params, actions} = this.props
 
-        if (nextProps.params.userId !== params.userId) {
+        if (nextProps.params.customerId !== params.customerId) {
             actions.clearCustomer()
-            this._fetchCustomer(nextProps.params.userId)
+            this._fetchCustomer(nextProps.params.customerId)
         }
     }
 
@@ -113,7 +113,7 @@ class UserDetailContainer extends React.Component {
                             color="success"
                             onClick={this._openModal}
                         >
-                            Edit user
+                            Edit customer
                         </Button>
                     </div>
                 </div>
@@ -123,10 +123,10 @@ class UserDetailContainer extends React.Component {
                 <Modal
                     isOpen={this.state.isUserFormOpen}
                     onClose={this._closeModal}
-                    header={`Update user: ${activeUser.get('name')}`}
+                    header={`Update customer: ${activeUser.get('name')}`}
                 >
-                    <UserForm
-                        user={activeUser}
+                    <CustomerForm
+                        customer={activeUser}
                         closeModal={this._closeModal}
                     />
                 </Modal>
@@ -135,9 +135,9 @@ class UserDetailContainer extends React.Component {
     }
 }
 
-UserDetailContainer.propTypes = {
+CustomerDetailContainer.propTypes = {
     params: PropTypes.shape({
-        userId: PropTypes.string
+        customerId: PropTypes.string
     }).isRequired,
 
     activeUser: PropTypes.object.isRequired,
@@ -163,4 +163,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserDetailContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(CustomerDetailContainer)

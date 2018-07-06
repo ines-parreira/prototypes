@@ -4,7 +4,7 @@ import {FormGroup, Label, Row, Col, Button} from 'reactstrap'
 
 import InputField from '../../../common/forms/InputField'
 
-class UserChannelFieldArray extends React.Component {
+class CustomerChannelFieldArray extends React.Component {
     _add = () => {
         return this.props.onChange(_clone(this.props.fields).concat([{
             address: ''
@@ -83,14 +83,14 @@ class UserChannelFieldArray extends React.Component {
     }
 }
 
-UserChannelFieldArray.defaultProps = {
+CustomerChannelFieldArray.defaultProps = {
     type: 'text',
     label: '',
     addLabel: 'Add',
     errors: {}
 }
 
-UserChannelFieldArray.propTypes = {
+CustomerChannelFieldArray.propTypes = {
     type: React.PropTypes.string.isRequired,
     fields: React.PropTypes.array.isRequired,
     meta: React.PropTypes.object.isRequired,
@@ -101,4 +101,4 @@ UserChannelFieldArray.propTypes = {
     errors: React.PropTypes.object,
 }
 
-export default UserChannelFieldArray
+export default CustomerChannelFieldArray

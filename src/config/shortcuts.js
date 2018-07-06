@@ -89,12 +89,12 @@ export default {
             }
         }
     },
-    UserListActions: {
-        description: 'Views (Users)',
+    CustomerListActions: {
+        description: 'Views (Customers)',
         actions: {
-            DELETE_USER: {
+            DELETE_CUSTOMER: {
                 key: '#',
-                description: 'Delete selected users.'
+                description: 'Delete selected customers.'
             }
         }
     },

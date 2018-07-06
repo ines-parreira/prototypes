@@ -172,11 +172,12 @@ export class Infobar extends React.Component<Props, State> {
         if (!identifier) {
             return
         }
+        const objectType = context === 'user' ? 'customer' : 'ticket'
 
         if (isEditing) {
-            browserHistory.push(`/app/${context}/${identifier}/edit-widgets${location.search}`)
+            browserHistory.push(`/app/${objectType}/${identifier}/edit-widgets${location.search}`)
         } else {
-            browserHistory.push(`/app/${context}/${identifier}${location.search}`)
+            browserHistory.push(`/app/${objectType}/${identifier}${location.search}`)
         }
     }
 

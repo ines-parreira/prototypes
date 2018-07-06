@@ -194,10 +194,10 @@ describe('utils', () => {
                 type: 'customer-list',
                 id: '2'
             }), {
-                pathname: '/app/user/2',
+                pathname: '/app/customer/2',
                 search: ''
             }, fromJS({}))
-            expect(url).toBe('/app/users/2')
+            expect(url).toBe('/app/customers/2')
         })
 
         it('should return the same url when on a different item type', () => {

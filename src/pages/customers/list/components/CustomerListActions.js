@@ -18,7 +18,7 @@ import shortcutManager from '../../../../services/shortcutManager'
 import * as ViewsActions from '../../../../state/views/actions'
 import * as UsersActions from '../../../../state/customers/actions'
 
-class UserListActions extends React.Component {
+class CustomerListActions extends React.Component {
     state = {
         popoverOpen: ''
     }
@@ -28,12 +28,12 @@ class UserListActions extends React.Component {
     }
 
     componentWillUnmount() {
-        shortcutManager.unbind('UserListActions')
+        shortcutManager.unbind('CustomerListActions')
     }
 
     _bindKeys = () => {
-        shortcutManager.bind('UserListActions', {
-            DELETE_USER: {
+        shortcutManager.bind('CustomerListActions', {
+            DELETE_CUSTOMER: {
                 action: () => {
                     if (!this._hasChecked()) {
                         return
@@ -96,7 +96,7 @@ class UserListActions extends React.Component {
                             className="text-danger"
                             onClick={this._toggleDeleteConfirmation}
                         >
-                            Delete users
+                            Delete customers
                         </DropdownItem>
                     </DropdownMenu>
                 </UncontrolledButtonDropdown>
@@ -110,7 +110,7 @@ class UserListActions extends React.Component {
                     <PopoverBody>
                         <p>
                             Are you sure you want to delete {this.props.selectedItemsIds.size}{' '}
-                            user{this.props.selectedItemsIds.size > 1 && 's'}?
+                            customer{this.props.selectedItemsIds.size > 1 && 's'}?
                         </p>
                         <Button
                             type="submit"
@@ -135,7 +135,7 @@ class UserListActions extends React.Component {
     }
 }
 
-UserListActions.propTypes = {
+CustomerListActions.propTypes = {
     view: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired, // tickets actions
     selectedItemsIds: PropTypes.object.isRequired, // list of ids of selected tickets
@@ -150,4 +150,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(null, mapDispatchToProps)(UserListActions)
+export default connect(null, mapDispatchToProps)(CustomerListActions)

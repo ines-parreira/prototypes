@@ -12,8 +12,8 @@ import _isError from 'lodash/isError'
 import {Form, Button} from 'reactstrap'
 
 import {submitCustomer} from '../../../../state/customers/actions'
-import UserChannelFieldArray from './UserChannelFieldArray'
 import InputField from '../../../common/forms/InputField'
+import CustomerChannelFieldArray from './CustomerChannelFieldArray'
 
 const defaultContent = {
     name: '',
@@ -28,7 +28,7 @@ const defaultContent = {
 
 const updatableChannels = ['email', 'twitter', 'phone']
 
-class UserForm extends React.Component {
+class CustomerForm extends React.Component {
     constructor(props) {
         super(props)
 
@@ -64,8 +64,8 @@ class UserForm extends React.Component {
 
     _getForm = () => {
         if (this.props.isUpdate) {
-            const user = this.props.user.toJS()
-            return this._docToForm(_pick(user, Object.keys(defaultContent)))
+            const customer = this.props.customer.toJS()
+            return this._docToForm(_pick(customer, Object.keys(defaultContent)))
         }
 
         return _clone(defaultContent)
@@ -74,8 +74,8 @@ class UserForm extends React.Component {
     _docToForm = (doc = {}) => {
         const channels = doc.channels || []
 
-        // if the user has a "email" property which is not in its channels, add it as an email channel
-        // this should not exist but some users apparently have email in "email" not in "channels"
+        // if the customer has a "email" property which is not in its channels, add it as an email channel
+        // this should not exist but some customers apparently have email in "email" not in "channels"
         const email = doc.email
         if (email) {
             const hasEmailAsChannel = _find(channels, {address: email})
@@ -105,9 +105,9 @@ class UserForm extends React.Component {
     }
 
     _formToDoc = (form = fromJS({})) => {
-        const {user, isUpdate} = this.props
+        const {customer, isUpdate} = this.props
 
-        let initialChannels = user.get('channels', fromJS([]))
+        let initialChannels = customer.get('channels', fromJS([]))
         // put aside channels of currently edited types
         initialChannels = initialChannels.filter((initialChannel) => {
             return !updatableChannels.includes(initialChannel.get('type'))
@@ -147,9 +147,9 @@ class UserForm extends React.Component {
 
         // if update, set ids for server
         if (this.props.isUpdate) {
-            const {user} = this.props
-            doc = doc.set('id', user.get('id'))
-            promise = this.props.onSubmit(this._formToDoc(doc).toJS(), user.get('id'))
+            const {customer} = this.props
+            doc = doc.set('id', customer.get('id'))
+            promise = this.props.onSubmit(this._formToDoc(doc).toJS(), customer.get('id'))
         } else {
             promise = this.props.onSubmit(this._formToDoc(doc).toJS())
         }
@@ -187,15 +187,15 @@ class UserForm extends React.Component {
                         name="name"
                         label="Name"
                         placeholder="John Doe"
-                        help="Give a name to the user to make it easier to identify"
+                        help="Give a name to the customer to make it easier to identify"
                         required
                         value={this.state.name}
                         onChange={name => this._updateField({name})}
                     />
                     <p>
-                        <b>Please set below at least one contact information for this user :</b>
+                        <b>Please set below at least one contact information for this customer :</b>
                     </p>
-                    <UserChannelFieldArray
+                    <CustomerChannelFieldArray
                         name="email"
                         type="email"
                         label="Emails"
@@ -205,7 +205,7 @@ class UserForm extends React.Component {
                         fields={this.state.email}
                         onChange={email => this._updateField({email})}
                     />
-                    <UserChannelFieldArray
+                    <CustomerChannelFieldArray
                         name="phone"
                         label="Phone numbers"
                         placeholder="+1 111 111 1111"
@@ -215,7 +215,7 @@ class UserForm extends React.Component {
                         onChange={phone => this._updateField({phone})}
                         errors={this.state.errors.phone}
                     />
-                    <UserChannelFieldArray
+                    <CustomerChannelFieldArray
                         name="twitter"
                         label="Twitter accounts"
                         placeholder="johnSnow"
@@ -235,7 +235,7 @@ class UserForm extends React.Component {
                         })}
                         disabled={this.state.submitting || invalid}
                     >
-                        {isUpdate ? 'Update user' : 'Add user'}
+                        {isUpdate ? 'Update customer' : 'Add customer'}
                     </Button>
                 </div>
             </Form>
@@ -243,23 +243,22 @@ class UserForm extends React.Component {
     }
 }
 
-UserForm.propTypes = {
+CustomerForm.propTypes = {
     isUpdate: PropTypes.bool.isRequired,
-    isUserStaff: PropTypes.bool.isRequired,
     closeModal: PropTypes.func.isRequired,
-    user: PropTypes.object,
+    customer: PropTypes.object,
     onSubmit: PropTypes.func.isRequired,
     onSuccess: PropTypes.func,
 }
 
-UserForm.defaultProps = {
-    user: fromJS({}),
+CustomerForm.defaultProps = {
+    customer: fromJS({}),
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const user = ownProps.user || fromJS({})
+    const customer = ownProps.customer || fromJS({})
     return {
-        isUpdate: !_isUndefined(user.get('id')),
+        isUpdate: !_isUndefined(customer.get('id')),
     }
 }
 
@@ -269,4 +268,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserForm)
+export default connect(mapStateToProps, mapDispatchToProps)(CustomerForm)

@@ -295,13 +295,13 @@ export const views = fromJS([{
         })
     },
 }, {
-    name: 'user',
+    name: 'customer',
     type: 'customer-list',
-    routeItem: 'user',
-    routeList: 'users',
+    routeItem: 'customer',
+    routeList: 'customers',
     api: 'users',
-    singular: 'user',
-    plural: 'users',
+    singular: 'customer',
+    plural: 'customers',
     mainField: 'name',
     fields: [
         {

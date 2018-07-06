@@ -281,8 +281,8 @@ function getViewTypeUrl(viewType: string): ?{detail: string, list: string} {
             list: 'tickets',
         },
         'customer-list': {
-            detail: 'user',
-            list: 'users',
+            detail: 'customer',
+            list: 'customers',
         }
     }
 

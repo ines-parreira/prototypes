@@ -108,8 +108,8 @@ class RechargeIntegrationDetail extends React.Component {
                                     isSyncOver
                                         ? (
                                             <p>
-                                                All your Recharge users have been imported. You can now see their info in the
-                                                sidebar. <Link to="/app/users">Review your users.</Link>
+                                                All your Recharge customers have been imported. You can now see their info in the
+                                                sidebar. <Link to="/app/customers">Review your customers.</Link>
                                             </p>
                                         ) : (
                                             <Alert color="info" className="mb-4">
@@ -122,7 +122,7 @@ class RechargeIntegrationDetail extends React.Component {
                                                 <p>
                                                     We're currently importing all your Recharge customers. This way, you'll see
                                                     customer info & orders next to tickets. We'll notify you via email when the
-                                                    import is done. <Link to="/app/users">Review imported users.</Link>
+                                                    import is done. <Link to="/app/customers">Review imported customers.</Link>
                                                 </p>
                                             </Alert>
                                         )

@@ -2,11 +2,11 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import * as ViewsActions from '../../../state/views/actions'
-import UsersNavbarView from './components/UsersNavbarView'
+import CustomersNavbarView from './components/CustomersNavbarView'
 import Navbar from '../../common/components/Navbar'
 import {getSettingsByType} from '../../../state/currentUser/selectors'
 
-class UserNavbarContainer extends React.Component {
+class CustomerNavbarContainer extends React.Component {
     componentWillMount() {
         // fetch the list view only
         const viewId = this.props.params.viewId ? this.props.params.viewId : this.props.location.query.viewId
@@ -15,9 +15,9 @@ class UserNavbarContainer extends React.Component {
 
     render() {
         return (
-            <Navbar activeContent="users">
-                <UsersNavbarView
-                    settingType="user-views"
+            <Navbar activeContent="customers">
+                <CustomersNavbarView
+                    settingType="customer-views"
                     setting={this.props.setting}
                     isLoading={this.props.isLoading}
                 />
@@ -26,7 +26,7 @@ class UserNavbarContainer extends React.Component {
     }
 }
 
-UserNavbarContainer.propTypes = {
+CustomerNavbarContainer.propTypes = {
     actions: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
     location: PropTypes.shape({
@@ -38,8 +38,8 @@ UserNavbarContainer.propTypes = {
 
 const mapStateToProps = (state) => {
     return {
-        setting: getSettingsByType('user-views')(state),
-        isLoading: state.currentUser.getIn(['_internal', 'loading', 'settings', 'user-views'], false)
+        setting: getSettingsByType('customer-views')(state),
+        isLoading: state.currentUser.getIn(['_internal', 'loading', 'settings', 'customer-views'], false)
     }
 }
 
@@ -47,4 +47,4 @@ const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(ViewsActions, dispatch)
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserNavbarContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(CustomerNavbarContainer)

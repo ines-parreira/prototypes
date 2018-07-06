@@ -9,7 +9,7 @@ import * as InfobarActions from '../../../state/infobar/actions'
 import {getActiveCustomer, getActiveCustomerId} from '../../../state/customers/selectors'
 import {getSources} from '../../../state/widgets/selectors'
 
-class UserInfobarContainer extends React.Component {
+class CustomerInfobarContainer extends React.Component {
     componentWillMount() {
         const {actions} = this.props
 
@@ -49,7 +49,7 @@ class UserInfobarContainer extends React.Component {
     }
 }
 
-UserInfobarContainer.propTypes = {
+CustomerInfobarContainer.propTypes = {
     actions: PropTypes.object.isRequired,
     infobar: PropTypes.object.isRequired,
     route: PropTypes.object.isRequired,
@@ -78,4 +78,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserInfobarContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(CustomerInfobarContainer)

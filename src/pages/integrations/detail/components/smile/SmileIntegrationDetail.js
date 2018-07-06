@@ -111,8 +111,8 @@ class SmileIntegrationDetail extends React.Component<Props, State> {
                                     isSyncOver
                                         ? (
                                             <p>
-                                                All your Smile users have been imported. You can now see their info in the
-                                                sidebar. <Link to="/app/users">Review your users.</Link>
+                                                All your Smile customers have been imported. You can now see their info in the
+                                                sidebar. <Link to="/app/customers">Review your customers.</Link>
                                             </p>
                                         ) : (
                                             <Alert color="info" className="mb-4">
@@ -125,7 +125,7 @@ class SmileIntegrationDetail extends React.Component<Props, State> {
                                                 <p>
                                                     We're currently importing all your Smile customers. This way, you'll see
                                                     customer rewards points next to tickets. We'll notify you via email when the
-                                                    import is done. <Link to="/app/users">Review imported users.</Link>
+                                                    import is done. <Link to="/app/customers">Review imported customers.</Link>
                                                 </p>
                                             </Alert>
                                         )

@@ -130,7 +130,7 @@ export const handleExecutedAction = (response: responseType) => ((dispatch: disp
             primary: true,
             name: 'Review',
             onClick: () => {
-                browserHistory.push(`/app/user/${response.user_id}`)
+                browserHistory.push(`/app/customer/${response.user_id}`)
             }
         }]
 

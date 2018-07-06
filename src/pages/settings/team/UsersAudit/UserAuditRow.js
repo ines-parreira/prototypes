@@ -44,7 +44,7 @@ export class UserAuditRow extends React.Component<Props> {
     _renderObject = (item: EventItem) => {
         const objectTypeRoutes = {
             'Ticket': `/app/ticket/${item.get('object_id')}/`,
-            'User': `/app/users/${item.get('object_id')}/`
+            'User': `/app/customer/${item.get('object_id')}/`
         }
         const objectType = item.get('object_type')
         const text = `${objectType} #${item.get('object_id')}`
