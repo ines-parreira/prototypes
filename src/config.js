@@ -561,18 +561,18 @@ export const ACTION_TEMPLATES = [
                 required: false,
                 display_order: 3
             },
-            zip: {
-                label: 'Zip',
-                type: 'string',
-                default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.zip}}',
-                editable: true,
-                required: false,
-                display_order: 4
-            },
             province: {
                 label: 'State/Province',
                 type: 'string',
                 default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.province}}',
+                editable: true,
+                required: false,
+                display_order: 4
+            },
+            zip: {
+                label: 'ZIP',
+                type: 'string',
+                default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.zip}}',
                 editable: true,
                 required: false,
                 display_order: 5
