@@ -724,7 +724,7 @@ export const findAndSetCustomer = (email: string): thunkActionType => (
 
                 const channel = resp.data[0]
 
-                return axios.get(`/api/users/${channel.user.id}/`)
+                return axios.get(`/api/customers/${channel.user.id}/`)
                     .then((json = {}) => json.data)
                     .then((resp): Promise<dispatchType> => {
                         return dispatch(setCustomer(fromJS(resp)))

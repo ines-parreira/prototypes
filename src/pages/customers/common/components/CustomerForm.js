@@ -17,9 +17,6 @@ import CustomerChannelFieldArray from './CustomerChannelFieldArray'
 
 const defaultContent = {
     name: '',
-    roles: [{
-        name: 'user',
-    }],
     email: [{address: ''}],
     twitter: [{address: ''}],
     phone: [{address: ''}],
@@ -105,7 +102,7 @@ class CustomerForm extends React.Component {
     }
 
     _formToDoc = (form = fromJS({})) => {
-        const {customer, isUpdate} = this.props
+        const {customer} = this.props
 
         let initialChannels = customer.get('channels', fromJS([]))
         // put aside channels of currently edited types
@@ -131,10 +128,6 @@ class CustomerForm extends React.Component {
 
         // set form channels
         doc = doc.set('channels', channels)
-
-        if (isUpdate) {
-            doc = doc.delete('roles')
-        }
 
         return doc
     }

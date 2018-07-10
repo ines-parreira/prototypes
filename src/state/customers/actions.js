@@ -12,7 +12,7 @@ export function fetchCustomer(customerId: number) {
             type: types.FETCH_CUSTOMER_START
         })
 
-        return axios.get(`/api/users/${customerId}/`)
+        return axios.get(`/api/customers/${customerId}/`)
             .then((json = {}) => json.data)
             .then(resp => {
                 return dispatch({
@@ -39,9 +39,9 @@ export function submitCustomer(data: {}, customerId: number) {
         })
 
         if (isUpdate) {
-            promise = axios.put(`/api/users/${customerId}/`, data)
+            promise = axios.put(`/api/customers/${customerId}/`, data)
         } else {
-            promise = axios.post('/api/users/', data)
+            promise = axios.post('/api/customers/', data)
         }
 
         return promise
@@ -76,7 +76,7 @@ export function deleteCustomer(customerId: number) {
             type: types.DELETE_CUSTOMER_START
         })
 
-        return axios.delete(`/api/users/${customerId}/`)
+        return axios.delete(`/api/customers/${customerId}/`)
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
@@ -105,7 +105,7 @@ export function fetchCustomerHistory(customerId: number, options: {successCondit
             type: types.FETCH_CUSTOMER_HISTORY_START
         })
 
-        return axios.get(`/api/users/${customerId}/tickets/?type=customer`)
+        return axios.get(`/api/customers/${customerId}/tickets/`)
             .then((json = {}) => json.data)
             .then(resp => {
                 const state = getState()
@@ -139,7 +139,7 @@ export function mergeCustomers(baseCustomerId: number, mergeCustomerId: number, 
             type: types.MERGE_CUSTOMERS_START
         })
 
-        return axios.put(`/api/users/${baseCustomerId}/merge/${mergeCustomerId}/`, data)
+        return axios.put(`/api/customers/merge?target_id=${baseCustomerId}&source_id=${mergeCustomerId}`, data)
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({

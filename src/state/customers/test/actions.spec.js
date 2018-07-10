@@ -24,7 +24,7 @@ describe('customers actions', () => {
     })
 
     it('fetch customer', () => {
-        mockServer.onGet('/api/users/2/').reply(200, {data: {id: 2}})
+        mockServer.onGet('/api/customers/2/').reply(200, {data: {id: 2}})
 
         return store.dispatch(actions.fetchCustomer(2))
             .then(() => expect(store.getActions()).toMatchSnapshot())
@@ -32,12 +32,11 @@ describe('customers actions', () => {
 
     it('create customer', () => {
         const data = {
-            name: 'Alex',
-            email: 'alex@gorgias.io',
-            role: 'agent'
+            name: 'Steve',
+            email: 'steve@acme.gorgias.io',
         }
 
-        mockServer.onPost('/api/users/').reply(200, {data})
+        mockServer.onPost('/api/customers/').reply(200, {data})
 
         return store.dispatch(actions.submitCustomer(data))
             .then(() => expect(store.getActions()).toMatchSnapshot())
@@ -46,26 +45,25 @@ describe('customers actions', () => {
     it('update customer', () => {
         const data = {
             id: 2,
-            name: 'Alex',
-            email: 'alex@gorgias.io',
-            role: 'agent'
+            name: 'Steve',
+            email: 'steve@acme.gorgias.io',
         }
 
-        mockServer.onPut('/api/users/2/').reply(200, {data})
+        mockServer.onPut('/api/customers/2/').reply(200, {data})
 
         return store.dispatch(actions.submitCustomer(data, data.id))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('delete customer', () => {
-        mockServer.onDelete('/api/users/2/').reply(200)
+        mockServer.onDelete('/api/customers/2/').reply(200)
 
         return store.dispatch(actions.deleteCustomer(2))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('fetch customer history', () => {
-        mockServer.onGet('/api/users/2/tickets/?type=customer').reply(200, {data: [{id: 1}]})
+        mockServer.onGet('/api/customers/2/tickets/').reply(200, {data: [{id: 1}]})
 
         return store.dispatch(actions.fetchCustomerHistory(2))
             .then(() => expect(store.getActions()).toMatchSnapshot())
@@ -81,7 +79,7 @@ describe('customers actions', () => {
     })
 
     it('merge customers', () => {
-        mockServer.onPut('/api/users/2/merge/3/').reply(200, {data: [{id: 1}]})
+        mockServer.onPut('/api/customers/merge?target_id=2&source_id=3').reply(200, {data: [{id: 1}]})
 
         return store.dispatch(actions.mergeCustomers(2, 3))
             .then(() => expect(store.getActions()).toMatchSnapshot())

@@ -44,7 +44,7 @@ describe('infobar actions', () => {
     })
 
     it('similar user', () => {
-        mockServer.onGet('/api/users/1/similar/').reply(200, {id: 1, name: 'alex'})
+        mockServer.onGet('/api/customers/1/similar/').reply(200, {id: 1, name: 'alex'})
 
         return store.dispatch(actions.similarUser(2))
             .then(() => expect(store.getActions()).toMatchSnapshot())

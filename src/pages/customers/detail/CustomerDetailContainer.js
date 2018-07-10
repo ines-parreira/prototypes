@@ -63,7 +63,7 @@ class CustomerDetailContainer extends React.Component {
         const historyLength = customerHistory.get('tickets', fromJS([])).size
 
         if (customerHistory.get('triedLoading', true) && !historyLength) {
-            return <p>The user has no activity recorded</p>
+            return <p>This customer has no activity recorded</p>
         }
 
         return (

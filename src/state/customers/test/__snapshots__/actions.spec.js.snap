@@ -9,9 +9,8 @@ Array [
     "isUpdate": false,
     "resp": Object {
       "data": Object {
-        "email": "alex@gorgias.io",
-        "name": "Alex",
-        "role": "agent",
+        "email": "steve@acme.gorgias.io",
+        "name": "Steve",
       },
     },
     "type": "SUBMIT_CUSTOMER_SUCCESS",
@@ -101,10 +100,9 @@ Array [
     "isUpdate": true,
     "resp": Object {
       "data": Object {
-        "email": "alex@gorgias.io",
+        "email": "steve@acme.gorgias.io",
         "id": 2,
-        "name": "Alex",
-        "role": "agent",
+        "name": "Steve",
       },
     },
     "type": "SUBMIT_CUSTOMER_SUCCESS",

@@ -41,7 +41,7 @@ export const similarUser = (userId: string): thunkActionType => ((dispatch: disp
         type: constants.SEARCH_SIMILAR_USER_START
     })
 
-    return axios.get(`/api/users/${userId}/similar/`)
+    return axios.get(`/api/customers/${userId}/similar/`)
         .then((json = {}) => json.data)
         .then(resp => {
             return dispatch({
@@ -62,7 +62,7 @@ export const fetchPreviewUser = (userId: string): thunkActionType => ((dispatch:
         type: constants.FETCH_PREVIEW_USER_START
     })
 
-    return axios.get(`/api/users/${userId}/`)
+    return axios.get(`/api/customers/${userId}/`)
         .then((json = {}) => json.data)
         .then(resp => {
             return dispatch({

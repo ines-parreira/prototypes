@@ -597,7 +597,7 @@ describe('ticket actions', () => {
         it('should set the customer because there is exactly one user matching this email address', () => {
             mockServer
                 .onPost('/api/search/').reply(200, {data: [{user: {id: 1}}]})
-                .onGet('/api/users/1/').reply(200, {id: 1, name: 'foo', email: 'foo@gorgias.io'})
+                .onGet('/api/customers/1/').reply(200, {id: 1, name: 'foo', email: 'foo@gorgias.io'})
             store = mockStore({
                 ticket: initialState
             })
