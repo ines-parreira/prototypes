@@ -49,10 +49,22 @@ export const similarUser = (userId: string): thunkActionType => ((dispatch: disp
                 user: resp,
             })
         }, error => {
+            // TODO(customers-migration): remove these lines when the migration is done
+            if (error && error.response && error.response.status === 404) {
+                if (window.Raven){
+                    window.Raven.captureMessage('Agent has a customer profile', {
+                        level: 'error',
+                        extra: {
+                            userId
+                        }
+                    })
+                }
+                return Promise.resolve()
+            }
+
             return dispatch({
                 type: constants.SEARCH_SIMILAR_USER_ERROR,
-                error,
-                reason: 'Failed to do the search similar users. Please try again...'
+                reason: 'Failed to search for similar customers. Please try again...'
             })
         })
 })

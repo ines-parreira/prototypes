@@ -102,7 +102,6 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
         case constants.FETCH_CUSTOMER_HISTORY_ERROR: {
             let newState = state
                 .setIn(['_internal', 'loading', 'history'], false)
-                .setIn(['customerHistory', 'triedLoading'], false)
 
             if (!action.shouldDisplayHistoryOnNextPage) {
                 newState = newState

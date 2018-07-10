@@ -33,7 +33,7 @@ const serverErrorHandler = store => next => action => {
     }
 
     const shouldDisplayError = action
-        && action.error
+        && (action.error || action.reason)
         && !_some(IGNORED_PREFIXS, (prefix) => action.type.startsWith(prefix))
 
     if (shouldDisplayError) {

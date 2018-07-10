@@ -124,6 +124,11 @@ export function fetchCustomerHistory(customerId: number, options: {successCondit
 
                 return Promise.resolve(resp)
             }, error => {
+                // TODO(customers-migration): remove these lines when the migration is done
+                if (error && error.response && error.response.status === 404) {
+                    return Promise.resolve()
+                }
+
                 return dispatch({
                     type: types.FETCH_CUSTOMER_HISTORY_ERROR,
                     error,
