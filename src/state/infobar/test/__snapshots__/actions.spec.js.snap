@@ -159,10 +159,5 @@ Array [
   Object {
     "type": "SEARCH_SIMILAR_USER_START",
   },
-  Object {
-    "error": [Error: Request failed with status code 404],
-    "reason": "Failed to do the search similar users. Please try again...",
-    "type": "SEARCH_SIMILAR_USER_ERROR",
-  },
 ]
 `;
