@@ -1,7 +1,6 @@
 // @flow
 import React from 'react'
 import linkifyString from 'linkifyjs/string'
-import linkifyHtml from 'linkifyjs/html'
 import classnames from 'classnames'
 
 import {sanitizeHtmlDefault, proxifyImages} from '../../../../utils'
@@ -60,7 +59,7 @@ export default class TicketMessageBody extends React.Component<Props, State> {
             }
         }
 
-        body = proxifyImages(sanitizeHtmlDefault(body), '1000x')
+        body = proxifyImages(body, '1000x')
 
         const linkifyOptions = {
             attributes: {
@@ -71,8 +70,11 @@ export default class TicketMessageBody extends React.Component<Props, State> {
         if (bodyIsOnlyText) {
             body = linkifyString(body, linkifyOptions)
         } else {
-            body = linkifyHtml(body, linkifyOptions)
+            // TODO(@ghinda): disabled this like because it brakes invalid HTML
+            // body = linkifyHtml(body, linkifyOptions)
         }
+
+        body = sanitizeHtmlDefault(body)
 
         let content = body !== 'null' && (
             <div>

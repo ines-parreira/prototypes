@@ -527,7 +527,7 @@ exports[`components TicketMessageBody should linkify invalid body_html 1`] = `
                                               
                                           
                                           <table>
-                                              <a href=\\"http://gorgias.io\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">http://gorgias.io</a>
+                                              http://gorgias.io
                                           
                                               
                                               <a href=\\"https://gorgias.io\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">gorgias.io</a>
