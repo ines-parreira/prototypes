@@ -47,16 +47,20 @@ NavLink.propTypes = {
 const mainMenu = [{
     url: '/app/tickets',
     label: 'Tickets',
+    icon: 'question_answer',
 }, {
     url: '/app/customers',
     label: 'Customers',
+    icon: 'people',
 }, {
     url: '/app/stats',
     label: 'Statistics',
     className: 'd-none d-md-block',
+    icon: 'bar_chart',
 }, {
     url: '/app/settings',
     label: 'Settings',
+    icon: 'settings',
 }]
 
 @connect((state) => ({
@@ -153,6 +157,7 @@ export default class Navbar extends React.Component {
                                             this._closePanel()
                                         }}
                                     >
+                                        <i className="material-icons mr-2">{item.icon}</i>
                                         {item.label}
                                     </DropdownItem>
                                 )
