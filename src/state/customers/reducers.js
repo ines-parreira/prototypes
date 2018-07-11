@@ -98,7 +98,20 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
                 .setIn(['customerHistory', 'hasHistory'], hasHistory)
         }
 
-        case ticketConstants.CLEAR_TICKET:
+        case ticketConstants.CLEAR_TICKET: {
+            let newState = state
+                .setIn(['_internal', 'loading', 'history'], false)
+                .setIn(['customerHistory', 'triedLoading'], false)
+
+            if (!action.shouldDisplayHistoryOnNextPage) {
+                newState = newState
+                    .setIn(['customerHistory', 'tickets'], fromJS([]))
+                    .setIn(['customerHistory', 'hasHistory'], false)
+            }
+
+            return newState
+        }
+
         case constants.FETCH_CUSTOMER_HISTORY_ERROR: {
             let newState = state
                 .setIn(['_internal', 'loading', 'history'], false)

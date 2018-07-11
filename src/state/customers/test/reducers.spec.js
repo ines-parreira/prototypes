@@ -156,20 +156,16 @@ describe('customers reducers', () => {
     })
 
     it('fetch customer history', () => {
+        const fetchCustomerHistoryStartState = reducer(initialState, {
+            type: types.FETCH_CUSTOMER_HISTORY_START
+        })
         // start
-        expect(
-            reducer(
-                initialState,
-                {
-                    type: types.FETCH_CUSTOMER_HISTORY_START,
-                }
-            ).toJS()
-        ).toMatchSnapshot()
+        expect(fetchCustomerHistoryStartState.toJS()).toMatchSnapshot()
 
         // success
         expect(
             reducer(
-                initialState,
+                fetchCustomerHistoryStartState,
                 {
                     type: types.FETCH_CUSTOMER_HISTORY_SUCCESS,
                     resp: {
@@ -185,7 +181,7 @@ describe('customers reducers', () => {
         // success but no history
         expect(
             reducer(
-                initialState,
+                fetchCustomerHistoryStartState,
                 {
                     type: types.FETCH_CUSTOMER_HISTORY_SUCCESS,
                     resp: {
@@ -201,7 +197,7 @@ describe('customers reducers', () => {
         // error
         expect(
             reducer(
-                initialState,
+                fetchCustomerHistoryStartState,
                 {
                     type: types.FETCH_CUSTOMER_HISTORY_ERROR,
                 }

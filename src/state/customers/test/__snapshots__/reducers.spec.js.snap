@@ -61,7 +61,7 @@ Object {
   "customerHistory": Object {
     "events": Array [],
     "hasHistory": false,
-    "tickets": Object {},
+    "tickets": Array [],
     "triedLoading": false,
   },
   "items": Array [],
@@ -198,7 +198,7 @@ Object {
         "id": 2,
       },
     ],
-    "triedLoading": false,
+    "triedLoading": true,
   },
   "items": Array [],
 }
@@ -222,7 +222,7 @@ Object {
         "id": 1,
       },
     ],
-    "triedLoading": false,
+    "triedLoading": true,
   },
   "items": Array [],
 }
@@ -242,7 +242,7 @@ Object {
     "events": Array [],
     "hasHistory": false,
     "tickets": Object {},
-    "triedLoading": false,
+    "triedLoading": true,
   },
   "items": Array [],
 }
