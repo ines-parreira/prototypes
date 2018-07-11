@@ -12,7 +12,7 @@ import {initialState as ticketInitialState} from '../../ticket/reducers'
 
 import {integrationsState} from '../../../fixtures/integrations'
 import * as integrationSelectors from '../../integrations/selectors'
-import {getPreferredChannel,} from '../../ticket/utils'
+import {getLastSenderChannel, getPreferredChannel} from '../../ticket/utils'
 import {smoochTicket, emailTicket, instagramMedia} from '../../ticket/test/fixtures'
 
 const middlewares = [thunk]
@@ -276,6 +276,28 @@ describe('actions', () => {
 
                 expect(senderChannel.meta.verified).toBe(true)
                 expect(senderChannel.meta.address).not.toEqual(unexistingChannel.address)
+            })
+
+            it('should persist the sender channel in the localStorage', () => {
+                store = mockStore({
+                    integrations: fromJS(integrationsState),
+                    ticket: emailTicket,
+                    newMessage: initialState,
+                })
+                expect(getLastSenderChannel()).toBe(null)
+                store.dispatch(actions.setSender())
+
+                // it should still be null because we didn't specify a sender param
+                expect(getLastSenderChannel()).toBe(null)
+
+                const from = getPreferredChannel('email', channels)
+                const expectedChannel = fromJS({
+                    name: from.get('name'),
+                    address: from.get('address'),
+                })
+
+                store.dispatch(actions.setSender(expectedChannel))
+                expect(getLastSenderChannel()).toEqual(expectedChannel)
             })
         })
 

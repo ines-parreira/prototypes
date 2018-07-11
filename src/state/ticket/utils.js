@@ -12,6 +12,7 @@ import {displayUserNameFromSource} from '../../pages/tickets/common/utils'
 import {getActionTemplate, toImmutable} from '../../utils'
 import {renderTemplate} from '../../pages/common/utils/template'
 
+
 /**
  * Get the most recent messages which have the matching sourceType
  * @param messages
@@ -240,6 +241,29 @@ export function getPreferredChannel(channelType, channels) {
     return chan || fromJS({})
 }
 
+
+const LAST_SENDER_CHANNEL_KEY = 'lastSenderChannel'
+
+export const persistLastSenderChannel = (channel) => {
+    if (window.localStorage) {
+        window.localStorage.setItem(LAST_SENDER_CHANNEL_KEY, JSON.stringify(channel.toJS()))
+    }
+}
+
+export const getLastSenderChannel = () => {
+    if (window.localStorage) {
+        const lastSenderChannel = window.localStorage.getItem(LAST_SENDER_CHANNEL_KEY)
+        if (lastSenderChannel) {
+            try {
+                return fromJS(JSON.parse(lastSenderChannel))
+            } catch (error) {
+                console.error(`Failed to decode window.localStorage."${LAST_SENDER_CHANNEL_KEY}"`, error)
+            }
+        }
+    }
+    return null
+}
+
 /**
  * Return sender based on ticket messages and available channels
  * @param ticket
@@ -284,6 +308,12 @@ export function getNewMessageSender(ticket, newMessageSourceType, channels) {
 
     // new ticket
     if (!lastMessage) {
+        const lastSender = getLastSenderChannel()
+
+        // make sure the persisted sender is in the list of channels
+        if (lastSender && channels.find((c) => c.get('address') === lastSender.get('address'))) {
+            return lastSender
+        }
         return preferredChannel
     }
 

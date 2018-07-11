@@ -11,6 +11,7 @@ import {
     getNewMessageSender,
     isForwardedMessage,
     replaceIntegrationVariables,
+    persistLastSenderChannel,
 } from '../utils'
 import {
     displayUserNameFromSource,
@@ -365,6 +366,26 @@ describe('ticket utils', () => {
                     name: '',
                     address: '',
                 }))
+        })
+
+        it('should get the sender channel from localStorage', () => {
+            const testChannel = fromJS({
+                name: 'test',
+                address: 'test@gorgias.io'
+            })
+            persistLastSenderChannel(testChannel)
+
+            // remove messages, to simulate a new ticket
+            const _emailTicket = emailTicket.set('messages', fromJS([]))
+
+            const expected = getPreferredChannel('email', channels)
+
+            // persisted channel is not present in the channels list so the preferred channel should be returned
+            expect(getNewMessageSender(_emailTicket, 'email', channels)).toEqualImmutable(expected)
+
+            // update the channel list and we should get the persisted channel
+            expect(getNewMessageSender(_emailTicket, 'email', channels.push(testChannel))).toEqualImmutable(testChannel)
+
         })
     })
 
