@@ -122,6 +122,10 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
   </div>
   <RichField
     allowExternalChanges={false}
+    attachFiles={[Function]}
+    canDropFiles={false}
+    canInsertInlineImages={true}
+    notify={[Function]}
     onChange={[Function]}
     signature={false}
     type="text"

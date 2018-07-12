@@ -26,7 +26,6 @@
   "author": "Alex Plugaru <alex@gorgias.io>",
   "license": "UNLICENSED",
   "dependencies": {
-    "@mikeljames/draft-js-drag-n-drop-upload-plugin": "^2.0.1",
     "array-includes": "^3.0.2",
     "axios": "^0.13.1",
     "bootstrap": "^4.0.0",

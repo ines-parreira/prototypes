@@ -9,25 +9,26 @@ import Image from './components/Image'
 // documentation: https://github.com/draft-js-plugins/draft-js-plugins/blob/master/HOW_TO_CREATE_A_PLUGIN.md
 
 const toolbarPlugin = (config = {}) => {
-    const store = createStore()
+    const toolbarStore = createStore()
 
     const toolbarProps = {
-        store,
-        actions: getToolbarActions(store),
+        toolbarStore,
+        actions: getToolbarActions(toolbarStore),
     }
 
     return {
         initialize: ({getEditorState, setEditorState}) => {
-            store.updateItem('getEditorState', getEditorState)
-            store.updateItem('setEditorState', setEditorState)
+            toolbarStore.updateItem('getEditorState', getEditorState)
+            toolbarStore.updateItem('setEditorState', setEditorState)
         },
         Toolbar: decorateComponentWithProps(Toolbar, toolbarProps),
         decorators,
         blockRendererFn: (block, {getEditorState}) => {
             const contetState = getEditorState().getCurrentContent()
             // render img (atomic block)
-            if (block.getType() === 'atomic') {
-                const entity = contetState.getEntity(block.getEntityAt(0))
+            const entityKey = block.getEntityAt(0)
+            if (block.getType() === 'atomic' && entityKey) {
+                const entity = contetState.getEntity(entityKey)
                 const type = entity.getType()
                 if (type === 'img') {
                     let component = Image

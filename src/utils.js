@@ -33,12 +33,14 @@ import crypto from 'crypto'
 import URLSafeBase64 from 'urlsafe-base64'
 import linkifyIt from 'linkify-it'
 import htmlparser from 'htmlparser2'
-import TICKET_LANGUAGES from './config/ticketLanguages'
 
+import TICKET_LANGUAGES from './config/ticketLanguages'
 import {ACTION_TEMPLATES} from './config'
 import {availableVariables} from './config/rules'
-import type {notificationType} from './state/notifications/actions'
+import {DEFAULT_IMAGE_WIDTH} from './config/editor'
 import {AUTHORIZED_NOTIFICATION_TYPES} from './state/notifications/actions'
+
+import type {notificationType} from './state/notifications/actions'
 import type {viewsStateType} from './state/views/types'
 import type {actionTemplateType, attachmentType, esprimaParse, reactRouterRoute, schemasType} from './types'
 
@@ -576,7 +578,7 @@ export function convertToHTML(contentState: ContentState): string {
             }
 
             if (entity.type === 'img') {
-                const width = entity.data.width || 400
+                const width = entity.data.width || DEFAULT_IMAGE_WIDTH
 
                 // keep the start/end way of doing until https://github.com/HubSpot/draft-convert/issues/47 is fixed
                 return `<img src="${entity.data.src}" width="${width}px" style="max-width: 100%" />`
@@ -610,7 +612,7 @@ export function convertToHTML(contentState: ContentState): string {
 export function convertFromHTML(html: string): ContentState {
     let converted = _convertFromHTML({
         htmlToBlock: (nodeName) => {
-            if (nodeName === 'figure') {
+            if (nodeName === 'figure' || nodeName === 'img') {
                 return 'atomic'
             }
         },
@@ -629,7 +631,7 @@ export function convertFromHTML(html: string): ContentState {
                     'MUTABLE',
                     {
                         src: node.src,
-                        width: node.width,
+                        width: node.width || DEFAULT_IMAGE_WIDTH,
                     }
                 )
             }

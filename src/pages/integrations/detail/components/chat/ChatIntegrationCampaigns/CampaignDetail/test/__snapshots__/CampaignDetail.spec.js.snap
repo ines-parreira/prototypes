@@ -447,6 +447,10 @@ exports[`CampaignDetail component should display the campaign correctly when upd
             </div>
             <RichField
               allowExternalChanges={false}
+              attachFiles={[Function]}
+              canDropFiles={false}
+              canInsertInlineImages={true}
+              notify={[Function]}
               onChange={[Function]}
               placeholder="Write your message"
               required={true}
@@ -747,6 +751,10 @@ exports[`CampaignDetail component should display the campaign correctly when upd
             </div>
             <RichField
               allowExternalChanges={false}
+              attachFiles={[Function]}
+              canDropFiles={false}
+              canInsertInlineImages={true}
+              notify={[Function]}
               onChange={[Function]}
               placeholder="Write your message"
               required={true}

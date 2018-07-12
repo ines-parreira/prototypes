@@ -6,8 +6,7 @@ import {connect} from 'react-redux'
 import _debounce from 'lodash/debounce'
 import _noop from 'lodash/noop'
 
-import {EditorState, ContentState, SelectionState} from 'draft-js'
-import createDndUploadPlugin from '@mikeljames/draft-js-drag-n-drop-upload-plugin'
+import {EditorState, ContentState} from 'draft-js'
 
 import shortcutManager from '../../../../../services/shortcutManager'
 import RichField from '../../../../common/forms/RichField'
@@ -20,8 +19,6 @@ import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {getOtherAgents} from '../../../../../state/agents/selectors'
 
 import {notify} from '../../../../../state/notifications/actions'
-
-const dndPlugin = createDndUploadPlugin()
 
 // Those are the source type which can send either text or attachment, but not both; they also cannot send more
 // than one attachment at a time
@@ -214,7 +211,6 @@ export class TicketReplyEditor extends React.Component<Props, State> {
 
     _handleFiles = (files: filesType, validationRegex: validationRegexType) => {
         const {newMessageType} = this.props
-
         if (!this._canAddAttachments(files)) {
             return
         }
@@ -256,19 +252,6 @@ export class TicketReplyEditor extends React.Component<Props, State> {
         this.props.addAttachments(this.props.ticket, files)
     }
 
-    _handleDroppedFiles = (selection: SelectionState, files: filesType, validationRegex: validationRegexType) => {
-        dndPlugin.handleDroppedFiles(selection, files, {
-            getEditorState: () => this.state.editorState,
-            setEditorState: (editorState) => {
-                this.setState({editorState})
-                updateMessageText(this.props, editorState)
-            }
-        })
-
-        this._handleFiles(files, validationRegex)
-        return false
-    }
-
     _getEditorState = () => {
         if (!this.richArea) {
             return
@@ -290,7 +273,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
     }
 
     render() {
-        const {newMessage, newMessageType, agents, richAreaRef} = this.props
+        const {newMessage, newMessageType, agents, richAreaRef, notify} = this.props
 
         const isNewMessageRichType = isRichType(newMessageType)
         const newMessageAcceptsOnlyImages = acceptsOnlyImages(newMessageType)
@@ -367,6 +350,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
             'but not both at the same time. If you want to write a message, remove the attachment first.'
 
         const isAlert = cantWriteTextBecauseOfAttachments
+        const canInsertInlineImages = (newMessageType === 'email')
 
         return (
             <div className={classnames(css.component, {[css.isAlert]: isAlert})}>
@@ -383,12 +367,10 @@ export class TicketReplyEditor extends React.Component<Props, State> {
                         html: newMessage.getIn(['newMessage', 'body_html']),
                     }}
                     onChange={this._onEditorChange}
-                    handleDroppedFiles={(selection, files) => {
-                        this._handleDroppedFiles(selection, files, attachmentInputProps.accept)
+                    attachFiles = {(files) => {
+                        return this._handleFiles(files, attachmentInputProps.accept)
                     }}
-                    canDropFiles
                     tabIndex="4"
-                    spellCheck
                     readOnly={
                         newMessage.getIn(['_internal', 'loading', 'submitMessage']) ||
                         cantWriteTextBecauseOfAttachments
@@ -398,7 +380,11 @@ export class TicketReplyEditor extends React.Component<Props, State> {
                     alertMode={isAlert && 'warning'}
                     alertText={alertText}
                     placeholder="Click here to reply, or press r."
+                    notify={notify}
+                    canInsertInlineImages={canInsertInlineImages}
+                    canDropFiles
                     signature
+                    spellCheck
                 />
             </div>
         )

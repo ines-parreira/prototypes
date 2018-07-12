@@ -2,16 +2,6 @@
 # yarn lockfile v1
 
 
-"@mikeljames/draft-js-drag-n-drop-upload-plugin@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@mikeljames/draft-js-drag-n-drop-upload-plugin/-/draft-js-drag-n-drop-upload-plugin-2.0.1.tgz#829875e2020a7a3c4b20b208bcb52aa902c7b677"
-  dependencies:
-    decorate-component-with-props "^1.0.2"
-    find-with-regex "^1.0.2"
-    immutable "~3.7.4"
-    prop-types "^15.5.8"
-    union-class-names "^1.0.0"
-
 "@types/react@^15.0.22":
   version "15.0.24"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-15.0.24.tgz#8a75299dc37906df327c18ca918bf97a55e7123b"

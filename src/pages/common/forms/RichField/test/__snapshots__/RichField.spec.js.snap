@@ -38,7 +38,10 @@ exports[`RichField display alert 1`] = `
           }
         />
       </div>
-      <Decorated(Toolbar) />
+      <Decorated(Toolbar)
+        attachFiles={[Function]}
+        getCanDropFiles={[Function]}
+      />
     </div>
   </div>
 </FormGroup>
@@ -69,6 +72,8 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
         }
       >
         <PluginEditor
+          canDropFiles={false}
+          canInsertInlineImages={true}
           customStyleMap={Object {}}
           decorators={Array []}
           defaultBlockRenderMap={true}
@@ -216,7 +221,6 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
               },
             }
           }
-          handleDroppedFiles={[Function]}
           handleKeyCommand={[Function]}
           handlePastedText={[Function]}
           onBlur={[Function]}
@@ -283,6 +287,9 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
                 ],
                 "onChange": [Function],
               },
+              Object {
+                "handlePastedFiles": [Function],
+              },
             ]
           }
         />
@@ -291,7 +298,10 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
           onSearchChange={[Function]}
         />
       </div>
-      <Decorated(Toolbar) />
+      <Decorated(Toolbar)
+        attachFiles={[Function]}
+        getCanDropFiles={[Function]}
+      />
     </div>
   </div>
 </FormGroup>
@@ -322,6 +332,8 @@ exports[`RichField should render a basic input 1`] = `
         }
       >
         <PluginEditor
+          canDropFiles={false}
+          canInsertInlineImages={true}
           customStyleMap={Object {}}
           decorators={Array []}
           defaultBlockRenderMap={true}
@@ -469,7 +481,6 @@ exports[`RichField should render a basic input 1`] = `
               },
             }
           }
-          handleDroppedFiles={[Function]}
           handleKeyCommand={[Function]}
           handlePastedText={[Function]}
           onBlur={[Function]}
@@ -536,6 +547,9 @@ exports[`RichField should render a basic input 1`] = `
                 ],
                 "onChange": [Function],
               },
+              Object {
+                "handlePastedFiles": [Function],
+              },
             ]
           }
         />
@@ -548,7 +562,10 @@ exports[`RichField should render a basic input 1`] = `
           }
         />
       </div>
-      <Decorated(Toolbar) />
+      <Decorated(Toolbar)
+        attachFiles={[Function]}
+        getCanDropFiles={[Function]}
+      />
     </div>
   </div>
 </FormGroup>
@@ -557,6 +574,10 @@ exports[`RichField should render a basic input 1`] = `
 exports[`RichField should render immutable variable 1`] = `
 <RichField
   allowExternalChanges={false}
+  attachFiles={[Function]}
+  canDropFiles={false}
+  canInsertInlineImages={true}
+  notify={[Function]}
   onChange={[Function]}
   signature={false}
   type="text"
@@ -595,6 +616,8 @@ exports[`RichField should render immutable variable 1`] = `
             }
           >
             <PluginEditor
+              canDropFiles={false}
+              canInsertInlineImages={true}
               customStyleMap={Object {}}
               decorators={Array []}
               defaultBlockRenderMap={true}
@@ -1015,7 +1038,6 @@ exports[`RichField should render immutable variable 1`] = `
                   },
                 }
               }
-              handleDroppedFiles={[Function]}
               handleKeyCommand={[Function]}
               handlePastedText={[Function]}
               onBlur={[Function]}
@@ -1082,6 +1104,9 @@ exports[`RichField should render immutable variable 1`] = `
                     ],
                     "onChange": [Function],
                   },
+                  Object {
+                    "handlePastedFiles": [Function],
+                  },
                 ]
               }
             >
@@ -1143,6 +1168,8 @@ exports[`RichField should render immutable variable 1`] = `
                 }
                 blockRendererFn={[Function]}
                 blockStyleFn={[Function]}
+                canDropFiles={false}
+                canInsertInlineImages={true}
                 customStyleMap={Object {}}
                 decorators={Array []}
                 defaultBlockRenderMap={true}
@@ -1565,6 +1592,7 @@ exports[`RichField should render immutable variable 1`] = `
                 }
                 handleDroppedFiles={[Function]}
                 handleKeyCommand={[Function]}
+                handlePastedFiles={[Function]}
                 handlePastedText={[Function]}
                 handleReturn={[Function]}
                 keyBindingFn={[Function]}
@@ -1635,6 +1663,9 @@ exports[`RichField should render immutable variable 1`] = `
                         },
                       ],
                       "onChange": [Function],
+                    },
+                    Object {
+                      "handlePastedFiles": [Function],
                     },
                   ]
                 }
@@ -3311,7 +3342,10 @@ exports[`RichField should render immutable variable 1`] = `
               />
             </Decorated(MentionSuggestions)>
           </div>
-          <Decorated(Toolbar)>
+          <Decorated(Toolbar)
+            attachFiles={[Function]}
+            getCanDropFiles={[Function]}
+          >
             <Toolbar
               actions={
                 Array [
@@ -3387,9 +3421,11 @@ exports[`RichField should render immutable variable 1`] = `
                   },
                 ]
               }
+              attachFiles={[Function]}
               buttons={Array []}
+              getCanDropFiles={[Function]}
               hideActions={false}
-              store={
+              toolbarStore={
                 Object {
                   "getItem": [Function],
                   "updateItem": [Function],
@@ -3398,6 +3434,9 @@ exports[`RichField should render immutable variable 1`] = `
             >
               <div
                 className="editor-toolbar page"
+                onDragLeave={[Function]}
+                onDragOver={[Function]}
+                onDrop={[Function]}
               >
                 <div
                   className="actions"
@@ -3593,6 +3632,11 @@ exports[`RichField should render immutable variable 1`] = `
                     </Popover>
                   </AddEmoji>
                 </div>
+                <div
+                  className="hoverOverlay"
+                >
+                  Add files as attachments
+                </div>
               </div>
             </Toolbar>
           </Decorated(Toolbar)>
@@ -3606,6 +3650,10 @@ exports[`RichField should render immutable variable 1`] = `
 exports[`RichField should render mutable variable 1`] = `
 <RichField
   allowExternalChanges={false}
+  attachFiles={[Function]}
+  canDropFiles={false}
+  canInsertInlineImages={true}
+  notify={[Function]}
   onChange={[Function]}
   signature={false}
   type="text"
@@ -3644,6 +3692,8 @@ exports[`RichField should render mutable variable 1`] = `
             }
           >
             <PluginEditor
+              canDropFiles={false}
+              canInsertInlineImages={true}
               customStyleMap={Object {}}
               decorators={Array []}
               defaultBlockRenderMap={true}
@@ -3971,7 +4021,6 @@ exports[`RichField should render mutable variable 1`] = `
                   },
                 }
               }
-              handleDroppedFiles={[Function]}
               handleKeyCommand={[Function]}
               handlePastedText={[Function]}
               onBlur={[Function]}
@@ -4038,6 +4087,9 @@ exports[`RichField should render mutable variable 1`] = `
                     ],
                     "onChange": [Function],
                   },
+                  Object {
+                    "handlePastedFiles": [Function],
+                  },
                 ]
               }
             >
@@ -4099,6 +4151,8 @@ exports[`RichField should render mutable variable 1`] = `
                 }
                 blockRendererFn={[Function]}
                 blockStyleFn={[Function]}
+                canDropFiles={false}
+                canInsertInlineImages={true}
                 customStyleMap={Object {}}
                 decorators={Array []}
                 defaultBlockRenderMap={true}
@@ -4428,6 +4482,7 @@ exports[`RichField should render mutable variable 1`] = `
                 }
                 handleDroppedFiles={[Function]}
                 handleKeyCommand={[Function]}
+                handlePastedFiles={[Function]}
                 handlePastedText={[Function]}
                 handleReturn={[Function]}
                 keyBindingFn={[Function]}
@@ -4498,6 +4553,9 @@ exports[`RichField should render mutable variable 1`] = `
                         },
                       ],
                       "onChange": [Function],
+                    },
+                    Object {
+                      "handlePastedFiles": [Function],
                     },
                   ]
                 }
@@ -5769,7 +5827,10 @@ exports[`RichField should render mutable variable 1`] = `
               />
             </Decorated(MentionSuggestions)>
           </div>
-          <Decorated(Toolbar)>
+          <Decorated(Toolbar)
+            attachFiles={[Function]}
+            getCanDropFiles={[Function]}
+          >
             <Toolbar
               actions={
                 Array [
@@ -5845,9 +5906,11 @@ exports[`RichField should render mutable variable 1`] = `
                   },
                 ]
               }
+              attachFiles={[Function]}
               buttons={Array []}
+              getCanDropFiles={[Function]}
               hideActions={false}
-              store={
+              toolbarStore={
                 Object {
                   "getItem": [Function],
                   "updateItem": [Function],
@@ -5856,6 +5919,9 @@ exports[`RichField should render mutable variable 1`] = `
             >
               <div
                 className="editor-toolbar page"
+                onDragLeave={[Function]}
+                onDragOver={[Function]}
+                onDrop={[Function]}
               >
                 <div
                   className="actions"
@@ -6050,6 +6116,11 @@ exports[`RichField should render mutable variable 1`] = `
                       </span>
                     </Popover>
                   </AddEmoji>
+                </div>
+                <div
+                  className="hoverOverlay"
+                >
+                  Add files as attachments
                 </div>
               </div>
             </Toolbar>

@@ -3,12 +3,10 @@ import React from 'react'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import _isEqual from 'lodash/isEqual'
+import _noop from 'lodash/noop'
 
 import {ContentState, EditorState, RichUtils, Modifier} from 'draft-js'
 import Editor, {composeDecorators} from 'draft-js-plugins-editor'
-// TODO switch to official source when published
-// https://github.com/draft-js-plugins/draft-js-plugins/issues/755
-import createDndUploadPlugin from '@mikeljames/draft-js-drag-n-drop-upload-plugin'
 import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
 import createResizeablePlugin from 'draft-js-resizeable-plugin'
 
@@ -17,6 +15,8 @@ import createToolbarPlugin from '../../draftjs/plugins/toolbar'
 import createMentionPlugin, {suggestionsFilter} from '../../draftjs/plugins/mentions'
 import createConnectedLinksPlugin from '../../draftjs/plugins/connectedLinks'
 import createVariablesPlugin from '../../draftjs/plugins/variables'
+import createPasteImagePlugin from '../../draftjs/plugins/pasteImage'
+import createDndUploadPlugin from '../../draftjs/plugins/dndUpload'
 
 import InputField from '../InputField'
 import {convertFromHTML, convertToHTML, removeMentions} from '../../../../utils'
@@ -38,11 +38,15 @@ type Props = {
     placeholder: string,
     value: any,
     signature: boolean,
+    notify: ({status: string, message: string}) => void,
+    attachFiles: (T: Array<Blob>) => void,
+    canDropFiles: boolean,
+    canInsertInlineImages: boolean,
 
     mentionProps?: {
         suggestions: suggestionsType,
         canAddMention: canAddMentionType
-    }
+    },
 }
 
 type State = {
@@ -59,12 +63,24 @@ export default class RichField extends InputField<Props, State> {
         allowExternalChanges: false,
         signature: false,
         type: 'text',
+        notify: _noop,
+        attachFiles: _noop,
+        canDropFiles: false,
+        canInsertInlineImages: true
     }
 
     constructor(props: Props) {
         super(props)
 
-        this.dndPlugin = createDndUploadPlugin()
+        const imagePluginProps = {
+            attachFiles: props.attachFiles,
+            notify: props.notify,
+            getCanDropFiles: this._getCanDropFiles,
+            getCanInsertInlineImages: this._getCanInsertInlineImages
+        }
+
+        this.dndPlugin = createDndUploadPlugin(imagePluginProps)
+        this.pasteImage = createPasteImagePlugin(imagePluginProps)
         this.blockBreakoutPlugin = createBlockBreakoutPlugin()
         this.resizeablePlugin = createResizeablePlugin({
             horizontal: 'absolute',
@@ -88,6 +104,7 @@ export default class RichField extends InputField<Props, State> {
             this.mentionPlugin,
             this.connectedLinksPlugin,
             this.variablesPlugin,
+            this.pasteImage,
         ]
 
         let editorState = EditorState.createEmpty()
@@ -127,6 +144,9 @@ export default class RichField extends InputField<Props, State> {
             this._updateEditorState(nextProps.value)
         }
     }
+
+    _getCanDropFiles = () => this.props.canDropFiles
+    _getCanInsertInlineImages = () => this.props.canInsertInlineImages
 
     // used by parents that want to set a new editor state
     _setEditorState = (editorState: EditorState) => {
@@ -189,13 +209,6 @@ export default class RichField extends InputField<Props, State> {
         }
 
         return 'not-handled'
-    }
-
-    _handleDroppedFiles = (...args: Array<any>) => {
-        const {handleDroppedFiles} = this.props
-        if (handleDroppedFiles) {
-            return handleDroppedFiles(...args)
-        }
     }
 
     _handlePastedText = (text: string, html?: string, editorState: EditorState) => {
@@ -283,14 +296,15 @@ export default class RichField extends InputField<Props, State> {
             required, // eslint-disable-line
             type, // eslint-disable-line
             value, // eslint-disable-line
+            notify, // eslint-disable-line
             allowExternalChanges, // eslint-disable-line
             alertMode,
             alertText,
-            canDropFiles,
             mentionProps,
             toolbarProps,
             displayOnly,
             signature,
+            attachFiles,
             ...rest,
         } = this.props
 
@@ -311,7 +325,7 @@ export default class RichField extends InputField<Props, State> {
             >
                 <div
                     className={classnames('editor-wrapper', {
-                        drop: this.state.isDragging && canDropFiles,
+                        drop: this.state.isDragging,
                     })}
                     style={{paddingBottom: '26px'}}
                     onClick={this.focusEditor}
@@ -332,7 +346,6 @@ export default class RichField extends InputField<Props, State> {
                                 onBlur={this._onBlur}
                                 plugins={this.plugins}
                                 handleKeyCommand={this._handleKeyCommand}
-                                handleDroppedFiles={this._handleDroppedFiles}
                                 handlePastedText={this._handlePastedText}
                                 readOnly={displayOnly}
                                 placeholder={this.state.placeholder}
@@ -374,7 +387,11 @@ export default class RichField extends InputField<Props, State> {
                     }
                 </div>
 
-                <Toolbar {...toolbarProps} />
+                <Toolbar
+                    attachFiles={attachFiles}
+                    getCanDropFiles={this._getCanDropFiles}
+                    {...toolbarProps}
+                />
             </div>
         )
     }

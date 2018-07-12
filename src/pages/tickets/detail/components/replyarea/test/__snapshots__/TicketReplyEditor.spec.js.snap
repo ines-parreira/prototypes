@@ -8,8 +8,9 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
     alertMode={false}
     alertText="When using Facebook, you can either send a text message, or an attachment, but not both at the same time. If you want to write a message, remove the attachment first."
     allowExternalChanges={false}
+    attachFiles={[Function]}
     canDropFiles={true}
-    handleDroppedFiles={[Function]}
+    canInsertInlineImages={true}
     mentionProps={
       Object {
         "canAddMention": false,
@@ -17,6 +18,7 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
       ],
       }
     }
+    notify={[Function]}
     onChange={[Function]}
     placeholder="Click here to reply, or press r."
     readOnly={false}

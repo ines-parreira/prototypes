@@ -19,7 +19,7 @@ exports[`global utils proxifyImages should work with richer complex html 1`] = `
 <uknown-tag>11233</uknown-tag>
 <img alt=\\"no-src\\"/>
 <img src=\\"http://proxy-url/1000x,so6yvnkQDSUf7HkDo6h-Q3JQVISTUtLw6FCR6H9qeh5g/http://some-image/\\" alt=\\"bla \\"/>
-<strong><img src=\\"image2\\"/></strong>
+<strong><img src=\\"http://proxy-url/1000x,stFP7Aw5J-RVYmAgv_PqumNaXx7CTmG2A7vHBwluq4MY/https://image2/\\"/></strong>
 </div>
 "
 `;

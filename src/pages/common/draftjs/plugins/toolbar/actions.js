@@ -1,8 +1,9 @@
-import {RichUtils, EditorState, AtomicBlockUtils} from 'draft-js'
+import {RichUtils, EditorState} from 'draft-js'
 import {insertText} from '../../../../../utils'
 import AddLink from './components/AddLink'
 import AddImage from './components/AddImage'
 import AddEmoji from './components/AddEmoji'
+import {addImage} from '../utils'
 
 export default [
     {
@@ -92,21 +93,7 @@ export default [
         component: AddImage,
         functions: {
             addImage: (block, action, editorState, setEditorState, url) => {
-                const entityContentState = editorState.getCurrentContent().createEntity(
-                    'img',
-                    'IMMUTABLE',
-                    {src: url, width: '400'}
-                )
-                const entityKey = entityContentState.getLastCreatedEntityKey()
-                let newEditorState = AtomicBlockUtils.insertAtomicBlock(
-                    editorState,
-                    entityKey,
-                    ' ',
-                )
-
-                // forcing the current selection ensures that it will be at it's right place
-                newEditorState = EditorState.forceSelection(newEditorState, newEditorState.getSelection())
-
+                const newEditorState = addImage(editorState, url)
                 setEditorState(newEditorState)
             }
         },

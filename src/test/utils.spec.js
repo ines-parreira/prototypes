@@ -303,6 +303,20 @@ describe('global utils', () => {
             const newHTML = utils.convertToHTML(contentState)
             expect(newHTML).toEqual(baseHTML)
         })
+
+        it('should convert image to img entity', () => {
+            const baseHTML = '<img src="https://gorgias.io/">'
+            const contentState = utils.convertFromHTML(baseHTML)
+            const entityKey = contentState.getFirstBlock().getEntityAt(0)
+            expect(contentState.getEntity(entityKey).getType()).toEqual('img')
+        })
+
+        it('should convert image to img entity with data', () => {
+            const baseHTML = '<img src="https://gorgias.io/">'
+            const contentState = utils.convertFromHTML(baseHTML)
+            const entityKey = contentState.getFirstBlock().getEntityAt(0)
+            expect(contentState.getEntity(entityKey).getData()).toEqual({src: 'https://gorgias.io/', width: 400})
+        })
     })
 
     describe('toHTML', () => {
@@ -543,7 +557,7 @@ describe('global utils', () => {
 <uknown-tag>11233</uknown-tag>
 <img alt="no-src">
 <img src="http://some-image" alt="bla ">
-<strong><img src="image2"></strong>
+<strong><img src="https://image2"></strong>
 </div>
 `)).toMatchSnapshot()
         })

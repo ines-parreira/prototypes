@@ -1,32 +1,59 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React from 'react'
 import classnames from 'classnames'
 import _forEach from 'lodash/forEach'
 
 import css from './Toolbar.less'
 
-class Toolbar extends React.Component {
-    static propTypes = {
-        actions: PropTypes.array.isRequired,
-        buttons: PropTypes.array.isRequired,
-        hideActions: PropTypes.bool.isRequired,
-        displayedActions: PropTypes.array, // array of keys of actions that we want to display
-        store: PropTypes.object.isRequired,
-    }
+import type {EditorState} from 'draft-js'
+import type {ComponentType, Node} from 'react'
 
+type actionType = {
+    isActive: (T: () => EditorState) => boolean,
+    isDisabled: (T: () => EditorState) => boolean,
+    component: ComponentType<*>,
+    key: string,
+    name: string,
+    icon: string,
+    functions: Array<*>,
+}
+
+type State = {
+    isHovered: boolean,
+}
+
+type Props = {
+    actions: Array<actionType>,
+    buttons: Array<?Node>,
+    hideActions: boolean,
+    toolbarStore: {
+        getItem: (T: string) => any,
+        setItem: (T: string, U: any) => void,
+    },
+    attachFiles: (T: Array<Blob>) => void,
+    displayedActions?: Array<*>, // array of keys of actions that we want to display
+    getCanDropFiles: () => boolean,
+}
+
+class Toolbar extends React.Component<Props, State> {
     static defaultProps = {
         actions: [],
         buttons: [],
         hideActions: false,
     }
 
-    _preventDefault = (event) => {
+    state = {
+        isHovered: false,
+    }
+
+    _preventDefault = (event: Event) => {
         event.preventDefault()
     }
 
-    _renderAction = (action) => {
-        const {store} = this.props
+    _renderAction = (action: actionType) => {
+        const {toolbarStore} = this.props
 
-        const getEditorState = store.getItem('getEditorState')
+        const getEditorState = toolbarStore.getItem('getEditorState')
 
         // sometimes the editor state is not present - so we're augmenting the exception here.
         let isActive = false
@@ -47,7 +74,7 @@ class Toolbar extends React.Component {
         const functions = {}
         _forEach(action.functions, (func, name) => {
             functions[name] = (...other) => {
-                return func(store.getItem('getEditorState'), store.getItem('setEditorState'), ...other)
+                return func(toolbarStore.getItem('getEditorState'), toolbarStore.getItem('setEditorState'), ...other)
             }
         })
 
@@ -87,7 +114,7 @@ class Toolbar extends React.Component {
         )
     }
 
-    _renderButton = (button, index) => {
+    _renderButton = (button: ?Node, index: number) => {
         return (
             <div
                 key={index}
@@ -96,6 +123,33 @@ class Toolbar extends React.Component {
                 {button}
             </div>
         )
+    }
+
+    _onDrop = (e: DragEvent) => {
+        const {getCanDropFiles, attachFiles} = this.props
+        if (!getCanDropFiles()) {
+            return
+        }
+
+        e.preventDefault()
+        const eventFiles = e.dataTransfer && e.dataTransfer.files || []
+        const files = Array.from(eventFiles)
+        attachFiles(files)
+        this._hideDragHover()
+    }
+
+    _onDragOver = (e: Event) => {
+        const {getCanDropFiles} = this.props
+        if (!getCanDropFiles()) {
+            return
+        }
+
+        e.preventDefault()
+        this.setState({isHovered: true})
+    }
+
+    _hideDragHover = () => {
+        this.setState({isHovered: false})
     }
 
     render() {
@@ -112,11 +166,22 @@ class Toolbar extends React.Component {
         }
 
         return (
-            <div className={classnames('editor-toolbar', css.page)}>
+            <div
+                className={classnames('editor-toolbar', css.page, {
+                    [css.isHovered]: this.state.isHovered
+                })}
+                onDrop={this._onDrop}
+                onDragOver={this._onDragOver}
+                onDragLeave={this._hideDragHover}
+            >
                 <div className={css.actions}>
                     {filteredActions.map(this._renderAction)}
                 </div>
                 {buttons.map(this._renderButton)}
+
+                <div className={css.hoverOverlay}>
+                    Add files as attachments
+                </div>
             </div>
         )
     }
