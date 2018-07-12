@@ -24,7 +24,6 @@ const createMentionPlugin = () => {
         mentionSuggestionsEntry: styles.mentionSuggestionsEntry,
         mentionSuggestionsEntryFocused: styles.mentionSuggestionsEntryFocused,
         mentionSuggestionsEntryText: styles.mentionSuggestionsEntryText,
-        mentionSuggestionsEntryAvatar: styles.mentionSuggestionsEntryAvatar,
     }
 
     const mentionTrigger = '@'

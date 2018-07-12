@@ -3,6 +3,7 @@
  */
 
 import React, {PropTypes} from 'react'
+import {AgentLabel} from '../../../../../utils/labels'
 
 const defaultEntryComponent = (props) => {
     const {
@@ -14,7 +15,11 @@ const defaultEntryComponent = (props) => {
 
     return (
         <div {...parentProps}>
-            <span className={theme.mentionSuggestionsEntryText}>{mention.get('name')}</span>
+            <AgentLabel
+                className={theme.mentionSuggestionsEntryText}
+                name={mention.get('name')}
+                email={mention.get('email')}
+            />
         </div>
     )
 }

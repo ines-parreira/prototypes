@@ -97,14 +97,9 @@ export const positionSuggestions = ({decoratorRect, popover, state, props}) => {
     const top = relativeRect.top + relativeRect.scrollTop
 
     let transform
-    let transition
     if (state.isActive) {
         if (props.suggestions.size > 0) {
             transform = 'scale(1)'
-            transition = 'all 0.25s cubic-bezier(.3,1.2,.2,1)'
-        } else {
-            transform = 'scale(0)'
-            transition = 'all 0.35s cubic-bezier(.3,1,.2,1)'
         }
     }
 
@@ -112,8 +107,6 @@ export const positionSuggestions = ({decoratorRect, popover, state, props}) => {
         left: `${left}px`,
         top: `${top}px`,
         transform,
-        transformOrigin: '1em 0%',
-        transition,
     }
 }
 

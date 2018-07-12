@@ -3304,7 +3304,6 @@ exports[`RichField should render immutable variable 1`] = `
                     "mention": "mention",
                     "mentionSuggestions": "mentionSuggestions",
                     "mentionSuggestionsEntry": "mentionSuggestionsEntry",
-                    "mentionSuggestionsEntryAvatar": "mentionSuggestionsEntryAvatar",
                     "mentionSuggestionsEntryFocused": "mentionSuggestionsEntryFocused",
                     "mentionSuggestionsEntryText": "mentionSuggestionsEntryText",
                   }
@@ -5763,7 +5762,6 @@ exports[`RichField should render mutable variable 1`] = `
                     "mention": "mention",
                     "mentionSuggestions": "mentionSuggestions",
                     "mentionSuggestionsEntry": "mentionSuggestionsEntry",
-                    "mentionSuggestionsEntryAvatar": "mentionSuggestionsEntryAvatar",
                     "mentionSuggestionsEntryFocused": "mentionSuggestionsEntryFocused",
                     "mentionSuggestionsEntryText": "mentionSuggestionsEntryText",
                   }

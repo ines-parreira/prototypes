@@ -1,7 +1,5 @@
-import React, {
-    Component,
-    PropTypes,
-} from 'react'
+import React, {Component, PropTypes} from 'react'
+import classnames from 'classnames'
 
 export default class Entry extends Component {
 
@@ -45,11 +43,12 @@ export default class Entry extends Component {
 
     render() {
         const {theme = {}, searchValue} = this.props
-        const className = this.props.isFocused ? theme.mentionSuggestionsEntryFocused : theme.mentionSuggestionsEntry
         const EntryComponent = this.props.entryComponent
         return (
             <EntryComponent
-                className={className}
+                className={classnames(theme.mentionSuggestionsEntry, {
+                    [theme.mentionSuggestionsEntryFocused]: this.props.isFocused
+                })}
                 onMouseDown={this.onMouseDown}
                 onMouseUp={this.onMouseUp}
                 onMouseEnter={this.onMouseEnter}
