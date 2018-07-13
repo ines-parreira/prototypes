@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import moment from 'moment'
 import {bindActionCreators} from 'redux'
+import {browserHistory} from 'react-router'
 import {
     UncontrolledButtonDropdown,
     ButtonDropdown,
@@ -79,6 +80,9 @@ class TicketListActions extends React.Component<Props, State> {
 
     _bindKeys = () => {
         shortcutManager.bind('TicketListActions', {
+            CREATE_TICKET: {
+                action: () => browserHistory.push('/app/ticket/new')
+            },
             OPEN_TICKET: {
                 action: () => this._bulkUpdate('status', 'open')
             },

@@ -63,10 +63,15 @@ export default {
     TicketListActions: {
         description: 'Views (Tickets)',
         actions: {
+            CREATE_TICKET: {
+                key: 'n',
+                description: 'Create a new ticket.'
+            },
             OPEN_ASSIGNEE: {
                 key: 'a',
                 description: 'Open the assignee dropdown.'
             },
+
             OPEN_TAGS: {
                 key: 't',
                 description: 'Open the tags dropdown.'
