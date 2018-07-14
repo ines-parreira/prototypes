@@ -29,14 +29,14 @@ const _handleDroppedFiles = (config) => (selection: SelectionState, files: Array
     // upload other files types
     // only if drag-to-upload is enabled
     if (config.getCanDropFiles()) {
-        config.attachFiles(others)
+        config.getAttachFiles()(others)
     }
     return 'handled'
 }
 
 const dndUploadPlugin = (config: imagePluginConfigType = {
-    attachFiles: _noop,
     notify: _noop,
+    getAttachFiles: () => _noop,
     getCanDropFiles: _noop,
     getCanInsertInlineImages: _noop,
 }) => {

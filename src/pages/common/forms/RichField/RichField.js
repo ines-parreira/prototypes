@@ -73,8 +73,8 @@ export default class RichField extends InputField<Props, State> {
         super(props)
 
         const imagePluginProps = {
-            attachFiles: props.attachFiles,
             notify: props.notify,
+            getAttachFiles: this._getAttachFiles,
             getCanDropFiles: this._getCanDropFiles,
             getCanInsertInlineImages: this._getCanInsertInlineImages
         }
@@ -145,6 +145,7 @@ export default class RichField extends InputField<Props, State> {
         }
     }
 
+    _getAttachFiles = () => this.props.attachFiles
     _getCanDropFiles = () => this.props.canDropFiles
     _getCanInsertInlineImages = () => this.props.canInsertInlineImages
 

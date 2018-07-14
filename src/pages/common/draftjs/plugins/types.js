@@ -6,8 +6,8 @@ export type pluginArgsType = {
 }
 
 export type imagePluginConfigType = {
-    attachFiles: (T: Array<Blob>) => void,
     notify: ({status: string, message: string}) => void,
+    getAttachFiles: () => (T: Array<Blob>) => void,
     getCanDropFiles: () => boolean,
     getCanInsertInlineImages: () => boolean
 }

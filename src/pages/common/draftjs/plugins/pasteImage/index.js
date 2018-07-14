@@ -14,14 +14,14 @@ const _handlePastedFiles = (config) => (files: Array<Blob>, pluginArgs: pluginAr
     if (config.getCanInsertInlineImages()) {
         insertInlineImages(images, pluginArgs, config.notify)
     } else if (config.getCanDropFiles()) {
-        config.attachFiles(images)
+        config.getAttachFiles()(images)
     }
     return 'handled'
 }
 
 const pasteImagePlugin = (config: imagePluginConfigType = {
-    attachFiles: _noop,
     notify: _noop,
+    getAttachFiles: () => _noop,
     getCanDropFiles: _noop,
     getCanInsertInlineImages: _noop
 }) => {
