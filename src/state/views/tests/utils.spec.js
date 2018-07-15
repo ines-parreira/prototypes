@@ -1,7 +1,7 @@
 import * as utils from '../utils'
 import moment from 'moment'
 import {fromJS} from 'immutable'
-import {updateFilterOperator, activeViewUrl} from '../utils'
+import {updateFilterOperator, activeViewUrl, rawify} from '../utils'
 
 describe('utils', () => {
     describe('RecentViewStorage', () => {
@@ -49,7 +49,7 @@ describe('utils', () => {
 
             it('should set recent views', () => {
                 utils.recentViewsStorage.set([1, 2])
-                expect(JSON.parse(localStorage.getItem('recentViews'))).toEqual([1,2])
+                expect(JSON.parse(localStorage.getItem('recentViews'))).toEqual([1, 2])
             })
         })
     })
@@ -113,7 +113,11 @@ describe('utils', () => {
                         },
                         arguments: [
                             {raw: '\'ticket.created_datetime\'', value: 'ticket.created_datetime', type: 'Identifier'},
-                            {raw: '\'2018-04-02T18:57:04.669744\'', value: '2018-04-02T18:57:04.669744', type: 'Literal'},
+                            {
+                                raw: '\'2018-04-02T18:57:04.669744\'',
+                                value: '2018-04-02T18:57:04.669744',
+                                type: 'Literal'
+                            },
                         ]
                     }
                 }]
@@ -254,6 +258,31 @@ describe('utils', () => {
                 search: ''
             }, fromJS({page: 2}))
             expect(url).toBe('/app/tickets/1?page=2')
+        })
+    })
+
+    describe('rawify', () => {
+        it('should work with empty values', () => {
+            expect(rawify()).toEqual('\'\'')
+            expect(rawify('')).toEqual('\'\'')
+            expect(rawify(null)).toEqual('\'\'')
+        })
+
+        it('should quote strings', () => {
+            expect(rawify('a')).toEqual('\'a\'')
+            expect(rawify('1')).toEqual('\'1\'')
+            expect(rawify('aaa')).toEqual('\'aaa\'')
+            expect(rawify('a\\a')).toEqual('\'a\\\\a\'')
+            expect(rawify('aaa\'bbb')).toEqual('\'aaa\\\'bbb\'')
+            expect(rawify('aaa\'b\'bb')).toEqual('\'aaa\\\'b\\\'bb\'')
+            expect(rawify('aaa\\\'bbb')).toEqual('\'aaa\\\\\\\'bbb\'')
+            expect(rawify('aaa\\\'b\\\'bb')).toEqual('\'aaa\\\\\\\'b\\\\\\\'bb\'')
+            expect(rawify('aaa\\\\\'bbb')).toEqual('\'aaa\\\\\\\\\\\'bbb\'')
+        })
+
+        it('should stringify numbers', () => {
+            expect(rawify(111)).toEqual('111')
+            expect(rawify(100.1)).toEqual('100.1')
         })
     })
 })

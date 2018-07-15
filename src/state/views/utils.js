@@ -13,20 +13,20 @@ import {getAST, getFirstExpressionOfAST, isCurrentlyOnView} from '../../utils'
 import {datetimeOperators, timedeltaOperators} from '../../config/rules'
 import {isTimedelta} from '../../utils/ast'
 
-type viewType = Map<*,*>
-type astType = Map<*,*>
+type viewType = Map<*, *>
+type astType = Map<*, *>
 type pathType = Array<string | number>
-type nodeType = Map<*,*>
+type nodeType = Map<*, *>
 
 type currentLocationType = {
     pathname: string,
     search: string
 }
 
-
-function rawify(data: string | number | null) : string {
+export const rawify = (data: string | number | null): string => {
     if (typeof data === 'string') {
-        return `'${data}'`
+        // escape ' and \ chars so that it's a valid string
+        return `'${data.replace(/\\/g, '\\\\').replace(/'/g, '\\\'')}'`
     }
 
     if (typeof data === 'number') {
@@ -43,7 +43,7 @@ function rawify(data: string | number | null) : string {
  * @param currentRawValue: the current raw value of the filter, if any
  * @returns {*}: the `right` value to set in the filter. If null, it means the filter should not have a `right` value
  */
-function resolveSecondArg(callee: string, currentRawValue: string) : string | null {
+function resolveSecondArg(callee: string, currentRawValue: string): string | null {
     const isTimedeltaCallee = timedeltaOperators.includes(callee)
     const isDatetimeCallee = datetimeOperators.includes(callee)
     const isEmptyCallee = Object.keys(EMPTY_OPERATORS).includes(callee)
@@ -68,7 +68,7 @@ function buildRawCallExpression(filter: filterType) {
 }
 
 // traverse filters_ast, find all the call expressions and return a new tree
-export function addFilterAST(view: viewType, filter: filterType): Map<*,*> {
+export function addFilterAST(view: viewType, filter: filterType): Map<*, *> {
     // generate a new call expression for the new filter as a string
     filter.right = resolveSecondArg(filter.operator, filter.right)
     const newCallExprCode = buildRawCallExpression(filter)
@@ -79,7 +79,7 @@ export function addFilterAST(view: viewType, filter: filterType): Map<*,*> {
 }
 
 // traverse filters_ast, remove the call expressions and return a new tree
-export function removeFilterAST(view: viewType, index: number): ?Map<*,*> {
+export function removeFilterAST(view: viewType, index: number): ?Map<*, *> {
     // As always, we assume that we only have && operators
     const codeSplit = view.get('filters').split('&&')
     codeSplit.splice(index, 1)
@@ -117,7 +117,7 @@ function setIn(ast: astType, index: number, path: pathType, value: any): nodeTyp
 function getIn(ast: astType, index: number, path: pathType): any {
     let count = 0
 
-    function walker(node: Map<*,*>) : Map<*,*> | typeof undefined {
+    function walker(node: Map<*, *>): Map<*, *> | typeof undefined {
         switch (node.get('type')) {
             case 'Program':
                 return walker(node.getIn(['body', 0], fromJS({})))
@@ -170,7 +170,7 @@ export function updateFilterOperator(ast: astType, index: number, operator: stri
 }
 
 export function updateFilterValue(ast: astType, index: number, value: string | number | null): nodeType {
-    let raw = rawify(value)
+    const raw = rawify(value)
     return setIn(ast, index, ['arguments', 1], getFirstExpressionOfAST(getAST(raw)))
 }
 
@@ -274,7 +274,7 @@ export const shouldUpdateView = (viewId: string, viewsState: viewsStateType): bo
     return !['search', 'new', '0', 0].includes(viewId) && isCurrentlyOnView(viewId, viewsState)
 }
 
-function getViewTypeUrl(viewType: string): ?{detail: string, list: string} {
+function getViewTypeUrl(viewType: string): ?{ detail: string, list: string } {
     const typeMap = {
         'ticket-list': {
             detail: 'ticket',
@@ -296,7 +296,7 @@ function getViewTypeUrl(viewType: string): ?{detail: string, list: string} {
  * @param pagination
  * @returns {string}
  */
-export function activeViewUrl(view: viewType, currentLocation: currentLocationType, pagination: Map<*,*>): string {
+export function activeViewUrl(view: viewType, currentLocation: currentLocationType, pagination: Map<*, *>): string {
     const viewType = view.get('type', '')
     const viewId = view.get('id')
     const viewSearch = view.get('search')
