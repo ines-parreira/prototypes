@@ -99,7 +99,7 @@ exports[`RealtimeMessagingIntegrationInstall component should display a placehol
           </p>
         </div>
         <div
-          className="form"
+          className="form shopifyIntegrationsList"
         >
           <Button
             block={true}
@@ -312,7 +312,7 @@ exports[`RealtimeMessagingIntegrationInstall component should display the code s
         </p>
         <div />
         <div
-          className="form"
+          className="form shopifyIntegrationsList"
         >
           <Button
             block={true}
@@ -518,7 +518,7 @@ exports[`RealtimeMessagingIntegrationInstall component should display the list o
         </p>
         <div />
         <div
-          className="form"
+          className="form shopifyIntegrationsList"
         >
           <Button
             block={true}

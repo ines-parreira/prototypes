@@ -47,6 +47,14 @@ export const getIntegrationsByTypes = (types: typesType) => createSelector(
     }
 )
 
+export const getEligibleShopifyIntegrationsFor = (state: stateType) => (type: string) => {
+    const shopifyIntegrations = getIntegrationsByTypes('shopify')(state)
+    const currentIntegrationOfType = getIntegrationsByTypes(type)(state)
+
+    return shopifyIntegrations.filter((integration) => ! currentIntegrationOfType.find(
+        (currentIntegration) => currentIntegration.get('name') === integration.get('name')))
+}
+
 export const getFacebookIntegrations = createSelector(
     [getIntegrations],
     (state) => state

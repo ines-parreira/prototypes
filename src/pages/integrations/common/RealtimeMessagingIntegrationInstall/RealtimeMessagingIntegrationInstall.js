@@ -215,7 +215,7 @@ class RealtimeMessagingIntegrationInstall extends React.Component<Props, State> 
                                 }
                             </div>
 
-                            <div className={css.form}>
+                            <div className={classnames(css.form, 'shopifyIntegrationsList')}>
                                 {
                                     shopifyIntegrationsWithoutWidget.map((integration, idx) => {
                                         return (
@@ -231,7 +231,7 @@ class RealtimeMessagingIntegrationInstall extends React.Component<Props, State> 
                                                 color="secondary"
                                             >
                                                 <img
-                                                    className={css.shopifyLogo}
+                                                    className="shopifyLogo"
                                                     src={integrationHelpers.getIconFromType('shopify')}
                                                 />
                                                 Add {integrationAlias} on {integration.get('name')}

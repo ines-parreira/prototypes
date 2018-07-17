@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
+import type {List} from 'immutable'
 import {Link, browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 import Lightbox from 'react-images'
@@ -14,6 +15,23 @@ import {
     Alert
 } from 'reactstrap'
 
+type Props = {
+    integrations: List,
+    shopifyIntegrations: List,
+
+    loading: Object,
+
+    activate: typeof integrationsActions.activateIntegration,
+    deactivate: typeof integrationsActions.deactivateIntegration,
+
+    redirectUri: string
+}
+
+type State = {
+    isLightboxOpen: boolean,
+    currentImage: Number,
+}
+
 @connect((state) => {
     return {
         redirectUri: integrationsSelectors.getRedirectUri('recharge')(state)
@@ -22,14 +40,7 @@ import {
     activate: integrationsActions.activateIntegration,
     deactivate: integrationsActions.deactivateIntegration,
 })
-export default class RechargeIntegrationList extends React.Component {
-    static propTypes = {
-        integrations: PropTypes.object.isRequired,
-        loading: PropTypes.object.isRequired,
-        activate: PropTypes.func.isRequired,
-        deactivate: PropTypes.func.isRequired,
-        redirectUri: PropTypes.string.isRequired
-    }
+export default class RechargeIntegrationList extends React.Component<Props, State> {
 
     state = {
         isLightboxOpen: false,
@@ -37,7 +48,7 @@ export default class RechargeIntegrationList extends React.Component {
     }
 
     _shouldHideCreateButton = () => {
-        return !this.props.integrations.filter((integration) => integration.get('type') === 'shopify').size
+        return !this.props.shopifyIntegrations.size
     }
 
     _toggleLightbox = (selectedImageId) => {
@@ -53,6 +64,7 @@ export default class RechargeIntegrationList extends React.Component {
 
     render() {
         const {integrations, loading} = this.props
+        const rechargeIntegrations = integrations.filter((v) => v.get('type') === 'recharge')
 
         const imagesUrl = [
             `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/recharge-carousel_1.jpg`,
@@ -62,10 +74,15 @@ export default class RechargeIntegrationList extends React.Component {
         const longTypeDescription = (
             <div>
                 {
-                    this._shouldHideCreateButton() && (
+                    this._shouldHideCreateButton() && (!rechargeIntegrations.size ? (
                         <Alert color="danger">
                             You need to have at least one Shopify integration to add Recharge integrations.
                         </Alert>
+                        ) : (
+                            <Alert color="info">
+                                All your Shopify integrations have a Recharge integration connected.
+                            </Alert>
+                            )
                     )
                 }
 
@@ -146,7 +163,7 @@ export default class RechargeIntegrationList extends React.Component {
             <IntegrationList
                 longTypeDescription={longTypeDescription}
                 integrationType="recharge"
-                integrations={integrations.filter((v) => v.get('type') === 'recharge')}
+                integrations={rechargeIntegrations}
                 createIntegration={() => browserHistory.push('/app/settings/integrations/recharge/new')}
                 createIntegrationButtonText="Add Recharge"
                 integrationToItemDisplay={integrationToItemDisplay}

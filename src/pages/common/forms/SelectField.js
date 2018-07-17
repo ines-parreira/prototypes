@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react'
 import {
-    DropdownMenu,
     DropdownItem,
+    DropdownMenu,
     DropdownToggle,
     UncontrolledDropdown,
 } from 'reactstrap'
@@ -22,6 +22,7 @@ export default class SelectField extends Component {
         placeholder: PropTypes.string,
         singular: PropTypes.string,
         style: PropTypes.object,
+        rightAddon: PropTypes.string,
         value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 
         onChange: PropTypes.func.isRequired,
@@ -159,7 +160,7 @@ export default class SelectField extends Component {
     }
 
     render() {
-        const {allowCustomValue, value, singular, style, placeholder, className, options} = this.props
+        const {allowCustomValue, value, singular, style, placeholder, className, options, rightAddon} = this.props
         const {filteredOptions, input, optionsOpen, selectedOptionIndex} = this.state
         const selectedOption = options.find((option) => option.value === value)
         const hasNoFilteredOptions = filteredOptions.length === 0
@@ -264,7 +265,19 @@ export default class SelectField extends Component {
                             })
                         ])}
                     </DropdownMenu>
+
                 </UncontrolledDropdown>
+                {
+                    rightAddon && (
+                        <div className={classnames({'input-group': !!rightAddon})}>
+                            <span className="input-group-append">
+                                <span className="input-group-text">
+                                    {rightAddon}
+                                </span>
+                            </span>
+                        </div>
+                    )
+                }
             </div>
         )
     }

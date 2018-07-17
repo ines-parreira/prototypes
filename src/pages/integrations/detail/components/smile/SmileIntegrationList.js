@@ -1,4 +1,5 @@
 import React from 'react'
+import {List} from 'immutable'
 import {Link, browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 import Lightbox from 'react-images'
@@ -15,7 +16,9 @@ import {
 
 
 type Props = {
-    integrations: Object,
+    integrations: List,
+    shopifyIntegrations: List,
+
     loading: Object,
     activate: typeof integrationsActions.activateIntegration,
     deactivate: typeof integrationsActions.deactivateIntegration,
@@ -38,7 +41,7 @@ export default class SmileIntegrationList extends React.Component<Props, State> 
     }
 
     _shouldHideCreateButton = () => {
-        return !this.props.integrations.filter((integration) => integration.get('type') === 'shopify').size
+        return !this.props.shopifyIntegrations.size
     }
 
     _toggleLightbox = (selectedImageId) => {
@@ -54,6 +57,7 @@ export default class SmileIntegrationList extends React.Component<Props, State> 
 
     render() {
         const {integrations, loading} = this.props
+        const smileIntegrations = integrations.filter((v) => v.get('type') === 'smile')
 
         const imagesUrl = [
             `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/smile-carousel_1.png`,
@@ -63,10 +67,15 @@ export default class SmileIntegrationList extends React.Component<Props, State> 
         const longTypeDescription = (
             <div>
                 {
-                    this._shouldHideCreateButton() && (
+                    this._shouldHideCreateButton() && (!smileIntegrations.size ? (
                         <Alert color="danger">
                             You need to have at least one Shopify integration to add Smile integrations.
                         </Alert>
+                        ) : (
+                            <Alert color="info">
+                                All your Shopify integrations have a Smile integration connected.
+                            </Alert>
+                            )
                     )
                 }
 
@@ -141,7 +150,7 @@ export default class SmileIntegrationList extends React.Component<Props, State> 
             <IntegrationList
                 longTypeDescription={longTypeDescription}
                 integrationType="smile"
-                integrations={integrations.filter((v) => v.get('type') === 'smile')}
+                integrations={smileIntegrations}
                 createIntegration={() => browserHistory.push('/app/settings/integrations/smile/new')}
                 createIntegrationButtonText="Add Smile"
                 integrationToItemDisplay={integrationToItemDisplay}

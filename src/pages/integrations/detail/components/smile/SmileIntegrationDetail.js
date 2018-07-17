@@ -1,16 +1,20 @@
 import React from 'react'
+import type {List} from 'immutable'
 import {Link, withRouter} from 'react-router'
 import classNames from 'classnames'
 import _isEmpty from 'lodash/isEmpty'
 import {
     Alert,
-    Button,
     Breadcrumb,
     BreadcrumbItem,
-    Container,
-    Row,
+    Button,
     Col,
+    Container,
+    Label,
+    Row,
 } from 'reactstrap'
+
+import * as integrationHelpers from '../../../../../state/integrations/helpers'
 
 import Loader from '../../../../common/components/Loader'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
@@ -21,6 +25,8 @@ import PageHeader from '../../../../common/components/PageHeader'
 
 type Props = {
     integration: string,
+    shopifyIntegrations: List,
+
     actions: Object,
     loading: Object,
 
@@ -67,12 +73,12 @@ class SmileIntegrationDetail extends React.Component<Props, State> {
         window.location.href = this.props.redirectUri.concat('?store_name=').concat(name)
     }
 
-    _submit = () => {
-        window.location.href = this.props.redirectUri.concat('?store_name=').concat(this.state.store_name)
+    _installForShopifyStore = (shopifyIntegration) => {
+        window.location.href = this.props.redirectUri.concat('?store_name=').concat(shopifyIntegration.get('name'))
     }
 
     render() {
-        const {actions, integration, loading} = this.props
+        const {actions, integration, shopifyIntegrations, loading} = this.props
 
         const isUpdate = this.props.params.integrationId !== 'new'
         const isSubmitting = loading.get('updateIntegration')
@@ -132,33 +138,50 @@ class SmileIntegrationDetail extends React.Component<Props, State> {
                                 )
                             }
 
-                            <InputField
-                                type="text"
-                                name="name"
-                                label="Shopify store name"
-                                value={isUpdate ? integration.get('name') : undefined}
-                                onChange={(value) => this.setState({store_name: value})}
-                                placeholder={'ex: "acme" for acme.myshopify.com'}
-                                disabled={isUpdate}
-                                rightAddon=".myshopify.com"
-                                required
-                            />
+                            {
+                                isUpdate
+                                    ? (
+                                        <InputField
+                                            type="text"
+                                            name="name"
+                                            label="Shopify store name"
+                                            value={isUpdate ? integration.get('name') : undefined}
+                                            onChange={(value) => this.setState({store_name: value})}
+                                            placeholder={'ex: "acme" for acme.myshopify.com'}
+                                            disabled={isUpdate}
+                                            rightAddon=".myshopify.com"
+                                        />
+                                    ): (
+                                        <div className="shopifyIntegrationsList">
+                                            <Label className="control-label">
+                                                Select an existing Shopify integration
+                                            </Label>
+                                            {
+                                                shopifyIntegrations.map((integration, idx) => {
+                                                    return (
+                                                        <Button
+                                                            block
+                                                            key={idx}
+                                                            onClick={() => this._installForShopifyStore(integration)}
+                                                            className={classNames('mb-2', {
+                                                                'btn-loading': this.state.integrationLoading === integration.get('id')
+                                                            })}
+                                                            color="secondary"
+                                                        >
+                                                            <img
+                                                                className="shopifyLogo"
+                                                                src={integrationHelpers.getIconFromType('shopify')}
+                                                            />
+                                                            Install Smile for {integration.get('name')}
+                                                        </Button>
+                                                    )
+                                                })
+                                            }
+                                        </div>
+                                    )
+                            }
 
                             <div>
-                                {
-                                    !isUpdate && (
-                                        <Button
-                                            type="button"
-                                            color="success"
-                                            className={classNames({
-                                                'btn-loading': isSubmitting,
-                                            })}
-                                            onClick={() => this._submit()}
-                                        >
-                                            Add Smile integration
-                                        </Button>
-                                    )
-                                }
                                 {
                                     isUpdate && !authenticationRequired && isActive && (
                                         <Button

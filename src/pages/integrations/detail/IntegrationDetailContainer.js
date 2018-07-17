@@ -72,7 +72,7 @@ class IntegrationDetailContainer extends React.Component {
     }
 
     render() {
-        const {actions, integrations, params, currentUser} = this.props
+        const {actions, integrations, params, currentUser, getEligibleShopifyIntegrationsFor} = this.props
 
         const isDetail = !!params.integrationId
         const isUpdate = isDetail && params.integrationId !== 'new'
@@ -385,6 +385,7 @@ class IntegrationDetailContainer extends React.Component {
                         <RechargeIntegrationDetail
                             actions={actions}
                             integration={commonProps.integration}
+                            shopifyIntegrations={getEligibleShopifyIntegrationsFor('recharge')}
                             isUpdate={isUpdate}
                             loading={commonProps.loading}
                             redirectUri={redirectUri}
@@ -396,6 +397,7 @@ class IntegrationDetailContainer extends React.Component {
                     <RechargeIntegrationList
                         actions={actions}
                         integrations={commonProps.integrations}
+                        shopifyIntegrations={getEligibleShopifyIntegrationsFor('recharge')}
                         loading={commonProps.loading}
                     />
                 )
@@ -406,6 +408,7 @@ class IntegrationDetailContainer extends React.Component {
                         <SmileIntegrationDetail
                             actions={actions}
                             integration={commonProps.integration}
+                            shopifyIntegrations={getEligibleShopifyIntegrationsFor('smile')}
                             isUpdate={isUpdate}
                             loading={commonProps.loading}
                             redirectUri={redirectUri}
@@ -417,6 +420,7 @@ class IntegrationDetailContainer extends React.Component {
                     <SmileIntegrationList
                         actions={actions}
                         integrations={commonProps.integrations}
+                        shopifyIntegrations={getEligibleShopifyIntegrationsFor('smile')}
                         loading={commonProps.loading}
                     />
                 )
@@ -431,6 +435,7 @@ class IntegrationDetailContainer extends React.Component {
 IntegrationDetailContainer.propTypes = {
     actions: PropTypes.object.isRequired,
     integrations: PropTypes.object.isRequired,
+    getEligibleShopifyIntegrationsFor: PropTypes.func.isRequired,
     params: PropTypes.shape({
         integrationType: PropTypes.string.isRequired,
         integrationId: PropTypes.string
@@ -441,6 +446,7 @@ IntegrationDetailContainer.propTypes = {
 
 const mapStateToProps = (state) => ({
     integrations: state.integrations,
+    getEligibleShopifyIntegrationsFor: IntegrationsSelectors.getEligibleShopifyIntegrationsFor(state),
     getRedirectUri: IntegrationsSelectors.makeGetRedirectUri(state),
     currentUser: state.currentUser
 })

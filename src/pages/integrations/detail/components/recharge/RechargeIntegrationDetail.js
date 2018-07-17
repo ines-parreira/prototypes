@@ -1,16 +1,20 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
+import type {List} from 'immutable'
 import {Link, withRouter} from 'react-router'
 import classNames from 'classnames'
 import _isEmpty from 'lodash/isEmpty'
 import {
     Alert,
-    Button,
     Breadcrumb,
     BreadcrumbItem,
-    Container,
-    Row,
+    Button,
     Col,
+    Container,
+    Label,
+    Row,
 } from 'reactstrap'
+
+import * as integrationHelpers from '../../../../../state/integrations/helpers'
 
 import Loader from '../../../../common/components/Loader'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
@@ -18,19 +22,25 @@ import ConfirmButton from '../../../../common/components/ConfirmButton'
 import InputField from '../../../../common/forms/InputField'
 import PageHeader from '../../../../common/components/PageHeader'
 
-class RechargeIntegrationDetail extends React.Component {
-    static propTypes = {
+type Props = {
+    integration: Object,
+    shopifyIntegrations: List,
 
-        integration: PropTypes.object.isRequired,
-        actions: PropTypes.object.isRequired,
-        loading: PropTypes.object.isRequired,
+    actions: Object,
+    loading: Object,
 
-        redirectUri: PropTypes.string.isRequired,
+    redirectUri: string,
 
-        // Router
-        location: PropTypes.object.isRequired,
-        params: PropTypes.object.isRequired
-    }
+    // Router
+    location: Object,
+    params: Object
+}
+
+type State = {
+    store_name: string
+}
+
+class RechargeIntegrationDetail extends React.Component<Props, State> {
 
     isInitialized = false
 
@@ -63,12 +73,12 @@ class RechargeIntegrationDetail extends React.Component {
         window.location.href = this.props.redirectUri.concat('?store_name=').concat(name)
     }
 
-    _submit = () => {
-        window.location.href = this.props.redirectUri.concat('?store_name=').concat(this.state.store_name)
+    _installForShopifyStore = (shopifyIntegration) => {
+        window.location.href = this.props.redirectUri.concat('?store_name=').concat(shopifyIntegration.get('name'))
     }
 
     render() {
-        const {actions, integration, loading} = this.props
+        const {actions, integration, shopifyIntegrations, loading} = this.props
 
         const isUpdate = this.props.params.integrationId !== 'new'
         const isSubmitting = loading.get('updateIntegration')
@@ -129,17 +139,49 @@ class RechargeIntegrationDetail extends React.Component {
                                 )
                             }
 
-                            <InputField
-                                type="text"
-                                name="name"
-                                label="Shopify store name"
-                                value={isUpdate ? integration.get('name') : undefined}
-                                onChange={(value) => this.setState({store_name: value})}
-                                placeholder={'ex: "acme" for acme.myshopify.com'}
-                                disabled={isUpdate}
-                                rightAddon=".myshopify.com"
-                                required
-                            />
+                            {
+                                isUpdate
+                                    ? (
+                                        <InputField
+                                            type="text"
+                                            name="name"
+                                            label="Shopify store name"
+                                            value={isUpdate ? integration.get('name') : undefined}
+                                            onChange={(value) => this.setState({store_name: value})}
+                                            placeholder={'ex: "acme" for acme.myshopify.com'}
+                                            disabled={isUpdate}
+                                            rightAddon=".myshopify.com"
+                                            required
+                                        />
+                                    ): (
+                                        <div className="shopifyIntegrationsList">
+                                            <Label className="control-label">
+                                                Select an existing Shopify integration
+                                            </Label>
+                                            {
+                                                shopifyIntegrations.map((integration, idx) => {
+                                                    return (
+                                                        <Button
+                                                            block
+                                                            key={idx}
+                                                            onClick={() => this._installForShopifyStore(integration)}
+                                                            className={classNames('mb-2', {
+                                                                'btn-loading': this.state.integrationLoading === integration.get('id')
+                                                            })}
+                                                            color="secondary"
+                                                        >
+                                                            <img
+                                                                className="shopifyLogo"
+                                                                src={integrationHelpers.getIconFromType('shopify')}
+                                                            />
+                                                            Install Recharge for {integration.get('name')}
+                                                        </Button>
+                                                    )
+                                                })
+                                            }
+                                        </div>
+                                    )
+                            }
 
                             <div>
                                 {
@@ -154,20 +196,6 @@ class RechargeIntegrationDetail extends React.Component {
                                             onClick={this._updateAppPermissions}
                                         >
                                             Update app permissions
-                                        </Button>
-                                    )
-                                }
-                                {
-                                    !isUpdate && (
-                                        <Button
-                                            type="button"
-                                            color="success"
-                                            className={classNames({
-                                                'btn-loading': isSubmitting,
-                                            })}
-                                            onClick={() => this._submit()}
-                                        >
-                                            Add Recharge integration
                                         </Button>
                                     )
                                 }
