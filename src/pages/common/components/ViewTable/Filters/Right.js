@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 
-import {AgentLabel, IntegrationsDetailLabel} from '../../../utils/labels'
+import {IntegrationsDetailLabel} from '../../../utils/labels'
 import {getLanguageDisplayName} from '../../../../../utils'
 
 import * as viewsActions from '../../../../../state/views/actions'
@@ -116,9 +116,7 @@ export default class Right extends React.Component {
         } else if (field.get('name') === 'assignee') { // display assignee
             const assignee = this.props.agents.find(agent => agent.get('id').toString() === displayedValue.toString())
             if (assignee) {
-                displayedValue = (
-                    <AgentLabel user={assignee} />
-                )
+                displayedValue = (<span>{assignee.get('name')}</span>)
             }
         } else if (field.get('name') === 'customer') { // display customer
             displayedValue = `Customer #${displayedValue}`
