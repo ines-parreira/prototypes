@@ -289,6 +289,7 @@ export class RenderLabel extends React.Component {
             case 'updated':
             case 'last_message':
             case 'last_received_message':
+            case 'snooze':
             case 'closed':
                 return (
                     <DatetimeLabel

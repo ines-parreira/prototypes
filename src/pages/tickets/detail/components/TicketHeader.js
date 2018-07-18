@@ -306,7 +306,7 @@ export default class TicketHeader extends React.Component<Props, State> {
                             transparent
                         />
                     </div>
-                    <div className="d-inline-flex">
+                    <div className="d-inline-flex align-items-center">
                         <TicketSnooze datetime={ticket.get('snooze_datetime')}/>
                         <TicketTrash trashed={isTrashed}/>
                         <TicketSpam spam={ticket.get('spam')}/>

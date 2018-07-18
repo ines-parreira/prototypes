@@ -71,7 +71,9 @@ exports[`ReplyMessageChannel component existing ticket with last message as chat
       </DropdownMenu>
     </UncontrolledDropdown>
   </div>
-  <div>
+  <div
+    className="sourceLabel mt-1"
+  >
     Internal note
   </div>
 </div>
@@ -148,7 +150,9 @@ exports[`ReplyMessageChannel component existing ticket with message of type chat
       </DropdownMenu>
     </UncontrolledDropdown>
   </div>
-  <div>
+  <div
+    className="sourceLabel mt-1"
+  >
     Internal note
   </div>
 </div>
@@ -214,7 +218,9 @@ exports[`ReplyMessageChannel component existing ticket with message of type emai
       </DropdownMenu>
     </UncontrolledDropdown>
   </div>
-  <div>
+  <div
+    className="sourceLabel mt-1"
+  >
     Internal note
   </div>
 </div>
@@ -291,7 +297,9 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
       </DropdownMenu>
     </UncontrolledDropdown>
   </div>
-  <div>
+  <div
+    className="sourceLabel mt-1"
+  >
     Internal note
   </div>
 </div>
@@ -368,7 +376,9 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
       </DropdownMenu>
     </UncontrolledDropdown>
   </div>
-  <div>
+  <div
+    className="sourceLabel mt-1"
+  >
     Internal note
   </div>
 </div>
@@ -445,7 +455,9 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
       </DropdownMenu>
     </UncontrolledDropdown>
   </div>
-  <div>
+  <div
+    className="sourceLabel mt-1"
+  >
     Internal note
   </div>
 </div>
@@ -522,7 +534,9 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
       </DropdownMenu>
     </UncontrolledDropdown>
   </div>
-  <div>
+  <div
+    className="sourceLabel mt-1"
+  >
     Internal note
   </div>
 </div>

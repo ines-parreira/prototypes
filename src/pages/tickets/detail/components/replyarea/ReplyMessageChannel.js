@@ -130,7 +130,7 @@ export default class ReplyMessageChannel extends React.Component {
 
         if (!isNewMessagePublic) {
             return (
-                <div>
+                <div className={classnames(css.sourceLabel, 'mt-1')}>
                     Internal note
                 </div>
             )
