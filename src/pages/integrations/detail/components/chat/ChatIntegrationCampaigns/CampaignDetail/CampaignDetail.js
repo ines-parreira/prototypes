@@ -311,7 +311,7 @@ export class CampaignDetail extends React.Component {
             }
         }).toJS()
 
-        // This is the default value; if no author is specified, any agent displayed in the widget when the user sees
+        // This is the default value; if no author is specified, any agent displayed in the widget when the customer sees
         // the campaign can be displayed as author of the campaign
         authorOptions.push({
             value: null,

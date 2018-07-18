@@ -15,8 +15,8 @@ import _isUndefined from 'lodash/isUndefined'
 
 import shortcutManager from '../../../../services/shortcutManager'
 
-import * as ViewsActions from '../../../../state/views/actions'
-import * as UsersActions from '../../../../state/customers/actions'
+import * as viewsActions from '../../../../state/views/actions'
+import * as customersActions from '../../../../state/customers/actions'
 
 class CustomerListActions extends React.Component {
     state = {
@@ -144,8 +144,8 @@ CustomerListActions.propTypes = {
 function mapDispatchToProps(dispatch) {
     return {
         actions: {
-            views: bindActionCreators(ViewsActions, dispatch),
-            users: bindActionCreators(UsersActions, dispatch),
+            views: bindActionCreators(viewsActions, dispatch),
+            customers: bindActionCreators(customersActions, dispatch),
         }
     }
 }

@@ -2,23 +2,29 @@ import {fromJS} from 'immutable'
 import {getValuePropFromSourceType} from '../../../state/ticket/utils'
 import {getActionTemplate} from './../../../utils'
 
-export function displayUserNameFromSource(user, sourceType) {
-    const valueProp = getValuePropFromSourceType(sourceType)
-    let value = user[valueProp] || ''
+/**
+ * Return the label of the given person
+ * @param {Object} person - A user or a customer
+ * @param {string} sourceType - The source type of a ticket message.
+ * @returns {string|*} the label of the given person
+ */
+export function getPersonLabelFromSource(person, sourceType) {
+    const addressProp = getValuePropFromSourceType(sourceType)
+    let address = person[addressProp] || ''
 
-    let label = user.name || value
+    let label = person.name || address
 
     // if is email channel and has a name, show the address next to the name
     if (sourceType === 'email') {
         // shrink email address if too long
-        if (value.length > 45) {
-            value = `${value.slice(0, 20)}[...]${value.slice(value.length - 20)}`
+        if (address.length > 45) {
+            address = `${address.slice(0, 20)}[...]${address.slice(address.length - 20)}`
         }
 
-        if (user.name) {
-            label = `${user.name} (${value})`
+        if (person.name) {
+            label = `${person.name} (${address})`
         } else {
-            label = value
+            label = address
         }
     }
 

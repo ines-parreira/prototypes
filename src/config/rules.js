@@ -16,7 +16,7 @@ export const events = fromJS([{
 }])
 
 // variables available in rules
-export const availableVariables = ['ticket', 'message', 'event', 'user']
+export const availableVariables = ['ticket', 'message', 'event']
 
 // collections operators
 export const collectionOperators = [

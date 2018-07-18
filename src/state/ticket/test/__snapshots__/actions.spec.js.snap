@@ -594,7 +594,7 @@ Array [
 ]
 `;
 
-exports[`ticket actions findAndSetCustomer should set the customer because there is exactly one user matching this email address 1`] = `
+exports[`ticket actions findAndSetCustomer should set the customer because there is exactly one customer matching this email address 1`] = `
 Array [
   Object {
     "args": Immutable.Map {
@@ -1234,10 +1234,10 @@ exports[`ticket actions handleMessageActionError 1`] = `Array []`;
 exports[`ticket actions mergeCustomer 1`] = `
 Array [
   Object {
-    "type": "MERGE_CUSTOMER",
-    "user": Object {
+    "customer": Object {
       "id": 1,
     },
+    "type": "MERGE_CUSTOMER",
   },
 ]
 `;

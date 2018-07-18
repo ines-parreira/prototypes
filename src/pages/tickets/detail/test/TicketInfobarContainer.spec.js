@@ -44,7 +44,7 @@ describe('TicketInfobarContainer component', () => {
     it('should disable widget editing new tickets without customer', () => {
         const component = shallow(<TicketInfobarContainer {...minProps} />).dive().dive()
 
-        expect(component.prop('user')).toBeImmutable(fromJS({}))
+        expect(component.prop('customer')).toBeImmutable(fromJS({}))
     })
 
     it('should allow widget editing new tickets with customer', () => {
@@ -54,6 +54,6 @@ describe('TicketInfobarContainer component', () => {
         const component = shallow(<TicketInfobarContainer {...minProps} />).dive().dive()
         component.setProps({ticket})
 
-        expect(component.prop('user')).toBeImmutable(ticket.get('customer'))
+        expect(component.prop('customer')).toBeImmutable(ticket.get('customer'))
     })
 })

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Infobar component should render current user with suggested user 1`] = `
+exports[`Infobar component should render current customer with suggested customer 1`] = `
 <Connect(InfobarLayout)
   className=""
 >
@@ -14,7 +14,7 @@ exports[`Infobar component should render current user with suggested user 1`] = 
         bindKey={true}
         disabled={false}
         onChange={[Function]}
-        placeholder="Search for users by email, order number, etc."
+        placeholder="Search for customers by email, order number, etc."
         searchDebounceTime={200}
         style={
           Object {
@@ -51,12 +51,17 @@ exports[`Infobar component should render current user with suggested user 1`] = 
       className="content"
     >
       <div>
-        <Connect(InfobarUserInfo)
+        <Connect(InfobarCustomerInfo)
           actions={
             Object {
               "startEditionMode": [Function],
               "stopEditionMode": [Function],
               "submitWidgets": [Function],
+            }
+          }
+          customer={
+            Immutable.Map {
+              id: 2,
             }
           }
           infobar={Object {}}
@@ -68,14 +73,9 @@ exports[`Infobar component should render current user with suggested user 1`] = 
                   id: 2,
                 },
               },
-              user: Immutable.Map {
+              customer: Immutable.Map {
                 id: 2,
               },
-            }
-          }
-          user={
-            Immutable.Map {
-              id: 2,
             }
           }
           widgets={
@@ -93,13 +93,13 @@ exports[`Infobar component should render current user with suggested user 1`] = 
             className="infobar-section-separator"
           />
           <div
-            className="suggestedUser"
+            className="suggestedCustomer"
           >
             <h4>
               Is this the same person?
             </h4>
             <p>
-              'We have found someone similar to the customer of this ticket. If it is the same person, merge them together to get a unified view of this user.
+              'We have found someone similar to the customer of this ticket. If it is the same person, merge them together to get a unified view of this customer.
             </p>
             <div
               style={
@@ -123,12 +123,17 @@ exports[`Infobar component should render current user with suggested user 1`] = 
                 Merge
               </Button>
             </div>
-            <Connect(InfobarUserInfo)
+            <Connect(InfobarCustomerInfo)
               actions={
                 Object {
                   "startEditionMode": [Function],
                   "stopEditionMode": [Function],
                   "submitWidgets": [Function],
+                }
+              }
+              customer={
+                Immutable.Map {
+                  id: 10,
                 }
               }
               infobar={Object {}}
@@ -140,14 +145,9 @@ exports[`Infobar component should render current user with suggested user 1`] = 
                       id: 10,
                     },
                   },
-                  user: Immutable.Map {
+                  customer: Immutable.Map {
                     id: 10,
                   },
-                }
-              }
-              user={
-                Immutable.Map {
-                  id: 10,
                 }
               }
               widgets={
@@ -158,8 +158,8 @@ exports[`Infobar component should render current user with suggested user 1`] = 
                 }
               }
             />
-            <Connect(MergeUsersContainer)
-              destinationUser={
+            <Connect(MergeCustomersContainer)
+              destinationCustomer={
                 Immutable.Map {
                   id: 2,
                 }
@@ -168,7 +168,7 @@ exports[`Infobar component should render current user with suggested user 1`] = 
               isTicketContext={true}
               onClose={[Function]}
               onSuccess={[Function]}
-              sourceUser={
+              sourceCustomer={
                 Immutable.Map {
                   id: 10,
                 }
@@ -182,7 +182,7 @@ exports[`Infobar component should render current user with suggested user 1`] = 
 </Connect(InfobarLayout)>
 `;
 
-exports[`Infobar component should render loading state because the search is in progress 1`] = `
+exports[`Infobar component should render customer context 1`] = `
 <Connect(InfobarLayout)
   className=""
 >
@@ -196,7 +196,99 @@ exports[`Infobar component should render loading state because the search is in 
         bindKey={true}
         disabled={false}
         onChange={[Function]}
-        placeholder="Search for users by email, order number, etc."
+        placeholder="Search for customers by email, order number, etc."
+        searchDebounceTime={200}
+        style={
+          Object {
+            "maxWidth": "none",
+          }
+        }
+        tabIndex="10"
+      />
+      <Button
+        active={false}
+        className="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent"
+        color="secondary"
+        disabled={true}
+        id="toggle-widgets-edition-button"
+        onClick={[Function]}
+        tag="button"
+        type="button"
+      >
+        <i
+          className="material-icons md-2"
+        >
+          settings
+        </i>
+      </Button>
+      <Tooltip
+        delay={0}
+        placement="left"
+        target="toggle-widgets-edition-button"
+      >
+        Edit widgets
+      </Tooltip>
+    </div>
+    <div
+      className="content"
+    >
+      <div>
+        <Connect(InfobarCustomerInfo)
+          actions={
+            Object {
+              "startEditionMode": [Function],
+              "stopEditionMode": [Function],
+              "submitWidgets": [Function],
+            }
+          }
+          customer={
+            Immutable.Map {
+              id: 2,
+            }
+          }
+          infobar={Object {}}
+          isEditing={false}
+          sources={
+            Immutable.Map {
+              ticket: Immutable.Map {
+                customer: Immutable.Map {
+                  id: 2,
+                },
+              },
+              customer: Immutable.Map {
+                id: 2,
+              },
+            }
+          }
+          widgets={
+            Immutable.Map {
+              _internal: Immutable.Map {
+                isEditing: false,
+              },
+            }
+          }
+        />
+      </div>
+    </div>
+  </div>
+</Connect(InfobarLayout)>
+`;
+
+exports[`Infobar component should render loading state because the customer is being fetched 1`] = `
+<Connect(InfobarLayout)
+  className=""
+>
+  <div
+    className="infobar-content"
+  >
+    <div
+      className="infobar-search-wrapper d-flex align-items-center justify-content-between"
+    >
+      <Search
+        bindKey={true}
+        disabled={false}
+        onChange={[Function]}
+        placeholder="Search for customers by email, order number, etc."
         searchDebounceTime={200}
         style={
           Object {
@@ -241,7 +333,7 @@ exports[`Infobar component should render loading state because the search is in 
 </Connect(InfobarLayout)>
 `;
 
-exports[`Infobar component should render loading state because the user is being fetched 1`] = `
+exports[`Infobar component should render loading state because the search is in progress 1`] = `
 <Connect(InfobarLayout)
   className=""
 >
@@ -255,7 +347,7 @@ exports[`Infobar component should render loading state because the user is being
         bindKey={true}
         disabled={false}
         onChange={[Function]}
-        placeholder="Search for users by email, order number, etc."
+        placeholder="Search for customers by email, order number, etc."
         searchDebounceTime={200}
         style={
           Object {
@@ -314,7 +406,7 @@ exports[`Infobar component should render search results 1`] = `
         bindKey={true}
         disabled={false}
         onChange={[Function]}
-        placeholder="Search for users by email, order number, etc."
+        placeholder="Search for customers by email, order number, etc."
         searchDebounceTime={200}
         style={
           Object {
@@ -369,8 +461,8 @@ exports[`Infobar component should render search results 1`] = `
           </Button>
         </div>
         <InfobarSearchResultsList
-          defaultUserId={2}
-          onUserClick={[Function]}
+          defaultCustomerId={2}
+          onCustomerClick={[Function]}
           searchResults={
             Immutable.List [
               Immutable.Map {
@@ -388,7 +480,7 @@ exports[`Infobar component should render search results 1`] = `
 </Connect(InfobarLayout)>
 `;
 
-exports[`Infobar component should render selected user 1`] = `
+exports[`Infobar component should render selected customer 1`] = `
 <Connect(InfobarLayout)
   className=""
 >
@@ -402,7 +494,7 @@ exports[`Infobar component should render selected user 1`] = `
         bindKey={true}
         disabled={false}
         onChange={[Function]}
-        placeholder="Search for users by email, order number, etc."
+        placeholder="Search for customers by email, order number, etc."
         searchDebounceTime={200}
         style={
           Object {
@@ -453,8 +545,13 @@ exports[`Infobar component should render selected user 1`] = `
             />
             Back
           </Button>
-          <InfobarUserActions
-            selectedUser={
+          <InfobarCustomerActions
+            customer={
+              Immutable.Map {
+                id: 2,
+              }
+            }
+            selectedCustomer={
               Immutable.Map {
                 id: 7,
               }
@@ -467,25 +564,25 @@ exports[`Infobar component should render selected user 1`] = `
                     id: 2,
                   },
                 },
-                user: Immutable.Map {
+                customer: Immutable.Map {
                   id: 2,
                 },
               }
             }
-            toggleMergeUserModal={[Function]}
-            user={
-              Immutable.Map {
-                id: 2,
-              }
-            }
+            toggleMergeCustomerModal={[Function]}
           />
         </div>
-        <Connect(InfobarUserInfo)
+        <Connect(InfobarCustomerInfo)
           actions={
             Object {
               "startEditionMode": [Function],
               "stopEditionMode": [Function],
               "submitWidgets": [Function],
+            }
+          }
+          customer={
+            Immutable.Map {
+              id: 7,
             }
           }
           infobar={Object {}}
@@ -497,14 +594,9 @@ exports[`Infobar component should render selected user 1`] = `
                   id: 7,
                 },
               },
-              user: Immutable.Map {
+              customer: Immutable.Map {
                 id: 7,
               },
-            }
-          }
-          user={
-            Immutable.Map {
-              id: 7,
             }
           }
           widgets={
@@ -515,8 +607,8 @@ exports[`Infobar component should render selected user 1`] = `
             }
           }
         />
-        <Connect(MergeUsersContainer)
-          destinationUser={
+        <Connect(MergeCustomersContainer)
+          destinationCustomer={
             Immutable.Map {
               id: 2,
             }
@@ -525,7 +617,7 @@ exports[`Infobar component should render selected user 1`] = `
           isTicketContext={true}
           onClose={[Function]}
           onSuccess={[Function]}
-          sourceUser={
+          sourceCustomer={
             Immutable.Map {
               id: 7,
             }
@@ -551,7 +643,7 @@ exports[`Infobar component should render ticket context 1`] = `
         bindKey={true}
         disabled={false}
         onChange={[Function]}
-        placeholder="Search for users by email, order number, etc."
+        placeholder="Search for customers by email, order number, etc."
         searchDebounceTime={200}
         style={
           Object {
@@ -588,12 +680,17 @@ exports[`Infobar component should render ticket context 1`] = `
       className="content"
     >
       <div>
-        <Connect(InfobarUserInfo)
+        <Connect(InfobarCustomerInfo)
           actions={
             Object {
               "startEditionMode": [Function],
               "stopEditionMode": [Function],
               "submitWidgets": [Function],
+            }
+          }
+          customer={
+            Immutable.Map {
+              id: 2,
             }
           }
           infobar={Object {}}
@@ -605,106 +702,9 @@ exports[`Infobar component should render ticket context 1`] = `
                   id: 2,
                 },
               },
-              user: Immutable.Map {
+              customer: Immutable.Map {
                 id: 2,
               },
-            }
-          }
-          user={
-            Immutable.Map {
-              id: 2,
-            }
-          }
-          widgets={
-            Immutable.Map {
-              _internal: Immutable.Map {
-                isEditing: false,
-              },
-            }
-          }
-        />
-      </div>
-    </div>
-  </div>
-</Connect(InfobarLayout)>
-`;
-
-exports[`Infobar component should render user context 1`] = `
-<Connect(InfobarLayout)
-  className=""
->
-  <div
-    className="infobar-content"
-  >
-    <div
-      className="infobar-search-wrapper d-flex align-items-center justify-content-between"
-    >
-      <Search
-        bindKey={true}
-        disabled={false}
-        onChange={[Function]}
-        placeholder="Search for users by email, order number, etc."
-        searchDebounceTime={200}
-        style={
-          Object {
-            "maxWidth": "none",
-          }
-        }
-        tabIndex="10"
-      />
-      <Button
-        active={false}
-        className="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent"
-        color="secondary"
-        disabled={true}
-        id="toggle-widgets-edition-button"
-        onClick={[Function]}
-        tag="button"
-        type="button"
-      >
-        <i
-          className="material-icons md-2"
-        >
-          settings
-        </i>
-      </Button>
-      <Tooltip
-        delay={0}
-        placement="left"
-        target="toggle-widgets-edition-button"
-      >
-        Edit widgets
-      </Tooltip>
-    </div>
-    <div
-      className="content"
-    >
-      <div>
-        <Connect(InfobarUserInfo)
-          actions={
-            Object {
-              "startEditionMode": [Function],
-              "stopEditionMode": [Function],
-              "submitWidgets": [Function],
-            }
-          }
-          infobar={Object {}}
-          isEditing={false}
-          sources={
-            Immutable.Map {
-              ticket: Immutable.Map {
-                customer: Immutable.Map {
-                  id: 2,
-                },
-              },
-              user: Immutable.Map {
-                id: 2,
-              },
-            }
-          }
-          user={
-            Immutable.Map {
-              id: 2,
             }
           }
           widgets={
@@ -735,7 +735,7 @@ exports[`Infobar component should render widgets edition mode 1`] = `
         bindKey={true}
         disabled={false}
         onChange={[Function]}
-        placeholder="Search for users by email, order number, etc."
+        placeholder="Search for customers by email, order number, etc."
         searchDebounceTime={200}
         style={
           Object {
@@ -772,12 +772,17 @@ exports[`Infobar component should render widgets edition mode 1`] = `
       className="content"
     >
       <div>
-        <Connect(InfobarUserInfo)
+        <Connect(InfobarCustomerInfo)
           actions={
             Object {
               "startEditionMode": [Function],
               "stopEditionMode": [Function],
               "submitWidgets": [Function],
+            }
+          }
+          customer={
+            Immutable.Map {
+              id: 2,
             }
           }
           infobar={Object {}}
@@ -789,14 +794,9 @@ exports[`Infobar component should render widgets edition mode 1`] = `
                   id: 2,
                 },
               },
-              user: Immutable.Map {
+              customer: Immutable.Map {
                 id: 2,
               },
-            }
-          }
-          user={
-            Immutable.Map {
-              id: 2,
             }
           }
           widgets={

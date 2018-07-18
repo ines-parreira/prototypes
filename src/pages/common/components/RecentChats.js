@@ -26,7 +26,7 @@ class RecentChatsItem extends React.Component {
         const channel = recentTicket.get('channel')
         const customer = recentTicket.get('customer') || fromJS({})
         const customerID = customer.get('id')
-        // If no user name nor ticket subject exists, then we'll display a user's id
+        // If no customer name nor ticket subject exists, then we'll display a customer's id
         const customerName = customer.get('name') || customer.get('email') || `Customer #${customerID}`
         // is the current link active or not?
         const isActive = isCurrentlyOnTicket(recentTicket.get('id'))

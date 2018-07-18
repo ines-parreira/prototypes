@@ -102,7 +102,7 @@ describe('widgets selectors', () => {
 
     describe('getWidgetsWithContext', () => {
         it('should return items with current context', () => {
-            const items = [{id: 1, context: 'ticket'}, {id: 2, context: 'user'}]
+            const items = [{id: 1, context: 'ticket'}, {id: 2, context: 'customer'}]
             const state = {
                 widgets: fromJS({items})
             }
@@ -111,7 +111,7 @@ describe('widgets selectors', () => {
         })
 
         it('should return an empty list because there is no items with current context', () => {
-            const items = [{id: 1, context: 'user'}, {id: 2, context: 'user'}]
+            const items = [{id: 1, context: 'customer'}, {id: 2, context: 'customer'}]
             const state = {
                 widgets: fromJS({items})
             }
@@ -138,7 +138,7 @@ describe('widgets selectors', () => {
         })
 
         it('should default to current context if no context is passed', () => {
-            const items = [{id: 1, context: 'ticket'}, {id: 2, context: 'user'}]
+            const items = [{id: 1, context: 'ticket'}, {id: 2, context: 'customer'}]
             const currentContext = 'ticket'
             const state = {
                 widgets: fromJS({items, currentContext})
@@ -150,7 +150,7 @@ describe('widgets selectors', () => {
 
     describe('hasWidgetsWithContext', () => {
         it('should return true because there are items matching the passed context', () => {
-            const items = [{id: 1, context: 'ticket'}, {id: 2, context: 'user'}]
+            const items = [{id: 1, context: 'ticket'}, {id: 2, context: 'customer'}]
             const state = {
                 widgets: fromJS({items})
             }
@@ -159,7 +159,7 @@ describe('widgets selectors', () => {
         })
 
         it('should return false because there are no items with passed context', () => {
-            const items = [{id: 1, context: 'user'}, {id: 2, context: 'user'}]
+            const items = [{id: 1, context: 'customer'}, {id: 2, context: 'customer'}]
             const state = {
                 widgets: fromJS({items})
             }
@@ -186,7 +186,7 @@ describe('widgets selectors', () => {
         })
 
         it('should default to current context if no context is passed', () => {
-            const items = [{id: 1, context: 'ticket'}, {id: 2, context: 'user'}]
+            const items = [{id: 1, context: 'ticket'}, {id: 2, context: 'customer'}]
             const currentContext = 'ticket'
             const state = {
                 widgets: fromJS({items, currentContext})
@@ -207,7 +207,7 @@ describe('widgets selectors', () => {
                 })
             }
 
-            expect(getSources(state)).toEqualImmutable(fromJS({ticket, user: customer}))
+            expect(getSources(state)).toEqualImmutable(fromJS({ticket, customer}))
         })
     })
 
@@ -220,7 +220,7 @@ describe('widgets selectors', () => {
                         name: 'foo'
                     }
                 },
-                user: {}
+                customer: {}
             })
 
             const ticket = expectedResult.get('ticket')
@@ -246,7 +246,7 @@ describe('widgets selectors', () => {
                         name: 'foo'
                     }
                 },
-                user: {
+                customer: {
                     id: 1,
                     name: 'foo'
                 }
@@ -278,7 +278,7 @@ describe('widgets selectors', () => {
                         name: 'bar'
                     }
                 },
-                user: {
+                customer: {
                     id: 2,
                     name: 'bar'
                 }

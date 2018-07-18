@@ -87,9 +87,9 @@ export const DEFAULT_SOURCE_PATHS = {
         custom: ['ticket', 'customer', 'data'],
         integrations: ['ticket', 'customer', 'integrations']
     },
-    user: {
-        custom: ['user', 'data'],
-        integrations: ['user', 'integrations']
+    customer: {
+        custom: ['customer', 'data'],
+        integrations: ['customer', 'integrations']
     }
 }
 
@@ -264,12 +264,6 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
 
 // Number of threads imported from Gmail
 export const GMAIL_IMPORTED_THREADS = 1000
-/**
- * Templates for custom actions.
- * Those templates are used by the front-end to generate the UI to create a new action (in the Macros Management).
- * Once it has been filled and saved by the user, it is saved in the Action table.
- * Then, when the macro will be used, the fields with no value will show up to be filled by the agent using the macro.
- */
 
 export const JSON_CONTENT_TYPE = 'application/json'
 export const FORM_CONTENT_TYPE = 'application/x-www-form-urlencoded'
@@ -450,7 +444,7 @@ export const ACTION_TEMPLATES = [
                 validate: (customer: Object) => {
                     return _find(customer.integrations, {'__integration_type__': 'shopify'})
                 },
-                error: 'This user has no Shopify data.'
+                error: 'This customer has no Shopify data.'
             },
             {
                 validate: (customer: Object) => {
@@ -458,7 +452,7 @@ export const ACTION_TEMPLATES = [
 
                     return _get(shopifyIntegration, ['orders'])
                 },
-                error: 'This user has no order to cancel.'
+                error: 'This customer has no order to cancel.'
             },
             {
                 validate: (customer: Object) => {
@@ -516,7 +510,7 @@ export const ACTION_TEMPLATES = [
                 validate: (customer: Object) => {
                     return _find(customer.integrations, {'__integration_type__': 'shopify'})
                 },
-                error: 'This user has no Shopify data.'
+                error: 'This customer has no Shopify data.'
             },
             {
                 validate: (customer: Object) => {
@@ -524,7 +518,7 @@ export const ACTION_TEMPLATES = [
 
                     return _get(shopifyIntegration, ['orders'])
                 },
-                error: 'This user has no order to duplicate.'
+                error: 'This customer has no order to duplicate.'
             },
         ]
     },
@@ -591,7 +585,7 @@ export const ACTION_TEMPLATES = [
                 validate: (customer: Object) => {
                     return _find(customer.integrations, {'__integration_type__': 'shopify'})
                 },
-                error: 'This user has no Shopify data.'
+                error: 'This customer has no Shopify data.'
             },
             {
                 validate: (customer: Object) => {
@@ -599,7 +593,7 @@ export const ACTION_TEMPLATES = [
 
                     return _get(shopifyIntegration, ['orders'])
                 },
-                error: 'This user has no order to edit.'
+                error: 'This customer has no order to edit.'
             },
             {
                 validate: (customer: Object) => {
@@ -625,7 +619,7 @@ export const ACTION_TEMPLATES = [
                 validate: (customer: Object) => {
                     return _find(customer.integrations, {'__integration_type__': 'shopify'})
                 },
-                error: 'This user has no Shopify data.'
+                error: 'This customer has no Shopify data.'
             },
             {
                 validate: (customer: Object) => {
@@ -633,7 +627,7 @@ export const ACTION_TEMPLATES = [
 
                     return _get(shopifyIntegration, ['orders'])
                 },
-                error: 'This user has no order to refund.'
+                error: 'This customer has no order to refund.'
             },
             {
                 validate: (customer: Object) => {
@@ -670,7 +664,7 @@ export const ACTION_TEMPLATES = [
                 validate: (customer: Object) => {
                     return _find(customer.integrations, {'__integration_type__': 'shopify'})
                 },
-                error: 'This user has no Shopify data.'
+                error: 'This customer has no Shopify data.'
             },
             {
                 validate: (customer: Object) => {
@@ -678,7 +672,7 @@ export const ACTION_TEMPLATES = [
 
                     return _get(shopifyIntegration, ['orders'])
                 },
-                error: 'This user has no order to refund.'
+                error: 'This customer has no order to refund.'
             },
             {
                 validate: (customer: Object) => {
@@ -716,7 +710,7 @@ export const ACTION_TEMPLATES = [
                 validate: (customer: Object) => {
                     return _find(customer.integrations, {'__integration_type__': 'shopify'})
                 },
-                error: 'This user has no Shopify data.'
+                error: 'This customer has no Shopify data.'
             },
             {
                 validate: (customer: Object) => {
@@ -724,7 +718,7 @@ export const ACTION_TEMPLATES = [
 
                     return _get(shopifyIntegration, ['orders'])
                 },
-                error: 'This user has no order to refund.'
+                error: 'This customer has no order to refund.'
             },
             {
                 validate: (customer: Object) => {
@@ -756,7 +750,7 @@ export const ACTION_TEMPLATES = [
                 validate: (customer: Object) => {
                     return _find(customer.integrations, {'__integration_type__': 'shopify'})
                 },
-                error: 'This user has no Shopify data.'
+                error: 'This customer has no Shopify data.'
             },
             {
                 validate: (customer: Object) => {
@@ -764,7 +758,7 @@ export const ACTION_TEMPLATES = [
 
                     return _get(shopifyIntegration, ['orders'])
                 },
-                error: 'This user has no order to edit.'
+                error: 'This customer has no order to edit.'
             },
         ]
     },
@@ -779,7 +773,7 @@ export const ACTION_TEMPLATES = [
                 validate: (customer: Object) => {
                     return _find(customer.integrations, {'__integration_type__': 'recharge'})
                 },
-                error: 'This user has no Recharge data.'
+                error: 'This customer has no Recharge data.'
             },
             {
                 validate: (customer: Object) => {
@@ -787,7 +781,7 @@ export const ACTION_TEMPLATES = [
 
                     return _get(rechargeIntegration, ['subscriptions'])
                 },
-                error: 'This user has no subscription to cancel.'
+                error: 'This customer has no subscription to cancel.'
             },
             {
                 validate: (customer: Object) => {

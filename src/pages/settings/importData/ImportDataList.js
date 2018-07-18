@@ -6,7 +6,7 @@ const config = [
     {
         img: `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/integrations/zendesk.png`,
         title: 'Zendesk',
-        description: 'Import tickets, users and macros',
+        description: 'Import tickets, agents, admins, end-users and macros',
         link: '/app/settings/import-data/zendesk'
     }
 ]

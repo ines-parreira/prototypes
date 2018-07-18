@@ -16,6 +16,7 @@ type dataType = {
  * @param payload
  * @returns {*}
  */
+// TODO(customers-migration): update `user_id` when we update our REST API
 export const actionButtonHashForData = ({action_name, user_id, integration_id, payload}: dataType): string => {
     let identifier = [
         action_name, // eslint-disable-line

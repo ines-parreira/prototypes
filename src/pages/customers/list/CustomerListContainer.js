@@ -26,6 +26,7 @@ class CustomerListContainer extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         this.setState({
+            // TODO(customers-migration): remove statements with `users` when we updated all links in our email templates.
             isSearch: isSearchUrl(nextProps.location.pathname, 'users') || isSearchUrl(nextProps.location.pathname, 'customers'),
             isUpdate: !isCreationUrl(nextProps.location.pathname, 'users') && !isCreationUrl(nextProps.location.pathname, 'customers')
         })

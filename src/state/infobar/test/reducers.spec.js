@@ -12,13 +12,13 @@ describe('infobar reducers', () => {
         expect(reducer(undefined, {})).toEqualImmutable(initialState)
     })
 
-    it('fetch user picture', () => {
+    it('fetch person avatar (user or customer)', () => {
         // start
         expect(
             reducer(
                 initialState,
                 {
-                    type: types.FETCH_USER_PICTURE_START,
+                    type: types.FETCH_AVATAR_START,
                 }
             ).toJS()
         ).toMatchSnapshot()
@@ -28,7 +28,7 @@ describe('infobar reducers', () => {
             reducer(
                 initialState,
                 {
-                    type: types.FETCH_USER_PICTURE_SUCCESS,
+                    type: types.FETCH_AVATAR_SUCCESS,
                     url: 'http://good.url',
                     email: 'alex@gorgias.io',
                 }
@@ -40,7 +40,7 @@ describe('infobar reducers', () => {
             reducer(
                 initialState,
                 {
-                    type: types.FETCH_USER_PICTURE_ERROR,
+                    type: types.FETCH_AVATAR_ERROR,
                 }
             ).toJS()
         ).toMatchSnapshot()

@@ -1,24 +1,24 @@
 import React from 'react'
-import InfobarUserActions from '../InfobarUserActions'
+import InfobarCustomerActions from '../InfobarCustomerActions'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 const commonProps = {
-    user: fromJS({
+    customer: fromJS({
         id: 1
     }),
     sources: fromJS({
-        user: {
+        customer: {
             id: 1
         },
         ticket: {
             id: 2
         }
     }),
-    selectedUser: fromJS({
+    selectedCustomer: fromJS({
         id: 3
     }),
-    toggleMergeUserModal: () => {},
+    toggleMergeCustomerModal: () => {},
     setCustomer: () => {}
 }
 
@@ -26,13 +26,13 @@ jest.mock('../../../../../../utils', () => ({
     isCurrentlyOnTicket: (ticketId) => !!ticketId
 }))
 
-describe('InfobarUserActions component', () => {
+describe('InfobarCustomerActions component', () => {
     it('should not render "set as customer" button because the agent is not on a ticket', () => {
         const component = shallow(
-            <InfobarUserActions
+            <InfobarCustomerActions
                 {...commonProps}
                 sources={fromJS({
-                    user: {
+                    customer: {
                         id: 1
                     }
                 })}
@@ -42,22 +42,22 @@ describe('InfobarUserActions component', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should not render "set as customer" nor "merge" buttons because the users are the same', () => {
+    it('should not render "set as customer" nor "merge" buttons because the customers are the same', () => {
         const component = shallow(
-            <InfobarUserActions
+            <InfobarCustomerActions
                 {...commonProps}
-                selectedUser={commonProps.user}
+                selectedCustomer={commonProps.customer}
             />
         )
 
         expect(component).toMatchSnapshot()
     })
 
-    it('should not render "merge" button because there is no user to merge the selected user with', () => {
+    it('should not render "merge" button because there is no customer to merge the selected customer with', () => {
         const component = shallow(
-            <InfobarUserActions
+            <InfobarCustomerActions
                 {...commonProps}
-                user={fromJS({})}
+                customer={fromJS({})}
             />
         )
 
@@ -66,7 +66,7 @@ describe('InfobarUserActions component', () => {
 
     it('should render "set as customer" and "merge" button', () => {
         const component = shallow(
-            <InfobarUserActions
+            <InfobarCustomerActions
                 {...commonProps}
             />
         )

@@ -31,7 +31,7 @@ class CustomerSourceContainer extends React.Component {
 
         return (
             <SourceWrapper
-                context="user"
+                context="customer"
                 identifier={identifier}
                 sources={sources}
                 widgets={widgets}

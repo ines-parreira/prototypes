@@ -1,7 +1,7 @@
 import {fromJS} from 'immutable'
 
 import * as types from './constants'
-import * as userTypes from '../customers/constants'
+import * as customerTypes from '../customers/constants'
 import ticketReplyCache from '../newMessage/ticketReplyCache'
 import * as newMessageTypes from '../newMessage/constants'
 import {getPendingMessageIndex} from './utils'
@@ -266,7 +266,7 @@ export default (state = initialState, action) => {
         case types.DISPLAY_HISTORY_ON_NEXT_PAGE:
             return state.setIn(['_internal', 'shouldDisplayHistoryOnNextPage'], action.state)
 
-        case userTypes.MERGE_CUSTOMERS_SUCCESS: {
+        case customerTypes.MERGE_CUSTOMERS_SUCCESS: {
             if (action.resp && state.getIn(['customer', 'id']) === action.resp.id) {
                 return state.set('customer', fromJS(action.resp))
             }
@@ -307,15 +307,15 @@ export default (state = initialState, action) => {
         }
 
         case types.MERGE_CUSTOMER: {
-            const {user} = action
-            const userData = fromJS(user)
+            const {customer} = action
+            const customerData = fromJS(customer)
 
-            // if received user data does not concern current customer of ticket, do nothing
-            if (userData.get('id') !== state.getIn(['customer', 'id'])) {
+            // if received customer data does not concern current customer of ticket, do nothing
+            if (customerData.get('id') !== state.getIn(['customer', 'id'])) {
                 return state
             }
 
-            return state.set('customer', userData)
+            return state.set('customer', customerData)
         }
 
         case types.DELETE_TICKET_PENDING_MESSAGE: {

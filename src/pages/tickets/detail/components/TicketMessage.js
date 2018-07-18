@@ -10,9 +10,9 @@ import * as infobarActions from './../../../../state/infobar/actions'
 import TicketMessageActions from './TicketMessageActions'
 import TicketMessageBody from './TicketMessageBody'
 import TicketAttachments from './replyarea/TicketAttachments'
-import {displayUserNameFromSource} from '../../common/utils'
+import {getPersonLabelFromSource} from '../../common/utils'
 import {formatDatetime} from './../../../../utils'
-import {AgentLabel, DatetimeLabel, UserLabel} from '../../../common/utils/labels'
+import {AgentLabel, CustomerLabel, DatetimeLabel} from '../../../common/utils/labels'
 import {isForwardedMessage} from '../../../../state/ticket/utils'
 import HardWarning from './HardWarning'
 import Avatar from '../../../common/components/Avatar'
@@ -80,8 +80,8 @@ export class TicketMessage extends React.Component {
                 <span className="text-faded">{title}:</span>
                 <strong>
                     {
-                        fieldSource.map((user) => {
-                            return displayUserNameFromSource(user, source.type)
+                        fieldSource.map((person) => {
+                            return getPersonLabelFromSource(person, source.type)
                         }).join(', ')
                     }
                 </strong>
@@ -423,7 +423,7 @@ export class TicketMessage extends React.Component {
                                 {
                                     message.from_agent
                                       ? <AgentLabel name={sender.get('name')} className={css.agentIcon} />
-                                      : <UserLabel user={sender} />
+                                      : <CustomerLabel customer={sender} />
                                 }
                             </div>
 

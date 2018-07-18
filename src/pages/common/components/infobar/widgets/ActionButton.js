@@ -86,7 +86,7 @@ export default class ActionButton extends React.Component<Props, State> {
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
         integrationId: PropTypes.number.isRequired,
-        userId: PropTypes.number.isRequired,
+        customerId: PropTypes.number.isRequired,
     }
 
     componentDidMount() {
@@ -140,7 +140,8 @@ export default class ActionButton extends React.Component<Props, State> {
     _generateActionId = (props: Props, context: Object, state: State | Object) => {
         const data = {
             action_name: state.actionName,
-            user_id: context.userId,
+            // TODO(customers-migration): update `user_id` when we update our REST API
+            user_id: context.customerId,
             integration_id: context.integrationId,
             payload: {
                 ...props.payload,
@@ -170,7 +171,7 @@ export default class ActionButton extends React.Component<Props, State> {
         this.props.executeAction(
             this.state.actionName,
             this.context.integrationId,
-            this.context.userId,
+            this.context.customerId,
             payload,
             (response) => {
                 if (response.status === 'error') {

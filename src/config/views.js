@@ -97,6 +97,7 @@ export const views = fromJS([{
             title: 'Requester',
             path: 'customer.id',
             filter: {
+                // TODO(customers-migration): replace with `customer` when we updated our search REST API.
                 type: 'user',
             },
         },
@@ -105,6 +106,7 @@ export const views = fromJS([{
             title: 'Assignee',
             path: 'assignee_user.id',
             filter: {
+                // TODO(customers-migration): replace with `user` when we updated our search REST API.
                 type: 'agent',
             }
         },
@@ -299,6 +301,7 @@ export const views = fromJS([{
     type: 'customer-list',
     routeItem: 'customer',
     routeList: 'customers',
+    // TODO(customers-migration): update when we created REST API to search for customers in a view
     api: 'users',
     singular: 'customer',
     plural: 'customers',

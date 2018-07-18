@@ -6,10 +6,10 @@ exports[`TicketInfobarContainer component should render infobar for new ticket 1
     Object {
       "infobar": Object {
         "executeAction": [Function],
-        "fetchPreviewUser": [Function],
+        "fetchPreviewCustomer": [Function],
         "handleExecutedAction": [Function],
         "search": [Function],
-        "similarUser": [Function],
+        "similarCustomer": [Function],
       },
       "widgets": Object {
         "cancelDrag": [Function],
@@ -32,6 +32,10 @@ exports[`TicketInfobarContainer component should render infobar for new ticket 1
     }
   }
   context="ticket"
+  customer={
+    Immutable.Map {
+    }
+  }
   identifier="new"
   infobar={
     Immutable.Map {
@@ -44,12 +48,8 @@ exports[`TicketInfobarContainer component should render infobar for new ticket 1
         customer: Immutable.Map {
         },
       },
-      user: Immutable.Map {
+      customer: Immutable.Map {
       },
-    }
-  }
-  user={
-    Immutable.Map {
     }
   }
   widgets={

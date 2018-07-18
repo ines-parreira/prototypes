@@ -12,7 +12,7 @@ const commonProps = {
             submitWidgets: jest.fn(() => Promise.resolve()),
         },
         infobar: {
-            fetchPreviewUser: jest.fn(() => Promise.resolve({resp: {}}))
+            fetchPreviewCustomer: jest.fn(() => Promise.resolve({resp: {}}))
         }
     },
     context: 'ticket',
@@ -25,11 +25,11 @@ const commonProps = {
                 id: 2
             }
         },
-        user: {
+        customer: {
             id: 2
         }
     }),
-    user: fromJS({
+    customer: fromJS({
         id: 2
     }),
     widgets: fromJS({
@@ -39,7 +39,7 @@ const commonProps = {
     }),
     fetchCustomerHistory: jest.fn(() => Promise.resolve()),
     search: jest.fn(() => Promise.resolve({resp: {data: []}})),
-    searchSimilarUser: jest.fn(() => Promise.resolve({user: {id: 4}})),
+    searchSimilarCustomer: jest.fn(() => Promise.resolve({customer: {id: 4}})),
     setCustomer: jest.fn(() => Promise.resolve()),
     location: {
         search: 'searchQuery'
@@ -57,11 +57,11 @@ describe('Infobar component', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should render user context', () => {
+    it('should render customer context', () => {
         const component = shallow(
             <Infobar
                 {...commonProps}
-                context="user"
+                context="customer"
             />
         )
 
@@ -78,24 +78,24 @@ describe('Infobar component', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should render loading state because the user is being fetched', () => {
+    it('should render loading state because the customer is being fetched', () => {
         const component = shallow(
             <Infobar
                 {...commonProps}
             />
-        ).setState({isFetchingUser: true})
+        ).setState({isFetchingCustomer: true})
 
         expect(component).toMatchSnapshot()
     })
 
-    it('should render selected user', () => {
+    it('should render selected customer', () => {
         const component = shallow(
             <Infobar
                 {...commonProps}
             />
         ).setState({
-            displaySelectedUser: true,
-            selectedUser: fromJS({id: 7})
+            displaySelectedCustomer: true,
+            selectedCustomer: fromJS({id: 7})
         })
 
         expect(component).toMatchSnapshot()
@@ -114,13 +114,13 @@ describe('Infobar component', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should render current user with suggested user', () => {
+    it('should render current customer with suggested customer', () => {
         const component = shallow(
             <Infobar
                 {...commonProps}
             />
         ).setState({
-            suggestedUser: fromJS({id: 10})
+            suggestedCustomer: fromJS({id: 10})
         })
 
         expect(component).toMatchSnapshot()

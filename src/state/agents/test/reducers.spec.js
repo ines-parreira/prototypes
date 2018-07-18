@@ -80,8 +80,8 @@ describe('agents reducers', () => {
                 {
                     type: types.SET_AGENTS_LOCATIONS,
                     data: [
-                        {users: ['1', '2'], ticket: '1'},
-                        {users: ['1'], ticket: '2'},
+                        {customers: ['1', '2'], ticket: '1'},
+                        {customers: ['1'], ticket: '2'},
                     ]
                 }
             ).toJS()

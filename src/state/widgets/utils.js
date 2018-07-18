@@ -29,7 +29,7 @@ export function itemsWithoutContext(items: itemsType = fromJS([]), context: cont
 
 /**
  * Return source paths for widgets
- * @param context - context of widget (ticket, user, etc.)
+ * @param context - context of widget (ticket, customer, etc.)
  * @param type (Optional) - type of widget (custom, shopify, etc.)
  * @returns {string/Array}
  */

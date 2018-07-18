@@ -29,7 +29,7 @@ class TicketInfobarContainer extends React.Component {
         } = this.props
 
         // the || is used to replace null
-        const user = sources.getIn(['ticket', 'customer']) || fromJS({})
+        const customer = sources.getIn(['ticket', 'customer']) || fromJS({})
 
         return (
             <Infobar
@@ -38,7 +38,7 @@ class TicketInfobarContainer extends React.Component {
                 sources={sources}
                 isRouteEditingWidgets={!!route.isEditingWidgets}
                 identifier={ticket.get('id', params.ticketId || '').toString()}
-                user={user}
+                customer={customer}
                 widgets={widgets}
                 context="ticket"
             />

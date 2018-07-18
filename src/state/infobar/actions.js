@@ -17,36 +17,36 @@ type responseType = {
 
 export const search = (query: string): thunkActionType => ((dispatch: dispatchType): Promise<dispatchType> => {
     dispatch({
-        type: constants.SEARCH_USERS_START,
+        type: constants.SEARCH_CUSTOMERS_START,
     })
 
     return axios.post('/api/search/', {type: 'user_profile', query})
         .then((json = {}) => json.data)
         .then(resp => {
             return dispatch({
-                type: constants.SEARCH_USERS_SUCCESS,
+                type: constants.SEARCH_CUSTOMERS_SUCCESS,
                 resp,
             })
         }, error => {
             return dispatch({
-                type: constants.SEARCH_USERS_ERROR,
+                type: constants.SEARCH_CUSTOMERS_ERROR,
                 error,
                 reason: 'Failed to do the search. Please try again...'
             })
         })
 })
 
-export const similarUser = (userId: string): thunkActionType => ((dispatch: dispatchType): Promise<dispatchType> => {
+export const similarCustomer = (customerId: string): thunkActionType => ((dispatch: dispatchType): Promise<dispatchType> => {
     dispatch({
-        type: constants.SEARCH_SIMILAR_USER_START
+        type: constants.SEARCH_SIMILAR_CUSTOMER_START
     })
 
-    return axios.get(`/api/customers/${userId}/similar/`)
+    return axios.get(`/api/customers/${customerId}/similar/`)
         .then((json = {}) => json.data)
         .then(resp => {
             return dispatch({
-                type: constants.SEARCH_SIMILAR_USER_SUCCESS,
-                user: resp,
+                type: constants.SEARCH_SIMILAR_CUSTOMER_SUCCESS,
+                customer: resp,
             })
         }, error => {
             // TODO(customers-migration): remove these lines when the migration is done
@@ -55,7 +55,7 @@ export const similarUser = (userId: string): thunkActionType => ((dispatch: disp
                     window.Raven.captureMessage('Agent has a customer profile', {
                         level: 'error',
                         extra: {
-                            userId
+                            customerId
                         }
                     })
                 }
@@ -63,29 +63,29 @@ export const similarUser = (userId: string): thunkActionType => ((dispatch: disp
             }
 
             return dispatch({
-                type: constants.SEARCH_SIMILAR_USER_ERROR,
+                type: constants.SEARCH_SIMILAR_CUSTOMER_ERROR,
                 reason: 'Failed to search for similar customers. Please try again...'
             })
         })
 })
 
-export const fetchPreviewUser = (userId: string): thunkActionType => ((dispatch: dispatchType): Promise<dispatchType> => {
+export const fetchPreviewCustomer = (customerId: string): thunkActionType => ((dispatch: dispatchType): Promise<dispatchType> => {
     dispatch({
-        type: constants.FETCH_PREVIEW_USER_START
+        type: constants.FETCH_PREVIEW_CUSTOMER_START
     })
 
-    return axios.get(`/api/customers/${userId}/`)
+    return axios.get(`/api/customers/${customerId}/`)
         .then((json = {}) => json.data)
         .then(resp => {
             return dispatch({
-                type: constants.FETCH_PREVIEW_USER_SUCCESS,
+                type: constants.FETCH_PREVIEW_CUSTOMER_SUCCESS,
                 resp
             })
         }, error => {
             return dispatch({
-                type: constants.FETCH_PREVIEW_USER_ERROR,
+                type: constants.FETCH_PREVIEW_CUSTOMER_ERROR,
                 error,
-                reason: 'Couldn\'t fetch the user. Please try again in a few minutes.'
+                reason: 'Couldn\'t fetch the customer. Please try again in a few minutes.'
             })
         })
 })
@@ -94,11 +94,11 @@ export const fetchPreviewUser = (userId: string): thunkActionType => ((dispatch:
  * Send action from infobar button to server
  * @param actionName
  * @param integrationId
- * @param userId
+ * @param customerId
  * @param payload
  * @param callback
  */
-export const executeAction = (actionName: string, integrationId: string, userId: string, payload: {} = {}, callback: () => void) => ((dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
+export const executeAction = (actionName: string, integrationId: string, customerId: string, payload: {} = {}, callback: () => void) => ((dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
     const state = getState()
     const {ticket} = state
 
@@ -106,7 +106,7 @@ export const executeAction = (actionName: string, integrationId: string, userId:
 
     const data = {
         action_name: actionName,
-        user_id: userId,
+        user_id: customerId,
         ticket_id: ticketId,
         integration_id: integrationId,
         payload,
@@ -127,7 +127,7 @@ export const executeAction = (actionName: string, integrationId: string, userId:
                 type: constants.EXECUTE_ACTION_ERROR,
                 data,
                 error,
-                reason: `Failed to execute action ${actionName} on user ${userId} for integration ${integrationId}`
+                reason: `Failed to execute action ${actionName} on customer #${customerId} for integration ${integrationId}`
             })
         })
 })

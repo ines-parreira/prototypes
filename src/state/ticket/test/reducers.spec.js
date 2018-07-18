@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 
 import reducer, {initialState} from '../reducers'
 import * as newMessageTypes from '../../newMessage/constants'
-import * as userTypes from '../../customers/constants'
+import * as customerTypes from '../../customers/constants'
 import * as types from '../constants'
 import * as ticketFixtures from '../../../fixtures/ticket'
 
@@ -650,14 +650,14 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('merge users', () => {
+    it('merge customers', () => {
         // success
         // should do nothing since there is no customer in state for now
         expect(
             reducer(
                 initialState,
                 {
-                    type: userTypes.MERGE_CUSTOMERS_SUCCESS,
+                    type: customerTypes.MERGE_CUSTOMERS_SUCCESS,
                     resp: {
                         id: 1,
                         name: 'Alex',
@@ -677,7 +677,7 @@ describe('ticket reducers', () => {
                         },
                     }),
                 {
-                    type: userTypes.MERGE_CUSTOMERS_SUCCESS,
+                    type: customerTypes.MERGE_CUSTOMERS_SUCCESS,
                     resp: {
                         id: 1,
                         name: 'Alex',
@@ -751,7 +751,7 @@ describe('ticket reducers', () => {
                 initialState,
                 {
                     type: types.MERGE_CUSTOMER,
-                    user: {
+                    customer: {
                         id: 1,
                         name: 'Alex',
                     },
@@ -771,7 +771,7 @@ describe('ticket reducers', () => {
                     }),
                 {
                     type: types.MERGE_CUSTOMER,
-                    user: {
+                    customer: {
                         id: 1,
                         name: 'Alex',
                     },

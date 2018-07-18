@@ -43,31 +43,31 @@ describe('infobar actions', () => {
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('similar user', () => {
+    it('similar customer', () => {
         mockServer.onGet('/api/customers/1/similar/').reply(200, {id: 1, name: 'alex'})
 
-        return store.dispatch(actions.similarUser(2))
+        return store.dispatch(actions.similarCustomer(2))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     describe('execute action', () => {
         const actionName = 'shopifyRefundShippingCostOfOrder'
         const integrationId = 5
-        const userId = 34
+        const customerId = 34
         const payload = {order_id: 4194477515}
         const callback = jest.fn()
 
         it('success', () => {
             mockServer.onPost('/api/actions/execute/').reply(200)
 
-            return store.dispatch(actions.executeAction(actionName, integrationId, userId, payload, callback))
+            return store.dispatch(actions.executeAction(actionName, integrationId, customerId, payload, callback))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
         it('fail', () => {
             mockServer.onPost('/api/actions/execute/').reply(400)
 
-            return store.dispatch(actions.executeAction(actionName, integrationId, userId, payload, callback))
+            return store.dispatch(actions.executeAction(actionName, integrationId, customerId, payload, callback))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })

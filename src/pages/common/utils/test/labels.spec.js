@@ -55,7 +55,7 @@ describe('components utils : labels', () => {
                     value: {
                         name: 'Luigi'
                     },
-                    expected: <labels.UserLabel user="Luigi"/>
+                    expected: <labels.CustomerLabel customer="Luigi"/>
                 },
                 {
                     type: 'channel',

@@ -3,7 +3,7 @@ import React from 'react'
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 
-import {userPicture, userPictureFromCache} from './utils'
+import {getAvatar, getAvatarFromCache} from './utils'
 
 import css from './Avatar.less'
 
@@ -50,7 +50,7 @@ export default class Avatar extends React.Component<Props, State> {
     }
 
     _getDefaultState = (props: Props) => {
-        const cached = userPictureFromCache(props.email)
+        const cached = getAvatarFromCache(props.email)
         let imageUrl = cached.url
         let isCached = cached.isCached
 
@@ -70,7 +70,7 @@ export default class Avatar extends React.Component<Props, State> {
             return this.setState(this._getDefaultState(props))
         }
 
-        return userPicture({
+        return getAvatar({
             email: props.email,
             size: props.size,
             google: props.google

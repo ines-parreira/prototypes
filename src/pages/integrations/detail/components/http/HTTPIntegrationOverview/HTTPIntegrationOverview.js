@@ -209,7 +209,7 @@ export default class HTTPIntegrationOverview extends React.Component {
                         Add the details about the HTTP integration you want to add below. If you need help, you can
                         check our {' '}
                         <a
-                            href="http://docs.gorgias.io/integrations/http-integrations#Connecting_your_own_back-office"
+                            href="https://docs.gorgias.io/integrations/http-integrations#Connecting_your_own_back-office"
                             target="_blank"
                             rel="noopener noreferrer"
                         >
@@ -261,14 +261,14 @@ export default class HTTPIntegrationOverview extends React.Component {
                             name="http.url"
                             label="URL"
                             title='Example: https://company.com/api'
-                            placeholder="https://company.com/api/users?email={{ticket.customer.email}}"
+                            placeholder="https://company.com/api/customers?email={{ticket.customer.email}}"
                             required
                             pattern={validateWebhookURLToPattern(this.state.url)}
                             help={(
                                 <div>
                                     You can use <code>{'{{ticket.customer.email}}'}</code> to pass the email of the
                                     ticket customer. See
-                                    other <a href="http://api.gorgias.io/#/definitions/User" target="_blank"
+                                    other <a href="https://api.gorgias.io/#Customer-object" target="_blank"
                                              rel="noopener noreferrer">vars</a>.
                                 </div>
                             )}

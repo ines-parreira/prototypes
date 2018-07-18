@@ -49,7 +49,7 @@ export default class ImportDataContainer extends React.Component {
                             </b>
                         </p>
                         <p>
-                            We are currently importing all your Zendesk data (tickets, users and macros). We will
+                            We are currently importing all your Zendesk data (tickets, agents, admins, end-users and macros). We will
                             notify you by email when the import is done.{' '}
                             <Link to="/app">Review imported tickets</Link>
                         </p>
@@ -69,7 +69,7 @@ export default class ImportDataContainer extends React.Component {
                             </b>
                         </p>
                         <p>
-                            We have finished importing all your Zendesk data (tickets, users and macros).{' '}
+                            We have finished importing all your Zendesk data (tickets, agents, admins, end-users and macros).{' '}
                             <Link to="/app">Review imported tickets</Link>
                         </p>
                     </Alert>

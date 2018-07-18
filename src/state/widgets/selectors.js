@@ -40,14 +40,14 @@ export const hasWidgetsWithContext = (context: contextType) => createSelector(
 export const getSources = (state: stateType) => {
     return fromJS({
         ticket: state.ticket,
-        user: getActiveCustomer(state)
+        customer: getActiveCustomer(state)
     })
 }
 
 export const getSourcesWithCustomer = createSelector(
     [getSources],
     (state) => {
-        return !state.getIn(['ticket', 'customer']) ? state.setIn(['ticket', 'customer'], state.get('user')) : state
+        return !state.getIn(['ticket', 'customer']) ? state.setIn(['ticket', 'customer'], state.get('customer')) : state
     }
 )
 

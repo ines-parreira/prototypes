@@ -1,4 +1,4 @@
-import {userPicture, userPictureFromCache} from '../utils'
+import {getAvatar, getAvatarFromCache} from '../utils'
 
 describe('Avatar utils', () => {
     const email = 'alex@gorgias.io'
@@ -9,9 +9,9 @@ describe('Avatar utils', () => {
         expect.assertions(1)
     })
 
-    describe('fetch user picture', () => {
+    describe('fetch avatar', () => {
         it('should return empty with no params', () => {
-            return userPicture()
+            return getAvatar()
             .then((res) => expect(res).toEqual({
                 url: '',
                 isCached: false
@@ -19,7 +19,7 @@ describe('Avatar utils', () => {
         })
 
         it('should return gravatar url', () => {
-            return userPicture({email})
+            return getAvatar({email})
             .then((res) => expect(res).toEqual({
                 url: gravatarUrl,
                 isCached: true
@@ -27,7 +27,7 @@ describe('Avatar utils', () => {
         })
 
         it('should return custom sized gravatar', () => {
-            return userPicture({
+            return getAvatar({
                 size: 100,
                 email
             })
@@ -40,8 +40,8 @@ describe('Avatar utils', () => {
 
     describe('get avatar from cache', () => {
         it('should return picture from cache', () => {
-            return userPicture({email})
-            .then(() => userPictureFromCache(email))
+            return getAvatar({email})
+            .then(() => getAvatarFromCache(email))
             .then((res) => expect(res).toEqual({
                 url: gravatarUrl,
                 isCached: true

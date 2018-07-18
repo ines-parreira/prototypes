@@ -25,26 +25,27 @@ const defaultContent = {
     channels: []
 }
 
-class MergeUsersModal extends React.Component {
+class MergeCustomersModal extends React.Component {
     state = _clone(defaultContent)
 
     componentDidMount = () => {
-        const {sourceUser} = this.props
-        const initData = this.props.destinationUser.map((v, k) => {
+        const {sourceCustomer} = this.props
+        const initData = this.props.destinationCustomer.map((v, k) => {
             if (!v) {
-                return sourceUser.get(k)
+                return sourceCustomer.get(k)
             }
 
             return v
         }).toJS()
 
-        initData.channels = initData.channels.concat(sourceUser.get('channels').toJS())
+        initData.channels = initData.channels.concat(sourceCustomer.get('channels').toJS())
 
         this.setState(_pick(initData, Object.keys(defaultContent)))
     }
 
     componentWillReceiveProps(nextProps) {
         if (!this.props.isOpen && nextProps.isOpen) {
+            // TODO(customers-migration): ask confirmation to update this event
             segmentTracker.logEvent(segmentTracker.EVENTS.MODAL_TOGGLED, {
                 open: true,
                 name: 'merge users',
@@ -55,13 +56,13 @@ class MergeUsersModal extends React.Component {
     _handleSubmit = (e) => {
         e.preventDefault()
         const data = {
-            user: _pick(this.state, Object.keys(defaultContent))
+            customer: _pick(this.state, Object.keys(defaultContent))
         }
 
         return this.props.mergeCustomers(
-            this.props.destinationUser.get('id'),
-            this.props.sourceUser.get('id'),
-            data.user
+            this.props.destinationCustomer.get('id'),
+            this.props.sourceCustomer.get('id'),
+            data.customer
         ).then(({error}) => {
             this._toggle()
 
@@ -71,9 +72,9 @@ class MergeUsersModal extends React.Component {
         })
     }
 
-    _generateChannelOptions = (user) => {
+    _generateChannelOptions = (customer) => {
         return (
-            user.get('channels', fromJS([]))
+            customer.get('channels', fromJS([]))
                 .filter(channel => !!channel) // removing falsey values
                 .map((channel, idx) => ({
                     label: (
@@ -94,17 +95,17 @@ class MergeUsersModal extends React.Component {
     }
 
     render() {
-        const {destinationUser, sourceUser, isLoading, requiredAddresses} = this.props
+        const {destinationCustomer, sourceCustomer, isLoading, requiredAddresses} = this.props
         const primaryEmail = this.state.email
 
-        let baseCustomerData = destinationUser.get('data') || fromJS({})
+        let baseCustomerData = destinationCustomer.get('data') || fromJS({})
 
         if (isCustomerDataValid(baseCustomerData)) {
             baseCustomerData = baseCustomerData.delete('_shopify')
         }
 
         baseCustomerData = isCustomerDataPresent(baseCustomerData) ? baseCustomerData.toJS() : {}
-        let mergeCustomerData = sourceUser.get('data') || fromJS({})
+        let mergeCustomerData = sourceCustomer.get('data') || fromJS({})
 
         if (isCustomerDataValid(mergeCustomerData)) {
             mergeCustomerData = mergeCustomerData.delete('_shopify')
@@ -112,7 +113,7 @@ class MergeUsersModal extends React.Component {
 
         mergeCustomerData = isCustomerDataPresent(mergeCustomerData) ? mergeCustomerData.toJS() : {}
 
-        const allChannels = destinationUser.get('channels').toJS().concat(sourceUser.get('channels').toJS())
+        const allChannels = destinationCustomer.get('channels').toJS().concat(sourceCustomer.get('channels').toJS())
 
         const allRequiredAddresses = requiredAddresses.toJS()
         allRequiredAddresses.push(primaryEmail)
@@ -126,35 +127,35 @@ class MergeUsersModal extends React.Component {
                 isOpen={this.props.isOpen}
                 onClose={this._toggle}
                 size="lg"
-                header="Merge users"
+                header="Merge customers"
             >
                 <Form onSubmit={this._handleSubmit}>
                     <div className="content">
                         <p className="merge-instructions">
-                            Select what data you want to keep, then click the "Merge Users" button.
+                            Select what data you want to keep, then click the "Merge Customers" button.
                             The fields in blue will be kept.
                         </p>
                         <BinaryChoiceField
                             label="Name"
-                            name="user.name"
+                            name="customer.name"
                             options={[
                                 {
                                     label: (
                                         <span>
                                             <i className="fa fa-fw fa-user mr-2" />
-                                            {destinationUser.get('name')}
+                                            {destinationCustomer.get('name')}
                                         </span>
                                     ),
-                                    value: destinationUser.get('name') || ''
+                                    value: destinationCustomer.get('name') || ''
                                 },
                                 {
                                     label: (
                                         <span>
                                             <i className="fa fa-fw fa-user mr-2" />
-                                            {sourceUser.get('name')}
+                                            {sourceCustomer.get('name')}
                                         </span>
                                     ),
-                                    value: sourceUser.get('name') || ''
+                                    value: sourceCustomer.get('name') || ''
                                 }
                             ]}
                             value={this.state.name}
@@ -162,7 +163,7 @@ class MergeUsersModal extends React.Component {
                         />
                         <BinaryChoiceField
                             label="Primary email"
-                            name="user.email"
+                            name="customer.email"
                             tooltip={(
                                 <span>
                                         <i
@@ -173,7 +174,7 @@ class MergeUsersModal extends React.Component {
                                             placement="top"
                                             target="merge-primary-email"
                                         >
-                                            This is the email address which will be used to fetch data for the user
+                                            This is the email address which will be used to fetch data for the customer
                                         </Tooltip>
                                     </span>
                             )}
@@ -182,19 +183,19 @@ class MergeUsersModal extends React.Component {
                                     label: (
                                         <span>
                                             <i className={classnames('mr-2', sourceTypeToIcon('email'))} />
-                                            {destinationUser.get('email')}
+                                            {destinationCustomer.get('email')}
                                         </span>
                                     ),
-                                    value: destinationUser.get('email') || ''
+                                    value: destinationCustomer.get('email') || ''
                                 },
                                 {
                                     label: (
                                         <span>
                                             <i className={classnames('mr-2', sourceTypeToIcon('email'))} />
-                                            {sourceUser.get('email')}
+                                            {sourceCustomer.get('email')}
                                         </span>
                                     ),
-                                    value: sourceUser.get('email') || ''
+                                    value: sourceCustomer.get('email') || ''
                                 }
                             ]}
                             value={this.state.email}
@@ -216,11 +217,11 @@ class MergeUsersModal extends React.Component {
                                     </Tooltip>
                                 </span>
                             )}
-                            name="user.channels"
+                            name="customer.channels"
                             requiredValues={requiredChannelValues}
                             options={[
-                                this._generateChannelOptions(destinationUser),
-                                this._generateChannelOptions(sourceUser)
+                                this._generateChannelOptions(destinationCustomer),
+                                this._generateChannelOptions(sourceCustomer)
                             ]}
                             propertiesToCompare={['address', 'type']}
                             value={this.state.channels}
@@ -228,7 +229,7 @@ class MergeUsersModal extends React.Component {
                         />
                         <BinaryChoiceField
                             label="Customer data"
-                            name="user.data"
+                            name="customer.data"
                             options={[
                                 {
                                     label: <JSONTree data={fromJS(baseCustomerData)} />,
@@ -258,9 +259,9 @@ class MergeUsersModal extends React.Component {
                             color="success"
                             type="submit"
                             loading={isLoading}
-                            content="This action is irreversible. Are you sure you want to merge those users?"
+                            content="This action is irreversible. Are you sure you want to merge those customers?"
                         >
-                            Merge users
+                            Merge customers
                         </ConfirmButton>
                     </div>
                 </Form>
@@ -269,9 +270,9 @@ class MergeUsersModal extends React.Component {
     }
 }
 
-MergeUsersModal.propTypes = {
-    destinationUser: PropTypes.object.isRequired,
-    sourceUser: PropTypes.object.isRequired,
+MergeCustomersModal.propTypes = {
+    destinationCustomer: PropTypes.object.isRequired,
+    sourceCustomer: PropTypes.object.isRequired,
     mergeCustomers: PropTypes.func.isRequired,
     toggleModal: PropTypes.func.isRequired,
     onSuccess: PropTypes.func,
@@ -281,5 +282,5 @@ MergeUsersModal.propTypes = {
     requiredAddresses: PropTypes.object
 }
 
-export default MergeUsersModal
+export default MergeCustomersModal
 

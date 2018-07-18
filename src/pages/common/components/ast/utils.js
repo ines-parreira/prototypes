@@ -125,7 +125,7 @@ export const updateCodeAst = (schemas, ast, path, value, operation) => {
             }))
         } else {
             newAst = ast.updateIn(path.toJS(), list => {
-                // add action at the beginning of the body (more readable for user)
+                // add action at the beginning of the body (more readable for users)
                 if (value.type === 'ExpressionStatement') {
                     return list.unshift(value)
                 }

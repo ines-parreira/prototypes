@@ -20,7 +20,7 @@ export const getSettings = createSelector(
     state => state.get('settings') || fromJS([])
 )
 
-// used to get ticket-views and user-views user preferences
+// used to get ticket-views and customer-views user preferences
 export const getSettingsByType = (type: string) => createSelector(
     [getViews, getSettings],
     (views, settings) => {

@@ -1,7 +1,7 @@
 /**
  * Check if url is a path to create a new resource
  * @param {String} url
- * @param {String} objectName Plural object name. E.g: tickets, users
+ * @param {String} objectName Plural object name. E.g: tickets, customers
  * @returns {boolean}
  */
 export function isCreationUrl(url, objectName) {

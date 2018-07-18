@@ -73,10 +73,10 @@ export const mergeTicket = (ticket) => (dispatch, getState) => {
     return Promise.resolve(mergeDispatch)
 }
 
-export const mergeCustomer = (user) => {
+export const mergeCustomer = (customer) => {
     return {
         type: types.MERGE_CUSTOMER,
-        user,
+        customer,
     }
 }
 
@@ -707,8 +707,8 @@ export function deleteTicketPendingMessage(message) {
 }
 
 /**
- * Search a user by email, and then fetch it and set it as customer of the current ticket.
- * @param email: the email of the user we want to set as customer
+ * Search a customer by email, and then fetch it and set it as customer of the current ticket.
+ * @param email: the email of the customer we want to set as customer
  */
 export const findAndSetCustomer = (email: string): thunkActionType => (
     (dispatch: dispatchType): Promise<dispatchType> => {
@@ -716,9 +716,9 @@ export const findAndSetCustomer = (email: string): thunkActionType => (
             .then((json = {}) => json.data)
             .then((resp): Promise<dispatchType> => {
                 if (resp.data.length !== 1) {
-                    // We can't do anything if we are not sure which user should be set as customer.
+                    // We can't do anything if we are not sure which customer should be set as customer of the current ticket.
                     // We don't want to log an error here, as this may be expected if the agent is sending an email
-                    // to a new user.
+                    // to a new customer.
                     return Promise.resolve()
                 }
 

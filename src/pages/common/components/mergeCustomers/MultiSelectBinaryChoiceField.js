@@ -13,7 +13,7 @@ import {FormGroup} from 'reactstrap'
 /**
  * Allow to pick values from multiples sources and build a single one.
  * Multiple values can be picked from each source
- * ex: used in merge users feature for merging channels
+ * ex: used in merge customers feature for merging channels
  */
 class MultiSelectBinaryChoiceField extends React.Component {
     componentWillReceiveProps(nextProps) {

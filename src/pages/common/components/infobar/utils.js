@@ -184,7 +184,7 @@ export function canDisplayWidget(widget, source) {
         return false
     }
 
-    // ex : ticket, user, etc.
+    // ex : ticket, customer, etc.
     const initialSourceName = splitPath[0]
 
     return areSourcesReady(fromJS({
@@ -356,9 +356,9 @@ export function jsonToWidgets(json, context = 'ticket') {
 
         // Add all `sourcePaths` matching integrations data
         // Transform:
-        //  [['user', 'customer'], ['user', 'integrations']]
+        //  [['customer', 'data'], ['customer', 'integrations']]
         // To:
-        //  [['user', 'customer'], ['user', 'integrations', '1'], ['user', 'integrations', '2']]
+        //  [['customer', 'data'], ['customer', 'integrations', '1'], ['customer', 'integrations', '2']]
         _.forEach(integrationsData, (integrationData, integrationId) => {
             const newPath = integrationsPath.slice()
             newPath.push(integrationId.toString())

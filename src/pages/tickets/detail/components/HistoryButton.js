@@ -9,7 +9,7 @@ type Props = {
     isHistoryDisplayed: boolean,
     customerHistory: Map<*, *>,
     toggleHistory: () => void,
-    usersIsLoading: (T: string) => boolean,
+    customersIsLoading: (T: string) => boolean,
     ticket: Map<*, *>,
 }
 
@@ -18,7 +18,7 @@ const HistoryButton = (props: Props) => {
         isHistoryDisplayed,
         customerHistory,
         toggleHistory,
-        usersIsLoading,
+        customersIsLoading,
         ticket,
     } = props
 
@@ -39,7 +39,7 @@ const HistoryButton = (props: Props) => {
 
     const buttonDisabled = !ticket.get('id')
         || !customerHistory.get('hasHistory')
-        || usersIsLoading('history')
+        || customersIsLoading('history')
 
     return (
         <button

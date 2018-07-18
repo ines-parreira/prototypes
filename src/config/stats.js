@@ -354,7 +354,7 @@ export const stats = fromJS({
                 label: 'Messages sent',
             },
             total_messages_received: {
-                tooltip: 'Number of messages on all channels received from user.',
+                tooltip: 'Number of messages on all channels received from customers.',
                 label: 'Messages received',
             },
             median_first_response_time: {

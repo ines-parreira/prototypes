@@ -273,10 +273,6 @@ exports[`ViewTable::Table default view 1`] = `
               lastname: "Bon",
               channels: Immutable.List [
                 Immutable.Map {
-                  user: Immutable.Map {
-                    id: 34,
-                    name: "Jean Bon",
-                  },
                   id: 55,
                   type: "email",
                   address: "jeanbon@gorgias.io",
@@ -286,10 +282,6 @@ exports[`ViewTable::Table default view 1`] = `
                   deleted_datetime: null,
                 },
                 Immutable.Map {
-                  user: Immutable.Map {
-                    id: 34,
-                    name: "Jean Bon",
-                  },
                   id: 56,
                   type: "phone",
                   address: "+1 415-548-9999",
@@ -882,10 +874,6 @@ exports[`ViewTable::Table empty view 1`] = `
               lastname: "Bon",
               channels: Immutable.List [
                 Immutable.Map {
-                  user: Immutable.Map {
-                    id: 34,
-                    name: "Jean Bon",
-                  },
                   id: 55,
                   type: "email",
                   address: "jeanbon@gorgias.io",
@@ -895,10 +883,6 @@ exports[`ViewTable::Table empty view 1`] = `
                   deleted_datetime: null,
                 },
                 Immutable.Map {
-                  user: Immutable.Map {
-                    id: 34,
-                    name: "Jean Bon",
-                  },
                   id: 56,
                   type: "phone",
                   address: "+1 415-548-9999",

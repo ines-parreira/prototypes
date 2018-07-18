@@ -71,7 +71,7 @@ export const currentUser = {
                 }
             },
             id: 2,
-            type: 'user-views'
+            type: 'customer-views'
         },
         {
             data: {
@@ -106,10 +106,7 @@ export const currentUser = {
             preferred: true,
             type: 'twitter',
             updated_datetime: '2016-12-22T19:36:12.542251+00:00',
-            user: {
-                id: 2,
-                name: 'Alex Plugaru'
-            }
+
         },
         {
             address: 'alex@gorgias.io',
@@ -118,10 +115,6 @@ export const currentUser = {
             preferred: true,
             type: 'email',
             updated_datetime: '2016-12-22T19:36:12.558905+00:00',
-            user: {
-                id: 2,
-                name: 'Alex Plugaru'
-            }
         },
         {
             address: 'support@gorgias.gorgias.io',
@@ -130,10 +123,6 @@ export const currentUser = {
             preferred: false,
             type: 'email',
             updated_datetime: '2016-12-22T19:36:12.581523+00:00',
-            user: {
-                id: 2,
-                name: 'Alex Plugaru'
-            }
         },
         {
             address: 'support@gorgias.io',
@@ -142,10 +131,6 @@ export const currentUser = {
             preferred: false,
             type: 'email',
             updated_datetime: '2016-12-22T19:36:12.602914+00:00',
-            user: {
-                id: 2,
-                name: 'Alex Plugaru'
-            }
         },
         {
             address: '4561237890',
@@ -154,10 +139,6 @@ export const currentUser = {
             preferred: true,
             type: 'facebook',
             updated_datetime: '2016-12-22T19:36:12.625131+00:00',
-            user: {
-                id: 2,
-                name: 'Alex Plugaru'
-            }
         }
     ],
     created_datetime: '2016-12-22T19:36:12.487448+00:00',

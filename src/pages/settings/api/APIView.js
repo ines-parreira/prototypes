@@ -102,7 +102,7 @@ export default class APIView extends React.Component<Props, State> {
                         Gorgias prides itself on being a developer-friendly helpdesk.
                         We expose a <a href="https://stackoverflow.com/questions/671118/what-exactly-is-restful-programming"
                                        target="_blank" rel="noopener noreferrer">RESTful API</a> to make it easy for you to
-                        get, create, update and delete many objects including users, tickets,
+                        get, create, update and delete many objects including customers, tickets,
                         messages and events. To find out more our API please consult our docs here:
                         <a href="http://api.gorgias.io/" target="_blank"
                            rel="noopener noreferrer"> http://api.gorgias.io/</a>.

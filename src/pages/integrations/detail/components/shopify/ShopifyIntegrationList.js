@@ -59,7 +59,7 @@ export default class ShopifyIntegrationList extends React.Component {
                         Edit orders, issue refunds, etc. directly from support conversations
                     </li>
                     <li>
-                        Search users by order number, shipping address... and match anonymous chat tickets with
+                        Search customers by order number, shipping address... and match anonymous chat tickets with
                         existing Shopify customers
                     </li>
                 </ul>

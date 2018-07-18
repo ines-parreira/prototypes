@@ -134,10 +134,9 @@ class SourceWrapper extends React.Component {
 
     _leaveEditionMode = () => {
         const {actions, context, identifier, location} = this.props
-        const objectType = context === 'user' ? 'customer': 'ticket'
 
         actions.widgets.stopEditionMode()
-        browserHistory.push(`/app/${objectType}/${identifier}${location.search}`)
+        browserHistory.push(`/app/${context}/${identifier}${location.search}`)
     }
 
     render() {

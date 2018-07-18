@@ -108,17 +108,17 @@ Object {
   "all": Array [],
   "locations": Array [
     Object {
-      "ticket": "1",
-      "users": Array [
+      "customers": Array [
         "1",
         "2",
       ],
+      "ticket": "1",
     },
     Object {
-      "ticket": "2",
-      "users": Array [
+      "customers": Array [
         "1",
       ],
+      "ticket": "2",
     },
   ],
   "pagination": Object {},

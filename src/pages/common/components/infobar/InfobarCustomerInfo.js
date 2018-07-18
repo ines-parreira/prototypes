@@ -20,24 +20,24 @@ import * as integrationsSelectors from '../../../../state/integrations/selectors
 
 import css from './Infobar.less'
 
-class InfobarUserInfo extends React.Component {
+class InfobarCustomerInfo extends React.Component {
     static childContextTypes = {
-        user: ImmutablePropTypes.map.isRequired,
-        userId: PropTypes.number,
+        customer: ImmutablePropTypes.map.isRequired,
+        customerId: PropTypes.number,
     }
 
     state = {
-        showAllUserChannels: false,
+        showAllCustomerChannels: false,
     }
 
-    shownUserChannels = 2
+    shownCustomerChannels = 2
 
     getChildContext() {
-        const user = this.props.user || fromJS({})
+        const customer = this.props.customer || fromJS({})
 
         return {
-            user,
-            userId: user.get('id'),
+            customer,
+            customerId: customer.get('id'),
         }
     }
 
@@ -57,8 +57,8 @@ class InfobarUserInfo extends React.Component {
     componentWillReceiveProps(nextProps) {
         this._initWidgets(nextProps)
 
-        if (this.props.user.get('id') !== nextProps.user.get('id')) {
-            this.setState({showAllUserChannels: false})
+        if (this.props.customer.get('id') !== nextProps.customer.get('id')) {
+            this.setState({showAllCustomerChannels: false})
         }
     }
 
@@ -120,7 +120,7 @@ class InfobarUserInfo extends React.Component {
     }
 
     /**
-     * Display widgets because the user has customer data
+     * Display widgets because the customer has data
      * @private
      */
     _renderWidgets = () => {
@@ -184,17 +184,17 @@ class InfobarUserInfo extends React.Component {
         }
 
         return (
-            <InfobarAddIntegrationSuggestion user={this.props.user} />
+            <InfobarAddIntegrationSuggestion customer={this.props.customer} />
         )
     }
 
     /**
-     * Render user channels like facebook, email address, etc.
+     * Render customer channels like facebook, email address, etc.
      * @param channels
      * @returns {*}
      * @private
      */
-    _renderUserChannels = (channels = fromJS([])) => {
+    _renderCustomerChannels = (channels = fromJS([])) => {
         channels = channels
             .filter((channel) => { // hide chats and facebook
                 const type = channel.get('type')
@@ -204,10 +204,10 @@ class InfobarUserInfo extends React.Component {
             .sortBy(channel => -channel.get('preferred')) // put preferred addresses on top
             .sortBy(channel => channel.get('type')) // group by channel type
 
-        const hasMoreChannels = !this.state.showAllUserChannels && channels.size > this.shownUserChannels
+        const hasMoreChannels = !this.state.showAllCustomerChannels && channels.size > this.shownCustomerChannels
 
-        if (!this.state.showAllUserChannels) {
-            channels = channels.take(this.shownUserChannels)
+        if (!this.state.showAllCustomerChannels) {
+            channels = channels.take(this.shownCustomerChannels)
         }
 
         const list = channels.map((channel, idx) => {
@@ -252,7 +252,7 @@ class InfobarUserInfo extends React.Component {
             return (
                 <p
                     key={idx}
-                    className={css.userChannel}
+                    className={css.customerChannel}
                 >
                     <SourceIcon
                         type={channel.get('type')}
@@ -289,7 +289,7 @@ class InfobarUserInfo extends React.Component {
                         <Button
                             type="button"
                             color="link"
-                            onClick={() => this.setState({showAllUserChannels: true})}
+                            onClick={() => this.setState({showAllCustomerChannels: true})}
                             style={{paddingLeft: 0}}
                         >
                             Show more
@@ -324,12 +324,12 @@ class InfobarUserInfo extends React.Component {
 
     render() {
         const {
-            user,
+            customer,
             sources,
             widgets
         } = this.props
 
-        if (!user || user.isEmpty()) {
+        if (!customer || customer.isEmpty()) {
             return null
         }
 
@@ -339,23 +339,23 @@ class InfobarUserInfo extends React.Component {
             <div className={classnames(css.widgetsList, 'd-flex flex-column')}>
                 <Card className={css.infobarCard}>
                     <CardBody>
-                        <div className={css.userProfile}>
+                        <div className={css.customerProfile}>
                             <Avatar
                                 className="mr-3 rounded"
-                                name={user.get('name', '')}
-                                email={user.get('email', '')}
-                                url={user.getIn(['meta', 'profile_picture_url'])}
+                                name={customer.get('name', '')}
+                                email={customer.get('email', '')}
+                                url={customer.getIn(['meta', 'profile_picture_url'])}
                                 google
                             />
                             <Link
-                                to={`/app/customer/${user.get('id')}`}
+                                to={`/app/customer/${customer.get('id')}`}
                                 className={css.displayName}
                             >
-                                {getDisplayName(user)}
+                                {getDisplayName(customer)}
                             </Link>
                         </div>
                         <div className={css.detail}>
-                            {this._renderUserChannels(user.get('channels', fromJS([])))}
+                            {this._renderCustomerChannels(customer.get('channels') || fromJS([]))}
                         </div>
                     </CardBody>
                 </Card>
@@ -365,23 +365,23 @@ class InfobarUserInfo extends React.Component {
     }
 }
 
-InfobarUserInfo.propTypes = {
+InfobarCustomerInfo.propTypes = {
     actions: PropTypes.object.isRequired,
     hasIntegrations: PropTypes.bool.isRequired,
     infobar: PropTypes.object.isRequired,
     isEditing: PropTypes.bool.isRequired,
     sources: PropTypes.object.isRequired,
-    user: PropTypes.object.isRequired,
+    customer: PropTypes.object.isRequired,
     widgets: PropTypes.object,
 }
 
-InfobarUserInfo.defaultProps = {
+InfobarCustomerInfo.defaultProps = {
     isRequired: false,
-    user: fromJS({}),
+    customer: fromJS({}),
 }
 
 const mapStateToProps = (state) => ({
     hasIntegrations: !integrationsSelectors.getIntegrationsByTypes(['http', 'shopify', 'recharge', 'smile'])(state).isEmpty(),
 })
 
-export default connect(mapStateToProps)(InfobarUserInfo)
+export default connect(mapStateToProps)(InfobarCustomerInfo)

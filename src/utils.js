@@ -254,7 +254,7 @@ export function resolvePropertyName(name: string = ''): string {
  * @param {Object} schemas OpenID Schemas
  * @param {Boolean} alwaysRef always use `$ref` of each property to resolve field
  *     E.g:
- *      true: return properties of `User.id` because `customer` is a `User`
+ *      true: return properties of `Customer.id` because `customer` is a `Customer`
  *      false: return properties of `ticket.customer.id` field
  * @returns {Object} API spec data of the last property
  */
@@ -808,8 +808,9 @@ export const isCurrentlyOnTicket = (ticketId: ?string): boolean => {
 export const isCurrentlyOnView = (viewId: string = '', viewsState: viewsStateType = fromJS({})): boolean => {
     const prefix = [
         '/app/tickets',
-        '/app/users',
         '/app/customers',
+        // TODO(customers-migration): remove this path when we updated all links in email templates.
+        '/app/users',
     ]
 
     let urls = prefix.map(p => `${p}/${viewId}`)
@@ -830,7 +831,7 @@ export const isCurrentlyOnView = (viewId: string = '', viewsState: viewsStateTyp
 /**
  * return plural object name of a given view type
  * @param {String} viewType E.g: customer-list, ticket-list
- * @returns {String} plural object name E.g: users, tickets
+ * @returns {String} plural object name E.g: customers, tickets
  */
 export function getPluralObjectName(viewType: string): string {
     return viewType.replace('-list', 's')

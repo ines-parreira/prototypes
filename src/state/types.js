@@ -19,7 +19,7 @@ export type stateType = {
     tags: Map<*,*>,
     ticket: Map<*,*>,
     tickets: Map<*,*>,
-    users: Map<*,*>,
+    customers: Map<*,*>,
     usersAudit: Map<*,*>,
     views: Map<*,*>,
     widgets: Map<*,*>,

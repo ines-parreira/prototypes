@@ -117,8 +117,8 @@ describe('TicketDetailContainer component', () => {
         expect(customersActions.fetchCustomer).toBeCalledWith(1)
     })
 
-    it('should set activeUser as customer', () => {
-        const activeUser = fromJS({
+    it('should set activeCustomer as customer', () => {
+        const activeCustomer = fromJS({
             id: 1,
             name: 'Pizza Pepperoni',
             email: 'pizza@pepperoni.com',
@@ -127,15 +127,15 @@ describe('TicketDetailContainer component', () => {
         const component = shallow(
             <TicketDetailContainer
                 {...minProps}
-                params={{userId: '1'}}
+                params={{customerId: '1'}}
                 location={{query: {customer:'1'}}}
                 />
         ).dive().dive()
 
-        component.setProps({activeUser})
+        component.setProps({activeCustomer})
 
         expect(ticketActions.setCustomer).toBeCalledWith(
-            activeUser.set('address', activeUser.get('email'))
+            activeCustomer.set('address', activeCustomer.get('email'))
         )
     })
 
@@ -199,8 +199,8 @@ describe('TicketDetailContainer component', () => {
         expect(component._hideTicket.mock.calls.length).toBe(1)
     })
 
-    it('should set activeUser as receiver', () => {
-        const activeUser = fromJS({
+    it('should set activeCustomer as receiver', () => {
+        const activeCustomer = fromJS({
             id: 1,
             name: 'Pizza Pepperoni',
             email: 'pizza@pepperoni.com',
@@ -213,12 +213,12 @@ describe('TicketDetailContainer component', () => {
                 />
         ).dive().dive()
 
-        component.setProps({activeUser})
+        component.setProps({activeCustomer})
 
         // wait promise to be resolved
         setTimeout(() => {
             expect(newMessageActions.setReceivers).toBeCalledWith({
-                to: [activeUser.set('address', activeUser.get('email')).toJS()]
+                to: [activeCustomer.set('address', activeCustomer.get('email')).toJS()]
             }, true)
         }, 1)
     })
@@ -229,7 +229,7 @@ describe('TicketDetailContainer component', () => {
         const component = shallow(
             <TicketDetailContainer
                 {...minProps}
-                params={{userId: '1'}}
+                params={{customerId: '1'}}
                 location={{query: {customer:'1'}}}
                 />
         ).dive().dive()
@@ -246,7 +246,7 @@ describe('TicketDetailContainer component', () => {
             <TicketDetailContainer
                 {...minProps}
                 activeView={activeView}
-                params={{userId: '1'}}
+                params={{customerId: '1'}}
                 location={{query: {customer:'1'}}}
                 />
         ).dive().dive()

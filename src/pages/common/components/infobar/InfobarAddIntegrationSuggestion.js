@@ -4,7 +4,7 @@ import {Card, CardBody, Button} from 'reactstrap'
 
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
-const InfobarAddIntegrationSuggestion = ({user}) => (
+const InfobarAddIntegrationSuggestion = ({customer}) => (
     <div className="widgets-list">
         <div>
             <Card className="wrapper transparent">
@@ -13,7 +13,7 @@ const InfobarAddIntegrationSuggestion = ({user}) => (
                         <Card className="blurred">
                             <CardBody className="header clearfix">
                                 <span>
-                                    👤 {user.get('name') || 'Nadia'} - 4 orders
+                                    👤 {customer.get('name') || 'Nadia'} - 4 orders
                                 </span>
                             </CardBody>
                             <CardBody className="content">
@@ -85,7 +85,7 @@ const InfobarAddIntegrationSuggestion = ({user}) => (
 )
 
 InfobarAddIntegrationSuggestion.propTypes = {
-    user: PropTypes.object.isRequired,
+    customer: PropTypes.object.isRequired,
 }
 
 export default InfobarAddIntegrationSuggestion

@@ -58,7 +58,7 @@ class ReceiversSelectField extends React.Component {
     render() {
         const {sourceType, disabled, required, valueProp, value} = this.props
 
-        const placeholder = valueProp ? 'Search a user...' : 'Sorry, no recipient for this type of message...'
+        const placeholder = valueProp ? 'Search a customer...' : 'Sorry, no recipient for this type of message...'
 
         return (
             <MultiSelectAsyncField

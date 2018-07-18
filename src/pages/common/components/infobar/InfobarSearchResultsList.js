@@ -8,51 +8,51 @@ import css from './Infobar.less'
 
 export default class InfobarSearchResultsList extends React.Component {
     render() {
-        const {searchResults, defaultUserId} = this.props
+        const {searchResults, defaultCustomerId} = this.props
 
         if (!searchResults.size) {
-            return <p className="empty-items">No user found.</p>
+            return <p className="empty-items">No customer found.</p>
         }
 
         return (
             <div>
                 <CardTitle className={css.cardTitle}>
-                    Users found:
+                    Customers found:
                 </CardTitle>
                 <div className="mt-3">
                     {
-                        searchResults.map((user, idx) => {
-                            const isDefaultUser = user.get('id') === defaultUserId
+                        searchResults.map((customer, idx) => {
+                            const isDefaultCustomer = customer.get('id') === defaultCustomerId
                             const className = classnames('clickable mb-2', {
-                                'current-user': isDefaultUser
+                                'current-customer': isDefaultCustomer
                             })
 
                             return (
                                 <Card
                                     className={className}
                                     key={idx}
-                                    onClick={() => this.props.onUserClick(user)}
+                                    onClick={() => this.props.onCustomerClick(customer)}
                                 >
                                     <CardBody>
                                         {
                                             <span className={classnames(css.subtitle, 'd-block mb-1 text-truncate')}>
-                                                {getDisplayName(user)}
+                                                {getDisplayName(customer)}
                                                 {
-                                                    isDefaultUser && (
+                                                    isDefaultCustomer && (
                                                         <Badge
                                                             color="info"
                                                             className="ml-2"
                                                         >
-                                                            Current User
+                                                            Current Customer
                                                         </Badge>
                                                     )
                                                 }
                                             </span>
                                         }
                                         {
-                                            user.get('email') && (
+                                            customer.get('email') && (
                                                 <div className={classnames(css.detail, 'd-block text-truncate')}>
-                                                    {user.get('email')}
+                                                    {customer.get('email')}
                                                 </div>
                                             )
                                         }
@@ -69,6 +69,6 @@ export default class InfobarSearchResultsList extends React.Component {
 
 InfobarSearchResultsList.propTypes = {
     searchResults: PropTypes.object.isRequired,
-    defaultUserId: PropTypes.number,
-    onUserClick: PropTypes.func.isRequired
+    defaultCustomerId: PropTypes.number,
+    onCustomerClick: PropTypes.func.isRequired
 }

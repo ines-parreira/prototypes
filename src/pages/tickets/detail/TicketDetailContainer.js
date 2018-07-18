@@ -33,11 +33,11 @@ import {updateMessageText} from './components/replyarea/TicketReplyEditor'
 @connect((state) => {
     return {
         activeView: viewsSelectors.getActiveView(state),
-        activeUser: customersSelectors.getActiveCustomer(state),
+        activeCustomer: customersSelectors.getActiveCustomer(state),
         currentUser: state.currentUser,
         macros: state.macros,
         pagination: viewsSelectors.getPagination(state),
-        users: customersSelectors.getCustomersState(state),
+        customers: customersSelectors.getCustomersState(state),
         routing: state.routing,
         ticket: state.ticket,
         newMessage: state.newMessage,
@@ -81,9 +81,9 @@ export default class TicketDetailContainer extends React.Component {
         ticket: PropTypes.object,
         newMessage: PropTypes.object,
         tickets: PropTypes.object,
-        users: PropTypes.object,
+        customers: PropTypes.object,
         pagination: ImmutablePropTypes.map.isRequired,
-        activeUser: PropTypes.object,
+        activeCustomer: PropTypes.object,
         newMessageSource: PropTypes.object,
 
         routing: PropTypes.object,
@@ -125,7 +125,7 @@ export default class TicketDetailContainer extends React.Component {
         if (
             this.props.params.ticketId === 'new' &&
             this.props.location.query.customer &&
-            this.props.activeUser.get('id') !== customerId
+            this.props.activeCustomer.get('id') !== customerId
         ) {
             this.props.actions.customers.fetchCustomer(customerId)
         }
@@ -139,7 +139,7 @@ export default class TicketDetailContainer extends React.Component {
         const nextTicket = nextProps.ticket
         const nextCustomer = nextTicket.get('customer') || fromJS({})
         const nextParams = nextProps.params
-        const nextUsers = nextProps.users
+        const nextCustomers = nextProps.customers
         const prevRecipients = this.props.newMessageSource.get('to') || fromJS([])
         const nextRecipients = nextProps.newMessageSource.get('to') || fromJS([])
 
@@ -155,7 +155,7 @@ export default class TicketDetailContainer extends React.Component {
 
         const onlyOneRecipient = nextRecipients.size === 1
 
-        if (!nextTicketIsNew && nextTicket.get('customer') && !nextUsers.getIn(['customerHistory', 'triedLoading'])) {
+        if (!nextTicketIsNew && nextTicket.get('customer') && !nextCustomers.getIn(['customerHistory', 'triedLoading'])) {
             const customerId = nextTicket.getIn(['customer', 'id'])
 
             if (!customerId) {
@@ -182,13 +182,13 @@ export default class TicketDetailContainer extends React.Component {
 
         // set customer and receiver from query
         // map default channel (email) to address, for the receivers select.
-        const receiver = nextProps.activeUser.set('address', nextProps.activeUser.get('email'))
+        const receiver = nextProps.activeCustomer.set('address', nextProps.activeCustomer.get('email'))
         const customer = this.props.ticket.get('customer') || fromJS({})
 
         if (
             nextTicketIsNew &&
             nextProps.location.query.customer &&
-            nextProps.activeUser.get('id') === parseInt(nextProps.location.query.customer) &&
+            nextProps.activeCustomer.get('id') === parseInt(nextProps.location.query.customer) &&
             !customer.equals(receiver)
         ) {
             // set customer on ticket
@@ -216,8 +216,8 @@ export default class TicketDetailContainer extends React.Component {
             const recipient = nextRecipients.first()
             let shouldSetCustomer = true
 
-            // The recipient address may be in the channels of the customer, and not be his user.email address, so
-            // to be sure we are not re-setting the same user as customer, we need to check every channel of the
+            // The recipient address may be in the channels of the customer, and not be in his customer.email address, so
+            // to be sure we are not re-setting the same customer as customer of the current ticket, we need to check every channel of the
             // current customer.
 
             if (nextCustomer && !nextCustomer.isEmpty()) {
@@ -267,7 +267,7 @@ export default class TicketDetailContainer extends React.Component {
 
         shortcutManager.unbind('TicketDetailContainer')
 
-        // leaving ticket and request user from socket io
+        // leaving ticket and request customer from socket io
         const ticketId = this.props.params.ticketId
         const customerId = this.props.ticket.getIn(['customer', 'id'])
 
@@ -276,7 +276,6 @@ export default class TicketDetailContainer extends React.Component {
         }
 
         if (customerId) {
-            socketManager.leave('user', customerId)
             socketManager.leave('customer', customerId)
         }
 

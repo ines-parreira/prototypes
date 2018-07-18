@@ -3,7 +3,7 @@ import md5 from 'md5'
 import jsonp from 'jsonp'
 import _get from 'lodash/get'
 
-type userPictureParamsType = {
+type avatarParamsType = {
     email: string,
     size: number,
     google: boolean
@@ -43,11 +43,11 @@ function cleanEmail (email): string {
     return (email || '').toLowerCase().trim()
 }
 
-export function userPictureFromCache(email: string): {isCached: boolean, url?: string} {
+export function getAvatarFromCache(email: string): {isCached: boolean, url?: string} {
     return avatarCache[cleanEmail(email)] || {isCached: false}
 }
 
-export function userPicture({email = '', size = 50, google = false}: userPictureParamsType = {}): Promise<{
+export function getAvatar({email = '', size = 50, google = false}: avatarParamsType = {}): Promise<{
     url: string,
     isCached: boolean,
 }> {

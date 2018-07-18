@@ -687,6 +687,75 @@ Object {
 }
 `;
 
+exports[`ticket reducers merge customers 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "sender": null,
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers merge customers 2`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "customer": Object {
+    "id": 1,
+    "name": "Alex",
+  },
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "sender": null,
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
 exports[`ticket reducers merge ticket 1`] = `
 Object {
   "_internal": Object {
@@ -789,75 +858,6 @@ Object {
   },
   "status": "open",
   "subject": "title",
-  "tags": Array [],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
-exports[`ticket reducers merge users 1`] = `
-Object {
-  "_internal": Object {
-    "displayHistory": false,
-    "loading": Object {
-      "deleteMessage": false,
-      "fetchTicket": false,
-    },
-    "pendingMessages": Array [],
-    "shouldDisplayHistoryOnNextPage": false,
-  },
-  "assignee_user": null,
-  "channel": "email",
-  "customer": null,
-  "events": Array [],
-  "messages": Array [],
-  "priority": "normal",
-  "receiver": null,
-  "sender": null,
-  "spam": false,
-  "state": Object {
-    "appliedMacro": null,
-    "dirty": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "",
-  "tags": Array [],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
-exports[`ticket reducers merge users 2`] = `
-Object {
-  "_internal": Object {
-    "displayHistory": false,
-    "loading": Object {
-      "deleteMessage": false,
-      "fetchTicket": false,
-    },
-    "pendingMessages": Array [],
-    "shouldDisplayHistoryOnNextPage": false,
-  },
-  "assignee_user": null,
-  "channel": "email",
-  "customer": Object {
-    "id": 1,
-    "name": "Alex",
-  },
-  "events": Array [],
-  "messages": Array [],
-  "priority": "normal",
-  "receiver": null,
-  "sender": null,
-  "spam": false,
-  "state": Object {
-    "appliedMacro": null,
-    "dirty": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "",
   "tags": Array [],
   "trashed_datetime": null,
   "via": "helpdesk",

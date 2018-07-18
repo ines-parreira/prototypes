@@ -57,7 +57,7 @@ Object {
 }
 `;
 
-exports[`infobar reducers fetch user picture 1`] = `
+exports[`infobar reducers fetch person avatar (user or customer) 1`] = `
 Object {
   "_internal": Object {
     "loading": Object {},
@@ -70,7 +70,7 @@ Object {
 }
 `;
 
-exports[`infobar reducers fetch user picture 2`] = `
+exports[`infobar reducers fetch person avatar (user or customer) 2`] = `
 Object {
   "_internal": Object {
     "loading": Object {},
@@ -83,7 +83,7 @@ Object {
 }
 `;
 
-exports[`infobar reducers fetch user picture 3`] = `
+exports[`infobar reducers fetch person avatar (user or customer) 3`] = `
 Object {
   "_internal": Object {
     "loading": Object {},

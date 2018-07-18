@@ -28,8 +28,8 @@ exports[`TicketMessage component should add a -sent via rule- label because the 
         <div
           className="author"
         >
-          <UserLabel
-            user={
+          <CustomerLabel
+            customer={
               Immutable.Map {
               }
             }

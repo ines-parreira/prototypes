@@ -13,14 +13,14 @@ import Timeline from '../../common/components/timeline/Timeline'
 import Modal from '../../common/components/Modal'
 
 import {getCustomerHistory, getActiveCustomer, makeIsLoading} from '../../../state/customers/selectors'
-import * as usersHelpers from '../../../state/customers/helpers'
+import * as customersHelpers from '../../../state/customers/helpers'
 
 class CustomerDetailContainer extends React.Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            isUserFormOpen: false
+            isCustomerFormOpen: false
         }
     }
 
@@ -47,16 +47,16 @@ class CustomerDetailContainer extends React.Component {
 
         actions.fetchCustomer(id).then(() => actions.fetchCustomerHistory(id, {
             successCondition(state) {
-                // its OK to be based on active user since the history is fetched when the user is already fetched
+                // its OK to be based on active customer since the history is fetched when the customer is already fetched
                 return getActiveCustomer(state).get('id', '').toString() === id.toString()
             }
         }))
     }
 
     _renderTimeline = () => {
-        const {customerHistory, usersIsLoading} = this.props
+        const {customerHistory, customersIsLoading} = this.props
 
-        if (usersIsLoading('history')) {
+        if (customersIsLoading('history')) {
             return <Loader message="Loading history..." />
         }
 
@@ -78,32 +78,32 @@ class CustomerDetailContainer extends React.Component {
     }
 
     _openModal = () => {
-        this.setState({isUserFormOpen: true})
+        this.setState({isCustomerFormOpen: true})
     }
 
     _closeModal = () => {
-        this.setState({isUserFormOpen: false})
+        this.setState({isCustomerFormOpen: false})
     }
 
     render() {
-        const {activeUser, usersIsLoading} = this.props
+        const {activeCustomer, customersIsLoading} = this.props
 
-        const shouldDisplayLoader = activeUser.isEmpty()
-            || usersIsLoading('active')
+        const shouldDisplayLoader = activeCustomer.isEmpty()
+            || customersIsLoading('active')
 
         if (shouldDisplayLoader) {
-            return <Loader message="Loading user..." />
+            return <Loader message="Loading customer..." />
         }
 
         return (
-            <div className="UserDetailContainer">
+            <div className="CustomerDetailContainer">
                 <div className="flex-spaced-row">
-                    <h1>{usersHelpers.getDisplayName(activeUser)}</h1>
+                    <h1>{customersHelpers.getDisplayName(activeCustomer)}</h1>
 
                     <div>
                         <Link
                             className="btn btn-secondary mr-2"
-                            to={`/app/ticket/new?customer=${activeUser.get('id')}`}
+                            to={`/app/ticket/new?customer=${activeCustomer.get('id')}`}
                         >
                             Create ticket
                         </Link>
@@ -121,12 +121,12 @@ class CustomerDetailContainer extends React.Component {
                 {this._renderTimeline()}
 
                 <Modal
-                    isOpen={this.state.isUserFormOpen}
+                    isOpen={this.state.isCustomerFormOpen}
                     onClose={this._closeModal}
-                    header={`Update customer: ${activeUser.get('name')}`}
+                    header={`Update customer: ${activeCustomer.get('name')}`}
                 >
                     <CustomerForm
-                        customer={activeUser}
+                        customer={activeCustomer}
                         closeModal={this._closeModal}
                     />
                 </Modal>
@@ -140,20 +140,20 @@ CustomerDetailContainer.propTypes = {
         customerId: PropTypes.string
     }).isRequired,
 
-    activeUser: PropTypes.object.isRequired,
+    activeCustomer: PropTypes.object.isRequired,
     customerHistory: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
 
     actions: PropTypes.object.isRequired,
-    usersIsLoading: PropTypes.func.isRequired,
+    customersIsLoading: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
     return {
-        activeUser: getActiveCustomer(state),
+        activeCustomer: getActiveCustomer(state),
         customerHistory: getCustomerHistory(state),
         currentUser: state.currentUser,
-        usersIsLoading: makeIsLoading(state),
+        customersIsLoading: makeIsLoading(state),
     }
 }
 

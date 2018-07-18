@@ -12,7 +12,7 @@ import Avatar from '../components/Avatar'
 import {formatDatetime, toJS, isImmutable} from '../../../utils'
 import {sourceTypeToIcon} from '../../../config/ticket'
 
-import * as usersHelpers from '../../../state/customers/helpers'
+import * as customersHelpers from '../../../state/customers/helpers'
 import {DEFAULT_TAG_COLOR} from '../../../config'
 import SourceIcon from '../components/SourceIcon'
 
@@ -75,17 +75,17 @@ export class AgentLabel extends React.Component {
 /**
  * USER
  */
-export const UserLabel = ({user}) => {
-    if (_isString(user)) {
-        return <span>{user}</span>
+export const CustomerLabel = ({customer}) => {
+    if (_isString(customer)) {
+        return <span>{customer}</span>
     }
 
     return (
-        <span>{usersHelpers.getDisplayName(user)}</span>
+        <span>{customersHelpers.getDisplayName(customer)}</span>
     )
 }
-UserLabel.propTypes = {
-    user: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired
+CustomerLabel.propTypes = {
+    customer: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired
 }
 
 /**
@@ -316,7 +316,7 @@ export class RenderLabel extends React.Component {
                 return typeof value === 'string' ? <span>{value}</span> :
                     <IntegrationsDetailLabel integration={value}/>
             case 'customer':
-                return <UserLabel user={value}/>
+                return <CustomerLabel customer={value}/>
             case 'roles':
                 return <RoleLabel roles={isImmutable(value) ? value.toJS() : value}/>
             case 'via':

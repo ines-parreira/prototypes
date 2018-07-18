@@ -14,7 +14,7 @@ import {resolveLiteral, isImmutable, fieldPath, getLanguageDisplayName} from '..
 import {fieldEnumSearch} from '../../../../state/views/actions'
 
 import * as schemasSelectors from '../../../../state/schemas/selectors'
-import * as usersHelpers from '../../../../state/customers/helpers'
+import * as customersHelpers from '../../../../state/customers/helpers'
 
 class FilterDropdown extends React.Component {
     state = {
@@ -132,7 +132,7 @@ class FilterDropdown extends React.Component {
                 // display tags as tags
                 renderValue = value.get('name')
             } else if (field.get('name') === 'customer') {
-                renderValue = usersHelpers.getDisplayName(value)
+                renderValue = customersHelpers.getDisplayName(value)
             } else if (field.get('name') === 'language') {
                 renderValue = getLanguageDisplayName(value)
             } else if (typeof value === 'object' || field.get('name') === 'roles') {

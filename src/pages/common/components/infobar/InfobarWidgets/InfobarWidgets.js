@@ -27,7 +27,7 @@ class InfobarWidgets extends React.Component {
         let preparedDisplayList = fromJS([])
 
         // Create a list `prepareDisplayList` of item containing enough data to generate widget components.
-        // For each widget OR userIntegrationData found in displayList, prepare the widget OR retrieve the associated
+        // For each widget OR customerIntegrationData found in displayList, prepare the widget OR retrieve the associated
         // widget, set it's template `path`, `templatePath` when needed
         displayList.forEach((item, idx) => {
             let widget = null
@@ -58,7 +58,7 @@ class InfobarWidgets extends React.Component {
                         const tmpSourcePath = sourcePath.slice()
                         tmpSourcePath.push(selectedIntegration.get('id').toString())
 
-                        // If there's something in source at sourcePath, the user has data for this integration,
+                        // If there's something in source at sourcePath, the customer has data for this integration,
                         // so we can display the widget
                         if (source.getIn(tmpSourcePath)) {
                             integration = selectedIntegration

@@ -14,7 +14,7 @@ import {
     areNewMessageContactPropertiesFulfilled,
 } from '../../../../../../state/newMessage/selectors'
 import * as integrationSelectors from '../../../../../../state/integrations/selectors'
-import {displayUserNameFromSource} from '../../../../common/utils'
+import {getPersonLabelFromSource} from '../../../../common/utils'
 import _upperFirst from 'lodash/upperFirst'
 import _uniq from 'lodash/uniq'
 import _difference from 'lodash/difference'
@@ -180,7 +180,7 @@ class MessageSourceFields extends React.Component {
     _renderClosed = () => {
         const {sourceType, allRecipients, canOpen} = this.props
 
-        const allDisplayedNames = allRecipients.toJS().map((v) => displayUserNameFromSource(v, sourceType))
+        const allDisplayedNames = allRecipients.toJS().map((recipient) => getPersonLabelFromSource(recipient, sourceType))
 
         return (
             <div className={css.sourceField}>

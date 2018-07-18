@@ -284,7 +284,7 @@ export class TicketReplyArea extends React.Component {
                         actions={this.props.actions}
                         ticket={this.props.ticket}
                         appliedMacro={this.props.ticket.getIn(['state', 'appliedMacro'])}
-                        users={this.props.users}
+                        customers={this.props.customers}
                         richAreaRef={(ref) => this.richArea = ref}
                     />
                 </div>
@@ -301,7 +301,7 @@ TicketReplyArea.propTypes = {
     macros: PropTypes.object.isRequired,
     macrosVisible: PropTypes.bool.isRequired,
     currentUser: PropTypes.object.isRequired,
-    users: PropTypes.object.isRequired,
+    customers: PropTypes.object.isRequired,
     applyMacro: PropTypes.func.isRequired,
     updateMacro: PropTypes.func,
     preferences: PropTypes.object.isRequired,

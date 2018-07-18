@@ -13,7 +13,7 @@ class CustomerInfobarContainer extends React.Component {
     componentWillMount() {
         const {actions} = this.props
 
-        actions.widgets.selectContext('user')
+        actions.widgets.selectContext('customer')
         actions.widgets.fetchWidgets()
     }
 
@@ -41,9 +41,9 @@ class CustomerInfobarContainer extends React.Component {
                 sources={sources}
                 isRouteEditingWidgets={!!route.isEditingWidgets}
                 identifier={identifier}
-                user={activeCustomer}
+                customer={activeCustomer}
                 widgets={widgets}
-                context="user"
+                context="customer"
             />
         )
     }

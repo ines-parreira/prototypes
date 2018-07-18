@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`InfobarUserActions component should not render "merge" button because there is no user to merge the selected user with 1`] = `
+exports[`InfobarCustomerActions component should not render "merge" button because there is no customer to merge the selected customer with 1`] = `
 <div
   className="float-right d-none d-md-block"
 >
@@ -20,7 +20,7 @@ exports[`InfobarUserActions component should not render "merge" button because t
 </div>
 `;
 
-exports[`InfobarUserActions component should not render "set as customer" button because the agent is not on a ticket 1`] = `
+exports[`InfobarCustomerActions component should not render "set as customer" button because the agent is not on a ticket 1`] = `
 <div
   className="float-right d-none d-md-block"
 >
@@ -35,13 +35,13 @@ exports[`InfobarUserActions component should not render "set as customer" button
 </div>
 `;
 
-exports[`InfobarUserActions component should not render "set as customer" nor "merge" buttons because the users are the same 1`] = `
+exports[`InfobarCustomerActions component should not render "set as customer" nor "merge" buttons because the customers are the same 1`] = `
 <div
   className="float-right d-none d-md-block"
 />
 `;
 
-exports[`InfobarUserActions component should render "set as customer" and "merge" button 1`] = `
+exports[`InfobarCustomerActions component should render "set as customer" and "merge" button 1`] = `
 <div
   className="float-right d-none d-md-block"
 >

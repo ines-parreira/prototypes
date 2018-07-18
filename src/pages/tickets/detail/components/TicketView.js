@@ -17,7 +17,7 @@ import HistoryButton from './HistoryButton'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
 import * as tagsSelectors from '../../../../state/tags/selectors'
-import * as usersSelectors from '../../../../state/customers/selectors'
+import * as customersSelectors from '../../../../state/customers/selectors'
 import * as agentSelectors from '../../../../state/agents/selectors'
 import * as ticketSelectors from '../../../../state/ticket/selectors'
 
@@ -36,8 +36,8 @@ import {getCustomersState} from '../../../../state/customers/selectors'
         tags: tagsSelectors.getTags(state),
         ticket: state.ticket,
         ticketBody: ticketSelectors.getBody(state),
-        users: getCustomersState(state),
-        usersIsLoading: usersSelectors.makeIsLoading(state),
+        customers: getCustomersState(state),
+        customersIsLoading: customersSelectors.makeIsLoading(state),
         views: state.views,
         isHistoryDisplayed: ticketSelectors.getDisplayHistory(state),
     }
@@ -56,8 +56,8 @@ export default class TicketView extends React.Component {
         tags: PropTypes.object.isRequired,
         ticket: PropTypes.object.isRequired,
         ticketBody: PropTypes.object.isRequired,
-        users: PropTypes.object.isRequired,
-        usersIsLoading: PropTypes.func.isRequired,
+        customers: PropTypes.object.isRequired,
+        customersIsLoading: PropTypes.func.isRequired,
         setStatus: PropTypes.func.isRequired,
         view: PropTypes.object,
         isHistoryDisplayed: PropTypes.bool
@@ -130,16 +130,17 @@ export default class TicketView extends React.Component {
     }
 
     _toggleHistory = () => {
-        const {ticket, users, actions, isHistoryDisplayed} = this.props
+        const {ticket, customers, actions, isHistoryDisplayed} = this.props
         const shouldOpenHistory = ticket.get('id')
-            && users.getIn(['customerHistory', 'hasHistory'])
+            && customers.getIn(['customerHistory', 'hasHistory'])
             && !isHistoryDisplayed
 
         actions.ticket.toggleHistory(shouldOpenHistory)
 
+        // TODO(customers-migration): ask confirmation to update this event
         segmentTracker.logEvent(segmentTracker.EVENTS.USER_HISTORY_TOGGLED, {
             open: shouldOpenHistory,
-            nbOfTicketsInTimeline: users.getIn(['customerHistory', 'tickets']).size,
+            nbOfTicketsInTimeline: customers.getIn(['customerHistory', 'tickets']).size,
             channel: ticket.get('channel'),
             nbOfMessagesInTicket: ticket.get('messages').size,
         })
@@ -206,8 +207,8 @@ export default class TicketView extends React.Component {
     render = () => {
         const {
             ticket,
-            users,
-            usersIsLoading,
+            customers,
+            customersIsLoading,
             actions,
             isTicketHidden,
             setStatus,
@@ -215,7 +216,7 @@ export default class TicketView extends React.Component {
         } = this.props
         const isCreating = !ticket.get('id')
 
-        const customerHistory = users.get('customerHistory') || fromJS({})
+        const customerHistory = customers.get('customerHistory') || fromJS({})
         const hideHistoryButton = !ticket.get('id')
 
         return (
@@ -258,7 +259,7 @@ export default class TicketView extends React.Component {
                                         customerHistory={customerHistory}
                                         toggleHistory={this._toggleHistory}
                                         ticket={ticket}
-                                        usersIsLoading={usersIsLoading}
+                                        customersIsLoading={customersIsLoading}
                                     />
                                 </div>
                             )
@@ -304,7 +305,7 @@ export default class TicketView extends React.Component {
                         <TicketReplyArea
                             actions={this.props.actions}
                             currentUser={this.props.currentUser}
-                            users={this.props.users}
+                            customers={this.props.customers}
                             macros={this.props.macros}
                             ticket={this.props.ticket}
                         />

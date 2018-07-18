@@ -8,7 +8,7 @@ import _pickBy from 'lodash/pickBy'
 import {getProperty} from './selectors'
 import {SOURCE_VALUE_PROP} from '../../config'
 import * as ticketConfig from '../../config/ticket'
-import {displayUserNameFromSource} from '../../pages/tickets/common/utils'
+import {getPersonLabelFromSource} from '../../pages/tickets/common/utils'
 import {getActionTemplate, toImmutable} from '../../utils'
 import {renderTemplate} from '../../pages/common/utils/template'
 
@@ -70,7 +70,7 @@ export function isSupportAddress(addressToTest = '', supportAddresses = fromJS([
 }
 
 /**
- * Return value prop from sender/customer that is used to identify a user depending on the source type
+ * Return value prop from sender/receiver that is used to identify a person depending on the source type
  * @param sourceType
  */
 export function getValuePropFromSourceType(sourceType) {
@@ -160,11 +160,11 @@ export function guessReceiversFromTicket(ticket, newMessageSourceType, channels 
  * @returns {*}
  */
 export function receiversValueFromState(options, sourceType) {
-    _forEach(options, (users, index) => {
-        options[index] = users.map((user) => ({
-            name: user.name || '',
-            label: displayUserNameFromSource(user, sourceType),
-            value: user.address || '',
+    _forEach(options, (receivers, index) => {
+        options[index] = receivers.map((receiver) => ({
+            name: receiver.name || '',
+            label: getPersonLabelFromSource(receiver, sourceType),
+            value: receiver.address || '',
         }))
     })
 
@@ -186,10 +186,10 @@ export function receiversStateFromValue(value, sourceType) {
 
     const newValue = value || {}
 
-    _forEach(newValue, (users, index) => {
-        newValue[index] = users.map((user) => ({
-            name: user.name || '',
-            address: user.value || '',
+    _forEach(newValue, (receivers, index) => {
+        newValue[index] = receivers.map((receiver) => ({
+            name: receiver.name || '',
+            address: receiver.value || '',
         }))
     })
 
@@ -424,7 +424,7 @@ export const replaceIntegrationVariables = (integrationType, ticketState, variab
     if (!integrationId) {
         notify({
             type: 'warning',
-            title: `This user does not have any ${integrationType} information`,
+            title: `This customer does not have any ${integrationType} information`,
         })
         return newArgument.replace(variable, '')
     }

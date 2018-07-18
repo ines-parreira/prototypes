@@ -7,7 +7,7 @@ import {FormGroup} from 'reactstrap'
 /**
  * Allow to pick values from multiples sources and build a single one.
  * Only one value can be picked from each source
- * ex: used in merge users feature for merging names
+ * ex: used in merge customers feature for merging names
  */
 const BinaryChoiceField = ({value, options, label, tooltip, onChange}) => {
     const firstOption = {

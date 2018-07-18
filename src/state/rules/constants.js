@@ -23,7 +23,6 @@ export const RESET_RULE_SUCCESS = 'RESET_RULE_SUCCESS'
 export const OBJECT_DEFINITIONS = {
     ticket: 'Ticket',
     message: 'TicketMessage',
-    user: 'User'
 }
 
 /* Constants for action default state */

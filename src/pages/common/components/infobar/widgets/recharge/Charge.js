@@ -153,27 +153,6 @@ class BeforeContent extends React.Component { // eslint-disable-line
     }
 }
 
-// @connect((state) => {
-//     return {
-//         getIntegrationData: (integrationId, customerId) => {
-//             // Here we don't know if we're in a ticket- or user- context.
-//             // So we get both data from the ticket.customer and the active user, and if any match
-//             // the subscription's customer_id, then it means it's the correct data.
-//             const ticketData = ticketSelectors.getIntegrationDataByIntegrationId(integrationId)(state)
-//             const userData = userSelectors.getActiveCustomerIntegrationDataByIntegrationId(integrationId)(state)
-//
-//             if (ticketData.getIn(['customer', 'id']) === customerId) {
-//                 return ticketData
-//             }
-//
-//             if (userData.getIn(['customer', 'id']) === customerId) {
-//                 return userData
-//             }
-//
-//             return fromJS({})
-//         }
-//     }
-// })
 class TitleWrapper extends React.Component { // eslint-disable-line
     static propTypes = {
         children: PropTypes.node,

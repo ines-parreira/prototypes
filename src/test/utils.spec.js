@@ -660,8 +660,8 @@ describe('global utils', () => {
 
     describe('unescape template variables', () => {
         it('should ONLY unescape template variables', () => {
-            expect(utils.unescapeTemplateVars('%7Bh%7B%7Bello%7D%7D %7B%7Bticket.customer.email%7D%7D %7B%7Bmessage.from_agent%7D%7D %7B%7Bevent.type%7D%7D %7B%7Buser.email%7D%7D'))
-                .toEqual('%7Bh%7B%7Bello%7D%7D {{ticket.customer.email}} {{message.from_agent}} {{event.type}} {{user.email}}')
+            expect(utils.unescapeTemplateVars('%7Bh%7B%7Bello%7D%7D %7B%7Bticket.customer.email%7D%7D %7B%7Bmessage.from_agent%7D%7D %7B%7Bevent.type%7D%7D'))
+                .toEqual('%7Bh%7B%7Bello%7D%7D {{ticket.customer.email}} {{message.from_agent}} {{event.type}}')
         })
 
         it('should NOT unescape variables (invalid template variables)', () => {

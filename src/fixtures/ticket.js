@@ -114,10 +114,6 @@ export const ticket = {
         lastname: 'Bon',
         channels: [
             {
-                user: {
-                    id: 34,
-                    name: 'Jean Bon'
-                },
                 id: 55,
                 type: 'email',
                 address: 'jeanbon@gorgias.io',
@@ -127,10 +123,6 @@ export const ticket = {
                 deleted_datetime: null
             },
             {
-                user: {
-                    id: 34,
-                    name: 'Jean Bon'
-                },
                 id: 56,
                 type: 'phone',
                 address: '+1 415-548-9999',

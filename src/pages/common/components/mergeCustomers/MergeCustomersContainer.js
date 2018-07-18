@@ -2,30 +2,30 @@ import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
 import {mergeCustomers} from '../../../../state/customers/actions'
-import MergeUsersModal from './MergeUsersModal'
+import MergeCustomersModal from './MergeCustomersModal'
 
 import {makeIsLoading} from '../../../../state/customers/selectors'
 import {getMessages} from './../../../../state/ticket/selectors'
 
-class MergeUsersContainer extends React.Component {
+class MergeCustomersContainer extends React.Component {
     render() {
         const {
-            destinationUser,
-            sourceUser,
+            destinationCustomer,
+            sourceCustomer,
             display,
             mergeCustomers,
             onClose,
-            usersIsLoading,
+            customersIsLoading,
             isTicketContext,
             ticketMessages,
             onSuccess,
         } = this.props
 
-        if (!destinationUser || destinationUser.isEmpty()) {
+        if (!destinationCustomer || destinationCustomer.isEmpty()) {
             return null
         }
 
-        if (!sourceUser || sourceUser.isEmpty()) {
+        if (!sourceCustomer || sourceCustomer.isEmpty()) {
             return null
         }
 
@@ -42,13 +42,13 @@ class MergeUsersContainer extends React.Component {
         }
 
         return (
-            <MergeUsersModal
+            <MergeCustomersModal
                 isOpen={display}
-                destinationUser={destinationUser}
-                sourceUser={sourceUser}
+                destinationCustomer={destinationCustomer}
+                sourceCustomer={sourceCustomer}
                 toggleModal={onClose}
                 mergeCustomers={mergeCustomers}
-                isLoading={usersIsLoading('merge')}
+                isLoading={customersIsLoading('merge')}
                 requiredAddresses={fromJS(requiredAddresses).toSet().filter((address) => address)}
                 onSuccess={onSuccess}
             />
@@ -56,19 +56,19 @@ class MergeUsersContainer extends React.Component {
     }
 }
 
-MergeUsersContainer.defaultProps = {
+MergeCustomersContainer.defaultProps = {
     display: false,
     isLoading: false,
     isTicketContext: false
 }
 
-MergeUsersContainer.propTypes = {
-    destinationUser: PropTypes.object.isRequired,
-    sourceUser: PropTypes.object.isRequired,
+MergeCustomersContainer.propTypes = {
+    destinationCustomer: PropTypes.object.isRequired,
+    sourceCustomer: PropTypes.object.isRequired,
     display: PropTypes.bool.isRequired,
     mergeCustomers: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
-    usersIsLoading: PropTypes.func.isRequired,
+    customersIsLoading: PropTypes.func.isRequired,
     onSuccess: PropTypes.func,
 
     isTicketContext: PropTypes.bool.isRequired,
@@ -77,9 +77,9 @@ MergeUsersContainer.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        usersIsLoading: makeIsLoading(state),
+        customersIsLoading: makeIsLoading(state),
         ticketMessages: getMessages(state)
     }
 }
 
-export default connect(mapStateToProps, {mergeCustomers})(MergeUsersContainer)
+export default connect(mapStateToProps, {mergeCustomers})(MergeCustomersContainer)

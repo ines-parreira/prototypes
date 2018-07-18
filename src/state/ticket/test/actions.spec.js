@@ -572,7 +572,7 @@ describe('ticket actions', () => {
     })
 
     describe('findAndSetCustomer', () => {
-        it('should not set the customer because we did not find any user with this email address', () => {
+        it('should not set the customer because we did not find any customer with this email address', () => {
             mockServer.onPost('/api/search/').reply(200, {data: []})
             store = mockStore({
                 ticket: initialState
@@ -583,7 +583,7 @@ describe('ticket actions', () => {
             })
         })
 
-        it('should not set the customer because we found too many users matching this email address', () => {
+        it('should not set the customer because we found too many customers matching this email address', () => {
             mockServer.onPost('/api/search/').reply(200, {data: [{user: {id: 1}}, {user: {id: 2}}]})
             store = mockStore({
                 ticket: initialState
@@ -594,7 +594,7 @@ describe('ticket actions', () => {
             })
         })
 
-        it('should set the customer because there is exactly one user matching this email address', () => {
+        it('should set the customer because there is exactly one customer matching this email address', () => {
             mockServer
                 .onPost('/api/search/').reply(200, {data: [{user: {id: 1}}]})
                 .onGet('/api/customers/1/').reply(200, {id: 1, name: 'foo', email: 'foo@gorgias.io'})

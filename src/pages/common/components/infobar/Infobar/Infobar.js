@@ -18,8 +18,8 @@ import * as segmentTracker from '../../../../../store/middlewares/segmentTracker
 import Loader from '../../Loader/index'
 import Tooltip from '../../Tooltip'
 import InfobarLayout from '../InfobarLayout'
-import InfobarUserInfo from '../InfobarUserInfo'
-import MergeUsersContainer from '../../mergeUsers/MergeUsersContainer'
+import InfobarCustomerInfo from '../InfobarCustomerInfo'
+import MergeCustomersContainer from '../../mergeCustomers/MergeCustomersContainer'
 import InfobarSearchResultsList from '../InfobarSearchResultsList'
 import Search from '../../Search'
 
@@ -28,7 +28,7 @@ import css from '../Infobar.less'
 import type {reactRouterLocation} from '../../../../../types'
 import {startEditionMode, stopEditionMode, submitWidgets} from '../../../../../state/widgets/actions'
 import InfobarWidgetsEditionTools from './InfobarWidgetsEditionTools'
-import InfobarUserActions from './InfobarUserActions'
+import InfobarCustomerActions from './InfobarCustomerActions'
 
 type Props = {
     actions: {
@@ -38,7 +38,7 @@ type Props = {
             submitWidgets: typeof submitWidgets
         },
         infobar: {
-            fetchPreviewUser: typeof infobarActions.fetchPreviewUser
+            fetchPreviewCustomer: typeof infobarActions.fetchPreviewCustomer
         }
     },
     context: string,
@@ -46,11 +46,11 @@ type Props = {
     infobar: Object,
     isRouteEditingWidgets: boolean,
     sources: Map<*, *>,
-    user: Map<*, *>,
+    customer: Map<*, *>,
     widgets: Map<*, *>,
     fetchCustomerHistory: typeof customersActions.fetchCustomerHistory,
     search: typeof infobarActions.search,
-    searchSimilarUser: typeof infobarActions.similarUser,
+    searchSimilarCustomer: typeof infobarActions.similarCustomer,
     setCustomer: typeof ticketActions.setCustomer,
 
     // react-router
@@ -59,29 +59,29 @@ type Props = {
 
 type State = {
     isSearching: boolean,
-    isFetchingUser: boolean,
+    isFetchingCustomer: boolean,
     displaySearchResults: boolean,
-    displaySelectedUser: boolean,
-    showMergeUserModal: boolean,
+    displaySelectedCustomer: boolean,
+    showMergeCustomerModal: boolean,
     searchResults: List<*>,
-    selectedUser: Map<*, *>,
-    suggestedUser: Map<*, *>,
+    selectedCustomer: Map<*, *>,
+    suggestedCustomer: Map<*, *>,
 }
 
 export class Infobar extends React.Component<Props, State> {
     static defaultProps = {
-        user: fromJS({}),
+        customer: fromJS({}),
     }
 
     state = {
         isSearching: false,
-        isFetchingUser: false,
+        isFetchingCustomer: false,
         displaySearchResults: false,
-        displaySelectedUser: false,
-        showMergeUserModal: false,
+        displaySelectedCustomer: false,
+        showMergeCustomerModal: false,
         searchResults: fromJS([]),
-        selectedUser: fromJS({}),
-        suggestedUser: fromJS({}),
+        selectedCustomer: fromJS({}),
+        suggestedCustomer: fromJS({}),
     }
 
     // refs
@@ -90,7 +90,7 @@ export class Infobar extends React.Component<Props, State> {
     }
 
     componentWillMount() {
-        this._updateSimilarUser(this.props)
+        this._updateSimilarCustomer(this.props)
     }
 
     componentWillReceiveProps(nextProps: Props) {
@@ -107,21 +107,21 @@ export class Infobar extends React.Component<Props, State> {
             nextProps.actions.widgets.stopEditionMode()
         }
 
-        // if user changed then try to find a suggestion of other user to merge with it
+        // if customer changed then try to find a suggestion of other customer to merge with it
         // $FlowFixMe
-        if (!this.props.user.equals(nextProps.user)) {
-            this._updateSimilarUser(nextProps)
+        if (!this.props.customer.equals(nextProps.customer)) {
+            this._updateSimilarCustomer(nextProps)
         }
     }
 
-    _updateSimilarUser = (props: Props) => {
-        this.setState({suggestedUser: fromJS({})})
+    _updateSimilarCustomer = (props: Props) => {
+        this.setState({suggestedCustomer: fromJS({})})
 
-        if (props.user.isEmpty() || !props.user.get('id')) {
+        if (props.customer.isEmpty() || !props.customer.get('id')) {
             return
         }
 
-        this.props.searchSimilarUser(props.user.get('id')).then(({user: suggestion}) => {
+        this.props.searchSimilarCustomer(props.customer.get('id')).then(({customer: suggestion}) => {
             if (!suggestion) {
                 return
             }
@@ -133,7 +133,7 @@ export class Infobar extends React.Component<Props, State> {
             }
 
             this.setState({
-                suggestedUser: suggestion,
+                suggestedCustomer: suggestion,
             })
         })
     }
@@ -147,11 +147,11 @@ export class Infobar extends React.Component<Props, State> {
             return 'loading'
         }
 
-        if (state.isFetchingUser) {
+        if (state.isFetchingCustomer) {
             return 'loading'
         }
 
-        if (state.displaySelectedUser) {
+        if (state.displaySelectedCustomer) {
             return 'selected'
         }
 
@@ -172,12 +172,11 @@ export class Infobar extends React.Component<Props, State> {
         if (!identifier) {
             return
         }
-        const objectType = context === 'user' ? 'customer' : 'ticket'
 
         if (isEditing) {
-            browserHistory.push(`/app/${objectType}/${identifier}/edit-widgets${location.search}`)
+            browserHistory.push(`/app/${context}/${identifier}/edit-widgets${location.search}`)
         } else {
-            browserHistory.push(`/app/${objectType}/${identifier}${location.search}`)
+            browserHistory.push(`/app/${context}/${identifier}${location.search}`)
         }
     }
 
@@ -186,7 +185,7 @@ export class Infobar extends React.Component<Props, State> {
             this.setState({isSearching: true})
             this.props.search(query).then(({resp}) => {
                 this.setState({
-                    displaySelectedUser: false,
+                    displaySelectedCustomer: false,
                     displaySearchResults: true,
                     isSearching: false,
                     searchResults: fromJS(resp.data.slice(0, 8)),
@@ -198,17 +197,17 @@ export class Infobar extends React.Component<Props, State> {
     }
 
     _fetchCustomerHistory = () => {
-        if (this.props.user.isEmpty()) {
+        if (this.props.customer.isEmpty()) {
             return
         }
 
-        const askedUserId = this.props.user.get('id')
+        const askedCustomerId = this.props.customer.get('id')
 
-        // wait 1.5s before fetching user history after merge (merge can take some time and is async)
+        // wait 1.5s before fetching customer history after merge (merge can take some time and is async)
         setTimeout(() => {
-            this.props.fetchCustomerHistory(askedUserId, {
+            this.props.fetchCustomerHistory(askedCustomerId, {
                 successCondition: () => {
-                    return this.props.user.get('id').toString() === askedUserId.toString()
+                    return this.props.customer.get('id').toString() === askedCustomerId.toString()
                 }
             })
         }, 1500)
@@ -223,13 +222,13 @@ export class Infobar extends React.Component<Props, State> {
 
     _resetSelected = () => {
         this.setState({
-            displaySelectedUser: false,
-            selectedUser: fromJS({}),
+            displaySelectedCustomer: false,
+            selectedCustomer: fromJS({}),
         })
     }
 
-    // reset search and display current user
-    _returnToCurrentUserProfile = () => {
+    // reset search and display current customer
+    _returnToCurrentCustomerProfile = () => {
         this._resetSearch()
         this._resetSelected()
         if (this.search) {
@@ -238,24 +237,24 @@ export class Infobar extends React.Component<Props, State> {
     }
 
     _setCustomer = () => {
-        return this.props.setCustomer(this.state.selectedUser)
-            .then(this._returnToCurrentUserProfile)
+        return this.props.setCustomer(this.state.selectedCustomer)
+            .then(this._returnToCurrentCustomerProfile)
     }
 
-    _renderUserInfo = (user: Map<*,*>) => {
+    _renderCustomerInfo = (customer: Map<*,*>) => {
         const isEditing = this._isEditing()
 
         const sources = this.props.sources
-            .setIn(['ticket', 'customer'], user)
-            .set('user', user)
+            .setIn(['ticket', 'customer'], customer)
+            .set('customer', customer)
 
         return (
-            <InfobarUserInfo
+            <InfobarCustomerInfo
                 actions={this.props.actions.widgets}
                 infobar={this.props.infobar}
                 isEditing={isEditing}
                 sources={sources}
-                user={user}
+                customer={customer}
                 widgets={this.props.widgets}
             />
         )
@@ -265,7 +264,7 @@ export class Infobar extends React.Component<Props, State> {
         const {
             actions,
             sources,
-            user
+            customer
         } = this.props
 
         const mode = this._mode()
@@ -285,26 +284,26 @@ export class Infobar extends React.Component<Props, State> {
                             <i className="fa fa-fw fa-arrow-left mr-2"/>
                             Back
                         </Button>
-                        <InfobarUserActions
-                            user={user}
+                        <InfobarCustomerActions
+                            customer={customer}
                             sources={sources}
-                            selectedUser={this.state.selectedUser}
-                            toggleMergeUserModal={(showMergeUserModal: boolean) => this.setState({showMergeUserModal})}
+                            selectedCustomer={this.state.selectedCustomer}
+                            toggleMergeCustomerModal={(showMergeCustomerModal: boolean) => this.setState({showMergeCustomerModal})}
                             setCustomer={this._setCustomer}
                         />
                     </div>
-                    {this._renderUserInfo(this.state.selectedUser)}
-                    <MergeUsersContainer
+                    {this._renderCustomerInfo(this.state.selectedCustomer)}
+                    <MergeCustomersContainer
                         isTicketContext={!sources.get('ticket', fromJS({})).isEmpty()}
-                        display={this.state.showMergeUserModal}
-                        destinationUser={user}
-                        sourceUser={this.state.selectedUser}
+                        display={this.state.showMergeCustomerModal}
+                        destinationCustomer={customer}
+                        sourceCustomer={this.state.selectedCustomer}
                         onSuccess={() => {
                             this._fetchCustomerHistory()
-                            this._returnToCurrentUserProfile()
+                            this._returnToCurrentCustomerProfile()
                         }}
                         onClose={() => {
-                            this.setState({showMergeUserModal: false})
+                            this.setState({showMergeCustomerModal: false})
                         }}
                     />
                 </div>
@@ -312,7 +311,7 @@ export class Infobar extends React.Component<Props, State> {
         }
 
         if (mode === 'results') {
-            const defaultUserId = sources.getIn(['ticket', 'customer', 'id']) || sources.getIn(['user', 'id'])
+            const defaultCustomerId = sources.getIn(['ticket', 'customer', 'id']) || sources.getIn(['customer', 'id'])
 
             return (
                 <div>
@@ -329,14 +328,14 @@ export class Infobar extends React.Component<Props, State> {
                     </div>
                     <InfobarSearchResultsList
                         searchResults={this.state.searchResults}
-                        defaultUserId={defaultUserId}
-                        onUserClick={(user) => {
-                            this.setState({isFetchingUser: true})
-                            return actions.infobar.fetchPreviewUser(user.get('id')).then(({resp}) => {
+                        defaultCustomerId={defaultCustomerId}
+                        onCustomerClick={(customer) => {
+                            this.setState({isFetchingCustomer: true})
+                            return actions.infobar.fetchPreviewCustomer(customer.get('id')).then(({resp}) => {
                                 this.setState({
-                                    displaySelectedUser: true,
-                                    isFetchingUser: false,
-                                    selectedUser: fromJS(resp),
+                                    displaySelectedCustomer: true,
+                                    isFetchingCustomer: false,
+                                    selectedCustomer: fromJS(resp),
                                 })
                             })
                         }}
@@ -349,21 +348,21 @@ export class Infobar extends React.Component<Props, State> {
             return null
         }
 
-        const displaySuggestedUser = !this.state.suggestedUser.isEmpty()
+        const displaySuggestedCustomer = !this.state.suggestedCustomer.isEmpty()
             && !this.props.widgets.getIn(['_internal', 'isEditing'])
 
         return (
             <div>
-                {this._renderUserInfo(user)}
+                {this._renderCustomerInfo(customer)}
                 {
-                    displaySuggestedUser && (
+                    displaySuggestedCustomer && (
                         <div className="d-none d-md-block">
                             <div className="infobar-section-separator"/>
-                            <div className={classnames(css.suggestedUser)}>
+                            <div className={classnames(css.suggestedCustomer)}>
                                 <h4>Is this the same person?</h4>
                                 <p>
                                     'We have found someone similar to the customer of this ticket. If it is the same
-                                    person, merge them together to get a unified view of this user.
+                                    person, merge them together to get a unified view of this customer.
                                 </p>
                                 <div style={{marginBottom: '30px'}}>
                                     <Button
@@ -371,25 +370,26 @@ export class Infobar extends React.Component<Props, State> {
                                         type="button"
                                         color="primary"
                                         onClick={() => {
+                                            // TODO(customers-migration): ask confirmation to update this event
                                             segmentTracker.logEvent(segmentTracker.EVENTS.USER_MERGE_CLICK, {
                                                 location: 'suggested user in infobar',
                                             })
-                                            this.setState({showMergeUserModal: true})
+                                            this.setState({showMergeCustomerModal: true})
                                         }}
                                     >
 
                                         <i className="material-icons mr-1">call_merge</i>Merge
                                     </Button>
                                 </div>
-                                {this._renderUserInfo(this.state.suggestedUser)}
-                                <MergeUsersContainer
+                                {this._renderCustomerInfo(this.state.suggestedCustomer)}
+                                <MergeCustomersContainer
                                     isTicketContext={!sources.get('ticket', fromJS({})).isEmpty()}
-                                    display={this.state.showMergeUserModal}
-                                    destinationUser={user}
-                                    sourceUser={this.state.suggestedUser}
+                                    display={this.state.showMergeCustomerModal}
+                                    destinationCustomer={customer}
+                                    sourceCustomer={this.state.suggestedCustomer}
                                     onSuccess={this._fetchCustomerHistory}
                                     onClose={() => {
-                                        this.setState({showMergeUserModal: false})
+                                        this.setState({showMergeCustomerModal: false})
                                     }}
                                 />
                             </div>
@@ -413,7 +413,7 @@ export class Infobar extends React.Component<Props, State> {
 
         const canEditWidgets = hasFetchedWidgets
             && areSourcesReady(sources, context)
-            && !this.state.displaySelectedUser
+            && !this.state.displaySelectedCustomer
 
         return (
             <InfobarLayout className={classnames({
@@ -423,7 +423,7 @@ export class Infobar extends React.Component<Props, State> {
                     <div className="infobar-search-wrapper d-flex align-items-center justify-content-between">
                         <Search
                             tabIndex="10"
-                            placeholder="Search for users by email, order number, etc."
+                            placeholder="Search for customers by email, order number, etc."
                             bindKey
                             onChange={this._onSearch}
                             style={{maxWidth: 'none'}}
@@ -474,6 +474,6 @@ export class Infobar extends React.Component<Props, State> {
 export default withRouter(connect(null, {
     fetchCustomerHistory: customersActions.fetchCustomerHistory,
     search: infobarActions.search,
-    searchSimilarUser: infobarActions.similarUser,
+    searchSimilarCustomer: infobarActions.similarCustomer,
     setCustomer: ticketActions.setCustomer,
 })(Infobar))
