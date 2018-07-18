@@ -263,7 +263,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
 ]
 
 // Number of threads imported from Gmail
-export const GMAIL_IMPORTED_THREADS = 100
+export const GMAIL_IMPORTED_THREADS = 1000
 /**
  * Templates for custom actions.
  * Those templates are used by the front-end to generate the UI to create a new action (in the Macros Management).
