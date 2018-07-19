@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
 import linkifyString from 'linkifyjs/string'
+import linkifyHtml from 'linkifyjs/html'
 import classnames from 'classnames'
 
 import {sanitizeHtmlDefault, proxifyImages} from '../../../../utils'
@@ -31,6 +32,18 @@ export default class TicketMessageBody extends React.Component<Props, State> {
     constructor() {
         super()
         this.state = {showFullBody: false}
+    }
+
+    // forgiving html parser to fix invalid markup and not escape chars
+    _parseHtml(html: string = '') {
+        // only parse in the browser
+        if (typeof window === 'undefined') {
+            return html
+        }
+
+        const fragment = document.createElement('div')
+        fragment.innerHTML = html
+        return fragment.innerHTML
     }
 
     render() {
@@ -70,8 +83,10 @@ export default class TicketMessageBody extends React.Component<Props, State> {
         if (bodyIsOnlyText) {
             body = linkifyString(body, linkifyOptions)
         } else {
-            // TODO(@ghinda): disabled this like because it brakes invalid HTML
-            // body = linkifyHtml(body, linkifyOptions)
+            // parse html before linkifying it.
+            // linkifyjs's html tokenizer (simple-html-tokenizer) breaks and returns empty string
+            // when encountering invalid chars or unsupported tags (CDATA, DOCTYPE, MDO, etc.).
+            body = linkifyHtml(this._parseHtml(body), linkifyOptions)
         }
 
         body = sanitizeHtmlDefault(body)

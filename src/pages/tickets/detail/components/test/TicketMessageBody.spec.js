@@ -78,7 +78,35 @@ describe('components', () => {
             expect(component).toMatchSnapshot()
         })
 
-        it.skip('should linkify body_html', () => {
+        it('should not escape quotes', () => {
+            const component = mount(
+                <TicketMessageBody
+                    message={{
+                        body_text: 'these "quotes" here',
+                        body_html: 'these "quotes" here'
+                    }}
+                    store={mockStore()}
+                />
+            )
+
+            expect(component.html()).toMatchSnapshot()
+        })
+
+        it('should not remove invalid characters', () => {
+            const component = mount(
+                <TicketMessageBody
+                    message={{
+                        body_text: 'Thank you <3 you are the best',
+                        body_html: 'Thank you <3 you are the best'
+                    }}
+                    store={mockStore()}
+                />
+            )
+
+            expect(component.html()).toMatchSnapshot()
+        })
+
+        it('should linkify body_html', () => {
             const component = mount(
                 <TicketMessageBody
                     message={{
@@ -89,7 +117,7 @@ describe('components', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(component.html()).toMatchSnapshot()
         })
 
         it('should linkify invalid body_html', () => {
@@ -118,7 +146,7 @@ describe('components', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(component.html()).toMatchSnapshot()
         })
 
         it('should display the Facebook carousel if there\'s matching metadata', () => {
