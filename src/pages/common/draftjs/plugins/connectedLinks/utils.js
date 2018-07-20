@@ -50,7 +50,8 @@ export const parseUrl = (url: string = '', target: string = ''): string => {
         }
     }
 
-    return a.href
+    // chrome encodes special chars like {&}
+    return decodeURI(a.href)
 }
 
 // connected links have the same text and href
