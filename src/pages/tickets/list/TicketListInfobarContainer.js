@@ -21,7 +21,7 @@ import type {Map, List} from 'immutable'
 
 type Props = {
     agents: List<*>,
-    currentUser: Map<*,*>,
+    currentUser: Map<*, *>,
     emailIntegrations: List<*>,
     hasIntegrationsOfTypes: typeof integrationsSelectors.hasIntegrationOfTypes,
 }
@@ -44,6 +44,7 @@ class TicketListInfobarContainer extends React.Component<Props> {
             })
 
         const hasConnectedFacebook = hasIntegrationsOfTypes('facebook')
+        const hasShopifyIntegration = hasIntegrationsOfTypes('shopify')
 
         const hasConnectedChat = hasIntegrationsOfTypes(['smooch', 'smooch_inside'])
 
@@ -65,8 +66,8 @@ class TicketListInfobarContainer extends React.Component<Props> {
                     className={classnames(css.page, 'infobar-content')}
                 >
                     <h1>
-                        Welcome<br />
-                        {currentUser.get('firstname')}
+                        Welcome<br/>
+                        {currentUser.get('firstname')}!
                     </h1>
 
                     <p>
@@ -74,6 +75,23 @@ class TicketListInfobarContainer extends React.Component<Props> {
                     </p>
 
                     <div className={css.buttons}>
+                        <Link
+                            to="/app/settings/integrations/shopify"
+                            className={css.button}
+                            onClick={() => {
+                                segmentTracker.logEvent(segmentTracker.EVENTS.ONBOARDING_WIDGET_CLICKED, {
+                                    name: 'Connect a Shopify store',
+                                })
+                            }}
+                        >
+                            <i
+                                className={classnames('fa fa-fw fa-check-circle', {
+                                    'text-success': hasShopifyIntegration,
+                                    'text-faded': !hasShopifyIntegration,
+                                })}
+                            />
+                            <div>Connect Shopify</div>
+                        </Link>
                         <Link
                             to="/app/settings/integrations/email"
                             className={css.button}
@@ -89,7 +107,7 @@ class TicketListInfobarContainer extends React.Component<Props> {
                                     'text-faded': !hasVerifiedEmailIntegration,
                                 })}
                             />
-                            <div>Connect an email address</div>
+                            <div>Connect email</div>
                         </Link>
                         <Link
                             to="/app/settings/integrations/smooch_inside"
@@ -106,7 +124,7 @@ class TicketListInfobarContainer extends React.Component<Props> {
                                     'text-faded': !hasConnectedChat,
                                 })}
                             />
-                            <div>Connect a chat</div>
+                            <div>Connect live chat</div>
                         </Link>
                         <Link
                             to="/app/settings/integrations/facebook"
@@ -123,7 +141,7 @@ class TicketListInfobarContainer extends React.Component<Props> {
                                     'text-faded': !hasConnectedFacebook,
                                 })}
                             />
-                            <div>Connect Facebook</div>
+                            <div>Connect Facebook &amp; Instagram</div>
                         </Link>
                         <Link
                             to="/app/settings/team"
