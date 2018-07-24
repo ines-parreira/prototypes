@@ -350,11 +350,11 @@ export const stats = fromJS({
                 'we only take into account the last time it was closed.',
             },
             total_messages_sent: {
-                tooltip: 'Number of messages on all channels sent by agents.',
+                tooltip: 'Number of messages sent by agents and rules.',
                 label: 'Messages sent',
             },
             total_messages_received: {
-                tooltip: 'Number of messages on all channels received from customers.',
+                tooltip: 'Number of messages received from customers.',
                 label: 'Messages received',
             },
             median_first_response_time: {
