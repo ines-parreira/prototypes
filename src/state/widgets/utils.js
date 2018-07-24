@@ -20,11 +20,13 @@ type contextFromSourcePathType = {
  * @returns {*}
  */
 export function itemsWithContext(items: itemsType = fromJS([]), context: contextType): itemsType {
-    return items.filter((w) => w.get('context', '') === context)
+    // TODO(custoners-migration): update this line when we migrated widgets with a `user` context
+    return items.filter((w) => w.get('context', '') === context.replace('customer', 'user'))
 }
 
 export function itemsWithoutContext(items: itemsType = fromJS([]), context: contextType): itemsType {
-    return items.filter((w) => w.get('context', '') !== context)
+    // TODO(custoners-migration): update this line when we migrated widgets with a `user` context
+    return items.filter((w) => w.get('context', '') !== context.replace('customer', 'user'))
 }
 
 /**
