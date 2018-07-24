@@ -141,6 +141,12 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/recharge.svg',
     },
     {
+        type: 'smile',
+        title: 'Smile',
+        description: 'Display customer points and activity. Insert point balance or referral url in macros.',
+        image: 'integrations/smile.svg',
+    },
+    {
         title: 'Helpdocs',
         description: 'Create a knowledge base & connect it to Gorgias',
         url: 'http://docs.gorgias.io/integrations/helpdocs',
@@ -253,12 +259,6 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         title: 'Smooch',
         description: 'Connect your own Smooch to Gorgias',
         image: 'integrations/smooch.png',
-    },
-    {
-        type: 'smile',
-        title: 'Smile',
-        description: 'Display customer points and activity. Insert point balance or referral url in macros.',
-        image: 'integrations/smile.svg',
     }
 ]
 
