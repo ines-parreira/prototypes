@@ -21,7 +21,8 @@
     "postinstall": "npm run dll",
     "build": "(export NODE_ENV=production; npm run dll -- -p; webpack -p)",
     "serve": "webpack-dev-server --progress",
-    "serve-maps": "webpack-dev-server --progress --debug --devtool source-map --output-pathinfo"
+    "serve-maps": "webpack-dev-server --progress --debug --devtool source-map --output-pathinfo",
+    "uglify-file": "uglifyjs --compress --mangle --"
   },
   "author": "Alex Plugaru <alex@gorgias.io>",
   "license": "UNLICENSED",
@@ -120,6 +121,7 @@
     "react-test-renderer": "^15.4.2",
     "redux-mock-store": "^1.2.0",
     "style-loader": "^0.18.1",
+    "uglify-js": "^3.4.4",
     "url-loader": "^0.5.8",
     "webpack": "^2.6.0",
     "webpack-dev-server": "^2.4.5",
