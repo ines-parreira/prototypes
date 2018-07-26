@@ -1,7 +1,8 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React from 'react'
 import {connect} from 'react-redux'
 import {Link, browserHistory, withRouter} from 'react-router'
-import {fromJS} from 'immutable'
+import {fromJS, Set, Map} from 'immutable'
 import {Card, CardBody} from 'reactstrap'
 
 import {areSourcesReady, jsonToWidgets} from '../infobar/utils'
@@ -73,14 +74,46 @@ export const WIDGET_DATA_TYPES = [
 
 ]
 
-class SourceWrapper extends React.Component {
-    state = {
-        widgetsTemplate: fromJS([]),
-        availableTypes: fromJS([])
+type Props = {
+    context: string,
+    identifier: string,
+    sources: Set<*>,
+    widgets: Map<*, *>,
+    actions: {
+        widgets: {
+            stopEditionMode: () => void
+        }
+    },
+    getIntegrationById: (T: number) => Set<*>,
+    // react-router
+    location: {
+        search: string
+    },
+}
+
+type State = {
+    widgetsTemplate: Set<*>,
+    availableTypes: Set<*>
+}
+
+class SourceWrapper extends React.Component<Props, State> {
+    constructor(props) {
+        super()
+        // defaults
+        this.state = {
+            widgetsTemplate: fromJS([]),
+            availableTypes: fromJS([])
+        }
+        // generate widgets
+        Object.assign(this.state, this._getWidgetsState(props))
     }
 
     componentWillReceiveProps(nextProps) {
-        const {sources, widgets, getIntegrationById} = nextProps
+        this.setState(this._getWidgetsState(nextProps))
+    }
+
+    _getWidgetsState(props) {
+        const {sources, widgets, getIntegrationById} = props
 
         const context = widgets.get('currentContext', '')
 
@@ -125,11 +158,14 @@ class SourceWrapper extends React.Component {
                 return ret
             }).filter((w) => w)  // filter out null values
 
-            this.setState({
+            return {
                 widgetsTemplate: widgetsTemplate,
+                // $FlowFixMe
                 availableTypes: new Set(typesAlreadyDisplayed)
-            })
+            }
         }
+
+        return {}
     }
 
     _leaveEditionMode = () => {
@@ -204,18 +240,6 @@ class SourceWrapper extends React.Component {
             </div>
         )
     }
-}
-
-SourceWrapper.propTypes = {
-    context: PropTypes.string.isRequired,
-    identifier: PropTypes.string.isRequired,
-    sources: PropTypes.object.isRequired,
-    widgets: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
-    getIntegrationById: PropTypes.func.isRequired,
-
-    // react-router
-    location: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = (state) => {
