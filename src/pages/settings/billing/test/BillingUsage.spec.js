@@ -13,7 +13,7 @@ describe('BillingUsage component', () => {
         interval: 'month',
     })
     let currentSubscription = fromJS({
-        created_datetime: '2018-01-01T10:10:10.480Z'
+        start_datetime: '2018-01-01T10:10:10.480Z'
     })
     let activeIntegrations = fromJS([])
 

@@ -210,7 +210,7 @@ export class BillingUsage extends Component {
         const planName = isTrialing ? 'Free' : currentPlan.get('name')
         const planTitle = isTrialing ? 'Free Trial' : `${planName} ${currentPlan.get('interval')}ly plan`
 
-        const currentSubscriptionCreated = moment(currentSubscription.get('created_datetime')).format(dateFormat)
+        const currentSubscriptionStart = moment(currentSubscription.get('start_datetime')).format(dateFormat)
         const currentSubscriptionTrialStart = moment(currentSubscription.get('trial_start_datetime')).format(dateFormat)
         const currentSubscriptionTrialEnd = moment(currentSubscription.get('trial_end_datetime')).format(dateFormat)
         const periodEnd = moment(currentUsage.getIn(['meta', 'end_datetime'])).format(dateFormat)
@@ -228,7 +228,7 @@ export class BillingUsage extends Component {
                             </div>
                         ) : (
                             <div>
-                                Your current subscription started on <strong>{currentSubscriptionCreated}</strong>.
+                                Your current subscription started on <strong>{currentSubscriptionStart}</strong>.
                             </div>
                         )}
                     </CardBody>

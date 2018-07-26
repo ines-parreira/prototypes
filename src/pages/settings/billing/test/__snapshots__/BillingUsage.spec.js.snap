@@ -44,7 +44,7 @@ exports[`BillingUsage component should display price 1`] = `
   }
   currentSubscription={
     Immutable.Map {
-      created_datetime: "2018-01-01T10:10:10.480Z",
+      start_datetime: "2018-01-01T10:10:10.480Z",
     }
   }
   currentUsage={
@@ -444,7 +444,7 @@ exports[`BillingUsage component should load with empty props 1`] = `
   }
   currentSubscription={
     Immutable.Map {
-      created_datetime: "2018-01-01T10:10:10.480Z",
+      start_datetime: "2018-01-01T10:10:10.480Z",
     }
   }
   currentUsage={
