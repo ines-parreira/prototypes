@@ -69,6 +69,7 @@ export const sendEvents = [
         name: socketConstants.AGENT_ACTIVE,
         dataToSend: function() {
             return {
+                clientId: window.CLIENT_ID,
                 event: socketConstants.AGENT_ACTIVE,
             }
         },
