@@ -198,6 +198,10 @@ class TicketListActions extends React.Component<Props, State> {
     _queryTagsOnSearch = _debounce(this._queryTags, 300)
 
     _bulkUpdate = (key, value) => {
+        if (!this._hasChecked()) {
+            return
+        }
+
         return this.props.actions.views.bulkUpdate(this.props.view, this.props.selectedItemsIds, key, value)
     }
 
