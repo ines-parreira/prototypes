@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`services userActivityManager should dispatch TOGGLE_ACTIVE_STATUS 1`] = `
+exports[`services userActivityManager should dispatch TOGGLE_ACTIVE_STATUS and send AGENT_INACTIVE_EVENT 1`] = `
 Array [
   Object {
     "status": true,
@@ -9,7 +9,7 @@ Array [
 ]
 `;
 
-exports[`services userActivityManager should dispatch TOGGLE_ACTIVE_STATUS 2`] = `
+exports[`services userActivityManager should dispatch TOGGLE_ACTIVE_STATUS and send AGENT_INACTIVE_EVENT 2`] = `
 Array [
   Object {
     "status": false,
