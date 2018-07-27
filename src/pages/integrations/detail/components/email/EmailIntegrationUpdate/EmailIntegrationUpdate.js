@@ -263,14 +263,10 @@ class EmailIntegrationUpdate extends React.Component {
     }
 
     _setName = (name) => {
-        const {integration} = this.props
         const {errors} = this.state
 
-        const isGmail = integration.get('type') === 'gmail'
-
-        // If it's a Gmail integration, we don't want to allow having '@' in the name
-        if (isGmail && name && /[@]+/.test(name)) {
-            errors.name = 'The name of your Gmail integration cannot contain a "@".'
+        if (name && /[@]+/.test(name)) {
+            errors.name = 'The name of your Email integration cannot contain a "@".'
         } else {
             errors.name = null
         }
@@ -313,11 +309,10 @@ class EmailIntegrationUpdate extends React.Component {
             name,
             use_gmail_categories,
         } = this.state
-        const hasErrors = errors.length > 0
 
-        const nameHelp = isGmail
-            ? 'The name that customers will see when they receive emails from you. Cannot contain a "@".'
-            : 'The name that customers will see when they receive emails from you'
+        const hasErrors = Object.values(errors).some((val) => val != null)
+
+        const nameHelp = 'The name that customers will see when they receive emails from you. Cannot contain a "@".'
 
         return (
             <div className="mt-4">

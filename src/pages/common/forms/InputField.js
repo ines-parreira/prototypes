@@ -70,6 +70,7 @@ export default class InputField extends FormField {
             <BootstrapInput
                 className={classnames({
                     'form-control-danger': error,
+                    'is-invalid': error
                 })}
                 id={this.id}
                 onChange={this._onChange}
@@ -132,7 +133,6 @@ export default class InputField extends FormField {
                             </span>
                         )
                     }
-                </div>
                 {
                     error && (
                         <Errors>
@@ -140,6 +140,7 @@ export default class InputField extends FormField {
                         </Errors>
                     )
                 }
+                </div>
                 {
                     defined(help) && (
                         <FormText color="muted">

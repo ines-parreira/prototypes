@@ -41,10 +41,13 @@ class EmailIntegrationCreate extends React.Component {
     state = {
         name: '',
         email: '',
+        errors: {},
+        dirty: false
     }
 
     _handleSubmit = (e) => {
         e.preventDefault()
+
         const integration = fromJS({
             type: 'email',
             name: this.state.name,
@@ -54,7 +57,30 @@ class EmailIntegrationCreate extends React.Component {
             }
         })
 
-        return this.props.actions.updateOrCreateIntegration(integration)
+        const {updateOrCreateIntegration} = this.props.actions
+
+        return updateOrCreateIntegration(integration)
+            .then((res) => {
+                this.setState({dirty: false})
+                return res
+            })
+    }
+
+    _setName = (name) => {
+        const {errors} = this.state
+
+        if (name && /[@]+/.test(name)) {
+            errors.name = 'The name of your Email integration cannot contain a "@".'
+        } else {
+            errors.name = null
+        }
+
+        this.setState({
+            dirty: true,
+            name,
+            errors
+        })
+
     }
 
     render() {
@@ -62,6 +88,13 @@ class EmailIntegrationCreate extends React.Component {
             domain,
             loading,
         } = this.props
+
+        const {errors} = this.state
+
+        const nameHelp = 'The name that customers will see when they receive emails from you. Cannot contain a "@".'
+
+        const hasErrors = Object.values(errors).some((val) => val != null)
+
         const isSubmitting = loading.get('updateIntegration')
 
         return (
@@ -108,9 +141,10 @@ class EmailIntegrationCreate extends React.Component {
                                 label="Address name"
                                 placeholder={`${_capitalize(domain)} Support`}
                                 required
-                                help="The name that customers will see when they receive emails from you"
+                                help={nameHelp}
                                 value={this.state.name}
-                                onChange={value => this.setState({name: value})}
+                                onChange={(name) => this._setName(name)}
+                                error={errors.name}
                             />
                             <InputField
                                 type="email"
@@ -119,7 +153,7 @@ class EmailIntegrationCreate extends React.Component {
                                 placeholder={`support@${domain}.com`}
                                 required
                                 value={this.state.email}
-                                onChange={value => this.setState({email: value})}
+                                onChange={(value) => this.setState({email: value})}
                             />
 
                             <div>
@@ -130,7 +164,7 @@ class EmailIntegrationCreate extends React.Component {
                                     className={classnames({
                                         'btn-loading': isSubmitting,
                                     })}
-                                    disabled={isSubmitting}
+                                    disabled={!this.state.dirty || isSubmitting || hasErrors}
                                 >
                                     Connect this email account
                                 </Button>

@@ -263,18 +263,18 @@ exports[`InputField should render the input with an error 1`] = `
     className=""
   >
     <Input
-      className="form-control-danger"
+      className="form-control-danger is-invalid"
       id="id-input-11"
       onChange={[Function]}
       type="text"
       value="value"
     />
+    <Errors
+      tag={[Function]}
+    >
+      the value is wrong
+    </Errors>
   </div>
-  <Errors
-    tag={[Function]}
-  >
-    the value is wrong
-  </Errors>
 </FormGroup>
 `;
 
