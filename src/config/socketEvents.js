@@ -71,16 +71,6 @@ export const sendEvents = [
             return {
                 clientId: window.CLIENT_ID,
                 event: socketConstants.AGENT_ACTIVE,
-                clientType: 'web'
-            }
-        },
-    },
-    {
-        name: socketConstants.AGENT_INACTIVE,
-        dataToSend: function() {
-            return {
-                clientId: window.CLIENT_ID,
-                event: socketConstants.AGENT_INACTIVE,
             }
         },
     },
