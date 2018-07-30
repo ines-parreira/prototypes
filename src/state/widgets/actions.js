@@ -23,7 +23,7 @@ type widgetUpdateType = {
 type widgetType = {
     order: number,
     type: string,
-    context: string,
+    context: {},
     template: {}
 }
 
@@ -216,7 +216,6 @@ export function submitWidgets(data: ?Array<widgetType>) {
         items = items.map((item, i) => {
             const updatedItem = item
             updatedItem.order = i
-            updatedItem.context = updatedItem.context.replace('customer', 'user')
             return _pick(updatedItem, ['id', 'order', 'template', 'context', 'type', 'integration_id'])
         })
 
