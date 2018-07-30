@@ -107,8 +107,7 @@ export function onUpdateSuccess(dispatch: dispatchType, resp: {type: string}, no
     let message = 'Integration successfully updated'
 
     if (resp.type === 'smooch_inside' && didInvalidateCache) {
-        message = 'Integration successfully updated. It may take up to 5 minutes for the changes to reflect on your ' +
-            'website.'
+        message = 'Integration successfully updated.'
     }
 
     return dispatch(notify({
