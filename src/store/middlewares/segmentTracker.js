@@ -61,4 +61,5 @@ export const EVENTS = {
     VIEW_FILTER_ADD_CLICKED: 'view-filter-add-clicked',
     PAYMENT_METHOD_ADDED: 'payment-method-added',
     PAYMENT_METHOD_ADD_CLICKED: 'payment-method-add-clicked',
+    TICKET_MESSAGE_CREATED: 'ticket-message-created'
 }

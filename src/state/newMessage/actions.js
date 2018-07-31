@@ -36,6 +36,8 @@ import {
     persistLastSenderChannel,
 } from '../ticket/utils'
 
+import * as currentAccountSelectors from '../currentAccount/selectors'
+import * as currentUserSelectors from '../currentUser/selectors'
 import * as integrationSelectors from '../integrations/selectors'
 import * as ticketSelectors from '../ticket/selectors'
 import * as agentSelectors from '../agents/selectors'
@@ -47,6 +49,7 @@ import type {Map, List} from 'immutable'
 import type {dispatchType, getStateType, currentUserType} from '../types'
 import type {attachmentType} from '../../types'
 import {getMomentNow} from '../../utils/date'
+import * as segmentTracker from '../../store/middlewares/segmentTracker'
 
 type userType = {
     id: string,
@@ -63,7 +66,8 @@ type newMessageType = {
     sender: userType,
     body_text: string,
     attachments: Array<attachmentType>,
-    actions: Array<Map<*, *>>
+    actions: Array<Map<*, *>>,
+    public?: boolean
 }
 type ticketType = {
     state: {},
@@ -679,6 +683,14 @@ export function submitTicketMessage(status: ?string, macroActions: ?macroActions
                         dispatch(prepare(sourceTypeOfResponse))
                     }
                 }
+
+                segmentTracker.logEvent(segmentTracker.EVENTS.TICKET_MESSAGE_CREATED, {
+                    sender_id: currentUserSelectors.getCurrentUser(state).get('id'),
+                    account_domain: currentAccountSelectors.getCurrentAccountState(state).get('domain'),
+                    message_id: messageId,
+                    channel: messageToSend.channel,
+                    is_public: messageToSend.public
+                })
 
                 return Promise.resolve(resp)
             }, (error) => {
