@@ -102,12 +102,14 @@ describe('widgets selectors', () => {
 
     describe('getWidgetsWithContext', () => {
         it('should return items with current context', () => {
-            const items = [{id: 1, context: 'ticket'}, {id: 2, context: 'customer'}]
+            const items = [{id: 1, context: 'ticket'}, {id: 2, context: 'customer'},  {id: 2, context: 'user'}]
             const state = {
                 widgets: fromJS({items})
             }
 
             expect(getWidgetsWithContext('ticket')(state)).toEqualImmutable(fromJS([{id: 1, context: 'ticket'}]))
+            expect(getWidgetsWithContext('customer')(state)).toEqualImmutable(fromJS(items.slice(1)))
+            expect(getWidgetsWithContext('user')(state)).toEqualImmutable(fromJS(items.slice(1)))
         })
 
         it('should return an empty list because there is no items with current context', () => {

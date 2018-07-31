@@ -90,6 +90,11 @@ export const DEFAULT_SOURCE_PATHS = {
     customer: {
         custom: ['customer', 'data'],
         integrations: ['customer', 'integrations']
+    },
+    //TODO(customers-migration): remove this property when we migrated widgets.
+    user: {
+        custom: ['customer', 'data'],
+        integrations: ['customer', 'integrations']
     }
 }
 
