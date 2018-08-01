@@ -67,7 +67,7 @@ export default class ImportZendeskDetail extends React.Component {
 
                 <Container fluid className="page-container">
                     <p>
-                        Gorgias will import (one way) up to 10.000 tickets from your Zendesk account.
+                        Gorgias will import tickets (one way) up to 1 year of history from your Zendesk account.
                         <br/>
                         Note: The import is performed one time only it will not sync your tickets continuously.
                     </p>
