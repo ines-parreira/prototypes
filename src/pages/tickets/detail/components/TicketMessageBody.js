@@ -4,7 +4,7 @@ import linkifyString from 'linkifyjs/string'
 import linkifyHtml from 'linkifyjs/html'
 import classnames from 'classnames'
 
-import {sanitizeHtmlDefault, proxifyImages} from '../../../../utils'
+import {sanitizeHtmlDefault, proxifyImages, parseHtml} from '../../../../utils'
 import FacebookCarousel from './FacebookCarousel'
 
 import css from './TicketMessageBody.less'
@@ -32,18 +32,6 @@ export default class TicketMessageBody extends React.Component<Props, State> {
     constructor() {
         super()
         this.state = {showFullBody: false}
-    }
-
-    // forgiving html parser to fix invalid markup and not escape chars
-    _parseHtml(html: string = '') {
-        // only parse in the browser
-        if (typeof window === 'undefined') {
-            return html
-        }
-
-        const fragment = document.createElement('div')
-        fragment.innerHTML = html
-        return fragment.innerHTML
     }
 
     render() {
@@ -86,7 +74,7 @@ export default class TicketMessageBody extends React.Component<Props, State> {
             // parse html before linkifying it.
             // linkifyjs's html tokenizer (simple-html-tokenizer) breaks and returns empty string
             // when encountering invalid chars or unsupported tags (CDATA, DOCTYPE, MDO, etc.).
-            body = linkifyHtml(this._parseHtml(body), linkifyOptions)
+            body = linkifyHtml(parseHtml(body), linkifyOptions)
         }
 
         body = sanitizeHtmlDefault(body)

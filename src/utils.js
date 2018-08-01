@@ -416,6 +416,25 @@ export function sanitizeHtmlDefault(html: string): string {
     })
 }
 
+/* Forgiving html parser:
+ * - Fixes invalid markup
+ * - Doesn't remove invalid chars
+ * - Doesn't run scripts or inline event handlers
+ * global is required for testing in a separate jsdom instance.
+ */
+export const parseHtml = (html: string = '', global: window = window): string => {
+    // only parse in the browser
+    if (typeof window === 'undefined') {
+        return html
+    }
+
+    const parser = new global.DOMParser()
+    const doc = parser.parseFromString(html, 'text/html')
+    // merge head and body contents, in case we need to load resources from head.
+    // also makes it backwards-compatible with the previous parser (div.innnerHTML = html).
+    return `${_get(doc, ['head','innerHTML'], '')}${_get(doc, ['body','innerHTML'], '')}`
+}
+
 const _proxyImageSignedURL = (url: string): string => {
     if (!window.IMAGE_PROXY_PUBLIC_SIGN_KEY) {
         throw new Error('window.IMAGE_PROXY_PUBLIC_SIGN_KEY is not defined')

@@ -444,13 +444,8 @@ exports[`components TicketMessageBody should linkify body_text 1`] = `
 
 exports[`components TicketMessageBody should linkify invalid body_html 1`] = `
 "<div class=\\"component bodyText\\"><div><div class=\\"\\">
-                            
-                            
-                            
-                                
                                     
                                     
-                                
                                 
                                     <a href=\\"http://gorgias.io\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">http://gorgias.io</a>
                                 <a href=\\"https://gorgias.io\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">gorgias.io</a><table>

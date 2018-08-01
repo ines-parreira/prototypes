@@ -1,5 +1,7 @@
 import moment from 'moment'
 import {fromJS} from 'immutable'
+import jsdom from 'jsdom'
+
 import plan from '../fixtures/plan'
 import * as utils from '../utils'
 import TICKET_LANGUAGES from '../config/ticketLanguages'
@@ -688,6 +690,106 @@ describe('global utils', () => {
         })
         it('should remove all `o` - outlook tags', () => {
             expect(utils.sanitizeHtmlDefault('<o:PixelsPerInch>96</o:PixelsPerInch>')).toBe('')
+        })
+    })
+
+    describe('parseHtml', () => {
+        const {JSDOM} = jsdom
+        const doc = '<!doctype><body></body>'
+        let dom
+
+        // failed expect in timeouts require try/catch and done.fail
+        // https://github.com/facebook/jest/issues/3519
+        function callback(done, body) {
+            return () => {
+                try {
+                    body()
+                    done()
+                } catch (error) {
+                    done.fail(error)
+                }
+            }
+        }
+
+        beforeEach(() => {
+            const options = {
+                runScripts: 'dangerously',
+                resources: 'usable'
+            }
+            dom = new JSDOM(doc, options)
+        })
+
+        // make sure jsdom runs inline event handlers
+        it('should run inline event handlers', (done) => {
+            const html = '<img src="xss.jpg" onerror="window._run=true" />'
+            const div = dom.window.document.createElement('div')
+            div.innerHTML = html
+
+            // timeout required for jsdom to load the image
+            setTimeout(callback(done, () => {
+                expect(dom.window._run).toBe(true)
+            }), 100)
+        })
+
+        it('should not run inline event handlers', (done) => {
+            const html = '<img src="xss.jpg" onerror="window._xss=true" />'
+            utils.parseHtml(html, dom.window)
+
+            // timeout required for jsdom to load the image
+            setTimeout(callback(done, () => {
+                expect(dom.window._xss).toBe(undefined)
+            }), 100)
+        })
+
+        it('should not run script tags', (done) => {
+            const html = '<script>window._xss=true<script/>'
+            utils.parseHtml(html, dom.window)
+
+            setTimeout(callback(done, () => {
+                expect(dom.window._xss).toBe(undefined)
+            }), 100)
+        })
+
+        it('should fix invalid html structure', (done) => {
+            const html = `
+                <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional //EN">
+                <!doctype html>
+                <html>
+                    <head>
+                        <title>Pepperoni</title>
+                        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+                    </head>
+                    <table>
+                        http://gorgias.io
+                    <body>
+                        <![CDATA[pizza]]>
+                        <a href="https://gorgias.io">gorgias.io</a>
+                    </body>
+                </html>
+            `
+            const parsed = utils.parseHtml(html, dom.window)
+
+            setTimeout(callback(done, () => {
+                expect(parsed).toMatchSnapshot()
+            }), 100)
+        })
+
+        it('should not remove invalid characters', (done) => {
+            const html = 'Thank you <3 you are the best'
+            const parsed = utils.parseHtml(html, dom.window)
+
+            setTimeout(callback(done, () => {
+                expect(parsed).toMatchSnapshot()
+            }), 100)
+        })
+
+        it('should not remove quotes', (done) => {
+            const html = 'these "quotes" here'
+            const parsed = utils.parseHtml(html, dom.window)
+
+            setTimeout(callback(done, () => {
+                expect(parsed).toMatchSnapshot()
+            }), 100)
         })
     })
 })
