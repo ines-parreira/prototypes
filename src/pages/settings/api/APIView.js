@@ -7,7 +7,9 @@ import * as currentUserSelectors from '../../../state/currentUser/selectors'
 import * as authsSelectors from '../../../state/auths/selectors'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
 import {fetchCurrentAuths} from '../../../state/auths/actions'
+import {notify} from '../../../state/notifications/actions'
 import PageHeader from '../../common/components/PageHeader'
+import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 
 
 type Props = {
@@ -15,6 +17,7 @@ type Props = {
     domain: string,
     email: string,
     fetchCurrentAuths: typeof fetchCurrentAuths,
+    notify: typeof notify
 }
 
 type State = {
@@ -29,7 +32,7 @@ type State = {
         email: currentUserSelectors.getCurrentUser(state).get('email'),
         domain: currentAccountSelectors.getCurrentAccountState(state).get('domain'),
     }
-}, {fetchCurrentAuths})
+}, {fetchCurrentAuths, notify})
 export default class APIView extends React.Component<Props, State> {
     state = {
         isCopiedapiKey: false,
@@ -69,6 +72,16 @@ export default class APIView extends React.Component<Props, State> {
         })
     }
 
+    _subscribeToDeveloperNewsletter = () => {
+        const {notify} = this.props
+
+        segmentTracker.logEvent(segmentTracker.EVENTS.SUBSCRIBED_TO_DEV_NEWSLETTER)
+        notify({
+            status: 'success',
+            message: 'Thank you! You have been subscribed to our developer newsletter.'
+        })
+    }
+
     render() {
         const {domain, apiKey, email} = this.props
         const postmanVars = [
@@ -103,7 +116,7 @@ export default class APIView extends React.Component<Props, State> {
                         We expose a <a href="https://stackoverflow.com/questions/671118/what-exactly-is-restful-programming"
                                        target="_blank" rel="noopener noreferrer">RESTful API</a> to make it easy for you to
                         get, create, update and delete many objects including customers, tickets,
-                        messages and events. To find out more our API please consult our docs here:
+                        messages and events. To find out more about our API, please consult our docs here:
                         <a href="http://api.gorgias.io/" target="_blank"
                            rel="noopener noreferrer"> http://api.gorgias.io/</a>.
                     </p>
@@ -177,6 +190,7 @@ export default class APIView extends React.Component<Props, State> {
                         </InputGroup>
                     </FormGroup>
                     <br/>
+
                     <h4>Postman collection</h4>
                     <p>
                         You can also import our{' '}
@@ -189,6 +203,20 @@ export default class APIView extends React.Component<Props, State> {
                         data-postman-var-1="9cd4c1e0f841a18f3510"
                         data-postman-param={postmanParams}
                     />
+                    <br/><br/>
+
+                    <h4>Developer newsletter</h4>
+                    <p>
+                        If you're using our API, we highly encourage you to subscribe to our developer newsletter.{' '}
+                        It contains updates about <b>upcoming changes and breaking changes to the API</b>, new{' '}
+                        features and integrations.
+                    </p>
+                    <Button
+                        color="info"
+                        onClick={this._subscribeToDeveloperNewsletter}
+                    >
+                        Subscribe
+                    </Button>
                 </Container>
             </div>
         )
