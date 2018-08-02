@@ -7,6 +7,7 @@ import socketManager from './socketManager'
 
 
 class UserActivityManager {
+    unavailabilityTimeout = 600000 // 1 hour
     inactivityTimeout = 60000 // 1 min
     watchThrottling = 15000 // 15 secs
     userActivityFn = null
@@ -20,12 +21,17 @@ class UserActivityManager {
         socketManager.send(socketConstants.AGENT_ACTIVE)
 
         clearTimeout(this.userActivityFn)
+        clearTimeout(this.userAvailabilityFn)
         const currentUser = this.store.getState().currentUser
 
         this.userActivityFn = setTimeout(() => {
             this.store.dispatch(toggleActiveStatus(false))
         }, this.inactivityTimeout)
-        
+
+        this.userAvailabilityFn = setTimeout(() => {
+            socketManager.send(socketConstants.AGENT_INACTIVE)
+        }, this.unavailabilityTimeout)
+
         if (!currentUser.get('is_active')) {
             this.store.dispatch(toggleActiveStatus(true))
         }

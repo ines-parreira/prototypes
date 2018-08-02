@@ -11,7 +11,7 @@ describe('services', () => {
     describe('userActivityManager', () => {
         let store
 
-        it('should dispatch TOGGLE_ACTIVE_STATUS', (done) => {
+        it('should dispatch TOGGLE_ACTIVE_STATUS and send AGENT_INACTIVE_EVENT', (done) => {
             // mark the current user as inactive
             const sendSpy = jest.fn()
             const send = socketManager.send
@@ -21,6 +21,7 @@ describe('services', () => {
             socketManager.send = sendSpy
             userActivityManager.store = store
             userActivityManager.inactivityTimeout = 5
+            userActivityManager.unavailabilityTimeout = 8
             userActivityManager.watchThrottling = 0
 
             userActivityManager.setCurrentUserActive()
@@ -33,13 +34,13 @@ describe('services', () => {
             store = mockStore({currentUser: fromJS({is_active: true})})
 
             userActivityManager.store = store
-            socketManager.send = send
 
             setTimeout(() => {
                 expect(store.getActions()).toMatchSnapshot()
+                expect(sendSpy).toHaveBeenCalledWith(socketConstants.AGENT_INACTIVE)
+                socketManager.send = send
                 done()
-            }, userActivityManager.inactivityTimeout + 1)
-
+            }, userActivityManager.unavailabilityTimeout + 1)
         })
 
         it('should watch user activity', () => {
