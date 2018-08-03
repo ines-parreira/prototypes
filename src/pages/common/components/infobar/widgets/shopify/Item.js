@@ -51,6 +51,7 @@ class AfterTitle extends React.Component { // eslint-disable-line
         let actions = [
             {
                 key: 'refund',
+                tooltip: 'This will send an email to the customer.',
                 options: [
                     {
                         value: 'shopifyRefundOrderItem',
