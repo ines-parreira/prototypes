@@ -91,6 +91,24 @@ Array [
 ]
 `;
 
+exports[`customers actions merge customers 2`] = `
+Array [
+  Object {
+    "type": "MERGE_CUSTOMERS_START",
+  },
+  Object {
+    "resp": Object {
+      "data": Array [
+        Object {
+          "id": 1,
+        },
+      ],
+    },
+    "type": "MERGE_CUSTOMERS_SUCCESS",
+  },
+]
+`;
+
 exports[`customers actions update customer 1`] = `
 Array [
   Object {

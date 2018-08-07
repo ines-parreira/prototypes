@@ -25,6 +25,16 @@ Array [
 ]
 `;
 
+exports[`agents actions fetch agent 1`] = `
+Array [
+  Object {
+    "id": 1,
+    "resp": undefined,
+    "type": "DELETE_AGENT_SUCCESS",
+  },
+]
+`;
+
 exports[`agents actions fetch agents 1`] = `
 Array [
   Object {

@@ -21,3 +21,13 @@ Array [
   },
 ]
 `;
+
+exports[`rules actions create should dispatch a fail action because creating the rule failed 2`] = `
+Array [
+  Object {
+    "error": [Error: Request failed with status code 400],
+    "reason": "Unable to create the rule",
+    "type": "ERROR",
+  },
+]
+`;
