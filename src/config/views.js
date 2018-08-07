@@ -94,11 +94,10 @@ export const views = fromJS([{
         },
         {
             name: 'customer',
-            title: 'Requester',
+            title: 'Customer',
             path: 'customer.id',
             filter: {
-                // TODO(customers-migration): replace with `customer` when we updated our search REST API.
-                type: 'user',
+                type: 'customer',
             },
         },
         {

@@ -42,11 +42,11 @@ export default class InfobarCustomerActions extends React.Component<Props> {
                     canSetAsCustomer ? ( // do not display on customer profile
                         <ConfirmButton
                             className="mr-2"
-                            title="Change ticket requester"
+                            title="Change ticket customer"
                             content={message}
                             confirm={setCustomer}
                         >
-                            Set as requester
+                            Set as customer
                         </ConfirmButton>
                     ) : null
                 }

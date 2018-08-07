@@ -17,23 +17,23 @@ export const USABLE_SOURCE_TYPES = ['email', 'chat', 'facebook-messenger', 'face
 
 // available variables in macros
 export const VARIABLES = [{
-    name: 'Ticket requester',
+    name: 'Ticket customer',
     type: 'ticket.customer',
     children: [{
         name: 'First name',
-        fullName: 'Requester first name',
+        fullName: 'Customer first name',
         value: '{{ticket.customer.firstname}}',
     }, {
         name: 'Last name',
-        fullName: 'Requester last name',
+        fullName: 'Customer last name',
         value: '{{ticket.customer.lastname}}',
     }, {
         name: 'Full name',
-        fullName: 'Requester full name',
+        fullName: 'Customer full name',
         value: '{{ticket.customer.name}}',
     }, {
         name: 'Email',
-        fullName: 'Requester email',
+        fullName: 'Customer email',
         value: '{{ticket.customer.email}}',
     }],
 }, {
@@ -144,23 +144,23 @@ export const HIDDEN_VARIABLES = [{
 
 // previously available variables in macros: still displayed as variables but are not available in dropdowns anymore
 export const PREVIOUS_VARIABLES = [{
-    name: 'Ticket requester',
+    name: 'Ticket Customer',
     type: 'ticket.requester',
     children: [{
         name: 'First name',
-        fullName: 'Requester first name',
+        fullName: 'Customer first name',
         value: '{{ticket.customer.firstname}}',
     }, {
         name: 'Last name',
-        fullName: 'Requester last name',
+        fullName: 'Customer last name',
         value: '{{ticket.customer.lastname}}',
     }, {
         name: 'Full name',
-        fullName: 'Requester full name',
+        fullName: 'Customer full name',
         value: '{{ticket.customer.name}}',
     }, {
         name: 'Email',
-        fullName: 'Requester email',
+        fullName: 'Customer email',
         value: '{{ticket.customer.email}}',
     }],
 }, {

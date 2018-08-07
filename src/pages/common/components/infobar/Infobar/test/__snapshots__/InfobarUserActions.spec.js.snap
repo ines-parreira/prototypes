@@ -12,10 +12,10 @@ exports[`InfobarCustomerActions component should not render "merge" button becau
     loading={false}
     placement="bottom"
     skip={false}
-    title="Change ticket requester"
+    title="Change ticket customer"
     type="button"
   >
-    Set as requester
+    Set as customer
   </ConfirmButton>
 </div>
 `;
@@ -53,10 +53,10 @@ exports[`InfobarCustomerActions component should render "set as customer" and "m
     loading={false}
     placement="bottom"
     skip={false}
-    title="Change ticket requester"
+    title="Change ticket customer"
     type="button"
   >
-    Set as requester
+    Set as customer
   </ConfirmButton>
   <Button
     color="secondary"

@@ -38,10 +38,10 @@ exports[`ViewTable::Page component default view 1`] = `
           },
           Immutable.Map {
             name: "customer",
-            title: "Requester",
+            title: "Customer",
             path: "customer.id",
             filter: Immutable.Map {
-              type: "user",
+              type: "customer",
             },
           },
           Immutable.Map {

@@ -58,13 +58,6 @@ class ShowMoreFieldsDropdown extends React.Component {
                                 const isMandatory = this.props.config.get('mainField') === field.get('name')
                                 const isChecked = visibleFieldsNames.includes(field.get('name')) || isMandatory
                                 let setFieldVisibility = (value) => this._setFieldVisibility(field.get('name'), value)
-                                // TODO(customers-migration): remove this when `requester` attribute will not be available anymore in view filters
-                                if (field.get('name') === 'customer' && isChecked) {
-                                    setFieldVisibility = (value) => {
-                                        this._setFieldVisibility(field.get('name'), value)
-                                        this._setFieldVisibility('requester', value)
-                                    }
-                                }
 
                                 return (
                                     <DropdownItem

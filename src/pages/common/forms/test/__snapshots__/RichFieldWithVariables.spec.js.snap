@@ -19,7 +19,7 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
         }
         type="button"
       >
-        Ticket requester
+        Ticket customer
       </DropdownToggle>
       <DropdownMenu
         flip={true}
