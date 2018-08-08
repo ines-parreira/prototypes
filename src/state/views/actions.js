@@ -287,7 +287,7 @@ export function fetchPage(page: ?number, discreet: boolean = false): thunkAction
         // when a view is dirty, just send the whole view data rather than just the id
         // this will allow us to test a view before submitting it to the DB
         if (isDirty) {
-            promise = axios.put(`/api/${viewConfig.get('api')}/view/?page=${page}`, {
+            promise = axios.put(`/api/${viewConfig.get('api')}/search/?page=${page}`, {
                 view: activeView
                     .delete('dirty')
                     .delete('editMode')

@@ -301,7 +301,7 @@ export const views = fromJS([{
     routeItem: 'customer',
     routeList: 'customers',
     // TODO(customers-migration): update when we created REST API to search for customers in a view
-    api: 'users',
+    api: 'customers',
     singular: 'customer',
     plural: 'customers',
     mainField: 'name',
