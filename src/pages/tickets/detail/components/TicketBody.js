@@ -102,7 +102,7 @@ export class TicketBody extends React.Component {
 
                         return (
                             <TicketMessage
-                                key={index}
+                                key={element.get('id')}
                                 message={element.toJS()}
                                 ticket={ticket}
                                 loading={isLoading}

@@ -29,7 +29,7 @@ jest.mock('../../../utils', () => {
     return {
         ...utils,
         isTabActive: jest.fn(() => false),
-        isCurrentlyOnTicket: jest.fn(() => true),
+        isCurrentlyOnTicket: jest.fn((ticketId) => ticketId === 1),
     }
 })
 
@@ -365,9 +365,37 @@ describe('ticket actions', () => {
         })
     })
 
-    it('handleMessageActionError', () => {
-        store.dispatch(actions.handleMessageActionError(1))
-        return expect(store.getActions()).toMatchSnapshot()
+    describe('handleMessageError', () => {
+        it('should fetch the ticket because the user is currently on it', () => {
+            mockServer.onGet('/api/tickets/1/').reply(200, {id: 1, messages: []})
+
+            store.dispatch(actions.handleMessageError(1))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+
+        })
+
+        it('should not fetch the ticket because the user is not currently on it', () => {
+            mockServer.onGet('/api/tickets/2/').reply(200, {id: 2, messages: []})
+
+            store.dispatch(actions.handleMessageError(2))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+    })
+
+    describe('handleMessageActionError', () => {
+        it('should fetch the ticket because the user is currently on it', () => {
+            mockServer.onGet('/api/tickets/1/').reply(200, {id: 1, messages: []})
+
+            store.dispatch(actions.handleMessageActionError(1))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+
+        it('should not fetch the ticket because the user is not currently on it', () => {
+            mockServer.onGet('/api/tickets/2/').reply(200, {id: 2, messages: []})
+
+            store.dispatch(actions.handleMessageActionError(2))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
     })
 
     it('updateTicketMessage', () => {

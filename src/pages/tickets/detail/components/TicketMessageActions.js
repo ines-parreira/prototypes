@@ -122,6 +122,7 @@ export default class TicketMessageActions extends React.Component {
                             icon = 'fa-ban'
                         }
 
+                        const isHttpAction = action.name === 'http'
                         const contentType = _get(action, 'arguments.content_type')
 
                         return (
@@ -139,7 +140,7 @@ export default class TicketMessageActions extends React.Component {
                                 </Button>
 
                                 {
-                                    contentType && (
+                                    isHttpAction ? (
                                         <Modal
                                             isOpen={this.state.isModalOpen[index]}
                                             onClose={this._closeModal(index)}
@@ -148,7 +149,7 @@ export default class TicketMessageActions extends React.Component {
                                         >
                                             {this._renderModalContent(index, action, contentType)}
                                         </Modal>
-                                    )
+                                    ) : null
                                 }
                             </div>
                         )

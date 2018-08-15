@@ -413,7 +413,13 @@ export const clearAppliedMacro = (ticketId) => ({
     ticketId
 })
 
-export const fetchTicket = (ticketId) => (dispatch) => {
+/**
+ * Fetch a ticket from the API, and put it in the `ticket` store.
+ *
+ * @param ticketId: the id of the ticket to fetch
+ * @param discreetly: (default: false) whether or not the function should dispatch `FETCH_TICKET_START`
+ */
+export const fetchTicket = (ticketId, discreetly = false) => (dispatch) => {
     if (ticketId === 'new') {
         return new Promise((resolve) => {
             // wait next tick before initializing the draft
@@ -427,9 +433,11 @@ export const fetchTicket = (ticketId) => (dispatch) => {
 
     ticketId = parseInt(ticketId)
 
-    dispatch({
-        type: types.FETCH_TICKET_START,
-    })
+    if (!discreetly) {
+        dispatch({
+            type: types.FETCH_TICKET_START,
+        })
+    }
 
     dispatch(markChatAsRead(ticketId))
 
@@ -598,6 +606,7 @@ export const goToNextTicket = (ticketId: number, promise: Promise) => (dispatch:
 
 export const handleMessageActionError = (ticketId) => (dispatch) => {
     let buttons = []
+    let fetchPromise = null
 
     if (!isCurrentlyOnTicket(ticketId)) {
         buttons = [{
@@ -607,16 +616,46 @@ export const handleMessageActionError = (ticketId) => (dispatch) => {
                 browserHistory.push(`/app/ticket/${ticketId}`)
             }
         }]
+    } else {
+        fetchPromise = dispatch(fetchTicket(ticketId, true))
     }
 
-    return dispatch(notify({
+    dispatch(notify({
         status: 'error',
-        title: 'Something went wrong on your last message 😞',
         dismissAfter: 0,
         allowHTML: true,
-        message: 'The message was not sent because an action broke on it, you should review it right now.',
+        message: 'Your last message could not be sent because an action broke on it, you should review it right now.',
         buttons
     }))
+
+    return fetchPromise || Promise.resolve()
+}
+
+export const handleMessageError = (ticketId) => (dispatch) => {
+    let buttons = []
+    let fetchPromise = null
+
+    if (!isCurrentlyOnTicket(ticketId)) {
+        buttons = [{
+            primary: true,
+            name: 'Review',
+            onClick: () => {
+                browserHistory.push(`/app/ticket/${ticketId}`)
+            }
+        }]
+    } else {
+        fetchPromise = dispatch(fetchTicket(ticketId, true))
+    }
+
+    dispatch(notify({
+        status: 'error',
+        dismissAfter: 0,
+        allowHTML: true,
+        message: 'Your last message could not be sent, you should review it right now.',
+        buttons
+    }))
+
+    return fetchPromise || Promise.resolve()
 }
 
 export function updateTicketMessage(ticketId, messageId, data, action = null) {

@@ -13,6 +13,15 @@
     margin: 0 -16px;
   }
 
+  &.hasError .header div,
+  &.hasError .messageContent div {
+    color: @lightPurple2;
+  }
+
+  &.hasError .avatar {
+    opacity: .6;
+  }
+
   &.fromAgent {
     background: fade(@lightPurple, 2%);
   }

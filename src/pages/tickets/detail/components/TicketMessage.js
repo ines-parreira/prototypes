@@ -14,7 +14,7 @@ import {getPersonLabelFromSource} from '../../common/utils'
 import {formatDatetime} from './../../../../utils'
 import {AgentLabel, CustomerLabel, DatetimeLabel} from '../../../common/utils/labels'
 import {isForwardedMessage} from '../../../../state/ticket/utils'
-import HardWarning from './HardWarning'
+import TicketMessageError from './TicketMessageError'
 import Avatar from '../../../common/components/Avatar'
 import {scrollToReactNode} from '../../../common/utils/keyboard'
 import SourceIcon from '../../../common/components/SourceIcon'
@@ -330,7 +330,7 @@ export class TicketMessage extends React.Component {
         }
 
         return (
-            <HardWarning
+            <TicketMessageError
                 error={error}
                 message={fromJS(message)}
                 messageId={message.id}
@@ -351,7 +351,7 @@ export class TicketMessage extends React.Component {
         const {message, ticket} = this.props
 
         return (
-            <HardWarning
+            <TicketMessageError
                 error="This message was not sent because one or more actions failed while sending it."
                 retryTooltipMessage="Retry to execute the failed action(s) automatically, and send the message if it succeeds."
                 messageId={message.id}
@@ -367,21 +367,21 @@ export class TicketMessage extends React.Component {
     render() {
         const {message, timezone, isLastReadMessage} = this.props
 
-        let error = false
-        let pending = false
+        let hasActionError = false
+        let isPending = false
 
         if (message.actions) {
             for (const action of message.actions) {
                 if (action.status === 'error') {
-                    error = true
+                    hasActionError = true
                     break
                 } else if (action.status === 'pending') {
-                    pending = true
+                    isPending = true
                 }
             }
         }
 
-        const loading = (pending && !error) || this.props.loading
+        const loading = (isPending && !hasActionError) || this.props.loading
         // appear animation if message is created after the ticket body component is mounted
         const appear = !!this.props.lastMessageDatetimeAfterMount
             && !message.from_agent
@@ -397,9 +397,12 @@ export class TicketMessage extends React.Component {
         )
 
         const sender = fromJS(message.sender || {})
+        const hasError = (!loading && (hasActionError || message.failed_datetime))
 
         return (
-            <div className={className}>
+            <div className={classnames(className, {
+                [css.hasError]: hasError
+            })}>
                 <div className={css.avatar}>
                     <Avatar
                         email={sender.get('email')}
@@ -409,12 +412,6 @@ export class TicketMessage extends React.Component {
                     />
                 </div>
                 <div className={css.body}>
-                    {
-                        !loading && error && this._renderActionFailed()
-                    }
-                    {
-                        !loading && message.failed_datetime && this._renderMessageNotSent()
-                    }
                     <div className={css.header}>
                         <div className={css.headerDetails}>
                             <div className={classnames(css.author, {
@@ -455,9 +452,18 @@ export class TicketMessage extends React.Component {
                             />
                         </span>
                     </div>
-                    <TicketMessageBody message={message}/>
+                    <TicketMessageBody
+                        className={css.messageContent}
+                        message={message}
+                    />
                     {this.renderAttachment(message)}
                     <TicketMessageActions message={message}/>
+                    {
+                        !loading && hasActionError && this._renderActionFailed()
+                    }
+                    {
+                        !loading && message.failed_datetime && this._renderMessageNotSent()
+                    }
                 </div>
             </div>
         )

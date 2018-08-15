@@ -124,6 +124,7 @@ exports[`TicketMessage component should add a -sent via rule- label because the 
       </span>
     </div>
     <TicketMessageBody
+      className="messageContent"
       message={
         Object {
           "rule_id": 4,

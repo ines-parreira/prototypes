@@ -22,6 +22,7 @@ type messageType = {
 
 type Props = {
     message: messageType,
+    className?: string,
 }
 
 type State = {
@@ -35,7 +36,7 @@ export default class TicketMessageBody extends React.Component<Props, State> {
     }
 
     render() {
-        const {message} = this.props
+        const {message, className} = this.props
         let body = message.body_html || message.body_text || ''
         const stripped = message.body_html && message.stripped_html ? message.stripped_html : message.stripped_text
 
@@ -100,7 +101,7 @@ export default class TicketMessageBody extends React.Component<Props, State> {
         return (
             <div className={classnames(css.component, {
                 [css.bodyText]: message.body_html
-            })}>
+            }, className)}>
                 {content}
                 {extension}
             </div>

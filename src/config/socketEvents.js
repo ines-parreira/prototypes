@@ -188,6 +188,11 @@ export const receivedEvents = [{
         return this.dispatch(ticketActions.handleMessageActionError(json.ticket_id))
     },
 }, {
+    name: 'ticket-message-failed',
+    onReceive: function (json) {
+        return this.dispatch(ticketActions.handleMessageError(json.ticket_id))
+    },
+}, {
     name: 'action-executed',
     onReceive: function (json) {
         return this.dispatch(infobarActions.handleExecutedAction(json))
