@@ -7,6 +7,7 @@ import configureStore from './store/configureStore'
 import {recentViewsStorage} from './state/views/utils'
 import {transformSystemMessagesToNotifications} from './utils'
 import {notify} from './state/notifications/actions'
+import * as segmentTracker from './store/middlewares/segmentTracker'
 
 // Polyfills
 Array.prototype.includes = Array.prototype.includes || includes // eslint-disable-line no-extend-native
@@ -47,7 +48,16 @@ if (recentViews) {
     initialState.views.recent = recentViews
 }
 
+const eventsToTrack = window.SEGMENT_EVENTS_TO_TRACK
+if (eventsToTrack) {
+    eventsToTrack.forEach((event) => {
+        segmentTracker.logEvent(event.type, event.data)
+    })
+    delete window.SEGMENT_EVENTS_TO_TRACK
+}
+
 export const store = configureStore(toImmutableProps(initialState))
 
 // Dispatch system messages as notifications
-transformSystemMessagesToNotifications(window.SYSTEM_MESSAGES || []).forEach((notification) => {store.dispatch(notify(notification))})
+transformSystemMessagesToNotifications(window.SYSTEM_MESSAGES || [])
+    .forEach((notification) => {store.dispatch(notify(notification))})
