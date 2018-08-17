@@ -27,6 +27,8 @@ __pycache__/
 *.egg-info/
 .installed.cfg
 *.egg
+.virtualenvs
+.local/share/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -78,3 +80,7 @@ g/static/*/_build/*
 .mypy_cache/
 
 db_fixtures
+secrets.yaml
+
+# gcloud tmp files
+transaction.yaml
