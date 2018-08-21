@@ -10,7 +10,7 @@ import {EMPTY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
 import type {filterType, viewsStateType} from './types'
 import type {agentsType} from '../agents/types'
 import {getAST, getFirstExpressionOfAST, isCurrentlyOnView} from '../../utils'
-import {datetimeOperators, timedeltaOperators} from '../../config/rules'
+import {datetimeOperators, timedeltaOperators, collectionOperators} from '../../config/rules'
 import {isTimedelta} from '../../utils/ast'
 
 type viewType = Map<*, *>
@@ -47,6 +47,7 @@ function resolveSecondArg(callee: string, currentRawValue: string): string | nul
     const isTimedeltaCallee = timedeltaOperators.includes(callee)
     const isDatetimeCallee = datetimeOperators.includes(callee)
     const isEmptyCallee = Object.keys(EMPTY_OPERATORS).includes(callee)
+    const isCollectionOperator = collectionOperators.includes(callee)
 
     if (isTimedeltaCallee && !isTimedelta(currentRawValue, true)) {
         return `\'${TIMEDELTA_OPERATOR_DEFAULT_VALUE}\'`
@@ -54,6 +55,8 @@ function resolveSecondArg(callee: string, currentRawValue: string): string | nul
         return '\'\''
     } else if (isEmptyCallee) {
         return null
+    } else if (isCollectionOperator) {
+        return '[]'
     }
 
     return currentRawValue || '\'\''
@@ -169,9 +172,26 @@ export function updateFilterOperator(ast: astType, index: number, operator: stri
     return setIn(ast, index, [], filter)
 }
 
-export function updateFilterValue(ast: astType, index: number, value: string | number | null): nodeType {
-    const raw = rawify(value)
-    return setIn(ast, index, ['arguments', 1], getFirstExpressionOfAST(getAST(raw)))
+export function updateFilterValue(ast: astType, index: number, value: string | number | Array<any> | null ): nodeType {
+    if (_isArray(value)) {
+        // $FlowFixMe
+        let astLiterals = value.map((item) => ({
+            type: 'Literal',
+            value: item,
+            raw: rawify(item)
+        }))
+
+        let arrayExpression = {
+            type: 'ArrayExpression',
+            elements: astLiterals
+        }
+
+        return setIn(ast, index, ['arguments', 1], arrayExpression)
+    } else {
+        // $FlowFixMe
+        const raw = rawify(value)
+        return setIn(ast, index, ['arguments', 1], getFirstExpressionOfAST(getAST(raw)))
+    }
 }
 
 /**

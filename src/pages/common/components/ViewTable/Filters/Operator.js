@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react'
 import {Input} from 'reactstrap'
-import {collectionOperators} from '../../../../../config/rules'
 
 export default class Operator extends React.Component {
     static propTypes = {
@@ -10,21 +9,14 @@ export default class Operator extends React.Component {
         onChange: PropTypes.func.isRequired
     }
 
-    _options = () => {
-        const {operators} = this.props
+    render() {
+        const {onChange, selected, operators} = this.props
 
-        return Object.keys(operators)
+        const options = Object.keys(operators)
             .map((operator) => ({
                 value: operator,
                 name: operators[operator].label
             }))
-            .filter((operator) => !collectionOperators.includes(operator.value))
-    }
-
-    render() {
-        const {onChange, selected} = this.props
-
-        const options = this._options()
 
         return (
             <Input

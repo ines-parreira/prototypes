@@ -3,6 +3,7 @@ import {fromJS} from 'immutable'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {Badge} from 'reactstrap'
 import {connect} from 'react-redux'
+import _ from 'lodash'
 
 import {BASIC_OPERATORS, EMPTY_OPERATORS} from '../../../../../config'
 import Left from './Left'
@@ -10,9 +11,8 @@ import Right from './Right'
 import Operator from './Operator'
 import OperatorLabel from './OperatorLabel'
 import RemoveCallExpression from './RemoveCallExpression'
-import {findProperty} from '../../../../../utils'
+import {findProperty, fieldPath} from '../../../../../utils'
 
-import {fieldPath} from '../../../../../utils'
 import * as viewsSelectors from '../../../../../state/views/selectors'
 
 const resolveObjectPath = (node) => {
@@ -50,19 +50,31 @@ export default class CallExpression extends React.Component {
         parentNode: PropTypes.object
     }
 
+    _getOperators = (objectPath) => {
+        const {schemas} = this.props
+
+        const property = findProperty(objectPath, schemas)
+
+        if (property && property.meta) {
+            return {..._.get(property.meta, 'operators'), ..._.get(property.meta, 'views.additional_operators', {})}
+        }
+
+        return BASIC_OPERATORS
+    }
+
     render() {
-        const {config, view, schemas, node, updateOperator, removeCondition, index, agents, currentUser, parentNode} = this.props
+        const {config, view, node, updateOperator, removeCondition, index, agents, currentUser, parentNode} = this.props
 
         const left = node.arguments[0]
         const right = node.arguments[1]
         const operator = node.callee
 
         const objectPath = resolveObjectPath(left)
-        const property = findProperty(objectPath, schemas)
-        let operators = property && property.meta ? property.meta.operators : BASIC_OPERATORS
 
         const fields = config.get('fields', fromJS([]))
         const field = fields.find((field) => objectPath === `${config.get('singular')}.${fieldPath(field)}`)
+
+        const operators = this._getOperators(objectPath)
 
         return (
             <div className="CallExpression">

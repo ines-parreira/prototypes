@@ -9,21 +9,25 @@ import * as viewsActions from '../../../../../state/views/actions'
 
 import {getMessagingIntegrations} from '../../../../../state/integrations/selectors'
 import * as viewsSelectors from '../../../../../state/views/selectors'
+import {getTags} from '../../../../../state/tags/selectors'
 
 import {timedeltaOperators} from '../../../../../config/rules'
 
 import FilterDropdown from '../FilterDropdown'
 import DatetimePicker from '../../../forms/DatetimePicker'
 import TimedeltaPicker from '../../../forms/TimedeltaPicker'
+import MultiSelectField from '../../../forms/MultiSelectField'
 
 @connect((state) => {
     return {
         integrations: getMessagingIntegrations(state),
         areFiltersValid: viewsSelectors.areFiltersValid(state),
+        tags: getTags(state)
     }
 }, {
     fetchPage: viewsActions.fetchPage,
 })
+
 export default class Right extends React.Component {
     static propTypes = {
         operator: PropTypes.object,
@@ -41,6 +45,7 @@ export default class Right extends React.Component {
         updateFieldFilterOperator: PropTypes.func.isRequired,
         objectPath: PropTypes.string.isRequired,
         empty: PropTypes.bool.isRequired,
+        tags: PropTypes.object.isRequired
     }
 
     static defaultProps = {
@@ -49,6 +54,7 @@ export default class Right extends React.Component {
 
     state = {
         dropdownOpen: false,
+        selectedOptions: []
     }
 
     componentDidMount() {
@@ -107,12 +113,33 @@ export default class Right extends React.Component {
         if (displayedValue === '{{current_user.id}}') { // display current user variable
             displayedValue = 'Me (current user)'
         } else if (field.get('name') === 'integrations') { // display integration
-            const integration = this.props.integrations.find(integration => integration.get('id').toString() === displayedValue.toString())
+            if (node.type === 'ArrayExpression') {
+                const selectedOptions = node.elements.map((opt) => opt.value)
+                const options = this.props.integrations.map((integration) => ({
+                    label: <IntegrationsDetailLabel integration={integration}/>,
+                    value: integration.get('id')
+                })).toJS()
+
+                return (
+                    <MultiSelectField
+                        values={selectedOptions}
+                        options={options}
+                        singular='integration'
+                        plural='integrations'
+                        onChange={(value) => updateFieldFilter(index, value)}
+                    />
+                )
+            }
+
+            const integration = this.props.integrations.find((integration) => (
+                integration.get('id').toString() === displayedValue.toString())
+            )
             if (integration) {
                 displayedValue = (
                     <IntegrationsDetailLabel integration={integration} />
                 )
             }
+
         } else if (field.get('name') === 'assignee') { // display assignee
             const assignee = this.props.agents.find(agent => agent.get('id').toString() === displayedValue.toString())
             if (assignee) {
@@ -138,6 +165,41 @@ export default class Right extends React.Component {
                     onChange={(value) => updateFieldFilter(index, value)}
                 />
             )
+        } else if (field.get('name') === 'tags') {
+            if (node.type === 'ArrayExpression') {
+                const selectedOptions = node.elements.map((opt) => opt.value)
+                const options = this.props.tags.map((tag) => ({
+                    label: tag.get('name'),
+                    value: tag.get('name')
+                })).toJS()
+
+                return (
+                    <MultiSelectField
+                        values={selectedOptions}
+                        options={options}
+                        singular='tag'
+                        plural='tags'
+                        onChange={(value) => updateFieldFilter(index, value)}
+                    />
+                )
+            }
+        } else if (field.get('name') === 'channel') {
+            if (node.type === 'ArrayExpression') {
+                const selectedOptions = node.elements.map((opt) => opt.value)
+                const options = field.getIn(['filter', 'enum']).map((val) => ({
+                    label: val, value: val
+                })).toJS()
+
+                return (
+                    <MultiSelectField
+                        values={selectedOptions}
+                        options={options}
+                        singular='channel'
+                        plural='channels'
+                        onChange={(value) => updateFieldFilter(index, value)}
+                    />
+                )
+            }
         }
 
         return (

@@ -71,7 +71,7 @@ export const removeFieldFilter = (index: number) => ({
 })
 
 // update a filter value
-export const updateFieldFilter = (index: number, value: string) => ({
+export const updateFieldFilter = (index: number, value: string | number | Array<any>) => ({
     type: types.UPDATE_VIEW_FIELD_FILTER,
     index,
     value
