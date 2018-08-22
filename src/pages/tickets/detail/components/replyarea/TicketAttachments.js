@@ -162,7 +162,7 @@ export default class TicketAttachments extends React.Component<Props, State> {
                 <Lightbox
                     images={images.map((image) => {
                         return {
-                            src: image.get('url'),
+                            src: proxifyURL(image.get('url')),
                             caption: image.get('name')
                         }
                     }).toJS()}

@@ -29,15 +29,15 @@ exports[`TicketAttachments component private should display an error message if 
       Array [
         Object {
           "caption": "foo",
-          "src": "bar",
+          "src": "http://proxy-url/cw-1,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar",
         },
         Object {
           "caption": "bar",
-          "src": "baz",
+          "src": "http://proxy-url/cw-1,seKwRTXuZZfHIF0O-p6Pte13-uEQ7wUFn5tkRNiZDeo8/http://gorgias.io/baz",
         },
         Object {
           "caption": "baz",
-          "src": "foo",
+          "src": "http://proxy-url/cw-1,sSfpnD-PAiV-KrmrNl6gZ9Cq7eu50_7Sd3bZqOar3Jt4/http://gorgias.io/foo",
         },
       ]
     }
@@ -149,15 +149,15 @@ exports[`TicketAttachments component private should display both an error messag
       Array [
         Object {
           "caption": "foo",
-          "src": "http://gorgias.io/bar",
+          "src": "http://proxy-url/cw-1,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar",
         },
         Object {
           "caption": "bar",
-          "src": "https://gorgias.io/baz",
+          "src": "http://proxy-url/cw-1,sq2V_C_-Dm_KHtaDdj_L_mXkIrrm2xS7uZ8pLuRDzmZ0/https://gorgias.io/baz",
         },
         Object {
           "caption": "baz",
-          "src": "http://gorgias.io/foo",
+          "src": "http://proxy-url/cw-1,sSfpnD-PAiV-KrmrNl6gZ9Cq7eu50_7Sd3bZqOar3Jt4/http://gorgias.io/foo",
         },
       ]
     }
@@ -250,7 +250,7 @@ exports[`TicketAttachments component read-only should match snapshot 1`] = `
       Array [
         Object {
           "caption": "foo",
-          "src": "http://gorgias.io/bar",
+          "src": "http://proxy-url/cw-1,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar",
         },
       ]
     }

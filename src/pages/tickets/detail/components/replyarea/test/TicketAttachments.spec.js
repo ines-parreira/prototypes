@@ -107,7 +107,7 @@ describe('TicketAttachments component', () => {
                 isLightboxOpen: true
             })
 
-            expect(document.body.querySelector('img').src).toBe('http://gorgias.io/bar')
+            expect(document.body.querySelector('img').src).toBe(proxifyURL('http://gorgias.io/bar'))
         })
 
         it('image should open the lightbox', () => {
@@ -134,17 +134,17 @@ describe('TicketAttachments component', () => {
                     attachments={fromJS([{
                         name: 'foo',
                         content_type: 'image/png',
-                        url: 'bar',
+                        url: 'http://gorgias.io/bar',
                         public: false
                     }, {
                         name: 'bar',
                         content_type: 'image/png',
-                        url: 'baz',
+                        url: 'http://gorgias.io/baz',
                         public: false
                     }, {
                         name: 'baz',
                         content_type: 'image/png',
-                        url: 'foo',
+                        url: 'http://gorgias.io/foo',
                         public: false
                     }])}
                     deleteAttachment={_noop}

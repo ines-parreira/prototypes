@@ -447,7 +447,15 @@ const _proxyImageSignedURL = (url: string): string => {
     )
 }
 
-export const proxifyURL = (urlStr: string, format: string): string => {
+/**
+ * Append a proxy URL before an image url, for signing/resizing/cropping.
+ *
+ * The default format string `cw-1` is a hack for https://github.com/willnorris/imageproxy
+ * to maintain the full image width/height, but still parse the image (eg. exif rotation).
+ * imageproxy has no explicit option for it.
+ * https://godoc.org/willnorris.com/go/imageproxy#ParseOptions
+ */
+export const proxifyURL = (urlStr: string, format: string = 'cw-1'): string => {
     const url = new URL(urlStr)
     let escapedURL = `${url.origin}${url.pathname}`
     if (url.search) {
