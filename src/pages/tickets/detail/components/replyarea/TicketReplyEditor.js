@@ -12,17 +12,25 @@ import shortcutManager from '../../../../../services/shortcutManager'
 import RichField from '../../../../common/forms/RichField'
 
 import {isRichType, acceptsOnlyImages, canLeaveInternalNote} from '../../../../../config/ticket'
+import {humanizeString} from '../../../../../utils'
 
 import * as macroActions from '../../../../../state/macro/actions'
 import * as newMessageActions from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {getOtherAgents} from '../../../../../state/agents/selectors'
-
 import {notify} from '../../../../../state/notifications/actions'
 
-// Those are the source type which can send either text or attachment, but not both; they also cannot send more
-// than one attachment at a time
-const RESTRAINED_SOURCE_TYPES = ['facebook-messenger']
+import type {attachmentType} from '../../../../../types'
+import type {agentsType} from '../../../../../state/agents/types'
+import type {Node} from 'react'
+
+import css from './TicketReplyEditor.less'
+
+
+// Those are the source types which can send either text or attachment, but not both at the same time
+export const TEXT_OR_ATTACHMENT_SOURCE_TYPES = ['facebook-messenger']
+// Those are the source types which cannot send more than one attachment at a time
+export const ONLY_ONE_ATTACHMENT_SOURCE_TYPES = ['facebook-messenger', 'facebook-comment']
 
 // debounce the updating of the redux because it's slow otherwise when we type
 export const updateMessageText = _debounce((props, editorState) => {
@@ -37,12 +45,6 @@ export const updateMessageText = _debounce((props, editorState) => {
         forceFocus: false,
     }))
 }, 100)
-
-import type {attachmentType} from '../../../../../types'
-import type {agentsType} from '../../../../../state/agents/types'
-import type {Node} from 'react'
-
-import css from './TicketReplyEditor.less'
 
 type richAreaType = {
     state: {
@@ -172,35 +174,28 @@ export class TicketReplyEditor extends React.Component<Props, State> {
     }
 
     _canAddAttachments = (files: filesType) => {
-        const cantAddAttachmentBecauseOfText =
-            RESTRAINED_SOURCE_TYPES.includes(this.props.newMessage.getIn(['newMessage', 'source', 'type']))
-            && this.props.newMessage.getIn(['newMessage', 'body_text'])
+        const {newMessageType, newMessage} = this.props
+        const cantAddAttachmentBecauseOfText = TEXT_OR_ATTACHMENT_SOURCE_TYPES.includes(newMessageType)
+            && newMessage.getIn(['newMessage', 'body_text'])
 
-        const attachments = this.props.newMessage.getIn(['newMessage', 'attachments']) || List()
-        const cantAddAttachmentBecauseOfAttachments =
-            RESTRAINED_SOURCE_TYPES.includes(this.props.newMessage.getIn(['newMessage', 'source', 'type']))
-            && attachments.size >= 1
-
-        const tryToAddTooManyAttachments =
-            RESTRAINED_SOURCE_TYPES.includes(this.props.newMessage.getIn(['newMessage', 'source', 'type']))
-            && files.length > 1
+        const attachments = newMessage.getIn(['newMessage', 'attachments']) || List()
+        const tooManyAttachments = ONLY_ONE_ATTACHMENT_SOURCE_TYPES.includes(newMessageType)
+            && (attachments.size >= 1 || files.length > 1)
 
         if (cantAddAttachmentBecauseOfText) {
             this.props.notify({
-                type: 'error',
                 status: 'warning',
-                message: 'When using Facebook, you can either send a text message, or an attachment, ' +
-                'but not both at the same time'
+                message: `When using ${humanizeString(newMessageType)}, you can either send a text message, or an ` +
+                'attachment, but not both at the same time.'
             })
 
             return false
         }
 
-        if (cantAddAttachmentBecauseOfAttachments || tryToAddTooManyAttachments) {
+        if (tooManyAttachments) {
             this.props.notify({
-                type: 'error',
                 status: 'warning',
-                message: 'When using Facebook, you can only send attachments one by one.'
+                message: `When using ${humanizeString(newMessageType)}, you can only send attachments one by one.`
             })
 
             return false
@@ -333,7 +328,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
 
         const attachments = this.props.newMessage.getIn(['newMessage', 'attachments']) || List()
         const cantWriteTextBecauseOfAttachments =
-            RESTRAINED_SOURCE_TYPES.includes(this.props.newMessage.getIn(['newMessage', 'source', 'type']))
+            TEXT_OR_ATTACHMENT_SOURCE_TYPES.includes(this.props.newMessage.getIn(['newMessage', 'source', 'type']))
             && attachments.size >= 1
 
         if (!isNewMessageRichType) {

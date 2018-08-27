@@ -5,8 +5,12 @@ import {EditorState, ContentState} from 'draft-js'
 import _noop from 'lodash/noop'
 
 import configureStore from '../../../../../../store/configureStore'
-import ConnectedTicketReplyEditor from '../TicketReplyEditor'
-import {TicketReplyEditor} from '../TicketReplyEditor'
+import ConnectedTicketReplyEditor, {
+    TicketReplyEditor,
+    TEXT_OR_ATTACHMENT_SOURCE_TYPES,
+    ONLY_ONE_ATTACHMENT_SOURCE_TYPES
+} from '../TicketReplyEditor'
+
 
 describe('TicketReplyEditor component', () => {
     it('should render empty ticket', () => {
@@ -87,5 +91,173 @@ describe('TicketReplyEditor component', () => {
             expect(newMessageText).toBe('')
             done()
         }, 500)
+    })
+
+    describe('_cantAddAttachments method', () => {
+        const commonProps = {
+            agents: [],
+            actions: {},
+            notify: _noop,
+            ticket: fromJS({})
+        }
+
+        it('should not allow to have text and attachments for source types in TEXT_OR_ATTACHMENT_SOURCE_TYPES', () => {
+            TEXT_OR_ATTACHMENT_SOURCE_TYPES.forEach((sourceType) => {
+                const component = shallow(
+                    <TicketReplyEditor
+                        newMessage={fromJS({
+                            newMessage: {
+                                source: {
+                                    type: sourceType,
+                                },
+                                body_text: 'foo',
+                            },
+                            state: {}
+                        })}
+                        newMessageType={sourceType}
+                        {...commonProps}
+                    />
+                ).instance()
+
+                expect(component._canAddAttachments([1])).toBe(false)
+            })
+        })
+
+        it('should allow to add attachments for source types in TEXT_OR_ATTACHMENT_SOURCE_TYPES because there is no ' +
+            'text', () => {
+            TEXT_OR_ATTACHMENT_SOURCE_TYPES.forEach((sourceType) => {
+                const component = shallow(
+                    <TicketReplyEditor
+                        newMessage={fromJS({
+                            newMessage: {
+                                source: {
+                                    type: sourceType,
+                                },
+                                body_text: '',
+                            },
+                            state: {}
+                        })}
+                        newMessageType={sourceType}
+                        {...commonProps}
+                    />
+                ).instance()
+
+                expect(component._canAddAttachments([1])).toBe(true)
+            })
+        })
+
+        it('should allow to have text and attachments for source types not in TEXT_OR_ATTACHMENT_SOURCE_TYPES', () => {
+            const sourceType = 'email'
+            expect(TEXT_OR_ATTACHMENT_SOURCE_TYPES).not.toContain(sourceType)
+
+            const component = shallow(
+                <TicketReplyEditor
+                    newMessage={fromJS({
+                        newMessage: {
+                            source: {
+                                type: sourceType,
+                            },
+                            body_text: 'foo',
+                        },
+                        state: {}
+                    })}
+                    newMessageType={sourceType}
+                    {...commonProps}
+                />
+            ).instance()
+
+            expect(component._canAddAttachments([1])).toBe(true)
+        })
+
+        it('should not allow to add an attachment if there is already an attachment for source types in ' +
+            'ONLY_ONE_ATTACHMENT_SOURCE_TYPES', () => {
+            ONLY_ONE_ATTACHMENT_SOURCE_TYPES.forEach((sourceType) => {
+                const component = shallow(
+                    <TicketReplyEditor
+                        newMessage={fromJS({
+                            newMessage: {
+                                source: {
+                                    type: sourceType,
+                                },
+                                attachments: ['attachment already existing'],
+                            },
+                            state: {}
+                        })}
+                        newMessageType={sourceType}
+                        {...commonProps}
+                    />
+                ).instance()
+
+                expect(component._canAddAttachments([1])).toBe(false)
+            })
+        })
+
+        it('should not allow to add multiple attachments for source types in ONLY_ONE_ATTACHMENT_SOURCE_TYPES', () => {
+            ONLY_ONE_ATTACHMENT_SOURCE_TYPES.forEach((sourceType) => {
+                const component = shallow(
+                    <TicketReplyEditor
+                        newMessage={fromJS({
+                            newMessage: {
+                                source: {
+                                    type: sourceType,
+                                },
+                                attachments: [],
+                            },
+                            state: {}
+                        })}
+                        newMessageType={sourceType}
+                        {...commonProps}
+                    />
+                ).instance()
+
+                expect(component._canAddAttachments([1, 2])).toBe(false)
+            })
+        })
+
+        it('should allow to add an attachment for source types in ONLY_ONE_ATTACHMENT_SOURCE_TYPES because there is ' +
+            'no other attachments', () => {
+            ONLY_ONE_ATTACHMENT_SOURCE_TYPES.forEach((sourceType) => {
+                const component = shallow(
+                    <TicketReplyEditor
+                        newMessage={fromJS({
+                            newMessage: {
+                                source: {
+                                    type: sourceType,
+                                },
+                                attachments: [],
+                            },
+                            state: {}
+                        })}
+                        newMessageType={sourceType}
+                        {...commonProps}
+                    />
+                ).instance()
+
+                expect(component._canAddAttachments([1])).toBe(true)
+            })
+        })
+
+        it('should allow to have multiple attachments for source types not in ONLY_ONE_ATTACHMENT_SOURCE_TYPES', () => {
+            const sourceType = 'email'
+            expect(ONLY_ONE_ATTACHMENT_SOURCE_TYPES).not.toContain(sourceType)
+
+            const component = shallow(
+                <TicketReplyEditor
+                    newMessage={fromJS({
+                        newMessage: {
+                            source: {
+                                type: sourceType,
+                            },
+                            attachments: ['attachment already existing'],
+                        },
+                        state: {}
+                    })}
+                    newMessageType={sourceType}
+                    {...commonProps}
+                />
+            ).instance()
+
+            expect(component._canAddAttachments([1])).toBe(true)
+        })
     })
 })
