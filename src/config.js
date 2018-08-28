@@ -327,8 +327,12 @@ export const ACTION_TEMPLATES = [
         execution: 'front',
         name: 'setAssignee',
         title: 'Assign an agent',
-        partialUpdateKey: 'assignee_user',
-        partialUpdateValue: 'assignee_user',
+        arguments: {
+            assignee_user: {
+                type: 'dict',
+                default: null
+            }
+        }
     },
     {
         execution: 'front',
