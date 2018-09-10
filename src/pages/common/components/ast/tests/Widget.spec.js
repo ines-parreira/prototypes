@@ -19,7 +19,7 @@ describe('ast', () => {
         const parent = fromJS(['body', 0, 'test', 'arguments', 1, 'elements'])
         let leftsiblings = fromJS(['definitions', 'Ticket', 'properties', 'subject'])
 
-        it('should render MultiSelectField (containsAll operator)', () => {
+        it('should render case-insensitive MultiSelectField (containsAll operator)', () => {
             const value = ['hello', 'world!',]
             const rule = fromJS({
                 code_ast: astCodeContains

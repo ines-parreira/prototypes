@@ -41,3 +41,10 @@ export const datetimeOperators = [
     'lte',
     ...timedeltaOperators
 ]
+
+export const caseInsensitiveOperators = [
+    'endsWith',
+    'startsWith',
+    ...collectionOperators,
+    ...deprecatedOperators
+]

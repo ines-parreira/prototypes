@@ -21,7 +21,9 @@ import InputField from '../../forms/InputField'
 import {convertToHTML, humanizeString} from '../../../../utils'
 import TagsSelect from './widget/TagsSelect'
 import MultiSelectField from '../../forms/MultiSelectField'
-import {collectionOperators, deprecatedOperators, timedeltaOperators} from '../../../../config/rules'
+import {
+    collectionOperators, caseInsensitiveOperators, deprecatedOperators, timedeltaOperators
+} from '../../../../config/rules'
 import {removeSuffix} from '../../../../utils/string'
 import TimedeltaPicker from '../../forms/TimedeltaPicker'
 import RichFieldWithVariables from '../../forms/RichFieldWithVariables'
@@ -311,6 +313,10 @@ export class Widget extends React.Component<Props, State> {
             if (_isArray(widget.value) && (!widget.type || widget.type === 'input') &&
                 collectionOperators.includes(calleeName)) {
                 widget.type = 'multi-select'
+
+                if (caseInsensitiveOperators.includes(calleeName)) {
+                    widget.type = 'case-insensitive-multi-select'
+                }
             }
 
             // current properties is a tag field so we used the specific
@@ -334,6 +340,20 @@ export class Widget extends React.Component<Props, State> {
         }
 
         switch (widget.type) {
+            case 'case-insensitive-multi-select':
+                return <MultiSelectField
+                    className={className}
+                    style={{
+                        display: 'inline-block',
+                        paddingBottom: '2px'
+                    }}
+                    values={widget.value}
+                    singular="word"
+                    plural="words"
+                    allowCustomValues
+                    onChange={this._handleChange}
+                    caseInsensitive
+                />
             case 'multi-select':
                 return <MultiSelectField
                     className={className}

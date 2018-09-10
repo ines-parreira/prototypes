@@ -103,29 +103,6 @@ exports[`ast Widget should render InputField (eq operator) 1`] = `
 />
 `;
 
-exports[`ast Widget should render MultiSelectField (containsAll operator) 1`] = `
-<MultiSelectField
-  allowCustomValues={true}
-  onChange={[Function]}
-  options={Array []}
-  plural="words"
-  singular="word"
-  style={
-    Object {
-      "display": "inline-block",
-      "paddingBottom": "2px",
-    }
-  }
-  tagColor="#0275d8"
-  values={
-    Array [
-      "hello",
-      "world!",
-    ]
-  }
-/>
-`;
-
 exports[`ast Widget should render RichFieldWithVariables 1`] = `
 <RichFieldWithVariables
   allowExternalChanges={true}
@@ -160,4 +137,28 @@ exports[`ast Widget should render TimedeltaSelect field 1`] = `
     value="1d"
   />
 </div>
+`;
+
+exports[`ast Widget should render case-insensitive MultiSelectField (containsAll operator) 1`] = `
+<MultiSelectField
+  allowCustomValues={true}
+  caseInsensitive={true}
+  onChange={[Function]}
+  options={Array []}
+  plural="words"
+  singular="word"
+  style={
+    Object {
+      "display": "inline-block",
+      "paddingBottom": "2px",
+    }
+  }
+  tagColor="#0275d8"
+  values={
+    Array [
+      "hello",
+      "world!",
+    ]
+  }
+/>
 `;

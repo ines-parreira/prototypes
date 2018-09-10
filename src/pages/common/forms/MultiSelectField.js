@@ -22,6 +22,7 @@ export default class MultiSelectField extends Component {
         tagColor: PropTypes.string,
         values: PropTypes.array,
         className: PropTypes.string,
+        caseInsensitive: PropTypes.bool,
 
         onChange: PropTypes.func.isRequired,
     }
@@ -63,16 +64,23 @@ export default class MultiSelectField extends Component {
     }
 
     _addValue = (value) => {
-        const {allowCustomValues, options, values} = this.props
+        const {allowCustomValues, options, values, caseInsensitive} = this.props
         // check for available options
-        if (!allowCustomValues && !options.map(option => option.value).includes(value)) {
+        let processedValue = value
+
+        if (caseInsensitive && typeof processedValue === 'string') {
+            processedValue = processedValue.toLowerCase()
+        }
+
+        if (!allowCustomValues && !options.map((option) => option.value).includes(processedValue)) {
             return
         }
+
         // check for duplicate
-        if (values.includes(value)) {
+        if (values.includes(processedValue)) {
             return
         }
-        this.props.onChange(this.props.values.concat([value]))
+        this.props.onChange(this.props.values.concat([processedValue]))
         this._resetField()
     }
 
