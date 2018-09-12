@@ -22,6 +22,7 @@ export default class InputField extends FormField {
         placeholder: PropTypes.node,
         type: PropTypes.string.isRequired,
         rightAddon: PropTypes.string,
+        caseInsensitive: PropTypes.bool
     }, FormField.propTypes)
 
     static defaultProps = {
@@ -33,7 +34,7 @@ export default class InputField extends FormField {
     }
 
     _onChange = (e) => {
-        const {type, onChange} = this.props
+        const {type, onChange, caseInsensitive} = this.props
         let value = e.target.value
 
         if (type === 'number') {
@@ -42,6 +43,8 @@ export default class InputField extends FormField {
             if (!isNaN(numberValue)) {
                 value = numberValue
             }
+        } else if (type === 'text' && caseInsensitive) {
+            value = value.toLowerCase()
         }
 
         onChange(value)
@@ -57,6 +60,7 @@ export default class InputField extends FormField {
             children,
             error,
             rightAddon, // eslint-disable-line
+            caseInsensitive,  // eslint-disable-line
             help, // eslint-disable-line
             inline, // eslint-disable-line
             label, // eslint-disable-line

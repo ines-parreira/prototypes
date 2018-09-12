@@ -94,6 +94,7 @@ exports[`ast Widget should render DatetimeSelect field 1`] = `
 
 exports[`ast Widget should render InputField (eq operator) 1`] = `
 <InputField
+  caseInsensitive={false}
   inline={false}
   onChange={[Function]}
   placeholder=""

@@ -84,6 +84,46 @@ exports[`InputField should render a hidden text input 1`] = `
 </FormGroup>
 `;
 
+exports[`InputField should render a lowercase value and convert any uppercase input to lowercase 1`] = `
+<InputField
+  caseInsensitive={true}
+  onChange={[Function]}
+  type="text"
+  value="value"
+>
+  <FormGroup
+    className="InputField"
+    color=""
+    tag="div"
+  >
+    <div
+      className="InputField form-group"
+      color=""
+    >
+      <div
+        className=""
+      >
+        <Input
+          className=""
+          id="id-input-12"
+          onChange={[Function]}
+          type="text"
+          value="value"
+        >
+          <input
+            className="form-control"
+            id="id-input-12"
+            onChange={[Function]}
+            type="text"
+            value="value"
+          />
+        </Input>
+      </div>
+    </div>
+  </FormGroup>
+</InputField>
+`;
+
 exports[`InputField should render a number input with an onChange handler, and call this handler on change 1`] = `
 <InputField
   onChange={[Function]}

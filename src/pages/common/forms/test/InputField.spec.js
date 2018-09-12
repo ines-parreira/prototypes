@@ -134,4 +134,23 @@ describe('InputField', () => {
         )
         expect(component).toMatchSnapshot()
     })
+
+    it('should render a lowercase value and convert any uppercase input to lowercase', () => {
+        let valueStorage = 'value'
+
+        const component = mount(
+            <InputField
+                {...minProps}
+                value={valueStorage}
+                onChange={(value) => {valueStorage = value}}
+                caseInsensitive
+            />
+        )
+        expect(component).toMatchSnapshot()
+
+        const newValue = 'newValue'
+        component.find('input').simulate('change', {target: {value: newValue}})
+
+        expect(valueStorage).toEqual(newValue.toLowerCase())
+    })
 })

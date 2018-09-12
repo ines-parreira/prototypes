@@ -104,7 +104,7 @@ export class Widget extends React.Component<Props, State> {
         return actions.modifyCodeAST(parent, newValue, 'UPDATE')
     }
 
-    _input = (value: any, type: string = 'text') => {
+    _input = (value: any, type: string = 'text', caseInsensitive: boolean = false) => {
         const {config = {}, className, compact} = this.props
 
         return (
@@ -117,6 +117,7 @@ export class Widget extends React.Component<Props, State> {
                 placeholder={config.placeholder || ''}
                 required={config.required || false}
                 inline={compact || false}
+                caseInsensitive={caseInsensitive}
             />
         )
     }
@@ -251,6 +252,8 @@ export class Widget extends React.Component<Props, State> {
         widget.description = ''
         widget.options = []
 
+        let caseInsensitive = false
+
         if (left.size === 1 && left.get(0) === 'definitions') {
             // we are at the root here, only allow some values
             widget.options = rootObjects
@@ -308,15 +311,15 @@ export class Widget extends React.Component<Props, State> {
             const calleeName = rule.getIn(parent.slice(0, -3).concat(['callee', 'name']).insert(0, 'code_ast'))
             widget.type = right ? right.getIn(['meta', 'rules', 'widget']) : 'input'
 
+            if (caseInsensitiveOperators.includes(calleeName)) {
+                caseInsensitive = true
+            }
+
             // display a multi select field in case current attribute is an array AND
             // it's has no specific input AND callee is a collection operator
             if (_isArray(widget.value) && (!widget.type || widget.type === 'input') &&
                 collectionOperators.includes(calleeName)) {
                 widget.type = 'multi-select'
-
-                if (caseInsensitiveOperators.includes(calleeName)) {
-                    widget.type = 'case-insensitive-multi-select'
-                }
             }
 
             // current properties is a tag field so we used the specific
@@ -340,20 +343,6 @@ export class Widget extends React.Component<Props, State> {
         }
 
         switch (widget.type) {
-            case 'case-insensitive-multi-select':
-                return <MultiSelectField
-                    className={className}
-                    style={{
-                        display: 'inline-block',
-                        paddingBottom: '2px'
-                    }}
-                    values={widget.value}
-                    singular="word"
-                    plural="words"
-                    allowCustomValues
-                    onChange={this._handleChange}
-                    caseInsensitive
-                />
             case 'multi-select':
                 return <MultiSelectField
                     className={className}
@@ -366,6 +355,7 @@ export class Widget extends React.Component<Props, State> {
                     plural="words"
                     allowCustomValues
                     onChange={this._handleChange}
+                    caseInsensitive={caseInsensitive}
                 />
             case 'select':
                 return <Select {...widget} className={className} onChange={this._handleChange}/>
@@ -400,7 +390,7 @@ export class Widget extends React.Component<Props, State> {
                 return this._input(value, 'number')
             case 'input':
             default:
-                return this._input(value)
+                return this._input(value, 'text', caseInsensitive)
         }
     }
 }

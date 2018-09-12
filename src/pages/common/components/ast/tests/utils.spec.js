@@ -56,11 +56,11 @@ describe('ast', () => {
                         // containsAll(ticket.subject, ['hello']) -> containsAll(ticket.subject, ['hello', 'world'])
                         const path = fromJS(['body', 0, 'test', 'arguments', 1, 'elements'])
                         const elements = astCodeContains.getIn(path)
-                        const newValue = elements.push(fromJS({
+                        const newValue = elements.push({
                             type: 'Literal',
                             raw: '\'world\'',
                             value: 'world'
-                        }))
+                        })
                         const newAst = updateCodeAst(schemas, astCodeContains, path, newValue, 'UPDATE')
                         expect(newAst).toMatchSnapshot()
                     })

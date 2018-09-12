@@ -5,11 +5,10 @@ import _isUndefined from 'lodash/isUndefined'
 import _isArray from 'lodash/isArray'
 import _isString from 'lodash/isString'
 import _isInteger from 'lodash/isInteger'
-import _uniq from 'lodash/uniq'
 
 import {OBJECT_DEFINITIONS} from './constants'
 import {getAST, getFirstExpressionOfAST} from '../../utils'
-import {collectionOperators, deprecatedOperators, timedeltaOperators, caseInsensitiveOperators} from '../../config/rules'
+import {collectionOperators, deprecatedOperators, timedeltaOperators} from '../../config/rules'
 
 import type {Map, List} from 'immutable'
 import type {schemasType} from '../../types'
@@ -291,12 +290,8 @@ function resolveSecondArg(callExpression: Map<*,*>, firstArgSchema: schemasType,
     }
 
     const isCollectionCallee = collectionOperators.includes(callee)
-    const isCaseInsensitiveCallee = caseInsensitiveOperators.includes(callee)
-
     const isTimedeltaCallee = timedeltaOperators.includes(callee)
     const args = callExpression.getIn(['arguments', 1]) || fromJS({})
-    const elements = fromJS(args.get('elements'))
-
     let curDefault = 'null'
     let curValue = undefined
 
@@ -304,7 +299,7 @@ function resolveSecondArg(callExpression: Map<*,*>, firstArgSchema: schemasType,
     switch (args.get('type')) {
         case 'ArrayExpression':
             curDefault = '[]'
-            curValue = elements.map(elem => elem.get('value')).toJS()
+            curValue = args.get('elements').map(elem => elem.get('value')).toJS()
             break
         case 'Literal':
             curDefault = '\'\''
@@ -323,15 +318,12 @@ function resolveSecondArg(callExpression: Map<*,*>, firstArgSchema: schemasType,
 
         // current value is an array so we just create the raw value
         if (_isArray(curValue)) {
-            return `[${_uniq(elements.map(elem => {
-                const rawValue = fromJS(elem).get('raw')
-                return isCaseInsensitiveCallee ? rawValue.toLowerCase() : rawValue
-            }).toJS())}]`
+            return `[${args.get('elements').map(elem => elem.get('raw')).toJS()}]`
         }
 
         // argument is not an array but new callee needs one
         // so we transform the current value to an array
-        return `[${isCaseInsensitiveCallee ? args.get('raw').toLowerCase() : args.get('raw') }]`
+        return `[${args.get('raw')}]`
     } else if (isTimedeltaCallee && !isTimedelta(curValue)) {
         return `'${TIMEDELTA_OPERATOR_DEFAULT_VALUE}'`
     }
@@ -354,9 +346,8 @@ function resolveSecondArg(callExpression: Map<*,*>, firstArgSchema: schemasType,
                     return `'${firstLit}'`
                 }
 
-                return useCurValue && _isString(curValue) ?
-                    // $FlowFixMe
-                    (isCaseInsensitiveCallee ? `'${curValue.toLowerCase()}'`: `'${curValue}'`) : '\'\''
+                // $FlowFixMe
+                return useCurValue && _isString(curValue) ? `'${curValue}'` : '\'\''
 
             case 'integer':
                 return useCurValue && _isInteger(curValue) ? args.get('raw') : curDefault
@@ -415,8 +406,15 @@ function resolveSecondArg(callExpression: Map<*,*>, firstArgSchema: schemasType,
  * @returns {*}
  */
 export function updateCallExpression(state: Map<*,*>, path: List<*>, schemas: schemasType) {
+    // nothing to do if it's just a value change, just return the same state
+    // `value`: value of an AST Literal
+    // `elements`: values of an AST ArrayExpression
+    if (['value', 'elements'].includes(path.last())) {
+        return state
+    }
+
     const argumentsIndex = path.lastIndexOf('arguments')
-    const calleeIndex = path.lastIndexOf('callee')
+    const calleeIndex= path.lastIndexOf('callee')
     let callExpressionPath = path
     let stopPath = fromJS({})
     // Property is the first argument of a call expression.
@@ -436,12 +434,6 @@ export function updateCallExpression(state: Map<*,*>, path: List<*>, schemas: sc
     const callExpression = state.getIn(callExpressionPath.toJS()) || fromJS({})
     const [firstArg, firstArgSchema] = resolveFirstArg(callExpression, stopPath, schemas)
     const callee = resolveCallee(callExpression, firstArgSchema)
-
-    // if we don't need to convert to lower-case the value, we can just ignore everything else
-    if (!caseInsensitiveOperators.includes(callee) && ['value', 'elements'].includes(path.last())) {
-        return state
-    }
-
     const secondArg = resolveSecondArg(callExpression, firstArgSchema, callee, hasPropertyChanged)
     // generate the new CallExpression and replace the old one
     let rawCallExpression = `${callee}(${firstArg.join('.')}`
