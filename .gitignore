@@ -3,6 +3,7 @@ celerybeat-schedule.db
 celerybeat-schedule
 
 .DS_Store
+.bash_history
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
