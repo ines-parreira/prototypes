@@ -52,7 +52,11 @@ exports[`Event component should display correctly a failed event for a Recharge 
         by
       </span>
       <AgentLabel
+        avatar={false}
+        className=""
+        email=""
         name="Acme Support"
+        profilePictureUrl=""
       />
       <Button
         className="more"
@@ -169,7 +173,11 @@ exports[`Event component should display correctly a failed event for a Recharge 
         by
       </span>
       <AgentLabel
+        avatar={false}
+        className=""
+        email=""
         name="Acme Support"
+        profilePictureUrl=""
       />
       <Button
         className="more"
@@ -279,7 +287,11 @@ exports[`Event component should display correctly a failed event for a Shopify I
         by
       </span>
       <AgentLabel
+        avatar={false}
+        className=""
+        email=""
         name="Acme Support"
+        profilePictureUrl=""
       />
       <Button
         className="more"
@@ -403,7 +415,11 @@ exports[`Event component should display correctly a failed event for a Shopify O
         by
       </span>
       <AgentLabel
+        avatar={false}
+        className=""
+        email=""
         name="Acme Support"
+        profilePictureUrl=""
       />
       <Button
         className="more"
@@ -513,7 +529,11 @@ exports[`Event component should display correctly a successful event for a Recha
         by
       </span>
       <AgentLabel
+        avatar={false}
+        className=""
+        email=""
         name="Acme Support"
+        profilePictureUrl=""
       />
       <Button
         className="more"
@@ -621,7 +641,11 @@ exports[`Event component should display correctly a successful event for a Recha
         by
       </span>
       <AgentLabel
+        avatar={false}
+        className=""
+        email=""
         name="Acme Support"
+        profilePictureUrl=""
       />
       <Button
         className="more"
@@ -722,7 +746,11 @@ exports[`Event component should display correctly a successful event for a Shopi
         by
       </span>
       <AgentLabel
+        avatar={false}
+        className=""
+        email=""
         name="Acme Support"
+        profilePictureUrl=""
       />
       <Button
         className="more"
@@ -837,7 +865,11 @@ exports[`Event component should display correctly a successful event for a Shopi
         by
       </span>
       <AgentLabel
+        avatar={false}
+        className=""
+        email=""
         name="Acme Support"
+        profilePictureUrl=""
       />
       <Button
         className="more"

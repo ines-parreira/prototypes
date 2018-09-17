@@ -1,11 +1,20 @@
+// @flow
 /**
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
 
-import React, {PropTypes} from 'react'
+import React from 'react'
 import {AgentLabel} from '../../../../../utils/labels'
 
-const defaultEntryComponent = (props) => {
+type Props = {
+    mention: Map<*,*>,
+    theme: {
+        mentionSuggestionsEntryText: string
+    },
+    searchValue?: string
+}
+
+const defaultEntryComponent = (props: Props) => {
     const {
         mention,
         theme,
@@ -22,12 +31,6 @@ const defaultEntryComponent = (props) => {
             />
         </div>
     )
-}
-
-defaultEntryComponent.propTypes = {
-    mention: PropTypes.object,
-    theme: PropTypes.object,
-    searchValue: PropTypes.string
 }
 
 export default defaultEntryComponent

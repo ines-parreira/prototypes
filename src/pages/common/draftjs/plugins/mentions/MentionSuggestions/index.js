@@ -1,8 +1,9 @@
+// @flow
 /**
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
 
-import React, {Component, PropTypes} from 'react'
+import React, {Component} from 'react'
 import {genKey} from 'draft-js'
 import {List, fromJS} from 'immutable'
 
@@ -12,32 +13,67 @@ import defaultEntryComponent from './Entry/defaultEntryComponent'
 import addMention from '../modifiers/addMention'
 import {decodeOffsetKey, getSearchText} from '../utils'
 
-export default class MentionSuggestions extends Component {
+import type {Map} from 'immutable'
+import type {EditorState, SelectionState} from 'draft-js'
+
+import type {themeType} from './types'
+
+type eventCallbackType = (T: Event) => ?'handled'
+
+type callbacksType = {
+    onDownArrow: ?eventCallbackType,
+    onUpArrow: ?eventCallbackType,
+    onEscape: ?eventCallbackType,
+    handleReturn: ?eventCallbackType,
+    onTab: ?eventCallbackType,
+    onChange: ?eventCallbackType,
+}
+
+type storeType = {
+    getAllSearches: () => Map<*, *>,
+    getPortalClientRect: (T: string) => void,
+    resetEscapedSearch: () => void,
+    isEscaped: (T: string) => boolean,
+    escapeSearch: (T: string) => void,
+    getEditorState: () => EditorState,
+    setEditorState: (T: EditorState) => void,
+}
+
+type Props = {
+    callbacks: callbacksType,
+    store: storeType,
+    ariaProps: {
+        ariaHasPopup: 'true' | 'false',
+        ariaExpanded: 'true' | 'false'
+    },
+    theme: themeType,
+    suggestions: List<*>,
+    positionSuggestions: (T: {
+        decoratorRect: ?string,
+        prevProps: Props,
+    }) => {},
+    onSearchChange: (T: {value: string}) => void,
+    mentionTrigger: string,
+    canAddMention?: boolean,
+    entityMutability?: string,
+    entryComponent?: () => void,
+    mentionPrefix?: string,
+}
+
+type State = {
+    isActive: boolean,
+    focusedOptionIndex: number
+}
+
+export default class MentionSuggestions extends Component<Props, State> {
+    key: string
+    activeOffsetKey: string
+    lastSearchValue: string
+    popover: ?HTMLElement
+    lastSelectionIsInsideWord: SelectionState
 
     static defaultProps = {
         suggestions: fromJS([])
-    }
-
-    static propTypes = {
-        canAddMention: PropTypes.bool,
-        onSearchChange: PropTypes.func,
-        positionSuggestions: PropTypes.func,
-        entityMutability: PropTypes.string,
-        entryComponent: PropTypes.func,
-        callbacks: PropTypes.object,
-        store: PropTypes.object,
-        suggestions: (props, propName, componentName) => {
-            if (!List.isList(props[propName])) {
-                return new Error(
-                    `Invalid prop \`${propName}\` supplied to \`${componentName}\`. should be an immutable list.`
-                )
-            }
-            return undefined
-        },
-        mentionPrefix: PropTypes.string,
-        mentionTrigger: PropTypes.string,
-        ariaProps: PropTypes.object,
-        theme: PropTypes.object
     }
 
     state = {
@@ -50,13 +86,13 @@ export default class MentionSuggestions extends Component {
         this.props.callbacks.onChange = this.onEditorStateChange
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         if (nextProps.suggestions.size === 0 && this.state.isActive) {
             this.closeDropdown()
         }
     }
 
-    componentDidUpdate = (prevProps, prevState) => {
+    componentDidUpdate = (prevProps: Props, prevState: State) => {
         if (this.popover) {
             // In case the list shrinks there should be still an option focused.
             // Note: this might run multiple times and deduct 1 until the condition is
@@ -86,6 +122,7 @@ export default class MentionSuggestions extends Component {
                 popover: this.popover,
             })
             Object.keys(newStyles).forEach((key) => {
+                // $FlowFixMe
                 this.popover.style[key] = newStyles[key]
             })
         }
@@ -95,7 +132,7 @@ export default class MentionSuggestions extends Component {
         this.props.callbacks.onChange = undefined
     }
 
-    onEditorStateChange = (editorState) => {
+    onEditorStateChange = (editorState: EditorState) => {
         const searches = this.props.store.getAllSearches()
 
         // if no search portal is active there is no need to show the popover
@@ -194,7 +231,7 @@ export default class MentionSuggestions extends Component {
         return editorState
     }
 
-    onSearchChange = (editorState, selection) => {
+    onSearchChange = (editorState: EditorState, selection: SelectionState) => {
         const {word} = getSearchText(editorState, selection)
         const searchValue = word.substring(1, word.length)
         if (this.lastSearchValue !== searchValue) {
@@ -203,18 +240,18 @@ export default class MentionSuggestions extends Component {
         }
     }
 
-    onDownArrow = (keyboardEvent) => {
+    onDownArrow = (keyboardEvent: Event) => {
         keyboardEvent.preventDefault()
         const newIndex = this.state.focusedOptionIndex + 1
         this.onMentionFocus(newIndex >= this.props.suggestions.size ? 0 : newIndex)
     }
 
-    onTab = (keyboardEvent) => {
+    onTab = (keyboardEvent: Event) => {
         keyboardEvent.preventDefault()
         this.commitSelection()
     }
 
-    onUpArrow = (keyboardEvent) => {
+    onUpArrow = (keyboardEvent: Event) => {
         keyboardEvent.preventDefault()
         if (this.props.suggestions.size > 0) {
             const newIndex = this.state.focusedOptionIndex - 1
@@ -222,7 +259,7 @@ export default class MentionSuggestions extends Component {
         }
     }
 
-    onEscape = (keyboardEvent) => {
+    onEscape = (keyboardEvent: Event) => {
         keyboardEvent.preventDefault()
 
         const activeOffsetKey = this.lastSelectionIsInsideWord
@@ -236,7 +273,7 @@ export default class MentionSuggestions extends Component {
         this.props.store.setEditorState(this.props.store.getEditorState())
     }
 
-    onMentionSelect = (mention) => {
+    onMentionSelect = (mention: Map<*,*>) => {
         // Note: This can happen in case a user typed @xxx (invalid mention) and
         // then hit Enter. Then the mention will be undefined.
         if (!mention) {
@@ -254,7 +291,7 @@ export default class MentionSuggestions extends Component {
         this.props.store.setEditorState(newEditorState)
     }
 
-    onMentionFocus = (index) => {
+    onMentionFocus = (index: number) => {
         this.state.focusedOptionIndex = index
 
         // to force a re-render of the outer component to change the aria props

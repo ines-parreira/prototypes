@@ -8,7 +8,7 @@ import type {Node} from 'react'
 
 type Props = {
     children: Node,
-    delay?: number
+    delay?: number | {show: number, hide: number}
 }
 
 export default class Tooltip extends React.Component<Props> {

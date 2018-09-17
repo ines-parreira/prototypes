@@ -188,6 +188,7 @@ export default class TicketAssignee extends React.Component<Props, State> {
                                     name={agent.get('name')}
                                     email={agent.get('email')}
                                     profilePictureUrl={agent.getIn(['meta', 'profile_picture_url'])}
+                                    avatar
                                 />
                             </DropdownItem>
                         )
@@ -224,7 +225,6 @@ export default class TicketAssignee extends React.Component<Props, State> {
 
     render() {
         const {currentAssignee, direction, email, profilePictureUrl, className, transparent} = this.props
-        const hasPicture = !!(email || profilePictureUrl)
 
         return (
             <Dropdown
@@ -237,7 +237,6 @@ export default class TicketAssignee extends React.Component<Props, State> {
                     type="button"
                     className={classnames(css.toggle, {
                         'btn-transparent': transparent,
-                        [css.hasPicture]: hasPicture
                     })}
                     caret
                 >
@@ -249,6 +248,7 @@ export default class TicketAssignee extends React.Component<Props, State> {
                                 profilePictureUrl={profilePictureUrl}
                                 className={css.label}
                                 maxWidth="100"
+                                avatar
                             />
                         ) : (
                             <span>

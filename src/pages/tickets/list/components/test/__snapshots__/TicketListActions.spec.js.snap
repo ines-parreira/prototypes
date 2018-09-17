@@ -109,7 +109,11 @@ exports[`TicketListActions component should display options for agents assignati
             type="button"
           >
             <AgentLabel
+              avatar={false}
+              className=""
+              email=""
               name="foo"
+              profilePictureUrl=""
             />
           </DropdownItem>
           <DropdownItem
@@ -119,7 +123,11 @@ exports[`TicketListActions component should display options for agents assignati
             type="button"
           >
             <AgentLabel
+              avatar={false}
+              className=""
+              email=""
               name="bar"
+              profilePictureUrl=""
             />
           </DropdownItem>
           <DropdownItem
@@ -129,7 +137,11 @@ exports[`TicketListActions component should display options for agents assignati
             type="button"
           >
             <AgentLabel
+              avatar={false}
+              className=""
+              email=""
               name="baz"
+              profilePictureUrl=""
             />
           </DropdownItem>
         </div>

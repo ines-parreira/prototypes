@@ -1,20 +1,26 @@
-import React, {Component, PropTypes} from 'react'
+// @flow
+import React, {Component} from 'react'
 import classnames from 'classnames'
 
-export default class Entry extends Component {
+import type {Map} from 'immutable'
 
-    static propTypes = {
-        entryComponent: PropTypes.any.isRequired,
-        searchValue: PropTypes.string.isRequired,
-        onMentionSelect: PropTypes.func,
-        mention: PropTypes.object,
-        onMentionFocus: PropTypes.func,
-        theme: PropTypes.object,
-        index: PropTypes.number,
-        isFocused: PropTypes.bool
-    }
+import type {themeType} from '../types'
 
-    constructor(props) {
+type Props = {
+    entryComponent: any,
+    searchValue: string,
+    onMentionSelect: (T: Map<*,*>) => void,
+    mention: Map<*,*>,
+    index: number,
+    onMentionFocus: (T: number) => void,
+    theme: themeType,
+    isFocused?: boolean
+}
+
+export default class Entry extends Component<Props> {
+    mouseDown: boolean
+
+    constructor(props: Props) {
         super(props)
         this.mouseDown = false
     }
@@ -30,7 +36,7 @@ export default class Entry extends Component {
         }
     }
 
-    onMouseDown = (event) => {
+    onMouseDown = (event: Event) => {
         // Note: important to avoid a content edit change
         event.preventDefault()
 

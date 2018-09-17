@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React from 'react'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
@@ -18,22 +19,41 @@ import SourceIcon from '../components/SourceIcon'
 
 import css from './labels.less'
 
+import type {Node} from 'react'
+import type {Map} from 'immutable'
+
 /**
  * AGENT
  */
-export class AgentLabel extends React.Component {
-    static propTypes = {
-        name: PropTypes.string,
-        maxWidth: PropTypes.string,
-        email: PropTypes.string,
-        className: PropTypes.string,
-        profilePictureUrl: PropTypes.string
+type AgentLabelProps = {
+    name?: string,
+    maxWidth?: string,
+    email?: string,
+    className?: string,
+    profilePictureUrl?: string,
+    avatar?: boolean,
+}
+
+export class AgentLabel extends React.Component<AgentLabelProps> {
+    static defaultProps = {
+        name: '',
+        email: '',
+        className: '',
+        profilePictureUrl: '',
+        avatar: false,
     }
 
     render() {
-        const {name = '', maxWidth, email = '', className = '', profilePictureUrl = ''} = this.props
+        const {
+            name,
+            maxWidth,
+            email,
+            className,
+            profilePictureUrl,
+            avatar,
+        } = this.props
+        const showAvatar = avatar || profilePictureUrl || email
         const style = {}
-
         if (maxWidth) {
             style.maxWidth = `${maxWidth}px`
         }
@@ -41,7 +61,7 @@ export class AgentLabel extends React.Component {
         return (
             <div className={classnames(css.AgentLabel, 'd-inline-flex align-items-center', className)}>
                 {
-                    email ? (
+                    showAvatar ? (
                         <Avatar
                             email={email}
                             name={name}
@@ -75,23 +95,35 @@ export class AgentLabel extends React.Component {
 /**
  * USER
  */
-export const CustomerLabel = ({customer}) => {
+type CustomerLabelParamType = {
+    customer: {
+        name: string,
+        id: string
+    }
+}
+export const CustomerLabel = ({customer}: CustomerLabelParamType) => {
     if (_isString(customer)) {
-        return <span>{customer}</span>
+        // flow discourages type detection
+        // $FlowFixMe
+        return (<span>{customer}</span>)
     }
 
     return (
         <span>{customersHelpers.getDisplayName(customer)}</span>
     )
 }
-CustomerLabel.propTypes = {
-    customer: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired
-}
 
 /**
  * TAG
  */
-export const TagLabel = ({decoration, children, style}) => {
+type TagLabelParamType = {
+    style: {
+        color?: string
+    },
+    decoration?: Map<*,*>,
+    children?: Node,
+}
+export const TagLabel = ({decoration, children, style}: TagLabelParamType) => {
     style.color = (decoration || fromJS({})).get('color') || DEFAULT_TAG_COLOR
 
     return (
@@ -103,11 +135,6 @@ export const TagLabel = ({decoration, children, style}) => {
         </Badge>
     )
 }
-TagLabel.propTypes = {
-    children: PropTypes.node,
-    decoration: PropTypes.object,
-    style: PropTypes.object.isRequired,
-}
 TagLabel.defaultProps = {
     style: {},
 }
@@ -115,7 +142,10 @@ TagLabel.defaultProps = {
 /**
  * STATUS
  */
-export const StatusLabel = ({status, ...rest}) => {
+type StatusLabelParam = {
+    status: string
+}
+export const StatusLabel = ({status, ...rest}: StatusLabelParam) => {
     let color = 'info'
 
     switch (status) {
@@ -139,22 +169,18 @@ export const StatusLabel = ({status, ...rest}) => {
         </Badge>
     )
 }
-StatusLabel.propTypes = {
-    status: PropTypes.string.isRequired,
-}
 
 /**
  * CHANNEL
  */
-export const ChannelLabel = ({channel}) => (
+export const ChannelLabel = ({channel}: {channel: string}) => (
     <SourceIcon type={channel} className="text-secondary"/>
 )
-ChannelLabel.propTypes = {channel: PropTypes.string.isRequired}
 
 /**
  *  Source DETAIL
  */
-export const IntegrationsDetailLabel = ({integration}) => {
+export const IntegrationsDetailLabel = ({integration}: {integration: Map<*,*>}) => {
     const type = integration.get('type')
     let label = integration.get('name', integration.get('address'))
     let address = integration.get('address') || integration.getIn(['meta', 'address'])
@@ -172,17 +198,16 @@ export const IntegrationsDetailLabel = ({integration}) => {
         </span>
     )
 }
-IntegrationsDetailLabel.propTypes = {
-    integration: PropTypes.object.isRequired
-}
 
 /**
  * ROLE
  */
-export const RoleLabel = ({roles = 'user'}) => {
+export const RoleLabel = ({roles = 'user'}: {roles: string}) => {
     roles = toJS(roles)
 
     if (!_isArray(roles)) {
+        // flow discourages type detection
+        // $FlowFixMe
         roles = [roles]
     }
 
@@ -191,6 +216,7 @@ export const RoleLabel = ({roles = 'user'}) => {
         // if roles are objects (like {name: 'refund'})
         if (_isObject(roles[0])) {
             if (roles[0].name) {
+                // $FlowFixMe
                 roles = roles.map(v => v.name)
             }
         }
@@ -216,19 +242,19 @@ export const RoleLabel = ({roles = 'user'}) => {
         </Badge>
     )
 }
-RoleLabel.propTypes = {roles: PropTypes.oneOfType([PropTypes.array, PropTypes.object, PropTypes.string]).isRequired}
 
 /**
  * DATETIME
  */
-export class DatetimeLabel extends React.Component {
-    static propTypes = {
-        dateTime: PropTypes.string,
-        labelFormat: PropTypes.string,
-        timezone: PropTypes.string,
-    }
+type DatetimeLabelProps = {
+    dateTime?: string,
+    labelFormat?: string,
+    timezone?: string,
+}
+export class DatetimeLabel extends React.Component<DatetimeLabelProps> {
+    id: string
 
-    constructor(props) {
+    constructor(props: DatetimeLabelProps) {
         super(props)
         this.id = `datetime-tooltip-${Math.random().toString(36).slice(2)}` // generates a random unique id
     }
@@ -265,12 +291,11 @@ const mapStateToProps = (state) => ({
 })
 connect(mapStateToProps)(DatetimeLabel)
 
-export class RenderLabel extends React.Component {
-    static propTypes = {
-        field: PropTypes.object.isRequired,
-        value: PropTypes.oneOfType([PropTypes.node, PropTypes.object]),
-    }
-
+type RenderLabelProps = {
+    field: Map<*,*>,
+    value?: any,
+}
+export class RenderLabel extends React.Component<RenderLabelProps> {
     render() {
         const {field, value} = this.props
 
