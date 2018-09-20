@@ -1141,6 +1141,23 @@ export const getLanguageDisplayName = (locale: string): ?string => {
 }
 
 /**
+ * Check if the given string contains unicode characters
+ * @param needle: string
+ * @returns: bool
+ */
+export const hasUnicodeChars = (needle: string): bool => {
+    const needleLength = needle.length
+
+    for (let index = 0; index < needleLength; index++) {
+        if (needle.charCodeAt(index) > 255) {
+            return true
+        }
+    }
+
+    return false
+}
+
+/**
  * Open the smooch chat (if present)
  */
 export const openChat = (e: Event) => {

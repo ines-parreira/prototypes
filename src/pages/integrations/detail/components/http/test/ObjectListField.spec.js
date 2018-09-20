@@ -30,4 +30,5 @@ describe('ObjectListField component', () => {
 
         expect(component).toMatchSnapshot()
     })
+
 })

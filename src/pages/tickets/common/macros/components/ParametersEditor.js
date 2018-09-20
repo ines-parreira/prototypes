@@ -6,6 +6,7 @@ import {Row, Col, Button} from 'reactstrap'
 import Tooltip from '../../../../common/components/Tooltip'
 import InputField from '../../../../common/forms/InputField'
 import {MAX_HEADER_LENGTH} from '../../../../../config'
+import {hasUnicodeChars} from '../../../../../utils'
 
 import css from './ParametersEditor.less'
 
@@ -25,6 +26,12 @@ export default class ParametersEditor extends React.Component {
 
     changeValue = (key, index, value) => {
         this.props.updateDict(this.props.list.setIn([index, key], value))
+    }
+
+    validateHeaderName = (value: String): ?String => {
+        if (this.props.name === 'headers' && hasUnicodeChars(value)) {
+            return 'Header\'s name can\'t contain unicode characters.'
+        }
     }
 
     render() {
@@ -62,6 +69,7 @@ export default class ParametersEditor extends React.Component {
                                         type="text"
                                         placeholder="Key"
                                         value={dict.get('key')}
+                                        error={this.validateHeaderName(dict.get('key'))}
                                         required
                                         form="macro_form"
                                         maxLength={MAX_HEADER_LENGTH}

@@ -52,7 +52,8 @@ exports[`ObjectListField component should display the field with items 1`] = `
       xs="5"
     >
       <InputField
-        name="[object Object].key"
+        error=""
+        name="key"
         onChange={[Function]}
         placeholder="Key"
         required={true}
@@ -73,7 +74,8 @@ exports[`ObjectListField component should display the field with items 1`] = `
       }
     >
       <InputField
-        name="[object Object].value"
+        error=""
+        name="value"
         onChange={[Function]}
         placeholder="Value"
         required={true}

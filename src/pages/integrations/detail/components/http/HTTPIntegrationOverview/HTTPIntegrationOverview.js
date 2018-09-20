@@ -17,6 +17,7 @@ import {AVAILABLE_HTTP_METHODS, FORM_CONTENT_TYPE, JSON_CONTENT_TYPE} from '../.
 import Loader from '../../../../../common/components/Loader'
 import ObjectListField from '../ObjectListField'
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
+import {hasUnicodeChars} from '../../../../../../utils'
 
 import InputField from '../../../../../common/forms/InputField'
 import BooleanField from '../../../../../common/forms/BooleanField'
@@ -192,6 +193,12 @@ export default class HTTPIntegrationOverview extends React.Component {
         return this.props.actions.updateOrCreateIntegration(fromJS(doc))
     }
 
+    validateHeaderName = (fieldName: string, fieldValue: string): ?string => {
+        if (fieldName === 'key' && hasUnicodeChars(fieldValue)) {
+            return 'Header\'s name can\'t contain unicode characters.'
+        }
+    }
+
     render() {
         const {actions, integration, isUpdate, loading} = this.props
         const isSubmitting = this._isSubmitting()
@@ -325,6 +332,7 @@ export default class HTTPIntegrationOverview extends React.Component {
                                 title="Header"
                                 fieldName="header"
                                 fields={this.state.headers}
+                                validate={this.validateHeaderName}
                                 onChange={(value) => this.setState({headers: value})}
                             />
                         </FormGroup>

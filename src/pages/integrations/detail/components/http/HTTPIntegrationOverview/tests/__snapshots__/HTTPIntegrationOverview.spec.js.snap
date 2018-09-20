@@ -192,6 +192,7 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
           name="http.headers"
           onChange={[Function]}
           title="Header"
+          validate={[Function]}
         />
       </FormGroup>
       <JsonField
@@ -446,6 +447,7 @@ exports[`HTTPIntegrationOverview should display data with url-encoded format 1`]
           name="http.headers"
           onChange={[Function]}
           title="Header"
+          validate={[Function]}
         />
       </FormGroup>
       <FormGroup
@@ -677,6 +679,7 @@ exports[`HTTPIntegrationOverview should display default values because there is 
           name="http.headers"
           onChange={[Function]}
           title="Header"
+          validate={[Function]}
         />
       </FormGroup>
       <div>

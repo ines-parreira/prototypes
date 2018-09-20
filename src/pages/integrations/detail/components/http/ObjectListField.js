@@ -10,11 +10,11 @@ type Props = {
     title: string,
     fieldName: string,
     fields: Array<any>,
+    validate: Function,
     onChange: (fields: Array<any>) => *,
 }
 
 export default class ObjectListField extends React.Component<Props> {
-
     _add = () => {
         return this.props.onChange(_clone(this.props.fields).concat([{
             key: '',
@@ -36,7 +36,7 @@ export default class ObjectListField extends React.Component<Props> {
     }
 
     render() {
-        const {fields} = this.props
+        const {fields, validate} = this.props
 
         return (
             <div>
@@ -53,9 +53,10 @@ export default class ObjectListField extends React.Component<Props> {
                             <Col xs="5">
                                 <InputField
                                     type="text"
-                                    name={`${header}.key`}
+                                    name="key"
                                     placeholder="Key"
                                     value={header.key}
+                                    error={validate ? validate('key', header.key) : ''}
                                     required
                                     onChange={(value) => { this._update(index, 'key', _trim(value))}}
                                 />
@@ -63,9 +64,10 @@ export default class ObjectListField extends React.Component<Props> {
                             <Col className="flex-grow">
                                 <InputField
                                     type="text"
-                                    name={`${header}.value`}
+                                    name="value"
                                     placeholder="Value"
                                     value={header.value}
+                                    error={validate ? validate('value', header.value) : ''}
                                     required
                                     onChange={(value) => { this._update(index, 'value', value)}}
                                 />
