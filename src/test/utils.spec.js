@@ -720,6 +720,7 @@ describe('global utils', () => {
         })
 
         // make sure jsdom runs inline event handlers
+        // TIP: in case the test is failing, try `npm rebuild`.
         it('should run inline event handlers', (done) => {
             const html = '<img src="xss.jpg" onerror="window._run=true" />'
             const div = dom.window.document.createElement('div')

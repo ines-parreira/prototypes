@@ -2,8 +2,10 @@
 import {EditorState, AtomicBlockUtils, SelectionState, Modifier} from 'draft-js'
 import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
+import _get from 'lodash/get'
 
 import {uploadFiles} from '../../../../utils'
+import {ATTACHMENT_SIZE_ERROR, getMaxAttachmentSize} from '../../../../utils/file'
 import {DEFAULT_IMAGE_WIDTH} from '../../../../config/editor'
 
 import type {ContentState} from 'draft-js'
@@ -54,11 +56,15 @@ const getEntitySelectionState = (contentState: ContentState, entityKey: string):
     return entitySelection
 }
 
-export const addImage = (editorState: EditorState, url: string): EditorState => {
+export const addImage = (editorState: EditorState, url: string, size: number = 0): EditorState => {
     const entityContentState = editorState.getCurrentContent().createEntity(
         'img',
         'IMMUTABLE',
-        {src: url, width: DEFAULT_IMAGE_WIDTH}
+        {
+            src: url,
+            width: DEFAULT_IMAGE_WIDTH,
+            size,
+        }
     )
     const entityKey = entityContentState.getLastCreatedEntityKey()
     let newEditorState = AtomicBlockUtils.insertAtomicBlock(
@@ -72,68 +78,82 @@ export const addImage = (editorState: EditorState, url: string): EditorState => 
 }
 
 export const insertInlineImages = (
-    files: Array<Blob>,
-    {getEditorState, setEditorState}: pluginArgsType,
+    files: Array<File>,
+    {getEditorState, setEditorState, getProps}: pluginArgsType,
     notify: ({status: string, message: string}) => void = _noop
 ): EditorState => {
-    const uploaded = []
-    files.forEach((f) => {
-        const reader = new FileReader()
+    // don't exceed maximum attachment file size
+    const editorState = getEditorState()
+    const attachments = _get(getProps(), 'attachments', fromJS([])).toJS()
+    const maxSize = getMaxAttachmentSize(editorState, attachments)
+    const currentSize = files.reduce((sum, file) => sum + (file.size || 0), 0)
 
+    if (currentSize >= maxSize) {
+        notify(ATTACHMENT_SIZE_ERROR)
+        return Promise.resolve()
+    }
+
+    const uploaded = []
+    let newEditorState = getEditorState()
+
+    files.forEach((file) => {
         uploaded.push(new Promise((resolve) => {
-            reader.onload = (event) => {
-                // add image to the editor with a dataUrl
+            const blobURL = window.URL.createObjectURL(file)
+            // add image to the editor with a dataUrl
+            newEditorState = addImage(newEditorState, blobURL, file.size)
+            const contentState = newEditorState.getCurrentContent()
+            const imageKey = contentState.getLastCreatedEntityKey()
+
+            // upload image then replace img src
+            uploadPicture(file)
+            .then((res: {url: string}) => {
                 const editorState = getEditorState()
-                const newEditorState = addImage(editorState, event.target.result)
-                const contentState = newEditorState.getCurrentContent()
-                const imageKey = contentState.getLastCreatedEntityKey()
+                const contentState = editorState.getCurrentContent()
+                const newContentState = contentState.mergeEntityData(imageKey, {src: res.url})
+                const newEditorState = EditorState.push(
+                    editorState,
+                    newContentState,
+                    'update-pasted-image-url',
+                )
+
                 setEditorState(newEditorState)
 
-                // upload image then replace img src
-                uploadPicture(f)
-                .then((res: {url: string}) => {
-                    const editorState = getEditorState()
-                    const contentState = editorState.getCurrentContent()
-                    const newContentState = contentState.mergeEntityData(imageKey, {src: res.url})
-                    const newEditorState = EditorState.push(
-                        editorState,
-                        newContentState,
-                        'update-pasted-image-url',
-                    )
+                window.URL.revokeObjectURL(blobURL)
+                return resolve({})
+            })
+            .catch((err) => {
+                // remove image that was not uploaded
+                const editorState = getEditorState()
+                const contentState = editorState.getCurrentContent()
+                const entitySelection = getEntitySelectionState(contentState, imageKey)
+                const newContentState = Modifier.applyEntity(
+                    contentState,
+                    entitySelection,
+                    null
+                )
+                const newEditorState = EditorState.push(
+                    editorState,
+                    newContentState,
+                    'remove-pasted-image',
+                )
 
-                    setEditorState(newEditorState)
-                    return resolve({})
+                setEditorState(newEditorState)
+
+                // notify
+                notify({
+                    status: 'error',
+                    message: err.error
                 })
-                .catch((err) => {
-                    // remove image that was not uploaded
-                    const editorState = getEditorState()
-                    const contentState = editorState.getCurrentContent()
-                    const entitySelection = getEntitySelectionState(contentState, imageKey)
-                    const newContentState = Modifier.applyEntity(
-                        contentState,
-                        entitySelection,
-                        null
-                    )
-                    const newEditorState = EditorState.push(
-                        editorState,
-                        newContentState,
-                        'remove-pasted-image',
-                    )
 
-                    setEditorState(newEditorState)
-
-                    // notify
-                    notify({
-                        status: 'error',
-                        message: err.error
-                    })
-
-                    return resolve(err)
-                })
-            }
+                window.URL.revokeObjectURL(blobURL)
+                return resolve(err)
+            })
         }))
-        reader.readAsDataURL(f)
     })
+
+    setEditorState(newEditorState)
 
     return Promise.all(uploaded)
 }
+
+

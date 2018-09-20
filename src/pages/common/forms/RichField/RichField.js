@@ -42,6 +42,7 @@ type Props = {
     attachFiles: (T: Array<Blob>) => void,
     canDropFiles: boolean,
     canInsertInlineImages: boolean,
+    toolbarProps: {},
 
     mentionProps?: {
         suggestions: suggestionsType,
@@ -90,7 +91,10 @@ export default class RichField extends InputField<Props, State> {
             this.resizeablePlugin.decorator,
         )
 
-        this.toolbarPlugin = createToolbarPlugin({imageDecorator})
+        this.toolbarPlugin = createToolbarPlugin({
+            toolbarProps: props.toolbarProps,
+            imageDecorator
+        })
 
         this.mentionPlugin = createMentionPlugin()
         this.connectedLinksPlugin = createConnectedLinksPlugin()
@@ -283,6 +287,11 @@ export default class RichField extends InputField<Props, State> {
         }
     }
 
+    _onDrop = (event: Event) => {
+        event.preventDefault()
+        this.setState({isDragging: false})
+    }
+
     _getField = () => {
         const {
             children, // eslint-disable-line
@@ -332,7 +341,7 @@ export default class RichField extends InputField<Props, State> {
                     onClick={this.focusEditor}
                     onDragOver={() => this.setState({isDragging: true})}
                     onDragLeave={() => this.setState({isDragging: false})}
-                    onDrop={() => this.setState({isDragging: false})}
+                    onDrop={this._onDrop}
                 >
                     {
                         alertMode ? (

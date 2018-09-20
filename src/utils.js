@@ -42,7 +42,7 @@ import {AUTHORIZED_NOTIFICATION_TYPES} from './state/notifications/actions'
 
 import type {notificationType} from './state/notifications/actions'
 import type {viewsStateType} from './state/views/types'
-import type {actionTemplateType, attachmentType, esprimaParse, reactRouterRoute, schemasType} from './types'
+import type {actionTemplateType, esprimaParse, reactRouterRoute, schemasType} from './types'
 
 type userType = { roles: Array<string | { name: string }> } | Map<*, *>
 type messageType = {
@@ -922,7 +922,7 @@ export function loadScript(url: string, callback: () => void) {
  * @param type: the type of file we're uploading
  * @return {Array} - [{content_type, name, size, url}]
  */
-export const uploadFiles = (files: Array<attachmentType>, type: string = ''): Promise<*> => {
+export const uploadFiles = (files: FileList | Array<File>, type: string = ''): Promise<*> => {
     const formData = new window.FormData()
 
     for (let i = 0; i < files.length; i++) {

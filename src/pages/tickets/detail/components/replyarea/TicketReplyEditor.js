@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import classnames from 'classnames'
-import {Map, List} from 'immutable'
+import {Map, List, fromJS} from 'immutable'
 import {connect} from 'react-redux'
 import _debounce from 'lodash/debounce'
 import _noop from 'lodash/noop'
@@ -13,6 +13,7 @@ import RichField from '../../../../common/forms/RichField'
 
 import {isRichType, acceptsOnlyImages, canLeaveInternalNote} from '../../../../../config/ticket'
 import {humanizeString} from '../../../../../utils'
+import {ATTACHMENT_SIZE_ERROR, getMaxAttachmentSize} from '../../../../../utils/file'
 
 import * as macroActions from '../../../../../state/macro/actions'
 import * as newMessageActions from '../../../../../state/newMessage/actions'
@@ -66,6 +67,7 @@ type Props = {
     newMessage: Map<*,*>,
     newMessageType: string,
     ticket: Map<*,*>,
+    attachments: List<*>,
 
     addAttachments: typeof newMessageActions.addAttachments,
     notify: ({}) => void,
@@ -83,7 +85,8 @@ export class TicketReplyEditor extends React.Component<Props, State> {
     richArea: richAreaType
 
     static defaultProps = {
-        richAreaRef: _noop
+        richAreaRef: _noop,
+        attachments: fromJS([])
     }
 
     componentWillMount() {
@@ -173,12 +176,13 @@ export class TicketReplyEditor extends React.Component<Props, State> {
         return editorState
     }
 
-    _canAddAttachments = (files: filesType) => {
-        const {newMessageType, newMessage} = this.props
+    _canAddAttachments = (fileList: filesType = []) => {
+        // FileList does not have map
+        const files = Array.from(fileList)
+        const {newMessageType, newMessage, attachments} = this.props
         const cantAddAttachmentBecauseOfText = TEXT_OR_ATTACHMENT_SOURCE_TYPES.includes(newMessageType)
             && newMessage.getIn(['newMessage', 'body_text'])
 
-        const attachments = newMessage.getIn(['newMessage', 'attachments']) || List()
         const tooManyAttachments = ONLY_ONE_ATTACHMENT_SOURCE_TYPES.includes(newMessageType)
             && (attachments.size >= 1 || files.length > 1)
 
@@ -198,6 +202,14 @@ export class TicketReplyEditor extends React.Component<Props, State> {
                 message: `When using ${humanizeString(newMessageType)}, you can only send attachments one by one.`
             })
 
+            return false
+        }
+
+        // check total attachments size.
+        const currentSize = this._getFilesSize(files)
+        const maxSize = getMaxAttachmentSize(this._getEditorState(), attachments.toJS())
+        if (currentSize >= maxSize) {
+            this.props.notify(ATTACHMENT_SIZE_ERROR)
             return false
         }
 
@@ -267,8 +279,12 @@ export class TicketReplyEditor extends React.Component<Props, State> {
         updateMessageText(this.props, editorState)
     }
 
+    _getFilesSize = (files: Array<File>) => {
+        return files.reduce((sum, file) => sum + (file.size || 0), 0)
+    }
+
     render() {
-        const {newMessage, newMessageType, agents, richAreaRef, notify} = this.props
+        const {newMessage, newMessageType, agents, richAreaRef, notify, attachments} = this.props
 
         const isNewMessageRichType = isRichType(newMessageType)
         const newMessageAcceptsOnlyImages = acceptsOnlyImages(newMessageType)
@@ -324,9 +340,9 @@ export class TicketReplyEditor extends React.Component<Props, State> {
                     />
                 </div>
             ],
+            attachments
         }
 
-        const attachments = this.props.newMessage.getIn(['newMessage', 'attachments']) || List()
         const cantWriteTextBecauseOfAttachments =
             TEXT_OR_ATTACHMENT_SOURCE_TYPES.includes(this.props.newMessage.getIn(['newMessage', 'source', 'type']))
             && attachments.size >= 1
@@ -377,6 +393,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
                     placeholder="Click here to reply, or press r."
                     notify={notify}
                     canInsertInlineImages={canInsertInlineImages}
+                    attachments={attachments}
                     canDropFiles
                     signature
                     spellCheck
@@ -389,6 +406,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
 function mapStateToProps(state) {
     return {
         newMessageType: newMessageSelectors.getNewMessageType(state),
+        attachments: newMessageSelectors.getNewMessageAttachments(state),
         newMessage: state.newMessage,
         agents: getOtherAgents(state),
     }

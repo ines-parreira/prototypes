@@ -123,8 +123,7 @@ describe('TicketReplyEditor component', () => {
             })
         })
 
-        it('should allow to add attachments for source types in TEXT_OR_ATTACHMENT_SOURCE_TYPES because there is no ' +
-            'text', () => {
+        it('should allow to add attachments for source types in TEXT_OR_ATTACHMENT_SOURCE_TYPES because there is no text', () => {
             TEXT_OR_ATTACHMENT_SOURCE_TYPES.forEach((sourceType) => {
                 const component = shallow(
                     <TicketReplyEditor
@@ -178,12 +177,12 @@ describe('TicketReplyEditor component', () => {
                             newMessage: {
                                 source: {
                                     type: sourceType,
-                                },
-                                attachments: ['attachment already existing'],
+                                }
                             },
                             state: {}
                         })}
                         newMessageType={sourceType}
+                        attachments={fromJS([{name: 'attachment already existing'}])}
                         {...commonProps}
                     />
                 ).instance()
@@ -201,7 +200,6 @@ describe('TicketReplyEditor component', () => {
                                 source: {
                                     type: sourceType,
                                 },
-                                attachments: [],
                             },
                             state: {}
                         })}
@@ -224,7 +222,6 @@ describe('TicketReplyEditor component', () => {
                                 source: {
                                     type: sourceType,
                                 },
-                                attachments: [],
                             },
                             state: {}
                         })}
@@ -248,10 +245,10 @@ describe('TicketReplyEditor component', () => {
                             source: {
                                 type: sourceType,
                             },
-                            attachments: ['attachment already existing'],
                         },
                         state: {}
                     })}
+                    attachments={fromJS([{name: 'attachment already existing'}])}
                     newMessageType={sourceType}
                     {...commonProps}
                 />

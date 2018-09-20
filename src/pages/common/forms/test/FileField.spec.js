@@ -90,4 +90,30 @@ describe('FileField', () => {
         expect(uploadFiles).not.toBeCalled()
         expect(calledNotify).toBe(true)
     })
+
+    it('should not allow uploading files larger than maxSize', () => {
+        const notify = jest.fn()
+
+        const component = mount(
+            <FileField
+                {...minProps}
+                maxSize={1000}
+                notify={notify}
+            />
+        )
+
+        component.find('input').simulate('change', {
+            target: {
+                files: [
+                    {size: 1000},
+                    {size: 1000},
+                ]
+            }
+        })
+
+        expect(notify).toBeCalledWith({
+            message: 'Failed to upload files. Attached files must be smaller than 10MB.',
+            status: 'error'
+        })
+    })
 })

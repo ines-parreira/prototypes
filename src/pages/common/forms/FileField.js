@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React from 'react'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
 import {Button, Input} from 'reactstrap'
@@ -7,34 +8,51 @@ import _isArray from 'lodash/isArray'
 import {notify} from './../../../state/notifications/actions'
 
 import {uploadFiles} from '../../../utils'
+import {ATTACHMENT_SIZE_ERROR} from '../../../utils/file'
 
 import InputField from './InputField'
 
 import css from './FileField.less'
 
-export class FileField extends InputField {
-    static propTypes = Object.assign({
-        noPreview: PropTypes.bool.isRequired,
-        returnFiles: PropTypes.bool.isRequired,
-        uploadType: PropTypes.string,
-    }, InputField.propTypes)
+const DEFAULT_ERROR = 'Failed to upload files. Please try again later.'
 
+type Props = {
+    noPreview: boolean,
+    returnFiles: boolean,
+    uploadType?: string,
+    maxSize?: number,
+}
+
+type State = {
+    isUploading: boolean
+}
+
+export class FileField extends InputField<Props, State> {
     static defaultProps = {
         noPreview: false,
         placeholder: 'Select a file...',
         returnFiles: false, // return urls of files only by default
         type: 'file',
+        maxSize: 0,
     }
 
     state = {
         isUploading: false,
     }
 
-    _onChange = (e) => {
-        const files = e.target.files
-        this.setState({isUploading: true})
+    _getFilesSize = (files: Array<File>) => {
+        return files.reduce((sum, file) => sum + (file.size || 0), 0)
+    }
 
+    // TODO (@ghinda) switch to SyntheticEvent<HTMLInputElement> after react upgrade
+    _onChange = (event: {target: {files: FileList}}) => {
+        const files = event.target.files
         const filesArray = Array.from(files)
+        if (this.props.maxSize && this._getFilesSize(filesArray) > this.props.maxSize) {
+            return this.props.notify(ATTACHMENT_SIZE_ERROR)
+        }
+
+        this.setState({isUploading: true})
 
         let isSvg = false
 
@@ -80,12 +98,10 @@ export class FileField extends InputField {
             this.props.onChange(result)
         }, (error) => {
             this.setState({isUploading: false})
-            let errorMessage = fromJS(error.response).getIn(['data', 'error', 'msg'])
+            let errorMessage = fromJS(error.response).getIn(['data', 'error', 'msg'], DEFAULT_ERROR)
 
-            if (!errorMessage) {
-                errorMessage = error.response.status === 413
-                    ? 'Failed to upload files. One or more files are larger than the size limit of 10MB.'
-                    : 'Failed to upload files. Please try again later.'
+            if (error.response.status === 413) {
+                return this.props.notify(ATTACHMENT_SIZE_ERROR)
             }
 
             this.props.notify({
@@ -109,6 +125,7 @@ export class FileField extends InputField {
             returnFiles, // eslint-disable-line
             notify, // eslint-disable-line
             uploadType, // eslint-disable-line
+            maxSize, // eslint-disable-line
             value,
             ...rest,
         } = this.props

@@ -6,14 +6,15 @@ import {getToolbarActions} from './utils'
 import Toolbar from './Toolbar'
 import Image from './components/Image'
 
-// documentation: https://github.com/draft-js-plugins/draft-js-plugins/blob/master/HOW_TO_CREATE_A_PLUGIN.md
+// documentation:
+// https://github.com/draft-js-plugins/draft-js-plugins/blob/master/HOW_TO_CREATE_A_PLUGIN.md
 
 const toolbarPlugin = (config = {}) => {
     const toolbarStore = createStore()
 
     const toolbarProps = {
         toolbarStore,
-        actions: getToolbarActions(toolbarStore),
+        actions: getToolbarActions(config.toolbarProps),
     }
 
     return {

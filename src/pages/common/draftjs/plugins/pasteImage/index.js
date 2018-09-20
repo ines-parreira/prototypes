@@ -5,7 +5,7 @@ import {insertInlineImages, isImage} from '../utils'
 
 import type {pluginArgsType, imagePluginConfigType} from '../types'
 
-const _handlePastedFiles = (config) => (files: Array<Blob>, pluginArgs: pluginArgsType) => {
+const _handlePastedFiles = (config) => (files: Array<File>, pluginArgs: pluginArgsType) => {
     const images = files.filter(isImage)
     if (!images.length) {
         return 'not-handled'

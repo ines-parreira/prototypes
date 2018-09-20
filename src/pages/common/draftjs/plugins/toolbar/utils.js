@@ -3,9 +3,12 @@ import _forEach from 'lodash/forEach'
 
 import actions from './actions'
 
-export const getToolbarActions = () => {
+export const getToolbarActions = (toolbarProps = {}) => {
     return actions.map((nativeAction) => {
         const updatedAction = {...nativeAction} // clone native action
+
+        // add toolbar props to action, to use parent props in action
+        updatedAction.toolbarProps = toolbarProps
 
         // complete toggle function configuration if not specified
         if (!updatedAction.functions) {

@@ -4,6 +4,7 @@ import AddLink from './components/AddLink'
 import AddImage from './components/AddImage'
 import AddEmoji from './components/AddEmoji'
 import {addImage} from '../utils'
+import {getMaxAttachmentSize} from '../../../../../utils/file'
 
 export default [
     {
@@ -92,9 +93,12 @@ export default [
         name: 'Insert image',
         component: AddImage,
         functions: {
-            addImage: (block, action, editorState, setEditorState, url) => {
-                const newEditorState = addImage(editorState, url)
+            addImage: (block, action, editorState, setEditorState, url, size = 0) => {
+                const newEditorState = addImage(editorState, url, size)
                 setEditorState(newEditorState)
+            },
+            getMaxAttachmentSize: (block, action, editorState) => {
+                return getMaxAttachmentSize(editorState, action.toolbarProps.attachments)
             }
         },
     },

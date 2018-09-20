@@ -3360,6 +3360,7 @@ exports[`RichField should render immutable variable 1`] = `
                     "key": "bold",
                     "name": "Bold",
                     "style": "BOLD",
+                    "toolbarProps": Object {},
                   },
                   Object {
                     "active": [Function],
@@ -3372,6 +3373,7 @@ exports[`RichField should render immutable variable 1`] = `
                     "key": "italic",
                     "name": "Italic",
                     "style": "ITALIC",
+                    "toolbarProps": Object {},
                   },
                   Object {
                     "active": [Function],
@@ -3384,6 +3386,7 @@ exports[`RichField should render immutable variable 1`] = `
                     "key": "underline",
                     "name": "Underline",
                     "style": "UNDERLINE",
+                    "toolbarProps": Object {},
                   },
                   Object {
                     "active": [Function],
@@ -3396,17 +3399,20 @@ exports[`RichField should render immutable variable 1`] = `
                     "isDisabled": [Function],
                     "key": "link",
                     "name": "Insert link",
+                    "toolbarProps": Object {},
                   },
                   Object {
                     "active": [Function],
                     "component": [Function],
                     "functions": Object {
                       "addImage": [Function],
+                      "getMaxAttachmentSize": [Function],
                     },
                     "isActive": [Function],
                     "isDisabled": [Function],
                     "key": "image",
                     "name": "Insert image",
+                    "toolbarProps": Object {},
                   },
                   Object {
                     "active": [Function],
@@ -3418,6 +3424,7 @@ exports[`RichField should render immutable variable 1`] = `
                     "isDisabled": [Function],
                     "key": "emoji",
                     "name": "Insert emoji",
+                    "toolbarProps": Object {},
                   },
                 ]
               }
@@ -3490,6 +3497,7 @@ exports[`RichField should render immutable variable 1`] = `
                         "isDisabled": [Function],
                         "key": "link",
                         "name": "Insert link",
+                        "toolbarProps": Object {},
                       }
                     }
                     functions={
@@ -3537,16 +3545,19 @@ exports[`RichField should render immutable variable 1`] = `
                         "component": [Function],
                         "functions": Object {
                           "addImage": [Function],
+                          "getMaxAttachmentSize": [Function],
                         },
                         "isActive": [Function],
                         "isDisabled": [Function],
                         "key": "image",
                         "name": "Insert image",
+                        "toolbarProps": Object {},
                       }
                     }
                     functions={
                       Object {
                         "addImage": [Function],
+                        "getMaxAttachmentSize": [Function],
                       }
                     }
                     isActive={false}
@@ -3592,6 +3603,7 @@ exports[`RichField should render immutable variable 1`] = `
                         "isDisabled": [Function],
                         "key": "emoji",
                         "name": "Insert emoji",
+                        "toolbarProps": Object {},
                       }
                     }
                     functions={
@@ -5845,6 +5857,7 @@ exports[`RichField should render mutable variable 1`] = `
                     "key": "bold",
                     "name": "Bold",
                     "style": "BOLD",
+                    "toolbarProps": Object {},
                   },
                   Object {
                     "active": [Function],
@@ -5857,6 +5870,7 @@ exports[`RichField should render mutable variable 1`] = `
                     "key": "italic",
                     "name": "Italic",
                     "style": "ITALIC",
+                    "toolbarProps": Object {},
                   },
                   Object {
                     "active": [Function],
@@ -5869,6 +5883,7 @@ exports[`RichField should render mutable variable 1`] = `
                     "key": "underline",
                     "name": "Underline",
                     "style": "UNDERLINE",
+                    "toolbarProps": Object {},
                   },
                   Object {
                     "active": [Function],
@@ -5881,17 +5896,20 @@ exports[`RichField should render mutable variable 1`] = `
                     "isDisabled": [Function],
                     "key": "link",
                     "name": "Insert link",
+                    "toolbarProps": Object {},
                   },
                   Object {
                     "active": [Function],
                     "component": [Function],
                     "functions": Object {
                       "addImage": [Function],
+                      "getMaxAttachmentSize": [Function],
                     },
                     "isActive": [Function],
                     "isDisabled": [Function],
                     "key": "image",
                     "name": "Insert image",
+                    "toolbarProps": Object {},
                   },
                   Object {
                     "active": [Function],
@@ -5903,6 +5921,7 @@ exports[`RichField should render mutable variable 1`] = `
                     "isDisabled": [Function],
                     "key": "emoji",
                     "name": "Insert emoji",
+                    "toolbarProps": Object {},
                   },
                 ]
               }
@@ -5975,6 +5994,7 @@ exports[`RichField should render mutable variable 1`] = `
                         "isDisabled": [Function],
                         "key": "link",
                         "name": "Insert link",
+                        "toolbarProps": Object {},
                       }
                     }
                     functions={
@@ -6022,16 +6042,19 @@ exports[`RichField should render mutable variable 1`] = `
                         "component": [Function],
                         "functions": Object {
                           "addImage": [Function],
+                          "getMaxAttachmentSize": [Function],
                         },
                         "isActive": [Function],
                         "isDisabled": [Function],
                         "key": "image",
                         "name": "Insert image",
+                        "toolbarProps": Object {},
                       }
                     }
                     functions={
                       Object {
                         "addImage": [Function],
+                        "getMaxAttachmentSize": [Function],
                       }
                     }
                     isActive={false}
@@ -6077,6 +6100,7 @@ exports[`RichField should render mutable variable 1`] = `
                         "isDisabled": [Function],
                         "key": "emoji",
                         "name": "Insert emoji",
+                        "toolbarProps": Object {},
                       }
                     }
                     functions={

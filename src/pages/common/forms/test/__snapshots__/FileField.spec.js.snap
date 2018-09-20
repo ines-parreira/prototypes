@@ -164,6 +164,7 @@ exports[`FileField should render preview 1`] = `
 
 exports[`FileField should use default props 1`] = `
 Object {
+  "maxSize": 0,
   "noPreview": false,
   "onChange": [Function],
   "placeholder": "Select a file...",

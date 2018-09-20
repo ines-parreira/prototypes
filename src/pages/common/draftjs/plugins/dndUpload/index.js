@@ -6,7 +6,7 @@ import {insertInlineImages, isImage} from '../utils'
 import type {SelectionState} from 'draft-js'
 import type {pluginArgsType, imagePluginConfigType} from '../types'
 
-const _handleDroppedFiles = (config) => (selection: SelectionState, files: Array<Blob>, pluginArgs: pluginArgsType) => {
+const _handleDroppedFiles = (config) => (selection: SelectionState, files: Array<File>, pluginArgs: pluginArgsType) => {
     // filter images
     let others = []
     let images = []

@@ -17,14 +17,22 @@ export default class AddImage extends React.Component {
     state = {
         url: '',
         mode: 'upload',
+        maxSize: 0
+    }
+
+    _updateMaxSize = () => {
+        const maxSize = this.props.functions.getMaxAttachmentSize()
+        this.setState({maxSize})
     }
 
     _changeMode = (mode) => {
         this.setState({mode})
     }
 
-    _handleImage = (url) => {
-        this.props.functions.addImage(url)
+    _handleImage = (files) => {
+        files.forEach((file) => {
+            this.props.functions.addImage(file.url, file.size)
+        })
         this.popover._close()
     }
 
@@ -84,7 +92,10 @@ export default class AddImage extends React.Component {
                                 key="file"
                                 accept="image/*"
                                 placeholder="Select image..."
+                                onClick={this._updateMaxSize}
                                 onChange={this._handleImage}
+                                maxSize={this.state.maxSize}
+                                returnFiles
                                 inline
                                 noPreview
                             />
