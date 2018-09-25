@@ -74,7 +74,8 @@ export const updateMacro = (macro: Map<*, *>) => (dispatch: dispatchType): Promi
             return dispatch({
                 type: constants.UPDATE_MACRO_ERROR,
                 error,
-                reason: 'Failed to update macro'
+                reason: 'Failed to update macro',
+                verbose: true
             })
         })
 }
