@@ -99,9 +99,7 @@ export default class TicketMessageBody extends React.Component<Props, State> {
         }
 
         return (
-            <div className={classnames(css.component, {
-                [css.bodyText]: message.body_html
-            }, className)}>
+            <div className={classnames(css.component, className)}>
                 {content}
                 {extension}
             </div>

@@ -20,11 +20,11 @@ import * as ticketActions from '../ticket/actions'
 import {renderTemplate} from '../../pages/common/utils/template'
 
 import {
-    convertToHTML,
     getActionTemplate,
     uploadFiles,
     toJS,
 } from '../../utils'
+import {convertToHTML} from '../../utils/editor'
 
 import {
     guessReceiversFromTicket,

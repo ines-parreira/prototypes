@@ -18,7 +18,8 @@ import DatetimePicker from '../../../common/forms/DatetimePicker'
 
 import InputField from '../../forms/InputField'
 
-import {convertToHTML, humanizeString} from '../../../../utils'
+import {humanizeString} from '../../../../utils'
+import {convertToHTML} from '../../../../utils/editor'
 import TagsSelect from './widget/TagsSelect'
 import MultiSelectField from '../../forms/MultiSelectField'
 import {

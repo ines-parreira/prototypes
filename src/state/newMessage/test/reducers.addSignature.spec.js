@@ -6,7 +6,7 @@ import {fromJS} from 'immutable'
 import {ContentState} from 'draft-js'
 import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
-import {convertToHTML} from '../../../utils'
+import {convertToHTML} from '../../../utils/editor'
 
 describe('New message reducers', () => {
     describe('NEW_MESSAGE_ADD_SIGNATURE action', () => {

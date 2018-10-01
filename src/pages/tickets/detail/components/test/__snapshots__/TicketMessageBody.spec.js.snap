@@ -20,7 +20,7 @@ exports[`components TicketMessageBody html by default 1`] = `
   }
 >
   <div
-    className="component bodyText"
+    className="component"
   >
     <div>
       <div
@@ -404,7 +404,7 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
 </TicketMessageBody>
 `;
 
-exports[`components TicketMessageBody should linkify body_html 1`] = `"<div class=\\"component bodyText\\"><div><div class=\\"\\">html <a href=\\"http://gorgias.io/\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">http://gorgias.io/</a></div></div></div>"`;
+exports[`components TicketMessageBody should linkify body_html 1`] = `"<div class=\\"component\\"><div><div class=\\"\\">html <a href=\\"http://gorgias.io/\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">http://gorgias.io/</a></div></div></div>"`;
 
 exports[`components TicketMessageBody should linkify body_text 1`] = `
 <TicketMessageBody
@@ -443,7 +443,7 @@ exports[`components TicketMessageBody should linkify body_text 1`] = `
 `;
 
 exports[`components TicketMessageBody should linkify invalid body_html 1`] = `
-"<div class=\\"component bodyText\\"><div><div class=\\"\\">
+"<div class=\\"component\\"><div><div class=\\"\\">
                                     
                                     
                                 
@@ -456,9 +456,9 @@ exports[`components TicketMessageBody should linkify invalid body_html 1`] = `
                         </table></div></div></div>"
 `;
 
-exports[`components TicketMessageBody should not escape quotes 1`] = `"<div class=\\"component bodyText\\"><div><div class=\\"\\">these \\"quotes\\" here</div></div></div>"`;
+exports[`components TicketMessageBody should not escape quotes 1`] = `"<div class=\\"component\\"><div><div class=\\"\\">these \\"quotes\\" here</div></div></div>"`;
 
-exports[`components TicketMessageBody should not remove invalid characters 1`] = `"<div class=\\"component bodyText\\"><div><div class=\\"\\">Thank you &lt;3 you are the best</div></div></div>"`;
+exports[`components TicketMessageBody should not remove invalid characters 1`] = `"<div class=\\"component\\"><div><div class=\\"\\">Thank you &lt;3 you are the best</div></div></div>"`;
 
 exports[`components TicketMessageBody should set new-line-interpret class 1`] = `
 <TicketMessageBody
@@ -520,7 +520,7 @@ exports[`components TicketMessageBody use stripped_html if available 1`] = `
   }
 >
   <div
-    className="component bodyText"
+    className="component"
   >
     <div>
       <div

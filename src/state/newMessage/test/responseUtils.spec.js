@@ -2,7 +2,7 @@ import {ContentState, EditorState, convertToRaw} from 'draft-js'
 import addMention from '../../../pages/common/draftjs/plugins/mentions/modifiers/addMention'
 import {fromJS} from 'immutable'
 import * as responseUtils from '../responseUtils'
-import {convertToHTML} from '../../../utils'
+import {convertToHTML} from '../../../utils/editor'
 
 describe('convertToRawWithoutMentions', () => {
     it('should return a raw contentState without any mention entities', () => {

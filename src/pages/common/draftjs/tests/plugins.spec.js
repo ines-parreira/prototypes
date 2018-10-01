@@ -6,7 +6,7 @@ import * as utils from './utils'
 
 import TestEditor from './TestEditor'
 
-import {convertFromHTML} from '../../../../utils'
+import {convertFromHTML} from '../../../../utils/editor'
 
 import createToolbarPlugin from '../plugins/toolbar'
 import {

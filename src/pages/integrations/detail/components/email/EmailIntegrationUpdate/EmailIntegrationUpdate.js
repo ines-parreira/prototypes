@@ -18,7 +18,8 @@ import {
     FormGroup,
 } from 'reactstrap'
 
-import {convertToHTML, isGorgiasSupportAddress} from '../../../../../../utils'
+import {isGorgiasSupportAddress} from '../../../../../../utils'
+import {convertToHTML} from '../../../../../../utils/editor'
 import Loader from '../../../../../common/components/Loader'
 import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker'
 import * as notificationActions from '../../../../../../state/notifications/actions'

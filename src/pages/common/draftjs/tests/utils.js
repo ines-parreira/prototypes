@@ -1,7 +1,7 @@
 import {EditorState, CompositeDecorator} from 'draft-js'
 import _isArray from 'lodash/isArray'
 
-import {convertFromHTML} from '../../../../utils'
+import {convertFromHTML} from '../../../../utils/editor'
 
 export const editorStateFromHtml = (html) => {
     const editorState = EditorState.createEmpty()

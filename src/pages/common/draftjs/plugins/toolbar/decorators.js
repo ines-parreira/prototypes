@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Tooltip from '../../../components/Tooltip'
-import {linkify} from '../../../../../utils'
+import {linkify} from '../../../../../utils/editor'
 
 // documentation: https://github.com/draft-js-plugins/draft-js-plugins/blob/master/HOW_TO_CREATE_A_PLUGIN.md
 

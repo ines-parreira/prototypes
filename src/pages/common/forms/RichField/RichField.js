@@ -19,7 +19,8 @@ import createPasteImagePlugin from '../../draftjs/plugins/pasteImage'
 import createDndUploadPlugin from '../../draftjs/plugins/dndUpload'
 
 import InputField from '../InputField'
-import {convertFromHTML, convertToHTML, removeMentions} from '../../../../utils'
+import {removeMentions} from '../../../../utils'
+import {convertFromHTML, convertToHTML} from '../../../../utils/editor'
 import {scrollToReactNode} from '../../../common/utils/keyboard'
 
 import {attachEntitiesToVariables} from '../../draftjs/plugins/variables/utils'

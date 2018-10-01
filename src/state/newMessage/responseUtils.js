@@ -5,7 +5,7 @@ import _findIndex from 'lodash/findIndex'
 import _pick from 'lodash/pick'
 import _pickBy from 'lodash/pickBy'
 import {fromJS} from 'immutable'
-import {convertFromHTML} from '../../utils'
+import {convertFromHTML} from '../../utils/editor'
 import {isRichType} from '../../config/ticket'
 import {convertToRaw, convertFromRaw, ContentState, SelectionState, Modifier} from 'draft-js'
 

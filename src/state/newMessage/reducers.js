@@ -2,7 +2,7 @@
 import * as types from './constants'
 import {fromJS} from 'immutable'
 import {convertToRaw, ContentState} from 'draft-js'
-import {convertToHTML} from '../../utils'
+import {convertToHTML} from '../../utils/editor'
 import * as responseUtils from './responseUtils'
 import {getReceiversProperties} from './selectors'
 
