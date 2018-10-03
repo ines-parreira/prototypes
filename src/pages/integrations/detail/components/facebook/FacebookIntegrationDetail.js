@@ -27,7 +27,7 @@ export default class FacebookIntegrationDetail extends React.Component {
     state = {
         settings: {
             posts_enabled: true,
-            private_messages_enabled: true,
+            messenger_enabled: true,
             import_history_enabled: true,
         },
         askDisableConfirmation: false,
@@ -157,11 +157,11 @@ export default class FacebookIntegrationDetail extends React.Component {
                     <div className="d-md-flex">
                         <FormGroup className="mr-3">
                             <BooleanField
-                                name="private_messages_enabled"
+                                name="messenger_enabled"
                                 type="checkbox"
                                 label="Enable Messenger"
-                                value={this.state.settings.private_messages_enabled}
-                                onChange={value => this._onChange(value, 'private_messages_enabled')}
+                                value={this.state.settings.messenger_enabled}
+                                onChange={value => this._onChange(value, 'messenger_enabled')}
                             />
                             <BooleanField
                                 name="posts_enabled"

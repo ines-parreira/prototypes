@@ -57,7 +57,7 @@ export default class FacebookIntegrationSetup extends React.Component {
             .forEach((integration) => {
                 pages[integration.get('id')] = {
                     page_enabled: false,
-                    private_messages_enabled: true,
+                    messenger_enabled: true,
                     posts_enabled: true,
                     instagram_comments_enabled: !!integration.getIn(['meta', 'instagram', 'id']),
                     import_history_enabled: false,
@@ -77,15 +77,6 @@ export default class FacebookIntegrationSetup extends React.Component {
             const settings = this.state.pages[integration.get('id')] || {}
 
             if (settings.page_enabled) {
-                // If the private messages are enabled, then enable messenger by default
-                // This is to avoid duplicate messages when receiving the first Messenger message on a new Facebook
-                // integration.
-                // todo(@martin): when we have completely deactivated `conversations` and use only `messenger`,
-                // definitely replace `private_messages_enabled` by `messenger_enabled`
-                if (settings.private_messages_enabled) {
-                    settings.messenger_enabled = true
-                }
-
                 const updated = integration
                     .set('deleted_datetime', null)
                     .mergeDeep({
@@ -109,7 +100,7 @@ export default class FacebookIntegrationSetup extends React.Component {
 
         // if page_enabled option changes, set the same value for following values
         if (name === 'page_enabled') {
-            this.state.pages[id]['private_messages_enabled'] = value
+            this.state.pages[id]['messenger_enabled'] = value
             this.state.pages[id]['posts_enabled'] = value
             this.state.pages[id]['instagram_comments_enabled'] = value && canEnableInstagram
         }
@@ -179,11 +170,11 @@ export default class FacebookIntegrationSetup extends React.Component {
                                     <div className="d-md-flex">
                                         <FormGroup className="mr-5">
                                             <BooleanField
-                                                name={`${id}.private_messages_enabled`}
+                                                name={`${id}.messenger_enabled`}
                                                 type="checkbox"
                                                 label="Enable Messenger"
-                                                value={this._getValue(id, 'private_messages_enabled')}
-                                                onChange={(value) => this._onChange(integration, value, id, 'private_messages_enabled')}
+                                                value={this._getValue(id, 'messenger_enabled')}
+                                                onChange={(value) => this._onChange(integration, value, id, 'messenger_enabled')}
                                             />
                                             <BooleanField
                                                 name={`${id}.posts_enabled`}
