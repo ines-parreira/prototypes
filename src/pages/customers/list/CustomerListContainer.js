@@ -12,7 +12,7 @@ import * as viewsActions from '../../../state/views/actions'
 import * as viewsSelectors from '../../../state/views/selectors'
 
 import CustomerListActions from './components/CustomerListActions'
-import ViewTable from '../../common/components/ViewTable/Page'
+import ViewTable from '../../common/components/ViewTable/ViewTable'
 
 import CustomerForm from '../common/components/CustomerForm'
 import Modal from '../../common/components/Modal'

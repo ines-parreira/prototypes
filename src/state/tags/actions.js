@@ -5,16 +5,11 @@ import {notify} from '../notifications/actions'
 
 import type {List} from 'immutable'
 import type {actionType, thunkActionType, dispatchType, getStateType} from '../types'
+import {createErrorNotification} from '../utils'
 type tagType = {
     id: string,
     name: string
 }
-
-export const fail = (error: {}, reason: string) => ({
-    type: 'ERROR',
-    error,
-    reason,
-})
 
 /**types
  * Add tags to ticket.
@@ -46,12 +41,12 @@ export function fetchTags(page: ?number, sort: string = 'usage', reverse: boolea
             }
         })
             .then((json = {}) => json.data)
-            .then(resp => {
+            .then((resp) => {
                 return dispatch({
                     type: constants.FETCH_TAG_LIST_SUCCESS,
                     resp
                 })
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: constants.FETCH_TAG_LIST_ERROR,
                     error,
@@ -121,8 +116,8 @@ export const save = (tag: tagType): thunkActionType => {
                     tag
                 })
             })
-            .catch(error => {
-                return dispatch(fail(error, 'Unable to save tag'))
+            .catch((error) => {
+                return dispatch(createErrorNotification(error, 'Unable to save tag'))
             })
     }
 }
@@ -169,8 +164,8 @@ export const remove = (id: string): thunkActionType => {
                     status: 'success',
                     message: 'Tag deleted successfully',
                 }))
-            }, error => {
-                return dispatch(fail(error, 'Unable to delete the tag'))
+            }, (error) => {
+                return dispatch(createErrorNotification(error, 'Unable to delete the tag'))
             })
     }
 }
@@ -187,8 +182,8 @@ export const bulkDelete = (ids: Array<string>): thunkActionType => {
                     status: 'success',
                     message: `${ids.length} tags deleted successfully`
                 }))
-            }, error => {
-                return dispatch(fail(error, 'Unable to delete tags'))
+            }, (error) => {
+                return dispatch(createErrorNotification(error, 'Unable to delete tags'))
             })
     }
 }
@@ -213,7 +208,7 @@ export const merge = (ids: List<*>): thunkActionType => {
                     message: 'Tags merged successfully',
                 }))
             }, (error) => {
-                return dispatch(fail(error, 'Unable to merge these tags'))
+                return dispatch(createErrorNotification(error, 'Unable to merge these tags'))
             })
     }
 }

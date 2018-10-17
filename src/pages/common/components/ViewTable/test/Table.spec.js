@@ -21,22 +21,25 @@ jest.mock('../../../../../state/views/actions', () => {
 })
 
 describe('ViewTable::Table', () => {
-    const fixtureView = viewsFixtures.view
-
     const minStore = {
         views: fromJS({
-            active: fixtureView,
+            active: viewsFixtures.view,
         })
     }
 
     const viewConfig = viewsConfig.views.first()
 
     const minProps = {
+        view: fromJS({}),
         type: viewConfig.get('name'),
-        items: fromJS([ticketFixtures.ticket]),
         fields: viewConfig.get('fields').take(3),
+        config: viewsConfig.getConfigByName('ticket'),
+        items: fromJS([ticketFixtures.ticket]),
         isSearch: false,
         store: configureStore(minStore),
+        isLoading: () => false,
+        pagination: fromJS({}),
+        onPageChange: () => {},
     }
 
     beforeEach(() => {
@@ -47,10 +50,6 @@ describe('ViewTable::Table', () => {
         const component = shallow(
             <Table
                 {...minProps}
-                store={configureStore({
-                    ...minStore,
-                    views: fromJS({}),
-                })}
                 fields={fromJS([])}
             />
         ).dive()
@@ -62,8 +61,23 @@ describe('ViewTable::Table', () => {
         expect(component).toMatchSnapshot()
     })
 
+    it('default view not selectable', () => {
+        const component = shallow(
+            <Table
+                {...minProps}
+                selectable={false}
+            />
+        ).dive()
+        expect(component).toMatchSnapshot()
+    })
+
     it('default view with no items', () => {
-        const component = shallow(<Table {...minProps} items={fromJS([])} />).dive()
+        const component = shallow(
+            <Table
+                {...minProps}
+                items={fromJS([])}
+            />
+        ).dive()
         expect(component).toMatchSnapshot()
     })
 
@@ -72,14 +86,7 @@ describe('ViewTable::Table', () => {
             <Table
                 {...minProps}
                 items={fromJS([])}
-                store={configureStore({
-                    ...minStore,
-                    views: minStore.views.merge({
-                        active: {
-                            dirty: true,
-                        }
-                    })
-                })}
+                view={fromJS({dirty: true})}
             />
         ).dive()
         expect(component).toMatchSnapshot()
@@ -101,13 +108,9 @@ describe('ViewTable::Table', () => {
         const component = shallow(
             <Table
                 {...minProps}
+                selectedItemsIds={fromJS([ticketFixtures.ticket.id])}
                 store={configureStore({
-                    ...minStore,
-                    views: minStore.views.merge({
-                        _internal: {
-                            selectedItemsIds: [ticketFixtures.ticket.id],
-                        }
-                    })
+                    ...minStore
                 })}
             />
         ).dive()

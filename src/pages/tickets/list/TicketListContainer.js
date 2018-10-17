@@ -15,7 +15,7 @@ import * as ticketsSelectors from '../../../state/tickets/selectors'
 import * as viewsSelectors from '../../../state/views/selectors'
 
 import TicketListActions from './components/TicketListActions'
-import ViewTable from '../../common/components/ViewTable/Page'
+import ViewTable from '../../common/components/ViewTable/ViewTable'
 
 import type {Map, List} from 'immutable'
 import type {reactRouterLocation, reactRouterRoute} from '../../../types'

@@ -35,7 +35,6 @@ exports[`TicketDetailContainer component should render container for new ticket 
             "cancel": [Function],
             "create": [Function],
             "edit": [Function],
-            "fail": [Function],
             "fetchTags": [Function],
             "merge": [Function],
             "remove": [Function],

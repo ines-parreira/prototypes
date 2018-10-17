@@ -7,6 +7,7 @@ import {notify} from '../notifications/actions'
 
 import type {dispatchType, getStateType} from '../types'
 import type {ruleType} from './types'
+import {createErrorNotification} from '../utils'
 type operationType = 'UPDATE' | 'INSERT' | 'DELETE' | 'UPDATE_LOGICAL_OPERATOR' | 'DELETE_BINARY_EXPRESSION'
 
 export const addRuleStart = (type: string, code: string) => ({
@@ -46,12 +47,6 @@ export const initialiseCodeAST = (id: string) => ({
     id,
 })
 
-export const fail = (error: {} = {}, reason: string) => ({
-    type: 'ERROR',
-    error,
-    reason,
-})
-
 /**
  * Create a rule
  * @param data: the data of the rule to create
@@ -61,7 +56,7 @@ export const create = (data: ruleType) => (dispatch: dispatchType): Promise<disp
         .then((response) => {
             return dispatch(addRuleEnd(response.data))
         }, (error) => {
-            return dispatch(fail(error, 'Unable to create the rule'))
+            return dispatch(createErrorNotification(error, 'Unable to create the rule'))
         })
 }
 
@@ -90,7 +85,7 @@ export const save = (data: ruleType) => (dispatch: dispatchType): Promise<dispat
                 rule: fromJS(resp),
             })
         }, (error) => {
-            dispatch(fail(error, 'Unable to save the rule'))
+            dispatch(createErrorNotification(error, 'Unable to save the rule'))
 
             return dispatch({
                 type: constants.UPDATE_RULE_ERROR,
@@ -117,7 +112,7 @@ export const activate = (id: string) => (dispatch: dispatchType): Promise<dispat
                 id,
             }))
         }, (error) => {
-            return dispatch(fail(error, 'Unable to activate the rule'))
+            return dispatch(createErrorNotification(error, 'Unable to activate the rule'))
         })
 )
 
@@ -140,7 +135,7 @@ export const deactivate = (id: string) => (dispatch: dispatchType): Promise<disp
                 id,
             }))
         }, error => {
-            return dispatch(fail(error, 'Unable to deactivate the rule'))
+            return dispatch(createErrorNotification(error, 'Unable to deactivate the rule'))
         })
 )
 
@@ -162,7 +157,7 @@ export const remove = (id: string) => (dispatch: dispatchType): Promise<dispatch
                 id,
             }))
         }, error => {
-            return dispatch(fail(error, 'Unable to delete the rule'))
+            return dispatch(createErrorNotification(error, 'Unable to delete the rule'))
         })
 )
 
@@ -191,7 +186,7 @@ export function fetchRules() {
             .then(resp => {
                 return dispatch(receiveRules(resp.data))
             }, error => {
-                return dispatch(fail(error, 'Unable to receive rules'))
+                return dispatch(createErrorNotification(error, 'Unable to receive rules'))
             })
     }
 }

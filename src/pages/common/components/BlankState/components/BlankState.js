@@ -1,94 +1,101 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React from 'react'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import {Emoji} from '../../Emoji'
 
-export const BlankState = ({message, totalClosedTickets}) => {
-    const messages = [
-        {
-            count: 10,
-            icon: 'fa-sun-o',
-            title: 'No more tickets here!',
-            text: (
-                <div>
-                    You closed {totalClosedTickets} tickets this week, that's a good start
-                    <Emoji name="ok_hand" />
-                </div>
-            )
-        },
-        {
-            count: 100,
-            icon: 'fa-check',
-            title: 'Done!',
-            text: (
-                <div>
-                    You've helped {totalClosedTickets} people this week, you deserve some
-                    <Emoji name="cookie" />
-                </div>
-            )
-        },
-        {
-            count: 500,
-            icon: 'fa-asterisk',
-            title: 'All good!',
-            text: (
-                <div>
-                    You closed {totalClosedTickets} tickets this week, you're awesome
-                    <Emoji name="rocket" />
-                </div>
-            )
-        }
-    ]
 
-    // default content
-    let content = (
-        <div>
-            This view is empty. Enjoy your day!
-        </div>
-    )
+type Props = {
+    totalClosedTickets: ?number,
+    message: ?Object | ?string
+}
 
-    // if custom message, show that.
-    if (message) {
-        content = message
-    } else {
-        // match message based on number of closed tickets
-        let messageMatch
-        messages.reverse().some((message) => {
-            if (totalClosedTickets > message.count) {
-                messageMatch = message
-                return true
-            }
-        })
-
-        if (messageMatch) {
-            const iconClassName = classnames('blank-state-message-icon fa fa-fw', messageMatch.icon)
-
-            content = (
-                <div className="blank-state-message">
-                    <i className={iconClassName} />
-                    <h2 className="blank-state-message-title">
-                        {messageMatch.title}
-                    </h2>
-                    <div className="blank-state-message-text">
-                        {messageMatch.text}
-                    </div>
-                </div>
-            )
-        }
+export default class BlankState extends React.Component<Props> {
+    defaultProps = {
+        stats: fromJS({})
     }
 
-    return (
-        <div className="blank-state">
-            {content}
-        </div>
-    )
-}
+    render() {
+        const {message, totalClosedTickets} = this.props
 
-BlankState.propTypes = {
-    totalClosedTickets: PropTypes.number,
-    message: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
-}
+        const messages = [
+            {
+                count: 10,
+                icon: 'fa-sun-o',
+                title: 'No more tickets here!',
+                text: (
+                    <div>
+                        You closed {totalClosedTickets} tickets this week, that's a good start
+                        <Emoji name="ok_hand" />
+                    </div>
+                )
+            },
+            {
+                count: 100,
+                icon: 'fa-check',
+                title: 'Done!',
+                text: (
+                    <div>
+                        You've helped {totalClosedTickets} people this week, you deserve some
+                        <Emoji name="cookie" />
+                    </div>
+                )
+            },
+            {
+                count: 500,
+                icon: 'fa-asterisk',
+                title: 'All good!',
+                text: (
+                    <div>
+                        You closed {totalClosedTickets} tickets this week, you're awesome
+                        <Emoji name="rocket" />
+                    </div>
+                )
+            }
+        ]
 
-BlankState.defaultProps = {
-    stats: fromJS({})
+        // default content
+        let content = (
+            <div>
+                This view is empty. Enjoy your day!
+            </div>
+        )
+
+        // if custom message, show that.
+        if (message) {
+            content = message
+        } else {
+            // match message based on number of closed tickets
+            let messageMatch
+            messages.reverse().some((presetMessage) => {
+                if (totalClosedTickets && totalClosedTickets > presetMessage.count) {
+                    messageMatch = presetMessage
+                    return true
+                }
+                return false
+            })
+
+            if (messageMatch) {
+                const iconClassName = classnames('blank-state-message-icon fa fa-fw', messageMatch.icon)
+
+                content = (
+                    <div className="blank-state-message">
+                        <i className={iconClassName} />
+                        <h2 className="blank-state-message-title">
+                            {messageMatch.title}
+                        </h2>
+                        <div className="blank-state-message-text">
+                            {messageMatch.text}
+                        </div>
+                    </div>
+                )
+            }
+        }
+
+        return (
+            <div className="blank-state">
+                {content}
+            </div>
+        )
+    }
 }

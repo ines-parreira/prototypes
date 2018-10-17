@@ -11,8 +11,8 @@ import Modal from '../Modal'
 import {JSONTree} from './../JSONTree'
 
 import {sourceTypeToIcon} from '../../../../config/ticket'
-import BinaryChoiceField from './BinaryChoiceField'
-import MultiSelectBinaryChoiceField from './MultiSelectBinaryChoiceField'
+import BinaryChoiceField from '../BinaryChoiceField'
+import MultiSelectBinaryChoiceField from '../MultiSelectBinaryChoiceField'
 import {isCustomerDataPresent, isCustomerDataValid} from '../infobar/utils'
 import ConfirmButton from '../ConfirmButton'
 import Tooltip from '../Tooltip'
@@ -259,7 +259,7 @@ class MergeCustomersModal extends React.Component {
                             color="success"
                             type="submit"
                             loading={isLoading}
-                            content="This action is irreversible. Are you sure you want to merge those customers?"
+                            content="This action is irreversible. Are you sure you want to merge these customers?"
                         >
                             Merge customers
                         </ConfirmButton>

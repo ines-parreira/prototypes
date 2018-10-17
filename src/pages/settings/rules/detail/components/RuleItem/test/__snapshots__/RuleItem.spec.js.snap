@@ -2,32 +2,34 @@
 
 exports[`RuleItem component should render 1`] = `
 <tr
-  className="container undefined"
+  className="container container"
   data-id={17}
   id={17}
 >
   <td
     colSpan="3"
   >
-    <div>
+    <div
+      className="row"
+    >
       <div
-        className=""
+        className="col left-col"
       >
         <i
-          className="material-icons"
+          className="material-icons closeRuleIcon"
           onClick={[Function]}
         >
           keyboard_arrow_down
         </i>
       </div>
       <div
-        className=""
+        className="col center-col"
       >
         <div
           className="d-flex justify-content-between align-items-center mb-1"
         >
           <EditableTitle
-            className="font-weight-bold"
+            className="font-weight-bold title"
             onChange={[Function]}
             placeholder="Name"
             size="md"
@@ -41,6 +43,7 @@ exports[`RuleItem component should render 1`] = `
           tag="div"
         >
           <InputField
+            className="rule-description"
             onChange={[Function]}
             placeholder="Description"
             rows="1"
@@ -50,7 +53,7 @@ exports[`RuleItem component should render 1`] = `
         </FormGroup>
       </div>
       <div
-        className=""
+        className="col right-col"
       >
         <div
           id="rule-toggle-17"
@@ -97,7 +100,9 @@ exports[`RuleItem component should render 1`] = `
         </Popover>
       </div>
     </div>
-    <div>
+    <div
+      className="row"
+    >
       <div
         className="full-width"
       >
@@ -110,12 +115,17 @@ exports[`RuleItem component should render 1`] = `
             className="mb-1"
             tag="div"
           >
-            <div>
-              <div>
+            <div
+              className="when-container"
+            >
+              <div
+                className="when-btn"
+              >
                 WHEN
               </div>
               <MultiSelectField
                 allowCustomValues={false}
+                className="when-events"
                 onChange={[Function]}
                 options={
                   Array [
@@ -173,8 +183,12 @@ exports[`RuleItem component should render 1`] = `
         </Form>
       </div>
     </div>
-    <div>
-      <div>
+    <div
+      className="row"
+    >
+      <div
+        className="buttons-container"
+      >
         <div>
           <UncontrolledButtonDropdown
             className="mr-2"
@@ -227,7 +241,7 @@ exports[`RuleItem component should render 1`] = `
         </div>
         <div>
           <ConfirmButton
-            className="ml-2"
+            className="ml-2 delete-button"
             color="secondary"
             confirm={[Function]}
             content="Are you sure you want to delete this rule?"
@@ -254,32 +268,34 @@ exports[`RuleItem component should render 1`] = `
 
 exports[`RuleItem component should render errors when there is no trigger selected 1`] = `
 <tr
-  className="container undefined"
+  className="container container"
   data-id={17}
   id={17}
 >
   <td
     colSpan="3"
   >
-    <div>
+    <div
+      className="row"
+    >
       <div
-        className=""
+        className="col left-col"
       >
         <i
-          className="material-icons"
+          className="material-icons closeRuleIcon"
           onClick={[Function]}
         >
           keyboard_arrow_down
         </i>
       </div>
       <div
-        className=""
+        className="col center-col"
       >
         <div
           className="d-flex justify-content-between align-items-center mb-1"
         >
           <EditableTitle
-            className="font-weight-bold"
+            className="font-weight-bold title"
             onChange={[Function]}
             placeholder="Name"
             size="md"
@@ -293,6 +309,7 @@ exports[`RuleItem component should render errors when there is no trigger select
           tag="div"
         >
           <InputField
+            className="rule-description"
             onChange={[Function]}
             placeholder="Description"
             rows="1"
@@ -302,7 +319,7 @@ exports[`RuleItem component should render errors when there is no trigger select
         </FormGroup>
       </div>
       <div
-        className=""
+        className="col right-col"
       >
         <div
           id="rule-toggle-17"
@@ -349,7 +366,9 @@ exports[`RuleItem component should render errors when there is no trigger select
         </Popover>
       </div>
     </div>
-    <div>
+    <div
+      className="row"
+    >
       <div
         className="full-width"
       >
@@ -362,12 +381,17 @@ exports[`RuleItem component should render errors when there is no trigger select
             className="mb-1"
             tag="div"
           >
-            <div>
-              <div>
+            <div
+              className="when-container"
+            >
+              <div
+                className="when-btn"
+              >
                 WHEN
               </div>
               <MultiSelectField
                 allowCustomValues={false}
+                className="when-events"
                 onChange={[Function]}
                 options={
                   Array [
@@ -424,8 +448,12 @@ exports[`RuleItem component should render errors when there is no trigger select
         </Form>
       </div>
     </div>
-    <div>
-      <div>
+    <div
+      className="row"
+    >
+      <div
+        className="buttons-container"
+      >
         <div>
           <UncontrolledButtonDropdown
             className="mr-2"
@@ -478,7 +506,7 @@ exports[`RuleItem component should render errors when there is no trigger select
         </div>
         <div>
           <ConfirmButton
-            className="ml-2"
+            className="ml-2 delete-button"
             color="secondary"
             confirm={[Function]}
             content="Are you sure you want to delete this rule?"

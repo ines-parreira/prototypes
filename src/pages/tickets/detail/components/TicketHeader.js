@@ -16,23 +16,24 @@ import {
 
 import shortcutManager from '../../../../services/shortcutManager'
 import EditableTitle from '../../../common/components/EditableTitle'
+import MergeTicketsContainer from '../../../common/components/MergeTickets/MergeTicketsContainer'
 import TicketTags from './ticketdetails/TicketTags'
 import TicketRequest from './ticketdetails/TicketRequest'
 import TicketStatus from './ticketdetails/TicketStatus'
 import TicketAssignee from './ticketdetails/TicketAssignee'
 import TicketSpam from './ticketdetails/TicketSpam'
 import TicketSnooze from './ticketdetails/TicketSnooze'
+import TicketSnoozePicker from './ticketdetails/TicketSnoozePicker'
 import TicketTrash from './ticketdetails/TicketTrash'
 
 import * as ticketActions from '../../../../state/ticket/actions'
-import TicketSnoozePicker from './ticketdetails/TicketSnoozePicker'
 
 import css from './TicketHeader.less'
 
 import type {Map} from 'immutable'
 
 type Props = {
-    ticket: Map<*, *>,
+    ticket: Map<*,*>,
     actions: {
         ticket: typeof ticketActions,
     },
@@ -46,7 +47,8 @@ type Props = {
 
 type State = {
     askTrashConfirmation: boolean,
-    showSnoozePicker: boolean
+    showSnoozePicker: boolean,
+    isMergeTicketModalOpen: boolean
 }
 
 @connect(null, {
@@ -58,7 +60,8 @@ type State = {
 export default class TicketHeader extends React.Component<Props, State> {
     state = {
         askTrashConfirmation: false,
-        showSnoozePicker: false
+        showSnoozePicker: false,
+        isMergeTicketModalOpen: false,
     }
 
     componentDidMount() {
@@ -125,6 +128,10 @@ export default class TicketHeader extends React.Component<Props, State> {
                 this._goToNextTicket()
             }
         })
+    }
+
+    _toggleMergeTicketModal = () => {
+        this.setState({isMergeTicketModalOpen: !this.state.isMergeTicketModalOpen})
     }
 
     _bindKeys() {
@@ -197,6 +204,15 @@ export default class TicketHeader extends React.Component<Props, State> {
                                             snooze
                                         </i>
                                         snooze
+                                    </DropdownItem>
+                                    <DropdownItem
+                                        type="button"
+                                        onClick={this._toggleMergeTicketModal}
+                                    >
+                                        <i className="icon material-icons">
+                                            call_merge
+                                        </i>
+                                        merge ticket
                                     </DropdownItem>
                                     <DropdownItem
                                         type="button"
@@ -321,6 +337,12 @@ export default class TicketHeader extends React.Component<Props, State> {
                         />
                     </div>
                 </div>
+
+                <MergeTicketsContainer
+                    sourceTicket={ticket}
+                    isOpen={this.state.isMergeTicketModalOpen}
+                    toggleModal={this._toggleMergeTicketModal}
+                />
             </div>
         )
     }

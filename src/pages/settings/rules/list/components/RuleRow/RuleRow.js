@@ -8,7 +8,7 @@ import ToggleButton from '../../../../../common/components/ToggleButton'
 
 import RuleItem from '../../../detail/components/RuleItem'
 
-import * as css from './RuleRow.less'
+import css from './RuleRow.less'
 
 
 type Props = {

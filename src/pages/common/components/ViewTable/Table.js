@@ -1,6 +1,6 @@
 // @flow
 import React from 'react'
-import {fromJS} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
@@ -15,30 +15,32 @@ import shortcutManager from '../../../../services/shortcutManager'
 import {moveIndex} from '../../../common/utils/keyboard'
 
 import * as viewsActions from '../../../../state/views/actions'
-import * as viewsSelectors from '../../../../state/views/selectors'
-
-import * as viewsConfig from '../../../../config/views'
 
 import css from './Table.less'
 
-import type {Map, List} from 'immutable'
 import type {viewType} from '../../../../state/views/types'
 
+
 type directionType = 'next' | 'previous'
+
 type Props = {
-    activeView: viewType,
+    view: viewType,
     config: Map<*,*>,
     isLoading: (T: string) => boolean,
     pagination: Map<*,*>,
-    selectedItemsIds: List<*>,
+    selectedItemsIds: ?List<*>,
     fields: List<*>,
     items: List<*>,
     isSearch: boolean,
     type: string,
+    selectable: ?boolean,
+    onItemClick: ?(number) => void,
+    getItemUrl: ?(Map<*,*>) => string,
 
     fetchPage: typeof viewsActions.fetchPage,
     resetView: typeof viewsActions.resetView,
     toggleSelection: typeof viewsActions.toggleSelection,
+    onPageChange: (number) => void,
 
     ActionsComponent?: () => void,
 }
@@ -47,23 +49,11 @@ type State = {
     rowCursor: number
 }
 
-@connect((state, ownProps) => {
-    return {
-        activeView: viewsSelectors.getActiveView(state),
-        config: viewsConfig.getConfigByName(ownProps.type),
-        isLoading: viewsSelectors.makeIsLoading(state),
-        pagination: viewsSelectors.getPagination(state),
-        selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
-    }
-}, {
-    fetchPage: viewsActions.fetchPage,
-    toggleSelection: viewsActions.toggleSelection,
-    resetView: viewsActions.resetView,
-})
-export default class Table extends React.Component<Props, State> {
+class Table extends React.Component<Props, State> {
     static defaultProps = {
         items: fromJS([]),
         type: 'ticket',
+        selectable: true
     }
 
     state = {
@@ -112,14 +102,16 @@ export default class Table extends React.Component<Props, State> {
                 action: (e) => {
                     e.preventDefault()
                     const item = this.props.items.get(this.state.rowCursor)
-                    browserHistory.push(this._getItemLink(item))
+                    const {onItemClick, getItemUrl} = this.props
+
+                    if (onItemClick) {
+                        onItemClick(item)
+                    } else if (getItemUrl) {
+                        browserHistory.push(getItemUrl(item))
+                    }
                 }
             }
         })
-    }
-
-    _getItemLink = (item: Map<*,*>) => {
-        return `/app/${this.props.config.get('routeItem')}/${item.get('id')}`
     }
 
     _moveCursor = (direction: directionType = 'next') => {
@@ -129,12 +121,12 @@ export default class Table extends React.Component<Props, State> {
     }
 
     _toggleSelectAll = () => {
-        const itemsIds = this.props.items.map(item => item.get('id'))
+        const itemsIds = this.props.items.map((item) => item.get('id'))
         this.props.toggleSelection(itemsIds, true)
     }
 
     _movePage = (direction: directionType = 'next') => {
-        const {pagination} = this.props
+        const {pagination, onPageChange} = this.props
         const currentPage = parseInt(pagination.get('page')) || 1
         const allPages = parseInt(pagination.get('nb_pages')) || 1
 
@@ -142,26 +134,19 @@ export default class Table extends React.Component<Props, State> {
             return
         }
 
-        this._pageChange(
+        onPageChange(
             moveIndex(currentPage - 1, allPages, {direction}) + 1
         )
     }
 
-    _pageChange = (page: number) => {
-        // update page query param of current location (add/update "page" param)
-        const location = Object.assign({}, browserHistory.getCurrentLocation())
-        Object.assign(location.query, {page})
-        browserHistory.push(location)
-    }
-
     _renderPagination = () => {
-        const {pagination} = this.props
+        const {pagination, onPageChange} = this.props
 
         return (
             <Pagination
                 pageCount={pagination.get('nb_pages') || 1}
                 currentPage={pagination.get('page') || 1}
-                onChange={this._pageChange}
+                onChange={onPageChange}
                 className={classnames(css.pagination, 'pagination-transparent')}
             />
         )
@@ -170,14 +155,19 @@ export default class Table extends React.Component<Props, State> {
     render() {
         const {
             ActionsComponent,
-            activeView,
+            view,
             config,
             isLoading,
             isSearch,
             items,
             fields,
+            selectable,
             selectedItemsIds,
             type,
+            resetView,
+            fetchPage,
+            onItemClick,
+            getItemUrl
         } = this.props
 
         if (isLoading('fetchList')) {
@@ -189,22 +179,22 @@ export default class Table extends React.Component<Props, State> {
             let message
 
             // if view is being modified, which resulted in an empty list
-            if (activeView.get('dirty')) {
+            if (view.get('dirty')) {
                 message = (
                     <p>
                         No {config.get('singular')} found.
                         <br />
                         {
-                            !isSearch && (
+                            !isSearch ? (
                                 <a
                                     onClick={() => {
-                                        this.props.resetView(config.get('name'))
-                                        this.props.fetchPage(1)
+                                        resetView(config.get('name'))
+                                        fetchPage(1)
                                     }}
                                 >
                                     Reset view
                                 </a>
-                            )
+                            ) : null
                         }
                     </p>
                 )
@@ -218,22 +208,26 @@ export default class Table extends React.Component<Props, State> {
             )
         }
 
-        const areAllSelected = items.size === selectedItemsIds.size
+        const areAllSelected = !!selectedItemsIds && items.size === selectedItemsIds.size
 
         return (
             <div>
                 <table className={classnames(css.table, 'view-table')}>
                     <thead>
                         <tr>
-                            <td
-                                className="cell-wrapper cell-short clickable d-none d-md-table-cell"
-                                onClick={this._toggleSelectAll}
-                            >
-                                <input
-                                    type="checkbox"
-                                    checked={areAllSelected}
-                                />
-                            </td>
+                            {
+                                selectable ? (
+                                    <td
+                                        className="cell-wrapper cell-short clickable d-none d-md-table-cell"
+                                        onClick={this._toggleSelectAll}
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            checked={areAllSelected}
+                                        />
+                                    </td>
+                                ) : null
+                            }
                             {
                                 fields.map((field, index) => {
                                     return (
@@ -253,7 +247,7 @@ export default class Table extends React.Component<Props, State> {
                     </thead>
                     <tbody>
                         {
-                            items.map((item, index) => {
+                            items.map((item: Map<*,*>, index: number) => {
                                 const id = item.get('id')
 
                                 return (
@@ -261,10 +255,12 @@ export default class Table extends React.Component<Props, State> {
                                         key={id}
                                         fields={fields}
                                         item={item}
-                                        isSelected={selectedItemsIds.includes(id)}
+                                        selectable={selectable}
+                                        isSelected={!!selectedItemsIds && selectedItemsIds.includes(id)}
                                         type={type}
                                         hasCursor={this.state.rowCursor === index}
-                                        link={this._getItemLink(item)}
+                                        onItemClick={onItemClick}
+                                        itemUrl={getItemUrl ? getItemUrl(item) : null}
                                     />
                                 )
                             })
@@ -277,4 +273,10 @@ export default class Table extends React.Component<Props, State> {
         )
     }
 }
+
+export default connect(null, {
+    fetchPage: viewsActions.fetchPage,
+    toggleSelection: viewsActions.toggleSelection,
+    resetView: viewsActions.resetView,
+})(Table)
 

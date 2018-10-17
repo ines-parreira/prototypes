@@ -1,13 +1,54 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ViewTable::Table::Cell default cell 1`] = `
+exports[`ViewTable::Table::Cell default cell with a click handler passed 1`] = `
+<td
+  className="limit-overflow"
+>
+  <div
+    className="cell-wrapper"
+    onClick={[Function]}
+  >
+    <RenderLabel
+      field={
+        Immutable.Map {
+          name: "details",
+          title: "Details",
+        }
+      }
+      value={
+        <div
+          style={
+            Object {
+              "marginBottom": "-5px",
+              "marginTop": "-5px",
+            }
+          }
+        >
+          <div
+            className="subject"
+          >
+            Great ticket
+          </div>
+          <div
+            className="description"
+          >
+            undefined
+          </div>
+        </div>
+      }
+    />
+  </div>
+</td>
+`;
+
+exports[`ViewTable::Table::Cell default cell with a url passed 1`] = `
 <td
   className="limit-overflow"
 >
   <Link
     onlyActiveOnIndex={false}
     style={Object {}}
-    to="/url"
+    to="/app/ticket/123"
   >
     <div
       className="cell-wrapper"
@@ -43,6 +84,46 @@ exports[`ViewTable::Table::Cell default cell 1`] = `
       />
     </div>
   </Link>
+</td>
+`;
+
+exports[`ViewTable::Table::Cell default cell with no click handler passed (cant open items) 1`] = `
+<td
+  className="limit-overflow"
+>
+  <div
+    className="cell-wrapper"
+  >
+    <RenderLabel
+      field={
+        Immutable.Map {
+          name: "details",
+          title: "Details",
+        }
+      }
+      value={
+        <div
+          style={
+            Object {
+              "marginBottom": "-5px",
+              "marginTop": "-5px",
+            }
+          }
+        >
+          <div
+            className="subject"
+          >
+            Great ticket
+          </div>
+          <div
+            className="description"
+          >
+            undefined
+          </div>
+        </div>
+      }
+    />
+  </div>
 </td>
 `;
 
@@ -262,7 +343,6 @@ Object {
 },
   "item": Immutable.Map {
 },
-  "link": "/url",
   "store": Object {
     "dispatch": [Function],
     "getState": [Function],

@@ -19,7 +19,7 @@ import * as integrationsSelectors from './../../../../../../../state/integration
 import * as campaignActions from './../../../../../../../state/campaigns/actions'
 import {notify} from './../../../../../../../state/notifications/actions'
 
-import * as css from './CampaignDetail.less'
+import css from './CampaignDetail.less'
 import RichField from '../../../../../../common/forms/RichField'
 import ConfirmButton from '../../../../../../common/components/ConfirmButton'
 import {AgentLabel} from '../../../../../../common/utils/labels'

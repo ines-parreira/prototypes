@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 
 import * as ticketConfig from './ticket'
 import TICKET_LANGUAGES from './ticketLanguages'
-import {stripHTML, getLanguageDisplayName} from '../utils'
+import {stripHTML, getLanguageDisplayName, getAST} from '../utils'
 import {TagLabel} from '../pages/common/utils/labels'
 
 import _isUndefined from 'lodash/isUndefined'
@@ -54,6 +54,23 @@ export const baseView = () => fromJS({
         type: 'Program'
     }
 })
+
+export const defaultMergeTicketsView = (ticketId, searchQuery, customerId) => {
+    let filters = customerId
+        ? `neq(ticket.id, ${ticketId}) && eq(ticket.customer.id, ${customerId})`
+        : `neq(ticket.id, ${ticketId})`
+
+    return fromJS({
+        search: customerId ? null : searchQuery,
+        fields: ['details', 'customer', 'channel', 'created'],
+        filters,
+        filters_ast: getAST(filters),
+        order_by: 'created_datetime',
+        order_dir: 'desc',
+        type: 'ticket-list',
+        slug: 'merge-tickets'
+    })
+}
 
 export const views = fromJS([{
     name: 'ticket',
@@ -365,7 +382,7 @@ export const views = fromJS([{
 }])
 
 export const getConfigByName = (name) => {
-    const config = views.find(item => item.get('name') === name)
+    const config = views.find((item) => item.get('name') === name)
 
     if (!config) {
         console.error(`There is no view configuration for name "${name}"`)
@@ -376,7 +393,7 @@ export const getConfigByName = (name) => {
 }
 
 export const getConfigByType = (type) => {
-    const config = views.find(item => item.get('type') === type)
+    const config = views.find((item) => item.get('type') === type)
 
     if (!config) {
         console.error(`There is no view configuration for type "${type}"`)

@@ -154,13 +154,14 @@ exports[`CampaignDetail component should display default value when it's a new c
             className="mb-4"
           >
             <div
-              className="mb-2"
+              className="mb-2 authorWrapper"
             >
               <span>
                 From: 
               </span>
               <SelectField
                 allowCustomValue={false}
+                className="authorInput"
                 onChange={[Function]}
                 options={
                   Array [
@@ -414,13 +415,14 @@ exports[`CampaignDetail component should display the campaign correctly when upd
             className="mb-4"
           >
             <div
-              className="mb-2"
+              className="mb-2 authorWrapper"
             >
               <span>
                 From: 
               </span>
               <SelectField
                 allowCustomValue={false}
+                className="authorInput"
                 onChange={[Function]}
                 options={
                   Array [
@@ -726,13 +728,14 @@ exports[`CampaignDetail component should display the campaign correctly when upd
             className="mb-4"
           >
             <div
-              className="mb-2"
+              className="mb-2 authorWrapper"
             >
               <span>
                 From: 
               </span>
               <SelectField
                 allowCustomValue={false}
+                className="authorInput"
                 onChange={[Function]}
                 options={
                   Array [

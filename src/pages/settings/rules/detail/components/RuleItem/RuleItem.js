@@ -22,7 +22,7 @@ import Errors from '../../../../../common/components/ast/Errors'
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
 
 import * as rulesHelpers from '../../../../../../state/rules/helpers'
-import * as css from './RuleItem.less'
+import css from './RuleItem.less'
 
 import {toJS} from '../../../../../../utils'
 import ToggleButton from '../../../../../common/components/ToggleButton'
@@ -260,7 +260,7 @@ export default class RuleItem extends React.Component<Props, State> {
             >
                 <td colSpan="3">
                     <div className={css.row}>
-                        <div className={classnames(css.col, classnames(css['left-col']))}>
+                        <div className={classnames(css.col, css['left-col'])}>
                             <i
                                 className={classnames('material-icons', css.closeRuleIcon)}
                                 onClick={() => this.props.toggleOpening(rule.get('id'))}

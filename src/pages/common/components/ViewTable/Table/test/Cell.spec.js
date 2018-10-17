@@ -13,7 +13,6 @@ describe('ViewTable::Table::Cell', () => {
 
     const minProps = {
         type: viewConfig.get('name'),
-        link: '/url',
         item: fromJS(ticketFixtures.ticket),
         field: viewConfig.get('fields').first(),
         store: configureStore(),
@@ -25,8 +24,18 @@ describe('ViewTable::Table::Cell', () => {
         expect(component.find('Cell').props()).toMatchSnapshot()
     })
 
-    it('default cell', () => {
+    it('default cell with no click handler passed (cant open items)', () => {
         const component = shallow(<Cell {...minProps} />).dive()
+        expect(component).toMatchSnapshot()
+    })
+
+    it('default cell with a url passed', () => {
+        const component = shallow(<Cell {...minProps} itemUrl="/app/ticket/123" />).dive()
+        expect(component).toMatchSnapshot()
+    })
+
+    it('default cell with a click handler passed', () => {
+        const component = shallow(<Cell {...minProps} onClick={() => {}} />).dive()
         expect(component).toMatchSnapshot()
     })
 })

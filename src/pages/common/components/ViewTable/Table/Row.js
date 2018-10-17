@@ -17,11 +17,13 @@ import * as viewsUtils from '../../../../../state/views/utils'
 import type {Map, List} from 'immutable'
 
 type Props = {
-    link: string,
+    onItemClick: ?(number) => void,
+    itemUrl: ?string,
     fields: List<*>,
     item: Map<*,*>,
     isSelected: boolean,
     hasCursor: boolean,
+    selectable: ?boolean,
     type: string,
 
     toggleSelection: typeof viewsActions.toggleSelection,
@@ -31,6 +33,7 @@ type Props = {
 class Row extends React.Component<Props> {
     static defaultProps = {
         item: fromJS({}),
+        selectable: true,
     }
 
     componentDidUpdate(prevProps) {
@@ -46,7 +49,9 @@ class Row extends React.Component<Props> {
     }
 
     render() {
-        const {fields, getAgentsViewing, item, isSelected, type, hasCursor, link} = this.props
+        const {
+            fields, getAgentsViewing, item, isSelected, selectable, type, hasCursor,onItemClick, itemUrl
+        } = this.props
 
         const agentsViewing = getAgentsViewing(item.get('id'))
 
@@ -57,34 +62,39 @@ class Row extends React.Component<Props> {
                     [css['has-cursor']]: hasCursor
                 })}
             >
-                <td
-                    className="cell-wrapper cell-short clickable d-none d-md-table-cell"
-                    onClick={this._toggleSelection}
-                >
-                    {
-                        // display an eye on row if an agent is currently viewing this item
-                        agentsViewing.size > 0 && (
-                            <div
-                                className={css.viewers}
-                                title={viewsUtils.agentsViewingMessage(agentsViewing)}
-                            >
-                                <i className="material-icons">remove_red_eye</i>
-                            </div>
-                        )
-                    }
-                    <input
-                        type="checkbox"
-                        checked={isSelected}
-                    />
-                </td>
+                {
+                    selectable ? (
+                        <td
+                            className="cell-wrapper cell-short clickable d-none d-md-table-cell"
+                            onClick={this._toggleSelection}
+                        >
+                            {
+                                // display an eye on row if an agent is currently viewing this item
+                                agentsViewing.size > 0 && (
+                                    <div
+                                        className={css.viewers}
+                                        title={viewsUtils.agentsViewingMessage(agentsViewing)}
+                                    >
+                                        <i className="material-icons">remove_red_eye</i>
+                                    </div>
+                                )
+                            }
+                            <input
+                                type="checkbox"
+                                checked={isSelected}
+                            />
+                        </td>
+                    ) : null
+                }
                 {
                     fields.map((field) => (
                         <Cell
                             key={`${item.get('id')}-${field.get('name')}`}
-                            link={link}
                             item={item}
                             field={field}
                             type={type}
+                            onClick={onItemClick}
+                            itemUrl={itemUrl}
                         />
                     ))
                 }

@@ -1,0 +1,167 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MergeTicketsContainer component should render a closed modal because isOpen==false 1`] = `
+<Modal
+  className="modal"
+  dismissible={true}
+  footer={null}
+  footerClassName="footer"
+  header="Merge tickets"
+  isOpen={false}
+  onClose={[Function]}
+  onClosed={[Function]}
+  size="lg"
+>
+  <Connect(SelectTargetTicket)
+    customerId={22}
+    sourceTicket={
+      Immutable.Map {
+        subject: "foo",
+        assignee_user: Immutable.Map {
+          id: 1,
+          name: "John Smith",
+        },
+        customer: Immutable.Map {
+          id: 22,
+          name: "Maria Curie",
+        },
+      }
+    }
+    updateTargetTicket={[Function]}
+  />
+</Modal>
+`;
+
+exports[`MergeTicketsContainer component should render the build component if there is a selected ticket in the state 1`] = `
+<Modal
+  className="modal"
+  dismissible={true}
+  footer={
+    <Form
+      onSubmit={[Function]}
+      style={
+        Object {
+          "width": "100%",
+        }
+      }
+      tag="form"
+    >
+      <div
+        className="float-left buttons-bar"
+      >
+        <Button
+          color="secondary"
+          disabled={false}
+          onClick={[Function]}
+          tag="button"
+          type="button"
+        >
+          <i
+            className="material-icons mr-2"
+          >
+            arrow_back
+          </i>
+          Back
+        </Button>
+      </div>
+      <div
+        className="float-right buttons-bar"
+      >
+        <Button
+          className="mr-2"
+          color="secondary"
+          disabled={false}
+          onClick={[Function]}
+          tag="button"
+          type="button"
+        >
+          Cancel
+        </Button>
+        <ConfirmButton
+          className=""
+          color="success"
+          confirm={[Function]}
+          content="This action is irreversible. Are you sure you want to merge these tickets?"
+          disabled={false}
+          loading={false}
+          placement="bottom"
+          skip={false}
+          title="Are you sure?"
+          type="submit"
+        >
+          Merge tickets
+        </ConfirmButton>
+      </div>
+    </Form>
+  }
+  footerClassName="footer"
+  header="Merge tickets"
+  isOpen={true}
+  onClose={[Function]}
+  onClosed={[Function]}
+  size="lg"
+>
+  <BuildFinalTicket
+    finalTicket={null}
+    sourceTicket={
+      Immutable.Map {
+        subject: "foo",
+        assignee_user: Immutable.Map {
+          id: 1,
+          name: "John Smith",
+        },
+        customer: Immutable.Map {
+          id: 22,
+          name: "Maria Curie",
+        },
+      }
+    }
+    targetTicket={
+      Immutable.Map {
+        subject: "foo",
+        assignee_user: Immutable.Map {
+          id: 1,
+          name: "John Smith",
+        },
+        customer: Immutable.Map {
+          id: 22,
+          name: "Maria Curie",
+        },
+      }
+    }
+    updateFinalTicket={[Function]}
+  />
+</Modal>
+`;
+
+exports[`MergeTicketsContainer component should render the selection component if there is no selected ticket in the state 1`] = `
+<Modal
+  className="modal"
+  dismissible={true}
+  footer={null}
+  footerClassName="footer"
+  header="Merge tickets"
+  isOpen={true}
+  onClose={[Function]}
+  onClosed={[Function]}
+  size="lg"
+>
+  <Connect(SelectTargetTicket)
+    customerId={22}
+    sourceTicket={
+      Immutable.Map {
+        subject: "foo",
+        assignee_user: Immutable.Map {
+          id: 1,
+          name: "John Smith",
+        },
+        customer: Immutable.Map {
+          id: 22,
+          name: "Maria Curie",
+        },
+      }
+    }
+    updateTargetTicket={[Function]}
+  />
+</Modal>
+`;

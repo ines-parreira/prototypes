@@ -1,8 +1,8 @@
-import React, {PropTypes} from 'react'
-import ImmutablePropTypes from 'react-immutable-proptypes'
-import {fromJS} from 'immutable'
+// @flow
+import React from 'react'
+import {fromJS, Map, List} from 'immutable'
 import {connect} from 'react-redux'
-import {withRouter} from 'react-router'
+import {browserHistory, withRouter} from 'react-router'
 import classnames from 'classnames'
 import _get from 'lodash/get'
 
@@ -16,47 +16,37 @@ import * as viewsSelectors from '../../../../state/views/selectors'
 
 import * as viewsConfig from '../../../../config/views'
 
-import css from './Page.less'
+import css from './ViewTable.less'
+import type {viewType} from '../../../../state/views/types'
 
-@withRouter
-@connect((state, ownProps) => {
-    const config = viewsConfig.getConfigByName(ownProps.type)
-    const currentPage = parseInt(ownProps.location.query.page) || 1
 
-    return {
-        activeView: viewsSelectors.getActiveView(state),
-        config,
-        currentPage,
-        getView: viewsSelectors.makeGetView(state),
-        getViewIdToDisplay: viewsSelectors.makeGetViewIdToDisplay(state),
-        hasActiveView: viewsSelectors.hasActiveViewOfType(config.get('type'))(state),
-    }
-}, {
-    fetchPage: viewsActions.fetchPage,
-    setViewActive: viewsActions.setViewActive,
-    updateView: viewsActions.updateView,
-})
-export default class Page extends React.Component {
-    static propTypes = {
-        ActionsComponent: PropTypes.func,
-        activeView: ImmutablePropTypes.map.isRequired,
-        config: ImmutablePropTypes.map.isRequired,
-        currentPage: PropTypes.number.isRequired,
-        fetchPage: PropTypes.func.isRequired,
-        getViewIdToDisplay: PropTypes.func.isRequired,
-        getView: PropTypes.func.isRequired,
-        hasActiveView: PropTypes.bool.isRequired,
-        isSearch: PropTypes.bool.isRequired,
-        isUpdate: PropTypes.bool.isRequired,
-        items: ImmutablePropTypes.list.isRequired,
-        setViewActive: PropTypes.func.isRequired,
-        type: PropTypes.string.isRequired,
-        urlViewId: PropTypes.string,
-        updateView: PropTypes.func.isRequired,
-        viewButtons: PropTypes.node,
-        className: PropTypes.string,
-    }
+type Props = {
+    ActionsComponent: ?() => {},
+    activeView: viewType,
+    config: Map<*,*>,
+    currentPage: number,
+    fetchPage: typeof viewsActions.fetchPage,
+    getViewIdToDisplay: typeof viewsSelectors.getViewIdToDisplay,
+    getView: typeof viewsSelectors.getView,
+    hasActiveView: boolean,
 
+    isLoading: (string) => boolean,
+    pagination: Map<*,*>,
+    selectedItemsIds: List<*>,
+
+    isSearch: boolean,
+    isUpdate: boolean,
+    items: List<*>,
+    setViewActive: typeof viewsActions.setViewActive,
+    type: string,
+    urlViewId: ?string,
+    updateView: typeof viewsActions.updateView,
+    viewButtons: ?Object,
+    className: ?string,
+}
+
+
+class ViewTable extends React.Component<Props> {
     static defaultProps = {
         items: fromJS([]),
         type: 'ticket',
@@ -122,10 +112,30 @@ export default class Page extends React.Component {
         return _get(props, 'location.query.q', '')
     }
 
+    _pageChange = (page: number) => {
+        // update page query param of current location (add/update "page" param)
+        const location = Object.assign({}, browserHistory.getCurrentLocation())
+        Object.assign(location.query, {page})
+        browserHistory.push(location)
+    }
+
+    _getItemUrl = (item: Map<*,*>): string | void => {
+        const {config} = this.props
+        if (!config) {
+            return
+        }
+
+        return `/app/${config.get('routeItem')}/${item.get('id')}`
+    }
+
     _renderTable = () => {
-        const {ActionsComponent, type, items, config, isSearch, activeView} = this.props
+        const {
+            ActionsComponent, type, items, config, isSearch, activeView,
+            isLoading, pagination, selectedItemsIds
+        } = this.props
+
         const displayedFields = config.get('fields', fromJS([]))
-            .filter(field => {
+            .filter((field) => {
                 // display field if mandatory from config
                 if (config.get('mainField') === field.get('name')) {
                     return true
@@ -136,11 +146,18 @@ export default class Page extends React.Component {
 
         return (
             <Table
+                view={activeView}
+                config={config}
+                isLoading={isLoading}
+                pagination={pagination}
+                selectedItemsIds={selectedItemsIds}
                 type={type}
                 items={items}
                 fields={displayedFields}
                 isSearch={isSearch}
                 ActionsComponent={ActionsComponent}
+                onPageChange={this._pageChange}
+                getItemUrl={this._getItemUrl}
             />
         )
     }
@@ -174,3 +191,25 @@ export default class Page extends React.Component {
         )
     }
 }
+
+export default withRouter(connect((state, ownProps) => {
+    const config = viewsConfig.getConfigByName(ownProps.type)
+    const currentPage = parseInt(ownProps.location.query.page) || 1
+
+    return {
+        activeView: viewsSelectors.getActiveView(state),
+        config,
+        currentPage,
+        getView: viewsSelectors.makeGetView(state),
+        getViewIdToDisplay: viewsSelectors.makeGetViewIdToDisplay(state),
+        hasActiveView: viewsSelectors.hasActiveViewOfType(config.get('type'))(state),
+
+        isLoading: viewsSelectors.makeIsLoading(state),
+        pagination: viewsSelectors.getPagination(state),
+        selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
+    }
+}, {
+    fetchPage: viewsActions.fetchPage,
+    setViewActive: viewsActions.setViewActive,
+    updateView: viewsActions.updateView,
+})(ViewTable))

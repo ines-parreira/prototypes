@@ -9,7 +9,7 @@ import Modal from '../../components/Modal'
 import shortcutManager from '../../../../services/shortcutManager'
 import keymap from '../../../../config/shortcuts'
 
-import * as css from './KeyboardHelp.less'
+import css from './KeyboardHelp.less'
 
 type State = {
     isOpen: boolean

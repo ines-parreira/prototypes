@@ -1,0 +1,698 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TicketHeader component should render existing ticket 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="d-flex justify-content-between mb-2"
+  >
+    <EditableTitle
+      className="editableTitle"
+      focus={false}
+      placeholder="Subject"
+      size="xl"
+      style={Object {}}
+      title="foo"
+      update={[Function]}
+    />
+    <UncontrolledDropdown
+      className="ml-2"
+    >
+      <DropdownToggle
+        aria-haspopup={true}
+        className="btn-transparent"
+        color="secondary"
+        id="ticket-actions-button"
+        size="sm"
+        type="button"
+      >
+        <i
+          className="material-icons md-2"
+        >
+          more_vert
+        </i>
+      </DropdownToggle>
+      <TicketSnoozePicker
+        isOpen={false}
+        onApply={[Function]}
+        ranges={
+          Object {
+            "In 1 day": Array [
+              "2017-01-01T00:00:00.000Z",
+              "2017-01-01T00:00:00.000Z",
+            ],
+            "In 3 days": Array [
+              "2017-01-01T00:00:00.000Z",
+              "2017-01-01T00:00:00.000Z",
+            ],
+            "In 3 hours": Array [
+              "2017-01-01T00:00:00.000Z",
+              "2017-01-01T00:00:00.000Z",
+            ],
+            "In 6 hours": Array [
+              "2017-01-01T00:00:00.000Z",
+              "2017-01-01T00:00:00.000Z",
+            ],
+            "in 1 week": Array [
+              "2017-01-01T00:00:00.000Z",
+              "2017-01-01T00:00:00.000Z",
+            ],
+          }
+        }
+        toggle={[Function]}
+      />
+      <DropdownMenu
+        flip={true}
+        right={true}
+        tag="div"
+      >
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="icon material-icons"
+          >
+            snooze
+          </i>
+          snooze
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="icon material-icons"
+          >
+            call_merge
+          </i>
+          merge ticket
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="icon material-icons"
+          >
+            print
+          </i>
+          print ticket
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <span>
+            <i
+              className="icon material-icons"
+            >
+              not_interested
+            </i>
+            mark as spam
+          </span>
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <div
+            className="text-danger"
+          >
+            <i
+              className="icon material-icons"
+            >
+              delete
+            </i>
+            delete
+          </div>
+          <Popover
+            delay={
+              Object {
+                "hide": 0,
+                "show": 0,
+              }
+            }
+            hideArrow={false}
+            isOpen={false}
+            placement="bottom"
+            placementPrefix="bs-popover"
+            target="ticket-actions-button"
+            toggle={[Function]}
+          >
+            <PopoverHeader
+              tag="h3"
+            >
+              Are you sure?
+            </PopoverHeader>
+            <PopoverBody
+              tag="div"
+            >
+              <p>
+                You are about to 
+                <b>
+                  delete
+                </b>
+                 this ticket.
+              </p>
+              <Button
+                autoFocus={true}
+                color="success"
+                onClick={[Function]}
+                tag="button"
+                type="submit"
+              >
+                Confirm
+              </Button>
+            </PopoverBody>
+          </Popover>
+        </DropdownItem>
+      </DropdownMenu>
+    </UncontrolledDropdown>
+  </div>
+  <div
+    className="d-flex justify-content-between"
+  >
+    <div
+      className="d-inline-flex"
+    >
+      <TicketStatus
+        currentStatus="open"
+        setQuickStatus={[Function]}
+      />
+      <Connect(TicketRequest) />
+      <Connect(TicketTags)
+        transparent={true}
+      />
+    </div>
+    <div
+      className="d-inline-flex align-items-center"
+    >
+      <TicketSnooze />
+      <TicketTrash
+        trashed={false}
+      />
+      <TicketSpam
+        spam={false}
+      />
+      <Connect(TicketAssignee)
+        className="assignee"
+        direction="right"
+        transparent={true}
+      />
+    </div>
+  </div>
+  <Connect(MergeTicketsContainer)
+    isOpen={false}
+    sourceTicket={
+      Immutable.Map {
+        id: 1,
+        subject: "foo",
+        status: "open",
+      }
+    }
+    toggleModal={[Function]}
+  />
+</div>
+`;
+
+exports[`TicketHeader component should render new ticket 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="d-flex justify-content-between mb-2"
+  >
+    <EditableTitle
+      className="editableTitle"
+      focus={true}
+      placeholder="Subject"
+      size="xl"
+      style={Object {}}
+      title="foo"
+      update={[Function]}
+    />
+  </div>
+  <div
+    className="d-flex justify-content-between"
+  >
+    <div
+      className="d-inline-flex"
+    >
+      <Connect(TicketRequest) />
+      <Connect(TicketTags)
+        transparent={true}
+      />
+    </div>
+    <div
+      className="d-inline-flex align-items-center"
+    >
+      <TicketSnooze />
+      <TicketTrash
+        trashed={false}
+      />
+      <TicketSpam
+        spam={false}
+      />
+      <Connect(TicketAssignee)
+        className="assignee"
+        direction="right"
+        transparent={true}
+      />
+    </div>
+  </div>
+  <Connect(MergeTicketsContainer)
+    isOpen={false}
+    sourceTicket={
+      Immutable.Map {
+        subject: "foo",
+        status: "open",
+      }
+    }
+    toggleModal={[Function]}
+  />
+</div>
+`;
+
+exports[`TicketHeader component should render spam ticket 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="d-flex justify-content-between mb-2"
+  >
+    <EditableTitle
+      className="editableTitle"
+      focus={false}
+      placeholder="Subject"
+      size="xl"
+      style={Object {}}
+      title="foo"
+      update={[Function]}
+    />
+    <UncontrolledDropdown
+      className="ml-2"
+    >
+      <DropdownToggle
+        aria-haspopup={true}
+        className="btn-transparent"
+        color="secondary"
+        id="ticket-actions-button"
+        size="sm"
+        type="button"
+      >
+        <i
+          className="material-icons md-2"
+        >
+          more_vert
+        </i>
+      </DropdownToggle>
+      <TicketSnoozePicker
+        isOpen={false}
+        onApply={[Function]}
+        ranges={
+          Object {
+            "In 1 day": Array [
+              "2017-01-01T00:00:00.000Z",
+              "2017-01-01T00:00:00.000Z",
+            ],
+            "In 3 days": Array [
+              "2017-01-01T00:00:00.000Z",
+              "2017-01-01T00:00:00.000Z",
+            ],
+            "In 3 hours": Array [
+              "2017-01-01T00:00:00.000Z",
+              "2017-01-01T00:00:00.000Z",
+            ],
+            "In 6 hours": Array [
+              "2017-01-01T00:00:00.000Z",
+              "2017-01-01T00:00:00.000Z",
+            ],
+            "in 1 week": Array [
+              "2017-01-01T00:00:00.000Z",
+              "2017-01-01T00:00:00.000Z",
+            ],
+          }
+        }
+        toggle={[Function]}
+      />
+      <DropdownMenu
+        flip={true}
+        right={true}
+        tag="div"
+      >
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="icon material-icons"
+          >
+            snooze
+          </i>
+          snooze
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="icon material-icons"
+          >
+            call_merge
+          </i>
+          merge ticket
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="icon material-icons"
+          >
+            print
+          </i>
+          print ticket
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <span>
+            <i
+              className="icon material-icons"
+            >
+              undo
+            </i>
+            unmark as spam
+          </span>
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <div
+            className="text-danger"
+          >
+            <i
+              className="icon material-icons"
+            >
+              delete
+            </i>
+            delete
+          </div>
+          <Popover
+            delay={
+              Object {
+                "hide": 0,
+                "show": 0,
+              }
+            }
+            hideArrow={false}
+            isOpen={false}
+            placement="bottom"
+            placementPrefix="bs-popover"
+            target="ticket-actions-button"
+            toggle={[Function]}
+          >
+            <PopoverHeader
+              tag="h3"
+            >
+              Are you sure?
+            </PopoverHeader>
+            <PopoverBody
+              tag="div"
+            >
+              <p>
+                You are about to 
+                <b>
+                  delete
+                </b>
+                 this ticket.
+              </p>
+              <Button
+                autoFocus={true}
+                color="success"
+                onClick={[Function]}
+                tag="button"
+                type="submit"
+              >
+                Confirm
+              </Button>
+            </PopoverBody>
+          </Popover>
+        </DropdownItem>
+      </DropdownMenu>
+    </UncontrolledDropdown>
+  </div>
+  <div
+    className="d-flex justify-content-between"
+  >
+    <div
+      className="d-inline-flex"
+    >
+      <TicketStatus
+        currentStatus="open"
+        setQuickStatus={[Function]}
+      />
+      <Connect(TicketRequest) />
+      <Connect(TicketTags)
+        transparent={true}
+      />
+    </div>
+    <div
+      className="d-inline-flex align-items-center"
+    >
+      <TicketSnooze />
+      <TicketTrash
+        trashed={false}
+      />
+      <TicketSpam
+        spam={true}
+      />
+      <Connect(TicketAssignee)
+        className="assignee"
+        direction="right"
+        transparent={true}
+      />
+    </div>
+  </div>
+  <Connect(MergeTicketsContainer)
+    isOpen={false}
+    sourceTicket={
+      Immutable.Map {
+        id: 1,
+        spam: true,
+        subject: "foo",
+        status: "open",
+      }
+    }
+    toggleModal={[Function]}
+  />
+</div>
+`;
+
+exports[`TicketHeader component should render trashed ticket 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="d-flex justify-content-between mb-2"
+  >
+    <EditableTitle
+      className="editableTitle"
+      focus={false}
+      placeholder="Subject"
+      size="xl"
+      style={Object {}}
+      title="foo"
+      update={[Function]}
+    />
+    <UncontrolledDropdown
+      className="ml-2"
+    >
+      <DropdownToggle
+        aria-haspopup={true}
+        className="btn-transparent"
+        color="secondary"
+        id="ticket-actions-button"
+        size="sm"
+        type="button"
+      >
+        <i
+          className="material-icons md-2"
+        >
+          more_vert
+        </i>
+      </DropdownToggle>
+      <TicketSnoozePicker
+        isOpen={false}
+        onApply={[Function]}
+        ranges={
+          Object {
+            "In 1 day": Array [
+              "2017-01-01T00:00:00.000Z",
+              "2017-01-01T00:00:00.000Z",
+            ],
+            "In 3 days": Array [
+              "2017-01-01T00:00:00.000Z",
+              "2017-01-01T00:00:00.000Z",
+            ],
+            "In 3 hours": Array [
+              "2017-01-01T00:00:00.000Z",
+              "2017-01-01T00:00:00.000Z",
+            ],
+            "In 6 hours": Array [
+              "2017-01-01T00:00:00.000Z",
+              "2017-01-01T00:00:00.000Z",
+            ],
+            "in 1 week": Array [
+              "2017-01-01T00:00:00.000Z",
+              "2017-01-01T00:00:00.000Z",
+            ],
+          }
+        }
+        toggle={[Function]}
+      />
+      <DropdownMenu
+        flip={true}
+        right={true}
+        tag="div"
+      >
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="icon material-icons"
+          >
+            snooze
+          </i>
+          snooze
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="icon material-icons"
+          >
+            call_merge
+          </i>
+          merge ticket
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="icon material-icons"
+          >
+            print
+          </i>
+          print ticket
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <span>
+            <i
+              className="icon material-icons"
+            >
+              not_interested
+            </i>
+            mark as spam
+          </span>
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="icon material-icons"
+          >
+            undo
+          </i>
+          undelete
+        </DropdownItem>
+      </DropdownMenu>
+    </UncontrolledDropdown>
+  </div>
+  <div
+    className="d-flex justify-content-between"
+  >
+    <div
+      className="d-inline-flex"
+    >
+      <TicketStatus
+        currentStatus="open"
+        setQuickStatus={[Function]}
+      />
+      <Connect(TicketRequest) />
+      <Connect(TicketTags)
+        transparent={true}
+      />
+    </div>
+    <div
+      className="d-inline-flex align-items-center"
+    >
+      <TicketSnooze />
+      <TicketTrash
+        trashed={true}
+      />
+      <TicketSpam
+        spam={false}
+      />
+      <Connect(TicketAssignee)
+        className="assignee"
+        direction="right"
+        transparent={true}
+      />
+    </div>
+  </div>
+  <Connect(MergeTicketsContainer)
+    isOpen={false}
+    sourceTicket={
+      Immutable.Map {
+        id: 1,
+        trashed_datetime: true,
+        subject: "foo",
+        status: "open",
+      }
+    }
+    toggleModal={[Function]}
+  />
+</div>
+`;

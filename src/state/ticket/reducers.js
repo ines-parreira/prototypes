@@ -62,7 +62,7 @@ export default (state = initialState, action) => {
 
             const messageIndex = newState
                 .getIn(['_internal', 'pendingMessages'], fromJS([]))
-                .findIndex(message => message.getIn(['_internal', 'id']) === action.messageId)
+                .findIndex((message) => message.getIn(['_internal', 'id']) === action.messageId)
 
             if (action.retry && ~messageIndex) {
                 // update the retried message
@@ -70,13 +70,13 @@ export default (state = initialState, action) => {
                     .deleteIn(['_internal', 'pendingMessages', messageIndex, 'failed_datetime'])
             }
 
-            return newState.updateIn(['_internal', 'pendingMessages'], messages => messages.unshift(message))
+            return newState.updateIn(['_internal', 'pendingMessages'], (messages) => messages.unshift(message))
         }
 
         case newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR: {
             const messageIndex = state
                 .getIn(['_internal', 'pendingMessages'], fromJS([]))
-                .findIndex(message => message.getIn(['_internal', 'id']) === action.messageId)
+                .findIndex((message) => message.getIn(['_internal', 'id']) === action.messageId)
 
             if (!~messageIndex) {
                 return state
@@ -111,7 +111,6 @@ export default (state = initialState, action) => {
         }
 
         case types.CLEAR_TICKET: {
-            // @todo(martin): re-set `crossTickets` in _internal
             return initialState.setIn(
                 ['_internal', 'shouldDisplayHistoryOnNextPage'],
                 state.getIn(['_internal', 'shouldDisplayHistoryOnNextPage'])
@@ -246,7 +245,7 @@ export default (state = initialState, action) => {
         case types.DELETE_TICKET_MESSAGE_SUCCESS:
             return state
                 .update('messages', (messages) => {
-                    const index = messages.findIndex(message => message.get('id') === action.messageId)
+                    const index = messages.findIndex((message) => message.get('id') === action.messageId)
 
                     if (!~index) {
                         return messages
@@ -280,7 +279,7 @@ export default (state = initialState, action) => {
             let newState = state.merge(ticket)
 
             // order messages by created datetime
-            newState = newState.update('messages', messages => {
+            newState = newState.update('messages', (messages) => {
                 return messages.sort((a, b) => compare(a.get('created_datetime'), b.get('created_datetime')))
             })
 

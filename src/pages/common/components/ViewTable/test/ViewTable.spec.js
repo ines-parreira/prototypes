@@ -7,7 +7,7 @@ import configureStore from '../../../../../store/configureStore'
 import * as viewsFixtures from '../../../../../fixtures/views'
 import * as ticketFixtures from '../../../../../fixtures/ticket'
 import * as viewsActions from '../../../../../state/views/actions'
-import Page from '../Page'
+import ViewTable from '../ViewTable'
 
 jest.mock('../../../../../state/views/actions', () => {
     const _identity = require('lodash/identity')
@@ -19,7 +19,7 @@ jest.mock('../../../../../state/views/actions', () => {
     }
 })
 
-describe('ViewTable::Page', () => {
+describe('ViewTable::ViewTable', () => {
     const fixtureView = viewsFixtures.view
 
     const minStore = {
@@ -48,7 +48,7 @@ describe('ViewTable::Page', () => {
 
     describe('connect HOC', () => {
         it('pass correct currentPage prop when page change in url', () => {
-            const component = shallow(<Page {...minProps} />).dive()
+            const component = shallow(<ViewTable {...minProps} />).dive()
             expect(component.props()).toHaveProperty('currentPage', 1)
             component.setProps({
                 location: {
@@ -64,7 +64,7 @@ describe('ViewTable::Page', () => {
     describe('component', () => {
         it('empty view', () => {
             const component = shallow(
-                <Page
+                <ViewTable
                     {...minProps}
                     store={configureStore({
                         ...minStore,
@@ -77,12 +77,12 @@ describe('ViewTable::Page', () => {
         })
 
         it('default view', () => {
-            const component = shallow(<Page {...minProps} />).dive().dive()
+            const component = shallow(<ViewTable {...minProps} />).dive().dive()
             expect(component).toMatchSnapshot()
         })
 
         it('fetch page when page changes', () => {
-            const component = shallow(<Page {...minProps} />).dive().dive()
+            const component = shallow(<ViewTable {...minProps} />).dive().dive()
             component.setProps({
                 currentPage: 2,
             })
@@ -90,7 +90,7 @@ describe('ViewTable::Page', () => {
         })
 
         it('change view when entering search mode', () => {
-            const component = shallow(<Page {...minProps} isSearch={false} />).dive().dive()
+            const component = shallow(<ViewTable {...minProps} isSearch={false} />).dive().dive()
             component.setProps({
                 isSearch: true,
             })
@@ -100,7 +100,7 @@ describe('ViewTable::Page', () => {
 
         it('search again if search query changed while in search mode', () => {
             const component = shallow(
-                <Page
+                <ViewTable
                     {...minProps}
                     isSearch={true}
                     location={_merge({}, minProps.location, {
@@ -122,7 +122,7 @@ describe('ViewTable::Page', () => {
         })
 
         it('change view when leaving search mode', () => {
-            const component = shallow(<Page {...minProps} isSearch />).dive().dive()
+            const component = shallow(<ViewTable {...minProps} isSearch />).dive().dive()
             component.setProps({
                 isSearch: false,
             })
@@ -131,7 +131,7 @@ describe('ViewTable::Page', () => {
         })
 
         it('change view when entering "add new" mode', () => {
-            const component = shallow(<Page {...minProps} isUpdate />).dive().dive()
+            const component = shallow(<ViewTable {...minProps} isUpdate />).dive().dive()
             component.setProps({
                 isUpdate: false,
             })
@@ -140,7 +140,7 @@ describe('ViewTable::Page', () => {
         })
 
         it('change view when leaving "add new" mode', () => {
-            const component = shallow(<Page {...minProps} isUpdate={false} />).dive().dive()
+            const component = shallow(<ViewTable {...minProps} isUpdate={false} />).dive().dive()
             component.setProps({
                 isUpdate: true,
             })

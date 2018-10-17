@@ -1,0 +1,249 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BuildFinalTicket component should display all fields because everything is different 1`] = `
+<div>
+  <p>
+    Select the fields you want to keep on the final ticket. The fields in blue will be kept. All fields not displayed here are either identical on both tickets, or will be computed automatically.
+  </p>
+  <BinaryChoiceField
+    label="Subject"
+    name="ticket.subject"
+    onChange={[Function]}
+    options={
+      Array [
+        Object {
+          "label": "foo",
+          "value": "foo",
+        },
+        Object {
+          "label": "bar",
+          "value": "bar",
+        },
+      ]
+    }
+    value="foo"
+  />
+  <BinaryChoiceField
+    label="Customer"
+    name="ticket.customer"
+    onChange={[Function]}
+    options={
+      Array [
+        Object {
+          "label": <span>
+            <i
+                  className="material-icons mr-2"
+            >
+                  person
+            </i>
+            Maria Curie
+      </span>,
+          "value": 22,
+        },
+        Object {
+          "label": <span>
+            <i
+                  className="material-icons mr-2"
+            >
+                  person
+            </i>
+            Pedro Curie
+      </span>,
+          "value": 33,
+        },
+      ]
+    }
+    value={22}
+  />
+  <BinaryChoiceField
+    label="Assignee"
+    name="ticket.assignee_user"
+    onChange={[Function]}
+    options={
+      Array [
+        Object {
+          "label": <span>
+            <Avatar
+                  className="d-inline-block mr-2"
+                  email=""
+                  google={false}
+                  name="John Smith"
+                  size={26}
+                  style={Object {}}
+                  url=""
+            />
+            John Smith
+      </span>,
+          "value": 1,
+        },
+        Object {
+          "label": <span>
+            <Avatar
+                  className="d-inline-block mr-2"
+                  email=""
+                  google={false}
+                  name="Jack Ryan"
+                  size={26}
+                  style={Object {}}
+                  url=""
+            />
+            Jack Ryan
+      </span>,
+          "value": 2,
+        },
+      ]
+    }
+    value={1}
+  />
+</div>
+`;
+
+exports[`BuildFinalTicket component should display the assignee field because the assignees on the tickets are different 1`] = `
+<div>
+  <p>
+    Select the fields you want to keep on the final ticket. The fields in blue will be kept. All fields not displayed here are either identical on both tickets, or will be computed automatically.
+  </p>
+  <BinaryChoiceField
+    label="Assignee"
+    name="ticket.assignee_user"
+    onChange={[Function]}
+    options={
+      Array [
+        Object {
+          "label": <span>
+            <Avatar
+                  className="d-inline-block mr-2"
+                  email=""
+                  google={false}
+                  name="John Smith"
+                  size={26}
+                  style={Object {}}
+                  url=""
+            />
+            John Smith
+      </span>,
+          "value": 1,
+        },
+        Object {
+          "label": <span>
+            <Avatar
+                  className="d-inline-block mr-2"
+                  email=""
+                  google={false}
+                  name="Jack Ryan"
+                  size={26}
+                  style={Object {}}
+                  url=""
+            />
+            Jack Ryan
+      </span>,
+          "value": 2,
+        },
+      ]
+    }
+    value={1}
+  />
+</div>
+`;
+
+exports[`BuildFinalTicket component should display the customer field because the customers on the tickets are different 1`] = `
+<div>
+  <p>
+    Select the fields you want to keep on the final ticket. The fields in blue will be kept. All fields not displayed here are either identical on both tickets, or will be computed automatically.
+  </p>
+  <BinaryChoiceField
+    label="Customer"
+    name="ticket.customer"
+    onChange={[Function]}
+    options={
+      Array [
+        Object {
+          "label": <span>
+            <i
+                  className="material-icons mr-2"
+            >
+                  person
+            </i>
+            Maria Curie
+      </span>,
+          "value": 22,
+        },
+        Object {
+          "label": <span>
+            <i
+                  className="material-icons mr-2"
+            >
+                  person
+            </i>
+            Pedro Curie
+      </span>,
+          "value": 33,
+        },
+      ]
+    }
+    value={22}
+  />
+</div>
+`;
+
+exports[`BuildFinalTicket component should display the subject field because the subjects on the tickets are different 1`] = `
+<div>
+  <p>
+    Select the fields you want to keep on the final ticket. The fields in blue will be kept. All fields not displayed here are either identical on both tickets, or will be computed automatically.
+  </p>
+  <BinaryChoiceField
+    label="Subject"
+    name="ticket.subject"
+    onChange={[Function]}
+    options={
+      Array [
+        Object {
+          "label": "foo",
+          "value": "foo",
+        },
+        Object {
+          "label": "bar",
+          "value": "bar",
+        },
+      ]
+    }
+    value="foo"
+  />
+</div>
+`;
+
+exports[`BuildFinalTicket component should not display any fields because they are all identical 1`] = `
+<div>
+  <p>
+    Select the fields you want to keep on the final ticket. The fields in blue will be kept. All fields not displayed here are either identical on both tickets, or will be computed automatically.
+  </p>
+  <p
+    className="mt-2 mb=2"
+    style={
+      Object {
+        "textAlign": "center",
+      }
+    }
+  >
+    These tickets are similar so all fields will be set automatically. Confirm the merge below and you’re all set!
+  </p>
+</div>
+`;
+
+exports[`BuildFinalTicket component should not display the assignee field because one of the assignees is empty 1`] = `
+<div>
+  <p>
+    Select the fields you want to keep on the final ticket. The fields in blue will be kept. All fields not displayed here are either identical on both tickets, or will be computed automatically.
+  </p>
+  <p
+    className="mt-2 mb=2"
+    style={
+      Object {
+        "textAlign": "center",
+      }
+    }
+  >
+    These tickets are similar so all fields will be set automatically. Confirm the merge below and you’re all set!
+  </p>
+</div>
+`;

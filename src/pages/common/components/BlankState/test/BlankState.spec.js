@@ -1,6 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import {BlankState} from '../components/BlankState'
+import BlankState from '../components/BlankState'
+
 
 describe('BlankState component', () => {
     it('default with undefined props', () => {

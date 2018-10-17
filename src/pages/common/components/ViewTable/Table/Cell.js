@@ -1,28 +1,25 @@
-import React, {PropTypes} from 'react'
-import {Link} from 'react-router'
-import ImmutablePropTypes from 'react-immutable-proptypes'
+// @flow
+import React from 'react'
 import {connect} from 'react-redux'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import {RenderLabel} from '../../../utils/labels'
 
 import * as viewsConfig from '../../../../../config/views'
 
 import css from '../Table.less'
+import {Link} from 'react-router'
 
-@connect((state, ownProps) => {
-    return {
-        config: viewsConfig.getConfigByName(ownProps.type),
-    }
-})
-export default class Cell extends React.Component {
-    static propTypes = {
-        config: ImmutablePropTypes.map.isRequired,
-        field: ImmutablePropTypes.map.isRequired,
-        item: ImmutablePropTypes.map.isRequired,
-        link: PropTypes.string.isRequired,
-        type: PropTypes.string.isRequired,
-    }
+type Props = {
+    config: Map<*,*>,
+    field: Map<*,*>,
+    item: Map<*,*>,
+    type: string,
+    onClick: ?(Map<*,*>) => void,
+    itemUrl: ?string
+}
 
+
+class Cell extends React.Component<Props> {
     static defaultProps = {
         item: fromJS({}),
     }
@@ -36,19 +33,49 @@ export default class Cell extends React.Component {
     }
 
     render() {
-        const {field, link} = this.props
+        const {item, field, onClick, itemUrl} = this.props
+
+        let content
+        let children = (
+            <RenderLabel
+                field={field}
+                value={this._labelValue()}
+            />
+        )
+
+        if (onClick) {
+            content = (
+                <div className="cell-wrapper" onClick={() => onClick(item)}>
+                    {children}
+                </div>
+            )
+        } else if (itemUrl) {
+            content = (
+                <Link to={itemUrl}>
+                    <div className="cell-wrapper">
+                        {children}
+                    </div>
+                </Link>
+            )
+        } else {
+            content = (
+                <div className="cell-wrapper">
+                    {children}
+                </div>
+            )
+        }
 
         return (
             <td className={css['limit-overflow']}>
-                <Link to={link}>
-                    <div className="cell-wrapper">
-                        <RenderLabel
-                            field={field}
-                            value={this._labelValue()}
-                        />
-                    </div>
-                </Link>
+                {content}
             </td>
         )
     }
 }
+
+
+export default connect((state, ownProps) => {
+    return {
+        config: viewsConfig.getConfigByName(ownProps.type),
+    }
+})(Cell)

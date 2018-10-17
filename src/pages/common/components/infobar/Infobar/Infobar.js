@@ -19,7 +19,7 @@ import Loader from '../../Loader/index'
 import Tooltip from '../../Tooltip'
 import InfobarLayout from '../InfobarLayout'
 import InfobarCustomerInfo from '../InfobarCustomerInfo'
-import MergeCustomersContainer from '../../mergeCustomers/MergeCustomersContainer'
+import MergeCustomersContainer from '../../MergeCustomers/MergeCustomersContainer'
 import InfobarSearchResultsList from '../InfobarSearchResultsList'
 import Search from '../../Search'
 
