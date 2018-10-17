@@ -228,7 +228,7 @@ export default class Navbar extends React.Component {
                             target="_blank"
                         >
                             <i className="material-icons mr-2" title="Helpcenter">help</i>
-                            Help Center
+                            Help center
                         </DropdownItem>
                         <DropdownItem
                             tag="div"
