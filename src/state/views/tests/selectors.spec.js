@@ -66,4 +66,39 @@ describe('selectors', () => {
             expect(selectors.getExpiredViewsCounts(1)(state).toJS()).toEqual([2])
         })
     })
+
+    describe('getViewIdToDisplay()', () => {
+        it('should return null because there is no views', () => {
+            const viewType = 'ticket-list'
+            const state = {views: initialState.set('items', fromJS([]))}
+            expect(selectors.getViewIdToDisplay(viewType)(state)).toEqual(null)
+        })
+
+        it('should return the id of the first view of matching type because no urlViewId was passed', () => {
+            const viewId = 7
+            const viewType = 'ticket-list'
+            const state = {views: initialState.set('items', fromJS([{id: viewId, type: viewType}]))}
+            expect(selectors.getViewIdToDisplay(viewType)(state)).toEqual(viewId)
+        })
+
+        it('should return the passed urlViewId because there is a matching view of the same type', () => {
+            const viewId = 7
+            const viewType = 'ticket-list'
+            const state = {views: initialState.set('items', fromJS([{id: viewId, type: viewType}]))}
+            expect(selectors.getViewIdToDisplay(viewType, viewId.toString())(state)).toEqual(viewId)
+        })
+
+        it('should not return the passed urlViewId because there is no matching view of the same type ' +
+            '(should instead return the if of the first view of matching type)', () => {
+            const viewId = 7
+            const viewType = 'customer-list'
+            const ticketViewId = 9
+            const ticketViewType = 'ticket-list'
+            const state = {views: initialState.set('items', fromJS([
+                {id: viewId, type: viewType},
+                {id: ticketViewId, type: ticketViewType}
+            ]))}
+            expect(selectors.getViewIdToDisplay(ticketViewType, viewId.toString())(state)).toEqual(ticketViewId)
+        })
+    })
 })

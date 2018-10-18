@@ -145,7 +145,11 @@ export const getViewIdToDisplay = (type: string, urlViewId: ?string) => createSe
     [getViewsByType(type)],
     (views: List<Map<*, *>>) => {
         if (urlViewId) {
-            return parseInt(urlViewId)
+            // Prevent suggesting a view with the wrong type
+            const matchingView = views.find((view) => view.get('id') === parseInt(urlViewId))
+            if (matchingView) {
+                return parseInt(urlViewId)
+            }
         }
 
         if (views.isEmpty()) {

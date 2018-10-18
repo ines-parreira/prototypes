@@ -66,6 +66,10 @@ class ViewTable extends React.Component<Props> {
         const currentSuggestedViewId = getViewIdToDisplay(this.props.config.get('type'), this.props.urlViewId)
         const nextSuggestedViewId = getViewIdToDisplay(nextProps.config.get('type'), nextProps.urlViewId)
 
+        if (nextProps.urlViewId && nextSuggestedViewId && nextSuggestedViewId.toString() !== nextProps.urlViewId) {
+            return browserHistory.push('/app')
+        }
+
         // if on the same view but page changed, fetch the new page
         if (currentSuggestedViewId === nextSuggestedViewId && this.props.currentPage !== nextProps.currentPage) {
             return this.props.fetchPage(nextProps.currentPage)
