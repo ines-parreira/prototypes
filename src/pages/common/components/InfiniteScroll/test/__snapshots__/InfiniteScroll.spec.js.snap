@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InfiniteScroll component should display infinite scroll with children 1`] = `
+<div
+  className="component"
+  onScroll={[Function]}
+>
+  <div>
+    Pizza Pepperoni
+  </div>
+  <Loader
+    className="loader"
+    inline={false}
+    minHeight="0"
+  />
+</div>
+`;

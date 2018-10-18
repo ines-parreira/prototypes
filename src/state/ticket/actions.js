@@ -12,7 +12,6 @@ import * as types from './constants'
 import * as newMessageTypes from '../newMessage/constants'
 
 import {DEFAULT_ACTIONS} from '../../config'
-import {setMacrosVisible} from '../macro/actions'
 import {notify} from '../notifications/actions'
 import {
     isCurrentlyOnTicket,
@@ -402,8 +401,6 @@ export const applyMacro = (macro, ticketId) => (dispatch, getState) => {
         type: newMessageTypes.NEW_MESSAGE_RECORD_MACRO,
         macro
     })
-
-    dispatch(setMacrosVisible(false))
 
     return Promise.resolve()
 }

@@ -8,6 +8,7 @@ import {
 import classnames from 'classnames'
 import _max from 'lodash/max'
 import _min from 'lodash/min'
+import _noop from 'lodash/noop'
 
 import css from './SelectField.less'
 
@@ -26,6 +27,7 @@ export default class SelectField extends Component {
         value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 
         onChange: PropTypes.func.isRequired,
+        onSearchChange: PropTypes.func,
         className: PropTypes.string
     }
 
@@ -35,6 +37,7 @@ export default class SelectField extends Component {
         placeholder: 'Select an option',
         singular: 'option',
         style: {},
+        onSearchChange: _noop,
     }
 
     constructor(props) {
@@ -78,6 +81,8 @@ export default class SelectField extends Component {
             filteredOptions: this._filterOptions(options, value, input),
             selectedOptionIndex: allowCustomValue ? -1 : 0,
         })
+
+        this.props.onSearchChange(input)
     }
 
     _stopPropagation = (event) => {

@@ -24,7 +24,6 @@ import shortcutManager from '../../../../../services/shortcutManager/index'
 
 import * as viewsActions from '../../../../../state/views/actions'
 import * as viewsSelectors from '../../../../../state/views/selectors'
-import * as macroActions from '../../../../../state/macro/actions'
 
 import {getAgents} from '../../../../../state/agents/selectors'
 
@@ -40,13 +39,13 @@ type Props = {
     view: viewType,
     actions: {
         views: typeof viewsActions,
-        macro: typeof macroActions
     },
     selectedItemsIds: List<Map<*,*>>,
     fieldEnumSearch: typeof viewsActions.fieldEnumSearch,
     currentUser: currentUserType,
     agents: agentsType,
-    isActiveViewTrashView: boolean
+    isActiveViewTrashView: boolean,
+    openMacroModal: () => void,
 }
 
 type State = {
@@ -113,7 +112,7 @@ class TicketListActions extends React.Component<Props, State> {
                         return
                     }
                     e.preventDefault()
-                    this.props.actions.macro.openModal()
+                    this.props.openMacroModal()
                 }
             },
             DELETE_TICKET: {
@@ -288,7 +287,7 @@ class TicketListActions extends React.Component<Props, State> {
             isActiveViewTrashView,
             selectedItemsIds,
             agents,
-            actions
+            openMacroModal,
         } = this.props
 
         const {
@@ -484,7 +483,7 @@ class TicketListActions extends React.Component<Props, State> {
                     <DropdownMenu right>
                         <DropdownItem
                             type="button"
-                            onClick={actions.macro.openModal}
+                            onClick={openMacroModal}
                         >
                             Apply macro
                         </DropdownItem>
@@ -586,7 +585,6 @@ function mapDispatchToProps(dispatch) {
     return {
         actions: {
             views: bindActionCreators(viewsActions, dispatch),
-            macro: bindActionCreators(macroActions, dispatch),
         },
         fieldEnumSearch: bindActionCreators(viewsActions.fieldEnumSearch, dispatch),
     }

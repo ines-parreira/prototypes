@@ -4,6 +4,8 @@ import _merge from 'lodash/merge'
 import _clone from 'lodash/clone'
 import _get from 'lodash/get'
 import _findIndex from 'lodash/findIndex'
+import _isFunction from 'lodash/isFunction'
+import _isObject from 'lodash/isObject'
 
 import keymap from '../../config/shortcuts'
 import {getModifier, isButton, closest} from './utils'
@@ -122,10 +124,8 @@ export class ShortcutManager {
             const keymap = this._getComponentKeymap(c.name)
             Object.keys(keymap.actions).forEach((a) => {
                 const action = keymap.actions[a]
-                if (
-                    (typeof action.key === 'object' && action.key.includes(combo))
-                    || action.key === combo
-                ) {
+                const hasCombo = (_isObject(action.key) && action.key.includes(combo)) || action.key === combo
+                if (hasCombo && _isFunction(action.action)) {
                     action.action(e)
                 }
             })

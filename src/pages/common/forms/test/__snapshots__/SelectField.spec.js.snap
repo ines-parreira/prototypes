@@ -307,6 +307,7 @@ exports[`SelectField should use custom props 1`] = `
 Object {
   "allowCustomValue": false,
   "onChange": [Function],
+  "onSearchChange": [Function],
   "options": Array [
     Object {
       "label": "First",
@@ -332,6 +333,7 @@ exports[`SelectField should use default props 1`] = `
 Object {
   "allowCustomValue": false,
   "onChange": [Function],
+  "onSearchChange": [Function],
   "options": Array [],
   "placeholder": "Select an option",
   "singular": "option",

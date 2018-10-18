@@ -435,6 +435,7 @@ exports[`ActionButton component should display multiple options with a common pa
         <SelectField
           allowCustomValue={false}
           onChange={[Function]}
+          onSearchChange={[Function]}
           options={
             Array [
               Object {
@@ -580,6 +581,7 @@ exports[`ActionButton component should display multiple options with different p
         <SelectField
           allowCustomValue={false}
           onChange={[Function]}
+          onSearchChange={[Function]}
           options={
             Array [
               Object {
@@ -724,6 +726,7 @@ exports[`ActionButton component should display multiple options without paramete
         <SelectField
           allowCustomValue={false}
           onChange={[Function]}
+          onSearchChange={[Function]}
           options={
             Array [
               Object {

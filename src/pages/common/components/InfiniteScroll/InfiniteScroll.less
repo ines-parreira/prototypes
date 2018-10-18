@@ -1,0 +1,17 @@
+:local .component {
+  position: relative;
+  overflow: auto;
+
+  .loader {
+    visibility: hidden;
+    height: 30px;
+
+    i {
+      font-size: 20px;
+    }
+  }
+
+  &.loading .loader {
+    visibility: visible;
+  }
+}

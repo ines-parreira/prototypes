@@ -234,7 +234,6 @@ exports[`TicketListActions component should display options for agents assignati
         tag="div"
       >
         <DropdownItem
-          onClick={[Function]}
           tag="button"
           toggle={true}
           type="button"
@@ -537,7 +536,6 @@ exports[`TicketListActions component should display special actions for trash vi
         tag="div"
       >
         <DropdownItem
-          onClick={[Function]}
           tag="button"
           toggle={true}
           type="button"
@@ -846,7 +844,6 @@ exports[`TicketListActions component should display when nothing is selected 1`]
         tag="div"
       >
         <DropdownItem
-          onClick={[Function]}
           tag="button"
           toggle={true}
           type="button"
@@ -1147,7 +1144,6 @@ exports[`TicketListActions component should display when some tickets are select
         tag="div"
       >
         <DropdownItem
-          onClick={[Function]}
           tag="button"
           toggle={true}
           type="button"

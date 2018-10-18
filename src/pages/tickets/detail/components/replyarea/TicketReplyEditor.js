@@ -8,14 +8,12 @@ import _noop from 'lodash/noop'
 
 import {EditorState, ContentState} from 'draft-js'
 
-import shortcutManager from '../../../../../services/shortcutManager'
 import RichField from '../../../../common/forms/RichField'
 
 import {isRichType, acceptsOnlyImages, canLeaveInternalNote} from '../../../../../config/ticket'
 import {humanizeString} from '../../../../../utils'
 import {ATTACHMENT_SIZE_ERROR, getMaxAttachmentSize} from '../../../../../utils/file'
 
-import * as macroActions from '../../../../../state/macro/actions'
 import * as newMessageActions from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {getOtherAgents} from '../../../../../state/agents/selectors'
@@ -71,7 +69,6 @@ type Props = {
 
     addAttachments: typeof newMessageActions.addAttachments,
     notify: ({}) => void,
-    setMacrosVisible: typeof macroActions.setMacrosVisible,
     setResponseText: typeof newMessageActions.setResponseText,
 
     richAreaRef: (T: richAreaType) => void
@@ -94,17 +91,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
         this._updateEditorState(this._getEditorStateFromReducer(this.props))
     }
 
-    componentDidMount() {
-        shortcutManager.bind('TicketDetailContainer', {
-            FOCUS_REPLY_AREA: {
-                action: this._focusReplyArea
-            }
-        })
-    }
-
     componentWillUnmount() {
-        shortcutManager.unbind('TicketDetailContainer')
-
         // prevent updating the newMessage state value with an old value.
         // without it on unmount the newMessage state is populated with the old editor value,
         // because of the debouncer.
@@ -134,17 +121,6 @@ export class TicketReplyEditor extends React.Component<Props, State> {
                     this.richArea.focusEditor()
                 }
             }, 1)
-        }
-    }
-
-    _focusReplyArea = (e: Event) => {
-        if (e && e.preventDefault) { // no incoming event if manually triggered
-            e.preventDefault()
-        }
-
-        if (this.richArea) {
-            this.props.setMacrosVisible(false)
-            this.richArea.focusEditor()
         }
     }
 
@@ -415,7 +391,6 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
     addAttachments: newMessageActions.addAttachments,
     notify,
-    setMacrosVisible: macroActions.setMacrosVisible,
     setResponseText: newMessageActions.setResponseText,
 }
 

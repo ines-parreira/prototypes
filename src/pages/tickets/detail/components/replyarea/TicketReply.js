@@ -77,7 +77,12 @@ export default class TicketReply extends React.Component {
     }
 
     render() {
-        const {ticket, isNewMessagePublic, actions, richAreaRef} = this.props
+        const {
+            ticket,
+            isNewMessagePublic,
+            actions,
+            richAreaRef,
+        } = this.props
 
         const className = classNames(css.component, this.props.className, {
             [css.internal]: !isNewMessagePublic,

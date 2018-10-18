@@ -1,13 +1,16 @@
 // @flow
 import {findDOMNode} from 'react-dom'
-import _isUndefined from 'lodash/isUndefined'
+import scrollIntoView from 'scroll-into-view-if-needed'
 
 /**
  * Scroll DOM node into view
  */
 function scrollToNode(node: HTMLElement) {
-    // $FlowFixMe
-    return !_isUndefined(Element.prototype.scrollIntoViewIfNeeded) ? node.scrollIntoViewIfNeeded() : node.scrollIntoView()
+    return scrollIntoView(node, {
+        scrollMode: 'if-needed',
+        block: 'nearest',
+        inline: 'nearest',
+    })
 }
 
 /**

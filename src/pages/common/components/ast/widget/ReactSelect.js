@@ -3,6 +3,7 @@ import React from 'react'
 import {List} from 'immutable'
 import sortBy from 'lodash/sortBy'
 import _isObject from 'lodash/isObject'
+import _noop from 'lodash/noop'
 
 import 'react-select/dist/react-select.css'
 import SelectField from '../../../forms/SelectField'
@@ -12,9 +13,14 @@ type Props = {
     onChange: (any) => void,
     options: any,
     value: any,
+    onSearchChange: (any) => void,
 }
 
 export default class Select extends React.Component<Props> {
+    static defaultProps = {
+        onSearchChange: _noop,
+    }
+
     _getOptions = () => {
         let {options} = this.props
 
@@ -53,7 +59,7 @@ export default class Select extends React.Component<Props> {
     }
 
     render() {
-        const {className, value} = this.props
+        const {className, value, onSearchChange} = this.props
         let newValue = value
 
         if (value === true) {
@@ -73,6 +79,7 @@ export default class Select extends React.Component<Props> {
                     className={className}
                     value={newValue}
                     onChange={this._onChange}
+                    onSearchChange={onSearchChange}
                     options={this._getOptions()}
                 />
             </div>

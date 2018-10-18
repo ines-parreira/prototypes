@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MacroNoResults component should display no macros available without search query 1`] = `
+<div
+  className="no-result-container"
+>
+  <p>
+    <span>
+      You don't have any macros yet
+    </span>
+  </p>
+  <Button
+    color="info"
+    onClick={[Function]}
+    tag="button"
+    type="button"
+  >
+    <i
+      className="fa fa-fw fa-plus mr-2"
+    />
+    Create a new macro
+  </Button>
+</div>
+`;
+
+exports[`MacroNoResults component should display no macros found with search query 1`] = `
+<div
+  className="no-result-container"
+>
+  <p>
+    <span>
+      No macros found
+    </span>
+  </p>
+  <Button
+    color="info"
+    onClick={[Function]}
+    tag="button"
+    type="button"
+  >
+    <i
+      className="fa fa-fw fa-plus mr-2"
+    />
+    Create a new macro
+  </Button>
+</div>
+`;

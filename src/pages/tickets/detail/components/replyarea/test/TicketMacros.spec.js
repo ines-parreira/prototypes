@@ -2,6 +2,7 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 import _noop from 'lodash/noop'
+import _assign from 'lodash/assign'
 
 import TicketMacros from '../TicketMacros'
 
@@ -13,6 +14,7 @@ const mockStore = configureMockStore(middlewares)
 
 describe('TicketMacros component', () => {
     let store
+    let defaultProps
     const defaultState = {
         newMessage: fromJS({
             newMessage: {
@@ -25,6 +27,19 @@ describe('TicketMacros component', () => {
 
     beforeEach(() => {
         store = mockStore(defaultState)
+        defaultProps = {
+            currentMacro: fromJS({}),
+            newMessageType: 'email',
+            fetchMacros: _noop,
+            page: 1,
+            totalPages: 1,
+            deleteMacro: _noop,
+            applyMacro: _noop,
+            notify: _noop,
+            hideMacros: _noop,
+            selectMacro: _noop,
+            store,
+        }
     })
 
     const baseMacros = [{
@@ -43,51 +58,23 @@ describe('TicketMacros component', () => {
 
     it('should display an empty state if there\'s no macros', () => {
         const component = shallow(
-            <TicketMacros
-                macros={fromJS([])}
-                macrosVisible={true}
-                store={store}
-                applyMacro={_noop}
-                openModal={_noop}
-                setMacrosVisible={_noop}
-                setSelectedMacroId={_noop}
-            />
-        ).dive()
+            <TicketMacros {...defaultProps} />
+        )
 
-        expect(component).toMatchSnapshot()
-    })
-
-    it('should display another empty state if there\'s no macros matching the searchQuery', () => {
-        const component = shallow(
-            <TicketMacros
-                macros={fromJS([])}
-                macrosVisible={true}
-                store={store}
-                applyMacro={_noop}
-                openModal={_noop}
-                setMacrosVisible={_noop}
-                setSelectedMacroId={_noop}
-                searchQuery="Foo Bar"
-            />
-        ).dive()
-
-        expect(component).toMatchSnapshot()
+        expect(component.dive().find('MacroNoResults')).toHaveLength(1)
     })
 
     it('should display macros list, and selected macro', () => {
+        const macros = fromJS(baseMacros)
         const component = shallow(
             <TicketMacros
-                macros={fromJS(baseMacros)}
-                macrosVisible={true}
-                store={store}
-                applyMacro={_noop}
-                openModal={_noop}
-                setMacrosVisible={_noop}
-                setSelectedMacroId={_noop}
-                searchQuery="Foo Bar"
+                {..._assign(defaultProps, {
+                    currentMacro: macros.get(1),
+                    macros,
+                })}
             />
-        ).dive()
+        )
 
-        expect(component).toMatchSnapshot()
+        expect(component.dive()).toMatchSnapshot()
     })
 })

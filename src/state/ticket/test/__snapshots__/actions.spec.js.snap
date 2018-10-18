@@ -168,10 +168,6 @@ Array [
 },
     "type": "NEW_MESSAGE_RECORD_MACRO",
   },
-  Object {
-    "type": "SET_MACROS_VISIBILITY",
-    "visible": false,
-  },
 ]
 `;
 

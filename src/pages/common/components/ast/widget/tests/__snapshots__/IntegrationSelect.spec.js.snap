@@ -4,6 +4,7 @@ exports[`ast widgets IntegrationSelect should render a SelectField 1`] = `
 <SelectField
   allowCustomValue={false}
   onChange={[Function]}
+  onSearchChange={[Function]}
   options={
     Array [
       Object {

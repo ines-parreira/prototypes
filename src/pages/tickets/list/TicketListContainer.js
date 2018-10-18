@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import DocumentTitle from 'react-document-title'
 import {Link} from 'react-router'
 import {Button} from 'reactstrap'
+import decorateComponentWithProps from 'decorate-component-with-props'
 
 import MacroContainer from '../common/macros/MacroContainer'
 import {compactInteger} from '../../../utils'
@@ -38,13 +39,15 @@ type Props = {
 
 type State = {
     isSearch: boolean,
-    isUpdate: boolean
+    isUpdate: boolean,
+    isMacroModalOpen: boolean,
 }
 
 class TicketListContainer extends React.Component<Props, State> {
     state = {
         isSearch: false,
         isUpdate: true,
+        isMacroModalOpen: false,
     }
 
     componentWillMount() {
@@ -57,6 +60,9 @@ class TicketListContainer extends React.Component<Props, State> {
             isUpdate: !isCreationUrl(nextProps.location.pathname, 'tickets'),
         })
     }
+
+    _openMacroModal = () => this.setState({isMacroModalOpen: true})
+    _closeMacroModal = () => this.setState({isMacroModalOpen: false})
 
     render() {
         const {isSearch, isUpdate} = this.state
@@ -93,7 +99,9 @@ class TicketListContainer extends React.Component<Props, State> {
                         isUpdate={isUpdate}
                         isSearch={isSearch}
                         urlViewId={urlViewId}
-                        ActionsComponent={TicketListActions}
+                        ActionsComponent={
+                            decorateComponentWithProps(TicketListActions, {openMacroModal: this._openMacroModal})
+                        }
                         viewButtons={(
                             <div className="d-inline-flex align-items-center">
                                 <Button
@@ -106,12 +114,15 @@ class TicketListContainer extends React.Component<Props, State> {
                             </div>
                         )}
                     />
-                    <MacroContainer
-                        activeView={activeView}
-                        disableExternalActions
-                        selectionMode
-                        selectedItemsIds={this.props.selectedItemsIds}
-                    />
+                    {this.state.isMacroModalOpen && (
+                        <MacroContainer
+                            activeView={activeView}
+                            disableExternalActions
+                            selectedItemsIds={this.props.selectedItemsIds}
+                            closeModal={this._closeMacroModal}
+                            selectionMode
+                        />
+                    )}
                 </div>
             </DocumentTitle>
         )

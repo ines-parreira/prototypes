@@ -1,7 +1,34 @@
 @import '~css/new/colors';
+@import '~css/new/mixins';
 
-:local {
-  .search {
-    border-color: @lightGrey;
+:local .component {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  color: @indigo;
+  font-size: 13px;
+  font-weight: 500;
+
+  @media @mobiles {
+    width: 100%;
+  }
+
+  .item {
+    display: block;
+    padding: .5em .4em;
+    border-radius: 2px;
+    cursor: pointer;
+
+    &.active {
+      background-color: #fff;
+      color: @blue;
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      color: #c2c2c2;
+    }
   }
 }
+

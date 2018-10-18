@@ -1,10 +1,14 @@
 // @flow
 import React, {Component} from 'react'
+import classnames from 'classnames'
+
 import css from './Loader.less'
+
 type Props = {
     inline: boolean,
     message?: Object | string,
-    minHeight?: string
+    minHeight?: string,
+    className?: string,
 }
 
 export default class Loader extends Component<Props> {
@@ -14,10 +18,10 @@ export default class Loader extends Component<Props> {
     }
 
     render() {
-        const {message, inline, minHeight} = this.props
+        const {message, inline, minHeight, className} = this.props
 
         return (
-            <div className={css.container}>
+            <div className={classnames(css.container, className)}>
                 <div className={css.inner} style={{minHeight}}>
                     <i className="fa fa-fw fa-circle-o-notch fa-spin" />
                     {

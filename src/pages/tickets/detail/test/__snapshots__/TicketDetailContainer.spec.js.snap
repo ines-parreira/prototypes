@@ -15,12 +15,9 @@ exports[`TicketDetailContainer component should render container for new ticket 
             "fetchCustomers": [Function],
           },
           "macro": Object {
-            "closeModal": [Function],
             "createMacro": [Function],
             "deleteMacro": [Function],
             "fetchMacros": [Function],
-            "openModal": [Function],
-            "setMacrosVisible": [Function],
             "updateMacro": [Function],
           },
           "newMessage": Object {

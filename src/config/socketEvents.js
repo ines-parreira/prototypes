@@ -5,7 +5,6 @@ import * as viewsActions from '../state/views/actions'
 import * as chatsActions from '../state/chats/actions'
 
 import * as viewsConstants from '../state/views/constants'
-import * as macroConstants from '../state/macro/constants'
 import * as requestsConstants from '../state/requests/constants'
 import * as currentAccountConstants from '../state/currentAccount/constants'
 import * as socketConstants from './socketConstants'
@@ -222,30 +221,6 @@ export const receivedEvents = [{
     name: 'views-count-updated',
     onReceive: function (json) {
         return this.dispatch(viewsActions.handleViewsCount(json.counts))
-    },
-}, {
-    name: 'macro-created',
-    onReceive: function (json) {
-        return this.dispatch({
-            type: macroConstants.CREATE_MACRO_SUCCESS,
-            resp: json.macro,
-        })
-    },
-}, {
-    name: 'macro-updated',
-    onReceive: function (json) {
-        return this.dispatch({
-            type: macroConstants.UPDATE_MACRO_SUCCESS,
-            resp: json.macro,
-        })
-    },
-}, {
-    name: 'macro-deleted',
-    onReceive: function (json) {
-        return this.dispatch({
-            type: macroConstants.DELETE_MACRO_SUCCESS,
-            resp: json.macro,
-        })
     },
 }, {
     name: 'request-created',

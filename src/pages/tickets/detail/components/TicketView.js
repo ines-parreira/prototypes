@@ -31,7 +31,6 @@ import {getCustomersState} from '../../../../state/customers/selectors'
         agentsViewing: agentSelectors.getOtherAgentsOnTicket(state.ticket.get('id'))(state),
         agentsTyping: agentSelectors.getOtherAgentsTypingOnTicket(state.ticket.get('id'))(state),
         currentUser: state.currentUser,
-        macros: state.macros,
         routing: state.routing,
         tags: tagsSelectors.getTags(state),
         ticket: state.ticket,
@@ -51,7 +50,6 @@ export default class TicketView extends React.Component {
         currentUser: PropTypes.object.isRequired,
         hideTicket: PropTypes.func.isRequired,
         isTicketHidden: PropTypes.bool.isRequired,
-        macros: PropTypes.object.isRequired,
         submit: PropTypes.func.isRequired,
         tags: PropTypes.object.isRequired,
         ticket: PropTypes.object.isRequired,
@@ -306,7 +304,6 @@ export default class TicketView extends React.Component {
                             actions={this.props.actions}
                             currentUser={this.props.currentUser}
                             customers={this.props.customers}
-                            macros={this.props.macros}
                             ticket={this.props.ticket}
                         />
 

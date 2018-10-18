@@ -5,30 +5,35 @@ import {fromJS} from 'immutable'
 import MacroList from '../MacroList'
 
 describe('MacroList component', () => {
-    let component
     const macros = fromJS([
+        {id: 1, name: 'Pizza Pepperoni'},
+        {id: 2, name: 'Pizza Capricciosa'},
         {
-            id: 1,
-            name: 'Pizza Pepperoni'
+            id: 3,
+            name: 'Pizza Margherita',
+            actions: [{name: 'http'}]
         },
-        {
-            id: 2,
-            name: 'Pizza Capricciosa'
-        }
     ])
-    const currentMacro = macros.first()
-
-    beforeEach(() => {
-        component = shallow(
-            <MacroList
-                macros={macros}
-                currentMacro={currentMacro}
-                disableExternalActions={false}
-            />
-        )
-    })
 
     it('should render the macro list', () => {
+        const component = shallow(
+            <MacroList
+                macros={macros}
+                currentMacro={macros.first()}
+            />
+        )
         expect(component).toMatchSnapshot()
     })
+
+    it('should render active and disabled macros', () => {
+        const component = shallow(
+            <MacroList
+                macros={macros}
+                currentMacro={macros.get(1)}
+                disableExternalActions={true}
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
 })

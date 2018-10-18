@@ -47,3 +47,12 @@ export function generateDefaultAction(actionType: string): ?Map<*,*> {
 
     return ret
 }
+
+export function getDefaultMacro() {
+    return fromJS({
+        name: 'New macro',
+        actions: [
+            generateDefaultAction('setResponseText')
+        ]
+    })
+}

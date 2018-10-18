@@ -3,40 +3,42 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {fromJS, List} from 'immutable'
-import {Input} from 'reactstrap'
 
 import {getActionTemplate} from './../../../../../utils'
 
 import Select from './ReactSelect'
 
 import * as macroActions from './../../../../../state/macro/actions'
-import {getMacros} from './../../../../../state/macro/selectors'
 
+import type {Map} from 'immutable'
 
 type Props = {
     actions: Object,
     onChange: (any) => void,
     value: string,
-    macros: Object,
     className: ?string
 }
 
-class MacroSelect extends React.Component<Props> {
+type State = {
+    loading: boolean,
+    macros: Map<*,*>,
+}
+
+class MacroSelect extends React.Component<Props, State> {
+    state = {
+        loading: false,
+        macros: fromJS([]),
+    }
+
     _selectFirstOption = (value: string, props: Props) => {
-        if (!value && !props.macros.isEmpty()) {
-            const firstOption = this._getOptions(props.macros).first()
+        if (!value && !this.state.macros.isEmpty()) {
+            const firstOption = this._getOptions(this.state.macros).first()
             props.onChange(firstOption.get('value').toString())
         }
     }
 
     componentDidMount() {
-        const {actions, macros, value} = this.props
-
-        if (macros.isEmpty()) {
-            actions.fetchMacros()
-        } else {
-            this._selectFirstOption(value, this.props)
-        }
+        this._loadMacros()
     }
 
     // Update the rule with the first macro when macros are fetched
@@ -45,6 +47,10 @@ class MacroSelect extends React.Component<Props> {
     }
 
     _getOptions = (macros = fromJS({})) : List<*> => {
+        if (this.state.loading) {
+            return fromJS([])
+        }
+
         // Filter out macros with external actions
         return macros
             .filter((macro) => macro.get('actions')
@@ -55,40 +61,37 @@ class MacroSelect extends React.Component<Props> {
             .sortBy((macro) => (macro.get('label') || '').toLowerCase())
     }
 
-    render() {
-        const {value, onChange, macros, className} = this.props
-        const options = this._getOptions(macros)
+    _loadMacros = (search) => {
+        this.setState({loading: true})
+        this.props.actions.fetchMacros({search}).then((res) => {
+            this.setState({
+                loading: false,
+                macros: res.macros,
+            })
+        })
+    }
 
-        if (options.isEmpty()) {
-            return (
-                <Input
-                    type="text"
-                    placeholder="Loading macros..."
-                    readOnly
-                />
-            )
-        }
+    render() {
+        const {value, onChange, className} = this.props
+        const options = this._getOptions(this.state.macros)
 
         return (
             <Select
                 className={className}
                 value={value}
                 onChange={onChange}
+                onSearchChange={this._loadMacros}
                 options={options.toJS()}
             />
         )
     }
 }
 
-const mapStateToProps = (state) => ({
-    macros: getMacros(state)
-})
-
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(macroActions, dispatch)
 })
 
 export default connect(
-    mapStateToProps,
+    null,
     mapDispatchToProps
 )(MacroSelect)

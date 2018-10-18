@@ -1,59 +1,106 @@
-import React, {PropTypes} from 'react'
-import ReactDOM from 'react-dom'
+//@flow
+import React from 'react'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
-import {Input} from 'reactstrap'
+import _debounce from 'lodash/debounce'
 
 import TicketReply from './TicketReply'
 import TicketMacros from './TicketMacros'
 import shortcutManager from '../../../../../services/shortcutManager'
 
-import * as search from '../../../../../state/macro/search'
-import * as ticketActions from '../../../../../state/ticket/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
-import {notify} from './../../../../../state/notifications/actions'
 import {getPreferences} from './../../../../../state/currentUser/selectors'
-import {areMacrosVisible, getMacrosOrderedByUsage} from '../../../../../state/macro/selectors'
+import * as ticketSelectors from '../../../../../state/ticket/selectors'
+import {notify} from './../../../../../state/notifications/actions'
+import {fetchMacros} from './../../../../../state/macro/actions'
+import {applyMacro} from '../../../../../state/ticket/actions'
+
+import {getDefaultSelectedMacroId, getCurrentMacro} from '../../../common/macros/utils'
 
 import css from './TicketReplyArea.less'
+import {Input} from 'reactstrap'
 
 const CONTENT_STATE_PATH = ['state', 'contentState']
 
-export class TicketReplyArea extends React.Component {
-    constructor(props) {
-        super(props)
+import type {Map} from 'immutable'
+import type {fetchMacrosType} from '../../../common/macros/types'
 
-        const macros = this._getMacros(props, {})
-        const firstMacro = macros.first()
-        const selectedMacroId = firstMacro ? firstMacro.get('id') : null
+type Props = {
+    actions: Object,
+    ticket: Object,
+    currentUser: Object,
+    customers: Object,
+    preferences: Object,
+    newMessage: Object,
+    newMessageType: string,
+    notify: typeof notify,
+    currentMacro: Map<*,*>,
+    page: number,
+    totalPages: number,
+    selectMacro: () => void,
+    fetchMacros: fetchMacrosType,
+    applyMacro: (M: Map<*,*>, I: number) => void,
+    currentTicket: Map<*,*>,
+    cacheAdded: boolean,
+}
+
+type State = {
+    macros: Map<*,*>,
+    page: number,
+    totalPages: number,
+    macrosVisible: boolean,
+    macroSearchQuery: string,
+    selectedMacroId: ?number,
+}
+
+export class TicketReplyArea extends React.Component<Props, State> {
+    richArea = null
+    macroInput = null
+    cacheAdded = false
+
+    constructor() {
+        super()
 
         this.state = {
-            searchQuery: '',
-            searchedMacrosIds: fromJS([]),
-            isMacroDisplayInitialized: false,
-            selectedMacroId,
+            macros: fromJS([]),
+            page: 1,
+            totalPages: 1,
+            macrosVisible: false,
+            macroSearchQuery: '',
+            selectedMacroId: null
         }
     }
 
     componentDidMount() {
         this._bindKeys()
-
-        // TODO(@xarg): move this closer after the loading of the initial state.
-        search.populate(this.props.macros)
+        this._loadMacros()
     }
 
-    componentWillReceiveProps(nextProps) {
-        this._showMacrosDefault(nextProps)
+    componentDidUpdate = (prevProps: Props) => {
+        if (this.props.cacheAdded && this.cacheAdded !== true) {
+            this._showMacrosDefault()
+            // only run once
+            this.cacheAdded = true
+        }
+
+        if (
+            // message type changed
+            prevProps.newMessageType !== this.props.newMessageType
+            && this.props.newMessageType === 'internal-note'
+        ) {
+            // hide macros on internal-note
+            this._hideMacros()
+        }
     }
 
     componentWillUnmount() {
         shortcutManager.unbind('TicketDetailContainer')
     }
 
-    // show macros depending on the show_macros preference
-    _showMacrosDefault(nextProps) {
-        const nextContextState = nextProps.newMessage.getIn(CONTENT_STATE_PATH)
+    _showMacrosDefault = () => {
+        // show macros depending on the show_macros preference
+        const nextContextState = this.props.newMessage.getIn(CONTENT_STATE_PATH)
         const editorFocused = this.richArea && this.richArea.isFocused()
 
         // has any text
@@ -63,10 +110,10 @@ export class TicketReplyArea extends React.Component {
         )
 
         // default
-        let showMacros = nextProps.preferences.get('show_macros')
+        let showMacros = this.props.preferences.get('show_macros')
 
         // show/hide macros depending on the profile setting
-        const preferences = nextProps.currentUser
+        const preferences = this.props.currentUser
             .get('settings')
             .find((s) => s.get('type') === 'preferences')
 
@@ -74,63 +121,129 @@ export class TicketReplyArea extends React.Component {
             showMacros = preferences.getIn(['data', 'show_macros'])
         }
 
-        // don't toggle macros
+        // toggle macros only if
         if (
-            // if show_macros preference is false
-            !showMacros
-            // macros where already shown
-            || this.state.isMacroDisplayInitialized
-            // cache wasn't added yet
-            || !nextProps.cacheAdded
-            // message is not email
-            || nextProps.newMessageType !== 'email'
-            // editor has text
-            || hasText
-            // editor is focused.
+            // show_macros preference is true
+            showMacros
+            // cache was added
+            && this.props.cacheAdded
+            // message is email
+            && this.props.newMessageType === 'email'
+            // editor doesn't have text
+            && !hasText
+            // editor is not focused
             // fixes issues caused by the debounced setResponseText,
             // that causes the contentState to be set with a delay.
-            || editorFocused
-            // or manually changed macro visibility
-            || nextProps.macros.get('visible') !== this.props.macros.get('visible')
+            && !editorFocused
         ) {
-            return
+            this._showMacros()
         }
-
-        this._setMacrosVisible(showMacros)
-        this.setState({isMacroDisplayInitialized: true})
     }
 
-    _bindKeys() {
-        const modalVisible = () => this.props.macros.get('isModalOpen')
+    _loadMacros = ({search = '', page = 1}: {search: string, page: number} = {}) => {
+        return this.props.fetchMacros({
+            currentMacros: this.state.macros,
+            currentPage: this.state.page,
+            search,
+            page,
+        }).then((res) => {
+            const selectedMacroId = getDefaultSelectedMacroId(res.macros, this.state.selectedMacroId)
+            return new Promise((resolve) => {
+                this.setState({
+                    selectedMacroId,
+                    macros: res.macros,
+                    page: res.page,
+                    totalPages: res.totalPages,
+                }, resolve)
+            })
+        })
+    }
 
+    _setSelectedMacroId = (macro: Map<*,*>) => this.setState({selectedMacroId: macro.get('id')})
+
+    _bindKeys() {
         shortcutManager.bind('TicketDetailContainer', {
             SHOW_MACROS: {
                 action: (e) => {
-                    if (!modalVisible()) {
-                        e.preventDefault()
-                        this._setMacrosVisible(true)
-
-                        if (this.macroInput) {
-                            ReactDOM.findDOMNode(this.macroInput).focus()
-                        }
+                    e.preventDefault()
+                    if (this.macroInput) {
+                        this.macroInput.focus()
                     }
                 }
             },
             BLUR_EVERYTHING: {
                 action: () => {
-                    if (!modalVisible()) {
-                        this._setMacrosVisible(false)
-                    }
+                    this._hideMacros()
 
-                    if ('activeElement' in document) {
+                    if (document.hasOwnProperty('activeElement') && document.activeElement) {
                         document.activeElement.blur()
                     }
+                }
+            },
+            FOCUS_REPLY_AREA: {
+                action: (e) => {
+                    e.preventDefault()
+                    this._hideMacros()
                 }
             },
         })
     }
 
-    _applyMacro = (macro) => {
+    _handleSearchKeyDown = (e: KeyboardEvent) => {
+        const {macros} = this.state
+        const macrosIds = macros.map((macro) => macro.get('id')).toList()
+        const indexCurrentMacro = macrosIds.indexOf(this.state.selectedMacroId)
+
+        if (e.key === 'Escape' || e.key === 'Tab') {
+            e.preventDefault()
+            this._hideMacros()
+        }
+
+        if (e.key === 'ArrowDown') {
+            if (~indexCurrentMacro && indexCurrentMacro < macrosIds.size - 1) {
+                e.preventDefault()
+                const nextMacroIndex = indexCurrentMacro + 1
+                this.setState({selectedMacroId: macrosIds.get(nextMacroIndex)})
+            }
+        }
+
+        if (e.key === 'ArrowUp') {
+            if (~indexCurrentMacro && indexCurrentMacro > 0) {
+                e.preventDefault()
+                const nextMacroIndex = indexCurrentMacro - 1
+                this.setState({selectedMacroId: macrosIds.get(nextMacroIndex)})
+            }
+        }
+
+        if (e.key === 'Enter') {
+            e.preventDefault()
+            const macro = macros.find((macro) => macro.get('id') === this.state.selectedMacroId)
+            // $FlowFixMe
+            this._applyMacro(macro)
+        }
+    }
+
+    _debounceLoadMacros = _debounce(this._loadMacros, 350)
+
+    _searchMacros = (e: {target: {value: string}}) => {
+        const search = e.target.value || ''
+        this.setState({macroSearchQuery: search})
+
+        if (!search.trim().length || search.trim().length > 1) {
+            this._debounceLoadMacros({search})
+        }
+    }
+
+    _showMacros = () => this.setState({macrosVisible: true})
+    _hideMacros = () => {
+        this.setState({macrosVisible: false}, () => {
+            if (this.richArea) {
+                this.richArea.focusEditor()
+            }
+        })
+    }
+
+    _applyMacro = (macro: Map<*,*>) => {
         const {newMessageType} = this.props
 
         const hasAttachments = !macro.get('actions').filter((action) => action.get('name') === 'addAttachments').isEmpty()
@@ -141,7 +254,8 @@ export class TicketReplyArea extends React.Component {
 
         if (isMessengerMessage && hasText && hasAttachments) {
             this.props.notify({
-                title: 'We have removed the attachment from this message, because you cannot send text and attachments at the same time on Messenger.'
+                status: 'warning',
+                message: 'We have removed the attachment from this message, because you cannot send text and attachments at the same time on Messenger.'
             })
             appliedMacro = appliedMacro.update(
                 'actions',
@@ -149,104 +263,17 @@ export class TicketReplyArea extends React.Component {
             )
         }
 
-        this.props.applyMacro(appliedMacro, this.props.ticket.get('id'))
-    }
-
-    _getMacros = (props = this.props, state = this.state) => {
-        const macros = props.macros
-        if (state.searchQuery) {
-            return state.searchedMacrosIds.map((macroId) =>
-                macros.find((m) =>
-                    m.get('id').toString() === macroId
-                )
-            )
-        }
-        return macros
-    }
-
-    _getMacrosIds = (props = this.props, state = this.state) => {
-        return this._getMacros(props, state).map((macro) => macro.get('id')).toList()
-    }
-
-    _setMacrosVisible = (v) => this.props.actions.macro.setMacrosVisible(v)
-
-    _handleSearch = (query) => {
-        let searchedMacrosIds = this.state.searchedMacrosIds
-        let selectedMacroId = this.state.selectedMacroId
-        if (!!query) {
-            searchedMacrosIds = fromJS(search.search(query))
-        }
-        // manually send new values,
-        // because state is not updated yet.
-        const macrosIds = this._getMacrosIds(this.props, {
-            searchQuery: query,
-            searchedMacrosIds,
-        })
-
-        // when macros change because of a search then select first one
-        const shouldSelectFirstMacro = !macrosIds.isEmpty()
-            && this.state.searchQuery !== query
-        if (shouldSelectFirstMacro) {
-            selectedMacroId = macrosIds.first()
-        }
-
-        this.setState({
-            searchQuery: query,
-            searchedMacrosIds,
-            selectedMacroId,
-        })
-    }
-
-    // scroll in macro list until currently selected macro
-    _scrollMacrosListToCurrent = () => {
-        const list = document.getElementsByClassName('macro-list')[0]
-        const selectedItem = document.getElementsByClassName('macro-item active')[0]
-        list.scrollTop = selectedItem.offsetTop - 14
-    }
-
-    _handleSearchKeyDown = (e) => {
-        const macros = this._getMacros()
-        const macrosIds = this._getMacrosIds()
-        const indexCurrentMacro = macrosIds.indexOf(this.state.selectedMacroId)
-
-        if (e.key === 'Escape' || e.key === 'Tab') {
-            // wait next React tick before focusing the reply area so React has rendered components already
-            setTimeout(() => {
-                shortcutManager.triggerAction('TicketDetailContainer', 'FOCUS_REPLY_AREA')
-            }, 1)
-        }
-
-        if (e.key === 'ArrowDown') {
-            if (~indexCurrentMacro && indexCurrentMacro < macrosIds.size - 1) {
-                e.preventDefault()
-                const nextMacroIndex = indexCurrentMacro + 1
-                this.setState({selectedMacroId: macrosIds.get(nextMacroIndex)}, this._scrollMacrosListToCurrent)
-            }
-        }
-
-        if (e.key === 'ArrowUp') {
-            if (~indexCurrentMacro && indexCurrentMacro > 0) {
-                e.preventDefault()
-                const nextMacroIndex = indexCurrentMacro - 1
-                this.setState({selectedMacroId: macrosIds.get(nextMacroIndex)}, this._scrollMacrosListToCurrent)
-            }
-        }
-
-        if (e.key === 'Enter') {
-            e.preventDefault()
-            const macro = macros.find((macro) => macro.get('id') === this.state.selectedMacroId)
-            this._applyMacro(macro)
-        }
+        this.props.applyMacro(appliedMacro, this.props.currentTicket.get('id'))
+        this._hideMacros()
     }
 
     render = () => {
-        const macros = this._getMacros()
-        const macrosVisible = this.props.macrosVisible
+        const currentMacro = getCurrentMacro(this.state.macros, this.state.selectedMacroId)
 
         return (
             <div
                 className={classnames(css.component, {
-                    [css.macrosVisible]: macrosVisible
+                    [css.macrosVisible]: this.state.macrosVisible
                 })}
             >
                 <div className={css.search}>
@@ -254,76 +281,51 @@ export class TicketReplyArea extends React.Component {
                         flash_on
                     </i>
                     <Input
-                        ref={(macroInput) => this.macroInput = macroInput}
+                        innerRef={(macroInput) => this.macroInput = macroInput}
                         tabIndex="3"
-                        onChange={(e) => this._handleSearch(e.target.value)}
+                        onChange={this._searchMacros}
                         onKeyDown={this._handleSearchKeyDown}
-                        onFocus={() => this._setMacrosVisible(true)}
+                        onFocus={this._showMacros}
                         placeholder="Search macros by name, tags or body..."
                     />
                 </div>
-
                 <div className={css.content}>
-                    <TicketMacros
-                        macros={macros}
-                        macrosVisible={macrosVisible}
-                        applyMacro={this._applyMacro}
-                        setMacrosVisible={this._setMacrosVisible}
-                        searchQuery={this.state.searchQuery}
-                        selectedMacroId={this.state.selectedMacroId}
-                        setSelectedMacroId={(selectedMacroId) => this.setState({selectedMacroId})}
-                        className={classnames({
-                            'd-block': macrosVisible
-                        })}
-                    />
-
-                    <TicketReply
-                        className={classnames({
-                            hidden: macrosVisible,
-                        })}
-                        actions={this.props.actions}
-                        ticket={this.props.ticket}
-                        appliedMacro={this.props.ticket.getIn(['state', 'appliedMacro'])}
-                        customers={this.props.customers}
-                        richAreaRef={(ref) => this.richArea = ref}
-                    />
+                    {this.state.macrosVisible ? (
+                        <TicketMacros
+                            ticket={this.props.ticket}
+                            macros={this.state.macros}
+                            page={this.state.page}
+                            totalPages={this.state.totalPages}
+                            currentMacro={currentMacro}
+                            selectMacro={this._setSelectedMacroId}
+                            fetchMacros={this._loadMacros}
+                            searchQuery={this.state.macroSearchQuery}
+                            hideMacros={this._hideMacros}
+                            applyMacro={this._applyMacro}
+                        />
+                    ) : (
+                        <TicketReply
+                            actions={this.props.actions}
+                            ticket={this.props.ticket}
+                            appliedMacro={this.props.ticket.getIn(['state', 'appliedMacro'])}
+                            customers={this.props.customers}
+                            richAreaRef={(ref) => this.richArea = ref}
+                        />
+                    )}
                 </div>
-
-
             </div>
         )
     }
 }
 
-TicketReplyArea.propTypes = {
-    actions: PropTypes.object.isRequired,
-    ticket: PropTypes.object.isRequired,
-    macros: PropTypes.object.isRequired,
-    macrosVisible: PropTypes.bool.isRequired,
-    currentUser: PropTypes.object.isRequired,
-    customers: PropTypes.object.isRequired,
-    applyMacro: PropTypes.func.isRequired,
-    updateMacro: PropTypes.func,
-    preferences: PropTypes.object.isRequired,
-    newMessage: PropTypes.object.isRequired,
-    newMessageType: PropTypes.string.isRequired,
-    notify: PropTypes.func.isRequired
-}
-
-function mapStateToProps(state) {
-    return {
-        macros: getMacrosOrderedByUsage(state),
-        macrosVisible: areMacrosVisible(state),
-        newMessageType: newMessageSelectors.getNewMessageType(state),
-        newMessage: state.newMessage,
-        preferences: getPreferences(state),
-        cacheAdded: newMessageSelectors.isCacheAdded(state),
-    }
-}
-
-const mapDispatchToProps = {
-    applyMacro: ticketActions.applyMacro,
+export default connect((state) => ({
+    newMessageType: newMessageSelectors.getNewMessageType(state),
+    newMessage: state.newMessage,
+    preferences: getPreferences(state),
+    cacheAdded: newMessageSelectors.isCacheAdded(state),
+    currentTicket: ticketSelectors.getTicket(state),
+}), ({
     notify,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(TicketReplyArea)
+    fetchMacros,
+    applyMacro,
+}))(TicketReplyArea)

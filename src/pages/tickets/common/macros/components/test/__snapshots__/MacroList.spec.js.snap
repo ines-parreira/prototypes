@@ -1,39 +1,63 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MacroList component should render the macro list 1`] = `
-<div>
+exports[`MacroList component should render active and disabled macros 1`] = `
+<InfiniteScroll
+  className="component"
+  load={[Function]}
+  loadMore={false}
+  threshold={50}
+>
   <div
-    className="macro-list"
+    className="item"
+    onClick={[Function]}
+    onMouseEnter={[Function]}
   >
-    <div
-      className="mt-3 mb-2"
-      style={
-        Object {
-          "position": "relative",
-        }
-      }
-    >
-      <Input
-        autoFocus={true}
-        className="search shortcuts-enable"
-        onChange={[Function]}
-        placeholder="Search macros by name, tags or body..."
-        type="text"
-        value=""
-      />
-    </div>
-    <div
-      className="macro-item m-0 active"
-      onClick={[Function]}
-    >
-      Pizza Pepperoni
-    </div>
-    <div
-      className="macro-item m-0"
-      onClick={[Function]}
-    >
-      Pizza Capricciosa
-    </div>
+    Pizza Pepperoni
   </div>
-</div>
+  <div
+    className="item active"
+    onClick={[Function]}
+    onMouseEnter={[Function]}
+  >
+    Pizza Capricciosa
+  </div>
+  <div
+    className="item disabled"
+    onClick={[Function]}
+    onMouseEnter={[Function]}
+  >
+    Pizza Margherita
+  </div>
+</InfiniteScroll>
+`;
+
+exports[`MacroList component should render the macro list 1`] = `
+<InfiniteScroll
+  className="component"
+  load={[Function]}
+  loadMore={false}
+  threshold={50}
+>
+  <div
+    className="item active"
+    onClick={[Function]}
+    onMouseEnter={[Function]}
+  >
+    Pizza Pepperoni
+  </div>
+  <div
+    className="item"
+    onClick={[Function]}
+    onMouseEnter={[Function]}
+  >
+    Pizza Capricciosa
+  </div>
+  <div
+    className="item"
+    onClick={[Function]}
+    onMouseEnter={[Function]}
+  >
+    Pizza Margherita
+  </div>
+</InfiniteScroll>
 `;

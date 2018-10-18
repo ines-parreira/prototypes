@@ -35,7 +35,6 @@ import {updateMessageText} from './components/replyarea/TicketReplyEditor'
         activeView: viewsSelectors.getActiveView(state),
         activeCustomer: customersSelectors.getActiveCustomer(state),
         currentUser: state.currentUser,
-        macros: state.macros,
         pagination: viewsSelectors.getPagination(state),
         customers: customersSelectors.getCustomersState(state),
         routing: state.routing,
@@ -77,7 +76,6 @@ export default class TicketDetailContainer extends React.Component {
         updateActiveViewCursor: PropTypes.func.isRequired,
         activeView: PropTypes.object.isRequired,
         currentUser: PropTypes.object,
-        macros: PropTypes.object,
         ticket: PropTypes.object,
         newMessage: PropTypes.object,
         tickets: PropTypes.object,
@@ -256,12 +254,6 @@ export default class TicketDetailContainer extends React.Component {
         }
     }
 
-    componentDidUpdate = (prevProps) => {
-        if (prevProps.macros.get('isModalOpen') && !this.props.macros.get('isModalOpen')) {
-            this._bindKeys()
-        }
-    }
-
     componentWillUnmount() {
         window.onbeforeunload = null
 
@@ -283,47 +275,37 @@ export default class TicketDetailContainer extends React.Component {
     }
 
     _bindKeys() {
-        const modalVisible = () => this.props.macros.get('isModalOpen')
-
         shortcutManager.bind('TicketDetailContainer', {
             GO_BACK: {
                 action: () => {
-                    if (!modalVisible()) {
-                        this.props.actions.ticket.clearTicket()
-                        this.props.actions.ticket.goToPrevTicket(this.props.params.ticketId)
-                    }
+                    this.props.actions.ticket.clearTicket()
+                    this.props.actions.ticket.goToPrevTicket(this.props.params.ticketId)
                 }
             },
             GO_FORWARD: {
                 action: () => {
-                    if (!modalVisible()) {
-                        this.props.actions.ticket.clearTicket()
-                        this.props.actions.ticket.goToNextTicket(this.props.params.ticketId)
-                    }
+                    this.props.actions.ticket.clearTicket()
+                    this.props.actions.ticket.goToNextTicket(this.props.params.ticketId)
                 }
             },
             SUBMIT_TICKET: {
                 action: (e) => {
-                    if (!modalVisible()) {
-                        if (e.preventDefault) {
-                            e.preventDefault()
-                            e.stopImmediatePropagation()
-                        }
-
-                        this._submit()
+                    if (e.preventDefault) {
+                        e.preventDefault()
+                        e.stopImmediatePropagation()
                     }
+
+                    this._submit()
                 }
             },
             SUBMIT_CLOSE_TICKET: {
                 action: (e) => {
-                    if (!modalVisible()) {
-                        if (e.preventDefault) {
-                            e.preventDefault()
-                            e.stopImmediatePropagation()
-                        }
-
-                        this._submit('closed', true)
+                    if (e.preventDefault) {
+                        e.preventDefault()
+                        e.stopImmediatePropagation()
                     }
+
+                    this._submit('closed', true)
                 }
             }
         })

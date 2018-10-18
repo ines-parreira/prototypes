@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React from 'react'
 import {fromJS} from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
 import classnames from 'classnames'
@@ -9,28 +10,66 @@ import {
     Col,
 } from 'reactstrap'
 
+import Loader from '../../../../common/components/Loader'
 import Modal from '../../../../common/components/Modal'
-import MacroList from './MacroList'
+import MacroModalList from './MacroModalList'
 import MacroEdit from './MacroEdit'
 import MacroPreview from './MacroPreview'
+import MacroNoResults from './MacroNoResults'
 import {DEFAULT_ACTIONS} from '../../../../../config'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
 import shortcutManager from '../../../../../services/shortcutManager'
 
-import {macroInitial} from '../../../../../state/macro/reducers'
-
 import css from './MacroModal.less'
 
-export default class MacroModal extends React.Component {
+import type {Map, List} from 'immutable'
+import * as macroActions from '../../../../../state/macro/actions'
+import * as viewsActions from '../../../../../state/views/actions'
+
+import type {fetchMacrosType} from '../types'
+
+type Props = {
+    macros: Map<*,*>,
+    agents: {},
+    actions: {
+        macro: typeof macroActions,
+        views: typeof viewsActions,
+    },
+    handleClickItem: (T: number) => void,
+    disableExternalActions: boolean,
+    selectionMode: boolean,
+    page: number,
+    totalPages: number,
+    isCreatingMacro: boolean,
+    closeModal: () => void,
+    updateMacros: (T: Map<*,*>) => void,
+    fetchMacros: fetchMacrosType,
+    activeView: Map<*,*>,
+    currentMacro: Map<*,*>,
+    toggleCreateMacro: (T?: boolean) => Promise<*>,
+    onSearch: (S: string, F?: boolean) => void,
+    search: string,
+    firstLoad: boolean,
+    selectedItemsIds: List<*>,
+}
+
+type State = {
+    actions: Map<*,*>,
+    name: string,
+}
+
+export default class MacroModal extends React.Component<Props, State> {
+    static defaultProps = {
+        activeView: fromJS({}),
+    }
+
     multipleActionsNames = ['http'] // actions names that can be set multiple times in the same macro
 
-    constructor(props) {
+    constructor(props: Props) {
         super(props)
 
         this.state = {
-            modal: false,
-            isCreatingMacro: false,
             actions: props.currentMacro.get('actions') || fromJS([]),
             name: props.currentMacro.get('name') || '',
         }
@@ -44,12 +83,12 @@ export default class MacroModal extends React.Component {
             name: 'macros',
         })
 
-        if (this.props.macros.isEmpty()) {
+        if (this.props.isCreatingMacro) {
             this._addNewMacro()
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         // if it is the first time we receive a macro, set its actions
         if (this.props.currentMacro.isEmpty() && !nextProps.currentMacro.isEmpty()) {
             this._setName(nextProps.currentMacro.get('name'))
@@ -63,11 +102,6 @@ export default class MacroModal extends React.Component {
                 this._setActions(nextProps.currentMacro.get('actions'))
             }
         }
-
-        // if we don't have any macros anymore (have been deleted), close modal
-        if (!this.props.macros.isEmpty() && nextProps.macros.isEmpty()) {
-            this._toggle()
-        }
     }
 
     componentWillUnmount() {
@@ -75,46 +109,63 @@ export default class MacroModal extends React.Component {
     }
 
     _applyMacro = () => {
-        const {activeView, currentMacro, actions, selectedItemsIds} = this.props
+        const {activeView, currentMacro, actions, selectedItemsIds, closeModal} = this.props
 
-        this._toggle()
+        closeModal()
         const value = currentMacro ? currentMacro.toJS() : null
         return actions.views.bulkUpdate(activeView, selectedItemsIds, 'macro', value)
     }
 
     _addNewMacro = () => {
-        this.setState({isCreatingMacro: true})
-        this._setName(macroInitial.get('name'))
-        this._setActions(macroInitial.get('actions'))
+        this.props.toggleCreateMacro(true).then(() => {
+            this._setName(this.props.currentMacro.get('name'))
+            this._setActions(this.props.currentMacro.get('actions'))
+        })
     }
 
-    _handleClickItem = (macroId) => {
-        this.setState({isCreatingMacro: false})
-        return this.props.handleClickItem(macroId)
-    }
-
-    _createMacro = (e) => {
+    _createMacro = (e: Event) => {
         e.preventDefault()
-        return this.props.actions.macro.createMacro(this.props.currentMacro.set('actions', this.state.actions).set('name', this.state.name))
+        const newMacro = this.props.currentMacro
+            .set('actions', this.state.actions)
+            .set('name', this.state.name)
+        return this.props.actions.macro.createMacro(newMacro)
             .then((resp) => {
-                this._handleClickItem(resp.id)
+                // $FlowFixMe
+                this.props.onSearch(newMacro.get('name'), true)
+                this.props.handleClickItem(resp.id)
             })
     }
 
-    _updateMacro = (e) => {
+    _updateMacro = (e: Event) => {
         e.preventDefault()
-        return this.props.actions.macro.updateMacro(this.props.currentMacro.set('actions', this.state.actions).set('name', this.state.name))
+        const updatedMacro = this.props.currentMacro.set('actions', this.state.actions).set('name', this.state.name)
+        return this.props.actions.macro.updateMacro(updatedMacro)
+            .then((res) => {
+                const macros = this.props.macros
+                macros.some((macro, index) => {
+                    if (macro.get('id') === res.id) {
+                        const newMacro = fromJS(res)
+                        if (macro.get('name') !== newMacro.get('name')) {
+                            // if the name changed, reload macro list
+                            this.props.fetchMacros({search: this.props.search})
+                        } else {
+                            this.props.updateMacros(macros.set(index, newMacro))
+                        }
+                        return true
+                    }
+                })
+            })
     }
 
     _deleteMacro = () => {
-        return this.props.actions.macro.deleteMacro(this.props.currentMacro.get('id', ''))
+        const macroId = this.props.currentMacro.get('id', '')
+        return this.props.actions.macro.deleteMacro(macroId)
+            .then(() => {
+                this.props.fetchMacros({search: this.props.search})
+            })
     }
 
-    _toggle = () => {
-        return this.props.actions.macro.closeModal()
-    }
-
-    _setActions = (actions) => {
+    _setActions = (actions: Map<*,*>) => {
         // filter actions that exist in configuration
         actions = actions.filter(action => DEFAULT_ACTIONS.includes(action.get('name')))
 
@@ -130,24 +181,32 @@ export default class MacroModal extends React.Component {
         this.setState({actions})
     }
 
-    _setName = (name) => {
+    _setName = (name: string) => {
         this.setState({name})
     }
 
     render() {
-        const {macros, selectionMode, selectedItemsIds} = this.props
-        let {currentMacro} = this.props
+        const {
+            macros,
+            selectionMode,
+            selectedItemsIds,
+            page,
+            totalPages,
+            disableExternalActions,
+            closeModal,
+            onSearch,
+            currentMacro,
+            isCreatingMacro,
+            handleClickItem,
+            firstLoad,
+        } = this.props
 
-        if (this.state.isCreatingMacro) {
-            currentMacro = macroInitial
-        }
-
-        const isUpdate = !!currentMacro && currentMacro.get('id') !== 'new'
+        const noResults = macros.isEmpty() && !isCreatingMacro
 
         return (
             <Modal
-                isOpen={this.props.isOpen}
-                onClose={this._toggle}
+                isOpen
+                onClose={closeModal}
                 className={css.component}
                 bodyClassName={css.body}
                 size="lg"
@@ -185,61 +244,63 @@ export default class MacroModal extends React.Component {
                             </Col>
                             <Col xs="9">
                                 {
-                                    selectionMode ? (
-                                        <div className="d-inline-block float-right">
-                                            <Button
-                                                type="submit"
-                                                color="primary"
-                                                onClick={this._applyMacro}
-                                            >
-                                                Apply macro to {selectedItemsIds.size} tickets
-                                            </Button>
-                                        </div>
-                                    ) : (
-                                        <div>
+                                    !noResults && !firstLoad && (
+                                        selectionMode ? (
                                             <div className="d-inline-block float-right">
-                                                {
-                                                    isUpdate && (
-                                                        <ConfirmButton
-                                                            color="secondary"
-                                                            confirm={this._deleteMacro}
-                                                            content={`Do you really want to delete the macro ${this.props.currentMacro.get('name', '')}?`}
-                                                        >
-                                                            <i className="material-icons md-2 text-danger mr-2">
-                                                                delete
-                                                            </i>
-                                                            Delete macro
-                                                        </ConfirmButton>
-                                                    )
-                                                }
+                                                <Button
+                                                    type="submit"
+                                                    color="primary"
+                                                    onClick={this._applyMacro}
+                                                >
+                                                    Apply macro to {selectedItemsIds.size} tickets
+                                                </Button>
                                             </div>
-                                            <div className="d-inline-block">
-                                                {
-                                                    isUpdate ? (
-                                                        <form id="macro_form"
-                                                              onSubmit={(e) => (this._updateMacro(e))}
-                                                        >
-                                                            <Button
-                                                                type="submit"
-                                                                color="success"
+                                        ) : (
+                                            <div>
+                                                <div className="d-inline-block float-right">
+                                                    {
+                                                        !isCreatingMacro && (
+                                                            <ConfirmButton
+                                                                color="secondary"
+                                                                confirm={this._deleteMacro}
+                                                                content={`Do you really want to delete the macro ${this.props.currentMacro.get('name', '')}?`}
                                                             >
-                                                                Update macro
-                                                            </Button>
-                                                        </form>
-                                                    ) : (
-                                                        <form id="macro_form"
-                                                              onSubmit={(e) => (this._createMacro(e))}
-                                                        >
-                                                            <Button
-                                                                type="submit"
-                                                                color="success"
+                                                                <i className="material-icons md-2 text-danger mr-2">
+                                                                    delete
+                                                                </i>
+                                                                Delete macro
+                                                            </ConfirmButton>
+                                                        )
+                                                    }
+                                                </div>
+                                                <div className="d-inline-block">
+                                                    {
+                                                        isCreatingMacro ? (
+                                                            <form id="macro_form"
+                                                                onSubmit={(e) => (this._createMacro(e))}
                                                             >
-                                                                Save new macro
-                                                            </Button>
-                                                        </form>
-                                                    )}
+                                                                <Button
+                                                                    type="submit"
+                                                                    color="success"
+                                                                >
+                                                                    Save new macro
+                                                                </Button>
+                                                            </form>
+                                                        ) : (
+                                                            <form id="macro_form"
+                                                                onSubmit={(e) => (this._updateMacro(e))}
+                                                            >
+                                                                <Button
+                                                                    type="submit"
+                                                                    color="success"
+                                                                >
+                                                                    Update macro
+                                                                </Button>
+                                                            </form>
+                                                        )}
+                                                </div>
                                             </div>
-                                        </div>
+                                        )
                                     )
                                 }
                             </Col>
@@ -253,11 +314,16 @@ export default class MacroModal extends React.Component {
                             xs="3"
                             className={classnames(css.list, css.content)}
                         >
-                            <MacroList
-                                macros={macros}
+                            <MacroModalList
                                 currentMacro={currentMacro}
-                                disableExternalActions={this.props.disableExternalActions}
-                                handleClickItem={this._handleClickItem}
+                                macros={macros}
+                                page={page}
+                                totalPages={totalPages}
+                                fetchMacros={this.props.fetchMacros}
+                                disableExternalActions={disableExternalActions}
+                                handleClickItem={handleClickItem}
+                                onSearch={(e: {target: {value: string}}) => onSearch(e.target.value)}
+                                search={this.props.search}
                             />
                         </Col>
                         <Col
@@ -265,7 +331,16 @@ export default class MacroModal extends React.Component {
                             className={css.content}
                         >
                             {
-                                selectionMode ? (
+                                firstLoad ? (
+                                    <Loader
+                                        minHeight="0"
+                                    />
+                                ) : noResults ? (
+                                    <MacroNoResults
+                                        searchQuery={this.props.search}
+                                        newAction={this._addNewMacro}
+                                    />
+                                ) : selectionMode ? (
                                     <MacroPreview
                                         currentMacro={currentMacro}
                                     />
@@ -286,24 +361,4 @@ export default class MacroModal extends React.Component {
             </Modal>
         )
     }
-}
-
-MacroModal.propTypes = {
-    activeView: PropTypes.object,
-    macros: PropTypes.object.isRequired,
-    currentMacro: PropTypes.object,
-    agents: PropTypes.object.isRequired,
-
-    actions: PropTypes.object.isRequired,
-    handleClickItem: PropTypes.func.isRequired,
-
-    disableExternalActions: PropTypes.bool.isRequired,
-    selectionMode: PropTypes.bool.isRequired,
-    selectedItemsIds: PropTypes.object,
-    isOpen: PropTypes.bool.isRequired,
-}
-
-MacroModal.defaultProps = {
-    activeView: fromJS({}),
-    isOpen: false,
 }

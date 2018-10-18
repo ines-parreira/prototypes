@@ -11,56 +11,65 @@ import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import Preview from '../../../common/macros/Preview'
 import Tooltip from '../../../../common/components/Tooltip'
 
+import MacroContainer from '../../../common/macros/MacroContainer'
+import MacroNoResults from '../../../common/macros/components/MacroNoResults'
+import MacroList from '../../../common/macros/components/MacroList'
+import {deleteMacro} from '../../../../../state/macro/actions'
 import {notify} from './../../../../../state/notifications/actions'
-import {openModal, deleteMacro} from './../../../../../state/macro/actions'
-
 
 import css from './TicketMacros.less'
-import MacroContainer from '../../../common/macros/MacroContainer'
 
-type macroType = Map<*, *>
+import type {fetchMacrosType} from '../../../common/macros/types'
 
 type Props = {
-    macros: Map<*, macroType>,
-    macrosVisible: boolean,
-    applyMacro: (T: macroType) => void,
-    openModal: typeof openModal,
-    deleteMacro: typeof deleteMacro,
+    currentTicket: Map<*,*>,
+    macros: Map<*, Map<*, *>>,
     newMessageType: string,
-    setMacrosVisible: (T: boolean) => void,
-    setSelectedMacroId: (T: number) => void,
-    notify: () => void,
-    searchQuery?: string,
-    selectedMacroId?: number,
+    fetchMacros: fetchMacrosType,
+    deleteMacro: typeof deleteMacro,
+    applyMacro: () => void,
+    notify: typeof notify,
+    currentMacro: Map<*,*>,
+    hideMacros: (T?: boolean) => void,
+    page: number,
+    totalPages: number,
+    selectMacro: () => void,
+    searchQuery: string,
+
     className?: string,
 }
 
 type State = {
+    page: number,
     macroDropdownOpen: boolean,
-    macroDeleteConfirmOpen: boolean,
+    isDeleteConfirmOpen: boolean,
+    isModalOpen: boolean,
+    isCreatingMacro: boolean,
 }
 
-@connect((state) => ({
-    newMessageType: newMessageSelectors.getNewMessageType(state),
-}), {
-    notify,
-    openModal,
-    deleteMacro
-})
-export default class TicketMacros extends React.Component<Props, State> {
-    defaultProps = {
+
+export class TicketMacros extends React.Component<Props, State> {
+    static defaultProps = {
+        currentTicket: fromJS({}),
         macros: fromJS([]),
-        macrosVisible: false,
+        searchQuery: '',
     }
 
-    state = {
-        macroDropdownOpen: false,
-        macroDeleteConfirmOpen: false,
+    constructor() {
+        super()
+
+        this.state = {
+            page: 1,
+            macroDropdownOpen: false,
+            isDeleteConfirmOpen: false,
+            isModalOpen: false,
+            isCreatingMacro: false,
+        }
     }
 
     componentDidUpdate(prevProps: Props) {
         // brings the preview to top when previewing another macro
-        if (this.props.selectedMacroId !== prevProps.selectedMacroId) {
+        if (this.props.currentMacro.get('id') !== prevProps.currentMacro.get('id')) {
             const element: ?Node = ReactDOM.findDOMNode(this.refs.previewContainer)
 
             if (element) {
@@ -68,27 +77,6 @@ export default class TicketMacros extends React.Component<Props, State> {
                 element.scrollTop = 0
             }
         }
-    }
-
-    renderMacroListItem = (macro: macroType) => {
-        if (!macro) {
-            return null
-        }
-
-        return (
-            <div
-                key={macro.get('id')}
-                className={classnames('macro-item', {
-                    active: macro.get('id') === this.props.selectedMacroId
-                })}
-                onMouseEnter={() => this.props.setSelectedMacroId(macro.get('id'))}
-                onClick={() => this.props.applyMacro(macro)}
-            >
-                <div className="content">
-                    {macro.get('name')}
-                </div>
-            </div>
-        )
     }
 
     _toggleMacroDropdown = () => {
@@ -99,23 +87,66 @@ export default class TicketMacros extends React.Component<Props, State> {
 
     _toggleMacroDeleteConfirmOpen = () => {
         this.setState({
-            macroDeleteConfirmOpen: !this.state.macroDeleteConfirmOpen
+            isDeleteConfirmOpen: !this.state.isDeleteConfirmOpen
         })
     }
 
+    _openMacroModal = ({create = false}: {create: boolean}) => {
+        this.setState({
+            isModalOpen: true,
+            isCreatingMacro: create,
+        })
+    }
+
+    _closeMacroModal = () => {
+        this.setState({isModalOpen: false})
+        // reload macros, in case they changed in the modal
+        this.props.fetchMacros({search: this.props.searchQuery})
+    }
+
+    _toggleCreateMacro = (isCreatingMacro: boolean = false): Promise<*> => {
+        return new Promise((resolve) => {
+            this.setState({isCreatingMacro}, resolve)
+        })
+    }
+
+    _deleteMacro = () => {
+        this._toggleMacroDeleteConfirmOpen()
+        const macroId = this.props.currentMacro.get('id', '')
+        return this.props.deleteMacro(macroId)
+            .then(() => {
+                this.props.fetchMacros({search: this.props.searchQuery})
+            })
+    }
+
     render() {
-        const {macros, macrosVisible, newMessageType, openModal, searchQuery, setMacrosVisible, className} = this.props
-        const macro = macros.find((macro) => macro.get('id') === this.props.selectedMacroId) || fromJS({})
+        const {
+            macros,
+            newMessageType,
+            className,
+            hideMacros,
+            fetchMacros,
+            page,
+            totalPages,
+            currentMacro,
+            selectMacro,
+        } = this.props
 
         let content = (
             <div
                 className={css.content}
             >
-                <div
-                    className={classnames(css.macroList, 'macro-list')}
-                >
-                    {macros.map(this.renderMacroListItem)}
-                </div>
+                <MacroList
+                    className={css.macroList}
+                    currentMacro={currentMacro}
+                    macros={macros}
+                    page={page}
+                    totalPages={totalPages}
+                    fetchMacros={fetchMacros}
+                    search={this.props.searchQuery}
+                    onClickItem={this.props.applyMacro}
+                    onHoverItem={selectMacro}
+                />
                 <div
                     className={css.previewContainer}
                     ref="previewContainer"
@@ -135,19 +166,19 @@ export default class TicketMacros extends React.Component<Props, State> {
                         </DropdownToggle>
                         <DropdownMenu>
                             <DropdownItem
-                                onClick={openModal}
+                                onClick={this._openMacroModal}
                                 className="cursor-pointer"
                             >
                                 <i className="material-icons">settings</i> Manage macros
                             </DropdownItem>
                             <DropdownItem
-                                onClick={openModal}
+                                onClick={this._openMacroModal}
                                 className="cursor-pointer"
                             >
                                 <i className="material-icons">mode_edit</i> Edit macro
                             </DropdownItem>
                             <DropdownItem
-                                onClick={openModal}
+                                onClick={() => this._openMacroModal({create: true})}
                                 className="cursor-pointer"
                             >
                                 <i className="material-icons">add</i> Create new macro
@@ -165,13 +196,13 @@ export default class TicketMacros extends React.Component<Props, State> {
                     <Popover
                         placement="bottom"
                         target="deleteMacroTarget"
-                        isOpen={this.state.macroDeleteConfirmOpen}
+                        isOpen={this.state.isDeleteConfirmOpen}
                         toggle={this._toggleMacroDeleteConfirmOpen}
                     >
                         <PopoverBody>
-                            <p>Are you sure you want to delete '{macro.get('name')}'?</p>
+                            <p>Are you sure you want to delete '{currentMacro.get('name')}'?</p>
                             <Button
-                                onClick={() => this.props.deleteMacro(macro.get('id'))}
+                                onClick={this._deleteMacro}
                                 color="danger"
                             >
                                 Delete macro
@@ -187,7 +218,7 @@ export default class TicketMacros extends React.Component<Props, State> {
 
                     <Preview
                         displayHTML={isRichType(newMessageType)}
-                        macro={macro}
+                        macro={currentMacro}
                         className={css.preview}
                     />
                 </div>
@@ -196,58 +227,53 @@ export default class TicketMacros extends React.Component<Props, State> {
 
         if (macros.isEmpty()) {
             content = (
-                <div className="no-result-container">
-                    <p>
-                        {
-                            !!searchQuery ? (
-                                <span>No macro for <b>{searchQuery}</b></span>
-                            ) : 'You don\'t have any macros yet'
-                        }
-                    </p>
-                    <Button
-                        type="button"
-                        color="info"
-                        onClick={openModal}
-                    >
-                        <i className="fa fa-fw fa-plus mr-2"/>
-                        Create a new macro
-                    </Button>
-                </div>
+                <MacroNoResults
+                    searchQuery={this.props.searchQuery}
+                    newAction={() => this._openMacroModal({create: true})}
+                />
             )
         }
         return (
             <div className={classnames(css.component, className)}>
-                {
-                    macrosVisible && (
-                        <a
-                            id="clear-macro-button"
-                            className={css.clearMacros}
-                            onClick={() => setMacrosVisible(false)}
-                        >
-                            <i className="material-icons d-none d-md-inline-block">
-                                close
-                            </i>
-                            <Button
-                                color="secondary"
-                                size="sm"
-                                className="d-md-none"
-                            >
-                                Close
-                            </Button>
-                            <Tooltip
-                                placement="top"
-                                target="clear-macro-button"
-                            >
-                                <strong>Esc</strong> to close the macro list.
-                            </Tooltip>
-                        </a>
-                    )
-                }
-
+                <a
+                    id="clear-macro-button"
+                    className={css.clearMacros}
+                    onClick={() => hideMacros(false)}
+                >
+                    <i className="material-icons d-none d-md-inline-block">
+                        close
+                    </i>
+                    <Button
+                        color="secondary"
+                        size="sm"
+                        className="d-md-none"
+                    >
+                        Close
+                    </Button>
+                    <Tooltip
+                        placement="top"
+                        target="clear-macro-button"
+                    >
+                        <strong>Esc</strong> to close the macro list.
+                    </Tooltip>
+                </a>
                 {content}
-
-                <MacroContainer selectedMacroIdOnOpen={this.props.selectedMacroId}/>
+                {this.state.isModalOpen && (
+                    <MacroContainer
+                        selectedMacro={this.props.currentMacro}
+                        closeModal={this._closeMacroModal}
+                        isCreatingMacro={this.state.isCreatingMacro}
+                        toggleCreateMacro={this._toggleCreateMacro}
+                    />
+                )}
             </div>
         )
     }
 }
+
+export default connect((state) => ({
+    newMessageType: newMessageSelectors.getNewMessageType(state),
+}), {
+    notify,
+    deleteMacro,
+})(TicketMacros)

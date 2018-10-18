@@ -1,120 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TicketMacros component should display an empty state if there's no macros 1`] = `
-<div
-  className="component"
->
-  <a
-    className="clearMacros"
-    id="clear-macro-button"
-    onClick={[Function]}
-  >
-    <i
-      className="material-icons d-none d-md-inline-block"
-    >
-      close
-    </i>
-    <Button
-      className="d-md-none"
-      color="secondary"
-      size="sm"
-      tag="button"
-    >
-      Close
-    </Button>
-    <Tooltip
-      delay={0}
-      placement="top"
-      target="clear-macro-button"
-    >
-      <strong>
-        Esc
-      </strong>
-       to close the macro list.
-    </Tooltip>
-  </a>
-  <div
-    className="no-result-container"
-  >
-    <p>
-      You don't have any macros yet
-    </p>
-    <Button
-      color="info"
-      onClick={[Function]}
-      tag="button"
-      type="button"
-    >
-      <i
-        className="fa fa-fw fa-plus mr-2"
-      />
-      Create a new macro
-    </Button>
-  </div>
-  <Connect(MacroContainer) />
-</div>
-`;
-
-exports[`TicketMacros component should display another empty state if there's no macros matching the searchQuery 1`] = `
-<div
-  className="component"
->
-  <a
-    className="clearMacros"
-    id="clear-macro-button"
-    onClick={[Function]}
-  >
-    <i
-      className="material-icons d-none d-md-inline-block"
-    >
-      close
-    </i>
-    <Button
-      className="d-md-none"
-      color="secondary"
-      size="sm"
-      tag="button"
-    >
-      Close
-    </Button>
-    <Tooltip
-      delay={0}
-      placement="top"
-      target="clear-macro-button"
-    >
-      <strong>
-        Esc
-      </strong>
-       to close the macro list.
-    </Tooltip>
-  </a>
-  <div
-    className="no-result-container"
-  >
-    <p>
-      <span>
-        No macro for 
-        <b>
-          Foo Bar
-        </b>
-      </span>
-    </p>
-    <Button
-      color="info"
-      onClick={[Function]}
-      tag="button"
-      type="button"
-    >
-      <i
-        className="fa fa-fw fa-plus mr-2"
-      />
-      Create a new macro
-    </Button>
-  </div>
-  <Connect(MacroContainer) />
-</div>
-`;
-
 exports[`TicketMacros component should display macros list, and selected macro 1`] = `
 <div
   className="component"
@@ -151,32 +36,45 @@ exports[`TicketMacros component should display macros list, and selected macro 1
   <div
     className="content"
   >
-    <div
-      className="macroList macro-list"
-    >
-      <div
-        className="macro-item"
-        onClick={[Function]}
-        onMouseEnter={[Function]}
-      >
-        <div
-          className="content"
-        >
-          Refund my order
-        </div>
-      </div>
-      <div
-        className="macro-item"
-        onClick={[Function]}
-        onMouseEnter={[Function]}
-      >
-        <div
-          className="content"
-        >
-          Order my refund
-        </div>
-      </div>
-    </div>
+    <MacroList
+      className="macroList"
+      currentMacro={
+        Immutable.Map {
+          id: 2,
+          name: "Order my refund",
+          actions: Immutable.List [
+          ],
+        }
+      }
+      fetchMacros={[Function]}
+      macros={
+        Immutable.List [
+          Immutable.Map {
+            id: 1,
+            name: "Refund my order",
+            actions: Immutable.List [
+              Immutable.Map {
+                name: "setResponseText",
+              },
+              Immutable.Map {
+                name: "addAttachments",
+              },
+            ],
+          },
+          Immutable.Map {
+            id: 2,
+            name: "Order my refund",
+            actions: Immutable.List [
+            ],
+          },
+        ]
+      }
+      onClickItem={[Function]}
+      onHoverItem={[Function]}
+      page={1}
+      search=""
+      totalPages={1}
+    />
     <div
       className="previewContainer"
     >
@@ -280,6 +178,7 @@ exports[`TicketMacros component should display macros list, and selected macro 1
         >
           <p>
             Are you sure you want to delete '
+            Order my refund
             '?
           </p>
           <Button
@@ -304,11 +203,14 @@ exports[`TicketMacros component should display macros list, and selected macro 1
         displayHTML={true}
         macro={
           Immutable.Map {
+            id: 2,
+            name: "Order my refund",
+            actions: Immutable.List [
+            ],
           }
         }
       />
     </div>
   </div>
-  <Connect(MacroContainer) />
 </div>
 `;

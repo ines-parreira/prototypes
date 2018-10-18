@@ -1,100 +1,147 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
+import _debounce from 'lodash/debounce'
 
 import MacroModal from './components/MacroModal'
 import * as ViewsActions from '../../../../state/views/actions'
 import * as MacroActions from '../../../../state/macro/actions'
 import {getAgents} from '../../../../state/agents/selectors'
-import {isMacrosModalOpen, getMacrosOrderedByName} from '../../../../state/macro/selectors'
 
+import {getDefaultSelectedMacroId, getCurrentMacro} from './utils'
 
-class MacroContainer extends React.Component {
-    constructor(props) {
-        super(props)
+import type {Map, List} from 'immutable'
 
-        this.state = {
-            selectedMacroId: this._defaultSelectedMacroId(props),
-        }
+type Props = {
+    activeView: Map<*,*>,
+    agents: Map<*,*>,
+    actions: {
+        macro: typeof MacroActions,
+        views: typeof ViewsActions,
+    },
+    closeModal: () => void,
+    isCreatingMacro: boolean,
+    toggleCreateMacro: (T?: boolean) => Promise<*>,
+     // macro to select when modal opens, selects first macro of list otherwise
+    selectedMacro: Map<*,*>,
+    selectedItemsIds: List<*>,
+
+    disableExternalActions?: boolean,
+    selectionMode?: boolean,
+}
+
+type State = {
+    search: string,
+    page: number,
+    totalPages: number,
+    macros: Map<*,*>,
+    selectedMacroId: ?number,
+    firstLoad: boolean,
+}
+
+class MacroContainer extends React.Component<Props, State> {
+    static defaultProps = {
+        activeView: fromJS({}),
+        selectedMacro: fromJS({}),
+        selectedItemsIds: fromJS({}),
     }
 
-    componentDidUpdate(prevProps) {
-        const {macros} = this.props
-        const macroIds = macros.map((macro) => macro.get('id'))
-        const currentMacro = macros.find((macro) => macro.get('id') === this.state.selectedMacroId) || fromJS({})
-
-        if (macros.isEmpty()) {
-            if (this.state.selectedMacroId) { // if there are no macros but there is a selected macro, deselect it
-                this.setState({selectedMacroId: null})
-            }
-        } else {
-            // if current macro does not exist in list anymore (list changed, deleted, etc.), select first of list
-            if (currentMacro.isEmpty()) {
-                const firstMacroId = macros.first().get('id')
-                this.setState({selectedMacroId: firstMacroId})
-            } else if (!macroIds.equals(prevProps.macros.map((macro) => macro.get('id')))) {
-                // when macros list changes, select first of list
-                const firstMacroId = macros.first().get('id')
-                this.setState({selectedMacroId: firstMacroId})
-            }
-        }
+    state = {
+        search: '',
+        page: 1,
+        totalPages: 1,
+        macros: fromJS([]),
+        selectedMacroId: null,
+        firstLoad: true,
     }
 
-    componentWillReceiveProps(nextProps) {
-        // modal opens
-        if (!this.props.isModalOpen && nextProps.isModalOpen) {
-            this.props.actions.macro.fetchMacros()
-            this.setState({selectedMacroId: this._defaultSelectedMacroId(nextProps)})
-        }
+    componentDidMount() {
+        this._loadMacros().then(() => {
+            if (!this.props.selectedMacro.isEmpty()) {
+                const currentMacro = getCurrentMacro(
+                    this.state.macros,
+                    this.props.selectedMacro.get('id'),
+                    this.props.isCreatingMacro,
+                )
+
+                this.setState({selectedMacroId: this.props.selectedMacro.get('id')})
+                // selectedMacro is not in page=1 macro list
+                if (currentMacro.isEmpty()) {
+                    // search for it
+                    this._onSearch(this.props.selectedMacro.get('name'), true)
+                }
+            }
+        })
+    }
+
+    _loadMacros = ({search = '', page = 1} = {}) => {
+        return this.props.actions.macro.fetchMacros({
+            currentMacros: this.state.macros,
+            currentPage: this.state.page,
+            search,
+            page,
+        }).then((res) => {
+            const selectedMacroId = getDefaultSelectedMacroId(res.macros, this.state.selectedMacroId, this.props.isCreatingMacro)
+            return new Promise((resolve) => {
+                this.setState({
+                    selectedMacroId,
+                    macros: res.macros,
+                    page: res.page,
+                    totalPages: res.totalPages,
+                    firstLoad: false,
+                }, resolve)
+            })
+        })
     }
 
     _handleClickItem = (macroId) => {
+        this.props.toggleCreateMacro(false)
         this.setState({selectedMacroId: macroId})
     }
 
-    _defaultSelectedMacroId = (props = this.props) => {
-        let selectedMacroId = null
+    _updateMacros = (macros) => {
+        this.setState({macros})
+    }
 
-        if (props.selectedMacroIdOnOpen) {
-            selectedMacroId = props.selectedMacroIdOnOpen
-        } else {
-            const firstMacro = props.macros.first()
+    _debounceLoadMacros = _debounce(this._loadMacros, 350)
 
-            if (firstMacro) {
-                selectedMacroId = firstMacro.get('id')
-            }
+    _onSearch = (search: string = '', forceSearch: boolean = false) => {
+        this.setState({search})
+        if (
+            forceSearch
+            || !search.trim().length
+            || search.trim().length > 1
+        ) {
+            this._debounceLoadMacros({search})
         }
-
-        return selectedMacroId
     }
 
     render() {
         const {
             activeView,
-            macros,
-            isModalOpen,
             agents,
             actions,
             disableExternalActions,
             selectionMode,
-            selectedItemsIds
+            selectedItemsIds,
+            closeModal,
+            isCreatingMacro,
+            toggleCreateMacro,
         } = this.props
 
-        // important to keep, we want the MacroModal component to mount only if it is open
-        // check lifecycle of shortcutManager
-        if (!isModalOpen) {
-            return null
-        }
-
-        const currentMacro = macros.find((macro) => macro.get('id') === this.state.selectedMacroId) || fromJS({})
+        const currentMacro = getCurrentMacro(this.state.macros, this.state.selectedMacroId, isCreatingMacro)
 
         return (
             <MacroModal
-                isOpen={isModalOpen}
+                closeModal={closeModal}
                 activeView={activeView}
-                macros={macros}
-                newMacro={macros.get('newMacro')}
+                macros={this.state.macros}
+                fetchMacros={this._loadMacros}
+                firstLoad={this.state.firstLoad}
+                page={this.state.page}
+                totalPages={this.state.totalPages}
                 currentMacro={currentMacro}
                 agents={agents}
                 actions={actions}
@@ -102,35 +149,19 @@ class MacroContainer extends React.Component {
                 selectionMode={selectionMode || false}
                 selectedItemsIds={selectedItemsIds}
                 handleClickItem={this._handleClickItem}
+                updateMacros={this._updateMacros}
+                onSearch={this._onSearch}
+                search={this.state.search}
+                isCreatingMacro={isCreatingMacro}
+                toggleCreateMacro={toggleCreateMacro}
             />
         )
     }
 }
 
 
-MacroContainer.propTypes = {
-    activeView: PropTypes.object,
-    macros: PropTypes.object.isRequired,
-    isModalOpen: PropTypes.bool.isRequired,
-    agents: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
-
-    disableExternalActions: PropTypes.bool,
-    selectionMode: PropTypes.bool,
-    selectedItemsIds: PropTypes.object,
-    selectedMacroIdOnOpen: PropTypes.number, // macro to select when modal opens, selects first macro of list otherwise
-}
-
-MacroContainer.defaultProps = {
-    activeView: fromJS({}),
-    macros: fromJS([]),
-    isModalOpen: false,
-}
-
 function mapStateToProps(state) {
     return {
-        macros: getMacrosOrderedByName(state),
-        isModalOpen: isMacrosModalOpen(state),
         agents: getAgents(state),
     }
 }

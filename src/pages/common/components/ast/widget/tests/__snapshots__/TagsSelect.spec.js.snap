@@ -4,6 +4,7 @@ exports[`ast widgets TagsSelect MultiSelectField should render array as value 1`
 <SelectField
   allowCustomValue={true}
   onChange={[Function]}
+  onSearchChange={[Function]}
   options={
     Array [
       Object {
@@ -79,6 +80,7 @@ exports[`ast widgets TagsSelect should render a SelectField 1`] = `
 <SelectField
   allowCustomValue={true}
   onChange={[Function]}
+  onSearchChange={[Function]}
   options={
     Array [
       Object {

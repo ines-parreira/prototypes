@@ -15,7 +15,6 @@ import * as constants from './constants'
 import * as ticketConstants from '../ticket/constants'
 
 import {notify} from '../notifications/actions'
-import * as macroActions from '../macro/actions'
 import * as ticketActions from '../ticket/actions'
 import {renderTemplate} from '../../pages/common/utils/template'
 
@@ -342,8 +341,6 @@ export const prepare = (sourceType: string) => (dispatch: dispatchType, getState
                 contentState = responseUtils.removeSignature(contentState, signature)
             }
 
-            // hide macros when switching to internal-note
-            dispatch(macroActions.setMacrosVisible(false))
             // update content with removed signature,
             // and focus the editor
             dispatch(setResponseText(
