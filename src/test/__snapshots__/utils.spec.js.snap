@@ -42,6 +42,6 @@ exports[`global utils proxifyImages should work with richer complex html 1`] = `
 "
 `;
 
-exports[`global utils proxifyImages should work with search query 1`] = `"<img src=\\"http://proxy-url/1000x,snvbCl8UTruIKFy70eXMBsFpLNTWD_djQnhgkNBb-fAw/http://gorgias.io/test/x.jpg?x%3D123%26y%3D456\\"/>"`;
+exports[`global utils proxifyImages should work with search query but not uri-encode it 1`] = `"<img src=\\"http://proxy-url/1000x,sDDTU5QgssPtf_YOih2F4PdxvF_FGjX5S_FJdrOeloH0/http://gorgias.io/test/x.jpg?x=123&y=456\\"/>"`;
 
 exports[`global utils proxifyImages should work with self closing 1`] = `"<br />"`;

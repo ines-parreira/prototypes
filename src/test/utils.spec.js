@@ -463,7 +463,7 @@ describe('global utils', () => {
             expect(utils.proxifyImages('<img src="http://gorgias.io/test/x.jpg" />')).toMatchSnapshot()
         })
 
-        it('should work with search query', () => {
+        it('should work with search query but not uri-encode it', () => {
             expect(utils.proxifyImages('<img src="http://gorgias.io/test/x.jpg?x=123&y=456#123" />')).toMatchSnapshot()
         })
 

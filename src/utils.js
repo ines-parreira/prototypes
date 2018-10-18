@@ -448,12 +448,7 @@ const _proxyImageSignedURL = (url: string): string => {
  */
 export const proxifyURL = (urlStr: string, format: string = 'cw-1'): string => {
     const url = new URL(urlStr)
-    let escapedURL = `${url.origin}${url.pathname}`
-    if (url.search) {
-        // url.search always starts with `?` so we need to make sure we remove it before encoding
-        escapedURL += `?${encodeURIComponent(url.search.substr(1))}`
-    }
-
+    let escapedURL = `${url.origin}${url.pathname}${url.search}`
     return `${window.IMAGE_PROXY_URL}${format},${_proxyImageSignedURL(escapedURL)}/${escapedURL}`
 }
 
