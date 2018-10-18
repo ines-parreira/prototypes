@@ -236,6 +236,7 @@ function updateOrCreateIntegrationRequest(integration: Map<*,*>, action: ?{}, wi
                 return dispatch({
                     type: isUpdate ? constants.UPDATE_INTEGRATION_ERROR : constants.CREATE_INTEGRATION_ERROR,
                     error,
+                    verbose: true,
                     reason: isUpdate ? 'Failed to update integration' : 'Failed to add integration'
                 })
             })
