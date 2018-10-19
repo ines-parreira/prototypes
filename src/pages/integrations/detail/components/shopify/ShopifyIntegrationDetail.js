@@ -1,9 +1,9 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React from 'react'
 import {browserHistory, Link, withRouter} from 'react-router'
 import {connect} from 'react-redux'
-import {notify} from './../../../../../state/notifications/actions'
 import classNames from 'classnames'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
 import {
     Alert,
@@ -19,34 +19,59 @@ import {
 import Loader from '../../../../common/components/Loader'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import InputField from '../../../../common/forms/InputField'
+import PageHeader from '../../../../common/components/PageHeader'
 
 import * as utils from '../../../../../utils'
-import PageHeader from '../../../../common/components/PageHeader'
+import {notify} from './../../../../../state/notifications/actions'
+import * as integrationSelectors from './../../../../../state/integrations/selectors'
 
 export const defaultContent = {
     type: 'shopify',
     meta: {}
 }
 
-class ShopifyIntegrationDetail extends React.Component {
-    constructor(props) {
-        super(props)
+type Props = {
+    integration: Map<*,*>,
+    isUpdate: boolean,
+    actions: Object,
+    loading: Object,
 
-        // used to know if form has been asynchronously initialized when updating
-        this.isInitialized = !props.isUpdate
-    }
+    redirectUri: string,
 
+    getExistingShopifyIntegration: (string) => Map<*,*>,
+
+    // Router
+    location: Object,
+
+    // Actions
+    notify: typeof notify
+}
+
+type State = {
+    name: string,
+    isInitialized: boolean
+}
+
+class ShopifyIntegrationDetail extends React.Component<Props, State> {
     state = {
-        name: ''
+        name: '',
+        isInitialized: false
     }
 
     componentDidMount() {
         // display message from url
         const {
-            message,
-            message_type: status = 'info',
-            error
-        } = this.props.location.query
+            location: {
+                query: {
+                    message,
+                    message_type: status = 'info',
+                    error
+                }
+            },
+            isUpdate
+        } = this.props
+
+        this.setState({isInitialized: !isUpdate})
 
         if (error === 'need_scope_update') {
             this.props.notify({
@@ -58,7 +83,7 @@ class ShopifyIntegrationDetail extends React.Component {
         if (message) {
             this.props.notify({
                 status,
-                title: decodeURIComponent(message.replace(/\+/g, ' '))
+                message: decodeURIComponent(message.replace(/\+/g, ' '))
             })
             // remove error from url
             browserHistory.push(window.location.pathname)
@@ -85,20 +110,21 @@ class ShopifyIntegrationDetail extends React.Component {
         }
     }
 
-    componentWillUpdate(nextProps) {
+    componentWillUpdate(nextProps, nextState) {
         const {integration, isUpdate, loading} = nextProps
 
         // populating the form when updating an integration
-        if (!this.isInitialized && isUpdate && !loading.get('integration')) {
+        if (!nextState.isInitialized && isUpdate && !loading.get('integration')) {
             this.setState({
-                name: integration.get('name')
+                name: integration.get('name'),
+                isInitialized: true
             })
-            this.isInitialized = true
         }
     }
 
-    _handleSubmit = (e) => {
-        e.preventDefault()
+    _handleSubmit = (evt: Event): void => {
+        evt.preventDefault()
+        const {isUpdate, integration, actions} = this.props
 
         let doc = fromJS(defaultContent).mergeDeep({
             name: utils.subdomain(this.state.name)
@@ -108,37 +134,39 @@ class ShopifyIntegrationDetail extends React.Component {
         doc = doc.setIn(['meta', 'shop_name'], name)
 
         // if update, set ids for server
-        if (this.props.isUpdate) {
-            const integration = this.props.integration
+        if (isUpdate) {
             doc = doc.set('id', integration.get('id'))
-            return this.props.actions.updateOrCreateIntegration(doc)
+            actions.updateOrCreateIntegration(doc)
         }
 
         window.location.href = this.props.redirectUri.replace('{shop_name}', name)
     }
 
-    _updateAppPermissions = () => {
-        const name = this.props.integration.getIn(['meta', 'shop_name'])
-        window.location.href = this.props.redirectUri.replace('{shop_name}', name)
+    _updateAppPermissions = (): void => {
+        const {integration, redirectUri} = this.props
+        window.location.href = redirectUri.replace('{shop_name}', integration.getIn(['meta', 'shop_name'], ''))
     }
 
     render() {
-        const {actions, integration, isUpdate, loading} = this.props
+        const {actions, integration, isUpdate, loading, getExistingShopifyIntegration} = this.props
+        const {name: shopName} = this.state
 
         const isSubmitting = loading.get('updateIntegration')
-        const isActive = !integration.get('deactivated_datetime')
 
-        const authenticationRequired = this.props.integration.getIn(['meta', 'oauth', 'status']) === 'pending'
+        const isActive = !integration.get('deactivated_datetime')
+        const needScopeUpdate = integration.getIn(['meta', 'need_scope_update'])
+        const authenticationRequired = integration.getIn(['meta', 'oauth', 'status']) === 'pending'
+        const isSyncOver = integration.getIn(['meta', 'sync_state', 'is_initialized'])
 
         const ctaIsLoading = isSubmitting || authenticationRequired
-
-        const needScopeUpdate = integration.getIn(['meta', 'need_scope_update'])
-
-        const isSyncOver = integration.getIn(['meta', 'sync_state', 'is_initialized'])
 
         if (loading.get('integration')) {
             return <Loader />
         }
+
+        const error = !isUpdate && !getExistingShopifyIntegration(shopName).isEmpty()
+            ? 'There is already another integration for this Shopify store'
+            : null
 
         return (
             <div className="full-width">
@@ -160,38 +188,38 @@ class ShopifyIntegrationDetail extends React.Component {
                     <Row>
                         <Col md="8">
                             {
-                                !isUpdate && (
+                                !isUpdate ? (
                                     <p>
-                                        Let's connect your store to Gorgias. We'll import your Shopify customers in Gorgias, along
-                                        with their order information. This way, when they contact you, you'll be able to see their
-                                        Shopify information next to tickets.
+                                        Let's connect your store to Gorgias. We'll import your Shopify customers in
+                                        Gorgias, along with their order information. This way, when they contact you,
+                                        you'll be able to see their Shopify information next to tickets.
                                     </p>
-                                )
+                                ) : null
                             }
                             {
-                                isUpdate && (
-                                    isSyncOver
-                                        ? (
+                                isUpdate ? (
+                                    isSyncOver ? (
+                                        <p>
+                                            All your Shopify customers have been imported. You can now see their info
+                                            in the sidebar. <Link to="/app/customers">Review your customers.</Link>
+                                        </p>
+                                    ) : (
+                                        <Alert color="info" className="mb-4">
                                             <p>
-                                                All your Shopify customers have been imported. You can now see their info in the
-                                                sidebar. <Link to="/app/customers">Review your customers.</Link>
+                                                <b className="alert-heading">
+                                                    <i className="fa fa-refresh fa-spin mr-2" />
+                                                    Importing your Shopify customers
+                                                </b>
                                             </p>
-                                        ) : (
-                                            <Alert color="info" className="mb-4">
-                                                <p>
-                                                    <b className="alert-heading">
-                                                        <i className="fa fa-refresh fa-spin mr-2" />
-                                                        Importing your Shopify customers
-                                                    </b>
-                                                </p>
-                                                <p>
-                                                    We're currently importing all your Shopify customers. This way, you'll see
-                                                    customer info & orders next to tickets. We'll notify you via email when the
-                                                    import is done. We typically sync 3,000 customers an hour. <Link to="/app/customers">Review imported customers.</Link>
-                                                </p>
-                                            </Alert>
-                                        )
-                                )
+                                            <p>
+                                                We're currently importing all your Shopify customers. This way, you'll
+                                                see customer info & orders next to tickets. We'll notify you via email
+                                                when the import is done. We typically sync 3,000 customers an hour.
+                                                <Link to="/app/customers">Review imported customers.</Link>
+                                            </p>
+                                        </Alert>
+                                    )
+                                ) : null
                             }
 
                             <Form onSubmit={this._handleSubmit}>
@@ -202,16 +230,15 @@ class ShopifyIntegrationDetail extends React.Component {
                                     placeholder={'ex: "acme" for acme.myshopify.com'}
                                     required
                                     disabled={isUpdate}
-                                    value={this.state.name}
+                                    value={shopName}
+                                    error={error}
                                     onChange={(name) => this.setState({name})}
                                     rightAddon=".myshopify.com"
                                 />
 
                                 <div>
                                     {
-                                        isUpdate
-                                        && needScopeUpdate
-                                        && (
+                                        isUpdate && needScopeUpdate ? (
                                             <Button
                                                 type="button"
                                                 color="info"
@@ -223,26 +250,26 @@ class ShopifyIntegrationDetail extends React.Component {
                                             >
                                                 Update app permissions
                                             </Button>
-                                        )
+                                        ) : null
                                     }
 
                                     {
-                                        !isUpdate && (
+                                        !isUpdate ? (
                                             <Button
                                                 type="submit"
                                                 color="success"
                                                 className={classNames('mr-2', {
                                                     'btn-loading': ctaIsLoading,
                                                 })}
-                                                disabled={isSubmitting}
+                                                disabled={isSubmitting || !!error}
                                             >
                                                 Add integration
                                             </Button>
-                                        )
+                                        ) : null
                                     }
 
                                     {
-                                        !authenticationRequired && isUpdate && isActive && (
+                                        !authenticationRequired && isUpdate && isActive ? (
                                             <Button
                                                 type="button"
                                                 color="warning"
@@ -254,11 +281,10 @@ class ShopifyIntegrationDetail extends React.Component {
                                             >
                                                 Deactivate integration
                                             </Button>
-                                        )
+                                        ) : null
                                     }
-
                                     {
-                                        !authenticationRequired && isUpdate && !isActive && (
+                                        !authenticationRequired && isUpdate && !isActive ? (
                                             <Button
                                                 type="button"
                                                 color="success"
@@ -269,11 +295,10 @@ class ShopifyIntegrationDetail extends React.Component {
                                             >
                                                 Re-activate integration
                                             </Button>
-                                        )
+                                        ) : null
                                     }
-
                                     {
-                                        isUpdate && (
+                                        isUpdate ? (
                                             <ConfirmButton
                                                 className="float-right"
                                                 color="secondary"
@@ -285,7 +310,7 @@ class ShopifyIntegrationDetail extends React.Component {
                                                 </i>
                                                 Delete integration
                                             </ConfirmButton>
-                                        )
+                                        ) : null
                                     }
                                 </div>
                             </Form>
@@ -297,20 +322,8 @@ class ShopifyIntegrationDetail extends React.Component {
     }
 }
 
-ShopifyIntegrationDetail.propTypes = {
-    integration: PropTypes.object.isRequired,
-    isUpdate: PropTypes.bool.isRequired,
-    actions: PropTypes.object.isRequired,
-    loading: PropTypes.object.isRequired,
-
-    redirectUri: PropTypes.string.isRequired,
-
-    // Router
-    location: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired,
-
-    // Actions
-    notify: PropTypes.func.isRequired
-}
-
-export default withRouter(connect(null, {notify})(ShopifyIntegrationDetail))
+export default withRouter(connect((state) => {
+    return {
+        getExistingShopifyIntegration: integrationSelectors.makeGetShopifyIntegrationByShopName(state)
+    }
+}, {notify})(ShopifyIntegrationDetail))

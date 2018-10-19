@@ -176,6 +176,14 @@ export const getShopifyIntegrationsWithoutFacebook = (state: stateType) => {
     })
 }
 
+export const getShopifyIntegrationByShopName = (shopName: string) => createSelector(
+    [getIntegrationsByTypes(['shopify'])],
+    (state) => state.find((integration) => integration.getIn(['meta', 'shop_name']) === shopName) || fromJS({})
+)
+
+export const makeGetShopifyIntegrationByShopName = (state: stateType) => (shopName: string) =>
+    getShopifyIntegrationByShopName(shopName)(state)
+
 export const getChatIntegrationCampaigns = (id: number) => createSelector(
     [getIntegrationById(id)],
     (integration) => integration.getIn(['meta', 'campaigns']) || fromJS([])

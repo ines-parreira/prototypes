@@ -4,11 +4,13 @@ import {
     getEmailIntegrations,
     getChannels,
     getShopifyIntegrationsWithoutChat,
+    getShopifyIntegrationsWithoutFacebook,
+    getShopifyIntegrationByShopName,
     getChatIntegrationCampaigns,
     getChatIntegrationCampaignById,
     getChannelByTypeAndAddress,
     getChannelSignature,
-    getCurrentIntegration
+    getCurrentIntegration,
 } from '../selectors'
 import {integrationsState} from '../../../fixtures/integrations'
 import {fromJS} from 'immutable'
@@ -109,6 +111,100 @@ describe('integrations selectors', () => {
 
             const res = getShopifyIntegrationsWithoutChat(state)
             expect(res.size).toEqual(0)
+        })
+    })
+
+    describe('getShopifyIntegrationsWithoutFacebook', () => {
+        it('should return one integration', () => {
+            const state = {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: 'shopify'
+                        },
+                        {
+                            id: 2,
+                            type: 'shopify'
+                        },
+                        {
+                            id: 3,
+                            type: 'facebook',
+                            meta: {
+                                shopify_integration_ids: [1]
+                            }
+                        }
+                    ]
+                })
+            }
+
+            const res = getShopifyIntegrationsWithoutFacebook(state)
+            expect(res.size).toEqual(1)
+
+            const integration = res.first()
+            expect(integration.get('id')).toEqual(2)
+        })
+
+        it('should return no integration', () => {
+            const state = {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: 'shopify'
+                        },
+                        {
+                            id: 2,
+                            type: 'shopify'
+                        },
+                        {
+                            id: 3,
+                            type: 'facebook',
+                            meta: {
+                                shopify_integration_ids: [1, 2]
+                            }
+                        }
+                    ]
+                })
+            }
+
+            const res = getShopifyIntegrationsWithoutFacebook(state)
+            expect(res.size).toEqual(0)
+        })
+    })
+
+    describe('getShopifyIntegrationByShopName selector', () => {
+        it('should return the matching integration', () => {
+            const state = {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: 'shopify',
+                            meta: {
+                                shop_name: 'foo'
+                            }
+                        },
+                        {
+                            id: 2,
+                            type: 'shopify',
+                            meta: {
+                                shop_name: 'bar'
+                            }
+                        },
+                        {
+                            id: 3,
+                            type: 'facebook',
+                            meta: {
+                                shop_name: 'bar'
+                            }
+                        }
+                    ]
+                })
+            }
+
+            const res = getShopifyIntegrationByShopName('bar')(state)
+            expect(res.get('id')).toEqual(2)
         })
     })
 

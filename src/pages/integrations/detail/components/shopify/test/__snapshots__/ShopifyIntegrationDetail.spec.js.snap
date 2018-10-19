@@ -1,0 +1,983 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ShopifyIntegrationDetail should render the page for a deactivated integration 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/shopify"
+          >
+            Shopify
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          foo
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        md="8"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <p>
+          All your Shopify customers have been imported. You can now see their info in the sidebar. 
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/customers"
+          >
+            Review your customers.
+          </Link>
+        </p>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <InputField
+            disabled={true}
+            error={null}
+            label="Store name"
+            name="name"
+            onChange={[Function]}
+            placeholder="ex: \\"acme\\" for acme.myshopify.com"
+            required={true}
+            rightAddon=".myshopify.com"
+            type="text"
+            value="foo"
+          />
+          <div>
+            <Button
+              className=""
+              color="success"
+              onClick={[Function]}
+              tag="button"
+              type="button"
+            >
+              Re-activate integration
+            </Button>
+            <ConfirmButton
+              className="float-right"
+              color="secondary"
+              confirm={[Function]}
+              content="Are you sure you want to delete this integration?"
+              disabled={false}
+              loading={false}
+              placement="bottom"
+              skip={false}
+              title="Are you sure?"
+              type="button"
+            >
+              <i
+                className="material-icons mr-1 text-danger"
+              >
+                delete
+              </i>
+              Delete integration
+            </ConfirmButton>
+          </div>
+        </Form>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
+
+exports[`ShopifyIntegrationDetail should render the page for an integration being created with the name of another existing integration 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/shopify"
+          >
+            Shopify
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Add integration
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        md="8"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <p>
+          Let's connect your store to Gorgias. We'll import your Shopify customers in Gorgias, along with their order information. This way, when they contact you, you'll be able to see their Shopify information next to tickets.
+        </p>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <InputField
+            disabled={false}
+            error="There is already another integration for this Shopify store"
+            label="Store name"
+            name="name"
+            onChange={[Function]}
+            placeholder="ex: \\"acme\\" for acme.myshopify.com"
+            required={true}
+            rightAddon=".myshopify.com"
+            type="text"
+            value="foo"
+          />
+          <div>
+            <Button
+              className="mr-2"
+              color="success"
+              disabled={true}
+              tag="button"
+              type="submit"
+            >
+              Add integration
+            </Button>
+          </div>
+        </Form>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
+
+exports[`ShopifyIntegrationDetail should render the page for an integration for which the authentication is still pending 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/shopify"
+          >
+            Shopify
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          foo
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        md="8"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <p>
+          All your Shopify customers have been imported. You can now see their info in the sidebar. 
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/customers"
+          >
+            Review your customers.
+          </Link>
+        </p>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <InputField
+            disabled={true}
+            error={null}
+            label="Store name"
+            name="name"
+            onChange={[Function]}
+            placeholder="ex: \\"acme\\" for acme.myshopify.com"
+            required={true}
+            rightAddon=".myshopify.com"
+            type="text"
+            value="foo"
+          />
+          <div>
+            <ConfirmButton
+              className="float-right"
+              color="secondary"
+              confirm={[Function]}
+              content="Are you sure you want to delete this integration?"
+              disabled={false}
+              loading={false}
+              placement="bottom"
+              skip={false}
+              title="Are you sure?"
+              type="button"
+            >
+              <i
+                className="material-icons mr-1 text-danger"
+              >
+                delete
+              </i>
+              Delete integration
+            </ConfirmButton>
+          </div>
+        </Form>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
+
+exports[`ShopifyIntegrationDetail should render the page for an integration for which the sync is not over 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/shopify"
+          >
+            Shopify
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          foo
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        md="8"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Alert
+          className="mb-4"
+          closeAriaLabel="Close"
+          color="info"
+          isOpen={true}
+          tag="div"
+          transition={
+            Object {
+              "appear": true,
+              "baseClass": "fade",
+              "baseClassActive": "show",
+              "enter": true,
+              "exit": true,
+              "in": true,
+              "mountOnEnter": false,
+              "onEnter": [Function],
+              "onEntered": [Function],
+              "onEntering": [Function],
+              "onExit": [Function],
+              "onExited": [Function],
+              "onExiting": [Function],
+              "tag": "div",
+              "timeout": 150,
+              "unmountOnExit": true,
+            }
+          }
+        >
+          <p>
+            <b
+              className="alert-heading"
+            >
+              <i
+                className="fa fa-refresh fa-spin mr-2"
+              />
+              Importing your Shopify customers
+            </b>
+          </p>
+          <p>
+            We're currently importing all your Shopify customers. This way, you'll see customer info & orders next to tickets. We'll notify you via email when the import is done. We typically sync 3,000 customers an hour.
+            <Link
+              onlyActiveOnIndex={false}
+              style={Object {}}
+              to="/app/customers"
+            >
+              Review imported customers.
+            </Link>
+          </p>
+        </Alert>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <InputField
+            disabled={true}
+            error={null}
+            label="Store name"
+            name="name"
+            onChange={[Function]}
+            placeholder="ex: \\"acme\\" for acme.myshopify.com"
+            required={true}
+            rightAddon=".myshopify.com"
+            type="text"
+            value="foo"
+          />
+          <div>
+            <Button
+              className=""
+              color="warning"
+              onClick={[Function]}
+              outline={true}
+              tag="button"
+              type="button"
+            >
+              Deactivate integration
+            </Button>
+            <ConfirmButton
+              className="float-right"
+              color="secondary"
+              confirm={[Function]}
+              content="Are you sure you want to delete this integration?"
+              disabled={false}
+              loading={false}
+              placement="bottom"
+              skip={false}
+              title="Are you sure?"
+              type="button"
+            >
+              <i
+                className="material-icons mr-1 text-danger"
+              >
+                delete
+              </i>
+              Delete integration
+            </ConfirmButton>
+          </div>
+        </Form>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
+
+exports[`ShopifyIntegrationDetail should render the page for an integration which is being updated (submit is in progress) 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/shopify"
+          >
+            Shopify
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          foo
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        md="8"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <p>
+          All your Shopify customers have been imported. You can now see their info in the sidebar. 
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/customers"
+          >
+            Review your customers.
+          </Link>
+        </p>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <InputField
+            disabled={true}
+            error={null}
+            label="Store name"
+            name="name"
+            onChange={[Function]}
+            placeholder="ex: \\"acme\\" for acme.myshopify.com"
+            required={true}
+            rightAddon=".myshopify.com"
+            type="text"
+            value="foo"
+          />
+          <div>
+            <Button
+              className="btn-loading"
+              color="warning"
+              onClick={[Function]}
+              outline={true}
+              tag="button"
+              type="button"
+            >
+              Deactivate integration
+            </Button>
+            <ConfirmButton
+              className="float-right"
+              color="secondary"
+              confirm={[Function]}
+              content="Are you sure you want to delete this integration?"
+              disabled={false}
+              loading={false}
+              placement="bottom"
+              skip={false}
+              title="Are you sure?"
+              type="button"
+            >
+              <i
+                className="material-icons mr-1 text-danger"
+              >
+                delete
+              </i>
+              Delete integration
+            </ConfirmButton>
+          </div>
+        </Form>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
+
+exports[`ShopifyIntegrationDetail should render the page for an integration which needs a scope update 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/shopify"
+          >
+            Shopify
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          foo
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        md="8"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <p>
+          All your Shopify customers have been imported. You can now see their info in the sidebar. 
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/customers"
+          >
+            Review your customers.
+          </Link>
+        </p>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <InputField
+            disabled={true}
+            error={null}
+            label="Store name"
+            name="name"
+            onChange={[Function]}
+            placeholder="ex: \\"acme\\" for acme.myshopify.com"
+            required={true}
+            rightAddon=".myshopify.com"
+            type="text"
+            value="foo"
+          />
+          <div>
+            <Button
+              className="mr-2"
+              color="info"
+              onClick={[Function]}
+              tag="button"
+              type="button"
+            >
+              Update app permissions
+            </Button>
+            <Button
+              className=""
+              color="warning"
+              onClick={[Function]}
+              outline={true}
+              tag="button"
+              type="button"
+            >
+              Deactivate integration
+            </Button>
+            <ConfirmButton
+              className="float-right"
+              color="secondary"
+              confirm={[Function]}
+              content="Are you sure you want to delete this integration?"
+              disabled={false}
+              loading={false}
+              placement="bottom"
+              skip={false}
+              title="Are you sure?"
+              type="button"
+            >
+              <i
+                className="material-icons mr-1 text-danger"
+              >
+                delete
+              </i>
+              Delete integration
+            </ConfirmButton>
+          </div>
+        </Form>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
+
+exports[`ShopifyIntegrationDetail should render the page to create a new integration 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/shopify"
+          >
+            Shopify
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Add integration
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        md="8"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <p>
+          Let's connect your store to Gorgias. We'll import your Shopify customers in Gorgias, along with their order information. This way, when they contact you, you'll be able to see their Shopify information next to tickets.
+        </p>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <InputField
+            disabled={false}
+            error={null}
+            label="Store name"
+            name="name"
+            onChange={[Function]}
+            placeholder="ex: \\"acme\\" for acme.myshopify.com"
+            required={true}
+            rightAddon=".myshopify.com"
+            type="text"
+            value=""
+          />
+          <div>
+            <Button
+              className="mr-2"
+              color="success"
+              disabled={false}
+              tag="button"
+              type="submit"
+            >
+              Add integration
+            </Button>
+          </div>
+        </Form>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
+
+exports[`ShopifyIntegrationDetail should render the page to update an existing integration 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/shopify"
+          >
+            Shopify
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          foo
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        md="8"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <p>
+          All your Shopify customers have been imported. You can now see their info in the sidebar. 
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/customers"
+          >
+            Review your customers.
+          </Link>
+        </p>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <InputField
+            disabled={true}
+            error={null}
+            label="Store name"
+            name="name"
+            onChange={[Function]}
+            placeholder="ex: \\"acme\\" for acme.myshopify.com"
+            required={true}
+            rightAddon=".myshopify.com"
+            type="text"
+            value="foo"
+          />
+          <div>
+            <Button
+              className=""
+              color="warning"
+              onClick={[Function]}
+              outline={true}
+              tag="button"
+              type="button"
+            >
+              Deactivate integration
+            </Button>
+            <ConfirmButton
+              className="float-right"
+              color="secondary"
+              confirm={[Function]}
+              content="Are you sure you want to delete this integration?"
+              disabled={false}
+              loading={false}
+              placement="bottom"
+              skip={false}
+              title="Are you sure?"
+              type="button"
+            >
+              <i
+                className="material-icons mr-1 text-danger"
+              >
+                delete
+              </i>
+              Delete integration
+            </ConfirmButton>
+          </div>
+        </Form>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
