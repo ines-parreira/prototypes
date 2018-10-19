@@ -41,6 +41,7 @@ type State = {
     isSearch: boolean,
     isUpdate: boolean,
     isMacroModalOpen: boolean,
+    actionsComponent: ?Object
 }
 
 class TicketListContainer extends React.Component<Props, State> {
@@ -48,10 +49,17 @@ class TicketListContainer extends React.Component<Props, State> {
         isSearch: false,
         isUpdate: true,
         isMacroModalOpen: false,
+        actionsComponent: null
     }
 
     componentWillMount() {
         this.props.fetchTags()
+    }
+
+    componentDidMount() {
+        this.setState({
+            actionsComponent: decorateComponentWithProps(TicketListActions, {openMacroModal: this._openMacroModal})
+        })
     }
 
     componentWillReceiveProps(nextProps) {
@@ -99,9 +107,7 @@ class TicketListContainer extends React.Component<Props, State> {
                         isUpdate={isUpdate}
                         isSearch={isSearch}
                         urlViewId={urlViewId}
-                        ActionsComponent={
-                            decorateComponentWithProps(TicketListActions, {openMacroModal: this._openMacroModal})
-                        }
+                        ActionsComponent={this.state.actionsComponent}
                         viewButtons={(
                             <div className="d-inline-flex align-items-center">
                                 <Button

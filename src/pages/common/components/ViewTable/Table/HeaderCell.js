@@ -97,12 +97,12 @@ export default class HeaderCell extends React.Component {
                     <div className="cell-wrapper">
                         {
                             isMainField ? (
-                                    ActionsComponent && (
+                                    ActionsComponent ? (
                                         <ActionsComponent
                                             view={this.props.activeView}
                                             selectedItemsIds={this.props.selectedItemsIds}
                                         />
-                                    )
+                                    ) : null
                                 ) : (
                                     <div
                                         onClick={onClick}
@@ -121,13 +121,13 @@ export default class HeaderCell extends React.Component {
                         }
                     </div>
                     {
-                        isLast && !isSearch && (
+                        isLast && !isSearch ? (
                             <ShowMoreFieldsDropdown
                                 config={config}
                                 fields={config.get('fields', fromJS([]))}
                                 visibleFields={fields}
                             />
-                        )
+                        ) : null
                     }
                 </div>
             </td>
