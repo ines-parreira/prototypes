@@ -26,6 +26,7 @@ const UNITS = [
     {label: 'week(s) ago', value: 'w'},
 ]
 
+const MAX_QUANTITY = 9999
 
 export default class TimedeltaPicker extends React.Component<Props, State> {
     constructor(props) {
@@ -69,6 +70,10 @@ export default class TimedeltaPicker extends React.Component<Props, State> {
     }
 
     _onQuantityChange = (quantity) => {
+        if (quantity > MAX_QUANTITY) {
+            return
+        }
+
         this.setState({quantity})
         this._onChange(quantity, this.state.unit)
     }
@@ -89,6 +94,7 @@ export default class TimedeltaPicker extends React.Component<Props, State> {
                         onChange={(event) => this._onQuantityChange(event.target.value)}
                         style={{width: '62px'}}
                         min="0"
+                        max={MAX_QUANTITY}
                         required
                     />
                     <InputGroupButtonDropdown
