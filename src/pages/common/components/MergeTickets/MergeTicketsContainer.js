@@ -14,6 +14,7 @@ import {mergeTickets} from '../../../../state/mergeTickets/actions'
 import shortcutManager from '../../../../services/shortcutManager/shortcutManager'
 
 import css from './MergeTicketsContainer.less'
+import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
 
 const EDITABLE_FIELDS = fromJS(['subject', 'customer', 'assignee_user'])
@@ -43,6 +44,9 @@ class MergeTicketsContainer extends React.Component<Props, State> {
             shortcutManager.bind('TicketDetailContainer')
         } else if (!prevProps.isOpen && this.props.isOpen) {
             shortcutManager.unbind('TicketDetailContainer')
+            segmentTracker.logEvent(segmentTracker.EVENTS.TICKET_MERGE_CLICKED, {
+                sourceTicketId: this.props.sourceTicket.get('id')
+            })
         }
     }
 

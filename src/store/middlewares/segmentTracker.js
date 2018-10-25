@@ -58,6 +58,7 @@ export const EVENTS = {
     SHOW_MORE_FIELDS_CLICKED: 'show-more-fields-clicked',
     USER_HISTORY_TOGGLED: 'user-history-toggled',
     USER_MERGE_CLICKED: 'user-merge-clicked',
+    TICKET_MERGE_CLICKED: 'ticket-merge-clicked',
     VIEW_FILTER_ADD_CLICKED: 'view-filter-add-clicked',
     PAYMENT_METHOD_ADDED: 'payment-method-added',
     PAYMENT_METHOD_ADD_CLICKED: 'payment-method-add-clicked',

@@ -45,6 +45,7 @@ export function searchTickets(searchQuery: string,
  * override default values specified in the backend
  */
 export function mergeTickets(sourceTicketId: number, targetTicketId: number, ticketData: Object): thunkActionType {
+
     return (dispatch: dispatchType): Promise<dispatchType> => {
         return axios.put(`/api/tickets/merge?target_id=${targetTicketId}&source_id=${sourceTicketId}`, ticketData)
             .then((data) => {
