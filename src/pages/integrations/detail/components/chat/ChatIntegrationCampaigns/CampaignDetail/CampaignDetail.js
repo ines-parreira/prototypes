@@ -25,7 +25,7 @@ import ConfirmButton from '../../../../../../common/components/ConfirmButton'
 import {AgentLabel} from '../../../../../../common/utils/labels'
 
 import CampaignPreview from './../CampaignPreview/CampaignPreview'
-import {sanitizeHtmlDefault} from '../../../../../../../utils'
+import {sanitizeHtmlDefault} from '../../../../../../../utils/html'
 import {convertToHTML} from '../../../../../../../utils/editor'
 
 import {CAMPAIGNS_TRIGGER_KEYS, GRAVATAR_URL_TEMPLATE} from '../../../../../../../config/campaigns'

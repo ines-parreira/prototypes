@@ -1,10 +1,9 @@
 // @flow
 import React from 'react'
-import linkifyString from 'linkifyjs/string'
-import linkifyHtml from 'linkifyjs/html'
 import classnames from 'classnames'
 
-import {sanitizeHtmlDefault, proxifyImages, parseHtml} from '../../../../utils'
+import {proxifyImages} from '../../../../utils'
+import {sanitizeHtmlDefault, linkifyHtml, linkifyString} from '../../../../utils/html'
 import FacebookCarousel from './FacebookCarousel'
 
 import css from './TicketMessageBody.less'
@@ -63,19 +62,13 @@ export default class TicketMessageBody extends React.Component<Props, State> {
 
         body = proxifyImages(body, '1000x')
 
-        const linkifyOptions = {
-            attributes: {
-                rel: 'noreferrer noopener'
-            }
-        }
-
         if (bodyIsOnlyText) {
-            body = linkifyString(body, linkifyOptions)
+            body = linkifyString(body)
         } else {
             // parse html before linkifying it.
             // linkifyjs's html tokenizer (simple-html-tokenizer) breaks and returns empty string
             // when encountering invalid chars or unsupported tags (CDATA, DOCTYPE, MDO, etc.).
-            body = linkifyHtml(parseHtml(body), linkifyOptions)
+            body = linkifyHtml(body)
         }
 
         body = sanitizeHtmlDefault(body)

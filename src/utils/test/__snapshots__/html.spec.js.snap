@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`html util linkifyHtml shoud linkify html with xml doctype 1`] = `"Pizza <a href=\\"http://gorgias.io\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">gorgias.io</a>"`;
+
+exports[`html util linkifyHtml should linkify html with CDATA entities in body 1`] = `"Website <a href=\\"http://gorgias.io\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">gorgias.io</a>"`;
+
+exports[`html util linkifyHtml should linkify html with CDATA in body 1`] = `"<div><!--[CDATA[ - ]]--></div>Website <a href=\\"http://gorgias.io\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">gorgias.io</a>"`;
+
+exports[`html util linkifyHtml should linkify html with CDATA in head 1`] = `"<style><![CDATA[body{}]]></style>Website <a href=\\"http://gorgias.io\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">gorgias.io</a>"`;
+
+exports[`html util linkifyHtml should linkify html with bogus comments 1`] = `"<a href=\\"http://gorgias.io\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">gorgias.io</a>"`;
+
+exports[`html util linkifyHtml should linkify html with comments tags 1`] = `"<a href=\\"http://gorgias.io\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">gorgias.io</a>"`;
+
+exports[`html util linkifyHtml should linkify html with doctype 1`] = `"<a href=\\"http://gorgias.io\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">gorgias.io</a>"`;
+
+exports[`html util linkifyHtml should linkify html with script tags 1`] = `"<script>alert();</script><a href=\\"http://gorgias.io\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">gorgias.io</a>"`;
+
+exports[`html util linkifyHtml should linkify nested links 1`] = `"<a href=\\"http://gorgias.io\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">gorgias.io</a> Pizza<div>Pepperoni<h1><a href=\\"http://gorgias.io\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">gorgias.io</a> Margherita</h1></div>"`;
+
+exports[`html util parseHtml should fix invalid html structure 1`] = `
+"<head>
+                        <title>Pepperoni</title>
+                        <meta http-equiv=\\"Content-Type\\" content=\\"text/html; charset=utf-8\\">
+                    </head>
+                    <body>
+                        http://gorgias.io
+                    <a href=\\"https://gorgias.io\\">gorgias.io</a><table>
+                        <!--[CDATA[pizza]]-->
+                        
+                    
+                
+            </table></body>"
+`;
+
+exports[`html util parseHtml should not remove invalid characters 1`] = `"<head></head><body>Thank you &lt;3 you are the best</body>"`;
+
+exports[`html util parseHtml should not remove quotes 1`] = `"<head></head><body>these \\"quotes\\" here</body>"`;

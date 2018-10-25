@@ -20,7 +20,6 @@ import axios from 'axios'
 import esprima from 'esprima'
 import escodegen from 'escodegen'
 import moment from 'moment-timezone'
-import sanitizeHtml from 'sanitize-html'
 import {ContentState, EditorState, Modifier} from 'draft-js'
 // types
 import type {Iterable, Map} from 'immutable'
@@ -378,52 +377,6 @@ export function stripHTML(text: string): ?string {
         console.error(`Failed stripHTML: ${e}`, text)
         return text
     }
-}
-
-/** sanitizeHtml with a sensible config. */
-export function sanitizeHtmlDefault(html: string): string {
-    if (typeof html !== 'string') {
-        return html
-    }
-
-    // Remove broken HTML comment, valid comments will be removed below
-    const sanitizedHtml = html.replace('<!-->', '')
-
-    return sanitizeHtml(sanitizedHtml, {
-        allowedTags: ['h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
-            'nl', 'li', 'b', 'i', 'u', 'strong', 'em', 'ins', 'strike', 'code', 'hr', 'br', 'div',
-            'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre', 'img', 'font', 'span', 'audio'],
-        allowedAttributes: {
-            // allow style/src and other meta attributes
-            '*': ['align', 'alt', 'bgcolor', 'border', 'class', 'color', 'colspan', 'dir',
-                'height', 'href', 'id', 'rel', 'rowspan', 'src', 'style', 'target', 'title', 'width', 'controls']
-        },
-        nonTextTags: ['style', 'script', 'textarea', 'noscript', 'title',
-            'o:pixelsperinch' // outlook specific tag
-        ],
-        transformTags: {
-            'a': sanitizeHtml.simpleTransform('a', {target: '_blank', rel: 'noreferrer noopener'})
-        }
-    })
-}
-
-/* Forgiving html parser:
- * - Fixes invalid markup
- * - Doesn't remove invalid chars
- * - Doesn't run scripts or inline event handlers
- * global is required for testing in a separate jsdom instance.
- */
-export const parseHtml = (html: string = '', global: window = window): string => {
-    // only parse in the browser
-    if (typeof window === 'undefined') {
-        return html
-    }
-
-    const parser = new global.DOMParser()
-    const doc = parser.parseFromString(html, 'text/html')
-    // merge head and body contents, in case we need to load resources from head.
-    // also makes it backwards-compatible with the previous parser (div.innnerHTML = html).
-    return `${_get(doc, ['head','innerHTML'], '')}${_get(doc, ['body','innerHTML'], '')}`
 }
 
 const _proxyImageSignedURL = (url: string): string => {
