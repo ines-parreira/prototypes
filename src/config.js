@@ -488,13 +488,21 @@ export const ACTION_TEMPLATES = [
             'This action won\'t work if the order has already been shipped.'
         ],
         arguments: {
+            name: {
+                label: 'Name',
+                type: 'string',
+                default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.name}}',
+                editable: true,
+                required: false,
+                display_order: 1
+            },
             address1: {
                 label: 'Address (1)',
                 type: 'string',
                 default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.address1}}',
                 editable: true,
                 required: false,
-                display_order: 1
+                display_order: 2
             },
             address2: {
                 label: 'Address (2)',
@@ -502,7 +510,7 @@ export const ACTION_TEMPLATES = [
                 default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.address2}}',
                 editable: true,
                 required: false,
-                display_order: 2
+                display_order: 3
             },
             city: {
                 label: 'City',
@@ -510,7 +518,7 @@ export const ACTION_TEMPLATES = [
                 default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.city}}',
                 editable: true,
                 required: false,
-                display_order: 3
+                display_order: 4
             },
             province: {
                 label: 'State/Province',
@@ -518,7 +526,7 @@ export const ACTION_TEMPLATES = [
                 default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.province}}',
                 editable: true,
                 required: false,
-                display_order: 4
+                display_order: 5
             },
             zip: {
                 label: 'ZIP',
@@ -526,7 +534,7 @@ export const ACTION_TEMPLATES = [
                 default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.zip}}',
                 editable: true,
                 required: false,
-                display_order: 5
+                display_order: 6
             },
             country: {
                 label: 'Country',
@@ -534,7 +542,7 @@ export const ACTION_TEMPLATES = [
                 default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.country}}',
                 editable: true,
                 required: false,
-                display_order: 6
+                display_order: 7
             },
         },
         validators: [
