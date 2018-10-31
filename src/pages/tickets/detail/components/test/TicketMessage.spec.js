@@ -26,4 +26,18 @@ describe('TicketMessage component', () => {
 
         expect(component).toMatchSnapshot()
     })
+
+    it('should add a -sent via campaign- label because the message was sent by a campaign', () => {
+        const component = shallow(
+            <TicketMessage
+                {...commonProps}
+                message={{
+                    meta: {campaign_id: '123'},
+                    integration_id: '118'
+                }}
+            />
+        )
+
+        expect(component).toMatchSnapshot()
+    })
 })

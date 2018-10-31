@@ -233,7 +233,18 @@ export class TicketMessage extends React.Component {
             )
         }
 
+        let sentViaLabel
+        let sentViaLink
+
         if (message.via === 'rule') {
+            sentViaLabel = 'Rule'
+            sentViaLink = `/app/settings/rules?ruleId=${message.rule_id}`
+        } else if (message.meta && message.meta.campaign_id) {
+            sentViaLabel = 'Campaign'
+            sentViaLink = `/app/settings/integrations/smooch_inside/${message.integration_id}/campaigns/${message.meta.campaign_id}`
+        }
+
+        if (sentViaLabel && sentViaLink) {
             widgets.push(
                 <span
                     key="via-widget"
@@ -243,10 +254,10 @@ export class TicketMessage extends React.Component {
                     <b>
                         <Link
                             tag="a"
-                            to={`/app/settings/rules?ruleId=${message.rule_id}`}
+                            to={sentViaLink}
                         >
                             <i className="fa fa-fw fa-cog mr-1"/>
-                            Rule
+                            {sentViaLabel}
                         </Link>
                     </b>
                 </span>
