@@ -4,7 +4,6 @@ import classnames from 'classnames'
 import {connect} from 'react-redux'
 import {UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 
-import shortcutManager from '../../../../../services/shortcutManager'
 import {ticketSourceTypes} from '../../../../../utils'
 import MessageSourceFields from './MessageSourceFields/'
 import {guessReceiversFromTicket} from '../../../../../state/ticket/utils'
@@ -14,6 +13,7 @@ import {getMessages} from '../../../../../state/ticket/selectors'
 import * as integrationSelectors from '../../../../../state/integrations/selectors'
 
 import SourceIcon from '../../../../common/components/SourceIcon'
+import KeyboardShortcuts from '../../../../common/components/KeyboardShortcuts'
 
 import css from './ReplyMessageChannel.less'
 
@@ -55,29 +55,29 @@ export default class ReplyMessageChannel extends React.Component {
 
     componentDidMount() {
         window.addEventListener('click', this._updateMessageSourceFieldsOpening)
-
-        this._bindKeys()
     }
 
     componentWillUnmount() {
         window.removeEventListener('click', this._updateMessageSourceFieldsOpening)
-
-        shortcutManager.unbind('TicketDetailContainer')
     }
 
-    _bindKeys = () => {
-        shortcutManager.bind('TicketDetailContainer', {
-            FORWARD_REPLY: {
-                action: (e) => {
-                    e.preventDefault()
-                    this.props.prepareNewMessage('email-forward')
+    _keymap = {
+        FORWARD_REPLY: {
+            action: (e) => {
+                e.preventDefault()
+                this.props.prepareNewMessage('email-forward')
 
-                    if (this._messageSourceFields) {
-                        this._messageSourceFields.focusInput()
-                    }
+                if (this._messageSourceFields) {
+                    this._messageSourceFields.focusInput()
                 }
             }
-        })
+        },
+        INTERNAL_NOTE_REPLY: {
+            action: (e) => {
+                e.preventDefault()
+                this.props.prepareNewMessage('internal-note')
+            }
+        }
     }
 
     _canChangeReceivers = () => {
@@ -306,6 +306,11 @@ export default class ReplyMessageChannel extends React.Component {
                 </div>
 
                 {this._renderReceiversArea()}
+
+                <KeyboardShortcuts
+                    name="TicketDetailContainer"
+                    keymap={this._keymap}
+                />
             </div>
         )
     }

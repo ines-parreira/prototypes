@@ -140,7 +140,10 @@ export default {
                 key: 'f',
                 description: 'Set reply to Forward.'
             },
-
+            INTERNAL_NOTE_REPLY: {
+                key: 'i',
+                description: 'Set reply to Internal Note.'
+            },
             CLOSE_TICKET: {
                 key: 'c',
                 description: 'Close the ticket.'
