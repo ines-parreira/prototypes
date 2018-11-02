@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ManageTags Table component should display the same number of rows as there are tags 1`] = `
+<table
+  className="view-table"
+>
+  <thead>
+    <tr>
+      <td
+        className="cell-wrapper cell-short clickable"
+        onClick={[Function]}
+      >
+        <input
+          checked={false}
+          type="checkbox"
+        />
+      </td>
+      <td>
+        <div>
+          <div
+            className="cell-wrapper"
+          >
+            <div
+              onClick={[Function]}
+            >
+              <span
+                className="clickable filterable"
+              >
+                Tag
+              </span>
+              <i
+                className="fa fa-fw"
+              />
+            </div>
+          </div>
+        </div>
+      </td>
+      <td>
+        <div>
+          <div
+            className="cell-wrapper"
+          >
+            <div
+              onClick={[Function]}
+            >
+              <span
+                className="clickable filterable"
+              >
+                Tickets
+              </span>
+              <i
+                className="fa fa-fw"
+              />
+            </div>
+          </div>
+        </div>
+      </td>
+      <td />
+    </tr>
+  </thead>
+  <tbody>
+    <Connect(Row)
+      meta={
+        Immutable.Map {
+        }
+      }
+      refresh={[Function]}
+      row={
+        Immutable.Map {
+          id: 1,
+          name: "refund",
+        }
+      }
+    />
+    <Connect(Row)
+      meta={
+        Immutable.Map {
+        }
+      }
+      refresh={[Function]}
+      row={
+        Immutable.Map {
+          id: 2,
+          name: "billing",
+        }
+      }
+    />
+    <Connect(Row)
+      meta={
+        Immutable.Map {
+        }
+      }
+      refresh={[Function]}
+      row={
+        Immutable.Map {
+          id: 3,
+          name: "shipping",
+        }
+      }
+    />
+  </tbody>
+</table>
+`;

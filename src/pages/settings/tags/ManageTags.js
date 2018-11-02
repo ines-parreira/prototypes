@@ -1,7 +1,8 @@
-import React, {Component, PropTypes} from 'react'
+// @flow
+import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router'
 import classnames from 'classnames'
-import {fromJS} from 'immutable'
 import {
     Container,
     Button,
@@ -16,32 +17,49 @@ import InputField from '../../common/forms/InputField'
 import Table from './Table'
 import Pagination from '../../common/components/Pagination'
 import Loader from '../../common/components/Loader'
+import PageHeader from '../../common/components/PageHeader'
+import Video from '../../common/components/Video'
 
 import * as tagsActions from '../../../state/tags/actions'
-
 import * as tagsSelectors from '../../../state/tags/selectors'
-import PageHeader from '../../common/components/PageHeader'
-import {Link} from 'react-router'
 
-export class ManageTags extends Component {
-    static propTypes = {
-        tags: PropTypes.object.isRequired,
-        currentPage: PropTypes.number.isRequired,
-        numberPages: PropTypes.number.isRequired,
-        fetch: PropTypes.func.isRequired,
-        create: PropTypes.func.isRequired,
-        remove: PropTypes.func.isRequired,
-        selectAll: PropTypes.func.isRequired,
-        setPage: PropTypes.func.isRequired,
-        merge: PropTypes.func.isRequired,
-        bulkDelete: PropTypes.func.isRequired
-    }
+import css from './ManageTags.less'
 
+import type {Map, List} from 'immutable'
+
+
+type Props = {
+    tags: List<*>,
+    meta: Map<*,*>,
+    currentPage: number,
+    numberPages: number,
+    fetch: typeof tagsActions.fetchTags,
+    create: typeof tagsActions.create,
+    remove: typeof tagsActions.remove,
+    selectAll: () => void,
+    setPage: typeof tagsActions.setPage,
+    merge: typeof tagsActions.merge,
+    bulkDelete: typeof tagsActions.bulkDelete,
+}
+
+type State = {
+    sort: string,
+    reverse: boolean,
+    newTag: string,
+    showCreationPopup: boolean,
+    askMergeConfirmation: boolean,
+    askRemoveConfirmation: boolean,
+    isFetching: boolean,
+    mergeTagDestination: string
+}
+
+export class ManageTags extends Component<Props, State> {
     state = {
         sort: 'usage',
         reverse: true,
         newTag: '',
         showCreationPopup: false,
+        askMergeConfirmation: false,
         askRemoveConfirmation: false,
         isFetching: false,
         mergeTagDestination: '',
@@ -55,7 +73,7 @@ export class ManageTags extends Component {
             })
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         const {currentPage} = this.props
         const nextPage = nextProps.currentPage
         const nextNumPages = nextProps.numberPages
@@ -72,7 +90,7 @@ export class ManageTags extends Component {
         this.props.fetch(this.props.currentPage, this.state.sort, this.state.reverse)
     }
 
-    _onSort = (sort, reverse) => {
+    _onSort = (sort: string, reverse: boolean) => {
         this.props.fetch(this.props.currentPage, sort, reverse)
             .then(() => {
                 this.setState({
@@ -82,8 +100,8 @@ export class ManageTags extends Component {
             })
     }
 
-    _onCreate = (e) => {
-        e.preventDefault()
+    _onCreate = (event: Object) => {
+        event.preventDefault()
 
         this.props.create({
             name: this.state.newTag,
@@ -98,24 +116,26 @@ export class ManageTags extends Component {
 
     _bulkDelete = () => {
         this.setState({askRemoveConfirmation: false})
+        const {meta, bulkDelete} = this.props
 
         let tagIDs = []
-        this.props.tags.get('meta', fromJS({}))
-            .forEach((meta, key) => {
-                if (meta.get('selected')) {
-                    tagIDs.push(key)
-                }
-            })
-        this.props.bulkDelete(tagIDs)
-            .then(() => {
-                this._fetchPage()
-            })
+        meta.forEach((meta, key) => {
+            if (meta.get('selected')) {
+                tagIDs.push(key)
+            }
+        })
+        bulkDelete(tagIDs).then(() => {
+            this._fetchPage()
+        })
     }
 
     _merge = () => {
         this.setState({askMergeConfirmation: false})
-        const selectedTagMeta = this.props.tags.get('meta', fromJS({})).filter((meta) => meta.get('selected'))
-        return this.props.merge(
+        const {meta, merge} = this.props
+
+        const selectedTagMeta = meta.filter((meta) => meta.get('selected'))
+
+        return merge(
             selectedTagMeta.keySeq().toList()
         ).then(() => {
             this._fetchPage()
@@ -135,10 +155,9 @@ export class ManageTags extends Component {
     }
 
     _toggleMergeConfirmation = () => {
-        const destID = this.props.tags.get('meta', fromJS({})).filter((meta) => meta.get('selected'))
-            .keySeq().toList().last()
-        const destName = this.props.tags.get('items', fromJS([])).filter(
-            (meta) => meta.get('id').toString() === destID.toString()).first().get('name', '')
+        const {tags, meta} = this.props
+        const destID = meta.filter((meta) => meta.get('selected')).keySeq().toList().last()
+        const destName = tags.filter((meta) => meta.get('id').toString() === destID.toString()).first().get('name', '')
         this.setState({
             askMergeConfirmation: !this.state.askMergeConfirmation,
             mergeTagDestination: destName
@@ -146,7 +165,7 @@ export class ManageTags extends Component {
     }
 
     render() {
-        const {tags, currentPage, numberPages, selectAll} = this.props
+        const {tags, currentPage, numberPages, selectAll, meta} = this.props
         const {sort, reverse, isFetching, mergeTagDestination} = this.state
 
         if (isFetching) {
@@ -154,8 +173,8 @@ export class ManageTags extends Component {
         }
 
         // check if any items are selected
-        const selected = tags.get('meta', fromJS({}))
-            .filter(meta => meta.get('selected'))
+        const selected = meta
+            .filter((meta) => meta.get('selected'))
             .size
 
         return (
@@ -237,76 +256,83 @@ export class ManageTags extends Component {
                         }
 
                         <span>
-                                <Button
-                                    id="create-tag-button"
-                                    color="success"
-                                    type="button"
-                                    onClick={this._toggleCreationPopup}
-                                >
-                                    Create tag
-                                </Button>
-                                <Popover
-                                    placement="bottom"
-                                    isOpen={this.state.showCreationPopup}
-                                    target="create-tag-button"
-                                    toggle={this._toggleCreationPopup}
-                                >
-                                    <PopoverHeader>Create a new tag</PopoverHeader>
-                                    <PopoverBody>
-                                        <Form onSubmit={this._onCreate}>
-                                            <div className="d-flex align-items-center">
-                                                <div className="mr-2">
-                                                    <InputField
-                                                        type="text"
-                                                        placeholder="New tag name"
-                                                        value={this.state.newTag}
-                                                        autoFocus
-                                                        onChange={value => this.setState({newTag: value})}
-                                                        required
-                                                        inline
-                                                    />
-                                                </div>
-                                                <Button
-                                                    color="success"
-                                                    type="submit"
-                                                    className={classnames({
-                                                        'btn-loading': tags.getIn(['_internal', 'creating']),
-                                                    })}
-                                                >
-                                                    <i className="fa fa-fw fa-check"/>
-                                                </Button>
+                            <Button
+                                id="create-tag-button"
+                                color="success"
+                                type="button"
+                                onClick={this._toggleCreationPopup}
+                            >
+                                Create tag
+                            </Button>
+                            <Popover
+                                placement="bottom"
+                                isOpen={this.state.showCreationPopup}
+                                target="create-tag-button"
+                                toggle={this._toggleCreationPopup}
+                            >
+                                <PopoverHeader>Create a new tag</PopoverHeader>
+                                <PopoverBody>
+                                    <Form onSubmit={this._onCreate}>
+                                        <div className="d-flex align-items-center">
+                                            <div className="mr-2">
+                                                <InputField
+                                                    type="text"
+                                                    placeholder="New tag name"
+                                                    value={this.state.newTag}
+                                                    autoFocus
+                                                    onChange={(value) => this.setState({newTag: value})}
+                                                    required
+                                                    inline
+                                                />
                                             </div>
-                                        </Form>
-                                    </PopoverBody>
-                                </Popover>
-                            </span>
+                                            <Button
+                                                color="success"
+                                                type="submit"
+                                                className={classnames({
+                                                    'btn-loading': tags.getIn(['_internal', 'creating']),
+                                                })}
+                                            >
+                                                <i className="fa fa-fw fa-check"/>
+                                            </Button>
+                                        </div>
+                                    </Form>
+                                </PopoverBody>
+                            </Popover>
+                        </span>
                     </div>
                 </PageHeader>
 
                 <Container fluid className="page-container">
-                    <div className="manage-tags-description">
-                        <p>
-                            You can tag tickets to keep track of topics customers are contacting you about.
-                            Check your tag statistics <Link to="/app/stats/tags">here</Link>.
-                        </p>
+                    <div className={css.description}>
+                        <div>
+                            <p>
+                                You can tag tickets to keep track of topics customers are contacting you about.
+                            </p>
+                            <p>
+                                Check your tag statistics <Link to="/app/stats/tags">here</Link>.
+                            </p>
+                        </div>
+                        <Video
+                            videoId="MHwrVTk6SNQ"
+                            legend="Working with tags"
+                        />
                     </div>
-
-                    <Table
-                        rows={tags}
-                        sort={sort}
-                        reverse={reverse}
-                        onSort={this._onSort}
-                        onSelectAll={selectAll}
-                        refresh={this._fetchPage}
-                    />
-
-                    <Pagination
-                        className="pagination-transparent"
-                        pageCount={numberPages}
-                        currentPage={currentPage}
-                        onChange={page => this.props.setPage(page)}
-                    />
                 </Container>
+
+                <Table
+                    sort={sort}
+                    reverse={reverse}
+                    onSort={this._onSort}
+                    onSelectAll={selectAll}
+                    refresh={this._fetchPage}
+                />
+
+                <Pagination
+                    className="pagination-transparent"
+                    pageCount={numberPages}
+                    currentPage={currentPage}
+                    onChange={(page) => this.props.setPage(page)}
+                />
             </div>
         )
     }
@@ -314,7 +340,8 @@ export class ManageTags extends Component {
 
 export default connect((state) => {
     return {
-        tags: state.tags,
+        tags: tagsSelectors.getTags(state),
+        meta: tagsSelectors.getMeta(state),
         currentPage: tagsSelectors.getCurrentPage(state),
         numberPages: tagsSelectors.getNumberPages(state)
     }

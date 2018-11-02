@@ -194,80 +194,42 @@ exports[`ManageTags component mounts correctly 1`] = `
     tag="div"
   >
     <div
-      className="manage-tags-description"
+      className="description"
     >
-      <p>
-        You can tag tickets to keep track of topics customers are contacting you about. Check your tag statistics 
-        <Link
-          onlyActiveOnIndex={false}
-          style={Object {}}
-          to="/app/stats/tags"
-        >
-          here
-        </Link>
-        .
-      </p>
+      <div>
+        <p>
+          You can tag tickets to keep track of topics customers are contacting you about.
+        </p>
+        <p>
+          Check your tag statistics 
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/stats/tags"
+          >
+            here
+          </Link>
+          .
+        </p>
+      </div>
+      <Video
+        legend="Working with tags"
+        videoId="MHwrVTk6SNQ"
+      />
     </div>
-    <Table
-      columns={
-        Array [
-          Object {
-            "field": "name",
-            "title": "Tag",
-          },
-          Object {
-            "field": "usage",
-            "title": "Tickets",
-          },
-        ]
-      }
-      onSelectAll={[Function]}
-      onSort={[Function]}
-      refresh={[Function]}
-      reverse={true}
-      rows={
-        Immutable.Map {
-          items: Immutable.List [
-            Immutable.Map {
-              id: 1,
-              name: "refund",
-            },
-            Immutable.Map {
-              id: 2,
-              name: "billing",
-            },
-            Immutable.Map {
-              id: 3,
-              name: "shipping",
-            },
-          ],
-          meta: Immutable.Map {
-            1: Immutable.Map {
-              selected: true,
-            },
-            2: Immutable.Map {
-              selected: true,
-            },
-          },
-          _internal: Immutable.Map {
-            pagination: Immutable.Map {
-              per_page: 30,
-              page: 1,
-              nb_pages: 1,
-              item_count: 3,
-              current_page: "/api/views/?page=1",
-            },
-          },
-        }
-      }
-      sort="usage"
-    />
-    <Pagination
-      className="pagination-transparent"
-      currentPage={1}
-      onChange={[Function]}
-      pageCount={1}
-    />
   </Container>
+  <Connect(Table)
+    onSelectAll={[Function]}
+    onSort={[Function]}
+    refresh={[Function]}
+    reverse={true}
+    sort="usage"
+  />
+  <Pagination
+    className="pagination-transparent"
+    currentPage={1}
+    onChange={[Function]}
+    pageCount={1}
+  />
 </div>
 `;

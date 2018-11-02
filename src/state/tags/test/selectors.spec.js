@@ -8,6 +8,7 @@ jest.addMatchers(immutableMatchers)
 
 describe('tags selectors', () => {
     let state
+    const selectedTagId = 123
 
     beforeEach(() => {
         state = {
@@ -37,9 +38,11 @@ describe('tags selectors', () => {
                             page: 1,
                             current_page: '/api/views/?page=1',
                             per_page: 30
-                        }
+                        },
+                        selectAll: true
                     }
-                })
+                })  // We need to do that separately, else JS transforms the `int` key into a string
+                    .setIn(['meta', selectedTagId], fromJS({selected: true}))
         }
     })
 
@@ -53,6 +56,11 @@ describe('tags selectors', () => {
         expect(selectors.getTags({})).toEqualImmutable(fromJS([]))
     })
 
+    it('getInternal', () => {
+        expect(selectors.getInternal(state)).toBe(state.tags.get('_internal'))
+        expect(selectors.getInternal({})).toBe(fromJS({}))
+    })
+
     it('getNumberPages', () => {
         expect(selectors.getNumberPages(state)).toBe(state.tags.getIn(['_internal', 'pagination', 'nb_pages']))
         expect(selectors.getNumberPages({})).toBe(1)
@@ -61,5 +69,20 @@ describe('tags selectors', () => {
     it('getCurrentPage', () => {
         expect(selectors.getCurrentPage(state)).toBe(state.tags.getIn(['_internal', 'pagination', 'page']))
         expect(selectors.getCurrentPage({})).toBe(1)
+    })
+
+    it('getSelectAll', () => {
+        expect(selectors.getSelectAll(state)).toBe(state.tags.getIn(['_internal', 'selectAll']))
+        expect(selectors.getSelectAll({})).toBe(false)
+    })
+
+    it('getMeta', () => {
+        expect(selectors.getMeta(state)).toBe(state.tags.get('meta'))
+        expect(selectors.getMeta({})).toBe(fromJS({}))
+    })
+
+    it('getSelectedTagMeta', () => {
+        expect(selectors.getSelectedTagMeta(selectedTagId)(state)).toBe(state.tags.getIn(['meta', selectedTagId]))
+        expect(selectors.getSelectedTagMeta(selectedTagId)({})).toBe(fromJS({}))
     })
 })

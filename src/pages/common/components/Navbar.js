@@ -16,6 +16,7 @@ import * as currentUserSelectors from '../../../state/currentUser/selectors'
 import ToggleButton from '../../../pages/common/components/ToggleButton'
 import './Navbar.less'
 import Avatar from './Avatar/Avatar'
+import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 
 // A <Link /> with some default styles
 const NavLink = (props) => {
@@ -226,6 +227,7 @@ export default class Navbar extends React.Component {
                             tag="a"
                             href="http://docs.gorgias.io/"
                             target="_blank"
+                            onClick={() => segmentTracker.logEvent(segmentTracker.EVENTS.HELP_CENTER_CLICKED)}
                         >
                             <i className="material-icons mr-2" title="Helpcenter">help</i>
                             Help center

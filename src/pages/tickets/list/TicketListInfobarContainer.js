@@ -18,6 +18,7 @@ import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 import css from './TicketListInfobarContainer.less'
 
 import type {Map, List} from 'immutable'
+import Video from '../../common/components/Video'
 
 type Props = {
     agents: List<*>,
@@ -160,6 +161,14 @@ class TicketListInfobarContainer extends React.Component<Props> {
                             />
                             <div>Add team members</div>
                         </Link>
+                    </div>
+
+                    <div className="mt-5 text-info">
+                        <h5>Learn how to use Gorgias:</h5>
+                        <Video
+                            videoId="dNWQPHfCtmE"
+                            legend="How to use Gorgias"
+                        />
                     </div>
 
                     <a

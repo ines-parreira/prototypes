@@ -1,6 +1,7 @@
-import React, {Component, PropTypes} from 'react'
+// @flow
+import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import {
     Form,
     Button,
@@ -13,66 +14,81 @@ import InputField from '../../common/forms/InputField'
 import ColorPicker from '../../common/components/ColorPicker'
 import {TagLabel} from '../../common/utils/labels'
 
-import * as tagsActions from '../../../state/tags/actions'
 import {toJS} from '../../../utils'
 import {DEFAULT_TAG_COLOR} from '../../../config'
 
-export class Row extends Component {
-    static propTypes = {
-        row: PropTypes.object.isRequired,
-        meta: PropTypes.object.isRequired,
-        edit: PropTypes.func.isRequired,
-        save: PropTypes.func.isRequired,
-        cancel: PropTypes.func.isRequired,
-        remove: PropTypes.func.isRequired,
-        select: PropTypes.func.isRequired,
-        refresh: PropTypes.func.isRequired
+import * as tagsActions from '../../../state/tags/actions'
+
+
+type Props = {
+    row: Map<*,*>,
+    meta: Map<*,*>,
+    edit: typeof tagsActions.edit,
+    save: typeof tagsActions.save,
+    cancel: typeof tagsActions.cancel,
+    remove: typeof tagsActions.remove,
+    select: typeof tagsActions.select,
+    refresh: () => void,
+}
+
+type State = {
+    name?: string,
+    decoration: Map<*,*>,
+    askRemoveConfirmation: boolean
+}
+
+
+export class Row extends Component<Props, State> {
+    state = {
+        name: '',
+        decoration: fromJS({
+            color: ''
+        }),
+        askRemoveConfirmation: false
     }
 
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            name: props.row.get('name'),
-            decoration: props.row.get('decoration') || fromJS({
-                color: ''
-            }),
-            askRemoveConfirmation: false,
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        // when adding new items, update the form inputs
+    _setStateFromRow = (row: Map<*,*>) => {
         this.setState({
-            name: nextProps.row.get('name'),
-            decoration: nextProps.row.get('decoration') || fromJS({
+            name: row.get('name'),
+            decoration: row.get('decoration') || fromJS({
                 color: ''
             })
         })
+    }
+
+    componentWillReceiveProps(nextProps: Props) {
+        // when adding new items, update the form inputs
+        this._setStateFromRow(nextProps.row)
+    }
+
+    componentDidMount() {
+        this._setStateFromRow(this.props.row)
     }
 
     _onEdit = () => {
         this.props.edit(this.props.row.toJS())
     }
 
-    _onSave = (e) => {
-        e.preventDefault()
+    _onSave = (event: Object) => {
+        event.preventDefault()
+        let {name, decoration} = this.state
+        const {row, save, refresh} = this.props
 
         let obj = toJS(this.state.decoration)
         // Set default blue color if no color
         if (obj.color === '') {
             obj.color = DEFAULT_TAG_COLOR
-            this.state.decoration = fromJS(obj)
+            decoration = fromJS(obj)
+            this.setState({decoration})
         }
 
-        const row = this.props.row
-            .set('name', this.state.name)
-            .set('decoration', this.state.decoration)
+        const updatedRow = row
+            .set('name', name)
+            .set('decoration', decoration)
 
-        this.props.save(row.toJS())
-            .then(() => {
-                this.props.refresh()
-            })
+        save(updatedRow.toJS()).then(() => {
+            refresh()
+        })
     }
 
     _onCancel = () => {
@@ -91,11 +107,11 @@ export class Row extends Component {
         this.props.select(this.props.row.toJS())
     }
 
-    _changeName = (value) => {
+    _changeName = (value: string) => {
         this.setState({name: value})
     }
 
-    _changeColor = (value) => {
+    _changeColor = (value: string) => {
         this.setState({decoration: this.state.decoration.set('color', value)})
     }
 

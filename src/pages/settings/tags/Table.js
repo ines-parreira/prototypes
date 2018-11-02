@@ -1,10 +1,36 @@
-import React, {Component, PropTypes} from 'react'
+// @flow
+import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import classnames from 'classnames'
-import {fromJS} from 'immutable'
+import {Map, List} from 'immutable'
 
 import Row from './Row'
+import * as tagsSelectors from '../../../state/tags/selectors'
 
-class Table extends Component {
+type Props = {
+    getSelectedTagMeta: (number) => Map<*,*>,
+    selectAll: boolean,
+    tags: List<*>,
+    columns: Array<*>,
+    onSort: (string, boolean) => void,
+    onSelectAll: () => void,
+    refresh: () => void,
+
+    sort: string,
+    reverse: boolean
+}
+
+class Table extends Component<Props> {
+    static defaultProps = {
+        columns: [{
+            title: 'Tag',
+            field: 'name',
+        }, {
+            title: 'Tickets',
+            field: 'usage',
+        }]
+    }
+
     _getSort() {
         if (!this.props.sort) {
             return this.props.columns[0].field
@@ -13,14 +39,14 @@ class Table extends Component {
         return this.props.sort
     }
 
-    _sortIconClassName = (sort, reverse, field) => {
+    _sortIconClassName = (sort: string, reverse: ?boolean, field: string) => {
         return classnames('fa fa-fw', {
             'fa-sort-desc': (sort === field && !reverse),
             'fa-sort-asc': (sort === field && reverse)
         })
     }
 
-    _onSort = (sort) => {
+    _onSort = (sort: string) => {
         return () => {
             let reverse = this.props.reverse
             // already sorted by this prop
@@ -33,9 +59,8 @@ class Table extends Component {
     }
 
     render() {
-        const {rows, columns, reverse, onSelectAll} = this.props
+        const {tags, getSelectedTagMeta, selectAll, columns, reverse, onSelectAll} = this.props
         const sort = this._getSort()
-        const sortedRows = rows.get('items')
 
         return (
             <table className="view-table">
@@ -47,7 +72,7 @@ class Table extends Component {
                         >
                             <input
                                 type="checkbox"
-                                checked={rows.getIn(['_internal', 'selectAll'], false)}
+                                checked={selectAll}
                             />
                         </td>
                         {
@@ -72,12 +97,12 @@ class Table extends Component {
 
                 <tbody>
                     {
-                        sortedRows.map((tag, i) => (
+                        tags.map((tag, i) => (
                             <Row
                                 key={i}
                                 row={tag}
                                 refresh={this.props.refresh}
-                                meta={rows.getIn(['meta', tag.get('id')]) || fromJS({})}
+                                meta={getSelectedTagMeta(tag.get('id'))}
                             />
                         ))
                     }
@@ -87,25 +112,11 @@ class Table extends Component {
     }
 }
 
-Table.propTypes = {
-    rows: PropTypes.object.isRequired,
-    columns: PropTypes.array.isRequired,
-    onSort: PropTypes.func.isRequired,
-    onSelectAll: PropTypes.func.isRequired,
-    refresh: PropTypes.func.isRequired,
 
-    sort: PropTypes.string,
-    reverse: PropTypes.bool
-}
-
-Table.defaultProps = {
-    columns: [{
-        title: 'Tag',
-        field: 'name',
-    }, {
-        title: 'Tickets',
-        field: 'usage',
-    }]
-}
-
-export default Table
+export default connect((state) => {
+    return {
+        tags: tagsSelectors.getTags(state),
+        selectAll: tagsSelectors.getSelectAll(state),
+        getSelectedTagMeta: tagsSelectors.makeGetSelectedTagMeta(state)
+    }
+})(Table)

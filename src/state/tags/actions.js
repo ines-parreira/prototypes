@@ -1,15 +1,22 @@
 // @flow
 import axios from 'axios'
 import * as constants from './constants'
+
 import {notify} from '../notifications/actions'
+import {createErrorNotification} from '../utils'
 
 import type {List} from 'immutable'
 import type {actionType, thunkActionType, dispatchType, getStateType} from '../types'
-import {createErrorNotification} from '../utils'
-type tagType = {
+
+type existingTagType = {
     id: string,
     name: string
 }
+
+type newTagType = {
+    name: string
+}
+
 
 /**types
  * Add tags to ticket.
@@ -60,7 +67,7 @@ export function fetchTags(page: ?number, sort: string = 'usage', reverse: boolea
  * Select tag
  * @param tag
  */
-export function select(tag: tagType) {
+export function select(tag: existingTagType) {
     return {
         type: constants.SELECT_TAG,
         tag,
@@ -81,7 +88,7 @@ export function selectAll() {
  * Edit tag
  * @param tag
  */
-export function edit(tag: tagType) {
+export function edit(tag: existingTagType) {
     return {
         type: constants.EDIT_TAG,
         tag,
@@ -92,7 +99,7 @@ export function edit(tag: tagType) {
  * Cancel edit tag
  * @param tag
  */
-export function cancel(tag: tagType) {
+export function cancel(tag: existingTagType) {
     return {
         type: constants.EDIT_TAG_CANCEL,
         tag,
@@ -103,7 +110,7 @@ export function cancel(tag: tagType) {
  * Save tag details
  * @param tag
  */
-export const save = (tag: tagType): thunkActionType => {
+export const save = (tag: existingTagType): thunkActionType => {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         return axios.put(`/api/tags/${tag.id}/`, tag)
             .then(() => {
@@ -126,7 +133,7 @@ export const save = (tag: tagType): thunkActionType => {
  * Create a tag
  * @param tag
  */
-export const create = (tag: tagType): thunkActionType => {
+export const create = (tag: newTagType): thunkActionType => {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
             type: constants.CREATE_TAG_START,

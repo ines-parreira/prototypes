@@ -6,8 +6,6 @@ import {ManageTags} from '../ManageTags'
 import Loader from '../../../common/components/Loader'
 import Pagination from '../../../common/components/Pagination'
 
-import Table from '../Table'
-import Row from '../Row'
 
 describe('ManageTags component', () => {
     let component
@@ -47,9 +45,12 @@ describe('ManageTags component', () => {
                 }
             }
         })
+
         component = shallow(
             <ManageTags
-                tags={tagData}
+                tagsState={tagData}
+                tags={tagData.get('items')}
+                meta={tagData.get('meta')}
                 currentPage={1}
                 numberPages={1}
                 fetch={() => Promise.resolve()}
@@ -61,7 +62,6 @@ describe('ManageTags component', () => {
                 bulkDelete={() => Promise.resolve()}
             />
         )
-
     })
 
     it('mounts correctly', () => {
@@ -80,10 +80,6 @@ describe('ManageTags component', () => {
     it('should display pagination when there are more than one page of tags', () => {
         component.setProps({numberPages: 2})
         expect(component.find(Pagination).dive().isEmptyRender()).toEqual(false)
-    })
-
-    it('should display the same number of rows as there are tags', () => {
-        expect(component.find(Table).dive().find(Row)).toHaveLength(3)
     })
 
     describe('Create Tags feature', () => {

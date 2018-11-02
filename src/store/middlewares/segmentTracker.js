@@ -63,5 +63,6 @@ export const EVENTS = {
     PAYMENT_METHOD_ADDED: 'payment-method-added',
     PAYMENT_METHOD_ADD_CLICKED: 'payment-method-add-clicked',
     TICKET_MESSAGE_CREATED: 'ticket-message-created',
-    SUBSCRIBED_TO_DEV_NEWSLETTER: 'subscribed-to-dev-newsletter'
+    SUBSCRIBED_TO_DEV_NEWSLETTER: 'subscribed-to-dev-newsletter',
+    HELP_CENTER_CLICKED: 'help-center-clicked',
 }

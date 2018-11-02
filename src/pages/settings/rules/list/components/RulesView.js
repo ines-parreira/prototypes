@@ -2,6 +2,7 @@
 import React from 'react'
 import {fromJS, List} from 'immutable'
 import moment from 'moment'
+import classnames from 'classnames'
 import _xor from 'lodash/xor'
 import {
     Button,
@@ -16,6 +17,9 @@ import RuleForm from './RuleForm'
 import RuleRow from './RuleRow/RuleRow'
 import ReactSortable from '../../../../common/components/dragging/ReactSortable'
 import {getAST, getCode} from '../../../../../utils'
+import Video from '../../../../common/components/Video'
+
+import css from './RulesView.less'
 
 
 type Props = {
@@ -127,7 +131,10 @@ export default class RulesView extends React.Component<Props, State> {
                     </Button>
                 </PageHeader>
 
-                <Container fluid className="page-container">
+                <Container
+                    fluid
+                    className={classnames('page-container', css.description)}
+                >
                     <div className="mb-3">
                         <p>
                             Rules provide a way to automatically perform actions on tickets, like tagging, assigning{' '}
@@ -149,6 +156,10 @@ export default class RulesView extends React.Component<Props, State> {
                             Rules are going to be executed in the order they are sorted by below.
                         </p>
                     </div>
+                    <Video
+                        videoId="0fIboyInGDg"
+                        legend="Working with rules"
+                    />
                 </Container>
 
                 {
