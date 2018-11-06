@@ -92,7 +92,7 @@ exports[`TicketListActions component should display options for agents assignati
         <DropdownItem
           className="dropdown-item-input"
           tag="button"
-          toggle={true}
+          toggle={false}
         />
         <DropdownItem
           divider={true}
@@ -206,7 +206,7 @@ exports[`TicketListActions component should display options for agents assignati
         <DropdownItem
           className="dropdown-item-input"
           tag="button"
-          toggle={true}
+          toggle={false}
         />
         <DropdownItem
           divider={true}
@@ -433,7 +433,7 @@ exports[`TicketListActions component should display special actions for trash vi
         <DropdownItem
           className="dropdown-item-input"
           tag="button"
-          toggle={true}
+          toggle={false}
         />
         <DropdownItem
           divider={true}
@@ -508,7 +508,7 @@ exports[`TicketListActions component should display special actions for trash vi
         <DropdownItem
           className="dropdown-item-input"
           tag="button"
-          toggle={true}
+          toggle={false}
         />
         <DropdownItem
           divider={true}
@@ -741,7 +741,7 @@ exports[`TicketListActions component should display when nothing is selected 1`]
         <DropdownItem
           className="dropdown-item-input"
           tag="button"
-          toggle={true}
+          toggle={false}
         />
         <DropdownItem
           divider={true}
@@ -816,7 +816,7 @@ exports[`TicketListActions component should display when nothing is selected 1`]
         <DropdownItem
           className="dropdown-item-input"
           tag="button"
-          toggle={true}
+          toggle={false}
         />
         <DropdownItem
           divider={true}
@@ -1041,7 +1041,7 @@ exports[`TicketListActions component should display when some tickets are select
         <DropdownItem
           className="dropdown-item-input"
           tag="button"
-          toggle={true}
+          toggle={false}
         />
         <DropdownItem
           divider={true}
@@ -1116,7 +1116,7 @@ exports[`TicketListActions component should display when some tickets are select
         <DropdownItem
           className="dropdown-item-input"
           tag="button"
-          toggle={true}
+          toggle={false}
         />
         <DropdownItem
           divider={true}

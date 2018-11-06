@@ -368,7 +368,10 @@ class TicketListActions extends React.Component<Props, State> {
                         >
                             ASSIGN TO:
                         </DropdownItem>
-                        <DropdownItem className="dropdown-item-input">
+                        <DropdownItem
+                            className="dropdown-item-input"
+                            toggle={false}
+                        >
                             {
                                 this._isPopoverOpen('agents') && ( // rebuild input on each opening so "autoFocus" works
                                     <Input
@@ -452,7 +455,10 @@ class TicketListActions extends React.Component<Props, State> {
                         >
                             ADD TAG:
                         </DropdownItem>
-                        <DropdownItem className="dropdown-item-input">
+                        <DropdownItem
+                            className="dropdown-item-input"
+                            toggle={false}
+                        >
                             {
                                 this._isPopoverOpen('tags') && ( // rebuild input on each opening so "autoFocus" works
                                     <Input
