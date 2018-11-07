@@ -16,7 +16,6 @@ describe('ChatIntegrationPreview', () => {
                 inputPlaceholder="input"
                 mainColor="#123456"
                 conversationColor="#456789"
-                icon="http://httpbin.org/image.jpg"
                 offlineStatusEnabled={true}
                 isOnline={true}
             />
@@ -36,7 +35,6 @@ describe('ChatIntegrationPreview', () => {
                 inputPlaceholder="input"
                 mainColor="#123456"
                 conversationColor="#456789"
-                icon="http://httpbin.org/image.jpg"
                 offlineStatusEnabled={true}
                 isOnline={false}
             />
@@ -57,9 +55,24 @@ describe('ChatIntegrationPreview', () => {
                 inputPlaceholder="input"
                 mainColor="#123456"
                 conversationColor="#456789"
-                icon="http://httpbin.org/image.jpg"
                 offlineStatusEnabled={false}
                 isOnline={false}
+            />
+        )
+
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should display quickReplies', () => {
+        const component = shallow(
+            <ChatIntegrationPreview
+                name="My little chat integration"
+                introductionText="intro"
+                inputPlaceholder="input"
+                mainColor="#123456"
+                conversationColor="#456789"
+                quickReplies={fromJS(['foo', 'bar'])}
+                isOnline
             />
         )
 

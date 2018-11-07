@@ -75,7 +75,7 @@ export default class BooleanField extends InputField {
                     check
                 >
                     {this._getField()}
-                    <span>
+                    <span style={{verticalAlign: 'middle'}}>
                         {label}
                     </span>
                 </Label>

@@ -17,6 +17,7 @@ describe('RealtimeMessagingIntegrationPreferences component', () => {
             <RealtimeMessagingIntegrationPreferences
                 store={mockStore({})}
                 integration={fromJS({
+                    id: 2,
                     type: 'smooch_inside'
                 })}
             />
@@ -29,6 +30,7 @@ describe('RealtimeMessagingIntegrationPreferences component', () => {
             <RealtimeMessagingIntegrationPreferences
                 store={mockStore({})}
                 integration={fromJS({
+                    id: 2,
                     type: 'facebook'
                 })}
             />
@@ -41,6 +43,7 @@ describe('RealtimeMessagingIntegrationPreferences component', () => {
             <RealtimeMessagingIntegrationPreferences
                 store={mockStore({})}
                 integration={fromJS({
+                    id: 2,
                     type: 'smooch'
                 })}
             />
@@ -53,6 +56,7 @@ describe('RealtimeMessagingIntegrationPreferences component', () => {
             <RealtimeMessagingIntegrationPreferences
                 store={mockStore({})}
                 integration={fromJS({
+                    id: 2,
                     meta: {
                         preferences: {
                             auto_responder: {
@@ -72,6 +76,7 @@ describe('RealtimeMessagingIntegrationPreferences component', () => {
             <RealtimeMessagingIntegrationPreferences
                 store={mockStore({})}
                 integration={fromJS({
+                    id: 2,
                     meta: {
                         preferences: {
                             auto_responder: {
@@ -91,6 +96,7 @@ describe('RealtimeMessagingIntegrationPreferences component', () => {
             <RealtimeMessagingIntegrationPreferences
                 store={mockStore({})}
                 integration={fromJS({
+                    id: 2,
                     meta: {
                         preferences: {
                             time_before_split: timeBeforeSplit

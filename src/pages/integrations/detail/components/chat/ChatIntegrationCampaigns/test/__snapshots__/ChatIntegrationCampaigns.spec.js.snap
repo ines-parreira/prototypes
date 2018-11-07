@@ -270,6 +270,21 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
                   Campaigns
                 </a>
               </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/smooch_inside/118/quick-replies"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Quick replies
+                </a>
+              </Link>
             </nav>
           </Navbar>
         </SecondaryNavbar>
@@ -593,6 +608,21 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
                   style={Object {}}
                 >
                   Campaigns
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/smooch_inside/118/quick-replies"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Quick replies
                 </a>
               </Link>
             </nav>

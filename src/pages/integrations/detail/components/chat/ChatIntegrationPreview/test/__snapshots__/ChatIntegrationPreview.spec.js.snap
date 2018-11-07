@@ -1,5 +1,157 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ChatIntegrationPreview should display quickReplies 1`] = `
+<div
+  className="preview"
+>
+  <div
+    className="titlebar"
+  />
+  <div
+    className="dialog"
+  >
+    <div
+      className="header"
+      style={
+        Object {
+          "backgroundColor": "#123456",
+        }
+      }
+    >
+      <div
+        className="agents"
+      >
+        <div
+          className="agent first"
+          style={
+            Object {
+              "borderColor": "#123456",
+            }
+          }
+        >
+          <i
+            className="fa fa-user"
+          />
+          <div
+            className="onlineMarker"
+          />
+        </div>
+        <div
+          className="agent middle"
+          style={
+            Object {
+              "borderColor": "#123456",
+            }
+          }
+        >
+          <i
+            className="fa fa-user"
+          />
+          <div
+            className="onlineMarker"
+          />
+        </div>
+        <div
+          className="agent last"
+          style={
+            Object {
+              "borderColor": "#123456",
+            }
+          }
+        >
+          <i
+            className="fa fa-user"
+          />
+          <div
+            className="onlineMarker"
+          />
+        </div>
+      </div>
+      <div
+        className="details"
+      >
+        <div
+          className="appName"
+        >
+          My little chat integration
+        </div>
+        <div
+          className="introductionText"
+        >
+          intro
+        </div>
+      </div>
+    </div>
+    <div
+      className="content quick-replies-content"
+    >
+      <div
+        className="quick-replies-wrapper"
+      >
+        <button
+          className="btn btn-reply-action reply"
+          style={
+            Object {
+              "borderColor": "#123456",
+              "color": "#123456",
+            }
+          }
+        >
+          foo
+        </button>
+        <button
+          className="btn btn-reply-action reply"
+          style={
+            Object {
+              "borderColor": "#123456",
+              "color": "#123456",
+            }
+          }
+        >
+          bar
+        </button>
+      </div>
+    </div>
+    <div
+      className="poweredby"
+    >
+      Powered by Gorgias
+    </div>
+    <div
+      className="footer"
+    >
+      <div
+        className="placeholder"
+      >
+        input
+      </div>
+      <i
+        className="icon camera"
+      />
+    </div>
+  </div>
+  <div
+    className="button"
+    style={
+      Object {
+        "backgroundColor": "#123456",
+      }
+    }
+  >
+    <div
+      className="iconWrapper"
+    >
+      <i
+        className="icon"
+      />
+      <div
+        className="shadow"
+      />
+    </div>
+  </div>
+</div>
+`;
+
 exports[`ChatIntegrationPreview should display the offline status because chat is offline and offline status is enabled 1`] = `
 <div
   className="preview"

@@ -28,7 +28,7 @@ import CampaignPreview from './../CampaignPreview/CampaignPreview'
 import {sanitizeHtmlDefault} from '../../../../../../../utils/html'
 import {convertToHTML} from '../../../../../../../utils/editor'
 
-import {CAMPAIGNS_TRIGGER_KEYS, GRAVATAR_URL_TEMPLATE} from '../../../../../../../config/campaigns'
+import {CAMPAIGNS_TRIGGER_KEYS, GRAVATAR_URL_TEMPLATE} from '../../../../../../../config/integrations/chat'
 import PageHeader from '../../../../../../common/components/PageHeader'
 import RealtimeMessagingIntegrationNavigation from '../../../../../common/RealtimeMessagingIntegrationNavigation'
 

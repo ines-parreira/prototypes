@@ -12,7 +12,7 @@ import * as socketConstants from './socketConstants'
 import {isCurrentlyOnTicket} from '../utils'
 
 import {store as reduxStore} from '../init'
-import {MAX_RECENT_CHATS} from './chats'
+import {MAX_RECENT_CHATS} from './recentChats'
 import {onVerify} from '../state/integrations/actions'
 
 /**

@@ -1,5 +1,7 @@
 import {fromJS} from 'immutable'
 
+
+// Campaigns
 export const GRAVATAR_URL_TEMPLATE = 'https://www.gravatar.com/avatar/{emailMd5}?d=mm&s=50'
 
 export const CAMPAIGNS_TRIGGER_KEYS = fromJS([
@@ -45,3 +47,9 @@ export const CAMPAIGNS_TRIGGER_KEYS = fromJS([
         }
     }
 ])
+
+
+// Quick replies
+export const QUICK_REPLIES_DEFAULTS = fromJS(['Get order status', 'Apply promo code'])
+export const QUICK_REPLIES_MAX_ITEMS = 3
+export const QUICK_REPLIES_MAX_ITEM_LENGTH = 20

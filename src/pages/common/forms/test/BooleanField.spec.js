@@ -7,6 +7,7 @@ import BooleanField from '../BooleanField'
 
 describe('BooleanField', () => {
     const minProps = {
+        name: 'mybooleanfield',
         type: 'text',
         label: 'label',
         value: 'value',

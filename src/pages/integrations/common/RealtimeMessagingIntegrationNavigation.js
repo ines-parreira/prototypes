@@ -25,6 +25,9 @@ export default class RealtimeMessagingIntegrationNavigation extends React.Compon
                 <Link to={`${baseURL}/campaigns`}>
                     Campaigns
                 </Link>
+                <Link to={`${baseURL}/quick-replies`}>
+                    Quick replies
+                </Link>
             </SecondaryNavbar>
         )
     }

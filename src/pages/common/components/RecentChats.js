@@ -8,7 +8,7 @@ import Tooltip from './Tooltip'
 import {isCurrentlyOnTicket} from '../../../utils'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 
-import {MAX_RECENT_CHATS} from '../../../config/chats'
+import {MAX_RECENT_CHATS} from '../../../config/recentChats'
 import SourceIcon from './SourceIcon'
 
 class RecentChatsItem extends React.Component {

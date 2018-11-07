@@ -10,7 +10,7 @@ exports[`BooleanField should render a basic boolean input 1`] = `
   <Label
     check={true}
     className="control-label"
-    htmlFor="id-input-2"
+    htmlFor="id-mybooleanfield"
     tag="label"
     widths={
       Array [
@@ -25,12 +25,18 @@ exports[`BooleanField should render a basic boolean input 1`] = `
     <Input
       checked="value"
       className="form-check-input"
-      id="id-input-2"
+      id="id-mybooleanfield"
       onChange={[Function]}
       placeholder="placeholder"
       type="text"
     />
-    <span>
+    <span
+      style={
+        Object {
+          "verticalAlign": "middle",
+        }
+      }
+    >
       label
     </span>
   </Label>
@@ -47,7 +53,7 @@ exports[`BooleanField should render a help text 1`] = `
   <Label
     check={true}
     className="control-label"
-    htmlFor="id-input-4"
+    htmlFor="id-mybooleanfield"
     tag="label"
     widths={
       Array [
@@ -62,12 +68,18 @@ exports[`BooleanField should render a help text 1`] = `
     <Input
       checked="value"
       className="form-check-input"
-      id="id-input-4"
+      id="id-mybooleanfield"
       onChange={[Function]}
       placeholder="placeholder"
       type="text"
     />
-    <span>
+    <span
+      style={
+        Object {
+          "verticalAlign": "middle",
+        }
+      }
+    >
       label
     </span>
   </Label>
@@ -90,7 +102,7 @@ exports[`BooleanField should render a required input 1`] = `
   <Label
     check={true}
     className="control-label"
-    htmlFor="id-input-3"
+    htmlFor="id-mybooleanfield"
     tag="label"
     widths={
       Array [
@@ -105,13 +117,19 @@ exports[`BooleanField should render a required input 1`] = `
     <Input
       checked="value"
       className="form-check-input"
-      id="id-input-3"
+      id="id-mybooleanfield"
       onChange={[Function]}
       placeholder="placeholder"
       required={true}
       type="text"
     />
-    <span>
+    <span
+      style={
+        Object {
+          "verticalAlign": "middle",
+        }
+      }
+    >
       label
     </span>
   </Label>
@@ -128,7 +146,7 @@ exports[`BooleanField should render inline 1`] = `
   <Label
     check={true}
     className="control-label"
-    htmlFor="id-input-6"
+    htmlFor="id-mybooleanfield"
     tag="label"
     widths={
       Array [
@@ -143,12 +161,18 @@ exports[`BooleanField should render inline 1`] = `
     <Input
       checked="value"
       className="form-check-input"
-      id="id-input-6"
+      id="id-mybooleanfield"
       onChange={[Function]}
       placeholder="placeholder"
       type="text"
     />
-    <span>
+    <span
+      style={
+        Object {
+          "verticalAlign": "middle",
+        }
+      }
+    >
       label
     </span>
   </Label>
@@ -165,7 +189,7 @@ exports[`BooleanField should render the input with an error 1`] = `
   <Label
     check={true}
     className="control-label"
-    htmlFor="id-input-5"
+    htmlFor="id-mybooleanfield"
     tag="label"
     widths={
       Array [
@@ -180,12 +204,18 @@ exports[`BooleanField should render the input with an error 1`] = `
     <Input
       checked="value"
       className="form-check-input form-control-danger"
-      id="id-input-5"
+      id="id-mybooleanfield"
       onChange={[Function]}
       placeholder="placeholder"
       type="text"
     />
-    <span>
+    <span
+      style={
+        Object {
+          "verticalAlign": "middle",
+        }
+      }
+    >
       label
     </span>
   </Label>
@@ -200,6 +230,7 @@ exports[`BooleanField should render the input with an error 1`] = `
 exports[`BooleanField should use default props 1`] = `
 Object {
   "label": "label",
+  "name": "mybooleanfield",
   "onChange": [Function],
   "placeholder": "placeholder",
   "type": "checkbox",

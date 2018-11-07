@@ -90,6 +90,26 @@
     .content {
       overflow: hidden;
       padding: 15px;
+      min-height: 356px;
+
+      &.quick-replies-content {
+        position: relative;
+
+        .quick-replies-wrapper {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          position: absolute;
+          bottom: 0;
+          width: 326px;
+
+          .reply {
+            background: white;
+            margin: 0 5px 5px 0;
+            border-radius: 14px;
+          }
+        }
+      }
     }
   }
 
@@ -229,7 +249,6 @@
     color: @gray;
     font-size: 12px;
     text-align: center;
-    margin-top: 64px;
   }
 
   .footer {

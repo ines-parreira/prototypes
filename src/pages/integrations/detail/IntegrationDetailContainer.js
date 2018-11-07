@@ -41,6 +41,7 @@ import EmailIntegrationCreate from './components/email/EmailIntegrationCreate/in
 import EmailIntegrationCreateForwarding from './components/email/EmailIntegrationCreateForwarding/index'
 import EmailIntegrationCreateVerification from './components/email/EmailIntegrationCreateVerification'
 import ChatIntegrationCampaigns from './components/chat/ChatIntegrationCampaigns/ChatIntegrationCampaigns'
+import ChatIntegrationQuickReplies from './components/chat/ChatIntegrationQuickReplies'
 import CampaignDetail from './components/chat/ChatIntegrationCampaigns/CampaignDetail/CampaignDetail'
 import HTTPIntegrationOverview from './components/http/HTTPIntegrationOverview/HTTPIntegrationOverview'
 import HTTPIntegrationEvents from './components/http/HTTPIntegrationEvents'
@@ -298,13 +299,11 @@ class IntegrationDetailContainer extends React.Component {
                             )
                         }
 
-                        return (
-                            <ChatIntegrationCampaigns
-                                actions={actions}
-                                loading={commonProps.loading}
-                                integration={commonProps.integration}
-                            />
-                        )
+                        return <ChatIntegrationCampaigns integration={commonProps.integration}/>
+                    }
+
+                    if (params.extra === 'quick-replies') {
+                        return <ChatIntegrationQuickReplies integration={commonProps.integration}/>
                     }
 
                     return (

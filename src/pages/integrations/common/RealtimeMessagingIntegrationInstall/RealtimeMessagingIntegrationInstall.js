@@ -158,7 +158,7 @@ class RealtimeMessagingIntegrationInstall extends React.Component<Props, State> 
             )
 
         return (
-            <div>
+            <div className="full-width">
                 <PageHeader title={(
                     <Breadcrumb>
                         <BreadcrumbItem>

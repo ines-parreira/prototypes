@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RealtimeMessagingIntegrationInstall component should display a placeholder if there's no Shopify store without chat, andshould display the list of Shopify stores where the chat is installed 1`] = `
-<div>
+<div
+  className="full-width"
+>
   <PageHeader
     title={
       <Breadcrumb
@@ -222,7 +224,9 @@ exports[`RealtimeMessagingIntegrationInstall component should display a placehol
 `;
 
 exports[`RealtimeMessagingIntegrationInstall component should display the code snippet for custom integration 1`] = `
-<div>
+<div
+  className="full-width"
+>
   <PageHeader
     title={
       <Breadcrumb
@@ -435,7 +439,9 @@ exports[`RealtimeMessagingIntegrationInstall component should display the code s
 `;
 
 exports[`RealtimeMessagingIntegrationInstall component should display the list of Shopify stores without chats 1`] = `
-<div>
+<div
+  className="full-width"
+>
   <PageHeader
     title={
       <Breadcrumb

@@ -4,6 +4,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
 <Connect(RealtimeMessagingIntegrationPreferences)
   integration={
     Immutable.Map {
+      id: 2,
       type: "facebook",
     }
   }
@@ -21,6 +22,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
   <RealtimeMessagingIntegrationPreferences
     integration={
       Immutable.Map {
+        id: 2,
         type: "facebook",
       }
     }
@@ -151,6 +153,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
       <RealtimeMessagingIntegrationNavigation
         integration={
           Immutable.Map {
+            id: 2,
             type: "facebook",
           }
         }
@@ -169,7 +172,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                 className="nav-link"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/facebook/undefined/overview"
+                to="/app/settings/integrations/facebook/2/overview"
               >
                 <a
                   className="nav-link"
@@ -184,7 +187,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                 className="nav-link"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/facebook/undefined/customer_chat"
+                to="/app/settings/integrations/facebook/2/customer_chat"
               >
                 <a
                   className="nav-link"
@@ -199,7 +202,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                 className="nav-link"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/facebook/undefined/preferences"
+                to="/app/settings/integrations/facebook/2/preferences"
               >
                 <a
                   className="nav-link"
@@ -294,7 +297,13 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                                 type="checkbox"
                               />
                             </Input>
-                            <span>
+                            <span
+                              style={
+                                Object {
+                                  "verticalAlign": "middle",
+                                }
+                              }
+                            >
                               Enable auto-responder when no agent is available for chat
                             </span>
                           </label>
@@ -503,6 +512,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
 <Connect(RealtimeMessagingIntegrationPreferences)
   integration={
     Immutable.Map {
+      id: 2,
       type: "smooch",
     }
   }
@@ -520,6 +530,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
   <RealtimeMessagingIntegrationPreferences
     integration={
       Immutable.Map {
+        id: 2,
         type: "smooch",
       }
     }
@@ -650,6 +661,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
       <RealtimeMessagingIntegrationNavigation
         integration={
           Immutable.Map {
+            id: 2,
             type: "smooch",
           }
         }
@@ -668,7 +680,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                 className="nav-link"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/smooch/undefined/overview"
+                to="/app/settings/integrations/smooch/2/overview"
               >
                 <a
                   className="nav-link"
@@ -683,7 +695,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                 className="nav-link"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/smooch/undefined/preferences"
+                to="/app/settings/integrations/smooch/2/preferences"
               >
                 <a
                   className="nav-link"
@@ -778,7 +790,13 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                                 type="checkbox"
                               />
                             </Input>
-                            <span>
+                            <span
+                              style={
+                                Object {
+                                  "verticalAlign": "middle",
+                                }
+                              }
+                            >
                               Enable auto-responder when no agent is available for chat
                             </span>
                           </label>
@@ -987,6 +1005,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
 <Connect(RealtimeMessagingIntegrationPreferences)
   integration={
     Immutable.Map {
+      id: 2,
       type: "smooch_inside",
     }
   }
@@ -1004,6 +1023,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
   <RealtimeMessagingIntegrationPreferences
     integration={
       Immutable.Map {
+        id: 2,
         type: "smooch_inside",
       }
     }
@@ -1134,6 +1154,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
       <RealtimeMessagingIntegrationNavigation
         integration={
           Immutable.Map {
+            id: 2,
             type: "smooch_inside",
           }
         }
@@ -1152,7 +1173,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                 className="nav-link"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/smooch_inside/undefined/appearance"
+                to="/app/settings/integrations/smooch_inside/2/appearance"
               >
                 <a
                   className="nav-link"
@@ -1167,7 +1188,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                 className="nav-link"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/smooch_inside/undefined/installation"
+                to="/app/settings/integrations/smooch_inside/2/installation"
               >
                 <a
                   className="nav-link"
@@ -1182,7 +1203,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                 className="nav-link"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/smooch_inside/undefined/preferences"
+                to="/app/settings/integrations/smooch_inside/2/preferences"
               >
                 <a
                   className="nav-link"
@@ -1197,7 +1218,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                 className="nav-link"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/smooch_inside/undefined/campaigns"
+                to="/app/settings/integrations/smooch_inside/2/campaigns"
               >
                 <a
                   className="nav-link"
@@ -1205,6 +1226,21 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                   style={Object {}}
                 >
                   Campaigns
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/smooch_inside/2/quick-replies"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Quick replies
                 </a>
               </Link>
             </nav>
@@ -1290,7 +1326,13 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                                 type="checkbox"
                               />
                             </Input>
-                            <span>
+                            <span
+                              style={
+                                Object {
+                                  "verticalAlign": "middle",
+                                }
+                              }
+                            >
                               Enable email capture
                             </span>
                           </label>
@@ -1530,7 +1572,13 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                                 type="checkbox"
                               />
                             </Input>
-                            <span>
+                            <span
+                              style={
+                                Object {
+                                  "verticalAlign": "middle",
+                                }
+                              }
+                            >
                               Enable auto-responder when no agent is available for chat
                             </span>
                           </label>

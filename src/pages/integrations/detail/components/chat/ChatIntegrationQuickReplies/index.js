@@ -1,0 +1,2 @@
+import ChatIntegrationQuickReplies from './ChatIntegrationQuickReplies'
+export default ChatIntegrationQuickReplies
