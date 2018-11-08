@@ -34,6 +34,7 @@ export class Plan extends React.Component<Props> {
         const costPerTicket = plan.get('cost_per_ticket') * costMultiplier
         const planName = plan.get('name')
         const planInterval = plan.get('interval') === 'month' ? 'mo' : 'yr'
+        const tooltipId = `additional-tickets-tooltip-${planName.replace(/\s/g, '')}`
 
         return (
             <Card
@@ -80,10 +81,10 @@ export class Plan extends React.Component<Props> {
                                     + {plan.get('currencySign')}{costPerTicket}
                                 </strong> per {costMultiplier} tickets
                                 {' '}
-                                <a id={`additional-tickets-tooltip-${planName}`}>
+                                <a id={tooltipId}>
                                     <i className="material-icons text-muted">info_outline</i>
                                 </a>
-                                <Tooltip target={`additional-tickets-tooltip-${planName}`}>
+                                <Tooltip target={tooltipId}>
                                     If you reply to more tickets than included in your plan
                                     this is the additional cost per 100 tickets.
                                 </Tooltip>
