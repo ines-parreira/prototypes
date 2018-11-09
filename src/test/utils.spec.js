@@ -387,7 +387,7 @@ describe('global utils', () => {
             expect(utils.resolvePropertyName('Event')).toEqual('Event')
             expect(utils.resolvePropertyName('Tag')).toEqual('Tag')
             expect(utils.resolvePropertyName('Source')).toEqual('Source')
-            expect(utils.resolvePropertyName('CustomerRating')).toEqual('CustomerRating')
+            expect(utils.resolvePropertyName('SatisfactionSurvey')).toEqual('SatisfactionSurvey')
             expect(utils.resolvePropertyName('IntegrationHTTP')).toEqual('IntegrationHTTP')
             expect(utils.resolvePropertyName('Rule')).toEqual('Rule')
 

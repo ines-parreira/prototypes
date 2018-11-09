@@ -9,6 +9,7 @@ import {moveIndex} from '../../../common/utils/keyboard'
 
 import TicketMessage from './TicketMessage'
 import Event from './Event'
+import SatisfactionSurvey from './SatisfactionSurvey'
 
 export class TicketBody extends React.Component {
     static propTypes = {
@@ -81,8 +82,13 @@ export class TicketBody extends React.Component {
             <div className="TicketMessages">
                 {
                     elements.map((element, index) => {
-                        if (element.get('isRating')) {
-                            return null // no rating component for now
+                        if (element.get('isSatisfactionSurvey')) {
+                            return <SatisfactionSurvey
+                                satisfactionSurvey={element}
+                                timezone={this.props.currentUser.get('timezone')}
+                                customer={ticket.get('customer')}
+                                isLast={index === elements.size - 1}
+                            />
                         }
 
                         if (element.get('isEvent')) {

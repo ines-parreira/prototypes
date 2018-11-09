@@ -20,6 +20,7 @@ import InputField from '../../../../../common/forms/InputField'
 import googleLogo from './../../../../../../../../public/img/google-icon.svg'
 import PageHeader from '../../../../../common/components/PageHeader'
 
+
 class EmailIntegrationCreate extends React.Component {
     componentDidMount() {
         // display message from url

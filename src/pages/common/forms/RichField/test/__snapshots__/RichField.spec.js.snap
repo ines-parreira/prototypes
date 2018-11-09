@@ -3067,7 +3067,7 @@ exports[`RichField should render immutable variable 1`] = `
                                       title="Current agent full name"
                                     >
                                       <div
-                                        className="badge-variable"
+                                        className="badge-variable badge-variable-type-current_user"
                                         contentEditable={false}
                                       >
                                         <div

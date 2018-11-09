@@ -200,7 +200,7 @@ exports[`Stat should render a table chart 1`] = `
     </h5>
   </div>
   <div>
-    <TableStat
+    <withRouter(TableStat)
       config={
         Immutable.Map {
           style: "table",

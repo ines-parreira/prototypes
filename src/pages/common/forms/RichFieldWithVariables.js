@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {
+    Button,
     UncontrolledButtonDropdown,
     DropdownToggle,
     DropdownMenu,
@@ -51,30 +52,43 @@ export default class RichFieldWithVariables extends Component<Props> {
                 )}
                 <div className="textarea-toolbar">
                     {variables.map((category, index) => (
-                        <UncontrolledButtonDropdown key={index}>
-                            <DropdownToggle
-                                color="link"
-                                caret
-                                type="button"
-                                style={{color: 'inherit'}}
-                            >
-                                {category.name}
-                            </DropdownToggle>
-                            <DropdownMenu>
-                                {category.children.map((variable, indexVariable) => (
-                                    <DropdownItem
-                                        key={indexVariable}
-                                        type="button"
-                                        onClick={() => {
-                                            this._insertText(variable.value)
-                                        }}
-                                    >
-                                        {variable.name}
-                                    </DropdownItem>
-                                ))}
-                            </DropdownMenu>
-                        </UncontrolledButtonDropdown>
-                    ))}
+                        category.children ? (
+                            <UncontrolledButtonDropdown key={index}>
+                                <DropdownToggle
+                                    color="link"
+                                    caret
+                                    type="button"
+                                    style={{color: 'inherit'}}
+                                >
+                                    {category.name}
+                                </DropdownToggle>
+                                <DropdownMenu>
+                                    {category.children.map((variable, indexVariable) => (
+                                        <DropdownItem
+                                            key={indexVariable}
+                                            type="button"
+                                            onClick={() => {
+                                                this._insertText(variable.value)
+                                            }}
+                                        >
+                                            {variable.name}
+                                        </DropdownItem>
+                                    ))}
+                                </DropdownMenu>
+                            </UncontrolledButtonDropdown>
+                            ) : (
+                                <Button
+                                    key={index}
+                                    color="link"
+                                    style={{color: 'inherit'}}
+                                    onClick={() => {
+                                        this._insertText(category.value)
+                                    }}
+                                >
+                                    {category.name}
+                                </Button>
+                            )))
+                    }
                 </div>
                 <RichField
                     ref={(richArea) => {

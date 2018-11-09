@@ -877,6 +877,18 @@ export function hoursToSeconds(hours: number = 0): number {
     return 60 * 60 * hours
 }
 
+/**
+ * Convert days to hours.
+ * @param days number of days
+ */
+export function daysToHours(days: number = 0): number {
+    if (typeof days !== 'number') {
+        return 0
+    }
+
+    return 24 * days
+}
+
 
 /**
  * Function that wraps functionality for cheking webhook url and return a valid or invalid pattern

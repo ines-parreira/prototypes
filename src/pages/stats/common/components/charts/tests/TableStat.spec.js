@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 import TableStat from '../TableStat/TableStat'
 import {stats as statsConfig, TICKETS_PER_TAG} from '../../../../../../config/stats'
 
-const barStat = fromJS({
+const tableStatData = fromJS({
     data: {
         axes: {
             x: [{
@@ -13,14 +13,30 @@ const barStat = fromJS({
             }, {
                 name: 'New tickets #',
                 type: 'number'
+            }, {
+                name: 'Percent',
+                type: 'percent'
+            }, {
+                name: 'Agent Score',
+                type: 'satisfaction-score'
+            }, {
+                name: 'Survey Score',
+                type: 'satisfaction-score'
+            }, {
+                name: 'Delta',
+                type: 'delta'
             }]
         },
         lines: [
-            ['refund', 42]
-        ]
+            ['refund', 42, 12, 93, 3, -1]
+        ],
     },
     name: 'tickets_per_tag',
-    label: 'Tickets per tag'
+    label: 'Tickets per tag',
+    meta: {
+        'previous_start_datetime': '2018-10-22',
+        'previous_end_datetime': '2018-10-23',
+    }
 })
 
 describe('TableStat', () => {
@@ -30,7 +46,7 @@ describe('TableStat', () => {
             <TableStat
                 context={{tagColors: null}}
                 config={config}
-                {...barStat.toObject()}
+                {...tableStatData.toObject()}
             />
         )
         expect(component).toMatchSnapshot()

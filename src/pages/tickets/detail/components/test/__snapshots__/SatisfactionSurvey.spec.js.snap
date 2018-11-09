@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SatisfactionSurvey should display satisfaction survey 1`] = `
+<div
+  className="component last"
+  id="satisfactionSurvey"
+>
+  <div
+    className="star"
+  >
+    <img
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    className="body"
+  >
+    <div
+      className="header"
+    >
+      <div
+        className="headerDetails"
+      >
+        <span
+          className="score"
+        >
+          3 stars
+        </span>
+        from
+        <span
+          className="author"
+        >
+          test me
+        </span>
+      </div>
+      <span
+        className="date text-faded float-right"
+      >
+        <DatetimeLabel
+          dateTime="now"
+          timezone="UTC"
+        />
+      </span>
+    </div>
+    <div
+      className="body_text"
+    >
+      test
+    </div>
+  </div>
+</div>
+`;

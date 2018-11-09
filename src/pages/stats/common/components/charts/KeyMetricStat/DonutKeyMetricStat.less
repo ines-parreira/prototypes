@@ -1,0 +1,44 @@
+@import '~css/new/colors';
+
+
+:local {
+    .container {
+        position: relative;
+    }
+
+    .donut {
+        width: 130px;
+
+        .path-empty {
+            fill: @almostWhite;
+        }
+
+        .path-success {
+            fill: @green;
+        }
+
+        .path-warning {
+            fill: @yellow;
+        }
+
+        .path-error {
+            fill: @red;
+        }
+
+        .path-info {
+            fill: @blue;
+        }
+    }
+
+    .difference {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+
+        .value {
+            font-size: 33px;
+        }
+    }
+}

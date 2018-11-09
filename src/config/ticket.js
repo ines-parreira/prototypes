@@ -117,6 +117,11 @@ export const VARIABLES = [{
         name: 'Vip tier',
         value: '{{ticket.customer.integrations.smile.customer.vip_tier.name}}',
     }]
+}, {
+    type: 'survey',
+    explicit: true,
+    name: 'Satisfaction Survey',
+    value: '{{satisfaction_survey_url}}',
 }]
 
 // variables used in some other variables, but which are never available to use on their own
@@ -425,7 +430,7 @@ export const sourceTypeToIcon = (sourceType) => {
  */
 export const getVariables = (types) => {
     if (!types) {
-        return VARIABLES
+        return VARIABLES.filter((variable) => !variable.explicit)
     }
 
     return VARIABLES.filter((variables) => types.includes(variables.type))
@@ -441,22 +446,30 @@ export const getVariablesList = (variablesList = VARIABLES) => {
     const variables = []
 
     variablesList.forEach((category) => {
-        category.children.forEach((variable) => {
-            const object = {
-                ...variable,
-                fullName: variable.fullName || variable.name,
-            }
+        if (category.children !== undefined) {
+            category.children.forEach((variable) => {
+                const object = {
+                    ...variable,
+                    fullName: variable.fullName || variable.name,
+                }
 
-            if (category.type) {
-                object.type = category.type
-            }
+                if (category.type) {
+                    object.type = category.type
+                }
 
-            if (category.integration) {
-                object.integration = category.integration
-            }
+                if (category.integration) {
+                    object.integration = category.integration
+                }
 
-            variables.push(object)
-        })
+                variables.push(object)
+            })
+        } else {
+            variables.push({
+                value: category.value,
+                type: category.type,
+                fullName: category.fullName || category.name,
+            })
+        }
     })
 
     return variables

@@ -93,10 +93,15 @@ export const getEvents = createImmutableSelector(
     state => state.get('events') || fromJS([])
 )
 
+export const getSatisfactionSurveys = createImmutableSelector(
+    [getTicketState],
+    state => fromJS(state.get('satisfaction_survey') ? [state.get('satisfaction_survey')] : [])
+)
+
 // return elements we display in the body of a ticket (messages, events, etc.)
 export const getBody = createImmutableSelector(
-    [getMessages, getPendingMessages, getEvents],
-    (messages, pendingMessages, events) => {
+    [getMessages, getPendingMessages, getEvents, getSatisfactionSurveys],
+    (messages, pendingMessages, events, satisfactionSurveys) => {
         messages = messages.map((message) => {
             return message.set('isMessage', true)
         })
@@ -111,9 +116,15 @@ export const getBody = createImmutableSelector(
             return event.set('isEvent', true)
         })
 
+        satisfactionSurveys = satisfactionSurveys.map((satisfactionSurveys) => {
+            return satisfactionSurveys.set('isSatisfactionSurvey', true)
+        })
+
         return messages
             .concat(pendingMessages)
             .concat(events)
-            .sortBy(element => element.get('created_datetime'))
+            .concat(satisfactionSurveys)
+            .sortBy(element => element.get('isSatisfactionSurvey') ?
+                element.get('scored_datetime') : element.get('created_datetime'))
     }
 )

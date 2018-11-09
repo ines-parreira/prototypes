@@ -29,7 +29,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
         }
 
         case constants.UPDATE_SUBSCRIPTION_SUCCESS:
-            return state.update('current_subscription', subscription => {
+            return state.update('current_subscription', (subscription) => {
                 if (subscription) {
                     return subscription.merge(fromJS(action.subscription))
                 }
@@ -40,12 +40,18 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
             const new_setting = action.setting
 
             if (!action.isUpdate) {
-                return state.update('settings', settings => settings.push(fromJS(new_setting)))
+                if (state.get('settings').findIndex((setting) => setting.get('type') === new_setting.type) !== -1) {
+                    return state.mergeDeep({
+                        'settings': [new_setting]
+                    })
+                }
+
+                return state.update('settings', (settings) => settings.push(fromJS(new_setting)))
             }
 
             return state
-                .update('settings', settings => settings
-                    .map(setting => {
+                .update('settings', (settings) => settings
+                    .map((setting) => {
                         if (setting.get('id') === new_setting.id) {
                             return fromJS(new_setting)
                         }

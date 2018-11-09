@@ -18,6 +18,8 @@ export const TICKETS_CREATED_PER_CHANNEL_PER_DAY = 'tickets-created-per-channel-
 export const TICKETS_CLOSED_PER_AGENT = 'tickets-closed-per-agent'
 export const TICKETS_CLOSED_PER_AGENT_PER_DAY = 'tickets-closed-per-agent-per-day'
 export const MESSAGES_SENT_PER_MACRO = 'messages-sent-per-macro'
+export const SATISFACTION_SURVEYS = 'satisfaction-surveys'
+export const LATEST_SATISFACTION_SURVEYS = 'latest-satisfaction-surveys'
 
 const mainBlue = '#152065'
 export const colors = [
@@ -45,6 +47,10 @@ export const colors = [
 
 export const chartMaxHeight = 360
 export const chartPointRadius = 4
+
+export const SATISFACTION_SURVEY_MIN_SCORE = 1
+export const SATISFACTION_SURVEY_MAX_SCORE = 5
+export const SATISFACTION_SURVEY_MAX_COMMENT_LENGTH = 80
 
 // Default configuration for Chart.js
 _merge(defaults, {
@@ -254,7 +260,7 @@ export const stats = fromJS({
         }
     },
     [TICKETS_CLOSED_PER_AGENT_PER_DAY]: {
-        helpText: `Number of tickets closed per agent per day. 
+        helpText: `Number of tickets closed per agent per day.
                    Only tickets where an agent is assigned are taken into account.`,
         style: 'bar',
         downloadable: true,
@@ -363,8 +369,8 @@ export const stats = fromJS({
                 label: 'First response time',
             },
             median_resolution_time: {
-                tooltip: `The time between the first message from a customer and the moment the ticket 
-                   has been closed by an agent or a rule. Only tickets with a least one response 
+                tooltip: `The time between the first message from a customer and the moment the ticket
+                   has been closed by an agent or a rule. Only tickets with a least one response
                    from an agent or a rule are taken into account. (median)`,
                 label: 'Resolution time',
             },
@@ -376,8 +382,8 @@ export const stats = fromJS({
 
     },
     [RESOLUTION_TIME]: {
-        helpText: `The time between the first message from a customer and the moment the ticket 
-                   has been closed by an agent or a rule. Only tickets with a least one response 
+        helpText: `The time between the first message from a customer and the moment the ticket
+                   has been closed by an agent or a rule. Only tickets with a least one response
                    from an agent or a rule are taken into account.`,
         style: 'line',
         downloadable: true,
@@ -428,7 +434,7 @@ export const stats = fromJS({
         })
     },
     [FIRST_RESPONSE_TIME]: {
-        helpText: `The time between the first message from a customer 
+        helpText: `The time between the first message from a customer
                    and the first response from an agent. Messages sent by rules are not taken into account.`,
         style: 'line',
         downloadable: true,
@@ -477,6 +483,42 @@ export const stats = fromJS({
                 }]
             }
         })
+    },
+    [SATISFACTION_SURVEYS]: {
+        style: 'key-metrics',
+        metrics: {
+            total_sent: {
+                label: 'Survey sent',
+                tooltip: 'Total number of customer satisfaction surveys sent.',
+            },
+            response_rate: {
+                label: 'Response rate',
+                tooltip: 'Total number of responses for surveys sent.',
+                type: 'donut',
+                fill: 'success',
+                maxValue: 100
+            },
+            average_rating: {
+                label: 'Average rating',
+                tooltip: 'Average score given by the customers.',
+                type: 'donut',
+                fill: 'warning',
+                maxValue: SATISFACTION_SURVEY_MAX_SCORE
+            },
+            response_distribution: {
+                label: 'Response Distribution',
+                tooltip: 'Percentage of responses, grouped by the given score.',
+                type: 'distribution',
+                variant: 'star',
+                minValue: SATISFACTION_SURVEY_MIN_SCORE,
+                maxValue: SATISFACTION_SURVEY_MAX_SCORE
+            },
+        }
+    },
+    [LATEST_SATISFACTION_SURVEYS]: {
+        helpText: 'Latest surveys for selected period',
+        style: 'table',
+        downloadable: true,
     },
 
 })
@@ -549,6 +591,14 @@ export const views = fromJS({
         link: 'macros',
         stats: [
             MESSAGES_SENT_PER_MACRO
+        ]
+    },
+    satisfaction: {
+        name: 'Satisfaction',
+        filters: ['date'],
+        link: 'satisfaction',
+        stats: [
+            SATISFACTION_SURVEYS, LATEST_SATISFACTION_SURVEYS
         ]
     },
 })

@@ -1,0 +1,2174 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SatisfactionSurveyView _onSubmit should submit user data 1`] = `Array []`;
+
+exports[`SatisfactionSurveyView render should render current survey settings form 1`] = `
+<Connect(SatisfactionSurveyView)
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+  submitSetting={[Function]}
+>
+  <SatisfactionSurveyView
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+    submitSetting={[Function]}
+    surveysSettings={
+      Immutable.Map {
+        data: Immutable.Map {
+        },
+        type: "satisfaction-surveys",
+      }
+    }
+  >
+    <div
+      className="full-width"
+    >
+      <PageHeader
+        title="Satisfaction"
+      >
+        <div
+          className="d-flex align-items-center justify-content-between flex-wrap page-header "
+        >
+          <h1
+            className="d-flex align-items-center"
+          >
+            Satisfaction
+          </h1>
+        </div>
+      </PageHeader>
+      <Container
+        className="page-container"
+        fluid={true}
+        tag="div"
+      >
+        <div
+          className="page-container container-fluid"
+        >
+          <div
+            className="mb-3"
+          >
+            <p>
+              Keep track of the performance of your support team by sending a satisfaction survey after a ticket is closed.
+            </p>
+          </div>
+          <div>
+            <Form
+              onSubmit={[Function]}
+              tag="form"
+            >
+              <form
+                className=""
+                onSubmit={[Function]}
+              >
+                <div>
+                  <h5>
+                    Send survey after the ticket has been closed for
+                  </h5>
+                  <InputField
+                    help="No survey will be sent after the ticket is snoozed."
+                    label=""
+                    name="survey_interval"
+                    onChange={[Function]}
+                    type="select"
+                  >
+                    <FormGroup
+                      className="InputField"
+                      color=""
+                      tag="div"
+                    >
+                      <div
+                        className="InputField form-group"
+                        color=""
+                      >
+                        <div
+                          className=""
+                        >
+                          <Input
+                            className=""
+                            id="id-survey_interval"
+                            onChange={[Function]}
+                            type="select"
+                          >
+                            <select
+                              className="form-control"
+                              id="id-survey_interval"
+                              onChange={[Function]}
+                              type="select"
+                            >
+                              <option
+                                value={2}
+                              >
+                                2 hours
+                              </option>
+                              <option
+                                value={24}
+                              >
+                                1 day
+                              </option>
+                              <option
+                                value={7200}
+                              >
+                                2 days
+                              </option>
+                              <option
+                                value={168}
+                              >
+                                7 days
+                              </option>
+                            </select>
+                          </Input>
+                        </div>
+                        <FormText
+                          color="muted"
+                          tag="small"
+                        >
+                          <small
+                            className="form-text text-muted"
+                          >
+                            No survey will be sent after the ticket is snoozed.
+                          </small>
+                        </FormText>
+                      </div>
+                    </FormGroup>
+                  </InputField>
+                </div>
+                <div>
+                  <h5>
+                    Send survey email for following channels
+                  </h5>
+                  <FormGroup
+                    className="mr-3"
+                    tag="div"
+                  >
+                    <div
+                      className="mr-3 form-group"
+                    >
+                      <BooleanField
+                        label="Email"
+                        name="send_survey_on_email"
+                        onChange={[Function]}
+                        type="checkbox"
+                      >
+                        <FormGroup
+                          check={true}
+                          className=""
+                          color=""
+                          tag="div"
+                        >
+                          <div
+                            className="form-check"
+                            color=""
+                          >
+                            <Label
+                              check={true}
+                              className="control-label"
+                              htmlFor="id-send_survey_on_email"
+                              tag="label"
+                              widths={
+                                Array [
+                                  "xs",
+                                  "sm",
+                                  "md",
+                                  "lg",
+                                  "xl",
+                                ]
+                              }
+                            >
+                              <label
+                                className="control-label form-check-label "
+                                htmlFor="id-send_survey_on_email"
+                              >
+                                <Input
+                                  className="form-check-input"
+                                  id="id-send_survey_on_email"
+                                  onChange={[Function]}
+                                  type="checkbox"
+                                >
+                                  <input
+                                    className="form-check-input form-check-input"
+                                    id="id-send_survey_on_email"
+                                    onChange={[Function]}
+                                    type="checkbox"
+                                  />
+                                </Input>
+                                <span
+                                  style={
+                                    Object {
+                                      "verticalAlign": "middle",
+                                    }
+                                  }
+                                >
+                                  Email
+                                </span>
+                              </label>
+                            </Label>
+                          </div>
+                        </FormGroup>
+                      </BooleanField>
+                      <BooleanField
+                        label="Chat"
+                        name="send_survey_on_chat"
+                        onChange={[Function]}
+                        type="checkbox"
+                      >
+                        <FormGroup
+                          check={true}
+                          className=""
+                          color=""
+                          tag="div"
+                        >
+                          <div
+                            className="form-check"
+                            color=""
+                          >
+                            <Label
+                              check={true}
+                              className="control-label"
+                              htmlFor="id-send_survey_on_chat"
+                              tag="label"
+                              widths={
+                                Array [
+                                  "xs",
+                                  "sm",
+                                  "md",
+                                  "lg",
+                                  "xl",
+                                ]
+                              }
+                            >
+                              <label
+                                className="control-label form-check-label "
+                                htmlFor="id-send_survey_on_chat"
+                              >
+                                <Input
+                                  className="form-check-input"
+                                  id="id-send_survey_on_chat"
+                                  onChange={[Function]}
+                                  type="checkbox"
+                                >
+                                  <input
+                                    className="form-check-input form-check-input"
+                                    id="id-send_survey_on_chat"
+                                    onChange={[Function]}
+                                    type="checkbox"
+                                  />
+                                </Input>
+                                <span
+                                  style={
+                                    Object {
+                                      "verticalAlign": "middle",
+                                    }
+                                  }
+                                >
+                                  Chat
+                                </span>
+                              </label>
+                            </Label>
+                          </div>
+                        </FormGroup>
+                      </BooleanField>
+                    </div>
+                  </FormGroup>
+                </div>
+                <div>
+                  <FormGroup
+                    tag="div"
+                  >
+                    <div
+                      className="form-group"
+                    >
+                      <RichFieldWithVariables
+                        allowExternalChanges={true}
+                        label="Survey email"
+                        name="survey_email"
+                        onChange={[Function]}
+                        value={
+                          Object {
+                            "html": "<br>",
+                            "text": "",
+                          }
+                        }
+                        variableTypes={
+                          Array [
+                            "ticket.customer",
+                            "current_user",
+                            "survey",
+                          ]
+                        }
+                      >
+                        <div
+                          className="field"
+                        >
+                          <Label
+                            className="control-label"
+                            tag="label"
+                            widths={
+                              Array [
+                                "xs",
+                                "sm",
+                                "md",
+                                "lg",
+                                "xl",
+                              ]
+                            }
+                          >
+                            <label
+                              className="control-label "
+                            >
+                              Survey email
+                            </label>
+                          </Label>
+                          <div
+                            className="textarea-toolbar"
+                          >
+                            <UncontrolledButtonDropdown>
+                              <ButtonDropdown
+                                isOpen={false}
+                                toggle={[Function]}
+                              >
+                                <Dropdown
+                                  active={false}
+                                  addonType={false}
+                                  direction="down"
+                                  group={true}
+                                  inNavbar={false}
+                                  isOpen={false}
+                                  nav={false}
+                                  toggle={[Function]}
+                                >
+                                  <Manager
+                                    className="btn-group"
+                                    onKeyDown={[Function]}
+                                    tag="div"
+                                  >
+                                    <div
+                                      className="btn-group"
+                                      onKeyDown={[Function]}
+                                    >
+                                      <DropdownToggle
+                                        aria-haspopup={true}
+                                        caret={true}
+                                        color="link"
+                                        style={
+                                          Object {
+                                            "color": "inherit",
+                                          }
+                                        }
+                                        type="button"
+                                      >
+                                        <Target
+                                          aria-expanded={false}
+                                          aria-haspopup={true}
+                                          className="dropdown-toggle"
+                                          color="link"
+                                          component={[Function]}
+                                          onClick={[Function]}
+                                          style={
+                                            Object {
+                                              "color": "inherit",
+                                            }
+                                          }
+                                          type="button"
+                                        >
+                                          <Button
+                                            aria-expanded={false}
+                                            aria-haspopup={true}
+                                            className="dropdown-toggle"
+                                            color="link"
+                                            innerRef={[Function]}
+                                            onClick={[Function]}
+                                            style={
+                                              Object {
+                                                "color": "inherit",
+                                              }
+                                            }
+                                            tag="button"
+                                            type="button"
+                                          >
+                                            <button
+                                              aria-expanded={false}
+                                              aria-haspopup={true}
+                                              className="dropdown-toggle btn btn-link"
+                                              onClick={[Function]}
+                                              style={
+                                                Object {
+                                                  "color": "inherit",
+                                                }
+                                              }
+                                              type="button"
+                                            >
+                                              Ticket customer
+                                            </button>
+                                          </Button>
+                                        </Target>
+                                      </DropdownToggle>
+                                      <DropdownMenu
+                                        flip={true}
+                                        tag="div"
+                                      >
+                                        <div
+                                          aria-hidden={true}
+                                          className="dropdown-menu"
+                                          role="menu"
+                                          tabIndex="-1"
+                                        >
+                                          <DropdownItem
+                                            onClick={[Function]}
+                                            tag="button"
+                                            toggle={true}
+                                            type="button"
+                                          >
+                                            <button
+                                              className="dropdown-item"
+                                              onClick={[Function]}
+                                              tabIndex="0"
+                                              type="button"
+                                            >
+                                              First name
+                                            </button>
+                                          </DropdownItem>
+                                          <DropdownItem
+                                            onClick={[Function]}
+                                            tag="button"
+                                            toggle={true}
+                                            type="button"
+                                          >
+                                            <button
+                                              className="dropdown-item"
+                                              onClick={[Function]}
+                                              tabIndex="0"
+                                              type="button"
+                                            >
+                                              Last name
+                                            </button>
+                                          </DropdownItem>
+                                          <DropdownItem
+                                            onClick={[Function]}
+                                            tag="button"
+                                            toggle={true}
+                                            type="button"
+                                          >
+                                            <button
+                                              className="dropdown-item"
+                                              onClick={[Function]}
+                                              tabIndex="0"
+                                              type="button"
+                                            >
+                                              Full name
+                                            </button>
+                                          </DropdownItem>
+                                          <DropdownItem
+                                            onClick={[Function]}
+                                            tag="button"
+                                            toggle={true}
+                                            type="button"
+                                          >
+                                            <button
+                                              className="dropdown-item"
+                                              onClick={[Function]}
+                                              tabIndex="0"
+                                              type="button"
+                                            >
+                                              Email
+                                            </button>
+                                          </DropdownItem>
+                                        </div>
+                                      </DropdownMenu>
+                                    </div>
+                                  </Manager>
+                                </Dropdown>
+                              </ButtonDropdown>
+                            </UncontrolledButtonDropdown>
+                            <UncontrolledButtonDropdown>
+                              <ButtonDropdown
+                                isOpen={false}
+                                toggle={[Function]}
+                              >
+                                <Dropdown
+                                  active={false}
+                                  addonType={false}
+                                  direction="down"
+                                  group={true}
+                                  inNavbar={false}
+                                  isOpen={false}
+                                  nav={false}
+                                  toggle={[Function]}
+                                >
+                                  <Manager
+                                    className="btn-group"
+                                    onKeyDown={[Function]}
+                                    tag="div"
+                                  >
+                                    <div
+                                      className="btn-group"
+                                      onKeyDown={[Function]}
+                                    >
+                                      <DropdownToggle
+                                        aria-haspopup={true}
+                                        caret={true}
+                                        color="link"
+                                        style={
+                                          Object {
+                                            "color": "inherit",
+                                          }
+                                        }
+                                        type="button"
+                                      >
+                                        <Target
+                                          aria-expanded={false}
+                                          aria-haspopup={true}
+                                          className="dropdown-toggle"
+                                          color="link"
+                                          component={[Function]}
+                                          onClick={[Function]}
+                                          style={
+                                            Object {
+                                              "color": "inherit",
+                                            }
+                                          }
+                                          type="button"
+                                        >
+                                          <Button
+                                            aria-expanded={false}
+                                            aria-haspopup={true}
+                                            className="dropdown-toggle"
+                                            color="link"
+                                            innerRef={[Function]}
+                                            onClick={[Function]}
+                                            style={
+                                              Object {
+                                                "color": "inherit",
+                                              }
+                                            }
+                                            tag="button"
+                                            type="button"
+                                          >
+                                            <button
+                                              aria-expanded={false}
+                                              aria-haspopup={true}
+                                              className="dropdown-toggle btn btn-link"
+                                              onClick={[Function]}
+                                              style={
+                                                Object {
+                                                  "color": "inherit",
+                                                }
+                                              }
+                                              type="button"
+                                            >
+                                              Current agent
+                                            </button>
+                                          </Button>
+                                        </Target>
+                                      </DropdownToggle>
+                                      <DropdownMenu
+                                        flip={true}
+                                        tag="div"
+                                      >
+                                        <div
+                                          aria-hidden={true}
+                                          className="dropdown-menu"
+                                          role="menu"
+                                          tabIndex="-1"
+                                        >
+                                          <DropdownItem
+                                            onClick={[Function]}
+                                            tag="button"
+                                            toggle={true}
+                                            type="button"
+                                          >
+                                            <button
+                                              className="dropdown-item"
+                                              onClick={[Function]}
+                                              tabIndex="0"
+                                              type="button"
+                                            >
+                                              First name
+                                            </button>
+                                          </DropdownItem>
+                                          <DropdownItem
+                                            onClick={[Function]}
+                                            tag="button"
+                                            toggle={true}
+                                            type="button"
+                                          >
+                                            <button
+                                              className="dropdown-item"
+                                              onClick={[Function]}
+                                              tabIndex="0"
+                                              type="button"
+                                            >
+                                              Last name
+                                            </button>
+                                          </DropdownItem>
+                                          <DropdownItem
+                                            onClick={[Function]}
+                                            tag="button"
+                                            toggle={true}
+                                            type="button"
+                                          >
+                                            <button
+                                              className="dropdown-item"
+                                              onClick={[Function]}
+                                              tabIndex="0"
+                                              type="button"
+                                            >
+                                              Full name
+                                            </button>
+                                          </DropdownItem>
+                                          <DropdownItem
+                                            onClick={[Function]}
+                                            tag="button"
+                                            toggle={true}
+                                            type="button"
+                                          >
+                                            <button
+                                              className="dropdown-item"
+                                              onClick={[Function]}
+                                              tabIndex="0"
+                                              type="button"
+                                            >
+                                              Email
+                                            </button>
+                                          </DropdownItem>
+                                          <DropdownItem
+                                            onClick={[Function]}
+                                            tag="button"
+                                            toggle={true}
+                                            type="button"
+                                          >
+                                            <button
+                                              className="dropdown-item"
+                                              onClick={[Function]}
+                                              tabIndex="0"
+                                              type="button"
+                                            >
+                                              Bio
+                                            </button>
+                                          </DropdownItem>
+                                        </div>
+                                      </DropdownMenu>
+                                    </div>
+                                  </Manager>
+                                </Dropdown>
+                              </ButtonDropdown>
+                            </UncontrolledButtonDropdown>
+                            <Button
+                              color="link"
+                              onClick={[Function]}
+                              style={
+                                Object {
+                                  "color": "inherit",
+                                }
+                              }
+                              tag="button"
+                            >
+                              <button
+                                className="btn btn-link"
+                                onClick={[Function]}
+                                style={
+                                  Object {
+                                    "color": "inherit",
+                                  }
+                                }
+                                type="button"
+                              >
+                                Satisfaction Survey
+                              </button>
+                            </Button>
+                          </div>
+                          <RichField
+                            allowExternalChanges={true}
+                            attachFiles={[Function]}
+                            canDropFiles={false}
+                            canInsertInlineImages={true}
+                            name="survey_email"
+                            notify={[Function]}
+                            onChange={[Function]}
+                            signature={false}
+                            type="text"
+                            value={
+                              Object {
+                                "html": "<br>",
+                                "text": "",
+                              }
+                            }
+                          >
+                            <FormGroup
+                              className="InputField"
+                              color=""
+                              tag="div"
+                            >
+                              <div
+                                className="InputField form-group"
+                                color=""
+                              >
+                                <div
+                                  className=""
+                                >
+                                  <div
+                                    className="rich-textarea-wrapper"
+                                  >
+                                    <div
+                                      className="editor-wrapper"
+                                      onClick={[Function]}
+                                      onDragLeave={[Function]}
+                                      onDragOver={[Function]}
+                                      onDrop={[Function]}
+                                      style={
+                                        Object {
+                                          "paddingBottom": "26px",
+                                        }
+                                      }
+                                    >
+                                      <PluginEditor
+                                        canDropFiles={false}
+                                        canInsertInlineImages={true}
+                                        customStyleMap={Object {}}
+                                        decorators={Array []}
+                                        defaultBlockRenderMap={true}
+                                        defaultKeyBindings={true}
+                                        editorState={
+                                          EditorState {
+                                            "_immutable": Object {
+                                              "allowUndo": true,
+                                              "currentContent": Object {
+                                                "blockMap": Object {
+                                                  "someRandomKey": Object {
+                                                    "characterList": Array [],
+                                                    "data": Object {},
+                                                    "depth": 0,
+                                                    "key": "someRandomKey",
+                                                    "text": "",
+                                                    "type": "unstyled",
+                                                  },
+                                                },
+                                                "entityMap": Object {
+                                                  "__add": [Function],
+                                                  "__create": [Function],
+                                                  "__get": [Function],
+                                                  "__getLastCreatedEntityKey": [Function],
+                                                  "__mergeData": [Function],
+                                                  "__replaceData": [Function],
+                                                  "add": [Function],
+                                                  "create": [Function],
+                                                  "get": [Function],
+                                                  "getLastCreatedEntityKey": [Function],
+                                                  "mergeData": [Function],
+                                                  "replaceData": [Function],
+                                                },
+                                                "selectionAfter": Object {
+                                                  "anchorKey": "someRandomKey",
+                                                  "anchorOffset": 0,
+                                                  "focusKey": "someRandomKey",
+                                                  "focusOffset": 0,
+                                                  "hasFocus": false,
+                                                  "isBackward": false,
+                                                },
+                                                "selectionBefore": Object {
+                                                  "anchorKey": "someRandomKey",
+                                                  "anchorOffset": 0,
+                                                  "focusKey": "someRandomKey",
+                                                  "focusOffset": 0,
+                                                  "hasFocus": true,
+                                                  "isBackward": false,
+                                                },
+                                              },
+                                              "decorator": MultiDecorator {
+                                                "decorators": Immutable.List [
+                                                  CompositeDraftDecorator {
+                                                          "_decorators": Array [
+                                                            Object {
+                                                              "component": [Function],
+                                                              "strategy": [Function],
+                                                            },
+                                                            Object {
+                                                              "component": [Function],
+                                                              "strategy": [Function],
+                                                            },
+                                                            Object {
+                                                              "component": [Function],
+                                                              "strategy": [Function],
+                                                            },
+                                                            Object {
+                                                              "component": [Function],
+                                                              "strategy": [Function],
+                                                            },
+                                                            Object {
+                                                              "component": [Function],
+                                                              "strategy": [Function],
+                                                            },
+                                                          ],
+                                                        },
+                                          ],
+                                              },
+                                              "directionMap": Object {
+                                                "someRandomKey": "LTR",
+                                              },
+                                              "forceSelection": false,
+                                              "inCompositionMode": false,
+                                              "inlineStyleOverride": null,
+                                              "lastChangeType": undefined,
+                                              "nativelyRenderedContent": null,
+                                              "redoStack": Array [],
+                                              "selection": Object {
+                                                "anchorKey": "someRandomKey",
+                                                "anchorOffset": 0,
+                                                "focusKey": "someRandomKey",
+                                                "focusOffset": 0,
+                                                "hasFocus": false,
+                                                "isBackward": false,
+                                              },
+                                              "treeMap": Object {
+                                                "someRandomKey": Array [
+                                                  Object {
+                                                    "decoratorKey": null,
+                                                    "end": 0,
+                                                    "leaves": Array [
+                                                      Object {
+                                                        "end": 0,
+                                                        "start": 0,
+                                                      },
+                                                    ],
+                                                    "start": 0,
+                                                  },
+                                                ],
+                                              },
+                                              "undoStack": Array [
+                                                Object {
+                                                  "blockMap": Object {
+                                                    "someRandomKey": Object {
+                                                      "characterList": Array [],
+                                                      "data": Object {},
+                                                      "depth": 0,
+                                                      "key": "someRandomKey",
+                                                      "text": "",
+                                                      "type": "unstyled",
+                                                    },
+                                                  },
+                                                  "entityMap": Object {
+                                                    "__add": [Function],
+                                                    "__create": [Function],
+                                                    "__get": [Function],
+                                                    "__getLastCreatedEntityKey": [Function],
+                                                    "__mergeData": [Function],
+                                                    "__replaceData": [Function],
+                                                    "add": [Function],
+                                                    "create": [Function],
+                                                    "get": [Function],
+                                                    "getLastCreatedEntityKey": [Function],
+                                                    "mergeData": [Function],
+                                                    "replaceData": [Function],
+                                                  },
+                                                  "selectionAfter": Object {
+                                                    "anchorKey": "someRandomKey",
+                                                    "anchorOffset": 0,
+                                                    "focusKey": "someRandomKey",
+                                                    "focusOffset": 0,
+                                                    "hasFocus": false,
+                                                    "isBackward": false,
+                                                  },
+                                                  "selectionBefore": Object {
+                                                    "anchorKey": "someRandomKey",
+                                                    "anchorOffset": 0,
+                                                    "focusKey": "someRandomKey",
+                                                    "focusOffset": 0,
+                                                    "hasFocus": false,
+                                                    "isBackward": false,
+                                                  },
+                                                },
+                                              ],
+                                            },
+                                          }
+                                        }
+                                        handleKeyCommand={[Function]}
+                                        handlePastedText={[Function]}
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onFocus={[Function]}
+                                        plugins={
+                                          Array [
+                                            Object {
+                                              "handleDroppedFiles": [Function],
+                                            },
+                                            Object {
+                                              "handleReturn": [Function],
+                                            },
+                                            Object {
+                                              "blockRendererFn": [Function],
+                                              "decorator": [Function],
+                                              "initialize": [Function],
+                                            },
+                                            Object {
+                                              "Toolbar": [Function],
+                                              "blockRendererFn": [Function],
+                                              "decorators": Array [
+                                                Object {
+                                                  "component": [Function],
+                                                  "strategy": [Function],
+                                                },
+                                                Object {
+                                                  "component": [Function],
+                                                  "strategy": [Function],
+                                                },
+                                              ],
+                                              "initialize": [Function],
+                                            },
+                                            Object {
+                                              "MentionSuggestions": [Function],
+                                              "decorators": Array [
+                                                Object {
+                                                  "component": [Function],
+                                                  "strategy": [Function],
+                                                },
+                                                Object {
+                                                  "component": [Function],
+                                                  "strategy": [Function],
+                                                },
+                                              ],
+                                              "getAccessibilityProps": [Function],
+                                              "handleReturn": [Function],
+                                              "initialize": [Function],
+                                              "onChange": [Function],
+                                              "onDownArrow": [Function],
+                                              "onEscape": [Function],
+                                              "onTab": [Function],
+                                              "onUpArrow": [Function],
+                                            },
+                                            Object {
+                                              "onChange": [Function],
+                                            },
+                                            Object {
+                                              "decorators": Array [
+                                                Object {
+                                                  "component": [Function],
+                                                  "strategy": [Function],
+                                                },
+                                              ],
+                                              "onChange": [Function],
+                                            },
+                                            Object {
+                                              "handlePastedFiles": [Function],
+                                            },
+                                          ]
+                                        }
+                                      >
+                                        <DraftEditor
+                                          ariaAutoComplete="list"
+                                          ariaExpanded="false"
+                                          ariaHasPopup="false"
+                                          blockRenderMap={
+                                            Immutable.Map {
+                                              ordered-list-item: Object {
+                                                "element": "li",
+                                                "wrapper": <ol
+                                                  className="public-DraftStyleDefault-ol"
+                                              />,
+                                              },
+                                              header-six: Object {
+                                                "element": "h6",
+                                              },
+                                              header-four: Object {
+                                                "element": "h4",
+                                              },
+                                              header-one: Object {
+                                                "element": "h1",
+                                              },
+                                              unordered-list-item: Object {
+                                                "element": "li",
+                                                "wrapper": <ul
+                                                  className="public-DraftStyleDefault-ul"
+                                              />,
+                                              },
+                                              atomic: Object {
+                                                "element": "figure",
+                                              },
+                                              unstyled: Object {
+                                                "aliasedElements": Array [
+                                                  "p",
+                                                ],
+                                                "element": "div",
+                                              },
+                                              header-two: Object {
+                                                "element": "h2",
+                                              },
+                                              code-block: Object {
+                                                "element": "pre",
+                                                "wrapper": <pre
+                                                  className="public-DraftStyleDefault-pre"
+                                              />,
+                                              },
+                                              blockquote: Object {
+                                                "element": "blockquote",
+                                              },
+                                              header-five: Object {
+                                                "element": "h5",
+                                              },
+                                              header-three: Object {
+                                                "element": "h3",
+                                              },
+                                            }
+                                          }
+                                          blockRendererFn={[Function]}
+                                          blockStyleFn={[Function]}
+                                          canDropFiles={false}
+                                          canInsertInlineImages={true}
+                                          customStyleMap={Object {}}
+                                          decorators={Array []}
+                                          defaultBlockRenderMap={true}
+                                          defaultKeyBindings={true}
+                                          editorState={
+                                            EditorState {
+                                              "_immutable": Object {
+                                                "allowUndo": true,
+                                                "currentContent": Object {
+                                                  "blockMap": Object {
+                                                    "someRandomKey": Object {
+                                                      "characterList": Array [],
+                                                      "data": Object {},
+                                                      "depth": 0,
+                                                      "key": "someRandomKey",
+                                                      "text": "",
+                                                      "type": "unstyled",
+                                                    },
+                                                  },
+                                                  "entityMap": Object {
+                                                    "__add": [Function],
+                                                    "__create": [Function],
+                                                    "__get": [Function],
+                                                    "__getLastCreatedEntityKey": [Function],
+                                                    "__mergeData": [Function],
+                                                    "__replaceData": [Function],
+                                                    "add": [Function],
+                                                    "create": [Function],
+                                                    "get": [Function],
+                                                    "getLastCreatedEntityKey": [Function],
+                                                    "mergeData": [Function],
+                                                    "replaceData": [Function],
+                                                  },
+                                                  "selectionAfter": Object {
+                                                    "anchorKey": "someRandomKey",
+                                                    "anchorOffset": 0,
+                                                    "focusKey": "someRandomKey",
+                                                    "focusOffset": 0,
+                                                    "hasFocus": false,
+                                                    "isBackward": false,
+                                                  },
+                                                  "selectionBefore": Object {
+                                                    "anchorKey": "someRandomKey",
+                                                    "anchorOffset": 0,
+                                                    "focusKey": "someRandomKey",
+                                                    "focusOffset": 0,
+                                                    "hasFocus": true,
+                                                    "isBackward": false,
+                                                  },
+                                                },
+                                                "decorator": MultiDecorator {
+                                                  "decorators": Immutable.List [
+                                                    CompositeDraftDecorator {
+                                                            "_decorators": Array [
+                                                              Object {
+                                                                "component": [Function],
+                                                                "strategy": [Function],
+                                                              },
+                                                              Object {
+                                                                "component": [Function],
+                                                                "strategy": [Function],
+                                                              },
+                                                              Object {
+                                                                "component": [Function],
+                                                                "strategy": [Function],
+                                                              },
+                                                              Object {
+                                                                "component": [Function],
+                                                                "strategy": [Function],
+                                                              },
+                                                              Object {
+                                                                "component": [Function],
+                                                                "strategy": [Function],
+                                                              },
+                                                            ],
+                                                          },
+                                            ],
+                                                },
+                                                "directionMap": Object {
+                                                  "someRandomKey": "LTR",
+                                                },
+                                                "forceSelection": false,
+                                                "inCompositionMode": false,
+                                                "inlineStyleOverride": null,
+                                                "lastChangeType": undefined,
+                                                "nativelyRenderedContent": null,
+                                                "redoStack": Array [],
+                                                "selection": Object {
+                                                  "anchorKey": "someRandomKey",
+                                                  "anchorOffset": 0,
+                                                  "focusKey": "someRandomKey",
+                                                  "focusOffset": 0,
+                                                  "hasFocus": false,
+                                                  "isBackward": false,
+                                                },
+                                                "treeMap": Object {
+                                                  "someRandomKey": Array [
+                                                    Object {
+                                                      "decoratorKey": null,
+                                                      "end": 0,
+                                                      "leaves": Array [
+                                                        Object {
+                                                          "end": 0,
+                                                          "start": 0,
+                                                        },
+                                                      ],
+                                                      "start": 0,
+                                                    },
+                                                  ],
+                                                },
+                                                "undoStack": Array [
+                                                  Object {
+                                                    "blockMap": Object {
+                                                      "someRandomKey": Object {
+                                                        "characterList": Array [],
+                                                        "data": Object {},
+                                                        "depth": 0,
+                                                        "key": "someRandomKey",
+                                                        "text": "",
+                                                        "type": "unstyled",
+                                                      },
+                                                    },
+                                                    "entityMap": Object {
+                                                      "__add": [Function],
+                                                      "__create": [Function],
+                                                      "__get": [Function],
+                                                      "__getLastCreatedEntityKey": [Function],
+                                                      "__mergeData": [Function],
+                                                      "__replaceData": [Function],
+                                                      "add": [Function],
+                                                      "create": [Function],
+                                                      "get": [Function],
+                                                      "getLastCreatedEntityKey": [Function],
+                                                      "mergeData": [Function],
+                                                      "replaceData": [Function],
+                                                    },
+                                                    "selectionAfter": Object {
+                                                      "anchorKey": "someRandomKey",
+                                                      "anchorOffset": 0,
+                                                      "focusKey": "someRandomKey",
+                                                      "focusOffset": 0,
+                                                      "hasFocus": false,
+                                                      "isBackward": false,
+                                                    },
+                                                    "selectionBefore": Object {
+                                                      "anchorKey": "someRandomKey",
+                                                      "anchorOffset": 0,
+                                                      "focusKey": "someRandomKey",
+                                                      "focusOffset": 0,
+                                                      "hasFocus": false,
+                                                      "isBackward": false,
+                                                    },
+                                                  },
+                                                ],
+                                              },
+                                            }
+                                          }
+                                          handleDroppedFiles={[Function]}
+                                          handleKeyCommand={[Function]}
+                                          handlePastedFiles={[Function]}
+                                          handlePastedText={[Function]}
+                                          handleReturn={[Function]}
+                                          keyBindingFn={[Function]}
+                                          onBlur={[Function]}
+                                          onChange={[Function]}
+                                          onDownArrow={[Function]}
+                                          onEscape={[Function]}
+                                          onFocus={[Function]}
+                                          onTab={[Function]}
+                                          onUpArrow={[Function]}
+                                          plugins={
+                                            Array [
+                                              Object {
+                                                "handleDroppedFiles": [Function],
+                                              },
+                                              Object {
+                                                "handleReturn": [Function],
+                                              },
+                                              Object {
+                                                "blockRendererFn": [Function],
+                                                "decorator": [Function],
+                                                "initialize": [Function],
+                                              },
+                                              Object {
+                                                "Toolbar": [Function],
+                                                "blockRendererFn": [Function],
+                                                "decorators": Array [
+                                                  Object {
+                                                    "component": [Function],
+                                                    "strategy": [Function],
+                                                  },
+                                                  Object {
+                                                    "component": [Function],
+                                                    "strategy": [Function],
+                                                  },
+                                                ],
+                                                "initialize": [Function],
+                                              },
+                                              Object {
+                                                "MentionSuggestions": [Function],
+                                                "decorators": Array [
+                                                  Object {
+                                                    "component": [Function],
+                                                    "strategy": [Function],
+                                                  },
+                                                  Object {
+                                                    "component": [Function],
+                                                    "strategy": [Function],
+                                                  },
+                                                ],
+                                                "getAccessibilityProps": [Function],
+                                                "handleReturn": [Function],
+                                                "initialize": [Function],
+                                                "onChange": [Function],
+                                                "onDownArrow": [Function],
+                                                "onEscape": [Function],
+                                                "onTab": [Function],
+                                                "onUpArrow": [Function],
+                                              },
+                                              Object {
+                                                "onChange": [Function],
+                                              },
+                                              Object {
+                                                "decorators": Array [
+                                                  Object {
+                                                    "component": [Function],
+                                                    "strategy": [Function],
+                                                  },
+                                                ],
+                                                "onChange": [Function],
+                                              },
+                                              Object {
+                                                "handlePastedFiles": [Function],
+                                              },
+                                            ]
+                                          }
+                                          readOnly={false}
+                                          role="combobox"
+                                          spellCheck={false}
+                                          stripPastedStyles={false}
+                                        >
+                                          <div
+                                            className="DraftEditor-root"
+                                          >
+                                            <div
+                                              className="DraftEditor-editorContainer"
+                                            >
+                                              <div
+                                                aria-autocomplete="list"
+                                                aria-describedby="placeholder-someRandomKey"
+                                                aria-expanded={true}
+                                                className="notranslate public-DraftEditor-content"
+                                                contentEditable={true}
+                                                onBeforeInput={[Function]}
+                                                onBlur={[Function]}
+                                                onCompositionEnd={[Function]}
+                                                onCompositionStart={[Function]}
+                                                onCopy={[Function]}
+                                                onCut={[Function]}
+                                                onDragEnd={[Function]}
+                                                onDragEnter={[Function]}
+                                                onDragLeave={[Function]}
+                                                onDragOver={[Function]}
+                                                onDragStart={[Function]}
+                                                onDrop={[Function]}
+                                                onFocus={[Function]}
+                                                onInput={[Function]}
+                                                onKeyDown={[Function]}
+                                                onKeyPress={[Function]}
+                                                onKeyUp={[Function]}
+                                                onMouseUp={[Function]}
+                                                onPaste={[Function]}
+                                                onSelect={[Function]}
+                                                role="combobox"
+                                                spellCheck={false}
+                                                style={
+                                                  Object {
+                                                    "WebkitUserSelect": "text",
+                                                    "outline": "none",
+                                                    "userSelect": "text",
+                                                    "whiteSpace": "pre-wrap",
+                                                    "wordWrap": "break-word",
+                                                  }
+                                                }
+                                                suppressContentEditableWarning={true}
+                                              >
+                                                <DraftEditorContents
+                                                  blockRenderMap={
+                                                    Immutable.Map {
+                                                      ordered-list-item: Object {
+                                                        "element": "li",
+                                                        "wrapper": <ol
+                                                          className="public-DraftStyleDefault-ol"
+                                                      />,
+                                                      },
+                                                      header-six: Object {
+                                                        "element": "h6",
+                                                      },
+                                                      header-four: Object {
+                                                        "element": "h4",
+                                                      },
+                                                      header-one: Object {
+                                                        "element": "h1",
+                                                      },
+                                                      unordered-list-item: Object {
+                                                        "element": "li",
+                                                        "wrapper": <ul
+                                                          className="public-DraftStyleDefault-ul"
+                                                      />,
+                                                      },
+                                                      atomic: Object {
+                                                        "element": "figure",
+                                                      },
+                                                      unstyled: Object {
+                                                        "aliasedElements": Array [
+                                                          "p",
+                                                        ],
+                                                        "element": "div",
+                                                      },
+                                                      header-two: Object {
+                                                        "element": "h2",
+                                                      },
+                                                      code-block: Object {
+                                                        "element": "pre",
+                                                        "wrapper": <pre
+                                                          className="public-DraftStyleDefault-pre"
+                                                      />,
+                                                      },
+                                                      blockquote: Object {
+                                                        "element": "blockquote",
+                                                      },
+                                                      header-five: Object {
+                                                        "element": "h5",
+                                                      },
+                                                      header-three: Object {
+                                                        "element": "h3",
+                                                      },
+                                                    }
+                                                  }
+                                                  blockRendererFn={[Function]}
+                                                  blockStyleFn={[Function]}
+                                                  customStyleMap={
+                                                    Object {
+                                                      "BOLD": Object {
+                                                        "fontWeight": "bold",
+                                                      },
+                                                      "CODE": Object {
+                                                        "fontFamily": "monospace",
+                                                        "wordWrap": "break-word",
+                                                      },
+                                                      "ITALIC": Object {
+                                                        "fontStyle": "italic",
+                                                      },
+                                                      "STRIKETHROUGH": Object {
+                                                        "textDecoration": "line-through",
+                                                      },
+                                                      "UNDERLINE": Object {
+                                                        "textDecoration": "underline",
+                                                      },
+                                                    }
+                                                  }
+                                                  editorKey="someRandomKey"
+                                                  editorState={
+                                                    EditorState {
+                                                      "_immutable": Object {
+                                                        "allowUndo": true,
+                                                        "currentContent": Object {
+                                                          "blockMap": Object {
+                                                            "someRandomKey": Object {
+                                                              "characterList": Array [],
+                                                              "data": Object {},
+                                                              "depth": 0,
+                                                              "key": "someRandomKey",
+                                                              "text": "",
+                                                              "type": "unstyled",
+                                                            },
+                                                          },
+                                                          "entityMap": Object {
+                                                            "__add": [Function],
+                                                            "__create": [Function],
+                                                            "__get": [Function],
+                                                            "__getLastCreatedEntityKey": [Function],
+                                                            "__mergeData": [Function],
+                                                            "__replaceData": [Function],
+                                                            "add": [Function],
+                                                            "create": [Function],
+                                                            "get": [Function],
+                                                            "getLastCreatedEntityKey": [Function],
+                                                            "mergeData": [Function],
+                                                            "replaceData": [Function],
+                                                          },
+                                                          "selectionAfter": Object {
+                                                            "anchorKey": "someRandomKey",
+                                                            "anchorOffset": 0,
+                                                            "focusKey": "someRandomKey",
+                                                            "focusOffset": 0,
+                                                            "hasFocus": false,
+                                                            "isBackward": false,
+                                                          },
+                                                          "selectionBefore": Object {
+                                                            "anchorKey": "someRandomKey",
+                                                            "anchorOffset": 0,
+                                                            "focusKey": "someRandomKey",
+                                                            "focusOffset": 0,
+                                                            "hasFocus": true,
+                                                            "isBackward": false,
+                                                          },
+                                                        },
+                                                        "decorator": MultiDecorator {
+                                                          "decorators": Immutable.List [
+                                                            CompositeDraftDecorator {
+                                                                    "_decorators": Array [
+                                                                      Object {
+                                                                        "component": [Function],
+                                                                        "strategy": [Function],
+                                                                      },
+                                                                      Object {
+                                                                        "component": [Function],
+                                                                        "strategy": [Function],
+                                                                      },
+                                                                      Object {
+                                                                        "component": [Function],
+                                                                        "strategy": [Function],
+                                                                      },
+                                                                      Object {
+                                                                        "component": [Function],
+                                                                        "strategy": [Function],
+                                                                      },
+                                                                      Object {
+                                                                        "component": [Function],
+                                                                        "strategy": [Function],
+                                                                      },
+                                                                    ],
+                                                                  },
+                                                    ],
+                                                        },
+                                                        "directionMap": Object {
+                                                          "someRandomKey": "LTR",
+                                                        },
+                                                        "forceSelection": false,
+                                                        "inCompositionMode": false,
+                                                        "inlineStyleOverride": null,
+                                                        "lastChangeType": undefined,
+                                                        "nativelyRenderedContent": null,
+                                                        "redoStack": Array [],
+                                                        "selection": Object {
+                                                          "anchorKey": "someRandomKey",
+                                                          "anchorOffset": 0,
+                                                          "focusKey": "someRandomKey",
+                                                          "focusOffset": 0,
+                                                          "hasFocus": false,
+                                                          "isBackward": false,
+                                                        },
+                                                        "treeMap": Object {
+                                                          "someRandomKey": Array [
+                                                            Object {
+                                                              "decoratorKey": null,
+                                                              "end": 0,
+                                                              "leaves": Array [
+                                                                Object {
+                                                                  "end": 0,
+                                                                  "start": 0,
+                                                                },
+                                                              ],
+                                                              "start": 0,
+                                                            },
+                                                          ],
+                                                        },
+                                                        "undoStack": Array [
+                                                          Object {
+                                                            "blockMap": Object {
+                                                              "someRandomKey": Object {
+                                                                "characterList": Array [],
+                                                                "data": Object {},
+                                                                "depth": 0,
+                                                                "key": "someRandomKey",
+                                                                "text": "",
+                                                                "type": "unstyled",
+                                                              },
+                                                            },
+                                                            "entityMap": Object {
+                                                              "__add": [Function],
+                                                              "__create": [Function],
+                                                              "__get": [Function],
+                                                              "__getLastCreatedEntityKey": [Function],
+                                                              "__mergeData": [Function],
+                                                              "__replaceData": [Function],
+                                                              "add": [Function],
+                                                              "create": [Function],
+                                                              "get": [Function],
+                                                              "getLastCreatedEntityKey": [Function],
+                                                              "mergeData": [Function],
+                                                              "replaceData": [Function],
+                                                            },
+                                                            "selectionAfter": Object {
+                                                              "anchorKey": "someRandomKey",
+                                                              "anchorOffset": 0,
+                                                              "focusKey": "someRandomKey",
+                                                              "focusOffset": 0,
+                                                              "hasFocus": false,
+                                                              "isBackward": false,
+                                                            },
+                                                            "selectionBefore": Object {
+                                                              "anchorKey": "someRandomKey",
+                                                              "anchorOffset": 0,
+                                                              "focusKey": "someRandomKey",
+                                                              "focusOffset": 0,
+                                                              "hasFocus": false,
+                                                              "isBackward": false,
+                                                            },
+                                                          },
+                                                        ],
+                                                      },
+                                                    }
+                                                  }
+                                                >
+                                                  <div
+                                                    data-contents="true"
+                                                  >
+                                                    <div
+                                                      className=""
+                                                      data-block={true}
+                                                      data-editor="someRandomKey"
+                                                      data-offset-key="someRandomKey-0-0"
+                                                    >
+                                                      <DraftEditorBlock
+                                                        block={
+                                                          Object {
+                                                            "characterList": Array [],
+                                                            "data": Object {},
+                                                            "depth": 0,
+                                                            "key": "someRandomKey",
+                                                            "text": "",
+                                                            "type": "unstyled",
+                                                          }
+                                                        }
+                                                        blockStyleFn={[Function]}
+                                                        contentState={
+                                                          Object {
+                                                            "blockMap": Object {
+                                                              "someRandomKey": Object {
+                                                                "characterList": Array [],
+                                                                "data": Object {},
+                                                                "depth": 0,
+                                                                "key": "someRandomKey",
+                                                                "text": "",
+                                                                "type": "unstyled",
+                                                              },
+                                                            },
+                                                            "entityMap": Object {
+                                                              "__add": [Function],
+                                                              "__create": [Function],
+                                                              "__get": [Function],
+                                                              "__getLastCreatedEntityKey": [Function],
+                                                              "__mergeData": [Function],
+                                                              "__replaceData": [Function],
+                                                              "add": [Function],
+                                                              "create": [Function],
+                                                              "get": [Function],
+                                                              "getLastCreatedEntityKey": [Function],
+                                                              "mergeData": [Function],
+                                                              "replaceData": [Function],
+                                                            },
+                                                            "selectionAfter": Object {
+                                                              "anchorKey": "someRandomKey",
+                                                              "anchorOffset": 0,
+                                                              "focusKey": "someRandomKey",
+                                                              "focusOffset": 0,
+                                                              "hasFocus": false,
+                                                              "isBackward": false,
+                                                            },
+                                                            "selectionBefore": Object {
+                                                              "anchorKey": "someRandomKey",
+                                                              "anchorOffset": 0,
+                                                              "focusKey": "someRandomKey",
+                                                              "focusOffset": 0,
+                                                              "hasFocus": true,
+                                                              "isBackward": false,
+                                                            },
+                                                          }
+                                                        }
+                                                        customStyleMap={
+                                                          Object {
+                                                            "BOLD": Object {
+                                                              "fontWeight": "bold",
+                                                            },
+                                                            "CODE": Object {
+                                                              "fontFamily": "monospace",
+                                                              "wordWrap": "break-word",
+                                                            },
+                                                            "ITALIC": Object {
+                                                              "fontStyle": "italic",
+                                                            },
+                                                            "STRIKETHROUGH": Object {
+                                                              "textDecoration": "line-through",
+                                                            },
+                                                            "UNDERLINE": Object {
+                                                              "textDecoration": "underline",
+                                                            },
+                                                          }
+                                                        }
+                                                        decorator={
+                                                          MultiDecorator {
+                                                            "decorators": Immutable.List [
+                                                              CompositeDraftDecorator {
+                                                                  "_decorators": Array [
+                                                                    Object {
+                                                                      "component": [Function],
+                                                                      "strategy": [Function],
+                                                                    },
+                                                                    Object {
+                                                                      "component": [Function],
+                                                                      "strategy": [Function],
+                                                                    },
+                                                                    Object {
+                                                                      "component": [Function],
+                                                                      "strategy": [Function],
+                                                                    },
+                                                                    Object {
+                                                                      "component": [Function],
+                                                                      "strategy": [Function],
+                                                                    },
+                                                                    Object {
+                                                                      "component": [Function],
+                                                                      "strategy": [Function],
+                                                                    },
+                                                                  ],
+                                                                },
+                                                          ],
+                                                          }
+                                                        }
+                                                        direction="LTR"
+                                                        forceSelection={false}
+                                                        offsetKey="someRandomKey-0-0"
+                                                        selection={
+                                                          Object {
+                                                            "anchorKey": "someRandomKey",
+                                                            "anchorOffset": 0,
+                                                            "focusKey": "someRandomKey",
+                                                            "focusOffset": 0,
+                                                            "hasFocus": false,
+                                                            "isBackward": false,
+                                                          }
+                                                        }
+                                                        tree={
+                                                          Immutable.List [
+                                                            Object {
+                                                              "decoratorKey": null,
+                                                              "end": 0,
+                                                              "leaves": Array [
+                                                                Object {
+                                                                  "end": 0,
+                                                                  "start": 0,
+                                                                },
+                                                              ],
+                                                              "start": 0,
+                                                            },
+                                                          ]
+                                                        }
+                                                      >
+                                                        <div
+                                                          className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                                          data-offset-key="someRandomKey-0-0"
+                                                        >
+                                                          <DraftEditorLeaf
+                                                            block={
+                                                              Object {
+                                                                "characterList": Array [],
+                                                                "data": Object {},
+                                                                "depth": 0,
+                                                                "key": "someRandomKey",
+                                                                "text": "",
+                                                                "type": "unstyled",
+                                                              }
+                                                            }
+                                                            customStyleMap={
+                                                              Object {
+                                                                "BOLD": Object {
+                                                                  "fontWeight": "bold",
+                                                                },
+                                                                "CODE": Object {
+                                                                  "fontFamily": "monospace",
+                                                                  "wordWrap": "break-word",
+                                                                },
+                                                                "ITALIC": Object {
+                                                                  "fontStyle": "italic",
+                                                                },
+                                                                "STRIKETHROUGH": Object {
+                                                                  "textDecoration": "line-through",
+                                                                },
+                                                                "UNDERLINE": Object {
+                                                                  "textDecoration": "underline",
+                                                                },
+                                                              }
+                                                            }
+                                                            forceSelection={false}
+                                                            isLast={true}
+                                                            offsetKey="someRandomKey-0-0"
+                                                            selection={
+                                                              Object {
+                                                                "anchorKey": "someRandomKey",
+                                                                "anchorOffset": 0,
+                                                                "focusKey": "someRandomKey",
+                                                                "focusOffset": 0,
+                                                                "hasFocus": false,
+                                                                "isBackward": false,
+                                                              }
+                                                            }
+                                                            start={0}
+                                                            styleSet={
+                                                              Immutable.OrderedSet [
+                                                              ]
+                                                            }
+                                                            text=""
+                                                          >
+                                                            <span
+                                                              data-offset-key="someRandomKey-0-0"
+                                                              style={Object {}}
+                                                            >
+                                                              <DraftEditorTextNode>
+                                                                <br
+                                                                  data-text="true"
+                                                                />
+                                                              </DraftEditorTextNode>
+                                                            </span>
+                                                          </DraftEditorLeaf>
+                                                        </div>
+                                                      </DraftEditorBlock>
+                                                    </div>
+                                                  </div>
+                                                </DraftEditorContents>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </DraftEditor>
+                                      </PluginEditor>
+                                      <Decorated(MentionSuggestions)
+                                        canAddMention={false}
+                                        onSearchChange={[Function]}
+                                        suggestions={
+                                          Immutable.List [
+                                          ]
+                                        }
+                                      >
+                                        <MentionSuggestions
+                                          ariaProps={
+                                            Object {
+                                              "ariaExpanded": "false",
+                                              "ariaHasPopup": "false",
+                                            }
+                                          }
+                                          callbacks={
+                                            Object {
+                                              "handleKeyCommand": undefined,
+                                              "handleReturn": undefined,
+                                              "keyBindingFn": undefined,
+                                              "onChange": [Function],
+                                              "onDownArrow": undefined,
+                                              "onEscape": undefined,
+                                              "onTab": undefined,
+                                              "onUpArrow": undefined,
+                                            }
+                                          }
+                                          canAddMention={false}
+                                          entityMutability="SEGMENTED"
+                                          mentionPrefix="@"
+                                          mentionTrigger="@"
+                                          onSearchChange={[Function]}
+                                          positionSuggestions={[Function]}
+                                          store={
+                                            Object {
+                                              "escapeSearch": [Function],
+                                              "getAllSearches": [Function],
+                                              "getEditorState": [Function],
+                                              "getPortalClientRect": [Function],
+                                              "isEscaped": [Function],
+                                              "register": [Function],
+                                              "resetEscapedSearch": [Function],
+                                              "setEditorState": [Function],
+                                              "unregister": [Function],
+                                              "updatePortalClientRect": [Function],
+                                            }
+                                          }
+                                          suggestions={
+                                            Immutable.List [
+                                            ]
+                                          }
+                                          theme={
+                                            Object {
+                                              "mention": "mention",
+                                              "mentionSuggestions": "mentionSuggestions",
+                                              "mentionSuggestionsEntry": "mentionSuggestionsEntry",
+                                              "mentionSuggestionsEntryFocused": "mentionSuggestionsEntryFocused",
+                                              "mentionSuggestionsEntryText": "mentionSuggestionsEntryText",
+                                            }
+                                          }
+                                        />
+                                      </Decorated(MentionSuggestions)>
+                                    </div>
+                                    <Decorated(Toolbar)
+                                      attachFiles={[Function]}
+                                      getCanDropFiles={[Function]}
+                                    >
+                                      <Toolbar
+                                        actions={
+                                          Array [
+                                            Object {
+                                              "active": [Function],
+                                              "functions": Object {
+                                                "toggle": [Function],
+                                              },
+                                              "icon": "format_bold",
+                                              "isActive": [Function],
+                                              "isDisabled": [Function],
+                                              "key": "bold",
+                                              "name": "Bold",
+                                              "style": "BOLD",
+                                              "toolbarProps": Object {},
+                                            },
+                                            Object {
+                                              "active": [Function],
+                                              "functions": Object {
+                                                "toggle": [Function],
+                                              },
+                                              "icon": "format_italic",
+                                              "isActive": [Function],
+                                              "isDisabled": [Function],
+                                              "key": "italic",
+                                              "name": "Italic",
+                                              "style": "ITALIC",
+                                              "toolbarProps": Object {},
+                                            },
+                                            Object {
+                                              "active": [Function],
+                                              "functions": Object {
+                                                "toggle": [Function],
+                                              },
+                                              "icon": "format_underline",
+                                              "isActive": [Function],
+                                              "isDisabled": [Function],
+                                              "key": "underline",
+                                              "name": "Underline",
+                                              "style": "UNDERLINE",
+                                              "toolbarProps": Object {},
+                                            },
+                                            Object {
+                                              "active": [Function],
+                                              "component": [Function],
+                                              "functions": Object {
+                                                "addLink": [Function],
+                                                "onClick": [Function],
+                                              },
+                                              "isActive": [Function],
+                                              "isDisabled": [Function],
+                                              "key": "link",
+                                              "name": "Insert link",
+                                              "toolbarProps": Object {},
+                                            },
+                                            Object {
+                                              "active": [Function],
+                                              "component": [Function],
+                                              "functions": Object {
+                                                "addImage": [Function],
+                                                "getMaxAttachmentSize": [Function],
+                                              },
+                                              "isActive": [Function],
+                                              "isDisabled": [Function],
+                                              "key": "image",
+                                              "name": "Insert image",
+                                              "toolbarProps": Object {},
+                                            },
+                                            Object {
+                                              "active": [Function],
+                                              "component": [Function],
+                                              "functions": Object {
+                                                "addEmoji": [Function],
+                                              },
+                                              "isActive": [Function],
+                                              "isDisabled": [Function],
+                                              "key": "emoji",
+                                              "name": "Insert emoji",
+                                              "toolbarProps": Object {},
+                                            },
+                                          ]
+                                        }
+                                        attachFiles={[Function]}
+                                        buttons={Array []}
+                                        getCanDropFiles={[Function]}
+                                        hideActions={false}
+                                        toolbarStore={
+                                          Object {
+                                            "getItem": [Function],
+                                            "updateItem": [Function],
+                                          }
+                                        }
+                                      >
+                                        <div
+                                          className="editor-toolbar page"
+                                          onDragLeave={[Function]}
+                                          onDragOver={[Function]}
+                                          onDrop={[Function]}
+                                        >
+                                          <div
+                                            className="actions"
+                                          >
+                                            <div
+                                              className="button btn btn-secondary btn-transparent"
+                                              onClick={[Function]}
+                                              onMouseDown={[Function]}
+                                              title="Bold"
+                                            >
+                                              <i
+                                                className="material-icons"
+                                              >
+                                                format_bold
+                                              </i>
+                                            </div>
+                                            <div
+                                              className="button btn btn-secondary btn-transparent"
+                                              onClick={[Function]}
+                                              onMouseDown={[Function]}
+                                              title="Italic"
+                                            >
+                                              <i
+                                                className="material-icons"
+                                              >
+                                                format_italic
+                                              </i>
+                                            </div>
+                                            <div
+                                              className="button btn btn-secondary btn-transparent"
+                                              onClick={[Function]}
+                                              onMouseDown={[Function]}
+                                              title="Underline"
+                                            >
+                                              <i
+                                                className="material-icons"
+                                              >
+                                                format_underline
+                                              </i>
+                                            </div>
+                                            <AddLink
+                                              action={
+                                                Object {
+                                                  "active": [Function],
+                                                  "component": [Function],
+                                                  "functions": Object {
+                                                    "addLink": [Function],
+                                                    "onClick": [Function],
+                                                  },
+                                                  "isActive": [Function],
+                                                  "isDisabled": [Function],
+                                                  "key": "link",
+                                                  "name": "Insert link",
+                                                  "toolbarProps": Object {},
+                                                }
+                                              }
+                                              functions={
+                                                Object {
+                                                  "addLink": [Function],
+                                                  "onClick": [Function],
+                                                }
+                                              }
+                                              isActive={false}
+                                              isDisabled={false}
+                                            >
+                                              <Popover
+                                                icon="link"
+                                                isActive={false}
+                                                isDisabled={false}
+                                                name="Insert link"
+                                                onIconClick={[Function]}
+                                              >
+                                                <span
+                                                  className="popover-wrapper"
+                                                >
+                                                  <button
+                                                    className="button btn btn-secondary btn-transparent"
+                                                    onMouseUp={[Function]}
+                                                    title="Insert link"
+                                                    type="button"
+                                                  >
+                                                    <i
+                                                      className="material-icons"
+                                                    >
+                                                      link
+                                                    </i>
+                                                  </button>
+                                                  <div
+                                                    className="popover hidden"
+                                                    onClick={[Function]}
+                                                  />
+                                                </span>
+                                              </Popover>
+                                            </AddLink>
+                                            <AddImage
+                                              action={
+                                                Object {
+                                                  "active": [Function],
+                                                  "component": [Function],
+                                                  "functions": Object {
+                                                    "addImage": [Function],
+                                                    "getMaxAttachmentSize": [Function],
+                                                  },
+                                                  "isActive": [Function],
+                                                  "isDisabled": [Function],
+                                                  "key": "image",
+                                                  "name": "Insert image",
+                                                  "toolbarProps": Object {},
+                                                }
+                                              }
+                                              functions={
+                                                Object {
+                                                  "addImage": [Function],
+                                                  "getMaxAttachmentSize": [Function],
+                                                }
+                                              }
+                                              isActive={false}
+                                              isDisabled={false}
+                                            >
+                                              <Popover
+                                                icon="insert_photo"
+                                                isActive={false}
+                                                isDisabled={false}
+                                                name="Insert image"
+                                              >
+                                                <span
+                                                  className="popover-wrapper"
+                                                >
+                                                  <button
+                                                    className="button btn btn-secondary btn-transparent"
+                                                    onMouseUp={[Function]}
+                                                    title="Insert image"
+                                                    type="button"
+                                                  >
+                                                    <i
+                                                      className="material-icons"
+                                                    >
+                                                      insert_photo
+                                                    </i>
+                                                  </button>
+                                                  <div
+                                                    className="popover hidden"
+                                                    onClick={[Function]}
+                                                  />
+                                                </span>
+                                              </Popover>
+                                            </AddImage>
+                                            <AddEmoji
+                                              action={
+                                                Object {
+                                                  "active": [Function],
+                                                  "component": [Function],
+                                                  "functions": Object {
+                                                    "addEmoji": [Function],
+                                                  },
+                                                  "isActive": [Function],
+                                                  "isDisabled": [Function],
+                                                  "key": "emoji",
+                                                  "name": "Insert emoji",
+                                                  "toolbarProps": Object {},
+                                                }
+                                              }
+                                              functions={
+                                                Object {
+                                                  "addEmoji": [Function],
+                                                }
+                                              }
+                                              isActive={false}
+                                              isDisabled={false}
+                                            >
+                                              <Popover
+                                                className="p-0 d-flex"
+                                                icon="insert_emoticon"
+                                                isActive={false}
+                                                isDisabled={false}
+                                                name="Insert emoji"
+                                              >
+                                                <span
+                                                  className="popover-wrapper"
+                                                >
+                                                  <button
+                                                    className="button btn btn-secondary btn-transparent"
+                                                    onMouseUp={[Function]}
+                                                    title="Insert emoji"
+                                                    type="button"
+                                                  >
+                                                    <i
+                                                      className="material-icons"
+                                                    >
+                                                      insert_emoticon
+                                                    </i>
+                                                  </button>
+                                                  <div
+                                                    className="p-0 d-flex popover hidden"
+                                                    onClick={[Function]}
+                                                  />
+                                                </span>
+                                              </Popover>
+                                            </AddEmoji>
+                                          </div>
+                                          <div
+                                            className="hoverOverlay"
+                                          >
+                                            Add files as attachments
+                                          </div>
+                                        </div>
+                                      </Toolbar>
+                                    </Decorated(Toolbar)>
+                                  </div>
+                                </div>
+                              </div>
+                            </FormGroup>
+                          </RichField>
+                        </div>
+                      </RichFieldWithVariables>
+                    </div>
+                  </FormGroup>
+                </div>
+                <Button
+                  className=""
+                  color="success"
+                  disabled={false}
+                  tag="button"
+                  type="submit"
+                >
+                  <button
+                    className="btn btn-success"
+                    disabled={false}
+                    onClick={[Function]}
+                    type="submit"
+                  >
+                    Save
+                  </button>
+                </Button>
+              </form>
+            </Form>
+          </div>
+        </div>
+      </Container>
+    </div>
+  </SatisfactionSurveyView>
+</Connect(SatisfactionSurveyView)>
+`;

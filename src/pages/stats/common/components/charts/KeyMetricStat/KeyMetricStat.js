@@ -1,12 +1,19 @@
 // @flow
 import React, {Component} from 'react'
 import moment from 'moment'
+import classnames from 'classnames'
+import {fromJS} from 'immutable'
+import _isObject from 'lodash/isObject'
 
 import Tooltip from '../../../../../common/components/Tooltip'
-import {comparedPeriodString, formatDuration, formatPercent} from '../../../utils'
-import {renderDifference} from '../../../utils'
-import css from './KeyMetricStat.less'
+import {renderDifference, comparedPeriodString, formatDuration, formatPercent} from '../../../utils'
+
+import DonutKeyMetricStat from './DonutKeyMetricStat'
+import DistributionKeyMetricStat from './DistributionKeyMetricStat'
+
 import statsCss from '../../../../style.less'
+import css from './KeyMetricStat.less'
+
 
 type Props = {
     data: Object,
@@ -15,24 +22,65 @@ type Props = {
 }
 
 export default class KeyMetricStat extends Component<Props> {
-    _renderValue = (config: Object, metric: Object) => {
-        let value = metric.get('value')
+    _defaultWrapper = (formattedValue: string, metric: Object, valueTooltipId: string,
+                       tooltipDelta: string) => {
+        return <div>
+            {
+              (formattedValue || formattedValue === 0) ?
+                  <div className={css.value}>{formattedValue}</div> : <div className={css.value}>n/a</div>
+            }
+            {this._renderDifference(valueTooltipId, metric, tooltipDelta)}
+        </div>
+    }
 
-        if (metric.get('type') === 'duration') {
-            value = formatDuration(metric.get('value'), 2)
-        } else if (metric.get('type') === 'percent') {
-            value = formatPercent(metric.get('value'))
+    _renderDifference = (valueTooltipId: string, metric: Object, tooltipDelta: string) => {
+        return <span id={valueTooltipId} className={css.diff}>
+            {renderDifference(metric.get('delta'), metric.get('delta'), metric.get('more_is_better'))}
+            <Tooltip
+                placement="top"
+                target={valueTooltipId}
+            >
+                {tooltipDelta}
+            </Tooltip>
+        </span>
+    }
+
+    _renderValue = (config: Object, metric: Object, valueTooltipId: string, tooltipDelta: string) => {
+        const value = metric.get('value')
+
+        if (_isObject(value)) {
+            const formattedValue = fromJS(value.reduce((acc, value, key) => ({
+                ...acc,
+                [key]: this._formatValue(value, metric.get('type'))
+            }), {}))
+
+            return <DistributionKeyMetricStat
+                config={config}
+                formattedValue={formattedValue}
+            />
         }
 
-        if (value || value === 0) {
-            return (
-                <div className={css.value}>
-                    {value}
-                </div>
-            )
-        }
+        const formattedValue = this._formatValue(value, metric.get('type'))
 
-        return <div className={css.value}>n/a</div>
+        return config.get('type') === 'donut' ? <DonutKeyMetricStat
+                    value={parseFloat(value)}
+                    maxValue={parseFloat(config.get('maxValue'))}
+                    fill={config.get('fill')}
+                    formattedValue={formattedValue}
+                    label={`${metric.get('delta')}%`}
+                    differenceComponent={this._renderDifference(valueTooltipId, metric, tooltipDelta)}
+                /> : this._defaultWrapper(value.toString(), metric, valueTooltipId, tooltipDelta)
+    }
+
+    _formatValue = (value: string, metricType: string) => {
+        switch (metricType) {
+            case 'duration':
+                return formatDuration(value, 2)
+            case 'percent':
+                return formatPercent(value)
+            default:
+                return value
+        }
     }
 
     render() {
@@ -76,16 +124,9 @@ export default class KeyMetricStat extends Component<Props> {
                                     </Tooltip>
                                 </span>
                             </div>
-                            {this._renderValue(metricConfig, metric)}
-                            <span id={valueTooltipId} className={css.diff}>
-                                {renderDifference(metric.get('delta'), metric.get('delta'), metric.get('more_is_better'))}
-                                <Tooltip
-                                    placement="top"
-                                    target={valueTooltipId}
-                                >
-                                    {tooltipDelta}
-                                </Tooltip>
-                            </span>
+                            <div className={classnames('mt-3', css.statsDisplay)}>
+                                {this._renderValue(metricConfig, metric, valueTooltipId, tooltipDelta)}
+                            </div>
                         </div>
                     )
                 })}

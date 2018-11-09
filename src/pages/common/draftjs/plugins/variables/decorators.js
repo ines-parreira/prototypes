@@ -5,6 +5,33 @@ import {setVariableEditable} from './utils'
 
 import * as integrationsHelpers from '../../../../../state/integrations/helpers'
 
+const placeholderRender = (entity) => {
+    const {fullName, type, integration} = entity
+    const entityIsIntegration = type && integration
+
+    if (entityIsIntegration) {
+        return <span>
+          <img
+              className="badge-variable-icon"
+              src={integrationsHelpers.getIconFromType(type)}
+          />
+          {fullName}
+          </span>
+    }
+
+    if (type === 'survey') {
+        return <span>
+          <i className="material-icons">star_rate</i>
+          <i className="material-icons">star_rate</i>
+          <i className="material-icons">star_rate</i>
+          <i className="material-icons">star_rate</i>
+          <i className="material-icons">star_rate</i>
+        </span>
+    }
+
+    return fullName
+}
+
 // VARIABLE
 export const variable = {
     strategy: (contentBlock, callback, contentState) => {
@@ -56,22 +83,12 @@ export const variable = {
                 title={title}
             >
                 <div
-                    className={classnames('badge-variable', {
-                        [`badge-variable-type-${type}`]: entityIsIntegration,
-                    })}
+                    className={classnames('badge-variable', `badge-variable-type-${type}`)}
                     contentEditable={false}
                 >
                     <div onDoubleClick={_makeVariableEditable}>
                         <span className="badge-variable-content">
-                            {
-                                entityIsIntegration && (
-                                    <img
-                                        className="badge-variable-icon"
-                                        src={integrationsHelpers.getIconFromType(type)}
-                                    />
-                                )
-                            }
-                            {fullName}
+                            {placeholderRender(entity)}
                         </span>
                     </div>
                     <button

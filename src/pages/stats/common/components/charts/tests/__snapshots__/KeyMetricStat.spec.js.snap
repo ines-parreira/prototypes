@@ -29,38 +29,42 @@ exports[`KeyMetricStat should render a key metrics chart 1`] = `
       </span>
     </div>
     <div
-      className="value"
+      className="mt-3 statsDisplay"
     >
-      37m 
-    </div>
-    <span
-      className="diff"
-      id="value-0"
-    >
-      <span
-        className="stats-difference negative"
-      >
-        <i
-          className="material-icons font-weight-bold mr-1"
-          style={
-            Object {
-              "fontSize": "15px",
-            }
-          }
+      <div>
+        <div
+          className="value"
         >
-          arrow_upward
-        </i>
-        100
-        %
-      </span>
-      <Tooltip
-        delay={0}
-        placement="top"
-        target="value-0"
-      >
-        Compared to : Sep 05, 2017 - Sep 06, 2017
-      </Tooltip>
-    </span>
+          2220
+        </div>
+        <span
+          className="diff"
+          id="value-0"
+        >
+          <span>
+            <i
+              className="stats-difference negative material-icons font-weight-bold mr-1"
+              style={
+                Object {
+                  "fontSize": "15px",
+                }
+              }
+            >
+              arrow_upward
+            </i>
+            100
+            %
+          </span>
+          <Tooltip
+            delay={0}
+            placement="top"
+            target="value-0"
+          >
+            Compared to : Sep 05, 2017 - Sep 06, 2017
+          </Tooltip>
+        </span>
+      </div>
+    </div>
   </div>
   <div
     className="metric"
@@ -81,45 +85,49 @@ exports[`KeyMetricStat should render a key metrics chart 1`] = `
           placement="top"
           target="title-median_resolution_time"
         >
-          The time between the first message from a customer and the moment the ticket 
-                             has been closed by an agent or a rule. Only tickets with a least one response 
+          The time between the first message from a customer and the moment the ticket
+                             has been closed by an agent or a rule. Only tickets with a least one response
                              from an agent or a rule are taken into account. (median)
         </Tooltip>
       </span>
     </div>
     <div
-      className="value"
+      className="mt-3 statsDisplay"
     >
-      3d 23h 
-    </div>
-    <span
-      className="diff"
-      id="value-1"
-    >
-      <span
-        className="stats-difference negative"
-      >
-        <i
-          className="material-icons font-weight-bold mr-1"
-          style={
-            Object {
-              "fontSize": "15px",
-            }
-          }
+      <div>
+        <div
+          className="value"
         >
-          arrow_upward
-        </i>
-        100
-        %
-      </span>
-      <Tooltip
-        delay={0}
-        placement="top"
-        target="value-1"
-      >
-        Compared to : Sep 05, 2017 - Sep 06, 2017
-      </Tooltip>
-    </span>
+          343529
+        </div>
+        <span
+          className="diff"
+          id="value-1"
+        >
+          <span>
+            <i
+              className="stats-difference negative material-icons font-weight-bold mr-1"
+              style={
+                Object {
+                  "fontSize": "15px",
+                }
+              }
+            >
+              arrow_upward
+            </i>
+            100
+            %
+          </span>
+          <Tooltip
+            delay={0}
+            placement="top"
+            target="value-1"
+          >
+            Compared to : Sep 05, 2017 - Sep 06, 2017
+          </Tooltip>
+        </span>
+      </div>
+    </div>
   </div>
   <div
     className="metric"
@@ -145,38 +153,167 @@ exports[`KeyMetricStat should render a key metrics chart 1`] = `
       </span>
     </div>
     <div
-      className="value"
+      className="mt-3 statsDisplay"
     >
-      20%
-    </div>
-    <span
-      className="diff"
-      id="value-2"
-    >
-      <span
-        className="stats-difference neutral"
-      >
-        <i
-          className="material-icons font-weight-bold mr-1"
-          style={
-            Object {
-              "fontSize": "15px",
-            }
-          }
+      <div>
+        <div
+          className="value"
         >
-          arrow_forward
+          20
+        </div>
+        <span
+          className="diff"
+          id="value-2"
+        >
+          <span>
+            <i
+              className="stats-difference neutral material-icons font-weight-bold mr-1"
+              style={
+                Object {
+                  "fontSize": "15px",
+                }
+              }
+            >
+              arrow_forward
+            </i>
+            0
+            %
+          </span>
+          <Tooltip
+            delay={0}
+            placement="top"
+            target="value-2"
+          >
+            Compared to : Sep 05, 2017 - Sep 06, 2017
+          </Tooltip>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`KeyMetricStat should render a key metrics chart with distribution and donut components 1`] = `
+<div
+  className="metrics"
+>
+  <div
+    className="metric"
+  >
+    <div
+      className="label"
+    >
+      Average rating
+      <span>
+        <i
+          className="info-icon help-icon material-icons ml-2"
+          id="title-average_rating"
+        >
+          info_outline
         </i>
-        0
-        %
+        <Tooltip
+          delay={0}
+          placement="top"
+          target="title-average_rating"
+        >
+          Average score given by the customers.
+        </Tooltip>
       </span>
-      <Tooltip
-        delay={0}
-        placement="top"
-        target="value-2"
-      >
-        Compared to : Sep 05, 2017 - Sep 06, 2017
-      </Tooltip>
-    </span>
+    </div>
+    <div
+      className="mt-3 statsDisplay"
+    >
+      <DonutKeyMetricStat
+        differenceComponent={
+          <span
+            className="diff"
+            id="value-0"
+          >
+            <span>
+              <i
+                className="stats-difference  material-icons font-weight-bold mr-1"
+                style={
+                  Object {
+                    "fontSize": "15px",
+                  }
+                }
+              >
+                arrow_upward
+              </i>
+              10
+              %
+            </span>
+            <Tooltip
+              delay={0}
+              placement="top"
+              target="value-0"
+            >
+              Compared to : Sep 05, 2017 - Sep 06, 2017
+            </Tooltip>
+          </span>
+        }
+        fill="warning"
+        formattedValue={20}
+        height={320}
+        innerRadius={0.83}
+        label="10%"
+        maxValue={5}
+        outerRadius={0.95}
+        startAngle={0}
+        total={null}
+        value={20}
+        width={320}
+      />
+    </div>
+  </div>
+  <div
+    className="metric"
+  >
+    <div
+      className="label"
+    >
+      Response Distribution
+      <span>
+        <i
+          className="info-icon help-icon material-icons ml-2"
+          id="title-response_distribution"
+        >
+          info_outline
+        </i>
+        <Tooltip
+          delay={0}
+          placement="top"
+          target="title-response_distribution"
+        >
+          Percentage of responses, grouped by the given score.
+        </Tooltip>
+      </span>
+    </div>
+    <div
+      className="mt-3 statsDisplay"
+    >
+      <DistributionKeyMetricStat
+        config={
+          Immutable.Map {
+            label: "Response Distribution",
+            tooltip: "Percentage of responses, grouped by the given score.",
+            type: "distribution",
+            variant: "star",
+            minValue: 1,
+            maxValue: 5,
+          }
+        }
+        formattedValue={
+          Immutable.Map {
+            1: 12,
+            2: 38,
+            3: 14.5,
+            4: 14.5,
+            5: 21,
+          }
+        }
+      />
+    </div>
   </div>
 </div>
 `;

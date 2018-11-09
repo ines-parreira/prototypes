@@ -3,10 +3,14 @@ import classnames from 'classnames'
 import {Link} from 'react-router'
 import {hasRole} from '../../../../utils'
 
-export default class SettingsNavbar extends React.Component {
+type Props = {
+    currentUser: Object,
+    currentAccount: Object,
+    location: Object
+}
+
+export default class SettingsNavbar extends React.Component<Props>{
     static propTypes = {
-        currentUser: PropTypes.object.isRequired,
-        location: PropTypes.object.isRequired
     }
 
     static contextTypes = {
@@ -16,6 +20,7 @@ export default class SettingsNavbar extends React.Component {
     render() {
         const {
             currentUser,
+            currentAccount,
             location: {pathname}
         } = this.props
 
@@ -74,6 +79,15 @@ export default class SettingsNavbar extends React.Component {
                 to: 'requests',
                 text: 'Requests',
                 className: 'd-none d-md-block hidden-sm-down',
+            })
+        }
+
+        if (currentAccount.get('extra_features').includes('satisfaction-surveys')) {
+            categories[1].links.splice(2, 0, {
+                requiredRole: 'admin',
+                to: 'satisfaction-surveys',
+                text: 'Satisfaction',
+                className: 'd-none d-md-block'
             })
         }
 

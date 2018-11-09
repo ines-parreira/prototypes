@@ -3,6 +3,7 @@
 :local {
     .table {
         width: 100%;
+        table-layout: fixed;
 
         thead tr {
             border-bottom: 1px solid @tableHeadBorder;
@@ -13,7 +14,13 @@
                 font-size: 11px;
                 letter-spacing: .6px;
                 text-transform: uppercase;
+
             }
+        }
+
+        .satisfaction-survey-link {
+            width: 50%;
+            word-break: break-word;
         }
 
         tbody tr {
@@ -27,6 +34,7 @@
             td:first-child {
                 font-weight: 500;
             }
+
         }
 
         .cell-wrapper {

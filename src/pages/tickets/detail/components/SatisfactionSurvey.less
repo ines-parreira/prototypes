@@ -1,0 +1,73 @@
+@import '~css/new/colors';
+
+:local .component {
+  display: flex;
+  position: relative;
+  padding: 4px 2em 16px 2em;
+  margin: 0 -30px;
+  word-break: break-word;
+
+  &.last::before {
+    height: 30px;
+  }
+
+  .star {
+    flex-shrink: 0;
+    width: 56px;
+
+    img {
+      width: 35px;
+    }
+  }
+
+  .body {
+    max-width: ~"calc(100% - 56px)"; // 56px being the width of `.star` above
+    flex-grow: 1;
+  }
+
+  .body_text {
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.41;
+    &:before, &:after {
+      content: '\201C';
+    }
+    &:after {
+      content: '\201D';
+    }
+  }
+
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    overflow: visible;
+    padding-bottom: .5em;
+    transition: padding .16s ease-out;
+  }
+
+  .date {
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .score {
+    font-weight: 900;
+  }
+
+  .author {
+    font-weight: 900;
+    margin-left: 5px;
+  }
+
+  .headerDetails {
+    float: left;
+    display: inline-flex;
+    align-items: center;
+
+    & > * {
+      margin-right: 6px;
+    }
+  }
+}

@@ -3,7 +3,7 @@ import axios from 'axios'
 import _get from 'lodash/get'
 import _find from 'lodash/find'
 
-import {hoursToSeconds} from './utils'
+import {daysToHours, hoursToSeconds} from './utils'
 
 // TODO @LouisBarranqueiro switch all configuration to modular version
 
@@ -795,6 +795,29 @@ export const TIMES_BEFORE_SPLIT = [
         label: '7 days'
     }
 ]
+
+/**
+ * Delay delta before a satisfaction survey is send
+ */
+export const DELAY_SURVEY_FOR = [
+    {
+        value: 2,
+        label: '2 hours'
+    },
+    {
+        value: daysToHours(1),
+        label: '1 day'
+    },
+    {
+        value: hoursToSeconds(2),
+        label: '2 days'
+    },
+    {
+        value: daysToHours(7),
+        label: '7 days'
+    }
+]
+
 
 /**
  * Max header length

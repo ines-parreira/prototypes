@@ -51,7 +51,6 @@ export function submitSetting(setting: settingType) {
         } else {
             promise = axios.post('/api/account/settings/', setting)
         }
-
         return promise
             .then((json = {}) => json.data)
             .then(setting => {

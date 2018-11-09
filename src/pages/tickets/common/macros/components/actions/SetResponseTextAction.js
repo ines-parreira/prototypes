@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {
+    Button,
     UncontrolledButtonDropdown,
     DropdownToggle,
     DropdownMenu,
@@ -68,33 +69,43 @@ export default class SetResponseTextAction extends React.Component {
             }
 
             return (
-                <UncontrolledButtonDropdown key={index}>
-                    <DropdownToggle
-                        color="secondary"
-                        caret
-                        type="button"
-                        className="dropdown-toggle btn-sm mr-2"
-                    >
-                        {category.name}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        {
-                            category.children.map((variable, indexVariable) => {
-                                return (
-                                    <DropdownItem
-                                        key={indexVariable}
-                                        type="button"
-                                        onClick={() => {
-                                            this._insertText(variable.value)
-                                        }}
-                                    >
-                                        {variable.name}
-                                    </DropdownItem>
-                                )
-                            })
-                        }
-                    </DropdownMenu>
-                </UncontrolledButtonDropdown>
+                category.children ? (
+                    <UncontrolledButtonDropdown key={index}>
+                        <DropdownToggle
+                            color="secondary"
+                            caret
+                            type="button"
+                            className="dropdown-toggle btn-sm mr-2"
+                        >
+                            {category.name}
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            {
+                                category.children.map((variable, indexVariable) => {
+                                    return (
+                                        <DropdownItem
+                                            key={indexVariable}
+                                            type="button"
+                                            onClick={() => {
+                                                this._insertText(variable.value)
+                                            }}
+                                        >
+                                            {variable.name}
+                                        </DropdownItem>
+                                    )
+                                })
+                            }
+                        </DropdownMenu>
+                    </UncontrolledButtonDropdown>
+                ) : (
+                  <Button
+                      color="link"
+                      style={{color: 'inherit'}}
+                      onClick={() => {this._insertText(category.value)}}
+                  >
+                      {category.name}
+                  </Button>
+                )
             )
         })
     }

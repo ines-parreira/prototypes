@@ -53,6 +53,15 @@ exports[`StatsNavbarView should render 1`] = `
       >
         Macros
       </Link>
+      <Link
+        activeClassName="active"
+        className="item"
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/stats/satisfaction"
+      >
+        Satisfaction
+      </Link>
     </div>
   </div>
 </div>

@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DonutKeyMetricStat should render a donut chart 1`] = `
+<div
+  className="container"
+>
+  <svg
+    className="donut"
+    viewBox="0 0 320 320"
+  >
+    <path
+      className="path-success"
+      d="M159.99,8.00
+              A152.00,152.00 0 1 1 131.51,309.30A5.76,5.76 0 1 1 135.11,290.44A132.79,132.79 0 1 0 159.99,27.20A5.76,5.76 0 1 1 159.99,8.00"
+    />
+    <path
+      className="path-empty"
+      d="M131.51,309.30
+              A152.00,152.00 0 0 1 159.99,8.00A5.76,5.76 0 0 0 159.99,27.20A132.79,132.79 0 0 0 135.11,290.44A5.76,5.76 0 0 0 131.51,309.30"
+    />
+  </svg>
+  <div
+    className="difference"
+  >
+    <div
+      className="value"
+    />
+    <div />
+  </div>
+</div>
+`;

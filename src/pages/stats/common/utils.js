@@ -39,9 +39,9 @@ export const renderDifference = (label, percentage, moreIsBetter) => {
     }
 
     return (
-        <span className={`stats-difference ${colorLabel}`}>
+        <span>
             <i
-                className="material-icons font-weight-bold mr-1"
+                className={`stats-difference ${colorLabel} material-icons font-weight-bold mr-1`}
                 style={{fontSize: '15px'}}
             >
                 {icon}

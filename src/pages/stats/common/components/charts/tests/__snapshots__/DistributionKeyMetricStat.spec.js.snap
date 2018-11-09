@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DistributionKeyMetricStat should render a distribution chart 1`] = `
+<div>
+  <div
+    className="mb-1 row"
+  >
+    <div
+      className="col-md-6 ta-left"
+    >
+      <DistributionVariantStat
+        currentValue={5}
+        maxValue={5}
+        minValue={1}
+        variant="star"
+      />
+    </div>
+    <div
+      className="value col-md-3 ta-right"
+    >
+      5
+    </div>
+  </div>
+  <div
+    className="mb-1 row"
+  >
+    <div
+      className="col-md-6 ta-left"
+    >
+      <DistributionVariantStat
+        currentValue={4}
+        maxValue={5}
+        minValue={1}
+        variant="star"
+      />
+    </div>
+    <div
+      className="value col-md-3 ta-right"
+    >
+      4
+    </div>
+  </div>
+  <div
+    className="mb-1 row"
+  >
+    <div
+      className="col-md-6 ta-left"
+    >
+      <DistributionVariantStat
+        currentValue={3}
+        maxValue={5}
+        minValue={1}
+        variant="star"
+      />
+    </div>
+    <div
+      className="value col-md-3 ta-right"
+    >
+      3
+    </div>
+  </div>
+  <div
+    className="mb-1 row"
+  >
+    <div
+      className="col-md-6 ta-left"
+    >
+      <DistributionVariantStat
+        currentValue={2}
+        maxValue={5}
+        minValue={1}
+        variant="star"
+      />
+    </div>
+    <div
+      className="value col-md-3 ta-right"
+    >
+      2
+    </div>
+  </div>
+  <div
+    className="mb-1 row"
+  >
+    <div
+      className="col-md-6 ta-left"
+    >
+      <DistributionVariantStat
+        currentValue={1}
+        maxValue={5}
+        minValue={1}
+        variant="star"
+      />
+    </div>
+    <div
+      className="value col-md-3 ta-right"
+    >
+      1
+    </div>
+  </div>
+</div>
+`;

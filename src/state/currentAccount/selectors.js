@@ -68,10 +68,15 @@ export const paymentIsActive = (state: stateType) => {
     return hasCreditCard(state)
 }
 
-export const getChatSettings = createSelector(
-    [getCurrentAccountState],
-    (account) => {
-        const settings = account.get('settings') || fromJS([])
-        return settings.find((setting) => setting.get('type') === 'chat') || fromJS({})
-    }
-)
+export const getSettingsByType = (type: string) => {
+    return createSelector(
+        [getCurrentAccountState],
+        (account) => {
+            const settings = account.get('settings') || fromJS([])
+            return settings.find((setting) => setting.get('type') === type) || fromJS({})
+        }
+    )
+}
+
+export const getChatSettings = getSettingsByType('chat')
+export const getSurveysSettings = getSettingsByType('satisfaction-surveys')

@@ -33,6 +33,7 @@ import ManageRequestsContainer from './settings/requests/ManageRequests'
 import ManageRequestItemContainer from './settings/requests/ManageRequestItem'
 import ImportDataContainer from './settings/importData/ImportDataContainer'
 import ImportZendeskDetail from './settings/importData/zendesk/ImportZendeskDetail'
+import SatisfactionSurveyView from './settings/satisfactionSurveys/SatisfactionSurveyView'
 
 import * as Team from './settings/team'
 import UserAuditList from './settings/team/UsersAudit/UserAuditList'
@@ -364,6 +365,13 @@ export default (
                     }}
                 />
             </Route>
+            <Route
+                path="satisfaction-surveys"
+                components={{
+                    content: UserRoleRequired(SatisfactionSurveyView, 'admin'),
+                    navbar: SettingsNavbarContainer
+                }}
+            />
         </Route>
         <Route path="*" component={NoMatch} containerPadding/>
     </Route>

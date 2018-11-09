@@ -1,10 +1,15 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
 
 import Navbar from '../../common/components/Navbar'
 import SettingsNavbar from './components/SettingsNavbar'
 
-class SettingsNavbarContainer extends React.Component {
+type Props = {
+    currentUser: Object,
+    currentAccount: Object
+}
+
+class SettingsNavbarContainer extends React.Component<Props>{
     render() {
         return (
             <Navbar activeContent="settings">
@@ -14,13 +19,10 @@ class SettingsNavbarContainer extends React.Component {
     }
 }
 
-SettingsNavbarContainer.propTypes = {
-    currentUser: PropTypes.object.isRequired,
-}
-
 function mapStateToProps(state) {
     return {
-        currentUser: state.currentUser
+        currentUser: state.currentUser,
+        currentAccount: state.currentAccount
     }
 }
 
