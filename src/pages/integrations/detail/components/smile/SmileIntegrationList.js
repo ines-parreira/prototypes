@@ -60,8 +60,8 @@ export default class SmileIntegrationList extends React.Component<Props, State> 
         const smileIntegrations = integrations.filter((v) => v.get('type') === 'smile')
 
         const imagesUrl = [
-            `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/smile-carousel_1.png`,
-            `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/smile-carousel_2.png`
+            `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/smile-carousel_1.jpg`,
+            `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/smile-carousel_2.jpg`
         ]
 
         const longTypeDescription = (

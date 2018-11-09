@@ -6,7 +6,7 @@ import _merge from 'lodash/merge'
 
 import css from './Notifications.less'
 
-export default _merge(reapopThemeWybo, {
+export default _merge({}, reapopThemeWybo, {
     notificationsContainer: {
         className: {
             main: `${reapopThemeWybo.notificationsContainer.className.main} ${css.container}`
