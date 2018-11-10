@@ -1,15 +1,12 @@
 const webpack = require('webpack')
 const path = require('path')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const ManifestPlugin = require('webpack-manifest-plugin')
 
 const pkg = require('./package.json')
 
 const __PRODUCTION__ = process.env.NODE_ENV === 'production'
 const HASH = process.env.GIT_COMMIT ? process.env.GIT_COMMIT : '[hash]'
-const GORGIAS_ASSETS_URL = __PRODUCTION__ ? 'https://gorgias-assets.gorgias.io' : ''
 
 const srcDir = path.join(__dirname, 'g/static/private')
 const buildDir = path.join(srcDir, '_build')
@@ -17,51 +14,17 @@ const jsBundleFile = __PRODUCTION__ ? `${HASH}.build.min.js` : 'build.js'
 const styleBundleFile = __PRODUCTION__ ? `${HASH}.build.min.css` : 'build.css'
 const vendorsBundleFile = __PRODUCTION__ ? `${HASH}.vendors.min.js` : 'vendors.js'
 
-const mode = __PRODUCTION__ ? 'production' : 'development'
-const devtool = 'source-map'
-const devServer = {
-    contentBase: [
-        buildDir,
-        path.join(__dirname, 'g')
-    ],
-    host: '0.0.0.0',
-    // disable host check for dev env (if using proxy)
-    disableHostCheck: !__PRODUCTION__,
-    headers: {
-        'Access-Control-Allow-Origin': '*'
-    }
-}
-const optimization = {
-    minimizer: [
-        new UglifyJsPlugin({
-            cache: true,
-            parallel: true,
-            sourceMap: true
-        }),
-        new OptimizeCSSAssetsPlugin({
-            cssProcessorOptions: {
-                map: {
-                    inline: false
-                }
-            }
-        })
-    ]
-}
+const pathinfo = !__PRODUCTION__
+const devtool = __PRODUCTION__ ? 'source-map' : 'eval'
 const cssLoaderOptions = {
     sourceMap: true
 }
-const urlLoader = {
-    loader: 'url-loader',
-    options: {
-        limit: 5000,
-        fallback: 'file-loader',
-        emitFile: false,
-        name: `${GORGIAS_ASSETS_URL}/[path][name].[ext]`,
-        context: 'g/'
-    }
+const devServer = {
+    contentBase: buildDir,
+    host: '0.0.0.0',
+    // disable host check for dev env (if using proxy)
+    disableHostCheck: !__PRODUCTION__
 }
-const imageExtRegex = /\.(jpe?g|png|gif)$/i
-const fontExtRegex = /\.(ttf|eot|svg|woff(2)?)$/i
 
 const cssOnlyPackages = ['bootstrap', 'font-awesome']
 const vendors = Object.keys(pkg.dependencies).filter(m => !cssOnlyPackages.includes(m))
@@ -69,13 +32,13 @@ const vendors = Object.keys(pkg.dependencies).filter(m => !cssOnlyPackages.inclu
 module.exports = (env = {}) => {
     if (env.dll) {
         return {
-            mode,
-            optimization,
+            devtool,
             entry: {
                 vendors,
             },
             output: {
                 path: buildDir,
+                pathinfo,
                 filename: vendorsBundleFile,
                 library: 'vendors',
             },
@@ -84,7 +47,7 @@ module.exports = (env = {}) => {
                 new webpack.ContextReplacementPlugin(/escodegen/, /^$/),
                 new webpack.DllPlugin({
                     name: '[name]',
-                    path: path.join(buildDir, `[name].${mode}.manifest.json`),
+                    path: path.join(buildDir, '[name].manifest.json'),
                 }),
                 new ManifestPlugin(),
             ],
@@ -103,86 +66,76 @@ module.exports = (env = {}) => {
     }
 
     return {
-        mode,
-        optimization,
-        devServer,
         devtool,
+        devServer,
         entry: {
             build: `${srcDir}/js/main.js`,
         },
         output: {
             path: buildDir,
+            pathinfo,
             filename: jsBundleFile
         },
         module: {
             rules: [
                 {
-                    test: /\.js$/i,
+                    test: /\.js$/,
                     exclude: /node_modules/,
                     loader: 'babel-loader?cacheDirectory'
                 },
                 {
-                    test: /\.css$/i,
-                    use: [
-                        MiniCssExtractPlugin.loader,
-                        {
-                            loader: 'css-loader',
-                            options: cssLoaderOptions
-                        }
-                    ]
+                    test: /.json$/,
+                    loader: 'json-loader'
                 },
                 {
-                    test: /\.less$/i,
-                    use: [
-                        MiniCssExtractPlugin.loader,
-                        {
-                            loader: 'css-loader',
-                            options: cssLoaderOptions
-                        },
-                        {
-                            loader: 'less-loader',
-                            options: cssLoaderOptions
-                        }
-                    ]
+                    test: /\.(jpe?g|png|gif)$/i,
+                    loader: 'url-loader'
                 },
                 {
-                    test: imageExtRegex,
-                    exclude: /node_modules/,
-                    use: urlLoader
+                    test: /\.css$/,
+                    use: ExtractTextPlugin.extract({
+                        fallback: 'style-loader',
+                        use: 'css-loader'
+                    })
+                },
+                {
+                    test: /\.less$/,
+                    use: ExtractTextPlugin.extract({
+                        fallback: 'style-loader',
+                        use: [
+                            {
+                                loader: 'css-loader',
+                                options: cssLoaderOptions
+                            },
+                            {
+                                loader: 'less-loader',
+                                options: cssLoaderOptions
+                            }
+                        ]
+                    })
                 },
                 // custom fonts
                 {
-                    test: fontExtRegex,
-                    exclude: /node_modules/,
-                    loader: urlLoader
+                    test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9=&.]+)?$/,
+                    loader: 'url-loader'
                 },
                 // audio
                 {
-                    test: /\.mp3$/i,
-                    loader: urlLoader
-                },
-                // embed node_modules assets
-                {
-                    test: {
-                        or: [
-                            imageExtRegex,
-                            fontExtRegex
-                        ]
-                    },
-                    include: /node_modules/,
+                    test: /\.mp3$/,
                     loader: 'url-loader'
                 }
             ]
         },
         plugins: [
-            new MiniCssExtractPlugin({
+            new ExtractTextPlugin({
                 filename: styleBundleFile,
+                allChunks: true
             }),
             new webpack.DllReferencePlugin({
-                manifest: require(`${buildDir}/vendors.${mode}.manifest.json`)
+                manifest: require(`${buildDir}/vendors.manifest.json`)
             }),
             new ManifestPlugin({
-                seed: require(`${buildDir}/manifest.json`)
+                cache: require(`${buildDir}/manifest.json`)
             }),
             new webpack.ProvidePlugin({
                 Tether: 'tether',
