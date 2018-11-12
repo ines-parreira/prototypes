@@ -210,14 +210,14 @@ export default class FacebookIntegrationSetup extends React.Component {
                                     </div>
 
                                     <p className="font-weight-medium">
-                                        Import your Facebook data (no Instagram for now):
+                                        Import your Facebook data:
                                     </p>
                                     <div className="d-md-flex">
                                         <FormGroup className="mr-5">
                                             <BooleanField
                                                 name={`${id}.import_history_enabled`}
                                                 type="checkbox"
-                                                label="Import 30 days of history (posts, comments and messages) as closed tickets"
+                                                label="Import 30 days of history (posts and comments) as closed tickets"
                                                 value={this._getValue(id, 'import_history_enabled')}
                                                 onChange={(value) => this._onChange(integration, value, id, 'import_history_enabled')}
                                             />
