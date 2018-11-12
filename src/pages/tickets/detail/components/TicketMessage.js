@@ -132,7 +132,12 @@ export class TicketMessage extends React.Component {
                                 </li>
                                 <li>
                                     <span className="text-faded">Date:</span>
-                                    <strong>{message.created_datetime}</strong>
+                                    <strong>
+                                        <DatetimeLabel
+                                            dateTime={message.created_datetime}
+                                            labelFormat='MM-DD-YYYY HH:mm'
+                                        />
+                                    </strong>
                                 </li>
                             </ul>
                         </div>

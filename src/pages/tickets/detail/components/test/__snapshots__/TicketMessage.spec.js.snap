@@ -90,7 +90,11 @@ exports[`TicketMessage component should add a -sent via campaign- label because 
                     >
                       Date:
                     </span>
-                    <strong />
+                    <strong>
+                      <DatetimeLabel
+                        labelFormat="MM-DD-YYYY HH:mm"
+                      />
+                    </strong>
                   </li>
                 </ul>
               </div>
@@ -238,7 +242,11 @@ exports[`TicketMessage component should add a -sent via rule- label because the 
                     >
                       Date:
                     </span>
-                    <strong />
+                    <strong>
+                      <DatetimeLabel
+                        labelFormat="MM-DD-YYYY HH:mm"
+                      />
+                    </strong>
                   </li>
                 </ul>
               </div>
