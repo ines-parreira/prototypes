@@ -69,7 +69,7 @@ export default class KeyMetricStat extends Component<Props> {
                     formattedValue={formattedValue}
                     label={`${metric.get('delta')}%`}
                     differenceComponent={this._renderDifference(valueTooltipId, metric, tooltipDelta)}
-                /> : this._defaultWrapper(value.toString(), metric, valueTooltipId, tooltipDelta)
+                /> : this._defaultWrapper(formattedValue, metric, valueTooltipId, tooltipDelta)
     }
 
     _formatValue = (value: string, metricType: string) => {

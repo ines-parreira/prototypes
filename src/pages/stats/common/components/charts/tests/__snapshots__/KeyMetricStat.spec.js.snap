@@ -35,7 +35,7 @@ exports[`KeyMetricStat should render a key metrics chart 1`] = `
         <div
           className="value"
         >
-          2220
+          37m 
         </div>
         <span
           className="diff"
@@ -98,7 +98,7 @@ exports[`KeyMetricStat should render a key metrics chart 1`] = `
         <div
           className="value"
         >
-          343529
+          3d 23h 
         </div>
         <span
           className="diff"
@@ -159,7 +159,7 @@ exports[`KeyMetricStat should render a key metrics chart 1`] = `
         <div
           className="value"
         >
-          20
+          20%
         </div>
         <span
           className="diff"
