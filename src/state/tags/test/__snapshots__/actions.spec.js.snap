@@ -16,7 +16,7 @@ exports[`tags actions bulkDelete 1`] = `
 Array [
   Object {
     "error": [Error: Request failed with status code 404],
-    "reason": "Unable to delete tags",
+    "reason": "Unable to delete tags, please try again.",
     "type": "ERROR",
   },
 ]

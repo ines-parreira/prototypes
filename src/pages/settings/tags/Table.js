@@ -2,13 +2,13 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
-import {Map, List} from 'immutable'
+import {List, Map} from 'immutable'
 
 import Row from './Row'
 import * as tagsSelectors from '../../../state/tags/selectors'
 
 type Props = {
-    getSelectedTagMeta: (number) => Map<*,*>,
+    getSelectedTagMeta: (number) => Map<*, *>,
     selectAll: boolean,
     tags: List<*>,
     columns: Array<*>,
@@ -25,6 +25,9 @@ class Table extends Component<Props> {
         columns: [{
             title: 'Tag',
             field: 'name',
+        }, {
+            title: 'Description',
+            field: 'description',
         }, {
             title: 'Tickets',
             field: 'usage',
@@ -65,47 +68,47 @@ class Table extends Component<Props> {
         return (
             <table className="view-table">
                 <thead>
-                    <tr>
-                        <td
-                            className="cell-wrapper cell-short clickable"
-                            onClick={onSelectAll}
-                        >
-                            <input
-                                type="checkbox"
-                                checked={selectAll}
-                            />
-                        </td>
-                        {
-                            columns.map((column, i) => (
-                                <td key={i}>
-                                    <div>
-                                        <div className="cell-wrapper">
-                                            <div onClick={this._onSort(column.field)}>
+                <tr>
+                    <td
+                        className="cell-wrapper cell-short clickable"
+                        onClick={onSelectAll}
+                    >
+                        <input
+                            type="checkbox"
+                            checked={selectAll}
+                        />
+                    </td>
+                    {
+                        columns.map((column, i) => (
+                            <td key={i}>
+                                <div>
+                                    <div className="cell-wrapper">
+                                        <div onClick={this._onSort(column.field)}>
                                             <span className="clickable filterable">
                                                 {column.title}
                                             </span>
-                                                <i className={this._sortIconClassName(sort, reverse, column.field)} />
-                                            </div>
+                                            <i className={this._sortIconClassName(sort, reverse, column.field)}/>
                                         </div>
                                     </div>
-                                </td>
-                            ))
-                        }
-                        <td />
-                    </tr>
+                                </div>
+                            </td>
+                        ))
+                    }
+                    <td/>
+                </tr>
                 </thead>
 
                 <tbody>
-                    {
-                        tags.map((tag, i) => (
-                            <Row
-                                key={i}
-                                row={tag}
-                                refresh={this.props.refresh}
-                                meta={getSelectedTagMeta(tag.get('id'))}
-                            />
-                        ))
-                    }
+                {
+                    tags.map((tag, i) => (
+                        <Row
+                            key={i}
+                            row={tag}
+                            refresh={this.props.refresh}
+                            meta={getSelectedTagMeta(tag.get('id'))}
+                        />
+                    ))
+                }
                 </tbody>
             </table>
         )

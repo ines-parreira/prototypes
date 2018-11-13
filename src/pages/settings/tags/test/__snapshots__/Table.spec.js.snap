@@ -46,6 +46,26 @@ exports[`ManageTags Table component should display the same number of rows as th
               <span
                 className="clickable filterable"
               >
+                Description
+              </span>
+              <i
+                className="fa fa-fw"
+              />
+            </div>
+          </div>
+        </div>
+      </td>
+      <td>
+        <div>
+          <div
+            className="cell-wrapper"
+          >
+            <div
+              onClick={[Function]}
+            >
+              <span
+                className="clickable filterable"
+              >
                 Tickets
               </span>
               <i

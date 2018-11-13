@@ -12,6 +12,7 @@ export const EDIT_TAG = 'EDIT_TAG'
 export const EDIT_TAG_CANCEL = 'EDIT_TAG_CANCEL'
 
 export const SAVE_TAG = 'SAVE_TAG'
+export const SAVE_TAG_ERROR = 'SAVE_TAG_ERROR'
 
 export const CREATE_TAG_START = 'CREATE_TAG_START'
 export const CREATE_TAG_SUCCESS = 'CREATE_TAG_SUCCESS'

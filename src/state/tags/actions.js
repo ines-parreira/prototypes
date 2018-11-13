@@ -10,11 +10,13 @@ import type {actionType, thunkActionType, dispatchType, getStateType} from '../t
 
 type existingTagType = {
     id: string,
-    name: string
+    name: string,
+    description?: string
 }
 
 type newTagType = {
-    name: string
+    name: string,
+    description?: string
 }
 
 
@@ -124,7 +126,11 @@ export const save = (tag: existingTagType): thunkActionType => {
                 })
             })
             .catch((error) => {
-                return dispatch(createErrorNotification(error, 'Unable to save tag'))
+                return dispatch({
+                    type: constants.SAVE_TAG_ERROR,
+                    verbose: true,
+                    error
+                })
             })
     }
 }
@@ -153,6 +159,7 @@ export const create = (tag: newTagType): thunkActionType => {
             }, (error) => {
                 return dispatch({
                     type: constants.CREATE_TAG_ERROR,
+                    verbose: true,
                     error
                 })
             })
@@ -172,7 +179,7 @@ export const remove = (id: string): thunkActionType => {
                     message: 'Tag deleted successfully',
                 }))
             }, (error) => {
-                return dispatch(createErrorNotification(error, 'Unable to delete the tag'))
+                return dispatch(createErrorNotification(error, 'Unable to delete the tag, please try again.'))
             })
     }
 }
@@ -190,7 +197,7 @@ export const bulkDelete = (ids: Array<string>): thunkActionType => {
                     message: `${ids.length} tags deleted successfully`
                 }))
             }, (error) => {
-                return dispatch(createErrorNotification(error, 'Unable to delete tags'))
+                return dispatch(createErrorNotification(error, 'Unable to delete tags, please try again.'))
             })
     }
 }

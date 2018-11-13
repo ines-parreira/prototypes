@@ -2,13 +2,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fromJS, Map} from 'immutable'
-import {
-    Form,
-    Button,
-    Popover,
-    PopoverHeader,
-    PopoverBody,
-} from 'reactstrap'
+import {Button, Form, Popover, PopoverBody, PopoverHeader,} from 'reactstrap'
 
 import InputField from '../../common/forms/InputField'
 import ColorPicker from '../../common/components/ColorPicker'
@@ -21,8 +15,8 @@ import * as tagsActions from '../../../state/tags/actions'
 
 
 type Props = {
-    row: Map<*,*>,
-    meta: Map<*,*>,
+    row: Map<*, *>,
+    meta: Map<*, *>,
     edit: typeof tagsActions.edit,
     save: typeof tagsActions.save,
     cancel: typeof tagsActions.cancel,
@@ -33,7 +27,8 @@ type Props = {
 
 type State = {
     name?: string,
-    decoration: Map<*,*>,
+    description?: string,
+    decoration: Map<*, *>,
     askRemoveConfirmation: boolean
 }
 
@@ -41,15 +36,17 @@ type State = {
 export class Row extends Component<Props, State> {
     state = {
         name: '',
+        description: '',
         decoration: fromJS({
             color: ''
         }),
         askRemoveConfirmation: false
     }
 
-    _setStateFromRow = (row: Map<*,*>) => {
+    _setStateFromRow = (row: Map<*, *>) => {
         this.setState({
             name: row.get('name'),
+            description: row.get('description') || '',
             decoration: row.get('decoration') || fromJS({
                 color: ''
             })
@@ -71,7 +68,7 @@ export class Row extends Component<Props, State> {
 
     _onSave = (event: Object) => {
         event.preventDefault()
-        let {name, decoration} = this.state
+        let {name, description, decoration} = this.state
         const {row, save, refresh} = this.props
 
         let obj = toJS(this.state.decoration)
@@ -84,6 +81,7 @@ export class Row extends Component<Props, State> {
 
         const updatedRow = row
             .set('name', name)
+            .set('description', description)
             .set('decoration', decoration)
 
         save(updatedRow.toJS()).then(() => {
@@ -109,6 +107,10 @@ export class Row extends Component<Props, State> {
 
     _changeName = (value: string) => {
         this.setState({name: value})
+    }
+
+    _changeDescription = (value: string) => {
+        this.setState({description: value})
     }
 
     _changeColor = (value: string) => {
@@ -148,6 +150,14 @@ export class Row extends Component<Props, State> {
                                         value={this.state.name}
                                         onChange={this._changeName}
                                         required
+                                        inline
+                                    />
+                                </div>
+                                <div className="mr-2">
+                                    <InputField
+                                        size={100}
+                                        value={this.state.description}
+                                        onChange={this._changeDescription}
                                         inline
                                     />
                                 </div>
@@ -200,6 +210,10 @@ export class Row extends Component<Props, State> {
                     </div>
                 </td>
 
+                <td>
+                    <div className="cell-wrapper">{row.get('description')}</div>
+                </td>
+
                 <td className="smallest">
                     <div className="cell-wrapper justify-content-center">
                         {row.get('usage')}
@@ -214,7 +228,7 @@ export class Row extends Component<Props, State> {
                             onClick={this._onEdit}
                             className="p-0 mr-3"
                         >
-                            <i className="fa fa-fw fa-pencil mr-1" />
+                            <i className="fa fa-fw fa-pencil mr-1"/>
                             Edit
                         </Button>
 
@@ -225,7 +239,7 @@ export class Row extends Component<Props, State> {
                             onClick={this._toggleRemoveConfirmation}
                             className="p-0"
                         >
-                            <i className="fa fa-fw fa-close mr-1" />
+                            <i className="fa fa-fw fa-close mr-1"/>
                             Delete
                         </Button>
                         <Popover
