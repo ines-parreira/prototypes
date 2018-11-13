@@ -1,39 +1,47 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
 import update from 'react/lib/update'
 import moment from 'moment'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import _debounce from 'lodash/debounce'
-import {stats as statsConfig} from '../../config/stats'
 import {Container} from 'reactstrap'
 
-import PeriodPicker from './common/PeriodPicker'
-import PageHeader from '../common/components/PageHeader'
+import {stats as statsConfig} from '../../config/stats'
 import {fieldEnumSearch} from '../../state/views/actions'
+import PageHeader from '../common/components/PageHeader'
+import * as statsActions from '../../state/stats/actions'
+import SatisfactionSurveyUpgrade from '../common/components/SatisfactionSurveyUpgrade'
+
+import PeriodPicker from './common/PeriodPicker'
 import SearchableSelectField from './common/SearchableSelectField'
 import Stat from './common/components/charts/Stat'
 
-class StatsView extends React.Component {
-    static propTypes = {
-        config: PropTypes.object.isRequired,
-        channels: PropTypes.array,
-        agents: PropTypes.array,
-        tags: PropTypes.array,
-        stats: PropTypes.object.isRequired,
-        meta: PropTypes.object.isRequired,
-        filters: PropTypes.object.isRequired,
-        fetchStat: PropTypes.func.isRequired,
-        setMeta: PropTypes.func.isRequired,
-        setFilters: PropTypes.func.isRequired,
-        fieldEnumSearch: PropTypes.func.isRequired,
-    }
 
+type Props = {
+    config: Object,
+    channels: Array,
+    agents: Array,
+    tags: Array,
+    stats: Object,
+    meta: Object,
+    filters: Object,
+    currentAccount: Object,
+    fetchStat: typeof statsActions.fetchStat,
+    setMeta: typeof statsActions.setMeta,
+    setFilters: typeof statsActions.setFilters,
+    fieldEnumSearch: typeof statsActions.fieldEnumSearch
+}
+
+
+class StatsView extends React.Component<Props> {
     constructor(props) {
         super(props)
 
         this.state = {
             tags: props.tags,
-            loadings: {} // store loading state of each stat on the view
+            loadings: {}, // store loading state of each stat on the view
+            isLightboxOpen: false,
+            currentImage: 0,
         }
     }
 
@@ -116,9 +124,12 @@ class StatsView extends React.Component {
     }
 
     render() {
-        const {config, filters, meta, stats} = this.props
+        const {config, filters, meta, stats, currentAccount} = this.props
         const startDatetime = moment(meta.get('start_datetime'))
         const endDatetime = moment(meta.get('end_datetime'))
+
+        const missingSatisfactionSurvey = config.get('name') === 'Satisfaction' &&
+            !currentAccount.get('extra_features').includes('satisfaction-surveys')
 
         return (
             <div className="stats full-width">
@@ -160,34 +171,39 @@ class StatsView extends React.Component {
                 </PageHeader>
 
                 <Container fluid style={{padding: 0}}>
-                    {config.get('stats').map((statName, idx) => {
-                        const isCurrentStatLoading = this.state.loadings[statName]
-                        const stat = stats.get(statName)
-                        const isLoading = isCurrentStatLoading || !stat
-                        const statConfig = statsConfig.get(statName)
-                        let padding = '30px'
-                        const statProps = isLoading ? {} : stat.toObject()
-                        // First key metrics statistics are stuck to the top
-                        if (idx === 0 && statConfig.get('style') === 'key-metrics') {
-                            padding = '0 0 30px'
-                        }
+                    { missingSatisfactionSurvey
+                        ? <SatisfactionSurveyUpgrade />
+                        : config.get('stats').map((statName, idx) => {
+                            const isCurrentStatLoading = this.state.loadings[statName]
+                            const stat = stats.get(statName)
+                            const isLoading = isCurrentStatLoading || !stat
+                            const statConfig = statsConfig.get(statName)
+                            let padding = '30px'
+                            const statProps = isLoading ? {} : stat.toObject()
+                            // First key metrics statistics are stuck to the top
+                            if (idx === 0 && statConfig.get('style') === 'key-metrics') {
+                                padding = '0 0 30px'
+                            }
 
-                        return (
-                            <div style={{padding}} key={idx}>
-                                <Stat
-                                    isLoading={isLoading}
-                                    name={statName}
-                                    config={statConfig}
-                                    filters={filters}
-                                    {...statProps}
-                                />
-                            </div>
-                        )
-                    })}
+                            return (
+                                <div style={{padding}} key={idx}>
+                                    <Stat
+                                        isLoading={isLoading}
+                                        name={statName}
+                                        config={statConfig}
+                                        filters={filters}
+                                        {...statProps}
+                                    />
+                                </div>
+                            )
+                        })
+                    }
                 </Container>
             </div>
         )
     }
 }
 
-export default connect(null, {fieldEnumSearch})(StatsView)
+export default connect((state) => ({
+    currentAccount: state.currentAccount
+}), {fieldEnumSearch})(StatsView)

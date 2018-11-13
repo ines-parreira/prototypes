@@ -1,0 +1,606 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StatsView render satisfaction surveys should render current survey stats 1`] = `
+<Connect(StatsView)
+  agents={
+    Immutable.List [
+    ]
+  }
+  channels={
+    Immutable.List [
+    ]
+  }
+  config={
+    Immutable.Map {
+      name: "Satisfaction",
+      stats: Immutable.List [
+      ],
+    }
+  }
+  fetchStat={[Function]}
+  fieldEnumSearch={[Function]}
+  filters={
+    Immutable.List [
+    ]
+  }
+  meta={
+    Immutable.List [
+    ]
+  }
+  setFilters={[Function]}
+  setMeta={[Function]}
+  stats={
+    Immutable.List [
+    ]
+  }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+  tags={
+    Immutable.List [
+    ]
+  }
+>
+  <StatsView
+    agents={
+      Immutable.List [
+      ]
+    }
+    channels={
+      Immutable.List [
+      ]
+    }
+    config={
+      Immutable.Map {
+        name: "Satisfaction",
+        stats: Immutable.List [
+        ],
+      }
+    }
+    currentAccount={
+      Immutable.Map {
+        extra_features: Immutable.List [
+          "satisfaction-surveys",
+        ],
+        settings: Immutable.List [
+          Immutable.Map {
+            data: Immutable.Map {
+            },
+            type: "satisfaction-surveys",
+          },
+        ],
+      }
+    }
+    fetchStat={[Function]}
+    fieldEnumSearch={[Function]}
+    filters={
+      Immutable.List [
+      ]
+    }
+    meta={
+      Immutable.List [
+      ]
+    }
+    setFilters={[Function]}
+    setMeta={[Function]}
+    stats={
+      Immutable.List [
+      ]
+    }
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+    tags={
+      Immutable.List [
+      ]
+    }
+  >
+    <div
+      className="stats full-width"
+    >
+      <PageHeader
+        className="mb-0"
+        title="Satisfaction"
+      >
+        <div
+          className="d-flex align-items-center justify-content-between flex-wrap page-header mb-0"
+        >
+          <h1
+            className="d-flex align-items-center"
+          >
+            Satisfaction
+          </h1>
+          <div>
+            <div
+              className="d-flex flex-wrap float-right"
+            />
+          </div>
+        </div>
+      </PageHeader>
+      <Container
+        fluid={true}
+        style={
+          Object {
+            "padding": 0,
+          }
+        }
+        tag="div"
+      >
+        <div
+          className="container-fluid"
+          style={
+            Object {
+              "padding": 0,
+            }
+          }
+        />
+      </Container>
+    </div>
+  </StatsView>
+</Connect(StatsView)>
+`;
+
+exports[`StatsView render satisfaction surveys should render the upgrade to pro component 1`] = `
+<Connect(StatsView)
+  agents={
+    Immutable.List [
+    ]
+  }
+  channels={
+    Immutable.List [
+    ]
+  }
+  config={
+    Immutable.Map {
+      name: "Satisfaction",
+      stats: Immutable.List [
+      ],
+    }
+  }
+  fetchStat={[Function]}
+  fieldEnumSearch={[Function]}
+  filters={
+    Immutable.List [
+    ]
+  }
+  meta={
+    Immutable.List [
+    ]
+  }
+  setFilters={[Function]}
+  setMeta={[Function]}
+  stats={
+    Immutable.List [
+    ]
+  }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+  tags={
+    Immutable.List [
+    ]
+  }
+>
+  <StatsView
+    agents={
+      Immutable.List [
+      ]
+    }
+    channels={
+      Immutable.List [
+      ]
+    }
+    config={
+      Immutable.Map {
+        name: "Satisfaction",
+        stats: Immutable.List [
+        ],
+      }
+    }
+    currentAccount={
+      Immutable.Map {
+        extra_features: Immutable.List [
+        ],
+        settings: Immutable.List [
+          Immutable.Map {
+            data: Immutable.Map {
+            },
+            type: "satisfaction-surveys",
+          },
+        ],
+      }
+    }
+    fetchStat={[Function]}
+    fieldEnumSearch={[Function]}
+    filters={
+      Immutable.List [
+      ]
+    }
+    meta={
+      Immutable.List [
+      ]
+    }
+    setFilters={[Function]}
+    setMeta={[Function]}
+    stats={
+      Immutable.List [
+      ]
+    }
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+    tags={
+      Immutable.List [
+      ]
+    }
+  >
+    <div
+      className="stats full-width"
+    >
+      <PageHeader
+        className="mb-0"
+        title="Satisfaction"
+      >
+        <div
+          className="d-flex align-items-center justify-content-between flex-wrap page-header mb-0"
+        >
+          <h1
+            className="d-flex align-items-center"
+          >
+            Satisfaction
+          </h1>
+          <div>
+            <div
+              className="d-flex flex-wrap float-right"
+            />
+          </div>
+        </div>
+      </PageHeader>
+      <Container
+        fluid={true}
+        style={
+          Object {
+            "padding": 0,
+          }
+        }
+        tag="div"
+      >
+        <div
+          className="container-fluid"
+          style={
+            Object {
+              "padding": 0,
+            }
+          }
+        >
+          <SatisfactionSurveyUpgrade>
+            <div
+              className="col mt-2"
+            >
+              <Alert
+                closeAriaLabel="Close"
+                color="danger"
+                isOpen={true}
+                tag="div"
+                transition={
+                  Object {
+                    "appear": true,
+                    "baseClass": "fade",
+                    "baseClassActive": "show",
+                    "enter": true,
+                    "exit": true,
+                    "in": true,
+                    "mountOnEnter": false,
+                    "onEnter": [Function],
+                    "onEntered": [Function],
+                    "onEntering": [Function],
+                    "onExit": [Function],
+                    "onExited": [Function],
+                    "onExiting": [Function],
+                    "tag": "div",
+                    "timeout": 150,
+                    "unmountOnExit": true,
+                  }
+                }
+              >
+                <Fade
+                  appear={true}
+                  baseClass="fade"
+                  baseClassActive="show"
+                  className="alert alert-danger"
+                  enter={true}
+                  exit={true}
+                  in={true}
+                  mountOnEnter={false}
+                  onEnter={[Function]}
+                  onEntered={[Function]}
+                  onEntering={[Function]}
+                  onExit={[Function]}
+                  onExited={[Function]}
+                  onExiting={[Function]}
+                  role="alert"
+                  tag="div"
+                  timeout={150}
+                  unmountOnExit={true}
+                >
+                  <Transition
+                    appear={true}
+                    enter={true}
+                    exit={true}
+                    in={true}
+                    mountOnEnter={false}
+                    onEnter={[Function]}
+                    onEntered={[Function]}
+                    onEntering={[Function]}
+                    onExit={[Function]}
+                    onExited={[Function]}
+                    onExiting={[Function]}
+                    timeout={150}
+                    unmountOnExit={true}
+                  >
+                    <div
+                      className="alert alert-danger fade"
+                      role="alert"
+                    >
+                      This feature is only available for Pro and above plans.
+                       
+                      <Link
+                        onlyActiveOnIndex={false}
+                        style={Object {}}
+                        to="/app/settings/billing/plans"
+                      >
+                        <a
+                          onClick={[Function]}
+                          style={Object {}}
+                        >
+                          Upgrade here.
+                        </a>
+                      </Link>
+                    </div>
+                  </Transition>
+                </Fade>
+              </Alert>
+              <p>
+                Keep track of the performance of your support team by sending a satisfaction survey after a ticket is closed.
+              </p>
+              <Carousel
+                arrows={false}
+                autoplay={true}
+                imagesUrl={
+                  Array [
+                    "/static/private/img/presentationals/satisfaction-survey-stats.png",
+                    "/static/private/img/presentationals/satisfaction-survey-ticket-details.png",
+                  ]
+                }
+                onImageClick={[Function]}
+                slidesToShow={2}
+              >
+                <div
+                  className="carouselContainer"
+                >
+                  <Slider
+                    arrows={false}
+                    autoplay={true}
+                    autoplaySpeed={3000}
+                    dots={true}
+                    slidesToShow={2}
+                  >
+                    <InnerSlider
+                      accessibility={true}
+                      adaptiveHeight={false}
+                      afterChange={null}
+                      appendDots={[Function]}
+                      arrows={false}
+                      autoplay={true}
+                      autoplaySpeed={3000}
+                      beforeChange={null}
+                      centerMode={false}
+                      centerPadding="50px"
+                      className=" unslicked"
+                      cssEase="ease"
+                      customPaging={[Function]}
+                      dots={true}
+                      dotsClass="slick-dots"
+                      draggable={true}
+                      easing="linear"
+                      edgeEvent={null}
+                      edgeFriction={0.35}
+                      fade={false}
+                      focusOnSelect={false}
+                      infinite={true}
+                      init={null}
+                      initialSlide={0}
+                      lazyLoad={false}
+                      nextArrow={null}
+                      pauseOnHover={true}
+                      prevArrow={null}
+                      responsive={null}
+                      rtl={false}
+                      slide="div"
+                      slidesToScroll={1}
+                      slidesToShow={2}
+                      speed={500}
+                      swipe={true}
+                      swipeEvent={null}
+                      swipeToSlide={false}
+                      touchMove={true}
+                      touchThreshold={5}
+                      unslick={true}
+                      useCSS={true}
+                      variableWidth={false}
+                      vertical={false}
+                      waitForAnimate={true}
+                    >
+                      <div
+                        className="slick-initialized slick-slider  unslicked"
+                      >
+                        <div
+                          className="slick-list"
+                        >
+                          <Track
+                            centerMode={false}
+                            centerPadding="50px"
+                            cssEase="ease"
+                            currentSlide={0}
+                            fade={false}
+                            focusOnSelect={null}
+                            infinite={true}
+                            lazyLoad={false}
+                            lazyLoadedList={Array []}
+                            listHeight={0}
+                            rtl={false}
+                            slideCount={2}
+                            slideHeight={0}
+                            slideWidth={0}
+                            slidesToScroll={1}
+                            slidesToShow={2}
+                            speed={500}
+                            trackStyle={
+                              Object {
+                                "WebkitTransform": "translate3d(0px, 0px, 0px)",
+                                "WebkitTransition": "",
+                                "msTransform": "translateX(0px)",
+                                "opacity": 1,
+                                "transform": "translate3d(0px, 0px, 0px)",
+                                "transition": "",
+                              }
+                            }
+                            unslick={true}
+                            variableWidth={false}
+                            vertical={false}
+                          >
+                            <div
+                              className="slick-track"
+                              style={
+                                Object {
+                                  "WebkitTransform": "translate3d(0px, 0px, 0px)",
+                                  "WebkitTransition": "",
+                                  "msTransform": "translateX(0px)",
+                                  "opacity": 1,
+                                  "transform": "translate3d(0px, 0px, 0px)",
+                                  "transition": "",
+                                }
+                              }
+                            >
+                              <div
+                                className="slick-slide slick-active slick-current carouselContent"
+                                data-index={0}
+                                onClick={[Function]}
+                                style={
+                                  Object {
+                                    "outline": "none",
+                                    "width": 0,
+                                  }
+                                }
+                                tabIndex="-1"
+                              >
+                                <a
+                                  href="/static/private/img/presentationals/satisfaction-survey-stats.png"
+                                  target="_blank"
+                                >
+                                  <img
+                                    onClick={[Function]}
+                                    src="/static/private/img/presentationals/satisfaction-survey-stats.png"
+                                  />
+                                </a>
+                              </div>
+                              <div
+                                className="slick-slide slick-active carouselContent"
+                                data-index={1}
+                                onClick={[Function]}
+                                style={
+                                  Object {
+                                    "outline": "none",
+                                    "width": 0,
+                                  }
+                                }
+                                tabIndex="-1"
+                              >
+                                <a
+                                  href="/static/private/img/presentationals/satisfaction-survey-ticket-details.png"
+                                  target="_blank"
+                                >
+                                  <img
+                                    onClick={[Function]}
+                                    src="/static/private/img/presentationals/satisfaction-survey-ticket-details.png"
+                                  />
+                                </a>
+                              </div>
+                            </div>
+                          </Track>
+                        </div>
+                      </div>
+                    </InnerSlider>
+                  </Slider>
+                </div>
+              </Carousel>
+              <Lightbox
+                backdropClosesModal={true}
+                closeButtonTitle="Close (Esc)"
+                currentImage={0}
+                enableKeyboardInput={true}
+                imageCountSeparator=" of "
+                images={
+                  Array [
+                    Object {
+                      "src": "/static/private/img/presentationals/satisfaction-survey-stats.png",
+                    },
+                    Object {
+                      "src": "/static/private/img/presentationals/satisfaction-survey-ticket-details.png",
+                    },
+                  ]
+                }
+                isOpen={false}
+                leftArrowTitle="Previous (Left arrow key)"
+                onClickNext={[Function]}
+                onClickPrev={[Function]}
+                onClickShowNextImage={true}
+                onClickThumbnail={[Function]}
+                onClose={[Function]}
+                preloadNextImage={true}
+                rightArrowTitle="Next (Right arrow key)"
+                showCloseButton={true}
+                showImageCount={true}
+                showThumbnails={true}
+                theme={Object {}}
+                thumbnailOffset={2}
+                width={1024}
+              >
+                <Portal />
+              </Lightbox>
+            </div>
+          </SatisfactionSurveyUpgrade>
+        </div>
+      </Container>
+    </div>
+  </StatsView>
+</Connect(StatsView)>
+`;

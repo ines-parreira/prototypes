@@ -809,7 +809,7 @@ export const DELAY_SURVEY_FOR = [
         label: '1 day'
     },
     {
-        value: hoursToSeconds(2),
+        value: daysToHours(2),
         label: '2 days'
     },
     {

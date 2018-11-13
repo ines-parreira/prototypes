@@ -16,6 +16,7 @@ describe('SatisfactionSurveyView', () => {
     beforeEach(() => {
         store = mockStore({
             currentAccount: fromJS({
+                extra_features: ['satisfaction-surveys'],
                 settings: [{
                     data: {},
                     type: 'satisfaction-surveys'
@@ -27,6 +28,27 @@ describe('SatisfactionSurveyView', () => {
 
     describe('render', () => {
         it('should render current survey settings form', () => {
+            const component = mount(
+                <SatisfactionSurveyView
+                    store={store}
+                    submitSetting={jest.fn()}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should render the upgrade to pro component', () => {
+            store = mockStore({
+                currentAccount: fromJS({
+                    extra_features: [],
+                    settings: [{
+                        data: {},
+                        type: 'satisfaction-surveys'
+                    }]
+                })
+            })
+
             const component = mount(
                 <SatisfactionSurveyView
                     store={store}

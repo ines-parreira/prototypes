@@ -5,7 +5,6 @@ import {hasRole} from '../../../../utils'
 
 type Props = {
     currentUser: Object,
-    currentAccount: Object,
     location: Object
 }
 
@@ -20,7 +19,6 @@ export default class SettingsNavbar extends React.Component<Props>{
     render() {
         const {
             currentUser,
-            currentAccount,
             location: {pathname}
         } = this.props
 
@@ -82,14 +80,12 @@ export default class SettingsNavbar extends React.Component<Props>{
             })
         }
 
-        if (currentAccount.get('extra_features').includes('satisfaction-surveys')) {
-            categories[1].links.splice(2, 0, {
-                requiredRole: 'admin',
-                to: 'satisfaction-surveys',
-                text: 'Satisfaction',
-                className: 'd-none d-md-block'
-            })
-        }
+        categories[1].links.splice(2, 0, {
+            requiredRole: 'admin',
+            to: 'satisfaction-surveys',
+            text: 'Satisfaction',
+            className: 'd-none d-md-block'
+        })
 
         return (
             <div>
