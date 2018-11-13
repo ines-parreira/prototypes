@@ -181,7 +181,7 @@ export default class FacebookIntegrationDetail extends React.Component {
                             <BooleanField
                                 name="import_history_enabled"
                                 type="checkbox"
-                                label="Import 30 days of history (posts, comments and messages) as closed tickets"
+                                label="Import 30 days of history (posts and comments) as closed tickets"
                                 value={this.state.settings.import_history_enabled}
                                 onChange={value => this._onChange(value, 'import_history_enabled')}
                             />
