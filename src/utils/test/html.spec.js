@@ -14,6 +14,7 @@ describe('html util', () => {
             runScripts: 'dangerously',
             resources: 'usable',
         }
+        const htmlWithEvent = '<iframe src="/" onload="window._xss=true;"></iframe>'
         let dom
 
         // failed expect in timeouts require try/catch and done.fail
@@ -33,21 +34,20 @@ describe('html util', () => {
             dom = new JSDOM(doc, domOptions)
         })
 
-        // skipped because jsdom does not fire onerror
-        it.skip('should run inline event handlers', (done) => {
-            const dom = new JSDOM('<img src="xss.jpg" onerror="window._xss=true;" />', domOptions)
-
-            // // timeout required for jsdom to load the image
+        it('should run inline event handlers', (done) => {
+            const dom = new JSDOM('<body></body>', domOptions)
+            var div = dom.window.document.createElement('div')
+            div.innerHTML = htmlWithEvent
+            dom.window.document.body.appendChild(div)
+            // timeout required for jsdom to trigger the event
             setTimeout(callback(done, () => {
                 expect(dom.window._xss).toBe(true)
             }), 100)
         })
 
         it('should not run inline event handlers', (done) => {
-            const html = '<img src="xss.jpg" onerror="window._xss=true" />'
-            parseHtml(html, dom.window)
-
-            // timeout required for jsdom to load the image
+            parseHtml(htmlWithEvent, dom.window)
+            // timeout required for jsdom to trigger the event
             setTimeout(callback(done, () => {
                 expect(dom.window._xss).toBe(undefined)
             }), 100)
@@ -58,16 +58,13 @@ describe('html util', () => {
             expect(dom.window._xss).toBe(true)
         })
 
-        it('should not run script tags', (done) => {
+        it('should not run script tags in parsed html', () => {
             const html = '<script>window._xss=true<script/>'
             parseHtml(html, dom.window)
-
-            setTimeout(callback(done, () => {
-                expect(dom.window._xss).toBe(undefined)
-            }), 100)
+            expect(dom.window._xss).toBe(undefined)
         })
 
-        it('should fix invalid html structure', (done) => {
+        it('should fix invalid html structure', () => {
             const html = `
                 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional //EN">
                 <!doctype html>
@@ -86,27 +83,21 @@ describe('html util', () => {
             `
             const parsed = parseHtml(html, dom.window)
 
-            setTimeout(callback(done, () => {
-                expect(parsed.documentElement.innerHTML).toMatchSnapshot()
-            }), 100)
+            expect(parsed.documentElement.innerHTML).toMatchSnapshot()
         })
 
-        it('should not remove invalid characters', (done) => {
+        it('should not remove invalid characters', () => {
             const html = 'Thank you <3 you are the best'
             const parsed = parseHtml(html, dom.window)
 
-            setTimeout(callback(done, () => {
-                expect(parsed.documentElement.innerHTML).toMatchSnapshot()
-            }), 100)
+            expect(parsed.documentElement.innerHTML).toMatchSnapshot()
         })
 
-        it('should not remove quotes', (done) => {
+        it('should not remove quotes', () => {
             const html = 'these "quotes" here'
             const parsed = parseHtml(html, dom.window)
 
-            setTimeout(callback(done, () => {
-                expect(parsed.documentElement.innerHTML).toMatchSnapshot()
-            }), 100)
+            expect(parsed.documentElement.innerHTML).toMatchSnapshot()
         })
     })
 
