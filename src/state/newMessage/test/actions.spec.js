@@ -639,7 +639,7 @@ describe('actions', () => {
                     integrations: fromJS(integrationsState)
                 })
 
-                store.dispatch(actions.submitTicketMessage()).then(() => {
+                return store.dispatch(actions.submitTicketMessage()).then(() => {
                     expect(store.getActions()).toMatchSnapshot()
                 })
             })
@@ -670,7 +670,7 @@ describe('actions', () => {
                     integrations: fromJS(integrationsState)
                 })
 
-                store.dispatch(actions.submitTicketMessage()).then(() => {
+                return store.dispatch(actions.submitTicketMessage()).then(() => {
                     expect(store.getActions()).toMatchSnapshot()
                 })
             })

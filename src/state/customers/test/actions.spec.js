@@ -70,7 +70,7 @@ describe('customers actions', () => {
             .then(() => {
                 store.clearActions()
 
-                store
+                return store
                     .dispatch(actions.fetchCustomerHistory(2, {
                         successCondition: () => false,
                     }))

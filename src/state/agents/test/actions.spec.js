@@ -36,14 +36,14 @@ describe('agents actions', () => {
 
         mockServer.onPost('/api/users/').reply(200, {data})
 
-        store.dispatch(actions.createAgent(data))
+        return store.dispatch(actions.createAgent(data))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('delete agent', () => {
         mockServer.onDelete('/api/users/1/').reply(200)
 
-        store.dispatch(actions.deleteAgent(1))
+        return store.dispatch(actions.deleteAgent(1))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 

@@ -217,15 +217,9 @@ describe('ticket actions', () => {
         })
 
         it('should not dispatch actions (same status)', () => {
-            store = mockStore({ticket: initialState.set('trashed_datetime', null)})
-
-            store.dispatch(actions.setTrashed(null)).then(() => {
-                expect(store.getActions()).toEqual([])
-            })
-
             store = mockStore({ticket: initialState.set('trashed_datetime', moment.utc())})
 
-            store.dispatch(actions.setTrashed(moment.utc())).then(() => {
+            return store.dispatch(actions.setTrashed(moment.utc())).then(() => {
                 expect(store.getActions()).toEqual([])
             })
         })
@@ -236,7 +230,7 @@ describe('ticket actions', () => {
         it('should snooze ticket', () => {
             store = mockStore({ticket: initialState.set('snooze_datetime', null)})
 
-            store.dispatch(actions.setSnooze('2017-12-21')).then(() => {
+            return store.dispatch(actions.setSnooze('2017-12-21')).then(() => {
                 expect(store.getActions()).toMatchSnapshot()
             })
         })
@@ -245,7 +239,7 @@ describe('ticket actions', () => {
             const callbackSpy = jest.fn()
             store = mockStore({ticket: initialState.set('snooze_datetime', null)})
 
-            store.dispatch(actions.setSnooze('2017-12-21', callbackSpy)).then(() => {
+            return store.dispatch(actions.setSnooze('2017-12-21', callbackSpy)).then(() => {
                 expect(store.getActions()).toMatchSnapshot()
                 expect(callbackSpy).toHaveBeenCalled()
             })
@@ -369,7 +363,7 @@ describe('ticket actions', () => {
         it('should fetch the ticket because the user is currently on it', () => {
             mockServer.onGet('/api/tickets/1/').reply(200, {id: 1, messages: []})
 
-            store.dispatch(actions.handleMessageError(1))
+            return store.dispatch(actions.handleMessageError(1))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
 
         })
@@ -377,7 +371,7 @@ describe('ticket actions', () => {
         it('should not fetch the ticket because the user is not currently on it', () => {
             mockServer.onGet('/api/tickets/2/').reply(200, {id: 2, messages: []})
 
-            store.dispatch(actions.handleMessageError(2))
+            return store.dispatch(actions.handleMessageError(2))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })
@@ -386,14 +380,14 @@ describe('ticket actions', () => {
         it('should fetch the ticket because the user is currently on it', () => {
             mockServer.onGet('/api/tickets/1/').reply(200, {id: 1, messages: []})
 
-            store.dispatch(actions.handleMessageActionError(1))
+            return store.dispatch(actions.handleMessageActionError(1))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
         it('should not fetch the ticket because the user is not currently on it', () => {
             mockServer.onGet('/api/tickets/2/').reply(200, {id: 2, messages: []})
 
-            store.dispatch(actions.handleMessageActionError(2))
+            return store.dispatch(actions.handleMessageActionError(2))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })
@@ -606,7 +600,7 @@ describe('ticket actions', () => {
                 ticket: initialState
             })
 
-            store.dispatch(findAndSetCustomer('foo@gorgias.io')).then(() => {
+            return store.dispatch(findAndSetCustomer('foo@gorgias.io')).then(() => {
                 expect(store.getActions()).toEqual([])
             })
         })
@@ -617,7 +611,7 @@ describe('ticket actions', () => {
                 ticket: initialState
             })
 
-            store.dispatch(findAndSetCustomer('foo@gorgias.io')).then(() => {
+            return store.dispatch(findAndSetCustomer('foo@gorgias.io')).then(() => {
                 expect(store.getActions()).toEqual([])
             })
         })
@@ -630,7 +624,7 @@ describe('ticket actions', () => {
                 ticket: initialState
             })
 
-            store.dispatch(findAndSetCustomer('foo@gorgias.io')).then(() => {
+            return store.dispatch(findAndSetCustomer('foo@gorgias.io')).then(() => {
                 expect(store.getActions()).toMatchSnapshot()
             })
         })

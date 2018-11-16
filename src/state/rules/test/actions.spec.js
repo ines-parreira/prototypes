@@ -29,7 +29,7 @@ describe('rules actions', () => {
             const ruleData = {id: 12, code: 'if this then that'}
             mockServer.onPost('/api/rules/').reply(201, ruleData)
 
-            store.dispatch(actions.create(ruleData)).then(() => {
+            return store.dispatch(actions.create(ruleData)).then(() => {
                 expect(store.getActions()).toMatchSnapshot()
             })
         })
@@ -38,7 +38,7 @@ describe('rules actions', () => {
             const ruleData = {id: 12, code: 'if this then that'}
             mockServer.onPost('/api/rules/').reply(400, {msg: 'bad request'})
 
-            store.dispatch(actions.create(ruleData)).then(() => {
+            return store.dispatch(actions.create(ruleData)).then(() => {
                 expect(store.getActions()).toMatchSnapshot()
             })
         })
