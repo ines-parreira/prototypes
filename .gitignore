@@ -41,6 +41,7 @@ __pycache__/
 .npm/**/*
 pip-log.txt
 pip-delete-this-directory.txt
+yarn-error.log
 
 # Unit test / coverage reports
 htmlcov/
@@ -77,6 +78,9 @@ g/static/*/_build/*
 # docker-compose env_file
 .env
 
+# docker-compose override
+docker-compose.override.yml
+
 # linters and other code inspection tools
 .mypy_cache/
 
@@ -85,3 +89,6 @@ secrets.yaml
 
 # gcloud tmp files
 transaction.yaml
+
+# V8 compile cache
+v8-compile-cache-*
