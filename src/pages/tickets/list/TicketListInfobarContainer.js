@@ -20,6 +20,17 @@ import css from './TicketListInfobarContainer.less'
 import type {Map, List} from 'immutable'
 import Video from '../../common/components/Video'
 
+const CheckIcon = ({condition}: {condition: boolean}) => (
+    <i
+        className={classnames('material-icons', {
+            'text-success': condition,
+            'text-faded': !condition,
+        })}
+    >
+        check_circle
+    </i>
+)
+
 type Props = {
     agents: List<*>,
     currentUser: Map<*, *>,
@@ -85,12 +96,7 @@ class TicketListInfobarContainer extends React.Component<Props> {
                                 })
                             }}
                         >
-                            <i
-                                className={classnames('fa fa-fw fa-check-circle', {
-                                    'text-success': hasShopifyIntegration,
-                                    'text-faded': !hasShopifyIntegration,
-                                })}
-                            />
+                            <CheckIcon condition={hasShopifyIntegration}/>
                             <div>Connect Shopify</div>
                         </Link>
                         <Link
@@ -102,12 +108,7 @@ class TicketListInfobarContainer extends React.Component<Props> {
                                 })
                             }}
                         >
-                            <i
-                                className={classnames('fa fa-fw fa-check-circle', {
-                                    'text-success': hasVerifiedEmailIntegration,
-                                    'text-faded': !hasVerifiedEmailIntegration,
-                                })}
-                            />
+                            <CheckIcon condition={hasVerifiedEmailIntegration}/>
                             <div>Connect email</div>
                         </Link>
                         <Link
@@ -119,12 +120,7 @@ class TicketListInfobarContainer extends React.Component<Props> {
                                 })
                             }}
                         >
-                            <i
-                                className={classnames('fa fa-fw fa-check-circle', {
-                                    'text-success': hasConnectedChat,
-                                    'text-faded': !hasConnectedChat,
-                                })}
-                            />
+                            <CheckIcon condition={hasConnectedChat}/>
                             <div>Connect live chat</div>
                         </Link>
                         <Link
@@ -136,12 +132,7 @@ class TicketListInfobarContainer extends React.Component<Props> {
                                 })
                             }}
                         >
-                            <i
-                                className={classnames('fa fa-fw fa-check-circle', {
-                                    'text-success': hasConnectedFacebook,
-                                    'text-faded': !hasConnectedFacebook,
-                                })}
-                            />
+                            <CheckIcon condition={hasConnectedFacebook}/>
                             <div>Connect Facebook &amp; Instagram</div>
                         </Link>
                         <Link
@@ -153,12 +144,7 @@ class TicketListInfobarContainer extends React.Component<Props> {
                                 })
                             }}
                         >
-                            <i
-                                className={classnames('fa fa-fw fa-check-circle', {
-                                    'text-success': hasInvitedTeamMembers,
-                                    'text-faded': !hasInvitedTeamMembers,
-                                })}
-                            />
+                            <CheckIcon condition={hasInvitedTeamMembers}/>
                             <div>Add team members</div>
                         </Link>
                     </div>

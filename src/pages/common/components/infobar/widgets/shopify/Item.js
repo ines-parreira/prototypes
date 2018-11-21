@@ -77,13 +77,17 @@ class AfterTitle extends React.Component { // eslint-disable-line
                 ],
                 title: (
                     <div>
-                        <i className="fa fa-fw fa-repeat mr-2" />
+                        <i className="material-icons mr-2">
+                            refresh
+                        </i>
                         Refund item
                     </div>
                 ),
                 child: (
                     <div>
-                        <i className="fa fa-fw fa-repeat mr-2" />
+                        <i className="material-icons mr-2">
+                            refresh
+                        </i>
                         Refund
                     </div>
                 )

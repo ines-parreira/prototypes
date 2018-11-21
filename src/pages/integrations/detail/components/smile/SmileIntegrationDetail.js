@@ -124,7 +124,9 @@ class SmileIntegrationDetail extends React.Component<Props, State> {
                                             <Alert color="info" className="mb-4">
                                                 <p>
                                                     <b className="alert-heading">
-                                                        <i className="fa fa-refresh fa-spin mr-2" />
+                                                        <i className="material-icons md-spin mr-2">
+                                                            autorenew
+                                                        </i>
                                                         Importing your Smile customers
                                                     </b>
                                                 </p>

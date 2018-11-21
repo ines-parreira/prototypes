@@ -190,7 +190,9 @@ export class ManageRequests extends React.Component<Props, State> {
                                             to={`/app/settings/requests/update/${r.get('id')}`}
                                             className="p-0 mr-3 btn-link"
                                         >
-                                            <i className="fa fa-fw fa-pencil mr-1"/>
+                                            <i className="material-icons mr-1">
+                                                edit
+                                            </i>
                                             Edit
                                         </Link>
 
@@ -201,7 +203,9 @@ export class ManageRequests extends React.Component<Props, State> {
                                             onClick={() => this._toggleRemoveConfirmation(r.get('id'))}
                                             className="p-0"
                                         >
-                                            <i className="fa fa-fw fa-close mr-1"/>
+                                            <i className="material-icons mr-1">
+                                                clear
+                                            </i>
                                             Delete
                                         </Button>
                                         <Popover

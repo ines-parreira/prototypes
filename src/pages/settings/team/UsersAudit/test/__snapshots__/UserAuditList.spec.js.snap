@@ -115,23 +115,26 @@ exports[`UserAuditList component mounts correctly 1`] = `
         timePicker={true}
       >
         <Button
-          className="selected-date-range-btn"
           color="secondary"
           disabled={false}
           tag="button"
           type="button"
         >
           <i
-            className="fa fa-fw fa-calendar mr-2"
-          />
+            className="material-icons mr-2"
+          >
+            calendar_today
+          </i>
           <span>
             December 29, 2017 5:00 PM
              - 
             January 4, 2018 5:00 PM
           </span>
           <i
-            className="fa fa-fw fa-caret-down"
-          />
+            className="material-icons"
+          >
+            arrow_drop_down
+          </i>
         </Button>
       </DatePicker>
     </div>

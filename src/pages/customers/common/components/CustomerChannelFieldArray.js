@@ -62,7 +62,9 @@ class CustomerChannelFieldArray extends React.Component {
                                     type="button"
                                     onClick={() => this._remove(index)}
                                 >
-                                    <i className="fa fa-fw fa-trash-o fa-lg" />
+                                    <i className="material-icons md-2">
+                                        delete_outline
+                                    </i>
                                 </Button>
                             </Col>
                         </Row>
@@ -75,7 +77,9 @@ class CustomerChannelFieldArray extends React.Component {
                     onClick={this._add}
                     color="secondary"
                 >
-                    <i className="fa fa-fw fa-plus mr-2" />
+                    <i className="material-icons mr-2">
+                        add
+                    </i>
                     {addLabel}
                 </Button>
             </FormGroup>

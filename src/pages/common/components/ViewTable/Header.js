@@ -119,7 +119,9 @@ export default class Header extends React.Component {
                                     className="btn btn-secondary mr-2"
                                     to={this._goBackUrl()}
                                 >
-                                    <i className="fa fa-fw fa-arrow-left mr-2"/>
+                                    <i className="material-icons mr-2">
+                                        arrow_back
+                                    </i>
                                     Back
                                 </Link>
                             )

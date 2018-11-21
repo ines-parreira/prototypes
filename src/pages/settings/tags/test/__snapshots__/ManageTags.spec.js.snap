@@ -178,8 +178,10 @@ exports[`ManageTags component mounts correctly 1`] = `
                   type="submit"
                 >
                   <i
-                    className="fa fa-fw fa-check"
-                  />
+                    className="material-icons"
+                  >
+                    check
+                  </i>
                 </Button>
               </div>
             </Form>

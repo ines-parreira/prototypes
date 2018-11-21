@@ -122,7 +122,9 @@ export class EmailIntegrationCreateForwarding extends React.Component<Props, Sta
                                 color="primary"
                                 data-clipboard-target="#forwarding-email"
                             >
-                                <i className="fa fa-fw fa-files-o mr-2" />
+                                <i className="material-icons mr-2">
+                                    file_copy
+                                </i>
                                 {this.state.isCopied ? 'Copied!' : 'Copy'}
                             </Button>
                         </InputGroupAddon>

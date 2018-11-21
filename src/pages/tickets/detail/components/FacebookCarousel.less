@@ -1,3 +1,8 @@
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+
+@import '~css/new/icons';
+
 @margins: 4px;
 
 :local {
@@ -19,8 +24,10 @@
 
       .slick-prev:before,
       .slick-next:before {
+        .material-icons();
+
+        font-size: 20px;
         color: #333;
-        font-family: FontAwesome;
       }
 
       .slick-prev {
@@ -28,7 +35,7 @@
         border-radius: 0 3px 3px 0;
 
         &:before {
-          content: '\f104';
+          content: '\e5cb';
         }
       }
 
@@ -37,7 +44,7 @@
         border-radius: 3px 0 0 3px;
 
         &:before {
-          content: '\f105';
+          content: '\e5cc';
         }
       }
     }

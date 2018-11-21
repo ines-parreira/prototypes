@@ -650,7 +650,7 @@ exports[`BillingPaymentMethod Stripe should render a loader 1`] = `
         }
       >
         <i
-          className="fa fa-fw fa-circle-o-notch fa-spin"
+          className="icon-custom icon-circle-o-notch md-spin"
         />
       </div>
     </div>

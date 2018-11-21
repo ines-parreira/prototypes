@@ -23,7 +23,7 @@ export default class Loader extends Component<Props> {
         return (
             <div className={classnames(css.container, className)}>
                 <div className={css.inner} style={{minHeight}}>
-                    <i className="fa fa-fw fa-circle-o-notch fa-spin" />
+                    <i className="icon-custom icon-circle-o-notch md-spin" />
                     {
                         !inline && message && (
                             <div className="mt-3">

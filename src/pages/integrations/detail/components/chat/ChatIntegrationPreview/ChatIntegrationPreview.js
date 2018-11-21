@@ -127,21 +127,27 @@ export default class ChatIntegrationPreview extends React.Component<Props> {
                                 className={classnames(css.agent, css.first)}
                                 style={{borderColor: shouldHeaderDisplayOnline ? mainColor : offlineColor}}
                             >
-                                <i className="fa fa-user"/>
+                            <i className="material-icons">
+                                person
+                            </i>
                                 {statusMarker}
                             </div>
                             <div
                                 className={classnames(css.agent, css.middle)}
                                 style={{borderColor: shouldHeaderDisplayOnline ? mainColor : offlineColor}}
                             >
-                                <i className="fa fa-user"/>
+                            <i className="material-icons">
+                                person
+                            </i>
                                 {statusMarker}
                             </div>
                             <div
                                 className={classnames(css.agent, css.last)}
                                 style={{borderColor: shouldHeaderDisplayOnline ? mainColor : offlineColor}}
                             >
-                                <i className="fa fa-user"/>
+                            <i className="material-icons">
+                                person
+                            </i>
                                 {statusMarker}
                             </div>
                         </div>

@@ -114,8 +114,10 @@ exports[`TicketMessage component should add a -sent via campaign- label because 
               to="/app/settings/integrations/smooch_inside/118/campaigns/123"
             >
               <i
-                className="fa fa-fw fa-cog mr-1"
-              />
+                className="material-icons mr-1"
+              >
+                settings
+              </i>
               Campaign
             </Link>
           </b>
@@ -266,8 +268,10 @@ exports[`TicketMessage component should add a -sent via rule- label because the 
               to="/app/settings/rules?ruleId=4"
             >
               <i
-                className="fa fa-fw fa-cog mr-1"
-              />
+                className="material-icons mr-1"
+              >
+                settings
+              </i>
               Rule
             </Link>
           </b>

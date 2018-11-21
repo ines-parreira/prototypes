@@ -143,7 +143,9 @@ class App extends React.Component<Props> {
                                     color="link"
                                     onClick={() => this.props.openPanel('navbar')}
                                 >
-                                    <i className="fa fa-fw fa-bars"/>
+                                    <i className="material-icons">
+                                        menu
+                                    </i>
                                 </Button>
                                 {
                                     currentRoute.infobarOnMobile && (

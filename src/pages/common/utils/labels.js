@@ -11,7 +11,6 @@ import {Badge} from 'reactstrap'
 import Tooltip from '../components/Tooltip'
 import Avatar from '../components/Avatar'
 import {formatDatetime, toJS, isImmutable} from '../../../utils'
-import {sourceTypeToIcon} from '../../../config/ticket'
 
 import * as customersHelpers from '../../../state/customers/helpers'
 import {DEFAULT_TAG_COLOR} from '../../../config'
@@ -193,7 +192,10 @@ export const IntegrationsDetailLabel = ({integration}: {integration: Map<*,*>}) 
 
     return (
         <span>
-            <i className={classnames('mr-2', sourceTypeToIcon(integration.get('type')))}/>
+            <SourceIcon
+                type={integration.get('type')}
+                className="mr-2"
+            />
             {label}
         </span>
     )

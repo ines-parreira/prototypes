@@ -93,13 +93,17 @@ class AfterTitle extends React.Component<AfterTitleProps> { // eslint-disable-li
                 tooltip: 'This will refund the order in Shopify.',
                 title: (
                     <div>
-                        <i className="fa fa-fw fa-repeat mr-2" />
+                        <i className="material-icons mr-2">
+                            refresh
+                        </i>
                         Refund order
                     </div>
                 ),
                 child: (
                     <div>
-                        <i className="fa fa-fw fa-repeat mr-2" />
+                        <i className="material-icons mr-2">
+                            refresh
+                        </i>
                         Refund
                     </div>
                 )
@@ -119,13 +123,17 @@ class AfterTitle extends React.Component<AfterTitleProps> { // eslint-disable-li
                 tooltip: 'This will cancel the order in Shopify.',
                 title: (
                     <div>
-                        <i className="fa fa-fw fa-ban mr-1" />
+                        <i className="material-icons mr-1">
+                            block
+                        </i>
                         Cancel order
                     </div>
                 ),
                 child: (
                     <div>
-                        <i className="fa fa-fw fa-ban mr-1" />
+                        <i className="material-icons mr-1">
+                            block
+                        </i>
                         Cancel
                     </div>
                 )
@@ -141,13 +149,17 @@ class AfterTitle extends React.Component<AfterTitleProps> { // eslint-disable-li
                 tooltip: 'This will create a new order with the same items and mark it as paid.',
                 title: (
                     <div>
-                        <i className="fa fa-fw fa-clone mr-2" />
+                        <i className="material-icons mr-2">
+                            filter_none
+                        </i>
                         Duplicate order
                     </div>
                 ),
                 child: (
                     <div>
-                        <i className="fa fa-fw fa-clone mr-2" />
+                        <i className="material-icons mr-2">
+                            filter_none
+                        </i>
                         Duplicate
                     </div>
                 )

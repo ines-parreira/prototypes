@@ -210,8 +210,10 @@ exports[`RealtimeMessagingIntegrationInstall component should display a placehol
                 type="button"
               >
                 <i
-                  className="fa fa-fw fa-files-o mr-2"
-                />
+                  className="material-icons mr-2"
+                >
+                  file_copy
+                </i>
                 Copy
               </Button>
             </div>
@@ -425,8 +427,10 @@ exports[`RealtimeMessagingIntegrationInstall component should display the code s
                 type="button"
               >
                 <i
-                  className="fa fa-fw fa-files-o mr-2"
-                />
+                  className="material-icons mr-2"
+                >
+                  file_copy
+                </i>
                 Copy
               </Button>
             </div>
@@ -633,8 +637,10 @@ exports[`RealtimeMessagingIntegrationInstall component should display the list o
                 type="button"
               >
                 <i
-                  className="fa fa-fw fa-files-o mr-2"
-                />
+                  className="material-icons mr-2"
+                >
+                  file_copy
+                </i>
                 Copy
               </Button>
             </div>

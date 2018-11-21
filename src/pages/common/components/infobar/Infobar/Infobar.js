@@ -281,7 +281,9 @@ export class Infobar extends React.Component<Props, State> {
                             type="button"
                             onClick={() => this._resetSelected()}
                         >
-                            <i className="fa fa-fw fa-arrow-left mr-2"/>
+                            <i className="material-icons md-2 mr-2">
+                                arrow_back
+                            </i>
                             Back
                         </Button>
                         <InfobarCustomerActions

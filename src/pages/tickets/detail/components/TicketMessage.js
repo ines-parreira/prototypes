@@ -261,7 +261,9 @@ export class TicketMessage extends React.Component {
                             tag="a"
                             to={sentViaLink}
                         >
-                            <i className="fa fa-fw fa-cog mr-1"/>
+                            <i className="material-icons mr-1">
+                                settings
+                            </i>
                             {sentViaLabel}
                         </Link>
                     </b>
@@ -450,8 +452,10 @@ export class TicketMessage extends React.Component {
                                     <span>
                                         <i
                                             id="read-status"
-                                            className="fa fa-check mr-2"
-                                        />
+                                            className="material-icons mr-2"
+                                        >
+                                            check
+                                        </i>
                                         <Tooltip
                                             placement="top"
                                             target="read-status"

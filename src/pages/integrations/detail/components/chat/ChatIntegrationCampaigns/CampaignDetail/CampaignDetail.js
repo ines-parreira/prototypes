@@ -163,9 +163,11 @@ class TriggerRow extends React.Component {
                 }
                 <div className={css.closeWrapper}>
                     <i
-                        className='fa fa-times text-danger clickable'
+                        className="material-icons text-danger clickable"
                         onClick={onDelete}
-                    />
+                    >
+                        clear
+                    </i>
                 </div>
             </div>
         )
@@ -400,7 +402,9 @@ export class CampaignDetail extends React.Component {
                                             type="button"
                                             className="mr-2"
                                         >
-                                            <i className="fa fa-plus fa-fw mr-2"/>
+                                            <i className="material-icons mr-2">
+                                                add
+                                            </i>
                                             Add condition
                                         </DropdownToggle>
                                         <DropdownMenu>

@@ -228,7 +228,9 @@ export class Row extends Component<Props, State> {
                             onClick={this._onEdit}
                             className="p-0 mr-3"
                         >
-                            <i className="fa fa-fw fa-pencil mr-1"/>
+                            <i className="material-icons mr-1">
+                                edit
+                            </i>
                             Edit
                         </Button>
 
@@ -239,7 +241,9 @@ export class Row extends Component<Props, State> {
                             onClick={this._toggleRemoveConfirmation}
                             className="p-0"
                         >
-                            <i className="fa fa-fw fa-close mr-1"/>
+                            <i className="material-icons mr-1">
+                                clear
+                            </i>
                             Delete
                         </Button>
                         <Popover

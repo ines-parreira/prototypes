@@ -82,7 +82,9 @@ class RuleRow extends React.Component<Props, State> {
                                             className="ml-2"
                                             color="danger"
                                         >
-                                            <i className="fa fa-fw fa-exclamation-triangle mr-2"/>
+                                            <i className="material-icons mr-2">
+                                                warning
+                                            </i>
                                             SYSTEM
                                         </Badge>
                                     )

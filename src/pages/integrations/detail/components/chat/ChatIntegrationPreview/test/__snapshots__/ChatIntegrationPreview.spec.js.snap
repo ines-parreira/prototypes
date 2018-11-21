@@ -30,8 +30,10 @@ exports[`ChatIntegrationPreview should display quickReplies 1`] = `
           }
         >
           <i
-            className="fa fa-user"
-          />
+            className="material-icons"
+          >
+            person
+          </i>
           <div
             className="onlineMarker"
           />
@@ -45,8 +47,10 @@ exports[`ChatIntegrationPreview should display quickReplies 1`] = `
           }
         >
           <i
-            className="fa fa-user"
-          />
+            className="material-icons"
+          >
+            person
+          </i>
           <div
             className="onlineMarker"
           />
@@ -60,8 +64,10 @@ exports[`ChatIntegrationPreview should display quickReplies 1`] = `
           }
         >
           <i
-            className="fa fa-user"
-          />
+            className="material-icons"
+          >
+            person
+          </i>
           <div
             className="onlineMarker"
           />
@@ -182,8 +188,10 @@ exports[`ChatIntegrationPreview should display the offline status because chat i
           }
         >
           <i
-            className="fa fa-user"
-          />
+            className="material-icons"
+          >
+            person
+          </i>
           <div
             className="offlineMarker"
           />
@@ -197,8 +205,10 @@ exports[`ChatIntegrationPreview should display the offline status because chat i
           }
         >
           <i
-            className="fa fa-user"
-          />
+            className="material-icons"
+          >
+            person
+          </i>
           <div
             className="offlineMarker"
           />
@@ -212,8 +222,10 @@ exports[`ChatIntegrationPreview should display the offline status because chat i
           }
         >
           <i
-            className="fa fa-user"
-          />
+            className="material-icons"
+          >
+            person
+          </i>
           <div
             className="offlineMarker"
           />
@@ -338,8 +350,10 @@ exports[`ChatIntegrationPreview should display the offline status with online co
           }
         >
           <i
-            className="fa fa-user"
-          />
+            className="material-icons"
+          >
+            person
+          </i>
           <div
             className="offlineMarker"
           />
@@ -353,8 +367,10 @@ exports[`ChatIntegrationPreview should display the offline status with online co
           }
         >
           <i
-            className="fa fa-user"
-          />
+            className="material-icons"
+          >
+            person
+          </i>
           <div
             className="offlineMarker"
           />
@@ -368,8 +384,10 @@ exports[`ChatIntegrationPreview should display the offline status with online co
           }
         >
           <i
-            className="fa fa-user"
-          />
+            className="material-icons"
+          >
+            person
+          </i>
           <div
             className="offlineMarker"
           />
@@ -494,8 +512,10 @@ exports[`ChatIntegrationPreview should display the online status because chat is
           }
         >
           <i
-            className="fa fa-user"
-          />
+            className="material-icons"
+          >
+            person
+          </i>
           <div
             className="onlineMarker"
           />
@@ -509,8 +529,10 @@ exports[`ChatIntegrationPreview should display the online status because chat is
           }
         >
           <i
-            className="fa fa-user"
-          />
+            className="material-icons"
+          >
+            person
+          </i>
           <div
             className="onlineMarker"
           />
@@ -524,8 +546,10 @@ exports[`ChatIntegrationPreview should display the online status because chat is
           }
         >
           <i
-            className="fa fa-user"
-          />
+            className="material-icons"
+          >
+            person
+          </i>
           <div
             className="onlineMarker"
           />

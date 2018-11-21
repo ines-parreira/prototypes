@@ -52,13 +52,17 @@ class AfterTitle extends React.Component { // eslint-disable-line
                 options: [{value: 'rechargeCancelSubscription'}],
                 title: (
                     <div>
-                        <i className="fa fa-fw fa-ban mr-1" />
+                        <i className="material-icons mr-2">
+                            refresh
+                        </i>
                         Cancel subscription
                     </div>
                 ),
                 child: (
                     <div>
-                        <i className="fa fa-fw fa-ban mr-1" />
+                        <i className="material-icons mr-2">
+                            refresh
+                        </i>
                         Cancel
                     </div>
                 )

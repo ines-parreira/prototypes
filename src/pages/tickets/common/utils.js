@@ -32,7 +32,7 @@ export function getPersonLabelFromSource(person, sourceType) {
 }
 
 /**
- * Map file content type like 'image/png' to Font-Awesome class
+ * Map file content type like 'image/png' to Material-Icons name
  * @param {string} contentType E.G : 'image/png'
  * @returns {string}
  */

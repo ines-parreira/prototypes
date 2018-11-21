@@ -67,7 +67,9 @@ export class EmailIntegrationCreateVerification extends React.Component<Props, S
         return (
             <div>
                 <Alert color="info" className="mb-4">
-                    <i className="fa fa-refresh fa-spin mr-2"/>
+                    <i className="material-icons md-spin mr-2">
+                        autorenew
+                    </i>
                     We're waiting to receive your verification email.
                 </Alert>
                 <p>

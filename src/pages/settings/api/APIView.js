@@ -141,7 +141,9 @@ export default class APIView extends React.Component<Props, State> {
                                     color="primary"
                                     data-clipboard-target="#url"
                                 >
-                                    <i className="fa fa-fw fa-files-o mr-2"/>
+                                    <i className="material-icons mr-2">
+                                        file_copy
+                                    </i>
                                     {this.state.isCopiedurl ? 'Copied!' : 'Copy'}
                                 </Button>
                             </InputGroupAddon>
@@ -162,7 +164,9 @@ export default class APIView extends React.Component<Props, State> {
                                     color="primary"
                                     data-clipboard-target="#email"
                                 >
-                                    <i className="fa fa-fw fa-files-o mr-2"/>
+                                    <i className="material-icons mr-2">
+                                        file_copy
+                                    </i>
                                     {this.state.isCopiedemail ? 'Copied!' : 'Copy'}
                                 </Button>
                             </InputGroupAddon>
@@ -183,7 +187,9 @@ export default class APIView extends React.Component<Props, State> {
                                     color="primary"
                                     data-clipboard-target="#apiKey"
                                 >
-                                    <i className="fa fa-fw fa-files-o mr-2"/>
+                                    <i className="material-icons mr-2">
+                                        file_copy
+                                    </i>
                                     {this.state.isCopiedapiKey ? 'Copied!' : 'Copy'}
                                 </Button>
                             </InputGroupAddon>

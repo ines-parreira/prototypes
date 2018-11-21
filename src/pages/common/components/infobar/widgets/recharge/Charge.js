@@ -53,13 +53,17 @@ export class SubscriptionAfterTitle extends React.Component { // eslint-disable-
                 tooltip: 'Skip the charge for this subscription on Recharge',
                 title: (
                     <div>
-                        <i className="fa fa-fw fa-ban mr-1" />
+                        <i className="material-icons mr-1">
+                            block
+                        </i>
                         Skip charge on subscription
                     </div>
                 ),
                 child: (
                     <div>
-                        <i className="fa fa-fw fa-ban mr-1" />
+                        <i className="material-icons mr-1">
+                            block
+                        </i>
                         Skip
                     </div>
                 )

@@ -11,9 +11,16 @@ exports[`components utils : labels RenderLabel ValueRendered should display name
   }
 >
   <span>
-    <i
-      className="mr-2 fa fa-fw fa-phone"
-    />
+    <SourceIcon
+      className="mr-2"
+      type="aircall"
+    >
+      <i
+        className="icon d-inline-block material-icons mr-2"
+      >
+        phone
+      </i>
+    </SourceIcon>
     common (aircall style)
   </span>
 </IntegrationsDetailLabel>
@@ -30,9 +37,16 @@ exports[`components utils : labels RenderLabel ValueRendered should display name
   }
 >
   <span>
-    <i
-      className="mr-2 fa fa-fw fa-envelope blue"
-    />
+    <SourceIcon
+      className="mr-2"
+      type="gmail"
+    >
+      <i
+        className="icon d-inline-block material-icons mr-2"
+      >
+        email
+      </i>
+    </SourceIcon>
     common &lt;inlined email&gt;
   </span>
 </IntegrationsDetailLabel>
@@ -51,9 +65,16 @@ exports[`components utils : labels RenderLabel ValueRendered should display the 
   }
 >
   <span>
-    <i
-      className="mr-2 fa fa-fw fa-envelope blue"
-    />
+    <SourceIcon
+      className="mr-2"
+      type="email"
+    >
+      <i
+        className="icon d-inline-block material-icons mr-2"
+      >
+        email
+      </i>
+    </SourceIcon>
     common &lt;specific&gt;
   </span>
 </IntegrationsDetailLabel>
@@ -72,9 +93,16 @@ exports[`components utils : labels RenderLabel ValueRendered should display the 
   }
 >
   <span>
-    <i
-      className="mr-2 fa fa-fw fa-envelope blue"
-    />
+    <SourceIcon
+      className="mr-2"
+      type="email"
+    >
+      <i
+        className="icon d-inline-block material-icons mr-2"
+      >
+        email
+      </i>
+    </SourceIcon>
     common
   </span>
 </IntegrationsDetailLabel>
@@ -93,9 +121,14 @@ exports[`components utils : labels RenderLabel ValueRendered should display the 
   }
 >
   <span>
-    <i
-      className="mr-2 fa fa-fw fa-facebook-square blue"
-    />
+    <SourceIcon
+      className="mr-2"
+      type="facebook"
+    >
+      <i
+        className="icon d-inline-block icon-custom icon-facebook mr-2"
+      />
+    </SourceIcon>
     common
   </span>
 </IntegrationsDetailLabel>

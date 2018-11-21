@@ -293,7 +293,9 @@ class InfobarCustomerInfo extends React.Component {
                             style={{paddingLeft: 0}}
                         >
                             Show more
-                            <i className="fa fa-fw fa-caret-down ml-2" />
+                            <i className="material-icons md-2 ml-2">
+                                arrow_drop_down
+                            </i>
                         </Button>
                     )
                 }

@@ -102,8 +102,10 @@ exports[`ViewTable::Header search view 1`] = `
         to="/app/tickets"
       >
         <i
-          className="fa fa-fw fa-arrow-left mr-2"
-        />
+          className="material-icons mr-2"
+        >
+          arrow_back
+        </i>
         Back
       </Link>
       <EditableTitle

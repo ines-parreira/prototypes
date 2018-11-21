@@ -631,8 +631,10 @@ exports[`ChatIntegrationQuickReplies component should render defaults because th
                               }
                             >
                               <i
-                                className="fa fa-user"
-                              />
+                                className="material-icons"
+                              >
+                                person
+                              </i>
                               <div
                                 className="onlineMarker"
                               />
@@ -646,8 +648,10 @@ exports[`ChatIntegrationQuickReplies component should render defaults because th
                               }
                             >
                               <i
-                                className="fa fa-user"
-                              />
+                                className="material-icons"
+                              >
+                                person
+                              </i>
                               <div
                                 className="onlineMarker"
                               />
@@ -661,8 +665,10 @@ exports[`ChatIntegrationQuickReplies component should render defaults because th
                               }
                             >
                               <i
-                                className="fa fa-user"
-                              />
+                                className="material-icons"
+                              >
+                                person
+                              </i>
                               <div
                                 className="onlineMarker"
                               />
@@ -1415,8 +1421,10 @@ exports[`ChatIntegrationQuickReplies component should render quick replies from 
                               }
                             >
                               <i
-                                className="fa fa-user"
-                              />
+                                className="material-icons"
+                              >
+                                person
+                              </i>
                               <div
                                 className="onlineMarker"
                               />
@@ -1430,8 +1438,10 @@ exports[`ChatIntegrationQuickReplies component should render quick replies from 
                               }
                             >
                               <i
-                                className="fa fa-user"
-                              />
+                                className="material-icons"
+                              >
+                                person
+                              </i>
                               <div
                                 className="onlineMarker"
                               />
@@ -1445,8 +1455,10 @@ exports[`ChatIntegrationQuickReplies component should render quick replies from 
                               }
                             >
                               <i
-                                className="fa fa-user"
-                              />
+                                className="material-icons"
+                              >
+                                person
+                              </i>
                               <div
                                 className="onlineMarker"
                               />

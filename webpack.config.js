@@ -63,7 +63,7 @@ const urlLoader = {
 const imageExtRegex = /\.(jpe?g|png|gif)$/i
 const fontExtRegex = /\.(ttf|eot|svg|woff(2)?)$/i
 
-const cssOnlyPackages = ['bootstrap', 'font-awesome']
+const cssOnlyPackages = ['bootstrap']
 const vendors = Object.keys(pkg.dependencies).filter(m => !cssOnlyPackages.includes(m))
 
 module.exports = (env = {}) => {

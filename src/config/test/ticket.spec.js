@@ -216,20 +216,6 @@ describe('Config: ticket', () => {
         })
     })
 
-    describe('sourceTypeToIcon', () => {
-        it('is string', () => {
-            expect(_isString(ticketConfig.sourceTypeToIcon())).toBe(true)
-
-            ticketConfig.USABLE_SOURCE_TYPES.forEach((type) => {
-                expect(_isString(ticketConfig.sourceTypeToIcon(type))).toBe(true)
-            })
-
-            ticketConfig.SYSTEM_SOURCE_TYPES.forEach((type) => {
-                expect(_isString(ticketConfig.sourceTypeToIcon(type))).toBe(true)
-            })
-        })
-    })
-
     describe('getVariablesList', () => {
         const list = ticketConfig.getVariablesList()
 

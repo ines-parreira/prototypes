@@ -85,8 +85,10 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
               tag="button"
             >
               <i
-                className="fa fa-fw fa-files-o mr-2"
-              />
+                className="material-icons mr-2"
+              >
+                file_copy
+              </i>
               Copied!
             </Button>
           </InputGroupAddon>
@@ -288,8 +290,10 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
               tag="button"
             >
               <i
-                className="fa fa-fw fa-files-o mr-2"
-              />
+                className="material-icons mr-2"
+              >
+                file_copy
+              </i>
               Copy
             </Button>
           </InputGroupAddon>

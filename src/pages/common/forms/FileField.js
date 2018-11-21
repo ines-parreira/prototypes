@@ -155,7 +155,9 @@ export class FileField extends InputField<Props, State> {
                     {
                         isUploading ? (
                                 <div>
-                                    <i className="fa fa-fw fa-circle-o-notch fa-spin mr-2" />
+                                    <i className="material-icons md-spin mr-2">
+                                        refresh
+                                    </i>
                                     Uploading...
                                 </div>
                             ) : (

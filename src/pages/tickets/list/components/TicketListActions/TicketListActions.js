@@ -227,7 +227,9 @@ class TicketListActions extends React.Component<Props, State> {
         if (this.state.isLoadingTags) {
             return (
                 <DropdownItem disabled>
-                    <i className="fa fa-fw fa-circle-o-notch fa-spin mr-2"/>
+                    <i className="material-icons md-spin mr-2">
+                        refresh
+                    </i>
                     Loading...
                 </DropdownItem>
             )

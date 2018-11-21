@@ -1,11 +1,13 @@
 // @flow
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import classnames from 'classnames'
 import {List, Map} from 'immutable'
+import classnames from 'classnames'
 
 import Row from './Row'
 import * as tagsSelectors from '../../../state/tags/selectors'
+
+import css from './Table.less'
 
 type Props = {
     getSelectedTagMeta: (number) => Map<*, *>,
@@ -42,19 +44,24 @@ class Table extends Component<Props> {
         return this.props.sort
     }
 
-    _sortIconClassName = (sort: string, reverse: ?boolean, field: string) => {
-        return classnames('fa fa-fw', {
-            'fa-sort-desc': (sort === field && !reverse),
-            'fa-sort-asc': (sort === field && reverse)
-        })
+    _sortIcon = (sort: string, reverse: ?boolean, field: string) => {
+        if (sort !== field) {
+            return null
+        }
+        const iconName = reverse ? 'arrow_drop_up' : 'arrow_drop_down'
+        return (
+            <i className={classnames('material-icons md-1', css.sort)}>
+                {iconName}
+            </i>
+        )
     }
 
     _onSort = (sort: string) => {
         return () => {
-            let reverse = this.props.reverse
+            let reverse = false
             // already sorted by this prop
             if (this.props.sort === sort) {
-                reverse = !reverse
+                reverse = !this.props.reverse
             }
 
             this.props.onSort(sort, reverse)
@@ -66,7 +73,7 @@ class Table extends Component<Props> {
         const sort = this._getSort()
 
         return (
-            <table className="view-table">
+            <table className={classnames('view-table', css.table)}>
                 <thead>
                 <tr>
                     <td
@@ -81,14 +88,15 @@ class Table extends Component<Props> {
                     {
                         columns.map((column, i) => (
                             <td key={i}>
-                                <div>
-                                    <div className="cell-wrapper">
-                                        <div onClick={this._onSort(column.field)}>
-                                            <span className="clickable filterable">
-                                                {column.title}
-                                            </span>
-                                            <i className={this._sortIconClassName(sort, reverse, column.field)}/>
-                                        </div>
+                                <div
+                                    className="cell-wrapper"
+                                    onClick={this._onSort(column.field)}
+                                >
+                                    <div>
+                                        <span>
+                                            {column.title}
+                                        </span>
+                                        {this._sortIcon(sort, reverse, column.field)}
                                     </div>
                                 </div>
                             </td>

@@ -541,8 +541,10 @@ exports[`Infobar component should render selected customer 1`] = `
             type="button"
           >
             <i
-              className="fa fa-fw fa-arrow-left mr-2"
-            />
+              className="material-icons md-2 mr-2"
+            >
+              arrow_back
+            </i>
             Back
           </Button>
           <InfobarCustomerActions

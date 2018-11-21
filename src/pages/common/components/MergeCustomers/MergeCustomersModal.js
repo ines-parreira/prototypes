@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
-import classnames from 'classnames'
 import _clone from 'lodash/clone'
 import _pick from 'lodash/pick'
 import _omit from 'lodash/omit'
@@ -10,9 +9,9 @@ import Modal from '../Modal'
 
 import {JSONTree} from './../JSONTree'
 
-import {sourceTypeToIcon} from '../../../../config/ticket'
 import BinaryChoiceField from '../BinaryChoiceField'
 import MultiSelectBinaryChoiceField from '../MultiSelectBinaryChoiceField'
+import SourceIcon from '../SourceIcon'
 import {isCustomerDataPresent, isCustomerDataValid} from '../infobar/utils'
 import ConfirmButton from '../ConfirmButton'
 import Tooltip from '../Tooltip'
@@ -79,7 +78,10 @@ class MergeCustomersModal extends React.Component {
                 .map((channel, idx) => ({
                     label: (
                         <div key={idx}>
-                            <i className={classnames('mr-2', sourceTypeToIcon(channel.get('type')))} />
+                            <SourceIcon
+                                className="mr-2"
+                                type={channel.get('type')}
+                            />
                             {channel.get('address')}
                         </div>
                     ),
@@ -142,7 +144,9 @@ class MergeCustomersModal extends React.Component {
                                 {
                                     label: (
                                         <span>
-                                            <i className="fa fa-fw fa-user mr-2" />
+                                            <i className="material-icons mr-2">
+                                                person
+                                            </i>
                                             {destinationCustomer.get('name')}
                                         </span>
                                     ),
@@ -151,7 +155,9 @@ class MergeCustomersModal extends React.Component {
                                 {
                                     label: (
                                         <span>
-                                            <i className="fa fa-fw fa-user mr-2" />
+                                            <i className="material-icons mr-2">
+                                                person
+                                            </i>
                                             {sourceCustomer.get('name')}
                                         </span>
                                     ),
@@ -168,8 +174,10 @@ class MergeCustomersModal extends React.Component {
                                 <span>
                                         <i
                                             id="merge-primary-email"
-                                            className="fa fa-fw fa-question-circle ml-2"
-                                        />
+                                            className="material-icons ml-2"
+                                        >
+                                            help
+                                        </i>
                                         <Tooltip
                                             placement="top"
                                             target="merge-primary-email"
@@ -182,7 +190,10 @@ class MergeCustomersModal extends React.Component {
                                 {
                                     label: (
                                         <span>
-                                            <i className={classnames('mr-2', sourceTypeToIcon('email'))} />
+                                            <SourceIcon
+                                                className="mr-2"
+                                                type="email"
+                                            />
                                             {destinationCustomer.get('email')}
                                         </span>
                                     ),
@@ -191,7 +202,10 @@ class MergeCustomersModal extends React.Component {
                                 {
                                     label: (
                                         <span>
-                                            <i className={classnames('mr-2', sourceTypeToIcon('email'))} />
+                                            <SourceIcon
+                                                className="mr-2"
+                                                type="email"
+                                            />
                                             {sourceCustomer.get('email')}
                                         </span>
                                     ),
@@ -207,8 +221,10 @@ class MergeCustomersModal extends React.Component {
                                 <span>
                                     <i
                                         id="merge-contact-info"
-                                        className="fa fa-fw fa-question-circle ml-2"
-                                    />
+                                        className="material-icons ml-2"
+                                    >
+                                        help
+                                    </i>
                                     <Tooltip
                                         placement="top"
                                         target="merge-contact-info"

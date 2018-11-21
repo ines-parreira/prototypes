@@ -430,8 +430,10 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
               className="alert-heading"
             >
               <i
-                className="fa fa-refresh fa-spin mr-2"
-              />
+                className="material-icons md-spin mr-2"
+              >
+                autorenew
+              </i>
               Importing your Shopify customers
             </b>
           </p>

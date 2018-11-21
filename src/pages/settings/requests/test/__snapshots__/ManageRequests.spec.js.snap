@@ -24,7 +24,7 @@ exports[`ManageRequests component should display loader 1`] = `
         }
       >
         <i
-          className="fa fa-fw fa-circle-o-notch fa-spin"
+          className="icon-custom icon-circle-o-notch md-spin"
         />
       </div>
     </div>
@@ -277,8 +277,10 @@ exports[`ManageRequests component should display requests 1`] = `
                       style={Object {}}
                     >
                       <i
-                        className="fa fa-fw fa-pencil mr-1"
-                      />
+                        className="material-icons mr-1"
+                      >
+                        edit
+                      </i>
                       Edit
                     </a>
                   </Link>
@@ -297,8 +299,10 @@ exports[`ManageRequests component should display requests 1`] = `
                       type="button"
                     >
                       <i
-                        className="fa fa-fw fa-close mr-1"
-                      />
+                        className="material-icons mr-1"
+                      >
+                        clear
+                      </i>
                       Delete
                     </button>
                   </Button>
@@ -354,8 +358,10 @@ exports[`ManageRequests component should display requests 1`] = `
                       style={Object {}}
                     >
                       <i
-                        className="fa fa-fw fa-pencil mr-1"
-                      />
+                        className="material-icons mr-1"
+                      >
+                        edit
+                      </i>
                       Edit
                     </a>
                   </Link>
@@ -374,8 +380,10 @@ exports[`ManageRequests component should display requests 1`] = `
                       type="button"
                     >
                       <i
-                        className="fa fa-fw fa-close mr-1"
-                      />
+                        className="material-icons mr-1"
+                      >
+                        clear
+                      </i>
                       Delete
                     </button>
                   </Button>

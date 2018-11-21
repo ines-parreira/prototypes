@@ -42,7 +42,9 @@ export default class ImportDataList extends React.Component {
                                     </Link>
                                 </td>
                                 <td className="smallest align-middle">
-                                    <i className="fa fa-angle-right"/>
+                                    <i className="material-icons">
+                                        chevron_right
+                                    </i>
                                 </td>
                             </tr>
                         )

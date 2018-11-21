@@ -95,7 +95,9 @@ export default class AircallIntegrationCreate extends Component {
                                             color="primary"
                                             data-clipboard-target="#webhookUrl"
                                         >
-                                            <i className="fa fa-fw fa-files-o mr-2"/>
+                                            <i className="material-icons mr-2">
+                                                file_copy
+                                            </i>
                                             {this.state.isCopied ? 'Copied!' : 'Copy'}
                                         </Button>
                                     </InputGroupAddon>

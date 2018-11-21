@@ -27,8 +27,10 @@ exports[`FileField should display loading when loading 1`] = `
       >
         <div>
           <i
-            className="fa fa-fw fa-circle-o-notch fa-spin mr-2"
-          />
+            className="material-icons md-spin mr-2"
+          >
+            refresh
+          </i>
           Uploading...
         </div>
         <Input

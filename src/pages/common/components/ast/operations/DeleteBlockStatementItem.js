@@ -28,7 +28,7 @@ export default class DeleteBlockStatementItem extends React.Component<Props> {
 
         return (
             <span
-                className="fa-stack clickable delete-blockstatement"
+                className="clickable delete-blockstatement"
                 style={{display}}
                 onClick={this._handleClick}
             >

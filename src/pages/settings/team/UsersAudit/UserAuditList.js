@@ -147,16 +147,19 @@ export class UserAuditList extends React.Component<Props, State> {
                         >
                             <Button
                                 type="button"
-                                className="selected-date-range-btn"
                                 disabled={false}
                             >
-                                <i className="fa fa-fw fa-calendar mr-2"/>
+                                <i className="material-icons mr-2">
+                                    calendar_today
+                                </i>
                                 <span>
                                     {formatDatetime(start_datetime, null, DATETIME_LABEL_FORMAT)}
                                     {' - '}
                                     {formatDatetime(end_datetime, null, DATETIME_LABEL_FORMAT)}
                                 </span>
-                                <i className="fa fa-fw fa-caret-down"/>
+                                <i className="material-icons">
+                                    arrow_drop_down
+                                </i>
                             </Button>
                         </DatePicker>
                     </div>

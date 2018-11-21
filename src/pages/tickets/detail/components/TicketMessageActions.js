@@ -109,17 +109,17 @@ export default class TicketMessageActions extends React.Component {
                 {
                     backActions.map((action, index) => {
                         let color = 'success'
-                        let icon = 'fa-check'
+                        let icon = 'check'
 
                         if (action.status === 'error') {
                             color = 'danger'
-                            icon = 'fa-close'
+                            icon = 'close'
                         } else if (action.status === 'pending') {
                             color = 'secondary'
-                            icon = 'fa-circle-o-notch fa-spin'
+                            icon = 'refresh'
                         } else if (action.status === 'canceled') {
                             color = 'danger'
-                            icon = 'fa-ban'
+                            icon = 'block'
                         }
 
                         const isHttpAction = action.name === 'http'
@@ -135,7 +135,11 @@ export default class TicketMessageActions extends React.Component {
                                     color={color}
                                     onClick={this._openModal(index)}
                                 >
-                                    <i className={`fa fa-fw ${icon} mr-2`} />
+                                    <i className={classnames('material-icons mr-2', {
+                                        'md-spin': (icon === 'refresh')
+                                    })}>
+                                        {icon}
+                                    </i>
                                     {action.title}
                                 </Button>
 

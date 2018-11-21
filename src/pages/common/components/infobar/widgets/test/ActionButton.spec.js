@@ -17,13 +17,17 @@ describe('ActionButton component', () => {
         tooltip: 'This action is little, but it is powerful.',
         title: (
             <div>
-                <i className="fa fa-fw fa-repeat mr-2" />
+                <i className="material-icons mr-2">
+                    refresh
+                </i>
                 Execute my little action
             </div>
         ),
         child: (
             <div>
-                <i className="fa fa-fw fa-repeat mr-2" />
+                <i className="material-icons mr-2">
+                    refresh
+                </i>
                 Little action
             </div>
         )

@@ -162,7 +162,9 @@ class EmailIntegrationUpdate extends React.Component {
                 <h2>
                     {
                         isImporting && (
-                            <i className="fa fa-fw fa-circle-o-notch fa-spin mr-2"/>
+                            <i className="material-icons md-spin mr-2">
+                                autorenew
+                            </i>
                         )
                     }
                     Import
@@ -242,7 +244,9 @@ class EmailIntegrationUpdate extends React.Component {
                             data-clipboard-target="#forwarding-email"
                             innerRef={this._clipboardCopy}
                         >
-                            <i className="fa fa-fw fa-files-o mr-2"/>
+                            <i className="material-icons mr-2">
+                                file_copy
+                            </i>
                             {this.state.isCopied ? 'Copied!' : 'Copy'}
                         </Button>
                     </InputGroupAddon>

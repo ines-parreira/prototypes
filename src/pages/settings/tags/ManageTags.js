@@ -292,7 +292,9 @@ export class ManageTags extends Component<Props, State> {
                                                     'btn-loading': tags.getIn(['_internal', 'creating']),
                                                 })}
                                             >
-                                                <i className="fa fa-fw fa-check"/>
+                                                <i className="material-icons">
+                                                    check
+                                                </i>
                                             </Button>
                                         </div>
                                     </Form>

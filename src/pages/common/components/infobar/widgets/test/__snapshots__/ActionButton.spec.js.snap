@@ -12,8 +12,10 @@ exports[`ActionButton component should display a single option with a checkbox p
 >
   <div>
     <i
-      className="fa fa-fw fa-repeat mr-2"
-    />
+      className="material-icons mr-2"
+    >
+      refresh
+    </i>
     Little action
   </div>
   <Popover
@@ -51,8 +53,10 @@ exports[`ActionButton component should display a single option with a checkbox p
     >
       <div>
         <i
-          className="fa fa-fw fa-repeat mr-2"
-        />
+          className="material-icons mr-2"
+        >
+          refresh
+        </i>
         Execute my little action
       </div>
     </PopoverHeader>
@@ -100,8 +104,10 @@ exports[`ActionButton component should display a single option with a number par
 >
   <div>
     <i
-      className="fa fa-fw fa-repeat mr-2"
-    />
+      className="material-icons mr-2"
+    >
+      refresh
+    </i>
     Little action
   </div>
   <Popover
@@ -139,8 +145,10 @@ exports[`ActionButton component should display a single option with a number par
     >
       <div>
         <i
-          className="fa fa-fw fa-repeat mr-2"
-        />
+          className="material-icons mr-2"
+        >
+          refresh
+        </i>
         Execute my little action
       </div>
     </PopoverHeader>
@@ -192,8 +200,10 @@ exports[`ActionButton component should display a single option with a text param
 >
   <div>
     <i
-      className="fa fa-fw fa-repeat mr-2"
-    />
+      className="material-icons mr-2"
+    >
+      refresh
+    </i>
     Little action
   </div>
   <Popover
@@ -231,8 +241,10 @@ exports[`ActionButton component should display a single option with a text param
     >
       <div>
         <i
-          className="fa fa-fw fa-repeat mr-2"
-        />
+          className="material-icons mr-2"
+        >
+          refresh
+        </i>
         Execute my little action
       </div>
     </PopoverHeader>
@@ -281,8 +293,10 @@ exports[`ActionButton component should display a single option with no parameter
 >
   <div>
     <i
-      className="fa fa-fw fa-repeat mr-2"
-    />
+      className="material-icons mr-2"
+    >
+      refresh
+    </i>
     Little action
   </div>
   <Popover
@@ -320,8 +334,10 @@ exports[`ActionButton component should display a single option with no parameter
     >
       <div>
         <i
-          className="fa fa-fw fa-repeat mr-2"
-        />
+          className="material-icons mr-2"
+        >
+          refresh
+        </i>
         Execute my little action
       </div>
     </PopoverHeader>
@@ -362,8 +378,10 @@ exports[`ActionButton component should display multiple options with a common pa
 >
   <div>
     <i
-      className="fa fa-fw fa-repeat mr-2"
-    />
+      className="material-icons mr-2"
+    >
+      refresh
+    </i>
     Little action
   </div>
   <Popover
@@ -401,8 +419,10 @@ exports[`ActionButton component should display multiple options with a common pa
     >
       <div>
         <i
-          className="fa fa-fw fa-repeat mr-2"
-        />
+          className="material-icons mr-2"
+        >
+          refresh
+        </i>
         Execute my little action
       </div>
     </PopoverHeader>
@@ -508,8 +528,10 @@ exports[`ActionButton component should display multiple options with different p
 >
   <div>
     <i
-      className="fa fa-fw fa-repeat mr-2"
-    />
+      className="material-icons mr-2"
+    >
+      refresh
+    </i>
     Little action
   </div>
   <Popover
@@ -547,8 +569,10 @@ exports[`ActionButton component should display multiple options with different p
     >
       <div>
         <i
-          className="fa fa-fw fa-repeat mr-2"
-        />
+          className="material-icons mr-2"
+        >
+          refresh
+        </i>
         Execute my little action
       </div>
     </PopoverHeader>
@@ -653,8 +677,10 @@ exports[`ActionButton component should display multiple options without paramete
 >
   <div>
     <i
-      className="fa fa-fw fa-repeat mr-2"
-    />
+      className="material-icons mr-2"
+    >
+      refresh
+    </i>
     Little action
   </div>
   <Popover
@@ -692,8 +718,10 @@ exports[`ActionButton component should display multiple options without paramete
     >
       <div>
         <i
-          className="fa fa-fw fa-repeat mr-2"
-        />
+          className="material-icons mr-2"
+        >
+          refresh
+        </i>
         Execute my little action
       </div>
     </PopoverHeader>

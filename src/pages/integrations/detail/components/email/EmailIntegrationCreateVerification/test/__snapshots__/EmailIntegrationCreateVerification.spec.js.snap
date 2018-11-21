@@ -86,8 +86,10 @@ exports[`EmailIntegrationCreateVerification component should render 1`] = `
         }
       >
         <i
-          className="fa fa-refresh fa-spin mr-2"
-        />
+          className="material-icons md-spin mr-2"
+        >
+          autorenew
+        </i>
         We're waiting to receive your verification email.
       </Alert>
       <p>

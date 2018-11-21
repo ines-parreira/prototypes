@@ -120,8 +120,10 @@ exports[`CampaignDetail component should display default value when it's a new c
                 type="button"
               >
                 <i
-                  className="fa fa-plus fa-fw mr-2"
-                />
+                  className="material-icons mr-2"
+                >
+                  add
+                </i>
                 Add condition
               </DropdownToggle>
               <DropdownMenu
@@ -382,8 +384,10 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                 type="button"
               >
                 <i
-                  className="fa fa-plus fa-fw mr-2"
-                />
+                  className="material-icons mr-2"
+                >
+                  add
+                </i>
                 Add condition
               </DropdownToggle>
               <DropdownMenu
@@ -696,8 +700,10 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                 type="button"
               >
                 <i
-                  className="fa fa-plus fa-fw mr-2"
-                />
+                  className="material-icons mr-2"
+                >
+                  add
+                </i>
                 Add condition
               </DropdownToggle>
               <DropdownMenu

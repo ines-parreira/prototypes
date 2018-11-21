@@ -88,8 +88,10 @@ class ListInfobarWidget extends React.Component {
                                         this.setState({showMoreTimes: this.state.showMoreTimes + 1})
                                     }}
                                 >
-                                    <i className="fa fa-fw fa-chevron-down mr-1" />
                                     Show more
+                                    <i className="material-icons md-2 ml-2">
+                                        arrow_drop_down
+                                    </i>
                                 </Button>
                             )
                         }

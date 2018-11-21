@@ -40,7 +40,9 @@ export default class ImportDataContainer extends React.Component {
                     >
                         <p>
                             <b className="alert-heading">
-                                <i className="fa fa-refresh fa-spin mr-2"/>
+                                <i className="material-icons md-spin mr-2">
+                                    refresh
+                                </i>
                                 Importing your Zendesk data
                             </b>
                         </p>
@@ -59,7 +61,9 @@ export default class ImportDataContainer extends React.Component {
                     >
                         <p>
                             <b className="alert-heading">
-                                <i className="fa fa-check mr-2"/>
+                                <i className="material-icons mr-2">
+                                    check
+                                </i>
                                 Import from Zendesk completed
                             </b>
                         </p>

@@ -42,13 +42,17 @@ class AfterTitle extends React.Component<AfterTitleProps> {
             //     }],
             //     title: (
             //         <div>
-            //             <i className="fa fa-fw fa-gift mr-2" />
+            //             <i className="material-icons mr-2">
+            //                 card_giftcard
+            //             </i>
             //             Create gift card
             //         </div>
             //     ),
             //     child: (
             //         <div>
-            //             <i className="fa fa-fw fa-gift mr-2" />
+            //             <i className="material-icons mr-2">
+            //                 card_giftcard
+            //             </i>
             //             Create gift card
             //         </div>
             //     )

@@ -10,9 +10,11 @@ class DeleteBinaryExpression extends React.Component {
     render() {
         return (
             <i
-                className="fa fa-fw fa-times text-danger remove clickable delete-binaryexpression"
+                className="material-icons text-danger remove clickable delete-binaryexpression"
                 onClick={this._handleClick}
-            />
+            >
+                clear
+            </i>
         )
     }
 

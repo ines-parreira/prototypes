@@ -64,14 +64,17 @@ export default class PeriodPicker extends React.Component {
         const button = (
             <Button
                 type="button"
-                className="selected-date-range-btn"
                 disabled={isDisabled}
             >
-                <i className="fa fa-fw fa-calendar mr-2" />
+                <i className="material-icons mr-2">
+                    calendar_today
+                </i>
                 <span>
-                        {label}
-                    </span>
-                <i className="fa fa-fw fa-caret-down" />
+                    {label}
+                </span>
+                <i className="material-icons md-2 strong ml-1">
+                    arrow_drop_down
+                </i>
             </Button>
         )
 

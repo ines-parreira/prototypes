@@ -185,7 +185,9 @@ class ViewNavbarViewEditor extends Component {
                 </ReactSortable>
                 <Link className={createButtonClass} to={`/app/${objectName}/new`}>
                     <div>
-                        <i className="fa fa-fw fa-plus mr-2" />
+                        <i className="material-icons mr-2">
+                            add
+                        </i>
                         Create new view
                     </div>
                 </Link>

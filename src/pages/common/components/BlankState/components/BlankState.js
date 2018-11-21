@@ -1,6 +1,5 @@
 // @flow
 import React from 'react'
-import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import {Emoji} from '../../Emoji'
 
@@ -21,7 +20,7 @@ export default class BlankState extends React.Component<Props> {
         const messages = [
             {
                 count: 10,
-                icon: 'fa-sun-o',
+                icon: 'brightness_5',
                 title: 'No more tickets here!',
                 text: (
                     <div>
@@ -32,7 +31,7 @@ export default class BlankState extends React.Component<Props> {
             },
             {
                 count: 100,
-                icon: 'fa-check',
+                icon: 'check',
                 title: 'Done!',
                 text: (
                     <div>
@@ -43,7 +42,7 @@ export default class BlankState extends React.Component<Props> {
             },
             {
                 count: 500,
-                icon: 'fa-asterisk',
+                icon: 'flare',
                 title: 'All good!',
                 text: (
                     <div>
@@ -74,13 +73,12 @@ export default class BlankState extends React.Component<Props> {
                 }
                 return false
             })
-
             if (messageMatch) {
-                const iconClassName = classnames('blank-state-message-icon fa fa-fw', messageMatch.icon)
-
                 content = (
                     <div className="blank-state-message">
-                        <i className={iconClassName} />
+                        <i className="blank-state-message-icon material-icons">
+                            {messageMatch.icon}
+                        </i>
                         <h2 className="blank-state-message-title">
                             {messageMatch.title}
                         </h2>

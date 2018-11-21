@@ -13,7 +13,7 @@ exports[`Loader component simple message 1`] = `
     }
   >
     <i
-      className="fa fa-fw fa-circle-o-notch fa-spin"
+      className="icon-custom icon-circle-o-notch md-spin"
     />
     <div
       className="mt-3"

@@ -110,7 +110,9 @@ class FilterDropdown extends React.Component {
         if (this.state.isLoading) {
             return (
                 <DropdownItem disabled>
-                    <i className="fa fa-fw fa-circle-o-notch fa-spin mr-2" />
+                    <i className="material-icons md-spin mr-2">
+                        refresh
+                    </i>
                     Loading...
                 </DropdownItem>
             )

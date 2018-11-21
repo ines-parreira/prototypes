@@ -158,8 +158,10 @@ exports[`Charge SubscriptionAfterTitle should display the skipCharge action if t
       Object {
         "child": <div>
           <i
-                className="fa fa-fw fa-ban mr-1"
-          />
+                className="material-icons mr-1"
+          >
+                block
+          </i>
           Skip
     </div>,
         "key": "skip",
@@ -170,8 +172,10 @@ exports[`Charge SubscriptionAfterTitle should display the skipCharge action if t
         ],
         "title": <div>
           <i
-                className="fa fa-fw fa-ban mr-1"
-          />
+                className="material-icons mr-1"
+          >
+                block
+          </i>
           Skip charge on subscription
     </div>,
         "tooltip": "Skip the charge for this subscription on Recharge",
@@ -194,8 +198,10 @@ exports[`Charge SubscriptionAfterTitle should display the skipCharge action with
       Object {
         "child": <div>
           <i
-                className="fa fa-fw fa-ban mr-1"
-          />
+                className="material-icons mr-1"
+          >
+                block
+          </i>
           Skip
     </div>,
         "key": "skip",
@@ -206,8 +212,10 @@ exports[`Charge SubscriptionAfterTitle should display the skipCharge action with
         ],
         "title": <div>
           <i
-                className="fa fa-fw fa-ban mr-1"
-          />
+                className="material-icons mr-1"
+          >
+                block
+          </i>
           Skip charge on subscription
     </div>,
         "tooltip": "Skip the charge for this subscription on Recharge",
@@ -230,8 +238,10 @@ exports[`Charge SubscriptionAfterTitle should not display the skipCharge action 
       Object {
         "child": <div>
           <i
-                className="fa fa-fw fa-ban mr-1"
-          />
+                className="material-icons mr-1"
+          >
+                block
+          </i>
           Skip
     </div>,
         "key": "skip",
@@ -242,8 +252,10 @@ exports[`Charge SubscriptionAfterTitle should not display the skipCharge action 
         ],
         "title": <div>
           <i
-                className="fa fa-fw fa-ban mr-1"
-          />
+                className="material-icons mr-1"
+          >
+                block
+          </i>
           Skip charge on subscription
     </div>,
         "tooltip": "Skip the charge for this subscription on Recharge",

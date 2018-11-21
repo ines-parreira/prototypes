@@ -23,7 +23,9 @@ const MacroNoResults = ({searchQuery, newAction}: Props) => {
                 color="info"
                 onClick={newAction}
             >
-                <i className="fa fa-fw fa-plus mr-2"/>
+                <i className="material-icons mr-2">
+                    add
+                </i>
                 Create a new macro
             </Button>
         </div>

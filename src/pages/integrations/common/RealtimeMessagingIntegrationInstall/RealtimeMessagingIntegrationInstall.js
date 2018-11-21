@@ -316,7 +316,9 @@ class RealtimeMessagingIntegrationInstall extends React.Component<Props, State> 
                                             className={css.copy}
                                             data-clipboard-target="#code-snippet"
                                         >
-                                            <i className="fa fa-fw fa-files-o mr-2"/>
+                                            <i className="material-icons mr-2">
+                                                file_copy
+                                            </i>
                                             {this.state.isCopied ? 'Copied!' : 'Copy'}
                                         </Button>
                                     </div>

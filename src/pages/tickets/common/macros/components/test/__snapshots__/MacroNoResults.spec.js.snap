@@ -16,8 +16,10 @@ exports[`MacroNoResults component should display no macros available without sea
     type="button"
   >
     <i
-      className="fa fa-fw fa-plus mr-2"
-    />
+      className="material-icons mr-2"
+    >
+      add
+    </i>
     Create a new macro
   </Button>
 </div>
@@ -39,8 +41,10 @@ exports[`MacroNoResults component should display no macros found with search que
     type="button"
   >
     <i
-      className="fa fa-fw fa-plus mr-2"
-    />
+      className="material-icons mr-2"
+    >
+      add
+    </i>
     Create a new macro
   </Button>
 </div>
