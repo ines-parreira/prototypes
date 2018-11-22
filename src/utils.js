@@ -970,7 +970,7 @@ export const getLanguageDisplayName = (locale: string): ?string => {
  * @param needle: string
  * @returns: bool
  */
-export const hasUnicodeChars = (needle: string): bool => {
+export const hasUnicodeChars = (needle: string): boolean => {
     const needleLength = needle.length
 
     for (let index = 0; index < needleLength; index++) {

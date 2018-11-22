@@ -34,7 +34,7 @@ const getIntegrationsCountPerType = (integrations = []): Object => {
  */
 export const getIntegrationsList = (integrations: integrationsType = []): Map<*,*> => {
     const counts = getIntegrationsCountPerType(integrations)
-    return fromJS(INTEGRATION_TYPE_DESCRIPTIONS.map((typeDescription : Object) => {
+    return fromJS(INTEGRATION_TYPE_DESCRIPTIONS.map((typeDescription: Object) => {
         let count = 0
 
         if (typeDescription.subTypes) {

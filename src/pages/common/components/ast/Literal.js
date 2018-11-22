@@ -22,7 +22,7 @@ type Props = {
     value: number | string | boolean
 }
 
-const Literal = ({value, rule, actions, parent, leftsiblings, schemas, callee} : Props) => {
+const Literal = ({value, rule, actions, parent, leftsiblings, schemas, callee}: Props) => {
     const parentNew = parent.push('value')
     const operator = callee && callee.name ? callee.name : ''
     const hasEmptyOperator = Object.keys(EMPTY_OPERATORS).includes(operator)

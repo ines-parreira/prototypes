@@ -1,26 +1,33 @@
-import React, {PropTypes} from 'react'
+//@flow
+import React, {type Node} from 'react'
 import classnames from 'classnames'
 
 import css from '../Toolbar.less'
 
-class Popover extends React.Component {
-    static propTypes = {
-        action: PropTypes.object,
-        onIconClick: PropTypes.func,
-        children: PropTypes.node.isRequired,
-        icon: PropTypes.string.isRequired,
-        isActive: PropTypes.bool.isRequired,
-        isDisabled: PropTypes.bool.isRequired,
-        name: PropTypes.string.isRequired,
-        className: PropTypes.string,
-    }
+type Props = {
+    action?: any,
+    onIconClick?: () => boolean,
+    children: Node,
+    icon: string,
+    isActive: boolean,
+    isDisabled: boolean,
+    name: string,
+    className?: string,
+}
 
+type State = {
+    isOpen: boolean
+}
+
+class Popover extends React.Component<Props, State> {
     static defaultProps = {
         isActive: false,
         isDisabled: false,
     }
+    
+    preventNextClose = false
 
-    state = {
+    state: State = {
         isOpen: false,
     }
 

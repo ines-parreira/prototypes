@@ -30,7 +30,7 @@ class AssigneeSelect extends React.Component<Props> {
 
     render() {
         const {value, onChange, agents, className} = this.props
-        let options : List<*> = fromJS([{value: null, label: 'Unassigned'}])
+        let options: List<*> = fromJS([{value: null, label: 'Unassigned'}])
 
         agents.forEach((agent) => {
             options = options.push({value: agent.get('id').toString(), label: agent.get('name')})

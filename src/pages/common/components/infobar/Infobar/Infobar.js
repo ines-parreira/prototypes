@@ -138,7 +138,7 @@ export class Infobar extends React.Component<Props, State> {
         })
     }
 
-    _mode = (state : State = this.state) => {
+    _mode = (state: State = this.state) => {
         // the following succession of conditions is in a particular order
         // which is important for the good display of each of those
         // /!\ do not mix it without testing it carefully

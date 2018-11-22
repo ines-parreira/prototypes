@@ -14,14 +14,14 @@ import Errors from '../Errors'
 import {isEmailList, findProperty} from '../../../../../utils'
 
 
-export function validateEmailList(value: string, schemas: Object) : string | void {
+export function validateEmailList(value: string, schemas: Object): string | void {
     let emailList = value
 
     // verify that all template variables are email addresses
     // if yes, we replace variables with valid email addresses to pass the validation
     // else, we replace variables with an invalid email address to fail the validation
     if (templateRegex.test(value)) {
-        emailList = emailList.replace(templateRegex, (match: string, path: string) : string => {
+        emailList = emailList.replace(templateRegex, (match: string, path: string): string => {
             const prop = findProperty(path, schemas, true)
             if (prop && prop.format === 'email') {
                 return 'placeholder@gorgias.io'
@@ -36,13 +36,13 @@ export function validateEmailList(value: string, schemas: Object) : string | voi
     }
 }
 
-export function validateBody(values: Object) : string | void {
+export function validateBody(values: Object): string | void {
     if (!values.body_text) {
         return 'Body must be filled'
     }
 }
 
-export function validateSendEmail(values: Object) : Array<string> {
+export function validateSendEmail(values: Object): Array<string> {
     const errors = []
 
     if (!values.body_text) {
@@ -55,7 +55,7 @@ export function validateSendEmail(values: Object) : Array<string> {
     return errors
 }
 
-export function validateTags(values: Object) : string | void {
+export function validateTags(values: Object): string | void {
     if (!values.tags) {
         return 'Tags cannot be empty'
     }

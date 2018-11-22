@@ -29,7 +29,7 @@ type Props = {
     }
 })
 export default class PlaceholderWidget extends React.Component<Props> {
-    _renderWidgetType = (widgetType: string) : string => {
+    _renderWidgetType = (widgetType: string): string => {
         if (widgetType === 'smooch_inside') {
             return 'chat'
         }
@@ -37,11 +37,11 @@ export default class PlaceholderWidget extends React.Component<Props> {
         return widgetType
     }
 
-    _deleteWidget = (evt : Object) => {
+    _deleteWidget = (evt: Object) => {
         const {template, editing} = this.props
 
-        const absolutePath : Array<string | number> = template.get('path')
-        const templatePath : string = template.get('templatePath')
+        const absolutePath: Array<string | number> = template.get('path')
+        const templatePath: string = template.get('templatePath')
 
         evt.stopPropagation()
 

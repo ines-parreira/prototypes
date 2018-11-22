@@ -46,7 +46,7 @@ class MacroSelect extends React.Component<Props, State> {
         this._selectFirstOption(this.props.value, nextProps)
     }
 
-    _getOptions = (macros = fromJS({})) : List<*> => {
+    _getOptions = (macros = fromJS({})): List<*> => {
         if (this.state.loading) {
             return fromJS([])
         }

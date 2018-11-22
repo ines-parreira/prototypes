@@ -1,17 +1,24 @@
-import React, {PropTypes} from 'react'
+//@flow
+import React, { type ElementRef } from 'react'
 import {Button} from 'reactstrap'
 
 import Popover from './Popover'
 
-export default class AddLink extends React.Component {
-    static propTypes = {
-        action: PropTypes.object.isRequired,
-        functions: PropTypes.object.isRequired,
-        isActive: PropTypes.bool.isRequired,
-        isDisabled: PropTypes.bool.isRequired,
-    }
+type Props = {
+    action: any, // TODO (@pwlmaciejewski): define better action type
+    functions: any, // TODO (@pwlmaciejewski): define better functions type
+    isActive: boolean,
+    isDisabled: boolean
+}
 
-    state = {
+type State = {
+    url: string
+}
+
+export default class AddLink extends React.Component<Props, State> {
+    popover: ?ElementRef<typeof Popover>
+
+    state: State = {
         url: '',
     }
 
@@ -27,11 +34,13 @@ export default class AddLink extends React.Component {
         }
 
         this.props.functions.addLink(url)
-        this.popover._close()
+        if (this.popover) {
+            this.popover._close()
+        }
         this.setState({url: ''})
     }
 
-    _onKeyDown = (e) => {
+    _onKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             e.preventDefault()
 
@@ -42,9 +51,12 @@ export default class AddLink extends React.Component {
 
         if (e.key === 'Escape') {
             e.preventDefault()
-            this.popover._close()
+            this.popover && this.popover._close()
         }
     }
+
+    _onUrlChange = (e: SyntheticInputEvent<HTMLInputElement>) =>
+        this.setState({url: e.target.value})
 
     render() {
         return (
@@ -54,7 +66,7 @@ export default class AddLink extends React.Component {
                 isActive={this.props.isActive}
                 isDisabled={this.props.isDisabled}
                 onIconClick={this.props.functions.onClick}
-                ref={(popover) => {
+                ref={(popover: ?ElementRef<typeof Popover>) => {
                     this.popover = popover
                 }}
             >
@@ -64,7 +76,7 @@ export default class AddLink extends React.Component {
                         ref="input"
                         type="text"
                         placeholder="External url..."
-                        onChange={e => this.setState({url: e.target.value})}
+                        onChange={this._onUrlChange}
                         value={this.state.url}
                         onKeyDown={this._onKeyDown}
                         autoFocus

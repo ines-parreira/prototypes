@@ -9,7 +9,7 @@ const DOUBLEQUOTE_RAW_TIMEDELTA_REGEX = /^"[\d]+[a-z]"$/
  * @param raw: whether we're look for a raw timedelta or not (default: false)
  * @returns {boolean}: whether data represents a timedelta or not
  */
-export const isTimedelta = (data: any, raw: boolean = false) : boolean => {
+export const isTimedelta = (data: any, raw: boolean = false): boolean => {
     if (typeof data !== 'string' || !data) {
         return false
     }

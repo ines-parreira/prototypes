@@ -96,7 +96,7 @@ export default class ActionButton extends React.Component<Props, State> {
         this.setState({actionId})
 
         const defaultParameters = {}
-        const parameters : ?Array<*> = options[0].parameters
+        const parameters: ?Array<*> = options[0].parameters
 
         // Here we initialize the component's state with the default values of the action parameters.
         // This state will then be updated whenever input values are changed, and then sent to the server when
@@ -220,11 +220,11 @@ export default class ActionButton extends React.Component<Props, State> {
         })
     }
 
-    _renderActionParameters = () : Array<Object> | null => {
+    _renderActionParameters = (): Array<Object> | null => {
         const {options} = this.props
         const {actionName, parameters: actionParameters} = this.state
 
-        let currentOption : ?OptionType = options.find((option) => option.value === actionName)
+        let currentOption: ?OptionType = options.find((option) => option.value === actionName)
 
         if (!currentOption) {
             currentOption = options[0]
@@ -242,7 +242,7 @@ export default class ActionButton extends React.Component<Props, State> {
             }
 
             // we don't need the defaultValue as it's set in the state as current value of the parameter
-            const inputAttributes : Object = _omit(parameter, ['defaultValue'])
+            const inputAttributes: Object = _omit(parameter, ['defaultValue'])
 
             return (
                 <InputTag

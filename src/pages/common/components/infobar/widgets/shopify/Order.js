@@ -36,12 +36,12 @@ class AfterTitle extends React.Component<AfterTitleProps> { // eslint-disable-li
     }
 
     render() {
-        const {source} : AfterTitleProps = this.props
+        const {source}: AfterTitleProps = this.props
         const {
             integrationId,
             isOrderCancelled,
             isOrderRefunded
-        } : {
+        }: {
             integrationId: number,
             isOrderCancelled: boolean,
             isOrderRefunded: boolean
@@ -212,7 +212,7 @@ class BeforeContent extends React.Component<BeforeContentProps> { // eslint-disa
 
     render() {
         const {source} = this.props
-        const {isOrderCancelled} : {isOrderCancelled: boolean} = this.context
+        const {isOrderCancelled}: {isOrderCancelled: boolean} = this.context
 
         const status: string = source.get('financial_status') || ''
 
@@ -254,7 +254,7 @@ class TitleWrapper extends React.Component<TitleWrapperProps> { // eslint-disabl
 
     render() {
         const {children, source} = this.props
-        const shopName : string = this.context.integration.getIn(['meta', 'shop_name'])
+        const shopName: string = this.context.integration.getIn(['meta', 'shop_name'])
 
         return (
             <a

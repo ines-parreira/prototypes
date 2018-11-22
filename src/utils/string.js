@@ -7,7 +7,7 @@ import _isString from 'lodash/isString'
  * @param suffix: the suffix to remove from the string
  * @returns {string}: the data without the suffix
  */
-export const removeSuffix = (data: string, suffix: string) : string => {
+export const removeSuffix = (data: string, suffix: string): string => {
     if (typeof data === 'string' && data.endsWith(suffix)) {
         return data.replace(suffix, '')
     }
