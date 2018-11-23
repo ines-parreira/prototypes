@@ -1,30 +1,14 @@
-import {RichUtils} from 'draft-js'
-import _forEach from 'lodash/forEach'
-
+//@flow
+import { ContentBlock, EditorState, RichUtils } from 'draft-js'
 import actions from './actions'
+import type { Action, ToolbarAction, EditorStateGetter } from './types'
 
-export const getToolbarActions = (toolbarProps = {}) => {
-    return actions.map((nativeAction) => {
-        const updatedAction = {...nativeAction} // clone native action
-
-        // add toolbar props to action, to use parent props in action
-        updatedAction.toolbarProps = toolbarProps
-
-        // complete toggle function configuration if not specified
-        if (!updatedAction.functions) {
-            updatedAction.functions = {
-                toggle: (block, action, editorState, setEditorState) => {
-                    return setEditorState(RichUtils.toggleInlineStyle(
-                        editorState,
-                        action.style
-                    ))
-                }
-            }
-        }
-
-        // complete active function configuration if not specified
-        if (!updatedAction.active) {
-            updatedAction.active = (block, editorState) => {
+export const getToolbarActions = (toolbarProps: any = {}) =>
+    actions.map((action: Action): ToolbarAction => {
+        const partialToolbarAction = {
+            ...action,
+            toolbarProps,
+            active: action.active || ((block: ContentBlock, editorState: EditorState) => {
                 const contentState = editorState.getCurrentContent()
 
                 if (!contentState.hasText()) {
@@ -32,39 +16,25 @@ export const getToolbarActions = (toolbarProps = {}) => {
                 }
 
                 const currentStyle = editorState.getCurrentInlineStyle()
-                return currentStyle.has(updatedAction.style)
-            }
+                return currentStyle.has(action.style)
+            }),
+            componentFunctions: action.componentFunctions || {
+                toggle: (block, action, editorState, setEditorState) => () =>
+                    setEditorState(RichUtils.toggleInlineStyle(
+                        editorState,
+                        action.style
+                    ))
+            },
+            isDisabled: () => false
         }
-
-        // for each functions of the action, bind the same function but accepting simpler parameters
-        const functions = {}
-        _forEach(updatedAction.functions, (func, name) => {
-            functions[name] = (getEditorState, setEditorState, ...other) => {
+        return ({
+            ...partialToolbarAction,
+            isActive: (getEditorState: EditorStateGetter) => {
                 const editorState = getEditorState()
                 const block = editorState
                     .getCurrentContent()
                     .getBlockForKey(editorState.getSelection().getStartKey())
-                return func(block, updatedAction, editorState, setEditorState, ...other)
+                return partialToolbarAction.active(block, editorState)
             }
         })
-        updatedAction.functions = functions
-
-        // add a isActive function that will run `active`, but accepts simpler parameters
-        updatedAction.isActive = (getEditorState) => {
-            const editorState = getEditorState()
-            const block = editorState
-                .getCurrentContent()
-                .getBlockForKey(editorState.getSelection().getStartKey())
-            return updatedAction.active(block, editorState)
-        }
-
-        if (!updatedAction.isDisabled) {
-            // useless for now but could be useful at some point
-            updatedAction.isDisabled = (getEditorState) => { //eslint-disable-line
-                return false
-            }
-        }
-
-        return updatedAction
     })
-}

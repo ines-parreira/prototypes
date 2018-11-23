@@ -1,39 +1,26 @@
 // @flow
-import React from 'react'
 import classnames from 'classnames'
-import _forEach from 'lodash/forEach'
-
+import _mapValues from 'lodash/mapValues'
+import React, { type Node } from 'react'
 import css from './Toolbar.less'
-
-import type {EditorState} from 'draft-js'
-import type {ComponentType, Node} from 'react'
-
-type actionType = {
-    isActive: (T: () => EditorState) => boolean,
-    isDisabled: (T: () => EditorState) => boolean,
-    component: ComponentType<*>,
-    key: string,
-    name: string,
-    icon: string,
-    functions: Array<*>,
-}
+import type { ToolbarAction, ActionComponentPropCreator, EditorStateSetter, EditorStateGetter } from './types'
+import DefaultAction from './components/Default'
+import type { Store } from './createStore'
 
 type State = {
     isHovered: boolean,
 }
 
 type Props = {
-    actions: Array<actionType>,
+    actions: ToolbarAction[],
     buttons: Array<?Node>,
     hideActions: boolean,
-    toolbarStore: {
-        getItem: (T: string) => any,
-        setItem: (T: string, U: any) => void,
-    },
+    toolbarStore: Store,
     attachFiles: (T: Array<Blob>) => void,
     displayedActions?: Array<*>, // array of keys of actions that we want to display
     getCanDropFiles: () => boolean,
 }
+
 
 class Toolbar extends React.Component<Props, State> {
     static defaultProps = {
@@ -50,8 +37,19 @@ class Toolbar extends React.Component<Props, State> {
         event.preventDefault()
     }
 
-    _renderAction = (action: actionType) => {
-        const {toolbarStore} = this.props
+    _getActionInjectedProp = (action: ToolbarAction, propCreator: ActionComponentPropCreator) => {
+        const { toolbarStore } = this.props
+        const getEditorState: EditorStateGetter = toolbarStore.getItem('getEditorState')
+        const setEditorState: EditorStateSetter = toolbarStore.getItem('setEditorState')
+        const editorState = getEditorState()
+        const block = editorState
+            .getCurrentContent()
+            .getBlockForKey(editorState.getSelection().getStartKey())
+        return propCreator(block, action, editorState, setEditorState)
+    }
+
+    _renderAction = (action: ToolbarAction) => {
+        const { toolbarStore } = this.props
 
         const getEditorState = toolbarStore.getItem('getEditorState')
 
@@ -68,49 +66,19 @@ class Toolbar extends React.Component<Props, State> {
                 throw e
             }
         }
+
         const isDisabled = action.isDisabled(getEditorState)
-
-        // pass getter and setter of editorState to functions
-        const functions = {}
-        _forEach(action.functions, (func, name) => {
-            functions[name] = (...other) => {
-                return func(toolbarStore.getItem('getEditorState'), toolbarStore.getItem('setEditorState'), ...other)
-            }
-        })
-
-        if (action.component) {
-            return (
-                <action.component
-                    key={action.key}
-                    action={action}
-                    functions={functions}
-                    isActive={isActive}
-                    isDisabled={isDisabled}
-                />
-            )
-        }
-
+        const injectedProps = _mapValues(action.componentFunctions, (pc) => this._getActionInjectedProp(action, pc))
+        const ActionComponent = action.component || DefaultAction
         return (
-            <div
+            <ActionComponent
                 key={action.key}
-                className={classnames(css.button, 'btn btn-secondary btn-transparent', {
-                    [css.active]: action.isActive(getEditorState),
-                    [css.disabled]: isDisabled,
-                })}
-                onClick={(e) => {
-                    this._preventDefault(e)
-
-                    if (!isDisabled) {
-                        functions.toggle()
-                    }
-                }}
-                onMouseDown={this._preventDefault}
-                title={action.name}
-            >
-                <i className="material-icons">
-                    {action.icon}
-                </i>
-            </div>
+                name={action.name}
+                isActive={isActive}
+                isDisabled={isDisabled}
+                icon={action.icon}
+                {...injectedProps}
+            />
         )
     }
 
@@ -126,7 +94,7 @@ class Toolbar extends React.Component<Props, State> {
     }
 
     _onDrop = (e: DragEvent) => {
-        const {getCanDropFiles, attachFiles} = this.props
+        const { getCanDropFiles, attachFiles } = this.props
         if (!getCanDropFiles()) {
             return
         }
@@ -139,21 +107,21 @@ class Toolbar extends React.Component<Props, State> {
     }
 
     _onDragOver = (e: Event) => {
-        const {getCanDropFiles} = this.props
+        const { getCanDropFiles } = this.props
         if (!getCanDropFiles()) {
             return
         }
 
         e.preventDefault()
-        this.setState({isHovered: true})
+        this.setState({ isHovered: true })
     }
 
     _hideDragHover = () => {
-        this.setState({isHovered: false})
+        this.setState({ isHovered: false })
     }
 
     render() {
-        const {actions, buttons, hideActions, displayedActions} = this.props
+        const { actions, buttons, hideActions, displayedActions } = this.props
 
         let filteredActions = actions
 

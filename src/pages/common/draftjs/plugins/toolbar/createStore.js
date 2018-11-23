@@ -1,8 +1,15 @@
-const createStore = (initialState) => {
+//@flow
+
+export type Store = {
+    updateItem: (string, any) => void,
+    getItem: (string) => any
+}
+
+const createStore = (initialState: any): Store => {
     let state = initialState || {}
     const listeners = {}
 
-    const updateItem = (key, item) => {
+    const updateItem = (key: string, item: any) => {
         state = {
             ...state,
             [key]: item,
@@ -12,7 +19,7 @@ const createStore = (initialState) => {
         }
     }
 
-    const getItem = (key) => state[key]
+    const getItem = (key: string) => state[key]
 
     return {
         updateItem,

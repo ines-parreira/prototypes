@@ -1,28 +1,28 @@
-import React, {PropTypes} from 'react'
+//@flow
+import React, { type ElementRef } from 'react'
 import {Picker} from 'emoji-mart'
-
 import 'emoji-mart/css/emoji-mart.css'
-
 import Popover from './Popover'
+import type { ActionComponentProps, Emoji } from '../types'
 
-export default class AddEmoji extends React.Component {
-    static propTypes = {
-        action: PropTypes.object.isRequired,
-        functions: PropTypes.object.isRequired,
-    }
+type Props = {
+    onAddEmoji: Emoji => boolean
+} & ActionComponentProps
 
-    _addEmoji = (emoji) => {
-        this.props.functions.addEmoji(emoji)
-        this.popover._close()
+export default class AddEmoji extends React.Component<Props> {
+    popover: ?ElementRef<typeof Popover>
+
+    _addEmoji = (emoji: Emoji) => {
+        this.props.onAddEmoji(emoji)
+        this.popover && this.popover._close()
     }
 
     render() {
         return (
             <Popover
                 icon="insert_emoticon"
-                name={this.props.action.name}
-                onIconClick={this.props.functions.onClick}
-                ref={(popover) => {
+                name={this.props.name}
+                ref={(popover: ?ElementRef<typeof Popover>) => {
                     this.popover = popover
                 }}
                 className="p-0 d-flex"

@@ -1,15 +1,13 @@
 //@flow
 import React, { type ElementRef } from 'react'
 import {Button} from 'reactstrap'
-
 import Popover from './Popover'
+import type { ActionComponentProps } from '../types'
 
 type Props = {
-    action: any, // TODO (@pwlmaciejewski): define better action type
-    functions: any, // TODO (@pwlmaciejewski): define better functions type
-    isActive: boolean,
-    isDisabled: boolean
-}
+    onClick: () => boolean,
+    onAddLink: (url: string) => void
+} & ActionComponentProps
 
 type State = {
     url: string
@@ -33,7 +31,7 @@ export default class AddLink extends React.Component<Props, State> {
             return
         }
 
-        this.props.functions.addLink(url)
+        this.props.onAddLink(url)
         if (this.popover) {
             this.popover._close()
         }
@@ -62,10 +60,10 @@ export default class AddLink extends React.Component<Props, State> {
         return (
             <Popover
                 icon="link"
-                name={this.props.action.name}
+                name={this.props.name}
                 isActive={this.props.isActive}
                 isDisabled={this.props.isDisabled}
-                onIconClick={this.props.functions.onClick}
+                onIconClick={this.props.onClick}
                 ref={(popover: ?ElementRef<typeof Popover>) => {
                     this.popover = popover
                 }}

@@ -1851,7 +1851,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                             Array [
                                               Object {
                                                 "active": [Function],
-                                                "functions": Object {
+                                                "componentFunctions": Object {
                                                   "toggle": [Function],
                                                 },
                                                 "icon": "format_bold",
@@ -1864,7 +1864,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               },
                                               Object {
                                                 "active": [Function],
-                                                "functions": Object {
+                                                "componentFunctions": Object {
                                                   "toggle": [Function],
                                                 },
                                                 "icon": "format_italic",
@@ -1877,7 +1877,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               },
                                               Object {
                                                 "active": [Function],
-                                                "functions": Object {
+                                                "componentFunctions": Object {
                                                   "toggle": [Function],
                                                 },
                                                 "icon": "format_underline",
@@ -1891,8 +1891,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               Object {
                                                 "active": [Function],
                                                 "component": [Function],
-                                                "functions": Object {
-                                                  "addLink": [Function],
+                                                "componentFunctions": Object {
+                                                  "onAddLink": [Function],
                                                   "onClick": [Function],
                                                 },
                                                 "isActive": [Function],
@@ -1904,9 +1904,9 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               Object {
                                                 "active": [Function],
                                                 "component": [Function],
-                                                "functions": Object {
-                                                  "addImage": [Function],
+                                                "componentFunctions": Object {
                                                   "getMaxAttachmentSize": [Function],
+                                                  "onAddImage": [Function],
                                                 },
                                                 "isActive": [Function],
                                                 "isDisabled": [Function],
@@ -1917,8 +1917,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               Object {
                                                 "active": [Function],
                                                 "component": [Function],
-                                                "functions": Object {
-                                                  "addEmoji": [Function],
+                                                "componentFunctions": Object {
+                                                  "onAddEmoji": [Function],
                                                 },
                                                 "isActive": [Function],
                                                 "isDisabled": [Function],
@@ -1948,66 +1948,72 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                             <div
                                               className="actions"
                                             >
-                                              <div
-                                                className="button btn btn-secondary btn-transparent"
-                                                onClick={[Function]}
-                                                onMouseDown={[Function]}
-                                                title="Bold"
-                                              >
-                                                <i
-                                                  className="material-icons"
-                                                >
-                                                  format_bold
-                                                </i>
-                                              </div>
-                                              <div
-                                                className="button btn btn-secondary btn-transparent"
-                                                onClick={[Function]}
-                                                onMouseDown={[Function]}
-                                                title="Italic"
-                                              >
-                                                <i
-                                                  className="material-icons"
-                                                >
-                                                  format_italic
-                                                </i>
-                                              </div>
-                                              <div
-                                                className="button btn btn-secondary btn-transparent"
-                                                onClick={[Function]}
-                                                onMouseDown={[Function]}
-                                                title="Underline"
-                                              >
-                                                <i
-                                                  className="material-icons"
-                                                >
-                                                  format_underline
-                                                </i>
-                                              </div>
-                                              <AddLink
-                                                action={
-                                                  Object {
-                                                    "active": [Function],
-                                                    "component": [Function],
-                                                    "functions": Object {
-                                                      "addLink": [Function],
-                                                      "onClick": [Function],
-                                                    },
-                                                    "isActive": [Function],
-                                                    "isDisabled": [Function],
-                                                    "key": "link",
-                                                    "name": "Insert link",
-                                                    "toolbarProps": Object {},
-                                                  }
-                                                }
-                                                functions={
-                                                  Object {
-                                                    "addLink": [Function],
-                                                    "onClick": [Function],
-                                                  }
-                                                }
+                                              <Component
+                                                icon="format_bold"
                                                 isActive={false}
                                                 isDisabled={false}
+                                                name="Bold"
+                                                toggle={[Function]}
+                                              >
+                                                <div
+                                                  className="button btn btn-secondary btn-transparent"
+                                                  onClick={[Function]}
+                                                  onMouseDown={[Function]}
+                                                  title="Bold"
+                                                >
+                                                  <i
+                                                    className="material-icons"
+                                                  >
+                                                    format_bold
+                                                  </i>
+                                                </div>
+                                              </Component>
+                                              <Component
+                                                icon="format_italic"
+                                                isActive={false}
+                                                isDisabled={false}
+                                                name="Italic"
+                                                toggle={[Function]}
+                                              >
+                                                <div
+                                                  className="button btn btn-secondary btn-transparent"
+                                                  onClick={[Function]}
+                                                  onMouseDown={[Function]}
+                                                  title="Italic"
+                                                >
+                                                  <i
+                                                    className="material-icons"
+                                                  >
+                                                    format_italic
+                                                  </i>
+                                                </div>
+                                              </Component>
+                                              <Component
+                                                icon="format_underline"
+                                                isActive={false}
+                                                isDisabled={false}
+                                                name="Underline"
+                                                toggle={[Function]}
+                                              >
+                                                <div
+                                                  className="button btn btn-secondary btn-transparent"
+                                                  onClick={[Function]}
+                                                  onMouseDown={[Function]}
+                                                  title="Underline"
+                                                >
+                                                  <i
+                                                    className="material-icons"
+                                                  >
+                                                    format_underline
+                                                  </i>
+                                                </div>
+                                              </Component>
+                                              <AddLink
+                                                isActive={false}
+                                                isDisabled={false}
+                                                name="Insert link"
+                                                onAddLink={[Function]}
+                                                onClick={[Function]}
                                               >
                                                 <Popover
                                                   icon="link"
@@ -2039,29 +2045,11 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                 </Popover>
                                               </AddLink>
                                               <AddImage
-                                                action={
-                                                  Object {
-                                                    "active": [Function],
-                                                    "component": [Function],
-                                                    "functions": Object {
-                                                      "addImage": [Function],
-                                                      "getMaxAttachmentSize": [Function],
-                                                    },
-                                                    "isActive": [Function],
-                                                    "isDisabled": [Function],
-                                                    "key": "image",
-                                                    "name": "Insert image",
-                                                    "toolbarProps": Object {},
-                                                  }
-                                                }
-                                                functions={
-                                                  Object {
-                                                    "addImage": [Function],
-                                                    "getMaxAttachmentSize": [Function],
-                                                  }
-                                                }
+                                                getMaxAttachmentSize={[Function]}
                                                 isActive={false}
                                                 isDisabled={false}
+                                                name="Insert image"
+                                                onAddImage={[Function]}
                                               >
                                                 <Popover
                                                   icon="insert_photo"
@@ -2092,27 +2080,10 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                 </Popover>
                                               </AddImage>
                                               <AddEmoji
-                                                action={
-                                                  Object {
-                                                    "active": [Function],
-                                                    "component": [Function],
-                                                    "functions": Object {
-                                                      "addEmoji": [Function],
-                                                    },
-                                                    "isActive": [Function],
-                                                    "isDisabled": [Function],
-                                                    "key": "emoji",
-                                                    "name": "Insert emoji",
-                                                    "toolbarProps": Object {},
-                                                  }
-                                                }
-                                                functions={
-                                                  Object {
-                                                    "addEmoji": [Function],
-                                                  }
-                                                }
                                                 isActive={false}
                                                 isDisabled={false}
+                                                name="Insert emoji"
+                                                onAddEmoji={[Function]}
                                               >
                                                 <Popover
                                                   className="p-0 d-flex"

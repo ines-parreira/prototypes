@@ -1,18 +1,25 @@
-import React, {PropTypes} from 'react'
+//@flow
+import React, { type ElementRef }  from 'react'
 import classnames from 'classnames'
 import {Button} from 'reactstrap'
-
 import Popover from './Popover'
-
 import FileField from '../../../../forms/FileField'
-
 import css from '../Toolbar.less'
+import type { ActionComponentProps } from '../types'
 
-export default class AddImage extends React.Component {
-    static propTypes = {
-        action: PropTypes.object.isRequired,
-        functions: PropTypes.object.isRequired,
-    }
+type Props = {
+    onAddImage: (string, maxSize?: number) => void,
+    getMaxAttachmentSize: () => number
+} & ActionComponentProps
+
+type State = {
+    url: string,
+    mode: string,
+    maxSize: number
+}
+
+export default class AddImage extends React.Component<Props, State> {
+    popover: ?ElementRef<typeof Popover>
 
     state = {
         url: '',
@@ -21,19 +28,19 @@ export default class AddImage extends React.Component {
     }
 
     _updateMaxSize = () => {
-        const maxSize = this.props.functions.getMaxAttachmentSize()
+        const maxSize = this.props.getMaxAttachmentSize()
         this.setState({maxSize})
     }
 
-    _changeMode = (mode) => {
+    _changeMode = (mode: string) => {
         this.setState({mode})
     }
 
-    _handleImage = (files) => {
+    _handleImage = (files: Array<{ url: string, size: number}>) => {
         files.forEach((file) => {
-            this.props.functions.addImage(file.url, file.size)
+            this.props.onAddImage(file.url, file.size)
         })
-        this.popover._close()
+        this.popover && this.popover._close()
     }
 
     _addImage = () => {
@@ -43,12 +50,12 @@ export default class AddImage extends React.Component {
             return
         }
 
-        this.props.functions.addImage(url)
-        this.popover._close()
+        this.props.onAddImage(url)
+        this.popover && this.popover._close()
         this.setState({url: ''})
     }
 
-    _onKeyDown = (e) => {
+    _onKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             e.preventDefault()
 
@@ -59,7 +66,7 @@ export default class AddImage extends React.Component {
 
         if (e.key === 'Escape') {
             e.preventDefault()
-            this.popover._close()
+            this.popover && this.popover._close()
         }
     }
 
@@ -67,7 +74,7 @@ export default class AddImage extends React.Component {
         return (
             <Popover
                 icon="insert_photo"
-                name={this.props.action.name}
+                name={this.props.name}
                 ref={(popover) => {
                     this.popover = popover
                 }}

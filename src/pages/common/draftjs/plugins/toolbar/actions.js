@@ -1,12 +1,14 @@
-import {RichUtils, EditorState} from 'draft-js'
+//@flow
+import {RichUtils, EditorState, ContentBlock, CharacterMetadata } from 'draft-js'
 import {insertText} from '../../../../../utils'
 import AddLink from './components/AddLink'
 import AddImage from './components/AddImage'
 import AddEmoji from './components/AddEmoji'
 import {addImage} from '../utils'
 import {getMaxAttachmentSize} from '../../../../../utils/file'
+import type { Action, ToolbarAction, EditorStateSetter, Emoji } from './types'
 
-export default [
+const actions: Action[] = [
     {
         key: 'bold',
         name: 'Bold',
@@ -29,7 +31,7 @@ export default [
         key: 'link',
         name: 'Insert link',
         component: AddLink,
-        active: (block, editorState) => {
+        active: (block: ContentBlock, editorState: EditorState) => {
             const contentState = editorState.getCurrentContent()
 
             if (!contentState.hasText()) {
@@ -39,11 +41,11 @@ export default [
             let active = false
             const selection = editorState.getSelection()
             block.findEntityRanges(
-                (character) => {
+                (character: CharacterMetadata) => {
                     const entityKey = character.getEntity()
                     return entityKey !== null && contentState.getEntity(entityKey).getType() === 'link'
                 },
-                (start, end) => {
+                (start: number, end: number) => {
                     if (block.getKey() === selection.anchorKey && selection.anchorKey === selection.focusKey) {
                         if (selection.anchorOffset >= start && selection.focusOffset <= end) {
                             active = true
@@ -53,51 +55,53 @@ export default [
             )
             return active
         },
-        functions: {
-            onClick: (block, action, editorState, setEditorState) => {
-                const selection = editorState.getSelection()
+        componentFunctions: {
+            onClick: (block: ContentBlock, action: ToolbarAction, editorState: EditorState, setEditorState: EditorStateSetter) => 
+                (): boolean => {
+                    const selection = editorState.getSelection()
 
-                if (action.active(block, editorState)) {
-                    // if already a link, remove it
-                    setEditorState(RichUtils.toggleLink(editorState, selection, null))
-                    return false
-                }
+                    if (action.active && action.active(block, editorState)) {
+                        // if already a link, remove it
+                        setEditorState(RichUtils.toggleLink(editorState, selection, null))
+                        return false
+                    }
 
-                return true
-            },
-            addLink: (block, action, editorState, setEditorState, url) => {
-                const selection = editorState.getSelection()
+                    return true
+                },
+            onAddLink: (block: ContentBlock, action: ToolbarAction, editorState: EditorState, setEditorState: EditorStateSetter) => 
+                (url: string): void => {
+                    const selection = editorState.getSelection()
 
-                // if no 'http' at the beginning of the url AND it is not a variable, add it
-                if (!/^https?:\/\//i.test(url) && !url.startsWith('{')) {
-                    url = `http://${url}`
-                }
+                    // if no 'http' at the beginning of the url AND it is not a variable, add it
+                    if (!/^https?:\/\//i.test(url) && !url.startsWith('{')) {
+                        url = `http://${url}`
+                    }
 
-                // nothing selected, insert link as text
-                if (selection.isCollapsed()) {
-                    return setEditorState(insertText(editorState, url))
-                }
+                    // nothing selected, insert link as text
+                    if (selection.isCollapsed()) {
+                        return setEditorState(insertText(editorState, url))
+                    }
 
-                const entityContentState = editorState.getCurrentContent().createEntity(
-                    'link',
-                    'MUTABLE',
-                    {url}
-                )
-                const entityKey = entityContentState.getLastCreatedEntityKey()
-                setEditorState(RichUtils.toggleLink(editorState, selection, entityKey))
-            },
+                    const entityContentState = editorState.getCurrentContent().createEntity(
+                        'link',
+                        'MUTABLE',
+                        {url}
+                    )
+                    const entityKey = entityContentState.getLastCreatedEntityKey()
+                    setEditorState(RichUtils.toggleLink(editorState, selection, entityKey))
+                },
         }
     },
     {
         key: 'image',
         name: 'Insert image',
         component: AddImage,
-        functions: {
-            addImage: (block, action, editorState, setEditorState, url, size = 0) => {
+        componentFunctions: {
+            onAddImage: (block: ContentBlock, action: ToolbarAction, editorState: EditorState, setEditorState: EditorStateSetter) => (url: string, size: number = 0) => {
                 const newEditorState = addImage(editorState, url, size)
                 setEditorState(newEditorState)
             },
-            getMaxAttachmentSize: (block, action, editorState) => {
+            getMaxAttachmentSize: (block: ContentBlock, action: ToolbarAction, editorState: EditorState) => () => {
                 return getMaxAttachmentSize(editorState, action.toolbarProps.attachments)
             }
         },
@@ -106,8 +110,8 @@ export default [
         key: 'emoji',
         name: 'Insert emoji',
         component: AddEmoji,
-        functions: {
-            addEmoji: (block, action, editorState, setEditorState, emoji) => {
+        componentFunctions: {
+            onAddEmoji: (block: ContentBlock, action: ToolbarAction, editorState: EditorState, setEditorState: EditorStateSetter) => (emoji: Emoji) => {
                 let newEditorState = insertText(editorState, emoji.native)
 
                 // forcing the current selection ensures that it will be at it's right place
@@ -118,3 +122,5 @@ export default [
         },
     },
 ]
+
+export default actions
