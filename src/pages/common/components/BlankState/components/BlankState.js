@@ -1,7 +1,6 @@
 // @flow
 import React from 'react'
 import {fromJS} from 'immutable'
-import {Emoji} from '../../Emoji'
 
 
 type Props = {
@@ -25,7 +24,7 @@ export default class BlankState extends React.Component<Props> {
                 text: (
                     <div>
                         You closed {totalClosedTickets} tickets this week, that's a good start
-                        <Emoji name="ok_hand" />
+                        <span className="ml-2">👌</span>
                     </div>
                 )
             },
@@ -36,7 +35,7 @@ export default class BlankState extends React.Component<Props> {
                 text: (
                     <div>
                         You've helped {totalClosedTickets} people this week, you deserve some
-                        <Emoji name="cookie" />
+                        <span className="ml-2">🍪</span>
                     </div>
                 )
             },
@@ -47,7 +46,7 @@ export default class BlankState extends React.Component<Props> {
                 text: (
                     <div>
                         You closed {totalClosedTickets} tickets this week, you're awesome
-                        <Emoji name="rocket" />
+                        <span className="ml-2">🚀</span>
                     </div>
                 )
             }
