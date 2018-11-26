@@ -8,6 +8,8 @@ import {
     Input,
 } from 'reactstrap'
 
+import css from './SearchableSelectField.less'
+
 class SearchableSelectField extends React.Component {
     state = {
         search: ''
@@ -64,6 +66,7 @@ class SearchableSelectField extends React.Component {
         return (
             <UncontrolledDropdown
                 disabled={isDisabled}
+                className={css.component}
             >
                 <DropdownToggle
                     caret
@@ -86,7 +89,7 @@ class SearchableSelectField extends React.Component {
                 </DropdownToggle>
                 <DropdownMenu
                     right
-                    style={{width: '230px'}}
+                    className={css.dropdown}
                 >
                     <DropdownItem
                         header
@@ -100,39 +103,41 @@ class SearchableSelectField extends React.Component {
                             onChange={(e) => this._handleSearchChange(e.target.value)}
                         />
                     </DropdownItem>
-                    {
-                        filteredItems.length === 0 ? (
-                            <DropdownItem header>
-                                Could not find any {singular}
-                            </DropdownItem>
-                        ) : (
-                            filteredItems.map((item) => {
-                                const isChecked = input.value.includes(item.value)
+                    <div className={css.content}>
+                        {
+                            filteredItems.length === 0 ? (
+                                <DropdownItem header>
+                                    Could not find any {singular}
+                                </DropdownItem>
+                            ) : (
+                                filteredItems.map((item) => {
+                                    const isChecked = input.value.includes(item.value)
 
-                                return (
-                                    <DropdownItem
-                                        key={item.value}
-                                        onClick={(e) => {
-                                            e.preventDefault()
-                                            e.stopPropagation()
-                                            this._handleOptionClick(item.value)
-                                        }}
-                                        toggle={false}
-                                    >
-                                        <Label check>
-                                            <input
-                                                className="mr-2"
-                                                type="checkbox"
-                                                checked={isChecked}
-                                            />
-                                            {' '}
-                                            {item.label}
-                                        </Label>
-                                    </DropdownItem>
-                                )
-                            })
-                        )
-                    }
+                                    return (
+                                        <DropdownItem
+                                            key={item.value}
+                                            onClick={(e) => {
+                                                e.preventDefault()
+                                                e.stopPropagation()
+                                                this._handleOptionClick(item.value)
+                                            }}
+                                            toggle={false}
+                                        >
+                                            <Label check>
+                                                <input
+                                                    className="mr-2"
+                                                    type="checkbox"
+                                                    checked={isChecked}
+                                                />
+                                                {' '}
+                                                {item.label}
+                                            </Label>
+                                        </DropdownItem>
+                                    )
+                                })
+                            )
+                        }
+                    </div>
                     {
                         hasSelectedItems && [
                             <DropdownItem

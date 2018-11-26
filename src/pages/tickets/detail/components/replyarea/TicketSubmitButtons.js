@@ -103,6 +103,7 @@ export default class TicketSubmitButtons extends React.Component {
                     <Tooltip
                         placement="top"
                         target="submit-button"
+                        disabled={disabled}
                     >
                         {shortcutManager.getActionKeys(keymap.TicketDetailContainer.actions.SUBMIT_TICKET)}
                     </Tooltip>
@@ -123,6 +124,7 @@ export default class TicketSubmitButtons extends React.Component {
                     <Tooltip
                         placement="top"
                         target="submit-and-close-button"
+                        disabled={disabled}
                     >
                         {shortcutManager.getActionKeys(keymap.TicketDetailContainer.actions.SUBMIT_CLOSE_TICKET)}
                     </Tooltip>

@@ -8,7 +8,8 @@ import type {Node} from 'react'
 
 type Props = {
     children: Node,
-    delay?: number | {show: number, hide: number}
+    delay?: number | {show: number, hide: number},
+    disabled?: boolean
 }
 
 export default class Tooltip extends React.Component<Props> {
@@ -23,8 +24,16 @@ export default class Tooltip extends React.Component<Props> {
             ...rest,
         } = this.props
 
+        const extraProps = {}
+        if (this.props.disabled) {
+            extraProps.isOpen = false
+        }
+
         return (
-            <UncontrolledTooltip {...rest}>
+            <UncontrolledTooltip
+                {...rest}
+                {...extraProps}
+            >
                 {children}
             </UncontrolledTooltip>
         )

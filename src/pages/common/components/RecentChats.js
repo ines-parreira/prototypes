@@ -11,6 +11,8 @@ import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 import {MAX_RECENT_CHATS} from '../../../config/recentChats'
 import SourceIcon from './SourceIcon'
 
+import css from './RecentChats.less'
+
 class RecentChatsItem extends React.Component {
     static propTypes = {
         recentTicket: PropTypes.object.isRequired,
@@ -30,10 +32,10 @@ class RecentChatsItem extends React.Component {
         const customerName = customer.get('name') || customer.get('email') || `Customer #${customerID}`
         // is the current link active or not?
         const isActive = isCurrentlyOnTicket(recentTicket.get('id'))
-        const linkClasses = classnames('item', {
+        const linkClasses = classnames('item', css.menuItem, {
             active: isActive,
             focused: isActive,
-            'has-something-new': recentTicket.get('is_unread') && !isActive,
+            [css.hasSomethingNew]: recentTicket.get('is_unread') && !isActive,
         })
 
         return (
@@ -82,7 +84,7 @@ class RecentChats extends React.Component {
         }
 
         return (
-            <div className="RecentChats">
+            <div className={css.component}>
                 <div className="item">
                     <h4>
                         <span id="active-chats-title">
@@ -90,8 +92,9 @@ class RecentChats extends React.Component {
                         </span>
                     </h4>
                     <Tooltip
-                        placement="right"
+                        placement="left"
                         target="active-chats-title"
+                        className={css.tooltip}
                     >
                         Open chats assigned to you or unassigned
                     </Tooltip>

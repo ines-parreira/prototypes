@@ -1,0 +1,25 @@
+:local .component {
+  .menuItem {
+    padding-right: 2.7em !important;
+  }
+
+  .hasSomethingNew {
+    &,
+    & > * {
+      color: white !important;
+      opacity: 1 !important;
+    }
+
+    span {
+      font-weight: 700;
+    }
+  }
+
+}
+
+/* after react 16 and reactstrap upgrade,
+  * set boundariesElement on tooltip and remove.
+  */
+:local .tooltip {
+  left: 40px !important;
+}

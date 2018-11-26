@@ -175,7 +175,7 @@ export class TicketReplyArea extends React.Component<Props, State> {
                 action: () => {
                     this._hideMacros()
 
-                    if (document.hasOwnProperty('activeElement') && document.activeElement) {
+                    if (document.activeElement) {
                         document.activeElement.blur()
                     }
                 }

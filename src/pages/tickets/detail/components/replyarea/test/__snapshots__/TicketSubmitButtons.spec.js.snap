@@ -23,6 +23,7 @@ exports[`TicketSubmitButtons component empty ticket 1`] = `
     </ConfirmButton>
     <Tooltip
       delay={0}
+      disabled={true}
       placement="top"
       target="submit-button"
     >
@@ -46,6 +47,7 @@ exports[`TicketSubmitButtons component empty ticket 1`] = `
     </ConfirmButton>
     <Tooltip
       delay={0}
+      disabled={true}
       placement="top"
       target="submit-and-close-button"
     >
