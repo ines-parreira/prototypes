@@ -56,7 +56,17 @@ export default class CallExpression extends React.Component {
         const property = findProperty(objectPath, schemas)
 
         if (property && property.meta) {
-            return {..._.get(property.meta, 'operators'), ..._.get(property.meta, 'views.additional_operators', {})}
+            let operators = {
+                ..._.get(property.meta, 'operators'),
+                ..._.get(property.meta, 'views.additional_operators', {})
+            }
+
+            const excludedOperators = _.get(property.meta, 'views.excluded_operators', {})
+            if (excludedOperators) {
+                operators = _.pickBy(operators, (value, key) => !Object.keys(excludedOperators).includes(key))
+            }
+
+            return operators
         }
 
         return BASIC_OPERATORS
