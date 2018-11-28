@@ -12,19 +12,19 @@ export const getCurrentUserState = (state: stateType) => state.currentUser || fr
 
 export const getCurrentUser = createSelector(
     [getCurrentUserState],
-    state => state
+    (state)=> state
 )
 
 export const getSettings = createSelector(
     [getCurrentUserState],
-    state => state.get('settings') || fromJS([])
+    (state) => state.get('settings') || fromJS([])
 )
 
 // used to get ticket-views and customer-views user preferences
 export const getSettingsByType = (type: string) => createSelector(
     [getViews, getSettings],
     (views, settings) => {
-        settings = settings.find(setting => setting.get('type') === type) || fromJS({type, data: {}})
+        (settings) = settings.find((setting) => setting.get('type') === type) || fromJS({type, data: {}})
 
         // add vies and update settings according to views configuration
         views.forEach((view) => {

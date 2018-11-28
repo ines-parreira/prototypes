@@ -12,7 +12,7 @@ import {collectionOperators, deprecatedOperators, timedeltaOperators} from '../.
 
 import type {Map, List} from 'immutable'
 import type {schemasType} from '../../types'
-import {EMPTY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
+import {UNARY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
 import {isTimedelta} from '../../utils/ast'
 type argPathType = Array<?string>
 
@@ -285,7 +285,7 @@ export function resolveCallee(callExpression: Map<*,*>, firstArgSchema: schemasT
  */
 function resolveSecondArg(callExpression: Map<*,*>, firstArgSchema: schemasType, callee, reset) {
     // empty operators have only one argument
-    if (Object.keys(EMPTY_OPERATORS).includes(callee)) {
+    if (Object.keys(UNARY_OPERATORS).includes(callee)) {
         return null
     }
 

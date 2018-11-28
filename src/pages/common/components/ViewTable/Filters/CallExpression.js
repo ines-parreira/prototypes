@@ -5,7 +5,7 @@ import {Badge} from 'reactstrap'
 import {connect} from 'react-redux'
 import _ from 'lodash'
 
-import {BASIC_OPERATORS, EMPTY_OPERATORS} from '../../../../../config'
+import {BASIC_OPERATORS, UNARY_OPERATORS} from '../../../../../config'
 import Left from './Left'
 import Right from './Right'
 import Operator from './Operator'
@@ -99,7 +99,7 @@ export default class CallExpression extends React.Component {
                     index={index}
                     config={config}
                     field={field}
-                    empty={Object.keys(EMPTY_OPERATORS).includes(operator.name)}
+                    empty={Object.keys(UNARY_OPERATORS).includes(operator.name)}
                 />
                 {!field && (
                     <Badge color="danger">

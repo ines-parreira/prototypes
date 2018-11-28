@@ -1,6 +1,7 @@
 // @flow
 import {createSelector} from 'reselect'
 import {fromJS} from 'immutable'
+import * as constants from './constants'
 
 // types
 import type {stateType} from '../types'
@@ -78,5 +79,5 @@ export const getSettingsByType = (type: string) => {
     )
 }
 
-export const getChatSettings = getSettingsByType('chat')
-export const getSurveysSettings = getSettingsByType('satisfaction-surveys')
+export const getSurveysSettings = getSettingsByType(constants.SETTING_TYPE_SATISFACTION_SURVEYS)
+export const getBusinessHoursSettings = getSettingsByType(constants.SETTING_TYPE_BUSINESS_HOURS)

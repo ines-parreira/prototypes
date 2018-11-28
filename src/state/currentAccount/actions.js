@@ -23,7 +23,7 @@ export const updateAccount = (values: {}) => ((dispatch: dispatchType): Promise<
 
     return axios.put('/api/account/', values)
         .then((json = {}) => json.data)
-        .then(resp => {
+        .then((resp) => {
             dispatch({
                 type: constants.UPDATE_ACCOUNT_SUCCESS,
                 resp
@@ -32,7 +32,7 @@ export const updateAccount = (values: {}) => ((dispatch: dispatchType): Promise<
                 status: 'success',
                 message: 'Account settings successfully updated!'
             }))
-        }, error => {
+        }, (error) => {
             return dispatch({
                 type: constants.UPDATE_ACCOUNT_ERROR,
                 error,
@@ -53,7 +53,7 @@ export function submitSetting(setting: settingType) {
         }
         return promise
             .then((json = {}) => json.data)
-            .then(setting => {
+            .then((setting) => {
                 dispatch(notify({
                     status: 'success',
                     message: `${_capitalize(setting.type)} settings saved`
@@ -65,7 +65,7 @@ export function submitSetting(setting: settingType) {
                     setting
                 })
 
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: constants.UPDATE_ACCOUNT_SETTING_ERROR,
                     error,

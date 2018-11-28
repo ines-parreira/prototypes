@@ -1,0 +1,40 @@
+:local {
+  .businessHoursInputWrapper {
+    display: flex;
+    margin-bottom: 10px;
+  }
+
+  .businessHoursLabel {
+    display: block;
+  }
+
+  .businessHoursInput {
+    display: flex;
+    align-items: center;
+
+    & > div, & > input, & > p {
+      margin-right: 5px;
+      margin-bottom: 0;
+    }
+
+    .timeField {
+      width: 121px;
+      height: 32px;
+    }
+
+    .closeWrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+
+  .deleteButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+  }
+}

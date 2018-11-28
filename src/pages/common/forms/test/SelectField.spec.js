@@ -70,6 +70,11 @@ describe('SelectField', () => {
         expect(component).toMatchSnapshot()
     })
 
+    it('should set the minWidth of the input according to the length of the longest label', () => {
+        const component = shallow(<SelectField {...minProps} {...props} fixedWidth />)
+        expect(component).toMatchSnapshot()
+    })
+
     it('should update state when search changes (custom values allowed)', () => {
         const options = [{
             value: 'hello',

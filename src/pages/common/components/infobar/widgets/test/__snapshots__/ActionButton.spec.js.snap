@@ -454,6 +454,7 @@ exports[`ActionButton component should display multiple options with a common pa
         </Label>
         <SelectField
           allowCustomValue={false}
+          fixedWidth={false}
           onChange={[Function]}
           onSearchChange={[Function]}
           options={
@@ -604,6 +605,7 @@ exports[`ActionButton component should display multiple options with different p
         </Label>
         <SelectField
           allowCustomValue={false}
+          fixedWidth={false}
           onChange={[Function]}
           onSearchChange={[Function]}
           options={
@@ -753,6 +755,7 @@ exports[`ActionButton component should display multiple options without paramete
         </Label>
         <SelectField
           allowCustomValue={false}
+          fixedWidth={false}
           onChange={[Function]}
           onSearchChange={[Function]}
           options={

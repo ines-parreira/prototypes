@@ -1,0 +1,170 @@
+// @flow
+import React from 'react'
+import {connect} from 'react-redux'
+import {fromJS, Map, List} from 'immutable'
+import {Button, Row, Col, Container, Form, Label} from 'reactstrap'
+import classnames from 'classnames'
+
+import PageHeader from '../../common/components/PageHeader'
+import InputField from '../../common/forms/InputField'
+import BusinessHoursForm from './BusinessHoursForm'
+import {getMomentTimezoneNames} from '../../../utils/date'
+
+import * as currentAccountActions from '../../../state/currentAccount/actions'
+import * as currentAccountConstants from '../../../state/currentAccount/constants'
+import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
+
+import {DEFAULT_BUSINESS_HOUR, MAX_BUSINESS_HOURS} from './constants'
+import css from './BusinessHours.less'
+
+type Props = {
+    submitSetting: (Object) => Promise<*>,
+    businessHoursSettings: Map<*,*>
+}
+
+type State = {
+    items: List<Map<*,*>>,
+    timezone: string,
+    loading: boolean
+}
+
+class BusinessHours extends React.Component<Props, State> {
+    state = {
+        items: fromJS([DEFAULT_BUSINESS_HOUR]),
+        timezone: 'UTC',
+        loading: false
+    }
+
+    componentDidMount() {
+        const {businessHoursSettings} = this.props
+
+        if (!businessHoursSettings.isEmpty()) {
+            this.setState({
+                timezone: businessHoursSettings.getIn(['data', 'timezone']),
+                items: businessHoursSettings.getIn(['data', 'business_hours'])
+            })
+        }
+    }
+
+    _onSubmit = (evt: Event) => {
+        evt.preventDefault()
+        this.setState({loading: true})
+
+        const {businessHoursSettings} = this.props
+        const {timezone, items} = this.state
+
+        this.props.submitSetting({
+            id: businessHoursSettings.get('id'),
+            type: currentAccountConstants.SETTING_TYPE_BUSINESS_HOURS,
+            data: {
+                timezone: timezone,
+                business_hours: items.toJS()
+            }
+        })
+            .then(() => this.setState({loading: false}))
+            .catch(() => this.setState({loading: false}))
+    }
+
+    _addBusinessHours = () => {
+        const {items} = this.state
+
+        if (items.size >= MAX_BUSINESS_HOURS) {
+            return
+        }
+
+        this.setState({items: items.push(DEFAULT_BUSINESS_HOUR)})
+    }
+
+    render() {
+        const {items} = this.state
+
+        return (
+            <div className="full-width">
+                <PageHeader title="Business hours"/>
+
+                <Container fluid className="page-container">
+                    <p>
+                        Let customers know when your team is online.<br/>
+                        This way, you can disable the chat outside of business hours, or set different auto-responders
+                        in the rules based on when your team is working.
+                    </p>
+
+                    <Form onSubmit={this._onSubmit}>
+                        <Row className="mb-2">
+                            <Col md="9">
+                                <div className="mb-3">
+                                    <Label className={classnames('control-label', css.businessHoursLabel)}>
+                                        Business hours
+                                    </Label>
+                                    {
+                                        items.map((item, idx) => (
+                                            <div
+                                                key={idx}
+                                                className={css.businessHoursInputWrapper}
+                                            >
+                                                <BusinessHoursForm
+                                                    businessHour={item}
+                                                    onChange={(data) => this.setState({items: items.set(idx, data)})}
+                                                />
+                                                <div
+                                                    className={css.deleteButton}
+                                                    onClick={() => this.setState({items: items.delete(idx)})}
+                                                >
+                                                    <i className="material-icons red">
+                                                        clear
+                                                    </i>
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
+                                    <Button
+                                        type="button"
+                                        onClick={this._addBusinessHours}
+                                    >
+                                        <i className="material-icons">
+                                            add
+                                        </i>
+                                        {' '}Add business hours
+                                    </Button>
+                                </div>
+
+                                <InputField
+                                    type="select"
+                                    name="timezone"
+                                    label="Timezone"
+                                    value={this.state.timezone}
+                                    onChange={(timezone) => this.setState({timezone})}
+                                >
+                                    {
+                                        getMomentTimezoneNames()
+                                            .map((name) => <option key={name} value={name}>{name}</option>)
+                                    }
+                                </InputField>
+                            </Col>
+                        </Row>
+
+                        <Button
+                            type="submit"
+                            color="success"
+                            className={classnames({
+                                'btn-loading': this.state.loading,
+                            })}
+                            disabled={this.state.loading}
+                        >
+                            Save changes
+                        </Button>
+                    </Form>
+                </Container>
+
+            </div>
+        )
+    }
+}
+
+export default connect((state) => {
+    return {
+        businessHoursSettings: currentAccountSelectors.getBusinessHoursSettings(state)
+    }
+}, {
+    submitSetting: currentAccountActions.submitSetting
+})(BusinessHours)

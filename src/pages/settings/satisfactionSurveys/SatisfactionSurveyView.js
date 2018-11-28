@@ -13,6 +13,7 @@ import RichFieldWithVariables from '../../common/forms/RichFieldWithVariables'
 import PageHeader from '../../common/components/PageHeader'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
 import * as currentAccountActions from '../../../state/currentAccount/actions'
+import * as currentAccountConstants from '../../../state/currentAccount/constants'
 import SatisfactionSurveyUpgrade from '../../common/components/SatisfactionSurveyUpgrade'
 
 
@@ -51,7 +52,7 @@ class SatisfactionSurveyView extends React.Component<Props> {
 
         const newSettings = {
             'id': this.props.surveysSettings.get('id'),
-            'type': 'satisfaction-surveys',
+            'type': currentAccountConstants.SETTING_TYPE_SATISFACTION_SURVEYS,
             'data': this.state.settings.toJS()
         }
 

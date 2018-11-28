@@ -239,6 +239,73 @@ Object {
 }
 `;
 
+exports[`SelectField should set the minWidth of the input according to the length of the longest label 1`] = `
+<div
+  style={
+    Object {
+      "background": "red",
+    }
+  }
+>
+  <UncontrolledDropdown
+    isOpen={false}
+    toggle={[Function]}
+  >
+    <DropdownToggle
+      aria-haspopup={true}
+      color="secondary"
+      data-toggle="dropdown"
+      tag="div"
+    >
+      <div
+        className="select dropdown-toggle"
+        onClick={[Function]}
+      >
+        <span
+          className="label"
+          style={
+            Object {
+              "minWidth": 58,
+              "opacity": 1,
+            }
+          }
+        >
+          First
+        </span>
+        <input
+          className="input"
+          onChange={[Function]}
+          onKeyDown={[Function]}
+          style={
+            Object {
+              "minWidth": 58,
+            }
+          }
+          type="text"
+          value=""
+        />
+      </div>
+    </DropdownToggle>
+    <DropdownMenu
+      className="options"
+      flip={true}
+      tag="div"
+    >
+      <DropdownItem
+        className="option option--focused"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        tag="button"
+        toggle={true}
+        type="button"
+      >
+        Second
+      </DropdownItem>
+    </DropdownMenu>
+  </UncontrolledDropdown>
+</div>
+`;
+
 exports[`SelectField should update state when search changes (custom NOT values allowed) 1`] = `
 Object {
   "filteredOptions": Array [
@@ -306,6 +373,7 @@ Object {
 exports[`SelectField should use custom props 1`] = `
 Object {
   "allowCustomValue": false,
+  "fixedWidth": false,
   "onChange": [Function],
   "onSearchChange": [Function],
   "options": Array [
@@ -332,6 +400,7 @@ Object {
 exports[`SelectField should use default props 1`] = `
 Object {
   "allowCustomValue": false,
+  "fixedWidth": false,
   "onChange": [Function],
   "onSearchChange": [Function],
   "options": Array [],

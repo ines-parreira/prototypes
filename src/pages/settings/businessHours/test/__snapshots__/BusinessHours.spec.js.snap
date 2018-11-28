@@ -1,0 +1,1168 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BusinessHours component should render default values 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title="Business hours"
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <p>
+      Let customers know when your team is online.
+      <br />
+      This way, you can disable the chat outside of business hours, or set different auto-responders in the rules based on when your team is working.
+    </p>
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <Row
+        className="mb-2"
+        tag="div"
+      >
+        <Col
+          md="9"
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <div
+            className="mb-3"
+          >
+            <Label
+              className="control-label businessHoursLabel"
+              tag="label"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              Business hours
+            </Label>
+            <div
+              className="businessHoursInputWrapper"
+            >
+              <BusinessHoursForm
+                businessHour={
+                  Immutable.Map {
+                    days: "1,2,3,4,5",
+                    from_time: "09:00",
+                    to_time: "17:00",
+                  }
+                }
+                onChange={[Function]}
+              />
+              <div
+                className="deleteButton"
+                onClick={[Function]}
+              >
+                <i
+                  className="material-icons red"
+                >
+                  clear
+                </i>
+              </div>
+            </div>
+            <Button
+              color="secondary"
+              onClick={[Function]}
+              tag="button"
+              type="button"
+            >
+              <i
+                className="material-icons"
+              >
+                add
+              </i>
+               
+              Add business hours
+            </Button>
+          </div>
+          <InputField
+            label="Timezone"
+            name="timezone"
+            onChange={[Function]}
+            type="select"
+            value="UTC"
+          >
+            <option
+              value="UTC"
+            >
+              UTC
+            </option>
+            <option
+              value="US/Pacific"
+            >
+              US/Pacific
+            </option>
+            <option
+              value="Australia/AUR"
+            >
+              Australia/AUR
+            </option>
+          </InputField>
+        </Col>
+      </Row>
+      <Button
+        className=""
+        color="success"
+        disabled={false}
+        tag="button"
+        type="submit"
+      >
+        Save changes
+      </Button>
+    </Form>
+  </Container>
+</div>
+`;
+
+exports[`BusinessHours component should render values from state 1`] = `
+<Connect(BusinessHours)
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <BusinessHours
+    businessHoursSettings={
+      Immutable.Map {
+        type: "business-hours",
+        data: Immutable.Map {
+          business_hours: Immutable.List [
+            Immutable.Map {
+              days: "2",
+              from_time: "10:00",
+              to_time: "17:00",
+            },
+            Immutable.Map {
+              days: "4",
+              from_time: "11:00",
+              to_time: "17:00",
+            },
+          ],
+          timezone: "US/Pacific",
+        },
+      }
+    }
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+    submitSetting={[Function]}
+  >
+    <div
+      className="full-width"
+    >
+      <PageHeader
+        title="Business hours"
+      >
+        <div
+          className="d-flex align-items-center justify-content-between flex-wrap page-header "
+        >
+          <h1
+            className="d-flex align-items-center"
+          >
+            Business hours
+          </h1>
+        </div>
+      </PageHeader>
+      <Container
+        className="page-container"
+        fluid={true}
+        tag="div"
+      >
+        <div
+          className="page-container container-fluid"
+        >
+          <p>
+            Let customers know when your team is online.
+            <br />
+            This way, you can disable the chat outside of business hours, or set different auto-responders in the rules based on when your team is working.
+          </p>
+          <Form
+            onSubmit={[Function]}
+            tag="form"
+          >
+            <form
+              className=""
+              onSubmit={[Function]}
+            >
+              <Row
+                className="mb-2"
+                tag="div"
+              >
+                <div
+                  className="mb-2 row"
+                >
+                  <Col
+                    md="9"
+                    tag="div"
+                    widths={
+                      Array [
+                        "xs",
+                        "sm",
+                        "md",
+                        "lg",
+                        "xl",
+                      ]
+                    }
+                  >
+                    <div
+                      className="col-md-9"
+                    >
+                      <div
+                        className="mb-3"
+                      >
+                        <Label
+                          className="control-label businessHoursLabel"
+                          tag="label"
+                          widths={
+                            Array [
+                              "xs",
+                              "sm",
+                              "md",
+                              "lg",
+                              "xl",
+                            ]
+                          }
+                        >
+                          <label
+                            className="control-label businessHoursLabel "
+                          >
+                            Business hours
+                          </label>
+                        </Label>
+                        <div
+                          className="businessHoursInputWrapper"
+                        >
+                          <BusinessHoursForm
+                            businessHour={
+                              Immutable.Map {
+                                days: "2",
+                                from_time: "10:00",
+                                to_time: "17:00",
+                              }
+                            }
+                            onChange={[Function]}
+                          >
+                            <div
+                              className="businessHoursInput"
+                            >
+                              <SelectField
+                                allowCustomValue={false}
+                                fixedWidth={true}
+                                onChange={[Function]}
+                                onSearchChange={[Function]}
+                                options={
+                                  Array [
+                                    Object {
+                                      "label": <i>
+                                        Everyday
+                                  </i>,
+                                      "value": "1,2,3,4,5,6,7",
+                                    },
+                                    Object {
+                                      "label": <i>
+                                        Weekdays
+                                  </i>,
+                                      "value": "1,2,3,4,5",
+                                    },
+                                    Object {
+                                      "label": <i>
+                                        Weekend
+                                  </i>,
+                                      "value": "6,7",
+                                    },
+                                    Object {
+                                      "label": "Monday",
+                                      "value": "1",
+                                    },
+                                    Object {
+                                      "label": "Tuesday",
+                                      "value": "2",
+                                    },
+                                    Object {
+                                      "label": "Wednesday",
+                                      "value": "3",
+                                    },
+                                    Object {
+                                      "label": "Thursday",
+                                      "value": "4",
+                                    },
+                                    Object {
+                                      "label": "Friday",
+                                      "value": "5",
+                                    },
+                                    Object {
+                                      "label": "Saturday",
+                                      "value": "6",
+                                    },
+                                    Object {
+                                      "label": "Sunday",
+                                      "value": "7",
+                                    },
+                                  ]
+                                }
+                                placeholder="Select an option"
+                                singular="option"
+                                style={Object {}}
+                                value="2"
+                              >
+                                <div
+                                  style={Object {}}
+                                >
+                                  <UncontrolledDropdown
+                                    isOpen={false}
+                                    toggle={[Function]}
+                                  >
+                                    <Dropdown
+                                      active={false}
+                                      addonType={false}
+                                      direction="down"
+                                      inNavbar={false}
+                                      isOpen={false}
+                                      nav={false}
+                                      toggle={[Function]}
+                                    >
+                                      <Manager
+                                        className="dropdown"
+                                        onKeyDown={[Function]}
+                                        tag="div"
+                                      >
+                                        <div
+                                          className="dropdown"
+                                          onKeyDown={[Function]}
+                                        >
+                                          <DropdownToggle
+                                            aria-haspopup={true}
+                                            color="secondary"
+                                            data-toggle="dropdown"
+                                            tag="div"
+                                          >
+                                            <Target
+                                              aria-expanded={false}
+                                              aria-haspopup={true}
+                                              className=""
+                                              component="div"
+                                              data-toggle="dropdown"
+                                              onClick={[Function]}
+                                            >
+                                              <div
+                                                aria-expanded={false}
+                                                aria-haspopup={true}
+                                                className=""
+                                                data-toggle="dropdown"
+                                                onClick={[Function]}
+                                              >
+                                                <div
+                                                  className="select dropdown-toggle"
+                                                  onClick={[Function]}
+                                                >
+                                                  <span
+                                                    className="label"
+                                                    style={
+                                                      Object {
+                                                        "minWidth": 82,
+                                                        "opacity": 1,
+                                                      }
+                                                    }
+                                                  >
+                                                    Tuesday
+                                                  </span>
+                                                  <input
+                                                    className="input"
+                                                    onChange={[Function]}
+                                                    onKeyDown={[Function]}
+                                                    style={
+                                                      Object {
+                                                        "minWidth": 82,
+                                                      }
+                                                    }
+                                                    type="text"
+                                                    value=""
+                                                  />
+                                                </div>
+                                              </div>
+                                            </Target>
+                                          </DropdownToggle>
+                                          <DropdownMenu
+                                            className="options"
+                                            flip={true}
+                                            tag="div"
+                                          >
+                                            <div
+                                              aria-hidden={true}
+                                              className="options dropdown-menu"
+                                              role="menu"
+                                              tabIndex="-1"
+                                            >
+                                              <DropdownItem
+                                                className="option option--focused"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                tag="button"
+                                                toggle={true}
+                                                type="button"
+                                              >
+                                                <button
+                                                  className="option option--focused dropdown-item"
+                                                  onClick={[Function]}
+                                                  onMouseEnter={[Function]}
+                                                  tabIndex="0"
+                                                  type="button"
+                                                >
+                                                  <i>
+                                                    Everyday
+                                                  </i>
+                                                </button>
+                                              </DropdownItem>
+                                              <DropdownItem
+                                                className="option"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                tag="button"
+                                                toggle={true}
+                                                type="button"
+                                              >
+                                                <button
+                                                  className="option dropdown-item"
+                                                  onClick={[Function]}
+                                                  onMouseEnter={[Function]}
+                                                  tabIndex="0"
+                                                  type="button"
+                                                >
+                                                  <i>
+                                                    Weekdays
+                                                  </i>
+                                                </button>
+                                              </DropdownItem>
+                                              <DropdownItem
+                                                className="option"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                tag="button"
+                                                toggle={true}
+                                                type="button"
+                                              >
+                                                <button
+                                                  className="option dropdown-item"
+                                                  onClick={[Function]}
+                                                  onMouseEnter={[Function]}
+                                                  tabIndex="0"
+                                                  type="button"
+                                                >
+                                                  <i>
+                                                    Weekend
+                                                  </i>
+                                                </button>
+                                              </DropdownItem>
+                                              <DropdownItem
+                                                className="option"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                tag="button"
+                                                toggle={true}
+                                                type="button"
+                                              >
+                                                <button
+                                                  className="option dropdown-item"
+                                                  onClick={[Function]}
+                                                  onMouseEnter={[Function]}
+                                                  tabIndex="0"
+                                                  type="button"
+                                                >
+                                                  Monday
+                                                </button>
+                                              </DropdownItem>
+                                              <DropdownItem
+                                                className="option"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                tag="button"
+                                                toggle={true}
+                                                type="button"
+                                              >
+                                                <button
+                                                  className="option dropdown-item"
+                                                  onClick={[Function]}
+                                                  onMouseEnter={[Function]}
+                                                  tabIndex="0"
+                                                  type="button"
+                                                >
+                                                  Wednesday
+                                                </button>
+                                              </DropdownItem>
+                                              <DropdownItem
+                                                className="option"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                tag="button"
+                                                toggle={true}
+                                                type="button"
+                                              >
+                                                <button
+                                                  className="option dropdown-item"
+                                                  onClick={[Function]}
+                                                  onMouseEnter={[Function]}
+                                                  tabIndex="0"
+                                                  type="button"
+                                                >
+                                                  Thursday
+                                                </button>
+                                              </DropdownItem>
+                                              <DropdownItem
+                                                className="option"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                tag="button"
+                                                toggle={true}
+                                                type="button"
+                                              >
+                                                <button
+                                                  className="option dropdown-item"
+                                                  onClick={[Function]}
+                                                  onMouseEnter={[Function]}
+                                                  tabIndex="0"
+                                                  type="button"
+                                                >
+                                                  Friday
+                                                </button>
+                                              </DropdownItem>
+                                              <DropdownItem
+                                                className="option"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                tag="button"
+                                                toggle={true}
+                                                type="button"
+                                              >
+                                                <button
+                                                  className="option dropdown-item"
+                                                  onClick={[Function]}
+                                                  onMouseEnter={[Function]}
+                                                  tabIndex="0"
+                                                  type="button"
+                                                >
+                                                  Saturday
+                                                </button>
+                                              </DropdownItem>
+                                              <DropdownItem
+                                                className="option"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                tag="button"
+                                                toggle={true}
+                                                type="button"
+                                              >
+                                                <button
+                                                  className="option dropdown-item"
+                                                  onClick={[Function]}
+                                                  onMouseEnter={[Function]}
+                                                  tabIndex="0"
+                                                  type="button"
+                                                >
+                                                  Sunday
+                                                </button>
+                                              </DropdownItem>
+                                            </div>
+                                          </DropdownMenu>
+                                        </div>
+                                      </Manager>
+                                    </Dropdown>
+                                  </UncontrolledDropdown>
+                                </div>
+                              </SelectField>
+                              <Input
+                                className="timeField"
+                                name="fromTime"
+                                onChange={[Function]}
+                                pattern="[0-9][0-9]:[0-9][0-9]"
+                                type="time"
+                                value="10:00"
+                              >
+                                <input
+                                  className="timeField form-control"
+                                  name="fromTime"
+                                  onChange={[Function]}
+                                  pattern="[0-9][0-9]:[0-9][0-9]"
+                                  type="time"
+                                  value="10:00"
+                                />
+                              </Input>
+                              <p>
+                                to
+                              </p>
+                              <Input
+                                className="timeField"
+                                name="toTime"
+                                onChange={[Function]}
+                                pattern="[0-9][0-9]:[0-9][0-9]"
+                                type="time"
+                                value="17:00"
+                              >
+                                <input
+                                  className="timeField form-control"
+                                  name="toTime"
+                                  onChange={[Function]}
+                                  pattern="[0-9][0-9]:[0-9][0-9]"
+                                  type="time"
+                                  value="17:00"
+                                />
+                              </Input>
+                            </div>
+                          </BusinessHoursForm>
+                          <div
+                            className="deleteButton"
+                            onClick={[Function]}
+                          >
+                            <i
+                              className="material-icons red"
+                            >
+                              clear
+                            </i>
+                          </div>
+                        </div>
+                        <div
+                          className="businessHoursInputWrapper"
+                        >
+                          <BusinessHoursForm
+                            businessHour={
+                              Immutable.Map {
+                                days: "4",
+                                from_time: "11:00",
+                                to_time: "17:00",
+                              }
+                            }
+                            onChange={[Function]}
+                          >
+                            <div
+                              className="businessHoursInput"
+                            >
+                              <SelectField
+                                allowCustomValue={false}
+                                fixedWidth={true}
+                                onChange={[Function]}
+                                onSearchChange={[Function]}
+                                options={
+                                  Array [
+                                    Object {
+                                      "label": <i>
+                                        Everyday
+                                  </i>,
+                                      "value": "1,2,3,4,5,6,7",
+                                    },
+                                    Object {
+                                      "label": <i>
+                                        Weekdays
+                                  </i>,
+                                      "value": "1,2,3,4,5",
+                                    },
+                                    Object {
+                                      "label": <i>
+                                        Weekend
+                                  </i>,
+                                      "value": "6,7",
+                                    },
+                                    Object {
+                                      "label": "Monday",
+                                      "value": "1",
+                                    },
+                                    Object {
+                                      "label": "Tuesday",
+                                      "value": "2",
+                                    },
+                                    Object {
+                                      "label": "Wednesday",
+                                      "value": "3",
+                                    },
+                                    Object {
+                                      "label": "Thursday",
+                                      "value": "4",
+                                    },
+                                    Object {
+                                      "label": "Friday",
+                                      "value": "5",
+                                    },
+                                    Object {
+                                      "label": "Saturday",
+                                      "value": "6",
+                                    },
+                                    Object {
+                                      "label": "Sunday",
+                                      "value": "7",
+                                    },
+                                  ]
+                                }
+                                placeholder="Select an option"
+                                singular="option"
+                                style={Object {}}
+                                value="4"
+                              >
+                                <div
+                                  style={Object {}}
+                                >
+                                  <UncontrolledDropdown
+                                    isOpen={false}
+                                    toggle={[Function]}
+                                  >
+                                    <Dropdown
+                                      active={false}
+                                      addonType={false}
+                                      direction="down"
+                                      inNavbar={false}
+                                      isOpen={false}
+                                      nav={false}
+                                      toggle={[Function]}
+                                    >
+                                      <Manager
+                                        className="dropdown"
+                                        onKeyDown={[Function]}
+                                        tag="div"
+                                      >
+                                        <div
+                                          className="dropdown"
+                                          onKeyDown={[Function]}
+                                        >
+                                          <DropdownToggle
+                                            aria-haspopup={true}
+                                            color="secondary"
+                                            data-toggle="dropdown"
+                                            tag="div"
+                                          >
+                                            <Target
+                                              aria-expanded={false}
+                                              aria-haspopup={true}
+                                              className=""
+                                              component="div"
+                                              data-toggle="dropdown"
+                                              onClick={[Function]}
+                                            >
+                                              <div
+                                                aria-expanded={false}
+                                                aria-haspopup={true}
+                                                className=""
+                                                data-toggle="dropdown"
+                                                onClick={[Function]}
+                                              >
+                                                <div
+                                                  className="select dropdown-toggle"
+                                                  onClick={[Function]}
+                                                >
+                                                  <span
+                                                    className="label"
+                                                    style={
+                                                      Object {
+                                                        "minWidth": 82,
+                                                        "opacity": 1,
+                                                      }
+                                                    }
+                                                  >
+                                                    Thursday
+                                                  </span>
+                                                  <input
+                                                    className="input"
+                                                    onChange={[Function]}
+                                                    onKeyDown={[Function]}
+                                                    style={
+                                                      Object {
+                                                        "minWidth": 82,
+                                                      }
+                                                    }
+                                                    type="text"
+                                                    value=""
+                                                  />
+                                                </div>
+                                              </div>
+                                            </Target>
+                                          </DropdownToggle>
+                                          <DropdownMenu
+                                            className="options"
+                                            flip={true}
+                                            tag="div"
+                                          >
+                                            <div
+                                              aria-hidden={true}
+                                              className="options dropdown-menu"
+                                              role="menu"
+                                              tabIndex="-1"
+                                            >
+                                              <DropdownItem
+                                                className="option option--focused"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                tag="button"
+                                                toggle={true}
+                                                type="button"
+                                              >
+                                                <button
+                                                  className="option option--focused dropdown-item"
+                                                  onClick={[Function]}
+                                                  onMouseEnter={[Function]}
+                                                  tabIndex="0"
+                                                  type="button"
+                                                >
+                                                  <i>
+                                                    Everyday
+                                                  </i>
+                                                </button>
+                                              </DropdownItem>
+                                              <DropdownItem
+                                                className="option"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                tag="button"
+                                                toggle={true}
+                                                type="button"
+                                              >
+                                                <button
+                                                  className="option dropdown-item"
+                                                  onClick={[Function]}
+                                                  onMouseEnter={[Function]}
+                                                  tabIndex="0"
+                                                  type="button"
+                                                >
+                                                  <i>
+                                                    Weekdays
+                                                  </i>
+                                                </button>
+                                              </DropdownItem>
+                                              <DropdownItem
+                                                className="option"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                tag="button"
+                                                toggle={true}
+                                                type="button"
+                                              >
+                                                <button
+                                                  className="option dropdown-item"
+                                                  onClick={[Function]}
+                                                  onMouseEnter={[Function]}
+                                                  tabIndex="0"
+                                                  type="button"
+                                                >
+                                                  <i>
+                                                    Weekend
+                                                  </i>
+                                                </button>
+                                              </DropdownItem>
+                                              <DropdownItem
+                                                className="option"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                tag="button"
+                                                toggle={true}
+                                                type="button"
+                                              >
+                                                <button
+                                                  className="option dropdown-item"
+                                                  onClick={[Function]}
+                                                  onMouseEnter={[Function]}
+                                                  tabIndex="0"
+                                                  type="button"
+                                                >
+                                                  Monday
+                                                </button>
+                                              </DropdownItem>
+                                              <DropdownItem
+                                                className="option"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                tag="button"
+                                                toggle={true}
+                                                type="button"
+                                              >
+                                                <button
+                                                  className="option dropdown-item"
+                                                  onClick={[Function]}
+                                                  onMouseEnter={[Function]}
+                                                  tabIndex="0"
+                                                  type="button"
+                                                >
+                                                  Tuesday
+                                                </button>
+                                              </DropdownItem>
+                                              <DropdownItem
+                                                className="option"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                tag="button"
+                                                toggle={true}
+                                                type="button"
+                                              >
+                                                <button
+                                                  className="option dropdown-item"
+                                                  onClick={[Function]}
+                                                  onMouseEnter={[Function]}
+                                                  tabIndex="0"
+                                                  type="button"
+                                                >
+                                                  Wednesday
+                                                </button>
+                                              </DropdownItem>
+                                              <DropdownItem
+                                                className="option"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                tag="button"
+                                                toggle={true}
+                                                type="button"
+                                              >
+                                                <button
+                                                  className="option dropdown-item"
+                                                  onClick={[Function]}
+                                                  onMouseEnter={[Function]}
+                                                  tabIndex="0"
+                                                  type="button"
+                                                >
+                                                  Friday
+                                                </button>
+                                              </DropdownItem>
+                                              <DropdownItem
+                                                className="option"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                tag="button"
+                                                toggle={true}
+                                                type="button"
+                                              >
+                                                <button
+                                                  className="option dropdown-item"
+                                                  onClick={[Function]}
+                                                  onMouseEnter={[Function]}
+                                                  tabIndex="0"
+                                                  type="button"
+                                                >
+                                                  Saturday
+                                                </button>
+                                              </DropdownItem>
+                                              <DropdownItem
+                                                className="option"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                tag="button"
+                                                toggle={true}
+                                                type="button"
+                                              >
+                                                <button
+                                                  className="option dropdown-item"
+                                                  onClick={[Function]}
+                                                  onMouseEnter={[Function]}
+                                                  tabIndex="0"
+                                                  type="button"
+                                                >
+                                                  Sunday
+                                                </button>
+                                              </DropdownItem>
+                                            </div>
+                                          </DropdownMenu>
+                                        </div>
+                                      </Manager>
+                                    </Dropdown>
+                                  </UncontrolledDropdown>
+                                </div>
+                              </SelectField>
+                              <Input
+                                className="timeField"
+                                name="fromTime"
+                                onChange={[Function]}
+                                pattern="[0-9][0-9]:[0-9][0-9]"
+                                type="time"
+                                value="11:00"
+                              >
+                                <input
+                                  className="timeField form-control"
+                                  name="fromTime"
+                                  onChange={[Function]}
+                                  pattern="[0-9][0-9]:[0-9][0-9]"
+                                  type="time"
+                                  value="11:00"
+                                />
+                              </Input>
+                              <p>
+                                to
+                              </p>
+                              <Input
+                                className="timeField"
+                                name="toTime"
+                                onChange={[Function]}
+                                pattern="[0-9][0-9]:[0-9][0-9]"
+                                type="time"
+                                value="17:00"
+                              >
+                                <input
+                                  className="timeField form-control"
+                                  name="toTime"
+                                  onChange={[Function]}
+                                  pattern="[0-9][0-9]:[0-9][0-9]"
+                                  type="time"
+                                  value="17:00"
+                                />
+                              </Input>
+                            </div>
+                          </BusinessHoursForm>
+                          <div
+                            className="deleteButton"
+                            onClick={[Function]}
+                          >
+                            <i
+                              className="material-icons red"
+                            >
+                              clear
+                            </i>
+                          </div>
+                        </div>
+                        <Button
+                          color="secondary"
+                          onClick={[Function]}
+                          tag="button"
+                          type="button"
+                        >
+                          <button
+                            className="btn btn-secondary"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <i
+                              className="material-icons"
+                            >
+                              add
+                            </i>
+                             
+                            Add business hours
+                          </button>
+                        </Button>
+                      </div>
+                      <InputField
+                        label="Timezone"
+                        name="timezone"
+                        onChange={[Function]}
+                        type="select"
+                        value="US/Pacific"
+                      >
+                        <FormGroup
+                          className="InputField"
+                          color=""
+                          tag="div"
+                        >
+                          <div
+                            className="InputField form-group"
+                            color=""
+                          >
+                            <Label
+                              className="control-label"
+                              htmlFor="id-timezone"
+                              tag="label"
+                              widths={
+                                Array [
+                                  "xs",
+                                  "sm",
+                                  "md",
+                                  "lg",
+                                  "xl",
+                                ]
+                              }
+                            >
+                              <label
+                                className="control-label "
+                                htmlFor="id-timezone"
+                              >
+                                Timezone
+                              </label>
+                            </Label>
+                            <div
+                              className=""
+                            >
+                              <Input
+                                className=""
+                                id="id-timezone"
+                                onChange={[Function]}
+                                type="select"
+                                value="US/Pacific"
+                              >
+                                <select
+                                  className="form-control"
+                                  id="id-timezone"
+                                  onChange={[Function]}
+                                  type="select"
+                                  value="US/Pacific"
+                                >
+                                  <option
+                                    value="UTC"
+                                  >
+                                    UTC
+                                  </option>
+                                  <option
+                                    value="US/Pacific"
+                                  >
+                                    US/Pacific
+                                  </option>
+                                  <option
+                                    value="Australia/AUR"
+                                  >
+                                    Australia/AUR
+                                  </option>
+                                </select>
+                              </Input>
+                            </div>
+                          </div>
+                        </FormGroup>
+                      </InputField>
+                    </div>
+                  </Col>
+                </div>
+              </Row>
+              <Button
+                className=""
+                color="success"
+                disabled={false}
+                tag="button"
+                type="submit"
+              >
+                <button
+                  className="btn btn-success"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="submit"
+                >
+                  Save changes
+                </button>
+              </Button>
+            </form>
+          </Form>
+        </div>
+      </Container>
+    </div>
+  </BusinessHours>
+</Connect(BusinessHours)>
+`;

@@ -67,6 +67,11 @@ export default class SettingsNavbar extends React.Component<Props>{
                 to: 'import-data',
                 text: 'Import data',
                 className: 'd-none d-md-block'
+            }, {
+                requiredRole: 'admin',
+                to: 'business-hours',
+                text: 'Business hours',
+                className: 'd-none d-md-block'
             }]
         }]
 

@@ -46,3 +46,12 @@ export const getMomentNow = () => {
 export const getMomentUtcISOString = () => {
     return moment.utc().toISOString()
 }
+
+/**
+ * Return moment.tz.names()
+ *
+ * We encapsulate it here so that it's easy to mock during tests.
+ */
+export const getMomentTimezoneNames = () => {
+    return moment.tz.names()
+}

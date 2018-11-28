@@ -164,6 +164,7 @@ exports[`CampaignDetail component should display default value when it's a new c
               <SelectField
                 allowCustomValue={false}
                 className="authorInput"
+                fixedWidth={false}
                 onChange={[Function]}
                 onSearchChange={[Function]}
                 options={
@@ -428,6 +429,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
               <SelectField
                 allowCustomValue={false}
                 className="authorInput"
+                fixedWidth={false}
                 onChange={[Function]}
                 onSearchChange={[Function]}
                 options={
@@ -744,6 +746,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
               <SelectField
                 allowCustomValue={false}
                 className="authorInput"
+                fixedWidth={false}
                 onChange={[Function]}
                 onSearchChange={[Function]}
                 options={

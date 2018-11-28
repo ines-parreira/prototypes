@@ -12,6 +12,11 @@ import _noop from 'lodash/noop'
 
 import css from './SelectField.less'
 
+const APPROXIMATE_CHAR_WIDTH = 8
+const ARROW_ICON_WIDTH = 10
+const MAXIMUM_MIN_WIDTH = 305
+
+
 export default class SelectField extends Component {
     static propTypes = {
         allowCustomValue: PropTypes.bool.isRequired,
@@ -28,7 +33,9 @@ export default class SelectField extends Component {
 
         onChange: PropTypes.func.isRequired,
         onSearchChange: PropTypes.func,
-        className: PropTypes.string
+        className: PropTypes.string,
+
+        fixedWidth: PropTypes.bool
     }
 
     static defaultProps = {
@@ -38,6 +45,7 @@ export default class SelectField extends Component {
         singular: 'option',
         style: {},
         onSearchChange: _noop,
+        fixedWidth: false
     }
 
     constructor(props) {
@@ -165,7 +173,7 @@ export default class SelectField extends Component {
     }
 
     render() {
-        const {allowCustomValue, value, singular, style, placeholder, className, options, rightAddon} = this.props
+        const {allowCustomValue, value, singular, style, placeholder, className, options, rightAddon, fixedWidth} = this.props
         const {filteredOptions, input, optionsOpen, selectedOptionIndex} = this.state
         const selectedOption = options.find((option) => option.value === value)
         const hasNoFilteredOptions = filteredOptions.length === 0
@@ -174,12 +182,15 @@ export default class SelectField extends Component {
         if (allowCustomValue && value) {
             label = value
         }
-        // 7: approximate width for a character in the input
+
+        // 8: approximate width for a character in the input
         // 10: width of the arrow of the select
         // 305: max-width allowed (pixel perfect)
-        // we use this value to increase the min height of the input and
+        // we use this value to increase the min width of the input, and
         // the label to increase or decrease according to its content
-        const selectMinWidth = _min([input.length * 7 + 10, 305])
+        let selectMinWidth = fixedWidth
+            ? _max(options.map((option) => option.label.length)) * APPROXIMATE_CHAR_WIDTH + ARROW_ICON_WIDTH
+            : _min([input.length * APPROXIMATE_CHAR_WIDTH + ARROW_ICON_WIDTH, MAXIMUM_MIN_WIDTH])
 
         return (
             <div style={style}>

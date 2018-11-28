@@ -37,6 +37,7 @@ import SatisfactionSurveyView from './settings/satisfactionSurveys/SatisfactionS
 
 import * as Team from './settings/team'
 import UserAuditList from './settings/team/UsersAudit/UserAuditList'
+import BusinessHours from './settings/businessHours/BusinessHours'
 
 export default (
     <Route
@@ -369,6 +370,13 @@ export default (
                 path="satisfaction-surveys"
                 components={{
                     content: UserRoleRequired(SatisfactionSurveyView, 'admin'),
+                    navbar: SettingsNavbarContainer
+                }}
+            />
+            <Route
+                path="business-hours"
+                components={{
+                    content: UserRoleRequired(BusinessHours, 'admin'),
                     navbar: SettingsNavbarContainer
                 }}
             />

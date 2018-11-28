@@ -5,7 +5,7 @@ import moment from 'moment'
 import _isArray from 'lodash/isArray'
 import _isInteger from 'lodash/isInteger'
 
-import {EMPTY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
+import {UNARY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
 
 import type {filterType, viewsStateType} from './types'
 import type {agentsType} from '../agents/types'
@@ -46,14 +46,14 @@ export const rawify = (data: string | number | null): string => {
 function resolveSecondArg(callee: string, currentRawValue: string): string | null {
     const isTimedeltaCallee = timedeltaOperators.includes(callee)
     const isDatetimeCallee = datetimeOperators.includes(callee)
-    const isEmptyCallee = Object.keys(EMPTY_OPERATORS).includes(callee)
+    const isUnaryCallee = Object.keys(UNARY_OPERATORS).includes(callee)
     const isCollectionOperator = collectionOperators.includes(callee)
 
     if (isTimedeltaCallee && !isTimedelta(currentRawValue, true)) {
         return `\'${TIMEDELTA_OPERATOR_DEFAULT_VALUE}\'`
     } else if (!isTimedeltaCallee && isDatetimeCallee && isTimedelta(currentRawValue, true)) {
         return '\'\''
-    } else if (isEmptyCallee) {
+    } else if (isUnaryCallee) {
         return null
     } else if (isCollectionOperator) {
         return '[]'

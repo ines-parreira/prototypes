@@ -54,6 +54,16 @@ export const EMPTY_OPERATORS = {
     }
 }
 
+export const UNARY_OPERATORS = {
+    ...EMPTY_OPERATORS,
+    duringBusinessHours: {
+        label: 'during business hours'
+    },
+    outsideBusinessHours: {
+        label: 'outside business hours'
+    }
+}
+
 export const TIMEDELTA_OPERATOR_DEFAULT_UNIT = 'd'
 export const TIMEDELTA_OPERATOR_DEFAULT_QUANTITY = 1
 export const TIMEDELTA_OPERATOR_DEFAULT_VALUE =

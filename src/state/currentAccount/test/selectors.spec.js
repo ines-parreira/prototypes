@@ -4,6 +4,7 @@ import {fromJS} from 'immutable'
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
 import * as currentAccountFixtures from '../../../fixtures/currentAccount'
+import {SETTING_TYPE_BUSINESS_HOURS, SETTING_TYPE_SATISFACTION_SURVEYS} from '../constants'
 
 jest.addMatchers(immutableMatchers)
 
@@ -101,20 +102,28 @@ describe('current account selectors', () => {
         expect(selectors.paymentIsActive({})).toBe(false)
     })
 
-    it('getChatSettings', () => {
-        expect(selectors.getChatSettings(
-            setStateWith(state, ['settings'], fromJS([{type: 'chat'}])))).toEqualImmutable(fromJS({type: 'chat'}))
-        expect(selectors.getChatSettings(
-            setStateWith(state, ['settings'], fromJS([{type: 'unknown'}])))).toEqualImmutable(fromJS({}))
-        expect(selectors.getChatSettings({})).toEqualImmutable(fromJS({}))
-    })
-
     it('getSurveySettings', () => {
         expect(selectors.getSurveysSettings(
-            setStateWith(state, ['settings'], fromJS([{type: 'satisfaction-surveys'}])))
-        ).toEqualImmutable(fromJS({type: 'satisfaction-surveys'}))
+            setStateWith(state, ['settings'], fromJS([{type: SETTING_TYPE_SATISFACTION_SURVEYS}])))
+        ).toEqualImmutable(fromJS({type: SETTING_TYPE_SATISFACTION_SURVEYS}))
         expect(selectors.getSurveysSettings(
             setStateWith(state, ['settings'], fromJS([{type: 'unknown'}])))).toEqualImmutable(fromJS({}))
         expect(selectors.getSurveysSettings({})).toEqualImmutable(fromJS({}))
+    })
+
+    it('getBusinessHoursSettings', () => {
+        expect(
+            selectors.getBusinessHoursSettings(
+                setStateWith(state, ['settings'], fromJS([{type: SETTING_TYPE_BUSINESS_HOURS}]))
+            )
+        ).toEqualImmutable(fromJS({type: SETTING_TYPE_BUSINESS_HOURS}))
+
+        expect(
+            selectors.getBusinessHoursSettings(
+                setStateWith(state, ['settings'], fromJS([{type: 'unknown'}]))
+            )
+        ).toEqualImmutable(fromJS({}))
+
+        expect(selectors.getBusinessHoursSettings({})).toEqualImmutable(fromJS({}))
     })
 })
