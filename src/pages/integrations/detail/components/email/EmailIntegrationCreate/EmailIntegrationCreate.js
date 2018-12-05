@@ -114,7 +114,10 @@ class EmailIntegrationCreate extends React.Component {
                     </Breadcrumb>
                 )}/>
 
-                <Container fluid className="page-container">
+                <Container
+                    fluid
+                    className="page-container"
+                >
                     <p>Choose the type of email account you want to add.</p>
 
                     <div className={css.form}>
@@ -124,7 +127,10 @@ class EmailIntegrationCreate extends React.Component {
                             block
                             className={classnames('mb-2', css.gmailButton)}
                         >
-                            <img src={googleLogo} style={{height: '100%'}} />
+                            <img
+                                src={googleLogo}
+                                style={{height: '100%'}}
+                            />
                             <div>Connect Google email account</div>
                         </Button>
 

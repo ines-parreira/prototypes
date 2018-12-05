@@ -169,7 +169,10 @@ export class UserAuditList extends React.Component<Props, State> {
                     <Link to="/app/settings/audit/">Audit logs</Link>
                 </SecondaryNavbar>
 
-                <Container fluid className="page-container">
+                <Container
+                    fluid
+                    className="page-container"
+                >
                     <div className="manage-requests-description">
                         <p>
                             User audit logs display recent actions performed by team members in

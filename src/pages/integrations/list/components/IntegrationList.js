@@ -43,7 +43,9 @@ export default class IntegrationList extends React.Component<Props> {
                             </strong> allowed on your <strong>
                                 {this.props.currentPlan.get('name')} plan.
                             </strong> Need more? <Link
-                            to="/app/settings/billing" className="alert-link">
+                                to="/app/settings/billing"
+                                className="alert-link"
+                            >
                                 Upgrade your account.
                             </Link>
                         </span>
@@ -51,7 +53,9 @@ export default class IntegrationList extends React.Component<Props> {
                         <span>
                             <strong> Your account has reached the integration limit. </strong>
                             To add more integrations, <Link
-                            to="/app/settings/billing" className="alert-link">upgrade your plan</Link>.
+                                to="/app/settings/billing"
+                                className="alert-link"
+                            >upgrade your plan</Link>.
                         </span>
                     )
                 }
@@ -68,7 +72,10 @@ export default class IntegrationList extends React.Component<Props> {
             <div className="full-width">
                 <PageHeader title="Integrations"/>
 
-                <Container fluid className="page-container">
+                <Container
+                    fluid
+                    className="page-container"
+                >
                     <Row className="mb-4">
                         <Col md="10">
                             <p>

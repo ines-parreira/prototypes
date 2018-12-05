@@ -48,7 +48,10 @@ export default class CampaignPreview extends React.Component {
                     className={css.button}
                     style={_bgColor(mainColor)}
                 >
-                    <img className={css.icon} src={`${window.GORGIAS_ASSETS_URL || ''}/static/private/img/icons/DefaultCloseIcon.svg`}/>
+                    <img
+                        className={css.icon}
+                        src={`${window.GORGIAS_ASSETS_URL || ''}/static/private/img/icons/DefaultCloseIcon.svg`}
+                    />
                 </div>
             </div>
         )

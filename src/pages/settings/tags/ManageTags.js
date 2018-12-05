@@ -304,7 +304,10 @@ export class ManageTags extends Component<Props, State> {
                     </div>
                 </PageHeader>
 
-                <Container fluid className="page-container">
+                <Container
+                    fluid
+                    className="page-container"
+                >
                     <div className={css.description}>
                         <div>
                             <p>

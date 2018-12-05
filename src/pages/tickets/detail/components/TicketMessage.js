@@ -189,7 +189,10 @@ export class TicketMessage extends React.Component {
                     key="from-widget"
                     className={classnames(css.from, 'd-none d-md-inline-block')}
                 >
-                    from <a target="_blank" href={message.meta.current_page}>
+                    from <a
+                        target="_blank"
+                        href={message.meta.current_page}
+                    >
                         {displayString}
                     </a>
                 </span>
@@ -436,9 +439,12 @@ export class TicketMessage extends React.Component {
                                 isAgent: message.from_agent
                             })}>
                                 {
-                                    message.from_agent
-                                      ? <AgentLabel name={sender.get('name')} className={css.agentIcon} />
-                                      : <CustomerLabel customer={sender} />
+                                    message.from_agent ? (
+                                        <AgentLabel
+                                            name={sender.get('name')}
+                                            className={css.agentIcon}
+                                        />
+                                    ) : <CustomerLabel customer={sender} />
                                 }
                             </div>
 

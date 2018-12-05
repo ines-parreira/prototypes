@@ -1,30 +1,39 @@
+//@flow
 import decorateComponentWithProps from 'decorate-component-with-props'
-
-import createStore from './createStore'
-import decorators from './decorators'
-import {getToolbarActions} from './utils'
+import { ContentBlock, EditorState, KeyBindingUtil } from 'draft-js'
+import { foundUrl, link } from './decorators'
 import Toolbar from './Toolbar'
 import Image from './components/Image'
+import type { PluginMethods } from '../types'
+import { getSelectedEntityKey, getSelectedText, removeLink } from '../utils'
+import type { ActionName } from './types'
 
 // documentation:
 // https://github.com/draft-js-plugins/draft-js-plugins/blob/master/HOW_TO_CREATE_A_PLUGIN.md
 
-const toolbarPlugin = (config = {}) => {
-    const toolbarStore = createStore()
+export type Config = {
+    imageDecorator?: Node => Node,
+    theme?: any,
+    getDisplayedActions: () => ?ActionName[],
+    onLinkEdit: (entityKey: string, text: string, url: string) => void,
+    onLinkCreate: (text: string) => void
+}
 
-    const toolbarProps = {
-        toolbarStore,
-        actions: getToolbarActions(config.toolbarProps),
-    }
+export default (config: Config) => {
+    const isLinkDisplayed = () => Toolbar.isDisplayedAction('LINK', config.getDisplayedActions())
 
     return {
-        initialize: ({getEditorState, setEditorState}) => {
-            toolbarStore.updateItem('getEditorState', getEditorState)
-            toolbarStore.updateItem('setEditorState', setEditorState)
-        },
-        Toolbar: decorateComponentWithProps(Toolbar, toolbarProps),
-        decorators,
-        blockRendererFn: (block, {getEditorState}) => {
+        Toolbar: Toolbar,
+
+        decorators: [
+            foundUrl(),
+            link({
+                isActive: isLinkDisplayed,
+                onLinkEdit: config.onLinkEdit
+            })
+        ],
+
+        blockRendererFn: (block: ContentBlock, { getEditorState }: PluginMethods) => {
             const contetState = getEditorState().getCurrentContent()
             // render img (atomic block)
             const entityKey = block.getEntityAt(0)
@@ -47,7 +56,32 @@ const toolbarPlugin = (config = {}) => {
 
             return null
         },
+
+        keyBindingFn: (e: SyntheticKeyboardEvent<*>) => {
+            // Mod+K
+            if (isLinkDisplayed() && e.key === 'k' && KeyBindingUtil.hasCommandModifier(e)) {
+                return 'insert-link'
+            }
+        },
+
+        handleKeyCommand: (command: string, editorState: EditorState, pluginMethods: PluginMethods) => {
+            const { setEditorState } = pluginMethods
+            const contentState = editorState.getCurrentContent()
+            const selection = editorState.getSelection()
+
+            if (command === 'insert-link') {
+                const entityKey = getSelectedEntityKey(contentState, selection)
+
+                if (entityKey && contentState.getEntity(entityKey).getType() === 'link') {
+                    setEditorState(removeLink(entityKey, editorState))
+                } else {
+                    config.onLinkCreate(getSelectedText(contentState, selection))
+                }
+
+                return 'handled'
+            }
+
+            return 'not-handled'
+        }
     }
 }
-
-export default toolbarPlugin

@@ -79,6 +79,7 @@ export class RequestSelect extends React.Component<Props, State> {
     }
 }
 
+//$FlowFixMe
 export default connect(
     (state) => ({
         requests: getRequests(state)

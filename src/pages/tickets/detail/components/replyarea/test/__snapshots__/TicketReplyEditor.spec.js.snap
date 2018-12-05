@@ -13,6 +13,32 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
       Immutable.List [
       ]
     }
+    buttons={
+      Array [
+        <div
+          className="attachment"
+      >
+          <label
+              className="m-0"
+              htmlFor="attachments-input"
+              title="Add attachment"
+          >
+              <i
+                  className="material-icons"
+              >
+                  attach_file
+              </i>
+          </label>
+          <input
+              id="attachments-input"
+              multiple={true}
+              onChange={[Function]}
+              onClick={[Function]}
+              type="file"
+          />
+      </div>,
+      ]
+    }
     canDropFiles={true}
     canInsertInlineImages={true}
     mentionProps={
@@ -29,36 +55,6 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
     signature={true}
     spellCheck={true}
     tabIndex="4"
-    toolbarProps={
-      Object {
-        "attachments": Immutable.List [
-      ],
-        "buttons": Array [
-          <div
-            className="attachment"
-      >
-            <label
-                  className="m-0"
-                  htmlFor="attachments-input"
-                  title="Add attachment"
-            >
-                  <i
-                        className="material-icons"
-                  >
-                        attach_file
-                  </i>
-            </label>
-            <input
-                  id="attachments-input"
-                  multiple={true}
-                  onChange={[Function]}
-                  onClick={[Function]}
-                  type="file"
-            />
-      </div>,
-        ],
-      }
-    }
     type="text"
     value={
       Object {

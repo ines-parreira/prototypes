@@ -45,7 +45,10 @@ class Cell extends React.Component<Props> {
 
         if (onClick) {
             content = (
-                <div className="cell-wrapper" onClick={() => onClick(item)}>
+                <div
+                    className="cell-wrapper"
+                    onClick={() => onClick(item)}
+                >
                     {children}
                 </div>
             )

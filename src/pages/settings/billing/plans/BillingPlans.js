@@ -78,7 +78,10 @@ export class BillingPlans extends React.Component<Props, State> {
     }
 
     _renderFAQ = () => (
-        <Container fluid className="page-container">
+        <Container
+            fluid
+            className="page-container"
+        >
             <div style={{maxWidth: 900}}>
                 <h3 className="mb-4">Frequently asked questions</h3>
                 <Row className={css.faq}>
@@ -163,7 +166,10 @@ export class BillingPlans extends React.Component<Props, State> {
         })
 
         return (
-            <Container fluid className={classnames('page-container', css['plans-container'])}>
+            <Container
+                fluid
+                className={classnames('page-container', css['plans-container'])}
+            >
                 <div className={css['interval-toggle']}>
                     <ButtonGroup>
                         <Button
@@ -244,7 +250,10 @@ export class BillingPlans extends React.Component<Props, State> {
                 <PageHeader title={(
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <Link className="section" to="/app/settings/billing">Billing & Usage</Link>
+                            <Link
+                                className="section"
+                                to="/app/settings/billing"
+                            >Billing & Usage</Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem>Plans</BreadcrumbItem>
                     </Breadcrumb>

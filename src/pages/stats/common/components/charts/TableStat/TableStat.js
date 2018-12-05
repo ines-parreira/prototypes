@@ -97,12 +97,18 @@ export default class TableStat extends React.Component {
                     There is no data for this period.
                 </div>
             ) :
-            <Table hover className={css.table}>
+            <Table
+                hover
+                className={css.table}
+            >
                 <thead>
                     <tr>
                         {data.getIn(['axes', 'x']).map((axe, index) => {
                             return (
-                                <th key={index} className={css[`${axe.get('type')}`]}>
+                                <th
+                                    key={index}
+                                    className={css[`${axe.get('type')}`]}
+                                >
                                     <span className={css['cell-wrapper']}>
                                         {axe.get('name').toUpperCase()}
                                     </span>
@@ -117,7 +123,10 @@ export default class TableStat extends React.Component {
                             {line.map((metric, metricIdx) => {
                                 const type = data.getIn(['axes', 'x', metricIdx, 'type'])
                                 return (
-                                    <td key={metricIdx} className={css[`${type}`]}>
+                                    <td
+                                        key={metricIdx}
+                                        className={css[`${type}`]}
+                                    >
                                         <span className={css['cell-wrapper']}>
                                             {this._renderCell(line, metric, type, lineIdx)}
                                         </span>

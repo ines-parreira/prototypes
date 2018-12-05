@@ -65,6 +65,7 @@ const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(userActions, dispatch)
 })
 
+//$FlowFixMe
 export default connect(
     mapStateToProps,
     mapDispatchToProps

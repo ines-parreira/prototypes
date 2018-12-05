@@ -22,7 +22,10 @@ export default class Loader extends Component<Props> {
 
         return (
             <div className={classnames(css.container, className)}>
-                <div className={css.inner} style={{minHeight}}>
+                <div
+                    className={css.inner}
+                    style={{minHeight}}
+                >
                     <i className="icon-custom icon-circle-o-notch md-spin" />
                     {
                         !inline && message && (

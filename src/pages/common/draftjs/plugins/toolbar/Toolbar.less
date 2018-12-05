@@ -1,4 +1,5 @@
-@import "../../../../../../css/new/mixins";
+@import '~css/new/colors';
+@import "~css/new/mixins";
 
 .editor-toolbar {
   .icon {
@@ -54,105 +55,6 @@
     }
   }
 
-  .popover-wrapper {
-    position: relative;
-
-    .popover {
-      z-index: 10;
-      position: absolute;
-      left: 25px;
-      bottom: -23px;
-      border-radius: 4px;
-      border: 1px solid #cfe0ee;
-      padding: 13px 17px;
-      background-color: white;
-      width: 300px;
-      box-shadow: #dedede 0 1px 2px;
-
-      &::before {
-        content: '';
-        position: absolute;
-        bottom: 28px;
-        left: -6px;
-        width: 10px;
-        height: 10px;
-        border: 1px solid #cfe0ee;
-        background: white;
-        border-top: none;
-        border-right: none;
-        transform: rotateZ(45deg);
-      }
-
-      .menu {
-        margin-bottom: 15px;
-
-        & > * {
-          border-bottom: 2px solid transparent;
-          cursor: pointer;
-          padding-bottom: 4px;
-          margin-right: 16px;
-        }
-
-        .selected {
-          border-color: #38A9F8;
-        }
-      }
-
-      &.hidden {
-        display: none !important;
-      }
-
-      :global .emoji-mart {
-        border: none;
-        width: 100% !important;
-
-        .emoji-mart-search {
-          margin-bottom: 6px;
-
-          input { // copied from Bootstrap style
-            padding: .5rem .75rem;
-            font-size: 1rem;
-            line-height: 1.25;
-            color: #464a4c;
-            background-color: #fff;
-            background-image: none;
-            border: 1px solid rgba(0, 0, 0, .15);
-            border-radius: .25rem;
-            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-          }
-        }
-
-        .emoji-mart-bar:last-child { // preview
-          display: none;
-        }
-
-        .emoji-mart-anchor {
-          cursor: pointer;
-        }
-
-        .emoji-mart-emoji span {
-          @size: 21px;
-          cursor: pointer;
-          font-size: @size !important;
-          width: @size !important;
-          height: @size !important;
-        }
-
-        .emoji-mart-scroll {
-          overflow-x: hidden;
-          height: 180px;
-        }
-
-        .emoji-mart-category-label {
-          position: relative;
-
-          span {
-            font-size: 14px;
-          }
-        }
-      }
-    }
-  }
 
   &.isHovered .hoverOverlay {
     visibility: visible;
@@ -168,12 +70,12 @@
     margin: 0 4px;
     padding: .1em;
     background: rgba(255, 255, 255, .8);
-    border: 3px dashed #a2abb3;
+    border: 3px dashed @grey;
     visibility: hidden;
     opacity: 0;
     transition: all .1s ease-out;
 
-    color: #a2abb3;
+    color: @grey;
     font-weight: bold;
     text-align: center;
     line-height: 1.9;

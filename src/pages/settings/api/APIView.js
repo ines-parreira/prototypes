@@ -110,21 +110,31 @@ export default class APIView extends React.Component<Props, State> {
             <div className="full-width">
                 <PageHeader title="REST API"/>
 
-                <Container fluid className="page-container">
+                <Container
+                    fluid
+                    className="page-container"
+                >
                     <p>
                         Gorgias prides itself on being a developer-friendly helpdesk.
-                        We expose a <a href="https://stackoverflow.com/questions/671118/what-exactly-is-restful-programming"
-                                       target="_blank" rel="noopener noreferrer">RESTful API</a> to make it easy for you to
+                        We expose a <a
+                            href="https://stackoverflow.com/questions/671118/what-exactly-is-restful-programming"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >RESTful API</a> to make it easy for you to
                         get, create, update and delete many objects including customers, tickets,
                         messages and events. To find out more about our API, please consult our docs here:
-                        <a href="http://api.gorgias.io/" target="_blank"
-                           rel="noopener noreferrer"> http://api.gorgias.io/</a>.
+                        <a
+                            href="http://api.gorgias.io/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        > http://api.gorgias.io/</a>.
                     </p>
                     <p>
                         Below are the parameters you will need to access our API. We're
-                        using <a href="https://en.wikipedia.org/wiki/Basic_access_authentication" rel="noopener noreferrer">HTTP
-                        basic
-                        authentication</a> to authenticate API requests.</p>
+                        using <a
+                            href="https://en.wikipedia.org/wiki/Basic_access_authentication"
+                            rel="noopener noreferrer"
+                        >HTTP basic authentication</a> to authenticate API requests.</p>
                     <h4>API Access &amp; Credentials</h4>
                     <FormGroup>
                         <Label for="URL">Base API URL</Label>
@@ -200,7 +210,13 @@ export default class APIView extends React.Component<Props, State> {
                     <h4>Postman collection</h4>
                     <p>
                         You can also import our{' '}
-                        <a href="https://www.getpostman.com/" target="_blank" rel="noopener noreferrer">Postman</a>
+                        <a
+                            href="https://www.getpostman.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Postman
+                        </a>
                         {' '}collection below to quickly connect and use our REST API.
                     </p>
                     <div

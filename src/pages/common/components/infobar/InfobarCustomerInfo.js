@@ -244,7 +244,14 @@ class InfobarCustomerInfo extends React.Component {
             const id = `address-copied-${channel.get('id')}`
 
             if (props) {
-                addressComponent = <a {...props} id={id}>{address}</a>
+                addressComponent = (
+                    <a
+                        {...props}
+                        id={id}
+                    >
+                        {address}
+                    </a>
+                )
             } else {
                 addressComponent = <span id={id}>{address}</span>
             }

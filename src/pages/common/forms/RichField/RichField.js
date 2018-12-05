@@ -1,35 +1,29 @@
 // @flow
-import React from 'react'
 import classnames from 'classnames'
-import {fromJS} from 'immutable'
+import { ContentState, EditorState, Modifier, RichUtils } from 'draft-js'
+import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
+import Editor, { composeDecorators } from 'draft-js-plugins-editor'
+import createResizeablePlugin from 'draft-js-resizeable-plugin'
+import 'draft-js/dist/Draft.css'
+import { fromJS } from 'immutable'
 import _isEqual from 'lodash/isEqual'
 import _noop from 'lodash/noop'
-
-import {ContentState, EditorState, RichUtils, Modifier} from 'draft-js'
-import Editor, {composeDecorators} from 'draft-js-plugins-editor'
-import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
-import createResizeablePlugin from 'draft-js-resizeable-plugin'
-
-import createToolbarPlugin from '../../draftjs/plugins/toolbar'
-
-import createMentionPlugin, {suggestionsFilter} from '../../draftjs/plugins/mentions'
+import React, { type ElementRef } from 'react'
+import { removeMentions } from '../../../../utils'
+import { convertFromHTML, convertToHTML } from '../../../../utils/editor'
+import { scrollToReactNode } from '../../../common/utils/keyboard'
 import createConnectedLinksPlugin from '../../draftjs/plugins/connectedLinks'
-import createVariablesPlugin from '../../draftjs/plugins/variables'
-import createPasteImagePlugin from '../../draftjs/plugins/pasteImage'
 import createDndUploadPlugin from '../../draftjs/plugins/dndUpload'
-
+import createMentionPlugin, { suggestionsFilter } from '../../draftjs/plugins/mentions'
+import createPasteImagePlugin from '../../draftjs/plugins/pasteImage'
+import createToolbarPlugin from '../../draftjs/plugins/toolbar'
+import createVariablesPlugin from '../../draftjs/plugins/variables'
+import { attachEntitiesToVariables } from '../../draftjs/plugins/variables/utils'
 import InputField from '../InputField'
-import {removeMentions} from '../../../../utils'
-import {convertFromHTML, convertToHTML} from '../../../../utils/editor'
-import {scrollToReactNode} from '../../../common/utils/keyboard'
-
-import {attachEntitiesToVariables} from '../../draftjs/plugins/variables/utils'
-
 import Signature from './Signature'
-
-import 'draft-js/dist/Draft.css'
-
 import type {List} from 'immutable'
+import type { ActionName } from '../../draftjs/plugins/toolbar/types'
+import { AddLink, AddImage } from '../../draftjs/plugins/toolbar/components'
 
 type suggestionsType = List<*>
 type canAddMentionType = boolean
@@ -43,21 +37,25 @@ type Props = {
     attachFiles: (T: Array<Blob>) => void,
     canDropFiles: boolean,
     canInsertInlineImages: boolean,
-    toolbarProps: {},
-
     mentionProps?: {
         suggestions: suggestionsType,
         canAddMention: canAddMentionType
     },
+    buttons?: Node[],
+    displayedActions?: ActionName[],
+    attachments?: File[]
 }
 
 type State = {
     editorState: EditorState,
     placeholder: string,
     isDragging: boolean,
-
     mentionSuggestions?: suggestionsType,
-    canAddMention?: canAddMentionType
+    canAddMention?: canAddMentionType,
+    linkEntityKey?: string,
+    linkIsOpen: boolean,
+    linkText: string,
+    linkUrl: string
 }
 
 export default class RichField extends InputField<Props, State> {
@@ -70,6 +68,8 @@ export default class RichField extends InputField<Props, State> {
         canDropFiles: false,
         canInsertInlineImages: true
     }
+
+    editor: ?ElementRef<Editor>
 
     constructor(props: Props) {
         super(props)
@@ -93,7 +93,9 @@ export default class RichField extends InputField<Props, State> {
         )
 
         this.toolbarPlugin = createToolbarPlugin({
-            toolbarProps: props.toolbarProps,
+            onLinkEdit: this._onToolbarPluginLinkEdit,
+            onLinkCreate: this._onToolbarPluginLinkCreate,
+            getDisplayedActions: () => this.props.displayedActions,
             imageDecorator
         })
 
@@ -115,7 +117,7 @@ export default class RichField extends InputField<Props, State> {
         let editorState = EditorState.createEmpty()
         editorState = EditorState.moveFocusToEnd(editorState)
 
-        this.state = {
+        this.state = ({
             editorState,
             placeholder: props.placeholder,
             isDragging: false,
@@ -123,7 +125,10 @@ export default class RichField extends InputField<Props, State> {
             canAddMention: false,
             isFocused: false,
             contentLoaded: false,
-        }
+            linkIsOpen: false,
+            linkUrl: '',
+            linkText: ''
+        }: State)
 
         if (this.props.mentionProps) {
             this.state.mentionSuggestions = this.props.mentionProps.suggestions
@@ -136,18 +141,45 @@ export default class RichField extends InputField<Props, State> {
     }
 
     componentWillReceiveProps(nextProps: Props) {
+        let { editorState } = this.state
+
         if (this.props.mentionProps && nextProps.mentionProps) {
             if (this.props.mentionProps.canAddMention && !nextProps.mentionProps.canAddMention) {
-                this.setState({
-                    editorState: removeMentions(this.state.editorState, nextProps.value)
-                })
+                editorState = removeMentions(editorState, nextProps.value)
             }
+        }
+
+        // Force re-render since decorators depend on displayed actions
+        if (!_isEqual(nextProps.displayedActions, this.props.displayedActions)) {
+            editorState = EditorState.forceSelection(editorState, editorState.getSelection())
+        }
+
+        if (editorState !== this.state.editorState) {
+            this.setState({ editorState })
         }
 
         // when we do a preview we're changing the value directly and so we need to update the editor state
         if (!_isEqual(nextProps.value, this.props.value) && (this.props.displayOnly || this.props.allowExternalChanges)) {
             this._updateEditorState(nextProps.value)
         }
+    }
+
+    _onToolbarPluginLinkEdit = (entityKey: string, text: string, url: string) => {
+        this.setState({
+            linkEntityKey: entityKey,
+            linkIsOpen: true,
+            linkText: text,
+            linkUrl: url
+        })
+    }
+
+    _onToolbarPluginLinkCreate = (text: string) => {
+        this.setState({
+            linkEntityKey: undefined,
+            linkIsOpen: true,
+            linkText: text,
+            linkUrl: ''
+        })
     }
 
     _getAttachFiles = () => this.props.attachFiles
@@ -218,6 +250,10 @@ export default class RichField extends InputField<Props, State> {
     }
 
     _handlePastedText = (text: string, html?: string, editorState: EditorState) => {
+        if (!this.editor) {
+            return
+        }
+
         // detect content copied from draft-js itself, and don't convert it.
         // fixes issues with doubling newlines
         // https://github.com/gorgias/gorgias/pull/3373#issuecomment-392855428
@@ -249,7 +285,7 @@ export default class RichField extends InputField<Props, State> {
         // comes from Editor internal onChange function https://github.com/draft-js-plugins/draft-js-plugins/blob/55eb3b845d7e776a10def7f388624cf4c9879f5a/draft-js-plugins-editor/src/Editor/index.js#L92
         if (this.editor) {
             this.editor.resolvePlugins().forEach((plugin) => {
-                if (plugin.onChange) {
+                if (plugin.onChange && this.editor) {
                     editorState = plugin.onChange(editorState, this.editor.getPluginMethods())
                 }
             })
@@ -293,6 +329,23 @@ export default class RichField extends InputField<Props, State> {
         this.setState({isDragging: false})
     }
 
+    _onLinkTextChange = (linkText: string) => this.setState({ linkText })
+
+    _onLinkUrlChange = (linkUrl: string) => this.setState({ linkUrl })
+
+    _onLinkOpen = () => {
+        this.setState({ linkIsOpen: true })
+    }
+
+    _onLinkClose = () => {
+        this.setState({
+            linkIsOpen: false,
+            linkText: '',
+            linkUrl: '',
+            linkEntityKey: undefined
+        })
+    }
+
     _getField = () => {
         const {
             children, // eslint-disable-line
@@ -312,10 +365,10 @@ export default class RichField extends InputField<Props, State> {
             alertMode,
             alertText,
             mentionProps,
-            toolbarProps,
             displayOnly,
             signature,
             attachFiles,
+            displayedActions,
             ...rest,
         } = this.props
 
@@ -326,6 +379,8 @@ export default class RichField extends InputField<Props, State> {
         if (mentionProps) {
             canAddMention = mentionProps.canAddMention
         }
+
+        const pluginMethods = this.editor && this.editor.getPluginMethods()
 
         return (
             <div
@@ -360,7 +415,7 @@ export default class RichField extends InputField<Props, State> {
                                 handlePastedText={this._handlePastedText}
                                 readOnly={displayOnly}
                                 placeholder={this.state.placeholder}
-                                ref={(editor) => {
+                                ref={(editor: ?ElementRef<Editor>) => {
                                     this.editor = editor
                                 }}
                                 {...rest}
@@ -397,12 +452,34 @@ export default class RichField extends InputField<Props, State> {
                         <Signature editorState={this.state.editorState} />
                     }
                 </div>
-
-                <Toolbar
-                    attachFiles={attachFiles}
-                    getCanDropFiles={this._getCanDropFiles}
-                    {...toolbarProps}
-                />
+                { pluginMethods && (
+                    <Toolbar
+                        attachFiles={attachFiles}
+                        getCanDropFiles={this._getCanDropFiles}
+                        displayedActions={displayedActions}
+                        buttons={this.props.buttons}
+                        linkAction={(
+                            <AddLink
+                                entityKey={this.state.linkEntityKey}
+                                isOpen={this.state.linkIsOpen}
+                                url={this.state.linkUrl}
+                                text={this.state.linkText}
+                                onUrlChange={this._onLinkUrlChange}
+                                onTextChange={this._onLinkTextChange}
+                                onOpen={this._onLinkOpen}
+                                onClose={this._onLinkClose}
+                                {...pluginMethods}
+                            />
+                        )}
+                        imageAction={(
+                            <AddImage
+                                attachments={this.props.attachments}
+                                {...pluginMethods}
+                            />
+                        )}
+                        {...pluginMethods}
+                    />
+                )}
             </div>
         )
     }

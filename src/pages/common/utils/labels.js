@@ -173,7 +173,10 @@ export const StatusLabel = ({status, ...rest}: StatusLabelParam) => {
  * CHANNEL
  */
 export const ChannelLabel = ({channel}: {channel: string}) => (
-    <SourceIcon type={channel} className="text-secondary"/>
+    <SourceIcon
+        type={channel}
+        className="text-secondary"
+    />
 )
 
 /**

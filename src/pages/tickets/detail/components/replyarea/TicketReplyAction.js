@@ -53,7 +53,10 @@ export default class TicketReplyAction extends React.Component {
                 }
                 {
                     args.map((arg, key) => (
-                        <div key={key} className={css.argInput}>
+                        <div
+                            key={key}
+                            className={css.argInput}
+                        >
                             <div className="mr-3">{arg.get('key')}</div>
                             <InputField
                                 type="text"
@@ -82,7 +85,10 @@ export default class TicketReplyAction extends React.Component {
 
                         if (inputConfig && inputConfig.type === 'checkbox') {
                             return (
-                                <div key={key} className={css.argInput}>
+                                <div
+                                    key={key}
+                                    className={css.argInput}
+                                >
                                     <BooleanField
                                         {...inputConfig}
                                         value={value}
@@ -96,7 +102,10 @@ export default class TicketReplyAction extends React.Component {
                         }
 
                         return (
-                            <div key={key} className={css.argInput}>
+                            <div
+                                key={key}
+                                className={css.argInput}
+                            >
                                 <InputField
                                     {...inputConfig}
                                     value={value}
@@ -168,7 +177,11 @@ export default class TicketReplyAction extends React.Component {
                 <div className={css.title}>
                     {
                         !!type && (
-                            <img className={css.actionLogo} role="presentation" src={icon} />
+                            <img
+                                className={css.actionLogo}
+                                role="presentation"
+                                src={icon}
+                            />
                         )
                     }
                     <span>{action.get('title')}</span>
@@ -185,7 +198,10 @@ export default class TicketReplyAction extends React.Component {
                         <div className="notes">
                             {
                                 notes.map((note, idx) => (
-                                    <div key={idx} className="text-light-black">
+                                    <div
+                                        key={idx}
+                                        className="text-light-black"
+                                    >
                                         <i className="material-icons">
                                             info
                                         </i>

@@ -3,9 +3,9 @@ import _noop from 'lodash/noop'
 
 import {insertInlineImages, isImage} from '../utils'
 
-import type {pluginArgsType, imagePluginConfigType} from '../types'
+import type {PluginMethods, imagePluginConfigType} from '../types'
 
-const _handlePastedFiles = (config) => (files: Array<File>, pluginArgs: pluginArgsType) => {
+const _handlePastedFiles = (config) => (files: Array<File>, pluginArgs: PluginMethods) => {
     const images = files.filter(isImage)
     if (!images.length) {
         return 'not-handled'
@@ -19,6 +19,7 @@ const _handlePastedFiles = (config) => (files: Array<File>, pluginArgs: pluginAr
     return 'handled'
 }
 
+//$FlowFixMe
 const pasteImagePlugin = (config: imagePluginConfigType = {
     notify: _noop,
     getAttachFiles: () => _noop,

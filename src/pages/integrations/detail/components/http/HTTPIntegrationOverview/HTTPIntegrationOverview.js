@@ -211,7 +211,10 @@ export default class HTTPIntegrationOverview extends React.Component {
 
         return (
             <div className="full-width">
-                <Container fluid className="page-container">
+                <Container
+                    fluid
+                    className="page-container"
+                >
                     <p>
                         Add the details about the HTTP integration you want to add below. If you need help, you can
                         check our {' '}
@@ -275,8 +278,11 @@ export default class HTTPIntegrationOverview extends React.Component {
                                 <div>
                                     You can use <code>{'{{ticket.customer.email}}'}</code> to pass the email of the
                                     ticket customer. See
-                                    other <a href="https://api.gorgias.io/#Customer-object" target="_blank"
-                                             rel="noopener noreferrer">vars</a>.
+                                    other <a
+                                        href="https://api.gorgias.io/#Customer-object"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >vars</a>.
                                 </div>
                             )}
                             value={this.state.url}

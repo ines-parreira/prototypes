@@ -60,6 +60,7 @@ export const getIntegrationsByTypes = (integrations: integrationsType = [], type
 )
 
 export const getIntegrationConfig = (type: string): {image?: string} => {
+    //$FlowFixMe
     return _find(INTEGRATION_TYPE_DESCRIPTIONS, {type})
 }
 

@@ -49,7 +49,10 @@ export class BillingContainer extends Component {
         return (
             <div className="full-width">
                 <PageHeader title="Billing & Usage"/>
-                <Container fluid className="page-container">
+                <Container
+                    fluid
+                    className="page-container"
+                >
                     <BillingUsage/>
                     <BillingPaymentMethod/>
                     <BillingInvoices/>

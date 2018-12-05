@@ -1,5 +1,5 @@
 // @flow
-import {EditorState, AtomicBlockUtils, SelectionState, Modifier} from 'draft-js'
+import {EditorState, AtomicBlockUtils, SelectionState, Modifier, ContentBlock, RichUtils} from 'draft-js'
 import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
 import _get from 'lodash/get'
@@ -9,7 +9,7 @@ import {ATTACHMENT_SIZE_ERROR, getMaxAttachmentSize} from '../../../../utils/fil
 import {DEFAULT_IMAGE_WIDTH} from '../../../../config/editor'
 
 import type {ContentState} from 'draft-js'
-import type {pluginArgsType} from './types'
+import type {PluginMethods} from './types'
 
 const uploadPicture = (file) => {
     return uploadFiles([file])
@@ -36,7 +36,7 @@ export const isImage = (file: {type: string}) => {
 // get selectionState around a specific entity.
 // draft doesn't support removing an entity by key, only all entities in a selection,
 // so we use the selection to isolate one entity.
-const getEntitySelectionState = (contentState: ContentState, entityKey: string): ?SelectionState => {
+export const getEntitySelectionState = (contentState: ContentState, entityKey: string): ?SelectionState => {
     let entitySelection
     const blocks = contentState.getBlockMap()
     blocks.some((block) => {
@@ -54,6 +54,56 @@ const getEntitySelectionState = (contentState: ContentState, entityKey: string):
         return !!entitySelection
     })
     return entitySelection
+}
+
+export const getSelectedText = (contentState: ContentState, selection: SelectionState): string => {
+    const startKey = selection.getStartKey()
+    const endKey = selection.getEndKey()
+    const blockMap = contentState.getBlockMap()
+    return blockMap
+        .skipUntil((b: ContentBlock) => b.getKey() === startKey)
+        .takeUntil((b: ContentBlock) => b.getKey() === endKey)
+        .concat([[endKey, blockMap.get(endKey)]])
+        .reduce(
+            (acc: string, block: ContentBlock) => {
+                const key = block.getKey()
+                const text = block.getText()
+                return acc + text.slice(
+                    key === startKey ? selection.getStartOffset() : 0,
+                    key === endKey ? selection.getEndOffset() : text.length
+                )
+            },
+            ''
+        )
+}
+
+// Enitity selection behavior is based on Gmail's editor link toggle functionality
+export const getSelectedEntityKey = (contentState: ContentState, selection: SelectionState): ?string => {
+    const block = contentState.getBlockForKey(selection.getStartKey())
+    const endOffset = selection.getEndOffset() - 1
+
+    if (endOffset < 0 || selection.getStartKey() !== selection.getEndKey()) {
+        return
+    }
+
+    const entityKey = block.getEntityAt(endOffset)
+
+    if (!entityKey || (!selection.isCollapsed() && entityKey !== block.getEntityAt(selection.getStartOffset()))) {
+        return
+    }
+
+    return entityKey
+}
+
+export const removeLink = (entityKey: string, editorState: EditorState): EditorState => {
+    const contentState = editorState.getCurrentContent()
+    const selection = getEntitySelectionState(contentState, entityKey)
+    if (selection) {
+        const newState = RichUtils.toggleLink(editorState, selection, null)
+        const endOfLinkSelection = selection.set('anchorOffset', selection.getFocusOffset())
+        return EditorState.forceSelection(newState, endOfLinkSelection)
+    }
+    return editorState
 }
 
 export const addImage = (editorState: EditorState, url: string, size: number = 0): EditorState => {
@@ -79,7 +129,7 @@ export const addImage = (editorState: EditorState, url: string, size: number = 0
 
 export const insertInlineImages = (
     files: Array<File>,
-    {getEditorState, setEditorState, getProps}: pluginArgsType,
+    {getEditorState, setEditorState, getProps}: PluginMethods,
     notify: ({status: string, message: string}) => void = _noop
 ): EditorState => {
     // don't exceed maximum attachment file size

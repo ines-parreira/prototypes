@@ -75,6 +75,7 @@ export function downloadStatistic(name: string, meta: {} = {}, filters: {} = {})
                 const reFilename =/filename[^;=\n]*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/
                 const contentDisposition = resp.headers['content-disposition'] || ''
                 const matches = contentDisposition.match(reFilename)
+                //$FlowFixMe
                 const filename = matches.length ? matches.pop() : `${name}.csv`
                 saveFileAsDownloaded(resp.data, filename, resp.headers['content-type'])
 

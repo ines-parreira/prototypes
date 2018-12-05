@@ -109,7 +109,10 @@ class SmileIntegrationDetail extends React.Component<Props, State> {
                 )}
                 />
 
-                <Container fluid className="page-container">
+                <Container
+                    fluid
+                    className="page-container"
+                >
                     <Row>
                         <Col md="8">
                             {
@@ -121,7 +124,10 @@ class SmileIntegrationDetail extends React.Component<Props, State> {
                                                 sidebar. <Link to="/app/customers">Review your customers.</Link>
                                             </p>
                                         ) : (
-                                            <Alert color="info" className="mb-4">
+                                            <Alert
+                                                color="info"
+                                                className="mb-4"
+                                            >
                                                 <p>
                                                     <b className="alert-heading">
                                                         <i className="material-icons md-spin mr-2">

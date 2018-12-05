@@ -94,7 +94,10 @@ class YourProfileView extends React.Component {
         return (
             <div className="full-width">
                 <PageHeader title="Your profile"/>
-                <Container fluid className="page-container">
+                <Container
+                    fluid
+                    className="page-container"
+                >
                     <p>Update your profile information.</p>
                     <Form
                         className="mb-4"
@@ -144,7 +147,14 @@ class YourProfileView extends React.Component {
                                     onChange={timezone => this.setState({timezone})}
                                 >
                                     {
-                                        moment.tz.names().map((name, idx) => <option key={idx} value={name}>{name}</option>)
+                                        moment.tz.names().map((name, idx) => (
+                                            <option
+                                                key={idx}
+                                                value={name}
+                                            >
+                                                {name}
+                                            </option>
+                                        ))
                                     }
                                 </InputField>
                                 <InputField
@@ -167,8 +177,10 @@ class YourProfileView extends React.Component {
                                     }
                                 </InputField>
                             </Col>
-                            <Col md="3" xs="12">
-
+                            <Col
+                                md="3"
+                                xs="12"
+                            >
                                 <FormGroup>
                                     <Label className="control-label">
                                         Profile picture
@@ -194,7 +206,11 @@ class YourProfileView extends React.Component {
 
                                     <FormText color="muted">
                                         The image must be square and weight less than 500kB.<br/>
-                                        If you don't want to upload your picture here, but have a <a href="https://en.gravatar.com/" target="_blank" rel="noopener noreferrer">Gravatar</a>{' '}
+                                        If you don't want to upload your picture here, but have a <a
+                                            href="https://en.gravatar.com/"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >Gravatar</a>{' '}
                                         account, we'll use it.
                                     </FormText>
                                 </FormGroup>

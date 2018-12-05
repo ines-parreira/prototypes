@@ -476,23 +476,21 @@ exports[`CampaignDetail component should display the campaign correctly when upd
               attachFiles={[Function]}
               canDropFiles={false}
               canInsertInlineImages={true}
+              displayedActions={
+                Array [
+                  "BOLD",
+                  "ITALIC",
+                  "UNDERLINE",
+                  "IMAGE",
+                  "EMOJI",
+                ]
+              }
               notify={[Function]}
               onChange={[Function]}
               placeholder="Write your message"
               required={true}
               rows="8"
               signature={false}
-              toolbarProps={
-                Object {
-                  "displayedActions": Array [
-                    "bold",
-                    "italic",
-                    "underline",
-                    "image",
-                    "emoji",
-                  ],
-                }
-              }
               type="text"
               value={
                 Object {
@@ -793,23 +791,21 @@ exports[`CampaignDetail component should display the campaign correctly when upd
               attachFiles={[Function]}
               canDropFiles={false}
               canInsertInlineImages={true}
+              displayedActions={
+                Array [
+                  "BOLD",
+                  "ITALIC",
+                  "UNDERLINE",
+                  "IMAGE",
+                  "EMOJI",
+                ]
+              }
               notify={[Function]}
               onChange={[Function]}
               placeholder="Write your message"
               required={true}
               rows="8"
               signature={false}
-              toolbarProps={
-                Object {
-                  "displayedActions": Array [
-                    "bold",
-                    "italic",
-                    "underline",
-                    "image",
-                    "emoji",
-                  ],
-                }
-              }
               type="text"
               value={
                 Object {

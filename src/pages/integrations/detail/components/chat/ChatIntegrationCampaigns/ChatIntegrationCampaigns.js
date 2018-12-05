@@ -71,7 +71,10 @@ export default class ChatIntegrationCampaigns extends React.Component {
 
                 <RealtimeMessagingIntegrationNavigation integration={integration}/>
 
-                <Container fluid className="page-container">
+                <Container
+                    fluid
+                    className="page-container"
+                >
                     <p>Use campaigns to prompt visitors of your website to start chatting with your team.</p>
 
                     {

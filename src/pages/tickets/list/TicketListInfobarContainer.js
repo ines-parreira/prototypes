@@ -96,6 +96,7 @@ class TicketListInfobarContainer extends React.Component<Props> {
                                 })
                             }}
                         >
+                            {/* $FlowFixMe */}
                             <CheckIcon condition={hasShopifyIntegration}/>
                             <div>Connect Shopify</div>
                         </Link>
@@ -120,6 +121,7 @@ class TicketListInfobarContainer extends React.Component<Props> {
                                 })
                             }}
                         >
+                            {/* $FlowFixMe */}
                             <CheckIcon condition={hasConnectedChat}/>
                             <div>Connect live chat</div>
                         </Link>
@@ -132,6 +134,7 @@ class TicketListInfobarContainer extends React.Component<Props> {
                                 })
                             }}
                         >
+                            {/* $FlowFixMe */}
                             <CheckIcon condition={hasConnectedFacebook}/>
                             <div>Connect Facebook &amp; Instagram</div>
                         </Link>
