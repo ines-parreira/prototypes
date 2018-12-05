@@ -1,38 +1,85 @@
 // @flow
 import classnames from 'classnames'
+import _mapValues from 'lodash/mapValues'
 import React, { type Node } from 'react'
 import css from './Toolbar.less'
-import type { ActionName, ActionInjectedProps } from './types'
-import { AddEmoji, Bold, Italic, Underline } from './components'
+import type { ToolbarAction, ActionComponentPropCreator, EditorStateSetter, EditorStateGetter } from './types'
+import DefaultAction from './components/Default'
+import type { Store } from './createStore'
 
 type State = {
     isHovered: boolean,
 }
 
 type Props = {
-    buttons: Node[],
+    actions: ToolbarAction[],
+    buttons: Array<?Node>,
+    hideActions: boolean,
+    toolbarStore: Store,
     attachFiles: (T: Array<Blob>) => void,
+    displayedActions?: Array<*>, // array of keys of actions that we want to display
     getCanDropFiles: () => boolean,
-    displayedActions?: ActionName[],
-    linkAction: Node,
-    imageAction: Node
-} & ActionInjectedProps
+}
 
-export default class Toolbar extends React.Component<Props, State> {
+
+class Toolbar extends React.Component<Props, State> {
     static defaultProps = {
-        buttons: []
+        actions: [],
+        buttons: [],
+        hideActions: false,
     }
 
-    static isDisplayedAction = (name: ActionName, displayedActions: ?ActionName[]) => {
-        if (!displayedActions) {
-            return true
+    state = {
+        isHovered: false,
+    }
+
+    _preventDefault = (event: Event) => {
+        event.preventDefault()
+    }
+
+    _getActionInjectedProp = (action: ToolbarAction, propCreator: ActionComponentPropCreator) => {
+        const { toolbarStore } = this.props
+        const getEditorState: EditorStateGetter = toolbarStore.getItem('getEditorState')
+        const setEditorState: EditorStateSetter = toolbarStore.getItem('setEditorState')
+        const editorState = getEditorState()
+        const block = editorState
+            .getCurrentContent()
+            .getBlockForKey(editorState.getSelection().getStartKey())
+        return propCreator(block, action, editorState, setEditorState)
+    }
+
+    _renderAction = (action: ToolbarAction) => {
+        const { toolbarStore } = this.props
+
+        const getEditorState = toolbarStore.getItem('getEditorState')
+
+        // sometimes the editor state is not present - so we're augmenting the exception here.
+        let isActive = false
+        try {
+            isActive = action.isActive(getEditorState)
+        } catch (e) {
+            if (window.Raven) {
+                window.Raven.captureException(e, {
+                    editorState: getEditorState()
+                })
+            } else {
+                throw e
+            }
         }
 
-        return displayedActions.indexOf(name) !== -1
-    }
-
-    state: State = {
-        isHovered: false
+        const isDisabled = action.isDisabled(getEditorState)
+        const injectedProps = _mapValues(action.componentFunctions, (pc) => this._getActionInjectedProp(action, pc))
+        const ActionComponent = action.component || DefaultAction
+        return (
+            <ActionComponent
+                key={action.key}
+                name={action.name}
+                isActive={isActive}
+                isDisabled={isDisabled}
+                icon={action.icon}
+                {...injectedProps}
+            />
+        )
     }
 
     _renderButton = (button: ?Node, index: number) => {
@@ -73,11 +120,18 @@ export default class Toolbar extends React.Component<Props, State> {
         this.setState({ isHovered: false })
     }
 
-    _isDisplayedAction = (name: ActionName): boolean => Toolbar.isDisplayedAction(name, this.props.displayedActions)
-
     render() {
-        const { buttons, getEditorState, setEditorState } = this.props
-        const actionsProps = { getEditorState, setEditorState }
+        const { actions, buttons, hideActions, displayedActions } = this.props
+
+        let filteredActions = actions
+
+        if (hideActions) {
+            filteredActions = []
+        }
+
+        if (displayedActions) {
+            filteredActions = filteredActions.filter((action) => displayedActions.includes(action.key))
+        }
 
         return (
             <div
@@ -89,14 +143,8 @@ export default class Toolbar extends React.Component<Props, State> {
                 onDragLeave={this._hideDragHover}
             >
                 <div className={css.actions}>
-                    {this._isDisplayedAction('BOLD') && <Bold {...actionsProps}/>}
-                    {this._isDisplayedAction('ITALIC') && <Italic {...actionsProps}/>}
-                    {this._isDisplayedAction('UNDERLINE') && <Underline {...actionsProps}/>}
-                    {this._isDisplayedAction('LINK') && this.props.linkAction}
-                    {this._isDisplayedAction('IMAGE') && this.props.imageAction}
-                    {this._isDisplayedAction('EMOJI') && <AddEmoji {...actionsProps} />}
+                    {filteredActions.map(this._renderAction)}
                 </div>
-
                 {buttons.map(this._renderButton)}
 
                 <div className={css.hoverOverlay}>
@@ -106,3 +154,5 @@ export default class Toolbar extends React.Component<Props, State> {
         )
     }
 }
+
+export default Toolbar

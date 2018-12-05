@@ -1,35 +1,30 @@
 //@flow
-
 import * as React from 'react'
-import classnames from 'classnames'
+import type { ActionComponentProps } from '../types'
 import css from '../Toolbar.less'
+import classnames from 'classnames'
 
 type Props = {
-    name: string,
-    isActive: boolean,
-    isDisabled: boolean,
-    icon: string,
-    onToggle: () => void
-}
+    toggle: () => void
+} & ActionComponentProps
 
 export default (props: Props) => (
-    <button
-        type="button"
+    <div
         className={classnames(css.button, 'btn btn-secondary btn-transparent', {
             [css.active]: props.isActive,
             [css.disabled]: props.isDisabled,
         })}
-        onClick={(e: SyntheticMouseEvent<*>) => {
+        onClick={(e: SyntheticMouseEvent<HTMLDivElement>) => {
             e.preventDefault()
             if (!props.isDisabled) {
-                props.onToggle()
+                props.toggle()
             }
         }}
-        onMouseDown={(e: SyntheticMouseEvent<*>) => e.preventDefault()}
+        onMouseDown={(e: SyntheticMouseEvent<HTMLDivElement>) => e.preventDefault()}
         title={props.name}
     >
         <i className="material-icons">
             {props.icon}
         </i>
-    </button>
+    </div>
 )

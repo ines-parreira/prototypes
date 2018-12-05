@@ -42,11 +42,7 @@ describe('ConfirmButton component', () => {
         const submit = jest.fn()
         component = mount(
             <form onSubmit={submit}>
-                <ConfirmButton
-                    id="1"
-                    type="submit"
-                    skip={true}
-                />
+                <ConfirmButton id="1" type="submit" skip={true} />
             </form>,
             {attachTo: container}
         )

@@ -90,12 +90,7 @@ describe('ViewTable::ViewTable', () => {
         })
 
         it('change view when entering search mode', () => {
-            const component = shallow(
-                <ViewTable
-                    {...minProps}
-                    isSearch={false}
-                />
-            ).dive().dive()
+            const component = shallow(<ViewTable {...minProps} isSearch={false} />).dive().dive()
             component.setProps({
                 isSearch: true,
             })
@@ -127,12 +122,7 @@ describe('ViewTable::ViewTable', () => {
         })
 
         it('change view when leaving search mode', () => {
-            const component = shallow(
-                <ViewTable
-                    {...minProps}
-                    isSearch
-                />
-            ).dive().dive()
+            const component = shallow(<ViewTable {...minProps} isSearch />).dive().dive()
             component.setProps({
                 isSearch: false,
             })
@@ -141,12 +131,7 @@ describe('ViewTable::ViewTable', () => {
         })
 
         it('change view when entering "add new" mode', () => {
-            const component = shallow(
-                <ViewTable
-                    {...minProps}
-                    isUpdate
-                />
-            ).dive().dive()
+            const component = shallow(<ViewTable {...minProps} isUpdate />).dive().dive()
             component.setProps({
                 isUpdate: false,
             })
@@ -155,12 +140,7 @@ describe('ViewTable::ViewTable', () => {
         })
 
         it('change view when leaving "add new" mode', () => {
-            const component = shallow(
-                <ViewTable
-                    {...minProps}
-                    isUpdate={false}
-                />
-            ).dive().dive()
+            const component = shallow(<ViewTable {...minProps} isUpdate={false} />).dive().dive()
             component.setProps({
                 isUpdate: true,
             })

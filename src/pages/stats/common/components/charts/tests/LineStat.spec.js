@@ -41,10 +41,7 @@ describe('LineStat', () => {
     it('should render a line chart', () => {
         const config = statsConfig.find((config, key) => key === RESOLUTION_TIME)
         const component = shallow(
-            <LineStat
-                config={config}
-                {...barStat.toObject()}
-            />
+            <LineStat config={config} {...barStat.toObject()}/>
         )
         expect(component).toMatchSnapshot()
     })

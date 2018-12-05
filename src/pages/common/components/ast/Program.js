@@ -32,10 +32,7 @@ export default class Program extends React.Component<ProgramType> {
                                 <div className="BlockStatement">
                                     {
                                         body.map((statement, key) => (
-                                            <div
-                                                key={key}
-                                                className="BlockStatementItem"
-                                            >
+                                            <div key={key} className="BlockStatementItem">
                                                 <Statement
                                                     {...statement}
                                                     parent={List(['body', key])}

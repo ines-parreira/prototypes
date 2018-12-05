@@ -154,10 +154,7 @@ class SatisfactionSurveyView extends React.Component<Props> {
         return (
             <div className="full-width">
                 <PageHeader title="Satisfaction"/>
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     {
                         currentAccount.get('extra_features').includes('satisfaction-surveys')
                         ? this._renderSettings()

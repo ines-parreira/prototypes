@@ -1,5 +1,6 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
+import {ContentState} from 'draft-js'
 
 import * as utils from './utils'
 
@@ -8,6 +9,10 @@ import TestEditor from './TestEditor'
 import {convertFromHTML} from '../../../../utils/editor'
 
 import createToolbarPlugin from '../plugins/toolbar'
+import {
+    link as linkDecorator,
+    foundUrl as foundUrlDecorator
+} from '../plugins/toolbar/decorators'
 import {variable as variableDecorator} from '../plugins/variables/decorators'
 import {attachEntitiesToVariables} from '../plugins/variables/utils'
 
@@ -24,9 +29,56 @@ describe('DraftJS convertToHtml', () => {
         expect(decorations.length).toBe(html.length)
         expect(decorations).toEqual(Array(html.length).fill(null))
     })
+
+    it('link entity in html', () => {
+        const composite = utils.getCompositeDecorator(linkDecorator)
+        const html = 'a url <a href="http://google.com">link</a> and <a href="http://google.com">link</a>'
+        const text = 'a url link and link'
+        const positions = [{start: 6, length: 4}, {start: 15, length: 4}]
+
+        const contentState = convertFromHTML(html)
+        const content = contentState.getBlockMap().first()
+        const decorations = composite.getDecorations(content, contentState).toArray()
+
+        expect(decorations.length).toBe(text.length)
+        expect(content.getText()).toEqual(text)
+
+        positions.forEach((position, index) => {
+            const {start, length} = position
+            const end = start + length - 1
+            const begin = index > 0 ? positions[index - 1].start + positions[index - 1].length : 0
+            expect(utils.isEntirelyNull(decorations.slice(begin, start))).toBe(true)
+            expect(utils.isOccupied(decorations.slice(start, length))).toBe(true)
+            expect(decorations[start]).toEqual(decorations[end])
+            expect(composite.getComponentForKey(decorations[start])).toBe(linkDecorator.component)
+        })
+    })
 })
 
 describe('DraftJS display entities', () => {
+    it('link found in text', () => {
+        const composite = utils.getCompositeDecorator(foundUrlDecorator)
+        const text = 'url http://google.com'
+        const positions = [{start: 4, length: 17}]
+
+        const contentState = convertFromHTML(text)
+        const content = contentState.getBlockMap().first()
+        const decorations = composite.getDecorations(content, contentState).toArray()
+
+        expect(decorations.length).toBe(text.length)
+        expect(content.getText()).toEqual(text)
+
+        positions.forEach((position, index) => {
+            const {start, length} = position
+            const end = start + length - 1
+            const begin = index > 0 ? positions[index - 1].start + positions[index - 1].length : 0
+            expect(utils.isEntirelyNull(decorations.slice(begin, start))).toBe(true)
+            expect(utils.isOccupied(decorations.slice(start, length))).toBe(true)
+            expect(decorations[start]).toEqual(decorations[end])
+            expect(composite.getComponentForKey(decorations[start])).toBe(foundUrlDecorator.component)
+        })
+    })
+
     it('variable entity in text', () => {
         const composite = utils.getCompositeDecorator(variableDecorator)
         const text = 'variable {{current_user.name}} and {{ticket.customer.email}}'
@@ -50,6 +102,27 @@ describe('DraftJS display entities', () => {
             expect(decorations[start]).toEqual(decorations[end])
             expect(composite.getComponentForKey(decorations[start])).toBe(variableDecorator.component)
         })
+    })
+})
+
+describe('DraftJS decorators', () => {
+    it('find url in text', () => {
+        const composite = utils.getCompositeDecorator(foundUrlDecorator)
+        const text = 'find a url http://google.com'
+        const contentState = ContentState.createFromText(text)
+        const content = contentState.getBlockMap().first()
+        const decorations = composite.getDecorations(content, contentState).toArray()
+        const expectedDecorations = Array(11).fill(null).concat(Array(17).fill('0.0'))
+        expect(decorations).toEqual(expectedDecorations)
+    })
+
+    it('find url with {{variable}} in text', () => {
+        const composite = utils.getCompositeDecorator(foundUrlDecorator)
+        const text = 'find a url http://google.com/{{ticket.id}}'
+        const content = ContentState.createFromText(text).getBlockMap().first()
+        const decorations = composite.getDecorations(content).toArray()
+        const expectedDecorations = Array(11).fill(null).concat(Array(31).fill('0.0'))
+        expect(decorations).toEqual(expectedDecorations)
     })
 })
 
@@ -80,9 +153,7 @@ describe('DraftJS Plugins', () => {
         const html = 'this is a url <a href="http://google.com">link</a>'
         let editorState = utils.editorStateFromHtml(html)
 
-        const toolbarPlugin = createToolbarPlugin({
-            getDisplayedActions: () => undefined
-        })
+        const toolbarPlugin = createToolbarPlugin()
 
         const plugins = [
             toolbarPlugin,

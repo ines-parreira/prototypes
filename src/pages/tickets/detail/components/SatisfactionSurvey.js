@@ -53,12 +53,9 @@ export default class SatisfactionSurvey extends React.Component<PropTypes> {
         const score = satisfactionSurvey.get('score')
 
         return (
-            <div
-                className={classnames(css.component, {
-                    [css.last]: isLast,
-                })}
-                id='satisfactionSurvey'
-            >
+            <div className={classnames(css.component, {
+                [css.last]: isLast,
+            })} id='satisfactionSurvey'>
                 <div className={css.star}>
                     <img src={fullStar} />
                 </div>

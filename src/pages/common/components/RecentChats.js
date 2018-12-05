@@ -51,10 +51,7 @@ class RecentChatsItem extends React.Component {
                 className={linkClasses}
                 title={customerName}
             >
-                <SourceIcon
-                    type={channel}
-                    className={classnames('uncolored mr-2')}
-                />
+                <SourceIcon type={channel} className={classnames('uncolored mr-2')}/>
                 <span>{customerName}</span>
             </Link>
         )

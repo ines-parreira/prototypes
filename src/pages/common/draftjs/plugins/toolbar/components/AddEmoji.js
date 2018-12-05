@@ -1,58 +1,31 @@
 //@flow
-import React from 'react'
+import React, { type ElementRef } from 'react'
 import {Picker} from 'emoji-mart'
 import 'emoji-mart/css/emoji-mart.css'
-import Popover from './ButtonPopover'
-import type { ActionInjectedProps } from '../types'
-import {insertText} from '../../../../../../utils'
-import { EditorState } from 'draft-js'
+import Popover from './Popover'
+import type { ActionComponentProps, Emoji } from '../types'
 
-type Props = ActionInjectedProps
+type Props = {
+    onAddEmoji: Emoji => boolean
+} & ActionComponentProps
 
-type State = {
-    isOpen: boolean
-}
-
-// Emoji-mart object https://github.com/missive/emoji-mart#examples-of-emoji-object
-type Emoji = {
-    id: string,
-    name: string,
-    colons: string,
-    text: string,
-    emoticons: string[],
-    native: string,
-    skin: ?number,
-}
-
-export default class AddEmoji extends React.Component<Props, State> {
-    state: State = {
-        isOpen: false
-    }
+export default class AddEmoji extends React.Component<Props> {
+    popover: ?ElementRef<typeof Popover>
 
     _addEmoji = (emoji: Emoji) => {
-        const editorState = this.props.getEditorState()
-        let newEditorState = insertText(editorState, emoji.native)
-
-        // forcing the current selection ensures that it will be at it's right place
-        newEditorState = EditorState.forceSelection(newEditorState, newEditorState.getSelection())
-
-        this.props.setEditorState(newEditorState)
-        this.setState({ isOpen: false })
+        this.props.onAddEmoji(emoji)
+        this.popover && this.popover._close()
     }
-
-    _onPopoverOpen = () => this.setState({ isOpen: true })
-
-    _onPopoverClose = () => this.setState({ isOpen: false })
 
     render() {
         return (
             <Popover
                 icon="insert_emoticon"
-                name="Insert emoji"
+                name={this.props.name}
+                ref={(popover: ?ElementRef<typeof Popover>) => {
+                    this.popover = popover
+                }}
                 className="p-0 d-flex"
-                isOpen={this.state.isOpen}
-                onOpen={this._onPopoverOpen}
-                onClose={this._onPopoverClose}
             >
                 <Picker
                     autoFocus

@@ -38,12 +38,7 @@ export default class IntegrationSelect extends Component {
             options = options.push({
                 value: integration.get('id'),
                 text: integration.get('name'),
-                label: (
-                    <RenderLabel
-                        field={field}
-                        value={integration}
-                    />
-                ),
+                label: <RenderLabel field={field} value={integration}/>,
             })
         })
 

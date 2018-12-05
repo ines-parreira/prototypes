@@ -17,12 +17,7 @@ export const WIDGET_DATA_TYPES = [
         description: (
             <div>
                 The following data comes from your{' '}
-                <Link
-                    to="/app/settings/integrations/shopify"
-                    target="_blank"
-                >
-                    <b>Shopify stores</b>
-                </Link>.
+                <Link to="/app/settings/integrations/shopify" target="_blank"><b>Shopify stores</b></Link>.
             </div>
         )
     },
@@ -32,12 +27,7 @@ export const WIDGET_DATA_TYPES = [
         description: (
             <div>
                 The following data comes from your{' '}
-                <Link
-                    to="/app/settings/integrations/recharge"
-                    target="_blank"
-                >
-                    <b>Recharge integrations</b>
-                </Link>.
+                <Link to="/app/settings/integrations/recharge" target="_blank"><b>Recharge integrations</b></Link>.
             </div>
         )
     },
@@ -47,12 +37,7 @@ export const WIDGET_DATA_TYPES = [
         description: (
             <div>
                 The following data comes from your{' '}
-                <Link
-                    to="/app/settings/integrations/smile"
-                    target="_blank"
-                >
-                    <b>Smile integrations</b>
-                </Link>.
+                <Link to="/app/settings/integrations/smile" target="_blank"><b>Smile integrations</b></Link>.
             </div>
         )
     },
@@ -62,12 +47,7 @@ export const WIDGET_DATA_TYPES = [
         description: (
             <div>
                 The following data comes from your{' '}
-                <Link
-                    to="/app/settings/integrations/smooch_inside"
-                    target="_blank"
-                >
-                    <b>Chat integrations</b>
-                </Link>.
+                <Link to="/app/settings/integrations/smooch_inside" target="_blank"><b>Chat integrations</b></Link>.
             </div>
         )
     },
@@ -77,12 +57,7 @@ export const WIDGET_DATA_TYPES = [
         description: (
             <div>
                 The following data comes from your server, after you configured{' '}
-                <Link
-                    to="/app/settings/integrations/http"
-                    target="_blank"
-                >
-                    <b>HTTP integrations</b>
-                </Link>.
+                <Link to="/app/settings/integrations/http" target="_blank"><b>HTTP integrations</b></Link>.
             </div>
         )
     },
@@ -92,12 +67,7 @@ export const WIDGET_DATA_TYPES = [
         description: (
             <div>
                 The following data comes is the one you push yourself using our{' '}
-                <Link
-                    to="https://docs.gorgias.io"
-                    target="_blank"
-                >
-                    <b>API</b>
-                </Link>.
+                <Link to="https://docs.gorgias.io" target="_blank"><b>API</b></Link>.
             </div>
         )
     },

@@ -60,10 +60,7 @@ describe('KeyMetricStat', () => {
     it('should render a key metrics chart', () => {
         const config = statsConfig.find((config, key) => key === OVERVIEW)
         const component = shallow(
-            <KeyMetricStat
-                config={config}
-                {...barStat.toObject()}
-            />
+            <KeyMetricStat config={config} {...barStat.toObject()}/>
         )
         expect(component).toMatchSnapshot()
     })
@@ -71,10 +68,7 @@ describe('KeyMetricStat', () => {
     it('should render a key metrics chart with distribution and donut components', () => {
         const config = statsConfig.find((config, key) => key === SATISFACTION_SURVEYS)
         const component = shallow(
-            <KeyMetricStat
-                config={config}
-                {...satisfactionSurveyStat.toObject()}
-            />
+            <KeyMetricStat config={config} {...satisfactionSurveyStat.toObject()}/>
         )
         expect(component).toMatchSnapshot()
     })

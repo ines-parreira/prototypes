@@ -183,10 +183,7 @@ class ViewNavbarViewEditor extends Component {
                 >
                     {this._renderViews(views)}
                 </ReactSortable>
-                <Link
-                    className={createButtonClass}
-                    to={`/app/${objectName}/new`}
-                >
+                <Link className={createButtonClass} to={`/app/${objectName}/new`}>
                     <div>
                         <i className="material-icons mr-2">
                             add

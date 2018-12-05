@@ -120,10 +120,7 @@ class MergeTicketsContainer extends React.Component<Props, State> {
                 className={css.modal}
                 footerClassName={css.footer}
                 footer={targetTicket ? (
-                    <Form
-                        onSubmit={this._handleSubmit}
-                        style={{width: '100%'}}
-                    >
+                    <Form onSubmit={this._handleSubmit} style={{width: '100%'}}>
                         <div className="float-left buttons-bar">
                             <Button
                                 color="secondary"

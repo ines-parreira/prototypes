@@ -129,10 +129,7 @@ export class ManageRequestItem extends React.Component<Props, State> {
                     </Breadcrumb>
                 )}/>
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <Form onSubmit={this._onSubmit}>
                         <InputField
                             type="text"

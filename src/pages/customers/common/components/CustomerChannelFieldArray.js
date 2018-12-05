@@ -46,10 +46,7 @@ class CustomerChannelFieldArray extends React.Component {
                             key={index}
                             className="mb-3 form-row"
                         >
-                            <Col
-                                md="10"
-                                xs="9"
-                            >
+                            <Col md="10" xs="9">
                                 <InputField
                                     type={type}
                                     name={`${contact}.address`}
@@ -59,10 +56,7 @@ class CustomerChannelFieldArray extends React.Component {
                                     error={errors[index] && errors[index].address}
                                 />
                             </Col>
-                            <Col
-                                md="2"
-                                xs="3"
-                            >
+                            <Col md="2" xs="3">
                                 <Button
                                     color="danger"
                                     type="button"

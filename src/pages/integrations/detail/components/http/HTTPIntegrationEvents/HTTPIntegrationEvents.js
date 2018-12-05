@@ -56,40 +56,28 @@ export class HTTPIntegrationEvents extends Component<Props, State> {
         return (
             <tr key={event.get('id')}>
                 <td className="link-full-td">
-                    <Link
-                        to={editLink}
-                        className="disabled"
-                    >
+                    <Link to={editLink} className="disabled">
                         <div>
                             {event.getIn(['request', 'method'], 'GET')}
                         </div>
                     </Link>
                 </td>
                 <td className="link-full-td">
-                    <Link
-                        to={editLink}
-                        className="disabled"
-                    >
+                    <Link to={editLink} className="disabled">
                         <div>
                             {_truncate(event.getIn(['request', 'url']), {length: 100})}
                         </div>
                     </Link>
                 </td>
                 <td className="link-full-td">
-                    <Link
-                        to={editLink}
-                        className="disabled"
-                    >
+                    <Link to={editLink} className="disabled">
                         <div>
                             <HTTPStatusLabel statusCode={event.get('status_code')}/>
                         </div>
                     </Link>
                 </td>
                 <td className="link-full-td">
-                    <Link
-                        to={editLink}
-                        className="disabled"
-                    >
+                    <Link to={editLink} className="disabled">
                         <div>
                             <DatetimeLabel dateTime={event.get('created_datetime')}/>
                         </div>
@@ -112,10 +100,7 @@ export class HTTPIntegrationEvents extends Component<Props, State> {
 
         return (
             <div>
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <p>
                         Shows the latest HTTP requests sent by this integration with their responses.
                         This page is useful to see if this integration works correctly.
@@ -129,10 +114,7 @@ export class HTTPIntegrationEvents extends Component<Props, State> {
                 </Container>
                 <br/>
                 {events.isEmpty() ? null :
-                    <Table
-                        hover
-                        className="view-table table-integrations"
-                    >
+                    <Table hover className="view-table table-integrations">
                         <thead>
                         <tr>
                             <th>Method</th>

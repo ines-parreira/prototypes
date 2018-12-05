@@ -198,11 +198,7 @@ export default class SelectField extends Component {
                     toggle={this._toggleDropdown}
                     isOpen={optionsOpen}
                 >
-                    <DropdownToggle
-                        tag="div"
-                        data-toggle="dropdown"
-                        className={className}
-                    >
+                    <DropdownToggle tag="div" data-toggle="dropdown" className={className}>
                         <div
                             className={`${css.select} dropdown-toggle`}
                             onClick={this._toggleDropdown}

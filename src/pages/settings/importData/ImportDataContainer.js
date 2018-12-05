@@ -84,10 +84,7 @@ export default class ImportDataContainer extends React.Component {
         return (
             <div className="full-width">
                 <PageHeader title="Import data"/>
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <div className="mb-3">
                         <p>
                             Import data (one way) from your current helpdesk into Gorgias.

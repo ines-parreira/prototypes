@@ -10,7 +10,7 @@ describe('MultiSelectField', () => {
     }
 
     const props = {
-        values: [1, 3],
+        values: [1,3],
         options: [{
             value: 1,
             text: 'first',
@@ -32,8 +32,7 @@ describe('MultiSelectField', () => {
     }
 
     it('should use default props', () => {
-        const component = mount(
-            <MultiSelectField {...minProps}/>)
+        const component = mount(<MultiSelectField {...minProps}/>)
         expect(component.props()).toMatchSnapshot()
     })
 
@@ -48,32 +47,17 @@ describe('MultiSelectField', () => {
     })
 
     it('should use custom props', () => {
-        const component = mount(
-            <MultiSelectField
-                {...minProps}
-                {...props}
-            />
-        )
+        const component = mount(<MultiSelectField {...minProps} {...props} />)
         expect(component.props()).toMatchSnapshot()
     })
 
     it('should init state with custom props', () => {
-        const component = mount(
-            <MultiSelectField
-                {...minProps}
-                {...props}
-            />
-        )
+        const component = mount(<MultiSelectField {...minProps} {...props} />)
         expect(component.state()).toMatchSnapshot()
     })
 
     it('should render a multi select input with custom props', () => {
-        const component = shallow(
-            <MultiSelectField
-                {...minProps}
-                {...props}
-            />
-        )
+        const component = shallow(<MultiSelectField {...minProps} {...props} />)
         expect(component).toMatchSnapshot()
     })
 

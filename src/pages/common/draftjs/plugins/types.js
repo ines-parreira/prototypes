@@ -1,15 +1,13 @@
-//@flow
 import type {EditorState} from 'draft-js'
 
-export type PluginMethods = {
+export type pluginArgsType = {
     getEditorState: () => EditorState,
-    setEditorState: EditorState => void,
-    getProps: () => any
+    setEditorState: (T: EditorState) => void
 }
 
 export type imagePluginConfigType = {
     notify: ({status: string, message: string}) => void,
-    getAttachFiles: () => (T: Array<File>) => void,
+    getAttachFiles: () => (T: Array<Blob>) => void,
     getCanDropFiles: () => boolean,
     getCanInsertInlineImages: () => boolean
 }

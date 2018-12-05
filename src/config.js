@@ -10,7 +10,7 @@ import {daysToHours, hoursToSeconds} from './utils'
 /**
  * Set default axios headers
  */
-//$FlowFixMe
+
 axios.defaults.headers.common['X-CSRF-Token'] = window.CSRF_TOKEN
 
 /**
@@ -425,7 +425,7 @@ export const ACTION_TEMPLATES = [
                 validate: (customer: Object) => {
                     const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
 
-                    return _get(shopifyIntegration, ['orders', '0', 'financial_status']) !== 'fulfilled'
+                    return _get(shopifyIntegration, ['orders', 0, 'financial_status']) !== 'fulfilled'
                 },
                 error: 'The last order has already been fulfilled, it\'s not cancellable.'
             }
@@ -574,7 +574,7 @@ export const ACTION_TEMPLATES = [
                 validate: (customer: Object) => {
                     const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
 
-                    return _get(shopifyIntegration, ['orders', '0', 'financial_status']) !== 'fulfilled'
+                    return _get(shopifyIntegration, ['orders', 0, 'financial_status']) !== 'fulfilled'
                 },
                 error: 'The last order has already been fulfilled, you can\'t edit it\'s shipping address.'
             }
@@ -608,7 +608,7 @@ export const ACTION_TEMPLATES = [
                 validate: (customer: Object) => {
                     const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
 
-                    return !['refunded', 'accepted'].includes(_get(shopifyIntegration, ['orders', '0', 'financial_status']))
+                    return !['refunded', 'accepted'].includes(_get(shopifyIntegration, ['orders', 0, 'financial_status']))
                 },
                 error: 'The last order has already been refunded or hasn\'t been paid for yet.'
             }
@@ -653,7 +653,7 @@ export const ACTION_TEMPLATES = [
                 validate: (customer: Object) => {
                     const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
 
-                    return !['refunded', 'accepted'].includes(_get(shopifyIntegration, ['orders', '0', 'financial_status']))
+                    return !['refunded', 'accepted'].includes(_get(shopifyIntegration, ['orders', 0, 'financial_status']))
                 },
                 error: 'The last order has already been refunded or hasn\'t been paid for yet.'
             }
@@ -699,7 +699,7 @@ export const ACTION_TEMPLATES = [
                 validate: (customer: Object) => {
                     const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
 
-                    return !['refunded', 'accepted'].includes(_get(shopifyIntegration, ['orders', '0', 'financial_status']))
+                    return !['refunded', 'accepted'].includes(_get(shopifyIntegration, ['orders', 0, 'financial_status']))
                 },
                 error: 'The last order has already been refunded or hasn\'t been paid for yet.'
             }
@@ -762,7 +762,7 @@ export const ACTION_TEMPLATES = [
                 validate: (customer: Object) => {
                     const rechargeIntegration = _find(customer.integrations, {'__integration_type__': 'recharge'})
 
-                    return _get(rechargeIntegration, ['subscriptions', '0', 'cancelled_at']) === null
+                    return _get(rechargeIntegration, ['subscriptions', 0, 'cancelled_at']) === null
                 },
                 error: 'The last subscription has already been cancelled.'
             }

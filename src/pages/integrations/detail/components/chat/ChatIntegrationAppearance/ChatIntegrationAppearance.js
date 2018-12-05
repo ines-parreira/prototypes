@@ -165,10 +165,7 @@ class ChatIntegrationAppearance extends React.Component {
                     <RealtimeMessagingIntegrationNavigation integration={integration}/>
                 )}
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <Row>
                         <Col>
                             <Form

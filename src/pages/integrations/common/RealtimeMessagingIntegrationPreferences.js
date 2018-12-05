@@ -173,10 +173,7 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
 
                 <RealtimeMessagingIntegrationNavigation integration={integration}/>
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <Form onSubmit={this._submitPreferences}>
 
                         {

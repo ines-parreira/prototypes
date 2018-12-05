@@ -37,10 +37,7 @@ export default class BuildFinalTicket extends React.Component<Props> {
                 </p>
                 {
                     nothingIsDifferent ? (
-                        <p
-                            className="mt-2 mb=2"
-                            style={{textAlign: 'center'}}
-                        >
+                        <p className="mt-2 mb=2" style={{textAlign: 'center'}}>
                             These tickets are similar so all fields will be set automatically.
                             Confirm the merge below and you’re all set!
                         </p>

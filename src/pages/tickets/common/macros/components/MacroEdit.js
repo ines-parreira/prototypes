@@ -255,10 +255,7 @@ export class MacroEdit extends React.Component {
                             const key = `${index}${currentMacro.get('id')}`
 
                             return (
-                                <div
-                                    key={key}
-                                    className="mt-5"
-                                >
+                                <div key={key} className="mt-5">
                                     <div className="d-flex justify-content-between align-items-center mb-2">
                                         <div className={css.title}>
                                             {config.title}

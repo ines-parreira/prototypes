@@ -82,10 +82,7 @@ class BusinessHours extends React.Component<Props, State> {
             <div className="full-width">
                 <PageHeader title="Business hours"/>
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <p>
                         Let customers know when your team is online.<br/>
                         This way, you can disable the chat outside of business hours, or set different auto-responders
@@ -140,14 +137,7 @@ class BusinessHours extends React.Component<Props, State> {
                                 >
                                     {
                                         getMomentTimezoneNames()
-                                            .map((name) => (
-                                                <option
-                                                    key={name}
-                                                    value={name}
-                                                >
-                                                    {name}
-                                                </option>
-                                            ))
+                                            .map((name) => <option key={name} value={name}>{name}</option>)
                                     }
                                 </InputField>
                             </Col>

@@ -942,8 +942,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                     "strategy": [Function],
                                                   },
                                                 ],
-                                                "handleKeyCommand": [Function],
-                                                "keyBindingFn": [Function],
+                                                "initialize": [Function],
                                               },
                                               Object {
                                                 "MentionSuggestions": [Function],
@@ -1240,8 +1239,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                       "strategy": [Function],
                                                     },
                                                   ],
-                                                  "handleKeyCommand": [Function],
-                                                  "keyBindingFn": [Function],
+                                                  "initialize": [Function],
                                                 },
                                                 Object {
                                                   "MentionSuggestions": [Function],
@@ -1844,355 +1842,287 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                           />
                                         </Decorated(MentionSuggestions)>
                                       </div>
-                                      <Toolbar
+                                      <Decorated(Toolbar)
                                         attachFiles={[Function]}
-                                        buttons={Array []}
                                         getCanDropFiles={[Function]}
-                                        getEditorRef={[Function]}
-                                        getEditorState={[Function]}
-                                        getPlugins={[Function]}
-                                        getProps={[Function]}
-                                        getReadOnly={[Function]}
-                                        imageAction={
-                                          <AddImage
-                                            attachments={undefined}
-                                            getEditorRef={[Function]}
-                                            getEditorState={[Function]}
-                                            getPlugins={[Function]}
-                                            getProps={[Function]}
-                                            getReadOnly={[Function]}
-                                            setEditorState={[Function]}
-                                            setReadOnly={[Function]}
-                                          />
-                                        }
-                                        linkAction={
-                                          <AddLink
-                                            entityKey={undefined}
-                                            getEditorRef={[Function]}
-                                            getEditorState={[Function]}
-                                            getPlugins={[Function]}
-                                            getProps={[Function]}
-                                            getReadOnly={[Function]}
-                                            isOpen={false}
-                                            onClose={[Function]}
-                                            onOpen={[Function]}
-                                            onTextChange={[Function]}
-                                            onUrlChange={[Function]}
-                                            setEditorState={[Function]}
-                                            setReadOnly={[Function]}
-                                            text=""
-                                            url=""
-                                          />
-                                        }
-                                        setEditorState={[Function]}
-                                        setReadOnly={[Function]}
                                       >
-                                        <div
-                                          className="editor-toolbar page"
-                                          onDragLeave={[Function]}
-                                          onDragOver={[Function]}
-                                          onDrop={[Function]}
+                                        <Toolbar
+                                          actions={
+                                            Array [
+                                              Object {
+                                                "active": [Function],
+                                                "componentFunctions": Object {
+                                                  "toggle": [Function],
+                                                },
+                                                "icon": "format_bold",
+                                                "isActive": [Function],
+                                                "isDisabled": [Function],
+                                                "key": "bold",
+                                                "name": "Bold",
+                                                "style": "BOLD",
+                                                "toolbarProps": Object {},
+                                              },
+                                              Object {
+                                                "active": [Function],
+                                                "componentFunctions": Object {
+                                                  "toggle": [Function],
+                                                },
+                                                "icon": "format_italic",
+                                                "isActive": [Function],
+                                                "isDisabled": [Function],
+                                                "key": "italic",
+                                                "name": "Italic",
+                                                "style": "ITALIC",
+                                                "toolbarProps": Object {},
+                                              },
+                                              Object {
+                                                "active": [Function],
+                                                "componentFunctions": Object {
+                                                  "toggle": [Function],
+                                                },
+                                                "icon": "format_underline",
+                                                "isActive": [Function],
+                                                "isDisabled": [Function],
+                                                "key": "underline",
+                                                "name": "Underline",
+                                                "style": "UNDERLINE",
+                                                "toolbarProps": Object {},
+                                              },
+                                              Object {
+                                                "active": [Function],
+                                                "component": [Function],
+                                                "componentFunctions": Object {
+                                                  "onAddLink": [Function],
+                                                  "onClick": [Function],
+                                                },
+                                                "isActive": [Function],
+                                                "isDisabled": [Function],
+                                                "key": "link",
+                                                "name": "Insert link",
+                                                "toolbarProps": Object {},
+                                              },
+                                              Object {
+                                                "active": [Function],
+                                                "component": [Function],
+                                                "componentFunctions": Object {
+                                                  "getMaxAttachmentSize": [Function],
+                                                  "onAddImage": [Function],
+                                                },
+                                                "isActive": [Function],
+                                                "isDisabled": [Function],
+                                                "key": "image",
+                                                "name": "Insert image",
+                                                "toolbarProps": Object {},
+                                              },
+                                              Object {
+                                                "active": [Function],
+                                                "component": [Function],
+                                                "componentFunctions": Object {
+                                                  "onAddEmoji": [Function],
+                                                },
+                                                "isActive": [Function],
+                                                "isDisabled": [Function],
+                                                "key": "emoji",
+                                                "name": "Insert emoji",
+                                                "toolbarProps": Object {},
+                                              },
+                                            ]
+                                          }
+                                          attachFiles={[Function]}
+                                          buttons={Array []}
+                                          getCanDropFiles={[Function]}
+                                          hideActions={false}
+                                          toolbarStore={
+                                            Object {
+                                              "getItem": [Function],
+                                              "updateItem": [Function],
+                                            }
+                                          }
                                         >
                                           <div
-                                            className="actions"
+                                            className="editor-toolbar page"
+                                            onDragLeave={[Function]}
+                                            onDragOver={[Function]}
+                                            onDrop={[Function]}
                                           >
-                                            <Decorated(_default)
-                                              getEditorState={[Function]}
-                                              setEditorState={[Function]}
+                                            <div
+                                              className="actions"
                                             >
-                                              <_default
-                                                getEditorState={[Function]}
+                                              <Component
                                                 icon="format_bold"
+                                                isActive={false}
+                                                isDisabled={false}
                                                 name="Bold"
-                                                setEditorState={[Function]}
-                                                style="BOLD"
+                                                toggle={[Function]}
                                               >
-                                                <Component
-                                                  icon="format_bold"
-                                                  isActive={false}
-                                                  isDisabled={false}
-                                                  name="Bold"
-                                                  onToggle={[Function]}
+                                                <div
+                                                  className="button btn btn-secondary btn-transparent"
+                                                  onClick={[Function]}
+                                                  onMouseDown={[Function]}
+                                                  title="Bold"
                                                 >
-                                                  <button
-                                                    className="button btn btn-secondary btn-transparent"
-                                                    onClick={[Function]}
-                                                    onMouseDown={[Function]}
-                                                    title="Bold"
-                                                    type="button"
+                                                  <i
+                                                    className="material-icons"
                                                   >
-                                                    <i
-                                                      className="material-icons"
-                                                    >
-                                                      format_bold
-                                                    </i>
-                                                  </button>
-                                                </Component>
-                                              </_default>
-                                            </Decorated(_default)>
-                                            <Decorated(_default)
-                                              getEditorState={[Function]}
-                                              setEditorState={[Function]}
-                                            >
-                                              <_default
-                                                getEditorState={[Function]}
+                                                    format_bold
+                                                  </i>
+                                                </div>
+                                              </Component>
+                                              <Component
                                                 icon="format_italic"
+                                                isActive={false}
+                                                isDisabled={false}
                                                 name="Italic"
-                                                setEditorState={[Function]}
-                                                style="ITALIC"
+                                                toggle={[Function]}
                                               >
-                                                <Component
-                                                  icon="format_italic"
-                                                  isActive={false}
-                                                  isDisabled={false}
-                                                  name="Italic"
-                                                  onToggle={[Function]}
+                                                <div
+                                                  className="button btn btn-secondary btn-transparent"
+                                                  onClick={[Function]}
+                                                  onMouseDown={[Function]}
+                                                  title="Italic"
                                                 >
-                                                  <button
-                                                    className="button btn btn-secondary btn-transparent"
-                                                    onClick={[Function]}
-                                                    onMouseDown={[Function]}
-                                                    title="Italic"
-                                                    type="button"
+                                                  <i
+                                                    className="material-icons"
                                                   >
-                                                    <i
-                                                      className="material-icons"
-                                                    >
-                                                      format_italic
-                                                    </i>
-                                                  </button>
-                                                </Component>
-                                              </_default>
-                                            </Decorated(_default)>
-                                            <Decorated(_default)
-                                              getEditorState={[Function]}
-                                              setEditorState={[Function]}
-                                            >
-                                              <_default
-                                                getEditorState={[Function]}
+                                                    format_italic
+                                                  </i>
+                                                </div>
+                                              </Component>
+                                              <Component
                                                 icon="format_underline"
+                                                isActive={false}
+                                                isDisabled={false}
                                                 name="Underline"
-                                                setEditorState={[Function]}
-                                                style="UNDERLINE"
+                                                toggle={[Function]}
                                               >
-                                                <Component
-                                                  icon="format_underline"
+                                                <div
+                                                  className="button btn btn-secondary btn-transparent"
+                                                  onClick={[Function]}
+                                                  onMouseDown={[Function]}
+                                                  title="Underline"
+                                                >
+                                                  <i
+                                                    className="material-icons"
+                                                  >
+                                                    format_underline
+                                                  </i>
+                                                </div>
+                                              </Component>
+                                              <AddLink
+                                                isActive={false}
+                                                isDisabled={false}
+                                                name="Insert link"
+                                                onAddLink={[Function]}
+                                                onClick={[Function]}
+                                              >
+                                                <Popover
+                                                  icon="link"
                                                   isActive={false}
                                                   isDisabled={false}
-                                                  name="Underline"
-                                                  onToggle={[Function]}
-                                                >
-                                                  <button
-                                                    className="button btn btn-secondary btn-transparent"
-                                                    onClick={[Function]}
-                                                    onMouseDown={[Function]}
-                                                    title="Underline"
-                                                    type="button"
-                                                  >
-                                                    <i
-                                                      className="material-icons"
-                                                    >
-                                                      format_underline
-                                                    </i>
-                                                  </button>
-                                                </Component>
-                                              </_default>
-                                            </Decorated(_default)>
-                                            <AddLink
-                                              getEditorRef={[Function]}
-                                              getEditorState={[Function]}
-                                              getPlugins={[Function]}
-                                              getProps={[Function]}
-                                              getReadOnly={[Function]}
-                                              isOpen={false}
-                                              onClose={[Function]}
-                                              onOpen={[Function]}
-                                              onTextChange={[Function]}
-                                              onUrlChange={[Function]}
-                                              setEditorState={[Function]}
-                                              setReadOnly={[Function]}
-                                              text=""
-                                              url=""
-                                            >
-                                              <_default
-                                                icon="link"
-                                                isActive={false}
-                                                isDisabled={false}
-                                                isOpen={false}
-                                                name="Insert link"
-                                                onClose={[Function]}
-                                                onOpen={[Function]}
-                                              >
-                                                <_default
-                                                  isOpen={false}
-                                                  trigger={
-                                                    <Unknown
-                                                      icon="link"
-                                                      isActive={false}
-                                                      isDisabled={false}
-                                                      name="Insert link"
-                                                      onToggle={[Function]}
-                                                    />
-                                                  }
+                                                  name="Insert link"
+                                                  onIconClick={[Function]}
                                                 >
                                                   <span
-                                                    className="popoverWrapper"
+                                                    className="popover-wrapper"
                                                   >
-                                                    <Component
-                                                      icon="link"
-                                                      isActive={false}
-                                                      isDisabled={false}
-                                                      name="Insert link"
-                                                      onToggle={[Function]}
+                                                    <button
+                                                      className="button btn btn-secondary btn-transparent"
+                                                      onMouseUp={[Function]}
+                                                      title="Insert link"
+                                                      type="button"
                                                     >
-                                                      <button
-                                                        className="button btn btn-secondary btn-transparent"
-                                                        onClick={[Function]}
-                                                        onMouseDown={[Function]}
-                                                        title="Insert link"
-                                                        type="button"
+                                                      <i
+                                                        className="material-icons"
                                                       >
-                                                        <i
-                                                          className="material-icons"
-                                                        >
-                                                          link
-                                                        </i>
-                                                      </button>
-                                                    </Component>
+                                                        link
+                                                      </i>
+                                                    </button>
                                                     <div
                                                       className="popover hidden"
+                                                      onClick={[Function]}
                                                     />
                                                   </span>
-                                                </_default>
-                                              </_default>
-                                            </AddLink>
-                                            <AddImage
-                                              getEditorRef={[Function]}
-                                              getEditorState={[Function]}
-                                              getPlugins={[Function]}
-                                              getProps={[Function]}
-                                              getReadOnly={[Function]}
-                                              setEditorState={[Function]}
-                                              setReadOnly={[Function]}
-                                            >
-                                              <_default
-                                                icon="insert_photo"
+                                                </Popover>
+                                              </AddLink>
+                                              <AddImage
+                                                getMaxAttachmentSize={[Function]}
                                                 isActive={false}
                                                 isDisabled={false}
-                                                isOpen={false}
                                                 name="Insert image"
-                                                onClose={[Function]}
-                                                onOpen={[Function]}
+                                                onAddImage={[Function]}
                                               >
-                                                <_default
-                                                  isOpen={false}
-                                                  trigger={
-                                                    <Unknown
-                                                      icon="insert_photo"
-                                                      isActive={false}
-                                                      isDisabled={false}
-                                                      name="Insert image"
-                                                      onToggle={[Function]}
-                                                    />
-                                                  }
+                                                <Popover
+                                                  icon="insert_photo"
+                                                  isActive={false}
+                                                  isDisabled={false}
+                                                  name="Insert image"
                                                 >
                                                   <span
-                                                    className="popoverWrapper"
+                                                    className="popover-wrapper"
                                                   >
-                                                    <Component
-                                                      icon="insert_photo"
-                                                      isActive={false}
-                                                      isDisabled={false}
-                                                      name="Insert image"
-                                                      onToggle={[Function]}
+                                                    <button
+                                                      className="button btn btn-secondary btn-transparent"
+                                                      onMouseUp={[Function]}
+                                                      title="Insert image"
+                                                      type="button"
                                                     >
-                                                      <button
-                                                        className="button btn btn-secondary btn-transparent"
-                                                        onClick={[Function]}
-                                                        onMouseDown={[Function]}
-                                                        title="Insert image"
-                                                        type="button"
+                                                      <i
+                                                        className="material-icons"
                                                       >
-                                                        <i
-                                                          className="material-icons"
-                                                        >
-                                                          insert_photo
-                                                        </i>
-                                                      </button>
-                                                    </Component>
+                                                        insert_photo
+                                                      </i>
+                                                    </button>
                                                     <div
                                                       className="popover hidden"
+                                                      onClick={[Function]}
                                                     />
                                                   </span>
-                                                </_default>
-                                              </_default>
-                                            </AddImage>
-                                            <AddEmoji
-                                              getEditorState={[Function]}
-                                              setEditorState={[Function]}
-                                            >
-                                              <_default
-                                                className="p-0 d-flex"
-                                                icon="insert_emoticon"
+                                                </Popover>
+                                              </AddImage>
+                                              <AddEmoji
                                                 isActive={false}
                                                 isDisabled={false}
-                                                isOpen={false}
                                                 name="Insert emoji"
-                                                onClose={[Function]}
-                                                onOpen={[Function]}
+                                                onAddEmoji={[Function]}
                                               >
-                                                <_default
+                                                <Popover
                                                   className="p-0 d-flex"
-                                                  isOpen={false}
-                                                  trigger={
-                                                    <Unknown
-                                                      icon="insert_emoticon"
-                                                      isActive={false}
-                                                      isDisabled={false}
-                                                      name="Insert emoji"
-                                                      onToggle={[Function]}
-                                                    />
-                                                  }
+                                                  icon="insert_emoticon"
+                                                  isActive={false}
+                                                  isDisabled={false}
+                                                  name="Insert emoji"
                                                 >
                                                   <span
-                                                    className="popoverWrapper"
+                                                    className="popover-wrapper"
                                                   >
-                                                    <Component
-                                                      icon="insert_emoticon"
-                                                      isActive={false}
-                                                      isDisabled={false}
-                                                      name="Insert emoji"
-                                                      onToggle={[Function]}
+                                                    <button
+                                                      className="button btn btn-secondary btn-transparent"
+                                                      onMouseUp={[Function]}
+                                                      title="Insert emoji"
+                                                      type="button"
                                                     >
-                                                      <button
-                                                        className="button btn btn-secondary btn-transparent"
-                                                        onClick={[Function]}
-                                                        onMouseDown={[Function]}
-                                                        title="Insert emoji"
-                                                        type="button"
+                                                      <i
+                                                        className="material-icons"
                                                       >
-                                                        <i
-                                                          className="material-icons"
-                                                        >
-                                                          insert_emoticon
-                                                        </i>
-                                                      </button>
-                                                    </Component>
+                                                        insert_emoticon
+                                                      </i>
+                                                    </button>
                                                     <div
                                                       className="p-0 d-flex popover hidden"
+                                                      onClick={[Function]}
                                                     />
                                                   </span>
-                                                </_default>
-                                              </_default>
-                                            </AddEmoji>
+                                                </Popover>
+                                              </AddEmoji>
+                                            </div>
+                                            <div
+                                              className="hoverOverlay"
+                                            >
+                                              Add files as attachments
+                                            </div>
                                           </div>
-                                          <div
-                                            className="hoverOverlay"
-                                          >
-                                            Add files as attachments
-                                          </div>
-                                        </div>
-                                      </Toolbar>
+                                        </Toolbar>
+                                      </Decorated(Toolbar)>
                                     </div>
                                   </div>
                                 </div>

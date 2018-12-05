@@ -116,10 +116,7 @@ class ChatIntegrationQuickReplies extends React.Component<Props, State> {
 
                 <RealtimeMessagingIntegrationNavigation integration={integration}/>
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <Row>
                         <Col>
                             <Form onSubmit={this._submit}>

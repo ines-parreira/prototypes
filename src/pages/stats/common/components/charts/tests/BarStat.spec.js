@@ -37,10 +37,7 @@ describe('BarStat', () => {
     it('should render a bar chart', () => {
         const config = statsConfig.find((config, key) => key === SUPPORT_VOLUME)
         const component = shallow(
-            <BarStat
-                config={config}
-                {...barStat.toObject()}
-            />
+            <BarStat config={config} {...barStat.toObject()}/>
         )
         expect(component).toMatchSnapshot()
     })

@@ -258,10 +258,7 @@ export default class FacebookIntegrationSetup extends React.Component {
                     </Breadcrumb>
                 )}/>
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <h1>Facebook pages setup</h1>
                     <p>
                         One last step: choose the pages you want to manage with Gorgias.

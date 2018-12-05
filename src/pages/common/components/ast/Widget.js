@@ -359,21 +359,9 @@ export class Widget extends React.Component<Props, State> {
                     caseInsensitive={caseInsensitive}
                 />
             case 'select':
-                return (
-                    <Select
-                        {...widget}
-                        className={className}
-                        onChange={this._handleChange}
-                    />
-                )
+                return <Select {...widget} className={className} onChange={this._handleChange}/>
             case 'status-select':
-                return (
-                    <StatusSelect
-                        {...widget}
-                        className={className}
-                        onChange={this._handleChange}
-                    />
-                )
+                return <StatusSelect {...widget} className={className} onChange={this._handleChange}/>
             case 'tags-select':
                 return (
                     <TagsSelect
@@ -384,37 +372,13 @@ export class Widget extends React.Component<Props, State> {
                     />
                 )
             case 'macro-select':
-                return (
-                    <MacroSelect
-                        {...widget}
-                        className={className}
-                        onChange={this._handleChange}
-                    />
-                )
+                return <MacroSelect {...widget} className={className} onChange={this._handleChange}/>
             case 'request-select':
-                return (
-                    <RequestSelect
-                        {...widget}
-                        className={className}
-                        onChange={this._handleChange}
-                    />
-                )
+                return <RequestSelect {...widget} className={className} onChange={this._handleChange}/>
             case 'assignee_user-select':
-                return (
-                    <AssigneeSelect
-                        {...widget}
-                        className={className}
-                        onChange={this._handleChange}
-                    />
-                )
+                return <AssigneeSelect {...widget} className={className} onChange={this._handleChange}/>
             case 'integration-select':
-                return (
-                    <IntegrationSelect
-                        {...widget}
-                        className={className}
-                        onChange={this._handleChange}
-                    />
-                )
+                return <IntegrationSelect {...widget} className={className} onChange={this._handleChange}/>
             case 'textarea':
                 return this._textarea(value)
             case 'rich-field':

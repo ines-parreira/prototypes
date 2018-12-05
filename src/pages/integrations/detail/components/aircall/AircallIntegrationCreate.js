@@ -59,10 +59,7 @@ export default class AircallIntegrationCreate extends Component {
                     </Breadcrumb>
                 )}/>
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <Row>
                         <Col md="8">
                             <h3>Setup Instructions</h3>
@@ -72,11 +69,8 @@ export default class AircallIntegrationCreate extends Component {
                                     <ul>
                                         <li>1. Copy the webhook url below</li>
                                         <li>2. Add a Webhook integration in your Aircall account, under{' '}
-                                            <a
-                                                href="https://dashboard-v2.aircall.io/integrations"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
+                                            <a href="https://dashboard-v2.aircall.io/integrations" target="_blank"
+                                            rel="noopener noreferrer">
                                                 integrations
                                             </a>
                                         </li>

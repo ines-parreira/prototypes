@@ -23,20 +23,8 @@ export default class DistributionVariantStat extends Component<Props> {
 
         const VARIANTS = fromJS({
             star: {
-                fill: (key) => (
-                    <img
-                        key={key}
-                        src={fullStar}
-                        className={css.star}
-                    />
-                ),
-                empty: (key) => (
-                    <img
-                        key={key}
-                        src={emptyStar}
-                        className={css.star}
-                    />
-                ),
+                fill: (key) => <img key={key} src={fullStar} className={css.star}/>,
+                empty: (key) => <img key={key} src={emptyStar} className={css.star}/>,
             },
             default: {
                 fill: (key) => <i key={key}

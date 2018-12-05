@@ -77,10 +77,7 @@ export class TicketRequest extends React.Component<Props, State> {
                             'btn-loading': isLoading,
                         })}
                     >
-                        <i
-                            className="icon-custom icon-magic"
-                            aria-hidden="true"
-                        />
+                        <i className="icon-custom icon-magic" aria-hidden="true"/>
                         {label}
                     </DropdownToggle>
 

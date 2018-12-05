@@ -195,10 +195,7 @@ export default class MultiSelectField extends Component {
         const hasNoFilteredOptions = filteredOptions.length === 0
 
         return (
-            <div
-                className={classnames('MultiSelectField', className)}
-                style={style}
-            >
+            <div className={classnames('MultiSelectField', className)} style={style}>
                 <div
                     className={css.select}
                     onClick={this._focusInput}

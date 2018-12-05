@@ -138,10 +138,7 @@ export default class FacebookIntegrationDetail extends React.Component {
 
                 <RealtimeMessagingIntegrationNavigation integration={integration}/>
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <div className="d-flex align-items-center mb-3">
                         <img
                             className="image rounded mr-3"

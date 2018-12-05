@@ -154,10 +154,7 @@ export default class Form extends React.Component {
                     </Breadcrumb>
                 )}/>
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     {
                         !isUpdate && (
                             <p>

@@ -4,9 +4,9 @@ import _noop from 'lodash/noop'
 import {insertInlineImages, isImage} from '../utils'
 
 import type {SelectionState} from 'draft-js'
-import type {PluginMethods, imagePluginConfigType} from '../types'
+import type {pluginArgsType, imagePluginConfigType} from '../types'
 
-const _handleDroppedFiles = (config) => (selection: SelectionState, files: Array<File>, pluginArgs: PluginMethods) => {
+const _handleDroppedFiles = (config) => (selection: SelectionState, files: Array<File>, pluginArgs: pluginArgsType) => {
     // filter images
     let others = []
     let images = []
@@ -34,7 +34,6 @@ const _handleDroppedFiles = (config) => (selection: SelectionState, files: Array
     return 'handled'
 }
 
-//$FlowFixMe
 const dndUploadPlugin = (config: imagePluginConfigType = {
     notify: _noop,
     getAttachFiles: () => _noop,

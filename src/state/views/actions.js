@@ -274,7 +274,6 @@ export function fetchPage(page: ?number, discreet: boolean = false): thunkAction
             return Promise.resolve()
         }
 
-        //$FlowFixMe
         const filtersHash = getHashOfObj(viewsSelectors.getActiveViewFilters(getState()))
 
         dispatch({
@@ -312,7 +311,6 @@ export function fetchPage(page: ?number, discreet: boolean = false): thunkAction
                     // is the current page the same as the received one
                     && views.getIn(['_internal', 'pagination', 'page'], 1).toString() === data.meta.page.toString()
                     // (if somebody has modified the filters while the request was done)
-                    //$FlowFixMe
                     && filtersHash === getHashOfObj(viewsSelectors.getActiveViewFilters(getState()))
 
                 // make sure the incoming ticket list is the one the current user is looking at

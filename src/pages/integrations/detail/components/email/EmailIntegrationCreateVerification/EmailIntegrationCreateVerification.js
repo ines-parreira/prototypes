@@ -66,10 +66,7 @@ export class EmailIntegrationCreateVerification extends React.Component<Props, S
 
         return (
             <div>
-                <Alert
-                    color="info"
-                    className="mb-4"
-                >
+                <Alert color="info" className="mb-4">
                     <i className="material-icons md-spin mr-2">
                         autorenew
                     </i>
@@ -128,10 +125,7 @@ export class EmailIntegrationCreateVerification extends React.Component<Props, S
                     </Breadcrumb>
                 )}/>
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <h1>
                         <i className="material-icons"></i>
                         Verification in progress...

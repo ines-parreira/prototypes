@@ -88,21 +88,10 @@ export class BillingUsage extends Component {
                     {periodStart} and {periodEnd}
                 </UncontrolledTooltip>
 
-                <Progress
-                    multi
-                    className={css['usage-progress']}
-                >
-                    <Progress
-                        bar
-                        value={percentUsed}
-                        color={percentUsedColor}
-                    />
+                <Progress multi className={css['usage-progress']}>
+                    <Progress bar value={percentUsed} color={percentUsedColor}/>
                     {percentRemainingColor && (
-                        <Progress
-                            bar
-                            value={percentRemaining}
-                            color={percentRemainingColor}
-                        />
+                        <Progress bar value={percentRemaining} color={percentRemainingColor}/>
                     )}
                 </Progress>
 
@@ -143,28 +132,13 @@ export class BillingUsage extends Component {
                         available for your current plan.
                     </UncontrolledTooltip>
                 </div>
-                <Progress
-                    multi
-                    className={css['usage-numbers']}
-                >
-                    <Progress
-                        bar
-                        value={percentUsed}
-                        color="primary"
-                    />
+                <Progress multi className={css['usage-numbers']}>
+                    <Progress bar value={percentUsed} color="primary"/>
                     {percentRemaining < 30 && percentRemaining >= 20 && (
-                        <Progress
-                            bar
-                            value={percentRemaining}
-                            color="warning"
-                        />
+                        <Progress bar value={percentRemaining} color="warning"/>
                     )}
                     {percentRemaining < 20 && (
-                        <Progress
-                            bar
-                            value={percentRemaining}
-                            color="danger"
-                        />
+                        <Progress bar value={percentRemaining} color="danger"/>
                     )}
                 </Progress>
             </div>
@@ -190,10 +164,7 @@ export class BillingUsage extends Component {
                     If you have any questions or if you want to unsubscribe, please
                     contact us at <a href="mailto:support@gorgias.io">support@gorgias.io</a> or
                     {' '}
-                    <a
-                        href=""
-                        onClick={openChat}
-                    >Live Chat</a>.
+                    <a href="" onClick={openChat}>Live Chat</a>.
                 </p>
             </div>
         )
@@ -213,10 +184,7 @@ export class BillingUsage extends Component {
                 <Card className="text-center">
                     <CardBody>
                         <Row>
-                            <Col
-                                sm={{ size: 4, offset: 8 }}
-                                className={css['plan-button']}
-                            >
+                            <Col sm={{ size: 4, offset: 8 }} className={css['plan-button']} >
                                 <Button
                                     color='secondary'
                                     onClick={() => {
@@ -270,17 +238,11 @@ export class BillingUsage extends Component {
                         <Row>
                             <Col sm="3">{this._renderTicketUsage()}</Col>
                             <Col sm="3">{this._renderIntegrationUsage()}</Col>
-                            <Col
-                                sm="3"
-                                className={css['plan-usage-reset']}
-                            >
+                            <Col sm="3" className={css['plan-usage-reset']}>
                                 <div><strong>Usage reset on:</strong></div>
                                 <div>{periodEnd}</div>
                             </Col>
-                            <Col
-                                sm="3"
-                                className={css['plan-button']}
-                            >
+                            <Col sm="3" className={css['plan-button']}>
                                 <Button
                                     color={isTrialing ? 'primary' : 'secondary'}
                                     onClick={() => {

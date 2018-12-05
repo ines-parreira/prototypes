@@ -35,7 +35,6 @@ export const getMoment = () => {
  * We encapsulate it here so that it's easy to mock during tests.
  */
 export const getMomentNow = () => {
-    //$FlowFixMe
     return moment.now()
 }
 
@@ -54,6 +53,5 @@ export const getMomentUtcISOString = () => {
  * We encapsulate it here so that it's easy to mock during tests.
  */
 export const getMomentTimezoneNames = () => {
-    //$FlowFixMe
     return moment.tz.names()
 }

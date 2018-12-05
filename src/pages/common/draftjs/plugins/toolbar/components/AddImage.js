@@ -1,36 +1,34 @@
 //@flow
-import React from 'react'
+import React, { type ElementRef }  from 'react'
 import classnames from 'classnames'
 import {Button} from 'reactstrap'
-import Popover from './ButtonPopover'
+import Popover from './Popover'
 import FileField from '../../../../forms/FileField'
 import css from '../Toolbar.less'
-import type { ActionInjectedProps } from '../types'
-import {getMaxAttachmentSize} from '../../../../../../utils/file'
-import {addImage} from '../../utils'
+import type { ActionComponentProps } from '../types'
 
 type Props = {
-    attachments?: File[]
-} & ActionInjectedProps
+    onAddImage: (string, maxSize?: number) => void,
+    getMaxAttachmentSize: () => number
+} & ActionComponentProps
 
 type State = {
     url: string,
     mode: string,
-    maxSize: number,
-    isOpen: boolean
+    maxSize: number
 }
 
 export default class AddImage extends React.Component<Props, State> {
-    state: State = {
+    popover: ?ElementRef<typeof Popover>
+
+    state = {
         url: '',
         mode: 'upload',
-        maxSize: 0,
-        isOpen: false
+        maxSize: 0
     }
 
     _updateMaxSize = () => {
-        const editorState = this.props.getEditorState()
-        const maxSize =  getMaxAttachmentSize(editorState, this.props.attachments)
+        const maxSize = this.props.getMaxAttachmentSize()
         this.setState({maxSize})
     }
 
@@ -40,29 +38,21 @@ export default class AddImage extends React.Component<Props, State> {
 
     _handleImage = (files: Array<{ url: string, size: number}>) => {
         files.forEach((file) => {
-            this._addImage(file.url, file.size)
+            this.props.onAddImage(file.url, file.size)
         })
-        this.setState({ isOpen: false })
+        this.popover && this.popover._close()
     }
 
-    _addImage = (url: string, size: number = 0) => {
-        const editorState = this.props.getEditorState()
-        const newEditorState = addImage(editorState, url, size)
-        this.props.setEditorState(newEditorState)
-    }
-
-    _submit = () => {
+    _addImage = () => {
         const url = this.state.url
 
         if (!url) {
             return
         }
 
-        this._addImage(url)
-        this.setState({
-            url: '',
-            isOpen: false
-        })
+        this.props.onAddImage(url)
+        this.popover && this.popover._close()
+        this.setState({url: ''})
     }
 
     _onKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
@@ -70,28 +60,24 @@ export default class AddImage extends React.Component<Props, State> {
             e.preventDefault()
 
             if (this.state.url) {
-                this._submit()
+                this._addImage()
             }
         }
 
         if (e.key === 'Escape') {
             e.preventDefault()
-            this.setState({ isOpen: false })
+            this.popover && this.popover._close()
         }
     }
-
-    _onPopoverOpen = () => this.setState({ isOpen: true })
-
-    _onPopoverClose = () => this.setState({ isOpen: false })
 
     render() {
         return (
             <Popover
                 icon="insert_photo"
-                name="Insert image"
-                isOpen={this.state.isOpen}
-                onOpen={this._onPopoverOpen}
-                onClose={this._onPopoverClose}
+                name={this.props.name}
+                ref={(popover) => {
+                    this.popover = popover
+                }}
             >
                 <div className={css.menu}>
                     <span
@@ -128,7 +114,7 @@ export default class AddImage extends React.Component<Props, State> {
                                     ref="input"
                                     type="text"
                                     placeholder="External image url..."
-                                    onChange={(e) => this.setState({url: e.target.value})}
+                                    onChange={e => this.setState({url: e.target.value})}
                                     value={this.state.url}
                                     onKeyDown={this._onKeyDown}
                                     autoFocus
@@ -138,7 +124,7 @@ export default class AddImage extends React.Component<Props, State> {
                                     color="primary"
                                     className="ml-2"
                                     disabled={!this.state.url}
-                                    onClick={this._submit}
+                                    onClick={this._addImage}
                                 >
                                     Insert
                                 </Button>

@@ -55,7 +55,6 @@ class ViewTable extends React.Component<Props> {
     componentDidMount() {
         const suggestedViewId = this.props.getViewIdToDisplay(this.props.config.get('type'), this.props.urlViewId)
 
-        //$FlowFixMe
         this.props.setViewActive(this.props.getView(suggestedViewId))
         this.props.fetchPage(this.props.currentPage)
     }
@@ -96,21 +95,18 @@ class ViewTable extends React.Component<Props> {
 
         // leaving search mode
         if (this.props.isSearch && !nextProps.isSearch) {
-            //$FlowFixMe
             this.props.setViewActive(this.props.getView(nextSuggestedViewId))
             return this.props.fetchPage(1)
         }
 
         // leaving "add new" mode
         if (!this.props.isUpdate && nextProps.isUpdate) {
-            //$FlowFixMe
             this.props.setViewActive(this.props.getView(nextSuggestedViewId))
             return this.props.fetchPage(1)
         }
 
         // suggested view to display (mostly because url changed) has changed OR there is no active view
         if (currentSuggestedViewId !== nextSuggestedViewId || !nextProps.hasActiveView) {
-            //$FlowFixMe
             this.props.setViewActive(this.props.getView(nextSuggestedViewId))
             return this.props.fetchPage(1)
         }

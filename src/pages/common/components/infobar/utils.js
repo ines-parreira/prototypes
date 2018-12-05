@@ -532,12 +532,7 @@ export function guessFieldValueFromRawData(data, type) {
             case 'email': {
                 if (utils.isEmail(data)) {
                     fieldValue = (
-                        <a
-                            href={`mailto:${data}`}
-                            target="_blank"
-                        >
-                            {data}
-                        </a>
+                        <a href={`mailto:${data}`} target="_blank">{data}</a>
                     )
                 }
                 break

@@ -52,6 +52,10 @@ type richAreaType = {
     focusEditor: () => void,
     _setEditorState: (T: EditorState) => void
 }
+type toolbarPropsType = {
+    buttons: Array<Node>,
+    displayedActions?: Array<string>
+}
 type filesType = Array<attachmentType>
 type validationRegexType = string | RegExp
 
@@ -276,59 +280,57 @@ export class TicketReplyEditor extends React.Component<Props, State> {
 
         const attachmentLoading = newMessage.getIn(['_internal', 'loading', 'addAttachment'])
 
-        let displayedActions
-        let buttons: Node[] = [
-            <div
-                className="attachment"
-                key="attachments"
-            >
-                <label
-                    htmlFor="attachments-input"
-                    className="m-0"
-                    title="Add attachment"
-                >
-                    {
-                        attachmentLoading
-                            ? (
-                                <i className="icon material-icons md-spin">
-                                    refresh
-                                </i>
-                            ) : (
-                                <i className="material-icons">
-                                    {newMessageAcceptsOnlyImages ? 'insert_photo' : 'attach_file'}
-                                </i>
-                            )
-                    }
-                </label>
-                <input
-                    id="attachments-input"
-                    type="file"
-                    multiple
-                    onChange={(event) => {
-                        return this._handleFiles(event.target.files, attachmentInputProps.accept)
-                    }}
-                    onClick={(event) => {
-                        // empty input on click
-                        return event.target.value = null
-                    }}
-                    {...attachmentInputProps}
-                />
-            </div>
-        ]
-
+        const toolbarProps: toolbarPropsType = {
+            buttons: [
+                <div className="attachment" key="attachments">
+                    <label
+                        htmlFor="attachments-input"
+                        className="m-0"
+                        title="Add attachment"
+                    >
+                        {
+                            attachmentLoading
+                                ? (
+                                    <i className="icon material-icons md-spin">
+                                        refresh
+                                    </i>
+                                ) : (
+                                    <i className="material-icons">
+                                        {newMessageAcceptsOnlyImages ? 'insert_photo' : 'attach_file'}
+                                    </i>
+                                )
+                        }
+                    </label>
+                    <input
+                        id="attachments-input"
+                        type="file"
+                        multiple
+                        onChange={(event) => {
+                            return this._handleFiles(event.target.files, attachmentInputProps.accept)
+                        }}
+                        onClick={(event) => {
+                            // empty input on click
+                            return event.target.value = null
+                        }}
+                        {...attachmentInputProps}
+                    />
+                </div>
+            ],
+            attachments
+        }
 
         const cantWriteTextBecauseOfAttachments =
             TEXT_OR_ATTACHMENT_SOURCE_TYPES.includes(this.props.newMessage.getIn(['newMessage', 'source', 'type']))
             && attachments.size >= 1
 
         if (!isNewMessageRichType) {
-            displayedActions = ['EMOJI']
+            toolbarProps.displayedActions = ['emoji']
         }
 
         // If we can't write text nor add more attachments, we don't need to display any toolbar button
         if (cantWriteTextBecauseOfAttachments) {
-            displayedActions = []
-            buttons = []
+            toolbarProps.displayedActions = []
+            toolbarProps.buttons = []
         }
 
         const alertText = 'When using Facebook, you can either send a text message, or an attachment, ' +
@@ -360,6 +362,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
                         newMessage.getIn(['_internal', 'loading', 'submitMessage']) ||
                         cantWriteTextBecauseOfAttachments
                     }
+                    toolbarProps={toolbarProps}
                     mentionProps={mentionProps}
                     alertMode={isAlert && 'warning'}
                     alertText={alertText}
@@ -367,8 +370,6 @@ export class TicketReplyEditor extends React.Component<Props, State> {
                     notify={notify}
                     canInsertInlineImages={canInsertInlineImages}
                     attachments={attachments}
-                    buttons={buttons}
-                    displayedActions={displayedActions}
                     canDropFiles
                     signature
                     spellCheck

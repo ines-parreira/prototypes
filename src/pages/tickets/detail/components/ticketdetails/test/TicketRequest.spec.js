@@ -11,12 +11,7 @@ describe('TicketRequest component', () => {
             {id: 123, name: 'some name'},
             {id: 234, name: 'other name'},
         ])
-        expect(shallow(
-            <TicketRequest
-                request={requests.first()}
-                requests={requests}
-            />
-        )).toMatchSnapshot()
+        expect(shallow(<TicketRequest request={requests.first()} requests={requests}/>)).toMatchSnapshot()
         window.DEVELOPMENT = false
     })
     it('should display empty dropdown', () => {

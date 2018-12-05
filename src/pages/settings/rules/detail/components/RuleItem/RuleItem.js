@@ -324,10 +324,7 @@ export default class RuleItem extends React.Component<Props, State> {
 
                     <div className={css.row}>
                         <div className="full-width">
-                            <BootstrapForm
-                                id="rule-form"
-                                onSubmit={this._handleSubmit}
-                            >
+                            <BootstrapForm id="rule-form" onSubmit={this._handleSubmit}>
                                 <FormGroup className="mb-1">
                                     <div className={css['when-container']}>
                                         <div className={css['when-btn']}>

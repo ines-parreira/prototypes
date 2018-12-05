@@ -100,7 +100,6 @@ export default class RulesView extends React.Component<Props, State> {
 
     _toggleRuleOpening = (id: number) => {
         this.setState({
-            //$FlowFixMe
             openedRules: _xor(this.state.openedRules, [id])
         })
     }

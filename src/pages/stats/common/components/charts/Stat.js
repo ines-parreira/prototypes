@@ -100,10 +100,7 @@ export default class Stat extends Component<Props, State> {
             <div>
                 {this.props.label ?
                     <div className="mb-3 d-flex justify-content-between align-items-baseline">
-                        <h5
-                            className="mb-0 d-flex"
-                            style={{fontSize: '17px'}}
-                        >
+                        <h5 className="mb-0 d-flex" style={{fontSize: '17px'}}>
                             {label}
                             {helpText ?
                                 <span>

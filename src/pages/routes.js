@@ -381,10 +381,6 @@ export default (
                 }}
             />
         </Route>
-        <Route
-            path="*"
-            component={NoMatch}
-            containerPadding
-        />
+        <Route path="*" component={NoMatch} containerPadding/>
     </Route>
 )
