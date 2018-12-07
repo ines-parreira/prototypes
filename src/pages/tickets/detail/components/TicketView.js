@@ -93,8 +93,14 @@ export default class TicketView extends React.Component {
         const styles = window.getComputedStyle(this.refs.ticketContent)
         const maxScrollTop = this.refs.ticketContent.scrollHeight - this.refs.ticketContent.clientHeight
         this.refs.ticketContent.scrollTop = maxScrollTop - parseInt(styles.paddingBottom)
-        // focus ticket content so we can keyboard scroll
-        this.refs.ticketContent.focus()
+
+        // don't steal focus if another component manages it.
+        // (eg. new ticket focuses the editable title).
+        // body is focused by default.
+        if (document.activeElement === document.body) {
+            // focus ticket content so we can keyboard scroll
+            this.refs.ticketContent.focus()
+        }
     }
 
     componentWillReceiveProps() {

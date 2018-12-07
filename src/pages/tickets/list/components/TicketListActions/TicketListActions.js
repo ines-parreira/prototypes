@@ -80,7 +80,10 @@ class TicketListActions extends React.Component<Props, State> {
     _bindKeys = () => {
         shortcutManager.bind('TicketListActions', {
             CREATE_TICKET: {
-                action: () => browserHistory.push('/app/ticket/new')
+                action: (e) => {
+                    e.preventDefault()
+                    browserHistory.push('/app/ticket/new')
+                }
             },
             OPEN_TICKET: {
                 action: () => this._bulkUpdate('status', 'open')
