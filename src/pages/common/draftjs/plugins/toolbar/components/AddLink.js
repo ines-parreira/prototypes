@@ -141,7 +141,7 @@ export default class AddLink extends React.Component<Props> {
                         placeholder="Ex. Helpcenter Article"
                         onChange={this.props.onTextChange}
                         value={this.props.text}
-                        autoFocus
+                        autoFocus={!this.props.text}
                     />
                     <InputField
                         className={css.field}
@@ -149,6 +149,7 @@ export default class AddLink extends React.Component<Props> {
                         placeholder="https://help.domain.com/article"
                         onChange={this.props.onUrlChange}
                         value={this.props.url}
+                        autoFocus={this.props.text}
                     />
                     <Button
                         color="primary"
