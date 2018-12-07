@@ -279,4 +279,5 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
+//$FlowFixMe
 export default connect(null, mapDispatchToProps)(TicketMessageError)

@@ -221,9 +221,26 @@ export default class Action extends React.Component<Props> {
 
         if (config.compact) {
             return [
-                <span key="children" className="compact-action">{children}</span>,
-                config.note ? <div className="rule-note" key="note">{config.note}</div> : null,
-                <Errors key="errors" inline>{errors}</Errors>,
+                <span
+                    key="children"
+                    className="compact-action"
+                >
+                    {children}
+                </span>,
+                config.note ? (
+                    <div
+                        className="rule-note"
+                        key="note"
+                    >
+                        {config.note}
+                    </div>
+                ) : null,
+                <Errors
+                    key="errors"
+                    inline
+                >
+                    {errors}
+                </Errors>,
             ]
         }
 

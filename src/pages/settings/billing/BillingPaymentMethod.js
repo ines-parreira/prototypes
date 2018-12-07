@@ -61,7 +61,10 @@ export class BillingPaymentMethod extends Component {
                 <CardBody>
                     <Row>
                         <Col sm={4}>{creditCardLabel}</Col>
-                        <Col sm={{size: 4, offset: 4}} className="text-right">
+                        <Col
+                            sm={{size: 4, offset: 4}}
+                            className="text-right"
+                        >
                             {
                                 creditCard.isEmpty() ? (
                                     <div

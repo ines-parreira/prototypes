@@ -74,7 +74,10 @@ export default class List extends React.Component {
                     <Link to="/app/settings/audit/">Audit logs</Link>
                 </SecondaryNavbar>
 
-                <Container fluid className="page-container">
+                <Container
+                    fluid
+                    className="page-container"
+                >
                     <p>
                         Manage team members for your Gorgias account. Team members can view tickets and respond to them.
                     </p>

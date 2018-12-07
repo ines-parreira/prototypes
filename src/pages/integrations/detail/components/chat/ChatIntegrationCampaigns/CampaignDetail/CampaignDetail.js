@@ -305,7 +305,12 @@ export class CampaignDetail extends React.Component {
         const isUpdate = id !== 'new'
 
         const authorOptions = agents.map((agent) => {
-            const label = <AgentLabel name={agent.get('name')} maxWidth="100" />
+            const label = (
+                <AgentLabel
+                    name={agent.get('name')}
+                    maxWidth="100"
+                />
+            )
 
             return {
                 value: agent.get('email'),
@@ -348,7 +353,10 @@ export class CampaignDetail extends React.Component {
 
                 <RealtimeMessagingIntegrationNavigation integration={integration}/>
 
-                <Container fluid className="page-container">
+                <Container
+                    fluid
+                    className="page-container"
+                >
                     <Row>
                         <Col>
                             <Form onSubmit={this._handleSubmit}>
@@ -453,7 +461,7 @@ export class CampaignDetail extends React.Component {
                                                             .set('text', content.getPlainText())
                                                     })
                                                 }}
-                                                toolbarProps={{displayedActions: ['bold', 'italic', 'underline', 'image', 'emoji']}}
+                                                displayedActions={['BOLD', 'ITALIC', 'UNDERLINE', 'IMAGE', 'EMOJI']}
                                                 placeholder={'Write your message'}
                                                 required
                                             />

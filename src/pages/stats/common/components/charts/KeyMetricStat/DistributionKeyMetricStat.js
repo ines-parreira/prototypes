@@ -23,7 +23,10 @@ export default class DistributionKeyMetricStat extends Component<Props> {
         return <div>
             {
                 _rangeRight(minValue, maxValue + 1).map((index) => (
-                    <div className={classnames('mb-1', 'row')} key={index}>
+                    <div
+                        className={classnames('mb-1', 'row')}
+                        key={index}
+                    >
                         <div className='col-md-6 ta-left'>
                             <DistributionVariantStat
                                 minValue={minValue}

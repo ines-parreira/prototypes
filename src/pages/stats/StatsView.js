@@ -133,7 +133,10 @@ class StatsView extends React.Component<Props> {
 
         return (
             <div className="stats full-width">
-                <PageHeader title={config.get('name')} className="mb-0">
+                <PageHeader
+                    title={config.get('name')}
+                    className="mb-0"
+                >
                     <div className="d-flex flex-wrap float-right">
                         {config.get('filters', []).includes('agents') && (
                             <SearchableSelectField
@@ -170,7 +173,10 @@ class StatsView extends React.Component<Props> {
                     </div>
                 </PageHeader>
 
-                <Container fluid style={{padding: 0}}>
+                <Container
+                    fluid
+                    style={{padding: 0}}
+                >
                     { missingSatisfactionSurvey
                         ? <SatisfactionSurveyUpgrade />
                         : config.get('stats').map((statName, idx) => {
@@ -186,7 +192,10 @@ class StatsView extends React.Component<Props> {
                             }
 
                             return (
-                                <div style={{padding}} key={idx}>
+                                <div
+                                    style={{padding}}
+                                    key={idx}
+                                >
                                     <Stat
                                         isLoading={isLoading}
                                         name={statName}

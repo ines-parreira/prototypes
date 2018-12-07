@@ -131,7 +131,10 @@ class BeforeContent extends React.Component { // eslint-disable-line
                 {
                     Object.keys(chargeSubscriptions).map((k) => {
                         return (
-                            <div className="card" key={k}>
+                            <div
+                                className="card"
+                                key={k}
+                            >
                                 <CardBody className="header clearfix">
                                     <a target="_blank">
                                         <span>🔄 Subscription #{k}</span>

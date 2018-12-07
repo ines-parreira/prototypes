@@ -143,7 +143,10 @@ export class ManageRequests extends React.Component<Props, State> {
                     </Link>
                 </PageHeader>
 
-                <Container fluid className="page-container">
+                <Container
+                    fluid
+                    className="page-container"
+                >
                     <div className="manage-requests-description">
                         <p>
                             Requests are distinct categories of customer messages that can be used to automatically classify
@@ -163,7 +166,10 @@ export class ManageRequests extends React.Component<Props, State> {
                                 className="cell-wrapper cell-short clickable"
                                 onClick={this._toggleSelectAll}
                             >
-                                <input type="checkbox" checked={selectedAll}/>
+                                <input
+                                    type="checkbox"
+                                    checked={selectedAll}
+                                />
                             </td>
                             <td colSpan={2}>
                                 <div className="cell-wrapper">Requests</div>
@@ -177,7 +183,10 @@ export class ManageRequests extends React.Component<Props, State> {
                                     className="cell-wrapper cell-short clickable"
                                     onClick={() => this._toggleSelectItem(r.get('id'))}
                                 >
-                                    <input type="checkbox" checked={selectedItems.includes(r.get('id'))}/>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedItems.includes(r.get('id'))}
+                                    />
                                 </td>
                                 <td>
                                     <div className="cell-wrapper">

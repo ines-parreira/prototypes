@@ -56,22 +56,43 @@ describe('SelectField', () => {
     })
 
     it('should use custom props', () => {
-        const component = mount(<SelectField {...minProps} {...props} />)
+        const component = mount(
+            <SelectField
+                {...minProps}
+                {...props}
+            />
+        )
         expect(component.props()).toMatchSnapshot()
     })
 
     it('should init state with custom props', () => {
-        const component = mount(<SelectField {...minProps} {...props} />)
+        const component = mount(
+            <SelectField
+                {...minProps}
+                {...props}
+            />
+        )
         expect(component.state()).toMatchSnapshot()
     })
 
     it('should render a select input with custom props', () => {
-        const component = shallow(<SelectField {...minProps} {...props} />)
+        const component = shallow(
+            <SelectField
+                {...minProps}
+                {...props}
+            />
+        )
         expect(component).toMatchSnapshot()
     })
 
     it('should set the minWidth of the input according to the length of the longest label', () => {
-        const component = shallow(<SelectField {...minProps} {...props} fixedWidth />)
+        const component = shallow(
+            <SelectField
+                {...minProps}
+                {...props}
+                fixedWidth
+            />
+        )
         expect(component).toMatchSnapshot()
     })
 

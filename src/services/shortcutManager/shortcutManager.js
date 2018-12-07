@@ -11,6 +11,7 @@ import keymap from '../../config/shortcuts'
 import {getModifier, isButton, closest} from './utils'
 import {isEditable} from '../common/utils'
 
+//$FlowFixMe
 const mousetrap = new Mousetrap()
 
 type keyboardActionType = {

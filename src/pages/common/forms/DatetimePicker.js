@@ -19,10 +19,12 @@ type State = {
 export default class DatetimePicker extends React.Component<Props,State> {
     constructor(props: Props) {
         super(props)
+        //$FlowFixMe
         this.state = {datetime: stringToDatetime(props.datetime)}
     }
 
     componentWillReceiveProps(nextProps: Props) {
+        //$FlowFixMe
         this.setState({datetime: stringToDatetime(nextProps.datetime)})
     }
 

@@ -449,7 +449,10 @@ class EmailIntegrationUpdate extends React.Component {
                     </Breadcrumb>
                 )}/>
 
-                <Container fluid className="page-container">
+                <Container
+                    fluid
+                    className="page-container"
+                >
                     {integration.get('type') === 'email' && this._renderInstructions()}
 
                     {integration.get('type') === 'gmail' && this._renderImportation()}

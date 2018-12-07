@@ -74,7 +74,10 @@ class ChangePasswordView extends React.Component {
         return (
             <div className="full-width">
                 <PageHeader title="Change password"/>
-                <Container fluid className="page-container">
+                <Container
+                    fluid
+                    className="page-container"
+                >
                     <p>
                         Enter your current password to confirm your identity, then the new password you would like to
                         set instead.

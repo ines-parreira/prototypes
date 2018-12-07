@@ -822,6 +822,7 @@ export const subdomain = (url: string): string => {
  */
 const _valuesDeep = (obj: {}): {} => {
     if (typeof obj === 'object' && !obj.hasOwnProperty('length')) {
+        //$FlowFixMe
         return _flatMapDeep(obj, _valuesDeep)
     }
 
@@ -854,6 +855,7 @@ export const errorToChildren = (incomingError: { response: { data: { error: { da
     return `
         <ul className="m-0">
             ${
+        //$FlowFixMe
         _map(data, (fieldErrors, fieldName) => {
             // $FlowFixMe
             return _valuesDeep(fieldErrors).map((fieldError) => {

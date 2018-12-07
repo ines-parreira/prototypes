@@ -136,6 +136,7 @@ export const getNewMessageRecipients = createImmutableSelector(
             .reduce((result, prop) => {
                 const recipients = getFromSource(prop)
                 recipients.forEach(recipient => {
+                    //$FlowFixMe
                     result = result.push(fromJS(recipient))
                 })
                 return result
@@ -145,6 +146,7 @@ export const getNewMessageRecipients = createImmutableSelector(
 
 export const hasNewMessageRecipients = createSelector(
     [getNewMessageRecipients],
+    //$FlowFixMe
     recipients => !recipients.isEmpty()
 )
 

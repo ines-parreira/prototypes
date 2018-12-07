@@ -180,7 +180,10 @@ class RealtimeMessagingIntegrationInstall extends React.Component<Props, State> 
 
                 <RealtimeMessagingIntegrationNavigation integration={integration}/>
 
-                <Container fluid className="page-container">
+                <Container
+                    fluid
+                    className="page-container"
+                >
                     <Row>
                         <Col md={isChat ? '8' : '6'}>
                             <p>{pageDescription}</p>
@@ -291,7 +294,10 @@ class RealtimeMessagingIntegrationInstall extends React.Component<Props, State> 
 
                                     <div className={css.snippet}>
                                         <Card className="p-0 mb-2">
-                                            <Alert color="info" className="m-0">
+                                            <Alert
+                                                color="info"
+                                                className="m-0"
+                                            >
                                             <pre
                                                 style={{
                                                     display: 'flex',

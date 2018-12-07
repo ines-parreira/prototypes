@@ -176,7 +176,10 @@ export default class Navbar extends React.Component {
                     toggle={this._toggleBottomDropdown}
                     isOpen={this.state.bottomDropdownOpen}
                 >
-                    <DropdownToggle color="transparent" style={{overflow: 'hidden'}}>
+                    <DropdownToggle
+                        color="transparent"
+                        style={{overflow: 'hidden'}}
+                    >
                         <div>
                             <span>
                                 {currentUser.get('name')}
@@ -229,7 +232,12 @@ export default class Navbar extends React.Component {
                             target="_blank"
                             onClick={() => segmentTracker.logEvent(segmentTracker.EVENTS.HELP_CENTER_CLICKED)}
                         >
-                            <i className="material-icons mr-2" title="Helpcenter">help</i>
+                            <i
+                                className="material-icons mr-2"
+                                title="Helpcenter"
+                            >
+                                help
+                            </i>
                             Help center
                         </DropdownItem>
                         <DropdownItem

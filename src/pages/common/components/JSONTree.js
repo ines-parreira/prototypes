@@ -5,13 +5,25 @@ import {Map, List} from 'immutable'
 const switchComponent = (data, root = false, last = false) => {
     if (Map.isMap(data)) {
         if (!!data.size) {
-            return <ObjectComponent data={data} root={root} last={last}/>
+            return (
+                <ObjectComponent
+                    data={data}
+                    root={root}
+                    last={last}
+                />
+            )
         }
 
         return <span className="empty-object">{'{}'}</span>
     } else if (List.isList(data)) {
         if (data.size) {
-            return <ArrayComponent data={data} root={root} last={last}/>
+            return (
+                <ArrayComponent
+                    data={data}
+                    root={root}
+                    last={last}
+                />
+            )
         }
 
         return <span className="empty-array">{'[]'}</span>
@@ -48,7 +60,10 @@ const ObjectComponent = ({data, root = false, last = false}) => {
                     const isArray = childNode.type.name && childNode.type.name === 'ArrayComponent'
 
                     return (
-                        <div key={`${k}-${idx}`} className="field">
+                        <div
+                            key={`${k}-${idx}`}
+                            className="field"
+                        >
                             <span className="string-key">"{k}": </span>
                             {isObject && leftBracket}
                             {isArray && leftArrayBracket}
@@ -86,7 +101,10 @@ const ArrayComponent = ({data, root = false, last = false}) => {
                     const isArray = childNode.type.name && childNode.type.name === 'ArrayComponent'
 
                     return (
-                        <div key={idx} className="field">
+                        <div
+                            key={idx}
+                            className="field"
+                        >
                             {childNode}
                             {idx < data.size - 1 && !isObject && !isArray && ','}
                         </div>

@@ -157,19 +157,28 @@ class CreditCard extends Component {
                 <PageHeader title={(
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <Link className="section" to="/app/settings/billing/">Billing</Link>
+                            <Link
+                                className="section"
+                                to="/app/settings/billing/"
+                            >Billing</Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem>{action} credit card</BreadcrumbItem>
                     </Breadcrumb>
                 )}/>
 
-                <Container fluid className="page-container">
+                <Container
+                    fluid
+                    className="page-container"
+                >
                     <p>Enter the information of the card you'd like to use.</p>
 
                     <Row>
                         {isTrialing && (
                             <Col sm={3}>
-                                <Plan plan={currentPlan} showFooter={false}/>
+                                <Plan
+                                    plan={currentPlan}
+                                    showFooter={false}
+                                />
                             </Col>
                         )}
                         <Col sm={4}>

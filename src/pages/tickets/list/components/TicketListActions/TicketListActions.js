@@ -598,4 +598,5 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
+//$FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(TicketListActions)

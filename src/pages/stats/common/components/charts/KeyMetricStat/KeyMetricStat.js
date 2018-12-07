@@ -34,15 +34,20 @@ export default class KeyMetricStat extends Component<Props> {
     }
 
     _renderDifference = (valueTooltipId: string, metric: Object, tooltipDelta: string) => {
-        return <span id={valueTooltipId} className={css.diff}>
-            {renderDifference(metric.get('delta'), metric.get('delta'), metric.get('more_is_better'))}
-            <Tooltip
-                placement="top"
-                target={valueTooltipId}
+        return (
+            <span
+                id={valueTooltipId}
+                className={css.diff}
             >
-                {tooltipDelta}
-            </Tooltip>
-        </span>
+                {renderDifference(metric.get('delta'), metric.get('delta'), metric.get('more_is_better'))}
+                <Tooltip
+                    placement="top"
+                    target={valueTooltipId}
+                >
+                    {tooltipDelta}
+                </Tooltip>
+            </span>
+        )
     }
 
     _renderValue = (config: Object, metric: Object, valueTooltipId: string, tooltipDelta: string) => {

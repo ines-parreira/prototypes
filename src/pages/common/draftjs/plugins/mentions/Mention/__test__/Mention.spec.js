@@ -10,7 +10,13 @@ describe('Mention', () => {
         const contentState = ContentState.createFromText('')
         const entityContentState = contentState.createEntity('mention', 'SEGMENTED', {mention})
         const entityKey = entityContentState.getLastCreatedEntityKey()
-        const result = render(<Mention contentState={contentState} entityKey={entityKey} theme={Map()}/>)
+        const result = render(
+            <Mention
+                contentState={contentState}
+                entityKey={entityKey}
+                theme={Map()}
+            />
+        )
         expect(result.length).toEqual(1)
     })
 })

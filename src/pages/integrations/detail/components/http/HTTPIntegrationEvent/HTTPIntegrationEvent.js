@@ -82,23 +82,45 @@ export class HTTPIntegrationEvent extends Component<Props, State> {
         }
 
         return (
-            <Container fluid className="page-container">
+            <Container
+                fluid
+                className="page-container"
+            >
                 <Row>
-                    <Col md="12" lg="6" className={`${css.request} mb-4`}>
+                    <Col
+                        md="12"
+                        lg="6"
+                        className={`${css.request} mb-4`}
+                    >
                         <Container fluid>
                             <h2 className='mb-4'>Request</h2>
-                            <HTTPItem name="Method" value={request.get('method')}/>
-                            <HTTPItem name="URL" value={request.get('url')}/>
+                            <HTTPItem
+                                name="Method"
+                                value={request.get('method')}
+                            />
+                            <HTTPItem
+                                name="URL"
+                                value={request.get('url')}
+                            />
                             <HTTPItem name="Sent">
                                 <DatetimeLabel dateTime={event.get('created_datetime')}/>
                             </HTTPItem>
-                            <HTTPItem name="Headers" value={requestHeaders}>
+                            <HTTPItem
+                                name="Headers"
+                                value={requestHeaders}
+                            >
                                 <HTTPParams params={requestHeaders}/>
                             </HTTPItem>
-                            <HTTPItem name="Params" value={requestParams}>
+                            <HTTPItem
+                                name="Params"
+                                value={requestParams}
+                            >
                                 <HTTPParams params={requestParams}/>
                             </HTTPItem>
-                            <HTTPItem name="Body" value={requestFormBody || requestJSONBody}>
+                            <HTTPItem
+                                name="Body"
+                                value={requestFormBody || requestJSONBody}
+                            >
                                 {requestFormBody ? <HTTPParams params={requestFormBody}/> : null}
                                 {requestJSONBody ?
                                     <InputField
@@ -113,7 +135,11 @@ export class HTTPIntegrationEvent extends Component<Props, State> {
                             </HTTPItem>
                         </Container>
                     </Col>
-                    <Col md="12" lg="6" className={css.response}>
+                    <Col
+                        md="12"
+                        lg="6"
+                        className={css.response}
+                    >
                         <Container fluid>
                             <h2 className='mb-4'>Response</h2>
                             <HTTPItem name="Status code">
@@ -122,7 +148,10 @@ export class HTTPIntegrationEvent extends Component<Props, State> {
                             <HTTPItem name="Headers">
                                 <HTTPParams params={responseHeaders}/>
                             </HTTPItem>
-                            <HTTPItem name="Body" value={responseBody}>
+                            <HTTPItem
+                                name="Body"
+                                value={responseBody}
+                            >
                                 {responseBody ?
                                     <InputField
                                         type="textarea"

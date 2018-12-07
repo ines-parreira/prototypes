@@ -77,7 +77,13 @@ export default class DonutKeyMetricStat extends Component<Props> {
                                   this.props.width, this.props.innerRadius, this.props.outerRadius,
                                   fillType === 'empty', single)
 
-        return <path key={index} className={css[`path-${fillType}`]} d={d} />
+        return (
+            <path
+                key={index}
+                className={css[`path-${fillType}`]}
+                d={d}
+            />
+        )
     }
 
     _getPathData = (data: number, total: number, startAngle: number, width: number,

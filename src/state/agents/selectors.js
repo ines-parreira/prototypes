@@ -76,6 +76,7 @@ export const getAgentsIdsOnTicket = (ticketId: ticketIdType) => createSelector(
 // Agents on a specific ticket
 export const getAgentsOnTicket = (ticketId: ticketIdType) => createSelector(
     [getAgentsIdsOnTicket(ticketId), makeGetAgent],
+    //$FlowFixMe
     (agentsIds: List<Map<*, *>>, getUserObject: (Map<*, *>) => Map<*, *>) => {
         if (!ticketId) {
             return fromJS([])
@@ -126,6 +127,7 @@ export const getAgentsIdsTypingStatusOnTicket = (ticketId: ticketIdType) => crea
 // Agents typing on a specific ticket
 export const getAgentsTypingOnTicket = (ticketId: ticketIdType) => createSelector(
     [getAgentsIdsTypingStatusOnTicket(ticketId), makeGetAgent],
+    //$FlowFixMe
     (agentsIds: List<Map<*, *>>, getUserObject: (Map<*, *>) => Map<*, *>) => {
         if (!ticketId) {
             return fromJS([])

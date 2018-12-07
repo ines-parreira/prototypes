@@ -1,4 +1,4 @@
-// @flow
+//@flow
 import {toImmutable, isImmutable} from '../../utils'
 import _trim from 'lodash/trim'
 import _compact from 'lodash/compact'
@@ -20,5 +20,5 @@ export const eventTypes = (rule: ruleType): Array<string> => {
 
     const types = ruleMap.get('event_types') || ''
 
-    return _compact(types.split(',').map(_trim))
+    return _compact(types.split(',').map((t) => _trim(t)))
 }

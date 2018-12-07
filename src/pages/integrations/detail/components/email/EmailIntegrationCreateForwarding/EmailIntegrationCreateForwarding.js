@@ -196,7 +196,10 @@ export class EmailIntegrationCreateForwarding extends React.Component<Props, Sta
                     </Breadcrumb>
                 )}/>
 
-                <Container fluid className="page-container">
+                <Container
+                    fluid
+                    className="page-container"
+                >
                     <h1>
                         Let's setup email forwarding
                     </h1>

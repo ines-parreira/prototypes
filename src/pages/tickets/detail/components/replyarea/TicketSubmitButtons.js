@@ -100,14 +100,14 @@ export default class TicketSubmitButtons extends React.Component {
                     >
                         Send
                     </ConfirmButton>
-                    <Tooltip
-                        placement="top"
-                        target="submit-button"
-                        disabled={disabled}
-                    >
-                        {shortcutManager.getActionKeys(keymap.TicketDetailContainer.actions.SUBMIT_TICKET)}
-                    </Tooltip>
-
+                    {!disabled && (
+                        <Tooltip
+                            placement="top"
+                            target="submit-button"
+                        >
+                            {shortcutManager.getActionKeys(keymap.TicketDetailContainer.actions.SUBMIT_TICKET)}
+                        </Tooltip>
+                    )}
                     <ConfirmButton
                         id="submit-and-close-button"
                         type="submit"
@@ -121,15 +121,15 @@ export default class TicketSubmitButtons extends React.Component {
                     >
                         Send &amp; Close
                     </ConfirmButton>
-                    <Tooltip
-                        placement="top"
-                        target="submit-and-close-button"
-                        disabled={disabled}
-                    >
-                        {shortcutManager.getActionKeys(keymap.TicketDetailContainer.actions.SUBMIT_CLOSE_TICKET)}
-                    </Tooltip>
+                    {!disabled && (
+                        <Tooltip
+                            placement="top"
+                            target="submit-and-close-button"
+                        >
+                            {shortcutManager.getActionKeys(keymap.TicketDetailContainer.actions.SUBMIT_CLOSE_TICKET)}
+                        </Tooltip>
+                    )}
                 </div>
-
                 {
                     !isHidingTips && (
                         <small className="text-faded d-none d-md-inline-block">
