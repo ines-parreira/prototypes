@@ -3,15 +3,17 @@ import React from 'react'
 import { ContentBlock, ContentState } from 'draft-js'
 import LinkPopover from '../components/LinkPopover'
 import { removeLink } from '../../utils'
-import type { StrategyCallback, ComponentProps } from './types'
+import type {
+    DecoratorStrategyCallback, DecoratorComponentProps, Decorator
+} from '../../types'
 
 type Config = {
     isActive: () => boolean,
     onLinkEdit: (entityKey: string, text: string, url: string) => void
 }
 
-export default (config: Config) => ({
-    strategy: (contentBlock: ContentBlock, callback: StrategyCallback, contentState: ContentState) => {
+export default (config: Config): Decorator => ({
+    strategy: (contentBlock: ContentBlock, callback: DecoratorStrategyCallback, contentState: ContentState) => {
         contentBlock.findEntityRanges(
             (character) => {
                 const entityKey = character.getEntity()
@@ -19,7 +21,7 @@ export default (config: Config) => ({
             }, callback
         )
     },
-    component: (props: ComponentProps) => {
+    component: (props: DecoratorComponentProps) => {
         const { contentState, entityKey, children, decoratedText, getEditorState, setEditorState } = props
         const { url } = contentState.getEntity(entityKey).getData()
         return (

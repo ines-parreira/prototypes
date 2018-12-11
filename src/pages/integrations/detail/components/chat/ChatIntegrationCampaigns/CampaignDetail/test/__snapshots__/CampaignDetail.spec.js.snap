@@ -471,11 +471,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                 value="john@gorgias.io"
               />
             </div>
-            <RichField
-              allowExternalChanges={false}
-              attachFiles={[Function]}
-              canDropFiles={false}
-              canInsertInlineImages={true}
+            <Wrapper
               displayedActions={
                 Array [
                   "BOLD",
@@ -485,12 +481,10 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                   "EMOJI",
                 ]
               }
-              notify={[Function]}
               onChange={[Function]}
               placeholder="Write your message"
               required={true}
               rows="8"
-              signature={false}
               type="text"
               value={
                 Object {
@@ -786,11 +780,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                 value="john@gorgias.io"
               />
             </div>
-            <RichField
-              allowExternalChanges={false}
-              attachFiles={[Function]}
-              canDropFiles={false}
-              canInsertInlineImages={true}
+            <Wrapper
               displayedActions={
                 Array [
                   "BOLD",
@@ -800,12 +790,10 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                   "EMOJI",
                 ]
               }
-              notify={[Function]}
               onChange={[Function]}
               placeholder="Write your message"
               required={true}
               rows="8"
-              signature={false}
               type="text"
               value={
                 Object {

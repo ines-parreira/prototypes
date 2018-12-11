@@ -118,7 +118,7 @@ export default class SetResponseTextAction extends React.Component {
                     {this._renderInsertVariable()}
                 </div>
                 <RichField
-                    ref={(richArea) => {
+                    getRef={(richArea) => {
                         this.richArea = richArea
                     }}
                     value={{

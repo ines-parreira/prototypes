@@ -4,17 +4,30 @@ import _noop from 'lodash/noop'
 import {EditorState, ContentState} from 'draft-js'
 import {convertToHTML} from 'draft-convert'
 
-import RichField from '../RichField'
+import {RichField} from '../RichField'
+import createToolbarPlugin from '../../../draftjs/plugins/toolbar'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
 
 describe('RichField', () => {
+    const defaultProps = {
+        createToolbarPlugin,
+        onChange: _noop,
+        linkIsOpen: false,
+        linkText: '',
+        linkUrl: '',
+        onLinkUrlChange: _noop,
+        onLinkTextChange: _noop,
+        onLinkOpen: _noop,
+        onLinkClose: _noop
+    }
+
     it('should render a basic input', () => {
         const component = shallow(
             <RichField
+                {...defaultProps}
                 value={{text: 'text', html: 'html'}}
-                onChange={_noop}
             />
         )
         expect(component).toMatchSnapshot()
@@ -23,8 +36,8 @@ describe('RichField', () => {
     it('display alert', () => {
         const component = shallow(
             <RichField
+                {...defaultProps}
                 value={{text: 'text', html: 'html'}}
-                onChange={_noop}
                 alertMode="warning"
                 alertText="alert"
             />
@@ -35,10 +48,10 @@ describe('RichField', () => {
     it('should render a MentionSuggestions component to the DOM if in internal-note mode', () => {
         const component = shallow(
             <RichField
+                {...defaultProps}
                 value={{text: 'text', html: 'html'}}
-                onChange={_noop}
                 mentionProps={{canAddMention: true}}
-                />
+            />
         )
         expect(component).toMatchSnapshot()
     })
@@ -46,9 +59,9 @@ describe('RichField', () => {
     it('should render immutable variable', () => {
         const component = mount(
             <RichField
+                {...defaultProps}
                 value={{text: 'text {{current_user.name}}', html: 'html {{current_user.name}}'}}
-                onChange={_noop}
-                />
+            />
         )
         expect(component).toMatchSnapshot()
     })
@@ -56,9 +69,9 @@ describe('RichField', () => {
     it('should render mutable variable', () => {
         const component = mount(
             <RichField
+                {...defaultProps}
                 value={{text: 'text', html: 'html'}}
-                onChange={_noop}
-                />
+            />
         )
 
         // simulate typed text
@@ -71,9 +84,9 @@ describe('RichField', () => {
     it('should keep existing content and newlines when pasting text', () => {
         const component = mount(
             <RichField
+                {...defaultProps}
                 value={{text: 'text', html: 'html'}}
-                onChange={_noop}
-                />
+            />
         )
         const text = 'a\n\nb\n\nc'
         const html = '<div>a<br><br>b<br><br>c</div>'
@@ -90,10 +103,10 @@ describe('RichField', () => {
     it('should not handle html when pasting draft-js-specific content', () => {
         const component = mount(
             <RichField
+                {...defaultProps}
                 editorKey="editor"
                 value={{text: 'text', html: 'html'}}
-                onChange={_noop}
-                />
+            />
         )
         const text = 'a\n\nb\n\nc'
         // html copied from draft-js contains the data-editor=editorKey attribute

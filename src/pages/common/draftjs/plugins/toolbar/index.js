@@ -7,6 +7,7 @@ import Image from './components/Image'
 import type { PluginMethods } from '../types'
 import { getSelectedEntityKey, getSelectedText, removeLink } from '../utils'
 import type { ActionName } from './types'
+import type {Node} from 'react'
 
 // documentation:
 // https://github.com/draft-js-plugins/draft-js-plugins/blob/master/HOW_TO_CREATE_A_PLUGIN.md
@@ -22,9 +23,7 @@ export type Config = {
 export default (config: Config) => {
     const isLinkDisplayed = () => Toolbar.isDisplayedAction('LINK', config.getDisplayedActions())
 
-    return {
-        Toolbar: Toolbar,
-
+    return ({
         decorators: [
             foundUrl(),
             link({
@@ -83,5 +82,5 @@ export default (config: Config) => {
 
             return 'not-handled'
         }
-    }
+    })
 }

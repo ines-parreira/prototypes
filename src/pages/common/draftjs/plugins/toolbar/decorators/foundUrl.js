@@ -1,12 +1,14 @@
 import * as React from 'react'
 import {ContentBlock, ContentState} from 'draft-js'
-import type {StrategyCallback, ComponentProps} from './types'
+import type {
+    DecoratorStrategyCallback, DecoratorComponentProps, Decorator
+} from '../../types'
 import {linkify} from '../../../../../../utils/editor'
 import LinkPopover from '../components/LinkPopover'
 
 
-export default () => ({
-    strategy: (contentBlock: ContentBlock, callback: StrategyCallback, contentState: ContentState) => {
+export default (): Decorator => ({
+    strategy: (contentBlock: ContentBlock, callback: DecoratorStrategyCallback, contentState: ContentState) => {
         // BUG double-closing curly braces, brackets, etc. break linkify-it detection,
         // because they're not valid URL characters.
         // https://github.com/markdown-it/linkify-it/issues/52
@@ -36,7 +38,7 @@ export default () => ({
             callback(link.index, link.lastIndex)
         })
     },
-    component: (props: ComponentProps) => {
+    component: (props: DecoratorComponentProps) => {
         const { decoratedText, children, offsetKey } = props
         const links = linkify.match(decoratedText)
         const url = links && links[0] ? links[0].url : ''

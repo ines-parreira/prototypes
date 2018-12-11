@@ -16,7 +16,7 @@ import createConnectedLinksPlugin from '../../draftjs/plugins/connectedLinks'
 import createDndUploadPlugin from '../../draftjs/plugins/dndUpload'
 import createMentionPlugin, { suggestionsFilter } from '../../draftjs/plugins/mentions'
 import createPasteImagePlugin from '../../draftjs/plugins/pasteImage'
-import createToolbarPlugin from '../../draftjs/plugins/toolbar'
+import Toolbar from '../../draftjs/plugins/toolbar/Toolbar'
 import createVariablesPlugin from '../../draftjs/plugins/variables'
 import { attachEntitiesToVariables } from '../../draftjs/plugins/variables/utils'
 import InputField from '../InputField'
@@ -24,6 +24,7 @@ import Signature from './Signature'
 import type {List} from 'immutable'
 import type { ActionName } from '../../draftjs/plugins/toolbar/types'
 import { AddLink, AddImage } from '../../draftjs/plugins/toolbar/components'
+import provideToolbarPlugin, { type InjectedProps as ToolbarPluginProps } from './provideToolbarPlugin'
 
 type suggestionsType = List<*>
 type canAddMentionType = boolean
@@ -44,21 +45,17 @@ type Props = {
     buttons?: Node[],
     displayedActions?: ActionName[],
     attachments?: File[]
-}
+} & ToolbarPluginProps
 
 type State = {
     editorState: EditorState,
     placeholder: string,
     isDragging: boolean,
     mentionSuggestions?: suggestionsType,
-    canAddMention?: canAddMentionType,
-    linkEntityKey?: string,
-    linkIsOpen: boolean,
-    linkText: string,
-    linkUrl: string
+    canAddMention?: canAddMentionType
 }
 
-export default class RichField extends InputField<Props, State> {
+export class RichField extends InputField<Props, State> {
     static defaultProps = {
         allowExternalChanges: false,
         signature: false,
@@ -92,12 +89,7 @@ export default class RichField extends InputField<Props, State> {
             this.resizeablePlugin.decorator,
         )
 
-        this.toolbarPlugin = createToolbarPlugin({
-            onLinkEdit: this._onToolbarPluginLinkEdit,
-            onLinkCreate: this._onToolbarPluginLinkCreate,
-            getDisplayedActions: () => this.props.displayedActions,
-            imageDecorator
-        })
+        this.toolbarPlugin = props.createToolbarPlugin(imageDecorator)
 
         this.mentionPlugin = createMentionPlugin()
         this.connectedLinksPlugin = createConnectedLinksPlugin()
@@ -124,10 +116,7 @@ export default class RichField extends InputField<Props, State> {
             mentionSuggestions: fromJS([]),
             canAddMention: false,
             isFocused: false,
-            contentLoaded: false,
-            linkIsOpen: false,
-            linkUrl: '',
-            linkText: ''
+            contentLoaded: false
         }: State)
 
         if (this.props.mentionProps) {
@@ -162,24 +151,6 @@ export default class RichField extends InputField<Props, State> {
         if (!_isEqual(nextProps.value, this.props.value) && (this.props.displayOnly || this.props.allowExternalChanges)) {
             this._updateEditorState(nextProps.value)
         }
-    }
-
-    _onToolbarPluginLinkEdit = (entityKey: string, text: string, url: string) => {
-        this.setState({
-            linkEntityKey: entityKey,
-            linkIsOpen: true,
-            linkText: text,
-            linkUrl: url
-        })
-    }
-
-    _onToolbarPluginLinkCreate = (text: string) => {
-        this.setState({
-            linkEntityKey: undefined,
-            linkIsOpen: true,
-            linkText: text,
-            linkUrl: ''
-        })
     }
 
     _getAttachFiles = () => this.props.attachFiles
@@ -329,23 +300,6 @@ export default class RichField extends InputField<Props, State> {
         this.setState({isDragging: false})
     }
 
-    _onLinkTextChange = (linkText: string) => this.setState({ linkText })
-
-    _onLinkUrlChange = (linkUrl: string) => this.setState({ linkUrl })
-
-    _onLinkOpen = () => {
-        this.setState({ linkIsOpen: true })
-    }
-
-    _onLinkClose = () => {
-        this.setState({
-            linkIsOpen: false,
-            linkText: '',
-            linkUrl: '',
-            linkEntityKey: undefined
-        })
-    }
-
     _getField = () => {
         const {
             children, // eslint-disable-line
@@ -372,7 +326,6 @@ export default class RichField extends InputField<Props, State> {
             ...rest,
         } = this.props
 
-        const {Toolbar} = this.toolbarPlugin
         const {MentionSuggestions} = this.mentionPlugin
 
         let canAddMention = false
@@ -460,14 +413,14 @@ export default class RichField extends InputField<Props, State> {
                         buttons={this.props.buttons}
                         linkAction={(
                             <AddLink
-                                entityKey={this.state.linkEntityKey}
-                                isOpen={this.state.linkIsOpen}
-                                url={this.state.linkUrl}
-                                text={this.state.linkText}
-                                onUrlChange={this._onLinkUrlChange}
-                                onTextChange={this._onLinkTextChange}
-                                onOpen={this._onLinkOpen}
-                                onClose={this._onLinkClose}
+                                entityKey={this.props.linkEntityKey}
+                                isOpen={this.props.linkIsOpen}
+                                url={this.props.linkUrl}
+                                text={this.props.linkText}
+                                onUrlChange={this.props.onLinkUrlChange}
+                                onTextChange={this.props.onLinkTextChange}
+                                onOpen={this.props.onLinkOpen}
+                                onClose={this.props.onLinkClose}
                                 {...pluginMethods}
                             />
                         )}
@@ -484,3 +437,5 @@ export default class RichField extends InputField<Props, State> {
         )
     }
 }
+
+export default provideToolbarPlugin(RichField)

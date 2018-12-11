@@ -340,7 +340,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
         return (
             <div className={classnames(css.component, {[css.isAlert]: isAlert})}>
                 <RichField
-                    ref={
+                    getRef={
                         // $FlowFixMe
                         (richArea: richAreaType) => {
                             this.richArea = richArea
