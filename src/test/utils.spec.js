@@ -4,10 +4,7 @@ import {fromJS} from 'immutable'
 import plan from '../fixtures/plan'
 import * as utils from '../utils'
 import TICKET_LANGUAGES from '../config/ticketLanguages'
-import {ContentState, EditorState, convertToRaw} from 'draft-js'
 import schemasJSON from '../fixtures/openapi'
-
-import addMention from '../pages/common/draftjs/plugins/mentions/modifiers/addMention'
 
 describe('global utils', () => {
     describe('formatDatetime', () => {
@@ -72,7 +69,7 @@ describe('global utils', () => {
                 {
                     id: 1,
                     created_datetime: '2017-01-12T18:00:00',
-                }
+                },
             ]
 
             const message = utils.getLastMessage(messages) || {}
@@ -150,7 +147,7 @@ describe('global utils', () => {
             'firstname-lastname@example.com',
             'test@dev.exam-ple.com',
             'test@dev.example.com, 1234567890@example.com',
-            'test@dev.example.com, 1234567890@example.com,'
+            'test@dev.example.com, 1234567890@example.com,',
         ]
 
         const incorrect = [
@@ -232,7 +229,7 @@ describe('global utils', () => {
                 'support@ACmE.gorgias.io',
                 'support@acm5678e.gorgias.io',
                 'support@ac-meee.gorgias.io',
-                'support@ac-meee78.gorgias.io'
+                'support@ac-meee78.gorgias.io',
             ]
 
             gorgiasSupportAddresses.forEach(address => {
@@ -244,7 +241,7 @@ describe('global utils', () => {
             const notGorgiasAddresses = [
                 'support@acme.io',
                 'support@acme.com',
-                'SuppOrT@acme-gorgias.io'
+                'SuppOrT@acme-gorgias.io',
             ]
 
             notGorgiasAddresses.forEach(address => {
@@ -258,7 +255,7 @@ describe('global utils', () => {
         it('should convert object to query params', () => {
             const obj = {
                 a: 12,
-                c: 14
+                c: 14,
             }
             expect(utils.toQueryParams(obj)).toEqual('a=12&c=14')
         })
@@ -268,8 +265,8 @@ describe('global utils', () => {
         it('should determine if user has required role (agent)', () => {
             const user = fromJS({
                 roles: [{
-                    name: 'agent'
-                }]
+                    name: 'agent',
+                }],
             })
             expect(utils.hasRole(user, 'agent')).toEqual(true)
             expect(utils.hasRole(user, 'admin')).toEqual(false)
@@ -280,8 +277,8 @@ describe('global utils', () => {
             // as admin
             let user = fromJS({
                 roles: [{
-                    name: 'admin'
-                }]
+                    name: 'admin',
+                }],
             })
             expect(utils.hasRole(user, 'agent')).toEqual(true)
             expect(utils.hasRole(user, 'admin')).toEqual(true)
@@ -289,8 +286,8 @@ describe('global utils', () => {
             // as staff
             user = fromJS({
                 roles: [{
-                    name: 'staff'
-                }]
+                    name: 'staff',
+                }],
             })
             expect(utils.hasRole(user, 'agent')).toEqual(true)
             expect(utils.hasRole(user, 'admin')).toEqual(true)
@@ -301,28 +298,28 @@ describe('global utils', () => {
         const inputs = [
             {
                 value: '',
-                expect: ''
+                expect: '',
             },
             {
                 value: 'ticket',
-                expect: 'Ticket'
+                expect: 'Ticket',
             },
             {
                 value: 'customerOrders',
-                expect: 'Customer orders'
+                expect: 'Customer orders',
             },
             {
                 value: 'order_id',
-                expect: 'Order id'
+                expect: 'Order id',
             },
             {
                 value: 'helper hello',
-                expect: 'Helper hello'
+                expect: 'Helper hello',
             },
             {
                 value: 'ticket-created',
-                expect: 'Ticket created'
-            }
+                expect: 'Ticket created',
+            },
         ]
 
         it('transform OK', () => {
@@ -336,24 +333,24 @@ describe('global utils', () => {
         const inputs = [
             {
                 value: '',
-                expect: ''
+                expect: '',
             },
             {
                 value: 'acme',
-                expect: 'acme'
+                expect: 'acme',
             },
             {
                 value: 'acme.shopify.com',
-                expect: 'acme'
+                expect: 'acme',
             },
             {
                 value: 'http://acme',
-                expect: 'acme'
+                expect: 'acme',
             },
             {
                 value: 'http://acme.shopify.com',
-                expect: 'acme'
-            }
+                expect: 'acme',
+            },
         ]
 
         it('transform OK', () => {
@@ -549,32 +546,15 @@ describe('global utils', () => {
                     data: {
                         error: {
                             data: {
-                                hello: ['world'], receiver: ['Missing data', 'Invalid value']
-                            }
-                        }
-                    }
-                }
+                                hello: ['world'], receiver: ['Missing data', 'Invalid value'],
+                            },
+                        },
+                    },
+                },
             }
 
             expect(utils.errorToChildren(error))
                 .toMatch('<li>hello: world</li><li>receiver: Missing data</li><li>receiver: Invalid value</li>')
-        })
-    })
-
-    describe('removeMentions', () => {
-        it('should remove any mention entites from editor state', () => {
-            const html = '<div>Hey @Bob</div>'
-            const text = 'Hey @Bob'
-            const value = {html, text}
-
-            const contentState = ContentState.createFromText(text)
-            const editorState = addMention(EditorState.createWithContent(contentState), fromJS({
-                name: 'Bob',
-                id: 1
-            }), '@', '@', 'SEGMENTED')
-
-            const cleanEditorState = utils.removeMentions(editorState, value)
-            expect(convertToRaw(cleanEditorState.getCurrentContent()).entityMap).toEqual({})
         })
     })
 })

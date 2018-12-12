@@ -5,8 +5,7 @@ import type {ActionName} from '../../draftjs/plugins/toolbar/types'
 import type {Plugin} from '../../draftjs/plugins/types'
 
 export type RequiredProps = {
-    displayedActions?: ActionName[],
-    getRef?: React.ElementRef<*> => void  // Replace with ForwardRef in React 16.3+
+    displayedActions?: ActionName[]
 }
 
 type State = {
@@ -26,19 +25,17 @@ export type InjectedProps = {
 
 export default <Props: RequiredProps>(WrappedComponent: React.ComponentType<Props & InjectedProps>): React.ComponentType<Props> => {
     class Wrapper extends React.Component<Props, State> {
-        wrapper: ?React.ElementRef<*>
-
         state: State = {
             linkIsOpen: false,
             linkText: '',
-            linkUrl: ''
+            linkUrl: '',
         }
 
         _createToolbarPlugin = (imageDecorator?: React.Node => React.Node) => createToolbarPlugin({
             onLinkEdit: this._onToolbarPluginLinkEdit,
             onLinkCreate: this._onToolbarPluginLinkCreate,
             getDisplayedActions: () => this.props.displayedActions,
-            imageDecorator: imageDecorator
+            imageDecorator: imageDecorator,
         })
 
         _onLinkTextChange = (linkText: string) => this.setState({linkText})
@@ -54,7 +51,7 @@ export default <Props: RequiredProps>(WrappedComponent: React.ComponentType<Prop
                 linkIsOpen: false,
                 linkText: '',
                 linkUrl: '',
-                linkEntityKey: undefined
+                linkEntityKey: undefined,
             })
         }
 
@@ -63,7 +60,7 @@ export default <Props: RequiredProps>(WrappedComponent: React.ComponentType<Prop
                 linkEntityKey: entityKey,
                 linkIsOpen: true,
                 linkText: text,
-                linkUrl: url
+                linkUrl: url,
             })
         }
 
@@ -72,7 +69,7 @@ export default <Props: RequiredProps>(WrappedComponent: React.ComponentType<Prop
                 linkEntityKey: undefined,
                 linkIsOpen: true,
                 linkText: text,
-                linkUrl: ''
+                linkUrl: '',
             })
         }
 
@@ -86,10 +83,10 @@ export default <Props: RequiredProps>(WrappedComponent: React.ComponentType<Prop
                     onLinkTextChange={this._onLinkTextChange}
                     onLinkOpen={this._onLinkOpen}
                     onLinkClose={this._onLinkClose}
-                    ref={this.props.getRef}
                 />
             )
         }
     }
+
     return Wrapper
 }

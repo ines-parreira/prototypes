@@ -12,7 +12,7 @@ type State = {
 type Props = {
     buttons: Node[],
     attachFiles: (T: Array<Blob>) => void,
-    getCanDropFiles: () => boolean,
+    canDropFiles: boolean,
     displayedActions?: ActionName[],
     linkAction: Node,
     imageAction: Node
@@ -47,8 +47,8 @@ export default class Toolbar extends React.Component<Props, State> {
     }
 
     _onDrop = (e: DragEvent) => {
-        const { getCanDropFiles, attachFiles } = this.props
-        if (!getCanDropFiles()) {
+        const { canDropFiles, attachFiles } = this.props
+        if (!canDropFiles) {
             return
         }
 
@@ -60,8 +60,8 @@ export default class Toolbar extends React.Component<Props, State> {
     }
 
     _onDragOver = (e: Event) => {
-        const { getCanDropFiles } = this.props
-        if (!getCanDropFiles()) {
+        const { canDropFiles } = this.props
+        if (!canDropFiles) {
             return
         }
 

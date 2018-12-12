@@ -1,15 +1,13 @@
 // @flow
-import {EditorState, AtomicBlockUtils, SelectionState, Modifier, ContentBlock, RichUtils} from 'draft-js'
+import {AtomicBlockUtils, EditorState, Modifier, RichUtils} from 'draft-js'
 import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
 import _get from 'lodash/get'
-
 import {uploadFiles} from '../../../../utils'
 import {ATTACHMENT_SIZE_ERROR, getMaxAttachmentSize} from '../../../../utils/file'
 import {DEFAULT_IMAGE_WIDTH} from '../../../../config/editor'
-
-import type {ContentState} from 'draft-js'
 import type {PluginMethods} from './types'
+import {getEntitySelectionState} from '../../../../utils/editor'
 
 const uploadPicture = (file) => {
     return uploadFiles([file])
@@ -24,75 +22,13 @@ const uploadPicture = (file) => {
             }
 
             return Promise.reject({
-                error: errorMessage
+                error: errorMessage,
             })
         })
 }
 
-export const isImage = (file: {type: string}) => {
+export const isImage = (file: { type: string }) => {
     return file.type.includes('image/')
-}
-
-// get selectionState around a specific entity.
-// draft doesn't support removing an entity by key, only all entities in a selection,
-// so we use the selection to isolate one entity.
-export const getEntitySelectionState = (contentState: ContentState, entityKey: string): ?SelectionState => {
-    let entitySelection
-    const blocks = contentState.getBlockMap()
-    blocks.some((block) => {
-        block.findEntityRanges(
-            (character) => {
-                return character.getEntity() === entityKey
-            },
-            (start, end) => {
-                entitySelection = SelectionState.createEmpty(block.getKey())
-                        .set('anchorOffset', start)
-                        .set('focusOffset', end)
-            }
-        )
-
-        return !!entitySelection
-    })
-    return entitySelection
-}
-
-export const getSelectedText = (contentState: ContentState, selection: SelectionState): string => {
-    const startKey = selection.getStartKey()
-    const endKey = selection.getEndKey()
-    const blockMap = contentState.getBlockMap()
-    return blockMap
-        .skipUntil((b: ContentBlock) => b.getKey() === startKey)
-        .takeUntil((b: ContentBlock) => b.getKey() === endKey)
-        .concat([[endKey, blockMap.get(endKey)]])
-        .reduce(
-            (acc: string, block: ContentBlock) => {
-                const key = block.getKey()
-                const text = block.getText()
-                return acc + text.slice(
-                    key === startKey ? selection.getStartOffset() : 0,
-                    key === endKey ? selection.getEndOffset() : text.length
-                )
-            },
-            ''
-        )
-}
-
-// Enitity selection behavior is based on Gmail's editor link toggle functionality
-export const getSelectedEntityKey = (contentState: ContentState, selection: SelectionState): ?string => {
-    const block = contentState.getBlockForKey(selection.getStartKey())
-    const endOffset = selection.getEndOffset() - 1
-
-    if (endOffset < 0 || selection.getStartKey() !== selection.getEndKey()) {
-        return
-    }
-
-    const entityKey = block.getEntityAt(endOffset)
-
-    if (!entityKey || (!selection.isCollapsed() && entityKey !== block.getEntityAt(selection.getStartOffset()))) {
-        return
-    }
-
-    return entityKey
 }
 
 export const removeLink = (entityKey: string, editorState: EditorState): EditorState => {
@@ -114,7 +50,7 @@ export const addImage = (editorState: EditorState, url: string, size: number = 0
             src: url,
             width: DEFAULT_IMAGE_WIDTH,
             size,
-        }
+        },
     )
     const entityKey = entityContentState.getLastCreatedEntityKey()
     let newEditorState = AtomicBlockUtils.insertAtomicBlock(
@@ -130,7 +66,7 @@ export const addImage = (editorState: EditorState, url: string, size: number = 0
 export const insertInlineImages = (
     files: Array<File>,
     {getEditorState, setEditorState, getProps}: PluginMethods,
-    notify: ({status: string, message: string}) => void = _noop
+    notify: ({ status: string, message: string }) => void = _noop,
 ): EditorState => {
     // don't exceed maximum attachment file size
     const editorState = getEditorState()
@@ -156,48 +92,48 @@ export const insertInlineImages = (
 
             // upload image then replace img src
             uploadPicture(file)
-            .then((res: {url: string}) => {
-                const editorState = getEditorState()
-                const contentState = editorState.getCurrentContent()
-                const newContentState = contentState.mergeEntityData(imageKey, {src: res.url})
-                const newEditorState = EditorState.push(
-                    editorState,
-                    newContentState,
-                    'update-pasted-image-url',
-                )
+                .then((res: { url: string }) => {
+                    const editorState = getEditorState()
+                    const contentState = editorState.getCurrentContent()
+                    const newContentState = contentState.mergeEntityData(imageKey, {src: res.url})
+                    const newEditorState = EditorState.push(
+                        editorState,
+                        newContentState,
+                        'update-pasted-image-url',
+                    )
 
-                setEditorState(newEditorState)
+                    setEditorState(newEditorState)
 
-                window.URL.revokeObjectURL(blobURL)
-                return resolve({})
-            })
-            .catch((err) => {
-                // remove image that was not uploaded
-                const editorState = getEditorState()
-                const contentState = editorState.getCurrentContent()
-                const entitySelection = getEntitySelectionState(contentState, imageKey)
-                const newContentState = Modifier.applyEntity(
-                    contentState,
-                    entitySelection,
-                    null
-                )
-                const newEditorState = EditorState.push(
-                    editorState,
-                    newContentState,
-                    'remove-pasted-image',
-                )
-
-                setEditorState(newEditorState)
-
-                // notify
-                notify({
-                    status: 'error',
-                    message: err.error
+                    window.URL.revokeObjectURL(blobURL)
+                    return resolve({})
                 })
+                .catch((err) => {
+                    // remove image that was not uploaded
+                    const editorState = getEditorState()
+                    const contentState = editorState.getCurrentContent()
+                    const entitySelection = getEntitySelectionState(contentState, imageKey)
+                    const newContentState = Modifier.applyEntity(
+                        contentState,
+                        entitySelection,
+                        null,
+                    )
+                    const newEditorState = EditorState.push(
+                        editorState,
+                        newContentState,
+                        'remove-pasted-image',
+                    )
 
-                window.URL.revokeObjectURL(blobURL)
-                return resolve(err)
-            })
+                    setEditorState(newEditorState)
+
+                    // notify
+                    notify({
+                        status: 'error',
+                        message: err.error,
+                    })
+
+                    window.URL.revokeObjectURL(blobURL)
+                    return resolve(err)
+                })
         }))
     })
 

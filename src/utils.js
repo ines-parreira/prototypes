@@ -14,13 +14,12 @@ import _find from 'lodash/find'
 import _last from 'lodash/last'
 import _ from 'lodash'
 import _flatMapDeep from 'lodash/flatMapDeep'
-
 import {createSelectorCreator, defaultMemoize} from 'reselect'
 import axios from 'axios'
 import esprima from 'esprima'
 import escodegen from 'escodegen'
 import moment from 'moment-timezone'
-import {ContentState, EditorState, Modifier} from 'draft-js'
+import {EditorState, Modifier} from 'draft-js'
 // types
 import type {Iterable, Map} from 'immutable'
 // $FlowFixMe: will be fixed with immutable 4.x
@@ -29,13 +28,10 @@ import md5 from 'md5'
 import crypto from 'crypto'
 import URLSafeBase64 from 'urlsafe-base64'
 import htmlparser from 'htmlparser2'
-
 import TICKET_LANGUAGES from './config/ticketLanguages'
 import {ACTION_TEMPLATES} from './config'
-import {AUTHORIZED_NOTIFICATION_TYPES} from './state/notifications/actions'
-import {convertFromHTML} from './utils/editor'
-
 import type {notificationType} from './state/notifications/actions'
+import {AUTHORIZED_NOTIFICATION_TYPES} from './state/notifications/actions'
 import type {viewsStateType} from './state/views/types'
 import type {actionTemplateType, esprimaParse, reactRouterRoute, schemasType} from './types'
 
@@ -505,26 +501,6 @@ export function insertText(editorState: EditorState, text: string): EditorState 
     const contentState = editorState.getCurrentContent()
     const modifier = Modifier.replaceText(contentState, selection, text)
     return EditorState.push(editorState, modifier, 'insert-fragment')
-}
-
-/**
- * Remove mentions from editor state
- * @param editorState
- * @param value
- * @returns {EditorState}
- */
-export function removeMentions(editorState: EditorState, value: { text: string, html: string }): EditorState {
-
-    // use convertFromHTML/fromText to create a new content state w/o mention
-    // because mentions are not present in the html/text of the body
-    let contentState = ContentState.createFromText('')
-    if (value.html) {
-        contentState = convertFromHTML(value.html)
-    } else if (value.text) {
-        contentState = ContentState.createFromText(value.text)
-    }
-
-    return EditorState.push(editorState, contentState)
 }
 
 /**

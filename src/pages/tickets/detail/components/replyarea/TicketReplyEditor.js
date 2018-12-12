@@ -271,7 +271,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
 
         const mentionProps = {
             canAddMention,
-            suggestions: agents
+            mentionSuggestions: agents
         }
 
         const attachmentLoading = newMessage.getIn(['_internal', 'loading', 'addAttachment'])
@@ -340,7 +340,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
         return (
             <div className={classnames(css.component, {[css.isAlert]: isAlert})}>
                 <RichField
-                    getRef={
+                    ref={
                         // $FlowFixMe
                         (richArea: richAreaType) => {
                             this.richArea = richArea
@@ -360,7 +360,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
                         newMessage.getIn(['_internal', 'loading', 'submitMessage']) ||
                         cantWriteTextBecauseOfAttachments
                     }
-                    mentionProps={mentionProps}
+                    {...mentionProps}
                     alertMode={isAlert && 'warning'}
                     alertText={alertText}
                     placeholder="Click here to reply, or press r."

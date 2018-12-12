@@ -1,13 +1,13 @@
 //@flow
-import { EditorState, Modifier } from 'draft-js'
+import {EditorState, Modifier} from 'draft-js'
 import React from 'react'
-import { Button } from 'reactstrap'
+import {Button} from 'reactstrap'
 import InputField from '../../../../forms/InputField'
-import { getEntitySelectionState, getSelectedEntityKey, getSelectedText, removeLink } from '../../utils'
+import {removeLink} from '../../utils'
+import {getEntitySelectionState, getSelectedEntityKey, getSelectedText, linkify} from '../../../../../../utils/editor'
 import css from './AddLink.less'
 import Popover from './ButtonPopover'
-import type { ActionInjectedProps } from '../types'
-import { linkify } from '../../../../../../utils/editor'
+import type {ActionInjectedProps} from '../types'
 
 type Props = {
     entityKey?: string,

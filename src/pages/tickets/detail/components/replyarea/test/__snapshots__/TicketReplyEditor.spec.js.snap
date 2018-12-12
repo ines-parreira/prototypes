@@ -4,7 +4,7 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
 <div
   className="component"
 >
-  <Wrapper
+  <RichField
     alertMode={false}
     alertText="When using Facebook, you can either send a text message, or an attachment, but not both at the same time. If you want to write a message, remove the attachment first."
     attachFiles={[Function]}
@@ -38,15 +38,12 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
       </div>,
       ]
     }
+    canAddMention={false}
     canDropFiles={true}
     canInsertInlineImages={true}
-    getRef={[Function]}
-    mentionProps={
-      Object {
-        "canAddMention": false,
-        "suggestions": Immutable.List [
-      ],
-      }
+    mentionSuggestions={
+      Immutable.List [
+      ]
     }
     notify={[Function]}
     onChange={[Function]}
@@ -55,6 +52,7 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
     signature={true}
     spellCheck={true}
     tabIndex="4"
+    type="text"
     value={
       Object {
         "html": "",

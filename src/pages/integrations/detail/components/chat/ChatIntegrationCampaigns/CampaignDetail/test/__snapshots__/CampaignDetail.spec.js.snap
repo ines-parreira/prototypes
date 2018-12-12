@@ -471,7 +471,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                 value="john@gorgias.io"
               />
             </div>
-            <Wrapper
+            <RichField
               displayedActions={
                 Array [
                   "BOLD",
@@ -780,7 +780,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                 value="john@gorgias.io"
               />
             </div>
-            <Wrapper
+            <RichField
               displayedActions={
                 Array [
                   "BOLD",

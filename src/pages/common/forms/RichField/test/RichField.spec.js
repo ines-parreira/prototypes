@@ -1,10 +1,8 @@
 import React from 'react'
-import {shallow, mount} from 'enzyme'
+import {mount, shallow} from 'enzyme'
 import _noop from 'lodash/noop'
-import {EditorState, ContentState} from 'draft-js'
-import {convertToHTML} from 'draft-convert'
-
-import {RichField} from '../RichField'
+import {ContentState, EditorState} from 'draft-js'
+import RichField from '../RichField'
 import createToolbarPlugin from '../../../draftjs/plugins/toolbar'
 
 // mock random key generation so they match from a snapshot to the other
@@ -20,7 +18,7 @@ describe('RichField', () => {
         onLinkUrlChange: _noop,
         onLinkTextChange: _noop,
         onLinkOpen: _noop,
-        onLinkClose: _noop
+        onLinkClose: _noop,
     }
 
     it('should render a basic input', () => {
@@ -28,7 +26,7 @@ describe('RichField', () => {
             <RichField
                 {...defaultProps}
                 value={{text: 'text', html: 'html'}}
-            />
+            />,
         )
         expect(component).toMatchSnapshot()
     })
@@ -40,7 +38,7 @@ describe('RichField', () => {
                 value={{text: 'text', html: 'html'}}
                 alertMode="warning"
                 alertText="alert"
-            />
+            />,
         )
         expect(component).toMatchSnapshot()
     })
@@ -51,7 +49,7 @@ describe('RichField', () => {
                 {...defaultProps}
                 value={{text: 'text', html: 'html'}}
                 mentionProps={{canAddMention: true}}
-            />
+            />,
         )
         expect(component).toMatchSnapshot()
     })
@@ -61,7 +59,7 @@ describe('RichField', () => {
             <RichField
                 {...defaultProps}
                 value={{text: 'text {{current_user.name}}', html: 'html {{current_user.name}}'}}
-            />
+            />,
         )
         expect(component).toMatchSnapshot()
     })
@@ -71,7 +69,7 @@ describe('RichField', () => {
             <RichField
                 {...defaultProps}
                 value={{text: 'text', html: 'html'}}
-            />
+            />,
         )
 
         // simulate typed text
@@ -79,44 +77,5 @@ describe('RichField', () => {
         component.instance()._setEditorState(editorState)
 
         expect(component).toMatchSnapshot()
-    })
-
-    it('should keep existing content and newlines when pasting text', () => {
-        const component = mount(
-            <RichField
-                {...defaultProps}
-                value={{text: 'text', html: 'html'}}
-            />
-        )
-        const text = 'a\n\nb\n\nc'
-        const html = '<div>a<br><br>b<br><br>c</div>'
-
-        // simulate pasted text
-        component.instance()._handlePastedText(text, html, component.state('editorState'))
-
-        const convertedHTML = convertToHTML(component.state('editorState').getCurrentContent())
-        expect(convertedHTML).toBe('<p>htmla<br/><br/>b<br/><br/>c</p>')
-    })
-
-    // tests the newline-doubling bug when copying and pasting content from draft-js
-    // https://github.com/gorgias/gorgias/pull/3373#issuecomment-392855428
-    it('should not handle html when pasting draft-js-specific content', () => {
-        const component = mount(
-            <RichField
-                {...defaultProps}
-                editorKey="editor"
-                value={{text: 'text', html: 'html'}}
-            />
-        )
-        const text = 'a\n\nb\n\nc'
-        // html copied from draft-js contains the data-editor=editorKey attribute
-        const html = '<div data-editor="editor"><div>a<br><br>b<br><br>c</div></div>'
-
-        // simulate pasted text
-        component.instance()._handlePastedText(text, html, component.state('editorState'))
-
-        const convertedHTML = convertToHTML(component.state('editorState').getCurrentContent())
-        // we can't simulate the paste event, so we test for unmodified content
-        expect(convertedHTML).toBe('<p>html</p>')
     })
 })

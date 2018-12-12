@@ -91,7 +91,7 @@ export default class RichFieldWithVariables extends Component<Props> {
                     }
                 </div>
                 <RichField
-                    getRef={(richArea) => {
+                    ref={(richArea) => {
                         this.richArea = richArea
                     }}
                     name={name}

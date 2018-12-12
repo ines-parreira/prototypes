@@ -120,9 +120,9 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
       </DropdownMenu>
     </UncontrolledButtonDropdown>
   </div>
-  <Wrapper
-    getRef={[Function]}
+  <RichField
     onChange={[Function]}
+    type="text"
     value={
       Object {
         "html": "html",

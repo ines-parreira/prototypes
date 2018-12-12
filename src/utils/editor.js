@@ -2,7 +2,7 @@
 import linkifyhtml from 'linkifyjs/html'
 import {convertToHTML as _convertToHTML, convertFromHTML as _convertFromHTML} from 'draft-convert'
 import linkifyIt from 'linkify-it'
-import {ContentState} from 'draft-js'
+import {ContentBlock, ContentState, EditorState, SelectionState} from 'draft-js'
 
 import {DEFAULT_IMAGE_WIDTH} from '../config/editor'
 import {availableVariables} from '../config/rules'
@@ -168,4 +168,86 @@ export function convertFromHTML(html: string): ContentState {
     converted = ContentState.createFromBlockArray(blocks)
 
     return converted
+}
+
+export function contentStateFromTextOrHTML(text: string, html?: string): ContentState {
+    let contentState = ContentState.createFromText('')
+
+    if (html) {
+        contentState = convertFromHTML(html)
+    } else if (text) {
+        contentState = ContentState.createFromText(text)
+    }
+
+    return contentState
+}
+
+// get selectionState around a specific entity.
+// draft doesn't support removing an entity by key, only all entities in a selection,
+// so we use the selection to isolate one entity.
+export function getEntitySelectionState(contentState: ContentState, entityKey: string): ?SelectionState {
+    let entitySelection
+    const blocks = contentState.getBlockMap()
+    blocks.some((block) => {
+        block.findEntityRanges(
+            (character) => {
+                return character.getEntity() === entityKey
+            },
+            (start, end) => {
+                entitySelection = SelectionState.createEmpty(block.getKey())
+                        .set('anchorOffset', start)
+                        .set('focusOffset', end)
+            }
+        )
+
+        return !!entitySelection
+    })
+    return entitySelection
+}
+
+export function getSelectedText(contentState: ContentState, selection: SelectionState): string {
+    const startKey = selection.getStartKey()
+    const endKey = selection.getEndKey()
+    const blockMap = contentState.getBlockMap()
+    return blockMap
+        .skipUntil((b: ContentBlock) => b.getKey() === startKey)
+        .takeUntil((b: ContentBlock) => b.getKey() === endKey)
+        .concat([[endKey, blockMap.get(endKey)]])
+        .reduce(
+            (acc: string, block: ContentBlock) => {
+                const key = block.getKey()
+                const text = block.getText()
+                return acc + text.slice(
+                    key === startKey ? selection.getStartOffset() : 0,
+                    key === endKey ? selection.getEndOffset() : text.length
+                )
+            },
+            ''
+        )
+}
+
+// Enitity selection behavior is based on Gmail's editor link toggle functionality
+export function getSelectedEntityKey(contentState: ContentState, selection: SelectionState): ?string {
+    const block = contentState.getBlockForKey(selection.getStartKey())
+    const endOffset = selection.getEndOffset() - 1
+
+    if (endOffset < 0 || selection.getStartKey() !== selection.getEndKey()) {
+        return
+    }
+
+    const entityKey = block.getEntityAt(endOffset)
+
+    if (!entityKey || (!selection.isCollapsed() && entityKey !== block.getEntityAt(selection.getStartOffset()))) {
+        return
+    }
+
+    return entityKey
+}
+
+export function removeMentions (editorState: EditorState): EditorState {
+    const contentState = editorState.getCurrentContent()
+    // use convertFromHTML to create a new content state w/o mention
+    // because mentions are not present in the html of the body
+    const newEditorState = convertFromHTML(convertToHTML(contentState))
+    return EditorState.push(editorState, newEditorState, 'change-block-data')
 }

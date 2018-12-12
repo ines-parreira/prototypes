@@ -1,6 +1,7 @@
-import {ContentState, EditorState, AtomicBlockUtils} from 'draft-js'
-
+import {AtomicBlockUtils, ContentState, EditorState, Modifier, SelectionState} from 'draft-js'
 import * as utils from '../editor'
+import {contentStateFromTextOrHTML, convertFromHTML, getSelectedEntityKey, getSelectedText} from '../editor'
+import {removeMentions} from '../editor'
 
 describe('editor utils', () => {
     describe('toHTML', () => {
@@ -132,6 +133,127 @@ describe('editor utils', () => {
                 .toEqual('hello %7B%7Baccount.id%7D%7D')
             expect(utils.unescapeTemplateVars('hello %7B%7Bintegrations.data%7D%7D 7B%hello 7B%7B%hello7%D7%D'))
                 .toEqual('hello %7B%7Bintegrations.data%7D%7D 7B%hello 7B%7B%hello7%D7%D')
+        })
+    })
+
+    describe('contentStateFromTextOrHTML', () => {
+        it('should use html value if provided', () => {
+            const html = '<b>bar</b>'
+            const contentState = contentStateFromTextOrHTML('foo', html)
+            expect(contentState.getPlainText()).toBe('bar')
+        })
+
+        it('should fallback to text value if html not provided', () => {
+            const contentState = contentStateFromTextOrHTML('foo')
+            expect(contentState.getPlainText()).toBe('foo')
+        })
+    })
+
+    describe('getSelectedText()', () => {
+        it('should return selected text', () => {
+            const text = 'Elit culpa tempor enim sunt pariatur do deserunt adipisicing nisi.'
+            const contentState = ContentState.createFromText(text)
+            const block = contentState.getFirstBlock()
+            const [start, end] = [3, 14]
+            const selection = SelectionState.createEmpty(block.getKey())
+                .set('anchorOffset', start)
+                .set('focusOffset', end)
+            const selectedText = getSelectedText(contentState, selection)
+            expect(selectedText).toBe(text.slice(start, end))
+        })
+
+        it('should return empty string if selection is collapsed', () => {
+            const text = 'Elit culpa tempor enim sunt pariatur do deserunt adipisicing nisi.'
+            const contentState = ContentState.createFromText(text)
+            const block = contentState.getFirstBlock()
+            const selection = SelectionState.createEmpty(block.getKey())
+            const selectedText = getSelectedText(contentState, selection)
+            expect(selectedText).toBe('')
+        })
+    })
+
+    describe('getSelectedEntityKey()', () => {
+        it('should return entity key when whole entity is selected', () => {
+            const html = '<a href="http://google.com">link</a>'
+            const contentState = convertFromHTML(html)
+            const block = contentState.getFirstBlock()
+            const selection = SelectionState.createEmpty(block.getKey()).set('focusOffset', 3)
+            const entityKey = getSelectedEntityKey(contentState, selection)
+            expect(entityKey).toBe(block.getEntityAt(0))
+        })
+
+        it('should return entity key when part of the entity is selected', () => {
+            const html = '<a href="http://google.com">link</a>'
+            const contentState = convertFromHTML(html)
+            const block = contentState.getFirstBlock()
+            const selection = SelectionState.createEmpty(block.getKey())
+                .set('anchorOffset', 1)
+                .set('focusOffset', 2)
+            const entityKey = getSelectedEntityKey(contentState, selection)
+            expect(entityKey).toBe(block.getEntityAt(0))
+        })
+
+        it('should return falsy value when cursor is right before the entity', () => {
+            const html = '<a href="http://google.com">link</a>'
+            const contentState = convertFromHTML(html)
+            const block = contentState.getFirstBlock()
+            const selection = SelectionState.createEmpty(block.getKey())
+            const entityKey = getSelectedEntityKey(contentState, selection)
+            expect(entityKey).toBeFalsy()
+        })
+
+        it('should return entity key when cursor is right after the entity', () => {
+            const html = '<a href="http://google.com">link</a>'
+            const contentState = convertFromHTML(html)
+            const block = contentState.getFirstBlock()
+            const selection = SelectionState.createEmpty(block.getKey())
+                .set('anchorOffset', 4)
+                .set('focusOffset', 4)
+            const entityKey = getSelectedEntityKey(contentState, selection)
+            expect(entityKey).toBe(block.getEntityAt(0))
+        })
+
+        it('should return falsy value when cursor is outside the entity', () => {
+            const html = '<a href="http://google.com">link</a> '
+            const contentState = convertFromHTML(html)
+            const block = contentState.getFirstBlock()
+            const selection = SelectionState.createEmpty(block.getKey())
+                .set('anchorOffset', 5)
+                .set('focusOffset', 5)
+            const entityKey = getSelectedEntityKey(contentState, selection)
+            expect(entityKey).toBeFalsy()
+        })
+
+        it('should return falsy value when more than the entity is selected', () => {
+            const html = 'foo <a href="http://google.com">link</a> bar'
+            const contentState = convertFromHTML(html)
+            const block = contentState.getFirstBlock()
+            const selection = SelectionState.createEmpty(block.getKey()).set('focusOffset', 9)
+            const entityKey = getSelectedEntityKey(contentState, selection)
+            expect(entityKey).toBeFalsy()
+        })
+    })
+
+    describe('removeMentions', () => {
+        it('should remove only mentions', () => {
+            let contentState = convertFromHTML('@Foo <a href="http://gorgias.io">Gorgias</a>')
+            contentState = contentState.createEntity('mention', 'SEGMENTED')
+            const entityKey = contentState.getLastCreatedEntityKey()
+            const selection = SelectionState
+                .createEmpty(contentState.getFirstBlock().getKey())
+                .set('focusOffset', 4)
+            contentState = Modifier.replaceText(
+                contentState,
+                selection,
+                '@Foo',
+                null, // no inline style needed
+                entityKey
+            )
+            const editorState = EditorState.createWithContent(contentState)
+            const newEditorState = removeMentions(editorState)
+            const newBlock = newEditorState.getCurrentContent().getFirstBlock()
+            expect(newBlock.getEntityAt(0)).toBe(null)
+            expect(newBlock.getEntityAt(5)).not.toBe(null)
         })
     })
 })

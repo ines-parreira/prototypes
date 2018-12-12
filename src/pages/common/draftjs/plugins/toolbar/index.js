@@ -1,12 +1,13 @@
 //@flow
 import decorateComponentWithProps from 'decorate-component-with-props'
-import { ContentBlock, EditorState, KeyBindingUtil } from 'draft-js'
-import { foundUrl, link } from './decorators'
+import {ContentBlock, EditorState, KeyBindingUtil} from 'draft-js'
+import {foundUrl, link} from './decorators'
 import Toolbar from './Toolbar'
 import Image from './components/Image'
-import type { PluginMethods } from '../types'
-import { getSelectedEntityKey, getSelectedText, removeLink } from '../utils'
-import type { ActionName } from './types'
+import type {PluginMethods} from '../types'
+import {removeLink} from '../utils'
+import {getSelectedEntityKey, getSelectedText} from '../../../../../utils/editor'
+import type {ActionName} from './types'
 import type {Node} from 'react'
 
 // documentation:
