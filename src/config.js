@@ -164,32 +164,26 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
         title: 'Helpdocs',
         description: 'Create a knowledge base & connect it to Gorgias',
-        url: 'http://docs.gorgias.io/integrations/helpdocs',
+        url: 'https://docs.gorgias.io/other-integrations/helpdocs',
         image: 'integrations/helpdocs.png',
     },
     {
         title: 'Veeqo',
         description: 'Display orders & inventory status next to tickets',
-        url: 'http://docs.gorgias.io/integrations/http-integrations#veeqo',
+        url: 'https://docs.gorgias.io/other-integrations/veeqo',
         image: 'integrations/veeqo.png',
     },
     {
         title: 'Swell',
         description: 'Display loyalty points next to tickets. Award points with macros.',
-        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#swell_rewards',
+        url: 'https://docs.gorgias.io/reward-and-loyalty/swell-rewards',
         image: 'integrations/swell.png',
     },
     {
         title: 'Amazon',
         description: 'Respond to support requests from Amazon',
-        url: 'http://docs.gorgias.io/integrations/amazon',
+        url: 'https://docs.gorgias.io/ecommerce-integrations/amazon',
         image: 'integrations/amazon.png',
-    },
-    {
-        title: 'eBay',
-        description: 'Respond to support requests from eBay',
-        url: 'http://docs.gorgias.io/integrations/e-bay',
-        image: 'integrations/ebay.png',
     },
     {
         title: 'Slack',
@@ -200,19 +194,19 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
         title: 'Segment',
         description: 'Use Gorgias activity data in other apps.',
-        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#segment',
+        url: 'https://docs.gorgias.io/data-and-http-integrations/segment',
         image: 'integrations/segment.png',
     },
     {
         title: 'Zapier',
         description: 'Trigger zaps with macros',
-        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#zapier',
+        url: 'https://docs.gorgias.io/data-and-http-integrations/zapier',
         image: 'integrations/zapier.png',
     },
     {
         title: 'Ottspott',
         description: 'Create tickets from phone conversations',
-        url: 'http://docs.gorgias.io/integrations/ottspott',
+        url: 'https://docs.gorgias.io/voice-and-phone/ottspott',
         image: 'integrations/ottspott.png'
     },
     {
