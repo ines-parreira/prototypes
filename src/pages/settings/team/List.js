@@ -1,11 +1,11 @@
-import React, {PropTypes} from 'react'
-import ImmutablePropTypes from 'react-immutable-proptypes'
+// @flow
+import React from 'react'
 import {connect} from 'react-redux'
+import classnames from 'classnames'
 import {Link} from 'react-router'
 import {
     Button,
     Container,
-    Table,
 } from 'reactstrap'
 
 import Loader from '../../common/components/Loader'
@@ -18,6 +18,21 @@ import * as selectors from '../../../state/agents/selectors'
 import PageHeader from '../../common/components/PageHeader'
 import SecondaryNavbar from '../../common/components/SecondaryNavbar/SecondaryNavbar'
 
+import css from './List.less'
+
+import type {List, Map} from 'immutable'
+
+type Props = {
+    agents: List<*>,
+    pagination: Map<*,*>,
+    fetchAgents: (T: number) => Promise<*>,
+    deleteAgent: (T: string) => Promise<*>,
+}
+
+type State = {
+    isFetching: boolean,
+}
+
 @connect((state) => {
     return {
         agents: selectors.getPaginatedAgents(state),
@@ -25,14 +40,9 @@ import SecondaryNavbar from '../../common/components/SecondaryNavbar/SecondaryNa
     }
 }, {
     fetchAgents: actions.fetchPagination,
+    deleteAgent: actions.deleteAgent,
 })
-export default class List extends React.Component {
-    static propTypes = {
-        agents: ImmutablePropTypes.list.isRequired,
-        fetchAgents: PropTypes.func.isRequired,
-        pagination: ImmutablePropTypes.map.isRequired,
-    }
-
+export default class TeamList extends React.Component<Props, State> {
     state = {
         isFetching: false,
     }
@@ -41,7 +51,7 @@ export default class List extends React.Component {
         this._fetchPage(1)
     }
 
-    _fetchPage = (page = 1) => {
+    _fetchPage = (page: number = 1) => {
         this.setState({isFetching: true})
         return this.props.fetchAgents(page)
             .then(() => {
@@ -50,15 +60,16 @@ export default class List extends React.Component {
     }
 
     render() {
-        const {agents, pagination} = this.props
-
+        const {agents, pagination, deleteAgent, fetchAgents} = this.props
 
         if (this.state.isFetching) {
             return <Loader/>
         }
 
+        const currentPage = pagination.get('page') || 1
+
         return (
-            <div className="full-width">
+            <div className={classnames('full-width', css.component)}>
                 <PageHeader title="Team members">
                     <Button
                         tag={Link}
@@ -84,25 +95,28 @@ export default class List extends React.Component {
                     <p>
                         You can <strong>add as many team members as you want</strong>, at no additional cost.
                     </p>
-                    <Table hover>
-                        <tbody>
+                    <div className={css.list}>
                         {
-                            agents.map((agent) => {
+                            agents.map((agent, index) => {
                                 return (
                                     <Row
                                         key={agent.get('id')}
                                         agent={agent}
+                                        deleteAgent={deleteAgent}
+                                        fetchAgents={fetchAgents}
+                                        currentPage={currentPage}
+                                        last={index === agents.size - 1}
                                     />
                                 )
                             })
                         }
-                        </tbody>
-                    </Table>
+                    </div>
 
                     <Pagination
                         pageCount={pagination.get('nb_pages') || 1}
-                        currentPage={pagination.get('page') || 1}
+                        currentPage={currentPage}
                         onChange={this._fetchPage}
+                        className={classnames(css.pagination, 'pagination-transparent')}
                     />
                 </Container>
             </div>
