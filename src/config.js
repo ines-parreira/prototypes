@@ -194,7 +194,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
         title: 'Slack',
         description: 'Post notifications on Slack when tickets are created or updated',
-        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#slack',
+        url: 'https://docs.gorgias.io/other-integrations/slack',
         image: 'integrations/slack.png',
     },
     {
