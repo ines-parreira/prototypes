@@ -4,6 +4,7 @@ import moment from 'moment'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import _debounce from 'lodash/debounce'
+import _find from 'lodash/find'
 import {Container} from 'reactstrap'
 
 import {stats as statsConfig} from '../../config/stats'
@@ -131,6 +132,52 @@ class StatsView extends React.Component<Props> {
         const missingSatisfactionSurvey = config.get('name') === 'Satisfaction' &&
             !currentAccount.get('extra_features').includes('satisfaction-surveys')
 
+        const configFilters = config.get('filters', fromJS([])).toJS()
+        const availableFilters = [
+            {
+                type: 'agents',
+                render: () => <SearchableSelectField
+                  key="agents-filter"
+                  plural="agents"
+                  singular="agent"
+                  items={this.props.agents}
+                  input={this._makeInputControl('agents')}
+                />
+            },
+            {
+                type: 'tags',
+                render: () => <SearchableSelectField
+                    key="tags-filter"
+                    plural="tags"
+                    singular="tag"
+                    items={this.state.tags.map(tag => ({label: tag.name, value: tag.id}))}
+                    input={this._makeInputControl('tags')}
+                    onSearch={this._onSearchTags}
+                />
+            },
+            {
+                type: 'channels',
+                render: (filter) => <SearchableSelectField
+                    key="channels-filter"
+                    plural="channels"
+                    singular="channel"
+                    items={filter.options
+                        ? this.props.channels.filter((channel) => filter.options.includes(channel.value))
+                        : this.props.channels}
+                    input={this._makeInputControl('channels')}
+                />
+            },
+            {
+                type: 'date',
+                render: () => <PeriodPicker
+                    key="date-filter"
+                    startDatetime={startDatetime}
+                    endDatetime={endDatetime}
+                    onChange={this._handleDateChange}
+                />
+            }
+        ]
+
         return (
             <div className="stats full-width">
                 <PageHeader
@@ -138,37 +185,13 @@ class StatsView extends React.Component<Props> {
                     className="mb-0"
                 >
                     <div className="d-flex flex-wrap float-right">
-                        {config.get('filters', []).includes('agents') && (
-                            <SearchableSelectField
-                                plural="agents"
-                                singular="agent"
-                                items={this.props.agents}
-                                input={this._makeInputControl('agents')}
-                            />
-                        )}
-                        {config.get('filters', []).includes('tags') && (
-                            <SearchableSelectField
-                                plural="tags"
-                                singular="tag"
-                                items={this.state.tags.map(tag => ({label: tag.name, value: tag.id}))}
-                                input={this._makeInputControl('tags')}
-                                onSearch={this._onSearchTags}
-                            />
-                        )}
-                        {config.get('filters', []).includes('channels') && (
-                            <SearchableSelectField
-                                plural="channels"
-                                singular="channel"
-                                items={this.props.channels}
-                                input={this._makeInputControl('channels')}
-                            />
-                        )}
-                        {config.get('filters', []).includes('date') && (
-                            <PeriodPicker
-                                startDatetime={startDatetime}
-                                endDatetime={endDatetime}
-                                onChange={this._handleDateChange}
-                            />
+                        {availableFilters.map(
+                            (availableFilter) => {
+                                const filter = _find(configFilters, (configFilter) => {
+                                    return configFilter.type === availableFilter.type
+                                })
+                                return filter && availableFilter.render(filter)
+                            }
                         )}
                     </div>
                 </PageHeader>

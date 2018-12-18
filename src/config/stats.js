@@ -3,9 +3,11 @@ import {fromJS} from 'immutable'
 import moment from 'moment'
 import _merge from 'lodash/merge'
 import _isString from 'lodash/isString'
-import {formatDuration} from '../pages/stats/common/utils'
 import {defaults} from 'react-chartjs-2'
+
+import {formatDuration} from '../pages/stats/common/utils'
 import {TagLabel} from '../pages/common/utils/labels'
+import {EMAIL_CHANNEL, CHAT_CHANNEL} from './ticket'
 
 // Available Stats. These names should match names in `g/stats/config`
 export const OVERVIEW = 'overview'
@@ -549,7 +551,7 @@ const formatDurationTooltipCb = (item, data) => {
 export const views = fromJS({
     overview: {
         name: 'Overview',
-        filters: ['channels', 'agents', 'tags', 'date'],
+        filters: [{type: 'channels'}, {type: 'agents'}, {type: 'tags'}, {type: 'date'}],
         // default view available at `app/stats/`
         link: '',
         stats: [
@@ -561,7 +563,7 @@ export const views = fromJS({
     },
     tags: {
         name: 'Tags',
-        filters: ['channels', 'date'],
+        filters: [{type: 'channels'}, {type: 'date'}],
         link: 'tags',
         stats: [
             TICKETS_PER_TAG,
@@ -569,7 +571,7 @@ export const views = fromJS({
     },
     channels: {
         name: 'Channels',
-        filters: ['channels', 'date'],
+        filters: [{type: 'channels'}, {type: 'date'}],
         link: 'channels',
         stats: [
             TICKETS_CREATED_PER_CHANNEL_PER_DAY,
@@ -578,7 +580,7 @@ export const views = fromJS({
     },
     agents: {
         name: 'Agents',
-        filters: ['channels', 'date'],
+        filters: [{type: 'channels'}, {type: 'date'}],
         link: 'agents',
         stats: [
             TICKETS_CLOSED_PER_AGENT_PER_DAY,
@@ -587,7 +589,7 @@ export const views = fromJS({
     },
     macros: {
         name: 'Macros',
-        filters: ['channels', 'date'],
+        filters: [{type: 'channels'}, {type: 'date'}],
         link: 'macros',
         stats: [
             MESSAGES_SENT_PER_MACRO
@@ -595,7 +597,12 @@ export const views = fromJS({
     },
     satisfaction: {
         name: 'Satisfaction',
-        filters: ['date'],
+        filters: [
+            {
+                type: 'channels',
+                options: [EMAIL_CHANNEL, CHAT_CHANNEL]
+            },
+            {type: 'agents'}, {type: 'tags'}, {type: 'date'}],
         link: 'satisfaction',
         stats: [
             SATISFACTION_SURVEYS, LATEST_SATISFACTION_SURVEYS

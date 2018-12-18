@@ -4,16 +4,42 @@ import _find from 'lodash/find'
 import {getLastMessage, compare, toImmutable} from '../utils'
 import {isForwardedMessage} from '../state/ticket/utils'
 
-export const DEFAULT_CHANNEL = 'email'
-export const DEFAULT_SOURCE_TYPE = 'email'
+export const EMAIL_CHANNEL = 'email'
+export const CHAT_CHANNEL = 'chat'
+export const AIRCALL_CHANNEL = 'aircall'
+export const API_CHANNEL = 'api'
+export const FACEBOOK_CHANNEL = 'facebook'
+export const FACEBOOK_MESSENGER_CHANNEL = 'facebook-messenger'
+export const PHONE_CHANNEL = 'phone'
+export const SMS_CHANNEL = 'sms'
+export const TWITTER_CHANNEL = 'twitter'
+export const INSTAGRAM_CHANNEL = 'instagram-comment'
+
+export const DEFAULT_CHANNEL = EMAIL_CHANNEL
+export const DEFAULT_SOURCE_TYPE = EMAIL_CHANNEL
 
 export const STATUSES = ['open', 'closed']
-export const CHANNELS = ['aircall', 'api', 'chat', 'email', 'facebook', 'facebook-messenger', 'phone', 'sms', 'twitter', 'instagram-comment']
+export const CHANNELS = [
+    AIRCALL_CHANNEL, API_CHANNEL, CHAT_CHANNEL, EMAIL_CHANNEL, FACEBOOK_CHANNEL,
+    SMS_CHANNEL, FACEBOOK_MESSENGER_CHANNEL, PHONE_CHANNEL, TWITTER_CHANNEL, INSTAGRAM_CHANNEL
+]
 
-export const SYSTEM_SOURCE_TYPES = ['internal-note', 'system-message']
+export const EMAIL_SOURCE = 'email'
+export const CHAT_SOURCE = 'chat'
+export const FACEBOOK_MESSENGER_SOURCE = 'facebook-messenger'
+export const FACEBOOK_MESSAGE_SOURCE = 'facebook-message'
+export const FACEBOOK_COMMENT_SOURCE = 'facebook-comment'
+export const INSTAGRAM_COMMENT_SOURCE = 'instagram-comment'
+export const INTERNAL_NOTE_SOURCE = 'internal-note'
+export const SYSTEM_MESSAGE_SOURCE = 'system-message'
+
+export const SYSTEM_SOURCE_TYPES = [INTERNAL_NOTE_SOURCE, SYSTEM_MESSAGE_SOURCE]
 
 // source types that can be used to answer
-export const USABLE_SOURCE_TYPES = ['email', 'chat', 'facebook-messenger', 'facebook-message', 'facebook-comment', 'internal-note', 'instagram-comment']
+export const USABLE_SOURCE_TYPES = [
+    EMAIL_SOURCE, CHAT_SOURCE, FACEBOOK_MESSENGER_SOURCE, FACEBOOK_MESSAGE_SOURCE,
+    FACEBOOK_COMMENT_SOURCE, INTERNAL_NOTE_SOURCE, INSTAGRAM_COMMENT_SOURCE
+]
 
 // available variables in macros
 export const VARIABLES = [{
