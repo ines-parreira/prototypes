@@ -1,59 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ConfirmButton component should have loading state 1`] = `
-<div
-  className="component d-inline-block"
-  id="1"
->
-  <Button
-    className="loading btn-loading"
-    color="secondary"
-    disabled={true}
-    id="confirm-button-1"
-    onClick={[Function]}
-    tag="button"
-    type="button"
-  />
-  <Popover
-    container="body"
-    delay={
-      Object {
-        "hide": 0,
-        "show": 0,
-      }
-    }
-    hideArrow={false}
-    isOpen={false}
-    placement="bottom"
-    placementPrefix="bs-popover"
-    target="confirm-button-1"
-    toggle={[Function]}
-  >
-    <PopoverHeader
-      tag="h3"
-    >
-      Are you sure?
-    </PopoverHeader>
-    <PopoverBody
-      tag="div"
-    >
-      <p />
-      <Button
-        color="success"
-        onClick={[Function]}
-        tag="button"
-        type="button"
-      >
-        Confirm
-      </Button>
-    </PopoverBody>
-  </Popover>
-</div>
-`;
-
 exports[`ConfirmButton component should match snapshot 1`] = `
 <div
-  className="component d-inline-block"
+  className="d-inline-block"
   id="1"
 >
   <Button

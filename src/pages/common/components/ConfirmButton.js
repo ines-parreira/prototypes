@@ -10,8 +10,6 @@ import {
 import _get from 'lodash/get'
 import _noop from 'lodash/noop'
 
-import css from './ConfirmButton.less'
-
 import type {Node} from 'react'
 
 type Props = {
@@ -19,14 +17,13 @@ type Props = {
     type?: 'button' | 'submit',
     className?: string,
     disabled?: boolean,
-    confirm: () => void | Promise<*>,
+    confirm: () => void,
     title?: string,
     content?: Node,
     children?: Node,
     skip?: boolean,
     loading?: boolean,
-    placement?: string,
-    confirmButtonProps?: {},
+    placement?: string
 }
 
 type State = {
@@ -129,7 +126,6 @@ export default class ConfirmButton extends React.Component<Props, State> {
             confirm, // eslint-disable-line no-unused-vars
             skip, // eslint-disable-line no-unused-vars
             placement,
-            confirmButtonProps,
             ...buttonProps
         } = this.props
 
@@ -143,7 +139,7 @@ export default class ConfirmButton extends React.Component<Props, State> {
 
         return (
             <div
-                className={classnames(css.component, 'd-inline-block', className)}
+                className={classnames('d-inline-block', className)}
                 id={id}
                 ref={(container) => this._container = container}
             >
@@ -153,7 +149,7 @@ export default class ConfirmButton extends React.Component<Props, State> {
                     disabled={isLoading || disabled}
                     onClick={this._showConfirmation}
                     className={classnames({
-                        [`${css.loading} btn-loading`]: isLoading
+                        'btn-loading': isLoading
                     })}
                     {...buttonProps}
                 >
@@ -176,7 +172,6 @@ export default class ConfirmButton extends React.Component<Props, State> {
                             type={type}
                             color="success"
                             onClick={this._confirmAction}
-                            {...confirmButtonProps}
                         >
                             Confirm
                         </Button>

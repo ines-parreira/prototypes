@@ -242,10 +242,7 @@ export const RoleLabel = ({roles = 'user'}: {roles: string}) => {
     }
 
     return (
-        <Badge
-            color={color}
-            className="badge-pill"
-        >
+        <Badge color={color}>
             {role}
         </Badge>
     )
