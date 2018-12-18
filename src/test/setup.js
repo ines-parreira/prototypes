@@ -84,3 +84,69 @@ Object.defineProperty(window, 'requestAnimationFrame', {
 Object.defineProperty(window, 'cancelAnimationFrame', {
     value: jest.fn()
 })
+
+// failed expect in timeouts require try/catch and done.fail
+// https://github.com/facebook/jest/issues/3519
+global.jestSetTimeout = (body, timeout, done) => {
+    setTimeout(() => {
+        try {
+            body()
+            done()
+        } catch (error) {
+            done.fail(error)
+        }
+    }, timeout)
+}
+
+// offsetParent unsupported by jsdom
+// https://github.com/jsdom/jsdom/issues/1261
+function supportsOffsetParent () {
+    let support = true
+    const div = document.createElement('div')
+    document.body.appendChild(div)
+    if (div.offsetParent === null) {
+        support = false
+        document.body.removeChild(div)
+    }
+    return support
+}
+
+// offsetParent polyfill
+// WARNING does not support the complete spec (eg. position: fixed)
+function offsetParent () {
+    let element = this
+    let style
+    let parent = null
+    if (!document) {
+        return null
+    }
+
+    while (
+        element
+        && element !== document.documentElement
+    ) {
+        style = window.getComputedStyle(element)
+        if (style.getPropertyValue('display') === 'none') {
+            return null
+        }
+        if (
+            !parent
+            && element !== this
+            && (
+                style.getPropertyValue('position') !== 'static'
+                || element === document.body
+            )
+        ) {
+            parent = element
+        }
+        element = element.parentNode
+    }
+
+    return parent
+}
+
+if (!supportsOffsetParent()) {
+    Object.defineProperty(HTMLElement.prototype, 'offsetParent', {
+        get: offsetParent
+    })
+}

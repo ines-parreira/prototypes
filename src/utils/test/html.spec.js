@@ -17,19 +17,6 @@ describe('html util', () => {
         const htmlWithEvent = '<iframe src="/" onload="window._xss=true;"></iframe>'
         let dom
 
-        // failed expect in timeouts require try/catch and done.fail
-        // https://github.com/facebook/jest/issues/3519
-        function callback(done, body) {
-            return () => {
-                try {
-                    body()
-                    done()
-                } catch (error) {
-                    done.fail(error)
-                }
-            }
-        }
-
         beforeEach(() => {
             dom = new JSDOM(doc, domOptions)
         })
@@ -40,17 +27,17 @@ describe('html util', () => {
             div.innerHTML = htmlWithEvent
             dom.window.document.body.appendChild(div)
             // timeout required for jsdom to trigger the event
-            setTimeout(callback(done, () => {
+            global.jestSetTimeout(() => {
                 expect(dom.window._xss).toBe(true)
-            }), 100)
+            }, 100, done)
         })
 
         it('should not run inline event handlers', (done) => {
             parseHtml(htmlWithEvent, dom.window)
             // timeout required for jsdom to trigger the event
-            setTimeout(callback(done, () => {
+            global.jestSetTimeout(() => {
                 expect(dom.window._xss).toBe(undefined)
-            }), 100)
+            }, 100, done)
         })
 
         it('should run script tags', () => {

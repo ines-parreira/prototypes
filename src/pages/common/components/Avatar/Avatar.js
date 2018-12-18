@@ -7,6 +7,8 @@ import {getAvatar, getAvatarFromCache} from './utils'
 
 import css from './Avatar.less'
 
+import type {Node} from 'react'
+
 type Props = {
     email: string,
     name: string,
@@ -24,6 +26,8 @@ type State = {
 }
 
 export default class Avatar extends React.Component<Props, State> {
+    component: Node
+
     static defaultProps = {
         url: '',
         email: '',
@@ -40,13 +44,17 @@ export default class Avatar extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-        this._setImageUrl(this.props)
+        this._setImageUrl()
     }
 
-    componentWillReceiveProps(nextProps: Props) {
-        if (!_isEqual(nextProps, this.props)) {
-            this._setImageUrl(nextProps)
+    componentDidUpdate(prevProps: Props) {
+        if (!_isEqual(prevProps, this.props)) {
+            this._setImageUrl()
         }
+    }
+
+    _container = (ref: Node) => {
+        this.component = ref
     }
 
     _getDefaultState = (props: Props) => {
@@ -65,15 +73,20 @@ export default class Avatar extends React.Component<Props, State> {
         }
     }
 
-    _setImageUrl = (props: Props) => {
+    _setImageUrl = () => {
+        // don't update image if hidden
+        if (!this.component || !this.component.offsetParent) {
+            return
+        }
+
         if (this.state.isCached) {
-            return this.setState(this._getDefaultState(props))
+            return this.setState(this._getDefaultState(this.props))
         }
 
         return getAvatar({
-            email: props.email,
-            size: props.size,
-            google: props.google
+            email: this.props.email,
+            size: this.props.size,
+            google: this.props.google
         })
         .then((image) => this.setState({
             imageUrl: image.url,
@@ -116,6 +129,7 @@ export default class Avatar extends React.Component<Props, State> {
                     height: `${String(size)}px`,
                     ...style
                 }}
+                ref={this._container}
             >
                 <div
                     className={css.initials}

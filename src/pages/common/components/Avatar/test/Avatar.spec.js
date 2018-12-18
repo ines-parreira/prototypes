@@ -42,4 +42,27 @@ describe('Avatar component', () => {
                 return expect(component).toMatchSnapshot()
             })
     })
+
+    it('should render image in visible container', (done) => {
+        const component = mount(
+            <Avatar email="pizza@gorgias.io" />
+        )
+        // wait for image url to return
+        global.jestSetTimeout(() => {
+            expect(component.find('img').length).toBe(1)
+        }, 10, done)
+    })
+
+    it('should not render image in invisible container', (done) => {
+        const container = document.createElement('div')
+        document.body.appendChild(container)
+        container.style.display = 'none'
+        const component = mount(
+            <Avatar email="pepperoni@gorgias.io" />,
+            {attachTo: container}
+        )
+        global.jestSetTimeout(() => {
+            expect(component.find('img').length).toBe(0)
+        }, 10, done)
+    })
 })
