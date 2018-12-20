@@ -1,7 +1,14 @@
-import {AtomicBlockUtils, ContentState, EditorState, Modifier, SelectionState} from 'draft-js'
+import {
+    AtomicBlockUtils,
+    CompositeDecorator,
+    ContentBlock,
+    ContentState,
+    EditorState,
+    Modifier,
+    SelectionState,
+} from 'draft-js'
 import * as utils from '../editor'
-import {contentStateFromTextOrHTML, convertFromHTML, getSelectedEntityKey, getSelectedText} from '../editor'
-import {removeMentions} from '../editor'
+import React from 'react'
 
 describe('editor utils', () => {
     describe('toHTML', () => {
@@ -139,12 +146,12 @@ describe('editor utils', () => {
     describe('contentStateFromTextOrHTML', () => {
         it('should use html value if provided', () => {
             const html = '<b>bar</b>'
-            const contentState = contentStateFromTextOrHTML('foo', html)
+            const contentState = utils.contentStateFromTextOrHTML('foo', html)
             expect(contentState.getPlainText()).toBe('bar')
         })
 
         it('should fallback to text value if html not provided', () => {
-            const contentState = contentStateFromTextOrHTML('foo')
+            const contentState = utils.contentStateFromTextOrHTML('foo')
             expect(contentState.getPlainText()).toBe('foo')
         })
     })
@@ -158,7 +165,7 @@ describe('editor utils', () => {
             const selection = SelectionState.createEmpty(block.getKey())
                 .set('anchorOffset', start)
                 .set('focusOffset', end)
-            const selectedText = getSelectedText(contentState, selection)
+            const selectedText = utils.getSelectedText(contentState, selection)
             expect(selectedText).toBe(text.slice(start, end))
         })
 
@@ -167,7 +174,7 @@ describe('editor utils', () => {
             const contentState = ContentState.createFromText(text)
             const block = contentState.getFirstBlock()
             const selection = SelectionState.createEmpty(block.getKey())
-            const selectedText = getSelectedText(contentState, selection)
+            const selectedText = utils.getSelectedText(contentState, selection)
             expect(selectedText).toBe('')
         })
     })
@@ -175,68 +182,68 @@ describe('editor utils', () => {
     describe('getSelectedEntityKey()', () => {
         it('should return entity key when whole entity is selected', () => {
             const html = '<a href="http://google.com">link</a>'
-            const contentState = convertFromHTML(html)
+            const contentState = utils.convertFromHTML(html)
             const block = contentState.getFirstBlock()
             const selection = SelectionState.createEmpty(block.getKey()).set('focusOffset', 3)
-            const entityKey = getSelectedEntityKey(contentState, selection)
+            const entityKey = utils.getSelectedEntityKey(contentState, selection)
             expect(entityKey).toBe(block.getEntityAt(0))
         })
 
         it('should return entity key when part of the entity is selected', () => {
             const html = '<a href="http://google.com">link</a>'
-            const contentState = convertFromHTML(html)
+            const contentState = utils.convertFromHTML(html)
             const block = contentState.getFirstBlock()
             const selection = SelectionState.createEmpty(block.getKey())
                 .set('anchorOffset', 1)
                 .set('focusOffset', 2)
-            const entityKey = getSelectedEntityKey(contentState, selection)
+            const entityKey = utils.getSelectedEntityKey(contentState, selection)
             expect(entityKey).toBe(block.getEntityAt(0))
         })
 
         it('should return falsy value when cursor is right before the entity', () => {
             const html = '<a href="http://google.com">link</a>'
-            const contentState = convertFromHTML(html)
+            const contentState = utils.convertFromHTML(html)
             const block = contentState.getFirstBlock()
             const selection = SelectionState.createEmpty(block.getKey())
-            const entityKey = getSelectedEntityKey(contentState, selection)
+            const entityKey = utils.getSelectedEntityKey(contentState, selection)
             expect(entityKey).toBeFalsy()
         })
 
         it('should return entity key when cursor is right after the entity', () => {
             const html = '<a href="http://google.com">link</a>'
-            const contentState = convertFromHTML(html)
+            const contentState = utils.convertFromHTML(html)
             const block = contentState.getFirstBlock()
             const selection = SelectionState.createEmpty(block.getKey())
                 .set('anchorOffset', 4)
                 .set('focusOffset', 4)
-            const entityKey = getSelectedEntityKey(contentState, selection)
+            const entityKey = utils.getSelectedEntityKey(contentState, selection)
             expect(entityKey).toBe(block.getEntityAt(0))
         })
 
         it('should return falsy value when cursor is outside the entity', () => {
             const html = '<a href="http://google.com">link</a> '
-            const contentState = convertFromHTML(html)
+            const contentState = utils.convertFromHTML(html)
             const block = contentState.getFirstBlock()
             const selection = SelectionState.createEmpty(block.getKey())
                 .set('anchorOffset', 5)
                 .set('focusOffset', 5)
-            const entityKey = getSelectedEntityKey(contentState, selection)
+            const entityKey = utils.getSelectedEntityKey(contentState, selection)
             expect(entityKey).toBeFalsy()
         })
 
         it('should return falsy value when more than the entity is selected', () => {
             const html = 'foo <a href="http://google.com">link</a> bar'
-            const contentState = convertFromHTML(html)
+            const contentState = utils.convertFromHTML(html)
             const block = contentState.getFirstBlock()
             const selection = SelectionState.createEmpty(block.getKey()).set('focusOffset', 9)
-            const entityKey = getSelectedEntityKey(contentState, selection)
+            const entityKey = utils.getSelectedEntityKey(contentState, selection)
             expect(entityKey).toBeFalsy()
         })
     })
 
     describe('removeMentions', () => {
         it('should remove only mentions', () => {
-            let contentState = convertFromHTML('@Foo <a href="http://gorgias.io">Gorgias</a>')
+            let contentState = utils.convertFromHTML('@Foo <a href="http://gorgias.io">Gorgias</a>')
             contentState = contentState.createEntity('mention', 'SEGMENTED')
             const entityKey = contentState.getLastCreatedEntityKey()
             const selection = SelectionState
@@ -247,13 +254,42 @@ describe('editor utils', () => {
                 selection,
                 '@Foo',
                 null, // no inline style needed
-                entityKey
+                entityKey,
             )
             const editorState = EditorState.createWithContent(contentState)
-            const newEditorState = removeMentions(editorState)
+            const newEditorState = utils.removeMentions(editorState)
             const newBlock = newEditorState.getCurrentContent().getFirstBlock()
             expect(newBlock.getEntityAt(0)).toBe(null)
             expect(newBlock.getEntityAt(5)).not.toBe(null)
+        })
+    })
+
+    describe('refreshEditor', () => {
+        it('should create a copy that doesnt pass the equality check', () => {
+            const contentState = ContentState.createFromText('foo bar baz')
+            const decorators = new CompositeDecorator([{
+                strategy: (contentBlock: ContentBlock, callback) => callback(0, 1),
+                component: (props: { children: React.Node }) => <span>{props.children}</span>,
+            }])
+            let editorState = EditorState.createWithContent(contentState, decorators)
+            const updatedContentState = Modifier.insertText(
+                contentState,
+                editorState.getSelection(),
+                'abc',
+            )
+            editorState = EditorState.push(
+                editorState,
+                updatedContentState,
+                'insert-characters',
+            )
+            const newEditorState = utils.refreshEditor(editorState)
+            expect(newEditorState).not.toBe(editorState)
+            expect(newEditorState.getSelection()).toBe(editorState.getSelection())
+            expect(newEditorState.getCurrentContent()).toBe(editorState.getCurrentContent())
+            expect(newEditorState.getDecorator()).toBe(decorators)
+            expect(newEditorState.getRedoStack()).toBe(editorState.getRedoStack())
+            expect(newEditorState.getUndoStack()).toBe(editorState.getUndoStack())
+            expect(newEditorState.getLastChangeType()).toBe(editorState.getLastChangeType())
         })
     })
 })

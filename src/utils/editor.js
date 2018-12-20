@@ -251,3 +251,14 @@ export function removeMentions (editorState: EditorState): EditorState {
     const newEditorState = convertFromHTML(convertToHTML(contentState))
     return EditorState.push(editorState, newEditorState, 'change-block-data')
 }
+
+export function refreshEditor (editorState: EditorState): EditorState {
+    const contentState = editorState.getCurrentContent()
+    const newEditorState = EditorState.createWithContent(contentState, editorState.getDecorator())
+    return EditorState.set(newEditorState, {
+        selection: editorState.getSelection(),
+        undoStack: editorState.getUndoStack(),
+        redoStack: editorState.getRedoStack(),
+        lastChangeType: editorState.getLastChangeType()
+    })
+}

@@ -22,7 +22,7 @@ import type {ActionName} from '../../draftjs/plugins/toolbar/types'
 import provideToolbarPlugin, {type InjectedProps as ToolbarPluginProps} from './provideToolbarPlugin'
 import provideMentionFilteredSuggestions, {type InjectedProps as MentionFilteredSuggestionsProps} from './provideMentionSearchResults'
 import {type Plugin} from '../../draftjs/plugins/types'
-import {contentStateFromTextOrHTML, removeMentions} from '../../../../utils/editor'
+import {contentStateFromTextOrHTML, removeMentions, refreshEditor} from '../../../../utils/editor'
 
 type suggestionsType = List<*>
 type canAddMentionType = boolean
@@ -130,7 +130,7 @@ export class RichFieldEditor extends InputField<Props, State> {
 
         // Force re-render since decorators depend on displayed actions
         if (!_isEqual(prevProps.displayedActions, this.props.displayedActions)) {
-            editorState = EditorState.forceSelection(editorState, editorState.getSelection())
+            editorState = refreshEditor(editorState)
         }
 
         if (editorState !== this.props.editorState) {
