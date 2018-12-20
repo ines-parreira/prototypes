@@ -47,7 +47,7 @@ type Props = {
     fetchMacros: fetchMacrosType,
     activeView: Map<*,*>,
     currentMacro: Map<*,*>,
-    toggleCreateMacro: (T?: boolean) => Promise<*>,
+    toggleCreateMacro?: (T?: boolean) => Promise<*>,
     onSearch: (S: string, F?: boolean) => void,
     search: string,
     firstLoad: boolean,
@@ -117,7 +117,8 @@ export default class MacroModal extends React.Component<Props, State> {
     }
 
     _addNewMacro = () => {
-        this.props.toggleCreateMacro(true).then(() => {
+        const { toggleCreateMacro } = this.props
+        toggleCreateMacro && toggleCreateMacro(true).then(() => {
             this._setName(this.props.currentMacro.get('name'))
             this._setActions(this.props.currentMacro.get('actions'))
         })

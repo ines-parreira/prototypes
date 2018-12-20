@@ -23,7 +23,7 @@ type Props = {
     },
     closeModal: () => void,
     isCreatingMacro: boolean,
-    toggleCreateMacro: (T?: boolean) => Promise<*>,
+    toggleCreateMacro?: (T?: boolean) => Promise<*>,
      // macro to select when modal opens, selects first macro of list otherwise
     selectedMacro: Map<*,*>,
     selectedItemsIds: List<*>,
@@ -97,7 +97,7 @@ class MacroContainer extends React.Component<Props, State> {
     }
 
     _handleClickItem = (macroId) => {
-        this.props.toggleCreateMacro(false)
+        this.props.toggleCreateMacro && this.props.toggleCreateMacro(false)
         this.setState({selectedMacroId: macroId})
     }
 
