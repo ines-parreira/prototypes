@@ -16,7 +16,7 @@ type Props = {
     actions: Object,
     onChange: (any) => void,
     value: string,
-    className: ?string
+    className?: string
 }
 
 type State = {

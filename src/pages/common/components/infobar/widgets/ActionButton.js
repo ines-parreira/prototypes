@@ -196,7 +196,7 @@ export default class ActionButton extends React.Component<Props, State> {
         })
     }, 100, {leading: true, trailing: false})
 
-    _updateActionName = (actionName: string) => {
+    _updateActionName = (actionName: string | number) => {
         const currentOption = this.props.options.find((option) => option.value === actionName)
         const parameters = {}
 
@@ -327,7 +327,10 @@ export default class ActionButton extends React.Component<Props, State> {
                                         style={{marginBottom: '1rem'}}
                                         onChange={this._updateActionName}
                                         value={actionName}
-                                        options={options}
+                                        options={options.map((option: OptionType) => ({
+                                            value: option.value,
+                                            label: option.label
+                                        }))}
                                     />
                                 ] : null
                             }

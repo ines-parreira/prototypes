@@ -1,10 +1,6 @@
-import React, {Component, PropTypes} from 'react'
-import {
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-    UncontrolledDropdown,
-} from 'reactstrap'
+//@flow
+import React, {Component, type Node} from 'react'
+import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap'
 import classnames from 'classnames'
 import _max from 'lodash/max'
 import _min from 'lodash/min'
@@ -16,28 +12,36 @@ const APPROXIMATE_CHAR_WIDTH = 8
 const ARROW_ICON_WIDTH = 10
 const MAXIMUM_MIN_WIDTH = 305
 
+type Value = number | string
 
-export default class SelectField extends Component {
-    static propTypes = {
-        allowCustomValue: PropTypes.bool.isRequired,
-        options: PropTypes.arrayOf(PropTypes.shape({
-            value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-            text: PropTypes.string, // text used to filter with the search value
-            label: PropTypes.oneOfType([PropTypes.element, PropTypes.string]).isRequired, // text displayed in the dropdown
-        })),
-        placeholder: PropTypes.string,
-        singular: PropTypes.string,
-        style: PropTypes.object,
-        rightAddon: PropTypes.string,
-        value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+type Option = {
+    value: Value,
+    text?: string, // text used to filter with the search value
+    label?: Node | string, // text displayed in the dropdown
+}
 
-        onChange: PropTypes.func.isRequired,
-        onSearchChange: PropTypes.func,
-        className: PropTypes.string,
+type Props = {
+    allowCustomValue: boolean,
+    options: Option[],
+    placeholder: string,
+    singular: string,
+    style: {},
+    rightAddon?: string,
+    value: Value,
+    onChange: Value => void,
+    onSearchChange: string => void,
+    className?: string,
+    fixedWidth: boolean
+}
 
-        fixedWidth: PropTypes.bool
-    }
+type State = {
+    input: string,
+    optionsOpen: boolean,
+    selectedOptionIndex: number,
+    filteredOptions: Option[]
+}
 
+export default class SelectField extends Component<Props, State> {
     static defaultProps = {
         allowCustomValue: false,
         options: [],
@@ -48,12 +52,12 @@ export default class SelectField extends Component {
         fixedWidth: false
     }
 
-    constructor(props) {
+    constructor(props: Props) {
         super(props)
         this.state = this._initialState(props)
     }
 
-    _initialState = (props) => {
+    _initialState = (props: Props): State => {
         return {
             input: '',
             optionsOpen: false,
@@ -62,7 +66,7 @@ export default class SelectField extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         const hasNewOptions = this.props.options.length !== nextProps.options.length ||
             !!nextProps.options.filter((option) => !this.props.options.includes(option))
 
@@ -73,17 +77,18 @@ export default class SelectField extends Component {
         }
     }
 
-    _filterOptions = (options, value, input) => {
+    _filterOptions = (options: Option[], value: Value, input: string): Option[] => {
         return options.filter((option) => {
             const searchableText = option.text ? option.text : option.label
 
             return option.value !== value &&
-                (!input || searchableText.toLowerCase().includes(input.toLowerCase()))
+                (!input || (typeof searchableText === 'string' && searchableText.toLowerCase().includes(input.toLowerCase())))
         })
     }
 
-    _onSearchChange = ({target: {value: input}}) => {
+    _onSearchChange = (event: SyntheticEvent<HTMLInputElement>) => {
         const {allowCustomValue, options, value} = this.props
+        const input = event.currentTarget.value
         this.setState({
             input: input,
             filteredOptions: this._filterOptions(options, value, input),
@@ -93,7 +98,7 @@ export default class SelectField extends Component {
         this.props.onSearchChange(input)
     }
 
-    _stopPropagation = (event) => {
+    _stopPropagation = (event: SyntheticEvent<*>) => {
         if (!event) {
             return
         }
@@ -102,7 +107,7 @@ export default class SelectField extends Component {
         event.preventDefault()
     }
 
-    _onSearchKeyDown = (event) => {
+    _onSearchKeyDown = (event: SyntheticKeyboardEvent<HTMLInputElement>) => {
         const {allowCustomValue, onChange} = this.props
         const {input, filteredOptions, selectedOptionIndex} = this.state
         const key = event.key
@@ -153,7 +158,7 @@ export default class SelectField extends Component {
         this.setState({optionsOpen: !optionsOpen})
     }
 
-    _onOptionClick = (event, value) => {
+    _onOptionClick = (event: SyntheticEvent<*>, value: Value) => {
         this._stopPropagation(event)
         this.props.onChange(value)
         this._toggleDropdown()
@@ -189,7 +194,15 @@ export default class SelectField extends Component {
         // we use this value to increase the min width of the input, and
         // the label to increase or decrease according to its content
         let selectMinWidth = fixedWidth
-            ? _max(options.map((option) => option.label.length)) * APPROXIMATE_CHAR_WIDTH + ARROW_ICON_WIDTH
+            ? _max(options.map((option: Option) => {
+                if (typeof option.label === 'string') {
+                    return option.label.length
+                }
+                if (option.text) {
+                    return option.text.length
+                }
+                return 0
+            })) * APPROXIMATE_CHAR_WIDTH + ARROW_ICON_WIDTH
             : _min([input.length * APPROXIMATE_CHAR_WIDTH + ARROW_ICON_WIDTH, MAXIMUM_MIN_WIDTH])
 
         return (

@@ -115,12 +115,12 @@ describe('SelectField', () => {
         const component = wrapper.instance()
 
         component._onSearchChange({
-            target: {value: 'hello'}
+            currentTarget: {value: 'hello'}
         })
         expect(wrapper.state()).toMatchSnapshot()
 
         component._onSearchChange({
-            target: {value: ''}
+            currentTarget: {value: ''}
         })
         expect(wrapper.state()).toMatchSnapshot()
     })
@@ -142,14 +142,40 @@ describe('SelectField', () => {
         )
         const component = wrapper.instance()
         component._onSearchChange({
-            target: {value: 'hello'}
+            currentTarget: {value: 'hello'}
         })
         expect(wrapper.state()).toMatchSnapshot()
 
         component._onSearchChange({
-            target: {value: ''}
+            currentTarget: {value: ''}
         })
         expect(wrapper.state()).toMatchSnapshot()
+    })
+
+    it('should handle search on mixed label type options', () => {
+        const options = [{
+            value: 'hello1',
+            label: <i>Hello1</i>
+        }, {
+            value: 'hello2',
+            text: 'Hello2',
+            label: <b>Hello2</b>
+        }]
+
+        const wrapper = mount(
+            <SelectField
+                {...minProps}
+                options={options}
+            />
+        )
+
+        wrapper.instance()._onSearchChange({
+            currentTarget: {value: 'hello'}
+        })
+
+        const items = wrapper.find('DropdownItem')
+        expect(items).toHaveLength(1)
+        expect(items.at(0)).toHaveText('Hello2')
     })
 
     it('should reset state on blur', () => {
@@ -163,7 +189,7 @@ describe('SelectField', () => {
 
         component._focusInput()
         component._onSearchChange({
-            target: {value: ''}
+            currentTarget: {value: ''}
         })
         component._blurInput()
         expect(wrapper.state()).toMatchSnapshot()
@@ -224,7 +250,7 @@ describe('SelectField', () => {
         )
         const component = wrapper.instance()
         component._onSearchChange({
-            target: {value: 'hello'}
+            currentTarget: {value: 'hello'}
         })
         component._stopPropagation = stopPropagationSpy
         wrapper.find('button').first().simulate('click')
@@ -246,7 +272,7 @@ describe('SelectField', () => {
             const component = wrapper.instance()
 
             component._onSearchChange({
-                target: {value: 'hello'}
+                currentTarget: {value: 'hello'}
             })
 
             component._toggleDropdown()
@@ -321,7 +347,7 @@ describe('SelectField', () => {
                 const component = wrapper.instance()
 
                 component._onSearchChange({
-                    target: {value: 'custom value'}
+                    currentTarget: {value: 'custom value'}
                 })
                 wrapper.find('input').simulate('keyDown', {key})
 

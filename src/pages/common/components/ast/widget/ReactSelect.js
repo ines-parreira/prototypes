@@ -9,7 +9,7 @@ import 'react-select/dist/react-select.css'
 import SelectField from '../../../forms/SelectField'
 
 type Props = {
-    className: ?string,
+    className?: string,
     onChange: (any) => void,
     options: any,
     value: any,
@@ -44,10 +44,10 @@ export default class Select extends React.Component<Props> {
             }
         }
         // order alphabetically
-        return sortBy(options, (o) => o.label.toLowerCase())
+        return sortBy(options, (option) => typeof option.label === 'string' && option.label.toLowerCase())
     }
 
-    _onChange = (value: string) => {
+    _onChange = (value: string | number) => {
         let val = value
         // We can't have boolean values so we're transforming them just before sending
         if (val === 'true') {

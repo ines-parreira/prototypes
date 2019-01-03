@@ -461,28 +461,10 @@ exports[`ActionButton component should display multiple options with a common pa
             Array [
               Object {
                 "label": "My little action",
-                "parameters": Array [
-                  Object {
-                    "defaultValue": "hello",
-                    "name": "param",
-                    "placeholder": "Just a param",
-                    "required": true,
-                    "type": "text",
-                  },
-                ],
                 "value": "myLittleAction",
               },
               Object {
                 "label": "My big action",
-                "parameters": Array [
-                  Object {
-                    "defaultValue": "hello",
-                    "name": "param",
-                    "placeholder": "Just a param",
-                    "required": true,
-                    "type": "text",
-                  },
-                ],
                 "value": "myBigAction",
               },
             ]
@@ -612,27 +594,10 @@ exports[`ActionButton component should display multiple options with different p
             Array [
               Object {
                 "label": "My little action",
-                "parameters": Array [
-                  Object {
-                    "defaultValue": "hello",
-                    "name": "param",
-                    "placeholder": "Just a param",
-                    "required": true,
-                    "type": "text",
-                  },
-                ],
                 "value": "myLittleAction",
               },
               Object {
                 "label": "My big action",
-                "parameters": Array [
-                  Object {
-                    "defaultValue": true,
-                    "label": "Execute the action for real",
-                    "name": "param",
-                    "type": "checkbox",
-                  },
-                ],
                 "value": "myBigAction",
               },
             ]

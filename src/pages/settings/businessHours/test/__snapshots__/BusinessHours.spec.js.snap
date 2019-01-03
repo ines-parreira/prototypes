@@ -289,18 +289,21 @@ exports[`BusinessHours component should render values from state 1`] = `
                                       "label": <i>
                                         Everyday
                                   </i>,
+                                      "text": "Everyday",
                                       "value": "1,2,3,4,5,6,7",
                                     },
                                     Object {
                                       "label": <i>
                                         Weekdays
                                   </i>,
+                                      "text": "Weekdays",
                                       "value": "1,2,3,4,5",
                                     },
                                     Object {
                                       "label": <i>
                                         Weekend
                                   </i>,
+                                      "text": "Weekend",
                                       "value": "6,7",
                                     },
                                     Object {
@@ -679,18 +682,21 @@ exports[`BusinessHours component should render values from state 1`] = `
                                       "label": <i>
                                         Everyday
                                   </i>,
+                                      "text": "Everyday",
                                       "value": "1,2,3,4,5,6,7",
                                     },
                                     Object {
                                       "label": <i>
                                         Weekdays
                                   </i>,
+                                      "text": "Weekdays",
                                       "value": "1,2,3,4,5",
                                     },
                                     Object {
                                       "label": <i>
                                         Weekend
                                   </i>,
+                                      "text": "Weekend",
                                       "value": "6,7",
                                     },
                                     Object {

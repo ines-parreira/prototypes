@@ -8,9 +8,9 @@ export const DEFAULT_BUSINESS_HOUR = fromJS({
 })
 
 export const DAYS_OPTIONS = fromJS([
-    {label: <i>Everyday</i>, value: '1,2,3,4,5,6,7'},
-    {label: <i>Weekdays</i>, value: '1,2,3,4,5'},
-    {label: <i>Weekend</i>, value: '6,7'},
+    {label: <i>Everyday</i>, text: 'Everyday', value: '1,2,3,4,5,6,7'},
+    {label: <i>Weekdays</i>, text: 'Weekdays', value: '1,2,3,4,5'},
+    {label: <i>Weekend</i>, text: 'Weekend', value: '6,7'},
     {label: 'Monday', value: '1'},
     {label: 'Tuesday', value: '2'},
     {label: 'Wednesday', value: '3'},

@@ -3,7 +3,6 @@ import React from 'react'
 import {List, Map, fromJS} from 'immutable'
 import InputField from '../../../forms/InputField'
 
-
 type Props = {
     onChange: () => void,
     options: Array<*> | List<*>,
