@@ -111,6 +111,7 @@ export const CustomerLabel = ({customer}: CustomerLabelParamType) => {
         <span>{customersHelpers.getDisplayName(customer)}</span>
     )
 }
+CustomerLabel.displayName = 'CustomerLabel'
 
 /**
  * TAG
@@ -119,7 +120,7 @@ type TagLabelParamType = {
     style: {
         color?: string
     },
-    decoration?: Map<*,*>,
+    decoration?: Map<*, *>,
     children?: Node,
 }
 export const TagLabel = ({decoration, children, style}: TagLabelParamType) => {
@@ -137,6 +138,7 @@ export const TagLabel = ({decoration, children, style}: TagLabelParamType) => {
 TagLabel.defaultProps = {
     style: {},
 }
+TagLabel.displayName = 'TagLabel'
 
 /**
  * STATUS
@@ -168,11 +170,12 @@ export const StatusLabel = ({status, ...rest}: StatusLabelParam) => {
         </Badge>
     )
 }
+StatusLabel.displayName = 'StatusLabel'
 
 /**
  * CHANNEL
  */
-export const ChannelLabel = ({channel}: {channel: string}) => (
+export const ChannelLabel = ({channel}: { channel: string }) => (
     <SourceIcon
         type={channel}
         className="text-secondary"
@@ -182,7 +185,7 @@ export const ChannelLabel = ({channel}: {channel: string}) => (
 /**
  *  Source DETAIL
  */
-export const IntegrationsDetailLabel = ({integration}: {integration: Map<*,*>}) => {
+export const IntegrationsDetailLabel = ({integration}: { integration: Map<*, *> }) => {
     const type = integration.get('type')
     let label = integration.get('name', integration.get('address'))
     let address = integration.get('address') || integration.getIn(['meta', 'address'])
@@ -203,11 +206,12 @@ export const IntegrationsDetailLabel = ({integration}: {integration: Map<*,*>}) 
         </span>
     )
 }
+IntegrationsDetailLabel.displayName = 'IntegrationsDetailLabel'
 
 /**
  * ROLE
  */
-export const RoleLabel = ({roles = 'user'}: {roles: string}) => {
+export const RoleLabel = ({roles = 'user'}: { roles: string }) => {
     roles = toJS(roles)
 
     if (!_isArray(roles)) {
@@ -247,6 +251,7 @@ export const RoleLabel = ({roles = 'user'}: {roles: string}) => {
         </Badge>
     )
 }
+RoleLabel.displayName = 'RoleLabel'
 
 /**
  * DATETIME
@@ -256,6 +261,7 @@ type DatetimeLabelProps = {
     labelFormat?: string,
     timezone?: string,
 }
+
 export class DatetimeLabel extends React.Component<DatetimeLabelProps> {
     id: string
 
@@ -297,9 +303,10 @@ const mapStateToProps = (state) => ({
 connect(mapStateToProps)(DatetimeLabel)
 
 type RenderLabelProps = {
-    field: Map<*,*>,
+    field: Map<*, *>,
     value?: any,
 }
+
 export class RenderLabel extends React.Component<RenderLabelProps> {
     render() {
         const {field, value} = this.props

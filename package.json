@@ -10,11 +10,11 @@
     "lint": "eslint --quiet g/static/private/js",
     "quality": "npm run lint && npm run types",
     "pretest": "npm run quality",
+    "pretest:cover": "npm run quality",
     "jest": "TZ=America/Creston jest",
     "test": "npm run jest",
     "test:debug": "TZ=America/Creston node --inspect-brk ./node_modules/.bin/jest -i",
-    "pretest:cover": "npm run quality",
-    "test:cover": "npm run jest --coverage",
+    "test:cover": "npm run jest -- --coverage",
     "test:update": "npm run jest -- -u",
     "test:watch": "npm test -- --watch",
     "dll": "webpack --env.dll",
@@ -132,11 +132,15 @@
   },
   "jest": {
     "collectCoverageFrom": [
-      "g/static/**/*.js",
+      "g/static/private/**/*.js",
       "!**/node_modules/**",
       "!**/vendor/**",
       "!**/bower_components/**",
       "!**/_build/**"
+    ],
+    "coverageDirectory": "coverage/jest",
+    "coverageReporters": [
+      "lcov"
     ],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/g/static/private/js/test/__mocks__/fileMock.js",
