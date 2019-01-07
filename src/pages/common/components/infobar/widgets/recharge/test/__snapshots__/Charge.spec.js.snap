@@ -178,7 +178,7 @@ exports[`Charge SubscriptionAfterTitle should display the skipCharge action if t
           </i>
           Skip charge on subscription
     </div>,
-        "tooltip": "Skip the charge for this subscription on Recharge",
+        "tooltip": "Skip the charge for this subscription on Recharge. No order will be created and no item will be shipped.",
       },
     ]
   }
@@ -218,7 +218,7 @@ exports[`Charge SubscriptionAfterTitle should display the skipCharge action with
           </i>
           Skip charge on subscription
     </div>,
-        "tooltip": "Skip the charge for this subscription on Recharge",
+        "tooltip": "Skip the charge for this subscription on Recharge. No order will be created and no item will be shipped.",
       },
     ]
   }
@@ -258,7 +258,7 @@ exports[`Charge SubscriptionAfterTitle should not display the skipCharge action 
           </i>
           Skip charge on subscription
     </div>,
-        "tooltip": "Skip the charge for this subscription on Recharge",
+        "tooltip": "Skip the charge for this subscription on Recharge. No order will be created and no item will be shipped.",
       },
     ]
   }

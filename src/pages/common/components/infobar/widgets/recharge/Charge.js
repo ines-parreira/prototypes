@@ -50,7 +50,8 @@ export class SubscriptionAfterTitle extends React.Component { // eslint-disable-
             {
                 key: 'skip',
                 options: [{value: 'rechargeSkipCharge'}],
-                tooltip: 'Skip the charge for this subscription on Recharge',
+                tooltip: 'Skip the charge for this subscription on Recharge. ' +
+                    'No order will be created and no item will be shipped.',
                 title: (
                     <div>
                         <i className="material-icons mr-1">
