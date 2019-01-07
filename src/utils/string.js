@@ -18,8 +18,8 @@ export const removeSuffix = (data: string, suffix: string): string => {
 /**
  * Count lines of a text
  *
- * @param {string} text - the text for which we want to count lines
- * @returns {number} - the number of lines in the given text
+ * @param {string} text: the text for which we want to count lines
+ * @returns {number}: the number of lines in the given text
  */
 export const countLines = (text: string): number => {
     if (!_isString(text)) {

@@ -24,6 +24,7 @@ import Tooltip from '../../../common/components/Tooltip'
 import css from './TicketMessage.less'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
+import {EMAIL_CHANNEL, INTERNAL_NOTE_SOURCE} from '../../../../config/ticket'
 
 const classnames = classnamesBind.bind(css)
 
@@ -243,6 +244,7 @@ export class TicketMessage extends React.Component {
 
         let sentViaLabel
         let sentViaLink
+        let sentViaPronoun = 'a '
 
         if (message.via === 'rule') {
             sentViaLabel = 'Rule'
@@ -250,26 +252,33 @@ export class TicketMessage extends React.Component {
         } else if (message.meta && message.meta.campaign_id) {
             sentViaLabel = 'Campaign'
             sentViaLink = `/app/settings/integrations/smooch_inside/${message.integration_id}/campaigns/${message.meta.campaign_id}`
+        } else if (message.source.type === INTERNAL_NOTE_SOURCE && message.via === EMAIL_CHANNEL) {
+            sentViaLabel = 'email'
+            sentViaPronoun = ''
         }
 
-        if (sentViaLabel && sentViaLink) {
+        if (sentViaLabel) {
             widgets.push(
                 <span
                     key="via-widget"
                     className={classnames(css.from, 'd-none d-md-inline-block')}
                 >
-                    sent via a{' '}
-                    <b>
-                        <Link
-                            tag="a"
-                            to={sentViaLink}
-                        >
-                            <i className="material-icons mr-1">
-                                settings
-                            </i>
-                            {sentViaLabel}
-                        </Link>
-                    </b>
+                    sent via{sentViaPronoun? ` ${sentViaPronoun} ` : ' '}
+                    {
+                        sentViaLink ? (
+                            <b>
+                                <Link
+                                    tag="a"
+                                    to={sentViaLink}
+                                >
+                                    <i className="material-icons mr-1">
+                                        settings
+                                    </i>
+                                    {sentViaLabel}
+                                </Link>
+                            </b>
+                        ) : sentViaLabel
+                    }
                 </span>
             )
         }
