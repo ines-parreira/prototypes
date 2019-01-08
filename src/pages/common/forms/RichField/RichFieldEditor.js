@@ -22,7 +22,7 @@ import type {ActionName} from '../../draftjs/plugins/toolbar/types'
 import provideToolbarPlugin, {type InjectedProps as ToolbarPluginProps} from './provideToolbarPlugin'
 import provideMentionFilteredSuggestions, {type InjectedProps as MentionFilteredSuggestionsProps} from './provideMentionSearchResults'
 import {type Plugin} from '../../draftjs/plugins/types'
-import {contentStateFromTextOrHTML, removeMentions, refreshEditor} from '../../../../utils/editor'
+import {contentStateFromTextOrHTML, isValidSelectionKey, refreshEditor, removeMentions} from '../../../../utils/editor'
 
 type suggestionsType = List<*>
 type canAddMentionType = boolean
@@ -141,6 +141,12 @@ export class RichFieldEditor extends InputField<Props, State> {
             this._focusEditor()
         }
 
+        // Force focus if content state was modified externally
+        // Related bug: https://github.com/gorgias/gorgias/issues/4042
+        // Underlying draft.js issue: https://github.com/facebook/draft-js/issues/1971
+        if (this.props.isFocused && !isValidSelectionKey(editorState, prevProps.editorState.getSelection())) {
+            this._focusEditor()
+        }
     }
 
     _getAttachFiles = () => this.props.attachFiles
@@ -236,7 +242,6 @@ export class RichFieldEditor extends InputField<Props, State> {
     _getField = () => {
         const {required, alertMode, alertText, displayOnly, signature} = this.props
         const {MentionSuggestions} = this.mentionPlugin
-
         return (
             <div
                 className={classnames('rich-textarea-wrapper', {

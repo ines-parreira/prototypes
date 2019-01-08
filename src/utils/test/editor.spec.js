@@ -1,3 +1,4 @@
+//@flow
 import {
     AtomicBlockUtils,
     CompositeDecorator,
@@ -8,7 +9,8 @@ import {
     SelectionState,
 } from 'draft-js'
 import * as utils from '../editor'
-import React from 'react'
+import React, {type Node} from 'react'
+import {isValidSelectionKey} from '../editor'
 
 describe('editor utils', () => {
     describe('toHTML', () => {
@@ -269,7 +271,7 @@ describe('editor utils', () => {
             const contentState = ContentState.createFromText('foo bar baz')
             const decorators = new CompositeDecorator([{
                 strategy: (contentBlock: ContentBlock, callback) => callback(0, 1),
-                component: (props: { children: React.Node }) => <span>{props.children}</span>,
+                component: (props: { children: Node }) => <span>{props.children}</span>,
             }])
             let editorState = EditorState.createWithContent(contentState, decorators)
             const updatedContentState = Modifier.insertText(
@@ -290,6 +292,30 @@ describe('editor utils', () => {
             expect(newEditorState.getRedoStack()).toBe(editorState.getRedoStack())
             expect(newEditorState.getUndoStack()).toBe(editorState.getUndoStack())
             expect(newEditorState.getLastChangeType()).toBe(editorState.getLastChangeType())
+        })
+    })
+
+    describe('isValidSelectionKey', () => {
+        const editorState1 = EditorState.createWithContent(ContentState.createFromText('foo'))
+        const editorState2 = EditorState.createWithContent(ContentState.createFromText('bar'))
+
+        it('should return true for selection from the same editorState', () => {
+            expect(isValidSelectionKey(editorState1, editorState1.getSelection())).toBe(true)
+        })
+
+        it('should return false for selection from some other editorState', () => {
+            expect(isValidSelectionKey(editorState1, editorState2.getSelection())).toBe(false)
+        })
+
+        it('should return false if anchor key is valid but focus key is not', () => {
+            const selection = editorState1.getSelection().set('focusKey', 'blabla')
+            expect(isValidSelectionKey(editorState1, selection)).toBe(false)
+        })
+
+        it('should return false for selection not updated after pushing new state', () => {
+            const contentState = ContentState.createFromText('baz')
+            const newEditorState = EditorState.push(editorState1, contentState)
+            expect(isValidSelectionKey(newEditorState, editorState1.getSelection())).toBe(false)
         })
     })
 })

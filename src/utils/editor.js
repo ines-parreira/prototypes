@@ -262,3 +262,18 @@ export function refreshEditor (editorState: EditorState): EditorState {
         lastChangeType: editorState.getLastChangeType()
     })
 }
+
+export function isValidSelectionKey (editorState: EditorState, selectionState: SelectionState): boolean {
+    const contentState = editorState.getCurrentContent()
+    const anchorKey = selectionState.getAnchorKey()
+    if (!contentState.getBlockForKey(anchorKey)) {
+        return false
+    }
+
+    const focusKey = selectionState.getFocusKey()
+    if (anchorKey !== focusKey && !contentState.getBlockForKey(focusKey)) {
+        return false
+    }
+
+    return true
+}
