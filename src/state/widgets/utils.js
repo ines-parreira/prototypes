@@ -23,7 +23,6 @@ export function itemsWithContext(items: itemsType = fromJS([]), context: context
     // TODO(custoners-migration): update this line when we migrated widgets with a `user` context
     return items.filter((w) => {
         if (['customer', 'user'].includes(context)) {
-            console.log(['customer', 'user'].includes(w.get('context', '')))
             return ['customer', 'user'].includes(w.get('context', ''))
         }
         return w.get('context', '') === context
