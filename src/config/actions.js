@@ -33,6 +33,10 @@ export const actions = [{
     label: 'Cancel subscription',
     objectType: 'subscription',
 }, {
+    name: 'rechargeActivateSubscription',
+    label: 'Activate subscription',
+    objectType: 'subscription',
+}, {
     name: 'rechargeSkipCharge',
     label: 'Skip charge',
     objectType: 'charge',

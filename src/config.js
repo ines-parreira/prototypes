@@ -761,6 +761,37 @@ export const ACTION_TEMPLATES = [
                 error: 'The last subscription has already been cancelled.'
             }
         ]
+    },
+    {
+        execution: 'back',
+        integrationType: 'recharge',
+        name: 'rechargeActivateLastSubscription',
+        title: 'Activate last subscription',
+        arguments: {},
+        validators: [
+            {
+                validate: (customer: Object) => {
+                    return _find(customer.integrations, {'__integration_type__': 'recharge'})
+                },
+                error: 'This customer has no Recharge data.'
+            },
+            {
+                validate: (customer: Object) => {
+                    const rechargeIntegration = _find(customer.integrations, {'__integration_type__': 'recharge'})
+
+                    return _get(rechargeIntegration, ['subscriptions'])
+                },
+                error: 'This customer has no subscription to activate.'
+            },
+            {
+                validate: (customer: Object) => {
+                    const rechargeIntegration = _find(customer.integrations, {'__integration_type__': 'recharge'})
+
+                    return _get(rechargeIntegration, ['subscriptions', '0', 'cancelled_at']) !== null
+                },
+                error: 'The last subscription is already active.'
+            }
+        ]
     }
 ]
 

@@ -23,7 +23,7 @@ export default () => {
     }
 }
 
-class AfterTitle extends React.Component { // eslint-disable-line
+export class AfterTitle extends React.Component { // eslint-disable-line
     static propTypes = {
         isEditing: PropTypes.bool.isRequired,
         source: ImmutablePropTypes.map.isRequired,
@@ -35,14 +35,10 @@ class AfterTitle extends React.Component { // eslint-disable-line
     }
 
     render() {
-        const {source} = this.props
+        const {isEditing, source} = this.props
         const {integrationId, isSubscriptionCancelled} = this.context
 
-        if (this.props.isEditing) {
-            return null
-        }
-
-        if (!integrationId) {
+        if (isEditing || !integrationId) {
             return null
         }
 
@@ -67,17 +63,32 @@ class AfterTitle extends React.Component { // eslint-disable-line
                     </div>
                 )
             },
+            {
+                key: 'activate',
+                options: [{value: 'rechargeActivateSubscription'}],
+                title: (
+                    <div>
+                        <i className="material-icons mr-2">
+                            refresh
+                        </i>
+                        Activate subscription
+                    </div>
+                ),
+                child: (
+                    <div>
+                        <i className="material-icons mr-2">
+                            refresh
+                        </i>
+                        Activate
+                    </div>
+                )
+            },
         ]
 
-        let removed = []
-
-        if (isSubscriptionCancelled) {
-            removed = removed.concat(['cancel'])
-        }
+        let ignoredActions = [isSubscriptionCancelled ? 'cancel' : 'activate']
 
         // remove removed actions from list of available actions
-        actions = actions.filter((action) => !removed.includes(action.key))
-
+        actions = actions.filter((action) => !ignoredActions.includes(action.key))
         const payload = {
             subscription_id: source.get('id'),
         }

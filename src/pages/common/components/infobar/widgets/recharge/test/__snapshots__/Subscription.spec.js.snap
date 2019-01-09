@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Subscription AfterTitle should display only the activate action because the subscription is cancelled 1`] = `
+<ActionButtonsGroup
+  actions={
+    Array [
+      Object {
+        "child": <div>
+          <i
+                className="material-icons mr-2"
+          >
+                refresh
+          </i>
+          Activate
+    </div>,
+        "key": "activate",
+        "options": Array [
+          Object {
+            "value": "rechargeActivateSubscription",
+          },
+        ],
+        "title": <div>
+          <i
+                className="material-icons mr-2"
+          >
+                refresh
+          </i>
+          Activate subscription
+    </div>,
+      },
+    ]
+  }
+  payload={
+    Object {
+      "subscription_id": undefined,
+    }
+  }
+/>
+`;
+
+exports[`Subscription AfterTitle should display only the cancel action because the subscription is not cancelled 1`] = `
+<ActionButtonsGroup
+  actions={
+    Array [
+      Object {
+        "child": <div>
+          <i
+                className="material-icons mr-2"
+          >
+                refresh
+          </i>
+          Cancel
+    </div>,
+        "key": "cancel",
+        "options": Array [
+          Object {
+            "value": "rechargeCancelSubscription",
+          },
+        ],
+        "title": <div>
+          <i
+                className="material-icons mr-2"
+          >
+                refresh
+          </i>
+          Cancel subscription
+    </div>,
+      },
+    ]
+  }
+  payload={
+    Object {
+      "subscription_id": undefined,
+    }
+  }
+/>
+`;
