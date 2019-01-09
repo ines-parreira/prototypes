@@ -91,10 +91,10 @@ export const VARIABLES = [{
     name: 'Shopify',
     integration: true,
     children: [{
-        name: 'Last order\'s number',
+        name: 'Number of last order',
         value: '{{ticket.customer.integrations.shopify.orders[0].name}}',
     }, {
-        name: 'Last order\'s date',
+        name: 'Date of last order',
         value: '{{ticket.customer.integrations.shopify.orders[0].created_at|datetime_format("MMMM Do YYYY")}}',
     }, {
         name: 'Tracking url of last order',
@@ -115,7 +115,7 @@ export const VARIABLES = [{
         name: 'Destination country of last order',
         value: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.country}}'
     }, {
-        name: 'Last order\'s shipping address',
+        name: 'Shipping address of last order',
         value: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.address1}} {{ticket.customer.integrations.shopify.orders[0].shipping_address.address2}}, {{ticket.customer.integrations.shopify.orders[0].shipping_address.zip}} {{ticket.customer.integrations.shopify.orders[0].shipping_address.city}} {{ticket.customer.integrations.shopify.orders[0].shipping_address.province}}',
     }]
 }, {
@@ -123,8 +123,26 @@ export const VARIABLES = [{
     integration: true,
     name: 'Recharge',
     children: [{
-        name: 'Customer\'s hash',
+        name: 'Hash of customer',
         value: '{{ticket.customer.integrations.recharge.customer.hash}}',
+    }, {
+        name: 'Quantity of last subscription',
+        value: '{{ticket.customer.integrations.recharge.subscriptions[0].quantity}}',
+    }, {
+        name: 'Product title of last subscription',
+        value: '{{ticket.customer.integrations.recharge.subscriptions[0].product_title}}',
+    }, {
+        name: 'Order interval frequency of last subscription',
+        value: '{{ticket.customer.integrations.recharge.subscriptions[0].order_interval_frequency}}',
+    }, {
+        name: 'Order interval unit of last subscription',
+        value: '{{ticket.customer.integrations.recharge.subscriptions[0].order_interval_unit}}',
+    }, {
+        name: 'Price of last subscription',
+        value: '{{ticket.customer.integrations.recharge.subscriptions[0].price}}',
+    }, {
+        name: 'Scheduled date of next charge of last subscription',
+        value: '{{ticket.customer.integrations.recharge.subscriptions[0].next_charge_scheduled_at|datetime_format("L")}}',
     }]
 }, {
     type: 'smile',
@@ -198,7 +216,7 @@ export const PREVIOUS_VARIABLES = [{
     type: 'shopify',
     name: 'Shopify',
     children: [{
-        name: 'Last order\'s number',
+        name: 'Number of last order',
         value: '{{ticket.customer.integrations.shopify.orders[0].name}}',
     }, {
         name: 'Tracking url of last order',
@@ -219,7 +237,7 @@ export const PREVIOUS_VARIABLES = [{
         name: 'Destination country of last order',
         value: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.country}}'
     }, {
-        name: 'Last order\'s number',
+        name: 'Number of last order',
         value: '{{ticket.customer.integrations.shopify.orders[0].order_number}}',
     }, {
         name: 'Tracking urls of last order',
@@ -248,7 +266,7 @@ export const PREVIOUS_VARIABLES = [{
     integration: true,
     name: 'Recharge',
     children: [{
-        name: 'Customer\'s hash',
+        name: 'Hash of customer',
         value: '{{ticket.customer.integrations.recharge.customer.hash}}',
     }]
 }]
