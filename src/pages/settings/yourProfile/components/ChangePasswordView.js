@@ -8,6 +8,11 @@ import {Form, Button, Container} from 'reactstrap'
 import InputField from '../../../common/forms/InputField'
 import PageHeader from '../../../common/components/PageHeader'
 
+const USER_PASSWORD_MIN_LENGTH = 8
+const USER_PASSWORD_MAX_LENGTH = 128
+const USER_PASSWORD_VALIDATION_PATTERN = `.{${USER_PASSWORD_MIN_LENGTH},${USER_PASSWORD_MAX_LENGTH}}`
+
+
 class ChangePasswordView extends React.Component {
     state = {
         dirty: true,
@@ -91,7 +96,7 @@ class ChangePasswordView extends React.Component {
                             placeholder="Current password"
                             required
                             value={this.state.old_password}
-                            onChange={old_password => this._updateField({old_password})}
+                            onChange={(old_password) => this._updateField({old_password})}
                             error={this.state.errors.old_password}
                         />
                         <InputField
@@ -99,10 +104,11 @@ class ChangePasswordView extends React.Component {
                             name="new_password"
                             label="New password"
                             placeholder="New password"
-                            min="6"
+                            pattern={USER_PASSWORD_VALIDATION_PATTERN}
+                            title={`Password must be between ${USER_PASSWORD_MIN_LENGTH} and ${USER_PASSWORD_MAX_LENGTH} characters long.`}
                             required
                             value={this.state.new_password}
-                            onChange={new_password => this._updateField({new_password})}
+                            onChange={(new_password) => this._updateField({new_password})}
                             error={this.state.errors.new_password}
                         />
                         <InputField
@@ -110,10 +116,11 @@ class ChangePasswordView extends React.Component {
                             name="confirm_new_password"
                             label="Confirm new password"
                             placeholder="Confirm new password"
-                            min="6"
+                            pattern={USER_PASSWORD_VALIDATION_PATTERN}
+                            title={`Password must be between ${USER_PASSWORD_MIN_LENGTH} and ${USER_PASSWORD_MAX_LENGTH} characters long.`}
                             required
                             value={this.state.confirm_new_password}
-                            onChange={confirm_new_password => this._updateField({confirm_new_password})}
+                            onChange={(confirm_new_password) => this._updateField({confirm_new_password})}
                             error={this.state.errors.confirm_new_password}
                         />
 
