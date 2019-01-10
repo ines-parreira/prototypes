@@ -372,7 +372,7 @@ export const stats = fromJS({
             },
             median_resolution_time: {
                 tooltip: `The time between the first message from a customer and the moment the ticket
-                   has been closed by an agent or a rule. Only tickets with a least one response
+                   has been closed by an agent or a rule. Only tickets with at least one response
                    from an agent or a rule are taken into account. (median)`,
                 label: 'Resolution time',
             },
