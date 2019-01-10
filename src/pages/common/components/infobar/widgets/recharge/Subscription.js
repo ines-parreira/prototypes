@@ -156,7 +156,7 @@ class BeforeContent extends React.Component { // eslint-disable-line
         }
     }
 })
-class TitleWrapper extends React.Component { // eslint-disable-line
+export class TitleWrapper extends React.Component { // eslint-disable-line
     static propTypes = {
         children: PropTypes.node,
         source: ImmutablePropTypes.map.isRequired,
@@ -169,12 +169,14 @@ class TitleWrapper extends React.Component { // eslint-disable-line
 
     render() {
         const {children, source, getIntegrationData} = this.props
-        const customerHash = getIntegrationData(this.context.integration.get('id'), source.get('customer_id'))
+        const {integration} = this.context
+        const storeName = integration.getIn(['meta', 'store_name'])
+        const customerHash = getIntegrationData(integration.get('id'), source.get('customer_id'))
             .getIn(['customer', 'hash'])
 
         return (
             <a
-                href={`https://shopifysubscriptions.com/customers/${customerHash}/subscriptions/${source.get('id')}/`}
+                href={`https://${storeName}.myshopify.com/tools/recurring/customers/${customerHash}/subscriptions/${source.get('id')}/`}
                 target="_blank"
             >
                 {children}

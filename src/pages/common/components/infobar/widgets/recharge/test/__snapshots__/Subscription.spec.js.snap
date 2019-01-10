@@ -75,3 +75,10 @@ exports[`Subscription AfterTitle should display only the cancel action because t
   }
 />
 `;
+
+exports[`Subscription TitleWrapper should render 1`] = `
+<a
+  href="https://mystore.myshopify.com/tools/recurring/customers/asd1as2d3/subscriptions/789/"
+  target="_blank"
+/>
+`;

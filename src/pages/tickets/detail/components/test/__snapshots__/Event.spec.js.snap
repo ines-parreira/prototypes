@@ -27,7 +27,7 @@ exports[`Event component should display correctly a failed event for a Recharge 
          
          
         <a
-          href="https://my-store.myshopify.com/admin/apps/shopify-recurring-payments/customers/sd478fs57dfds4f1/subscriptions/items/6"
+          href="https://my-store.myshopify.com/tools/recurring/customers/sd478fs57dfds4f1/subscriptions/6"
           target="_blank"
         >
           8
@@ -156,7 +156,7 @@ exports[`Event component should display correctly a failed event for a Recharge 
          
          
         <a
-          href="https://my-store.myshopify.com/admin/apps/shopify-recurring-payments/customers/sd478fs57dfds4f1/subscriptions/items/6"
+          href="https://my-store.myshopify.com/tools/recurring/customers/sd478fs57dfds4f1/subscriptions/6"
           target="_blank"
         >
           6
@@ -534,7 +534,7 @@ exports[`Event component should display correctly a successful event for a Recha
          
          
         <a
-          href="https://my-store.myshopify.com/admin/apps/shopify-recurring-payments/customers/sd478fs57dfds4f1/subscriptions/items/6"
+          href="https://my-store.myshopify.com/tools/recurring/customers/sd478fs57dfds4f1/subscriptions/6"
           target="_blank"
         >
           8
@@ -652,7 +652,7 @@ exports[`Event component should display correctly a successful event for a Recha
          
          
         <a
-          href="https://my-store.myshopify.com/admin/apps/shopify-recurring-payments/customers/sd478fs57dfds4f1/subscriptions/items/6"
+          href="https://my-store.myshopify.com/tools/recurring/customers/sd478fs57dfds4f1/subscriptions/6"
           target="_blank"
         >
           6

@@ -165,7 +165,7 @@ export default class Event extends React.Component {
                     objectLabel += charge.get('id')
                 }
 
-                objectLink = `https://${storeName}.myshopify.com/admin/apps/shopify-recurring-payments/customers/${hash}/subscriptions/items/${subscription.get('id')}`
+                objectLink = `https://${storeName}.myshopify.com/tools/recurring/customers/${hash}/subscriptions/${subscription.get('id')}`
             }
         } else {
             actionLabel += ` #${payload.get('order_id')} (deleted integration)`
