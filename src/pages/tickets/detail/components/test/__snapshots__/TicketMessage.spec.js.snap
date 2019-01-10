@@ -411,6 +411,7 @@ exports[`TicketMessage component should add a -sent via email- label with no lin
         </div>
         <span
           className="from d-none d-md-inline-block"
+          key="via-widget"
         >
           sent via
            
