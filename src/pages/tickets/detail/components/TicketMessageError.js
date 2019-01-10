@@ -53,6 +53,13 @@ class TicketMessageError extends React.Component<Props, State> {
         loading: ''
     }
 
+    uid: number
+
+    constructor(props: Props) {
+        super(props)
+        this.uid = Date.now()
+    }
+
     retry = () => {
         const {
             message,
@@ -118,14 +125,12 @@ class TicketMessageError extends React.Component<Props, State> {
             cancel,
         } = this.props
 
-        const uid = Date.now()
-
         let retryButton = null
         let forceButton = null
         let cancelButton = null
 
         if (retry) {
-            const id = `retry-button-${uid}`
+            const id = `retry-button-${this.uid}`
 
             retryButton = (
                 <span className="mr-2">
@@ -137,7 +142,7 @@ class TicketMessageError extends React.Component<Props, State> {
                         color="danger"
                         onClick={this.retry}
                         className="mb-1 mb-lg-0"
-                        disabled={this.state.loading}
+                        disabled={!!this.state.loading}
                     >
                         <i className="material-icons md-1 mr-2">
                             cached
@@ -155,7 +160,7 @@ class TicketMessageError extends React.Component<Props, State> {
         }
 
         if (force) {
-            const id = `force-button-${uid}`
+            const id = `force-button-${this.uid}`
 
             forceButton = (
                 <span className="mr-2">
@@ -167,7 +172,7 @@ class TicketMessageError extends React.Component<Props, State> {
                         color="danger"
                         onClick={this.force}
                         className="mb-1 mb-lg-0"
-                        disabled={this.state.loading}
+                        disabled={!!this.state.loading}
                     >
                         <i className="material-icons md-1 mr-2">
                             chevron_right
@@ -185,7 +190,7 @@ class TicketMessageError extends React.Component<Props, State> {
         }
 
         if (cancel) {
-            const id = `cancel-button-${uid}`
+            const id = `cancel-button-${this.uid}`
 
             cancelButton = (
                 <span>
@@ -196,7 +201,7 @@ class TicketMessageError extends React.Component<Props, State> {
                         outline={this.state.loading !== CANCEL}
                         color="danger"
                         onClick={this.cancel}
-                        disabled={this.state.loading}
+                        disabled={!!this.state.loading}
                     >
                         <i className="material-icons md-1 mr-2">
                             not_interested

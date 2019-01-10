@@ -49,6 +49,7 @@ describe('Avatar component', () => {
         )
         // wait for image url to return
         global.jestSetTimeout(() => {
+            component.update()
             expect(component.find('img').length).toBe(1)
         }, 10, done)
     })

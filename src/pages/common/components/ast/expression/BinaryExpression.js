@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import Expression from './Expression'
 import Widget from '../Widget'
@@ -65,14 +66,14 @@ const BinaryExpression = ({ operator, left, right, rule, actions, schemas, paren
 }
 
 BinaryExpression.propTypes = {
-    rule: React.PropTypes.object.isRequired,
-    actions: React.PropTypes.object.isRequired,
-    left: React.PropTypes.object.isRequired,
-    leftsiblings: React.PropTypes.object.isRequired,
-    operator: React.PropTypes.object.isRequired,
-    parent: React.PropTypes.object.isRequired,
-    right: React.PropTypes.object.isRequired,
-    schemas: React.PropTypes.object.isRequired,
+    rule: PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired,
+    left: PropTypes.object.isRequired,
+    leftsiblings: PropTypes.object.isRequired,
+    operator: PropTypes.object.isRequired,
+    parent: PropTypes.object.isRequired,
+    right: PropTypes.object.isRequired,
+    schemas: PropTypes.object.isRequired,
 }
 
 export default BinaryExpression

@@ -228,6 +228,7 @@ exports[`UserAuditList component mounts correctly 1`] = `
                 created_datetime: "2018-01-01T00:00:00.000Z",
               }
             }
+            key="1"
           />
           <Connect(UserAuditRow)
             eventItem={
@@ -240,6 +241,7 @@ exports[`UserAuditList component mounts correctly 1`] = `
                 created_datetime: "2018-01-02T00:00:00.000Z",
               }
             }
+            key="2"
           />
           <Connect(UserAuditRow)
             eventItem={
@@ -252,6 +254,7 @@ exports[`UserAuditList component mounts correctly 1`] = `
                 created_datetime: "2018-01-03T00:00:00.000Z",
               }
             }
+            key="3"
           />
         </tbody>
       </Table>

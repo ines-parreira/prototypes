@@ -82,6 +82,7 @@ exports[`TicketAttachments component private should display both an error messag
   <a
     className="item hasPreview"
     href="http://gorgias.io/bar"
+    key="0"
     onClick={[Function]}
     style={
       Object {
@@ -112,6 +113,7 @@ exports[`TicketAttachments component private should display both an error messag
   <a
     className="item hasPreview"
     href="http://gorgias.io/foo"
+    key="1"
     onClick={[Function]}
     style={
       Object {
@@ -187,6 +189,7 @@ exports[`TicketAttachments component read-only should match snapshot 1`] = `
   <a
     className="item hasPreview"
     href="http://gorgias.io/bar"
+    key="0"
     onClick={[Function]}
     style={
       Object {
@@ -217,6 +220,7 @@ exports[`TicketAttachments component read-only should match snapshot 1`] = `
   <a
     className="item"
     href="foo"
+    key="1"
     onClick={[Function]}
     style={null}
     target="_blank"

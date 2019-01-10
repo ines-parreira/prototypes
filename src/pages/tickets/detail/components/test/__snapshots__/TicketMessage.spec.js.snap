@@ -103,6 +103,7 @@ exports[`TicketMessage component should add a -sent via a campaign- label with a
         </div>
         <span
           className="from d-none d-md-inline-block"
+          key="via-widget"
         >
           sent via
            a  
@@ -257,6 +258,7 @@ exports[`TicketMessage component should add a -sent via a rule- label with a lin
         </div>
         <span
           className="from d-none d-md-inline-block"
+          key="via-widget"
         >
           sent via
            a  

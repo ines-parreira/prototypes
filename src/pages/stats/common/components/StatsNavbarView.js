@@ -19,7 +19,7 @@ export default class StatsNavbarView extends React.Component {
                                     {view.get('name')}
                                 </Link>
                             )
-                        })}
+                        }).valueSeq().toArray()}
                     </div>
                 </div>
             </div>

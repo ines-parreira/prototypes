@@ -82,6 +82,7 @@ class Row extends React.Component<Props> {
                             <input
                                 type="checkbox"
                                 checked={isSelected}
+                                readOnly
                             />
                         </td>
                     ) : null

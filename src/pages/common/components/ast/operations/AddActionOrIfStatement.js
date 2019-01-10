@@ -1,5 +1,6 @@
 // @flow
 import React from 'react'
+import PropTypes from 'prop-types'
 import type {List} from 'immutable'
 import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 
@@ -139,7 +140,7 @@ type Props = {
 }
 
 AddActionOrIfStatement.contextTypes = {
-    hovered: React.PropTypes.bool,
+    hovered: PropTypes.bool,
 }
 
 export default Hoverable(AddActionOrIfStatement)

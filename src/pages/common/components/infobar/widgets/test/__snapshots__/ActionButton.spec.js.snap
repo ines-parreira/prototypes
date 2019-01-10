@@ -5,7 +5,7 @@ exports[`ActionButton component should display a single option with a checkbox p
   className="button action-button"
   color="secondary"
   disabled={false}
-  id="initialActionId"
+  id="myLittleAction-1-1-12"
   onClick={[Function]}
   size="sm"
   tag="button"
@@ -29,7 +29,7 @@ exports[`ActionButton component should display a single option with a checkbox p
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
-    target="initialActionId"
+    target="myLittleAction-1-1-12"
     tether={
       Object {
         "constraints": Array [
@@ -74,10 +74,12 @@ exports[`ActionButton component should display a single option with a checkbox p
       >
         <BooleanField
           className="mb-2"
+          key="param"
           label="Execute the action for real"
           name="param"
           onChange={[Function]}
           type="checkbox"
+          value={true}
         />
         <Button
           block={true}
@@ -97,7 +99,7 @@ exports[`ActionButton component should display a single option with a number par
   className="button action-button"
   color="secondary"
   disabled={false}
-  id="initialActionId"
+  id="myLittleAction-1-1-12"
   onClick={[Function]}
   size="sm"
   tag="button"
@@ -121,7 +123,7 @@ exports[`ActionButton component should display a single option with a number par
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
-    target="initialActionId"
+    target="myLittleAction-1-1-12"
     tether={
       Object {
         "constraints": Array [
@@ -166,6 +168,7 @@ exports[`ActionButton component should display a single option with a number par
       >
         <InputField
           className="mb-2"
+          key="param"
           max={9}
           min={2}
           name="param"
@@ -174,6 +177,7 @@ exports[`ActionButton component should display a single option with a number par
           required={true}
           step={0.1}
           type="number"
+          value={7}
         />
         <Button
           block={true}
@@ -193,7 +197,7 @@ exports[`ActionButton component should display a single option with a text param
   className="button action-button"
   color="secondary"
   disabled={false}
-  id="initialActionId"
+  id="myLittleAction-1-1-12"
   onClick={[Function]}
   size="sm"
   tag="button"
@@ -217,7 +221,7 @@ exports[`ActionButton component should display a single option with a text param
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
-    target="initialActionId"
+    target="myLittleAction-1-1-12"
     tether={
       Object {
         "constraints": Array [
@@ -262,11 +266,13 @@ exports[`ActionButton component should display a single option with a text param
       >
         <InputField
           className="mb-2"
+          key="param"
           name="param"
           onChange={[Function]}
           placeholder="Just a param"
           required={true}
           type="text"
+          value="hello"
         />
         <Button
           block={true}
@@ -286,7 +292,7 @@ exports[`ActionButton component should display a single option with no parameter
   className="button action-button"
   color="secondary"
   disabled={false}
-  id="initialActionId"
+  id="myLittleAction-1-1-12"
   onClick={[Function]}
   size="sm"
   tag="button"
@@ -310,7 +316,7 @@ exports[`ActionButton component should display a single option with no parameter
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
-    target="initialActionId"
+    target="myLittleAction-1-1-12"
     tether={
       Object {
         "constraints": Array [
@@ -371,7 +377,7 @@ exports[`ActionButton component should display multiple options with a common pa
   className="button action-button"
   color="secondary"
   disabled={false}
-  id="initialActionId"
+  id="myLittleAction-1-1-12"
   onClick={[Function]}
   size="sm"
   tag="button"
@@ -395,7 +401,7 @@ exports[`ActionButton component should display multiple options with a common pa
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
-    target="initialActionId"
+    target="myLittleAction-1-1-12"
     tether={
       Object {
         "constraints": Array [
@@ -439,6 +445,7 @@ exports[`ActionButton component should display multiple options with a common pa
         tag="form"
       >
         <Label
+          key="label"
           tag="label"
           widths={
             Array [
@@ -455,6 +462,7 @@ exports[`ActionButton component should display multiple options with a common pa
         <SelectField
           allowCustomValue={false}
           fixedWidth={false}
+          key="input"
           onChange={[Function]}
           onSearchChange={[Function]}
           options={
@@ -476,15 +484,17 @@ exports[`ActionButton component should display multiple options with a common pa
               "marginBottom": "1rem",
             }
           }
-          value=""
+          value="myLittleAction"
         />
         <InputField
           className="mb-2"
+          key="param"
           name="param"
           onChange={[Function]}
           placeholder="Just a param"
           required={true}
           type="text"
+          value="hello"
         />
         <Button
           block={true}
@@ -504,7 +514,7 @@ exports[`ActionButton component should display multiple options with different p
   className="button action-button"
   color="secondary"
   disabled={false}
-  id="initialActionId"
+  id="myLittleAction-1-1-12"
   onClick={[Function]}
   size="sm"
   tag="button"
@@ -528,7 +538,7 @@ exports[`ActionButton component should display multiple options with different p
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
-    target="initialActionId"
+    target="myLittleAction-1-1-12"
     tether={
       Object {
         "constraints": Array [
@@ -572,6 +582,7 @@ exports[`ActionButton component should display multiple options with different p
         tag="form"
       >
         <Label
+          key="label"
           tag="label"
           widths={
             Array [
@@ -588,6 +599,7 @@ exports[`ActionButton component should display multiple options with different p
         <SelectField
           allowCustomValue={false}
           fixedWidth={false}
+          key="input"
           onChange={[Function]}
           onSearchChange={[Function]}
           options={
@@ -609,15 +621,17 @@ exports[`ActionButton component should display multiple options with different p
               "marginBottom": "1rem",
             }
           }
-          value=""
+          value="myLittleAction"
         />
         <InputField
           className="mb-2"
+          key="param"
           name="param"
           onChange={[Function]}
           placeholder="Just a param"
           required={true}
           type="text"
+          value="hello"
         />
         <Button
           block={true}
@@ -637,7 +651,7 @@ exports[`ActionButton component should display multiple options without paramete
   className="button action-button"
   color="secondary"
   disabled={false}
-  id="initialActionId"
+  id="myLittleAction-1-1-12"
   onClick={[Function]}
   size="sm"
   tag="button"
@@ -661,7 +675,7 @@ exports[`ActionButton component should display multiple options without paramete
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
-    target="initialActionId"
+    target="myLittleAction-1-1-12"
     tether={
       Object {
         "constraints": Array [
@@ -705,6 +719,7 @@ exports[`ActionButton component should display multiple options without paramete
         tag="form"
       >
         <Label
+          key="label"
           tag="label"
           widths={
             Array [
@@ -721,6 +736,7 @@ exports[`ActionButton component should display multiple options without paramete
         <SelectField
           allowCustomValue={false}
           fixedWidth={false}
+          key="input"
           onChange={[Function]}
           onSearchChange={[Function]}
           options={
@@ -742,7 +758,7 @@ exports[`ActionButton component should display multiple options without paramete
               "marginBottom": "1rem",
             }
           }
-          value=""
+          value="myLittleAction"
         />
         <Button
           block={true}

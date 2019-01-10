@@ -147,7 +147,9 @@ exports[`StatsView render satisfaction surveys should render current survey stat
               "padding": 0,
             }
           }
-        />
+        >
+          <Component />
+        </div>
       </Container>
     </div>
   </StatsView>
@@ -513,6 +515,7 @@ exports[`StatsView render satisfaction surveys should render the upgrade to pro 
                               <div
                                 className="slick-slide slick-active slick-current carouselContent"
                                 data-index={0}
+                                key="original.$0"
                                 onClick={[Function]}
                                 style={
                                   Object {
@@ -535,6 +538,7 @@ exports[`StatsView render satisfaction surveys should render the upgrade to pro 
                               <div
                                 className="slick-slide slick-active carouselContent"
                                 data-index={1}
+                                key="original.$1"
                                 onClick={[Function]}
                                 style={
                                   Object {

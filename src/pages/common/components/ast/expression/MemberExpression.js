@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Expression from '../expression/Expression'
 
 import {getSyntaxTreeLeaves} from '../utils'
@@ -54,14 +55,14 @@ const MemberExpression = ({object, property, rule, actions, parent, leftsiblings
 }
 
 MemberExpression.propTypes = {
-    rule: React.PropTypes.object.isRequired,
-    actions: React.PropTypes.object.isRequired,
-    leftsiblings: React.PropTypes.object.isRequired,
-    object: React.PropTypes.object.isRequired,
-    parent: React.PropTypes.object.isRequired,
-    property: React.PropTypes.object.isRequired,
-    schemas: React.PropTypes.object.isRequired,
-    type: React.PropTypes.string,
+    rule: PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired,
+    leftsiblings: PropTypes.object.isRequired,
+    object: PropTypes.object.isRequired,
+    parent: PropTypes.object.isRequired,
+    property: PropTypes.object.isRequired,
+    schemas: PropTypes.object.isRequired,
+    type: PropTypes.string,
 }
 
 export default MemberExpression

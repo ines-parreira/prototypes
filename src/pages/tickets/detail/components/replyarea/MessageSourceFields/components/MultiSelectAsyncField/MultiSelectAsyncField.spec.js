@@ -17,7 +17,7 @@ describe('MultiSelectAsyncField component', () => {
     it('empty items', () => {
         const component = shallow(<MultiSelectAsyncField{...minProps} />)
 
-        expect(component.children().first().find('> div').length).toEqual(0)
+        expect(component.children().first().find('div > div').length).toEqual(0)
     })
 
     it('multiple items correct amount', () => {
@@ -34,7 +34,7 @@ describe('MultiSelectAsyncField component', () => {
             />
         )
 
-        expect(component.children().first().find('> div').length).toEqual(2)
+        expect(component.children().first().find('div > div').length).toEqual(2)
     })
 
     it('multiple items correct content', () => {
@@ -51,7 +51,7 @@ describe('MultiSelectAsyncField component', () => {
             />
         )
 
-        component.children().first().find('> div').forEach((item, index) => {
+        component.children().first().find('div > div').forEach((item, index) => {
             expect(item.find('span').first()).toHaveText(values[index].label)
         })
     })
@@ -72,7 +72,7 @@ describe('MultiSelectAsyncField component', () => {
             />
         )
 
-        component.children().first().find('> input').simulate('change', {target: {value: 'Something'}})
+        component.children().first().find('div > input').simulate('change', {target: {value: 'Something'}})
         expect(loadOptions).toBeCalled()
         expect(component.state('options')).toEqual(options)
     })
@@ -88,7 +88,7 @@ describe('MultiSelectAsyncField component', () => {
             />
         )
 
-        component.children().first().find('> input').simulate('change', {
+        component.children().first().find('div > input').simulate('change', {
             preventDefault: _noop,
             stopPropagation: _noop,
             target: {

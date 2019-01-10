@@ -146,6 +146,7 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
         <Slider
           arrows={true}
           infinite={false}
+          key="0"
           responsive={
             Array [
               Object {
@@ -279,6 +280,7 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
                     <div
                       className="slick-slide slick-active slick-current carouselCardContainer"
                       data-index={0}
+                      key="original.$0"
                       onClick={[Function]}
                       style={
                         Object {
@@ -347,6 +349,7 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
                               <Button
                                 color="secondary"
                                 href="https://sfbicycles.myshopify.com/products/fixie-bike"
+                                key="0"
                                 tag="a"
                                 target="_blank"
                               >
@@ -362,6 +365,7 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
                               <Button
                                 color="secondary"
                                 disabled={true}
+                                key="1"
                                 tag="button"
                               >
                                 <button
@@ -375,6 +379,7 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
                               <Button
                                 color="secondary"
                                 href="https://messenger-commerce.shopifyapps.com/redirect_to_cart"
+                                key="2"
                                 tag="a"
                                 target="_blank"
                               >

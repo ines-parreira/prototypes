@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {Form, Button} from 'reactstrap'
 
@@ -87,8 +88,8 @@ class RuleForm extends React.Component {
 }
 
 RuleForm.propTypes = {
-    onSubmit: React.PropTypes.func.isRequired,
-    onCancel: React.PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired
 }
 
 export default RuleForm

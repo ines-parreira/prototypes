@@ -1,5 +1,5 @@
 import React from 'react'
-import update from 'react/lib/update'
+import update from 'immutability-helper'
 import moment from 'moment'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'

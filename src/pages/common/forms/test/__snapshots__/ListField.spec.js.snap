@@ -21,6 +21,7 @@ exports[`ListField component should render with some items and an "add" button 1
 <div>
   <Row
     className="mb-3 form-row"
+    key="0"
     tag="div"
   >
     <Col
@@ -76,6 +77,7 @@ exports[`ListField component should render with some items and an "add" button 1
   </Row>
   <Row
     className="mb-3 form-row"
+    key="1"
     tag="div"
   >
     <Col
@@ -148,6 +150,7 @@ exports[`ListField component should render with the max number of items and no "
 <div>
   <Row
     className="mb-3 form-row"
+    key="0"
     tag="div"
   >
     <Col
@@ -203,6 +206,7 @@ exports[`ListField component should render with the max number of items and no "
   </Row>
   <Row
     className="mb-3 form-row"
+    key="1"
     tag="div"
   >
     <Col

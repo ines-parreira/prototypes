@@ -284,7 +284,7 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
                 placeholder="Ex: Company Support"
                 required={true}
                 type="text"
-                value=""
+                value="hellosmoochintegration"
               />
               <InputField
                 label="Introduction text"
@@ -412,7 +412,7 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
           introductionText="What can we do for you?"
           isOnline={true}
           mainColor="#0d87dd"
-          name=""
+          name="hellosmoochintegration"
           offlineIntroductionText="We're away!"
           offlineStatusEnabled={true}
         />
@@ -512,7 +512,7 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
                 placeholder="Ex: Company Support"
                 required={true}
                 type="text"
-                value=""
+                value="hellosmoochintegration"
               />
               <InputField
                 label="Introduction text"
@@ -640,7 +640,7 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
           introductionText="What can we do for you?"
           isOnline={true}
           mainColor="#0d87dd"
-          name=""
+          name="hellosmoochintegration"
           offlineIntroductionText="We're away!"
           offlineStatusEnabled={true}
         />

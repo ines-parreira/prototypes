@@ -89,7 +89,9 @@ exports[`Event component should display correctly a failed event for a Recharge 
     <CardBody
       tag="div"
     >
-      <div>
+      <div
+        key="error"
+      >
         <b
           className="text-danger"
         >
@@ -98,16 +100,22 @@ exports[`Event component should display correctly a failed event for a Recharge 
          
         the error is real
       </div>
-      <div>
+      <div
+        key="payload"
+      >
         <div>
-          <div>
+          <div
+            key="subscription_id"
+          >
             <b>
               Subscription id
             </b>
             : 
             6
           </div>
-          <div>
+          <div
+            key="charge_id"
+          >
             <b>
               Charge id
             </b>
@@ -210,7 +218,9 @@ exports[`Event component should display correctly a failed event for a Recharge 
     <CardBody
       tag="div"
     >
-      <div>
+      <div
+        key="error"
+      >
         <b
           className="text-danger"
         >
@@ -219,9 +229,13 @@ exports[`Event component should display correctly a failed event for a Recharge 
          
         the error is real
       </div>
-      <div>
+      <div
+        key="payload"
+      >
         <div>
-          <div>
+          <div
+            key="subscription_id"
+          >
             <b>
               Subscription id
             </b>
@@ -324,7 +338,9 @@ exports[`Event component should display correctly a failed event for a Shopify I
     <CardBody
       tag="div"
     >
-      <div>
+      <div
+        key="error"
+      >
         <b
           className="text-danger"
         >
@@ -333,23 +349,31 @@ exports[`Event component should display correctly a failed event for a Shopify I
          
         the error is real
       </div>
-      <div>
+      <div
+        key="payload"
+      >
         <div>
-          <div>
+          <div
+            key="order_id"
+          >
             <b>
               Order id
             </b>
             : 
             3
           </div>
-          <div>
+          <div
+            key="item_id"
+          >
             <b>
               Item id
             </b>
             : 
             5
           </div>
-          <div>
+          <div
+            key="quantity"
+          >
             <b>
               Quantity
             </b>
@@ -452,7 +476,9 @@ exports[`Event component should display correctly a failed event for a Shopify O
     <CardBody
       tag="div"
     >
-      <div>
+      <div
+        key="error"
+      >
         <b
           className="text-danger"
         >
@@ -461,9 +487,13 @@ exports[`Event component should display correctly a failed event for a Shopify O
          
         the error is real
       </div>
-      <div>
+      <div
+        key="payload"
+      >
         <div>
-          <div>
+          <div
+            key="order_id"
+          >
             <b>
               Order id
             </b>
@@ -566,16 +596,22 @@ exports[`Event component should display correctly a successful event for a Recha
     <CardBody
       tag="div"
     >
-      <div>
+      <div
+        key="payload"
+      >
         <div>
-          <div>
+          <div
+            key="subscription_id"
+          >
             <b>
               Subscription id
             </b>
             : 
             6
           </div>
-          <div>
+          <div
+            key="charge_id"
+          >
             <b>
               Charge id
             </b>
@@ -678,9 +714,13 @@ exports[`Event component should display correctly a successful event for a Recha
     <CardBody
       tag="div"
     >
-      <div>
+      <div
+        key="payload"
+      >
         <div>
-          <div>
+          <div
+            key="subscription_id"
+          >
             <b>
               Subscription id
             </b>
@@ -783,23 +823,31 @@ exports[`Event component should display correctly a successful event for a Shopi
     <CardBody
       tag="div"
     >
-      <div>
+      <div
+        key="payload"
+      >
         <div>
-          <div>
+          <div
+            key="order_id"
+          >
             <b>
               Order id
             </b>
             : 
             3
           </div>
-          <div>
+          <div
+            key="item_id"
+          >
             <b>
               Item id
             </b>
             : 
             5
           </div>
-          <div>
+          <div
+            key="quantity"
+          >
             <b>
               Quantity
             </b>
@@ -902,9 +950,13 @@ exports[`Event component should display correctly a successful event for a Shopi
     <CardBody
       tag="div"
     >
-      <div>
+      <div
+        key="payload"
+      >
         <div>
-          <div>
+          <div
+            key="order_id"
+          >
             <b>
               Order id
             </b>

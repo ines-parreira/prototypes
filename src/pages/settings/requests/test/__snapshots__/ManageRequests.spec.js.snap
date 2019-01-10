@@ -242,7 +242,9 @@ exports[`ManageRequests component should display requests 1`] = `
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr
+              key="0"
+            >
               <td
                 className="cell-wrapper cell-short clickable"
                 onClick={[Function]}
@@ -323,7 +325,9 @@ exports[`ManageRequests component should display requests 1`] = `
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr
+              key="1"
+            >
               <td
                 className="cell-wrapper cell-short clickable"
                 onClick={[Function]}
@@ -613,7 +617,9 @@ exports[`ManageRequests component should load with empty props 1`] = `
               </td>
             </tr>
           </thead>
-          <tbody />
+          <tbody>
+            <Component />
+          </tbody>
         </table>
       </div>
     </Container>

@@ -49,8 +49,15 @@ export default class ConfirmButton extends React.Component<Props, State> {
         showConfirmation: false
     }
 
+    dateId: number
+
     _container: ?HTMLElement = null
     _mounted: boolean = false
+
+    constructor(props: Props) {
+        super(props)
+        this.dateId = Date.now()
+    }
 
     componentWillMount() {
         this._mounted = true
@@ -135,7 +142,7 @@ export default class ConfirmButton extends React.Component<Props, State> {
 
         const isLoading = this.state.loading || loading
 
-        const uid = `confirm-button-${id || Date.now()}`
+        const uid = `confirm-button-${id || this.dateId}`
 
         return (
             <div

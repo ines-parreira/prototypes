@@ -10,6 +10,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
   >
     <input
       checked={false}
+      readOnly={true}
       type="checkbox"
     />
   </td>
@@ -569,6 +570,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
         updated_datetime: "2017-07-31T23:07:37.253131+00:00",
       }
     }
+    key="152-details"
     type="ticket"
   />
   <Connect(Cell)
@@ -1127,6 +1129,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
         updated_datetime: "2017-07-31T23:07:37.253131+00:00",
       }
     }
+    key="152-subject"
     type="ticket"
   />
   <Connect(Cell)
@@ -1692,6 +1695,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
         updated_datetime: "2017-07-31T23:07:37.253131+00:00",
       }
     }
+    key="152-integrations"
     type="ticket"
   />
 </tr>
@@ -1717,6 +1721,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
     </div>
     <input
       checked={false}
+      readOnly={true}
       type="checkbox"
     />
   </td>
@@ -2276,6 +2281,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
         updated_datetime: "2017-07-31T23:07:37.253131+00:00",
       }
     }
+    key="1-details"
     type="ticket"
   />
   <Connect(Cell)
@@ -2834,6 +2840,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
         updated_datetime: "2017-07-31T23:07:37.253131+00:00",
       }
     }
+    key="1-subject"
     type="ticket"
   />
   <Connect(Cell)
@@ -3399,6 +3406,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
         updated_datetime: "2017-07-31T23:07:37.253131+00:00",
       }
     }
+    key="1-integrations"
     type="ticket"
   />
 </tr>

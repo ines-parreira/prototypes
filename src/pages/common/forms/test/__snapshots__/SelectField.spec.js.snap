@@ -151,6 +151,7 @@ exports[`SelectField should render a select input with custom props 1`] = `
     >
       <DropdownItem
         className="option option--focused"
+        key="2"
         onClick={[Function]}
         onMouseEnter={[Function]}
         tag="button"
@@ -293,6 +294,7 @@ exports[`SelectField should set the minWidth of the input according to the lengt
     >
       <DropdownItem
         className="option option--focused"
+        key="2"
         onClick={[Function]}
         onMouseEnter={[Function]}
         tag="button"

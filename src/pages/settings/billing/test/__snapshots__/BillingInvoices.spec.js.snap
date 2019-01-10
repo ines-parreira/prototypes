@@ -68,7 +68,9 @@ exports[`BillingInvoices component should display invoices 1`] = `
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr
+            key="123"
+          >
             <td>
               <Badge
                 color="danger"
@@ -94,7 +96,9 @@ exports[`BillingInvoices component should display invoices 1`] = `
                
             </td>
           </tr>
-          <tr>
+          <tr
+            key="125"
+          >
             <td>
               <Badge
                 color="success"

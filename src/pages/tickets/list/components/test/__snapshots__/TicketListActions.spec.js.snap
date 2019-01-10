@@ -40,6 +40,7 @@ exports[`TicketListActions component should display options for agents assignati
           SET STATUS
         </DropdownItem>
         <DropdownItem
+          key="open"
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -103,6 +104,7 @@ exports[`TicketListActions component should display options for agents assignati
           className="agents-dropdown-list"
         >
           <DropdownItem
+            key="4"
             onClick={[Function]}
             tag="button"
             toggle={true}
@@ -117,6 +119,7 @@ exports[`TicketListActions component should display options for agents assignati
             />
           </DropdownItem>
           <DropdownItem
+            key="5"
             onClick={[Function]}
             tag="button"
             toggle={true}
@@ -131,6 +134,7 @@ exports[`TicketListActions component should display options for agents assignati
             />
           </DropdownItem>
           <DropdownItem
+            key="6"
             onClick={[Function]}
             tag="button"
             toggle={true}
@@ -151,6 +155,7 @@ exports[`TicketListActions component should display options for agents assignati
           toggle={true}
         />
         <DropdownItem
+          key="clear"
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -381,6 +386,7 @@ exports[`TicketListActions component should display special actions for trash vi
           SET STATUS
         </DropdownItem>
         <DropdownItem
+          key="open"
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -453,6 +459,7 @@ exports[`TicketListActions component should display special actions for trash vi
           toggle={true}
         />
         <DropdownItem
+          key="clear"
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -548,6 +555,7 @@ exports[`TicketListActions component should display special actions for trash vi
           toggle={true}
         />
         <DropdownItem
+          key="undelete-button"
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -557,6 +565,7 @@ exports[`TicketListActions component should display special actions for trash vi
         </DropdownItem>
         <DropdownItem
           className="text-danger"
+          key="delete-button"
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -689,6 +698,7 @@ exports[`TicketListActions component should display when nothing is selected 1`]
           SET STATUS
         </DropdownItem>
         <DropdownItem
+          key="open"
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -761,6 +771,7 @@ exports[`TicketListActions component should display when nothing is selected 1`]
           toggle={true}
         />
         <DropdownItem
+          key="clear"
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -989,6 +1000,7 @@ exports[`TicketListActions component should display when some tickets are select
           SET STATUS
         </DropdownItem>
         <DropdownItem
+          key="open"
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -1061,6 +1073,7 @@ exports[`TicketListActions component should display when some tickets are select
           toggle={true}
         />
         <DropdownItem
+          key="clear"
           onClick={[Function]}
           tag="button"
           toggle={true}

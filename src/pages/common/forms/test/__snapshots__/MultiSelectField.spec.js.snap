@@ -119,6 +119,7 @@ exports[`MultiSelectField should render a multi select input with custom props 1
     <Badge
       className="tag"
       color="secondary"
+      key="0"
       pill={false}
       style={
         Object {
@@ -141,6 +142,7 @@ exports[`MultiSelectField should render a multi select input with custom props 1
     <Badge
       className="tag"
       color="secondary"
+      key="1"
       pill={false}
       style={
         Object {
@@ -189,6 +191,7 @@ exports[`MultiSelectField should render a multi select input with custom props 1
         >
           <DropdownItem
             className="option"
+            key="2"
             onMouseDown={[Function]}
             onMouseEnter={[Function]}
             tag="button"

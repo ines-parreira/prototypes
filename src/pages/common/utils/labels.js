@@ -123,13 +123,13 @@ type TagLabelParamType = {
     decoration?: Map<*, *>,
     children?: Node,
 }
-export const TagLabel = ({decoration, children, style}: TagLabelParamType) => {
-    style.color = (decoration || fromJS({})).get('color') || DEFAULT_TAG_COLOR
+export const TagLabel = ({decoration, children}: TagLabelParamType) => {
+    const color = (decoration || fromJS({})).get('color') || DEFAULT_TAG_COLOR
 
     return (
         <Badge
             className="badge-tag"
-            style={style}
+            style={{color}}
         >
             {children}
         </Badge>

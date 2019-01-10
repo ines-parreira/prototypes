@@ -22,11 +22,10 @@ const commonProps = {
         email: 'doe@gorgias.io',
         id: 2
     }]),
-    actions: {
-        createCampaign: jest.fn(),
-        updateCampaign: jest.fn(),
-        deleteCampaign: jest.fn()
-    }
+    createCampaign: jest.fn(),
+    updateCampaign: jest.fn(),
+    deleteCampaign: jest.fn(),
+    notify: jest.fn()
 }
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')

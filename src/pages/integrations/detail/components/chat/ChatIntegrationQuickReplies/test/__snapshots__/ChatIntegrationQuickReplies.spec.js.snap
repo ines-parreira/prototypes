@@ -314,6 +314,7 @@ exports[`ChatIntegrationQuickReplies component should render defaults because th
                         >
                           <Row
                             className="mb-3 form-row"
+                            key="0"
                             tag="div"
                           >
                             <div
@@ -424,6 +425,7 @@ exports[`ChatIntegrationQuickReplies component should render defaults because th
                           </Row>
                           <Row
                             className="mb-3 form-row"
+                            key="1"
                             tag="div"
                           >
                             <div
@@ -697,6 +699,7 @@ exports[`ChatIntegrationQuickReplies component should render defaults because th
                           >
                             <button
                               className="btn btn-reply-action reply"
+                              key="Get order status-0"
                               style={
                                 Object {
                                   "borderColor": "#123456",
@@ -708,6 +711,7 @@ exports[`ChatIntegrationQuickReplies component should render defaults because th
                             </button>
                             <button
                               className="btn btn-reply-action reply"
+                              key="Apply promo code-1"
                               style={
                                 Object {
                                   "borderColor": "#123456",
@@ -1104,6 +1108,7 @@ exports[`ChatIntegrationQuickReplies component should render quick replies from 
                         >
                           <Row
                             className="mb-3 form-row"
+                            key="0"
                             tag="div"
                           >
                             <div
@@ -1214,6 +1219,7 @@ exports[`ChatIntegrationQuickReplies component should render quick replies from 
                           </Row>
                           <Row
                             className="mb-3 form-row"
+                            key="1"
                             tag="div"
                           >
                             <div
@@ -1487,6 +1493,7 @@ exports[`ChatIntegrationQuickReplies component should render quick replies from 
                           >
                             <button
                               className="btn btn-reply-action reply"
+                              key="foo-0"
                               style={
                                 Object {
                                   "borderColor": "#123456",
@@ -1498,6 +1505,7 @@ exports[`ChatIntegrationQuickReplies component should render quick replies from 
                             </button>
                             <button
                               className="btn btn-reply-action reply"
+                              key="bar-1"
                               style={
                                 Object {
                                   "borderColor": "#123456",

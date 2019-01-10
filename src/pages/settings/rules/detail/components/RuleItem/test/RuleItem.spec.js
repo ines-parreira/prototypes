@@ -9,7 +9,8 @@ const commonProps = {
     rule: fromJS({
         id: 17,
         title: 'my rule',
-        code_ast: {}
+        code_ast: {},
+        code: {}
     }),
     actions: {
         rules: {

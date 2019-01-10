@@ -4,6 +4,7 @@ exports[`DistributionKeyMetricStat should render a distribution chart 1`] = `
 <div>
   <div
     className="mb-1 row"
+    key="5"
   >
     <div
       className="col-md-6 ta-left"
@@ -23,6 +24,7 @@ exports[`DistributionKeyMetricStat should render a distribution chart 1`] = `
   </div>
   <div
     className="mb-1 row"
+    key="4"
   >
     <div
       className="col-md-6 ta-left"
@@ -42,6 +44,7 @@ exports[`DistributionKeyMetricStat should render a distribution chart 1`] = `
   </div>
   <div
     className="mb-1 row"
+    key="3"
   >
     <div
       className="col-md-6 ta-left"
@@ -61,6 +64,7 @@ exports[`DistributionKeyMetricStat should render a distribution chart 1`] = `
   </div>
   <div
     className="mb-1 row"
+    key="2"
   >
     <div
       className="col-md-6 ta-left"
@@ -80,6 +84,7 @@ exports[`DistributionKeyMetricStat should render a distribution chart 1`] = `
   </div>
   <div
     className="mb-1 row"
+    key="1"
   >
     <div
       className="col-md-6 ta-left"

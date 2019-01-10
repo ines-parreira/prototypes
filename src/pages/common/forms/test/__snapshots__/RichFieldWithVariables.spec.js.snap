@@ -7,7 +7,9 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
   <div
     className="textarea-toolbar"
   >
-    <UncontrolledButtonDropdown>
+    <UncontrolledButtonDropdown
+      key="0"
+    >
       <DropdownToggle
         aria-haspopup={true}
         caret={true}
@@ -26,6 +28,7 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
         tag="div"
       >
         <DropdownItem
+          key="0"
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -34,6 +37,7 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
           First name
         </DropdownItem>
         <DropdownItem
+          key="1"
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -42,6 +46,7 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
           Last name
         </DropdownItem>
         <DropdownItem
+          key="2"
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -50,6 +55,7 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
           Full name
         </DropdownItem>
         <DropdownItem
+          key="3"
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -59,7 +65,9 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
         </DropdownItem>
       </DropdownMenu>
     </UncontrolledButtonDropdown>
-    <UncontrolledButtonDropdown>
+    <UncontrolledButtonDropdown
+      key="1"
+    >
       <DropdownToggle
         aria-haspopup={true}
         caret={true}
@@ -78,6 +86,7 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
         tag="div"
       >
         <DropdownItem
+          key="0"
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -86,6 +95,7 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
           First name
         </DropdownItem>
         <DropdownItem
+          key="1"
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -94,6 +104,7 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
           Last name
         </DropdownItem>
         <DropdownItem
+          key="2"
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -102,6 +113,7 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
           Full name
         </DropdownItem>
         <DropdownItem
+          key="3"
           onClick={[Function]}
           tag="button"
           toggle={true}
@@ -110,6 +122,7 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
           Email
         </DropdownItem>
         <DropdownItem
+          key="4"
           onClick={[Function]}
           tag="button"
           toggle={true}

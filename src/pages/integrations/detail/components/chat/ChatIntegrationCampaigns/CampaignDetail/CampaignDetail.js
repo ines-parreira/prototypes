@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
 import {Link, browserHistory} from 'react-router'
 import {connect} from 'react-redux'
@@ -196,6 +197,7 @@ export class CampaignDetail extends React.Component {
     }
 
     _initState = (campaign) => {
+        this.isInitialized = true
         this.setState({
             name: campaign.get('name'),
             triggers: campaign.get('triggers') || fromJS([
@@ -203,8 +205,6 @@ export class CampaignDetail extends React.Component {
             ]),
             message: campaign.get('message') || fromJS({}),
         })
-
-        this.isInitialized = true
     }
 
     componentDidMount() {

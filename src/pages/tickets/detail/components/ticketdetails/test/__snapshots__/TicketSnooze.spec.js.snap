@@ -21,4 +21,4 @@ exports[`TicketSnooze should render an icon with a tooltip 1`] = `
 </div>
 `;
 
-exports[`TicketSnooze should render null 1`] = `null`;
+exports[`TicketSnooze should render null 1`] = `""`;

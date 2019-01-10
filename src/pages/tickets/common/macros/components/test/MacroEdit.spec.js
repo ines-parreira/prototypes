@@ -37,6 +37,6 @@ describe('MacroEdit component', () => {
             name: newName,
         })
 
-        expect(component.find('#id-name').props().value).toBe(newName)
+        expect(component.find('input#id-name').props().value).toBe(newName)
     })
 })

@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import {Line} from 'react-chartjs-2'
 import moment from 'moment'
 import Legend from '../Legend'

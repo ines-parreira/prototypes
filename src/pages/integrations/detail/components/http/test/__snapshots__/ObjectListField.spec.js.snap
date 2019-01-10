@@ -36,6 +36,7 @@ exports[`ObjectListField component should display the field with items 1`] = `
   </label>
   <Row
     className="mb-3 form-row"
+    key="0"
     tag="div"
   >
     <Col

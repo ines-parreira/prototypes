@@ -67,7 +67,7 @@ describe('RealtimeMessagingIntegrationPreferences component', () => {
                 })}
             />
         )
-        expect(component.find('#id-autoResponderEnabled').props().checked).toBe(true)
+        expect(component.find('input#id-autoResponderEnabled').props().checked).toBe(true)
     })
 
     it('should set autoResponderText value', () => {
@@ -87,7 +87,7 @@ describe('RealtimeMessagingIntegrationPreferences component', () => {
                 })}
             />
         )
-        expect(component.find('#id-autoResponderText').props().value).toBe(autoResponderText)
+        expect(component.find('textarea#id-autoResponderText').props().value).toBe(autoResponderText)
     })
 
     it('should set timeBeforeSplit value', () => {
@@ -105,7 +105,7 @@ describe('RealtimeMessagingIntegrationPreferences component', () => {
                 })}
             />
         )
-        expect(component.find('#id-timeBeforeSplit').props().value).toBe(timeBeforeSplit)
+        expect(component.find('select#id-timeBeforeSplit').props().value).toBe(timeBeforeSplit)
     })
 
     it('should submit the form with defaults', () => {

@@ -22,6 +22,7 @@ exports[`Charge BeforeContent should aggregate line_items by subscriptions 1`] =
   </div>
   <div
     className="card"
+    key="1"
   >
     <CardBody
       className="header clearfix"
@@ -48,13 +49,17 @@ exports[`Charge BeforeContent should aggregate line_items by subscriptions 1`] =
       className="content"
       tag="div"
     >
-      <span>
+      <span
+        key="1-undefined"
+      >
         foo
          (
         7
         )
       </span>
-      <span>
+      <span
+        key="1-undefined"
+      >
         bar
          (
         5
@@ -64,6 +69,7 @@ exports[`Charge BeforeContent should aggregate line_items by subscriptions 1`] =
   </div>
   <div
     className="card"
+    key="2"
   >
     <CardBody
       className="header clearfix"
@@ -90,7 +96,9 @@ exports[`Charge BeforeContent should aggregate line_items by subscriptions 1`] =
       className="content"
       tag="div"
     >
-      <span>
+      <span
+        key="2-undefined"
+      >
         baz
          (
         1
@@ -271,6 +279,6 @@ exports[`Charge SubscriptionAfterTitle should not display the skipCharge action 
 />
 `;
 
-exports[`Charge SubscriptionAfterTitle should return null if isEditing 1`] = `null`;
+exports[`Charge SubscriptionAfterTitle should return null if isEditing 1`] = `""`;
 
-exports[`Charge SubscriptionAfterTitle should return null if there's no integrationId 1`] = `null`;
+exports[`Charge SubscriptionAfterTitle should return null if there's no integrationId 1`] = `""`;

@@ -1,8 +1,9 @@
 // @flow
 import React, {Component} from 'react'
+import {Map} from 'immutable'
 
 type Props = {
-    params: Object | null
+    params?: Map<*, *>
 }
 
 export default class HTTPIntegrationEventParams extends Component<Props> {
@@ -22,7 +23,7 @@ export default class HTTPIntegrationEventParams extends Component<Props> {
                         {value}
                     </span>
                     </li>
-                ))}
+                )).valueSeq().toJS()}
             </ul>
         )
     }

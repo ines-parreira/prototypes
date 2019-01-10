@@ -127,21 +127,25 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                 type="select"
                               >
                                 <option
+                                  key="0"
                                   value={2}
                                 >
                                   2 hours
                                 </option>
                                 <option
+                                  key="1"
                                   value={24}
                                 >
                                   1 day
                                 </option>
                                 <option
+                                  key="2"
                                   value={48}
                                 >
                                   2 days
                                 </option>
                                 <option
+                                  key="3"
                                   value={168}
                                 >
                                   7 days
@@ -352,7 +356,9 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                             <div
                               className="textarea-toolbar"
                             >
-                              <UncontrolledButtonDropdown>
+                              <UncontrolledButtonDropdown
+                                key="0"
+                              >
                                 <ButtonDropdown
                                   isOpen={false}
                                   toggle={[Function]}
@@ -444,6 +450,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                             tabIndex="-1"
                                           >
                                             <DropdownItem
+                                              key="0"
                                               onClick={[Function]}
                                               tag="button"
                                               toggle={true}
@@ -459,6 +466,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               </button>
                                             </DropdownItem>
                                             <DropdownItem
+                                              key="1"
                                               onClick={[Function]}
                                               tag="button"
                                               toggle={true}
@@ -474,6 +482,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               </button>
                                             </DropdownItem>
                                             <DropdownItem
+                                              key="2"
                                               onClick={[Function]}
                                               tag="button"
                                               toggle={true}
@@ -489,6 +498,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               </button>
                                             </DropdownItem>
                                             <DropdownItem
+                                              key="3"
                                               onClick={[Function]}
                                               tag="button"
                                               toggle={true}
@@ -510,7 +520,9 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                   </Dropdown>
                                 </ButtonDropdown>
                               </UncontrolledButtonDropdown>
-                              <UncontrolledButtonDropdown>
+                              <UncontrolledButtonDropdown
+                                key="1"
+                              >
                                 <ButtonDropdown
                                   isOpen={false}
                                   toggle={[Function]}
@@ -602,6 +614,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                             tabIndex="-1"
                                           >
                                             <DropdownItem
+                                              key="0"
                                               onClick={[Function]}
                                               tag="button"
                                               toggle={true}
@@ -617,6 +630,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               </button>
                                             </DropdownItem>
                                             <DropdownItem
+                                              key="1"
                                               onClick={[Function]}
                                               tag="button"
                                               toggle={true}
@@ -632,6 +646,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               </button>
                                             </DropdownItem>
                                             <DropdownItem
+                                              key="2"
                                               onClick={[Function]}
                                               tag="button"
                                               toggle={true}
@@ -647,6 +662,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               </button>
                                             </DropdownItem>
                                             <DropdownItem
+                                              key="3"
                                               onClick={[Function]}
                                               tag="button"
                                               toggle={true}
@@ -662,6 +678,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               </button>
                                             </DropdownItem>
                                             <DropdownItem
+                                              key="4"
                                               onClick={[Function]}
                                               tag="button"
                                               toggle={true}
@@ -685,6 +702,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                               </UncontrolledButtonDropdown>
                               <Button
                                 color="link"
+                                key="2"
                                 onClick={[Function]}
                                 style={
                                   Object {
@@ -2091,6 +2109,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                     },
                                                                   }
                                                                 }
+                                                                key="contents0"
                                                               >
                                                                 <div
                                                                   data-contents="true"
@@ -2100,6 +2119,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                     data-block={true}
                                                                     data-editor="someRandomKey"
                                                                     data-offset-key="someRandomKey-0-0"
+                                                                    key="someRandomKey"
                                                                   >
                                                                     <DraftEditorBlock
                                                                       block={
@@ -2209,6 +2229,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                       }
                                                                       direction="LTR"
                                                                       forceSelection={false}
+                                                                      key="someRandomKey"
                                                                       offsetKey="someRandomKey-0-0"
                                                                       selection={
                                                                         Object {
@@ -2273,6 +2294,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                           }
                                                                           forceSelection={false}
                                                                           isLast={true}
+                                                                          key="someRandomKey-0-0"
                                                                           offsetKey="someRandomKey-0-0"
                                                                           selection={
                                                                             Object {
@@ -2298,6 +2320,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                             <DraftEditorTextNode>
                                                                               <br
                                                                                 data-text="true"
+                                                                                key="B"
                                                                               />
                                                                             </DraftEditorTextNode>
                                                                           </span>
@@ -3248,6 +3271,7 @@ exports[`SatisfactionSurveyView render should render the upgrade to pro componen
                               <div
                                 className="slick-slide slick-active slick-current carouselContent"
                                 data-index={0}
+                                key="original.$0"
                                 onClick={[Function]}
                                 style={
                                   Object {
@@ -3270,6 +3294,7 @@ exports[`SatisfactionSurveyView render should render the upgrade to pro componen
                               <div
                                 className="slick-slide slick-active carouselContent"
                                 data-index={1}
+                                key="original.$1"
                                 onClick={[Function]}
                                 style={
                                   Object {

@@ -96,6 +96,7 @@ exports[`ChatIntegrationPreview should display quickReplies 1`] = `
       >
         <button
           className="btn btn-reply-action reply"
+          key="foo-0"
           style={
             Object {
               "borderColor": "#123456",
@@ -107,6 +108,7 @@ exports[`ChatIntegrationPreview should display quickReplies 1`] = `
         </button>
         <button
           className="btn btn-reply-action reply"
+          key="bar-1"
           style={
             Object {
               "borderColor": "#123456",

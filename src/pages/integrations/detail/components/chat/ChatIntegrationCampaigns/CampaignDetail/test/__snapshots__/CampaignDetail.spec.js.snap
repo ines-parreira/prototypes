@@ -102,7 +102,6 @@ exports[`CampaignDetail component should display default value when it's a new c
               placeholder="My new campaign"
               required={true}
               type="input"
-              value=""
             />
           </div>
           <h5>
@@ -111,6 +110,21 @@ exports[`CampaignDetail component should display default value when it's a new c
           <div
             className="mb-4"
           >
+            <TriggerRow
+              idx={0}
+              key="0"
+              nbOfTriggers={1}
+              onDelete={[Function]}
+              onOperatorChange={[Function]}
+              onValueChange={[Function]}
+              trigger={
+                Immutable.Map {
+                  key: "current_url",
+                  operator: "eq",
+                  value: "",
+                }
+              }
+            />
             <UncontrolledDropdown>
               <DropdownToggle
                 aria-haspopup={true}
@@ -131,6 +145,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                 tag="div"
               >
                 <DropdownItem
+                  key="current_url"
                   onClick={[Function]}
                   tag="button"
                   toggle={true}
@@ -139,6 +154,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                   Current URL
                 </DropdownItem>
                 <DropdownItem
+                  key="time_spent_on_page"
                   onClick={[Function]}
                   tag="button"
                   toggle={true}
@@ -206,6 +222,27 @@ exports[`CampaignDetail component should display default value when it's a new c
                 value={null}
               />
             </div>
+            <RichField
+              displayedActions={
+                Array [
+                  "BOLD",
+                  "ITALIC",
+                  "UNDERLINE",
+                  "IMAGE",
+                  "EMOJI",
+                ]
+              }
+              onChange={[Function]}
+              placeholder="Write your message"
+              required={true}
+              rows="8"
+              type="text"
+              value={
+                Object {
+                  "html": undefined,
+                }
+              }
+            />
           </div>
           <Button
             className=""
@@ -350,6 +387,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
           >
             <TriggerRow
               idx={0}
+              key="0"
               nbOfTriggers={2}
               onDelete={[Function]}
               onOperatorChange={[Function]}
@@ -364,6 +402,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
             />
             <TriggerRow
               idx={1}
+              key="1"
               nbOfTriggers={2}
               onDelete={[Function]}
               onOperatorChange={[Function]}
@@ -396,6 +435,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                 tag="div"
               >
                 <DropdownItem
+                  key="current_url"
                   onClick={[Function]}
                   tag="button"
                   toggle={true}
@@ -404,6 +444,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                   Current URL
                 </DropdownItem>
                 <DropdownItem
+                  key="time_spent_on_page"
                   onClick={[Function]}
                   tag="button"
                   toggle={true}
@@ -659,6 +700,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
           >
             <TriggerRow
               idx={0}
+              key="0"
               nbOfTriggers={2}
               onDelete={[Function]}
               onOperatorChange={[Function]}
@@ -673,6 +715,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
             />
             <TriggerRow
               idx={1}
+              key="1"
               nbOfTriggers={2}
               onDelete={[Function]}
               onOperatorChange={[Function]}
@@ -705,6 +748,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                 tag="div"
               >
                 <DropdownItem
+                  key="current_url"
                   onClick={[Function]}
                   tag="button"
                   toggle={true}
@@ -713,6 +757,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                   Current URL
                 </DropdownItem>
                 <DropdownItem
+                  key="time_spent_on_page"
                   onClick={[Function]}
                   tag="button"
                   toggle={true}

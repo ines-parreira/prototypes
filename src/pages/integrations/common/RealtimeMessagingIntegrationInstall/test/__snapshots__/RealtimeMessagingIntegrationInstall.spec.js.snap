@@ -85,7 +85,9 @@ exports[`RealtimeMessagingIntegrationInstall component should display a placehol
           Let's install your chat on your website.
         </p>
         <div>
-          <p>
+          <p
+            key="1"
+          >
             Chat
              installed on
              
@@ -107,6 +109,7 @@ exports[`RealtimeMessagingIntegrationInstall component should display a placehol
             block={true}
             className="mb-2"
             color="secondary"
+            key="0"
             onClick={[Function]}
             tag="button"
           >
@@ -324,6 +327,7 @@ exports[`RealtimeMessagingIntegrationInstall component should display the code s
             block={true}
             className="mb-2"
             color="secondary"
+            key="0"
             onClick={[Function]}
             tag="button"
           >
@@ -534,6 +538,7 @@ exports[`RealtimeMessagingIntegrationInstall component should display the list o
             block={true}
             className="mb-2"
             color="secondary"
+            key="0"
             onClick={[Function]}
             tag="button"
           >

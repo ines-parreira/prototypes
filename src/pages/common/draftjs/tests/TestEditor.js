@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import Editor from 'draft-js-plugins-editor'
 
 import * as utils from './utils'

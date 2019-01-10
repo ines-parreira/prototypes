@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 class DeleteBinaryExpression extends React.Component {
 
@@ -21,9 +22,9 @@ class DeleteBinaryExpression extends React.Component {
 }
 
 DeleteBinaryExpression.propTypes = {
-    rule: React.PropTypes.object.isRequired,
-    actions: React.PropTypes.object.isRequired,
-    parent: React.PropTypes.object.isRequired,
+    rule: PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired,
+    parent: PropTypes.object.isRequired,
 }
 
 export default DeleteBinaryExpression

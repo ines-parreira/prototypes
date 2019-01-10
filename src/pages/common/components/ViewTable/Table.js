@@ -224,6 +224,7 @@ class Table extends React.Component<Props, State> {
                                         <input
                                             type="checkbox"
                                             checked={areAllSelected}
+                                            readOnly
                                         />
                                     </td>
                                 ) : null

@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import Sortable from 'sortablejs'
 
@@ -75,16 +76,16 @@ class ReactSortable extends React.Component {
 
     render() {
         const {children, className, tag} = this.props
-        return React.DOM[tag]({className}, children)
+        return React.createElement(tag, {className}, children)
     }
 }
 
 ReactSortable.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
-    options: React.PropTypes.object,
-    onChange: React.PropTypes.func,
-    tag: React.PropTypes.string
+    options: PropTypes.object,
+    onChange: PropTypes.func,
+    tag: PropTypes.string
 }
 
 ReactSortable.defaultProps = {

@@ -22,7 +22,7 @@ exports[`JsonField display invalid message 1`] = `
           onChange={[Function]}
           rows="6"
           type="textarea"
-          value="{}"
+          value="\\"value\\""
         />
         <Errors
           tag={[Function]}

@@ -2,7 +2,8 @@
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
 
-import React, {PropTypes} from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
 
 const MentionText = ({children, className}) =>{

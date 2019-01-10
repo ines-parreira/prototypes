@@ -14,7 +14,12 @@ describe('ShopifyIntegrationDetail', () => {
 
     const commonProps = {
         redirectUri: 'gorgias.io',
-        location: {},
+        location: {
+            query: {
+                message: '',
+                message_type: 'info',
+            }
+        },
         notify: _noop,
         actions: {
             activateIntegration: _noop,
@@ -60,6 +65,7 @@ describe('ShopifyIntegrationDetail', () => {
     })
 
     it('should render the page to update an existing integration', () => {
+        const name = 'foo'
         const component = shallow(
             <ShopifyIntegrationDetail
                 integration={fromJS({
@@ -81,6 +87,7 @@ describe('ShopifyIntegrationDetail', () => {
     })
 
     it('should render the page for a deactivated integration', () => {
+        const name = 'foo'
         const component = shallow(
             <ShopifyIntegrationDetail
                 integration={fromJS({
@@ -103,6 +110,7 @@ describe('ShopifyIntegrationDetail', () => {
     })
 
     it('should render the page for an integration which needs a scope update', () => {
+        const name = 'foo'
         const component = shallow(
             <ShopifyIntegrationDetail
                 integration={fromJS({
@@ -125,6 +133,7 @@ describe('ShopifyIntegrationDetail', () => {
     })
 
     it('should render the page for an integration for which the sync is not over', () => {
+        const name = 'foo'
         const component = shallow(
             <ShopifyIntegrationDetail
                 integration={fromJS({
@@ -146,6 +155,7 @@ describe('ShopifyIntegrationDetail', () => {
     })
 
     it('should render the page for an integration which is being updated (submit is in progress)', () => {
+        const name = 'foo'
         const component = shallow(
             <ShopifyIntegrationDetail
                 integration={fromJS({
@@ -170,6 +180,7 @@ describe('ShopifyIntegrationDetail', () => {
     })
 
     it('should render the page for an integration for which the authentication is still pending', () => {
+        const name = 'foo'
         const component = shallow(
             <ShopifyIntegrationDetail
                 integration={fromJS({

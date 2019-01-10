@@ -1,5 +1,6 @@
 // @flow
-import React, {PropTypes} from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import Expression from '../expression/Expression'
 import {DeleteBlockStatementItem} from '../operations'
 import classnames from 'classnames'

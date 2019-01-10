@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Legend should not render a legend (no labels, invalid labels) 1`] = `null`;
+exports[`Legend should not render a legend (no labels, invalid labels) 1`] = `""`;
 
-exports[`Legend should not render a legend (no labels, invalid labels) 2`] = `null`;
+exports[`Legend should not render a legend (no labels, invalid labels) 2`] = `""`;
 
-exports[`Legend should not render a legend (no labels, invalid labels) 3`] = `null`;
+exports[`Legend should not render a legend (no labels, invalid labels) 3`] = `""`;
 
-exports[`Legend should not render a legend (no labels, invalid labels) 4`] = `null`;
+exports[`Legend should not render a legend (no labels, invalid labels) 4`] = `""`;
 
 exports[`Legend should render a legend 1`] = `
 <div
@@ -14,6 +14,7 @@ exports[`Legend should render a legend 1`] = `
 >
   <span
     className="label mr-4 mb-2"
+    key="line 1"
   >
     <span
       className="circle mr-2"
@@ -27,6 +28,7 @@ exports[`Legend should render a legend 1`] = `
   </span>
   <span
     className="label mr-4 mb-2"
+    key="line 2"
   >
     <span
       className="circle mr-2"

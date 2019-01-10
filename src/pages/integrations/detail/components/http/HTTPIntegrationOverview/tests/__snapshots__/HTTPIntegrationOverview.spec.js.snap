@@ -119,21 +119,25 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
         value="POST"
       >
         <option
+          key="GET"
           value="GET"
         >
           GET
         </option>
         <option
+          key="POST"
           value="POST"
         >
           POST
         </option>
         <option
+          key="PUT"
           value="PUT"
         >
           PUT
         </option>
         <option
+          key="DELETE"
           value="DELETE"
         >
           DELETE
@@ -374,21 +378,25 @@ exports[`HTTPIntegrationOverview should display data with url-encoded format 1`]
         value="POST"
       >
         <option
+          key="GET"
           value="GET"
         >
           GET
         </option>
         <option
+          key="POST"
           value="POST"
         >
           POST
         </option>
         <option
+          key="PUT"
           value="PUT"
         >
           PUT
         </option>
         <option
+          key="DELETE"
           value="DELETE"
         >
           DELETE
@@ -636,21 +644,25 @@ exports[`HTTPIntegrationOverview should display default values because there is 
         value="GET"
       >
         <option
+          key="GET"
           value="GET"
         >
           GET
         </option>
         <option
+          key="POST"
           value="POST"
         >
           POST
         </option>
         <option
+          key="PUT"
           value="PUT"
         >
           PUT
         </option>
         <option
+          key="DELETE"
           value="DELETE"
         >
           DELETE

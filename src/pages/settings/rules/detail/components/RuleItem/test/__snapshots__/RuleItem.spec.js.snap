@@ -5,6 +5,7 @@ exports[`RuleItem component should render 1`] = `
   className="container container"
   data-id={17}
   id={17}
+  key="17"
 >
   <td
     colSpan="3"
@@ -34,7 +35,7 @@ exports[`RuleItem component should render 1`] = `
             placeholder="Name"
             size="md"
             style={Object {}}
-            title=""
+            title="my rule"
             update={[Function]}
           />
         </div>
@@ -171,6 +172,8 @@ exports[`RuleItem component should render 1`] = `
                   title: "my rule",
                   code_ast: Immutable.Map {
                   },
+                  code: Immutable.Map {
+                  },
                 }
               }
               triggers={
@@ -215,6 +218,7 @@ exports[`RuleItem component should render 1`] = `
             >
               <DropdownItem
                 disabled={false}
+                key="open"
                 onClick={[Function]}
                 tag="button"
                 toggle={true}
@@ -271,6 +275,7 @@ exports[`RuleItem component should render errors when there is no trigger select
   className="container container"
   data-id={17}
   id={17}
+  key="17"
 >
   <td
     colSpan="3"
@@ -300,7 +305,7 @@ exports[`RuleItem component should render errors when there is no trigger select
             placeholder="Name"
             size="md"
             style={Object {}}
-            title=""
+            title="my rule"
             update={[Function]}
           />
         </div>
@@ -440,6 +445,8 @@ exports[`RuleItem component should render errors when there is no trigger select
                   title: "my rule",
                   code_ast: Immutable.Map {
                   },
+                  code: Immutable.Map {
+                  },
                 }
               }
               triggers={Array []}
@@ -480,6 +487,7 @@ exports[`RuleItem component should render errors when there is no trigger select
             >
               <DropdownItem
                 disabled={true}
+                key="open"
                 onClick={[Function]}
                 tag="button"
                 toggle={true}

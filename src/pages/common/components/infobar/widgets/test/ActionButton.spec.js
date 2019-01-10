@@ -33,6 +33,12 @@ describe('ActionButton component', () => {
         )
     }
 
+    const defaultContext = {
+        integration: fromJS({}),
+        integrationId: 1,
+        customerId: 1
+    }
+
     beforeEach(() => {
         // set execute action callbacks
         store = mockStore({
@@ -63,7 +69,9 @@ describe('ActionButton component', () => {
             >
                 {action.child}
             </ActionButton>
-        ).dive()
+        , {
+            context: defaultContext
+        }).dive()
 
         expect(component).toMatchSnapshot()
     })
@@ -99,7 +107,9 @@ describe('ActionButton component', () => {
             >
                 {action.child}
             </ActionButton>
-        ).dive()
+        , {
+            context: defaultContext
+        }).dive()
 
         expect(component).toMatchSnapshot()
     })
@@ -138,7 +148,9 @@ describe('ActionButton component', () => {
             >
                 {action.child}
             </ActionButton>
-        ).dive()
+        , {
+            context: defaultContext
+        }).dive()
 
         expect(component).toMatchSnapshot()
     })
@@ -173,7 +185,9 @@ describe('ActionButton component', () => {
             >
                 {action.child}
             </ActionButton>
-        ).dive()
+        , {
+            context: defaultContext
+        }).dive()
 
         expect(component).toMatchSnapshot()
     })
@@ -205,7 +219,9 @@ describe('ActionButton component', () => {
             >
                 {action.child}
             </ActionButton>
-        ).dive()
+        , {
+            context: defaultContext
+        }).dive()
 
         expect(component).toMatchSnapshot()
     })
@@ -251,7 +267,9 @@ describe('ActionButton component', () => {
             >
                 {action.child}
             </ActionButton>
-        ).dive()
+        , {
+            context: defaultContext
+        }).dive()
 
         expect(component).toMatchSnapshot()
     })
@@ -296,7 +314,9 @@ describe('ActionButton component', () => {
             >
                 {action.child}
             </ActionButton>
-        ).dive()
+        , {
+            context: defaultContext
+        }).dive()
 
         expect(component).toMatchSnapshot()
     })

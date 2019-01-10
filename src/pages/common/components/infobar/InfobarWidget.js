@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import _isObject from 'lodash/isObject'
 import _isFunction from 'lodash/isFunction'
 import {fromJS} from 'immutable'

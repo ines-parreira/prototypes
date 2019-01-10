@@ -58,6 +58,7 @@ exports[`BusinessHours component should render default values 1`] = `
             </Label>
             <div
               className="businessHoursInputWrapper"
+              key="0"
             >
               <BusinessHoursForm
                 businessHour={
@@ -103,16 +104,19 @@ exports[`BusinessHours component should render default values 1`] = `
             value="UTC"
           >
             <option
+              key="UTC"
               value="UTC"
             >
               UTC
             </option>
             <option
+              key="US/Pacific"
               value="US/Pacific"
             >
               US/Pacific
             </option>
             <option
+              key="Australia/AUR"
               value="Australia/AUR"
             >
               Australia/AUR
@@ -264,6 +268,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                         </Label>
                         <div
                           className="businessHoursInputWrapper"
+                          key="0"
                         >
                           <BusinessHoursForm
                             businessHour={
@@ -431,6 +436,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                             >
                                               <DropdownItem
                                                 className="option option--focused"
+                                                key="1,2,3,4,5,6,7"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -451,6 +457,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
+                                                key="1,2,3,4,5"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -471,6 +478,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
+                                                key="6,7"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -491,6 +499,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
+                                                key="1"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -509,6 +518,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
+                                                key="3"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -527,6 +537,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
+                                                key="4"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -545,6 +556,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
+                                                key="5"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -563,6 +575,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
+                                                key="6"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -581,6 +594,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
+                                                key="7"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -657,6 +671,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                         </div>
                         <div
                           className="businessHoursInputWrapper"
+                          key="1"
                         >
                           <BusinessHoursForm
                             businessHour={
@@ -824,6 +839,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                             >
                                               <DropdownItem
                                                 className="option option--focused"
+                                                key="1,2,3,4,5,6,7"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -844,6 +860,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
+                                                key="1,2,3,4,5"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -864,6 +881,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
+                                                key="6,7"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -884,6 +902,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
+                                                key="1"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -902,6 +921,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
+                                                key="2"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -920,6 +940,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
+                                                key="3"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -938,6 +959,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
+                                                key="5"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -956,6 +978,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
+                                                key="6"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -974,6 +997,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
+                                                key="7"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -1124,16 +1148,19 @@ exports[`BusinessHours component should render values from state 1`] = `
                                   value="US/Pacific"
                                 >
                                   <option
+                                    key="UTC"
                                     value="UTC"
                                   >
                                     UTC
                                   </option>
                                   <option
+                                    key="US/Pacific"
                                     value="US/Pacific"
                                   >
                                     US/Pacific
                                   </option>
                                   <option
+                                    key="Australia/AUR"
                                     value="Australia/AUR"
                                   >
                                     Australia/AUR

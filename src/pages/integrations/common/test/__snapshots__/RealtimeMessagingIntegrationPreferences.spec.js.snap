@@ -170,6 +170,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
               <Link
                 activeClassName="disabled"
                 className="nav-link"
+                key=".0"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/2/overview"
@@ -185,6 +186,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
               <Link
                 activeClassName="disabled"
                 className="nav-link"
+                key=".1"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/2/customer_chat"
@@ -200,6 +202,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
               <Link
                 activeClassName="disabled"
                 className="nav-link"
+                key=".2"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/2/preferences"
@@ -440,26 +443,31 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                             value={86400}
                           >
                             <option
+                              key="0"
                               value={1800}
                             >
                               30 minutes
                             </option>
                             <option
+                              key="1"
                               value={10800}
                             >
                               3 hours
                             </option>
                             <option
+                              key="2"
                               value={21600}
                             >
                               6 hours
                             </option>
                             <option
+                              key="3"
                               value={86400}
                             >
                               1 day
                             </option>
                             <option
+                              key="4"
                               value={604800}
                             >
                               7 days
@@ -678,6 +686,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
               <Link
                 activeClassName="disabled"
                 className="nav-link"
+                key=".0"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch/2/overview"
@@ -693,6 +702,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
               <Link
                 activeClassName="disabled"
                 className="nav-link"
+                key=".1"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch/2/preferences"
@@ -933,26 +943,31 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
                             value={10800}
                           >
                             <option
+                              key="0"
                               value={1800}
                             >
                               30 minutes
                             </option>
                             <option
+                              key="1"
                               value={10800}
                             >
                               3 hours
                             </option>
                             <option
+                              key="2"
                               value={21600}
                             >
                               6 hours
                             </option>
                             <option
+                              key="3"
                               value={86400}
                             >
                               1 day
                             </option>
                             <option
+                              key="4"
                               value={604800}
                             >
                               7 days
@@ -1171,6 +1186,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
               <Link
                 activeClassName="disabled"
                 className="nav-link"
+                key=".0"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/2/appearance"
@@ -1186,6 +1202,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
               <Link
                 activeClassName="disabled"
                 className="nav-link"
+                key=".1"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/2/installation"
@@ -1201,6 +1218,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
               <Link
                 activeClassName="disabled"
                 className="nav-link"
+                key=".2"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/2/preferences"
@@ -1216,6 +1234,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
               <Link
                 activeClassName="disabled"
                 className="nav-link"
+                key=".3"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/2/campaigns"
@@ -1231,6 +1250,7 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
               <Link
                 activeClassName="disabled"
                 className="nav-link"
+                key=".4"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/2/quick-replies"
@@ -1715,26 +1735,31 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
                             value={10800}
                           >
                             <option
+                              key="0"
                               value={1800}
                             >
                               30 minutes
                             </option>
                             <option
+                              key="1"
                               value={10800}
                             >
                               3 hours
                             </option>
                             <option
+                              key="2"
                               value={21600}
                             >
                               6 hours
                             </option>
                             <option
+                              key="3"
                               value={86400}
                             >
                               1 day
                             </option>
                             <option
+                              key="4"
                               value={604800}
                             >
                               7 days

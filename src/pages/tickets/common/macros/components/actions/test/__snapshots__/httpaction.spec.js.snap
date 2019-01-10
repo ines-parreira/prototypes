@@ -39,21 +39,25 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
         type="select"
       >
         <option
+          key="GET"
           value="GET"
         >
           GET
         </option>
         <option
+          key="POST"
           value="POST"
         >
           POST
         </option>
         <option
+          key="PUT"
           value="PUT"
         >
           PUT
         </option>
         <option
+          key="DELETE"
           value="DELETE"
         >
           DELETE

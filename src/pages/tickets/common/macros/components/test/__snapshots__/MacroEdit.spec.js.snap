@@ -175,6 +175,7 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                         />
                       </DropdownItem>
                       <DropdownItem
+                        key="setResponseText"
                         onClick={[Function]}
                         tag="button"
                         toggle={true}
@@ -190,6 +191,7 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                         </button>
                       </DropdownItem>
                       <DropdownItem
+                        key="addAttachments"
                         onClick={[Function]}
                         tag="button"
                         toggle={true}
@@ -205,6 +207,7 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                         </button>
                       </DropdownItem>
                       <DropdownItem
+                        key="addTags"
                         onClick={[Function]}
                         tag="button"
                         toggle={true}
@@ -220,6 +223,7 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                         </button>
                       </DropdownItem>
                       <DropdownItem
+                        key="setStatus"
                         onClick={[Function]}
                         tag="button"
                         toggle={true}
@@ -235,6 +239,7 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                         </button>
                       </DropdownItem>
                       <DropdownItem
+                        key="setAssignee"
                         onClick={[Function]}
                         tag="button"
                         toggle={true}
@@ -250,6 +255,7 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                         </button>
                       </DropdownItem>
                       <DropdownItem
+                        key="setSubject"
                         onClick={[Function]}
                         tag="button"
                         toggle={true}
@@ -289,6 +295,7 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                         </h6>
                       </DropdownItem>
                       <DropdownItem
+                        key="http"
                         onClick={[Function]}
                         tag="button"
                         toggle={true}

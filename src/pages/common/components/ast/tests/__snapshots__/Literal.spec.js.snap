@@ -87,4 +87,4 @@ exports[`Literal component should not display an error because the value is not 
 </span>
 `;
 
-exports[`Literal component should return null because the operator is an empty operator 1`] = `null`;
+exports[`Literal component should return null because the operator is an empty operator 1`] = `""`;

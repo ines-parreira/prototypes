@@ -51,10 +51,7 @@ describe('ConfirmButton component', () => {
             {attachTo: container}
         )
 
-        // enzyme doesn't support event delegation (click -> parent submit)
-        // https://github.com/airbnb/enzyme/issues/308
-        // use click() from jsdom
-        component.find('#confirm-button-1').get(0).click()
+        component.find('button#confirm-button-1').simulate('submit')
 
         return new Promise((resolve) => {
             setTimeout(() => {

@@ -1,5 +1,9 @@
 import {browserHistory} from 'react-router'
 import mockMoment from 'moment'
+import Enzyme from 'enzyme'
+import Adapter from 'enzyme-adapter-react-16'
+
+Enzyme.configure({ adapter: new Adapter() })
 
 // jsdom does not support matchMedia
 Object.defineProperty(window, 'matchMedia', {

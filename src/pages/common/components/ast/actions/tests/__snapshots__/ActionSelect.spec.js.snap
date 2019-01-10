@@ -18,6 +18,7 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
     tag="div"
   >
     <DropdownItem
+      key="0"
       onClick={[Function]}
       tag="button"
       toggle={true}
@@ -26,6 +27,7 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
       Deliver message
     </DropdownItem>
     <DropdownItem
+      key="1"
       onClick={[Function]}
       tag="button"
       toggle={true}
@@ -34,6 +36,7 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
       Send email
     </DropdownItem>
     <DropdownItem
+      key="2"
       onClick={[Function]}
       tag="button"
       toggle={true}
@@ -42,6 +45,7 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
       Reply to ticket
     </DropdownItem>
     <DropdownItem
+      key="3"
       onClick={[Function]}
       tag="button"
       toggle={true}
@@ -50,6 +54,7 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
       Apply macro
     </DropdownItem>
     <DropdownItem
+      key="4"
       onClick={[Function]}
       tag="button"
       toggle={true}
@@ -58,6 +63,7 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
       Add tags
     </DropdownItem>
     <DropdownItem
+      key="5"
       onClick={[Function]}
       tag="button"
       toggle={true}
@@ -66,6 +72,7 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
       Set tags
     </DropdownItem>
     <DropdownItem
+      key="6"
       onClick={[Function]}
       tag="button"
       toggle={true}
@@ -74,6 +81,7 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
       Set subject
     </DropdownItem>
     <DropdownItem
+      key="7"
       onClick={[Function]}
       tag="button"
       toggle={true}
@@ -82,6 +90,7 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
       Set status
     </DropdownItem>
     <DropdownItem
+      key="8"
       onClick={[Function]}
       tag="button"
       toggle={true}
@@ -90,6 +99,7 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
       Assign agent
     </DropdownItem>
     <DropdownItem
+      key="9"
       onClick={[Function]}
       tag="button"
       toggle={true}
@@ -119,6 +129,7 @@ exports[`ActionSelect component should render all non-system actions for non-sys
     tag="div"
   >
     <DropdownItem
+      key="1"
       onClick={[Function]}
       tag="button"
       toggle={true}
@@ -127,6 +138,7 @@ exports[`ActionSelect component should render all non-system actions for non-sys
       Send email
     </DropdownItem>
     <DropdownItem
+      key="2"
       onClick={[Function]}
       tag="button"
       toggle={true}
@@ -135,6 +147,7 @@ exports[`ActionSelect component should render all non-system actions for non-sys
       Reply to ticket
     </DropdownItem>
     <DropdownItem
+      key="3"
       onClick={[Function]}
       tag="button"
       toggle={true}
@@ -143,6 +156,7 @@ exports[`ActionSelect component should render all non-system actions for non-sys
       Apply macro
     </DropdownItem>
     <DropdownItem
+      key="4"
       onClick={[Function]}
       tag="button"
       toggle={true}
@@ -151,6 +165,7 @@ exports[`ActionSelect component should render all non-system actions for non-sys
       Add tags
     </DropdownItem>
     <DropdownItem
+      key="5"
       onClick={[Function]}
       tag="button"
       toggle={true}
@@ -159,6 +174,7 @@ exports[`ActionSelect component should render all non-system actions for non-sys
       Set tags
     </DropdownItem>
     <DropdownItem
+      key="6"
       onClick={[Function]}
       tag="button"
       toggle={true}
@@ -167,6 +183,7 @@ exports[`ActionSelect component should render all non-system actions for non-sys
       Set subject
     </DropdownItem>
     <DropdownItem
+      key="7"
       onClick={[Function]}
       tag="button"
       toggle={true}
@@ -175,6 +192,7 @@ exports[`ActionSelect component should render all non-system actions for non-sys
       Set status
     </DropdownItem>
     <DropdownItem
+      key="8"
       onClick={[Function]}
       tag="button"
       toggle={true}
@@ -183,6 +201,7 @@ exports[`ActionSelect component should render all non-system actions for non-sys
       Assign agent
     </DropdownItem>
     <DropdownItem
+      key="9"
       onClick={[Function]}
       tag="button"
       toggle={true}

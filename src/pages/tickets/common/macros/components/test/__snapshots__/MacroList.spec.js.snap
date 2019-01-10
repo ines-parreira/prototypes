@@ -9,6 +9,7 @@ exports[`MacroList component should render active and disabled macros 1`] = `
 >
   <div
     className="item"
+    key="1"
     onClick={[Function]}
     onMouseEnter={[Function]}
   >
@@ -16,6 +17,7 @@ exports[`MacroList component should render active and disabled macros 1`] = `
   </div>
   <div
     className="item active"
+    key="2"
     onClick={[Function]}
     onMouseEnter={[Function]}
   >
@@ -23,6 +25,7 @@ exports[`MacroList component should render active and disabled macros 1`] = `
   </div>
   <div
     className="item disabled"
+    key="3"
     onClick={[Function]}
     onMouseEnter={[Function]}
   >
@@ -40,6 +43,7 @@ exports[`MacroList component should render the macro list 1`] = `
 >
   <div
     className="item active"
+    key="1"
     onClick={[Function]}
     onMouseEnter={[Function]}
   >
@@ -47,6 +51,7 @@ exports[`MacroList component should render the macro list 1`] = `
   </div>
   <div
     className="item"
+    key="2"
     onClick={[Function]}
     onMouseEnter={[Function]}
   >
@@ -54,6 +59,7 @@ exports[`MacroList component should render the macro list 1`] = `
   </div>
   <div
     className="item"
+    key="3"
     onClick={[Function]}
     onMouseEnter={[Function]}
   >

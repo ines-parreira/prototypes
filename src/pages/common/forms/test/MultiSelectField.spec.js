@@ -208,6 +208,7 @@ describe('MultiSelectField', () => {
             target: {value: 'hello'}
         })
         component._stopPropagation = stopPropagationSpy
+        wrapper.update()
         wrapper.find('button').first().simulate('mouseDown')
 
         expect(stopPropagationSpy.mock.calls.length).toBe(1)

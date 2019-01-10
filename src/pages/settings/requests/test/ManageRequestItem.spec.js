@@ -30,7 +30,7 @@ describe('ManageRequestItem component', () => {
                 requestId={2}
             />
         )
-        expect(component.find('#id-name').props().value).toBe('b')
+        expect(component.find('input#id-name').props().value).toBe('b')
         expect(component).toMatchSnapshot()
     })
 })

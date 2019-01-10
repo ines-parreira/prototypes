@@ -8,11 +8,13 @@ exports[`ast widgets RequestSelect should handle change 1`] = `
   value={1}
 >
   <option
+    key="0"
     value={1}
   >
     shipping status
   </option>
   <option
+    key="1"
     value={2}
   >
     missing items

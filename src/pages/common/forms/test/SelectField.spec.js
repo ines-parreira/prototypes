@@ -172,6 +172,7 @@ describe('SelectField', () => {
         wrapper.instance()._onSearchChange({
             currentTarget: {value: 'hello'}
         })
+        wrapper.update()
 
         const items = wrapper.find('DropdownItem')
         expect(items).toHaveLength(1)
@@ -253,6 +254,7 @@ describe('SelectField', () => {
             currentTarget: {value: 'hello'}
         })
         component._stopPropagation = stopPropagationSpy
+        wrapper.update()
         wrapper.find('button').first().simulate('click')
 
         expect(stopPropagationSpy.mock.calls.length).toBe(1)

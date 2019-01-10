@@ -50,6 +50,7 @@ exports[`FacebookCarousel component render generic template 1`] = `
     <Slider
       arrows={true}
       infinite={false}
+      key="0"
       responsive={
         Array [
           Object {
@@ -183,6 +184,7 @@ exports[`FacebookCarousel component render generic template 1`] = `
                 <div
                   className="slick-slide slick-active slick-current carouselCardContainer"
                   data-index={0}
+                  key="original.$0"
                   onClick={[Function]}
                   style={
                     Object {
@@ -251,6 +253,7 @@ exports[`FacebookCarousel component render generic template 1`] = `
                           <Button
                             color="secondary"
                             href="https://sfbicycles.myshopify.com/"
+                            key="0"
                             tag="a"
                             target="_blank"
                           >
@@ -266,6 +269,7 @@ exports[`FacebookCarousel component render generic template 1`] = `
                           <Button
                             color="secondary"
                             disabled={true}
+                            key="1"
                             tag="button"
                           >
                             <button
@@ -279,6 +283,7 @@ exports[`FacebookCarousel component render generic template 1`] = `
                           <Button
                             color="secondary"
                             href="https://messenger-commerce.shopifyapps.com/"
+                            key="2"
                             tag="a"
                             target="_blank"
                           >

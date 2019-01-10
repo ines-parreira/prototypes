@@ -6,13 +6,13 @@ import classNames from 'classnames'
 
 import {removeRequest, setRequest} from '../../../../../state/ticket/actions'
 import {getRequests, getLatestRequest} from '../../../../../state/requests/selectors'
-import {fromJS} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 
 import headerCss from '../TicketHeader.less'
 
 type Props = {
     request: Object,
-    requests: Array<*>,
+    requests: List<Map<*, *>>,
     setRequest: typeof setRequest,
     removeRequest: typeof removeRequest,
 }
@@ -60,7 +60,6 @@ export class TicketRequest extends React.Component<Props, State> {
         }
 
         const label = !request.isEmpty() ? request.get('name') : ''
-
         return (
             <div className="d-none d-md-inline-flex flex-wrap">
                 <Dropdown
@@ -92,7 +91,7 @@ export class TicketRequest extends React.Component<Props, State> {
                         </DropdownItem>
                         {requests.map((request) => (
                             <DropdownItem
-                                key={request}
+                                key={request.get('id')}
                                 onClick={() => this._onChange(() => setRequest(request))}
                             >
                                 {request.get('name')}

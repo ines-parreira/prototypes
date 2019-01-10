@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 
 /**
  * HOC to allow to the wrapped component to check if it is hovered or not.
@@ -12,7 +13,7 @@ export default (ComposedComponent) => {
         }
 
         static childContextTypes = {
-            hovered: React.PropTypes.bool,
+            hovered: PropTypes.bool,
         }
 
         constructor() {

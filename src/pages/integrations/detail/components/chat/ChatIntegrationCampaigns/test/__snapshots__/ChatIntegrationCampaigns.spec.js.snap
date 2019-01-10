@@ -213,6 +213,7 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
               <Link
                 activeClassName="disabled"
                 className="nav-link"
+                key=".0"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/appearance"
@@ -228,6 +229,7 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
               <Link
                 activeClassName="disabled"
                 className="nav-link"
+                key=".1"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/installation"
@@ -243,6 +245,7 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
               <Link
                 activeClassName="disabled"
                 className="nav-link"
+                key=".2"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/preferences"
@@ -258,6 +261,7 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
               <Link
                 activeClassName="disabled"
                 className="nav-link"
+                key=".3"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/campaigns"
@@ -273,6 +277,7 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
               <Link
                 activeClassName="disabled"
                 className="nav-link"
+                key=".4"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/quick-replies"
@@ -553,6 +558,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
               <Link
                 activeClassName="disabled"
                 className="nav-link"
+                key=".0"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/appearance"
@@ -568,6 +574,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
               <Link
                 activeClassName="disabled"
                 className="nav-link"
+                key=".1"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/installation"
@@ -583,6 +590,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
               <Link
                 activeClassName="disabled"
                 className="nav-link"
+                key=".2"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/preferences"
@@ -598,6 +606,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
               <Link
                 activeClassName="disabled"
                 className="nav-link"
+                key=".3"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/campaigns"
@@ -613,6 +622,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
               <Link
                 activeClassName="disabled"
                 className="nav-link"
+                key=".4"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/quick-replies"
@@ -652,7 +662,9 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
           className="table-integrations mt-3 table table-hover"
         >
           <tbody>
-            <tr>
+            <tr
+              key="156a4d-fg68h40-sd6f4"
+            >
               <td
                 className="link-full-td"
               >
@@ -720,7 +732,9 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
                 </ForwardIcon>
               </td>
             </tr>
-            <tr>
+            <tr
+              key="not-so-good-campaign-d8f9-fds486-sf78"
+            >
               <td
                 className="link-full-td"
               >

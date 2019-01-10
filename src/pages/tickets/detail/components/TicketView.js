@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
@@ -67,6 +68,10 @@ export default class TicketView extends React.Component {
         setStatus: _noop
     }
 
+    newMessageFormRef
+
+    ticketContentRef
+
     wasAtBottomOfPage = false // used to track if user was at the bottom of the page
 
     componentWillMount() {
@@ -90,16 +95,18 @@ export default class TicketView extends React.Component {
     componentDidMount() {
         // scroll to the bottom of the ticket content the first time the ticket is viewed.
         // decrease the bottom padding, to avoid scrolling to a white screen on touchscreens.
-        const styles = window.getComputedStyle(this.refs.ticketContent)
-        const maxScrollTop = this.refs.ticketContent.scrollHeight - this.refs.ticketContent.clientHeight
-        this.refs.ticketContent.scrollTop = maxScrollTop - parseInt(styles.paddingBottom)
+        if (this.ticketContentRef) {
+            const styles = window.getComputedStyle(this.ticketContentRef)
+            const maxScrollTop = this.ticketContentRef.scrollHeight - this.ticketContentRef.clientHeight
+            this.ticketContentRef.scrollTop = maxScrollTop - parseInt(styles.paddingBottom)
 
-        // don't steal focus if another component manages it.
-        // (eg. new ticket focuses the editable title).
-        // body is focused by default.
-        if (document.activeElement === document.body) {
-            // focus ticket content so we can keyboard scroll
-            this.refs.ticketContent.focus()
+            // don't steal focus if another component manages it.
+            // (eg. new ticket focuses the editable title).
+            // body is focused by default.
+            if (document.activeElement === document.body) {
+                // focus ticket content so we can keyboard scroll
+                this.ticketContentRef.focus()
+            }
         }
     }
 
@@ -121,7 +128,7 @@ export default class TicketView extends React.Component {
     }
 
     _handlePreSubmit = (...args) => {
-        if (this.refs.newMessageForm.checkValidity()) {
+        if (this.newMessageFormRef.checkValidity()) {
             this.statusParams = args
         } else {
             this.statusParams = []
@@ -285,7 +292,7 @@ export default class TicketView extends React.Component {
                         [css.historyDisplayed]: isHistoryDisplayed,
                         'mt-3': isCreating,
                     })}
-                    ref="ticketContent"
+                    ref={ref => this.ticketContentRef = ref}
                     tabIndex="1"
                 >
                     {
@@ -300,7 +307,7 @@ export default class TicketView extends React.Component {
                     <form
                         className={classnames('d-print-none', css.newMessageForm)}
                         onSubmit={this._handleSubmit}
-                        ref="newMessageForm"
+                        ref={ref => this.newMessageFormRef = ref}
                     >
                         <ReplyMessageChannel
                             actions={this.props.actions}

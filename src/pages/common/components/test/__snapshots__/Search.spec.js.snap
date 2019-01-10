@@ -28,7 +28,7 @@ exports[`Search component handle change function 1`] = `
         }
       }
       type="text"
-      value="text"
+      value=""
     >
       <input
         className="input form-control"
@@ -41,7 +41,7 @@ exports[`Search component handle change function 1`] = `
           }
         }
         type="text"
-        value="text"
+        value=""
       />
     </Input>
   </div>
@@ -76,7 +76,7 @@ exports[`Search component reset function 1`] = `
         }
       }
       type="text"
-      value="text"
+      value=""
     >
       <input
         className="input form-control"
@@ -89,7 +89,7 @@ exports[`Search component reset function 1`] = `
           }
         }
         type="text"
-        value="text"
+        value=""
       />
     </Input>
   </div>

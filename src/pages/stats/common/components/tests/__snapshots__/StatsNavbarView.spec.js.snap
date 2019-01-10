@@ -11,6 +11,7 @@ exports[`StatsNavbarView should render 1`] = `
       <Link
         activeClassName="active"
         className="item"
+        key="Overview"
         onlyActiveOnIndex={false}
         style={Object {}}
         to="/app/stats/"
@@ -20,6 +21,7 @@ exports[`StatsNavbarView should render 1`] = `
       <Link
         activeClassName="active"
         className="item"
+        key="Tags"
         onlyActiveOnIndex={false}
         style={Object {}}
         to="/app/stats/tags"
@@ -29,6 +31,7 @@ exports[`StatsNavbarView should render 1`] = `
       <Link
         activeClassName="active"
         className="item"
+        key="Channels"
         onlyActiveOnIndex={false}
         style={Object {}}
         to="/app/stats/channels"
@@ -38,6 +41,7 @@ exports[`StatsNavbarView should render 1`] = `
       <Link
         activeClassName="active"
         className="item"
+        key="Agents"
         onlyActiveOnIndex={false}
         style={Object {}}
         to="/app/stats/agents"
@@ -47,6 +51,7 @@ exports[`StatsNavbarView should render 1`] = `
       <Link
         activeClassName="active"
         className="item"
+        key="Macros"
         onlyActiveOnIndex={false}
         style={Object {}}
         to="/app/stats/macros"
@@ -56,6 +61,7 @@ exports[`StatsNavbarView should render 1`] = `
       <Link
         activeClassName="active"
         className="item"
+        key="Satisfaction"
         onlyActiveOnIndex={false}
         style={Object {}}
         to="/app/stats/satisfaction"

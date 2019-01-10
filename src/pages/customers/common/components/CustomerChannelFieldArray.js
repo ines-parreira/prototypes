@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import _clone from 'lodash/clone'
 import {FormGroup, Label, Row, Col, Button} from 'reactstrap'
 
@@ -101,14 +102,14 @@ CustomerChannelFieldArray.defaultProps = {
 }
 
 CustomerChannelFieldArray.propTypes = {
-    type: React.PropTypes.string.isRequired,
-    fields: React.PropTypes.array.isRequired,
-    meta: React.PropTypes.object.isRequired,
-    label: React.PropTypes.string,
-    addLabel: React.PropTypes.string,
-    placeholder: React.PropTypes.string,
-    onChange: React.PropTypes.func,
-    errors: React.PropTypes.object,
+    type: PropTypes.string.isRequired,
+    fields: PropTypes.array.isRequired,
+    meta: PropTypes.object.isRequired,
+    label: PropTypes.string,
+    addLabel: PropTypes.string,
+    placeholder: PropTypes.string,
+    onChange: PropTypes.func,
+    errors: PropTypes.object,
 }
 
 export default CustomerChannelFieldArray

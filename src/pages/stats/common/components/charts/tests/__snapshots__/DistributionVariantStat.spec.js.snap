@@ -6,22 +6,27 @@ exports[`DistributionVariantStat should render a distribution chart 1`] = `
 >
   <img
     className="star"
+    key="5"
     src="test-file-stub"
   />
   <img
     className="star"
+    key="4"
     src="test-file-stub"
   />
   <img
     className="star"
+    key="3"
     src="test-file-stub"
   />
   <img
     className="star"
+    key="2"
     src="test-file-stub"
   />
   <img
     className="star"
+    key="1"
     src="test-file-stub"
   />
 </span>

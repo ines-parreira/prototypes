@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import classnames from 'classnames'
@@ -103,9 +104,9 @@ export default class Navbar extends React.Component {
     }
 
     componentWillMount() {
-        this.state = {
+        this.setState({
             title: _capitalize(this.props.activeContent)
-        }
+        })
     }
 
     _closePanel = () => {

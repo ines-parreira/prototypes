@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
 import {Button, } from 'reactstrap'
 import _capitalize from 'lodash/capitalize'

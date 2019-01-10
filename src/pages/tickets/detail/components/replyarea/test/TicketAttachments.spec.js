@@ -56,7 +56,7 @@ describe('TicketAttachments component', () => {
         })
 
         it('should not show the remove button', () => {
-            expect(component.find('.itemRemove')).not.toBePresent()
+            expect(component.find('.itemRemove')).not.toExist()
         })
     })
 
@@ -74,7 +74,7 @@ describe('TicketAttachments component', () => {
         })
 
         it('should show the remove button', () => {
-            expect(component.find('.itemRemove')).toBePresent()
+            expect(component.find('.itemRemove')).toExist()
         })
     })
 

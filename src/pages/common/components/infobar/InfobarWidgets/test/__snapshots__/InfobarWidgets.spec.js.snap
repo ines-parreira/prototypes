@@ -277,6 +277,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                 }
               }
               isEditing={false}
+              key="ticket,customer,integrations,1-0"
               open={true}
               source={
                 Immutable.Map {
@@ -559,6 +560,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                   }
                                 }
                                 isEditing={false}
+                                key="-0"
                                 open={false}
                                 parent={
                                   Immutable.Map {
@@ -837,6 +839,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                                   }
                                                 }
                                                 isEditing={false}
+                                                key="foo-0"
                                                 open={false}
                                                 parent={
                                                   Immutable.Map {
@@ -1024,6 +1027,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                 }
               }
               isEditing={false}
+              key="ticket,customer,integrations,2-1"
               open={false}
               source={
                 Immutable.Map {
@@ -1303,6 +1307,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                   }
                                 }
                                 isEditing={false}
+                                key="-0"
                                 open={false}
                                 parent={
                                   Immutable.Map {
@@ -1579,6 +1584,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                                   }
                                                 }
                                                 isEditing={false}
+                                                key="bar-0"
                                                 open={false}
                                                 parent={
                                                   Immutable.Map {
@@ -2063,6 +2069,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                   }
                 }
                 isEditing={true}
+                key="ticket,customer,integrations,1-0"
                 open={true}
                 source={
                   Immutable.Map {
@@ -2391,6 +2398,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                       }
                                     }
                                     isEditing={true}
+                                    key="-0"
                                     open={false}
                                     parent={
                                       Immutable.Map {
@@ -2701,6 +2709,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                         }
                                                       }
                                                       isEditing={true}
+                                                      key="foo-0"
                                                       open={false}
                                                       parent={
                                                         Immutable.Map {
@@ -2900,6 +2909,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                   }
                 }
                 isEditing={true}
+                key="ticket,customer,integrations,2-1"
                 open={false}
                 source={
                   Immutable.Map {
@@ -3225,6 +3235,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                       }
                                     }
                                     isEditing={true}
+                                    key="-0"
                                     open={false}
                                     parent={
                                       Immutable.Map {
@@ -3533,6 +3544,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                         }
                                                       }
                                                       isEditing={true}
+                                                      key="bar-0"
                                                       open={false}
                                                       parent={
                                                         Immutable.Map {
@@ -3730,6 +3742,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                   }
                 }
                 isEditing={true}
+                key="ticket,customer,integrations-2"
                 open={false}
                 source={
                   Immutable.Map {

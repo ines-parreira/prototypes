@@ -34,7 +34,7 @@ describe('TicketMessageActions component', () => {
     )
 
     it('should display only actions with execution in back-end', () => {
-        expect(component.children().length).toBe(4)
+        expect(component.find('Button').length).toBe(4)
     })
 
     it('should display actions titles', () => {

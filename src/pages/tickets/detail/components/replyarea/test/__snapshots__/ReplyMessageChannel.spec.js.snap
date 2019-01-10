@@ -633,7 +633,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
 </div>
 `;
 
-exports[`ReplyMessageChannel component existing ticket without messages 1`] = `null`;
+exports[`ReplyMessageChannel component existing ticket without messages 1`] = `""`;
 
 exports[`ReplyMessageChannel component new ticket 1`] = `
 <div

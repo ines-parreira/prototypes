@@ -1,5 +1,6 @@
 // @flow
 import React from 'react'
+import PropTypes from 'prop-types'
 import type {List} from 'immutable'
 import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Button} from 'reactstrap'
 
@@ -14,7 +15,7 @@ type Props = {
 
 export class AddLogicalCondition extends React.Component<Props> {
     static contextTypes = {
-        hovered: React.PropTypes.bool,
+        hovered: PropTypes.bool,
     }
 
     _handleAndClick = () => {

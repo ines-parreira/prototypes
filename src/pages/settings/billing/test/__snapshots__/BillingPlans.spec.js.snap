@@ -66,6 +66,7 @@ exports[`BillingPlans component should display a custom plan 1`] = `
         isFeatured={false}
         isTrialing={false}
         isUpdating={false}
+        key="1"
         onClick={[Function]}
         plan={
           Immutable.Map {
@@ -78,6 +79,7 @@ exports[`BillingPlans component should display a custom plan 1`] = `
         }
         showFooter={true}
       />
+      <Component />
     </CardDeck>
   </Container>
   <Container

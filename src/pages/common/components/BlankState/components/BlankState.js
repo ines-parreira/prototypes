@@ -9,7 +9,7 @@ type Props = {
 }
 
 export default class BlankState extends React.Component<Props> {
-    defaultProps = {
+    static defaultProps = {
         stats: fromJS({})
     }
 

@@ -3509,6 +3509,7 @@ exports[`RichField should render immutable variable 1`] = `
                                         },
                                       }
                                     }
+                                    key="contents0"
                                   >
                                     <div
                                       data-contents="true"
@@ -3518,6 +3519,7 @@ exports[`RichField should render immutable variable 1`] = `
                                         data-block={true}
                                         data-editor="123"
                                         data-offset-key="123-0-0"
+                                        key="123"
                                       >
                                         <DraftEditorBlock
                                           block={
@@ -3837,6 +3839,7 @@ exports[`RichField should render immutable variable 1`] = `
                                           }
                                           direction="LTR"
                                           forceSelection={false}
+                                          key="123"
                                           offsetKey="123-0-0"
                                           selection={
                                             Object {
@@ -4017,6 +4020,7 @@ exports[`RichField should render immutable variable 1`] = `
                                               }
                                               forceSelection={false}
                                               isLast={false}
+                                              key="123-0-0"
                                               offsetKey="123-0-0"
                                               selection={
                                                 Object {
@@ -4042,6 +4046,7 @@ exports[`RichField should render immutable variable 1`] = `
                                                 <DraftEditorTextNode>
                                                   <span
                                                     data-text="true"
+                                                    key="A"
                                                   >
                                                     html 
                                                   </span>
@@ -4201,6 +4206,7 @@ exports[`RichField should render immutable variable 1`] = `
                                               decoratedText="{{current_user.name}}"
                                               dir={null}
                                               entityKey="1"
+                                              key="123-1-0"
                                               offsetKey="123-1-0"
                                             >
                                               <component
@@ -4532,6 +4538,7 @@ exports[`RichField should render immutable variable 1`] = `
                                                       }
                                                       forceSelection={false}
                                                       isLast={true}
+                                                      key="123-1-0"
                                                       offsetKey="123-1-0"
                                                       selection={
                                                         Object {
@@ -4557,6 +4564,7 @@ exports[`RichField should render immutable variable 1`] = `
                                                         <DraftEditorTextNode>
                                                           <span
                                                             data-text="true"
+                                                            key="B"
                                                           >
                                                             {{current_user.name}}
                                                           </span>
@@ -5503,94 +5511,26 @@ exports[`RichField should render mutable variable 1`] = `
                     "123": Object {
                       "characterList": Array [
                         Object {
-                          "entity": "2",
+                          "entity": null,
                           "style": Array [],
                         },
                         Object {
-                          "entity": "2",
+                          "entity": null,
                           "style": Array [],
                         },
                         Object {
-                          "entity": "2",
+                          "entity": null,
                           "style": Array [],
                         },
                         Object {
-                          "entity": "2",
-                          "style": Array [],
-                        },
-                        Object {
-                          "entity": "2",
-                          "style": Array [],
-                        },
-                        Object {
-                          "entity": "2",
-                          "style": Array [],
-                        },
-                        Object {
-                          "entity": "2",
-                          "style": Array [],
-                        },
-                        Object {
-                          "entity": "2",
-                          "style": Array [],
-                        },
-                        Object {
-                          "entity": "2",
-                          "style": Array [],
-                        },
-                        Object {
-                          "entity": "2",
-                          "style": Array [],
-                        },
-                        Object {
-                          "entity": "2",
-                          "style": Array [],
-                        },
-                        Object {
-                          "entity": "2",
-                          "style": Array [],
-                        },
-                        Object {
-                          "entity": "2",
-                          "style": Array [],
-                        },
-                        Object {
-                          "entity": "2",
-                          "style": Array [],
-                        },
-                        Object {
-                          "entity": "2",
-                          "style": Array [],
-                        },
-                        Object {
-                          "entity": "2",
-                          "style": Array [],
-                        },
-                        Object {
-                          "entity": "2",
-                          "style": Array [],
-                        },
-                        Object {
-                          "entity": "2",
-                          "style": Array [],
-                        },
-                        Object {
-                          "entity": "2",
-                          "style": Array [],
-                        },
-                        Object {
-                          "entity": "2",
-                          "style": Array [],
-                        },
-                        Object {
-                          "entity": "2",
+                          "entity": null,
                           "style": Array [],
                         },
                       ],
                       "data": Object {},
                       "depth": 0,
                       "key": "123",
-                      "text": "{{current_user.name}}",
+                      "text": "html",
                       "type": "unstyled",
                     },
                   },
@@ -5610,18 +5550,18 @@ exports[`RichField should render mutable variable 1`] = `
                   },
                   "selectionAfter": Object {
                     "anchorKey": "123",
-                    "anchorOffset": 21,
+                    "anchorOffset": 0,
                     "focusKey": "123",
-                    "focusOffset": 21,
+                    "focusOffset": 0,
                     "hasFocus": false,
                     "isBackward": false,
                   },
                   "selectionBefore": Object {
                     "anchorKey": "123",
-                    "anchorOffset": 21,
+                    "anchorOffset": 0,
                     "focusKey": "123",
-                    "focusOffset": 21,
-                    "hasFocus": false,
+                    "focusOffset": 0,
+                    "hasFocus": true,
                     "isBackward": false,
                   },
                 },
@@ -5656,28 +5596,28 @@ exports[`RichField should render mutable variable 1`] = `
                 "directionMap": Object {
                   "123": "LTR",
                 },
-                "forceSelection": true,
+                "forceSelection": false,
                 "inCompositionMode": false,
                 "inlineStyleOverride": null,
-                "lastChangeType": "attach-entity-variables",
+                "lastChangeType": undefined,
                 "nativelyRenderedContent": null,
                 "redoStack": Array [],
                 "selection": Object {
                   "anchorKey": "123",
-                  "anchorOffset": 21,
+                  "anchorOffset": 4,
                   "focusKey": "123",
-                  "focusOffset": 21,
+                  "focusOffset": 4,
                   "hasFocus": false,
                   "isBackward": false,
                 },
                 "treeMap": Object {
                   "123": Array [
                     Object {
-                      "decoratorKey": "0-4.0",
-                      "end": 21,
+                      "decoratorKey": null,
+                      "end": 4,
                       "leaves": Array [
                         Object {
-                          "end": 21,
+                          "end": 4,
                           "start": 0,
                         },
                       ],
@@ -5689,96 +5629,11 @@ exports[`RichField should render mutable variable 1`] = `
                   Object {
                     "blockMap": Object {
                       "123": Object {
-                        "characterList": Array [
-                          Object {
-                            "entity": null,
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": null,
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": null,
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": null,
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": null,
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": null,
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": null,
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": null,
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": null,
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": null,
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": null,
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": null,
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": null,
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": null,
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": null,
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": null,
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": null,
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": null,
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": null,
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": null,
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": null,
-                            "style": Array [],
-                          },
-                        ],
+                        "characterList": Array [],
                         "data": Object {},
                         "depth": 0,
                         "key": "123",
-                        "text": "{{current_user.name}}",
+                        "text": "",
                         "type": "unstyled",
                       },
                     },
@@ -5847,94 +5702,26 @@ exports[`RichField should render mutable variable 1`] = `
                       "123": Object {
                         "characterList": Array [
                           Object {
-                            "entity": "2",
+                            "entity": null,
                             "style": Array [],
                           },
                           Object {
-                            "entity": "2",
+                            "entity": null,
                             "style": Array [],
                           },
                           Object {
-                            "entity": "2",
+                            "entity": null,
                             "style": Array [],
                           },
                           Object {
-                            "entity": "2",
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": "2",
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": "2",
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": "2",
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": "2",
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": "2",
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": "2",
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": "2",
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": "2",
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": "2",
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": "2",
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": "2",
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": "2",
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": "2",
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": "2",
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": "2",
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": "2",
-                            "style": Array [],
-                          },
-                          Object {
-                            "entity": "2",
+                            "entity": null,
                             "style": Array [],
                           },
                         ],
                         "data": Object {},
                         "depth": 0,
                         "key": "123",
-                        "text": "{{current_user.name}}",
+                        "text": "html",
                         "type": "unstyled",
                       },
                     },
@@ -5954,18 +5741,18 @@ exports[`RichField should render mutable variable 1`] = `
                     },
                     "selectionAfter": Object {
                       "anchorKey": "123",
-                      "anchorOffset": 21,
+                      "anchorOffset": 0,
                       "focusKey": "123",
-                      "focusOffset": 21,
+                      "focusOffset": 0,
                       "hasFocus": false,
                       "isBackward": false,
                     },
                     "selectionBefore": Object {
                       "anchorKey": "123",
-                      "anchorOffset": 21,
+                      "anchorOffset": 0,
                       "focusKey": "123",
-                      "focusOffset": 21,
-                      "hasFocus": false,
+                      "focusOffset": 0,
+                      "hasFocus": true,
                       "isBackward": false,
                     },
                   },
@@ -6000,28 +5787,28 @@ exports[`RichField should render mutable variable 1`] = `
                   "directionMap": Object {
                     "123": "LTR",
                   },
-                  "forceSelection": true,
+                  "forceSelection": false,
                   "inCompositionMode": false,
                   "inlineStyleOverride": null,
-                  "lastChangeType": "attach-entity-variables",
+                  "lastChangeType": undefined,
                   "nativelyRenderedContent": null,
                   "redoStack": Array [],
                   "selection": Object {
                     "anchorKey": "123",
-                    "anchorOffset": 21,
+                    "anchorOffset": 4,
                     "focusKey": "123",
-                    "focusOffset": 21,
+                    "focusOffset": 4,
                     "hasFocus": false,
                     "isBackward": false,
                   },
                   "treeMap": Object {
                     "123": Array [
                       Object {
-                        "decoratorKey": "0-4.0",
-                        "end": 21,
+                        "decoratorKey": null,
+                        "end": 4,
                         "leaves": Array [
                           Object {
-                            "end": 21,
+                            "end": 4,
                             "start": 0,
                           },
                         ],
@@ -6033,96 +5820,11 @@ exports[`RichField should render mutable variable 1`] = `
                     Object {
                       "blockMap": Object {
                         "123": Object {
-                          "characterList": Array [
-                            Object {
-                              "entity": null,
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": null,
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": null,
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": null,
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": null,
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": null,
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": null,
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": null,
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": null,
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": null,
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": null,
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": null,
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": null,
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": null,
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": null,
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": null,
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": null,
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": null,
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": null,
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": null,
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": null,
-                              "style": Array [],
-                            },
-                          ],
+                          "characterList": Array [],
                           "data": Object {},
                           "depth": 0,
                           "key": "123",
-                          "text": "{{current_user.name}}",
+                          "text": "",
                           "type": "unstyled",
                         },
                       },
@@ -6194,94 +5896,26 @@ exports[`RichField should render mutable variable 1`] = `
                         "123": Object {
                           "characterList": Array [
                             Object {
-                              "entity": "2",
+                              "entity": null,
                               "style": Array [],
                             },
                             Object {
-                              "entity": "2",
+                              "entity": null,
                               "style": Array [],
                             },
                             Object {
-                              "entity": "2",
+                              "entity": null,
                               "style": Array [],
                             },
                             Object {
-                              "entity": "2",
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": "2",
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": "2",
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": "2",
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": "2",
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": "2",
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": "2",
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": "2",
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": "2",
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": "2",
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": "2",
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": "2",
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": "2",
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": "2",
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": "2",
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": "2",
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": "2",
-                              "style": Array [],
-                            },
-                            Object {
-                              "entity": "2",
+                              "entity": null,
                               "style": Array [],
                             },
                           ],
                           "data": Object {},
                           "depth": 0,
                           "key": "123",
-                          "text": "{{current_user.name}}",
+                          "text": "html",
                           "type": "unstyled",
                         },
                       },
@@ -6301,18 +5935,18 @@ exports[`RichField should render mutable variable 1`] = `
                       },
                       "selectionAfter": Object {
                         "anchorKey": "123",
-                        "anchorOffset": 21,
+                        "anchorOffset": 0,
                         "focusKey": "123",
-                        "focusOffset": 21,
+                        "focusOffset": 0,
                         "hasFocus": false,
                         "isBackward": false,
                       },
                       "selectionBefore": Object {
                         "anchorKey": "123",
-                        "anchorOffset": 21,
+                        "anchorOffset": 0,
                         "focusKey": "123",
-                        "focusOffset": 21,
-                        "hasFocus": false,
+                        "focusOffset": 0,
+                        "hasFocus": true,
                         "isBackward": false,
                       },
                     },
@@ -6347,28 +5981,28 @@ exports[`RichField should render mutable variable 1`] = `
                     "directionMap": Object {
                       "123": "LTR",
                     },
-                    "forceSelection": true,
+                    "forceSelection": false,
                     "inCompositionMode": false,
                     "inlineStyleOverride": null,
-                    "lastChangeType": "attach-entity-variables",
+                    "lastChangeType": undefined,
                     "nativelyRenderedContent": null,
                     "redoStack": Array [],
                     "selection": Object {
                       "anchorKey": "123",
-                      "anchorOffset": 21,
+                      "anchorOffset": 4,
                       "focusKey": "123",
-                      "focusOffset": 21,
+                      "focusOffset": 4,
                       "hasFocus": false,
                       "isBackward": false,
                     },
                     "treeMap": Object {
                       "123": Array [
                         Object {
-                          "decoratorKey": "0-4.0",
-                          "end": 21,
+                          "decoratorKey": null,
+                          "end": 4,
                           "leaves": Array [
                             Object {
-                              "end": 21,
+                              "end": 4,
                               "start": 0,
                             },
                           ],
@@ -6380,96 +6014,11 @@ exports[`RichField should render mutable variable 1`] = `
                       Object {
                         "blockMap": Object {
                           "123": Object {
-                            "characterList": Array [
-                              Object {
-                                "entity": null,
-                                "style": Array [],
-                              },
-                              Object {
-                                "entity": null,
-                                "style": Array [],
-                              },
-                              Object {
-                                "entity": null,
-                                "style": Array [],
-                              },
-                              Object {
-                                "entity": null,
-                                "style": Array [],
-                              },
-                              Object {
-                                "entity": null,
-                                "style": Array [],
-                              },
-                              Object {
-                                "entity": null,
-                                "style": Array [],
-                              },
-                              Object {
-                                "entity": null,
-                                "style": Array [],
-                              },
-                              Object {
-                                "entity": null,
-                                "style": Array [],
-                              },
-                              Object {
-                                "entity": null,
-                                "style": Array [],
-                              },
-                              Object {
-                                "entity": null,
-                                "style": Array [],
-                              },
-                              Object {
-                                "entity": null,
-                                "style": Array [],
-                              },
-                              Object {
-                                "entity": null,
-                                "style": Array [],
-                              },
-                              Object {
-                                "entity": null,
-                                "style": Array [],
-                              },
-                              Object {
-                                "entity": null,
-                                "style": Array [],
-                              },
-                              Object {
-                                "entity": null,
-                                "style": Array [],
-                              },
-                              Object {
-                                "entity": null,
-                                "style": Array [],
-                              },
-                              Object {
-                                "entity": null,
-                                "style": Array [],
-                              },
-                              Object {
-                                "entity": null,
-                                "style": Array [],
-                              },
-                              Object {
-                                "entity": null,
-                                "style": Array [],
-                              },
-                              Object {
-                                "entity": null,
-                                "style": Array [],
-                              },
-                              Object {
-                                "entity": null,
-                                "style": Array [],
-                              },
-                            ],
+                            "characterList": Array [],
                             "data": Object {},
                             "depth": 0,
                             "key": "123",
-                            "text": "{{current_user.name}}",
+                            "text": "",
                             "type": "unstyled",
                           },
                         },
@@ -6575,94 +6124,26 @@ exports[`RichField should render mutable variable 1`] = `
                                     "123": Object {
                                       "characterList": Array [
                                         Object {
-                                          "entity": "2",
+                                          "entity": null,
                                           "style": Array [],
                                         },
                                         Object {
-                                          "entity": "2",
+                                          "entity": null,
                                           "style": Array [],
                                         },
                                         Object {
-                                          "entity": "2",
+                                          "entity": null,
                                           "style": Array [],
                                         },
                                         Object {
-                                          "entity": "2",
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": "2",
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": "2",
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": "2",
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": "2",
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": "2",
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": "2",
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": "2",
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": "2",
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": "2",
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": "2",
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": "2",
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": "2",
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": "2",
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": "2",
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": "2",
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": "2",
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": "2",
+                                          "entity": null,
                                           "style": Array [],
                                         },
                                       ],
                                       "data": Object {},
                                       "depth": 0,
                                       "key": "123",
-                                      "text": "{{current_user.name}}",
+                                      "text": "html",
                                       "type": "unstyled",
                                     },
                                   },
@@ -6682,18 +6163,18 @@ exports[`RichField should render mutable variable 1`] = `
                                   },
                                   "selectionAfter": Object {
                                     "anchorKey": "123",
-                                    "anchorOffset": 21,
+                                    "anchorOffset": 0,
                                     "focusKey": "123",
-                                    "focusOffset": 21,
+                                    "focusOffset": 0,
                                     "hasFocus": false,
                                     "isBackward": false,
                                   },
                                   "selectionBefore": Object {
                                     "anchorKey": "123",
-                                    "anchorOffset": 21,
+                                    "anchorOffset": 0,
                                     "focusKey": "123",
-                                    "focusOffset": 21,
-                                    "hasFocus": false,
+                                    "focusOffset": 0,
+                                    "hasFocus": true,
                                     "isBackward": false,
                                   },
                                 },
@@ -6728,28 +6209,28 @@ exports[`RichField should render mutable variable 1`] = `
                                 "directionMap": Object {
                                   "123": "LTR",
                                 },
-                                "forceSelection": true,
+                                "forceSelection": false,
                                 "inCompositionMode": false,
                                 "inlineStyleOverride": null,
-                                "lastChangeType": "attach-entity-variables",
+                                "lastChangeType": undefined,
                                 "nativelyRenderedContent": null,
                                 "redoStack": Array [],
                                 "selection": Object {
                                   "anchorKey": "123",
-                                  "anchorOffset": 21,
+                                  "anchorOffset": 4,
                                   "focusKey": "123",
-                                  "focusOffset": 21,
+                                  "focusOffset": 4,
                                   "hasFocus": false,
                                   "isBackward": false,
                                 },
                                 "treeMap": Object {
                                   "123": Array [
                                     Object {
-                                      "decoratorKey": "0-4.0",
-                                      "end": 21,
+                                      "decoratorKey": null,
+                                      "end": 4,
                                       "leaves": Array [
                                         Object {
-                                          "end": 21,
+                                          "end": 4,
                                           "start": 0,
                                         },
                                       ],
@@ -6761,96 +6242,11 @@ exports[`RichField should render mutable variable 1`] = `
                                   Object {
                                     "blockMap": Object {
                                       "123": Object {
-                                        "characterList": Array [
-                                          Object {
-                                            "entity": null,
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": null,
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": null,
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": null,
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": null,
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": null,
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": null,
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": null,
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": null,
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": null,
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": null,
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": null,
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": null,
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": null,
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": null,
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": null,
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": null,
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": null,
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": null,
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": null,
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": null,
-                                            "style": Array [],
-                                          },
-                                        ],
+                                        "characterList": Array [],
                                         "data": Object {},
                                         "depth": 0,
                                         "key": "123",
-                                        "text": "{{current_user.name}}",
+                                        "text": "",
                                         "type": "unstyled",
                                       },
                                     },
@@ -7032,94 +6428,26 @@ exports[`RichField should render mutable variable 1`] = `
                                       "123": Object {
                                         "characterList": Array [
                                           Object {
-                                            "entity": "2",
+                                            "entity": null,
                                             "style": Array [],
                                           },
                                           Object {
-                                            "entity": "2",
+                                            "entity": null,
                                             "style": Array [],
                                           },
                                           Object {
-                                            "entity": "2",
+                                            "entity": null,
                                             "style": Array [],
                                           },
                                           Object {
-                                            "entity": "2",
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": "2",
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": "2",
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": "2",
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": "2",
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": "2",
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": "2",
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": "2",
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": "2",
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": "2",
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": "2",
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": "2",
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": "2",
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": "2",
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": "2",
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": "2",
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": "2",
-                                            "style": Array [],
-                                          },
-                                          Object {
-                                            "entity": "2",
+                                            "entity": null,
                                             "style": Array [],
                                           },
                                         ],
                                         "data": Object {},
                                         "depth": 0,
                                         "key": "123",
-                                        "text": "{{current_user.name}}",
+                                        "text": "html",
                                         "type": "unstyled",
                                       },
                                     },
@@ -7139,18 +6467,18 @@ exports[`RichField should render mutable variable 1`] = `
                                     },
                                     "selectionAfter": Object {
                                       "anchorKey": "123",
-                                      "anchorOffset": 21,
+                                      "anchorOffset": 0,
                                       "focusKey": "123",
-                                      "focusOffset": 21,
+                                      "focusOffset": 0,
                                       "hasFocus": false,
                                       "isBackward": false,
                                     },
                                     "selectionBefore": Object {
                                       "anchorKey": "123",
-                                      "anchorOffset": 21,
+                                      "anchorOffset": 0,
                                       "focusKey": "123",
-                                      "focusOffset": 21,
-                                      "hasFocus": false,
+                                      "focusOffset": 0,
+                                      "hasFocus": true,
                                       "isBackward": false,
                                     },
                                   },
@@ -7185,28 +6513,28 @@ exports[`RichField should render mutable variable 1`] = `
                                   "directionMap": Object {
                                     "123": "LTR",
                                   },
-                                  "forceSelection": true,
+                                  "forceSelection": false,
                                   "inCompositionMode": false,
                                   "inlineStyleOverride": null,
-                                  "lastChangeType": "attach-entity-variables",
+                                  "lastChangeType": undefined,
                                   "nativelyRenderedContent": null,
                                   "redoStack": Array [],
                                   "selection": Object {
                                     "anchorKey": "123",
-                                    "anchorOffset": 21,
+                                    "anchorOffset": 4,
                                     "focusKey": "123",
-                                    "focusOffset": 21,
+                                    "focusOffset": 4,
                                     "hasFocus": false,
                                     "isBackward": false,
                                   },
                                   "treeMap": Object {
                                     "123": Array [
                                       Object {
-                                        "decoratorKey": "0-4.0",
-                                        "end": 21,
+                                        "decoratorKey": null,
+                                        "end": 4,
                                         "leaves": Array [
                                           Object {
-                                            "end": 21,
+                                            "end": 4,
                                             "start": 0,
                                           },
                                         ],
@@ -7218,96 +6546,11 @@ exports[`RichField should render mutable variable 1`] = `
                                     Object {
                                       "blockMap": Object {
                                         "123": Object {
-                                          "characterList": Array [
-                                            Object {
-                                              "entity": null,
-                                              "style": Array [],
-                                            },
-                                            Object {
-                                              "entity": null,
-                                              "style": Array [],
-                                            },
-                                            Object {
-                                              "entity": null,
-                                              "style": Array [],
-                                            },
-                                            Object {
-                                              "entity": null,
-                                              "style": Array [],
-                                            },
-                                            Object {
-                                              "entity": null,
-                                              "style": Array [],
-                                            },
-                                            Object {
-                                              "entity": null,
-                                              "style": Array [],
-                                            },
-                                            Object {
-                                              "entity": null,
-                                              "style": Array [],
-                                            },
-                                            Object {
-                                              "entity": null,
-                                              "style": Array [],
-                                            },
-                                            Object {
-                                              "entity": null,
-                                              "style": Array [],
-                                            },
-                                            Object {
-                                              "entity": null,
-                                              "style": Array [],
-                                            },
-                                            Object {
-                                              "entity": null,
-                                              "style": Array [],
-                                            },
-                                            Object {
-                                              "entity": null,
-                                              "style": Array [],
-                                            },
-                                            Object {
-                                              "entity": null,
-                                              "style": Array [],
-                                            },
-                                            Object {
-                                              "entity": null,
-                                              "style": Array [],
-                                            },
-                                            Object {
-                                              "entity": null,
-                                              "style": Array [],
-                                            },
-                                            Object {
-                                              "entity": null,
-                                              "style": Array [],
-                                            },
-                                            Object {
-                                              "entity": null,
-                                              "style": Array [],
-                                            },
-                                            Object {
-                                              "entity": null,
-                                              "style": Array [],
-                                            },
-                                            Object {
-                                              "entity": null,
-                                              "style": Array [],
-                                            },
-                                            Object {
-                                              "entity": null,
-                                              "style": Array [],
-                                            },
-                                            Object {
-                                              "entity": null,
-                                              "style": Array [],
-                                            },
-                                          ],
+                                          "characterList": Array [],
                                           "data": Object {},
                                           "depth": 0,
                                           "key": "123",
-                                          "text": "{{current_user.name}}",
+                                          "text": "",
                                           "type": "unstyled",
                                         },
                                       },
@@ -7560,94 +6803,26 @@ exports[`RichField should render mutable variable 1`] = `
                                               "123": Object {
                                                 "characterList": Array [
                                                   Object {
-                                                    "entity": "2",
+                                                    "entity": null,
                                                     "style": Array [],
                                                   },
                                                   Object {
-                                                    "entity": "2",
+                                                    "entity": null,
                                                     "style": Array [],
                                                   },
                                                   Object {
-                                                    "entity": "2",
+                                                    "entity": null,
                                                     "style": Array [],
                                                   },
                                                   Object {
-                                                    "entity": "2",
-                                                    "style": Array [],
-                                                  },
-                                                  Object {
-                                                    "entity": "2",
-                                                    "style": Array [],
-                                                  },
-                                                  Object {
-                                                    "entity": "2",
-                                                    "style": Array [],
-                                                  },
-                                                  Object {
-                                                    "entity": "2",
-                                                    "style": Array [],
-                                                  },
-                                                  Object {
-                                                    "entity": "2",
-                                                    "style": Array [],
-                                                  },
-                                                  Object {
-                                                    "entity": "2",
-                                                    "style": Array [],
-                                                  },
-                                                  Object {
-                                                    "entity": "2",
-                                                    "style": Array [],
-                                                  },
-                                                  Object {
-                                                    "entity": "2",
-                                                    "style": Array [],
-                                                  },
-                                                  Object {
-                                                    "entity": "2",
-                                                    "style": Array [],
-                                                  },
-                                                  Object {
-                                                    "entity": "2",
-                                                    "style": Array [],
-                                                  },
-                                                  Object {
-                                                    "entity": "2",
-                                                    "style": Array [],
-                                                  },
-                                                  Object {
-                                                    "entity": "2",
-                                                    "style": Array [],
-                                                  },
-                                                  Object {
-                                                    "entity": "2",
-                                                    "style": Array [],
-                                                  },
-                                                  Object {
-                                                    "entity": "2",
-                                                    "style": Array [],
-                                                  },
-                                                  Object {
-                                                    "entity": "2",
-                                                    "style": Array [],
-                                                  },
-                                                  Object {
-                                                    "entity": "2",
-                                                    "style": Array [],
-                                                  },
-                                                  Object {
-                                                    "entity": "2",
-                                                    "style": Array [],
-                                                  },
-                                                  Object {
-                                                    "entity": "2",
+                                                    "entity": null,
                                                     "style": Array [],
                                                   },
                                                 ],
                                                 "data": Object {},
                                                 "depth": 0,
                                                 "key": "123",
-                                                "text": "{{current_user.name}}",
+                                                "text": "html",
                                                 "type": "unstyled",
                                               },
                                             },
@@ -7667,18 +6842,18 @@ exports[`RichField should render mutable variable 1`] = `
                                             },
                                             "selectionAfter": Object {
                                               "anchorKey": "123",
-                                              "anchorOffset": 21,
+                                              "anchorOffset": 0,
                                               "focusKey": "123",
-                                              "focusOffset": 21,
+                                              "focusOffset": 0,
                                               "hasFocus": false,
                                               "isBackward": false,
                                             },
                                             "selectionBefore": Object {
                                               "anchorKey": "123",
-                                              "anchorOffset": 21,
+                                              "anchorOffset": 0,
                                               "focusKey": "123",
-                                              "focusOffset": 21,
-                                              "hasFocus": false,
+                                              "focusOffset": 0,
+                                              "hasFocus": true,
                                               "isBackward": false,
                                             },
                                           },
@@ -7713,28 +6888,28 @@ exports[`RichField should render mutable variable 1`] = `
                                           "directionMap": Object {
                                             "123": "LTR",
                                           },
-                                          "forceSelection": true,
+                                          "forceSelection": false,
                                           "inCompositionMode": false,
                                           "inlineStyleOverride": null,
-                                          "lastChangeType": "attach-entity-variables",
+                                          "lastChangeType": undefined,
                                           "nativelyRenderedContent": null,
                                           "redoStack": Array [],
                                           "selection": Object {
                                             "anchorKey": "123",
-                                            "anchorOffset": 21,
+                                            "anchorOffset": 4,
                                             "focusKey": "123",
-                                            "focusOffset": 21,
+                                            "focusOffset": 4,
                                             "hasFocus": false,
                                             "isBackward": false,
                                           },
                                           "treeMap": Object {
                                             "123": Array [
                                               Object {
-                                                "decoratorKey": "0-4.0",
-                                                "end": 21,
+                                                "decoratorKey": null,
+                                                "end": 4,
                                                 "leaves": Array [
                                                   Object {
-                                                    "end": 21,
+                                                    "end": 4,
                                                     "start": 0,
                                                   },
                                                 ],
@@ -7746,96 +6921,11 @@ exports[`RichField should render mutable variable 1`] = `
                                             Object {
                                               "blockMap": Object {
                                                 "123": Object {
-                                                  "characterList": Array [
-                                                    Object {
-                                                      "entity": null,
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": null,
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": null,
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": null,
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": null,
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": null,
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": null,
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": null,
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": null,
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": null,
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": null,
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": null,
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": null,
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": null,
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": null,
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": null,
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": null,
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": null,
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": null,
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": null,
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": null,
-                                                      "style": Array [],
-                                                    },
-                                                  ],
+                                                  "characterList": Array [],
                                                   "data": Object {},
                                                   "depth": 0,
                                                   "key": "123",
-                                                  "text": "{{current_user.name}}",
+                                                  "text": "",
                                                   "type": "unstyled",
                                                 },
                                               },
@@ -7874,6 +6964,7 @@ exports[`RichField should render mutable variable 1`] = `
                                         },
                                       }
                                     }
+                                    key="contents0"
                                   >
                                     <div
                                       data-contents="true"
@@ -7883,100 +6974,33 @@ exports[`RichField should render mutable variable 1`] = `
                                         data-block={true}
                                         data-editor="123"
                                         data-offset-key="123-0-0"
+                                        key="123"
                                       >
                                         <DraftEditorBlock
                                           block={
                                             Object {
                                               "characterList": Array [
                                                 Object {
-                                                  "entity": "2",
+                                                  "entity": null,
                                                   "style": Array [],
                                                 },
                                                 Object {
-                                                  "entity": "2",
+                                                  "entity": null,
                                                   "style": Array [],
                                                 },
                                                 Object {
-                                                  "entity": "2",
+                                                  "entity": null,
                                                   "style": Array [],
                                                 },
                                                 Object {
-                                                  "entity": "2",
-                                                  "style": Array [],
-                                                },
-                                                Object {
-                                                  "entity": "2",
-                                                  "style": Array [],
-                                                },
-                                                Object {
-                                                  "entity": "2",
-                                                  "style": Array [],
-                                                },
-                                                Object {
-                                                  "entity": "2",
-                                                  "style": Array [],
-                                                },
-                                                Object {
-                                                  "entity": "2",
-                                                  "style": Array [],
-                                                },
-                                                Object {
-                                                  "entity": "2",
-                                                  "style": Array [],
-                                                },
-                                                Object {
-                                                  "entity": "2",
-                                                  "style": Array [],
-                                                },
-                                                Object {
-                                                  "entity": "2",
-                                                  "style": Array [],
-                                                },
-                                                Object {
-                                                  "entity": "2",
-                                                  "style": Array [],
-                                                },
-                                                Object {
-                                                  "entity": "2",
-                                                  "style": Array [],
-                                                },
-                                                Object {
-                                                  "entity": "2",
-                                                  "style": Array [],
-                                                },
-                                                Object {
-                                                  "entity": "2",
-                                                  "style": Array [],
-                                                },
-                                                Object {
-                                                  "entity": "2",
-                                                  "style": Array [],
-                                                },
-                                                Object {
-                                                  "entity": "2",
-                                                  "style": Array [],
-                                                },
-                                                Object {
-                                                  "entity": "2",
-                                                  "style": Array [],
-                                                },
-                                                Object {
-                                                  "entity": "2",
-                                                  "style": Array [],
-                                                },
-                                                Object {
-                                                  "entity": "2",
-                                                  "style": Array [],
-                                                },
-                                                Object {
-                                                  "entity": "2",
+                                                  "entity": null,
                                                   "style": Array [],
                                                 },
                                               ],
                                               "data": Object {},
                                               "depth": 0,
                                               "key": "123",
-                                              "text": "{{current_user.name}}",
+                                              "text": "html",
                                               "type": "unstyled",
                                             }
                                           }
@@ -7987,94 +7011,26 @@ exports[`RichField should render mutable variable 1`] = `
                                                 "123": Object {
                                                   "characterList": Array [
                                                     Object {
-                                                      "entity": "2",
+                                                      "entity": null,
                                                       "style": Array [],
                                                     },
                                                     Object {
-                                                      "entity": "2",
+                                                      "entity": null,
                                                       "style": Array [],
                                                     },
                                                     Object {
-                                                      "entity": "2",
+                                                      "entity": null,
                                                       "style": Array [],
                                                     },
                                                     Object {
-                                                      "entity": "2",
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": "2",
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": "2",
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": "2",
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": "2",
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": "2",
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": "2",
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": "2",
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": "2",
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": "2",
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": "2",
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": "2",
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": "2",
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": "2",
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": "2",
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": "2",
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": "2",
-                                                      "style": Array [],
-                                                    },
-                                                    Object {
-                                                      "entity": "2",
+                                                      "entity": null,
                                                       "style": Array [],
                                                     },
                                                   ],
                                                   "data": Object {},
                                                   "depth": 0,
                                                   "key": "123",
-                                                  "text": "{{current_user.name}}",
+                                                  "text": "html",
                                                   "type": "unstyled",
                                                 },
                                               },
@@ -8094,18 +7050,18 @@ exports[`RichField should render mutable variable 1`] = `
                                               },
                                               "selectionAfter": Object {
                                                 "anchorKey": "123",
-                                                "anchorOffset": 21,
+                                                "anchorOffset": 0,
                                                 "focusKey": "123",
-                                                "focusOffset": 21,
+                                                "focusOffset": 0,
                                                 "hasFocus": false,
                                                 "isBackward": false,
                                               },
                                               "selectionBefore": Object {
                                                 "anchorKey": "123",
-                                                "anchorOffset": 21,
+                                                "anchorOffset": 0,
                                                 "focusKey": "123",
-                                                "focusOffset": 21,
-                                                "hasFocus": false,
+                                                "focusOffset": 0,
+                                                "hasFocus": true,
                                                 "isBackward": false,
                                               },
                                             }
@@ -8161,14 +7117,15 @@ exports[`RichField should render mutable variable 1`] = `
                                             }
                                           }
                                           direction="LTR"
-                                          forceSelection={true}
+                                          forceSelection={false}
+                                          key="123"
                                           offsetKey="123-0-0"
                                           selection={
                                             Object {
                                               "anchorKey": "123",
-                                              "anchorOffset": 21,
+                                              "anchorOffset": 4,
                                               "focusKey": "123",
-                                              "focusOffset": 21,
+                                              "focusOffset": 4,
                                               "hasFocus": false,
                                               "isBackward": false,
                                             }
@@ -8176,11 +7133,11 @@ exports[`RichField should render mutable variable 1`] = `
                                           tree={
                                             Immutable.List [
                                               Object {
-                                                "decoratorKey": "0-4.0",
-                                                "end": 21,
+                                                "decoratorKey": null,
+                                                "end": 4,
                                                 "leaves": Array [
                                                   Object {
-                                                    "end": 21,
+                                                    "end": 4,
                                                     "start": 0,
                                                   },
                                                 ],
@@ -8193,433 +7150,89 @@ exports[`RichField should render mutable variable 1`] = `
                                             className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
                                             data-offset-key="123-0-0"
                                           >
-                                            <Decorated(component)
-                                              contentState={
+                                            <DraftEditorLeaf
+                                              block={
                                                 Object {
-                                                  "blockMap": Object {
-                                                    "123": Object {
-                                                      "characterList": Array [
-                                                        Object {
-                                                          "entity": "2",
-                                                          "style": Array [],
-                                                        },
-                                                        Object {
-                                                          "entity": "2",
-                                                          "style": Array [],
-                                                        },
-                                                        Object {
-                                                          "entity": "2",
-                                                          "style": Array [],
-                                                        },
-                                                        Object {
-                                                          "entity": "2",
-                                                          "style": Array [],
-                                                        },
-                                                        Object {
-                                                          "entity": "2",
-                                                          "style": Array [],
-                                                        },
-                                                        Object {
-                                                          "entity": "2",
-                                                          "style": Array [],
-                                                        },
-                                                        Object {
-                                                          "entity": "2",
-                                                          "style": Array [],
-                                                        },
-                                                        Object {
-                                                          "entity": "2",
-                                                          "style": Array [],
-                                                        },
-                                                        Object {
-                                                          "entity": "2",
-                                                          "style": Array [],
-                                                        },
-                                                        Object {
-                                                          "entity": "2",
-                                                          "style": Array [],
-                                                        },
-                                                        Object {
-                                                          "entity": "2",
-                                                          "style": Array [],
-                                                        },
-                                                        Object {
-                                                          "entity": "2",
-                                                          "style": Array [],
-                                                        },
-                                                        Object {
-                                                          "entity": "2",
-                                                          "style": Array [],
-                                                        },
-                                                        Object {
-                                                          "entity": "2",
-                                                          "style": Array [],
-                                                        },
-                                                        Object {
-                                                          "entity": "2",
-                                                          "style": Array [],
-                                                        },
-                                                        Object {
-                                                          "entity": "2",
-                                                          "style": Array [],
-                                                        },
-                                                        Object {
-                                                          "entity": "2",
-                                                          "style": Array [],
-                                                        },
-                                                        Object {
-                                                          "entity": "2",
-                                                          "style": Array [],
-                                                        },
-                                                        Object {
-                                                          "entity": "2",
-                                                          "style": Array [],
-                                                        },
-                                                        Object {
-                                                          "entity": "2",
-                                                          "style": Array [],
-                                                        },
-                                                        Object {
-                                                          "entity": "2",
-                                                          "style": Array [],
-                                                        },
-                                                      ],
-                                                      "data": Object {},
-                                                      "depth": 0,
-                                                      "key": "123",
-                                                      "text": "{{current_user.name}}",
-                                                      "type": "unstyled",
+                                                  "characterList": Array [
+                                                    Object {
+                                                      "entity": null,
+                                                      "style": Array [],
                                                     },
+                                                    Object {
+                                                      "entity": null,
+                                                      "style": Array [],
+                                                    },
+                                                    Object {
+                                                      "entity": null,
+                                                      "style": Array [],
+                                                    },
+                                                    Object {
+                                                      "entity": null,
+                                                      "style": Array [],
+                                                    },
+                                                  ],
+                                                  "data": Object {},
+                                                  "depth": 0,
+                                                  "key": "123",
+                                                  "text": "html",
+                                                  "type": "unstyled",
+                                                }
+                                              }
+                                              customStyleMap={
+                                                Object {
+                                                  "BOLD": Object {
+                                                    "fontWeight": "bold",
                                                   },
-                                                  "entityMap": Object {
-                                                    "__add": [Function],
-                                                    "__create": [Function],
-                                                    "__get": [Function],
-                                                    "__getLastCreatedEntityKey": [Function],
-                                                    "__mergeData": [Function],
-                                                    "__replaceData": [Function],
-                                                    "add": [Function],
-                                                    "create": [Function],
-                                                    "get": [Function],
-                                                    "getLastCreatedEntityKey": [Function],
-                                                    "mergeData": [Function],
-                                                    "replaceData": [Function],
+                                                  "CODE": Object {
+                                                    "fontFamily": "monospace",
+                                                    "wordWrap": "break-word",
                                                   },
-                                                  "selectionAfter": Object {
-                                                    "anchorKey": "123",
-                                                    "anchorOffset": 21,
-                                                    "focusKey": "123",
-                                                    "focusOffset": 21,
-                                                    "hasFocus": false,
-                                                    "isBackward": false,
+                                                  "ITALIC": Object {
+                                                    "fontStyle": "italic",
                                                   },
-                                                  "selectionBefore": Object {
-                                                    "anchorKey": "123",
-                                                    "anchorOffset": 21,
-                                                    "focusKey": "123",
-                                                    "focusOffset": 21,
-                                                    "hasFocus": false,
-                                                    "isBackward": false,
+                                                  "STRIKETHROUGH": Object {
+                                                    "textDecoration": "line-through",
+                                                  },
+                                                  "UNDERLINE": Object {
+                                                    "textDecoration": "underline",
                                                   },
                                                 }
                                               }
-                                              decoratedText="{{current_user.name}}"
-                                              dir={null}
-                                              entityKey="2"
+                                              forceSelection={false}
+                                              isLast={true}
+                                              key="123-0-0"
                                               offsetKey="123-0-0"
-                                            >
-                                              <component
-                                                contentState={
-                                                  Object {
-                                                    "blockMap": Object {
-                                                      "123": Object {
-                                                        "characterList": Array [
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                        ],
-                                                        "data": Object {},
-                                                        "depth": 0,
-                                                        "key": "123",
-                                                        "text": "{{current_user.name}}",
-                                                        "type": "unstyled",
-                                                      },
-                                                    },
-                                                    "entityMap": Object {
-                                                      "__add": [Function],
-                                                      "__create": [Function],
-                                                      "__get": [Function],
-                                                      "__getLastCreatedEntityKey": [Function],
-                                                      "__mergeData": [Function],
-                                                      "__replaceData": [Function],
-                                                      "add": [Function],
-                                                      "create": [Function],
-                                                      "get": [Function],
-                                                      "getLastCreatedEntityKey": [Function],
-                                                      "mergeData": [Function],
-                                                      "replaceData": [Function],
-                                                    },
-                                                    "selectionAfter": Object {
-                                                      "anchorKey": "123",
-                                                      "anchorOffset": 21,
-                                                      "focusKey": "123",
-                                                      "focusOffset": 21,
-                                                      "hasFocus": false,
-                                                      "isBackward": false,
-                                                    },
-                                                    "selectionBefore": Object {
-                                                      "anchorKey": "123",
-                                                      "anchorOffset": 21,
-                                                      "focusKey": "123",
-                                                      "focusOffset": 21,
-                                                      "hasFocus": false,
-                                                      "isBackward": false,
-                                                    },
-                                                  }
+                                              selection={
+                                                Object {
+                                                  "anchorKey": "123",
+                                                  "anchorOffset": 4,
+                                                  "focusKey": "123",
+                                                  "focusOffset": 4,
+                                                  "hasFocus": false,
+                                                  "isBackward": false,
                                                 }
-                                                decoratedText="{{current_user.name}}"
-                                                dir={null}
-                                                entityKey="2"
-                                                getEditorState={[Function]}
-                                                offsetKey="123-0-0"
-                                                setEditorState={[Function]}
+                                              }
+                                              start={0}
+                                              styleSet={
+                                                Immutable.OrderedSet [
+                                                ]
+                                              }
+                                              text="html"
+                                            >
+                                              <span
+                                                data-offset-key="123-0-0"
+                                                style={Object {}}
                                               >
-                                                <span
-                                                  className="d-inline text-primary"
-                                                >
-                                                  <DraftEditorLeaf
-                                                    block={
-                                                      Object {
-                                                        "characterList": Array [
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                          Object {
-                                                            "entity": "2",
-                                                            "style": Array [],
-                                                          },
-                                                        ],
-                                                        "data": Object {},
-                                                        "depth": 0,
-                                                        "key": "123",
-                                                        "text": "{{current_user.name}}",
-                                                        "type": "unstyled",
-                                                      }
-                                                    }
-                                                    customStyleMap={
-                                                      Object {
-                                                        "BOLD": Object {
-                                                          "fontWeight": "bold",
-                                                        },
-                                                        "CODE": Object {
-                                                          "fontFamily": "monospace",
-                                                          "wordWrap": "break-word",
-                                                        },
-                                                        "ITALIC": Object {
-                                                          "fontStyle": "italic",
-                                                        },
-                                                        "STRIKETHROUGH": Object {
-                                                          "textDecoration": "line-through",
-                                                        },
-                                                        "UNDERLINE": Object {
-                                                          "textDecoration": "underline",
-                                                        },
-                                                      }
-                                                    }
-                                                    forceSelection={true}
-                                                    isLast={true}
-                                                    offsetKey="123-0-0"
-                                                    selection={
-                                                      Object {
-                                                        "anchorKey": "123",
-                                                        "anchorOffset": 21,
-                                                        "focusKey": "123",
-                                                        "focusOffset": 21,
-                                                        "hasFocus": false,
-                                                        "isBackward": false,
-                                                      }
-                                                    }
-                                                    start={0}
-                                                    styleSet={
-                                                      Immutable.OrderedSet [
-                                                      ]
-                                                    }
-                                                    text="{{current_user.name}}"
+                                                <DraftEditorTextNode>
+                                                  <span
+                                                    data-text="true"
+                                                    key="B"
                                                   >
-                                                    <span
-                                                      data-offset-key="123-0-0"
-                                                      style={Object {}}
-                                                    >
-                                                      <DraftEditorTextNode>
-                                                        <span
-                                                          data-text="true"
-                                                        >
-                                                          {{current_user.name}}
-                                                        </span>
-                                                      </DraftEditorTextNode>
-                                                    </span>
-                                                  </DraftEditorLeaf>
-                                                </span>
-                                              </component>
-                                            </Decorated(component)>
+                                                    html
+                                                  </span>
+                                                </DraftEditorTextNode>
+                                              </span>
+                                            </DraftEditorLeaf>
                                           </div>
                                         </DraftEditorBlock>
                                       </div>
@@ -8707,94 +7320,26 @@ exports[`RichField should render mutable variable 1`] = `
                                   "123": Object {
                                     "characterList": Array [
                                       Object {
-                                        "entity": "2",
+                                        "entity": null,
                                         "style": Array [],
                                       },
                                       Object {
-                                        "entity": "2",
+                                        "entity": null,
                                         "style": Array [],
                                       },
                                       Object {
-                                        "entity": "2",
+                                        "entity": null,
                                         "style": Array [],
                                       },
                                       Object {
-                                        "entity": "2",
-                                        "style": Array [],
-                                      },
-                                      Object {
-                                        "entity": "2",
-                                        "style": Array [],
-                                      },
-                                      Object {
-                                        "entity": "2",
-                                        "style": Array [],
-                                      },
-                                      Object {
-                                        "entity": "2",
-                                        "style": Array [],
-                                      },
-                                      Object {
-                                        "entity": "2",
-                                        "style": Array [],
-                                      },
-                                      Object {
-                                        "entity": "2",
-                                        "style": Array [],
-                                      },
-                                      Object {
-                                        "entity": "2",
-                                        "style": Array [],
-                                      },
-                                      Object {
-                                        "entity": "2",
-                                        "style": Array [],
-                                      },
-                                      Object {
-                                        "entity": "2",
-                                        "style": Array [],
-                                      },
-                                      Object {
-                                        "entity": "2",
-                                        "style": Array [],
-                                      },
-                                      Object {
-                                        "entity": "2",
-                                        "style": Array [],
-                                      },
-                                      Object {
-                                        "entity": "2",
-                                        "style": Array [],
-                                      },
-                                      Object {
-                                        "entity": "2",
-                                        "style": Array [],
-                                      },
-                                      Object {
-                                        "entity": "2",
-                                        "style": Array [],
-                                      },
-                                      Object {
-                                        "entity": "2",
-                                        "style": Array [],
-                                      },
-                                      Object {
-                                        "entity": "2",
-                                        "style": Array [],
-                                      },
-                                      Object {
-                                        "entity": "2",
-                                        "style": Array [],
-                                      },
-                                      Object {
-                                        "entity": "2",
+                                        "entity": null,
                                         "style": Array [],
                                       },
                                     ],
                                     "data": Object {},
                                     "depth": 0,
                                     "key": "123",
-                                    "text": "{{current_user.name}}",
+                                    "text": "html",
                                     "type": "unstyled",
                                   },
                                 },
@@ -8814,18 +7359,18 @@ exports[`RichField should render mutable variable 1`] = `
                                 },
                                 "selectionAfter": Object {
                                   "anchorKey": "123",
-                                  "anchorOffset": 21,
+                                  "anchorOffset": 0,
                                   "focusKey": "123",
-                                  "focusOffset": 21,
+                                  "focusOffset": 0,
                                   "hasFocus": false,
                                   "isBackward": false,
                                 },
                                 "selectionBefore": Object {
                                   "anchorKey": "123",
-                                  "anchorOffset": 21,
+                                  "anchorOffset": 0,
                                   "focusKey": "123",
-                                  "focusOffset": 21,
-                                  "hasFocus": false,
+                                  "focusOffset": 0,
+                                  "hasFocus": true,
                                   "isBackward": false,
                                 },
                               },
@@ -8860,28 +7405,28 @@ exports[`RichField should render mutable variable 1`] = `
                               "directionMap": Object {
                                 "123": "LTR",
                               },
-                              "forceSelection": true,
+                              "forceSelection": false,
                               "inCompositionMode": false,
                               "inlineStyleOverride": null,
-                              "lastChangeType": "attach-entity-variables",
+                              "lastChangeType": undefined,
                               "nativelyRenderedContent": null,
                               "redoStack": Array [],
                               "selection": Object {
                                 "anchorKey": "123",
-                                "anchorOffset": 21,
+                                "anchorOffset": 4,
                                 "focusKey": "123",
-                                "focusOffset": 21,
+                                "focusOffset": 4,
                                 "hasFocus": false,
                                 "isBackward": false,
                               },
                               "treeMap": Object {
                                 "123": Array [
                                   Object {
-                                    "decoratorKey": "0-4.0",
-                                    "end": 21,
+                                    "decoratorKey": null,
+                                    "end": 4,
                                     "leaves": Array [
                                       Object {
-                                        "end": 21,
+                                        "end": 4,
                                         "start": 0,
                                       },
                                     ],
@@ -8893,96 +7438,11 @@ exports[`RichField should render mutable variable 1`] = `
                                 Object {
                                   "blockMap": Object {
                                     "123": Object {
-                                      "characterList": Array [
-                                        Object {
-                                          "entity": null,
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": null,
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": null,
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": null,
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": null,
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": null,
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": null,
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": null,
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": null,
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": null,
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": null,
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": null,
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": null,
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": null,
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": null,
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": null,
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": null,
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": null,
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": null,
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": null,
-                                          "style": Array [],
-                                        },
-                                        Object {
-                                          "entity": null,
-                                          "style": Array [],
-                                        },
-                                      ],
+                                      "characterList": Array [],
                                       "data": Object {},
                                       "depth": 0,
                                       "key": "123",
-                                      "text": "{{current_user.name}}",
+                                      "text": "",
                                       "type": "unstyled",
                                     },
                                   },
