@@ -101,6 +101,7 @@ exports[`ShopifyIntegrationDetail should render the page for a deactivated integ
               className="float-right"
               color="secondary"
               confirm={[Function]}
+              confirmColor="success"
               content="Are you sure you want to delete this integration?"
               disabled={false}
               loading={false}
@@ -314,6 +315,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
               className="float-right"
               color="secondary"
               confirm={[Function]}
+              confirmColor="success"
               content="Are you sure you want to delete this integration?"
               disabled={false}
               loading={false}
@@ -479,6 +481,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
               className="float-right"
               color="secondary"
               confirm={[Function]}
+              confirmColor="success"
               content="Are you sure you want to delete this integration?"
               disabled={false}
               loading={false}
@@ -604,6 +607,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
               className="float-right"
               color="secondary"
               confirm={[Function]}
+              confirmColor="success"
               content="Are you sure you want to delete this integration?"
               disabled={false}
               loading={false}
@@ -738,6 +742,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
               className="float-right"
               color="secondary"
               confirm={[Function]}
+              confirmColor="success"
               content="Are you sure you want to delete this integration?"
               disabled={false}
               loading={false}
@@ -961,6 +966,7 @@ exports[`ShopifyIntegrationDetail should render the page to update an existing i
               className="float-right"
               color="secondary"
               confirm={[Function]}
+              confirmColor="success"
               content="Are you sure you want to delete this integration?"
               disabled={false}
               loading={false}

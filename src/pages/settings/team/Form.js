@@ -12,9 +12,6 @@ import {
     Container,
     Form as BootstrapForm,
     FormGroup,
-    Popover,
-    PopoverBody,
-    PopoverHeader,
 } from 'reactstrap'
 
 import {toJS} from '../../../utils'
@@ -25,6 +22,7 @@ import InputField from '../../common/forms/InputField'
 import * as actions from '../../../state/agents/actions'
 import * as helpers from '../../../state/agents/helpers'
 import PageHeader from '../../common/components/PageHeader'
+import DeleteAgent from './DeleteAgent'
 
 @connect((state, ownProps) => {
     return {
@@ -49,10 +47,8 @@ export default class Form extends React.Component {
 
     state = {
         agent: fromJS({}),
-        askDeleteConfirmation: false,
         email: '',
         errors: {},
-        isDeleting: false,
         isInviting: false,
         isFetching: false,
         isSubmitting: false,
@@ -95,10 +91,8 @@ export default class Form extends React.Component {
     }
 
     _delete = () => {
-        this.setState({isDeleting: true})
         return this.props.deleteAgent(this.props.agentId)
             .then(({error}) => {
-                this.setState({isDeleting: false})
                 if (!error) {
                     browserHistory.push('/app/settings/team')
                 }
@@ -125,12 +119,6 @@ export default class Form extends React.Component {
                     }
                 }
             })
-    }
-
-    _toggleDeleteConfirmation = () => {
-        this.setState({
-            askDeleteConfirmation: !this.state.askDeleteConfirmation,
-        })
     }
 
     render() {
@@ -221,44 +209,14 @@ export default class Form extends React.Component {
                                         >
                                              <i className="material-icons">mail</i> Re-send invitation email
                                         </Button>
-                                        <Button
-                                            id="delete-agent-button"
-                                            type="button"
+                                        <DeleteAgent
+                                            action={this._delete}
+                                            className="float-right"
                                             color="danger"
                                             outline
-                                            onClick={this._toggleDeleteConfirmation}
-                                            className={classnames('float-right', {
-                                                'btn-loading': this.state.isDeleting,
-                                            })}
-                                            disabled={this.state.isDeleting}
                                         >
                                             <i className="material-icons">delete</i> Delete team member
-                                        </Button>
-                                        <Popover
-                                            placement="left"
-                                            isOpen={this.state.askDeleteConfirmation}
-                                            target="delete-agent-button"
-                                            toggle={this._toggleDeleteConfirmation}
-                                        >
-                                            <PopoverHeader>Are you sure?</PopoverHeader>
-                                            <PopoverBody>
-                                                <p>
-                                                    You are about to <b>delete</b> this team member. This action is{' '}
-                                                    <b>irreversible</b>. This will unassign this team member from{' '}
-                                                    all its tickets, open or closed, and delete its statistics.
-                                                </p>
-                                                <Button
-                                                    type="submit"
-                                                    color="danger"
-                                                    onClick={() => {
-                                                        this._toggleDeleteConfirmation()
-                                                        this._delete()
-                                                    }}
-                                                >
-                                                    Confirm
-                                                </Button>
-                                            </PopoverBody>
-                                        </Popover>
+                                        </DeleteAgent>
                                     </span>
                                 )
                             }

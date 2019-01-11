@@ -545,6 +545,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
             className="float-right"
             color="secondary"
             confirm={[Function]}
+            confirmColor="success"
             content="Are you sure you want to delete this campaign?"
             disabled={false}
             id="delete-campaign-button"
@@ -858,6 +859,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
             className="float-right"
             color="secondary"
             confirm={[Function]}
+            confirmColor="success"
             content="Are you sure you want to delete this campaign?"
             disabled={false}
             id="delete-campaign-button"

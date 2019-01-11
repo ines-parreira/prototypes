@@ -10,6 +10,8 @@ import {
 import _get from 'lodash/get'
 import _noop from 'lodash/noop'
 
+import css from './ConfirmButton.less'
+
 import type {Node} from 'react'
 
 type Props = {
@@ -17,13 +19,15 @@ type Props = {
     type?: 'button' | 'submit',
     className?: string,
     disabled?: boolean,
-    confirm: () => void,
+    confirm: () => void | Promise<*>,
     title?: string,
     content?: Node,
     children?: Node,
     skip?: boolean,
     loading?: boolean,
-    placement?: string
+    placement?: string,
+    confirmColor?: string,
+    buttonClassName?: string,
 }
 
 type State = {
@@ -41,7 +45,8 @@ export default class ConfirmButton extends React.Component<Props, State> {
         content: null,
         skip: false,
         loading: false,
-        placement: 'bottom'
+        placement: 'bottom',
+        confirmColor: 'success',
     }
 
     state = {
@@ -133,6 +138,8 @@ export default class ConfirmButton extends React.Component<Props, State> {
             confirm, // eslint-disable-line no-unused-vars
             skip, // eslint-disable-line no-unused-vars
             placement,
+            confirmColor,
+            buttonClassName,
             ...buttonProps
         } = this.props
 
@@ -146,7 +153,7 @@ export default class ConfirmButton extends React.Component<Props, State> {
 
         return (
             <div
-                className={classnames('d-inline-block', className)}
+                className={classnames(css.component, 'd-inline-block', className)}
                 id={id}
                 ref={(container) => this._container = container}
             >
@@ -155,8 +162,8 @@ export default class ConfirmButton extends React.Component<Props, State> {
                     type={type}
                     disabled={isLoading || disabled}
                     onClick={this._showConfirmation}
-                    className={classnames({
-                        'btn-loading': isLoading
+                    className={classnames(buttonClassName, {
+                        [`${css.loading} btn-loading`]: isLoading
                     })}
                     {...buttonProps}
                 >
@@ -177,7 +184,7 @@ export default class ConfirmButton extends React.Component<Props, State> {
 
                         <Button
                             type={type}
-                            color="success"
+                            color={confirmColor}
                             onClick={this._confirmAction}
                         >
                             Confirm
