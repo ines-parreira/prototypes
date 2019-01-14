@@ -126,6 +126,7 @@ export default class MacroModal extends React.Component<Props, State> {
 
     _createMacro = (e: Event) => {
         e.preventDefault()
+        e.stopPropagation()
         const newMacro = this.props.currentMacro
             .set('actions', this.state.actions)
             .set('name', this.state.name)
@@ -139,6 +140,7 @@ export default class MacroModal extends React.Component<Props, State> {
 
     _updateMacro = (e: Event) => {
         e.preventDefault()
+        e.stopPropagation()
         const updatedMacro = this.props.currentMacro.set('actions', this.state.actions).set('name', this.state.name)
         return this.props.actions.macro.updateMacro(updatedMacro)
             .then((res) => {
