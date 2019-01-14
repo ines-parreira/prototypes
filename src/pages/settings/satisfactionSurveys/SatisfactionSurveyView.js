@@ -14,7 +14,7 @@ import PageHeader from '../../common/components/PageHeader'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
 import * as currentAccountActions from '../../../state/currentAccount/actions'
 import * as currentAccountConstants from '../../../state/currentAccount/constants'
-import SatisfactionSurveyUpgrade from '../../common/components/SatisfactionSurveyUpgrade'
+import RestrictedSatisfactionSurvey from '../../stats/common/RestrictedSatisfactionSurvey'
 
 
 type Props = {
@@ -161,7 +161,7 @@ class SatisfactionSurveyView extends React.Component<Props> {
                     {
                         currentAccount.get('extra_features').includes('satisfaction-surveys')
                         ? this._renderSettings()
-                        : <SatisfactionSurveyUpgrade />
+                        : <RestrictedSatisfactionSurvey />
                     }
                 </Container>
             </div>

@@ -68,6 +68,16 @@ exports[`StatsNavbarView should render 1`] = `
       >
         Satisfaction
       </Link>
+      <Link
+        activeClassName="active"
+        className="item"
+        key="Revenue (Beta)"
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/stats/revenue"
+      >
+        Revenue (Beta)
+      </Link>
     </div>
   </div>
 </div>

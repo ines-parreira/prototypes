@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SatisfactionSurveyUpgrade component should render image carusel and Lightbox 1`] = `
+exports[`RestrictedFeature component should render image carusel and Lightbox 1`] = `
 <div
   className="col mt-2"
 >
@@ -41,15 +41,15 @@ exports[`SatisfactionSurveyUpgrade component should render image carusel and Lig
     </Link>
   </Alert>
   <p>
-    Keep track of the performance of your support team by sending a satisfaction survey after a ticket is closed.
+    text
   </p>
   <Carousel
     arrows={false}
     autoplay={true}
     imagesUrl={
       Array [
-        "/static/private/img/presentationals/satisfaction-survey-stats.png",
-        "/static/private/img/presentationals/satisfaction-survey-ticket-details.png",
+        "url1",
+        "url2",
       ]
     }
     onImageClick={[Function]}
@@ -64,10 +64,10 @@ exports[`SatisfactionSurveyUpgrade component should render image carusel and Lig
     images={
       Array [
         Object {
-          "src": "/static/private/img/presentationals/satisfaction-survey-stats.png",
+          "src": "url1",
         },
         Object {
-          "src": "/static/private/img/presentationals/satisfaction-survey-ticket-details.png",
+          "src": "url2",
         },
       ]
     }

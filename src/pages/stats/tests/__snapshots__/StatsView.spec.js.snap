@@ -303,58 +303,50 @@ exports[`StatsView render satisfaction surveys should render the upgrade to pro 
             }
           }
         >
-          <SatisfactionSurveyUpgrade>
-            <div
-              className="col mt-2"
+          <RestrictedSatisfactionSurvey>
+            <RestrictedFeature
+              imagesURL={
+                Array [
+                  "/static/private/img/presentationals/satisfaction-survey-stats.png",
+                  "/static/private/img/presentationals/satisfaction-survey-ticket-details.png",
+                ]
+              }
+              info="Keep track of the performance of your support team by sending a satisfaction survey after a ticket is closed."
             >
-              <Alert
-                closeAriaLabel="Close"
-                color="danger"
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              <div
+                className="col mt-2"
               >
-                <Fade
-                  appear={true}
-                  baseClass="fade"
-                  baseClassActive="show"
-                  className="alert alert-danger"
-                  enter={true}
-                  exit={true}
-                  in={true}
-                  mountOnEnter={false}
-                  onEnter={[Function]}
-                  onEntered={[Function]}
-                  onEntering={[Function]}
-                  onExit={[Function]}
-                  onExited={[Function]}
-                  onExiting={[Function]}
-                  role="alert"
+                <Alert
+                  closeAriaLabel="Close"
+                  color="danger"
+                  isOpen={true}
                   tag="div"
-                  timeout={150}
-                  unmountOnExit={true}
+                  transition={
+                    Object {
+                      "appear": true,
+                      "baseClass": "fade",
+                      "baseClassActive": "show",
+                      "enter": true,
+                      "exit": true,
+                      "in": true,
+                      "mountOnEnter": false,
+                      "onEnter": [Function],
+                      "onEntered": [Function],
+                      "onEntering": [Function],
+                      "onExit": [Function],
+                      "onExited": [Function],
+                      "onExiting": [Function],
+                      "tag": "div",
+                      "timeout": 150,
+                      "unmountOnExit": true,
+                    }
+                  }
                 >
-                  <Transition
+                  <Fade
                     appear={true}
+                    baseClass="fade"
+                    baseClassActive="show"
+                    className="alert alert-danger"
                     enter={true}
                     exit={true}
                     in={true}
@@ -365,143 +357,144 @@ exports[`StatsView render satisfaction surveys should render the upgrade to pro 
                     onExit={[Function]}
                     onExited={[Function]}
                     onExiting={[Function]}
+                    role="alert"
+                    tag="div"
                     timeout={150}
                     unmountOnExit={true}
                   >
-                    <div
-                      className="alert alert-danger fade"
-                      role="alert"
+                    <Transition
+                      appear={true}
+                      enter={true}
+                      exit={true}
+                      in={true}
+                      mountOnEnter={false}
+                      onEnter={[Function]}
+                      onEntered={[Function]}
+                      onEntering={[Function]}
+                      onExit={[Function]}
+                      onExited={[Function]}
+                      onExiting={[Function]}
+                      timeout={150}
+                      unmountOnExit={true}
                     >
-                      This feature is only available for Pro and above plans.
-                       
-                      <Link
-                        onlyActiveOnIndex={false}
-                        style={Object {}}
-                        to="/app/settings/billing/plans"
+                      <div
+                        className="alert alert-danger fade"
+                        role="alert"
                       >
-                        <a
-                          onClick={[Function]}
+                        This feature is only available for Pro and above plans.
+                         
+                        <Link
+                          onlyActiveOnIndex={false}
                           style={Object {}}
+                          to="/app/settings/billing/plans"
                         >
-                          Upgrade here.
-                        </a>
-                      </Link>
-                    </div>
-                  </Transition>
-                </Fade>
-              </Alert>
-              <p>
-                Keep track of the performance of your support team by sending a satisfaction survey after a ticket is closed.
-              </p>
-              <Carousel
-                arrows={false}
-                autoplay={true}
-                imagesUrl={
-                  Array [
-                    "/static/private/img/presentationals/satisfaction-survey-stats.png",
-                    "/static/private/img/presentationals/satisfaction-survey-ticket-details.png",
-                  ]
-                }
-                onImageClick={[Function]}
-                slidesToShow={2}
-              >
-                <div
-                  className="carouselContainer"
+                          <a
+                            onClick={[Function]}
+                            style={Object {}}
+                          >
+                            Upgrade here.
+                          </a>
+                        </Link>
+                      </div>
+                    </Transition>
+                  </Fade>
+                </Alert>
+                <p>
+                  Keep track of the performance of your support team by sending a satisfaction survey after a ticket is closed.
+                </p>
+                <Carousel
+                  arrows={false}
+                  autoplay={true}
+                  imagesUrl={
+                    Array [
+                      "/static/private/img/presentationals/satisfaction-survey-stats.png",
+                      "/static/private/img/presentationals/satisfaction-survey-ticket-details.png",
+                    ]
+                  }
+                  onImageClick={[Function]}
+                  slidesToShow={2}
                 >
-                  <Slider
-                    arrows={false}
-                    autoplay={true}
-                    autoplaySpeed={3000}
-                    dots={true}
-                    slidesToShow={2}
+                  <div
+                    className="carouselContainer"
                   >
-                    <InnerSlider
-                      accessibility={true}
-                      adaptiveHeight={false}
-                      afterChange={null}
-                      appendDots={[Function]}
+                    <Slider
                       arrows={false}
                       autoplay={true}
                       autoplaySpeed={3000}
-                      beforeChange={null}
-                      centerMode={false}
-                      centerPadding="50px"
-                      className=" unslicked"
-                      cssEase="ease"
-                      customPaging={[Function]}
                       dots={true}
-                      dotsClass="slick-dots"
-                      draggable={true}
-                      easing="linear"
-                      edgeEvent={null}
-                      edgeFriction={0.35}
-                      fade={false}
-                      focusOnSelect={false}
-                      infinite={true}
-                      init={null}
-                      initialSlide={0}
-                      lazyLoad={false}
-                      nextArrow={null}
-                      pauseOnHover={true}
-                      prevArrow={null}
-                      responsive={null}
-                      rtl={false}
-                      slide="div"
-                      slidesToScroll={1}
                       slidesToShow={2}
-                      speed={500}
-                      swipe={true}
-                      swipeEvent={null}
-                      swipeToSlide={false}
-                      touchMove={true}
-                      touchThreshold={5}
-                      unslick={true}
-                      useCSS={true}
-                      variableWidth={false}
-                      vertical={false}
-                      waitForAnimate={true}
                     >
-                      <div
-                        className="slick-initialized slick-slider  unslicked"
+                      <InnerSlider
+                        accessibility={true}
+                        adaptiveHeight={false}
+                        afterChange={null}
+                        appendDots={[Function]}
+                        arrows={false}
+                        autoplay={true}
+                        autoplaySpeed={3000}
+                        beforeChange={null}
+                        centerMode={false}
+                        centerPadding="50px"
+                        className=" unslicked"
+                        cssEase="ease"
+                        customPaging={[Function]}
+                        dots={true}
+                        dotsClass="slick-dots"
+                        draggable={true}
+                        easing="linear"
+                        edgeEvent={null}
+                        edgeFriction={0.35}
+                        fade={false}
+                        focusOnSelect={false}
+                        infinite={true}
+                        init={null}
+                        initialSlide={0}
+                        lazyLoad={false}
+                        nextArrow={null}
+                        pauseOnHover={true}
+                        prevArrow={null}
+                        responsive={null}
+                        rtl={false}
+                        slide="div"
+                        slidesToScroll={1}
+                        slidesToShow={2}
+                        speed={500}
+                        swipe={true}
+                        swipeEvent={null}
+                        swipeToSlide={false}
+                        touchMove={true}
+                        touchThreshold={5}
+                        unslick={true}
+                        useCSS={true}
+                        variableWidth={false}
+                        vertical={false}
+                        waitForAnimate={true}
                       >
                         <div
-                          className="slick-list"
+                          className="slick-initialized slick-slider  unslicked"
                         >
-                          <Track
-                            centerMode={false}
-                            centerPadding="50px"
-                            cssEase="ease"
-                            currentSlide={0}
-                            fade={false}
-                            focusOnSelect={null}
-                            infinite={true}
-                            lazyLoad={false}
-                            lazyLoadedList={Array []}
-                            listHeight={0}
-                            rtl={false}
-                            slideCount={2}
-                            slideHeight={0}
-                            slideWidth={0}
-                            slidesToScroll={1}
-                            slidesToShow={2}
-                            speed={500}
-                            trackStyle={
-                              Object {
-                                "WebkitTransform": "translate3d(0px, 0px, 0px)",
-                                "WebkitTransition": "",
-                                "msTransform": "translateX(0px)",
-                                "opacity": 1,
-                                "transform": "translate3d(0px, 0px, 0px)",
-                                "transition": "",
-                              }
-                            }
-                            unslick={true}
-                            variableWidth={false}
-                            vertical={false}
+                          <div
+                            className="slick-list"
                           >
-                            <div
-                              className="slick-track"
-                              style={
+                            <Track
+                              centerMode={false}
+                              centerPadding="50px"
+                              cssEase="ease"
+                              currentSlide={0}
+                              fade={false}
+                              focusOnSelect={null}
+                              infinite={true}
+                              lazyLoad={false}
+                              lazyLoadedList={Array []}
+                              listHeight={0}
+                              rtl={false}
+                              slideCount={2}
+                              slideHeight={0}
+                              slideWidth={0}
+                              slidesToScroll={1}
+                              slidesToShow={2}
+                              speed={500}
+                              trackStyle={
                                 Object {
                                   "WebkitTransform": "translate3d(0px, 0px, 0px)",
                                   "WebkitTransition": "",
@@ -511,97 +504,114 @@ exports[`StatsView render satisfaction surveys should render the upgrade to pro 
                                   "transition": "",
                                 }
                               }
+                              unslick={true}
+                              variableWidth={false}
+                              vertical={false}
                             >
                               <div
-                                className="slick-slide slick-active slick-current carouselContent"
-                                data-index={0}
-                                key="original.$0"
-                                onClick={[Function]}
+                                className="slick-track"
                                 style={
                                   Object {
-                                    "outline": "none",
-                                    "width": 0,
+                                    "WebkitTransform": "translate3d(0px, 0px, 0px)",
+                                    "WebkitTransition": "",
+                                    "msTransform": "translateX(0px)",
+                                    "opacity": 1,
+                                    "transform": "translate3d(0px, 0px, 0px)",
+                                    "transition": "",
                                   }
                                 }
-                                tabIndex="-1"
                               >
-                                <a
-                                  href="/static/private/img/presentationals/satisfaction-survey-stats.png"
-                                  target="_blank"
-                                >
-                                  <img
-                                    onClick={[Function]}
-                                    src="/static/private/img/presentationals/satisfaction-survey-stats.png"
-                                  />
-                                </a>
-                              </div>
-                              <div
-                                className="slick-slide slick-active carouselContent"
-                                data-index={1}
-                                key="original.$1"
-                                onClick={[Function]}
-                                style={
-                                  Object {
-                                    "outline": "none",
-                                    "width": 0,
+                                <div
+                                  className="slick-slide slick-active slick-current carouselContent"
+                                  data-index={0}
+                                  key="original.$0"
+                                  onClick={[Function]}
+                                  style={
+                                    Object {
+                                      "outline": "none",
+                                      "width": 0,
+                                    }
                                   }
-                                }
-                                tabIndex="-1"
-                              >
-                                <a
-                                  href="/static/private/img/presentationals/satisfaction-survey-ticket-details.png"
-                                  target="_blank"
+                                  tabIndex="-1"
                                 >
-                                  <img
-                                    onClick={[Function]}
-                                    src="/static/private/img/presentationals/satisfaction-survey-ticket-details.png"
-                                  />
-                                </a>
+                                  <a
+                                    href="/static/private/img/presentationals/satisfaction-survey-stats.png"
+                                    target="_blank"
+                                  >
+                                    <img
+                                      onClick={[Function]}
+                                      src="/static/private/img/presentationals/satisfaction-survey-stats.png"
+                                    />
+                                  </a>
+                                </div>
+                                <div
+                                  className="slick-slide slick-active carouselContent"
+                                  data-index={1}
+                                  key="original.$1"
+                                  onClick={[Function]}
+                                  style={
+                                    Object {
+                                      "outline": "none",
+                                      "width": 0,
+                                    }
+                                  }
+                                  tabIndex="-1"
+                                >
+                                  <a
+                                    href="/static/private/img/presentationals/satisfaction-survey-ticket-details.png"
+                                    target="_blank"
+                                  >
+                                    <img
+                                      onClick={[Function]}
+                                      src="/static/private/img/presentationals/satisfaction-survey-ticket-details.png"
+                                    />
+                                  </a>
+                                </div>
                               </div>
-                            </div>
-                          </Track>
+                            </Track>
+                          </div>
                         </div>
-                      </div>
-                    </InnerSlider>
-                  </Slider>
-                </div>
-              </Carousel>
-              <Lightbox
-                backdropClosesModal={true}
-                closeButtonTitle="Close (Esc)"
-                currentImage={0}
-                enableKeyboardInput={true}
-                imageCountSeparator=" of "
-                images={
-                  Array [
-                    Object {
-                      "src": "/static/private/img/presentationals/satisfaction-survey-stats.png",
-                    },
-                    Object {
-                      "src": "/static/private/img/presentationals/satisfaction-survey-ticket-details.png",
-                    },
-                  ]
-                }
-                isOpen={false}
-                leftArrowTitle="Previous (Left arrow key)"
-                onClickNext={[Function]}
-                onClickPrev={[Function]}
-                onClickShowNextImage={true}
-                onClickThumbnail={[Function]}
-                onClose={[Function]}
-                preloadNextImage={true}
-                rightArrowTitle="Next (Right arrow key)"
-                showCloseButton={true}
-                showImageCount={true}
-                showThumbnails={true}
-                theme={Object {}}
-                thumbnailOffset={2}
-                width={1024}
-              >
-                <Portal />
-              </Lightbox>
-            </div>
-          </SatisfactionSurveyUpgrade>
+                      </InnerSlider>
+                    </Slider>
+                  </div>
+                </Carousel>
+                <Lightbox
+                  backdropClosesModal={true}
+                  closeButtonTitle="Close (Esc)"
+                  currentImage={0}
+                  enableKeyboardInput={true}
+                  imageCountSeparator=" of "
+                  images={
+                    Array [
+                      Object {
+                        "src": "/static/private/img/presentationals/satisfaction-survey-stats.png",
+                      },
+                      Object {
+                        "src": "/static/private/img/presentationals/satisfaction-survey-ticket-details.png",
+                      },
+                    ]
+                  }
+                  isOpen={false}
+                  leftArrowTitle="Previous (Left arrow key)"
+                  onClickNext={[Function]}
+                  onClickPrev={[Function]}
+                  onClickShowNextImage={true}
+                  onClickThumbnail={[Function]}
+                  onClose={[Function]}
+                  preloadNextImage={true}
+                  rightArrowTitle="Next (Right arrow key)"
+                  showCloseButton={true}
+                  showImageCount={true}
+                  showThumbnails={true}
+                  theme={Object {}}
+                  thumbnailOffset={2}
+                  width={1024}
+                >
+                  <Portal />
+                </Lightbox>
+              </div>
+            </RestrictedFeature>
+          </RestrictedSatisfactionSurvey>
         </div>
       </Container>
     </div>

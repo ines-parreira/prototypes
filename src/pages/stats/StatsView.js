@@ -5,17 +5,18 @@ import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import _debounce from 'lodash/debounce'
 import _find from 'lodash/find'
-import {Container} from 'reactstrap'
+import {Container, Button, Popover, PopoverBody} from 'reactstrap'
 
 import {stats as statsConfig} from '../../config/stats'
 import {fieldEnumSearch} from '../../state/views/actions'
 import PageHeader from '../common/components/PageHeader'
 import * as statsActions from '../../state/stats/actions'
-import SatisfactionSurveyUpgrade from '../common/components/SatisfactionSurveyUpgrade'
 
 import PeriodPicker from './common/PeriodPicker'
 import SearchableSelectField from './common/SearchableSelectField'
 import Stat from './common/components/charts/Stat'
+import RestrictedSatisfactionSurvey from './common/RestrictedSatisfactionSurvey'
+import RevenueUpgrade from './common/RevenueUpgrade'
 
 
 type Props = {
@@ -42,6 +43,7 @@ class StatsView extends React.Component<Props> {
             tags: props.tags,
             loadings: {}, // store loading state of each stat on the view
             isLightboxOpen: false,
+            descriptionPopoverOpen: false,
             currentImage: 0,
         }
     }
@@ -124,24 +126,43 @@ class StatsView extends React.Component<Props> {
         }
     }
 
+    renderRestrictedFeatures(currentAccount, config) {
+        const missingSatisfactionSurvey = config.get('name') === 'Satisfaction' &&
+            !currentAccount.get('extra_features').includes('satisfaction-surveys')
+
+        if (missingSatisfactionSurvey) {
+            return <RestrictedSatisfactionSurvey/>
+        }
+
+        const missingRevenue = config.get('name') === 'Revenue' &&
+            !currentAccount.get('extra_features').includes('revenue')
+
+        if (missingRevenue) {
+            return <RevenueUpgrade/>
+        }
+    }
+
+    _toggleDescriptionPopover = () => {
+        this.setState({
+            descriptionPopoverOpen: !this.state.descriptionPopoverOpen
+        })
+    }
+
     render() {
         const {config, filters, meta, stats, currentAccount} = this.props
         const startDatetime = moment(meta.get('start_datetime'))
         const endDatetime = moment(meta.get('end_datetime'))
-
-        const missingSatisfactionSurvey = config.get('name') === 'Satisfaction' &&
-            !currentAccount.get('extra_features').includes('satisfaction-surveys')
 
         const configFilters = config.get('filters', fromJS([])).toJS()
         const availableFilters = [
             {
                 type: 'agents',
                 render: () => <SearchableSelectField
-                  key="agents-filter"
-                  plural="agents"
-                  singular="agent"
-                  items={this.props.agents}
-                  input={this._makeInputControl('agents')}
+                    key="agents-filter"
+                    plural="agents"
+                    singular="agent"
+                    items={this.props.agents}
+                    input={this._makeInputControl('agents')}
                 />
             },
             {
@@ -178,10 +199,36 @@ class StatsView extends React.Component<Props> {
             }
         ]
 
+        let pageTitle = config.get('name')
+
+        if (config.get('description')) {
+            pageTitle = (
+                <h1 className="d-flex align-items-center">
+                    {pageTitle}
+                    <Button
+                        id="stat-description-trigger"
+                        className="mt-1"
+                        color="link"
+                        onClick={this._toggleDescriptionPopover}
+                    >
+                        <i className="material-icons">info_outline</i> Learn more
+                    </Button>
+                    <Popover
+                        placement="auto"
+                        target="stat-description-trigger"
+                        isOpen={this.state.descriptionPopoverOpen}
+                        toggle={this._toggleDescriptionPopover}
+                    >
+                        <PopoverBody dangerouslySetInnerHTML={{__html: config.get('description')}}/>
+                    </Popover>
+                </h1>
+            )
+        }
+
         return (
             <div className="stats full-width">
                 <PageHeader
-                    title={config.get('name')}
+                    title={pageTitle}
                     className="mb-0"
                 >
                     <div className="d-flex flex-wrap float-right">
@@ -200,35 +247,34 @@ class StatsView extends React.Component<Props> {
                     fluid
                     style={{padding: 0}}
                 >
-                    { missingSatisfactionSurvey
-                        ? <SatisfactionSurveyUpgrade />
-                        : config.get('stats').map((statName, idx) => {
-                            const isCurrentStatLoading = this.state.loadings[statName]
-                            const stat = stats.get(statName)
-                            const isLoading = isCurrentStatLoading || !stat
-                            const statConfig = statsConfig.get(statName)
-                            let padding = '30px'
-                            const statProps = isLoading ? {} : stat.toObject()
-                            // First key metrics statistics are stuck to the top
-                            if (idx === 0 && statConfig.get('style') === 'key-metrics') {
-                                padding = '0 0 30px'
-                            }
+                    {this.renderRestrictedFeatures(currentAccount, config) ||
+                    config.get('stats').map((statName, idx) => {
+                        const isCurrentStatLoading = this.state.loadings[statName]
+                        const stat = stats.get(statName)
+                        const isLoading = isCurrentStatLoading || !stat
+                        const statConfig = statsConfig.get(statName)
+                        let padding = '30px'
+                        const statProps = isLoading ? {} : stat.toObject()
+                        // First key metrics statistics are stuck to the top
+                        if (idx === 0 && statConfig.get('style') === 'key-metrics') {
+                            padding = '0 0 30px'
+                        }
 
-                            return (
-                                <div
-                                    style={{padding}}
-                                    key={idx}
-                                >
-                                    <Stat
-                                        isLoading={isLoading}
-                                        name={statName}
-                                        config={statConfig}
-                                        filters={filters}
-                                        {...statProps}
-                                    />
-                                </div>
-                            )
-                        })
+                        return (
+                            <div
+                                style={{padding}}
+                                key={idx}
+                            >
+                                <Stat
+                                    isLoading={isLoading}
+                                    name={statName}
+                                    config={statConfig}
+                                    filters={filters}
+                                    {...statProps}
+                                />
+                            </div>
+                        )
+                    })
                     }
                 </Container>
             </div>

@@ -7,7 +7,7 @@ import {defaults} from 'react-chartjs-2'
 
 import {formatDuration} from '../pages/stats/common/utils'
 import {TagLabel} from '../pages/common/utils/labels'
-import {EMAIL_CHANNEL, CHAT_CHANNEL} from './ticket'
+import {EMAIL_CHANNEL, CHAT_CHANNEL, AIRCALL_CHANNEL, API_CHANNEL} from './ticket'
 
 // Available Stats. These names should match names in `g/stats/config`
 export const OVERVIEW = 'overview'
@@ -22,6 +22,9 @@ export const TICKETS_CLOSED_PER_AGENT_PER_DAY = 'tickets-closed-per-agent-per-da
 export const MESSAGES_SENT_PER_MACRO = 'messages-sent-per-macro'
 export const SATISFACTION_SURVEYS = 'satisfaction-surveys'
 export const LATEST_SATISFACTION_SURVEYS = 'latest-satisfaction-surveys'
+export const REVENUE_OVERVIEW = 'revenue-overview'
+export const SALES_PER_AGENT = 'sales-per-agent'
+export const PRE_SALE_CONVERTED_TICKETS_PER_DAY = 'pre-sale-converted-tickets-per-day'
 
 const mainBlue = '#152065'
 export const colors = [
@@ -355,7 +358,7 @@ export const stats = fromJS({
             total_closed_tickets: {
                 label: 'Tickets closed',
                 tooltip: 'Number of tickets closed. If a ticket was closed multiple times, ' +
-                'we only take into account the last time it was closed.',
+                    'we only take into account the last time it was closed.',
             },
             total_messages_sent: {
                 tooltip: 'Number of messages sent by agents and rules.',
@@ -522,7 +525,75 @@ export const stats = fromJS({
         style: 'table',
         downloadable: true,
     },
-
+    [REVENUE_OVERVIEW]: {
+        style: 'key-metrics',
+        metrics: {
+            pre_sale_tickets: {
+                label: 'Pre-sale tickets',
+                tooltip: 'All tickets excluding post-sale tickets. Post-sale tickets are tickets that had an order ' +
+                    'within 45 days before being created, and no order within 7 days after being created. <a href="test">test</a>',
+            },
+            converted_tickets: {
+                label: 'Converted tickets',
+                tooltip: 'Pre-sale that were followed by a sale within 7 days.'
+            },
+            conversion_rate: {
+                label: 'Conversion rate',
+                tooltip: 'Ratio between pre-sale tickets vs converted tickets.'
+            },
+            total_sales_from_support: {
+                label: 'Total sales from support',
+                tooltip: 'Sum of the order amount for each converted ticket.'
+            },
+        }
+    },
+    [SALES_PER_AGENT]: {
+        helpText: 'Breakdown of sales metrics per agent.',
+        style: 'table',
+        downloadable: true,
+    },
+    [PRE_SALE_CONVERTED_TICKETS_PER_DAY]: {
+        helpText: 'Number of pre-sale and converted tickets per day.',
+        style: 'bar',
+        downloadable: true,
+        lines: {
+            pre_sale_tickets: {
+                label: 'Pre-sale tickets',
+                color: '#ffb584',
+            },
+            converted_tickets: {
+                label: 'Converted tickets',
+                color: '#8892f2'
+            },
+        },
+        options: (legend) => ({
+            scales: {
+                xAxes: [{
+                    scaleLabel: _merge({}, defaultScaleLabel, {
+                        labelString: legend.getIn(['axes', 'x']),
+                        display: !!legend.getIn(['axes', 'x']),
+                    }),
+                    stacked: false,
+                    gridLines: defaultXAxeGridLines,
+                    ticks: _merge({}, defaultTicks, {
+                        callback: formatDateAxeCb
+                    })
+                }],
+                yAxes: [{
+                    scaleLabel: _merge({}, defaultScaleLabel, {
+                        labelString: legend.getIn(['axes', 'y']),
+                        display: !!legend.getIn(['axes', 'y']),
+                    }),
+                    ticks: _merge({}, defaultTicks, {
+                        min: 0,
+                        suggestedMax: 1,
+                        callback: formatTicketAxeCb
+                    }),
+                    gridLines: defaultYAxeGridLines
+                }]
+            }
+        })
+    },
 })
 
 // Callbacks to format values of datasets or axes
@@ -551,6 +622,10 @@ const formatDurationTooltipCb = (item, data) => {
 export const views = fromJS({
     overview: {
         name: 'Overview',
+        description: `Get an overview of the most important statistics about your customer service.
+Metrics such as volume of tickets, first response time and resolution time are key when it comes to 
+providing excelent customer support.
+<a href="https://docs.gorgias.io/admin-guide-to-gorgias/statistics#overview">Learn more</a>.`,
         filters: [{type: 'channels'}, {type: 'agents'}, {type: 'tags'}, {type: 'date'}],
         // default view available at `app/stats/`
         link: '',
@@ -563,6 +638,8 @@ export const views = fromJS({
     },
     tags: {
         name: 'Tags',
+        description: `Tags statistics will show you how many tickets were created during this time period and have a 
+tag attached to them. <a href="https://docs.gorgias.io/admin-guide-to-gorgias/statistics#tags">Learn more</a>.`,
         filters: [{type: 'channels'}, {type: 'date'}],
         link: 'tags',
         stats: [
@@ -571,6 +648,9 @@ export const views = fromJS({
     },
     channels: {
         name: 'Channels',
+        description: `Channel statistics to get a clear view of your ticket volume based on the different communication 
+channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...
+<a href="https://docs.gorgias.io/admin-guide-to-gorgias/statistics#channels">Learn more</a>.`,
         filters: [{type: 'channels'}, {type: 'date'}],
         link: 'channels',
         stats: [
@@ -580,6 +660,8 @@ export const views = fromJS({
     },
     agents: {
         name: 'Agents',
+        description: `Agents statistics will show you how many tickets were closed by each agent during this period.
+<a href="https://docs.gorgias.io/admin-guide-to-gorgias/statistics#agents">Learn more</a>.`,
         filters: [{type: 'channels'}, {type: 'date'}],
         link: 'agents',
         stats: [
@@ -589,6 +671,10 @@ export const views = fromJS({
     },
     macros: {
         name: 'Macros',
+        description: `Macro statistics is an excellent way to ensure your agents are very efficient by using macros. 
+It also shows what macros are being used the most often so you can you can provide this information elsewhere in order 
+to help reduce your support inquiries. 
+<a href="https://docs.gorgias.io/admin-guide-to-gorgias/statistics#macros">Learn more</a>.`,
         filters: [{type: 'channels'}, {type: 'date'}],
         link: 'macros',
         stats: [
@@ -597,6 +683,8 @@ export const views = fromJS({
     },
     satisfaction: {
         name: 'Satisfaction',
+        description: `Satisfaction survey statistics allow you to measure how good is the support your team is providing over time. 
+How many surveys have been sent, response rate, average scores and more. <a href="https://docs.gorgias.io/admin-guide-to-gorgias/statistics#satisfaction">Learn more</a>.`,
         filters: [
             {
                 type: 'channels',
@@ -606,6 +694,24 @@ export const views = fromJS({
         link: 'satisfaction',
         stats: [
             SATISFACTION_SURVEYS, LATEST_SATISFACTION_SURVEYS
+        ]
+    },
+    revenue: {
+        name: 'Revenue (Beta)',
+        description: `Revenue statistics allow you to measure how much money your support team is generating by 
+helping customers through the purchasing journey.<br/> 
+<a href="https://docs.gorgias.io/admin-guide-to-gorgias/revenue-statistics">Learn how it works</a>.`,
+        filters: [
+            {
+                type: 'channels',
+                options: [EMAIL_CHANNEL, CHAT_CHANNEL, AIRCALL_CHANNEL, API_CHANNEL]
+            },
+            {
+                type: 'date'
+            }],
+        link: 'revenue',
+        stats: [
+            REVENUE_OVERVIEW, SALES_PER_AGENT, PRE_SALE_CONVERTED_TICKETS_PER_DAY
         ]
     },
 })

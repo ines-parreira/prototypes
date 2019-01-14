@@ -7,7 +7,13 @@ import {Link} from 'react-router'
 import Carousel from './../../integrations/common/Carousel'
 
 
-export default class SatisfactionSurveyUpgrade extends React.Component {
+type Props = {
+    imagesURL: Array,
+    info: string
+}
+
+
+export default class RestrictedFeature extends React.Component<Props> {
     constructor(props) {
         super(props)
 
@@ -29,10 +35,7 @@ export default class SatisfactionSurveyUpgrade extends React.Component {
     }
 
     render() {
-        const imagesUrl = [
-            `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/satisfaction-survey-stats.png`,
-            `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/satisfaction-survey-ticket-details.png`
-        ]
+        const {imagesURL, info} = this.props
 
         return <div className="col mt-2">
             <Alert color="danger">
@@ -40,20 +43,17 @@ export default class SatisfactionSurveyUpgrade extends React.Component {
                 <Link to="/app/settings/billing/plans">Upgrade here.</Link>
             </Alert>
 
-            <p>
-                Keep track of the performance of your support team by sending a satisfaction survey after a ticket is
-                closed.
-            </p>
+            <p>{info}</p>
 
             <Carousel
-                imagesUrl={imagesUrl}
+                imagesUrl={imagesURL}
                 onImageClick={({index}) => this._toggleLightbox(index)}
             />
 
             <Lightbox
-                images={imagesUrl.map((imageUrl) => {
+                images={imagesURL.map((imageURL) => {
                     return {
-                        src: imageUrl,
+                        src: imageURL,
                     }
                 })}
                 isOpen={this.state.isLightboxOpen}

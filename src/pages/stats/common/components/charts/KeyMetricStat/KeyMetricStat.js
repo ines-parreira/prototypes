@@ -56,7 +56,7 @@ export default class KeyMetricStat extends Component<Props> {
         if (_isObject(value)) {
             const formattedValue = fromJS(value.reduce((acc, value, key) => ({
                 ...acc,
-                [key]: this._formatValue(value, metric.get('type'))
+                [key]: this._formatValue(value, metric)
             }), {}))
 
             return <DistributionKeyMetricStat
@@ -65,7 +65,7 @@ export default class KeyMetricStat extends Component<Props> {
             />
         }
 
-        const formattedValue = this._formatValue(value, metric.get('type'))
+        const formattedValue = this._formatValue(value, metric)
 
         return config.get('type') === 'donut' ? <DonutKeyMetricStat
                     value={parseFloat(value)}
@@ -77,12 +77,14 @@ export default class KeyMetricStat extends Component<Props> {
                 /> : this._defaultWrapper(formattedValue, metric, valueTooltipId, tooltipDelta)
     }
 
-    _formatValue = (value: string, metricType: string) => {
-        switch (metricType) {
+    _formatValue = (value: string, metric: Map<string, *>) => {
+        switch (metric.get('type')) {
             case 'duration':
                 return formatDuration(value, 2)
             case 'percent':
                 return formatPercent(value)
+            case 'money':
+                return (metric.get('currency_format') || '{{amount}}').replace('{{amount}}', value)
             default:
                 return value
         }

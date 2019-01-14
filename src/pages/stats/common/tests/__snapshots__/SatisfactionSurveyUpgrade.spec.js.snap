@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RestrictedSatisfactionSurvey should render 1`] = `
+<RestrictedFeature
+  imagesURL={
+    Array [
+      "/static/private/img/presentationals/satisfaction-survey-stats.png",
+      "/static/private/img/presentationals/satisfaction-survey-ticket-details.png",
+    ]
+  }
+  info="Keep track of the performance of your support team by sending a satisfaction survey after a ticket is closed."
+/>
+`;
