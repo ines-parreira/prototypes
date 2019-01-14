@@ -241,35 +241,7 @@ exports[`Charge SubscriptionAfterTitle should display the skipCharge action with
 
 exports[`Charge SubscriptionAfterTitle should not display the skipCharge action if the charge is not queued 1`] = `
 <ActionButtonsGroup
-  actions={
-    Array [
-      Object {
-        "child": <div>
-          <i
-                className="material-icons mr-1"
-          >
-                block
-          </i>
-          Skip
-    </div>,
-        "key": "skip",
-        "options": Array [
-          Object {
-            "value": "rechargeSkipCharge",
-          },
-        ],
-        "title": <div>
-          <i
-                className="material-icons mr-1"
-          >
-                block
-          </i>
-          Skip charge on subscription
-    </div>,
-        "tooltip": "Skip the charge for this subscription on Recharge. No order will be created and no item will be shipped.",
-      },
-    ]
-  }
+  actions={Array []}
   payload={
     Object {
       "charge_id": undefined,

@@ -72,14 +72,10 @@ export class SubscriptionAfterTitle extends React.Component { // eslint-disable-
             },
         ]
 
-        let removed = []
-
-        if (isChargeNotQueued) {
-            removed = removed.concat(['rechargeSkipCharge'])
-        }
+        let removed = isChargeNotQueued ? ['skip'] : []
 
         // remove removed actions from list of available actions
-        actions = actions.filter((action) => !removed.includes(action.actionName))
+        actions = actions.filter((action) => !removed.includes(action.key))
 
         const payload = {
             charge_id: source.get('charge_id'),
