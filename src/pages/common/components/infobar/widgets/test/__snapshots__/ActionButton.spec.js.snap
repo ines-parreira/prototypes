@@ -5,7 +5,7 @@ exports[`ActionButton component should display a single option with a checkbox p
   className="button action-button"
   color="secondary"
   disabled={false}
-  id="myLittleAction-1-1-12"
+  id="action-button-4"
   onClick={[Function]}
   size="sm"
   tag="button"
@@ -29,7 +29,7 @@ exports[`ActionButton component should display a single option with a checkbox p
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
-    target="myLittleAction-1-1-12"
+    target="action-button-4"
     tether={
       Object {
         "constraints": Array [
@@ -99,7 +99,7 @@ exports[`ActionButton component should display a single option with a number par
   className="button action-button"
   color="secondary"
   disabled={false}
-  id="myLittleAction-1-1-12"
+  id="action-button-3"
   onClick={[Function]}
   size="sm"
   tag="button"
@@ -123,7 +123,7 @@ exports[`ActionButton component should display a single option with a number par
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
-    target="myLittleAction-1-1-12"
+    target="action-button-3"
     tether={
       Object {
         "constraints": Array [
@@ -197,7 +197,7 @@ exports[`ActionButton component should display a single option with a text param
   className="button action-button"
   color="secondary"
   disabled={false}
-  id="myLittleAction-1-1-12"
+  id="action-button-2"
   onClick={[Function]}
   size="sm"
   tag="button"
@@ -221,7 +221,7 @@ exports[`ActionButton component should display a single option with a text param
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
-    target="myLittleAction-1-1-12"
+    target="action-button-2"
     tether={
       Object {
         "constraints": Array [
@@ -292,7 +292,7 @@ exports[`ActionButton component should display a single option with no parameter
   className="button action-button"
   color="secondary"
   disabled={false}
-  id="myLittleAction-1-1-12"
+  id="action-button-1"
   onClick={[Function]}
   size="sm"
   tag="button"
@@ -316,7 +316,7 @@ exports[`ActionButton component should display a single option with no parameter
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
-    target="myLittleAction-1-1-12"
+    target="action-button-1"
     tether={
       Object {
         "constraints": Array [
@@ -377,7 +377,7 @@ exports[`ActionButton component should display multiple options with a common pa
   className="button action-button"
   color="secondary"
   disabled={false}
-  id="myLittleAction-1-1-12"
+  id="action-button-6"
   onClick={[Function]}
   size="sm"
   tag="button"
@@ -401,7 +401,7 @@ exports[`ActionButton component should display multiple options with a common pa
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
-    target="myLittleAction-1-1-12"
+    target="action-button-6"
     tether={
       Object {
         "constraints": Array [
@@ -514,7 +514,7 @@ exports[`ActionButton component should display multiple options with different p
   className="button action-button"
   color="secondary"
   disabled={false}
-  id="myLittleAction-1-1-12"
+  id="action-button-7"
   onClick={[Function]}
   size="sm"
   tag="button"
@@ -538,7 +538,7 @@ exports[`ActionButton component should display multiple options with different p
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
-    target="myLittleAction-1-1-12"
+    target="action-button-7"
     tether={
       Object {
         "constraints": Array [
@@ -651,7 +651,7 @@ exports[`ActionButton component should display multiple options without paramete
   className="button action-button"
   color="secondary"
   disabled={false}
-  id="myLittleAction-1-1-12"
+  id="action-button-5"
   onClick={[Function]}
   size="sm"
   tag="button"
@@ -675,7 +675,7 @@ exports[`ActionButton component should display multiple options without paramete
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
-    target="myLittleAction-1-1-12"
+    target="action-button-5"
     tether={
       Object {
         "constraints": Array [

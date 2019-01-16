@@ -29,6 +29,7 @@ import * as segmentTracker from '../../../../../store/middlewares/segmentTracker
 import * as infobarActions from '../../../../../state/infobar/actions'
 import * as infobarSelectors from '../../../../../state/infobar/selectors'
 import * as infobarUtils from '../../../../../state/infobar/utils'
+import _uniqueId from 'lodash/uniqueId'
 
 import css from './ActionButton.less'
 
@@ -88,6 +89,11 @@ export default class ActionButton extends React.Component<Props, State> {
         integration: ImmutablePropTypes.map.isRequired,
         integrationId: PropTypes.number.isRequired,
         customerId: PropTypes.number.isRequired,
+    }
+
+    constructor(props: Props) {
+        super(props)
+        this.id = _uniqueId('action-button-')
     }
 
     componentDidMount() {
@@ -269,7 +275,7 @@ export default class ActionButton extends React.Component<Props, State> {
             tagOptions
         } = this.props
 
-        const {actionName, popoverOpen, showSuccess, showError, isLoading, actionId} = this.state
+        const {actionName, popoverOpen, showSuccess, showError, isLoading} = this.state
 
         const multipleOptions = options.length > 1
 
@@ -283,7 +289,7 @@ export default class ActionButton extends React.Component<Props, State> {
 
         return (
             <Tag
-                id={actionId}
+                id={this.id}
                 color={buttonColor}
                 size="sm"
                 className={classnames(css.button, 'action-button', {
@@ -297,7 +303,7 @@ export default class ActionButton extends React.Component<Props, State> {
                 <Popover
                     placement="bottom"
                     isOpen={popoverOpen}
-                    target={actionId}
+                    target={this.id}
                     toggle={this._togglePopover}
                     tether={{
                         // Necessary to avoid the popover being displayed outside of the window.
