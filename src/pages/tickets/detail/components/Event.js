@@ -51,23 +51,27 @@ export default class Event extends React.Component {
 
     _getOrder = (orderId) => {
         const {integrationData: data} = this.props
-        return (data.get('orders') || fromJS([])).find((order) => order.get('id').toString() === orderId.toString()) || fromJS({})
+        return (data.get('orders') || fromJS([]))
+            .find((order) => order.get('id').toString() === orderId.toString()) || fromJS({})
     }
 
     _getItem = (orderId, itemId) => {
         const order = this._getOrder(orderId)
-        return (order.get('line_items') || fromJS([])).find((item) => item.get('id').toString() === itemId.toString()) || fromJS({})
+        return (order.get('line_items') || fromJS([]))
+            .find((item) => item.get('id').toString() === itemId.toString()) || fromJS({})
     }
 
     _getSubscription = (subscriptionId) => {
         const {integrationData: data} = this.props
-        return (data.get('subscriptions') || fromJS([])).find((subscription) => subscription.get('id').toString() === subscriptionId.toString())
+        return (data.get('subscriptions') || fromJS([]))
+                .find((subscription) => subscription.get('id').toString() === subscriptionId.toString())
             || fromJS({})
     }
 
     _getCharge = (chargeId) => {
         const {integrationData: data} = this.props
-        return (data.get('charges') || fromJS([])).find((charge) => charge.get('id').toString() === chargeId.toString()) || fromJS({})
+        return (data.get('charges') || fromJS([]))
+            .find((charge) => charge.get('id').toString() === chargeId.toString()) || fromJS({})
     }
 
     _renderDetails = (isError, eventData) => {
@@ -156,16 +160,17 @@ export default class Event extends React.Component {
             } else if (integration.get('type') === 'recharge') {
                 const storeName = integration.getIn(['meta', 'store_name'])
                 const hash = integrationData.getIn(['customer', 'hash'])
-                const subscription = this._getSubscription(payload.get('subscription_id'))
 
                 if (actionConfig.objectType === 'subscription') {
+                    const subscription = this._getSubscription(payload.get('subscription_id'))
                     objectLabel += subscription.get('id')
+                    objectLink = `https://${storeName}.myshopify.com/tools/recurring/customers/${hash}/subscriptions/${subscription.get('id')}`
                 } else if (actionConfig.objectType === 'charge') {
                     const charge = this._getCharge(payload.get('charge_id'))
                     objectLabel += charge.get('id')
+                    objectLink = `https://${storeName}.myshopify.com/tools/recurring/customers/${hash}/orders`
                 }
 
-                objectLink = `https://${storeName}.myshopify.com/tools/recurring/customers/${hash}/subscriptions/${subscription.get('id')}`
             }
         } else {
             actionLabel += ` #${payload.get('order_id')} (deleted integration)`

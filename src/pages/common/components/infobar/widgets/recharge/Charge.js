@@ -1,7 +1,8 @@
-import React from 'react'
+// @flow
+import React, {type Node} from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import {fromJS} from 'immutable'
+import {fromJS, type Map} from 'immutable'
 import {
     Badge,
     CardBody,
@@ -16,34 +17,114 @@ import ActionButtonsGroup from '../ActionButtonsGroup'
 
 export default () => {
     return {
-        // AfterTitle, // eslint-disable-line  todo(@martin): uncomment that when we've figured what to do with Skip
+        AfterTitle, // eslint-disable-line
         BeforeContent, // eslint-disable-line
+        AfterContent, // eslint-disable-line
         editionHiddenFields: ['link'],
         TitleWrapper, // eslint-disable-line
         Wrapper, // eslint-disable-line
     }
 }
 
-export class SubscriptionAfterTitle extends React.Component { // eslint-disable-line
-    static propTypes = {
-        isEditing: PropTypes.bool.isRequired,
-        source: ImmutablePropTypes.map.isRequired,
+type AfterTitleProps = {
+    isEditing: boolean,
+    source: Map<*,*>
+}
+
+export class AfterTitle extends React.Component<AfterTitleProps> {
+    static contextTypes = {
+        integrationId: PropTypes.number,
     }
 
+    render() {
+        const {isEditing, source} = this.props
+        const {integrationId} = this.context
+
+        if (isEditing || !integrationId) {
+            return null
+        }
+
+        const total_price = parseFloat(source.get('total_price')) || 0
+        const total_refunds = source.get('total_refunds') || 0
+
+        let actions = [
+            {
+                key: 'refund',
+                tooltip: 'Refund this charge, partially or totally.',
+                options: [
+                    {
+                        value: 'rechargeRefundCharge',
+                        label: 'Refund charge',
+                        parameters: [
+                            {
+                                name: 'amount',
+                                type: 'number',
+                                defaultValue: total_price - total_refunds,
+                                placeholder: 'Amount',
+                                required: true,
+                                step: 0.01,
+                                min: 0.01,
+                                max: total_price - total_refunds
+                            }
+                        ]
+                    }
+                ],
+                title: (
+                    <div>
+                        <i className="material-icons mr-2">
+                            refresh
+                        </i>
+                        Refund charge
+                    </div>
+                ),
+                child: (
+                    <div>
+                        <i className="material-icons mr-2">
+                            refresh
+                        </i>
+                        Refund
+                    </div>
+                )
+            }
+        ]
+
+
+        const status = source.get('status')
+        let removed = !['SUCCESS', 'PARTIALLY_REFUNDED'].includes(status) ? ['refund'] : []
+
+        // remove removed actions from list of available actions
+        actions = actions.filter((action) => !removed.includes(action.key))
+
+        const payload = {
+            charge_id: source.get('id')
+        }
+
+        return (
+            <ActionButtonsGroup
+                payload={payload}
+                actions={actions}
+            />
+        )
+    }
+}
+
+
+type SubscriptionAfterTitleProps = {
+    isEditing: boolean,
+    source: Map<*,*>
+}
+
+export class SubscriptionAfterTitle extends React.Component<SubscriptionAfterTitleProps> { // eslint-disable-line
     static contextTypes = {
         integrationId: PropTypes.number,
         isChargeNotQueued: PropTypes.bool.isRequired,
     }
 
     render() {
-        const {source} = this.props
+        const {isEditing, source} = this.props
         const {integrationId, isChargeNotQueued} = this.context
 
-        if (this.props.isEditing) {
-            return null
-        }
-
-        if (!integrationId) {
+        if (isEditing || !integrationId) {
             return null
         }
 
@@ -69,7 +150,7 @@ export class SubscriptionAfterTitle extends React.Component { // eslint-disable-
                         Skip
                     </div>
                 )
-            },
+            }
         ]
 
         let removed = isChargeNotQueued ? ['skip'] : []
@@ -100,17 +181,15 @@ const statusColors = {
     skipped: 'info'
 }
 
-class BeforeContent extends React.Component { // eslint-disable-line
-    static propTypes = {
-        source: ImmutablePropTypes.map.isRequired,
-        isEditing: PropTypes.bool.isRequired
-    }
+type BeforeContentProps = {
+    source: Map<*,*>
+}
 
+class BeforeContent extends React.Component<BeforeContentProps> { // eslint-disable-line
     render() {
-        const {source, isEditing} = this.props
+        const {source} = this.props
 
         const status = (source.get('status') || '').toLowerCase()
-        const chargeSubscriptions = _groupBy(toJS(source.get('line_items')), (item) => item.subscription_id)
 
         return (
             <div>
@@ -126,6 +205,25 @@ class BeforeContent extends React.Component { // eslint-disable-line
                         </Badge>
                     </span>
                 </div>
+            </div>
+        )
+    }
+}
+
+
+type AfterContentProps = {
+    isEditing: boolean,
+    source: Map<*,*>
+}
+
+export class AfterContent extends React.Component<AfterContentProps> { // eslint-disable-line
+    render() {
+        const {source, isEditing} = this.props
+
+        const chargeSubscriptions = _groupBy(toJS(source.get('line_items')), (item) => item.subscription_id)
+
+        return (
+            <div className="mt-2">
                 {
                     Object.keys(chargeSubscriptions).map((k) => {
                         return (
@@ -158,13 +256,13 @@ class BeforeContent extends React.Component { // eslint-disable-line
     }
 }
 
-class TitleWrapper extends React.Component { // eslint-disable-line
-    static propTypes = {
-        children: PropTypes.node,
-        source: ImmutablePropTypes.map.isRequired,
-        // getIntegrationData: PropTypes.func.isRequired
-    }
 
+type TitleWrapperProps = {
+    children: ?Node,
+    source: Map<*,*>
+}
+
+class TitleWrapper extends React.Component<TitleWrapperProps> { // eslint-disable-line
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
     }
@@ -184,12 +282,13 @@ class TitleWrapper extends React.Component { // eslint-disable-line
     }
 }
 
-class Wrapper extends React.Component { // eslint-disable-line
-    static propTypes = {
-        children: PropTypes.node,
-        source: ImmutablePropTypes.map.isRequired,
-    }
 
+type WrapperProps = {
+    children: ?Node,
+    source: Map<*,*>
+}
+
+class Wrapper extends React.Component<WrapperProps> { // eslint-disable-line
     static childContextTypes = {
         charge: ImmutablePropTypes.map.isRequired,
         chargeId: PropTypes.number,

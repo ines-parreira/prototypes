@@ -158,6 +158,7 @@ class CardInfobarWidget extends React.Component {
             open,
             AfterTitle,
             BeforeContent,
+            AfterContent,
             Wrapper,
         } = this.props
 
@@ -295,6 +296,8 @@ class CardInfobarWidget extends React.Component {
                                 )
                             )
                     }
+
+                    {!!AfterContent && <AfterContent {...this.props} />}
                 </CardBody>
             </Card>
         )
@@ -314,6 +317,7 @@ class CardInfobarWidget extends React.Component {
 CardInfobarWidget.propTypes = {
     AfterTitle: PropTypes.func,
     BeforeContent: PropTypes.func,
+    AfterContent: PropTypes.func,
     TitleWrapper: PropTypes.func,
     Wrapper: PropTypes.func,
 

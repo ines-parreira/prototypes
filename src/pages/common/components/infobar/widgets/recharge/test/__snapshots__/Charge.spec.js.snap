@@ -1,25 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Charge BeforeContent should aggregate line_items by subscriptions 1`] = `
-<div>
-  <div
-    className="simple-field"
-  >
-    <span
-      className="field-label"
-    >
-      Status:
-    </span>
-    <span
-      className="field-value"
-    >
-      <Badge
-        color="secondary"
-        pill={false}
-        tag="span"
-      />
-    </span>
-  </div>
+exports[`Charge AfterContent should aggregate line_items by subscriptions 1`] = `
+<div
+  className="mt-2"
+>
   <div
     className="card"
     key="1"
@@ -37,6 +21,7 @@ exports[`Charge BeforeContent should aggregate line_items by subscriptions 1`] =
         </span>
       </a>
       <SubscriptionAfterTitle
+        isEditing={false}
         source={
           Immutable.Map {
             charge_id: undefined,
@@ -84,6 +69,7 @@ exports[`Charge BeforeContent should aggregate line_items by subscriptions 1`] =
         </span>
       </a>
       <SubscriptionAfterTitle
+        isEditing={false}
         source={
           Immutable.Map {
             charge_id: undefined,
@@ -108,6 +94,229 @@ exports[`Charge BeforeContent should aggregate line_items by subscriptions 1`] =
   </div>
 </div>
 `;
+
+exports[`Charge AfterTitle should display the refund action when the status is SUCCESS or PARTIALLY_REFUNDED 1`] = `
+<ActionButtonsGroup
+  actions={
+    Array [
+      Object {
+        "child": <div>
+          <i
+                className="material-icons mr-2"
+          >
+                refresh
+          </i>
+          Refund
+    </div>,
+        "key": "refund",
+        "options": Array [
+          Object {
+            "label": "Refund charge",
+            "parameters": Array [
+              Object {
+                "defaultValue": 18,
+                "max": 18,
+                "min": 0.01,
+                "name": "amount",
+                "placeholder": "Amount",
+                "required": true,
+                "step": 0.01,
+                "type": "number",
+              },
+            ],
+            "value": "rechargeRefundCharge",
+          },
+        ],
+        "title": <div>
+          <i
+                className="material-icons mr-2"
+          >
+                refresh
+          </i>
+          Refund charge
+    </div>,
+        "tooltip": "Refund this charge, partially or totally.",
+      },
+    ]
+  }
+  payload={
+    Object {
+      "charge_id": undefined,
+    }
+  }
+/>
+`;
+
+exports[`Charge AfterTitle should display the refund action when the status is SUCCESS or PARTIALLY_REFUNDED 2`] = `
+<ActionButtonsGroup
+  actions={
+    Array [
+      Object {
+        "child": <div>
+          <i
+                className="material-icons mr-2"
+          >
+                refresh
+          </i>
+          Refund
+    </div>,
+        "key": "refund",
+        "options": Array [
+          Object {
+            "label": "Refund charge",
+            "parameters": Array [
+              Object {
+                "defaultValue": 10,
+                "max": 10,
+                "min": 0.01,
+                "name": "amount",
+                "placeholder": "Amount",
+                "required": true,
+                "step": 0.01,
+                "type": "number",
+              },
+            ],
+            "value": "rechargeRefundCharge",
+          },
+        ],
+        "title": <div>
+          <i
+                className="material-icons mr-2"
+          >
+                refresh
+          </i>
+          Refund charge
+    </div>,
+        "tooltip": "Refund this charge, partially or totally.",
+      },
+    ]
+  }
+  payload={
+    Object {
+      "charge_id": undefined,
+    }
+  }
+/>
+`;
+
+exports[`Charge AfterTitle should handle correctly if total_price or total_refunds is not set 1`] = `
+<ActionButtonsGroup
+  actions={
+    Array [
+      Object {
+        "child": <div>
+          <i
+                className="material-icons mr-2"
+          >
+                refresh
+          </i>
+          Refund
+    </div>,
+        "key": "refund",
+        "options": Array [
+          Object {
+            "label": "Refund charge",
+            "parameters": Array [
+              Object {
+                "defaultValue": 0,
+                "max": 0,
+                "min": 0.01,
+                "name": "amount",
+                "placeholder": "Amount",
+                "required": true,
+                "step": 0.01,
+                "type": "number",
+              },
+            ],
+            "value": "rechargeRefundCharge",
+          },
+        ],
+        "title": <div>
+          <i
+                className="material-icons mr-2"
+          >
+                refresh
+          </i>
+          Refund charge
+    </div>,
+        "tooltip": "Refund this charge, partially or totally.",
+      },
+    ]
+  }
+  payload={
+    Object {
+      "charge_id": undefined,
+    }
+  }
+/>
+`;
+
+exports[`Charge AfterTitle should handle correctly if total_price or total_refunds is not set 2`] = `
+<ActionButtonsGroup
+  actions={
+    Array [
+      Object {
+        "child": <div>
+          <i
+                className="material-icons mr-2"
+          >
+                refresh
+          </i>
+          Refund
+    </div>,
+        "key": "refund",
+        "options": Array [
+          Object {
+            "label": "Refund charge",
+            "parameters": Array [
+              Object {
+                "defaultValue": 18,
+                "max": 18,
+                "min": 0.01,
+                "name": "amount",
+                "placeholder": "Amount",
+                "required": true,
+                "step": 0.01,
+                "type": "number",
+              },
+            ],
+            "value": "rechargeRefundCharge",
+          },
+        ],
+        "title": <div>
+          <i
+                className="material-icons mr-2"
+          >
+                refresh
+          </i>
+          Refund charge
+    </div>,
+        "tooltip": "Refund this charge, partially or totally.",
+      },
+    ]
+  }
+  payload={
+    Object {
+      "charge_id": undefined,
+    }
+  }
+/>
+`;
+
+exports[`Charge AfterTitle should not display the refund action when the status is not SUCCESS or PARTIALLY_REFUNDED 1`] = `
+<ActionButtonsGroup
+  actions={Array []}
+  payload={
+    Object {
+      "charge_id": undefined,
+    }
+  }
+/>
+`;
+
+exports[`Charge AfterTitle should return null if we are in edition mode, or if there is no integrationId 1`] = `""`;
+
+exports[`Charge AfterTitle should return null if we are in edition mode, or if there is no integrationId 2`] = `""`;
 
 exports[`Charge BeforeContent should display default color if there's no matching status 1`] = `
 <div>

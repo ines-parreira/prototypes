@@ -40,6 +40,10 @@ export const actions = [{
     name: 'rechargeSkipCharge',
     label: 'Skip charge',
     objectType: 'charge',
+}, {
+    name: 'rechargeRefundCharge',
+    label: 'Refund charge',
+    objectType: 'charge',
 }]
 
 export const getActionByName = (name) => {
