@@ -79,12 +79,12 @@ class SearchableSelectField extends React.Component {
                     {
                         hasSelectedItems ? (
                             <span>
-                                    {input.value.length} {input.value.length > 1 ? plural : singular}
-                                </span>
+                                {input.value.length} {input.value.length > 1 ? plural : singular}
+                            </span>
                         ) : (
                             <span>
-                                    All {plural}
-                                </span>
+                                All {plural}
+                            </span>
                         )
                     }
                 </DropdownToggle>

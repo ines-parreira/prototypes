@@ -189,6 +189,31 @@ class StatsView extends React.Component<Props> {
                 />
             },
             {
+                type: 'score',
+                render: (filter) => <SearchableSelectField
+                    key='score-filter'
+                    plural='scores'
+                    singular='score'
+                    items={
+                        Array.from({ length: filter.maxValue - filter.minValue + 1 }, (value, index) => {
+                            const scoreValue = filter.reverse ? (filter.maxValue - index) : (index + filter.minValue)
+
+                            switch(filter.variant) {
+                                case 'star':
+                                    return {
+                                        value: scoreValue,
+                                        label: (Array(filter.minValue + scoreValue - 1).fill('★').join('') +
+                                                Array(filter.maxValue - scoreValue).fill('☆').join(''))
+                                    }
+                                default:
+                                    return {}
+                            }
+                        })
+                    }
+                    input={this._makeInputControl('score')}
+                />
+            },
+            {
                 type: 'date',
                 render: () => <PeriodPicker
                     key="date-filter"
@@ -196,7 +221,7 @@ class StatsView extends React.Component<Props> {
                     endDatetime={endDatetime}
                     onChange={this._handleDateChange}
                 />
-            }
+            },
         ]
 
         let pageTitle = config.get('name')

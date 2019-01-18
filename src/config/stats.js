@@ -690,7 +690,15 @@ How many surveys have been sent, response rate, average scores and more. <a href
                 type: 'channels',
                 options: [EMAIL_CHANNEL, CHAT_CHANNEL]
             },
-            {type: 'agents'}, {type: 'tags'}, {type: 'date'}],
+            {
+                type: 'score',
+                minValue: SATISFACTION_SURVEY_MIN_SCORE,
+                maxValue: SATISFACTION_SURVEY_MAX_SCORE,
+                variant: 'star',
+                reverse: true
+            },
+            {type: 'agents'}, {type: 'tags'}, {type: 'date'},
+        ],
         link: 'satisfaction',
         stats: [
             SATISFACTION_SURVEYS, LATEST_SATISFACTION_SURVEYS
