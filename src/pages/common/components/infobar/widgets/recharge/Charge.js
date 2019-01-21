@@ -50,7 +50,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
         let actions = [
             {
                 key: 'refund',
-                tooltip: 'Refund this charge, partially or totally.',
+                tooltip: 'This will refund the charge in Recharge with the amount specified below.',
                 options: [
                     {
                         value: 'rechargeRefundCharge',

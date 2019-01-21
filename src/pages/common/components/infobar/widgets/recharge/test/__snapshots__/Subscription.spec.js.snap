@@ -27,6 +27,7 @@ exports[`Subscription AfterTitle should display only the activate action because
           </i>
           Activate subscription
     </div>,
+        "tooltip": "This will activate the subscription in Recharge.",
       },
     ]
   }
@@ -65,6 +66,7 @@ exports[`Subscription AfterTitle should display only the cancel action because t
           </i>
           Cancel subscription
     </div>,
+        "tooltip": "This will cancel the subscription in Recharge.",
       },
     ]
   }

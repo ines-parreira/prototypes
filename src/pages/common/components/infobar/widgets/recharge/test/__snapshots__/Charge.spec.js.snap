@@ -135,7 +135,7 @@ exports[`Charge AfterTitle should display the refund action when the status is S
           </i>
           Refund charge
     </div>,
-        "tooltip": "Refund this charge, partially or totally.",
+        "tooltip": "This will refund the charge in Recharge with the amount specified below.",
       },
     ]
   }
@@ -187,7 +187,7 @@ exports[`Charge AfterTitle should display the refund action when the status is S
           </i>
           Refund charge
     </div>,
-        "tooltip": "Refund this charge, partially or totally.",
+        "tooltip": "This will refund the charge in Recharge with the amount specified below.",
       },
     ]
   }
@@ -239,7 +239,7 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
           </i>
           Refund charge
     </div>,
-        "tooltip": "Refund this charge, partially or totally.",
+        "tooltip": "This will refund the charge in Recharge with the amount specified below.",
       },
     ]
   }
@@ -291,7 +291,7 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
           </i>
           Refund charge
     </div>,
-        "tooltip": "Refund this charge, partially or totally.",
+        "tooltip": "This will refund the charge in Recharge with the amount specified below.",
       },
     ]
   }

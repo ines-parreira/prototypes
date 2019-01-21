@@ -47,6 +47,7 @@ export class AfterTitle extends React.Component { // eslint-disable-line
             {
                 key: 'cancel',
                 options: [{value: 'rechargeCancelSubscription'}],
+                tooltip: 'This will cancel the subscription in Recharge.',
                 title: (
                     <div>
                         <i className="material-icons mr-2">
@@ -67,6 +68,7 @@ export class AfterTitle extends React.Component { // eslint-disable-line
             {
                 key: 'activate',
                 options: [{value: 'rechargeActivateSubscription'}],
+                tooltip: 'This will activate the subscription in Recharge.',
                 title: (
                     <div>
                         <i className="material-icons mr-2">
