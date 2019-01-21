@@ -117,12 +117,12 @@ type SubscriptionAfterTitleProps = {
 export class SubscriptionAfterTitle extends React.Component<SubscriptionAfterTitleProps> { // eslint-disable-line
     static contextTypes = {
         integrationId: PropTypes.number,
-        isChargeNotQueued: PropTypes.bool.isRequired,
+        chargeStatus: PropTypes.string.isRequired,
     }
 
     render() {
         const {isEditing, source} = this.props
-        const {integrationId, isChargeNotQueued} = this.context
+        const {integrationId, chargeStatus} = this.context
 
         if (isEditing || !integrationId) {
             return null
@@ -150,10 +150,39 @@ export class SubscriptionAfterTitle extends React.Component<SubscriptionAfterTit
                         Skip
                     </div>
                 )
+            },
+            {
+                key: 'unskip',
+                options: [{value: 'rechargeUnskipCharge'}],
+                tooltip: 'Unskip the charge for this subscription on Recharge.',
+                title: (
+                    <div>
+                        <i className="material-icons mr-1">
+                            block
+                        </i>
+                        Unskip charge on subscription
+                    </div>
+                ),
+                child: (
+                    <div>
+                        <i className="material-icons mr-1">
+                            autorenew
+                        </i>
+                        Unskip
+                    </div>
+                )
             }
         ]
 
-        let removed = isChargeNotQueued ? ['skip'] : []
+        let removed = []
+
+        if (chargeStatus !== 'queued') {
+            removed = removed.concat(['skip'])
+        }
+
+        if (chargeStatus !== 'skipped') {
+            removed = removed.concat(['unskip'])
+        }
 
         // remove removed actions from list of available actions
         actions = actions.filter((action) => !removed.includes(action.key))
@@ -292,7 +321,7 @@ class Wrapper extends React.Component<WrapperProps> { // eslint-disable-line
     static childContextTypes = {
         charge: ImmutablePropTypes.map.isRequired,
         chargeId: PropTypes.number,
-        isChargeNotQueued: PropTypes.bool.isRequired,
+        chargeStatus: PropTypes.string.isRequired,
     }
 
     getChildContext() {
@@ -301,7 +330,7 @@ class Wrapper extends React.Component<WrapperProps> { // eslint-disable-line
         return {
             charge,
             chargeId: charge.get('id'),
-            isChargeNotQueued: _lowerCase(charge.get('status', '')) !== 'queued',
+            chargeStatus: _lowerCase(charge.get('status', '')),
         }
     }
 

@@ -41,6 +41,10 @@ export const actions = [{
     label: 'Skip charge',
     objectType: 'charge',
 }, {
+    name: 'rechargeUnskipCharge',
+    label: 'Unskip charge',
+    objectType: 'charge',
+}, {
     name: 'rechargeRefundCharge',
     label: 'Refund charge',
     objectType: 'charge',

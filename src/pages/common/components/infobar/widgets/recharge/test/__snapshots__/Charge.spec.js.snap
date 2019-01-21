@@ -401,14 +401,14 @@ exports[`Charge SubscriptionAfterTitle should display the skipCharge action if t
   }
   payload={
     Object {
-      "charge_id": undefined,
-      "subscription_id": undefined,
+      "charge_id": 2,
+      "subscription_id": 3,
     }
   }
 />
 `;
 
-exports[`Charge SubscriptionAfterTitle should display the skipCharge action with the correct payload taken from the source 1`] = `
+exports[`Charge SubscriptionAfterTitle should display the unskipCharge action if the charge is skipped 1`] = `
 <ActionButtonsGroup
   actions={
     Array [
@@ -417,14 +417,14 @@ exports[`Charge SubscriptionAfterTitle should display the skipCharge action with
           <i
                 className="material-icons mr-1"
           >
-                block
+                autorenew
           </i>
-          Skip
+          Unskip
     </div>,
-        "key": "skip",
+        "key": "unskip",
         "options": Array [
           Object {
-            "value": "rechargeSkipCharge",
+            "value": "rechargeUnskipCharge",
           },
         ],
         "title": <div>
@@ -433,9 +433,9 @@ exports[`Charge SubscriptionAfterTitle should display the skipCharge action with
           >
                 block
           </i>
-          Skip charge on subscription
+          Unskip charge on subscription
     </div>,
-        "tooltip": "Skip the charge for this subscription on Recharge. No order will be created and no item will be shipped.",
+        "tooltip": "Unskip the charge for this subscription on Recharge.",
       },
     ]
   }
@@ -448,7 +448,7 @@ exports[`Charge SubscriptionAfterTitle should display the skipCharge action with
 />
 `;
 
-exports[`Charge SubscriptionAfterTitle should not display the skipCharge action if the charge is not queued 1`] = `
+exports[`Charge SubscriptionAfterTitle should not display any action if the charge is nor queued nor skipped 1`] = `
 <ActionButtonsGroup
   actions={Array []}
   payload={

@@ -1,8 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
-import index, {SubscriptionAfterTitle} from './../Charge'
-import {AfterContent, AfterTitle} from '../Charge'
+import index, {SubscriptionAfterTitle, AfterContent, AfterTitle} from './../Charge'
 
 const BeforeContent = index().BeforeContent
 const Wrapper = index().Wrapper
@@ -28,14 +27,14 @@ describe('Charge', () => {
                 />
             ), {
                 context: {
-                    isChargeNotQueued: true
+                    chargeStatus: 'success'
                 }
             })
 
             expect(component).toMatchSnapshot()
         })
 
-        it('should not display the skipCharge action if the charge is not queued', () => {
+        it('should not display any action if the charge is nor queued nor skipped', () => {
             const component = shallow((
                 <SubscriptionAfterTitle
                     isEditing={false}
@@ -44,7 +43,7 @@ describe('Charge', () => {
             ), {
                 context: {
                     integrationId: 1,
-                    isChargeNotQueued: true
+                    chargeStatus: 'success'
                 }
             })
 
@@ -52,22 +51,6 @@ describe('Charge', () => {
         })
 
         it('should display the skipCharge action if the charge is queued', () => {
-            const component = shallow((
-                <SubscriptionAfterTitle
-                    isEditing={false}
-                    source={fromJS({})}
-                />
-            ), {
-                context: {
-                    integrationId: 1,
-                    isChargeNotQueued: false
-                }
-            })
-
-            expect(component).toMatchSnapshot()
-        })
-
-        it('should display the skipCharge action with the correct payload taken from the source', () => {
             const component = shallow((
                 <SubscriptionAfterTitle
                     isEditing={false}
@@ -79,7 +62,26 @@ describe('Charge', () => {
             ), {
                 context: {
                     integrationId: 1,
-                    isChargeNotQueued: false
+                    chargeStatus: 'queued'
+                }
+            })
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should display the unskipCharge action if the charge is skipped', () => {
+            const component = shallow((
+                <SubscriptionAfterTitle
+                    isEditing={false}
+                    source={fromJS({
+                        charge_id: 2,
+                        subscription_id: 3
+                    })}
+                />
+            ), {
+                context: {
+                    integrationId: 1,
+                    chargeStatus: 'skipped'
                 }
             })
 
@@ -133,7 +135,7 @@ describe('Charge', () => {
     })
 
     describe('Wrapper', () => {
-        it('should set the context correctly when integration is not queued', () => {
+        it('should set the context correctly', () => {
             const component = shallow(
                 <Wrapper
                     source={fromJS({
@@ -144,22 +146,7 @@ describe('Charge', () => {
                 </Wrapper>
             )
 
-            expect(component.instance().getChildContext().isChargeNotQueued).toEqual(true)
-        })
-
-        it('should set the context correctly when integration is queued', () => {
-            const component = shallow(
-                <Wrapper
-                    source={fromJS({
-                        id: 1,
-                        status: 'queued'
-                    })}
-                >
-                    <div></div>
-                </Wrapper>
-            )
-
-            expect(component.instance().getChildContext().isChargeNotQueued).toEqual(false)
+            expect(component.instance().getChildContext().chargeStatus).toEqual('success')
         })
     })
 
