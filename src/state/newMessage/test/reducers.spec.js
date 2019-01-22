@@ -171,13 +171,33 @@ describe('New message reducers', () => {
         )
     })
 
-    it('should set firstNewMessage to false after posting a message', () => {
-        expect(
-            reducer(initialState, {
+    describe('NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START action', () => {
+        it('should set firstNewMessage to false after posting a message', () => {
+            expect(
+                reducer(initialState, {
+                    type: types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
+                    message: {channel: 'email'}
+                }).getIn(['state', 'firstNewMessage'])
+            ).toEqual(false)
+        })
+
+        it('should compute the new source and channel', () => {
+            const action = {
                 type: types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
-                message: {channel: 'email'}
-            }).getIn(['state', 'firstNewMessage'])
-        ).toEqual(false)
+                resetMessage: true,
+                message: {
+                    channel: 'email'
+                },
+                messages: [{
+                    source: {
+                        type: 'facebook-messenger'
+                    }
+                }]
+            }
+            const newState = reducer(initialState, action)
+            expect(newState.getIn(['newMessage', 'source', 'type'])).toEqual('facebook-messenger')
+            expect(newState.getIn(['newMessage', 'channel'])).toEqual('facebook-messenger')
+        })
     })
 
     describe('SET_RESPONSE_TEXT action', () => {

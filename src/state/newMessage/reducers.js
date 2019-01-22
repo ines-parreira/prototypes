@@ -141,7 +141,6 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
         }
 
         case types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START: {
-            const {channel} = action.message
             let messages = fromJS(action.messages)
 
             let newState = resetContentState(state)
@@ -157,7 +156,9 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
                 return newState
             }
 
-            return newState.set('newMessage', makeNewMessage(channel, getSourceTypeOfResponse(messages)))
+            const sourceType = getSourceTypeOfResponse(messages)
+            return resetContentState(state)
+                .set('newMessage', makeNewMessage(getChannelFromSourceType(sourceType, messages), sourceType))
         }
 
         case types.NEW_MESSAGE_SUBMIT_TICKET_ERROR: {
