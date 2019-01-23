@@ -125,10 +125,6 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
             return newState
         }
 
-        case constants.CLEAR_CUSTOMER: {
-            return state.set('active', fromJS({}))
-        }
-
         case viewsConstants.BULK_DELETE_SUCCESS: {
             if (action.viewType !== 'customer-list') {
                 return state

@@ -168,5 +168,3 @@ export function mergeCustomers(baseCustomerId: number, mergeCustomerId: number, 
             })
     }
 }
-
-export const clearCustomer = () => ({type: types.CLEAR_CUSTOMER})

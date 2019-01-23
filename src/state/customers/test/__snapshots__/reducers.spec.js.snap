@@ -28,26 +28,6 @@ Immutable.Map {
 }
 `;
 
-exports[`customers reducers clear customer 1`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
-      "active": false,
-      "history": false,
-      "merge": false,
-    },
-  },
-  "active": Object {},
-  "customerHistory": Object {
-    "events": Array [],
-    "hasHistory": false,
-    "tickets": Array [],
-    "triedLoading": false,
-  },
-  "items": Array [],
-}
-`;
-
 exports[`customers reducers clear ticket 1`] = `
 Object {
   "_internal": Object {

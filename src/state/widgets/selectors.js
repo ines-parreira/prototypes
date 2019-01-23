@@ -46,8 +46,14 @@ export const getSources = (state: stateType) => {
 
 export const getSourcesWithCustomer = createSelector(
     [getSources],
-    (state) => {
-        return !state.getIn(['ticket', 'customer']) ? state.setIn(['ticket', 'customer'], state.get('customer')) : state
+    (sources) => {
+        // If there's no customer and ticket is not loading then use the one from sources.
+        // Loading check prevents from content flashing: https://github.com/gorgias/gorgias/issues/2415
+        if (!sources.getIn(['ticket', 'customer']) &&
+            !sources.getIn(['ticket', '_internal', 'loading', 'fetchTicket'])) {
+            return sources.setIn(['ticket', 'customer'], sources.get('customer'))
+        }
+        return sources
     }
 )
 

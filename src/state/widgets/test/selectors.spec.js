@@ -288,6 +288,37 @@ describe('widgets selectors', () => {
 
             expect(getSourcesWithCustomer(state)).toEqualImmutable(expectedResult)
         })
+
+        it('should not set the customer if ticket is loading', () => {
+            const customer = {
+                id: 2,
+                name: 'bar'
+            }
+
+            const ticket = {
+                id: 1,
+                subject: 'foo',
+                _internal: {
+                    loading: {
+                        fetchTicket: true
+                    }
+                }
+            }
+
+            const state = {
+                ticket: fromJS(ticket),
+                customers: fromJS({
+                    active: customer
+                })
+            }
+
+            const expectedResult = fromJS({
+                ticket,
+                customer
+            })
+
+            expect(getSourcesWithCustomer(state)).toEqualImmutable(expectedResult)
+        })
     })
 
     describe('isEditing', () => {

@@ -39,10 +39,6 @@ class CustomerDetailContainer extends React.Component {
         }
     }
 
-    componentWillUnmount() {
-        this.props.actions.clearCustomer()
-    }
-
     _fetchCustomer = (id) => {
         const {actions} = this.props
 

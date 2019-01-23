@@ -216,20 +216,6 @@ describe('customers reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('clear customer', () => {
-        expect(
-            reducer(
-                initialState
-                    .mergeDeep({
-                        active: {id: 1, name: 'Romain'},
-                    }),
-                {
-                    type: types.CLEAR_CUSTOMER,
-                }
-            ).toJS()
-        ).toMatchSnapshot()
-    })
-
     it('bulk delete', () => {
         // success
         expect(
