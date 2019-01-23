@@ -127,6 +127,7 @@ export default class SetResponseTextAction extends React.Component {
                         html: action.getIn(['arguments', 'body_html'], ''),
                     }}
                     onChange={this._setResponseText}
+                    spellCheck
                 />
             </div>
         )
