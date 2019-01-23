@@ -16,9 +16,16 @@ type fetchMacrosParamsTypes = {
     currentPage?: number,
 }
 
-export const fetchMacros = (filters: fetchMacrosParamsTypes = {}): thunkActionType =>
+export const fetchMacros = (filters: fetchMacrosParamsTypes = {},
+                            orderBy: string = '', orderDir: string = 'asc'): thunkActionType =>
     (dispatch: dispatchType): Promise<dispatchType> => {
         const params = _pick(filters, ['search', 'page'])
+        if (orderBy) {
+            params.order_by = orderBy
+            params.order_dir = orderDir
+        }
+
+
         return axios.get('/api/macros/', {params})
             .then((json = {}) => json.data)
             .then((resp) => {

@@ -82,7 +82,7 @@ class MacroContainer extends React.Component<Props, State> {
             currentPage: this.state.page,
             search,
             page,
-        }).then((res) => {
+        }, 'name', 'asc').then((res) => {
             const selectedMacroId = getDefaultSelectedMacroId(res.macros, this.state.selectedMacroId, this.props.isCreatingMacro)
             return new Promise((resolve) => {
                 this.setState({
