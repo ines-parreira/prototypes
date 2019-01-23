@@ -1,0 +1,33 @@
+@import '~css/new/colors';
+
+:local .source {
+  transition: all .2s linear;
+
+  color: @lightPurple2;
+
+  &:hover {
+    color: @purple;
+  }
+}
+
+/* sourceDetails is in a popover
+ */
+:local .details {
+  ul {
+    padding: .4em .8em;
+    margin: 0;
+    list-style-type: none;
+
+    color: inherit;
+  }
+
+  li {
+    line-height: 1.5em;
+  }
+
+  li strong {
+    margin-left: .4em;
+
+    color: @black;
+  }
+}

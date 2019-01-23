@@ -1,0 +1,45 @@
+@import '~css/new/colors';
+
+:local .header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  overflow: visible;
+  padding-bottom: .5em;
+  transition: padding .16s ease-out;
+
+  &.hasError div {
+    color: @lightPurple2;
+  }
+
+  .headerDetails {
+    float: left;
+    display: inline-flex;
+    align-items: center;
+
+    & > * {
+      margin-right: 6px;
+    }
+  }
+
+  .author {
+    margin-right: .8em;
+    line-height: 1em;
+    font-weight: bold;
+  }
+
+  .isAgent {
+    color: @blue;
+  }
+
+  .agentIcon {
+    margin-right: 6px;
+    vertical-align: text-bottom;
+  }
+
+  .sourceDetails {
+    float: right;
+  }
+}
+

@@ -98,7 +98,7 @@ export const fetchPreviewCustomer = (customerId: string): thunkActionType => ((d
  * @param payload
  * @param callback
  */
-export const executeAction = (actionName: string, integrationId: string, customerId: string, payload: {} = {}, callback: () => void) => ((dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
+export const executeAction = (actionName: string, integrationId: string, customerId?: string, payload: {} = {}, callback: () => void = () => undefined) => ((dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
     const state = getState()
     const {ticket} = state
 
@@ -127,7 +127,7 @@ export const executeAction = (actionName: string, integrationId: string, custome
                 type: constants.EXECUTE_ACTION_ERROR,
                 data,
                 error,
-                reason: `Failed to execute action ${actionName} on customer #${customerId} for integration ${integrationId}`
+                reason: `Failed to execute action ${actionName} on customer #${customerId || ''} for integration ${integrationId}`
             })
         })
 })

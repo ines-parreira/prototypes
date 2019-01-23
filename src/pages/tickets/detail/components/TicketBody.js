@@ -1,33 +1,52 @@
+//@flow
 import React from 'react'
-import PropTypes from 'prop-types'
 import moment from 'moment'
 import {connect} from 'react-redux'
 import _debounce from 'lodash/debounce'
-
+import {fromJS, List, Map} from 'immutable'
 import * as ticketSelectors from '../../../../state/ticket/selectors'
 import shortcutManager from '../../../../services/shortcutManager'
+import type {MoveIndexDirection} from '../../../common/utils/keyboard'
 import {moveIndex} from '../../../common/utils/keyboard'
-
-import TicketMessage from './TicketMessage'
-import Event from './Event'
+import TicketMessages from './TicketMessages'
 import SatisfactionSurvey from './SatisfactionSurvey'
+import Event from './Event'
+import type {stateType} from '../../../../state/types'
+import type {
+    Channel,
+    TicketElement,
+    TicketMessage,
+    TicketEvent,
+    TicketSatisfactionSurvey,
+} from '../../../../models/ticketElement/types'
+import {isTicketMessage, isTicketEvent, isTicketSatisfactionSurvey} from '../../../../models/ticketElement'
 
-export class TicketBody extends React.Component {
-    static propTypes = {
-        currentUser: PropTypes.object,
-        elements: PropTypes.object.isRequired,
-        ticket: PropTypes.object.isRequired,
-        setStatus: PropTypes.func.isRequired,
-        lastReadMessage: PropTypes.object,
+type Props = {
+    currentUser: Map<*, *>,
+    // TODO (@pwlmaciejewski): After bumping immutable to v4 it can be a List<RecordOf<TicketElement>>
+    elements: List<*>,
+    ticket: Map<*, *>,
+    setStatus: string => void,
+    lastReadMessage: Map<*, *>,
+    messageGroupingChannels: Channel[],
+    messageGroupingDuration: string
+}
+
+type State = {
+    messageCursor: number
+}
+
+export class TicketBody extends React.Component<Props, State> {
+    static defaultProps: $Shape<Props> = {
+        messageGroupingChannels: ['facebook-messenger', 'chat'],
+        messageGroupingDuration: 'PT5M',
     }
 
-    state = {
-        messageCursor: 0
-    }
+    lastMessageDatetimeAfterMount: ?string
 
-    _messageCursor = 0
+    _messageCursor: number = 0
 
-    constructor(props) {
+    constructor(props: Props) {
         super(props)
 
         this.lastMessageDatetimeAfterMount = null
@@ -36,7 +55,9 @@ export class TicketBody extends React.Component {
         }
 
         this._messageCursor = props.elements.size - 1
-        this.state.messageCursor = this._messageCursor
+        this.state = {
+            messageCursor: this._messageCursor,
+        }
     }
 
     componentDidMount() {
@@ -49,11 +70,11 @@ export class TicketBody extends React.Component {
 
     _updateCursorState = _debounce(() => {
         this.setState({
-            messageCursor: this._messageCursor
+            messageCursor: this._messageCursor,
         })
     })
 
-    _moveCursor(direction = 'next') {
+    _moveCursor(direction: MoveIndexDirection = 'next') {
         const newCursorPosition = moveIndex(this._messageCursor, this.props.elements.size, {direction})
         if (this._messageCursor !== newCursorPosition) {
             this._messageCursor = newCursorPosition
@@ -64,12 +85,28 @@ export class TicketBody extends React.Component {
     _bindKeys() {
         shortcutManager.bind('TicketDetailContainer', {
             GO_NEXT_MESSAGE: {
-                action: () => this._moveCursor()
+                action: () => this._moveCursor(),
             },
             GO_PREV_MESSAGE: {
-                action: () => this._moveCursor('previous')
+                action: () => this._moveCursor('previous'),
             },
         })
+    }
+
+    _shouldMessagesBeGrouped = (msg1: TicketMessage, msg2: TicketMessage) => {
+        const groupingDuration = moment.duration(this.props.messageGroupingDuration)
+
+        if (!isTicketMessage(msg1)
+            || !isTicketMessage(msg2)
+            || msg1.sender.id !== msg2.sender.id
+            || msg1.channel !== msg2.channel
+            || !this.props.messageGroupingChannels.includes(msg1.channel)
+            || moment(msg2.created_datetime).isAfter(moment(msg1.created_datetime).add(groupingDuration))
+            || msg1.public !== msg2.public) {
+            return false
+        }
+
+        return true
     }
 
     render() {
@@ -82,45 +119,75 @@ export class TicketBody extends React.Component {
         return (
             <div className="TicketMessages">
                 {
-                    elements.map((element, index) => {
-                        if (element.get('isSatisfactionSurvey')) {
-                            return <SatisfactionSurvey
-                                satisfactionSurvey={element}
-                                timezone={this.props.currentUser.get('timezone')}
-                                customer={ticket.get('customer')}
-                                isLast={index === elements.size - 1}
-                            />
-                        }
+                    elements.toJS()
+                        .reduce((acc: TicketElement[], element: TicketElement) => {
+                            if (!isTicketMessage(element)) {
+                                return acc.concat([element])
+                            }
 
-                        if (element.get('isEvent')) {
-                            return (
-                                <Event
-                                    key={index}
-                                    event={element}
-                                    isLast={index === elements.size - 1}
-                                />
-                            )
-                        }
+                            const message = ((element: any): TicketMessage)
 
-                        const isLoading = element.get('isPending', false)
+                            if (!acc.length) {
+                                return acc.concat([[message]])
+                            }
 
-                        const isLastReadMessage = !lastReadMessage.isEmpty()
-                            && element.get('id') === lastReadMessage.get('id')
+                            const prevGroup = acc[acc.length - 1]
+                            if (!Array.isArray(prevGroup)) {
+                                return acc.concat([[message]])
+                            }
 
-                        return (
-                            <TicketMessage
-                                key={element.get('id')}
-                                message={element.toJS()}
-                                ticket={ticket}
-                                loading={isLoading}
-                                timezone={this.props.currentUser.get('timezone')}
-                                lastMessageDatetimeAfterMount={this.lastMessageDatetimeAfterMount}
-                                setStatus={setStatus}
-                                isLastReadMessage={isLastReadMessage}
-                                hasCursor={this.state.messageCursor === index}
-                            />
-                        )
-                    })
+                            const firstInPrevGroup = prevGroup[0]
+                            if (this._shouldMessagesBeGrouped(firstInPrevGroup, message)) {
+                                prevGroup.push(message)
+                                return acc
+                            }
+
+                            return acc.concat([[message]])
+                        }, [])
+                        .map((element: TicketEvent | TicketSatisfactionSurvey | TicketMessage[], index: number) => {
+                            if (Array.isArray(element)) {
+                                const id = `message-${index}`
+                                return (
+                                    <TicketMessages
+                                        id={id}
+                                        key={id}
+                                        messages={element}
+                                        ticketId={ticket.get('id')}
+                                        timezone={this.props.currentUser.get('timezone')}
+                                        lastMessageDatetimeAfterMount={this.lastMessageDatetimeAfterMount}
+                                        setStatus={setStatus}
+                                        lastReadMessageId={lastReadMessage.get('id')}
+                                        hasCursor={this.state.messageCursor === index}
+                                    />
+                                )
+                            }
+
+                            const elementMap: Map<*, *> = fromJS(element)
+
+                            if (isTicketSatisfactionSurvey(element)) {
+                                return (
+                                    <SatisfactionSurvey
+                                        key={`survey-${index}`}
+                                        satisfactionSurvey={elementMap}
+                                        timezone={this.props.currentUser.get('timezone')}
+                                        customer={ticket.get('customer')}
+                                        isLast={index === elements.size - 1}
+                                    />
+                                )
+                            }
+
+                            if (isTicketEvent(element)) {
+                                return (
+                                    <Event
+                                        key={`event-${index}`}
+                                        event={elementMap}
+                                        isLast={index === elements.size - 1}
+                                    />
+                                )
+                            }
+
+                            return null
+                        })
                 }
             </div>
         )
@@ -128,10 +195,10 @@ export class TicketBody extends React.Component {
 }
 
 
-export default connect((state) => {
+export default connect((state: stateType) => {
     return {
         currentUser: state.currentUser,
         ticket: state.ticket,
-        lastReadMessage: ticketSelectors.getLastReadMessage(state)
+        lastReadMessage: ticketSelectors.getLastReadMessage(state),
     }
 })(TicketBody)

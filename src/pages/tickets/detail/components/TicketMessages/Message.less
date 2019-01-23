@@ -1,0 +1,26 @@
+@import '~css/new/colors';
+
+:local .wrapper {
+  position: relative;
+
+  &.hasSourceDetails {
+    padding-top: 8px;
+  }
+
+  .sourceDetails {
+    position: absolute;
+    top: -16px;
+    right: -10px;
+    visibility: hidden;
+    background: @darkWhite;
+    padding: 4px 10px;
+
+    &.internal {
+      background: darken(@internalYellow, 1%)
+    }
+  }
+
+  &:hover .sourceDetails {
+    visibility: visible;
+  }
+}

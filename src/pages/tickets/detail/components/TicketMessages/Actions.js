@@ -5,14 +5,14 @@ import _get from 'lodash/get'
 import {Button} from 'reactstrap'
 import classnames from 'classnames'
 
-import {getActionTemplate} from '../../../../utils'
-import Modal from '../../../common/components/Modal'
-import {JSONTree} from './../../../common/components/JSONTree'
-import {JSON_CONTENT_TYPE, FORM_CONTENT_TYPE} from './../../../../config'
+import {getActionTemplate} from '../../../../../utils'
+import Modal from '../../../../common/components/Modal'
+import {JSONTree} from '../../../../common/components/JSONTree'
+import {JSON_CONTENT_TYPE, FORM_CONTENT_TYPE} from '../../../../../config'
 
-import css from './TicketMessageActions.less'
+import css from './Actions.less'
 
-export default class TicketMessageActions extends React.Component {
+export default class Actions extends React.Component {
     constructor(props) {
         super(props)
 
@@ -165,6 +165,6 @@ export default class TicketMessageActions extends React.Component {
     }
 }
 
-TicketMessageActions.propTypes = {
+Actions.propTypes = {
     message: PropTypes.object.isRequired
 }

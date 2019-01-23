@@ -1,3 +1,4 @@
+//@flow
 import React from 'react'
 import classnames from 'classnames'
 import Lightbox from 'react-images'
@@ -9,10 +10,13 @@ import shortcutManager from '../../../../../services/shortcutManager'
 import css from './TicketAttachments.less'
 import {proxifyURL} from '../../../../../utils'
 
+// TODO (@pwlmaciejewski): Once we upgrade Immutable to v4 it should be a RecordOf<MessageAttachment>
+type Attachment = any
+
 type Props = {
-    attachments: List<*>,
+    attachments: List<Attachment>,
     removable: boolean,
-    deleteAttachment: ({}) => void,
+    deleteAttachment?: number => void,
     className?: string,
 }
 
@@ -22,12 +26,16 @@ type State = {
 }
 
 export default class TicketAttachments extends React.Component<Props, State> {
+    static defaultProps = {
+        removable: false
+    }
+
     state = {
         isLightboxOpen: false,
         currentImage: 0
     }
 
-    renderAttachmentIcon = (contentType) => {
+    renderAttachmentIcon = (contentType: string) => {
         return (
             <div className={css.metaType}>
                 <i className="material-icons md-2">
@@ -37,15 +45,15 @@ export default class TicketAttachments extends React.Component<Props, State> {
         )
     }
 
-    removeAttachment = (idx, e) => {
-        this.props.deleteAttachment(idx)
+    removeAttachment = (idx: number, e: SyntheticEvent<*>) => {
+        this.props.deleteAttachment && this.props.deleteAttachment(idx)
 
         // prevent opening the thumb when clicking the delete button
         e.preventDefault()
         e.stopPropagation()
     }
 
-    renderRemoveIcon = (idx) => {
+    renderRemoveIcon = (idx: number) => {
         if (this.props.removable) {
             return (
                 <i
@@ -60,11 +68,11 @@ export default class TicketAttachments extends React.Component<Props, State> {
         return null
     }
 
-    isImage = (attachment) => {
+    isImage = (attachment: Attachment) => {
         return attachment.get('content_type').startsWith('image/')
     }
 
-    setImagePreview = (attachment) => {
+    setImagePreview = (attachment: Attachment) => {
         if (!this.isImage(attachment)) {
             return null
         }
@@ -79,7 +87,7 @@ export default class TicketAttachments extends React.Component<Props, State> {
 
     }
 
-    openLightbox = (e, attachment, images) => {
+    openLightbox = (e: SyntheticEvent<*>, attachment: Attachment, images: List<Attachment>) => {
         if (!this.isImage(attachment)) {
             return
         }
@@ -103,7 +111,7 @@ export default class TicketAttachments extends React.Component<Props, State> {
         shortcutManager.unpause()
     }
 
-    gotoImage = (index) => {
+    gotoImage = (index: number) => {
         this.setState({currentImage: index})
     }
 
@@ -133,7 +141,7 @@ export default class TicketAttachments extends React.Component<Props, State> {
                     )
                 }
                 {
-                    publicAttachments.map((attachment, idx) => {
+                    publicAttachments.map((attachment: Attachment, idx) => {
                         return (
                             <a
                                 href={attachment.get('url') || '#'}

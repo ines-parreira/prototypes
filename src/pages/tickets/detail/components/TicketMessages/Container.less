@@ -14,21 +14,12 @@
     margin: 0 -16px;
   }
 
-  &.hasError .header div,
-  &.hasError .messageContent div {
-    color: @lightPurple2;
-  }
-
-  &.hasError .avatar {
-    opacity: .6;
-  }
-
   &.fromAgent {
     background: fade(@lightPurple, 2%);
   }
 
   &:hover {
-    background: #f9f9fa;
+    background: @darkWhite;
   }
 
   &.internal {
@@ -58,50 +49,10 @@
     }
   }
 
-  .header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    overflow: visible;
-    padding-bottom: .5em;
-
-    transition: padding .16s ease-out;
-  }
-
-  .source {
-    transition: all .2s linear;
-
-    color: @lightPurple2;
-
-    &:hover {
-      color: @purple;
+  &.hasError {
+    .avatar {
+      opacity: .6;
     }
-  }
-
-  .date {
-    font-size: 12px;
-    font-weight: 500;
-  }
-
-  .headerDetails {
-    float: left;
-    display: inline-flex;
-    align-items: center;
-
-    & > * {
-      margin-right: 6px;
-    }
-  }
-
-  .author {
-    margin-right: .8em;
-    line-height: 1em;
-    font-weight: bold;
-  }
-
-  .isAgent {
-    color: @blue;
   }
 
   .avatar {
@@ -109,70 +60,11 @@
     flex-shrink: 0;
   }
 
-  .from {
-    color: darken(@lightGrey, 8%);
-    font-size: 1rem;
-  }
-
-  .from a {
-    font-weight: 600;
-    color: darken(@lightGrey, 8%);
-    text-decoration: underline !important;
-  }
-
-  .attachmentsLabel {
-    display: block;
-    margin-bottom: .5em;
-
-    color: @blue;
-    font-weight: 500;
-    font-size: 12px;
-  }
-
-  .agentIcon {
-    margin-right: 6px;
-
-    vertical-align: text-bottom;
-  }
-
-  .body {
+  .bodyWrapper {
     max-width: ~"calc(100% - 56px)";  // 56px being the width of `.avatar` above
     flex-grow: 1;
   }
-
-  .actionButton {
-    cursor: pointer;
-    padding: 0;
-    margin-right: 10px;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 }
-
-/* sourceDetails is in a popover
- */
-:local .sourceDetails {
-  ul {
-    padding: .4em .8em;
-    margin: 0;
-    list-style-type: none;
-
-    color: inherit;
-  }
-
-  li {
-    line-height: 1.5em;
-  }
-
-  li strong {
-    margin-left: .4em;
-
-    color: @black;
-  }
-}
-
 
 /* loading state.
  * keyframe animation is broken for :local styles,

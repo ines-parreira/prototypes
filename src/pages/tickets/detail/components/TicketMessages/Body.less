@@ -1,8 +1,12 @@
-@import "~css/new/colors";
+@import '~css/new/colors';
 
 :local .component {
   font-size: 1em;
   color: @blockTextColor;
+
+  &.hasError div {
+    color: @lightPurple2;
+  }
 
   [style*="fixed"] {
     position: relative !important;

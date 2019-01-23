@@ -1,13 +1,14 @@
 // @flow
 import React from 'react'
 import classnames from 'classnames'
+import type {SourceType} from '../../../models/ticketElement/types'
 
 type Props = {
-    type?: string,
+    type?: SourceType,
     className?: string,
 }
 
-const sourceTypeToIcon = (sourceType) => {
+const sourceTypeToIcon = (sourceType?: SourceType) => {
     const icon = {
         name: 'live_help',
         custom: false,

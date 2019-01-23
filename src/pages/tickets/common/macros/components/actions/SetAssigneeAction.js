@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
-import TicketAssignee from '../../../../detail/components/ticketdetails/TicketAssignee'
+import TicketAssignee from '../../../../detail/components/TicketDetails/TicketAssignee'
 
 export default class SetAssigneeAction extends React.Component {
     setAssignee(assignee) {

@@ -1,15 +1,19 @@
+//@flow
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import {TicketBody} from '../TicketBody'
-
-// jest.mock('../Event', () => 'icon')
+import {message} from '../../../../../models/ticketElement/tests/mocks'
+import type {TicketMessage} from '../../../../../models/ticketElement'
+import TicketMessages from '../TicketMessages/TicketMessages'
+import Event from '../Event'
 
 describe('TicketBody', () => {
     it('should display messages', () => {
         const component = shallow(
             <TicketBody
                 elements={fromJS([{
+                    ...message,
                     id: 1,
                     created_datetime: '2017-07-01T18:00:00'
                 }])}
@@ -32,9 +36,12 @@ describe('TicketBody', () => {
         const component = shallow(
             <TicketBody
                 elements={fromJS([{
+                    ...message,
                     id: 1,
                     created_datetime: '2017-07-01T18:00:00'
                 }, {
+                    ...message,
+                    isMessage: false,
                     isEvent: true,
                     created_datetime: '2017-07-01T19:00:00'
                 }])}
@@ -53,41 +60,64 @@ describe('TicketBody', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should pass `isLastReadMessage` only for the last read message', () => {
-        const component = shallow(
-            <TicketBody
-                elements={fromJS([{
-                    id: 1,
-                    created_datetime: '2017-07-01T18:00:00'
-                }, {
-                    id: 2,
-                    created_datetime: '2017-07-01T19:00:00'
-                }, {
-                    id: undefined,
-                    created_datetime: '2017-07-01T20:00:00'
-                }])}
-                lastReadMessage={fromJS({
-                    id: 1
-                })}
-                loadingState={fromJS([])}
-                ticket={fromJS({id: 1})}
-                setStatus={() => {}}
-                currentUser={fromJS({
-                    timezone: 'UTC'
-                })}
-            />
-        )
+    describe('last read message', () => {
+        it('should pass `isLastReadMessage` only for the last read message', () => {
+            const component = shallow(
+                <TicketBody
+                    elements={fromJS([{
+                        ...message,
+                        id: 1,
+                        created_datetime: '2017-07-01T18:00:00'
+                    }, {
+                        ...message,
+                        id: 2,
+                        created_datetime: '2017-07-01T19:00:00'
+                    }, {
+                        ...message,
+                        id: undefined,
+                        created_datetime: '2017-07-01T20:00:00'
+                    }])}
+                    lastReadMessage={fromJS({
+                        id: 1
+                    })}
+                    loadingState={fromJS([])}
+                    ticket={fromJS({id: 1})}
+                    setStatus={() => {}}
+                    currentUser={fromJS({
+                        timezone: 'UTC'
+                    })}
+                />
+            )
 
-        expect(component).toMatchSnapshot()
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should not pass `isLastReadMessage` for a new message', () => {
+            const component = shallow(
+                <TicketBody
+                    elements={fromJS([{
+                        id: undefined,
+                        created_datetime: '2017-07-01T18:00:00'
+                    }])}
+                    lastReadMessage={fromJS({
+                        id: undefined
+                    })}
+                    loadingState={fromJS([])}
+                    ticket={fromJS({id: 1})}
+                    setStatus={() => {}}
+                    currentUser={fromJS({
+                        timezone: 'UTC'
+                    })}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
     })
 
-    it('should not pass `isLastReadMessage` for a new message', () => {
-        const component = shallow(
+    describe('message grouping', () => {
+        const DefaultTicketBody = (props: {}) => (
             <TicketBody
-                elements={fromJS([{
-                    id: undefined,
-                    created_datetime: '2017-07-01T18:00:00'
-                }])}
                 lastReadMessage={fromJS({
                     id: undefined
                 })}
@@ -97,9 +127,125 @@ describe('TicketBody', () => {
                 currentUser={fromJS({
                     timezone: 'UTC'
                 })}
+                messageGroupingChannels={['chat']}
+                messageGroupingDuration='PT5M'
+                {...props}
             />
         )
 
-        expect(component).toMatchSnapshot()
+        const message1: TicketMessage = {
+            ...message,
+            channel: 'chat',
+            created_datetime: '2018-01-01T12:00:00.000Z'
+        }
+
+        const message2: TicketMessage = {
+            ...message1,
+            created_datetime: '2018-01-01T12:01:00.000Z'
+        }
+
+        it('should group messages if they have the same channel and ', () => {
+            const component = shallow(
+                <DefaultTicketBody elements={fromJS([message1, message2])}/>
+            )
+            const ticketMessages = component.find(TicketBody).dive().find(TicketMessages)
+            expect(ticketMessages).toHaveLength(1)
+        })
+
+        it('should not group messages if they have different channels', () => {
+            const component = shallow(
+                <DefaultTicketBody
+                    elements={fromJS([
+                        message1,
+                        {
+                            ...message2,
+                            channel: 'email'
+                        }
+                    ])}
+                />
+            )
+            const ticketMessages = component.find(TicketBody).dive().find(TicketMessages)
+            expect(ticketMessages).toHaveLength(2)
+        })
+
+        it('should not group messages if they have the same channel, but the channel is not grouped', () => {
+            const component = shallow(
+                <DefaultTicketBody
+                    elements={fromJS([message1, message2])}
+                    messageGroupingChannels={'mail'}
+                />
+            )
+            const ticketMessages = component.find(TicketBody).dive().find(TicketMessages)
+            expect(ticketMessages).toHaveLength(2)
+        })
+
+        it('should not group messages if they do not fall into the grouping interval', () => {
+            const component = shallow(
+                <DefaultTicketBody
+                    elements={fromJS([
+                        message1,
+                        {
+                            ...message2,
+                            created_datetime: '2018-01-01T13:00:00.000Z'
+                        }
+                    ])}
+                />
+            )
+            const ticketMessages = component.find(TicketBody).dive().find(TicketMessages)
+            expect(ticketMessages).toHaveLength(2)
+        })
+
+        it('should not group elements if they are not messages', () => {
+            const component = shallow(
+                <DefaultTicketBody
+                    elements={fromJS([
+                        message1,
+                        {
+                            ...message2,
+                            isMessage: false,
+                            isEvent: true
+                        }
+                    ])}
+                />
+            )
+            const body = component.find(TicketBody).dive()
+            expect(body.find(TicketMessages)).toHaveLength(1)
+            expect(body.find(Event)).toHaveLength(1)
+        })
+
+        it('should not group messages if they are not from the same sender', () => {
+            const component = shallow(
+                <DefaultTicketBody
+                    elements={fromJS([
+                        message1,
+                        {
+                            ...message2,
+                            sender: {
+                                ...message2.sender,
+                                id: 123123
+                            }
+                        }
+                    ])}
+                />
+            )
+            const body = component.find(TicketBody).dive()
+            expect(body.find(TicketMessages)).toHaveLength(2)
+        })
+
+        it('should not merge the messages if one of them is private', () => {
+            const component = shallow(
+                <DefaultTicketBody
+                    elements={fromJS([
+                        {
+                            ...message1,
+                            public: false
+                        },
+                        message2
+                    ])}
+                />
+            )
+            const body = component.find(TicketBody).dive()
+            expect(body.find(TicketMessages)).toHaveLength(2)
+        })
     })
 })

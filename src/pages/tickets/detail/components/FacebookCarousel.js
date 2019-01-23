@@ -14,24 +14,10 @@ import {
 import Slider from 'react-slick'
 
 import css from './FacebookCarousel.less'
+import type {FacebookCarouselTemplate} from '../../../../models/ticketElement/types'
 
 type Props = {
-    data: Array<{
-        type: 'template',
-        payload: {
-            template_type: string,
-            elements?: Array<{
-                title: string,
-                subtitle: string,
-                image_url: string,
-                buttons?: Array<{
-                    type: string,
-                    title: string,
-                    url: string
-                }>
-            }>
-        }
-    }>
+    data: FacebookCarouselTemplate[]
 }
 
 export default class FacebookCarousel extends React.Component<Props> {

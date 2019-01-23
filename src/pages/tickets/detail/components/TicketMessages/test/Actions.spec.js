@@ -1,9 +1,9 @@
 import React from 'react'
 import {mount} from 'enzyme'
 
-import TicketMessageActions from '../TicketMessageActions'
+import Actions from '../Actions'
 
-describe('TicketMessageActions component', () => {
+describe('Actions component', () => {
     const args = {
         headers: {
             Authorization: 'auth',
@@ -28,7 +28,7 @@ describe('TicketMessageActions component', () => {
     }
 
     let component = mount(
-        <TicketMessageActions
+        <Actions
             message={message}
         />
     )

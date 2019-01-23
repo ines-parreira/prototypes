@@ -28,7 +28,7 @@ import * as newMessageSelectors from '../../../state/newMessage/selectors'
 import * as viewsSelectors from '../../../state/views/selectors'
 import * as ticketSelectors from '../../../state/ticket/selectors'
 import * as customersSelectors from '../../../state/customers/selectors'
-import {updateMessageText} from './components/replyarea/TicketReplyEditor'
+import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
 
 @withRouter
 @connect((state) => {

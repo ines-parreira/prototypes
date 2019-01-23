@@ -26,9 +26,12 @@ export function scrollToReactNode(node: any) {
  * Returns the next/previous possible index in a list
  */
 type optionsType = {
-    direction: 'previous' | 'next',
+    direction: MoveIndexDirection,
     rotate?: boolean
 }
+
+export type MoveIndexDirection = 'previous' | 'next'
+
 export function moveIndex(
     currentIndex: number = 0,
     length: number = 0,

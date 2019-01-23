@@ -51,6 +51,7 @@
     "linkifyjs": "^2.1.6",
     "lodash": "^4.15.0",
     "md5": "^2.2.1",
+    "memoize-one": "^5.0.0",
     "moment": "^2.14.1",
     "moment-timezone": "^0.5.5",
     "mousetrap": "^1.6.0",

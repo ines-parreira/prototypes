@@ -1,43 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components TicketMessageBody html by default 1`] = `
-<TicketMessageBody
-  message={
-    Object {
-      "body_html": "html",
-      "body_text": "text",
-    }
-  }
-  store={
-    Object {
-      "clearActions": [Function],
-      "dispatch": [Function],
-      "getActions": [Function],
-      "getState": [Function],
-      "replaceReducer": [Function],
-      "subscribe": [Function],
-    }
-  }
->
-  <div
-    className="component"
-  >
-    <div>
-      <div
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "html",
-          }
-        }
-      />
-    </div>
-  </div>
-</TicketMessageBody>
-`;
-
-exports[`components TicketMessageBody should display the Facebook carousel if there's matching metadata 1`] = `
-<TicketMessageBody
+exports[`Body should display the Facebook carousel if there's matching metadata 1`] = `
+<Component
   message={
     Object {
       "body_html": "",
@@ -79,30 +43,25 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
       },
     }
   }
-  store={
-    Object {
-      "clearActions": [Function],
-      "dispatch": [Function],
-      "getActions": [Function],
-      "getState": [Function],
-      "replaceReducer": [Function],
-      "subscribe": [Function],
-    }
-  }
 >
   <div
     className="component"
   >
-    <div>
-      <div
-        className="new-line-interpret"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "text <a href=\\"http://gorgias.io/\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">http://gorgias.io/</a>",
+    <Content
+      html=""
+      text="text http://gorgias.io/"
+    >
+      <div>
+        <div
+          className="new-line-interpret"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "text <a href=\\"http://gorgias.io/\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">http://gorgias.io/</a>",
+            }
           }
-        }
-      />
-    </div>
+        />
+      </div>
+    </Content>
     <FacebookCarousel
       data={
         Array [
@@ -406,216 +365,5 @@ exports[`components TicketMessageBody should display the Facebook carousel if th
       </div>
     </FacebookCarousel>
   </div>
-</TicketMessageBody>
-`;
-
-exports[`components TicketMessageBody should linkify body_html 1`] = `"<div class=\\"component\\"><div><div class=\\"\\">html <a href=\\"http://gorgias.io/\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">http://gorgias.io/</a></div></div></div>"`;
-
-exports[`components TicketMessageBody should linkify body_text 1`] = `
-<TicketMessageBody
-  message={
-    Object {
-      "body_html": "",
-      "body_text": "text http://gorgias.io/",
-    }
-  }
-  store={
-    Object {
-      "clearActions": [Function],
-      "dispatch": [Function],
-      "getActions": [Function],
-      "getState": [Function],
-      "replaceReducer": [Function],
-      "subscribe": [Function],
-    }
-  }
->
-  <div
-    className="component"
-  >
-    <div>
-      <div
-        className="new-line-interpret"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "text <a href=\\"http://gorgias.io/\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">http://gorgias.io/</a>",
-          }
-        }
-      />
-    </div>
-  </div>
-</TicketMessageBody>
-`;
-
-exports[`components TicketMessageBody should linkify invalid body_html 1`] = `
-"<div class=\\"component\\"><div><div class=\\"\\">
-                                    
-                                    
-                                
-                                    <a href=\\"http://gorgias.io\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">http://gorgias.io</a>
-                                <a href=\\"https://gorgias.io\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">gorgias.io</a><table>
-                                    
-                                    
-                                
-                            
-                        </table></div></div></div>"
-`;
-
-exports[`components TicketMessageBody should not escape quotes 1`] = `"<div class=\\"component\\"><div><div class=\\"\\">these \\"quotes\\" here</div></div></div>"`;
-
-exports[`components TicketMessageBody should not remove invalid characters 1`] = `"<div class=\\"component\\"><div><div class=\\"\\">Thank you &lt;3 you are the best</div></div></div>"`;
-
-exports[`components TicketMessageBody should set new-line-interpret class 1`] = `
-<TicketMessageBody
-  message={
-    Object {
-      "body_html": "",
-      "body_text": "my test 
-    with a new line",
-    }
-  }
-  store={
-    Object {
-      "clearActions": [Function],
-      "dispatch": [Function],
-      "getActions": [Function],
-      "getState": [Function],
-      "replaceReducer": [Function],
-      "subscribe": [Function],
-    }
-  }
->
-  <div
-    className="component"
-  >
-    <div>
-      <div
-        className="new-line-interpret"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "my test 
-          with a new line",
-          }
-        }
-      />
-    </div>
-  </div>
-</TicketMessageBody>
-`;
-
-exports[`components TicketMessageBody use stripped_html if available 1`] = `
-<TicketMessageBody
-  message={
-    Object {
-      "body_html": "long html",
-      "body_text": "text",
-      "stripped_html": "stripped html",
-      "stripped_text": "stripped text",
-    }
-  }
-  store={
-    Object {
-      "clearActions": [Function],
-      "dispatch": [Function],
-      "getActions": [Function],
-      "getState": [Function],
-      "replaceReducer": [Function],
-      "subscribe": [Function],
-    }
-  }
->
-  <div
-    className="component"
-  >
-    <div>
-      <div
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "stripped html",
-          }
-        }
-      />
-      <Ellipsis
-        onClick={[Function]}
-        title="Show full content"
-      >
-        <div
-          className="btn-more"
-          onClick={[Function]}
-          title="Show full content"
-        >
-          …
-        </div>
-      </Ellipsis>
-    </div>
-  </div>
-</TicketMessageBody>
-`;
-
-exports[`components TicketMessageBody use text when no html 1`] = `
-<TicketMessageBody
-  message={
-    Object {
-      "body_html": "",
-      "body_text": "text",
-    }
-  }
-  store={
-    Object {
-      "clearActions": [Function],
-      "dispatch": [Function],
-      "getActions": [Function],
-      "getState": [Function],
-      "replaceReducer": [Function],
-      "subscribe": [Function],
-    }
-  }
->
-  <div
-    className="component"
-  >
-    <div>
-      <div
-        className="new-line-interpret"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "text",
-          }
-        }
-      />
-    </div>
-  </div>
-</TicketMessageBody>
-`;
-
-exports[`components TicketMessageBody with empty props 1`] = `
-<TicketMessageBody
-  message={Object {}}
-  store={
-    Object {
-      "clearActions": [Function],
-      "dispatch": [Function],
-      "getActions": [Function],
-      "getState": [Function],
-      "replaceReducer": [Function],
-      "subscribe": [Function],
-    }
-  }
->
-  <div
-    className="component"
-  >
-    <div>
-      <div
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "",
-          }
-        }
-      />
-    </div>
-  </div>
-</TicketMessageBody>
+</Component>
 `;

@@ -20,6 +20,7 @@ import css from './labels.less'
 
 import type {Node} from 'react'
 import type {Map} from 'immutable'
+import type {SourceType} from '../../../models/ticketElement/types'
 
 /**
  * AGENT
@@ -175,7 +176,8 @@ StatusLabel.displayName = 'StatusLabel'
 /**
  * CHANNEL
  */
-export const ChannelLabel = ({channel}: { channel: string }) => (
+
+export const ChannelLabel = ({channel}: {channel: SourceType}) => (
     <SourceIcon
         type={channel}
         className="text-secondary"

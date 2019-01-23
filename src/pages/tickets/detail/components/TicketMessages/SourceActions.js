@@ -1,0 +1,106 @@
+//@flow
+import React from 'react'
+import classNamesBind from 'classnames/bind'
+import * as infobarActions from '../../../../../state/infobar/actions'
+import css from './SourceActions.less'
+import {connect} from 'react-redux'
+import type {Meta, Source} from '../../../../../models/ticketElement/types'
+
+const classNames = classNamesBind.bind(css)
+
+type Props = {
+    source?: Source,
+    meta?: Meta,
+    integrationId?: string,
+    messageId?: string,
+    fromAgent: boolean,
+    executeAction: typeof infobarActions.executeAction
+}
+
+export class SourceActions extends React.Component<Props> {
+    _executeAction = (name: string) => {
+        const {integrationId, messageId, executeAction} = this.props
+        if (integrationId) {
+            executeAction(
+                name,
+                integrationId,
+                undefined,
+                {'comment_id': messageId},
+            )
+        }
+    }
+
+    _toggleInstagramHideComment = (hide: boolean) => {
+        this._executeAction(hide ? 'instagramHideComment' : 'instagramUnhideComment')
+    }
+
+    _toggleFacebookHideComment = (hide: boolean) => {
+        this._executeAction(hide ? 'facebookHideComment' : 'facebookUnhideComment')
+    }
+
+    _toggleLikeComment = (like: boolean) => {
+        this._executeAction(like ? 'facebookLikeComment' : 'facebookUnlikeComment')
+    }
+
+    render() {
+        const {source, meta, fromAgent} = this.props
+
+        const widgets = []
+
+        if (!source || !source.type) {
+            return widgets
+        }
+
+        const isInstagramComment = source.type === 'instagram-comment'
+        const isFacebookComment = source.type === 'facebook-comment'
+
+        // If the comment is a Facebook comment, posted by the page, then the API will never allow us to hide it.
+        // So we don't even display the `hide` button to avoid frustration.
+        if (isInstagramComment || (isFacebookComment && !fromAgent)) {
+            let hiddenDatetime = null
+
+            if (meta && meta.hidden_datetime) {
+                hiddenDatetime = meta.hidden_datetime
+            }
+
+            const shouldHide = !hiddenDatetime
+
+            widgets.push(
+                <span
+                    key="hide-action"
+                    className={classNames('hidden-sm-down', css.actionButton)}
+                    onClick={() => isInstagramComment
+                        ? this._toggleInstagramHideComment(shouldHide)
+                        : this._toggleFacebookHideComment(shouldHide)
+                    }
+                >
+                    {shouldHide ? 'Hide' : 'Unhide'}
+                </span>,
+            )
+        }
+
+        if (isFacebookComment) {
+            let likedDatetime = null
+
+            if (meta && meta.liked_datetime) {
+                likedDatetime = meta.liked_datetime
+            }
+
+            const shouldHide = !likedDatetime
+
+            widgets.push(
+                <span
+                    key="like-action"
+                    className={classNames('hidden-sm-down', css.actionButton)}
+                    onClick={() => this._toggleLikeComment(shouldHide)}
+                >
+                    {shouldHide ? 'Like' : 'Unlike'}
+                </span>,
+            )
+        }
+
+        return widgets
+    }
+}
+
+export default connect(null, {executeAction: infobarActions.executeAction})(SourceActions)

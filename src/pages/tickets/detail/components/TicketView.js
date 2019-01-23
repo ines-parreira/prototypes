@@ -11,9 +11,9 @@ import TicketBody from './TicketBody'
 
 import {AgentLabel} from '../../../common/utils/labels'
 import Timeline from '../../../common/components/timeline/Timeline'
-import ReplyMessageChannel from './replyarea/ReplyMessageChannel'
-import TicketReplyArea from './replyarea/TicketReplyArea'
-import TicketSubmitButtons from './replyarea/TicketSubmitButtons'
+import ReplyMessageChannel from './ReplyArea/ReplyMessageChannel'
+import TicketReplyArea from './ReplyArea/TicketReplyArea'
+import TicketSubmitButtons from './ReplyArea/TicketSubmitButtons'
 import HistoryButton from './HistoryButton'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 

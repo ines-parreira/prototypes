@@ -1,38 +1,209 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`TicketBody last read message should not pass \`isLastReadMessage\` for a new message 1`] = `
+<div
+  className="TicketMessages"
+/>
+`;
+
+exports[`TicketBody last read message should pass \`isLastReadMessage\` only for the last read message 1`] = `
+<div
+  className="TicketMessages"
+>
+  <_default
+    hasCursor={false}
+    id="message-0"
+    key="message-0"
+    lastMessageDatetimeAfterMount={"2017-07-02T03:00:00.000Z"}
+    lastReadMessageId={1}
+    messages={
+      Array [
+        Object {
+          "channel": "email",
+          "created_datetime": "2017-07-01T18:00:00",
+          "from_agent": false,
+          "id": 1,
+          "isMessage": true,
+          "public": true,
+          "receiver": Object {
+            "email": "mary.poppins@example.com",
+            "firstname": "Mary",
+            "id": 2,
+            "lastname": "Poppins",
+            "name": "Mary Poppins",
+          },
+          "sender": Object {
+            "email": "john.doe@example.com",
+            "firstname": "John",
+            "id": 1,
+            "lastname": "Doe",
+            "name": "John Doe",
+          },
+          "subject": "Some subject",
+          "uri": "http://example.com/messages/1",
+          "via": "email",
+        },
+      ]
+    }
+    setStatus={[Function]}
+    ticketId={1}
+    timezone="UTC"
+  />
+  <_default
+    hasCursor={false}
+    id="message-1"
+    key="message-1"
+    lastMessageDatetimeAfterMount={"2017-07-02T03:00:00.000Z"}
+    lastReadMessageId={1}
+    messages={
+      Array [
+        Object {
+          "channel": "email",
+          "created_datetime": "2017-07-01T19:00:00",
+          "from_agent": false,
+          "id": 2,
+          "isMessage": true,
+          "public": true,
+          "receiver": Object {
+            "email": "mary.poppins@example.com",
+            "firstname": "Mary",
+            "id": 2,
+            "lastname": "Poppins",
+            "name": "Mary Poppins",
+          },
+          "sender": Object {
+            "email": "john.doe@example.com",
+            "firstname": "John",
+            "id": 1,
+            "lastname": "Doe",
+            "name": "John Doe",
+          },
+          "subject": "Some subject",
+          "uri": "http://example.com/messages/1",
+          "via": "email",
+        },
+      ]
+    }
+    setStatus={[Function]}
+    ticketId={1}
+    timezone="UTC"
+  />
+  <_default
+    hasCursor={true}
+    id="message-2"
+    key="message-2"
+    lastMessageDatetimeAfterMount={"2017-07-02T03:00:00.000Z"}
+    lastReadMessageId={1}
+    messages={
+      Array [
+        Object {
+          "channel": "email",
+          "created_datetime": "2017-07-01T20:00:00",
+          "from_agent": false,
+          "id": undefined,
+          "isMessage": true,
+          "public": true,
+          "receiver": Object {
+            "email": "mary.poppins@example.com",
+            "firstname": "Mary",
+            "id": 2,
+            "lastname": "Poppins",
+            "name": "Mary Poppins",
+          },
+          "sender": Object {
+            "email": "john.doe@example.com",
+            "firstname": "John",
+            "id": 1,
+            "lastname": "Doe",
+            "name": "John Doe",
+          },
+          "subject": "Some subject",
+          "uri": "http://example.com/messages/1",
+          "via": "email",
+        },
+      ]
+    }
+    setStatus={[Function]}
+    ticketId={1}
+    timezone="UTC"
+  />
+</div>
+`;
+
 exports[`TicketBody should display events with messages 1`] = `
 <div
   className="TicketMessages"
 >
-  <Connect(TicketMessage)
+  <_default
     hasCursor={false}
-    isLastReadMessage={true}
-    key="1"
+    id="message-0"
+    key="message-0"
     lastMessageDatetimeAfterMount={"2017-07-02T02:00:00.000Z"}
-    loading={false}
-    message={
-      Object {
-        "created_datetime": "2017-07-01T18:00:00",
-        "id": 1,
-      }
+    lastReadMessageId={1}
+    messages={
+      Array [
+        Object {
+          "channel": "email",
+          "created_datetime": "2017-07-01T18:00:00",
+          "from_agent": false,
+          "id": 1,
+          "isMessage": true,
+          "public": true,
+          "receiver": Object {
+            "email": "mary.poppins@example.com",
+            "firstname": "Mary",
+            "id": 2,
+            "lastname": "Poppins",
+            "name": "Mary Poppins",
+          },
+          "sender": Object {
+            "email": "john.doe@example.com",
+            "firstname": "John",
+            "id": 1,
+            "lastname": "Doe",
+            "name": "John Doe",
+          },
+          "subject": "Some subject",
+          "uri": "http://example.com/messages/1",
+          "via": "email",
+        },
+      ]
     }
     setStatus={[Function]}
-    ticket={
-      Immutable.Map {
-        id: 1,
-      }
-    }
+    ticketId={1}
     timezone="UTC"
   />
   <Connect(Event)
     event={
       Immutable.Map {
+        channel: "email",
+        public: true,
+        subject: "Some subject",
+        uri: "http://example.com/messages/1",
+        via: "email",
+        receiver: Immutable.Map {
+          id: 2,
+          email: "mary.poppins@example.com",
+          name: "Mary Poppins",
+          firstname: "Mary",
+          lastname: "Poppins",
+        },
+        from_agent: false,
         isEvent: true,
         created_datetime: "2017-07-01T19:00:00",
+        sender: Immutable.Map {
+          id: 1,
+          email: "john.doe@example.com",
+          name: "John Doe",
+          firstname: "John",
+          lastname: "Doe",
+        },
+        id: 1,
+        isMessage: false,
       }
     }
     isLast={true}
-    key="1"
+    key="event-1"
   />
 </div>
 `;
@@ -41,116 +212,43 @@ exports[`TicketBody should display messages 1`] = `
 <div
   className="TicketMessages"
 >
-  <Connect(TicketMessage)
+  <_default
     hasCursor={true}
-    isLastReadMessage={true}
-    key="1"
+    id="message-0"
+    key="message-0"
     lastMessageDatetimeAfterMount={"2017-07-02T01:00:00.000Z"}
-    loading={false}
-    message={
-      Object {
-        "created_datetime": "2017-07-01T18:00:00",
-        "id": 1,
-      }
+    lastReadMessageId={1}
+    messages={
+      Array [
+        Object {
+          "channel": "email",
+          "created_datetime": "2017-07-01T18:00:00",
+          "from_agent": false,
+          "id": 1,
+          "isMessage": true,
+          "public": true,
+          "receiver": Object {
+            "email": "mary.poppins@example.com",
+            "firstname": "Mary",
+            "id": 2,
+            "lastname": "Poppins",
+            "name": "Mary Poppins",
+          },
+          "sender": Object {
+            "email": "john.doe@example.com",
+            "firstname": "John",
+            "id": 1,
+            "lastname": "Doe",
+            "name": "John Doe",
+          },
+          "subject": "Some subject",
+          "uri": "http://example.com/messages/1",
+          "via": "email",
+        },
+      ]
     }
     setStatus={[Function]}
-    ticket={
-      Immutable.Map {
-        id: 1,
-      }
-    }
-    timezone="UTC"
-  />
-</div>
-`;
-
-exports[`TicketBody should not pass \`isLastReadMessage\` for a new message 1`] = `
-<div
-  className="TicketMessages"
->
-  <Connect(TicketMessage)
-    hasCursor={true}
-    isLastReadMessage={true}
-    lastMessageDatetimeAfterMount={"2017-07-02T01:00:00.000Z"}
-    loading={false}
-    message={
-      Object {
-        "created_datetime": "2017-07-01T18:00:00",
-        "id": undefined,
-      }
-    }
-    setStatus={[Function]}
-    ticket={
-      Immutable.Map {
-        id: 1,
-      }
-    }
-    timezone="UTC"
-  />
-</div>
-`;
-
-exports[`TicketBody should pass \`isLastReadMessage\` only for the last read message 1`] = `
-<div
-  className="TicketMessages"
->
-  <Connect(TicketMessage)
-    hasCursor={false}
-    isLastReadMessage={true}
-    key="1"
-    lastMessageDatetimeAfterMount={"2017-07-02T03:00:00.000Z"}
-    loading={false}
-    message={
-      Object {
-        "created_datetime": "2017-07-01T18:00:00",
-        "id": 1,
-      }
-    }
-    setStatus={[Function]}
-    ticket={
-      Immutable.Map {
-        id: 1,
-      }
-    }
-    timezone="UTC"
-  />
-  <Connect(TicketMessage)
-    hasCursor={false}
-    isLastReadMessage={false}
-    key="2"
-    lastMessageDatetimeAfterMount={"2017-07-02T03:00:00.000Z"}
-    loading={false}
-    message={
-      Object {
-        "created_datetime": "2017-07-01T19:00:00",
-        "id": 2,
-      }
-    }
-    setStatus={[Function]}
-    ticket={
-      Immutable.Map {
-        id: 1,
-      }
-    }
-    timezone="UTC"
-  />
-  <Connect(TicketMessage)
-    hasCursor={true}
-    isLastReadMessage={false}
-    lastMessageDatetimeAfterMount={"2017-07-02T03:00:00.000Z"}
-    loading={false}
-    message={
-      Object {
-        "created_datetime": "2017-07-01T20:00:00",
-        "id": undefined,
-      }
-    }
-    setStatus={[Function]}
-    ticket={
-      Immutable.Map {
-        id: 1,
-      }
-    }
+    ticketId={1}
     timezone="UTC"
   />
 </div>

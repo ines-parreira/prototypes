@@ -5,13 +5,13 @@ import {connect} from 'react-redux'
 import {Button, Alert} from 'reactstrap'
 import classnames from 'classnames'
 
-import Tooltip from '../../../common/components/Tooltip'
+import Tooltip from '../../../../common/components/Tooltip'
 
-import * as TicketActions from '../../../../state/ticket/actions'
-import * as NewMessageActions from '../../../../state/newMessage/actions'
-import {getActionTemplate, stripErrorMessage} from './../../../../utils'
+import * as TicketActions from '../../../../../state/ticket/actions'
+import * as NewMessageActions from '../../../../../state/newMessage/actions'
+import {getActionTemplate, stripErrorMessage} from '../../../../../utils'
 
-import css from './TicketMessageError.less'
+import css from './Error.less'
 
 
 const CANCEL = 'cancel'
@@ -23,10 +23,11 @@ type Props = {
     retryTooltipMessage?: string,
     actions: Object,
 
-    ticketId: Number,
+    ticketId: number,
 
-    message: Object,
-    messageId: Number,
+    // TODO (@pwlmaciejewski): Once we upgrade Immutable to v4, it should be a RecordOf<Message>
+    message: any,
+    messageId: number,
     messageActions: Array<*>,
 
     setStatus: (string) => void,
@@ -41,7 +42,7 @@ type State = {
     loading: string
 }
 
-class TicketMessageError extends React.Component<Props, State> {
+class Error extends React.Component<Props, State> {
     static defaultProps = {
         error: '',
         messageActions: [],
@@ -285,4 +286,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 //$FlowFixMe
-export default connect(null, mapDispatchToProps)(TicketMessageError)
+export default connect(null, mapDispatchToProps)(Error)
