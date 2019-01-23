@@ -137,6 +137,12 @@ export default class TicketView extends React.Component {
 
     _handleSubmit = (e) => {
         e.preventDefault()
+
+        // https://github.com/gorgias/gorgias/issues/4074
+        if (e.target !== this.newMessageFormRef) {
+            return
+        }
+
         this.props.submit(...this.statusParams)
     }
 
