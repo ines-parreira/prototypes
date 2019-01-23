@@ -1,5 +1,6 @@
 import React from 'react'
 import moment from 'moment'
+import numbro from 'numbro'
 import _isUndefined from 'lodash/isUndefined'
 import _isNumber from 'lodash/isNumber'
 
@@ -65,6 +66,17 @@ export const comparedPeriodString = (previousStartDatetime, previousEndDatetime)
 export const formatPercent = (value) => {
     return _isNumber(value) ? `${value}%` : ''
 }
+
+// format a value and display it as a currency
+export const formatCurrency = (value, format, placeholder) => {
+    if (!format) {
+        return value
+    }
+
+    const formattedValue = numbro(value).format({thousandSeparated: true})
+    return format.replace(placeholder, formattedValue)
+}
+
 /**
  * Display a duration in days, hours, minutes and seconds
 

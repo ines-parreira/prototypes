@@ -10,7 +10,7 @@ import Tooltip from '../../../../../common/components/Tooltip'
 import {DatetimeLabel} from '../../../../../common/utils/labels'
 import {SATISFACTION_SURVEY_MAX_SCORE, SATISFACTION_SURVEY_MIN_SCORE,
         SATISFACTION_SURVEY_MAX_COMMENT_LENGTH} from '../../../../../../config/stats'
-import {renderDifference, comparedPeriodString} from '../../../utils'
+import {renderDifference, comparedPeriodString, formatCurrency} from '../../../utils'
 
 import css from './TableStat.less'
 import DistributionVariantStat from '../DistributionVariantStat'
@@ -73,6 +73,9 @@ export default class TableStat extends React.Component {
                 return <DatetimeLabel
                     dateTime={metric.get('value')}
                 />
+            }
+            case 'currency': {
+                return formatCurrency(metric.get('value'), metric.get('format'), metric.get('placeholder'))
             }
             case 'customer-link': {
                 return <Link to={`/app/customer/${metric.get('customer_id')}`}>{metric.get('customer_name')}</Link>

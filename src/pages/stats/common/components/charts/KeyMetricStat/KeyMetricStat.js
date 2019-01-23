@@ -6,7 +6,7 @@ import {fromJS} from 'immutable'
 import _isObject from 'lodash/isObject'
 
 import Tooltip from '../../../../../common/components/Tooltip'
-import {renderDifference, comparedPeriodString, formatDuration, formatPercent} from '../../../utils'
+import {renderDifference, comparedPeriodString, formatDuration, formatPercent, formatCurrency} from '../../../utils'
 
 import DonutKeyMetricStat from './DonutKeyMetricStat'
 import DistributionKeyMetricStat from './DistributionKeyMetricStat'
@@ -83,8 +83,8 @@ export default class KeyMetricStat extends Component<Props> {
                 return formatDuration(value, 2)
             case 'percent':
                 return formatPercent(value)
-            case 'money':
-                return (metric.get('currency_format') || '{{amount}}').replace('{{amount}}', value)
+            case 'currency':
+                return formatCurrency(value, metric.get('format'), metric.get('placeholder'))
             default:
                 return value
         }
