@@ -42,7 +42,6 @@ const sourceTypeToIcon = (sourceType?: SourceType) => {
             icon.name = 'phone'
             break
         case 'facebook':
-        case 'facebook-account':
         case 'facebook-post':
         case 'facebook-comment':
             icon.custom = true
