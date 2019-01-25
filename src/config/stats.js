@@ -531,7 +531,7 @@ export const stats = fromJS({
             pre_sale_tickets: {
                 label: 'Pre-sale tickets',
                 tooltip: 'All tickets excluding post-sale tickets. Post-sale tickets are tickets that had an order ' +
-                    'within 45 days before being created, and no order within 7 days after being created. <a href="test">test</a>',
+                    'within 45 days before being created, and no order within 7 days after being created.',
             },
             converted_tickets: {
                 label: 'Converted tickets',
