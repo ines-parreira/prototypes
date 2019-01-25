@@ -247,5 +247,24 @@ describe('TicketBody', () => {
             const body = component.find(TicketBody).dive()
             expect(body.find(TicketMessages)).toHaveLength(2)
         })
+
+        it('should not merge the messages if one is from agent and the second is not', () => {
+            const component = shallow(
+                <DefaultTicketBody
+                    elements={fromJS([
+                        {
+                            ...message1,
+                            from_agent: false
+                        },
+                        {
+                            ...message2,
+                            from_agent: true
+                        }
+                    ])}
+                />
+            )
+            const body = component.find(TicketBody).dive()
+            expect(body.find(TicketMessages)).toHaveLength(2)
+        })
     })
 })

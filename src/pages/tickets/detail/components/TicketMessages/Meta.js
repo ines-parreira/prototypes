@@ -6,7 +6,7 @@ import {Link} from 'react-router'
 import classnames from 'classnames'
 
 type Props = {
-    messageId: string,
+    messageId?: string,
     via: string,
     integrationId?: string,
     ruleId?: string,
@@ -55,7 +55,7 @@ export default (props: Props) => {
         const isInstagramMedia = source.type === 'instagram-media'
 
         let type = 'reply'
-        let link = `https://facebook.com/${messageId}`
+        let link = `https://facebook.com/${messageId || ''}`
 
         if (isFacebookPost) {
             type = 'post'
@@ -65,7 +65,7 @@ export default (props: Props) => {
             link = permalink
         } else if (isFacebookComment) {
             type = 'comment'
-            link = `https://facebook.com/${messageId}`
+            link = `https://facebook.com/${messageId || ''}`
         }
 
         widgets.push(

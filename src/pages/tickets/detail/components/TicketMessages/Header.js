@@ -52,7 +52,7 @@ export default (props: Props) => {
                 )}
 
                 <Meta
-                    messageId={props.id}
+                    messageId={message.message_id}
                     meta={message.meta}
                     via={message.via}
                     source={message.source}

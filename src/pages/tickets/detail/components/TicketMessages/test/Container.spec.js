@@ -1,0 +1,43 @@
+// @flow
+import React from 'react'
+import {shallow} from 'enzyme'
+import Container from '../Container'
+import {message} from '../../../../../../models/ticketElement/tests/mocks'
+import css from '../Container.less'
+
+describe('Container', () => {
+    it('should render container', () => {
+        const component = shallow(
+            <Container
+                id="some-header"
+                hasCursor={false}
+                message={message}
+                timezone="America/Los_Angeles"
+                isLastRead={false}
+                lastMessageDatetimeAfterMount="2017-01-01T12:12:34Z"
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should have hasError class if message is failed', () => {
+        const failedMessage = {
+            ...message,
+            failed_datetime: '2017-01-01T12:12:34Z'
+        }
+        const component = shallow(
+            <Container
+                id="some-header"
+                hasCursor={false}
+                message={message}
+                timezone="America/Los_Angeles"
+                isLastRead={false}
+                lastMessageDatetimeAfterMount="2017-01-01T12:12:34Z"
+            />
+        )
+        expect(component).not.toHaveClassName(css.hasError)
+
+        component.setProps({message: failedMessage})
+        expect(component).toHaveClassName(css.hasError)
+    })
+})

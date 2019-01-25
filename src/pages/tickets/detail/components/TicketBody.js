@@ -102,7 +102,8 @@ export class TicketBody extends React.Component<Props, State> {
             || msg1.channel !== msg2.channel
             || !this.props.messageGroupingChannels.includes(msg1.channel)
             || moment(msg2.created_datetime).isAfter(moment(msg1.created_datetime).add(groupingDuration))
-            || msg1.public !== msg2.public) {
+            || msg1.public !== msg2.public
+            || msg1.from_agent !== msg2.from_agent) {
             return false
         }
 

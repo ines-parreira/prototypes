@@ -17,7 +17,7 @@ type Props = {
     message: TicketMessage,
     hasCursor: boolean,
     lastMessageDatetimeAfterMount: string,
-    children: Node,
+    children?: Node,
     timezone: string,
     isLastRead: boolean
 }
@@ -46,7 +46,7 @@ export default class Container extends React.Component<Props> {
                 fromAgent: message.from_agent,
                 internal: !message.public,
                 appear: appear,
-                hasError: isFailed,
+                hasError: isFailed(message),
                 'ticket-message-loading': isPending(message),
             })}>
                 <div className={css.avatar}>
