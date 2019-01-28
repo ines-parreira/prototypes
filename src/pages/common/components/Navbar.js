@@ -229,7 +229,7 @@ export default class Navbar extends React.Component {
                         </DropdownItem>
                         <DropdownItem
                             tag="a"
-                            href="http://docs.gorgias.io/"
+                            href="https://docs.gorgias.io/"
                             target="_blank"
                             onClick={() => segmentTracker.logEvent(segmentTracker.EVENTS.HELP_CENTER_CLICKED)}
                         >

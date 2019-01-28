@@ -220,11 +220,11 @@ class EmailIntegrationUpdate extends React.Component {
                     <a
                         target="_blank"
                         rel="noopener noreferrer"
-                        href="http://docs.gorgias.io/integrations/email"
+                        href="https://docs.gorgias.io/email-integrations/email"
                         onClick={() => {
                             segmentTracker.logEvent(segmentTracker.EVENTS.EXTERNAL_LINK_CLICKED, {
                                 name: 'Step by step instructions in add email integration',
-                                url: 'http://docs.gorgias.io/integrations/email',
+                                url: 'https://docs.gorgias.io/email-integrations/email',
                             })
                         }}
                     >
@@ -259,7 +259,7 @@ class EmailIntegrationUpdate extends React.Component {
                     <a
                         target="_blank"
                         rel="noopener noreferrer"
-                        href="http://docs.gorgias.io/integrations/email#improve_email_deliverability_using_spf_and_dkim"
+                        href="https://docs.gorgias.io/email-integrations/email"
                     >
                         setup SPF
                     </a> so your emails are not flagged as Spam when you send them from Gorgias.

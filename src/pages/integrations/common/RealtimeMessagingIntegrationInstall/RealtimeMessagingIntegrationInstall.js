@@ -150,7 +150,7 @@ class RealtimeMessagingIntegrationInstall extends React.Component<Props, State> 
                     <a
                         target="_blank"
                         rel="noopener noreferrer"
-                        href="http://docs.gorgias.io/integrations/facebook#customer_chat"
+                        href="https://docs.gorgias.io/facebok/customer-chat"
                     >
                         Learn more.
                     </a>

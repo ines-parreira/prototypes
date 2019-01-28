@@ -223,7 +223,7 @@ export default class HTTPIntegrationOverview extends React.Component {
                         Add the details about the HTTP integration you want to add below. If you need help, you can
                         check our {' '}
                         <a
-                            href="https://docs.gorgias.io/integrations/http-integrations#Connecting_your_own_back-office"
+                            href="https://docs.gorgias.io/data-and-http-integrations/http-integrations"
                             target="_blank"
                             rel="noopener noreferrer"
                         >
@@ -290,10 +290,10 @@ export default class HTTPIntegrationOverview extends React.Component {
                                     You can use <code>{'{{ticket.customer.email}}'}</code> to pass the email of the
                                     ticket customer. See
                                     other <a
-                                        href="https://api.gorgias.io/#Customer-object"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >vars</a>.
+                                    href="https://api.gorgias.io/#Customer-object"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >vars</a>.
                                 </div>
                             )}
                             value={this.state.url}

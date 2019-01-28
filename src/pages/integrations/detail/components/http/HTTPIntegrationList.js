@@ -32,7 +32,7 @@ export default class HTTPIntegrationList extends React.Component {
                 </p>
                 <p>
                     <a
-                        href="http://docs.gorgias.io/integrations/http-integrations#Connecting_your_own_back-office"
+                        href="https://docs.gorgias.io/data-and-http-integrations/http-integrations"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
