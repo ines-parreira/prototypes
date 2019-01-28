@@ -56,6 +56,7 @@ export default class HTTPIntegrationOverview extends React.Component {
         responseContentType: defaultContent.http.response_content_type,
         ticketCreated: defaultContent.http.triggers['ticket-created'],
         ticketUpdated: defaultContent.http.triggers['ticket-updated'],
+        ticketMessageCreated: defaultContent.http.triggers['ticket-message-created'],
         headers: [],
         form: ''
     }
@@ -104,6 +105,7 @@ export default class HTTPIntegrationOverview extends React.Component {
             responseContentType: integration.getIn(['http', 'response_content_type']),
             ticketCreated: integration.getIn(['http', 'triggers', 'ticket-created']),
             ticketUpdated: integration.getIn(['http', 'triggers', 'ticket-updated']),
+            ticketMessageCreated: integration.getIn(['http', 'triggers', 'ticket-message-created']),
             form: formData
         }
     }
@@ -177,6 +179,7 @@ export default class HTTPIntegrationOverview extends React.Component {
         doc.http.response_content_type = this.state.responseContentType
         doc.http.triggers['ticket-created'] = this.state.ticketCreated
         doc.http.triggers['ticket-updated'] = this.state.ticketUpdated
+        doc.http.triggers['ticket-message-created'] = this.state.ticketMessageCreated
 
         if (this.state.requestContentType === JSON_CONTENT_TYPE) {
             doc.http.form = this.state.form
@@ -264,6 +267,13 @@ export default class HTTPIntegrationOverview extends React.Component {
                                 label="Ticket updated"
                                 value={this.state.ticketUpdated}
                                 onChange={(value) => this.setState({ticketUpdated: value})}
+                            />
+                            <BooleanField
+                                name="http.triggers.ticket-message-created"
+                                type="checkbox"
+                                label="Ticket message created"
+                                value={this.state.ticketMessageCreated}
+                                onChange={(value) => this.setState({ticketMessageCreated: value})}
                             />
                         </FormGroup>
                         <InputField

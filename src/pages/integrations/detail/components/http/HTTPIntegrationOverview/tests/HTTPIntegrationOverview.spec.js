@@ -43,7 +43,8 @@ describe('HTTPIntegrationOverview', () => {
                         response_content_type: 'application/json',
                         triggers: {
                             'ticket-created': true,
-                            'ticket-updated': false
+                            'ticket-updated': false,
+                            'ticket-message-created': false
                         },
                         form: {
                             foo: 'bar',
@@ -81,7 +82,8 @@ describe('HTTPIntegrationOverview', () => {
                         response_content_type: 'application/json',
                         triggers: {
                             'ticket-created': true,
-                            'ticket-updated': false
+                            'ticket-updated': false,
+                            'ticket-message-created': false
                         },
                         form: {
                             foo: 'bar',
@@ -119,7 +121,8 @@ describe('HTTPIntegrationOverview', () => {
                         response_content_type: 'application/json',
                         triggers: {
                             'ticket-created': true,
-                            'ticket-updated': false
+                            'ticket-updated': false,
+                            'ticket-message-created': false
                         },
                         form: {
                             foo: 'bar',
