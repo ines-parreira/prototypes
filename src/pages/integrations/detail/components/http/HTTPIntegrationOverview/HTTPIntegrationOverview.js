@@ -97,7 +97,7 @@ export default class HTTPIntegrationOverview extends React.Component {
             name: integration.get('name'),
             description: integration.get('description') || '',
             headers: this._objectToParameters(
-                integration.getIn(['http', 'headers']).toJS()
+                (integration.getIn(['http', 'headers']) || {}).toJS()
             ),
             url: integration.getIn(['http', 'url']),
             method: integration.getIn(['http', 'method']),
