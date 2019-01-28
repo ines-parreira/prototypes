@@ -7,7 +7,11 @@ import {getSearchText, getTypeByTrigger} from '../utils'
 
 const addMention = (editorState, mention, mentionPrefix, mentionTrigger, entityMutability) => {
     const contentState = editorState.getCurrentContent()
-    const entityContentState = contentState.createEntity(getTypeByTrigger(mentionTrigger), entityMutability, {mention})
+    const entityContentState = contentState.createEntity(getTypeByTrigger(mentionTrigger), entityMutability, {
+        // add mention as plain object,
+        // to be able to cache draftjs' convertToRaw
+        mention: mention.toJS()
+    })
     const entityKey = entityContentState.getLastCreatedEntityKey()
 
     const currentSelectionState = editorState.getSelection()

@@ -14,6 +14,7 @@ import _pick from 'lodash/pick'
 import _assign from 'lodash/assign'
 import _omit from 'lodash/omit'
 import _forOwn from 'lodash/forOwn'
+import _get from 'lodash/get'
 
 import {
     getSourceTypeOfResponse,
@@ -142,6 +143,8 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
 
         case types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START: {
             let messages = fromJS(action.messages)
+            // clear the reply cache
+            responseUtils.deleteReplyCache(action.ticketId)
 
             let newState = resetContentState(state)
                 .mergeDeep({
@@ -206,8 +209,12 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
         case types.NEW_MESSAGE_FETCH_TICKET_SUCCESS: {
             const {messages} = action.resp
             const sourceType = getSourceTypeOfResponse(messages)
+
             return resetContentState(state)
-                .set('newMessage', makeNewMessage(getChannelFromSourceType(sourceType, messages), sourceType))
+                .set(
+                    'newMessage',
+                    makeNewMessage(getChannelFromSourceType(sourceType, messages), sourceType)
+                )
         }
 
         case types.NEW_MESSAGE_SET_SOURCE_TYPE: {
@@ -229,6 +236,12 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
             let selectionState = action.args.get('selectionState') || state.getIn(['state', 'selectionState'])
             const {appliedMacro, forceFocus, forceUpdate} = action
 
+            const source = state.getIn(['newMessage', 'source'], fromJS({}))
+
+            // email-forward uses email source type
+            const forward = source.getIn(['extra', 'forward'])
+            const sourceType = forward ? 'email-forward' : source.get('type')
+
             let context = {
                 action,
                 state,
@@ -236,7 +249,8 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
                 selectionState,
                 appliedMacro,
                 forceUpdate,
-                forceFocus
+                forceFocus,
+                sourceType,
             }
 
             context = responseUtils.addCache(context)
@@ -255,7 +269,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
                 _forOwn(entityMap, (entity) => {
                     if (entity.type === 'mention') {
                         // don't push duplicate ids
-                        const id = entity.data.mention.get('id')
+                        const id = _get(entity.data.mention, 'id')
                         if (!ids.includes(id)) {
                             ids = ids.push(id)
                         }

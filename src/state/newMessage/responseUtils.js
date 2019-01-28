@@ -3,7 +3,6 @@ import _take from 'lodash/take'
 import _takeRight from 'lodash/takeRight'
 import _findIndex from 'lodash/findIndex'
 import _pick from 'lodash/pick'
-import _pickBy from 'lodash/pickBy'
 import {fromJS} from 'immutable'
 import {convertFromHTML} from '../../utils/editor'
 import {isRichType} from '../../config/ticket'
@@ -35,11 +34,7 @@ type contextType = {
     signatureAdded?: boolean,
     cacheAdded?: boolean,
     selectionState?: SelectionState,
-}
-
-type rawType = {
-    blocks: Array<*>,
-    entityMap: {}
+    sourceType?: string,
 }
 
 export const getSignatureContentState = (signature: Map<*,*>): ContentState => {
@@ -121,6 +116,18 @@ export const hasOnlySignature = (contentState: ?ContentState, textSignature: ?st
     return contentState.getPlainText() === signatureTextPrefix + textSignature
 }
 
+export const getSourceTypeCache = (ticketId: string): string => {
+    return ticketReplyCache.get(ticketId).get('sourceType')
+}
+
+export const setSourceTypeCache = (ticketId: string, sourceType: string): void => {
+    return ticketReplyCache.set(ticketId, {sourceType})
+}
+
+export const deleteReplyCache = (ticketId: string): void => {
+    return ticketReplyCache.delete(ticketId)
+}
+
 /**
  * Get the initial editor state (contentState + selectionState) from cache or return an empty state
  */
@@ -155,7 +162,7 @@ export const getCache = (context: contextType): contextType => {
  * Update the cache by saving the contentState and selectionState
  */
 export const updateCache = (context: contextType) => {
-    const {contentState, selectionState, appliedMacro, action} = context
+    const {contentState, selectionState, appliedMacro, action, sourceType} = context
     const textSignature = action.signature ? action.signature.get('text') : ''
 
     // We're storing the content state in a persistent storage so we can keep it after page refresh
@@ -164,34 +171,14 @@ export const updateCache = (context: contextType) => {
     ) {
         // TODO (@xarg): We also need to keep the attachments in the cache
         ticketReplyCache.set(action.ticketId, {
-            contentState: convertToRawWithoutMentions(contentState),
-            selectionState
+            contentState: convertToRaw(contentState),
+            selectionState,
+            sourceType: sourceType,
         })
     } else {
         // we're deleting the data from cache so we don't explode the storage
         ticketReplyCache.delete(action.ticketId)
     }
-}
-
-/**
- * Return a raw content state without any mention entities
- *
- * @param contentState
- * @return {{blocks: Array, entityMap: {}}}
- */
-export const convertToRawWithoutMentions = (contentState: ContentState): rawType => {
-    // We don't store mentions in cache because when we fetch the message from cache,
-    // the mention entity would be applied even if the ticket channel is not private
-
-    const rawContent = convertToRaw(contentState)
-    let newRaw = {blocks: [], entityMap: {}}
-
-    newRaw.blocks = rawContent.blocks.slice()
-    newRaw.entityMap = _pickBy(rawContent.entityMap, (val) => {
-        return val.type !== 'mention'
-    })
-
-    return newRaw
 }
 
 /**

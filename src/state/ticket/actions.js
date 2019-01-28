@@ -29,6 +29,7 @@ import {getCustomerMessages} from './selectors'
 import {markChatAsRead} from '../chats/actions'
 import * as ticketsSelectors from '../tickets/selectors'
 
+import {getSourceTypeCache} from '../newMessage/responseUtils'
 
 export const mergeTicket = (ticket) => (dispatch, getState) => {
     ticket = fromJS(ticket)
@@ -475,6 +476,12 @@ export const fetchTicket = (ticketId, discreetly = false) => (dispatch) => {
             })
 
             dispatch(newMessageActions.initializeMessageDraft())
+
+            // trigger side effects for cached source type
+            const cachedSourceType = getSourceTypeCache(ticketId)
+            if (cachedSourceType) {
+                dispatch(newMessageActions.prepare(cachedSourceType))
+            }
 
             const sourceTypeOfResponse = getSourceTypeOfResponse(resp.messages)
 

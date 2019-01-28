@@ -10,7 +10,8 @@ export const CACHE_MAX_ITEMS = 5
 export const defaultTicket = fromJS({
     contentState: null,
     selectionState: null,
-    macro: null
+    macro: null,
+    sourceType: null,
 })
 
 export class TicketReplyCache {

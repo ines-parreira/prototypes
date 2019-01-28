@@ -1,20 +1,7 @@
-import {ContentState, EditorState, convertToRaw} from 'draft-js'
-import addMention from '../../../pages/common/draftjs/plugins/mentions/modifiers/addMention'
+import {ContentState} from 'draft-js'
 import {fromJS} from 'immutable'
 import * as responseUtils from '../responseUtils'
 import {convertToHTML} from '../../../utils/editor'
-
-describe('convertToRawWithoutMentions', () => {
-    it('should return a raw contentState without any mention entities', () => {
-        const editorState = EditorState.push(EditorState.createEmpty(), ContentState.createFromText('@Bob'))
-        const newEditorState = addMention(editorState, fromJS({name: 'Bob', id: 8}), '@', '@', 'SEGMENTED')
-
-        expect(convertToRaw(newEditorState.getCurrentContent()).entityMap).toHaveProperty('0')
-
-        const raw = responseUtils.convertToRawWithoutMentions(newEditorState.getCurrentContent())
-        expect(raw.entityMap).not.toHaveProperty('0')
-    })
-})
 
 describe('addSignature', () => {
     it('should add plain text signature', () => {

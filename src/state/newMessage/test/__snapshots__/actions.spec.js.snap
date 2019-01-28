@@ -1650,6 +1650,7 @@ Array [
     "resetMessage": true,
     "retry": false,
     "status": undefined,
+    "ticketId": 12,
     "type": "NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START",
   },
   Object {
@@ -2090,6 +2091,7 @@ Array [
     "resetMessage": true,
     "retry": false,
     "status": undefined,
+    "ticketId": 12,
     "type": "NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START",
   },
   Object {

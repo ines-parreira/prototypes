@@ -300,10 +300,12 @@ const prepareDefault = (sourceType: string) => (dispatch: dispatchType, getState
  */
 export const prepare = (sourceType: string) => (dispatch: dispatchType, getState: getStateType) => {
     const state = getState()
+    const currentTicket = ticketSelectors.getTicket(state)
+    // cache source type when changed
+    responseUtils.setSourceTypeCache(currentTicket.get('id'), sourceType)
 
     switch (sourceType) {
         case 'email-forward': {
-            const currentTicket = ticketSelectors.getTicket(state)
             const messages = ticketSelectors.getMessages(state)
             let attachments = []
 
@@ -633,6 +635,7 @@ export function submitTicketMessage(status: ?string, macroActions: ?macroActions
             retry: !!retryMessage,
             status: status,
             messages: ticketSelectors.getMessages(state),
+            ticketId: ticket.get('id'),
         })
 
         onMessageSent(dispatch)

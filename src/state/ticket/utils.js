@@ -12,6 +12,7 @@ import {getPersonLabelFromSource} from '../../pages/tickets/common/utils'
 import {getActionTemplate, toImmutable} from '../../utils'
 import {renderTemplate} from '../../pages/common/utils/template'
 
+import * as responseUtils from '../newMessage/responseUtils'
 
 /**
  * Get the most recent messages which have the matching sourceType
@@ -38,6 +39,13 @@ export function getLastSameSourceTypeMessage(messages, sourceType) {
  */
 export function getSourceTypeOfResponse(messages) {
     messages = toImmutable(messages)
+    const ticketId = messages.getIn([0, 'ticket_id'])
+    if (ticketId) {
+        const cachedSourceType = responseUtils.getSourceTypeCache(ticketId)
+        if (cachedSourceType) {
+            return cachedSourceType
+        }
+    }
     return ticketConfig.responseSourceType(messages)
 }
 
