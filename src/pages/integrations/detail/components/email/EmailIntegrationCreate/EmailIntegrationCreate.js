@@ -136,7 +136,7 @@ class EmailIntegrationCreate extends React.Component {
                         </Button>
 
                         <p className="text-muted text-center">
-                            Improve email deliverability, keep your data on your Google account, import last 100 emails
+                            Improve email deliverability, keep your data on your Google account, import last 1000 emails
                             (optional)
                         </p>
 
