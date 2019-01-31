@@ -18,6 +18,7 @@ import FilterDropdown from '../FilterDropdown'
 import DatetimePicker from '../../../forms/DatetimePicker'
 import TimedeltaPicker from '../../../forms/TimedeltaPicker'
 import MultiSelectField from '../../../forms/MultiSelectField'
+import FilterMultiSelectField from '../FilterMultiSelectField'
 
 @connect((state) => {
     return {
@@ -92,6 +93,13 @@ export default class Right extends React.Component {
         this.setState({dropdownOpen: !this.state.dropdownOpen})
     }
 
+    _mapTagSearchResultsToOptions = (results) => {
+        return results.map((result) => ({
+            value: result.name,
+            label: result.name
+        }))
+    }
+
     render() {
         const {operator, node, config, field, updateFieldFilter, updateFieldFilterOperator, index, empty} = this.props
 
@@ -117,7 +125,8 @@ export default class Right extends React.Component {
             if (node.type === 'ArrayExpression') {
                 const selectedOptions = node.elements.map((opt) => opt.value)
                 const options = this.props.integrations.map((integration) => ({
-                    label: <IntegrationsDetailLabel integration={integration}/>,
+                    label: integration.get('name'),
+                    displayLabel: <IntegrationsDetailLabel integration={integration}/>,
                     value: integration.get('id')
                 })).toJS()
 
@@ -168,19 +177,19 @@ export default class Right extends React.Component {
             )
         } else if (field.get('name') === 'tags') {
             if (node.type === 'ArrayExpression') {
-                const selectedOptions = node.elements.map((opt) => opt.value)
-                const options = this.props.tags.map((tag) => ({
-                    label: tag.get('name'),
-                    value: tag.get('name')
-                })).toJS()
+                const selectedOptions = node.elements.map((opt) => ({
+                    label: opt.value,
+                    value: opt.value
+                }))
 
                 return (
-                    <MultiSelectField
-                        values={selectedOptions}
-                        options={options}
+                    <FilterMultiSelectField
+                        field={field}
+                        selectedOptions={selectedOptions}
                         singular='tag'
                         plural='tags'
-                        onChange={(value) => updateFieldFilter(index, value)}
+                        onChange={(options) => updateFieldFilter(index, options.map((option) => option.value))}
+                        mapSearchResults={this._mapTagSearchResultsToOptions}
                     />
                 )
             }
@@ -188,7 +197,8 @@ export default class Right extends React.Component {
             if (node.type === 'ArrayExpression') {
                 const selectedOptions = node.elements.map((opt) => opt.value)
                 const options = field.getIn(['filter', 'enum']).map((val) => ({
-                    label: val, value: val
+                    label: val,
+                    value: val
                 })).toJS()
 
                 return (

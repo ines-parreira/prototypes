@@ -150,7 +150,6 @@ exports[`RuleItem component should render 1`] = `
                 }
                 plural="events"
                 singular="event"
-                style={null}
                 tagColor="#0275d8"
                 values={
                   Array [
@@ -422,7 +421,6 @@ exports[`RuleItem component should render errors when there is no trigger select
                 }
                 plural="events"
                 singular="event"
-                style={null}
                 tagColor="#0275d8"
                 values={Array []}
               />

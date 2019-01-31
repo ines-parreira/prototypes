@@ -1,0 +1,554 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MultiSelectField should init state with custom props 1`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "First",
+      "value": "first",
+    },
+    Object {
+      "label": "Second",
+      "value": "second",
+    },
+    Object {
+      "label": "Third",
+      "value": "third",
+    },
+  ],
+  "input": "",
+  "isFocused": false,
+}
+`;
+
+exports[`MultiSelectField should render a multi select input with custom props 1`] = `
+<MultiSelectOptionsField
+  allowCustomOptions={false}
+  matchInput={false}
+  onChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "First",
+        "value": "first",
+      },
+      Object {
+        "label": "Second",
+        "value": "second",
+      },
+      Object {
+        "label": "Third",
+        "value": "third",
+      },
+    ]
+  }
+  plural="tags"
+  selectedOptions={Array []}
+  singular="tag"
+  tagColor="#0275d8"
+>
+  <div
+    className="MultiSelectField"
+  >
+    <div
+      className="select"
+      onClick={[Function]}
+    >
+      <Dropdown
+        isFocused={false}
+        onBlur={[Function]}
+        onChange={[Function]}
+        onDelete={[Function]}
+        onFocus={[Function]}
+        onSelect={[Function]}
+        options={
+          Array [
+            Object {
+              "label": "First",
+              "value": "first",
+            },
+            Object {
+              "label": "Second",
+              "value": "second",
+            },
+            Object {
+              "label": "Third",
+              "value": "third",
+            },
+          ]
+        }
+        placeholder="Add tags..."
+        value=""
+      >
+        <div
+          className="input-container"
+        >
+          <UncontrolledDropdown
+            isOpen={false}
+          >
+            <Dropdown
+              active={false}
+              addonType={false}
+              direction="down"
+              inNavbar={false}
+              isOpen={false}
+              nav={false}
+              toggle={[Function]}
+            >
+              <Manager
+                className="dropdown"
+                onKeyDown={[Function]}
+                tag="div"
+              >
+                <div
+                  className="dropdown"
+                  onKeyDown={[Function]}
+                >
+                  <DropdownToggle
+                    aria-haspopup={true}
+                    color="secondary"
+                    data-toggle="dropdown"
+                    tag="div"
+                  >
+                    <Target
+                      aria-expanded={false}
+                      aria-haspopup={true}
+                      className=""
+                      component="div"
+                      data-toggle="dropdown"
+                      onClick={[Function]}
+                    >
+                      <div
+                        aria-expanded={false}
+                        aria-haspopup={true}
+                        className=""
+                        data-toggle="dropdown"
+                        onClick={[Function]}
+                      >
+                        <Input
+                          isFocused={false}
+                          onBlur={[Function]}
+                          onChange={[Function]}
+                          onDelete={[Function]}
+                          onDown={[Function]}
+                          onFocus={[Function]}
+                          onSubmit={[Function]}
+                          onUp={[Function]}
+                          placeholder="Add tags..."
+                          value=""
+                        >
+                          <input
+                            className="input ml-2"
+                            onBlur={[Function]}
+                            onChange={[Function]}
+                            onFocus={[Function]}
+                            onKeyDown={[Function]}
+                            placeholder="Add tags..."
+                            value=""
+                          />
+                        </Input>
+                      </div>
+                    </Target>
+                  </DropdownToggle>
+                  <DropdownMenu
+                    className="options"
+                    flip={true}
+                    tag="div"
+                  >
+                    <div
+                      aria-hidden={true}
+                      className="options dropdown-menu"
+                      role="menu"
+                      tabIndex="-1"
+                    >
+                      <Menu
+                        activeIndex={0}
+                        onActivate={[Function]}
+                        onSelect={[Function]}
+                        options={
+                          Array [
+                            Object {
+                              "label": "First",
+                              "value": "first",
+                            },
+                            Object {
+                              "label": "Second",
+                              "value": "second",
+                            },
+                            Object {
+                              "label": "Third",
+                              "value": "third",
+                            },
+                          ]
+                        }
+                      >
+                        <MenuItem
+                          isActive={true}
+                          key="0"
+                          onActivate={[Function]}
+                          onSelect={[Function]}
+                        >
+                          <DropdownItem
+                            className="option option--focused"
+                            onMouseDown={[Function]}
+                            onMouseEnter={[Function]}
+                            tag="button"
+                            toggle={true}
+                            type="button"
+                          >
+                            <button
+                              className="option option--focused dropdown-item"
+                              onClick={[Function]}
+                              onMouseDown={[Function]}
+                              onMouseEnter={[Function]}
+                              tabIndex="0"
+                              type="button"
+                            >
+                              First
+                            </button>
+                          </DropdownItem>
+                        </MenuItem>
+                        <MenuItem
+                          isActive={false}
+                          key="1"
+                          onActivate={[Function]}
+                          onSelect={[Function]}
+                        >
+                          <DropdownItem
+                            className="option"
+                            onMouseDown={[Function]}
+                            onMouseEnter={[Function]}
+                            tag="button"
+                            toggle={true}
+                            type="button"
+                          >
+                            <button
+                              className="option dropdown-item"
+                              onClick={[Function]}
+                              onMouseDown={[Function]}
+                              onMouseEnter={[Function]}
+                              tabIndex="0"
+                              type="button"
+                            >
+                              Second
+                            </button>
+                          </DropdownItem>
+                        </MenuItem>
+                        <MenuItem
+                          isActive={false}
+                          key="2"
+                          onActivate={[Function]}
+                          onSelect={[Function]}
+                        >
+                          <DropdownItem
+                            className="option"
+                            onMouseDown={[Function]}
+                            onMouseEnter={[Function]}
+                            tag="button"
+                            toggle={true}
+                            type="button"
+                          >
+                            <button
+                              className="option dropdown-item"
+                              onClick={[Function]}
+                              onMouseDown={[Function]}
+                              onMouseEnter={[Function]}
+                              tabIndex="0"
+                              type="button"
+                            >
+                              Third
+                            </button>
+                          </DropdownItem>
+                        </MenuItem>
+                      </Menu>
+                    </div>
+                  </DropdownMenu>
+                </div>
+              </Manager>
+            </Dropdown>
+          </UncontrolledDropdown>
+        </div>
+      </Dropdown>
+    </div>
+  </div>
+</MultiSelectOptionsField>
+`;
+
+exports[`MultiSelectField should render a select input with default props 1`] = `
+<MultiSelectOptionsField
+  allowCustomOptions={false}
+  matchInput={false}
+  onChange={[Function]}
+  options={Array []}
+  plural="items"
+  selectedOptions={Array []}
+  singular="item"
+  tagColor="#0275d8"
+>
+  <div
+    className="MultiSelectField"
+  >
+    <div
+      className="select"
+      onClick={[Function]}
+    >
+      <Dropdown
+        isFocused={false}
+        onBlur={[Function]}
+        onChange={[Function]}
+        onDelete={[Function]}
+        onFocus={[Function]}
+        onSelect={[Function]}
+        options={Array []}
+        placeholder="Add items..."
+        value=""
+      >
+        <div
+          className="input-container"
+        >
+          <UncontrolledDropdown
+            isOpen={false}
+          >
+            <Dropdown
+              active={false}
+              addonType={false}
+              direction="down"
+              inNavbar={false}
+              isOpen={false}
+              nav={false}
+              toggle={[Function]}
+            >
+              <Manager
+                className="dropdown"
+                onKeyDown={[Function]}
+                tag="div"
+              >
+                <div
+                  className="dropdown"
+                  onKeyDown={[Function]}
+                >
+                  <DropdownToggle
+                    aria-haspopup={true}
+                    color="secondary"
+                    data-toggle="dropdown"
+                    tag="div"
+                  >
+                    <Target
+                      aria-expanded={false}
+                      aria-haspopup={true}
+                      className=""
+                      component="div"
+                      data-toggle="dropdown"
+                      onClick={[Function]}
+                    >
+                      <div
+                        aria-expanded={false}
+                        aria-haspopup={true}
+                        className=""
+                        data-toggle="dropdown"
+                        onClick={[Function]}
+                      >
+                        <Input
+                          isFocused={false}
+                          onBlur={[Function]}
+                          onChange={[Function]}
+                          onDelete={[Function]}
+                          onDown={[Function]}
+                          onFocus={[Function]}
+                          onSubmit={[Function]}
+                          onUp={[Function]}
+                          placeholder="Add items..."
+                          value=""
+                        >
+                          <input
+                            className="input ml-2"
+                            onBlur={[Function]}
+                            onChange={[Function]}
+                            onFocus={[Function]}
+                            onKeyDown={[Function]}
+                            placeholder="Add items..."
+                            value=""
+                          />
+                        </Input>
+                      </div>
+                    </Target>
+                  </DropdownToggle>
+                  <DropdownMenu
+                    className="options"
+                    flip={true}
+                    tag="div"
+                  >
+                    <div
+                      aria-hidden={true}
+                      className="options dropdown-menu"
+                      role="menu"
+                      tabIndex="-1"
+                    >
+                      <Menu
+                        activeIndex={0}
+                        onActivate={[Function]}
+                        onSelect={[Function]}
+                        options={Array []}
+                      >
+                        <DropdownItem
+                          header={true}
+                          tag="button"
+                          toggle={true}
+                        >
+                          <h6
+                            className="dropdown-header"
+                            onClick={[Function]}
+                            tabIndex="-1"
+                          >
+                            No result
+                          </h6>
+                        </DropdownItem>
+                      </Menu>
+                    </div>
+                  </DropdownMenu>
+                </div>
+              </Manager>
+            </Dropdown>
+          </UncontrolledDropdown>
+        </div>
+      </Dropdown>
+    </div>
+  </div>
+</MultiSelectOptionsField>
+`;
+
+exports[`MultiSelectField should render a select input with default props 2`] = `
+Object {
+  "allowCustomOptions": false,
+  "matchInput": false,
+  "onChange": [Function],
+  "options": Array [],
+  "plural": "items",
+  "selectedOptions": Array [],
+  "singular": "item",
+  "tagColor": "#0275d8",
+}
+`;
+
+exports[`MultiSelectField should render a select input with default props 3`] = `
+Object {
+  "filteredOptions": Array [],
+  "input": "",
+  "isFocused": false,
+}
+`;
+
+exports[`MultiSelectField should reset state on blur 1`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "First",
+      "value": "first",
+    },
+    Object {
+      "label": "Second",
+      "value": "second",
+    },
+    Object {
+      "label": "Third",
+      "value": "third",
+    },
+  ],
+  "input": "",
+  "isFocused": false,
+}
+`;
+
+exports[`MultiSelectField should update state when search changes (custom values NOT allowed) 1`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "Hello",
+      "value": "hello",
+    },
+    Object {
+      "label": "World",
+      "value": "world",
+    },
+  ],
+  "input": "hello",
+  "isFocused": false,
+}
+`;
+
+exports[`MultiSelectField should update state when search changes (custom values NOT allowed) 2`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "Hello",
+      "value": "hello",
+    },
+    Object {
+      "label": "World",
+      "value": "world",
+    },
+  ],
+  "input": "",
+  "isFocused": false,
+}
+`;
+
+exports[`MultiSelectField should update state when search changes (custom values allowed) 1`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "Hello",
+      "value": "hello",
+    },
+    Object {
+      "label": "World",
+      "value": "world",
+    },
+  ],
+  "input": "hello",
+  "isFocused": false,
+}
+`;
+
+exports[`MultiSelectField should update state when search changes (custom values allowed) 2`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "Hello",
+      "value": "hello",
+    },
+    Object {
+      "label": "World",
+      "value": "world",
+    },
+  ],
+  "input": "",
+  "isFocused": false,
+}
+`;
+
+exports[`MultiSelectField should use custom props 1`] = `
+Object {
+  "allowCustomOptions": false,
+  "matchInput": false,
+  "onChange": [Function],
+  "options": Array [
+    Object {
+      "label": "First",
+      "value": "first",
+    },
+    Object {
+      "label": "Second",
+      "value": "second",
+    },
+    Object {
+      "label": "Third",
+      "value": "third",
+    },
+  ],
+  "plural": "tags",
+  "selectedOptions": Array [],
+  "singular": "tag",
+  "tagColor": "#0275d8",
+}
+`;
