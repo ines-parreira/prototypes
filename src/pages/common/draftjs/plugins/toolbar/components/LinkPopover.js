@@ -29,7 +29,7 @@ const Button = (props: any) => (
 
 )
 
-export default class extends React.Component<Props, State> {
+export default class LinkPopover extends React.Component<Props, State> {
     state: State = {
         isOpen: false
     }

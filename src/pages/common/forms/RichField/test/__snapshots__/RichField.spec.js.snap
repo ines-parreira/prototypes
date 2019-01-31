@@ -5158,11 +5158,11 @@ exports[`RichField should render immutable variable 1`] = `
                             <div
                               className="actions"
                             >
-                              <Decorated(_default)
+                              <Decorated(InlineStyle)
                                 getEditorState={[Function]}
                                 setEditorState={[Function]}
                               >
-                                <_default
+                                <InlineStyle
                                   getEditorState={[Function]}
                                   icon="format_bold"
                                   name="Bold"
@@ -5190,13 +5190,13 @@ exports[`RichField should render immutable variable 1`] = `
                                       </i>
                                     </button>
                                   </Component>
-                                </_default>
-                              </Decorated(_default)>
-                              <Decorated(_default)
+                                </InlineStyle>
+                              </Decorated(InlineStyle)>
+                              <Decorated(InlineStyle)
                                 getEditorState={[Function]}
                                 setEditorState={[Function]}
                               >
-                                <_default
+                                <InlineStyle
                                   getEditorState={[Function]}
                                   icon="format_italic"
                                   name="Italic"
@@ -5224,13 +5224,13 @@ exports[`RichField should render immutable variable 1`] = `
                                       </i>
                                     </button>
                                   </Component>
-                                </_default>
-                              </Decorated(_default)>
-                              <Decorated(_default)
+                                </InlineStyle>
+                              </Decorated(InlineStyle)>
+                              <Decorated(InlineStyle)
                                 getEditorState={[Function]}
                                 setEditorState={[Function]}
                               >
-                                <_default
+                                <InlineStyle
                                   getEditorState={[Function]}
                                   icon="format_underline"
                                   name="Underline"
@@ -5258,8 +5258,8 @@ exports[`RichField should render immutable variable 1`] = `
                                       </i>
                                     </button>
                                   </Component>
-                                </_default>
-                              </Decorated(_default)>
+                                </InlineStyle>
+                              </Decorated(InlineStyle)>
                               <AddLink
                                 getEditorRef={[Function]}
                                 getEditorState={[Function]}
@@ -5276,7 +5276,7 @@ exports[`RichField should render immutable variable 1`] = `
                                 text=""
                                 url=""
                               >
-                                <_default
+                                <ButtonPopover
                                   icon="link"
                                   isActive={false}
                                   isDisabled={false}
@@ -5285,7 +5285,7 @@ exports[`RichField should render immutable variable 1`] = `
                                   onClose={[Function]}
                                   onOpen={[Function]}
                                 >
-                                  <_default
+                                  <Popover
                                     isOpen={false}
                                     trigger={
                                       <Unknown
@@ -5325,8 +5325,8 @@ exports[`RichField should render immutable variable 1`] = `
                                         className="popover hidden"
                                       />
                                     </span>
-                                  </_default>
-                                </_default>
+                                  </Popover>
+                                </ButtonPopover>
                               </AddLink>
                               <AddImage
                                 getEditorRef={[Function]}
@@ -5337,7 +5337,7 @@ exports[`RichField should render immutable variable 1`] = `
                                 setEditorState={[Function]}
                                 setReadOnly={[Function]}
                               >
-                                <_default
+                                <ButtonPopover
                                   icon="insert_photo"
                                   isActive={false}
                                   isDisabled={false}
@@ -5346,7 +5346,7 @@ exports[`RichField should render immutable variable 1`] = `
                                   onClose={[Function]}
                                   onOpen={[Function]}
                                 >
-                                  <_default
+                                  <Popover
                                     isOpen={false}
                                     trigger={
                                       <Unknown
@@ -5386,14 +5386,14 @@ exports[`RichField should render immutable variable 1`] = `
                                         className="popover hidden"
                                       />
                                     </span>
-                                  </_default>
-                                </_default>
+                                  </Popover>
+                                </ButtonPopover>
                               </AddImage>
                               <AddEmoji
                                 getEditorState={[Function]}
                                 setEditorState={[Function]}
                               >
-                                <_default
+                                <ButtonPopover
                                   className="p-0 d-flex"
                                   icon="insert_emoticon"
                                   isActive={false}
@@ -5403,7 +5403,7 @@ exports[`RichField should render immutable variable 1`] = `
                                   onClose={[Function]}
                                   onOpen={[Function]}
                                 >
-                                  <_default
+                                  <Popover
                                     className="p-0 d-flex"
                                     isOpen={false}
                                     trigger={
@@ -5444,8 +5444,8 @@ exports[`RichField should render immutable variable 1`] = `
                                         className="p-0 d-flex popover hidden"
                                       />
                                     </span>
-                                  </_default>
-                                </_default>
+                                  </Popover>
+                                </ButtonPopover>
                               </AddEmoji>
                             </div>
                             <div
@@ -7570,11 +7570,11 @@ exports[`RichField should render mutable variable 1`] = `
                             <div
                               className="actions"
                             >
-                              <Decorated(_default)
+                              <Decorated(InlineStyle)
                                 getEditorState={[Function]}
                                 setEditorState={[Function]}
                               >
-                                <_default
+                                <InlineStyle
                                   getEditorState={[Function]}
                                   icon="format_bold"
                                   name="Bold"
@@ -7602,13 +7602,13 @@ exports[`RichField should render mutable variable 1`] = `
                                       </i>
                                     </button>
                                   </Component>
-                                </_default>
-                              </Decorated(_default)>
-                              <Decorated(_default)
+                                </InlineStyle>
+                              </Decorated(InlineStyle)>
+                              <Decorated(InlineStyle)
                                 getEditorState={[Function]}
                                 setEditorState={[Function]}
                               >
-                                <_default
+                                <InlineStyle
                                   getEditorState={[Function]}
                                   icon="format_italic"
                                   name="Italic"
@@ -7636,13 +7636,13 @@ exports[`RichField should render mutable variable 1`] = `
                                       </i>
                                     </button>
                                   </Component>
-                                </_default>
-                              </Decorated(_default)>
-                              <Decorated(_default)
+                                </InlineStyle>
+                              </Decorated(InlineStyle)>
+                              <Decorated(InlineStyle)
                                 getEditorState={[Function]}
                                 setEditorState={[Function]}
                               >
-                                <_default
+                                <InlineStyle
                                   getEditorState={[Function]}
                                   icon="format_underline"
                                   name="Underline"
@@ -7670,8 +7670,8 @@ exports[`RichField should render mutable variable 1`] = `
                                       </i>
                                     </button>
                                   </Component>
-                                </_default>
-                              </Decorated(_default)>
+                                </InlineStyle>
+                              </Decorated(InlineStyle)>
                               <AddLink
                                 getEditorRef={[Function]}
                                 getEditorState={[Function]}
@@ -7688,7 +7688,7 @@ exports[`RichField should render mutable variable 1`] = `
                                 text=""
                                 url=""
                               >
-                                <_default
+                                <ButtonPopover
                                   icon="link"
                                   isActive={false}
                                   isDisabled={false}
@@ -7697,7 +7697,7 @@ exports[`RichField should render mutable variable 1`] = `
                                   onClose={[Function]}
                                   onOpen={[Function]}
                                 >
-                                  <_default
+                                  <Popover
                                     isOpen={false}
                                     trigger={
                                       <Unknown
@@ -7737,8 +7737,8 @@ exports[`RichField should render mutable variable 1`] = `
                                         className="popover hidden"
                                       />
                                     </span>
-                                  </_default>
-                                </_default>
+                                  </Popover>
+                                </ButtonPopover>
                               </AddLink>
                               <AddImage
                                 getEditorRef={[Function]}
@@ -7749,7 +7749,7 @@ exports[`RichField should render mutable variable 1`] = `
                                 setEditorState={[Function]}
                                 setReadOnly={[Function]}
                               >
-                                <_default
+                                <ButtonPopover
                                   icon="insert_photo"
                                   isActive={false}
                                   isDisabled={false}
@@ -7758,7 +7758,7 @@ exports[`RichField should render mutable variable 1`] = `
                                   onClose={[Function]}
                                   onOpen={[Function]}
                                 >
-                                  <_default
+                                  <Popover
                                     isOpen={false}
                                     trigger={
                                       <Unknown
@@ -7798,14 +7798,14 @@ exports[`RichField should render mutable variable 1`] = `
                                         className="popover hidden"
                                       />
                                     </span>
-                                  </_default>
-                                </_default>
+                                  </Popover>
+                                </ButtonPopover>
                               </AddImage>
                               <AddEmoji
                                 getEditorState={[Function]}
                                 setEditorState={[Function]}
                               >
-                                <_default
+                                <ButtonPopover
                                   className="p-0 d-flex"
                                   icon="insert_emoticon"
                                   isActive={false}
@@ -7815,7 +7815,7 @@ exports[`RichField should render mutable variable 1`] = `
                                   onClose={[Function]}
                                   onOpen={[Function]}
                                 >
-                                  <_default
+                                  <Popover
                                     className="p-0 d-flex"
                                     isOpen={false}
                                     trigger={
@@ -7856,8 +7856,8 @@ exports[`RichField should render mutable variable 1`] = `
                                         className="p-0 d-flex popover hidden"
                                       />
                                     </span>
-                                  </_default>
-                                </_default>
+                                  </Popover>
+                                </ButtonPopover>
                               </AddEmoji>
                             </div>
                             <div

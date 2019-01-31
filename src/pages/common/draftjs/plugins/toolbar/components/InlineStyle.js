@@ -10,7 +10,7 @@ type Props = {
     style: string
 } & ActionInjectedProps
 
-export default class extends React.Component<Props> {
+export default class InlineStyle extends React.Component<Props> {
     _isActive = () => {
         const editorState = this.props.getEditorState()
         const contentState = editorState.getCurrentContent()

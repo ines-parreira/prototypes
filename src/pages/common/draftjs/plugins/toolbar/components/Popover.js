@@ -10,7 +10,7 @@ type Props = {
     className?: string
 }
 
-export default class extends React.Component<Props> {
+export default class Popover extends React.Component<Props> {
     render () {
         const { isOpen, children, trigger, className } = this.props
         return (

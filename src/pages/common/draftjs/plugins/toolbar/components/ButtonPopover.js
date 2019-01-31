@@ -16,7 +16,7 @@ type Props = {
     onOpen: () => void,
 }
 
-export default class extends React.Component<Props> {
+export default class ButtonPopover extends React.Component<Props> {
     static defaultProps = {
         isActive: false,
         isDisabled: false,

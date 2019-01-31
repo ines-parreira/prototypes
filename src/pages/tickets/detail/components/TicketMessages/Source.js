@@ -4,7 +4,7 @@ import css from './Source.less'
 import SourceIcon from '../../../../common/components/SourceIcon'
 import {Popover, PopoverBody} from 'reactstrap'
 import {DatetimeLabel} from '../../../../common/utils/labels'
-import {type Source} from '../../../../../models/ticketElement/types'
+import {type Source as SourceType} from '../../../../../models/ticketElement/types'
 import classnames from 'classnames'
 import {isArray as _isArray} from 'lodash'
 import {getPersonLabelFromSource} from '../../../common/utils'
@@ -13,14 +13,14 @@ type Props = {
     id: string,
     isForwarded: boolean,
     createdDatetime: string,
-    source: Source
+    source: SourceType
 }
 
 type State = {
     isDropdownOpen: boolean
 }
 
-export default class extends React.Component<Props, State> {
+export default class Source extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = {

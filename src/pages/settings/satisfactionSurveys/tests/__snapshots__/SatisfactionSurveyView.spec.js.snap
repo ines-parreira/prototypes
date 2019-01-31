@@ -2647,11 +2647,11 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                         <div
                                                           className="actions"
                                                         >
-                                                          <Decorated(_default)
+                                                          <Decorated(InlineStyle)
                                                             getEditorState={[Function]}
                                                             setEditorState={[Function]}
                                                           >
-                                                            <_default
+                                                            <InlineStyle
                                                               getEditorState={[Function]}
                                                               icon="format_bold"
                                                               name="Bold"
@@ -2679,13 +2679,13 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                   </i>
                                                                 </button>
                                                               </Component>
-                                                            </_default>
-                                                          </Decorated(_default)>
-                                                          <Decorated(_default)
+                                                            </InlineStyle>
+                                                          </Decorated(InlineStyle)>
+                                                          <Decorated(InlineStyle)
                                                             getEditorState={[Function]}
                                                             setEditorState={[Function]}
                                                           >
-                                                            <_default
+                                                            <InlineStyle
                                                               getEditorState={[Function]}
                                                               icon="format_italic"
                                                               name="Italic"
@@ -2713,13 +2713,13 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                   </i>
                                                                 </button>
                                                               </Component>
-                                                            </_default>
-                                                          </Decorated(_default)>
-                                                          <Decorated(_default)
+                                                            </InlineStyle>
+                                                          </Decorated(InlineStyle)>
+                                                          <Decorated(InlineStyle)
                                                             getEditorState={[Function]}
                                                             setEditorState={[Function]}
                                                           >
-                                                            <_default
+                                                            <InlineStyle
                                                               getEditorState={[Function]}
                                                               icon="format_underline"
                                                               name="Underline"
@@ -2747,8 +2747,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                   </i>
                                                                 </button>
                                                               </Component>
-                                                            </_default>
-                                                          </Decorated(_default)>
+                                                            </InlineStyle>
+                                                          </Decorated(InlineStyle)>
                                                           <AddLink
                                                             getEditorRef={[Function]}
                                                             getEditorState={[Function]}
@@ -2765,7 +2765,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                             text=""
                                                             url=""
                                                           >
-                                                            <_default
+                                                            <ButtonPopover
                                                               icon="link"
                                                               isActive={false}
                                                               isDisabled={false}
@@ -2774,7 +2774,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                               onClose={[Function]}
                                                               onOpen={[Function]}
                                                             >
-                                                              <_default
+                                                              <Popover
                                                                 isOpen={false}
                                                                 trigger={
                                                                   <Unknown
@@ -2814,8 +2814,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                     className="popover hidden"
                                                                   />
                                                                 </span>
-                                                              </_default>
-                                                            </_default>
+                                                              </Popover>
+                                                            </ButtonPopover>
                                                           </AddLink>
                                                           <AddImage
                                                             getEditorRef={[Function]}
@@ -2826,7 +2826,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                             setEditorState={[Function]}
                                                             setReadOnly={[Function]}
                                                           >
-                                                            <_default
+                                                            <ButtonPopover
                                                               icon="insert_photo"
                                                               isActive={false}
                                                               isDisabled={false}
@@ -2835,7 +2835,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                               onClose={[Function]}
                                                               onOpen={[Function]}
                                                             >
-                                                              <_default
+                                                              <Popover
                                                                 isOpen={false}
                                                                 trigger={
                                                                   <Unknown
@@ -2875,14 +2875,14 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                     className="popover hidden"
                                                                   />
                                                                 </span>
-                                                              </_default>
-                                                            </_default>
+                                                              </Popover>
+                                                            </ButtonPopover>
                                                           </AddImage>
                                                           <AddEmoji
                                                             getEditorState={[Function]}
                                                             setEditorState={[Function]}
                                                           >
-                                                            <_default
+                                                            <ButtonPopover
                                                               className="p-0 d-flex"
                                                               icon="insert_emoticon"
                                                               isActive={false}
@@ -2892,7 +2892,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                               onClose={[Function]}
                                                               onOpen={[Function]}
                                                             >
-                                                              <_default
+                                                              <Popover
                                                                 className="p-0 d-flex"
                                                                 isOpen={false}
                                                                 trigger={
@@ -2933,8 +2933,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                     className="p-0 d-flex popover hidden"
                                                                   />
                                                                 </span>
-                                                              </_default>
-                                                            </_default>
+                                                              </Popover>
+                                                            </ButtonPopover>
                                                           </AddEmoji>
                                                         </div>
                                                         <div
