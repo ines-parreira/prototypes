@@ -15,7 +15,7 @@ exports[`BusinessHours component should render default values 1`] = `
     <p>
       Let customers know when your team is online.
       <br />
-      This way, you can disable the chat outside of business hours, or set different auto-responders in the rules based on when your team is working.
+      This way, you can set different auto-responders in the rules based on when your team is working.
     </p>
     <Form
       onSubmit={[Function]}
@@ -211,7 +211,7 @@ exports[`BusinessHours component should render values from state 1`] = `
           <p>
             Let customers know when your team is online.
             <br />
-            This way, you can disable the chat outside of business hours, or set different auto-responders in the rules based on when your team is working.
+            This way, you can set different auto-responders in the rules based on when your team is working.
           </p>
           <Form
             onSubmit={[Function]}

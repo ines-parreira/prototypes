@@ -88,8 +88,7 @@ class BusinessHours extends React.Component<Props, State> {
                 >
                     <p>
                         Let customers know when your team is online.<br/>
-                        This way, you can disable the chat outside of business hours, or set different auto-responders
-                        in the rules based on when your team is working.
+                        This way, you can set different auto-responders in the rules based on when your team is working.
                     </p>
 
                     <Form onSubmit={this._onSubmit}>
