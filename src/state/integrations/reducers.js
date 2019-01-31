@@ -1,9 +1,8 @@
 // @flow
-import {fromJS} from 'immutable'
+import {fromJS, type Map} from 'immutable'
 import moment from 'moment'
 import * as constants from './constants.js'
 
-import type {Map} from 'immutable'
 import type {actionType} from '../types'
 
 type defaultActionType = actionType & {
@@ -26,6 +25,15 @@ export const initialState = fromJS({
             updateIntegration: false,
             testing: false,
             delete: false
+        }
+    },
+
+    extra: {
+        facebook: {
+            onboardingPages: {
+                data: [],
+                meta: {}
+            }
         }
     }
 })
@@ -111,6 +119,16 @@ export default (state: Map<*,*> = initialState, action: defaultActionType): Map<
                     integrations.findIndex((integration) => integration.get('id') === action.integrationId),
                     (integration) => integration.setIn(['meta', 'verified'], true))
                 )
+        }
+
+        case constants.FETCH_FACEBOOK_ONBOARDING_PAGES_SUCCESS: {
+            const currentPage = state.getIn(['extra', 'facebook', 'onboardingPages', 'meta', 'page'])
+
+            if (!currentPage || action.forceOverride || action.resp.meta.page === currentPage) {
+                return state.setIn(['extra', 'facebook', 'onboardingPages'], fromJS(action.resp))
+            }
+
+            return state.setIn(['extra', 'facebook', 'onboardingPages', 'meta'], fromJS(action.resp.meta))
         }
 
         default:

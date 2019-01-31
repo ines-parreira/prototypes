@@ -53,7 +53,7 @@ import HTTPIntegrationLayout from './components/http/HTTPIntegrationLayout/HTTPI
 class IntegrationDetailContainer extends React.Component {
     componentWillMount() {
         const {actions, params} = this.props
-        actions.fetchIntegrations(true)
+        actions.fetchIntegrations()
 
         // We need this to allow the user to refresh the settings page.
         // If we don't fetch it, the state is empty on refresh.

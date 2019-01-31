@@ -20,7 +20,7 @@ import PageHeader from '../../../../common/components/PageHeader'
 
 @connect((state) => {
     return {
-        webhookUrl: integrationsSelectors.getIntegrationExtra('aircall')(state).get('webhook_url')
+        webhookUrl: integrationsSelectors.getAuthData('aircall')(state).get('webhook_url')
     }
 })
 export default class AircallIntegrationCreate extends Component {

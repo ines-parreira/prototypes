@@ -1,11 +1,11 @@
+// @flow
 import React from 'react'
-import PropTypes from 'prop-types'
-import ImmutablePropsTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import {Link, browserHistory} from 'react-router'
 import classnames from 'classnames'
+import {fromJS, type List, type Map} from 'immutable'
 import _truncate from 'lodash/truncate'
-import _some from 'lodash/some'
+
 import {
     Form,
     FormGroup,
@@ -17,104 +17,116 @@ import {
 } from 'reactstrap'
 
 import Loader from '../../../../common/components/Loader'
-
+import ToggleButton from '../../../../common/components/ToggleButton'
+import PageHeader from '../../../../common/components/PageHeader'
+import Pagination from '../../../../common/components/Pagination'
 import BooleanField from '../../../../common/forms/BooleanField'
 
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 
-import css from './FacebookIntegrationSetup.less'
-import PageHeader from '../../../../common/components/PageHeader'
-
 import pageIconDefault from '../../../../../../img/integrations/facebook-page.png'
-import ToggleButton from '../../../../common/components/ToggleButton'
+import css from './FacebookIntegrationSetup.less'
+
+
+
+type Props = {
+    integrations: List<Map<*,*>>,
+    pagination: Object,
+    actions: Object,
+    loading: Object,
+}
+
+type State = {
+    selectedIntegrations: List<Map<*,*>>,
+    isLoading: boolean
+}
+
 
 @connect((state) => {
     // Here we only want the DELETED integrations of the current_user
     return {
-        integrations: integrationsSelectors.getFacebookOnboardingPages(state)
+        integrations: integrationsSelectors.getFacebookOnboardingPages(state),
+        pagination: integrationsSelectors.getFacebookOnboardingMeta(state)
     }
 })
-export default class FacebookIntegrationSetup extends React.Component {
-    static propTypes = {
-        integrations: ImmutablePropsTypes.list.isRequired,
-        actions: PropTypes.object.isRequired,
-        loading: PropTypes.object.isRequired,
+export default class FacebookIntegrationSetup extends React.Component<Props, State> {
+    state = {
+        selectedIntegrations: fromJS({}),
+        isLoading: false
     }
+
+    fetchInterval = null
 
     componentWillMount() {
-        this._initializeState(this.props)
+        this._fetchPage(this.props.pagination.get('page') || 1)
+
+        this.fetchInterval = setInterval(
+            () => this._fetchPage(this.props.pagination.get('page') || 1),
+            3000
+        )
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.integrations.isEmpty() && !nextProps.integrations.isEmpty()) {
-            this._initializeState(nextProps)
+    componentWillUnmount() {
+        if (this.fetchInterval) {
+            clearInterval(this.fetchInterval)
         }
     }
 
-    _initializeState(props) {
-        const pages = {}
+    _activateSelectedIntegrations = (evt: Event) => {
+        evt.preventDefault()
+        const {actions} = this.props
+        const {selectedIntegrations} = this.state
 
-        props.integrations
-            .forEach((integration) => {
-                pages[integration.get('id')] = {
-                    page_enabled: false,
-                    messenger_enabled: true,
-                    posts_enabled: true,
-                    instagram_comments_enabled: !!integration.getIn(['meta', 'instagram', 'id']),
-                    import_history_enabled: false,
-                }
-            })
-
-        this.setState({pages})
-    }
-
-    _handleSubmit = (e) => {
-        e.preventDefault()
-        const {actions, integrations} = this.props
-
-        const data = []
-
-        integrations.forEach((integration) => {
-            const settings = this.state.pages[integration.get('id')] || {}
-
-            if (settings.page_enabled) {
-                const updated = integration
-                    .set('deleted_datetime', null)
-                    .mergeDeep({
-                        facebook: {
-                            settings
-                        }
-                    })
-
-                data.push(updated.toJS())
-            }
-        })
+        const data = selectedIntegrations
+            .map((integration) => fromJS(integration).set('deleted_datetime', null))
+            .toList().toJS()
 
         actions.activateFacebookOnboardingPage(data).then(() => actions.fetchIntegrations())
         browserHistory.push('/app/settings/integrations/facebook')
     }
 
-    _onChange = (integration, value, id, name) => {
-        this.state.pages[id][name] = value
+    _toggleIntegration = (integration: Map<*,*>, enable: boolean) => {
+        let {selectedIntegrations} = this.state
+        const id = integration.get('id')
 
-        const canEnableInstagram = !!integration.getIn(['meta', 'instagram', 'id'])
-
-        // if page_enabled option changes, set the same value for following values
-        if (name === 'page_enabled') {
-            this.state.pages[id]['messenger_enabled'] = value
-            this.state.pages[id]['posts_enabled'] = value
-            this.state.pages[id]['instagram_comments_enabled'] = value && canEnableInstagram
+        if (enable) {
+            selectedIntegrations = selectedIntegrations.set(id, integration.setIn(['facebook', 'settings'], fromJS({
+                messenger_enabled: true,
+                posts_enabled: true,
+                instagram_comments_enabled: !!integration.getIn(['meta', 'instagram', 'id']),
+            })))
+        } else {
+            selectedIntegrations = selectedIntegrations.delete(id)
         }
 
-        this.setState(this.state)
+        this.setState({selectedIntegrations})
     }
 
-    _getValue = (id, key) => {
-        return this.state.pages[id][key]
+    _getSettingValue = (id: number, key: string): boolean => {
+        return this.state.selectedIntegrations.getIn([id, 'facebook', 'settings', key]) || false
     }
 
-    _renderPages = () => {
-        const {integrations} = this.props
+    _setSettingValue = (id: number, key: string, value: boolean) => {
+        this.setState({
+            selectedIntegrations: this.state.selectedIntegrations.setIn([id, 'facebook', 'settings', key], value)
+        })
+    }
+
+    _fetchPage = (page: number, silent: boolean = true) => {
+        if (!silent) {
+            this.setState({isLoading: true})
+        }
+
+        this.props.actions.fetchFacebookOnboardingPages(page, !silent).then(() => {
+            if (!silent) {
+                this.setState({isLoading: false})
+            }
+        })
+    }
+
+    _renderIntegrations = () => {
+        const {integrations, pagination} = this.props
+        const {selectedIntegrations, isLoading} = this.state
 
         if (integrations.isEmpty()) {
             return null
@@ -123,17 +135,17 @@ export default class FacebookIntegrationSetup extends React.Component {
         return (
             <div className="mb-4">
                 <p className="font-weight-medium">
-                    We found {integrations.size} pages associated with your account.{' '}
+                    We found {pagination.get('item_count')} pages associated with your account.{' '}
                     Please activate the pages you want to use with Gorgias:
                 </p>
-
+                <div className="mb-2">
                 {
-                    integrations.map((integration) => {
+                    isLoading ? <Loader></Loader> : integrations.map((integration) => {
                         const id = integration.get('id')
                         const page = integration.get('facebook')
 
                         const instagramIsDisabled = !integration.getIn(['meta', 'instagram', 'id'])
-                        const pageEnabled = this._getValue(id, 'page_enabled')
+                        const pageEnabled = selectedIntegrations.has(id)
 
                         return (
                             <div
@@ -159,7 +171,7 @@ export default class FacebookIntegrationSetup extends React.Component {
                                     </div>
                                     <ToggleButton
                                         value={pageEnabled}
-                                        onChange={(value) => this._onChange(integration, value, id, 'page_enabled')}
+                                        onChange={(value) => this._toggleIntegration(integration, value)}
                                     />
                                 </div>
 
@@ -174,23 +186,23 @@ export default class FacebookIntegrationSetup extends React.Component {
                                                 name={`${id}.messenger_enabled`}
                                                 type="checkbox"
                                                 label="Enable Messenger"
-                                                value={this._getValue(id, 'messenger_enabled')}
-                                                onChange={(value) => this._onChange(integration, value, id, 'messenger_enabled')}
+                                                value={this._getSettingValue(id, 'messenger_enabled')}
+                                                onChange={(value) => this._setSettingValue(id, 'messenger_enabled', value)}
                                             />
                                             <BooleanField
                                                 name={`${id}.posts_enabled`}
                                                 type="checkbox"
                                                 label="Enable Facebook posts & comments"
-                                                value={this._getValue(id, 'posts_enabled')}
-                                                onChange={(value) => this._onChange(integration, value, id, 'posts_enabled')}
+                                                value={this._getSettingValue(id, 'posts_enabled')}
+                                                onChange={(value) => this._setSettingValue(id, 'posts_enabled', value)}
                                             />
                                             {!instagramIsDisabled && (
                                                 <BooleanField
                                                     name={`${id}.instagram_comments_enabled`}
                                                     type="checkbox"
                                                     label="Enable Instagram comments"
-                                                    value={this._getValue(id, 'instagram_comments_enabled')}
-                                                    onChange={(value) => this._onChange(integration, value, id, 'instagram_comments_enabled')}
+                                                    value={this._getSettingValue(id, 'instagram_comments_enabled')}
+                                                    onChange={(value) => this._setSettingValue(id, 'instagram_comments_enabled', value)}
                                                 />
                                             )}
                                         </FormGroup>
@@ -219,8 +231,8 @@ export default class FacebookIntegrationSetup extends React.Component {
                                                 name={`${id}.import_history_enabled`}
                                                 type="checkbox"
                                                 label="Import 30 days of history (posts and comments) as closed tickets"
-                                                value={this._getValue(id, 'import_history_enabled')}
-                                                onChange={(value) => this._onChange(integration, value, id, 'import_history_enabled')}
+                                                value={this._getSettingValue(id, 'import_history_enabled')}
+                                                onChange={(value) => this._setSettingValue(id, 'import_history_enabled', value)}
                                             />
                                         </FormGroup>
                                     </div>
@@ -229,6 +241,12 @@ export default class FacebookIntegrationSetup extends React.Component {
                         )
                     })
                 }
+                </div>
+                <Pagination
+                    onChange={(page) => this._fetchPage(page, false)}
+                    pageCount={pagination.get('nb_pages')}
+                    currentPage={pagination.get('page')}
+                />
             </div>
         )
     }
@@ -236,12 +254,7 @@ export default class FacebookIntegrationSetup extends React.Component {
 
     render() {
         const {loading} = this.props
-
-        if (loading.get('integration')) {
-            return <Loader/>
-        }
-
-        const pagesEnabled = _some(this.state.pages, 'page_enabled')
+        const {selectedIntegrations} = this.state
 
         return (
             <div className="full-width">
@@ -271,14 +284,14 @@ export default class FacebookIntegrationSetup extends React.Component {
                         it's done, you can leave this page.
                     </p>
 
-                    <Form onSubmit={this._handleSubmit}>
-                        {this._renderPages()}
+                    <Form onSubmit={this._activateSelectedIntegrations}>
+                        {this._renderIntegrations()}
 
                         <div>
                             <Button
                                 type="submit"
                                 color="success"
-                                disabled={!pagesEnabled}
+                                disabled={selectedIntegrations.isEmpty()}
                                 className={classnames({
                                     'btn-loading': loading.get('updateIntegration'),
                                 })}

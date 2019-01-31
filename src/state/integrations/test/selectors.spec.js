@@ -10,7 +10,7 @@ import {
     getChatIntegrationCampaignById,
     getChannelByTypeAndAddress,
     getChannelSignature,
-    getCurrentIntegration,
+    getCurrentIntegration, getFacebookOnboardingPages, getFacebookOnboardingMeta,
 } from '../selectors'
 import {integrationsState} from '../../../fixtures/integrations'
 import {fromJS} from 'immutable'
@@ -306,6 +306,40 @@ describe('integrations selectors', () => {
             }
 
             expect(getCurrentIntegration(state).toJS()).toEqual(currentIntegration)
+        })
+    })
+
+    describe('getFacebookOnboardingPages selector', () => {
+        it('should return an empty list because there is no integrations in the state', () => {
+            expect(getFacebookOnboardingPages({})).toEqual(fromJS([]))
+        })
+
+        it('should return the list of onboarding pages from the state', () => {
+            const page = {id: 1, name: 'foo'}
+            const state = {
+                integrations: fromJS({
+                    extra: {facebook: {onboardingPages: {data: [page]}}}
+                })
+            }
+
+            expect(getFacebookOnboardingPages(state).toJS()).toEqual([page])
+        })
+    })
+
+    describe('getFacebookOnboardingMeta selector', () => {
+        it('should return an empty map because there is no meta in the state', () => {
+            expect(getFacebookOnboardingMeta({})).toEqual(fromJS({}))
+        })
+
+        it('should return the meta of onboarding pages from the state', () => {
+            const meta = {page: 1}
+            const state = {
+                integrations: fromJS({
+                    extra: {facebook: {onboardingPages: {meta}}}
+                })
+            }
+
+            expect(getFacebookOnboardingMeta(state).toJS()).toEqual(meta)
         })
     })
 })

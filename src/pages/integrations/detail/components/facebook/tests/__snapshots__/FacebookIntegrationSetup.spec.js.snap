@@ -1,0 +1,801 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FacebookIntegrationSetup should render a loader because integrations are currently being fetched 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/facebook"
+          >
+            Facebook
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Facebook Pages setup
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <h1>
+      Facebook pages setup
+    </h1>
+    <p>
+      One last step: choose the pages you want to manage with Gorgias.
+      <br />
+      If you just wanted to re-activate your facebook integration or update your permissions: it's done, you can leave this page.
+    </p>
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <div
+        className="mb-4"
+      >
+        <p
+          className="font-weight-medium"
+        >
+          We found 
+          1
+           pages associated with your account.
+           
+          Please activate the pages you want to use with Gorgias:
+        </p>
+        <div
+          className="mb-2"
+        >
+          <Loader
+            inline={false}
+            minHeight="500px"
+          />
+        </div>
+        <Pagination
+          currentPage={1}
+          onChange={[Function]}
+          pageCount={1}
+        />
+      </div>
+      <div>
+        <Button
+          className=""
+          color="success"
+          disabled={true}
+          tag="button"
+          type="submit"
+        >
+          Save Changes
+        </Button>
+      </div>
+    </Form>
+  </Container>
+</div>
+`;
+
+exports[`FacebookIntegrationSetup should render an empty list because there is no integrations to display 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/facebook"
+          >
+            Facebook
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Facebook Pages setup
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <h1>
+      Facebook pages setup
+    </h1>
+    <p>
+      One last step: choose the pages you want to manage with Gorgias.
+      <br />
+      If you just wanted to re-activate your facebook integration or update your permissions: it's done, you can leave this page.
+    </p>
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <div>
+        <Button
+          className=""
+          color="success"
+          disabled={true}
+          tag="button"
+          type="submit"
+        >
+          Save Changes
+        </Button>
+      </div>
+    </Form>
+  </Container>
+</div>
+`;
+
+exports[`FacebookIntegrationSetup should render integrations because there is available data and and it is not loading 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/facebook"
+          >
+            Facebook
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Facebook Pages setup
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <h1>
+      Facebook pages setup
+    </h1>
+    <p>
+      One last step: choose the pages you want to manage with Gorgias.
+      <br />
+      If you just wanted to re-activate your facebook integration or update your permissions: it's done, you can leave this page.
+    </p>
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <div
+        className="mb-4"
+      >
+        <p
+          className="font-weight-medium"
+        >
+          We found 
+          1
+           pages associated with your account.
+           
+          Please activate the pages you want to use with Gorgias:
+        </p>
+        <div
+          className="mb-2"
+        >
+          <div
+            className="page"
+            key="1"
+          >
+            <div
+              className="d-flex flex-wrap flex-md-nowrap"
+            >
+              <div
+                className="mr-auto"
+              >
+                <div>
+                  <img
+                    className="image rounded mr-3 mb-2 mb-md-0 icon"
+                    src="https://gorgias.io/page-image-link.png"
+                  />
+                  <div
+                    className="details mr-3 text-faded"
+                  >
+                    <h3
+                      className="name mr-3"
+                    >
+                      My page
+                    </h3>
+                    <span>
+                      A page about stuff
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <ToggleButton
+                onChange={[Function]}
+                value={false}
+              />
+            </div>
+            <div
+              className="settings"
+            >
+              <p
+                className="font-weight-medium"
+              >
+                Choose the Facebook channels you want to use to communicate with your customers:
+              </p>
+              <div
+                className="d-md-flex"
+              >
+                <FormGroup
+                  className="mr-5"
+                  tag="div"
+                >
+                  <BooleanField
+                    label="Enable Messenger"
+                    name="1.messenger_enabled"
+                    onChange={[Function]}
+                    type="checkbox"
+                    value={false}
+                  />
+                  <BooleanField
+                    label="Enable Facebook posts & comments"
+                    name="1.posts_enabled"
+                    onChange={[Function]}
+                    type="checkbox"
+                    value={false}
+                  />
+                </FormGroup>
+                <div>
+                  <Alert
+                    className="d-flex align-items-center"
+                    closeAriaLabel="Close"
+                    color="warning"
+                    isOpen={true}
+                    tag="div"
+                    transition={
+                      Object {
+                        "appear": true,
+                        "baseClass": "fade",
+                        "baseClassActive": "show",
+                        "enter": true,
+                        "exit": true,
+                        "in": true,
+                        "mountOnEnter": false,
+                        "onEnter": [Function],
+                        "onEntered": [Function],
+                        "onEntering": [Function],
+                        "onExit": [Function],
+                        "onExited": [Function],
+                        "onExiting": [Function],
+                        "tag": "div",
+                        "timeout": 150,
+                        "unmountOnExit": true,
+                      }
+                    }
+                  >
+                    <i
+                      className="material-icons md-3 mr-3"
+                    >
+                      warning
+                    </i>
+                    Create an Instagram account for this page and you will be able to enable Instagram comments.
+                  </Alert>
+                </div>
+              </div>
+              <p
+                className="font-weight-medium"
+              >
+                Import your Facebook data:
+              </p>
+              <div
+                className="d-md-flex"
+              >
+                <FormGroup
+                  className="mr-5"
+                  tag="div"
+                >
+                  <BooleanField
+                    label="Import 30 days of history (posts and comments) as closed tickets"
+                    name="1.import_history_enabled"
+                    onChange={[Function]}
+                    type="checkbox"
+                    value={false}
+                  />
+                </FormGroup>
+              </div>
+            </div>
+          </div>
+        </div>
+        <Pagination
+          currentPage={1}
+          onChange={[Function]}
+          pageCount={1}
+        />
+      </div>
+      <div>
+        <Button
+          className=""
+          color="success"
+          disabled={true}
+          tag="button"
+          type="submit"
+        >
+          Save Changes
+        </Button>
+      </div>
+    </Form>
+  </Container>
+</div>
+`;
+
+exports[`FacebookIntegrationSetup should render the integration as enabled and save button as enabled because the integration is selected 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/facebook"
+          >
+            Facebook
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Facebook Pages setup
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <h1>
+      Facebook pages setup
+    </h1>
+    <p>
+      One last step: choose the pages you want to manage with Gorgias.
+      <br />
+      If you just wanted to re-activate your facebook integration or update your permissions: it's done, you can leave this page.
+    </p>
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <div
+        className="mb-4"
+      >
+        <p
+          className="font-weight-medium"
+        >
+          We found 
+          1
+           pages associated with your account.
+           
+          Please activate the pages you want to use with Gorgias:
+        </p>
+        <div
+          className="mb-2"
+        >
+          <div
+            className="page enabled"
+            key="1"
+          >
+            <div
+              className="d-flex flex-wrap flex-md-nowrap"
+            >
+              <div
+                className="mr-auto"
+              >
+                <div>
+                  <img
+                    className="image rounded mr-3 mb-2 mb-md-0 icon"
+                    src="https://gorgias.io/page-image-link.png"
+                  />
+                  <div
+                    className="details mr-3 text-faded"
+                  >
+                    <h3
+                      className="name mr-3"
+                    >
+                      My page
+                    </h3>
+                    <span>
+                      A page about stuff
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <ToggleButton
+                onChange={[Function]}
+                value={true}
+              />
+            </div>
+            <div
+              className="settings"
+            >
+              <p
+                className="font-weight-medium"
+              >
+                Choose the Facebook channels you want to use to communicate with your customers:
+              </p>
+              <div
+                className="d-md-flex"
+              >
+                <FormGroup
+                  className="mr-5"
+                  tag="div"
+                >
+                  <BooleanField
+                    label="Enable Messenger"
+                    name="1.messenger_enabled"
+                    onChange={[Function]}
+                    type="checkbox"
+                    value={true}
+                  />
+                  <BooleanField
+                    label="Enable Facebook posts & comments"
+                    name="1.posts_enabled"
+                    onChange={[Function]}
+                    type="checkbox"
+                    value={true}
+                  />
+                </FormGroup>
+                <div>
+                  <Alert
+                    className="d-flex align-items-center"
+                    closeAriaLabel="Close"
+                    color="warning"
+                    isOpen={true}
+                    tag="div"
+                    transition={
+                      Object {
+                        "appear": true,
+                        "baseClass": "fade",
+                        "baseClassActive": "show",
+                        "enter": true,
+                        "exit": true,
+                        "in": true,
+                        "mountOnEnter": false,
+                        "onEnter": [Function],
+                        "onEntered": [Function],
+                        "onEntering": [Function],
+                        "onExit": [Function],
+                        "onExited": [Function],
+                        "onExiting": [Function],
+                        "tag": "div",
+                        "timeout": 150,
+                        "unmountOnExit": true,
+                      }
+                    }
+                  >
+                    <i
+                      className="material-icons md-3 mr-3"
+                    >
+                      warning
+                    </i>
+                    Create an Instagram account for this page and you will be able to enable Instagram comments.
+                  </Alert>
+                </div>
+              </div>
+              <p
+                className="font-weight-medium"
+              >
+                Import your Facebook data:
+              </p>
+              <div
+                className="d-md-flex"
+              >
+                <FormGroup
+                  className="mr-5"
+                  tag="div"
+                >
+                  <BooleanField
+                    label="Import 30 days of history (posts and comments) as closed tickets"
+                    name="1.import_history_enabled"
+                    onChange={[Function]}
+                    type="checkbox"
+                    value={false}
+                  />
+                </FormGroup>
+              </div>
+            </div>
+          </div>
+        </div>
+        <Pagination
+          currentPage={1}
+          onChange={[Function]}
+          pageCount={1}
+        />
+      </div>
+      <div>
+        <Button
+          className=""
+          color="success"
+          disabled={false}
+          tag="button"
+          type="submit"
+        >
+          Save Changes
+        </Button>
+      </div>
+    </Form>
+  </Container>
+</div>
+`;
+
+exports[`FacebookIntegrationSetup should render the integration as enabled with Instagram enabled because it has an Instagram id 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/facebook"
+          >
+            Facebook
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Facebook Pages setup
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <h1>
+      Facebook pages setup
+    </h1>
+    <p>
+      One last step: choose the pages you want to manage with Gorgias.
+      <br />
+      If you just wanted to re-activate your facebook integration or update your permissions: it's done, you can leave this page.
+    </p>
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <div
+        className="mb-4"
+      >
+        <p
+          className="font-weight-medium"
+        >
+          We found 
+          1
+           pages associated with your account.
+           
+          Please activate the pages you want to use with Gorgias:
+        </p>
+        <div
+          className="mb-2"
+        >
+          <div
+            className="page enabled"
+            key="1"
+          >
+            <div
+              className="d-flex flex-wrap flex-md-nowrap"
+            >
+              <div
+                className="mr-auto"
+              >
+                <div>
+                  <img
+                    className="image rounded mr-3 mb-2 mb-md-0 icon"
+                    src="https://gorgias.io/page-image-link.png"
+                  />
+                  <div
+                    className="details mr-3 text-faded"
+                  >
+                    <h3
+                      className="name mr-3"
+                    >
+                      My page
+                    </h3>
+                    <span>
+                      A page about stuff
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <ToggleButton
+                onChange={[Function]}
+                value={true}
+              />
+            </div>
+            <div
+              className="settings"
+            >
+              <p
+                className="font-weight-medium"
+              >
+                Choose the Facebook channels you want to use to communicate with your customers:
+              </p>
+              <div
+                className="d-md-flex"
+              >
+                <FormGroup
+                  className="mr-5"
+                  tag="div"
+                >
+                  <BooleanField
+                    label="Enable Messenger"
+                    name="1.messenger_enabled"
+                    onChange={[Function]}
+                    type="checkbox"
+                    value={true}
+                  />
+                  <BooleanField
+                    label="Enable Facebook posts & comments"
+                    name="1.posts_enabled"
+                    onChange={[Function]}
+                    type="checkbox"
+                    value={true}
+                  />
+                  <BooleanField
+                    label="Enable Instagram comments"
+                    name="1.instagram_comments_enabled"
+                    onChange={[Function]}
+                    type="checkbox"
+                    value={true}
+                  />
+                </FormGroup>
+              </div>
+              <p
+                className="font-weight-medium"
+              >
+                Import your Facebook data:
+              </p>
+              <div
+                className="d-md-flex"
+              >
+                <FormGroup
+                  className="mr-5"
+                  tag="div"
+                >
+                  <BooleanField
+                    label="Import 30 days of history (posts and comments) as closed tickets"
+                    name="1.import_history_enabled"
+                    onChange={[Function]}
+                    type="checkbox"
+                    value={false}
+                  />
+                </FormGroup>
+              </div>
+            </div>
+          </div>
+        </div>
+        <Pagination
+          currentPage={1}
+          onChange={[Function]}
+          pageCount={1}
+        />
+      </div>
+      <div>
+        <Button
+          className=""
+          color="success"
+          disabled={false}
+          tag="button"
+          type="submit"
+        >
+          Save Changes
+        </Button>
+      </div>
+    </Form>
+  </Container>
+</div>
+`;

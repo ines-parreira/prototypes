@@ -3,42 +3,35 @@ import axios from 'axios'
 import {sortBy as _sortBy} from 'lodash'
 import {browserHistory} from 'react-router'
 import moment from 'moment'
-import {fromJS} from 'immutable'
+import {fromJS, type Map} from 'immutable'
 
 import * as constants from './constants'
 import * as integrationSelectors from './selectors'
 import {notify} from '../notifications/actions'
 
-import type {Map} from 'immutable'
 import type {dispatchType, getStateType} from '../types'
-import {getCurrentIntegration} from './selectors'
+
 type integrationType = {
     type: string,
     id: string
 }
 
-export function fetchIntegrations(withDeleted: boolean = false) {
+export function fetchIntegrations() {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
             type: constants.FETCH_INTEGRATIONS_START
         })
 
-        const params = {}
-
-        if (withDeleted) {
-            params.with_deleted = 'true'
-        }
-
-        return axios.get('/api/integrations/', {params})
+        return axios.get('/api/integrations/')
             .then((json = {}) => json.data)
             .then((resp) => {
                 const newResp = resp
 
                 if (newResp) {
-                    newResp.data = _sortBy(newResp.data, o => o.name.toLowerCase())
+                    newResp.data = _sortBy(newResp.data, (integration) => integration.name.toLowerCase())
                 }
 
-                dispatch({
+                return dispatch({
                     type: constants.FETCH_INTEGRATIONS_SUCCESS,
                     resp: newResp
                 })
@@ -47,6 +40,37 @@ export function fetchIntegrations(withDeleted: boolean = false) {
                     type: constants.FETCH_INTEGRATIONS_ERROR,
                     error,
                     reason: 'Failed to fetch integrations'
+                })
+            })
+    }
+}
+
+/**
+ * Fetch Facebook pages which can be added as integrations by the current agent.
+ *
+ * @param page: the page of the list that we want
+ * @param forceOverride: whether the result should be forcefully set in the reducer, or only set if the page of the
+ *   response's meta matches the page currently set in the reducer
+ */
+export function fetchFacebookOnboardingPages(page: number = 1, forceOverride: boolean = true) {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
+        dispatch({
+            type: constants.FETCH_FACEBOOK_ONBOARDING_PAGES_START
+        })
+
+        return axios.get('/integrations/facebook/onboarding-pages/', {params: {page}})
+            .then((json = {}) => json.data)
+            .then((resp) => {
+                return dispatch({
+                    type: constants.FETCH_FACEBOOK_ONBOARDING_PAGES_SUCCESS,
+                    resp,
+                    forceOverride
+                })
+            }, (error) => {
+                return dispatch({
+                    type: constants.FETCH_FACEBOOK_ONBOARDING_PAGES_ERROR,
+                    error,
+                    reason: 'Failed to fetch Facebook pages'
                 })
             })
     }
@@ -192,7 +216,7 @@ export function deleteIntegration(integration: Map<*,*>) {
     }
 }
 
-function updateOrCreateIntegrationRequest(integration: Map<*,*>, action: ?{}, withDeleted: ?boolean, notificationId: ?string = null) {
+function updateOrCreateIntegrationRequest(integration: Map<*,*>, action: ?{}, notificationId: ?string = null) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         const isUpdate = integration.get('id')
         const oldDecoration = integration.get('decoration') || fromJS({})
@@ -208,10 +232,6 @@ function updateOrCreateIntegrationRequest(integration: Map<*,*>, action: ?{}, wi
 
         if (action) {
             params.action = action
-        }
-
-        if (withDeleted) {
-            params.with_deleted = 'true'
         }
 
         if (isUpdate) {
@@ -297,7 +317,7 @@ export function deactivateIntegration(id: number) {
             notificationId = notification.id
         }
 
-        return dispatch(updateOrCreateIntegrationRequest(integration, undefined, undefined, notificationId))
+        return dispatch(updateOrCreateIntegrationRequest(integration, undefined, notificationId))
     }
 }
 
@@ -321,7 +341,7 @@ export function activateIntegration(id: number) {
             notificationId = notification.id
         }
 
-        return dispatch(updateOrCreateIntegrationRequest(integration, undefined, undefined, notificationId))
+        return dispatch(updateOrCreateIntegrationRequest(integration, undefined, notificationId))
     }
 }
 
@@ -331,9 +351,9 @@ export function activateIntegration(id: number) {
  * @param action
  * @returns {Function}
  */
-export function updateOrCreateIntegration(integration: Map<*,*>, action: {}, withDeleted: boolean) {
+export function updateOrCreateIntegration(integration: Map<*,*>, action: {}) {
     return (dispatch: dispatchType): dispatchType => {
-        return dispatch(updateOrCreateIntegrationRequest(integration, action, withDeleted))
+        return dispatch(updateOrCreateIntegrationRequest(integration, action))
     }
 }
 
@@ -409,7 +429,7 @@ export function onVerify(dispatch: dispatchType, integrationId: number): Promise
 export function verifyEmailIntegration(token: string) {
     return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
         const state = getState()
-        const integration = getCurrentIntegration(state)
+        const integration = integrationSelectors.getCurrentIntegration(state)
 
         return axios.post(`/api/integrations/${integration.get('id')}/verify/`, {token})
             .then(() => {
@@ -426,7 +446,7 @@ export function verifyEmailIntegration(token: string) {
 export function sendVerificationEmail() {
     return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
         const state = getState()
-        const integration = getCurrentIntegration(state)
+        const integration = integrationSelectors.getCurrentIntegration(state)
 
         return axios.post(`/api/integrations/${integration.get('id')}/send-verification-email/`)
             .then(() => {

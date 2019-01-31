@@ -64,7 +64,12 @@ export const getFacebookIntegrations = createSelector(
 
 export const getFacebookOnboardingPages = createSelector(
     [getIntegrationsState],
-    (state) => state.getIn(['extra', 'facebook', 'onboardingPages']) || fromJS([])
+    (state) => state.getIn(['extra', 'facebook', 'onboardingPages', 'data']) || fromJS([])
+)
+
+export const getFacebookOnboardingMeta = createSelector(
+    [getIntegrationsState],
+    (state) => state.getIn(['extra', 'facebook', 'onboardingPages', 'meta']) || fromJS({})
 )
 
 export const getEmailIntegrations = createSelector(
@@ -144,11 +149,6 @@ export const hasIntegrationOfTypes = (types: typesType) => createSelector(
 )
 
 export const makeHasIntegrationOfTypes = (state: stateType) => (types: typesType) => hasIntegrationOfTypes(types)(state)
-
-export const getIntegrationExtra = (type: string) => createSelector(
-    [getIntegrationsState],
-    (state) => state.getIn(['extra', type]) || fromJS({})
-)
 
 export const getShopifyIntegrationsWithoutChat = (state: stateType) => {
     const shopifyIntegrations = getIntegrationsByTypes('shopify')(state)
