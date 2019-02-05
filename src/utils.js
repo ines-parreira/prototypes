@@ -521,7 +521,7 @@ export const toImmutable = (object: {} | Iterable<*, *>): any => isImmutable(obj
  */
 // throws error on missing toJS() for plain object.
 // $FlowFixMe
-export const toJS = (object: {} | Iterable<*, *>): any => isImmutable(object) ? object.toJS() : object
+export const toJS = (object: {} | Iterable<*, *> | void): any => isImmutable(object) ? object.toJS() : object
 
 /**
  * Return field path

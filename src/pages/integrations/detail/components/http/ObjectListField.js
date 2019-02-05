@@ -10,7 +10,7 @@ type Props = {
     title: string,
     fieldName: string,
     fields: Array<any>,
-    validate: Function,
+    validate?: Function,
     onChange: (fields: Array<any>) => *,
 }
 

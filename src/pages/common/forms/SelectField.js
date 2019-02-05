@@ -5,6 +5,7 @@ import classnames from 'classnames'
 import _max from 'lodash/max'
 import _min from 'lodash/min'
 import _noop from 'lodash/noop'
+import _isEqual from 'lodash/isEqual'
 
 import css from './SelectField.less'
 
@@ -180,7 +181,7 @@ export default class SelectField extends Component<Props, State> {
     render() {
         const {allowCustomValue, value, singular, style, placeholder, className, options, rightAddon, fixedWidth} = this.props
         const {filteredOptions, input, optionsOpen, selectedOptionIndex} = this.state
-        const selectedOption = options.find((option) => option.value === value)
+        const selectedOption = options.find((option) => _isEqual(option.value, value))
         const hasNoFilteredOptions = filteredOptions.length === 0
         let label = selectedOption ? selectedOption.label : null
 

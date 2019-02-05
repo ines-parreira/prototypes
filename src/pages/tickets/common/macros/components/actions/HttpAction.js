@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
 import {Row, Col, FormGroup, Label} from 'reactstrap'
 
-import {AVAILABLE_HTTP_METHODS, JSON_CONTENT_TYPE, FORM_CONTENT_TYPE} from '../../../../../../config'
+import {AVAILABLE_HTTP_METHODS, JSON_CONTENT_TYPE, FORM_CONTENT_TYPE, HTTP_METHOD_GET} from '../../../../../../config'
 
 import ParametersEditor from '../ParametersEditor'
 
@@ -29,7 +29,7 @@ export default class HttpAction extends React.Component {
     }
 
     _renderBody = (action) => {
-        if (action.getIn(['arguments', 'method']) === 'GET') {
+        if (action.getIn(['arguments', 'method']) === HTTP_METHOD_GET) {
             return null
         }
 

@@ -1,5 +1,4 @@
 import React from 'react'
-import classnames from 'classnames'
 import {Input, FormGroup} from 'reactstrap'
 
 import InputField from './InputField'
@@ -28,8 +27,8 @@ export default class JsonField extends InputField {
         }
     }
 
-    _onChange = (e) => {
-        const value = e.target.value
+    _onChange = (evt: Event) => {
+        const value = evt.target.value
         let isJsonValid = true
         let parsedValue = JSON.parse(this.defaultValue)
 
@@ -54,7 +53,7 @@ export default class JsonField extends InputField {
     _getField = () => {
         const {
             children,
-            error,
+            error, // eslint-disable-line
             type, // eslint-disable-line
             help, // eslint-disable-line
             inline, // eslint-disable-line
@@ -66,17 +65,17 @@ export default class JsonField extends InputField {
         } = this.props
 
         const isInvalid = !this.state.isJsonValid
-        const color = isInvalid ? 'danger' : ''
+
+        if (isInvalid) {
+            rest.invalid = true
+        }
 
         return (
-            <FormGroup color={color}>
+            <FormGroup>
                 <div className="controls">
                     <Input
                         type="textarea"
                         rows="6"
-                        className={classnames({
-                            'form-control-danger': error || isInvalid,
-                        })}
                         id={this.id}
                         onChange={this._onChange}
                         value={this.state.value}

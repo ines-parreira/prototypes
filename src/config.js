@@ -1,7 +1,7 @@
 // @flow
 import axios from 'axios'
-import _get from 'lodash/get'
 import _find from 'lodash/find'
+import _get from 'lodash/get'
 
 import {daysToHours, hoursToSeconds} from './utils'
 
@@ -17,7 +17,11 @@ axios.defaults.headers.common['X-CSRF-Token'] = window.CSRF_TOKEN
  * Action related
  */
 // remember to keep them uppercase in the array below
-export const AVAILABLE_HTTP_METHODS = ['GET', 'POST', 'PUT', 'DELETE']
+export const HTTP_METHOD_GET = 'GET'
+export const HTTP_METHOD_POST = 'POST'
+export const HTTP_METHOD_PUT = 'PUT'
+export const HTTP_METHOD_DELETE = 'DELETE'
+export const AVAILABLE_HTTP_METHODS = [HTTP_METHOD_GET, HTTP_METHOD_POST, HTTP_METHOD_PUT, HTTP_METHOD_DELETE]
 
 /**
  * Timeformat related
@@ -301,7 +305,7 @@ export const ACTION_TEMPLATES = [
             method: {
                 type: 'string',
                 enum: AVAILABLE_HTTP_METHODS,
-                default: 'GET',
+                default: HTTP_METHOD_GET,
             },
             url: {
                 type: 'string',

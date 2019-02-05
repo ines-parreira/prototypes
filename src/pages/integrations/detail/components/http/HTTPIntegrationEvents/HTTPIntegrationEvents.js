@@ -5,6 +5,8 @@ import {Link} from 'react-router'
 import {Container, Table} from 'reactstrap'
 import _truncate from 'lodash/truncate'
 
+import {HTTP_METHOD_GET} from '../../../../../../config'
+
 import Loader from '../../../../../common/components/Loader'
 import ForwardIcon from '../../ForwardIcon'
 import {DatetimeLabel} from '../../../../../common/utils/labels'
@@ -61,7 +63,7 @@ export class HTTPIntegrationEvents extends Component<Props, State> {
                         className="disabled"
                     >
                         <div>
-                            {event.getIn(['request', 'method'], 'GET')}
+                            {event.getIn(['request', 'method'], HTTP_METHOD_GET)}
                         </div>
                     </Link>
                 </td>

@@ -206,13 +206,8 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
           validate={[Function]}
         />
       </FormGroup>
-      <JsonField
-        label="Request Body (JSON)"
-        name="http.form"
-        onChange={[Function]}
-        rows="8"
-        type="text"
-        value={
+      <JSONBody
+        form={
           Object {
             "baz": Object {
               "bazile": "bazar",
@@ -220,6 +215,7 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
             "foo": "bar",
           }
         }
+        onChange={[Function]}
       />
       <div>
         <Button
@@ -626,6 +622,7 @@ exports[`HTTPIntegrationOverview should display default values because there is 
           name="http.triggers.ticket-message-created"
           onChange={[Function]}
           type="checkbox"
+          value={true}
         />
       </FormGroup>
       <InputField

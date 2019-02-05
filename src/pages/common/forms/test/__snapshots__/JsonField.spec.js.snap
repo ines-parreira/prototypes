@@ -10,15 +10,14 @@ exports[`JsonField display invalid message 1`] = `
     className=""
   >
     <FormGroup
-      color="danger"
       tag="div"
     >
       <div
         className="controls"
       >
         <Input
-          className="form-control-danger"
           id="id-input-2"
+          invalid={true}
           onChange={[Function]}
           rows="6"
           type="textarea"
@@ -54,18 +53,15 @@ exports[`JsonField should render input 1`] = `
         className=""
       >
         <FormGroup
-          color=""
           tag="div"
         >
           <div
             className="form-group"
-            color=""
           >
             <div
               className="controls"
             >
               <Input
-                className=""
                 id="id-input-1"
                 onChange={[Function]}
                 rows="6"
