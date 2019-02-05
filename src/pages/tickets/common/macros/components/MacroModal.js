@@ -30,7 +30,7 @@ import * as viewsActions from '../../../../../state/views/actions'
 import type {fetchMacrosType} from '../types'
 
 type Props = {
-    macros: Map<*,*>,
+    macros: Map<*, *>,
     agents: {},
     actions: {
         macro: typeof macroActions,
@@ -43,19 +43,19 @@ type Props = {
     totalPages: number,
     isCreatingMacro: boolean,
     closeModal: () => void,
-    updateMacros: (T: Map<*,*>) => void,
+    updateMacros: (T: Map<*, *>) => void,
     fetchMacros: fetchMacrosType,
-    activeView: Map<*,*>,
-    currentMacro: Map<*,*>,
+    activeView: Map<*, *>,
+    currentMacro: Map<*, *>,
     toggleCreateMacro?: (T?: boolean) => Promise<*>,
-    onSearch: (S: string, F?: boolean) => void,
+    onSearch: (search: string, forceSearch?: boolean) => void,
     search: string,
     firstLoad: boolean,
     selectedItemsIds: List<*>,
 }
 
 type State = {
-    actions: Map<*,*>,
+    actions: Map<*, *>,
     name: string,
 }
 
@@ -117,7 +117,7 @@ export default class MacroModal extends React.Component<Props, State> {
     }
 
     _addNewMacro = () => {
-        const { toggleCreateMacro } = this.props
+        const {toggleCreateMacro} = this.props
         toggleCreateMacro && toggleCreateMacro(true).then(() => {
             this._setName(this.props.currentMacro.get('name'))
             this._setActions(this.props.currentMacro.get('actions'))
@@ -160,6 +160,21 @@ export default class MacroModal extends React.Component<Props, State> {
             })
     }
 
+    _duplicateMacro = (e: Event) => {
+        e.preventDefault()
+        e.stopPropagation()
+
+        const {currentMacro} = this.props
+        const duplicateMacro = currentMacro.delete('id').set(
+            'name', 'Copy of ' + (currentMacro.get('name', '') || '')
+        )
+
+        return this.props.actions.macro.createMacro(duplicateMacro).then((res) => {
+            // once the macro is created - search it in the list
+            this.props.onSearch(res.name || '', true)
+        })
+    }
+
     _deleteMacro = () => {
         const macroId = this.props.currentMacro.get('id', '')
         return this.props.actions.macro.deleteMacro(macroId)
@@ -168,7 +183,7 @@ export default class MacroModal extends React.Component<Props, State> {
             })
     }
 
-    _setActions = (actions: Map<*,*>) => {
+    _setActions = (actions: Map<*, *>) => {
         // filter actions that exist in configuration
         actions = actions.filter(action => DEFAULT_ACTIONS.includes(action.get('name')))
 
@@ -276,22 +291,24 @@ export default class MacroModal extends React.Component<Props, State> {
                                                         )
                                                     }
                                                 </div>
-                                                <div className="d-inline-block">
-                                                    {
-                                                        isCreatingMacro ? (
-                                                            <form id="macro_form"
-                                                                onSubmit={(e) => (this._createMacro(e))}
+                                                {
+                                                    isCreatingMacro ? (
+                                                        <form id="macro_form"
+                                                              className="d-inline-block"
+                                                              onSubmit={(e) => (this._createMacro(e))}
+                                                        >
+                                                            <Button
+                                                                type="submit"
+                                                                color="success"
                                                             >
-                                                                <Button
-                                                                    type="submit"
-                                                                    color="success"
-                                                                >
-                                                                    Save new macro
-                                                                </Button>
-                                                            </form>
-                                                        ) : (
-                                                            <form id="macro_form"
-                                                                onSubmit={(e) => (this._updateMacro(e))}
+                                                                Save new macro
+                                                            </Button>
+                                                        </form>
+                                                    ) : (
+                                                        <div>
+                                                            <form id="update_macro_form"
+                                                                  className="d-inline-block"
+                                                                  onSubmit={(e) => (this._updateMacro(e))}
                                                             >
                                                                 <Button
                                                                     type="submit"
@@ -300,8 +317,19 @@ export default class MacroModal extends React.Component<Props, State> {
                                                                     Update macro
                                                                 </Button>
                                                             </form>
-                                                        )}
-                                                </div>
+                                                            <form id="duplicate_macro_form"
+                                                                  className="d-inline-block ml-1"
+                                                                  onSubmit={(e) => (this._duplicateMacro(e))}
+                                                            >
+                                                                <Button
+                                                                    type="submit"
+                                                                    color="secondary"
+                                                                >
+                                                                    Duplicate macro
+                                                                </Button>
+                                                            </form>
+                                                        </div>
+                                                    )}
                                             </div>
                                         )
                                     )
@@ -325,7 +353,7 @@ export default class MacroModal extends React.Component<Props, State> {
                                 fetchMacros={this.props.fetchMacros}
                                 disableExternalActions={disableExternalActions}
                                 handleClickItem={handleClickItem}
-                                onSearch={(e: {target: {value: string}}) => onSearch(e.target.value)}
+                                onSearch={(e: { target: { value: string } }) => onSearch(e.target.value)}
                                 search={this.props.search}
                             />
                         </Col>
