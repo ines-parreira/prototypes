@@ -380,6 +380,7 @@ export class Widget extends React.Component<Props, State> {
                         {...widget}
                         className={className}
                         onChange={this._handleChange}
+                        caseInsensitive={caseInsensitive}
                         multiple={_isUndefined(widget.multiple) ? true : widget.multiple}
                     />
                 )

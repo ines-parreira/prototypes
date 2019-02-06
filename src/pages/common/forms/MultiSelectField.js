@@ -49,6 +49,7 @@ export default class MultiSelectField extends React.Component<Props> {
                 onChange={this._onChange}
                 style={this.props.style}
                 className={this.props.className}
+                caseInsensitive={this.props.caseInsensitive}
                 matchInput
             />
         )

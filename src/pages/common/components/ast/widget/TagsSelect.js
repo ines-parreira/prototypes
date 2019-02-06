@@ -13,7 +13,8 @@ type Props = {
     onChange: Function,
     multiple: ?boolean,
     className: ?string,
-    actions: Object
+    actions: Object,
+    caseInsensitive: ?string
 }
 
 export class TagsSelect extends Component<Props> {
@@ -69,6 +70,7 @@ export class TagsSelect extends Component<Props> {
                     singular="tag"
                     style={style}
                     values={values}
+                    caseInsensitive={this.props.caseInsensitive}
                     className={className}
                 />
             )
