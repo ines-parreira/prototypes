@@ -6,7 +6,7 @@ import {FormGroup, Container, Label, InputGroup, Button, Input, InputGroupAddon}
 import * as currentUserSelectors from '../../../state/currentUser/selectors'
 import * as authsSelectors from '../../../state/auths/selectors'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
-import {fetchCurrentAuths} from '../../../state/auths/actions'
+import {fetchCurrentAuths, resetApiKey} from '../../../state/auths/actions'
 import {notify} from '../../../state/notifications/actions'
 import PageHeader from '../../common/components/PageHeader'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker'
@@ -17,7 +17,8 @@ type Props = {
     domain: string,
     email: string,
     fetchCurrentAuths: typeof fetchCurrentAuths,
-    notify: typeof notify
+    notify: typeof notify,
+    resetApiKey: typeof resetApiKey,
 }
 
 type State = {
@@ -32,7 +33,7 @@ type State = {
         email: currentUserSelectors.getCurrentUser(state).get('email'),
         domain: currentAccountSelectors.getCurrentAccountState(state).get('domain'),
     }
-}, {fetchCurrentAuths, notify})
+}, {fetchCurrentAuths, notify, resetApiKey})
 export default class APIView extends React.Component<Props, State> {
     state = {
         isCopiedapiKey: false,
@@ -80,6 +81,14 @@ export default class APIView extends React.Component<Props, State> {
             status: 'success',
             message: 'Thank you! You have been subscribed to our developer newsletter.'
         })
+    }
+
+    _resetApiKey = () => {
+        const confirm = window.confirm('You are about to reset your API key. Are you sure?')
+
+        if (confirm) {
+            this.props.resetApiKey()
+        }
     }
 
     render() {
@@ -192,6 +201,16 @@ export default class APIView extends React.Component<Props, State> {
                                 readOnly
                             />
                             <InputGroupAddon addonType="append">
+                                <Button
+                                    className="resetBtn"
+                                    color="danger"
+                                    onClick={this._resetApiKey}
+                                >
+                                    <i className="material-icons mr-2">
+                                        refresh
+                                    </i>
+                                    Reset
+                                </Button>
                                 <Button
                                     className="copyBtn"
                                     color="primary"

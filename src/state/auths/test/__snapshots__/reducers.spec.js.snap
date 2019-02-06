@@ -1,22 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`auths reducers fetch auths pagination 1`] = `
-Immutable.Map {
-  data: Immutable.List [
-    Immutable.Map {
-      data: Immutable.Map {
-        token: "onetoken",
-      },
+Immutable.List [
+  Immutable.Map {
+    data: Immutable.Map {
+      token: "onetoken",
     },
-    Immutable.Map {
-      data: Immutable.Map {
-        token: "secondtoken",
-      },
-    },
-  ],
-  meta: Immutable.Map {
-    nb_pages: 2,
-    page: 1,
   },
-}
+  Immutable.Map {
+    data: Immutable.Map {
+      token: "secondtoken",
+    },
+  },
+]
+`;
+
+exports[`auths reducers reset API key 1`] = `
+Immutable.List [
+  Immutable.Map {
+    data: Immutable.Map {
+      token: "newtoken",
+    },
+  },
+]
 `;
