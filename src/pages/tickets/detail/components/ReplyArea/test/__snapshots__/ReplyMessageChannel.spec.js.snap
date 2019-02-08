@@ -357,98 +357,6 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
 </div>
 `;
 
-exports[`ReplyMessageChannel component existing ticket with message of type facebook-message 1`] = `
-<div
-  className="component"
->
-  <div
-    className="mt-1 mr-2"
-  >
-    <UncontrolledDropdown>
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        className="dropdownToggle"
-        color=""
-        type="button"
-      >
-        <SourceIcon
-          className="md-2"
-          type="facebook-message"
-        />
-      </DropdownToggle>
-      <DropdownMenu
-        flip={true}
-        tag="div"
-      >
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-          type="button"
-        >
-          <SourceIcon
-            type="email"
-          />
-          Reply via email
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-          type="button"
-        >
-          <SourceIcon
-            type="email-forward"
-          />
-          Forward by email
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-          type="button"
-        >
-          <SourceIcon
-            type="facebook-message"
-          />
-          Reply via Messenger
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-          type="button"
-        >
-          <SourceIcon
-            type="internal-note"
-          />
-          Leave an internal note
-        </DropdownItem>
-      </DropdownMenu>
-    </UncontrolledDropdown>
-  </div>
-  <div
-    className="sourceLabel mt-1"
-  >
-    Internal note
-  </div>
-  <KeyboardShortcuts
-    keymap={
-      Object {
-        "FORWARD_REPLY": Object {
-          "action": [Function],
-        },
-        "INTERNAL_NOTE_REPLY": Object {
-          "action": [Function],
-        },
-      }
-    }
-    name="TicketDetailContainer"
-  />
-</div>
-`;
-
 exports[`ReplyMessageChannel component existing ticket with message of type facebook-messenger 1`] = `
 <div
   className="component"
@@ -597,6 +505,190 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
             type="facebook-comment"
           />
           Reply via Facebook comment
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <SourceIcon
+            type="internal-note"
+          />
+          Leave an internal note
+        </DropdownItem>
+      </DropdownMenu>
+    </UncontrolledDropdown>
+  </div>
+  <div
+    className="sourceLabel mt-1"
+  >
+    Internal note
+  </div>
+  <KeyboardShortcuts
+    keymap={
+      Object {
+        "FORWARD_REPLY": Object {
+          "action": [Function],
+        },
+        "INTERNAL_NOTE_REPLY": Object {
+          "action": [Function],
+        },
+      }
+    }
+    name="TicketDetailContainer"
+  />
+</div>
+`;
+
+exports[`ReplyMessageChannel component existing ticket with message of type instagram-comment 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="mt-1 mr-2"
+  >
+    <UncontrolledDropdown>
+      <DropdownToggle
+        aria-haspopup={true}
+        caret={true}
+        className="dropdownToggle"
+        color=""
+        type="button"
+      >
+        <SourceIcon
+          className="md-2"
+          type="instagram-comment"
+        />
+      </DropdownToggle>
+      <DropdownMenu
+        flip={true}
+        tag="div"
+      >
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <SourceIcon
+            type="email"
+          />
+          Reply via email
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <SourceIcon
+            type="email-forward"
+          />
+          Forward by email
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <SourceIcon
+            type="instagram-comment"
+          />
+          Reply via Instagram
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <SourceIcon
+            type="internal-note"
+          />
+          Leave an internal note
+        </DropdownItem>
+      </DropdownMenu>
+    </UncontrolledDropdown>
+  </div>
+  <div
+    className="sourceLabel mt-1"
+  >
+    Internal note
+  </div>
+  <KeyboardShortcuts
+    keymap={
+      Object {
+        "FORWARD_REPLY": Object {
+          "action": [Function],
+        },
+        "INTERNAL_NOTE_REPLY": Object {
+          "action": [Function],
+        },
+      }
+    }
+    name="TicketDetailContainer"
+  />
+</div>
+`;
+
+exports[`ReplyMessageChannel component existing ticket with message of type instagram-media 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="mt-1 mr-2"
+  >
+    <UncontrolledDropdown>
+      <DropdownToggle
+        aria-haspopup={true}
+        caret={true}
+        className="dropdownToggle"
+        color=""
+        type="button"
+      >
+        <SourceIcon
+          className="md-2"
+          type="instagram-comment"
+        />
+      </DropdownToggle>
+      <DropdownMenu
+        flip={true}
+        tag="div"
+      >
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <SourceIcon
+            type="email"
+          />
+          Reply via email
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <SourceIcon
+            type="email-forward"
+          />
+          Forward by email
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <SourceIcon
+            type="instagram-comment"
+          />
+          Reply via Instagram
         </DropdownItem>
         <DropdownItem
           onClick={[Function]}

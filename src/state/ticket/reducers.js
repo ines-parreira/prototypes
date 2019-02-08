@@ -35,7 +35,12 @@ export const initialState = fromJS({
     receiver: null,
     priority: 'normal',
     tags: [],
-    trashed_datetime: null
+    trashed_datetime: null,
+    reply_options: {
+        email: {
+            answerable: true
+        }
+    }
 })
 
 export default (state = initialState, action) => {

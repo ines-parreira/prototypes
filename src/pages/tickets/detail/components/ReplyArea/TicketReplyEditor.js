@@ -1,35 +1,32 @@
 // @flow
-import React from 'react'
-import classnames from 'classnames'
-import {Map, List, fromJS} from 'immutable'
+import React, {type Node} from 'react'
+import {fromJS, List, Map} from 'immutable'
 import {connect} from 'react-redux'
+import {ContentState, EditorState} from 'draft-js'
 import _debounce from 'lodash/debounce'
 import _noop from 'lodash/noop'
 
-import {EditorState, ContentState} from 'draft-js'
+import {getOtherAgents} from '../../../../../state/agents/selectors'
+import * as newMessageActions from '../../../../../state/newMessage/actions'
+import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
+import {notify} from '../../../../../state/notifications/actions'
 
-import RichField from '../../../../common/forms/RichField'
-
-import {isRichType, acceptsOnlyImages, canLeaveInternalNote} from '../../../../../config/ticket'
+import {acceptsOnlyImages, canLeaveInternalNote, isRichType} from '../../../../../config/ticket'
 import {humanizeString} from '../../../../../utils'
 import {ATTACHMENT_SIZE_ERROR, getMaxAttachmentSize} from '../../../../../utils/file'
 
-import * as newMessageActions from '../../../../../state/newMessage/actions'
-import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
-import {getOtherAgents} from '../../../../../state/agents/selectors'
-import {notify} from '../../../../../state/notifications/actions'
-
-import type {attachmentType} from '../../../../../types'
-import type {agentsType} from '../../../../../state/agents/types'
-import type {Node} from 'react'
+import RichField from '../../../../common/forms/RichField'
 
 import css from './TicketReplyEditor.less'
 
+import type {attachmentType} from '../../../../../types'
+import type {agentsType} from '../../../../../state/agents/types'
 
-// Those are the source types which can send either text or attachment, but not both at the same time
-export const TEXT_OR_ATTACHMENT_SOURCE_TYPES = ['facebook-messenger']
+
 // Those are the source types which cannot send more than one attachment at a time
 export const ONLY_ONE_ATTACHMENT_SOURCE_TYPES = ['facebook-messenger', 'facebook-comment']
+// Those are the source types which can send either text or attachment, but not both at the same time
+export const TEXT_OR_ATTACHMENT_SOURCE_TYPES = ['facebook-messenger']
 
 // debounce the updating of the redux because it's slow otherwise when we type
 export const updateMessageText = _debounce((props, editorState) => {
@@ -73,6 +70,7 @@ type Props = {
 type State = {
     editorState: EditorState
 }
+
 
 export class TicketReplyEditor extends React.Component<Props, State> {
     richArea: richAreaType
@@ -316,29 +314,14 @@ export class TicketReplyEditor extends React.Component<Props, State> {
             </div>
         ]
 
-
-        const cantWriteTextBecauseOfAttachments =
-            TEXT_OR_ATTACHMENT_SOURCE_TYPES.includes(this.props.newMessage.getIn(['newMessage', 'source', 'type']))
-            && attachments.size >= 1
-
         if (!isNewMessageRichType) {
             displayedActions = ['EMOJI']
         }
 
-        // If we can't write text nor add more attachments, we don't need to display any toolbar button
-        if (cantWriteTextBecauseOfAttachments) {
-            displayedActions = []
-            buttons = []
-        }
-
-        const alertText = 'When using Facebook, you can either send a text message, or an attachment, ' +
-            'but not both at the same time. If you want to write a message, remove the attachment first.'
-
-        const isAlert = cantWriteTextBecauseOfAttachments
         const canInsertInlineImages = (newMessageType === 'email')
 
         return (
-            <div className={classnames(css.component, {[css.isAlert]: isAlert})}>
+            <div className={css.component}>
                 <RichField
                     ref={
                         // $FlowFixMe
@@ -356,13 +339,8 @@ export class TicketReplyEditor extends React.Component<Props, State> {
                         return this._handleFiles(files, attachmentInputProps.accept)
                     }}
                     tabIndex="4"
-                    readOnly={
-                        newMessage.getIn(['_internal', 'loading', 'submitMessage']) ||
-                        cantWriteTextBecauseOfAttachments
-                    }
+                    readOnly={newMessage.getIn(['_internal', 'loading', 'submitMessage'])}
                     {...mentionProps}
-                    alertMode={isAlert && 'warning'}
-                    alertText={alertText}
                     placeholder="Click here to reply, or press r."
                     notify={notify}
                     canInsertInlineImages={canInsertInlineImages}

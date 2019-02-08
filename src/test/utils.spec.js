@@ -78,20 +78,6 @@ describe('global utils', () => {
         })
     })
 
-    describe('ticketSourceTypes', () => {
-        const messages = [
-            {source: {type: 'system-message'}},
-            {source: {type: 'system-message'}},
-            {},
-            {source: {type: 'chat'}},
-            {source: {type: 'email'}},
-        ]
-
-        const answer = ['system-message', 'chat', 'email']
-
-        expect(utils.ticketSourceTypes(messages)).toEqual(answer)
-    })
-
     describe('is email', () => {
         const correct = [
             'email@example.com',

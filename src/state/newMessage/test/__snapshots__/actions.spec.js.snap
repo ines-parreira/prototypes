@@ -2117,6 +2117,11 @@ Array [
       trashed_datetime: null,
       channel: "email",
       priority: "normal",
+      reply_options: Immutable.Map {
+            email: Immutable.Map {
+                  answerable: true,
+            },
+      },
       spam: false,
       subject: "",
       messages: Immutable.List [

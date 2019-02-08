@@ -1,47 +1,51 @@
+// @flow
 import React from 'react'
-import PropTypes from 'prop-types'
-import classNames from 'classnames'
 import {connect} from 'react-redux'
-import {fromJS} from 'immutable'
-
-import TicketAttachments from './TicketAttachments'
-import TicketReplyAction from './TicketReplyAction'
-import TicketReplyEditor from './TicketReplyEditor'
+import classNames from 'classnames'
 
 import * as newMessageActions from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {getActionTemplate} from '../../../../../utils'
 
+import TicketAttachments from './TicketAttachments'
+import TicketReplyAction from './TicketReplyAction'
+import TicketReplyEditor, {TEXT_OR_ATTACHMENT_SOURCE_TYPES} from './TicketReplyEditor'
+
 import css from './TicketReply.less'
+
+import type {List, Map} from 'immutable'
+
+type Props = {
+    actions: Object,
+    deleteAttachment?: number => void,
+    className?: string,
+    ticket: Map<*,*>,
+    newMessageType: string,
+    newMessageAttachments: List<*>,
+    appliedMacro: ?Map<*,*>,
+    isNewMessagePublic: boolean,
+    richAreaRef: () => void
+}
 
 @connect((state) => {
     return {
         isNewMessagePublic: newMessageSelectors.isNewMessagePublic(state),
-        newMessage: state.newMessage,
+        newMessageType: newMessageSelectors.getNewMessageType(state),
+        newMessageAttachments: newMessageSelectors.getNewMessageAttachments(state),
     }
 }, {
     deleteAttachment: newMessageActions.deleteAttachment,
 })
-export default class TicketReply extends React.Component {
-    static propTypes = {
-        actions: PropTypes.object.isRequired,
-        deleteAttachment: PropTypes.func.isRequired,
-        className: PropTypes.string,
-        ticket: PropTypes.object.isRequired,
-        newMessage: PropTypes.object.isRequired,
-        appliedMacro: PropTypes.object,
-        isNewMessagePublic: PropTypes.bool.isRequired,
-        richAreaRef: PropTypes.func,
-    }
-
+// $FlowFixMe
+export default class TicketReply extends React.Component<Props> {
     _renderAttachments = () => {
-        const {newMessage} = this.props
+        const {newMessageAttachments, deleteAttachment} = this.props
 
         return (
             <TicketAttachments
                 removable
-                attachments={newMessage.getIn(['newMessage', 'attachments'], fromJS([]))}
-                deleteAttachment={this.props.deleteAttachment}
+                attachments={newMessageAttachments}
+                deleteAttachment={deleteAttachment}
                 className="p-2"
             />
         )
@@ -52,10 +56,10 @@ export default class TicketReply extends React.Component {
 
         const backendActions = appliedMacro ?
             appliedMacro.get('actions').filter(
-                action => getActionTemplate(action.get('name')).execution === 'back'
+                (action) => getActionTemplate(action.get('name')).execution === 'back'
             ) : []
 
-        if (!backendActions) {
+        if (!appliedMacro || !backendActions) {
             return null
         }
 
@@ -83,19 +87,50 @@ export default class TicketReply extends React.Component {
             isNewMessagePublic,
             actions,
             richAreaRef,
+            className: passedClassName,
+            newMessageType,
+            newMessageAttachments
         } = this.props
 
-        const className = classNames(css.component, this.props.className, {
+        const isAnswerable = ticket.getIn(['reply_options', newMessageType, 'answerable'])
+        const notAnswerableReason = ticket.getIn(['reply_options', newMessageType, 'reason'])
+
+        const cantWriteTextBecauseOfAttachments =
+            TEXT_OR_ATTACHMENT_SOURCE_TYPES.includes(newMessageType)
+            && newMessageAttachments.size >= 1
+
+        let alertText = ''
+        let isAlert = cantWriteTextBecauseOfAttachments || !isAnswerable
+
+        if (cantWriteTextBecauseOfAttachments) {
+            alertText = 'When using Facebook, you can either send a text message, or an attachment, ' +
+                'but not both at the same time. If you want to write a message, remove the attachment first.'
+        }
+
+        if (!isAnswerable) {
+            alertText = notAnswerableReason
+        }
+
+        const className = classNames(css.component, passedClassName, {
             [css.internal]: !isNewMessagePublic,
+            'alert-warning': isAlert,
         })
 
         return (
             <div className={className}>
-                <TicketReplyEditor
-                    actions={actions}
-                    ticket={ticket}
-                    richAreaRef={richAreaRef}
-                />
+                {
+                    isAlert ? (
+                        <div className={css.alert}>
+                            {alertText}
+                        </div>
+                    ) : (
+                        <TicketReplyEditor
+                            actions={actions}
+                            ticket={ticket}
+                            richAreaRef={richAreaRef}
+                        />
+                    )
+                }
                 {this._renderAttachments()}
                 {this._renderActions()}
             </div>

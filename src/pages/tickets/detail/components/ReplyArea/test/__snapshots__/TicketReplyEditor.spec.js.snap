@@ -5,8 +5,6 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
   className="component"
 >
   <RichField
-    alertMode={false}
-    alertText="When using Facebook, you can either send a text message, or an attachment, but not both at the same time. If you want to write a message, remove the attachment first."
     attachFiles={[Function]}
     attachments={
       Immutable.List [

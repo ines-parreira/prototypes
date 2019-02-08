@@ -7,8 +7,6 @@ import _isNumber from 'lodash/isNumber'
 import _isObject from 'lodash/isObject'
 import _filter from 'lodash/filter'
 import _get from 'lodash/get'
-import _uniq from 'lodash/uniq'
-import _compact from 'lodash/compact'
 import _trim from 'lodash/trim'
 import _find from 'lodash/find'
 import _last from 'lodash/last'
@@ -20,18 +18,15 @@ import esprima from 'esprima'
 import escodegen from 'escodegen'
 import moment from 'moment-timezone'
 import {EditorState, Modifier} from 'draft-js'
-// types
-import type {Iterable, Map} from 'immutable'
 // $FlowFixMe: will be fixed with immutable 4.x
-import Immutable, {fromJS} from 'immutable'
+import Immutable, {fromJS, type Iterable, type Map} from 'immutable'
 import md5 from 'md5'
 import crypto from 'crypto'
 import URLSafeBase64 from 'urlsafe-base64'
 import htmlparser from 'htmlparser2'
 import TICKET_LANGUAGES from './config/ticketLanguages'
 import {ACTION_TEMPLATES} from './config'
-import type {notificationType} from './state/notifications/actions'
-import {AUTHORIZED_NOTIFICATION_TYPES} from './state/notifications/actions'
+import {AUTHORIZED_NOTIFICATION_TYPES, type notificationType} from './state/notifications/actions'
 import type {viewsStateType} from './state/views/types'
 import type {actionTemplateType, esprimaParse, reactRouterRoute, schemasType} from './types'
 
@@ -201,27 +196,6 @@ export function getLastMessage(messages: Array<messageType>, options: any = null
 
     // most recent message sorted to first element of array
     return messages.sort((a, b) => compare(b.created_datetime, a.created_datetime))[0]
-}
-
-/**
- * Return list of types of messages present in a list of messages
- * @param messages
- * @returns {Array}
- */
-export function ticketSourceTypes(messages: Array<messageType>): Array<{}> {
-    let sources = []
-
-    if (!messages) {
-        return sources
-    }
-
-    if (!messages.length) {
-        return sources
-    }
-
-    sources = messages.map(message => _get(message, 'source.type'))
-
-    return _uniq(_compact(sources))
 }
 
 export function resolvePropertyName(name: string = ''): string {

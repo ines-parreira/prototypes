@@ -5,7 +5,6 @@ import classnames from 'classnames'
 import {connect} from 'react-redux'
 import {UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 
-import {ticketSourceTypes} from '../../../../../utils'
 import MessageSourceFields from './MessageSourceFields/'
 import {guessReceiversFromTicket} from '../../../../../state/ticket/utils'
 import * as newMessageActions from '../../../../../state/newMessage/actions'
@@ -163,20 +162,20 @@ export default class ReplyMessageChannel extends React.Component {
     }
 
     render() {
-        const {isUpdate, messages, prepareNewMessage, isForward, className} = this.props
-
-        const sources = ticketSourceTypes(messages.toJS())
+        const {isUpdate, messages, prepareNewMessage, isForward, className, ticket} = this.props
 
         if (isUpdate && messages.isEmpty()) {
             return null
         }
 
-        const suggestChat = isUpdate && sources.includes('chat')
-        const suggestFacebookComment = isUpdate && (sources.includes('facebook-post') || sources.includes('facebook-comment'))
-        const suggestFacebookMessage = isUpdate && sources.includes('facebook-message')
-        const suggestFacebookMessenger = isUpdate && sources.includes('facebook-messenger')
-        const suggestInstagram = isUpdate && (sources.includes('instagram-media') || sources.includes('instagram-comment'))
-        const suggestInternalNote = isUpdate
+        const replyOptions = ticket.get('reply_options')
+
+        const suggestEmail = !isUpdate || !!replyOptions.get('email')
+        const suggestChat = isUpdate && !!replyOptions.get('chat')
+        const suggestFacebookComment = isUpdate && !!replyOptions.get('facebook-comment')
+        const suggestFacebookMessenger = isUpdate && !!replyOptions.get('facebook-messenger')
+        const suggestInstagram = isUpdate && !!replyOptions.get('instagram-comment')
+        const suggestInternalNote = isUpdate && !!replyOptions.get('internal-note')
         const suggestForwardByEmail = isUpdate
         const iconLabel = isForward ? 'email-forward' : this.props.sourceType
 
@@ -202,15 +201,19 @@ export default class ReplyMessageChannel extends React.Component {
                             />
                         </DropdownToggle>
                         <DropdownMenu>
-                            <DropdownItem
-                                type="button"
-                                onClick={() => {
-                                    prepareNewMessage('email')
-                                }}
-                            >
-                                <SourceIcon type="email" />
-                                Reply via email
-                            </DropdownItem>
+                            {
+                                suggestEmail && (
+                                    <DropdownItem
+                                        type="button"
+                                        onClick={() => {
+                                            prepareNewMessage('email')
+                                        }}
+                                    >
+                                        <SourceIcon type="email" />
+                                        Reply via email
+                                    </DropdownItem>
+                                )
+                            }
                             {
                                 suggestForwardByEmail && (
                                     <DropdownItem
@@ -259,19 +262,6 @@ export default class ReplyMessageChannel extends React.Component {
                                         }}
                                     >
                                         <SourceIcon type="facebook-messenger" />
-                                        Reply via Messenger
-                                    </DropdownItem>
-                                )
-                            }
-                            {
-                                suggestFacebookMessage && (
-                                    <DropdownItem
-                                        type="button"
-                                        onClick={() => {
-                                            prepareNewMessage('facebook-message')
-                                        }}
-                                    >
-                                        <SourceIcon type="facebook-message" />
                                         Reply via Messenger
                                     </DropdownItem>
                                 )

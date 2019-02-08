@@ -31,8 +31,6 @@ export type Props = {
     editorState: EditorState,
     onChange: EditorState => void,
     required: boolean,
-    alertMode?: string,
-    alertText?: string,
     displayOnly: boolean,
     signature: boolean,
     isFocused: boolean,
@@ -240,13 +238,12 @@ export class RichFieldEditor extends InputField<Props, State> {
     }
 
     _getField = () => {
-        const {required, alertMode, alertText, displayOnly, signature} = this.props
+        const {required, displayOnly, signature} = this.props
         const {MentionSuggestions} = this.mentionPlugin
         return (
             <div
                 className={classnames('rich-textarea-wrapper', {
                     'display-only': displayOnly,
-                    'alert-warning': alertMode === 'warning',
                 })}
             >
                 <div
@@ -259,32 +256,24 @@ export class RichFieldEditor extends InputField<Props, State> {
                     onDragLeave={this._onDragLeave}
                     onDrop={this._onDrop}
                 >
-                    {
-                        alertMode ? (
-                            <div className="pt-1">
-                                {alertText}
-                            </div>
-                        ) : (
-                            <Editor
-                                editorState={this.props.editorState}
-                                onChange={this._onChange}
-                                onFocus={this._onFocus}
-                                onBlur={this.props.onBlur}
-                                plugins={this.plugins}
-                                handleKeyCommand={this._handleKeyCommand}
-                                handlePastedText={this._handlePastedText}
-                                readOnly={displayOnly || this.props.readOnly}
-                                // once focused we're removing the placeholder (Gmail style)
-                                placeholder={!this.state.wasEverFocused && this.props.placeholder}
-                                ref={(editor: ?ElementRef<Editor>) => {
-                                    this.editor = editor
-                                }}
-                                editorKey={this.props.editorKey}
-                                tabIndex={this.props.tabIndex}
-                                spellCheck={this.props.spellCheck}
-                            />
-                        )
-                    }
+                    <Editor
+                        editorState={this.props.editorState}
+                        onChange={this._onChange}
+                        onFocus={this._onFocus}
+                        onBlur={this.props.onBlur}
+                        plugins={this.plugins}
+                        handleKeyCommand={this._handleKeyCommand}
+                        handlePastedText={this._handlePastedText}
+                        readOnly={displayOnly || this.props.readOnly}
+                        // once focused we're removing the placeholder (Gmail style)
+                        placeholder={!this.state.wasEverFocused && this.props.placeholder}
+                        ref={(editor: ?ElementRef<Editor>) => {
+                            this.editor = editor
+                        }}
+                        editorKey={this.props.editorKey}
+                        tabIndex={this.props.tabIndex}
+                        spellCheck={this.props.spellCheck}
+                    />
                     <MentionSuggestions
                         onSearchChange={this.props.onMentionSearchChange}
                         suggestions={this.props.mentionSearchResults}

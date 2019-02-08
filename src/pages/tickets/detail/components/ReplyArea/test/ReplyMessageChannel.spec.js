@@ -2,8 +2,24 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
+import {
+    CHAT_SOURCE,
+    EMAIL_SOURCE,
+    FACEBOOK_MESSENGER_SOURCE,
+    FACEBOOK_POST_SOURCE,
+    FACEBOOK_COMMENT_SOURCE,
+    INSTAGRAM_MEDIA_SOURCE,
+    INSTAGRAM_COMMENT_SOURCE,
+} from '../../../../../../config/ticket'
+
 import configureStore from '../../../../../../store/configureStore'
 import ReplyMessageChannel from '../ReplyMessageChannel'
+
+
+const baseReply = {
+    email: {answerable: true},
+    ['internal-note']: {answerable: true}
+}
 
 describe('ReplyMessageChannel component', () => {
     it('new ticket', () => {
@@ -29,7 +45,13 @@ describe('ReplyMessageChannel component', () => {
         expect(component).toMatchSnapshot()
     })
 
-    const types = ['email', 'chat', 'facebook-message', 'facebook-messenger', 'facebook-post', 'facebook-comment']
+    const types = [
+        EMAIL_SOURCE,
+        CHAT_SOURCE,
+        FACEBOOK_MESSENGER_SOURCE,
+        INSTAGRAM_MEDIA_SOURCE, INSTAGRAM_COMMENT_SOURCE,
+        FACEBOOK_POST_SOURCE, FACEBOOK_COMMENT_SOURCE
+    ]
 
     types.forEach((type) => {
         it(`existing ticket with message of type ${type}`, () => {
@@ -37,6 +59,13 @@ describe('ReplyMessageChannel component', () => {
 
             if (type === 'facebook-post') {
                 newMessageType = 'facebook-comment'
+            } else if (type === 'instagram-media') {
+                newMessageType = 'instagram-comment'
+            }
+
+            const replyOptions = {
+                ...baseReply,
+                [newMessageType]: {answerable: true}
             }
 
             const component = shallow(
@@ -44,6 +73,7 @@ describe('ReplyMessageChannel component', () => {
                     store={configureStore({
                         ticket: fromJS({
                             id: 12,
+                            reply_options: replyOptions,
                             messages: [{
                                 id: 1,
                                 source: {
@@ -71,6 +101,10 @@ describe('ReplyMessageChannel component', () => {
                 store={configureStore({
                     ticket: fromJS({
                         id: 12,
+                        reply_options: {
+                            ...baseReply,
+                            chat: {answerable: true},
+                        },
                         messages: [{
                             id: 2,
                             source: {
