@@ -1,9 +1,10 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+import {mount} from 'enzyme/build/index'
+
 import * as labels from '../labels'
 import Avatar from '../../components/Avatar/Avatar'
-import {mount} from 'enzyme/build/index'
 import {IntegrationsDetailLabel} from '../labels'
 
 /* DatetimeLabel uses Math.random.

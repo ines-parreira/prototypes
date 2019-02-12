@@ -74,7 +74,7 @@ export default class ParametersEditor extends React.Component {
                                         required
                                         form="macro_form"
                                         maxLength={MAX_HEADER_LENGTH}
-                                        onChange={value => this.changeValue('key', index, value)}
+                                        onChange={(value) => this.changeValue('key', index, value)}
                                     />
                                 </Col>
                                 <Col className="flex-grow">
@@ -85,7 +85,7 @@ export default class ParametersEditor extends React.Component {
                                         form="macro_form"
                                         maxLength={MAX_HEADER_LENGTH}
                                         required={this.props.name === 'headers'}
-                                        onChange={value => this.changeValue('value', index, value)}
+                                        onChange={(value) => this.changeValue('value', index, value)}
                                     />
 
                                 </Col>

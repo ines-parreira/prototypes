@@ -1,6 +1,7 @@
 // @flow
-import {toImmutable, isImmutable} from '../../utils'
 import _trim from 'lodash/trim'
+
+import {toImmutable, isImmutable} from '../../utils'
 
 /**
  * Return name of customer

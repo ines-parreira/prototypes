@@ -5,11 +5,12 @@ import classnames from 'classnames'
 import {Link, withRouter} from 'react-router'
 import {fromJS} from 'immutable'
 
-import Tooltip from './Tooltip'
 import {isCurrentlyOnTicket} from '../../../utils'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 
 import {MAX_RECENT_CHATS} from '../../../config/recentChats'
+
+import Tooltip from './Tooltip'
 import SourceIcon from './SourceIcon'
 
 import css from './RecentChats.less'

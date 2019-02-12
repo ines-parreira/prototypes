@@ -19,7 +19,6 @@ import {
     Col,
 } from 'reactstrap'
 
-import * as integrationSelectors from './../../../../../../state/integrations/selectors'
 
 import Loader from '../../../../../common/components/Loader'
 import ChatIntegrationPreview from '../ChatIntegrationPreview/ChatIntegrationPreview'
@@ -28,10 +27,12 @@ import ConfirmButton from '../../../../../common/components/ConfirmButton'
 import InputField from '../../../../../common/forms/InputField'
 import ColorField from '../../../../../common/forms/ColorField'
 
-import css from './ChatIntegrationAppearance.less'
 import PageHeader from '../../../../../common/components/PageHeader'
 import RealtimeMessagingIntegrationNavigation from '../../../../common/RealtimeMessagingIntegrationNavigation'
 import BooleanField from '../../../../../common/forms/BooleanField'
+
+import css from './ChatIntegrationAppearance.less'
+import * as integrationSelectors from './../../../../../../state/integrations/selectors'
 
 export const defaultContent = {
     type: 'smooch_inside',

@@ -9,9 +9,9 @@ import {fromJS} from 'immutable'
 import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
 
-import shortcutManager from '../../../services/shortcutManager'
 import DocumentTitle from 'react-document-title'
-import TicketView from './components/TicketView'
+
+import shortcutManager from '../../../services/shortcutManager'
 import Loader from '../../common/components/Loader'
 import * as ViewsActions from '../../../state/views/actions'
 import * as TicketActions from '../../../state/ticket/actions'
@@ -28,6 +28,8 @@ import * as newMessageSelectors from '../../../state/newMessage/selectors'
 import * as viewsSelectors from '../../../state/views/selectors'
 import * as ticketSelectors from '../../../state/ticket/selectors'
 import * as customersSelectors from '../../../state/customers/selectors'
+
+import TicketView from './components/TicketView'
 import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
 
 @withRouter

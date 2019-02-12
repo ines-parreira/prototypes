@@ -1,7 +1,8 @@
 //@flow
 import {hasFailedAction, hasPendingAction, isFailed, isPending} from '../predicates'
-import {action as defaultAction, message as defaultMessage} from './mocks'
 import type {TicketMessage} from '../types'
+
+import {action as defaultAction, message as defaultMessage} from './mocks'
 
 describe('predicates', () => {
     describe('hasFailedAction', () => {

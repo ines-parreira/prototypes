@@ -2,10 +2,12 @@
 import React from 'react'
 import classnames from 'classnames'
 
+import type {Node} from 'react'
+
 import Loader from '../Loader'
+
 import css from './InfiniteScroll.less'
 
-import type {Node} from 'react'
 
 type Props = {
     load: () => Promise<*>,

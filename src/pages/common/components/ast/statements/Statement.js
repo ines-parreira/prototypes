@@ -2,10 +2,11 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
+import UnknownSyntax from '../UnknownSyntax'
+
 import BlockStatement from './BlockStatement'
 import ExpressionStatement from './ExpressionStatement'
 import IfStatement from './IfStatement'
-import UnknownSyntax from '../UnknownSyntax'
 
 
 type Props = {

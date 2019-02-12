@@ -3,11 +3,13 @@ import React from 'react'
 import {Link} from 'react-router'
 import {Alert, Container, Row, Col} from 'reactstrap'
 
-import IntegrationListRow from './IntegrationListRow'
+import type {Map} from 'immutable'
+
 import PageHeader from '../../../common/components/PageHeader'
 import {getIntegrationsList} from '../../../../state/integrations/helpers'
 
-import type {Map} from 'immutable'
+import IntegrationListRow from './IntegrationListRow'
+
 
 type Props = {
     integrations: Map<*,*>,

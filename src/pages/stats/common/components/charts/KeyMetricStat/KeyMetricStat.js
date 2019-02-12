@@ -8,10 +8,11 @@ import _isObject from 'lodash/isObject'
 import Tooltip from '../../../../../common/components/Tooltip'
 import {renderDifference, comparedPeriodString, formatDuration, formatPercent, formatCurrency} from '../../../utils'
 
+import statsCss from '../../../../style.less'
+
 import DonutKeyMetricStat from './DonutKeyMetricStat'
 import DistributionKeyMetricStat from './DistributionKeyMetricStat'
 
-import statsCss from '../../../../style.less'
 import css from './KeyMetricStat.less'
 
 

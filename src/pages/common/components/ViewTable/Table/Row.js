@@ -4,7 +4,8 @@ import classnames from 'classnames'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 
-import Cell from './Cell'
+import type {Map, List} from 'immutable'
+
 import {scrollToReactNode} from '../../../utils/keyboard'
 
 import css from '../Table.less'
@@ -14,7 +15,8 @@ import * as viewsActions from '../../../../../state/views/actions'
 
 import * as viewsUtils from '../../../../../state/views/utils'
 
-import type {Map, List} from 'immutable'
+import Cell from './Cell'
+
 
 type Props = {
     onItemClick: ?(number) => void,

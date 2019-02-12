@@ -1,9 +1,10 @@
 import React from 'react'
 import {fromJS} from 'immutable'
-import TicketListActions from '../TicketListActions'
 import {shallow} from 'enzyme'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import TicketListActions from '../TicketListActions'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

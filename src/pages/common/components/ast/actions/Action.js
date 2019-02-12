@@ -2,16 +2,18 @@
 import React from 'react'
 import classnames from 'classnames'
 import {Card, CardBody} from 'reactstrap'
-import {templateRegex} from '../../../utils/template'
-import {computeLeftPadding} from '../utils'
 
 import _isFunction from 'lodash/isFunction'
 import _isArray from 'lodash/isArray'
 
-import ActionSelect from './ActionSelect'
+import {computeLeftPadding} from '../utils'
+import {templateRegex} from '../../../utils/template'
+
 import Errors from '../Errors'
 
 import {isEmailList, findProperty} from '../../../../../utils'
+
+import ActionSelect from './ActionSelect'
 
 
 export function validateEmailList(value: string, schemas: Object): string | void {

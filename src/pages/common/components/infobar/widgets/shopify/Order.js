@@ -10,9 +10,10 @@ import {
 
 import {humanizeString} from '../../../../../../utils'
 
+import ActionButtonsGroup from '../ActionButtonsGroup'
+
 import type {ActionType} from './../types'
 
-import ActionButtonsGroup from '../ActionButtonsGroup'
 
 export default () => {
     return {

@@ -1,7 +1,8 @@
 import React from 'react'
-import {Infobar} from '../Infobar'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+
+import {Infobar} from '../Infobar'
 
 
 const commonProps = {

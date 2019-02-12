@@ -1,7 +1,8 @@
 import React from 'react'
-import TicketSnooze from '../TicketSnooze'
 import moment from 'moment'
 import {shallow} from 'enzyme'
+
+import TicketSnooze from '../TicketSnooze'
 
 describe('TicketSnooze', () => {
     it('should render an icon with a tooltip', () => {

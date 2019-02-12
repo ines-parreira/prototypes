@@ -4,6 +4,7 @@ import {
     DropdownItem, DropdownMenu, DropdownToggle,
     Input, InputGroup, InputGroupButtonDropdown
 } from 'reactstrap'
+
 import {isTimedelta} from '../../../utils/ast'
 import {TIMEDELTA_OPERATOR_DEFAULT_QUANTITY, TIMEDELTA_OPERATOR_DEFAULT_UNIT} from '../../../config'
 

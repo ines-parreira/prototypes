@@ -6,10 +6,11 @@ import {Badge} from 'reactstrap'
 
 import {fileIconFromContentType, getSortedIntegrationActions} from '../../common/utils'
 import {TagLabel, AgentLabel, StatusLabel} from '../../../common/utils/labels'
+import RichField from '../../../common/forms/RichField'
+
 import {getIconFromType} from './../../../../state/integrations/helpers'
 import {getActionTemplate} from './../../../../utils'
 
-import RichField from '../../../common/forms/RichField'
 
 import css from './Preview.less'
 
@@ -178,15 +179,15 @@ class Preview extends React.Component {
             return null
         }
 
-        const addTagsActions = macro.get('actions').filter(action => action.get('name') === 'addTags')
-        const responseTextAction = macro.get('actions').find(action => action.get('name') === 'setResponseText')
-        const setStatusAction = macro.get('actions').find(action => action.get('name') === 'setStatus')
-        const setAssigneeAction = macro.get('actions').find(action => action.get('name') === 'setAssignee')
-        const setSubjectAction = macro.get('actions').find(action => action.get('name') === 'setSubject')
-        const addAttachmentsActions = macro.get('actions').find(action => action.get('name') === 'addAttachments')
+        const addTagsActions = macro.get('actions').filter((action) => action.get('name') === 'addTags')
+        const responseTextAction = macro.get('actions').find((action) => action.get('name') === 'setResponseText')
+        const setStatusAction = macro.get('actions').find((action) => action.get('name') === 'setStatus')
+        const setAssigneeAction = macro.get('actions').find((action) => action.get('name') === 'setAssignee')
+        const setSubjectAction = macro.get('actions').find((action) => action.get('name') === 'setSubject')
+        const addAttachmentsActions = macro.get('actions').find((action) => action.get('name') === 'addAttachments')
 
         const backActions = macro.get('actions').filter(
-            action => getActionTemplate(action.get('name')).execution === 'back'
+            (action) => getActionTemplate(action.get('name')).execution === 'back'
         )
 
         const sortedBackActions = getSortedIntegrationActions(backActions)

@@ -10,7 +10,6 @@ import {updateCreditCard} from '../../../../state/billing/actions'
 import {currentPlan as currentPlanSelector} from '../../../../state/billing/selectors'
 
 import Loader from '../../../common/components/Loader'
-import {creditCardCVCNormalizer, creditCardExpDateNormalizer, creditCardNormalizer} from './utils'
 import {loadScript} from '../../../../utils'
 
 import Errors from '../../../common/forms/Errors'
@@ -20,6 +19,8 @@ import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 import PageHeader from '../../../common/components/PageHeader'
 import * as currentAccountSelectors from '../../../../state/currentAccount/selectors'
 import {Plan} from '../plans/Plan'
+
+import {creditCardCVCNormalizer, creditCardExpDateNormalizer, creditCardNormalizer} from './utils'
 
 class CreditCard extends Component {
     static propTypes = {

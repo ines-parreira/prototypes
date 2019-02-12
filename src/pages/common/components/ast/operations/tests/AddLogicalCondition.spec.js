@@ -1,7 +1,8 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import {AddLogicalCondition} from '../AddLogicalCondition'
 import {fromJS} from 'immutable'
+
+import {AddLogicalCondition} from '../AddLogicalCondition'
 import {toJS} from '../../../../../../utils'
 
 

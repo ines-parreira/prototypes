@@ -1,6 +1,7 @@
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
+
 import userActivityManager from '../userActivityManager'
 import socketManager from '../socketManager'
 import * as socketConstants from '../../config/socketConstants'

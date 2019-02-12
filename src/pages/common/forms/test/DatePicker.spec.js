@@ -1,7 +1,8 @@
 import React from 'react'
 import {mount, shallow} from 'enzyme'
-import DatePicker from '../DatePicker'
 import moment from 'moment/moment'
+
+import DatePicker from '../DatePicker'
 
 describe('DatePicker', () => {
     it('should render a date range picker', () => {

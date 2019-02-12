@@ -1,8 +1,8 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
+import {fromJS} from 'immutable'
+
 import {getChannels} from '../../integrations/selectors'
 import {integrationsState} from '../../../fixtures/integrations'
-import {smoochTicket, emailTicket, facebookPost} from './fixtures'
-import {fromJS} from 'immutable'
 import {
     guessReceiversFromTicket,
     receiversValueFromState,
@@ -16,6 +16,8 @@ import {
 import {
     getPersonLabelFromSource,
 } from '../../../pages/tickets/common/utils'
+
+import {smoochTicket, emailTicket, facebookPost} from './fixtures'
 
 jest.addMatchers(immutableMatchers)
 
@@ -239,7 +241,7 @@ describe('ticket utils', () => {
 
     describe('getPreferredChannel', () => {
         it('should return preferred', () => {
-            const expected = channels.find(channel => {
+            const expected = channels.find((channel) => {
                 return channel.get('type') === 'email' && channel.get('preferred', false)
             })
             expect(getPreferredChannel('email', channels))
@@ -248,8 +250,8 @@ describe('ticket utils', () => {
 
         it('should return first', () => {
             // remove preferred channels of the list
-            const _chans = channels.filter(channel => channel.get('preferred', false) === false)
-            const expected = _chans.find(channel => channel.get('type') === 'email')
+            const _chans = channels.filter((channel) => channel.get('preferred', false) === false)
+            const expected = _chans.find((channel) => channel.get('type') === 'email')
             expect(getPreferredChannel('email', _chans))
                 .toEqualImmutable(expected)
         })
@@ -317,7 +319,7 @@ describe('ticket utils', () => {
             // delete last message from agent
             // and move `To` addresses in `Cc` and remove `To` addresses
             const _emailTicket = emailTicket.deleteIn(['messages', 1])
-                .updateIn(['messages', 0, 'source'], source => {
+                .updateIn(['messages', 0, 'source'], (source) => {
                     return source.set('cc', source.get('to'))
                         .set('to', fromJS([]))
                 })

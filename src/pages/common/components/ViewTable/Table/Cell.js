@@ -2,12 +2,13 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {fromJS, Map} from 'immutable'
+import {Link} from 'react-router'
+
 import {RenderLabel} from '../../../utils/labels'
 
 import * as viewsConfig from '../../../../../config/views'
 
 import css from '../Table.less'
-import {Link} from 'react-router'
 
 type Props = {
     config: Map<*,*>,

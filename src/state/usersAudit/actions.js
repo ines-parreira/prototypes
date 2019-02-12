@@ -1,8 +1,10 @@
 // @flow
 import axios from 'axios'
-import {FETCH_USERS_AUDIT_SUCCESS, FETCH_USERS_AUDIT_ERROR} from './constants'
 
 import type {dispatchType, thunkActionType} from '../types'
+
+import {FETCH_USERS_AUDIT_SUCCESS, FETCH_USERS_AUDIT_ERROR} from './constants'
+
 
 export const fetchUsersAudit = (params: Object): thunkActionType => {
     return (dispatch: dispatchType): Promise<dispatchType> => {

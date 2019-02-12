@@ -1,4 +1,5 @@
 import {fromJS} from 'immutable'
+
 import {TicketReplyCache, defaultTicket, CACHE_MAX_ITEMS} from '../../newMessage/ticketReplyCache'
 
 // Storage Mock

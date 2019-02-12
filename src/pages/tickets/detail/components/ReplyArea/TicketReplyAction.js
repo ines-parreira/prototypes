@@ -3,13 +3,14 @@ import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
 
+import InputField from '../../../../common/forms/InputField'
+import BooleanField from '../../../../common/forms/BooleanField'
+
 import {getActionTemplate} from './../../../../../utils'
 
 import {FORM_CONTENT_TYPE} from './../../../../../config'
 import {getIconUrl, getIconFromUrl} from './../../../../../state/integrations/helpers'
 
-import InputField from '../../../../common/forms/InputField'
-import BooleanField from '../../../../common/forms/BooleanField'
 
 import css from './TicketReplyAction.less'
 
@@ -145,7 +146,7 @@ export default class TicketReplyAction extends React.Component {
                 .filter((curAction) => curAction.get('editable'))
 
             const formData = action.getIn(['arguments', 'content_type']) === FORM_CONTENT_TYPE
-                ? action.getIn(['arguments', 'form'], fromJS([])).filter(curAction => curAction.get('editable'))
+                ? action.getIn(['arguments', 'form'], fromJS([])).filter((curAction) => curAction.get('editable'))
                 : fromJS([])
 
             const shouldDisplayArgs = headersArgs.size + paramsArgs.size + formData.size

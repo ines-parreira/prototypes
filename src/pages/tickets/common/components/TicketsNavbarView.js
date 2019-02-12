@@ -1,4 +1,5 @@
 import React from 'react'
+
 import ViewNavbarView from '../../../common/components/ViewNavbarView/'
 
 const TicketsNavbarView = (props) => (

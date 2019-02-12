@@ -155,9 +155,9 @@ class Wrapper extends React.Component { // eslint-disable-line
             .map((refund) => { // keep refund items information about current item
                 return refund
                     .get('refund_line_items', fromJS([]))
-                    .filter(lineItem => lineItem.get('line_item_id').toString() === itemId.toString())
+                    .filter((lineItem) => lineItem.get('line_item_id').toString() === itemId.toString())
             })
-            .filter(refundedItemInfo => !refundedItemInfo.isEmpty()) // remove falsey data
+            .filter((refundedItemInfo) => !refundedItemInfo.isEmpty()) // remove falsey data
             .flatten(true) // flatten all those refund info in one List
             .reduce((total, refund) => { // sum all refunded quantities
                 return total + refund.get('quantity')

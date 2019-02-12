@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router'
+
 import {views} from '../../../../config/stats'
 
 export default class StatsNavbarView extends React.Component {

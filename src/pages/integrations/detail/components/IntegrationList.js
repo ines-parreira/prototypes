@@ -5,10 +5,11 @@ import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Table, Button, Container} from 'reactstrap'
 
-import NoIntegration from './NoIntegration'
 import {getIntegrationsList} from '../../../../state/integrations/helpers'
 import {notify} from '../../../../state/notifications/actions'
 import PageHeader from '../../../common/components/PageHeader'
+
+import NoIntegration from './NoIntegration'
 
 /**
  * A generic component to edit integrations of a given type.
@@ -70,7 +71,7 @@ class IntegrationList extends React.Component {
         } = this.props
 
         const integrationTypes = fromJS(getIntegrationsList(integrations))
-        const integrationConfig = integrationTypes.find(i => i.get('type', '') === integrationType, null, fromJS({}))
+        const integrationConfig = integrationTypes.find((i) => i.get('type', '') === integrationType, null, fromJS({}))
         const integrationTitle = integrationConfig.get('title')
 
         return (

@@ -1,7 +1,8 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import ActionSelect from '../ActionSelect'
 import {fromJS} from 'immutable'
+
+import ActionSelect from '../ActionSelect'
 
 const commonProps = {
     actions: {

@@ -8,7 +8,6 @@ import axios from 'axios'
 import browserNotification from '../../services/browserNotification'
 import * as newMessageActions from '../newMessage/actions'
 import * as viewsSelectors from '../views/selectors'
-import * as types from './constants'
 import * as newMessageTypes from '../newMessage/constants'
 
 import {DEFAULT_ACTIONS} from '../../config'
@@ -17,19 +16,21 @@ import {
     isCurrentlyOnTicket,
     isTabActive,
 } from '../../utils'
+
+import socketManager from '../../services/socketManager'
+import type {dispatchType, getStateType, thunkActionType} from '../types'
+import {markChatAsRead} from '../chats/actions'
+import * as ticketsSelectors from '../tickets/selectors'
+
+import {getSourceTypeCache} from '../newMessage/responseUtils'
+
+import {getCustomerMessages} from './selectors'
 import {
     buildPartialUpdateFromAction,
     getSourceTypeOfResponse,
     nestedReplace,
 } from './utils'
-
-import socketManager from '../../services/socketManager'
-import type {dispatchType, getStateType, thunkActionType} from '../types'
-import {getCustomerMessages} from './selectors'
-import {markChatAsRead} from '../chats/actions'
-import * as ticketsSelectors from '../tickets/selectors'
-
-import {getSourceTypeCache} from '../newMessage/responseUtils'
+import * as types from './constants'
 
 export const mergeTicket = (ticket) => (dispatch, getState) => {
     ticket = fromJS(ticket)

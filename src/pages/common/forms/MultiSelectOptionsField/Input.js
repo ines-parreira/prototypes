@@ -1,5 +1,6 @@
 // @flow
 import React from 'react'
+
 import css from './Input.less'
 
 type Props = {

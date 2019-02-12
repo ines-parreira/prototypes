@@ -4,6 +4,7 @@ import {Table, Badge} from 'reactstrap'
 import {connect} from 'react-redux'
 
 import moment from 'moment'
+
 import * as billingSelectors from '../../../state/billing/selectors'
 import {fetchInvoices} from '../../../state/billing/actions'
 import Loader from '../../common/components/Loader'

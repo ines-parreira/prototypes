@@ -1,6 +1,7 @@
 // @flow
 import React, {type ChildrenArray, type Element} from 'react'
 import {Navbar} from 'reactstrap'
+
 import css from './SecondaryNavbar.less'
 
 type NavbarProps = {

@@ -2,12 +2,14 @@
 import React from 'react'
 import classnames from 'classnames'
 import {Button} from 'reactstrap'
-import Popover from './ButtonPopover'
+
 import FileField from '../../../../forms/FileField'
-import css from './AddImage.less'
 import type { ActionInjectedProps } from '../types'
 import {getMaxAttachmentSize} from '../../../../../../utils/file'
 import {addImage} from '../../utils'
+
+import css from './AddImage.less'
+import Popover from './ButtonPopover'
 
 type Props = {
     attachments?: File[]

@@ -44,7 +44,7 @@ describe('ViewTable::Table::HeaderCell', () => {
         const component = shallow(
             <HeaderCell
                 {...minProps}
-                field={viewConfig.get('fields').find(field => field.get('name') === 'created')}
+                field={viewConfig.get('fields').find((field) => field.get('name') === 'created')}
             />
         ).dive()
         expect(component).toMatchSnapshot()

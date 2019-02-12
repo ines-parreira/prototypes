@@ -6,7 +6,6 @@ import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 
 import {compactInteger, getPluralObjectName} from '../../../../utils'
-import ViewNavbarViewEditor from './ViewNavbarViewEditor'
 import Tooltip from '../Tooltip'
 
 import shortcutManager from '../../../../services/shortcutManager'
@@ -15,6 +14,8 @@ import {moveIndex} from '../../../common/utils/keyboard'
 import * as viewsActions from '../../../../state/views/actions'
 import {getActiveView, getViewsByType, makeGetView, makeGetViewCount} from '../../../../state/views/selectors'
 import {getSettingsByType as getCurrentUserSettingsByType} from '../../../../state/currentUser/selectors'
+
+import ViewNavbarViewEditor from './ViewNavbarViewEditor'
 
 import css from './ViewNavbarView.less'
 
@@ -69,7 +70,7 @@ class ViewNavbarView extends Component {
     _getDisplayedViews = () => {
         // hide hidden views if we are not in edit mode
         if (!this.state.hasEditMode) {
-            return this.props.views.filter(view => !view.get('hide', false))
+            return this.props.views.filter((view) => !view.get('hide', false))
         }
 
         return this.props.views

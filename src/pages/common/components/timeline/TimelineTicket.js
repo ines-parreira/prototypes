@@ -7,8 +7,9 @@ import {Card, CardBody} from 'reactstrap'
 import {StatusLabel, AgentLabel, DatetimeLabel} from '../../utils/labels'
 import {stripHTML} from '../../../../utils'
 
-import css from './TimelineTicket.less'
 import SourceIcon from '../SourceIcon'
+
+import css from './TimelineTicket.less'
 
 export default class TimelineTicket extends React.Component {
     _goToTicket = (e) => {

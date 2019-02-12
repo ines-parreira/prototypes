@@ -1,9 +1,10 @@
 // @flow
 import {fromJS} from 'immutable'
-import {getActionTemplate} from '../../utils'
 import _forEach from 'lodash/forEach'
 
 import type {Map} from 'immutable'
+
+import {getActionTemplate} from '../../utils'
 
 export function generateDefaultAction(actionType: string): ?Map<*,*> {
     const actionTemplate = getActionTemplate(actionType)

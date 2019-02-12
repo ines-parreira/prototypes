@@ -1,11 +1,13 @@
 //@flow
+import React from 'react'
+import classNamesBind from 'classnames/bind'
+
+import {DatetimeLabel} from '../../../../common/utils/labels'
+import type {TicketMessage} from '../../../../../models/ticketElement'
+
 import SourceActions from './SourceActions'
 import SeenIndicator from './SeenIndicator'
-import {DatetimeLabel} from '../../../../common/utils/labels'
-import React from 'react'
-import type {TicketMessage} from '../../../../../models/ticketElement'
 import css from './SourceDetails.less'
-import classNamesBind from 'classnames/bind'
 
 const classNames = classNamesBind.bind(css)
 

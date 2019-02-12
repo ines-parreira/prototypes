@@ -2,8 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
-import NotAllowed from './NotAllowed'
+
 import {hasRole} from '../../../utils'
+
+import NotAllowed from './NotAllowed'
 // check user role before render the desired component
 const userRoleRequired = (Component, requiredRole, redirectTo) => {
     const UserRoleRequired = (props) => {

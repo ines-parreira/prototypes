@@ -9,10 +9,11 @@ import {
 
 import {humanizeString} from '../../../../../../utils'
 
-import * as ticketSelectors from './../../../../../../state/ticket/selectors'
 import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../state/customers/selectors'
 
 import ActionButtonsGroup from '../ActionButtonsGroup'
+
+import * as ticketSelectors from './../../../../../../state/ticket/selectors'
 
 export default () => {
     return {

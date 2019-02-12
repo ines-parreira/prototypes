@@ -8,6 +8,9 @@ import _isArray from 'lodash/isArray'
 import _isString from 'lodash/isString'
 import {Badge} from 'reactstrap'
 
+import type {Node} from 'react'
+import type {Map} from 'immutable'
+
 import Tooltip from '../components/Tooltip'
 import Avatar from '../components/Avatar'
 import {formatDatetime, toJS, isImmutable} from '../../../utils'
@@ -16,11 +19,10 @@ import * as customersHelpers from '../../../state/customers/helpers'
 import {DEFAULT_TAG_COLOR} from '../../../config'
 import SourceIcon from '../components/SourceIcon'
 
+import type {SourceType} from '../../../models/ticketElement/types'
+
 import css from './labels.less'
 
-import type {Node} from 'react'
-import type {Map} from 'immutable'
-import type {SourceType} from '../../../models/ticketElement/types'
 
 /**
  * AGENT
@@ -228,7 +230,7 @@ export const RoleLabel = ({roles = 'user'}: { roles: string }) => {
         if (_isObject(roles[0])) {
             if (roles[0].name) {
                 // $FlowFixMe
-                roles = roles.map(v => v.name)
+                roles = roles.map((v) => v.name)
             }
         }
     }

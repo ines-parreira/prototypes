@@ -1,6 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+
 import LineStat from '../LineStat'
 import {stats as statsConfig, RESOLUTION_TIME} from '../../../../../../config/stats'
 

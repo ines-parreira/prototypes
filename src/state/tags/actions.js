@@ -1,12 +1,14 @@
 // @flow
 import axios from 'axios'
-import * as constants from './constants'
+
+import type {List} from 'immutable'
 
 import {notify} from '../notifications/actions'
 import {createErrorNotification} from '../utils'
 
-import type {List} from 'immutable'
 import type {actionType, thunkActionType, dispatchType, getStateType} from '../types'
+
+import * as constants from './constants'
 
 type existingTagType = {
     id: string,

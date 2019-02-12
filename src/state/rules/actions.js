@@ -2,12 +2,13 @@
 import axios from 'axios'
 import {fromJS, List} from 'immutable'
 
-import * as constants from './constants'
 import {notify} from '../notifications/actions'
 
 import type {dispatchType, getStateType} from '../types'
-import type {ruleType} from './types'
 import {createErrorNotification} from '../utils'
+
+import type {ruleType} from './types'
+import * as constants from './constants'
 type operationType = 'UPDATE' | 'INSERT' | 'DELETE' | 'UPDATE_LOGICAL_OPERATOR' | 'DELETE_BINARY_EXPRESSION'
 
 export const addRuleStart = (type: string, code: string) => ({
@@ -134,7 +135,7 @@ export const deactivate = (id: string) => (dispatch: dispatchType): Promise<disp
                 type: constants.DEACTIVATE_RULE,
                 id,
             }))
-        }, error => {
+        }, (error) => {
             return dispatch(createErrorNotification(error, 'Unable to deactivate the rule'))
         })
 )
@@ -156,7 +157,7 @@ export const remove = (id: string) => (dispatch: dispatchType): Promise<dispatch
                 type: constants.REMOVE_RULE,
                 id,
             }))
-        }, error => {
+        }, (error) => {
             return dispatch(createErrorNotification(error, 'Unable to delete the rule'))
         })
 )
@@ -183,9 +184,9 @@ export function fetchRules() {
 
         return axios.get(url)
             .then((json = {}) => json.data)
-            .then(resp => {
+            .then((resp) => {
                 return dispatch(receiveRules(resp.data))
-            }, error => {
+            }, (error) => {
                 return dispatch(createErrorNotification(error, 'Unable to receive rules'))
             })
     }
@@ -202,7 +203,7 @@ export function updateOrder(priorities: {}) {
             .then((json = {}) => json.data)
             .then((resp) => {
                 return dispatch(receiveRules(resp))
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: constants.UPDATE_ORDER_ERROR,
                     error,

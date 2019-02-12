@@ -1,5 +1,7 @@
 import {fromJS} from 'immutable'
+
 import {getValuePropFromSourceType} from '../../../state/ticket/utils'
+
 import {getActionTemplate} from './../../../utils'
 
 /**
@@ -60,7 +62,7 @@ export function fileIconFromContentType(contentType) {
 export function getSortedIntegrationActionsNames(actionsList) {
     let sortedActions = fromJS({})
 
-    actionsList.map(action => {
+    actionsList.map((action) => {
         const type = action.integrationType
 
         if (!sortedActions.get(type)) {
@@ -83,7 +85,7 @@ export function getSortedIntegrationActionsNames(actionsList) {
 export function getSortedIntegrationActions(actionsList) {
     let sortedActions = fromJS({})
 
-    actionsList.map(action => {
+    actionsList.map((action) => {
         const type = getActionTemplate(action.get('name')).integrationType || action.get('name')
 
         if (!sortedActions.get(type)) {

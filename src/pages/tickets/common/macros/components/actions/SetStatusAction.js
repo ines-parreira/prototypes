@@ -21,7 +21,7 @@ export default class SetStatusAction extends React.Component {
                 <InputField
                     type="select"
                     value={action.getIn(['arguments', 'status'])}
-                    onChange={value => updateActionArgs(index, fromJS({status: value}))}
+                    onChange={(value) => updateActionArgs(index, fromJS({status: value}))}
                     required
                 >
                     {

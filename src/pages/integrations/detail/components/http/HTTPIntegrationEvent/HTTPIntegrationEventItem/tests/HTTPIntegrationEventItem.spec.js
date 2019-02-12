@@ -1,6 +1,7 @@
 import React from 'react'
-import HTTPIntegrationEventItem from '../HTTPIntegrationEventItem'
 import {shallow} from 'enzyme'
+
+import HTTPIntegrationEventItem from '../HTTPIntegrationEventItem'
 
 describe('HTTPIntegrationEventItem', () => {
     it('should render its name with an empty label because it has no value and children', () => {

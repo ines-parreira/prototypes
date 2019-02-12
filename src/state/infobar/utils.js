@@ -26,7 +26,7 @@ export const actionButtonHashForData = ({action_name, user_id, integration_id, p
 
     // add payload data in keys alphabetical order (same order each time we pass the same object)
     // reminder: object keys don't have a fixed order in JS
-    const orderedPayload = _keys(payload).sort().map(key => payload[key])
+    const orderedPayload = _keys(payload).sort().map((key) => payload[key])
 
     identifier = identifier.concat(orderedPayload)
 

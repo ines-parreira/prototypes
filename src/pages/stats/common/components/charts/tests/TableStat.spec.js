@@ -1,6 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+
 import TableStat from '../TableStat/TableStat'
 import {stats as statsConfig, TICKETS_PER_TAG} from '../../../../../../config/stats'
 

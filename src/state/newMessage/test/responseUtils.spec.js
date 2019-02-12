@@ -1,5 +1,6 @@
 import {ContentState} from 'draft-js'
 import {fromJS} from 'immutable'
+
 import * as responseUtils from '../responseUtils'
 import {convertToHTML} from '../../../utils/editor'
 

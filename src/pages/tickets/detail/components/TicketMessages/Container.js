@@ -1,13 +1,15 @@
 //@flow
 import React, {type Node} from 'react'
 import classNamesBind from 'classnames/bind'
-import {scrollToReactNode} from '../../../../common/utils/keyboard'
-import css from './Container.less'
 import moment from 'moment'
-import Avatar from '../../../../common/components/Avatar'
-import Header from './Header'
-import {TicketMessage, isFailed, isPending} from '../../../../../models/ticketElement'
 import {fromJS} from 'immutable/dist/immutable'
+
+import {scrollToReactNode} from '../../../../common/utils/keyboard'
+import Avatar from '../../../../common/components/Avatar'
+import {TicketMessage, isFailed, isPending} from '../../../../../models/ticketElement'
+
+import css from './Container.less'
+import Header from './Header'
 
 const classNames = classNamesBind.bind(css)
 

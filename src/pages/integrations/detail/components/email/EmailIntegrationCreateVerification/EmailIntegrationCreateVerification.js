@@ -3,11 +3,12 @@ import React from 'react'
 import {Alert, Button, Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import {browserHistory, Link} from 'react-router'
 import {connect} from 'react-redux'
+import classNames from 'classnames'
+
 import PageHeader from '../../../../../common/components/PageHeader'
 import * as integrationActions from '../../../../../../state/integrations/actions'
 import * as notificationActions from '../../../../../../state/notifications/actions'
 import type {dispatchType} from '../../../../../../state/types'
-import classNames from 'classnames'
 import socketManager from '../../../../../../services/socketManager'
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
 

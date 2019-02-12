@@ -1,7 +1,8 @@
-import {getHTTPIntegrationEvent, getHTTPIntegrationEvents, getHTTPIntegrationEventsState} from '../selectors'
-import {initialState} from '../reducers'
 import {fromJS} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
+
+import {getHTTPIntegrationEvent, getHTTPIntegrationEvents, getHTTPIntegrationEventsState} from '../selectors'
+import {initialState} from '../reducers'
 
 jest.addMatchers(immutableMatchers)
 

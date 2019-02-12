@@ -1,12 +1,14 @@
 // @flow
 import axios from 'axios'
 
+import type {Map} from 'immutable'
+
 import {toImmutable, toJS} from '../../utils'
 import {notify} from '../notifications/actions'
+import type {dispatchType} from '../types'
+
 import * as constants from './constants'
 
-import type {Map} from 'immutable'
-import type {dispatchType} from '../types'
 type agentType = {}
 
 export function fetchUsers(roles: Array<string>) {
@@ -23,13 +25,13 @@ export function fetchUsers(roles: Array<string>) {
 
         return axios.get(`/api/users/${rolesParam}`)
             .then((json = {}) => json.data)
-            .then(resp => {
+            .then((resp) => {
                 dispatch({
                     type: constants.FETCH_USER_LIST_SUCCESS,
                     resp,
                     roles
                 })
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: constants.FETCH_USER_LIST_ERROR,
                     error,
@@ -43,7 +45,7 @@ export const createAgent = (agent: agentType) => (dispatch: dispatchType): Promi
     agent = toJS(agent)
     return axios.post('/api/users/', agent)
         .then((json = {}) => json.data)
-        .then(data => {
+        .then((data) => {
             const resp: Map<*,*> = toImmutable(data)
 
             dispatch(notify({
@@ -55,7 +57,7 @@ export const createAgent = (agent: agentType) => (dispatch: dispatchType): Promi
                 type: constants.CREATE_AGENT_SUCCESS,
                 resp,
             })
-        }, error => {
+        }, (error) => {
             return dispatch({
                 type: constants.CREATE_AGENT_ERROR,
                 error,
@@ -67,7 +69,7 @@ export const createAgent = (agent: agentType) => (dispatch: dispatchType): Promi
 export const deleteAgent = (id: string) => (dispatch: dispatchType): Promise<dispatchType> => {
     return axios.delete(`/api/users/${id}/`)
         .then((json = {}) => json.data)
-        .then(resp => {
+        .then((resp) => {
             dispatch(notify({
                 status: 'success',
                 message: 'Team member deleted',
@@ -78,7 +80,7 @@ export const deleteAgent = (id: string) => (dispatch: dispatchType): Promise<dis
                 resp,
                 id,
             })
-        }, error => {
+        }, (error) => {
             return dispatch({
                 type: constants.DELETE_AGENT_ERROR,
                 error,
@@ -90,9 +92,9 @@ export const deleteAgent = (id: string) => (dispatch: dispatchType): Promise<dis
 export const fetchAgent = (id: string) => (dispatch: dispatchType): Promise<dispatchType | Map<*,*>> => {
     return axios.get(`/api/users/${id}/`)
         .then((json = {}) => json.data)
-        .then(resp => {
+        .then((resp) => {
             return Promise.resolve(toImmutable(resp))
-        }, error => {
+        }, (error) => {
             return dispatch({
                 type: constants.FETCH_AGENT_ERROR,
                 error,
@@ -109,14 +111,14 @@ export const fetchPagination = (page: number = 1) => (dispatch: dispatchType): P
             page:  page.toString()
         }})
         .then((json = {}) => json.data)
-        .then(resp => {
+        .then((resp) => {
             resp = toImmutable(resp)
 
             return dispatch({
                 type: constants.FETCH_AGENTS_PAGINATION_SUCCESS,
                 resp,
             })
-        }, error => {
+        }, (error) => {
             return dispatch({
                 type: constants.FETCH_AGENTS_PAGINATION_ERROR,
                 error,
@@ -133,7 +135,7 @@ export const inviteAgent = (id: string) => (dispatch: dispatchType): Promise<dis
                 status: 'success',
                 message: 'Team member invited',
             }))
-        }, error => {
+        }, (error) => {
             return dispatch({
                 type: constants.INVITE_AGENT_ERROR,
                 error,
@@ -146,7 +148,7 @@ export const updateAgent = (id: string, agent: agentType) => (dispatch: dispatch
     agent = toJS(agent)
     return axios.put(`/api/users/${id}/`, agent)
         .then((json = {}) => json.data)
-        .then(resp => {
+        .then((resp) => {
             resp = toImmutable(resp)
 
             dispatch(notify({
@@ -158,7 +160,7 @@ export const updateAgent = (id: string, agent: agentType) => (dispatch: dispatch
                 type: constants.UPDATE_AGENT_SUCCESS,
                 resp,
             })
-        }, error => {
+        }, (error) => {
             return dispatch({
                 type: constants.UPDATE_AGENT_ERROR,
                 error,

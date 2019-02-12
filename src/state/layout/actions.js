@@ -1,7 +1,8 @@
 // @flow
+import type {dispatchType} from '../types'
+
 import * as constants from './constants'
 
-import type {dispatchType} from '../types'
 
 export const openPanel = (panelName: string): dispatchType => {
     return {

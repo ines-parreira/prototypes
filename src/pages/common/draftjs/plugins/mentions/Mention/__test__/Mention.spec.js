@@ -2,6 +2,7 @@ import React from 'react'
 import {render} from 'enzyme'
 import {Map} from 'immutable'
 import {ContentState} from 'draft-js'
+
 import Mention from '../index'
 
 describe('Mention', () => {

@@ -1,8 +1,10 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import {Widget} from '../Widget'
 import {fromJS} from 'immutable'
+
+import {Widget} from '../Widget'
 import _schemas from '../../../../../fixtures/openapi'
+
 import _astCodeEq from './fixtures/astCodeEq'
 import _astCodeContains from './fixtures/astCodeContains'
 import _astCodeGteTimedelta from './fixtures/astCodeGteTimedelta'

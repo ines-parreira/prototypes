@@ -1,6 +1,7 @@
 // @flow
 import React, {Component} from 'react'
 import moment from 'moment/moment'
+
 import DatePicker from '../../../../common/forms/DatePicker'
 
 type Props = {

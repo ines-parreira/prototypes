@@ -81,7 +81,7 @@ describe('Config: ticket', () => {
             }]
 
             expect(
-                ticketConfig.orderedMessages(messages).map(message => message.get('id')).toJS()
+                ticketConfig.orderedMessages(messages).map((message) => message.get('id')).toJS()
             ).toEqual([1, 2])
 
             const reversedMessages = [{
@@ -93,7 +93,7 @@ describe('Config: ticket', () => {
             }]
 
             expect(
-                ticketConfig.orderedMessages(reversedMessages).map(message => message.get('id')).toJS()
+                ticketConfig.orderedMessages(reversedMessages).map((message) => message.get('id')).toJS()
             ).toEqual([2, 1])
         })
     })

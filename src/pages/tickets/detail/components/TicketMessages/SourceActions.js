@@ -1,10 +1,12 @@
 //@flow
 import React from 'react'
 import classNamesBind from 'classnames/bind'
-import * as infobarActions from '../../../../../state/infobar/actions'
-import css from './SourceActions.less'
 import {connect} from 'react-redux'
+
+import * as infobarActions from '../../../../../state/infobar/actions'
 import type {Meta, Source} from '../../../../../models/ticketElement/types'
+
+import css from './SourceActions.less'
 
 const classNames = classNamesBind.bind(css)
 

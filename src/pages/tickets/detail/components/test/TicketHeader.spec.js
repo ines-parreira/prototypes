@@ -1,9 +1,10 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
-import TicketHeader from '../TicketHeader'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+
+import TicketHeader from '../TicketHeader'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

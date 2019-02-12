@@ -1,7 +1,8 @@
 import React from 'react'
-import {WrappedCallExpression} from '../CallExpression'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
+
+import {WrappedCallExpression} from '../CallExpression'
 
 
 const commonProps = {

@@ -346,7 +346,7 @@ export function jsonToWidgets(json, context = 'ticket') {
 
     try {
         const sourcePaths = getSourcePathFromContext(context)
-        const integrationsPath = sourcePaths.find(path => {
+        const integrationsPath = sourcePaths.find((path) => {
             return _.includes(path, 'integrations')
         })
 

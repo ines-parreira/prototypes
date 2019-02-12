@@ -8,11 +8,12 @@ import _pick from 'lodash/pick'
 import _merge from 'lodash/merge'
 import _isUndefined from 'lodash/isUndefined'
 
-import ReactSortable from './../../../common/components/dragging/ReactSortable'
 import BooleanField from '../../forms/BooleanField'
 
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 import {submitSetting} from '../../../../state/currentUser/actions'
+
+import ReactSortable from './../../../common/components/dragging/ReactSortable'
 import {sortViews} from './utils'
 
 import css from './ViewNavbarViewEditor.less'
@@ -52,7 +53,7 @@ class ViewNavbarViewEditor extends Component {
             displayOrder: {}
         }
 
-        views.forEach(view => {
+        views.forEach((view) => {
             const viewId = view.get('id')
             newSettings.hide[`${viewId}`] = view.get('hide')
             newSettings.displayOrder[`${viewId}`] = view.get('display_order')
@@ -125,7 +126,7 @@ class ViewNavbarViewEditor extends Component {
 
         // re-sort views with `display_order` values of the form
         if (Object.keys(this.state.displayOrder).length > 0) {
-            newView = newView.map(view => {
+            newView = newView.map((view) => {
                 return view.set(
                     'display_order',
                     this._getDisplayOrder(view)
@@ -133,7 +134,7 @@ class ViewNavbarViewEditor extends Component {
             }).sort(sortViews)
         }
 
-        return newView.map(view => {
+        return newView.map((view) => {
             const viewId = view.get('id')
 
             return (

@@ -7,6 +7,12 @@ import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} 
 
 import {generateDefaultAction} from '../../../../../state/macro/utils'
 
+import * as ticketTypes from '../../../../../state/ticket/constants'
+import * as newMessageTypes from '../../../../../state/newMessage/constants'
+import * as integrationsSelectors from '../../../../../state/integrations/selectors'
+import {ACTION_TEMPLATES} from '../../../../../config'
+import InputField from '../../../../common/forms/InputField'
+
 import SetStatusAction from './actions/SetStatusAction'
 import SetSubjectAction from './actions/SetSubjectAction'
 import SetResponseTextAction from './actions/SetResponseTextAction'
@@ -20,14 +26,9 @@ import {getSortedIntegrationActionsNames} from './../../utils'
 
 import css from './MacroEdit.less'
 
-import * as ticketTypes from '../../../../../state/ticket/constants'
-import * as newMessageTypes from '../../../../../state/newMessage/constants'
-import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 
-import {ACTION_TEMPLATES} from '../../../../../config'
 import {getActionTemplate, humanizeString} from './../../../../../utils'
 
-import InputField from '../../../../common/forms/InputField'
 
 export class MacroEdit extends React.Component {
     _updateActionArguments = (index, args = fromJS({})) => {
@@ -51,26 +52,26 @@ export class MacroEdit extends React.Component {
     }
 
     _addAttachment = (index, files) => {
-        const actions = this.props.actions.updateIn([index, 'arguments', 'attachments'], attachments => attachments.concat(fromJS(files)))
+        const actions = this.props.actions.updateIn([index, 'arguments', 'attachments'], (attachments) => attachments.concat(fromJS(files)))
         this.props.setActions(actions)
     }
 
     _deleteAttachment = (actionIndex, fileIndex) => {
-        const actions = this.props.actions.updateIn([actionIndex, 'arguments', 'attachments'], attachments => attachments.delete(fileIndex))
+        const actions = this.props.actions.updateIn([actionIndex, 'arguments', 'attachments'], (attachments) => attachments.delete(fileIndex))
         this.props.setActions(actions)
     }
 
     renderNewActionMenu = () => {
         // front actions executed on client
         const ticketActions = ACTION_TEMPLATES
-            .filter(template => template.execution === 'front')
+            .filter((template) => template.execution === 'front')
             // remove actions that have already been used
-            .filter(action => !this.props.actions.find(usedActions => usedActions.get('name') === action.name))
+            .filter((action) => !this.props.actions.find((usedActions) => usedActions.get('name') === action.name))
 
         // external actions executed on server
-        const externalActions = ACTION_TEMPLATES.filter(template => template.execution === 'back')
+        const externalActions = ACTION_TEMPLATES.filter((template) => template.execution === 'back')
         // external actions without externalType, list of names
-        const nonIntegrationActions = externalActions.filter(v => !v.integrationType)
+        const nonIntegrationActions = externalActions.filter((v) => !v.integrationType)
 
         const hasActions = (ticketActions.length  > 0)
 
@@ -124,9 +125,9 @@ export class MacroEdit extends React.Component {
         }
 
         // external actions executed on server
-        const externalActions = ACTION_TEMPLATES.filter(template => template.execution === 'back')
+        const externalActions = ACTION_TEMPLATES.filter((template) => template.execution === 'back')
         // external actions with externalType grouped by externalType
-        const integrationMenus = getSortedIntegrationActionsNames(externalActions.filter(v => !!v.integrationType))
+        const integrationMenus = getSortedIntegrationActionsNames(externalActions.filter((v) => !!v.integrationType))
 
         return (
             <form>
@@ -296,7 +297,7 @@ export class MacroEdit extends React.Component {
                                 }
 
                                 // remove actions that have already been used
-                                actions = actions.filter(action => !this.props.actions.find(usedActions => usedActions.get('name') === action))
+                                actions = actions.filter((action) => !this.props.actions.find((usedActions) => usedActions.get('name') === action))
 
                                 if (actions.isEmpty()) {
                                     return null

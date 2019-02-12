@@ -1,11 +1,13 @@
 import React from 'react'
 
+import classnames from 'classnames'
+
 import {AddActionOrIfStatement, AddLogicalCondition, DeleteBlockStatementItem} from '../operations'
 import Expression from '../expression/Expression'
-import Statement from './Statement'
 import {computeLeftPadding} from '../utils'
-import classnames from 'classnames'
 import Foldable from '../Foldable'
+
+import Statement from './Statement'
 
 /**
  * Test Expression of the IF Statement

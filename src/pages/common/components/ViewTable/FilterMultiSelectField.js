@@ -3,6 +3,7 @@ import type {Map} from 'immutable'
 import _debounce from 'lodash/debounce'
 import React from 'react'
 import {connect} from 'react-redux'
+
 import {fieldEnumSearch} from '../../../../state/views/actions'
 import MultiSelectOptionsField, {type Option} from '../../forms/MultiSelectOptionsField'
 

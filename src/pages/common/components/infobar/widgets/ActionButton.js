@@ -17,10 +17,10 @@ import {
     PopoverBody, Label,
 } from 'reactstrap'
 
-import type {OptionType, ParameterType} from './types'
+import _uniqueId from 'lodash/uniqueId'
 
-import InputField from './../../../forms/InputField'
 import SelectField from '../../../forms/SelectField'
+
 import BooleanField from '../../../forms/BooleanField'
 
 import {getActionByName} from '../../../../../config/actions'
@@ -29,7 +29,9 @@ import * as segmentTracker from '../../../../../store/middlewares/segmentTracker
 import * as infobarActions from '../../../../../state/infobar/actions'
 import * as infobarSelectors from '../../../../../state/infobar/selectors'
 import * as infobarUtils from '../../../../../state/infobar/utils'
-import _uniqueId from 'lodash/uniqueId'
+
+import InputField from './../../../forms/InputField'
+import type {OptionType, ParameterType} from './types'
 
 import css from './ActionButton.less'
 

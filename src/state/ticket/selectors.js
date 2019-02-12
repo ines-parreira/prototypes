@@ -4,50 +4,50 @@ import {createSelector} from 'reselect'
 import {createImmutableSelector} from '../../utils'
 import {getNewMessageState} from '../newMessage/selectors'
 
-export const getTicketState = state => state.ticket || fromJS({})
+export const getTicketState = (state) => state.ticket || fromJS({})
 
-export const getProperty = property => createSelector(
+export const getProperty = (property) => createSelector(
     [getTicketState],
-    state => state.get(property)
+    (state) => state.get(property)
 )
 
 export const getTicket = createImmutableSelector(
     [getTicketState],
-    state => state
+    (state) => state
         .delete('_internal')
         .delete('state') || fromJS({})
 )
 
 export const getIntegrationsData = createSelector(
     [getTicketState],
-    state => state.getIn(['customer', 'integrations']) || fromJS({})
+    (state) => state.getIn(['customer', 'integrations']) || fromJS({})
 )
 
-export const getIntegrationDataByIntegrationId = integrationId => createSelector(
+export const getIntegrationDataByIntegrationId = (integrationId) => createSelector(
     [getIntegrationsData],
-    state => state.get(String(integrationId)) || fromJS({})
+    (state) => state.get(String(integrationId)) || fromJS({})
 )
 
 export const getLoading = createImmutableSelector(
     [getTicketState],
-    state => state.getIn(['_internal', 'loading']) || fromJS({})
+    (state) => state.getIn(['_internal', 'loading']) || fromJS({})
 )
 
 export const getDisplayHistory = createImmutableSelector(
     [getTicketState],
-    state => state.getIn(['_internal', 'displayHistory'])
+    (state) => state.getIn(['_internal', 'displayHistory'])
 )
 
 // in props usage
 // ex: isMerging: isLoading('merge')(state)
-export const isLoading = name => createSelector(
+export const isLoading = (name) => createSelector(
     [getLoading],
-    loading => loading.get(name, false)
+    (loading) => loading.get(name, false)
 )
 
 // in component usage
 // ex: isLoading: makeIsLoading(state)   then : const isMerging = isLoading('merge')
-export const makeIsLoading = state => name => isLoading(name)(state)
+export const makeIsLoading = (state) => (name) => isLoading(name)(state)
 
 export const isDirty = createSelector(
     [getTicketState, getNewMessageState],
@@ -58,7 +58,7 @@ export const isDirty = createSelector(
 
 export const getMessages = createImmutableSelector(
     [getTicketState],
-    state => state.get('messages') || fromJS([])
+    (state) => state.get('messages') || fromJS([])
 )
 
 export const getCustomerMessages = createImmutableSelector(
@@ -68,19 +68,19 @@ export const getCustomerMessages = createImmutableSelector(
 
 export const getPendingMessages = createImmutableSelector(
     [getTicketState],
-    state => state.getIn(['_internal', 'pendingMessages']) || fromJS([])
+    (state) => state.getIn(['_internal', 'pendingMessages']) || fromJS([])
 )
 
 export const getLastMessage = createImmutableSelector(
     [getMessages],
-    state => state
-        .sortBy(message => message.get('created_datetime'))
+    (state) => state
+        .sortBy((message) => message.get('created_datetime'))
         .last() || fromJS({})
 )
 
 export const getReadMessages = createImmutableSelector(
     [getMessages],
-    state => state.filter((message) => message.get('opened_datetime')) || fromJS([])
+    (state) => state.filter((message) => message.get('opened_datetime')) || fromJS([])
 )
 
 export const getLastReadMessage = createImmutableSelector(
@@ -90,12 +90,12 @@ export const getLastReadMessage = createImmutableSelector(
 
 export const getEvents = createImmutableSelector(
     [getTicketState],
-    state => state.get('events') || fromJS([])
+    (state) => state.get('events') || fromJS([])
 )
 
 export const getSatisfactionSurveys = createImmutableSelector(
     [getTicketState],
-    state => fromJS(state.get('satisfaction_survey') ? [state.get('satisfaction_survey')] : [])
+    (state) => fromJS(state.get('satisfaction_survey') ? [state.get('satisfaction_survey')] : [])
 )
 
 // return elements we display in the body of a ticket (messages, events, etc.)
@@ -124,7 +124,7 @@ export const getBody = createImmutableSelector(
             .concat(pendingMessages)
             .concat(events)
             .concat(satisfactionSurveys)
-            .sortBy(element => element.get('isSatisfactionSurvey') ?
+            .sortBy((element) => element.get('isSatisfactionSurvey') ?
                 element.get('scored_datetime') : element.get('created_datetime'))
     }
 )

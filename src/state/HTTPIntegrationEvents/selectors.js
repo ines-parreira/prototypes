@@ -1,8 +1,10 @@
 // @flow
 import {createSelector} from 'reselect'
-import type {stateType} from '../types'
-import {initialState} from './reducers'
 import {fromJS} from 'immutable'
+
+import type {stateType} from '../types'
+
+import {initialState} from './reducers'
 
 export const getHTTPIntegrationEventsState = (state: stateType) => state.HTTPIntegrationEvents || initialState
 

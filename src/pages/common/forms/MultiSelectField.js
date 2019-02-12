@@ -1,5 +1,6 @@
 // @flow
 import React from 'react'
+
 import MultiSelectOptionsField, {type Option} from './MultiSelectOptionsField'
 
 type Props = {

@@ -1,9 +1,10 @@
 // @flow
 import _noop from 'lodash/noop'
 
+import type {SelectionState} from 'draft-js'
+
 import {insertInlineImages, isImage} from '../utils'
 
-import type {SelectionState} from 'draft-js'
 import type {PluginMethods, imagePluginConfigType} from '../types'
 
 const _handleDroppedFiles = (config) => (selection: SelectionState, files: Array<File>, pluginArgs: PluginMethods) => {

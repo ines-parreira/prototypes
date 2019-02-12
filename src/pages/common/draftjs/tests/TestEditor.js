@@ -25,7 +25,7 @@ export default class TestEditor extends React.Component {
         return (
             <Editor
                 editorState={this.state.editorState}
-                onChange={editorState => editorState}
+                onChange={(editorState) => editorState}
                 plugins={this.props.plugins}
                 ref={(editor) => {
                     this.editor = editor

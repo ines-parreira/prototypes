@@ -1,7 +1,8 @@
 //@flow
+import React from 'react'
+
 import Tooltip from '../../../../common/components/Tooltip'
 import {formatDatetime} from '../../../../../utils'
-import React from 'react'
 
 type Props = {
     openedDatetime?: string,

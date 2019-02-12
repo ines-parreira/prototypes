@@ -2,6 +2,7 @@
 import {mount} from 'enzyme'
 import _noop from 'lodash/noop'
 import React from 'react'
+
 import Dropdown from '../Dropdown'
 import Input from '../Input'
 import Menu from '../Menu'

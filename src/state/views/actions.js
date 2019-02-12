@@ -5,17 +5,19 @@ import _max from 'lodash/max'
 import {browserHistory} from 'react-router'
 
 
-import * as types from './constants'
-import * as viewsSelectors from './selectors'
+import type {Map, List} from 'immutable'
+
 import * as viewsConfig from '../../config/views'
 import * as socketConstants from '../../config/socketConstants'
 import {notify} from '../notifications/actions'
 import socketManager from '../../services/socketManager'
 import {getPluralObjectName, getHashOfObj, isCurrentlyOnTicket, isCurrentlyOnView} from '../../utils'
+import type {dispatchType, getStateType, thunkActionType} from '../types'
+
 import {shouldUpdateView, activeViewUrl} from './utils'
 
-import type {Map, List} from 'immutable'
-import type {dispatchType, getStateType, thunkActionType} from '../types'
+import * as viewsSelectors from './selectors'
+import * as types from './constants'
 import type {viewType, filterType} from './types'
 
 export const setViewActive = (view: viewType) => (dispatch: dispatchType): dispatchType => {
@@ -95,14 +97,14 @@ export function fieldEnumSearch(field: Map<*, *>, query: string): thunkActionTyp
         data.query = query
         return axios.post('/api/search/', data)
             .then((json = {}) => json.data)
-            .then(resp => {
+            .then((resp) => {
                 dispatch({
                     type: types.UPDATE_VIEW_FIELD_ENUM_SUCCESS,
                     field,
                     resp
                 })
                 return fromJS(resp.data)
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: types.UPDATE_VIEW_FIELD_ENUM_ERROR,
                     error,
@@ -127,13 +129,13 @@ export function fetchViews(currentViewId: string): thunkActionType {
 
         return axios.get('/api/views/')
             .then((json = {}) => json.data)
-            .then(resp => {
+            .then((resp) => {
                 dispatch({
                     type: types.FETCH_VIEW_LIST_SUCCESS,
                     resp,
                     currentViewId
                 })
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: types.FETCH_VIEW_LIST_ERROR,
                     error,
@@ -180,13 +182,13 @@ export function submitView(view: viewType): thunkActionType {
 
         return promise
             .then((json = {}) => json.data)
-            .then(resp => {
+            .then((resp) => {
                 // redirect to the view created
                 if (!isUpdate) {
                     browserHistory.push(`/app/${objectName}/${resp.id}/${resp.slug}`)
                 }
                 return Promise.resolve(resp)
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: isUpdate ? types.SUBMIT_UPDATE_VIEW_ERROR : types.SUBMIT_NEW_VIEW_ERROR,
                     error,
@@ -220,7 +222,7 @@ export function deleteView(view: viewType): thunkActionType {
                 const destinationRoute = `/app/${viewConfig.get('routeList')}/${destinationView.get('id')}/${destinationView.get('slug')}`
                 browserHistory.push(destinationRoute)
                 return Promise.resolve()
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: 'ERROR',
                     error,
@@ -305,7 +307,7 @@ export function fetchPage(page: ?number, discreet: boolean = false): thunkAction
 
         return promise
             .then((json = {}) => json.data)
-            .then(data => {
+            .then((data) => {
                 views = getState().views
                 // if the current view id the same as the received one
                 const isCurrent = views.getIn(['_internal', 'currentViewId']) === viewId
@@ -323,7 +325,7 @@ export function fetchPage(page: ?number, discreet: boolean = false): thunkAction
                         data,
                     })
                 }
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: types.FETCH_LIST_VIEW_ERROR,
                     error,

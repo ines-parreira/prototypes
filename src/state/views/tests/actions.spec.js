@@ -1,9 +1,10 @@
 import moment from 'moment'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {fromJS} from 'immutable'
+
 import * as actions from '../actions'
 import {initialState} from '../../views/reducers'
-import {fromJS} from 'immutable'
 import {ACTIVE_VIEW_COUNT_TIMEOUT, RECENT_VIEWS_COUNTS_TIMEOUT} from '../../../config/views'
 import socketManager from '../../../services/socketManager'
 import * as socketConstants from '../../../config/socketConstants'

@@ -1,9 +1,10 @@
 // @flow
 import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
+import type {Map} from 'immutable'
+
 import {isImmutable, createImmutableSelector} from '../../utils'
 
-import type {Map} from 'immutable'
 import type {stateType} from '../types'
 import * as integrationsSelectors from '../integrations/selectors'
 
@@ -109,19 +110,19 @@ export const getContactProperties = (sourceType: string) => createImmutableSelec
 
 export const getNewMessageMandatoryContactProperties = createImmutableSelector(
     [getNewMessageType],
-    sourceType => getMandatoryContactProperties(sourceType)()
+    (sourceType) => getMandatoryContactProperties(sourceType)()
 )
 
 export const getNewMessageContactProperties = createImmutableSelector(
     [getNewMessageType],
-    sourceType => getContactProperties(sourceType)()
+    (sourceType) => getContactProperties(sourceType)()
 )
 
 // true if mandatory contact properties (such as 'to') are not empty for current new message
 export const areNewMessageContactPropertiesFulfilled = createImmutableSelector(
     [getNewMessageMandatoryContactProperties, makeGetNewMessageSourceProperty],
     (mandatoryProperties, getFromSource) => {
-        return mandatoryProperties.every((property => {
+        return mandatoryProperties.every(((property) => {
             const value = getFromSource(property)
             return isImmutable(value) ? !value.isEmpty() : !!value
         }))
@@ -132,10 +133,10 @@ export const areNewMessageContactPropertiesFulfilled = createImmutableSelector(
 export const getNewMessageRecipients = createImmutableSelector(
     [getNewMessageContactProperties, makeGetNewMessageSourceProperty],
     (recipientProperties, getFromSource) => {
-        return recipientProperties.filter(prop => prop !== 'from')
+        return recipientProperties.filter((prop) => prop !== 'from')
             .reduce((result, prop) => {
                 const recipients = getFromSource(prop)
-                recipients.forEach(recipient => {
+                recipients.forEach((recipient) => {
                     //$FlowFixMe
                     result = result.push(fromJS(recipient))
                 })
@@ -147,12 +148,12 @@ export const getNewMessageRecipients = createImmutableSelector(
 export const hasNewMessageRecipients = createSelector(
     [getNewMessageRecipients],
     //$FlowFixMe
-    recipients => !recipients.isEmpty()
+    (recipients) => !recipients.isEmpty()
 )
 
 export const hasAttachments = createSelector(
     [getNewMessage],
-    message => !(message.get('attachments') || fromJS([])).isEmpty()
+    (message) => !(message.get('attachments') || fromJS([])).isEmpty()
 )
 
 // Determine if the new message is ready to be sent

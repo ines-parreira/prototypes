@@ -1,4 +1,5 @@
 import React from 'react'
+
 import TicketListContainer from '../tickets/list/TicketListContainer'
 
 export default class WelcomeContainer extends React.Component {

@@ -4,8 +4,9 @@ import {browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 
 import IntegrationList from '../IntegrationList'
-import AircallIntegrationListItem from './AircallIntegrationListItem'
 import * as integrationsActions from '../../../../../state/integrations/actions'
+
+import AircallIntegrationListItem from './AircallIntegrationListItem'
 
 @connect(null, {
     activate: integrationsActions.activateIntegration,

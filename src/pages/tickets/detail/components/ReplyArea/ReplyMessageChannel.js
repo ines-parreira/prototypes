@@ -1,19 +1,20 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import md5 from 'md5'
 import classnames from 'classnames'
+import md5 from 'md5'
+import PropTypes from 'prop-types'
+import React from 'react'
 import {connect} from 'react-redux'
-import {UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
+import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap'
 
-import MessageSourceFields from './MessageSourceFields/'
-import {guessReceiversFromTicket} from '../../../../../state/ticket/utils'
+import * as integrationSelectors from '../../../../../state/integrations/selectors'
 import * as newMessageActions from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {getMessages} from '../../../../../state/ticket/selectors'
-import * as integrationSelectors from '../../../../../state/integrations/selectors'
+import {guessReceiversFromTicket} from '../../../../../state/ticket/utils'
+import KeyboardShortcuts from '../../../../common/components/KeyboardShortcuts'
 
 import SourceIcon from '../../../../common/components/SourceIcon'
-import KeyboardShortcuts from '../../../../common/components/KeyboardShortcuts'
+
+import MessageSourceFields from './MessageSourceFields/'
 
 import css from './ReplyMessageChannel.less'
 

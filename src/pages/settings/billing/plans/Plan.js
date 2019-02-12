@@ -1,10 +1,11 @@
 // @flow
 
+import classnames from 'classnames'
 import React, {type Node} from 'react'
-import {Card, Button, CardBody, CardHeader, CardFooter} from 'reactstrap'
+import {Button, Card, CardBody, CardFooter, CardHeader} from 'reactstrap'
+
 import Tooltip from '../../../common/components/Tooltip'
 import './Plan.less'
-import classnames from 'classnames'
 
 type Props = {
     plan: Object,

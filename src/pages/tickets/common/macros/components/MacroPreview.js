@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+
 import Preview from '../Preview'
 
 export default class MacroPreview extends React.Component {

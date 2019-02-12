@@ -1,6 +1,7 @@
 //@flow
 import React from 'react'
 import { ContentBlock, ContentState } from 'draft-js'
+
 import LinkPopover from '../components/LinkPopover'
 import { removeLink } from '../../utils'
 import type {

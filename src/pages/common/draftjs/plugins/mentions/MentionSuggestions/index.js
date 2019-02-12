@@ -7,14 +7,16 @@ import React, {Component} from 'react'
 import {genKey} from 'draft-js'
 import {List, fromJS} from 'immutable'
 
-import Entry from './Entry'
-import defaultEntryComponent from './Entry/defaultEntryComponent'
+import type {Map} from 'immutable'
+import type {EditorState, SelectionState} from 'draft-js'
 
 import addMention from '../modifiers/addMention'
 import {decodeOffsetKey, getSearchText} from '../utils'
 
-import type {Map} from 'immutable'
-import type {EditorState, SelectionState} from 'draft-js'
+import Entry from './Entry'
+import defaultEntryComponent from './Entry/defaultEntryComponent'
+
+
 
 import type {themeType} from './types'
 

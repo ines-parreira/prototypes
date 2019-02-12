@@ -15,11 +15,12 @@ import MacroContainer from '../../../common/macros/MacroContainer'
 import MacroNoResults from '../../../common/macros/components/MacroNoResults'
 import MacroList from '../../../common/macros/components/MacroList'
 import {deleteMacro} from '../../../../../state/macro/actions'
+import type {fetchMacrosType} from '../../../common/macros/types'
+
 import {notify} from './../../../../../state/notifications/actions'
 
 import css from './TicketMacros.less'
 
-import type {fetchMacrosType} from '../../../common/macros/types'
 
 type Props = {
     currentTicket: Map<*,*>,

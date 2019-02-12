@@ -1,4 +1,5 @@
 import decorateComponentWithProps from 'decorate-component-with-props'
+
 import InlineStyle from './InlineStyle'
 
 export { default as InlineStyle } from './InlineStyle'

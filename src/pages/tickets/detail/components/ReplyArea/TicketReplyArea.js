@@ -1,30 +1,27 @@
 //@flow
-import React from 'react'
-import {connect} from 'react-redux'
 import classnames from 'classnames'
+import type {Map} from 'immutable'
 import {fromJS} from 'immutable'
 import _debounce from 'lodash/debounce'
-
-import TicketReply from './TicketReply'
-import TicketMacros from './TicketMacros'
-import shortcutManager from '../../../../../services/shortcutManager'
-
-import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
-import {getPreferences} from './../../../../../state/currentUser/selectors'
-import * as ticketSelectors from '../../../../../state/ticket/selectors'
-import {notify} from './../../../../../state/notifications/actions'
-import {fetchMacros} from './../../../../../state/macro/actions'
-import {applyMacro} from '../../../../../state/ticket/actions'
-
-import {getDefaultSelectedMacroId, getCurrentMacro} from '../../../common/macros/utils'
-
-import css from './TicketReplyArea.less'
+import React from 'react'
+import {connect} from 'react-redux'
 import {Input} from 'reactstrap'
 
-const CONTENT_STATE_PATH = ['state', 'contentState']
-
-import type {Map} from 'immutable'
+import shortcutManager from '../../../../../services/shortcutManager'
+import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
+import {applyMacro} from '../../../../../state/ticket/actions'
+import * as ticketSelectors from '../../../../../state/ticket/selectors'
 import type {fetchMacrosType} from '../../../common/macros/types'
+import {getCurrentMacro, getDefaultSelectedMacroId} from '../../../common/macros/utils'
+
+import {getPreferences} from './../../../../../state/currentUser/selectors'
+import {fetchMacros} from './../../../../../state/macro/actions'
+import {notify} from './../../../../../state/notifications/actions'
+import TicketMacros from './TicketMacros'
+import TicketReply from './TicketReply'
+import css from './TicketReplyArea.less'
+
+const CONTENT_STATE_PATH = ['state', 'contentState']
 
 type Props = {
     actions: Object,

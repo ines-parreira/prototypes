@@ -165,21 +165,21 @@ export default class FacebookIntegrationDetail extends React.Component {
                                 type="checkbox"
                                 label="Enable Messenger"
                                 value={this.state.settings.messenger_enabled}
-                                onChange={value => this._onChange(value, 'messenger_enabled')}
+                                onChange={(value) => this._onChange(value, 'messenger_enabled')}
                             />
                             <BooleanField
                                 name="posts_enabled"
                                 type="checkbox"
                                 label="Enable Facebook posts & comments"
                                 value={this.state.settings.posts_enabled}
-                                onChange={value => this._onChange(value, 'posts_enabled')}
+                                onChange={(value) => this._onChange(value, 'posts_enabled')}
                             />
                             <BooleanField
                                 name="instagram_comments_enabled"
                                 type="checkbox"
                                 label="Enable Instagram comments"
                                 value={this.state.settings.instagram_comments_enabled}
-                                onChange={value => this._onChange(value, 'instagram_comments_enabled')}
+                                onChange={(value) => this._onChange(value, 'instagram_comments_enabled')}
                                 disabled={doesntHaveInstagramPermissions || doesntHaveInstagramId}
                             />
                             <BooleanField
@@ -187,7 +187,7 @@ export default class FacebookIntegrationDetail extends React.Component {
                                 type="checkbox"
                                 label="Import 30 days of history (posts and comments) as closed tickets"
                                 value={this.state.settings.import_history_enabled}
-                                onChange={value => this._onChange(value, 'import_history_enabled')}
+                                onChange={(value) => this._onChange(value, 'import_history_enabled')}
                             />
                         </FormGroup>
                         <div>

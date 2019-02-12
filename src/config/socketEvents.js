@@ -7,13 +7,14 @@ import * as chatsActions from '../state/chats/actions'
 import * as viewsConstants from '../state/views/constants'
 import * as requestsConstants from '../state/requests/constants'
 import * as currentAccountConstants from '../state/currentAccount/constants'
-import * as socketConstants from './socketConstants'
 
 import {isCurrentlyOnTicket} from '../utils'
 
 import {store as reduxStore} from '../init'
-import {MAX_RECENT_CHATS} from './recentChats'
 import {onVerify} from '../state/integrations/actions'
+
+import {MAX_RECENT_CHATS} from './recentChats'
+import * as socketConstants from './socketConstants'
 
 /**
  * Events that can be sent to server via socket

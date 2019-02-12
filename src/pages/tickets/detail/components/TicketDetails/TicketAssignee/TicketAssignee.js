@@ -14,8 +14,9 @@ import * as agentSelectors from '../../../../../../state/agents/selectors'
 import shortcutManager from '../../../../../../services/shortcutManager/index'
 import {AgentLabel} from '../../../../../common/utils/labels'
 
-import css from './TicketAssignee.less'
 import {setAgent} from '../../../../../../state/ticket/actions'
+
+import css from './TicketAssignee.less'
 
 type Props = {
     agents: Object,
@@ -140,7 +141,7 @@ export default class TicketAssignee extends React.Component<Props, State> {
         let availableAgents = this.state.enum
 
         if (currentAssignee) {
-            availableAgents = availableAgents.filter(agent => agent.get('name') !== currentAssignee)
+            availableAgents = availableAgents.filter((agent) => agent.get('name') !== currentAssignee)
         }
 
         let options = fromJS([])
@@ -282,7 +283,7 @@ export default class TicketAssignee extends React.Component<Props, State> {
                                         placeholder="Search agents..."
                                         autoFocus
                                         value={this.state.search}
-                                        onChange={e => this._search(e.target.value)}
+                                        onChange={(e) => this._search(e.target.value)}
                                     />
                                 </div>
                             )

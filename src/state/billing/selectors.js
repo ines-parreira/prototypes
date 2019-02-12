@@ -1,6 +1,7 @@
 // @flow
 import {createSelector} from 'reselect'
 import {fromJS} from 'immutable'
+
 import {getActiveIntegrations} from '../integrations/selectors'
 
 // types

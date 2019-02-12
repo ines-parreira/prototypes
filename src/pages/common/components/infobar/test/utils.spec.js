@@ -1,4 +1,5 @@
 import {fromJS} from 'immutable'
+
 import * as utils from '../utils'
 
 describe('widgets infobar utils', () => {

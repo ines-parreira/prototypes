@@ -1,5 +1,6 @@
 import * as React from 'react'
 import {ContentBlock, ContentState} from 'draft-js'
+
 import type {
     DecoratorStrategyCallback, DecoratorComponentProps, Decorator
 } from '../../types'

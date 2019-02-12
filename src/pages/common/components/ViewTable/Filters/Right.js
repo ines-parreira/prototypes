@@ -151,7 +151,7 @@ export default class Right extends React.Component {
             }
 
         } else if (field.get('name') === 'assignee') { // display assignee
-            const assignee = this.props.agents.find(agent => agent.get('id').toString() === displayedValue.toString())
+            const assignee = this.props.agents.find((agent) => agent.get('id').toString() === displayedValue.toString())
             if (assignee) {
                 displayedValue = (<span>{assignee.get('name')}</span>)
             }

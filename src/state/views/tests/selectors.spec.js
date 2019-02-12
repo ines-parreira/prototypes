@@ -1,7 +1,8 @@
 import moment from 'moment'
+import {fromJS} from 'immutable'
+
 import {initialState} from '../reducers'
 import * as selectors from '../selectors'
-import {fromJS} from 'immutable'
 
 describe('selectors', () => {
     describe('isActiveViewTrashView()', () => {

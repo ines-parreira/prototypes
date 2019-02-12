@@ -1,9 +1,11 @@
 // @flow
 import {fromJS} from 'immutable'
-import * as types from './constants.js'
 
 import type {Map} from 'immutable'
+
 import type {actionType} from '../types'
+
+import * as types from './constants.js'
 
 const initialState = fromJS({
     openedPanel: null,

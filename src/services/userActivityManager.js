@@ -3,6 +3,7 @@ import _throttle from 'lodash/throttle'
 import {store as reduxStore} from '../init'
 import {toggleActiveStatus} from '../state/currentUser/actions'
 import * as socketConstants from '../config/socketConstants'
+
 import socketManager from './socketManager'
 
 

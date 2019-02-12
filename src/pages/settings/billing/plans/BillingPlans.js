@@ -6,16 +6,18 @@ import {Link, browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Button, CardDeck, Container, Col, Row, ButtonGroup} from 'reactstrap'
 
+import classnames from 'classnames'
+
 import {notify} from '../../../../state/notifications/actions'
 import {updateSubscription} from '../../../../state/currentAccount/actions'
 import * as billingSelectors from '../../../../state/billing/selectors'
 import * as currentAccountSelectors from '../../../../state/currentAccount/selectors'
 import {openChat} from '../../../../utils'
 import PageHeader from '../../../common/components/PageHeader'
+
 import {Plan} from './Plan'
 
 import css from './BillingPlans.less'
-import classnames from 'classnames'
 
 type Props = {
     currentPlan: Object,

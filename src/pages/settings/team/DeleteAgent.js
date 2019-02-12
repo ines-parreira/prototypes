@@ -1,9 +1,10 @@
 // @flow
 import React from 'react'
 
+import type {Node} from 'react'
+
 import ConfirmButton from '../../common/components/ConfirmButton'
 
-import type {Node} from 'react'
 
 type Props = {
     action: () => Promise<*>,

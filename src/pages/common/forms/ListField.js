@@ -2,6 +2,7 @@
 import React from 'react'
 import {List} from 'immutable'
 import {Row, Col, Button} from 'reactstrap'
+
 import InputField from './InputField'
 
 

@@ -1,22 +1,23 @@
 // @flow
-import _take from 'lodash/take'
-import _takeRight from 'lodash/takeRight'
+import {ContentState, convertFromRaw, convertToRaw, Modifier, SelectionState} from 'draft-js'
+import type {Map} from 'immutable'
+import {fromJS} from 'immutable'
 import _findIndex from 'lodash/findIndex'
 import _pick from 'lodash/pick'
-import {fromJS} from 'immutable'
-import {convertFromHTML} from '../../utils/editor'
-import {isRichType} from '../../config/ticket'
-import {convertToRaw, convertFromRaw, ContentState, SelectionState, Modifier} from 'draft-js'
+import _take from 'lodash/take'
+import _takeRight from 'lodash/takeRight'
 
-import ticketReplyCache from './ticketReplyCache'
+import {isRichType} from '../../config/ticket'
 import {renderTemplate} from '../../pages/common/utils/template'
+import {convertFromHTML} from '../../utils/editor'
+import type {currentUserType} from '../types'
+
 import * as selectors from './selectors'
+import ticketReplyCache from './ticketReplyCache'
 
 const signatureHTMLPrefix = '<div></div><div></div>'
 const signatureTextPrefix = '\n\n'
 
-import type {Map} from 'immutable'
-import type {currentUserType} from '../types'
 type contextType = {
     action: {
         fromMacro: boolean,

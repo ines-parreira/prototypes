@@ -12,9 +12,10 @@ import {
     PopoverBody,
 } from 'reactstrap'
 
+import type {Map, List} from 'immutable'
+
 import InputField from '../../common/forms/InputField'
 
-import Table from './Table'
 import Pagination from '../../common/components/Pagination'
 import Loader from '../../common/components/Loader'
 import PageHeader from '../../common/components/PageHeader'
@@ -23,9 +24,10 @@ import Video from '../../common/components/Video'
 import * as tagsActions from '../../../state/tags/actions'
 import * as tagsSelectors from '../../../state/tags/selectors'
 
+import Table from './Table'
+
 import css from './ManageTags.less'
 
-import type {Map, List} from 'immutable'
 
 
 type Props = {

@@ -6,6 +6,7 @@ import {fromJS, Set, Map} from 'immutable'
 import {Card, CardBody} from 'reactstrap'
 
 import {areSourcesReady, jsonToWidgets} from '../infobar/utils'
+
 import * as integrationsSelectors from './../../../../state/integrations/selectors'
 
 import SourceWidgets from './SourceWidgets'

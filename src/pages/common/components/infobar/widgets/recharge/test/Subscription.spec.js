@@ -3,6 +3,7 @@ import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+
 import {AfterTitle} from '../Subscription'
 import {TitleWrapper} from '../Subscription'
 

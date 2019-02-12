@@ -9,20 +9,22 @@ import type {List} from 'immutable'
 import _isEqual from 'lodash/isEqual'
 import _noop from 'lodash/noop'
 import React, {type ElementRef} from 'react'
+
 import {scrollToReactNode} from '../../../common/utils/keyboard'
 import createConnectedLinksPlugin from '../../draftjs/plugins/connectedLinks'
 import createDndUploadPlugin from '../../draftjs/plugins/dndUpload'
 import createMentionPlugin from '../../draftjs/plugins/mentions'
 import createPasteImagePlugin from '../../draftjs/plugins/pasteImage'
-import Toolbar from './Toolbar'
 import createVariablesPlugin from '../../draftjs/plugins/variables'
 import InputField from '../InputField'
-import Signature from './Signature'
 import type {ActionName} from '../../draftjs/plugins/toolbar/types'
-import provideToolbarPlugin, {type InjectedProps as ToolbarPluginProps} from './provideToolbarPlugin'
-import provideMentionFilteredSuggestions, {type InjectedProps as MentionFilteredSuggestionsProps} from './provideMentionSearchResults'
 import {type Plugin} from '../../draftjs/plugins/types'
 import {contentStateFromTextOrHTML, isValidSelectionKey, refreshEditor, removeMentions} from '../../../../utils/editor'
+
+import Signature from './Signature'
+import provideToolbarPlugin, {type InjectedProps as ToolbarPluginProps} from './provideToolbarPlugin'
+import provideMentionFilteredSuggestions, {type InjectedProps as MentionFilteredSuggestionsProps} from './provideMentionSearchResults'
+import Toolbar from './Toolbar'
 
 type suggestionsType = List<*>
 type canAddMentionType = boolean

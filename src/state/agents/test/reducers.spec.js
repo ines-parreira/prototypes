@@ -1,8 +1,9 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 
+import {fromJS} from 'immutable'
+
 import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
-import {fromJS} from 'immutable'
 
 jest.addMatchers(immutableMatchers)
 

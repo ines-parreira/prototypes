@@ -1,4 +1,5 @@
 import _isUndefined from 'lodash/isUndefined'
+
 import {devLog} from '../../utils'
 
 const analytics = window.analytics

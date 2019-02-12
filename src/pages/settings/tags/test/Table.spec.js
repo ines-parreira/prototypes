@@ -1,9 +1,10 @@
 import React from 'react'
 import {shallow} from 'enzyme/build'
 import {fromJS} from 'immutable'
-import Table from '../Table'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import Table from '../Table'
 
 const mockStore = configureMockStore([thunk])
 

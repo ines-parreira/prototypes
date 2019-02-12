@@ -1,10 +1,12 @@
 // @flow
 import axios from 'axios'
+import _throttle from 'lodash/throttle'
+
 import browserNotification from '../../services/browserNotification'
 
-import * as constants from './constants'
 import type {dispatchType} from '../types'
-import _throttle from 'lodash/throttle'
+
+import * as constants from './constants'
 
 export const fetchChats = () => (dispatch: dispatchType): Promise<dispatchType> => {
     return axios.get('/api/activity/chats/', {timeout: 10000})

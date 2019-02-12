@@ -3,7 +3,6 @@ import classnames from 'classnames'
 import {Form, FormGroup, Button, Container} from 'reactstrap'
 import {connect} from 'react-redux'
 
-import {DELAY_SURVEY_FOR} from './../../../config'
 import {convertToHTML} from '../../../utils/editor'
 
 import BooleanField from '../../common/forms/BooleanField'
@@ -15,6 +14,8 @@ import * as currentAccountSelectors from '../../../state/currentAccount/selector
 import * as currentAccountActions from '../../../state/currentAccount/actions'
 import * as currentAccountConstants from '../../../state/currentAccount/constants'
 import RestrictedSatisfactionSurvey from '../../stats/common/RestrictedSatisfactionSurvey'
+
+import {DELAY_SURVEY_FOR} from './../../../config'
 
 
 type Props = {
@@ -81,7 +82,7 @@ class SatisfactionSurveyView extends React.Component<Props> {
                             label=""
                             help="No survey will be sent after the ticket is snoozed."
                             value={this.state.settings.get('survey_interval')}
-                            onChange={value => this.setState({
+                            onChange={(value) => this.setState({
                                 settings: this.state.settings.set('survey_interval', value)
                             })}
                         >
@@ -105,7 +106,7 @@ class SatisfactionSurveyView extends React.Component<Props> {
                                 type="checkbox"
                                 label="Email"
                                 value={this.state.settings.get('send_survey_for_email')}
-                                onChange={value => this.setState({
+                                onChange={(value) => this.setState({
                                     settings: this.state.settings.set('send_survey_for_email', value)
                                 })}
                             />
@@ -114,7 +115,7 @@ class SatisfactionSurveyView extends React.Component<Props> {
                                 type="checkbox"
                                 label="Chat"
                                 value={this.state.settings.get('send_survey_for_chat')}
-                                onChange={value => this.setState({
+                                onChange={(value) => this.setState({
                                     settings: this.state.settings.set('send_survey_for_chat', value)
                                 })}
                             />

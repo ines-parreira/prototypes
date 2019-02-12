@@ -1,8 +1,9 @@
 // @flow
 import {type Map, fromJS} from 'immutable'
 
-import * as constants from './constants'
 import type {actionType} from '../types'
+
+import * as constants from './constants'
 
 export const initialState = fromJS({
     events: [],

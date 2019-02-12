@@ -3,13 +3,15 @@ import {fromJS, OrderedMap} from 'immutable'
 import _fromPairs from 'lodash/fromPairs'
 import _find from 'lodash/find'
 
+import type {Map} from 'immutable'
+
 import {getCode, getAST} from '../../utils'
 import {updateCodeAst} from '../../pages/common/components/ast/utils'
 
+import type {actionType} from '../types'
+
 import * as constants from './constants'
 
-import type {Map} from 'immutable'
-import type {actionType} from '../types'
 
 export const initialState = fromJS({
     rules: {}

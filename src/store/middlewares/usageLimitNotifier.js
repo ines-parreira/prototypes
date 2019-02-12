@@ -1,6 +1,7 @@
 import {fromJS} from 'immutable'
 import {browserHistory} from 'react-router'
 import {removeNotification as hide} from 'reapop'
+
 import {notify} from '../../state/notifications/actions'
 import * as currentAccountTypes from '../../state/currentAccount/constants'
 import * as ticketTypes from '../../state/ticket/constants'
@@ -37,7 +38,7 @@ const _showPaymentModal = (store, notification) => {
 }
 
 // Middleware used to notify user about free limit usage
-const usageLimitNotifier = store => next => action => {
+const usageLimitNotifier = (store) => (next) => (action) => {
     if (!TRACKED_ACTIONS.includes(action.type)) {
         return next(action)
     }

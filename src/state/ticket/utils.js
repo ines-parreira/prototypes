@@ -5,7 +5,6 @@ import _toLower from 'lodash/toLower'
 import _isEqual from 'lodash/isEqual'
 import _pickBy from 'lodash/pickBy'
 
-import {getProperty} from './selectors'
 import {SOURCE_VALUE_PROP} from '../../config'
 import * as ticketConfig from '../../config/ticket'
 import {getPersonLabelFromSource} from '../../pages/tickets/common/utils'
@@ -13,6 +12,8 @@ import {getActionTemplate, toImmutable} from '../../utils'
 import {renderTemplate} from '../../pages/common/utils/template'
 
 import * as responseUtils from '../newMessage/responseUtils'
+
+import {getProperty} from './selectors'
 
 /**
  * Get the most recent messages which have the matching sourceType
@@ -23,7 +24,7 @@ import * as responseUtils from '../newMessage/responseUtils'
 export function getLastSameSourceTypeMessage(messages, sourceType) {
     messages = ticketConfig
         .orderedMessages(messages)
-        .filter(m => !isForwardedMessage(m))
+        .filter((m) => !isForwardedMessage(m))
     const msg = messages.filter((m) => m.getIn(['source', 'type']) === sourceType).last()
 
     if (!msg && sourceType === 'facebook-comment') {
@@ -97,7 +98,7 @@ export function guessReceiversFromTicket(ticket, newMessageSourceType, channels 
     let ccReceivers = fromJS([])
     const messages = ticket.get('messages', fromJS([]))
 
-    const supportAddresses = channels.map(channel => channel.get('address'))
+    const supportAddresses = channels.map((channel) => channel.get('address'))
     const lastMessage = getLastSameSourceTypeMessage(messages, newMessageSourceType)
 
     if (lastMessage) {
@@ -113,16 +114,16 @@ export function guessReceiversFromTicket(ticket, newMessageSourceType, channels 
         ccReceivers = lastMessage.getIn(['source', 'cc'], fromJS([]))
     }
 
-    const cleanReceivers = receivers => receivers
-        .filter(receiver => !!receiver) // remove falsy values
-        .map(receiver => { // set address to lowercase
+    const cleanReceivers = (receivers) => receivers
+        .filter((receiver) => !!receiver) // remove falsy values
+        .map((receiver) => { // set address to lowercase
             if (receiver.get('address')) {
                 return receiver.update('address', _toLower)
             }
 
             return receiver
         })
-        .filter(receiver => { // remove support addresses
+        .filter((receiver) => { // remove support addresses
             return !isSupportAddress(receiver.get('address'), supportAddresses)
         })
 
@@ -143,8 +144,8 @@ export function guessReceiversFromTicket(ticket, newMessageSourceType, channels 
         if (!ticketConfig.isSystemType(newMessageSourceType)) {
             const newMessageChannel = ticketConfig.sourceTypeToChannel(newMessageSourceType, messages)
             const customerChannel = ticket.getIn(['customer', 'channels'], fromJS([]))
-                .filter(channel => channel.get('type') === newMessageChannel) // keep only matching channels
-                .sortBy(channel => !channel.get('preferred')) // preferred channel is now first of the list
+                .filter((channel) => channel.get('type') === newMessageChannel) // keep only matching channels
+                .sortBy((channel) => !channel.get('preferred')) // preferred channel is now first of the list
                 .first()
 
             if (customerChannel) {
@@ -220,8 +221,8 @@ export function buildPartialUpdateFromAction(actionNames, state) {
     }
 
     return actionNames
-        .map(actionName => getActionTemplate(actionName))
-        .filter(config => !!config.partialUpdateKey)
+        .map((actionName) => getActionTemplate(actionName))
+        .filter((config) => !!config.partialUpdateKey)
         .reduce((result, config) => {
             result[config.partialUpdateKey] = getProperty(config.partialUpdateValue)(state)
             return result
@@ -237,13 +238,13 @@ export function buildPartialUpdateFromAction(actionNames, state) {
  */
 export function getPreferredChannel(channelType, channels) {
     // get the preferred channel
-    let chan = channels.find(channel => {
+    let chan = channels.find((channel) => {
         return channel.get('type') === channelType && channel.get('preferred', false)
     })
 
     // get the first channel available
     if (!chan) {
-        chan = channels.find(channel => channel.get('type') === channelType)
+        chan = channels.find((channel) => channel.get('type') === channelType)
     }
 
     return chan || fromJS({})
@@ -289,7 +290,7 @@ export function getNewMessageSender(ticket, newMessageSourceType, channels) {
 
     const preferredChannel = getPreferredChannel(newMessageSourceType, channels) || fromJS({})
     const lastMessage = ticket.get('messages')
-        .findLast(message => {
+        .findLast((message) => {
             const type = message.getIn(['source', 'type'], '')
 
             // a message can be a facebook post
@@ -407,7 +408,7 @@ export const renderObject = (argument, context) => {
     if (typeof argument === 'string') {
         ret = renderTemplate(argument, context)
     } else if (typeof argument === 'object') {
-        ret = argument.map(v => renderObject(v, context))
+        ret = argument.map((v) => renderObject(v, context))
     }
 
     return ret
@@ -422,7 +423,7 @@ export const replaceIntegrationVariables = (integrationType, ticketState, variab
 
     // if we have updated_at in customer, sort integrations by the update date so we use the most recent updates
     if (!integrations.isEmpty() && integrations.first().getIn(['customer', 'updated_at'])) {
-        integrations = integrations.sortBy(integration => integration.getIn(['customer', 'updated_at'])).reverse()
+        integrations = integrations.sortBy((integration) => integration.getIn(['customer', 'updated_at'])).reverse()
     }
 
     const integrationIds = integrations.map((_, integrationId) => integrationId).toList()

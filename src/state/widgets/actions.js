@@ -1,18 +1,20 @@
 // @flow
 import axios from 'axios'
-import * as types from './constants'
-import {notify} from '../notifications/actions'
-import {jsonToWidgets} from '../../pages/common/components/infobar/utils'
 import _pick from 'lodash/pick'
 import _size from 'lodash/size'
 import _last from 'lodash/last'
 import _isUndefined from 'lodash/isUndefined'
-import * as integrationsSelectors from './../integrations/selectors'
+
+import type {Map} from 'immutable'
 
 import {getSources, getSourcesWithCustomer} from '../widgets/selectors'
 
-import type {Map} from 'immutable'
+import {jsonToWidgets} from '../../pages/common/components/infobar/utils'
+import {notify} from '../notifications/actions'
 import type {dispatchType, getStateType} from '../types'
+
+import * as integrationsSelectors from './../integrations/selectors'
+import * as types from './constants'
 type widgetUpdateType = {
     title: string,
     meta: {
@@ -44,7 +46,7 @@ export function fetchWidgets() {
                     type: types.FETCH_WIDGETS_SUCCESS,
                     items: resp.data
                 })
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: types.FETCH_WIDGETS_ERROR,
                     error,
@@ -222,7 +224,7 @@ export function submitWidgets(data: ?Array<widgetType>) {
         return axios
             .put('/api/widgets/', items)
             .then((json = {}) => json.data)
-            .then(resp => {
+            .then((resp) => {
                 dispatch({
                     type: types.SUBMIT_WIDGET_SUCCESS,
                     items: resp.data,
@@ -233,7 +235,7 @@ export function submitWidgets(data: ?Array<widgetType>) {
                     status: 'success',
                     message: 'Widgets successfully updated'
                 }))
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: types.SUBMIT_WIDGET_ERROR,
                     error,

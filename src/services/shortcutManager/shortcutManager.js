@@ -8,8 +8,9 @@ import _isFunction from 'lodash/isFunction'
 import _isObject from 'lodash/isObject'
 
 import keymap from '../../config/shortcuts'
-import {getModifier, isButton, closest} from './utils'
 import {isEditable} from '../common/utils'
+
+import {getModifier, isButton, closest} from './utils'
 
 //$FlowFixMe
 const mousetrap = new Mousetrap()

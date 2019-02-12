@@ -6,9 +6,10 @@ import {fromJS} from 'immutable'
 import {pick as _pick} from 'lodash'
 
 import {submitSetting, updateCurrentUser} from '../../../state/currentUser/actions'
+import {getPreferences} from '../../../state/currentUser/selectors'
+
 import YourProfileView from './components/YourProfileView'
 
-import {getPreferences} from '../../../state/currentUser/selectors'
 
 
 class YourProfileContainer extends React.Component {

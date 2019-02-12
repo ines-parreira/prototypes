@@ -1,13 +1,15 @@
 //@flow
 import React from 'react'
+import classNamesBind from 'classnames/bind'
+
+import {TicketMessage, isFailed, isPending, hasFailedAction} from '../../../../../models/ticketElement'
+
 import Actions from './Actions'
 import Body from './Body'
 import Attachments from './Attachments'
 import Errors from './Errors'
-import {TicketMessage, isFailed, isPending, hasFailedAction} from '../../../../../models/ticketElement'
 import SourceDetails from './SourceDetails'
 import css from './Message.less'
-import classNamesBind from 'classnames/bind'
 
 const classNames = classNamesBind.bind(css)
 

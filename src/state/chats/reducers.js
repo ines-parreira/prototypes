@@ -1,5 +1,4 @@
 // @flow
-import * as constants from './constants'
 import {fromJS} from 'immutable'
 
 export const initialState = fromJS({
@@ -7,8 +6,11 @@ export const initialState = fromJS({
 })
 
 import type {Map} from 'immutable'
-import type {actionType} from '../types'
 import moment from 'moment'
+
+import type {actionType} from '../types'
+
+import * as constants from './constants'
 
 type defaultActionType = actionType & {
     ticketId: string,
@@ -28,14 +30,14 @@ export default (state: Map<*, *> = initialState, action: defaultActionType): Map
             const newTicket = fromJS(action.ticket)
             let newState = state
 
-            const index = newState.get('tickets', fromJS([])).findIndex(ticket => ticket.get('id') === newTicket.get('id'))
+            const index = newState.get('tickets', fromJS([])).findIndex((ticket) => ticket.get('id') === newTicket.get('id'))
 
             if (~index) {
                 // update the existing chat
                 newState = newState.mergeIn(['tickets', index], newTicket)
             } else {
                 // add the new chat
-                newState = newState.update('tickets', tickets => tickets.push(newTicket))
+                newState = newState.update('tickets', (tickets) => tickets.push(newTicket))
             }
 
             return newState.update('tickets', (tickets) => tickets.sortBy(sortChats))

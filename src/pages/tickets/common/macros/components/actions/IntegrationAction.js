@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+
 import {getIconFromType} from './../../../../../../state/integrations/helpers'
 import {getActionTemplate} from './../../../../../../utils'
 

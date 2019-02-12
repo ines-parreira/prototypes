@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
 import {DropdownItem} from 'reactstrap'
+
 import MenuItem from './MenuItem'
 import type {Option} from './types'
 

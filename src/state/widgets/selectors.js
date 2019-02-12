@@ -1,11 +1,12 @@
 // @flow
 import {fromJS, Map} from 'immutable'
 import {createSelector} from 'reselect'
-import {itemsWithContext} from './utils'
 
 import {getActiveCustomer} from '../customers/selectors'
 
 import type {stateType} from '../types'
+
+import {itemsWithContext} from './utils'
 import type {contextType} from './types'
 
 

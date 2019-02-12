@@ -4,9 +4,10 @@ import {connect} from 'react-redux'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 import classNames from 'classnames'
 
+import {fromJS, List, Map} from 'immutable'
+
 import {removeRequest, setRequest} from '../../../../../state/ticket/actions'
 import {getRequests, getLatestRequest} from '../../../../../state/requests/selectors'
-import {fromJS, List, Map} from 'immutable'
 
 import headerCss from '../TicketHeader.less'
 

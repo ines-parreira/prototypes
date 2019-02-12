@@ -14,6 +14,11 @@ import {
     Input,
 } from 'reactstrap'
 
+import * as notificationActions from '../../../../../../state/notifications/actions'
+import * as integrationActions from '../../../../../../state/integrations/actions'
+import PageHeader from '../../../../../common/components/PageHeader'
+import type {dispatchType} from '../../../../../../state/types'
+
 import css from './EmailIntegrationCreateForwarding.less'
 
 import outlook from './../../../../../../../img/integrations/outlook.svg'
@@ -22,10 +27,6 @@ import zoho from './../../../../../../../img/integrations/zoho.svg'
 import exchange from './../../../../../../../img/integrations/exchange.svg'
 import groups from './../../../../../../../img/integrations/google-groups.svg'
 
-import * as notificationActions from '../../../../../../state/notifications/actions'
-import * as integrationActions from '../../../../../../state/integrations/actions'
-import PageHeader from '../../../../../common/components/PageHeader'
-import type {dispatchType} from '../../../../../../state/types'
 
 const servicesWithTutorials = [
     {

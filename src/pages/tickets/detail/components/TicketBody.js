@@ -4,13 +4,11 @@ import moment from 'moment'
 import {connect} from 'react-redux'
 import _debounce from 'lodash/debounce'
 import {fromJS, List, Map} from 'immutable'
+
 import * as ticketSelectors from '../../../../state/ticket/selectors'
 import shortcutManager from '../../../../services/shortcutManager'
 import type {MoveIndexDirection} from '../../../common/utils/keyboard'
 import {moveIndex} from '../../../common/utils/keyboard'
-import TicketMessages from './TicketMessages'
-import SatisfactionSurvey from './SatisfactionSurvey'
-import Event from './Event'
 import type {stateType} from '../../../../state/types'
 import type {
     Channel,
@@ -20,6 +18,10 @@ import type {
     TicketSatisfactionSurvey,
 } from '../../../../models/ticketElement/types'
 import {isTicketMessage, isTicketEvent, isTicketSatisfactionSurvey} from '../../../../models/ticketElement'
+
+import TicketMessages from './TicketMessages'
+import SatisfactionSurvey from './SatisfactionSurvey'
+import Event from './Event'
 
 type Props = {
     currentUser: Map<*, *>,

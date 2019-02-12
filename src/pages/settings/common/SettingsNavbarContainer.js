@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import Navbar from '../../common/components/Navbar'
+
 import SettingsNavbar from './components/SettingsNavbar'
 
 type Props = {

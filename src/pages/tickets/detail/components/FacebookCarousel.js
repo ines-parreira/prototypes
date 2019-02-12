@@ -13,8 +13,9 @@ import {
 } from 'reactstrap'
 import Slider from 'react-slick'
 
-import css from './FacebookCarousel.less'
 import type {FacebookCarouselTemplate} from '../../../../models/ticketElement/types'
+
+import css from './FacebookCarousel.less'
 
 type Props = {
     data: FacebookCarouselTemplate[]

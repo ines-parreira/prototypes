@@ -1,6 +1,7 @@
 import React from 'react'
-import Foldable from '../Foldable'
 import {shallow} from 'enzyme'
+
+import Foldable from '../Foldable'
 
 describe('Foldable component', () => {
     it('should render open', () => {

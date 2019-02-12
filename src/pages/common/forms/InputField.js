@@ -9,10 +9,11 @@ import {
     FormText,
 } from 'reactstrap'
 
+import {defined} from '../../../utils'
+
 import Errors from './Errors'
 import FormField from './FormField'
 
-import {defined} from '../../../utils'
 
 import css from './InputField.less'
 

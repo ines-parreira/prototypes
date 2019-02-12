@@ -1,9 +1,11 @@
 // @flow
-import * as constants from './constants'
 import {fromJS} from 'immutable'
 
 import type {Map} from 'immutable'
+
 import type {actionType} from '../types'
+
+import * as constants from './constants'
 
 export const initialState = fromJS({
     _internal: {},
@@ -59,7 +61,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
 
         case constants.SAVE_TAG:
             return state
-                .setIn(['items', state.get('items').findIndex(item => {
+                .setIn(['items', state.get('items').findIndex((item) => {
                     return item.get('id') === action.tag.id
                 })], fromJS(action.tag))
                 .setIn(['meta', action.tag.id, 'edit'], false)
@@ -76,7 +78,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
             return state.setIn(['_internal', 'creating'], false)
 
         case constants.REMOVE_TAG: {
-            const itemIndex = state.get('items', fromJS([])).findIndex(item => item.get('id') === action.id)
+            const itemIndex = state.get('items', fromJS([])).findIndex((item) => item.get('id') === action.id)
             return state.removeIn(['items', itemIndex])
         }
 

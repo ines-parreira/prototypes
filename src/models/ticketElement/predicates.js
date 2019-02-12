@@ -1,6 +1,7 @@
 //@flow
-import type {TicketMessage} from './types'
 import memoizeOne from 'memoize-one'
+
+import type {TicketMessage} from './types'
 
 export const isTicketMessage = (obj: any) => obj.isMessage
 

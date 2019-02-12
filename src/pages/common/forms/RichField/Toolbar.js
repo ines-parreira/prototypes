@@ -1,4 +1,5 @@
 import * as React from 'react'
+
 import type {ActionName} from '../../draftjs/plugins/toolbar/types'
 import type {PluginMethods} from '../../draftjs/plugins/types'
 import Toolbar from '../../draftjs/plugins/toolbar/Toolbar'

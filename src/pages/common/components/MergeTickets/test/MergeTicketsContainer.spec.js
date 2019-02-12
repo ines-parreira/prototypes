@@ -3,6 +3,7 @@ import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+
 import MergeTicketsContainer from '../MergeTicketsContainer'
 
 const middlewares = [thunk]

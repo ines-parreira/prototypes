@@ -7,13 +7,14 @@ import {browserHistory} from 'react-router'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import moment from 'moment'
+
 import * as customersActions from '../../../../state/customers/actions'
 import * as newMessageActions from '../../../../state/newMessage/actions'
 import * as ticketActions from '../../../../state/ticket/actions'
 
 import TicketDetailContainer from '../TicketDetailContainer'
 import * as ticketsActions from '../../../../state/tickets/actions'
-import moment from 'moment'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

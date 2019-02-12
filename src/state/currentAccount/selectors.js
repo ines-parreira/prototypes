@@ -1,10 +1,12 @@
 // @flow
 import {createSelector} from 'reselect'
 import {fromJS} from 'immutable'
+
+import type {stateType} from '../types'
+
 import * as constants from './constants'
 
 // types
-import type {stateType} from '../types'
 
 export const getCurrentAccountState = (state: stateType) => state.currentAccount || fromJS({})
 

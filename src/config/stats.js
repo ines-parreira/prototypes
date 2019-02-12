@@ -7,6 +7,7 @@ import {defaults} from 'react-chartjs-2'
 
 import {formatDuration} from '../pages/stats/common/utils'
 import {TagLabel} from '../pages/common/utils/labels'
+
 import {EMAIL_CHANNEL, CHAT_CHANNEL, AIRCALL_CHANNEL, API_CHANNEL} from './ticket'
 
 // Available Stats. These names should match names in `g/stats/config`

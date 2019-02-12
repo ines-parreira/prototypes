@@ -1,8 +1,9 @@
 // @flow
 import axios from 'axios'
 
-import * as constants from './constants'
 import type {dispatchType} from '../types'
+
+import * as constants from './constants'
 
 /**
  * Fetch events of a HTTP integration

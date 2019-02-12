@@ -1,9 +1,10 @@
 import React from 'react'
+import {fromJS} from 'immutable'
+import {shallow} from 'enzyme'
+
 import HTTPIntegrationEventsContainer, {HTTPIntegrationEvents} from '../HTTPIntegrationEvents'
 import {initialState} from '../../../../../../../state/HTTPIntegrationEvents/reducers'
 import {mockStore, shallowWithStore} from '../../../../../../../utils/testing'
-import {fromJS} from 'immutable'
-import {shallow} from 'enzyme'
 import {getMomentNow} from '../../../../../../../utils/date'
 
 const events = fromJS([{

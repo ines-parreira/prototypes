@@ -3,6 +3,7 @@ import {createSelector} from 'reselect'
 import {fromJS} from 'immutable'
 
 import type {Map} from 'immutable'
+
 import type {stateType} from '../types'
 
 export const getRulesState = (state: stateType): Map<*,*> => state.rules || fromJS({})

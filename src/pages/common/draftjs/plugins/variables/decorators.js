@@ -1,9 +1,10 @@
 import React from 'react'
 import classnames from 'classnames'
 
+import * as integrationsHelpers from '../../../../../state/integrations/helpers'
+
 import {setVariableEditable} from './utils'
 
-import * as integrationsHelpers from '../../../../../state/integrations/helpers'
 
 const placeholderRender = (entity) => {
     const {fullName, type, integration} = entity

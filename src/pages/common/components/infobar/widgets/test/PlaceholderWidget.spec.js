@@ -1,9 +1,10 @@
 import React from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
-import PlaceholderWidget from '../PlaceholderWidget'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import PlaceholderWidget from '../PlaceholderWidget'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

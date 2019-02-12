@@ -1,5 +1,6 @@
 import React from 'react'
 import {IndexRoute, Route} from 'react-router'
+
 import App from './App'
 import IntegrationDetailContainer from './integrations/detail/IntegrationDetailContainer'
 import IntegrationListContainer from './integrations/list/IntegrationListContainer'

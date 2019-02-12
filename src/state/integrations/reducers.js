@@ -1,9 +1,11 @@
 // @flow
 import {fromJS, type Map} from 'immutable'
 import moment from 'moment'
-import * as constants from './constants.js'
 
 import type {actionType} from '../types'
+
+import * as constants from './constants.js'
+
 
 type defaultActionType = actionType & {
     id: string,

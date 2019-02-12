@@ -5,6 +5,8 @@ import {connect} from 'react-redux'
 import classnames from 'classnames'
 import moment from 'moment'
 
+import type {Map, List} from 'immutable'
+
 import {isAdmin} from '../../../utils'
 
 import InfobarLayout from '../../common/components/infobar/InfobarLayout'
@@ -15,10 +17,10 @@ import * as agentSelectors from '../../../state/agents/selectors'
 
 import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 
+import Video from '../../common/components/Video'
+
 import css from './TicketListInfobarContainer.less'
 
-import type {Map, List} from 'immutable'
-import Video from '../../common/components/Video'
 
 const CheckIcon = ({condition}: {condition: boolean}) => (
     <i

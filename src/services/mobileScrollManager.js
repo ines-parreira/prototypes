@@ -3,8 +3,9 @@
  * when the onscreen keyboard pops up mobile.
  */
 
-import {isEditable} from './common/utils'
 import {isTouchDevice, isMediumOrSmallScreen} from '../pages/common/utils/mobile'
+
+import {isEditable} from './common/utils'
 
 window.addEventListener('focusin', () => {
     // if focused element is editable,

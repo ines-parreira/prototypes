@@ -13,11 +13,12 @@ import {
 import Modal from '../../../../common/components/Modal'
 import PageHeader from '../../../../common/components/PageHeader'
 
-import RuleForm from './RuleForm'
-import RuleRow from './RuleRow/RuleRow'
 import ReactSortable from '../../../../common/components/dragging/ReactSortable'
 import {getAST, getCode} from '../../../../../utils'
 import Video from '../../../../common/components/Video'
+
+import RuleRow from './RuleRow/RuleRow'
+import RuleForm from './RuleForm'
 
 import css from './RulesView.less'
 

@@ -9,7 +9,7 @@ export const isStaff = (user: userType): boolean => {
         return false
     }
 
-    return !!user.get('roles', fromJS([])).find(role => role.get('name') === 'staff', null, false)
+    return !!user.get('roles', fromJS([])).find((role) => role.get('name') === 'staff', null, false)
 }
 
 /**
@@ -23,7 +23,7 @@ export const getHighestRole = (user: userType): Map<*,*> => {
         return fromJS({})
     }
 
-    const roles = user.get('roles', fromJS([])).map(role => role.get('name'))
+    const roles = user.get('roles', fromJS([])).map((role) => role.get('name'))
     let role
     if (roles.includes('staff')) {
         role = 'staff'

@@ -10,24 +10,26 @@ import {
     Col,
 } from 'reactstrap'
 
+import type {Map, List} from 'immutable'
+
 import Loader from '../../../../common/components/Loader'
 import Modal from '../../../../common/components/Modal'
-import MacroModalList from './MacroModalList'
-import MacroEdit from './MacroEdit'
-import MacroPreview from './MacroPreview'
-import MacroNoResults from './MacroNoResults'
 import {DEFAULT_ACTIONS} from '../../../../../config'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
 import shortcutManager from '../../../../../services/shortcutManager'
 
-import css from './MacroModal.less'
 
-import type {Map, List} from 'immutable'
 import * as macroActions from '../../../../../state/macro/actions'
 import * as viewsActions from '../../../../../state/views/actions'
 
 import type {fetchMacrosType} from '../types'
+
+import css from './MacroModal.less'
+import MacroNoResults from './MacroNoResults'
+import MacroPreview from './MacroPreview'
+import MacroEdit from './MacroEdit'
+import MacroModalList from './MacroModalList'
 
 type Props = {
     macros: Map<*, *>,
@@ -185,7 +187,7 @@ export default class MacroModal extends React.Component<Props, State> {
 
     _setActions = (actions: Map<*, *>) => {
         // filter actions that exist in configuration
-        actions = actions.filter(action => DEFAULT_ACTIONS.includes(action.get('name')))
+        actions = actions.filter((action) => DEFAULT_ACTIONS.includes(action.get('name')))
 
         // keep only one action by type
         actions = fromJS(_uniqWith(actions.toJS(), (first, second) => {

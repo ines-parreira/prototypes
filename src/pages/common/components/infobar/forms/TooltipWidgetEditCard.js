@@ -101,7 +101,7 @@ class TooltipWidgetEditCard extends React.Component {
                     label="Title"
                     placeholder="Order {{id}}"
                     value={this.state.title}
-                    onChange={title => this.setState({title})}
+                    onChange={(title) => this.setState({title})}
                 />
                 {
                     !editionHiddenFields.includes('link') && (
@@ -111,7 +111,7 @@ class TooltipWidgetEditCard extends React.Component {
                             label="Link"
                             placeholder="http://myapi.com/{{id}}"
                             value={this.state.link}
-                            onChange={link => this.setState({link})}
+                            onChange={(link) => this.setState({link})}
                         />
                     )
                 }
@@ -123,7 +123,7 @@ class TooltipWidgetEditCard extends React.Component {
                                 name="card.meta.displayCard"
                                 label="Display card"
                                 value={this.state.displayCard}
-                                onChange={displayCard => this.setState({displayCard})}
+                                onChange={(displayCard) => this.setState({displayCard})}
                             />
                         </FormGroup>
                     )
@@ -137,7 +137,7 @@ class TooltipWidgetEditCard extends React.Component {
                             label="Limit"
                             placeholder="ex: 0"
                             value={this.state.limit}
-                            onChange={limit => this.setState({limit})}
+                            onChange={(limit) => this.setState({limit})}
                         />,
                         <InputField
                             key="order"
@@ -145,7 +145,7 @@ class TooltipWidgetEditCard extends React.Component {
                             name="list.meta.orderBy"
                             label="Order by"
                             value={this.state.orderBy}
-                            onChange={orderBy => this.setState({orderBy})}
+                            onChange={(orderBy) => this.setState({orderBy})}
                         >
                             {
                                 orderByOptions

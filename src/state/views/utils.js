@@ -7,11 +7,12 @@ import _isInteger from 'lodash/isInteger'
 
 import {UNARY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
 
-import type {filterType, viewsStateType} from './types'
 import type {agentsType} from '../agents/types'
 import {getAST, getFirstExpressionOfAST, isCurrentlyOnView} from '../../utils'
 import {datetimeOperators, timedeltaOperators, collectionOperators} from '../../config/rules'
 import {isTimedelta} from '../../utils/ast'
+
+import type {filterType, viewsStateType} from './types'
 
 type viewType = Map<*, *>
 type astType = Map<*, *>
@@ -187,11 +188,11 @@ export function updateFilterValue(ast: astType, index: number, value: string | n
         }
 
         return setIn(ast, index, ['arguments', 1], arrayExpression)
-    } else {
+    } 
         // $FlowFixMe
-        const raw = rawify(value)
-        return setIn(ast, index, ['arguments', 1], getFirstExpressionOfAST(getAST(raw)))
-    }
+    const raw = rawify(value)
+    return setIn(ast, index, ['arguments', 1], getFirstExpressionOfAST(getAST(raw)))
+    
 }
 
 /**

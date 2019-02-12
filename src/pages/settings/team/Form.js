@@ -22,6 +22,7 @@ import InputField from '../../common/forms/InputField'
 import * as actions from '../../../state/agents/actions'
 import * as helpers from '../../../state/agents/helpers'
 import PageHeader from '../../common/components/PageHeader'
+
 import DeleteAgent from './DeleteAgent'
 
 @connect((state, ownProps) => {
@@ -161,7 +162,7 @@ export default class Form extends React.Component {
                             name="name"
                             label="Name"
                             value={this.state.name}
-                            onChange={value => this.setState({name: value})}
+                            onChange={(value) => this.setState({name: value})}
                             placeholder="John Doe"
                             required
                         />
@@ -170,7 +171,7 @@ export default class Form extends React.Component {
                             name="email"
                             label="Email"
                             value={this.state.email}
-                            onChange={value => this.setState({email: value})}
+                            onChange={(value) => this.setState({email: value})}
                             placeholder="john@doe.com"
                             required
                         />
@@ -179,7 +180,7 @@ export default class Form extends React.Component {
                             name="role"
                             label="Role"
                             value={this.state.role}
-                            onChange={value => this.setState({role: value})}
+                            onChange={(value) => this.setState({role: value})}
                             required
                             help="Agents can view & respond to tickets. Admins can add/remove team members, manage tags & billing."
                         >

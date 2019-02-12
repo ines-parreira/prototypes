@@ -1,5 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
+
 import {AddActionOrIfStatement} from '../AddActionOrIfStatement'
 
 describe('AddActionOrIfStatement component', () => {

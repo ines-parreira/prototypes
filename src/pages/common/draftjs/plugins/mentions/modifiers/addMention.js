@@ -3,6 +3,7 @@
  */
 
 import {Modifier, EditorState} from 'draft-js'
+
 import {getSearchText, getTypeByTrigger} from '../utils'
 
 const addMention = (editorState, mention, mentionPrefix, mentionTrigger, entityMutability) => {

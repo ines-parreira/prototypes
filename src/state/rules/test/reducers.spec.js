@@ -1,4 +1,5 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
+
 import reducer, {initialState} from '../reducers'
 
 jest.addMatchers(immutableMatchers)

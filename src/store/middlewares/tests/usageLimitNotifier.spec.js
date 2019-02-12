@@ -3,11 +3,12 @@ import thunk from 'redux-thunk'
 import _assign from 'lodash/assign'
 import _some from 'lodash/some'
 import {fromJS} from 'immutable'
+import moment from 'moment'
+
 import usageLimitNotifier, {PAYMENT_MODAL} from '../usageLimitNotifier'
 import * as ticketTypes from '../../../state/ticket/constants'
 import * as newMessageTypes from '../../../state/newMessage/constants'
 import plan from '../../../fixtures/plan'
-import moment from 'moment'
 
 const middlewares = [thunk, usageLimitNotifier]
 const mockStore = configureMockStore(middlewares)

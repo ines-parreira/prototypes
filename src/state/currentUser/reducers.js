@@ -1,11 +1,13 @@
 // @flow
-import * as constants from './constants'
 import {fromJS} from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 
 // types
 import type {Map} from 'immutable'
+
 import type {actionType} from '../types'
+
+import * as constants from './constants'
 
 export const initialState = fromJS({
     settings: [],
@@ -44,8 +46,8 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
         case constants.SUBMIT_SETTING_SUCCESS: {
             const newState = state.setIn(['_internal', 'loading', 'settings', action.settingType], false)
             if (action.isUpdate) {
-                return newState.update('settings', settings => {
-                    return settings.map(setting => {
+                return newState.update('settings', (settings) => {
+                    return settings.map((setting) => {
                         if (setting.get('id') === action.resp.id) {
                             return setting.set('data', fromJS(action.resp.data))
                         }
@@ -53,10 +55,10 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
                     })
                 })
             }
-            return newState.update('settings', settings => settings.push(fromJS(action.resp)))
+            return newState.update('settings', (settings) => settings.push(fromJS(action.resp)))
         }
         case constants.TOGGLE_ACTIVE_STATUS:
-            return state.update('is_active', status => _isUndefined(action.status) ? !status : action.status)
+            return state.update('is_active', (status) => _isUndefined(action.status) ? !status : action.status)
         default:
             return state
     }

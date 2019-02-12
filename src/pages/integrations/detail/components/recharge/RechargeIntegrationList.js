@@ -4,16 +4,18 @@ import {Link, browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 import Lightbox from 'react-images'
 
+import {
+    Alert
+} from 'reactstrap'
+
 import ToggleButton from '../../../../common/components/ToggleButton'
-import Carousel from './../../../common/Carousel'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
 import * as integrationsActions from '../../../../../state/integrations/actions'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 
-import {
-    Alert
-} from 'reactstrap'
+import Carousel from './../../../common/Carousel'
+
 
 type Props = {
     integrations: List,

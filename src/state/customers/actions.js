@@ -1,10 +1,12 @@
 // @flow
 import axios from 'axios'
 import _isUndefined from 'lodash/isUndefined'
-import * as types from './constants'
+
 import {notify} from '../notifications/actions'
 
 import type {dispatchType, stateType, getStateType} from '../types'
+
+import * as types from './constants'
 
 export function fetchCustomer(customerId: number) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
@@ -14,12 +16,12 @@ export function fetchCustomer(customerId: number) {
 
         return axios.get(`/api/customers/${customerId}/`)
             .then((json = {}) => json.data)
-            .then(resp => {
+            .then((resp) => {
                 return dispatch({
                     type: types.FETCH_CUSTOMER_SUCCESS,
                     resp
                 })
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: types.FETCH_CUSTOMER_ERROR,
                     error,
@@ -46,7 +48,7 @@ export function submitCustomer(data: {}, customerId: number) {
 
         return promise
             .then((json = {}) => json.data)
-            .then(resp => {
+            .then((resp) => {
                 dispatch({
                     type: types.SUBMIT_CUSTOMER_SUCCESS,
                     isUpdate,
@@ -59,7 +61,7 @@ export function submitCustomer(data: {}, customerId: number) {
                 }))
 
                 return resp
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: types.SUBMIT_CUSTOMER_ERROR,
                     error,
@@ -78,7 +80,7 @@ export function deleteCustomer(customerId: number) {
 
         return axios.delete(`/api/customers/${customerId}/`)
             .then((json = {}) => json.data)
-            .then(resp => {
+            .then((resp) => {
                 dispatch({
                     type: types.DELETE_CUSTOMER_SUCCESS,
                     customerId,
@@ -89,7 +91,7 @@ export function deleteCustomer(customerId: number) {
                     status: 'success',
                     message: 'Customer successfully deleted'
                 }))
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: types.DELETE_CUSTOMER_ERROR,
                     error,
@@ -107,7 +109,7 @@ export function fetchCustomerHistory(customerId: number, options: {successCondit
 
         return axios.get(`/api/customers/${customerId}/tickets/`)
             .then((json = {}) => json.data)
-            .then(resp => {
+            .then((resp) => {
                 const state = getState()
 
                 let shouldTriggerSuccess = true
@@ -123,7 +125,7 @@ export function fetchCustomerHistory(customerId: number, options: {successCondit
                 }
 
                 return Promise.resolve(resp)
-            }, error => {
+            }, (error) => {
                 // TODO(customers-migration): remove these lines when the migration is done
                 if (error && error.response && error.response.status === 404) {
                     return Promise.resolve()
@@ -146,7 +148,7 @@ export function mergeCustomers(baseCustomerId: number, mergeCustomerId: number, 
 
         return axios.put(`/api/customers/merge?target_id=${baseCustomerId}&source_id=${mergeCustomerId}`, data)
             .then((json = {}) => json.data)
-            .then(resp => {
+            .then((resp) => {
                 dispatch({
                     type: types.MERGE_CUSTOMERS_SUCCESS,
                     resp
@@ -158,7 +160,7 @@ export function mergeCustomers(baseCustomerId: number, mergeCustomerId: number, 
                 }))
 
                 return Promise.resolve(resp)
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: types.MERGE_CUSTOMERS_ERROR,
                     error,

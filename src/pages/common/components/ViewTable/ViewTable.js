@@ -7,17 +7,18 @@ import classnames from 'classnames'
 import _get from 'lodash/get'
 
 import Loader from '../Loader'
+import * as viewsActions from '../../../../state/views/actions'
+import * as viewsSelectors from '../../../../state/views/selectors'
+import * as viewsConfig from '../../../../config/views'
+import type {viewType} from '../../../../state/views/types'
+
 import Header from './Header'
 import Table from './Table'
 import FilterTopbar from './FilterTopbar'
 
-import * as viewsActions from '../../../../state/views/actions'
-import * as viewsSelectors from '../../../../state/views/selectors'
 
-import * as viewsConfig from '../../../../config/views'
 
 import css from './ViewTable.less'
-import type {viewType} from '../../../../state/views/types'
 
 
 type Props = {

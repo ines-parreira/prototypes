@@ -3,6 +3,7 @@ import {mount} from 'enzyme'
 import _noop from 'lodash/noop'
 import {EditorState} from 'draft-js'
 import {convertToHTML} from 'draft-convert'
+
 import {RichFieldEditor} from '../RichFieldEditor'
 import createToolbarPlugin from '../../../draftjs/plugins/toolbar'
 import {convertFromHTML} from '../../../../../utils/editor'

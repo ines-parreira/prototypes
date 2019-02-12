@@ -5,16 +5,17 @@ import {connect} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 import {Button, Form} from 'reactstrap'
 
-import SelectTargetTicket from './SelectTargetTicket'
-import BuildFinalTicket from './BuildFinalTicket'
 import Modal from '../Modal'
 import ConfirmButton from '../ConfirmButton'
 
 import {mergeTickets} from '../../../../state/mergeTickets/actions'
 import shortcutManager from '../../../../services/shortcutManager/shortcutManager'
 
-import css from './MergeTicketsContainer.less'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
+
+import css from './MergeTicketsContainer.less'
+import BuildFinalTicket from './BuildFinalTicket'
+import SelectTargetTicket from './SelectTargetTicket'
 
 
 const EDITABLE_FIELDS = fromJS(['subject', 'customer', 'assignee_user'])

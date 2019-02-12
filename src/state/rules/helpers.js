@@ -1,7 +1,8 @@
 //@flow
-import {toImmutable, isImmutable} from '../../utils'
 import _trim from 'lodash/trim'
 import _compact from 'lodash/compact'
+
+import {toImmutable, isImmutable} from '../../utils'
 
 import type {ruleType} from './types'
 

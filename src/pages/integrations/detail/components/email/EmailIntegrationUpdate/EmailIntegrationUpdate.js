@@ -346,7 +346,7 @@ class EmailIntegrationUpdate extends React.Component {
                                     type="checkbox"
                                     label="Tag Gorgias tickets with Gmail categories (Social, Promotions, Updates, Forums)"
                                     value={use_gmail_categories}
-                                    onChange={value => this.setState({
+                                    onChange={(value) => this.setState({
                                         dirty: true,
                                         use_gmail_categories: value
                                     })}
@@ -374,7 +374,7 @@ class EmailIntegrationUpdate extends React.Component {
                             label="Import spam emails"
                             help="Imported spam emails will be placed in the Spam ticket view and will not be counted in statistics. Spam tickets are automatically deleted after 30 days."
                             value={import_spam}
-                            onChange={value => this.setState({
+                            onChange={(value) => this.setState({
                                 dirty: true,
                                 import_spam: value
                             })}
@@ -475,7 +475,7 @@ EmailIntegrationUpdate.propTypes = {
     location: PropTypes.object.isRequired,
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     domain: state.currentAccount.get('domain'),
 })
 

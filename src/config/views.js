@@ -1,12 +1,14 @@
 import React from 'react'
 import {fromJS} from 'immutable'
 
-import * as ticketConfig from './ticket'
-import TICKET_LANGUAGES from './ticketLanguages'
+import _isUndefined from 'lodash/isUndefined'
+
 import {stripHTML, getLanguageDisplayName, getAST} from '../utils'
 import {TagLabel} from '../pages/common/utils/labels'
 
-import _isUndefined from 'lodash/isUndefined'
+import * as ticketConfig from './ticket'
+import TICKET_LANGUAGES from './ticketLanguages'
+
 
 // Expiration times for views counts (second).
 // After this period, we will ask for a new count.
@@ -137,7 +139,7 @@ export const views = fromJS([{
             name: 'language',
             title: 'Language',
             filter: {
-                enum: TICKET_LANGUAGES.map(lang => lang.localeName)
+                enum: TICKET_LANGUAGES.map((lang) => lang.localeName)
             }
         },
         {
@@ -262,7 +264,7 @@ export const views = fromJS([{
             }
             case 'integrations': {
                 return item.get('integrations', fromJS([]))
-                    .map(inte => {
+                    .map((inte) => {
                         if (!inte) {
                             return ''
                         }

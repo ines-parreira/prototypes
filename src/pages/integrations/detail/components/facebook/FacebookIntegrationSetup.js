@@ -25,6 +25,7 @@ import BooleanField from '../../../../common/forms/BooleanField'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 
 import pageIconDefault from '../../../../../../img/integrations/facebook-page.png'
+
 import css from './FacebookIntegrationSetup.less'
 
 

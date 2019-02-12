@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
+
 import ActionButtonsGroup from '../ActionButtonsGroup'
 import type {ActionType} from '../types'
 

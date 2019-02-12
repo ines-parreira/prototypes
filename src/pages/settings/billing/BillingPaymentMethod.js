@@ -3,12 +3,13 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import {Button, Card, CardBody, Col, Row, UncontrolledTooltip} from 'reactstrap'
+import classNames from 'classnames'
+
 import * as billingSelectors from '../../../state/billing/selectors'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
 import {fetchPaymentMethod, fetchCreditCard} from '../../../state/billing/actions'
 import Loader from '../../common/components/Loader'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker'
-import classNames from 'classnames'
 
 export class BillingPaymentMethod extends Component {
     static propTypes = {

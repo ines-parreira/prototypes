@@ -4,6 +4,7 @@ import moment from 'moment'
 import DateRangePicker from 'react-bootstrap-daterangepicker'
 
 import {Input} from 'reactstrap'
+
 import {stringToDatetime} from '../../../utils/date'
 
 type Props = {

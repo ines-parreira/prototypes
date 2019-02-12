@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
 import {List, Map, fromJS} from 'immutable'
+
 import InputField from '../../../forms/InputField'
 
 type Props = {

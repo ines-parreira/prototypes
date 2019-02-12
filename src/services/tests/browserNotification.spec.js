@@ -1,5 +1,6 @@
-import browserNotification from '../browserNotification'
 import PushJS from 'push.js'
+
+import browserNotification from '../browserNotification'
 
 describe('services', () => {
     describe('browserNotification', () => {

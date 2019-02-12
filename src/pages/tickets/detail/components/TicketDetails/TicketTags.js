@@ -6,12 +6,13 @@ import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Input} from 'react
 import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
 
+import classnames from 'classnames'
+
 import shortcutManager from '../../../../../services/shortcutManager'
 import {TagLabel} from '../../../../common/utils/labels'
 import {fieldEnumSearch} from '../../../../../state/views/actions'
 
 import css from './TicketTags.less'
-import classnames from 'classnames'
 
 
 const LIMIT_TAGS_SEARCH = 15
@@ -110,8 +111,8 @@ export class TicketTags extends React.Component {
             )
         }
 
-        const existingTagNames = ticketTags.map(x => x.get('name'))
-        const availableTags = this.state.enum.filter(tag => !existingTagNames.contains(tag.get('name')))
+        const existingTagNames = ticketTags.map((x) => x.get('name'))
+        const availableTags = this.state.enum.filter((tag) => !existingTagNames.contains(tag.get('name')))
 
         let options = availableTags.map((tag, i) => {
             const name = tag.get('name')
@@ -126,7 +127,7 @@ export class TicketTags extends React.Component {
             )
         })
 
-        const isInEnum = !!this.state.enum.find(tag => tag.get('name') === search)
+        const isInEnum = !!this.state.enum.find((tag) => tag.get('name') === search)
 
         if (!isInEnum && search) {
             if (!availableTags.isEmpty()) {
@@ -218,7 +219,7 @@ export class TicketTags extends React.Component {
                                         placeholder="Search tags..."
                                         autoFocus
                                         value={this.state.search}
-                                        onChange={e => this._search(e.target.value)}
+                                        onChange={(e) => this._search(e.target.value)}
                                     />
                                 )
                             }

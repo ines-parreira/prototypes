@@ -9,15 +9,16 @@ import {Button, Card, CardBody} from 'reactstrap'
 import Clipboard from 'clipboard'
 
 import Tooltip from '../Tooltip'
+import SourceIcon from '../SourceIcon'
+import {itemsWithContext} from '../../../../state/widgets/utils'
+import {getDisplayName} from '../../../../state/customers/helpers'
+import * as integrationsSelectors from '../../../../state/integrations/selectors'
+
 import InfobarWidgets from './InfobarWidgets'
 import InfobarAddIntegrationSuggestion from './InfobarAddIntegrationSuggestion'
 import Avatar from './../Avatar'
-import SourceIcon from '../SourceIcon'
 import {canDrop, areSourcesReady, jsonToWidgets} from './utils'
-import {itemsWithContext} from '../../../../state/widgets/utils'
 
-import {getDisplayName} from '../../../../state/customers/helpers'
-import * as integrationsSelectors from '../../../../state/integrations/selectors'
 
 import css from './Infobar.less'
 
@@ -143,7 +144,7 @@ class InfobarCustomerInfo extends React.Component {
             && contextWidgets.size <= 1
             && contextWidgets.getIn([0, 'template'], fromJS({})) === fromJS({})
 
-        if (!isEditing && !shouldSuggestTemplateGeneration && contextWidgets.every(w => w.get('template', fromJS({})).isEmpty())) {
+        if (!isEditing && !shouldSuggestTemplateGeneration && contextWidgets.every((w) => w.get('template', fromJS({})).isEmpty())) {
             return null
         }
 
@@ -201,9 +202,9 @@ class InfobarCustomerInfo extends React.Component {
                 const type = channel.get('type')
                 return type !== 'chat' && !type.includes('facebook') && type !== 'instagram'
             })
-            .sortBy(channel => channel.get('address', '').toLowerCase()) // order addresses alphabetically
-            .sortBy(channel => -channel.get('preferred')) // put preferred addresses on top
-            .sortBy(channel => channel.get('type')) // group by channel type
+            .sortBy((channel) => channel.get('address', '').toLowerCase()) // order addresses alphabetically
+            .sortBy((channel) => -channel.get('preferred')) // put preferred addresses on top
+            .sortBy((channel) => channel.get('type')) // group by channel type
 
         const hasMoreChannels = !this.state.showAllCustomerChannels && channels.size > this.shownCustomerChannels
 

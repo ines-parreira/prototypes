@@ -2,10 +2,11 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
+import {fromJS} from 'immutable'
+
 import * as actions from '../actions'
 import {initialState} from '../reducers'
 import * as types from '../constants'
-import {fromJS} from 'immutable'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

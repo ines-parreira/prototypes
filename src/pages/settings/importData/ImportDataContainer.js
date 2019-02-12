@@ -2,13 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
-import ImportDataList from './ImportDataList'
 import {Alert, Container} from 'reactstrap'
+
+import PageHeader from '../../common/components/PageHeader'
+
+import ImportDataList from './ImportDataList'
 
 import * as integrationSelectors from './../../../state/integrations/selectors'
 
 import * as integrationActions from './../../../state/integrations/actions'
-import PageHeader from '../../common/components/PageHeader'
 
 @connect((state) => {
     return {

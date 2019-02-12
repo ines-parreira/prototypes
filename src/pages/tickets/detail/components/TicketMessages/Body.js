@@ -1,9 +1,11 @@
 // @flow
 import React from 'react'
 import classNamesBind from 'classnames/bind'
+
 import FacebookCarousel from '../FacebookCarousel'
-import css from './Body.less'
 import type {TicketMessage} from '../../../../../models/ticketElement/types'
+
+import css from './Body.less'
 import Content from './Content'
 
 const classNames = classNamesBind.bind(css)

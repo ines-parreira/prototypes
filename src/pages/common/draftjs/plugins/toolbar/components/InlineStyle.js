@@ -1,8 +1,10 @@
 //@flow
 import * as React from 'react'
-import Button from './Button'
-import type { ActionInjectedProps } from '../types'
 import { RichUtils } from 'draft-js'
+
+import type { ActionInjectedProps } from '../types'
+
+import Button from './Button'
 
 type Props = {
     name: string,

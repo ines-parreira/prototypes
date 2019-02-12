@@ -2,6 +2,7 @@
 import classNames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 import React from 'react'
+
 import Dropdown from './Dropdown'
 import css from './MultiSelectOptionsField.less'
 import OptionTag from './Tag'

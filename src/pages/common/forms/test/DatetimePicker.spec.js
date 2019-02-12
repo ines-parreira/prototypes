@@ -1,5 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
+
 import DatetimePicker from '../DatetimePicker'
 
 describe('DatetimePicker component', () => {

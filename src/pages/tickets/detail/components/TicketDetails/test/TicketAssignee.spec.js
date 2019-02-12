@@ -4,8 +4,9 @@ import {mount} from 'enzyme'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import _noop from 'lodash/noop'
-import TicketAssignee from '../TicketAssignee/TicketAssignee'
 import {fromJS} from 'immutable'
+
+import TicketAssignee from '../TicketAssignee/TicketAssignee'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

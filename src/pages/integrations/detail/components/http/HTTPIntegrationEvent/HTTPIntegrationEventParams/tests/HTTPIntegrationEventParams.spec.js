@@ -1,7 +1,8 @@
 import React from 'react'
-import HTTPIntegrationEventParams from '../HTTPIntegrationEventParams'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+
+import HTTPIntegrationEventParams from '../HTTPIntegrationEventParams'
 
 describe('HTTPIntegrationEventParams', () => {
     it('should not render the component because it has no params', () => {

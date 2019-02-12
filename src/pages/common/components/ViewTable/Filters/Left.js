@@ -23,7 +23,7 @@ export default class Left extends React.Component {
         // now find our field and return it's title
         const field = viewsConfig.getConfigByType(view.get('type'))
             .get('fields', fromJS([]))
-            .find(f => f.get('path') === suffixPath)
+            .find((f) => f.get('path') === suffixPath)
 
         return (
             <Button

@@ -1,14 +1,16 @@
 //@flow
 import decorateComponentWithProps from 'decorate-component-with-props'
 import {ContentBlock, EditorState, KeyBindingUtil} from 'draft-js'
-import {foundUrl, link} from './decorators'
-import Toolbar from './Toolbar'
-import Image from './components/Image'
+import type {Node} from 'react'
+
 import type {PluginMethods} from '../types'
 import {removeLink} from '../utils'
 import {getSelectedEntityKey, getSelectedText} from '../../../../../utils/editor'
+
+import {foundUrl, link} from './decorators'
+import Toolbar from './Toolbar'
+import Image from './components/Image'
 import type {ActionName} from './types'
-import type {Node} from 'react'
 
 // documentation:
 // https://github.com/draft-js-plugins/draft-js-plugins/blob/master/HOW_TO_CREATE_A_PLUGIN.md

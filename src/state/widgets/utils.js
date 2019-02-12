@@ -3,9 +3,10 @@ import {fromJS} from 'immutable'
 import _difference from 'lodash/difference'
 import _values from 'lodash/values'
 import _forEach from 'lodash/forEach'
+import type {List, Map} from 'immutable'
+
 import {DEFAULT_SOURCE_PATHS} from '../../config'
 
-import type {List, Map} from 'immutable'
 import type {contextType} from './types'
 type itemsType = List<Map<*,*>>
 type contextFromSourcePathType = {

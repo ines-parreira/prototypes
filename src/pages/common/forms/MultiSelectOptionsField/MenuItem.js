@@ -2,6 +2,7 @@
 import classNames from 'classnames'
 import React, {type Node} from 'react'
 import {DropdownItem} from 'reactstrap'
+
 import css from './MenuItem.less'
 
 type Props = {

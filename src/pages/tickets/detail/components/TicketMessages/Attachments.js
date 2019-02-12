@@ -1,10 +1,12 @@
 //@flow
 import React from 'react'
 import {fromJS} from 'immutable'
-import TicketAttachments from '../ReplyArea/TicketAttachments'
-import css from './Attachments.less'
-import type {TicketMessage} from '../../../../../models/ticketElement/types'
 import classNamesBind from 'classnames/bind'
+
+import TicketAttachments from '../ReplyArea/TicketAttachments'
+import type {TicketMessage} from '../../../../../models/ticketElement/types'
+
+import css from './Attachments.less'
 
 const classNames = classNamesBind.bind(css)
 

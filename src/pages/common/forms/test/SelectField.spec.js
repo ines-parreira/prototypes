@@ -336,7 +336,7 @@ describe('SelectField', () => {
         })
 
         it('Enter/tab (custom value)', () => {
-            addKeys.forEach(key => {
+            addKeys.forEach((key) => {
                 const onChangeSpy = jest.fn()
                 const wrapper = mount(
                     <SelectField
@@ -359,7 +359,7 @@ describe('SelectField', () => {
         })
 
         it('Enter/Tab (existing value)', () => {
-            addKeys.forEach(key => {
+            addKeys.forEach((key) => {
                 const onChangeSpy = jest.fn()
                 const wrapper = mount(
                     <SelectField
@@ -381,7 +381,7 @@ describe('SelectField', () => {
 
         it('should stop propagation of events', () => {
             const keys = ['ArrowUp', 'ArrowDown', 'Enter', 'Tab']
-            keys.forEach(key => {
+            keys.forEach((key) => {
                 const stopPropagationSpy = jest.fn()
                 const wrapper = mount(
                     <SelectField

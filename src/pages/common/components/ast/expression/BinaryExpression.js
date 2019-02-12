@@ -1,10 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Expression from './Expression'
 import Widget from '../Widget'
 
 import {getSyntaxTreeLeaves} from '../utils'
+
+import Expression from './Expression'
 
 /*
  interface BinaryExpression <: Expression {

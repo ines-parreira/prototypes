@@ -1,8 +1,9 @@
 //@flow
 import * as React from 'react'
-import css from './LinkPopover.less'
 import classnames from 'classnames'
 import {Popover} from 'reactstrap'
+
+import css from './LinkPopover.less'
 
 type Props = {
     id: string,

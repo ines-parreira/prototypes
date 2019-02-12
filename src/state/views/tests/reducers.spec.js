@@ -1,5 +1,6 @@
 import {fromJS} from 'immutable'
 import moment from 'moment'
+
 import reducers, {initialState} from '../reducers'
 import * as fixtures from '../../../fixtures/views'
 import * as types from '../constants'

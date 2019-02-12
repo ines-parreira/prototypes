@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
 import classNames from 'classnames'
+
 import {proxifyImages} from '../../../../../utils'
 import {linkifyHtml, linkifyString, sanitizeHtmlDefault} from '../../../../../utils/html'
 import Ellipsis from '../../../../common/components/Ellipsis'

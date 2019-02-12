@@ -4,6 +4,7 @@ import _max from 'lodash/max'
 import _min from 'lodash/min'
 import React from 'react'
 import {DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap'
+
 import css from './Dropdown.less'
 import OptionInput from './Input'
 import Menu from './Menu'

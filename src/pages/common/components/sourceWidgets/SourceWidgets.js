@@ -2,8 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
-import SourceWidget from './SourceWidget'
+
 import DragWrapper from '../dragging/WidgetsDragWrapper'
+
+import SourceWidget from './SourceWidget'
 
 class SourceWidgets extends React.Component {
     render() {

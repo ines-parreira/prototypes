@@ -4,8 +4,11 @@ import moment from 'moment'
 import _isNumber from 'lodash/isNumber'
 import type {Map} from 'immutable'
 
-import * as constants from './constants'
 import {getCode} from '../../utils'
+import type {actionType} from '../types'
+import {MAX_RECENT_VIEWS} from '../../config/views'
+
+import * as constants from './constants'
 import {
     addFilterAST,
     removeFilterAST,
@@ -16,8 +19,6 @@ import {
 } from './utils'
 import * as selectors from './selectors'
 
-import type {actionType} from '../types'
-import {MAX_RECENT_VIEWS} from '../../config/views'
 
 export const initialState = fromJS({
     items: [],
@@ -49,7 +50,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
             }
 
             // update recent views
-            const newState = state.update('recent', views => {
+            const newState = state.update('recent', (views) => {
                 const now = moment.utc().toISOString()
                 // merge the new view and keep the most recent ones
                 return views
@@ -59,13 +60,13 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
                             updated_datetime: now
                         }
                     }))
-                    .sortBy(view => view.get('insert_datetime'))
+                    .sortBy((view) => view.get('insert_datetime'))
                     .slice(-MAX_RECENT_VIEWS)
             })
 
             // store recent view on the client
             const recentViews = selectors.getRecentViews({views: newState})
-            const viewIds = recentViews.keySeq().map(viewId => parseInt(viewId)).toJS()
+            const viewIds = recentViews.keySeq().map((viewId) => parseInt(viewId)).toJS()
             recentViewsStorage.set(viewIds)
 
             return newState
@@ -74,7 +75,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
 
         case constants.UPDATE_RECENT_VIEWS: {
             // update datetime of given recent views
-            return state.update('recent', views => {
+            return state.update('recent', (views) => {
                 return views.map((view, viewId) => {
                     if (action.viewIds.includes(parseInt(viewId))) {
                         return view.set('updated_datetime', moment.utc().toISOString())
@@ -174,7 +175,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
             const updatedView = fromJS(action.resp)
             // we need to replace the old view with the new one
             items = state.get('items')
-            const replaceIndex = items.findIndex(v => v.get('id') === updatedView.get('id'))
+            const replaceIndex = items.findIndex((v) => v.get('id') === updatedView.get('id'))
             let newState = state.setIn(['items', replaceIndex], updatedView)
 
             if (shouldUpdateView(updatedView.get('id'), state)) {
@@ -205,7 +206,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
 
             // also populate the active view state
             if (action.currentViewId) {
-                activeView = items.find(item => item.get('id') === parseInt(action.currentViewId), null, fromJS({}))
+                activeView = items.find((item) => item.get('id') === parseInt(action.currentViewId), null, fromJS({}))
             }
 
             return state.merge({
@@ -235,7 +236,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
 
         case constants.DELETE_VIEW_SUCCESS: {
             return state.merge({
-                items: state.get('items').filter(item => item.get('id') !== action.viewId),
+                items: state.get('items').filter((item) => item.get('id') !== action.viewId),
             })
         }
 
@@ -313,7 +314,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
                     counts: action.counts
                 })
                 // update datetime when we receive count for a recent view
-                .update('recent', views => {
+                .update('recent', (views) => {
                     return views.map((view, viewId) => {
                         if (viewIds.includes(viewId)) {
                             return view.set('updated_datetime', moment.utc().toISOString())

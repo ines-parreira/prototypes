@@ -3,13 +3,15 @@ import React from 'react'
 import {Link} from 'react-router'
 import classnames from 'classnames'
 
+import type {Map} from 'immutable'
+
 import {RoleLabel} from '../../common/utils/labels'
 import Avatar from '../../common/components/Avatar'
+
 import DeleteAgent from './DeleteAgent'
 
 import css from './Row.less'
 
-import type {Map} from 'immutable'
 
 type Props = {
     agent: Map<*,*>,

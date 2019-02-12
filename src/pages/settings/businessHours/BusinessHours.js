@@ -7,12 +7,13 @@ import classnames from 'classnames'
 
 import PageHeader from '../../common/components/PageHeader'
 import InputField from '../../common/forms/InputField'
-import BusinessHoursForm from './BusinessHoursForm'
 import {getMomentTimezoneNames} from '../../../utils/date'
 
 import * as currentAccountActions from '../../../state/currentAccount/actions'
 import * as currentAccountConstants from '../../../state/currentAccount/constants'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
+
+import BusinessHoursForm from './BusinessHoursForm'
 
 import {DEFAULT_BUSINESS_HOUR, MAX_BUSINESS_HOURS} from './constants'
 import css from './BusinessHours.less'

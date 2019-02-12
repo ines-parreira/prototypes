@@ -4,10 +4,11 @@ import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import {Input} from 'reactstrap'
 
-import * as integrationsSelectors from './../../../../../state/integrations/selectors'
-import * as integrationsActions from './../../../../../state/integrations/actions'
 import SelectField from '../../../forms/SelectField'
 import {RenderLabel} from '../../../utils/labels'
+
+import * as integrationsSelectors from './../../../../../state/integrations/selectors'
+import * as integrationsActions from './../../../../../state/integrations/actions'
 
 const mapStateToProps = (state) => ({
     integrations: integrationsSelectors.getMessagingIntegrations(state)

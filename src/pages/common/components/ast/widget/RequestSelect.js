@@ -5,10 +5,11 @@ import {bindActionCreators} from 'redux'
 import {fromJS} from 'immutable'
 import {Input} from 'reactstrap'
 
-import Select from './Select'
 
 import * as requestActions from '../../../../../state/requests/actions'
 import {getRequests} from '../../../../../state/requests/selectors'
+
+import Select from './Select'
 
 type Props = {
     onChange: Function,

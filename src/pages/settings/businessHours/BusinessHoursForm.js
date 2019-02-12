@@ -1,11 +1,12 @@
 // @flow
 import React from 'react'
-import SelectField from '../../common/forms/SelectField'
 import {Input} from 'reactstrap'
+import type {Map} from 'immutable'
+
+import SelectField from '../../common/forms/SelectField'
 
 import css from './BusinessHours.less'
 
-import type {Map} from 'immutable'
 import {DAYS_OPTIONS} from './constants'
 
 

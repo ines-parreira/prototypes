@@ -2,14 +2,16 @@ import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import _upperFirst from 'lodash/upperFirst'
 
-import StatsView from './StatsView'
+import moment from 'moment/moment'
+
 import * as statsActions from '../../state/stats/actions'
 import {getDisplayName} from '../../state/customers/helpers'
 import {getAgents} from '../../state/agents/selectors'
 import {getTags} from '../../state/tags/selectors'
 import {views as statViewsConfig} from '../../config/stats'
 import {CHANNELS} from '../../config/ticket'
-import moment from 'moment/moment'
+
+import StatsView from './StatsView'
 
 const mapStateToProps = (state, props) => {
     const view = props.params.view || 'overview'
@@ -27,11 +29,11 @@ const mapStateToProps = (state, props) => {
 
     return {
         tags: getTags(state).toJS(),
-        channels: CHANNELS.map(channel => ({
+        channels: CHANNELS.map((channel) => ({
             label: _upperFirst(channel.replace('-', ' ')),
             value: channel,
         })),
-        agents: getAgents(state).map(agent => ({
+        agents: getAgents(state).map((agent) => ({
             label: getDisplayName(agent),
             value: agent.get('id'),
         })).toJS(),

@@ -14,6 +14,7 @@ import {Form, Button} from 'reactstrap'
 
 import {submitCustomer} from '../../../../state/customers/actions'
 import InputField from '../../../common/forms/InputField'
+
 import CustomerChannelFieldArray from './CustomerChannelFieldArray'
 
 const defaultContent = {
@@ -116,8 +117,8 @@ class CustomerForm extends React.Component {
             const formValues = form.get(type) || fromJS([])
             // merging previous channels with new ones
             const addedChannels = formValues
-                .map(v => v.set('type', type))
-                .filter(v => v.get('address', '').length)
+                .map((v) => v.set('type', type))
+                .filter((v) => v.get('address', '').length)
             return previousChannels.toSet().union(addedChannels.toSet()).toList()
         }, initialChannels)
 
@@ -184,7 +185,7 @@ class CustomerForm extends React.Component {
                         help="Give a name to the customer to make it easier to identify"
                         required
                         value={this.state.name}
-                        onChange={name => this._updateField({name})}
+                        onChange={(name) => this._updateField({name})}
                     />
                     <p>
                         <b>Please set below at least one contact information for this customer :</b>
@@ -197,7 +198,7 @@ class CustomerForm extends React.Component {
                         addLabel="Add an email address"
                         meta={{}}
                         fields={this.state.email}
-                        onChange={email => this._updateField({email})}
+                        onChange={(email) => this._updateField({email})}
                     />
                     <CustomerChannelFieldArray
                         name="phone"
@@ -206,7 +207,7 @@ class CustomerForm extends React.Component {
                         addLabel="Add an phone number"
                         meta={{}}
                         fields={this.state.phone}
-                        onChange={phone => this._updateField({phone})}
+                        onChange={(phone) => this._updateField({phone})}
                         errors={this.state.errors.phone}
                     />
                     <CustomerChannelFieldArray
@@ -216,7 +217,7 @@ class CustomerForm extends React.Component {
                         addLabel="Add a Twitter account"
                         meta={{}}
                         fields={this.state.twitter}
-                        onChange={twitter => this._updateField({twitter})}
+                        onChange={(twitter) => this._updateField({twitter})}
                     />
                 </div>
 

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {browserHistory} from 'react-router'
+
 import {onUpdateSuccess, fetchIntegration} from '../integrations/actions'
 import * as types from '../integrations/constants'
 

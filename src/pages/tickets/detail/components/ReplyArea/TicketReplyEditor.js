@@ -1,26 +1,25 @@
 // @flow
-import React, {type Node} from 'react'
-import {fromJS, List, Map} from 'immutable'
-import {connect} from 'react-redux'
 import {ContentState, EditorState} from 'draft-js'
+import {fromJS, List, Map} from 'immutable'
 import _debounce from 'lodash/debounce'
 import _noop from 'lodash/noop'
+import React, {type Node} from 'react'
+import {connect} from 'react-redux'
+
+import {acceptsOnlyImages, canLeaveInternalNote, isRichType} from '../../../../../config/ticket'
 
 import {getOtherAgents} from '../../../../../state/agents/selectors'
+import type {agentsType} from '../../../../../state/agents/types'
 import * as newMessageActions from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {notify} from '../../../../../state/notifications/actions'
 
-import {acceptsOnlyImages, canLeaveInternalNote, isRichType} from '../../../../../config/ticket'
+import type {attachmentType} from '../../../../../types'
 import {humanizeString} from '../../../../../utils'
 import {ATTACHMENT_SIZE_ERROR, getMaxAttachmentSize} from '../../../../../utils/file'
-
 import RichField from '../../../../common/forms/RichField'
 
 import css from './TicketReplyEditor.less'
-
-import type {attachmentType} from '../../../../../types'
-import type {agentsType} from '../../../../../state/agents/types'
 
 
 // Those are the source types which cannot send more than one attachment at a time

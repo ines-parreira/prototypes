@@ -1,5 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
+
 import Expression from '../Expression'
 
 describe('Expression component', () => {

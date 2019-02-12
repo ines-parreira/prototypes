@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
 import * as CurrentUserActions from '../../../state/currentUser/actions'
+
 import ChangePasswordView from './components/ChangePasswordView'
 
 

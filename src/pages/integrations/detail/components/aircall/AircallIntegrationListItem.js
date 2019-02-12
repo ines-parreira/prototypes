@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+
 import ToggleButton from '../../../../common/components/ToggleButton'
 
 export default class AircallIntegrationListItem extends React.Component {

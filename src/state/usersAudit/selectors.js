@@ -1,6 +1,7 @@
 // @flow
 import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
+
 import type {stateType} from '../types'
 import {humanizeString} from '../../utils'
 import {getAgents} from '../agents/selectors'

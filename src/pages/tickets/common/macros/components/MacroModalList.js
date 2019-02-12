@@ -4,14 +4,15 @@ import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 import {Input} from 'reactstrap'
 
-import MacroList from './MacroList'
 import shortcutManager from '../../../../../services/shortcutManager'
 import {moveIndex} from '../../../../common/utils/keyboard'
 import {isMacroDisabled} from '../utils'
 
+import type {fetchMacrosType} from '../types'
+
 import css from './MacroModalList.less'
 
-import type {fetchMacrosType} from '../types'
+import MacroList from './MacroList'
 
 type Props = {
     macros: Object,

@@ -7,14 +7,15 @@ import {connect} from 'react-redux'
 import _ from 'lodash'
 
 import {BASIC_OPERATORS, UNARY_OPERATORS} from '../../../../../config'
+import {findProperty, fieldPath} from '../../../../../utils'
+import * as viewsSelectors from '../../../../../state/views/selectors'
+
 import Left from './Left'
 import Right from './Right'
 import Operator from './Operator'
 import OperatorLabel from './OperatorLabel'
 import RemoveCallExpression from './RemoveCallExpression'
-import {findProperty, fieldPath} from '../../../../../utils'
 
-import * as viewsSelectors from '../../../../../state/views/selectors'
 
 const resolveObjectPath = (node) => {
     switch (node.type) {

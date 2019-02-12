@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import _isObject from 'lodash/isObject'
 import _isFunction from 'lodash/isFunction'
 import {fromJS} from 'immutable'
+
 import {prepareWidgetToDisplay, guessFieldValueFromRawData} from './utils'
 
 import ListInfobarWidget from './widgets/ListInfobarWidget'

@@ -1,8 +1,9 @@
 import React from 'react'
-import YourProfileView from '../components/YourProfileView'
 import {shallow} from 'enzyme'
-import {currentUser} from '../../../../fixtures/users'
 import {fromJS} from 'immutable'
+
+import YourProfileView from '../components/YourProfileView'
+import {currentUser} from '../../../../fixtures/users'
 
 const mockUpdateCurrentUser = jest.fn()
 
@@ -47,7 +48,7 @@ describe('YourProfileView', () => {
             const submitSetting = jest.fn().mockReturnValueOnce(Promise.resolve())
             const preferences = fromJS({data: {foo: 'bar'}})
             const newPreferences = fromJS({hello: 'world'})
-            const expectedPreferences = preferences.update('data', data => data.mergeDeep(newPreferences)).toJS()
+            const expectedPreferences = preferences.update('data', (data) => data.mergeDeep(newPreferences)).toJS()
 
             const component = shallow(
                 <YourProfileView

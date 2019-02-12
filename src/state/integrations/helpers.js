@@ -1,9 +1,10 @@
 // @flow
 import {fromJS} from 'immutable'
-import {INTEGRATION_TYPE_DESCRIPTIONS} from '../../config'
 import _find from 'lodash/find'
 
 import type {Map} from 'immutable'
+
+import {INTEGRATION_TYPE_DESCRIPTIONS} from '../../config'
 type integrationsType = Array<Map<*,*>>
 
 /**
@@ -39,7 +40,7 @@ export const getIntegrationsList = (integrations: integrationsType = []): Map<*,
 
         if (typeDescription.subTypes) {
             // make sum of all count of sub types
-            typeDescription.subTypes.forEach(type => {
+            typeDescription.subTypes.forEach((type) => {
                 if (counts[type]) {
                     count += counts[type]
                 }
@@ -56,7 +57,7 @@ export const getIntegrationsList = (integrations: integrationsType = []): Map<*,
 }
 
 export const getIntegrationsByTypes = (integrations: integrationsType = [], types: Array<string> = []): integrationsType => (
-    integrations.filter(inte => types.includes(inte.get('type', '')))
+    integrations.filter((inte) => types.includes(inte.get('type', '')))
 )
 
 export const getIntegrationConfig = (type: string): {image?: string} => {

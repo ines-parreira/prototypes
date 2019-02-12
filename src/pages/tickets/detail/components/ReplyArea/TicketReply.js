@@ -1,19 +1,18 @@
 // @flow
+import classNames from 'classnames'
+import type {List, Map} from 'immutable'
 import React from 'react'
 import {connect} from 'react-redux'
-import classNames from 'classnames'
 
 import * as newMessageActions from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {getActionTemplate} from '../../../../../utils'
 
 import TicketAttachments from './TicketAttachments'
-import TicketReplyAction from './TicketReplyAction'
-import TicketReplyEditor, {TEXT_OR_ATTACHMENT_SOURCE_TYPES} from './TicketReplyEditor'
 
 import css from './TicketReply.less'
-
-import type {List, Map} from 'immutable'
+import TicketReplyAction from './TicketReplyAction'
+import TicketReplyEditor, {TEXT_OR_ATTACHMENT_SOURCE_TYPES} from './TicketReplyEditor'
 
 type Props = {
     actions: Object,

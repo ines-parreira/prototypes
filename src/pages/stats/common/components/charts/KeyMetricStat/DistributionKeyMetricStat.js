@@ -2,6 +2,7 @@
 import React, {Component} from 'react'
 import classnames from 'classnames'
 import _rangeRight from 'lodash/rangeRight'
+
 import DistributionVariantStat from '../DistributionVariantStat'
 
 import css from './DistributionKeyMetricStat.less'

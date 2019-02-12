@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
 import {shallow} from 'enzyme'
+
 import Container from '../Container'
 import {message} from '../../../../../../models/ticketElement/tests/mocks'
 import css from '../Container.less'

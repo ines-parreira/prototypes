@@ -4,8 +4,6 @@ import {connect} from 'react-redux'
 import {Col, Container, Row} from 'reactstrap'
 
 import {DatetimeLabel} from '../../../../../common/utils/labels'
-import HTTPItem from './HTTPIntegrationEventItem'
-import HTTPParams from './HTTPIntegrationEventParams'
 import HTTPStatusLabel from '../../../../../common/components/HTTPStatusLabel'
 import InputField from '../../../../../common/forms/InputField'
 import Loader from '../../../../../common/components/Loader/Loader'
@@ -13,6 +11,9 @@ import Loader from '../../../../../common/components/Loader/Loader'
 import {countLines} from '../../../../../../utils/string'
 import {fetchHTTPIntegrationEvent} from '../../../../../../state/HTTPIntegrationEvents/actions'
 import {getHTTPIntegrationEvent} from '../../../../../../state/HTTPIntegrationEvents/selectors'
+
+import HTTPParams from './HTTPIntegrationEventParams'
+import HTTPItem from './HTTPIntegrationEventItem'
 
 import css from './HTTPIntegrationEvent.less'
 

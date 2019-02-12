@@ -5,8 +5,9 @@ import moment from 'moment'
 import {Link, browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 
-import Loader from '../../common/components/Loader'
 import {Button, Card, CardBody, CardGroup, Col, Progress, Row, UncontrolledTooltip} from 'reactstrap'
+
+import Loader from '../../common/components/Loader'
 import {fetchCurrentUsage} from '../../../state/billing/actions'
 import {openChat} from '../../../utils'
 import * as integrationSelectors from '../../../state/integrations/selectors'

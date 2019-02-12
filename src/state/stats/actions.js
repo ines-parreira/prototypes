@@ -1,9 +1,10 @@
 // @flow
 import axios from 'axios'
-import * as constants from './constants'
 
 import type {dispatchType, actionType} from '../types'
 import {saveFileAsDownloaded} from '../../utils/file'
+
+import * as constants from './constants'
 
 export function setMeta(meta: {} = {}): actionType {
     return {
@@ -38,13 +39,13 @@ export function fetchStat(name: string, meta: {} = {}, filters: {} = {}, label: 
 
         return axios.post(`/api/stats/${name}/`, params, config)
             .then((json = {}) => json.data)
-            .then(resp => {
+            .then((resp) => {
                 dispatch({
                     type: constants.FETCH_STATS_SUCCESS,
                     name: label || name,
                     resp
                 })
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: constants.FETCH_STATS_ERROR,
                     error,
@@ -71,7 +72,7 @@ export function downloadStatistic(name: string, meta: {} = {}, filters: {} = {})
         }
         const config = {timeout: 60000 * 3}
         return axios.post(`/api/stats/${name}/download`, params, config)
-            .then(resp => {
+            .then((resp) => {
                 const reFilename =/filename[^;=\n]*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/
                 const contentDisposition = resp.headers['content-disposition'] || ''
                 const matches = contentDisposition.match(reFilename)
@@ -86,7 +87,7 @@ export function downloadStatistic(name: string, meta: {} = {}, filters: {} = {})
                 }
             })
 
-            .catch(error => {
+            .catch((error) => {
                 return dispatch({
                     type: constants.FETCH_STATS_ERROR,
                     error,

@@ -4,12 +4,13 @@ import {connect} from 'react-redux'
 import {withRouter, browserHistory} from 'react-router'
 import {Container} from 'reactstrap'
 
-import BillingUsage from './BillingUsage'
-import BillingPaymentMethod from './BillingPaymentMethod'
-import BillingInvoices from './BillingInvoices'
 import {notify} from '../../../state/notifications/actions'
 import PageHeader from '../../common/components/PageHeader'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
+
+import BillingUsage from './BillingUsage'
+import BillingPaymentMethod from './BillingPaymentMethod'
+import BillingInvoices from './BillingInvoices'
 
 @withRouter
 export class BillingContainer extends Component {

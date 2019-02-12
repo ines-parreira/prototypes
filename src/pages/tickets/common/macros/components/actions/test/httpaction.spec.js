@@ -1,7 +1,8 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import HttpAction from '../HttpAction'
 import {fromJS} from 'immutable'
+
+import HttpAction from '../HttpAction'
 
 describe('HTTP action component', () => {
     let component

@@ -2,9 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 
+import * as schemasSelectors from '../../../../../state/schemas/selectors'
+
 import CallExpression from './CallExpression'
 
-import * as schemasSelectors from '../../../../../state/schemas/selectors'
 
 export class ViewFilters extends React.Component {
     removeCondition = (index) => {

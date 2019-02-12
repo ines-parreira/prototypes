@@ -5,14 +5,16 @@ import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import _debounce from 'lodash/debounce'
 
-import MacroModal from './components/MacroModal'
+import type {Map, List} from 'immutable'
+
 import * as ViewsActions from '../../../../state/views/actions'
 import * as MacroActions from '../../../../state/macro/actions'
 import {getAgents} from '../../../../state/agents/selectors'
 
+import MacroModal from './components/MacroModal'
+
 import {getDefaultSelectedMacroId, getCurrentMacro} from './utils'
 
-import type {Map, List} from 'immutable'
 
 type Props = {
     activeView: Map<*,*>,

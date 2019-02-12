@@ -1,9 +1,10 @@
 import React from 'react'
-import IntegrationSelect from '../IntegrationSelect'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import IntegrationSelect from '../IntegrationSelect'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

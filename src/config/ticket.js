@@ -308,7 +308,7 @@ export const isSystemType = (sourceType) => {
 export function lastNonSystemTypeMessage(messages) {
     messages = toImmutable(messages)
     messages = orderedMessages(messages)
-    const filteredMessages = messages.filter(message => {
+    const filteredMessages = messages.filter((message) => {
         return !isSystemType(message.getIn(['source', 'type'])) && !isForwardedMessage(message)
     })
     return !filteredMessages.isEmpty() && fromJS(getLastMessage(filteredMessages.toJS()))

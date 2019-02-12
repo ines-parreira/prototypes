@@ -136,7 +136,7 @@ export default class Search extends React.Component {
                     type="text"
                     className={css.input}
                     value={this.state.search}
-                    onChange={e => this._handleChange(e.target.value)}
+                    onChange={(e) => this._handleChange(e.target.value)}
                     style={{zIndex: 1}} // override the zIndex 2 of Bootstrap .form-control class
                     {...rest}
                 />

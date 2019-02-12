@@ -1,6 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+
 import SatisfactionSurvey from '../SatisfactionSurvey'
 
 describe('SatisfactionSurvey', () => {

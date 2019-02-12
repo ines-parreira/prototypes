@@ -1,10 +1,12 @@
 // @flow
 import axios from 'axios'
 import _capitalize from 'lodash/capitalize'
-import * as constants from './constants'
+
 import {notify} from '../notifications/actions'
 
 import type {dispatchType} from '../types'
+
+import * as constants from './constants'
 
 type settingType = {
     id: string,

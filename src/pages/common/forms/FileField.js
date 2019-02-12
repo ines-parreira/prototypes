@@ -5,10 +5,11 @@ import {connect} from 'react-redux'
 import {Button, Input} from 'reactstrap'
 import _isArray from 'lodash/isArray'
 
-import {notify} from './../../../state/notifications/actions'
 
 import {uploadFiles} from '../../../utils'
 import {ATTACHMENT_SIZE_ERROR} from '../../../utils/file'
+
+import {notify} from './../../../state/notifications/actions'
 
 import InputField from './InputField'
 
@@ -92,7 +93,7 @@ export class FileField extends InputField<Props, State> {
             }
 
             if (files.length > 1) {
-                result = files.map(file => file.url)
+                result = files.map((file) => file.url)
             }
 
             this.props.onChange(result)

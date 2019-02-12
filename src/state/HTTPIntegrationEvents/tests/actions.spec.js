@@ -1,5 +1,6 @@
 import MockAdapter from 'axios-mock-adapter'
 import axios from 'axios'
+
 import {initialState} from '../reducers'
 import {fetchHTTPIntegrationEvent, fetchHTTPIntegrationEvents} from '../actions'
 import {mockStore} from '../../../utils/testing'

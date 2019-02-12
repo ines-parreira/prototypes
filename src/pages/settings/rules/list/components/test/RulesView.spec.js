@@ -1,6 +1,7 @@
 import React from 'react'
-import RulesView from '../RulesView'
 import {shallow} from 'enzyme'
+
+import RulesView from '../RulesView'
 
 
 const commonProps = {

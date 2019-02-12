@@ -2,6 +2,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+
 import {TicketBody} from '../TicketBody'
 import {message} from '../../../../../models/ticketElement/tests/mocks'
 import type {TicketMessage} from '../../../../../models/ticketElement'

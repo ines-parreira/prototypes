@@ -1,5 +1,6 @@
 import _some from 'lodash/some'
 import _get from 'lodash/get'
+
 import {stripErrorMessage, errorToChildren} from '../../utils'
 import {notify} from '../../state/notifications/actions'
 
@@ -12,7 +13,7 @@ const IGNORED_PREFIXS = [
     'SUBMIT_ACTIVITY_ERROR',
 ]
 
-const serverErrorHandler = store => next => action => {
+const serverErrorHandler = (store) => (next) => (action) => {
     const status = _get(action, 'error.response.status', '')
     const error = _get(action, 'error.response.data.error', '')
 

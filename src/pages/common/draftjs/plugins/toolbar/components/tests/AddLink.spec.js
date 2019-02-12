@@ -1,9 +1,10 @@
 //@flow
 import * as React from 'react'
-import AddLink from '../AddLink'
 import {shallow} from 'enzyme'
 import {EditorState} from 'draft-js'
 import _noop from 'lodash/noop'
+
+import AddLink from '../AddLink'
 
 describe('<AddLink />', () => {
     const defaultProps = {

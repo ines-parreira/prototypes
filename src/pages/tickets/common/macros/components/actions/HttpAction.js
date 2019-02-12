@@ -37,7 +37,7 @@ export default class HttpAction extends React.Component {
             <JsonField
                 name="json"
                 value={action.getIn(['arguments', 'json'])}
-                onChange={value => this._setArgument('json', value)}
+                onChange={(value) => this._setArgument('json', value)}
             />
         )
 
@@ -48,7 +48,7 @@ export default class HttpAction extends React.Component {
                 <ParametersEditor
                     name="body"
                     list={action.getIn(['arguments', 'form'], fromJS([]))}
-                    updateDict={d => this._setArgument('form', d)}
+                    updateDict={(d) => this._setArgument('form', d)}
                 />
             )
         }
@@ -98,7 +98,7 @@ export default class HttpAction extends React.Component {
                             name="method"
                             label="Method"
                             value={action.getIn(['arguments', 'method'])}
-                            onChange={value => this._setArgument('method', value)}
+                            onChange={(value) => this._setArgument('method', value)}
                             required
                             form="macro_form"
                         >
@@ -122,7 +122,7 @@ export default class HttpAction extends React.Component {
                             label="URL"
                             error={validateWebhookURL(action.getIn(['arguments', 'url']))}
                             value={action.getIn(['arguments', 'url'])}
-                            onChange={value => this._setArgument('url', value)}
+                            onChange={(value) => this._setArgument('url', value)}
                             help="Example: https://company.com/api"
                             required
                             form="macro_form"
@@ -135,7 +135,7 @@ export default class HttpAction extends React.Component {
                     <ParametersEditor
                         name="params"
                         list={action.getIn(['arguments', 'params'])}
-                        updateDict={d => this._setArgument('params', d)}
+                        updateDict={(d) => this._setArgument('params', d)}
                     />
                 </FormGroup>
                 <FormGroup>
@@ -143,7 +143,7 @@ export default class HttpAction extends React.Component {
                     <ParametersEditor
                         name="headers"
                         list={action.getIn(['arguments', 'headers'])}
-                        updateDict={d => this._setArgument('headers', d)}
+                        updateDict={(d) => this._setArgument('headers', d)}
                     />
                 </FormGroup>
                 {this._renderBody(action)}

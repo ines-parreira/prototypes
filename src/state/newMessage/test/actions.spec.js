@@ -152,7 +152,7 @@ describe('actions', () => {
                 // delete last message from agent
                 // and move `To` addresses in `Cc` and remove `To` addresses
                 const _emailTicket = emailTicket.deleteIn(['messages', 1])
-                    .updateIn(['messages', 0, 'source'], source => {
+                    .updateIn(['messages', 0, 'source'], (source) => {
                         return source.set('cc', source.get('to'))
                             .set('to', fromJS([]))
                     })

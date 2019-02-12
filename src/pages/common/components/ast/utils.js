@@ -124,7 +124,7 @@ export const updateCodeAst = (schemas, ast, path, value, operation) => {
                 body: [value],
             }))
         } else {
-            newAst = ast.updateIn(path.toJS(), list => {
+            newAst = ast.updateIn(path.toJS(), (list) => {
                 // add action at the beginning of the body (more readable for users)
                 if (value.type === 'ExpressionStatement') {
                     return list.unshift(value)
@@ -138,7 +138,7 @@ export const updateCodeAst = (schemas, ast, path, value, operation) => {
     if (operation === 'DELETE') {
         const lastIndex = path.last()
         const pathNew = path.pop()
-        newAst = ast.updateIn(pathNew.toJS(), list => list.delete(lastIndex))
+        newAst = ast.updateIn(pathNew.toJS(), (list) => list.delete(lastIndex))
     }
 
     // Add logical AND operation in TEST block of IFSTATEMENT.

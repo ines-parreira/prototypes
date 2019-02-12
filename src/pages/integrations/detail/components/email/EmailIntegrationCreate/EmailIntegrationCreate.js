@@ -13,13 +13,14 @@ import {
     BreadcrumbItem,
 } from 'reactstrap'
 
-import css from './EmailIntegrationCreate.less'
 import {notify} from '../../../../../../state/notifications/actions'
 
 import InputField from '../../../../../common/forms/InputField'
 
-import googleLogo from './../../../../../../../../public/img/google-icon.svg'
 import PageHeader from '../../../../../common/components/PageHeader'
+
+import googleLogo from './../../../../../../../../public/img/google-icon.svg'
+import css from './EmailIntegrationCreate.less'
 
 
 class EmailIntegrationCreate extends React.Component {
@@ -194,7 +195,7 @@ EmailIntegrationCreate.propTypes = {
     notify: PropTypes.func.isRequired,
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     domain: state.currentAccount.get('domain'),
 })
 

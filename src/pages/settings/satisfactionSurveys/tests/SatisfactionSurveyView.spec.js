@@ -1,9 +1,10 @@
 import React from 'react'
-import SatisfactionSurveyView from '../SatisfactionSurveyView'
 import {mount} from 'enzyme'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import SatisfactionSurveyView from '../SatisfactionSurveyView'
 
 const mockSubmitSetting = jest.fn()
 const mockStore = configureMockStore([thunk])

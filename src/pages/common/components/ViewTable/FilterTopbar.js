@@ -20,7 +20,6 @@ import {
 } from 'reactstrap'
 
 import ConfirmButton from '../ConfirmButton'
-import Filters from './Filters'
 import {getDefaultOperator, slugify, fieldPath} from '../../../../utils'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
@@ -30,6 +29,8 @@ import * as agentSelectors from '../../../../state/agents/selectors'
 import * as schemasSelectors from '../../../../state/schemas/selectors'
 
 import * as viewsConfig from '../../../../config/views'
+
+import Filters from './Filters'
 
 import css from './FilterTopbar.less'
 
@@ -181,8 +182,8 @@ class FilterTopbar extends React.Component {
         }
 
         const filterableFields = config.get('fields')
-            .filter(field => field.get('filter') && field.getIn(['filter', 'show'], true))
-            .sortBy(field => field.get('title'))
+            .filter((field) => field.get('filter') && field.getIn(['filter', 'show'], true))
+            .sortBy((field) => field.get('title'))
 
         return (
             <Card className={css.component}>

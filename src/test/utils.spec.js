@@ -218,7 +218,7 @@ describe('global utils', () => {
                 'support@ac-meee78.gorgias.io',
             ]
 
-            gorgiasSupportAddresses.forEach(address => {
+            gorgiasSupportAddresses.forEach((address) => {
                 expect(utils.isGorgiasSupportAddress(address)).toEqual(true)
             })
         })
@@ -230,7 +230,7 @@ describe('global utils', () => {
                 'SuppOrT@acme-gorgias.io',
             ]
 
-            notGorgiasAddresses.forEach(address => {
+            notGorgiasAddresses.forEach((address) => {
                 expect(utils.isGorgiasSupportAddress(address)).toEqual(false)
             })
         })
@@ -514,7 +514,7 @@ describe('global utils', () => {
 
     describe('getLanguageDisplayName', () => {
         it('should return the display name correctly from the locale name', () => {
-            TICKET_LANGUAGES.forEach(lang => {
+            TICKET_LANGUAGES.forEach((lang) => {
                 expect(utils.getLanguageDisplayName(lang.localeName)).toEqual(lang.displayName)
             })
         })

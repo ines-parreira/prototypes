@@ -1,6 +1,7 @@
-import * as utils from '../utils'
 import moment from 'moment'
 import {fromJS} from 'immutable'
+
+import * as utils from '../utils'
 import {updateFilterOperator, activeViewUrl, rawify} from '../utils'
 
 describe('utils', () => {

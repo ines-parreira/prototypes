@@ -1,8 +1,10 @@
 //@flow
 import React from 'react'
 import {fromJS} from 'immutable'
-import Error from './Error'
+
 import type {TicketMessage} from '../../../../../models/ticketElement/types'
+
+import Error from './Error'
 
 type Props = {
     message: TicketMessage,

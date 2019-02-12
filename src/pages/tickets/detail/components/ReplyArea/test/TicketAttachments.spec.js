@@ -5,6 +5,7 @@ import _noop from 'lodash/noop'
 import {StyleSheetTestUtils} from 'aphrodite'
 
 import {fromJS} from 'immutable'
+
 import TicketAttachments from '../TicketAttachments'
 import {proxifyURL} from '../../../../../../utils'
 

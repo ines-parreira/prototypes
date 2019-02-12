@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
+
 import {prepareWidgetToDisplay, displayLabel} from '../infobar/utils'
 
 import ListSourceWidget from './widgets/ListSourceWidget'

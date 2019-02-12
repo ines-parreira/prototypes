@@ -5,9 +5,10 @@ import {browserHistory} from 'react-router'
 import {notify} from '../notifications/actions'
 import {isCurrentlyOnTicket, stripErrorMessage} from '../../utils'
 
+import type {dispatchType, getStateType, thunkActionType} from '../types'
+
 import * as constants from './constants'
 
-import type {dispatchType, getStateType, thunkActionType} from '../types'
 type responseType = {
     status: string,
     user_id: string,
@@ -22,12 +23,12 @@ export const search = (query: string): thunkActionType => ((dispatch: dispatchTy
 
     return axios.post('/api/search/', {type: 'user_profile', query})
         .then((json = {}) => json.data)
-        .then(resp => {
+        .then((resp) => {
             return dispatch({
                 type: constants.SEARCH_CUSTOMERS_SUCCESS,
                 resp,
             })
-        }, error => {
+        }, (error) => {
             return dispatch({
                 type: constants.SEARCH_CUSTOMERS_ERROR,
                 error,
@@ -43,12 +44,12 @@ export const similarCustomer = (customerId: string): thunkActionType => ((dispat
 
     return axios.get(`/api/customers/${customerId}/similar/`)
         .then((json = {}) => json.data)
-        .then(resp => {
+        .then((resp) => {
             return dispatch({
                 type: constants.SEARCH_SIMILAR_CUSTOMER_SUCCESS,
                 customer: resp,
             })
-        }, error => {
+        }, (error) => {
             // TODO(customers-migration): remove these lines when the migration is done
             if (error && error.response && error.response.status === 404) {
                 if (window.Raven){
@@ -76,12 +77,12 @@ export const fetchPreviewCustomer = (customerId: string): thunkActionType => ((d
 
     return axios.get(`/api/customers/${customerId}/`)
         .then((json = {}) => json.data)
-        .then(resp => {
+        .then((resp) => {
             return dispatch({
                 type: constants.FETCH_PREVIEW_CUSTOMER_SUCCESS,
                 resp
             })
-        }, error => {
+        }, (error) => {
             return dispatch({
                 type: constants.FETCH_PREVIEW_CUSTOMER_ERROR,
                 error,
@@ -122,7 +123,7 @@ export const executeAction = (actionName: string, integrationId: string, custome
         .then((json = {}) => json.data)
         .then(() => {
             return Promise.resolve()
-        }, error => {
+        }, (error) => {
             return dispatch({
                 type: constants.EXECUTE_ACTION_ERROR,
                 data,

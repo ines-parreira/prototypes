@@ -9,16 +9,17 @@ import Loader from '../Loader'
 import BlankState from '../BlankState'
 import Pagination from '../Pagination'
 
-import Row from './Table/Row'
-import HeaderCell from './Table/HeaderCell'
 import shortcutManager from '../../../../services/shortcutManager'
 import {moveIndex} from '../../../common/utils/keyboard'
 
 import * as viewsActions from '../../../../state/views/actions'
 
+import type {viewType} from '../../../../state/views/types'
+
 import css from './Table.less'
 
-import type {viewType} from '../../../../state/views/types'
+import HeaderCell from './Table/HeaderCell'
+import Row from './Table/Row'
 
 
 type directionType = 'next' | 'previous'

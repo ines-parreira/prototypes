@@ -1,9 +1,11 @@
 // @flow
 import {fromJS} from 'immutable'
-import * as constants from './constants.js'
 import _isEqual from 'lodash/isEqual'
 import type {Map} from 'immutable'
+
 import {actionType} from '../types'
+
+import * as constants from './constants.js'
 import * as agentsConstants from './constants'
 
 export const initialState = fromJS({
@@ -21,7 +23,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
         }
 
         case agentsConstants.CREATE_AGENT_SUCCESS: {
-            return state.update('all', agents => agents.push(action.resp))
+            return state.update('all', (agents) => agents.push(action.resp))
         }
 
         case agentsConstants.FETCH_USER_LIST_SUCCESS: {
@@ -37,7 +39,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
         case agentsConstants.UPDATE_AGENT_SUCCESS: {
             const agent = action.resp
 
-            const existingAgentIndex = state.get('all').findIndex(user => user.get('id') === agent.get('id'))
+            const existingAgentIndex = state.get('all').findIndex((user) => user.get('id') === agent.get('id'))
 
             if (!~existingAgentIndex) {
                 return state
@@ -47,7 +49,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
         }
 
         case agentsConstants.DELETE_AGENT_SUCCESS: {
-            return state.update('all', agents => agents.filter(user => String(user.get('id')) !== String(action.id)))
+            return state.update('all', (agents) => agents.filter((user) => String(user.get('id')) !== String(action.id)))
         }
 
         case agentsConstants.SET_AGENTS_LOCATIONS: {

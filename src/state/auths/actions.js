@@ -1,7 +1,9 @@
 // @flow
 import axios from 'axios'
-import * as constants from './constants'
+
 import type {dispatchType} from '../types'
+
+import * as constants from './constants'
 
 
 export const fetchCurrentAuths = () => (dispatch: dispatchType): Promise<dispatchType> => {

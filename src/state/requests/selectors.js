@@ -3,6 +3,7 @@ import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
 
 import type {Map} from 'immutable'
+
 import type {stateType} from '../types'
 import {getMessages} from '../ticket/selectors'
 

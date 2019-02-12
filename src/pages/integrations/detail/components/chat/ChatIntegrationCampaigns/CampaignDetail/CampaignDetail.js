@@ -15,23 +15,24 @@ import {
 import InputField from '../../../../../../common/forms/InputField'
 import SelectField from '../../../../../../common/forms/SelectField'
 
-import * as agentSelectors from './../../../../../../../state/agents/selectors'
-import * as integrationsSelectors from './../../../../../../../state/integrations/selectors'
-import * as campaignActions from './../../../../../../../state/campaigns/actions'
-import {notify} from './../../../../../../../state/notifications/actions'
 
-import css from './CampaignDetail.less'
 import RichField from '../../../../../../common/forms/RichField'
 import ConfirmButton from '../../../../../../common/components/ConfirmButton'
 import {AgentLabel} from '../../../../../../common/utils/labels'
 
-import CampaignPreview from './../CampaignPreview/CampaignPreview'
 import {sanitizeHtmlDefault} from '../../../../../../../utils/html'
 import {convertToHTML} from '../../../../../../../utils/editor'
 
 import {CAMPAIGNS_TRIGGER_KEYS, GRAVATAR_URL_TEMPLATE} from '../../../../../../../config/integrations/chat'
 import PageHeader from '../../../../../../common/components/PageHeader'
 import RealtimeMessagingIntegrationNavigation from '../../../../../common/RealtimeMessagingIntegrationNavigation'
+
+import CampaignPreview from './../CampaignPreview/CampaignPreview'
+import css from './CampaignDetail.less'
+import {notify} from './../../../../../../../state/notifications/actions'
+import * as campaignActions from './../../../../../../../state/campaigns/actions'
+import * as integrationsSelectors from './../../../../../../../state/integrations/selectors'
+import * as agentSelectors from './../../../../../../../state/agents/selectors'
 
 /**
  * Generate and return a default empty trigger associated with a trigger configuration.

@@ -6,6 +6,8 @@ import {Link} from 'react-router'
 import {Button} from 'reactstrap'
 import decorateComponentWithProps from 'decorate-component-with-props'
 
+import type {Map, List} from 'immutable'
+
 import MacroContainer from '../common/macros/MacroContainer'
 import {compactInteger} from '../../../utils'
 import {isCreationUrl, isSearchUrl} from '../../common/utils/url'
@@ -15,11 +17,11 @@ import * as tagsActions from '../../../state/tags/actions'
 import * as ticketsSelectors from '../../../state/tickets/selectors'
 import * as viewsSelectors from '../../../state/views/selectors'
 
-import TicketListActions from './components/TicketListActions'
 import ViewTable from '../../common/components/ViewTable/ViewTable'
 
-import type {Map, List} from 'immutable'
 import type {reactRouterLocation, reactRouterRoute} from '../../../types'
+
+import TicketListActions from './components/TicketListActions'
 
 import css from './TicketListContainer.less'
 

@@ -1,6 +1,7 @@
 //@flow
 import * as React from 'react'
 import {fromJS, List} from 'immutable'
+
 import {suggestionsFilter} from '../../draftjs/plugins/mentions'
 
 type Suggestions = List<*>

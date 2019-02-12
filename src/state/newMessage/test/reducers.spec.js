@@ -1,6 +1,7 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 import {EditorState, ContentState} from 'draft-js'
+
 import addMention from '../../../pages/common/draftjs/plugins/mentions/modifiers/addMention'
 import reducer, {makeNewMessage, initialState} from '../reducers'
 import * as types from '../constants'

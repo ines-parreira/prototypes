@@ -6,14 +6,16 @@ import _isArray from 'lodash/isArray'
 import _isString from 'lodash/isString'
 import _isInteger from 'lodash/isInteger'
 
-import {OBJECT_DEFINITIONS} from './constants'
+import type {Map, List} from 'immutable'
+
 import {getAST, getFirstExpressionOfAST} from '../../utils'
 import {collectionOperators, deprecatedOperators, timedeltaOperators} from '../../config/rules'
 
-import type {Map, List} from 'immutable'
 import type {schemasType} from '../../types'
 import {UNARY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
 import {isTimedelta} from '../../utils/ast'
+
+import {OBJECT_DEFINITIONS} from './constants'
 type argPathType = Array<?string>
 
 /**
@@ -299,7 +301,7 @@ function resolveSecondArg(callExpression: Map<*,*>, firstArgSchema: schemasType,
     switch (args.get('type')) {
         case 'ArrayExpression':
             curDefault = '[]'
-            curValue = args.get('elements').map(elem => elem.get('value')).toJS()
+            curValue = args.get('elements').map((elem) => elem.get('value')).toJS()
             break
         case 'Literal':
             curDefault = '\'\''
@@ -318,7 +320,7 @@ function resolveSecondArg(callExpression: Map<*,*>, firstArgSchema: schemasType,
 
         // current value is an array so we just create the raw value
         if (_isArray(curValue)) {
-            return `[${args.get('elements').map(elem => elem.get('raw')).toJS()}]`
+            return `[${args.get('elements').map((elem) => elem.get('raw')).toJS()}]`
         }
 
         // argument is not an array but new callee needs one

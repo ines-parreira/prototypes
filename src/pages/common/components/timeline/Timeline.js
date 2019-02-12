@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
+
 import TimelineTicket from './TimelineTicket'
 
 import css from './Timeline.less'

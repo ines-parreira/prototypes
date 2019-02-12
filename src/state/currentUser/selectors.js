@@ -1,12 +1,14 @@
 // @flow
 import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
+
 import {getViews} from '../views/selectors'
+
+import type {stateType} from '../types'
 
 import {DEFAULT_PREFERENCES} from './../../config'
 
 // types
-import type {stateType} from '../types'
 
 export const getCurrentUserState = (state: stateType) => state.currentUser || fromJS({})
 
@@ -45,12 +47,12 @@ export const getSettingsByType = (type: string) => createSelector(
 
 export const getApiKey = createSelector(
     [getCurrentUserState],
-    state => state.getIn(['auths', 0, 'data', 'token']) || ''
+    (state) => state.getIn(['auths', 0, 'data', 'token']) || ''
 )
 
 export const getPreferences = createSelector(
     [getSettings],
-    state => {
+    (state) => {
         return fromJS({
             type: 'preferences',
             data: DEFAULT_PREFERENCES
@@ -61,15 +63,15 @@ export const getPreferences = createSelector(
 
 export const isAvailableForChat = createSelector(
     [getPreferences],
-    state => state.getIn(['data', 'available_for_chat'], true)
+    (state) => state.getIn(['data', 'available_for_chat'], true)
 )
 
 export const isHidingTips = createSelector(
     [getPreferences],
-    state => state.getIn(['data', 'hide_tips']) || false
+    (state) => state.getIn(['data', 'hide_tips']) || false
 )
 
 export const isActive = createSelector(
     [getCurrentUserState],
-    state => state.get('is_active') !== false
+    (state) => state.get('is_active') !== false
 )

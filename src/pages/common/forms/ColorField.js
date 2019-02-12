@@ -1,7 +1,9 @@
 import React from 'react'
-import InputField from './InputField'
 
 import ColorPicker from '../components/ColorPicker'
+
+import InputField from './InputField'
+
 
 export default class ColorField extends InputField {
     _getField = () => {

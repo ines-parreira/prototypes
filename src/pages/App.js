@@ -1,40 +1,34 @@
 // @flow
-import React from 'react'
-import {connect} from 'react-redux'
-import DocumentTitle from 'react-document-title'
-import {Container, Button} from 'reactstrap'
 import classnames from 'classnames'
+import type {Node} from 'react'
+import React from 'react'
+import DocumentTitle from 'react-document-title'
+import {connect} from 'react-redux'
+import {Button, Container} from 'reactstrap'
 import NotificationsSystem from 'reapop'
 
-import * as utils from '../utils'
-
-import * as layoutActions from '../state/layout/actions'
-import * as viewsActions from '../state/views/actions'
+import '../../css/main.less'
+import pollingManager from '../services/pollingManager'
+import shortcutManager from '../services/shortcutManager'
+import socketManager from '../services/socketManager'
+import userActivityManager from '../services/userActivityManager'
 import * as currentAccountActions from '../state/currentAccount/actions'
+import * as layoutActions from '../state/layout/actions'
+import * as layoutSelectors from '../state/layout/selectors'
+import type {currentAccountType, currentUserType} from '../state/types'
+import * as viewsActions from '../state/views/actions'
+import * as viewsSelectors from '../state/views/selectors'
+import * as segmentTracker from '../store/middlewares/segmentTracker'
+import type {reactRouterLocation} from '../types'
+import * as utils from '../utils'
 import {injectInterceptor} from '../utils/axios'
 
-import * as layoutSelectors from '../state/layout/selectors'
-import * as viewsSelectors from '../state/views/selectors'
-
-import * as segmentTracker from '../store/middlewares/segmentTracker'
-import KeyboardHelp from './common/components/KeyboardHelp'
-import socketManager from '../services/socketManager'
-
-import notificationsTheme from './common/components/Notifications'
-import shortcutManager from '../services/shortcutManager'
-import BannerNotifications from './common/components/BannerNotifications/'
-import ModalNotification from './common/components/ModalNotification'
-import FullPage from './common/components/FullPage'
-import userActivityManager from '../services/userActivityManager'
-import pollingManager from '../services/pollingManager'
-
-import '../../css/main.less'
 import css from './App.less'
-
-
-import type {reactRouterLocation} from '../types'
-import type {Node} from 'react'
-import type {currentUserType, currentAccountType} from '../state/types'
+import BannerNotifications from './common/components/BannerNotifications/'
+import FullPage from './common/components/FullPage'
+import KeyboardHelp from './common/components/KeyboardHelp'
+import ModalNotification from './common/components/ModalNotification'
+import notificationsTheme from './common/components/Notifications'
 
 type Props = {
     // current logged in user
@@ -113,8 +107,8 @@ class App extends React.Component<Props> {
 
     render() {
         const {notifications, openedPanel, currentRoute} = this.props
-        const bannerNotifications = notifications.filter(notif => notif.style === 'banner')
-        const modalNotifications = notifications.filter(notif => notif.style === 'modal')
+        const bannerNotifications = notifications.filter((notif) => notif.style === 'banner')
+        const modalNotifications = notifications.filter((notif) => notif.style === 'modal')
 
         const hasOpenedPanel = !!openedPanel
 
@@ -190,7 +184,7 @@ class App extends React.Component<Props> {
 
                     <NotificationsSystem
                         theme={notificationsTheme}
-                        filter={n => n.style === 'alert'}
+                        filter={(n) => n.style === 'alert'}
                     />
                 </div>
             </DocumentTitle>

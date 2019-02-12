@@ -21,10 +21,11 @@ import {
     getUserAuditPagination,
     getUserAuditUserIdOptions,
 } from '../../../../state/usersAudit/selectors'
-import UserAuditRow from './UserAuditRow'
-import {DATETIME_LABEL_FORMAT} from './constants'
 import {formatDatetime} from '../../../../utils'
 import {getMoment} from '../../../../utils/date'
+
+import UserAuditRow from './UserAuditRow'
+import {DATETIME_LABEL_FORMAT} from './constants'
 
 type Props = {
     timezone: string,

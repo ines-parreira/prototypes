@@ -1,6 +1,7 @@
 import React from 'react'
-import RevenueUpgrade from '../RevenueUpgrade'
 import {shallow} from 'enzyme'
+
+import RevenueUpgrade from '../RevenueUpgrade'
 
 
 describe('RevenueUpgrade', () => {

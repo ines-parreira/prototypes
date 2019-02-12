@@ -20,6 +20,8 @@ import {
 import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
 
+import type {List, Map} from 'immutable'
+
 import shortcutManager from '../../../../../services/shortcutManager/index'
 
 import * as viewsActions from '../../../../../state/views/actions'
@@ -27,7 +29,6 @@ import * as viewsSelectors from '../../../../../state/views/selectors'
 
 import {getAgents} from '../../../../../state/agents/selectors'
 
-import type {List, Map} from 'immutable'
 import type {currentUserType} from '../../../../../state/types'
 import type {agentsType} from '../../../../../state/agents/types'
 import type {viewType} from '../../../../../state/views/types'
@@ -251,7 +252,7 @@ class TicketListActions extends React.Component<Props, State> {
             )
         })
 
-        const isInEnum = !!this.state.tags.find(tag => tag.get('name') === tagsSearch)
+        const isInEnum = !!this.state.tags.find((tag) => tag.get('name') === tagsSearch)
 
         if (!isInEnum && tagsSearch) {
             if (!this.state.tags.isEmpty()) {
@@ -383,7 +384,7 @@ class TicketListActions extends React.Component<Props, State> {
                                         placeholder="Search agents..."
                                         autoFocus
                                         value={agentsSearch}
-                                        onChange={e => this.setState({agentsSearch: e.target.value})}
+                                        onChange={(e) => this.setState({agentsSearch: e.target.value})}
                                     />
                                 )
                             }
@@ -470,7 +471,7 @@ class TicketListActions extends React.Component<Props, State> {
                                         placeholder="Search tags..."
                                         autoFocus
                                         value={tagsSearch}
-                                        onChange={e => this._searchTags(e.target.value)}
+                                        onChange={(e) => this._searchTags(e.target.value)}
                                     />
                                 )
                             }

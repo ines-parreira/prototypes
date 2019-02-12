@@ -1,31 +1,33 @@
 // @flow
-import _has from 'lodash/has'
-import _map from 'lodash/map'
-import _upperFirst from 'lodash/upperFirst'
-import _isString from 'lodash/isString'
-import _isNumber from 'lodash/isNumber'
-import _isObject from 'lodash/isObject'
-import _filter from 'lodash/filter'
-import _get from 'lodash/get'
-import _trim from 'lodash/trim'
-import _find from 'lodash/find'
-import _last from 'lodash/last'
-import _ from 'lodash'
-import _flatMapDeep from 'lodash/flatMapDeep'
-import {createSelectorCreator, defaultMemoize} from 'reselect'
+import crypto from 'crypto'
+
 import axios from 'axios'
-import esprima from 'esprima'
-import escodegen from 'escodegen'
-import moment from 'moment-timezone'
 import {EditorState, Modifier} from 'draft-js'
+import escodegen from 'escodegen'
+import esprima from 'esprima'
+import htmlparser from 'htmlparser2'
 // $FlowFixMe: will be fixed with immutable 4.x
 import Immutable, {fromJS, type Iterable, type Map} from 'immutable'
+import _ from 'lodash'
+import _filter from 'lodash/filter'
+import _find from 'lodash/find'
+import _flatMapDeep from 'lodash/flatMapDeep'
+import _get from 'lodash/get'
+import _has from 'lodash/has'
+import _isNumber from 'lodash/isNumber'
+import _isObject from 'lodash/isObject'
+import _isString from 'lodash/isString'
+import _last from 'lodash/last'
+import _map from 'lodash/map'
+import _trim from 'lodash/trim'
+import _upperFirst from 'lodash/upperFirst'
 import md5 from 'md5'
-import crypto from 'crypto'
+import moment from 'moment-timezone'
+import {createSelectorCreator, defaultMemoize} from 'reselect'
 import URLSafeBase64 from 'urlsafe-base64'
-import htmlparser from 'htmlparser2'
-import TICKET_LANGUAGES from './config/ticketLanguages'
+
 import {ACTION_TEMPLATES} from './config'
+import TICKET_LANGUAGES from './config/ticketLanguages'
 import {AUTHORIZED_NOTIFICATION_TYPES, type notificationType} from './state/notifications/actions'
 import type {viewsStateType} from './state/views/types'
 import type {actionTemplateType, esprimaParse, reactRouterRoute, schemasType} from './types'
@@ -526,7 +528,7 @@ export const isAgent = (user: userType): boolean => {
     // $FlowFixMe
     if (roles[0] && _isObject(roles[0])) {
         // $FlowFixMe
-        roles = roles.map(role => role.name)
+        roles = roles.map((role) => role.name)
     }
 
     // $FlowFixMe
@@ -553,7 +555,7 @@ export const isAdmin = (user: userType): boolean => {
     // $FlowFixMe
     if (roles[0] && _isObject(roles[0])) {
         // $FlowFixMe
-        roles = roles.map(role => role.name)
+        roles = roles.map((role) => role.name)
     }
 
     // $FlowFixMe
@@ -603,7 +605,7 @@ export const isCurrentlyOnView = (viewId: string = '', viewsState: viewsStateTyp
         '/app/users',
     ]
 
-    let urls = prefix.map(p => `${p}/${viewId}`)
+    let urls = prefix.map((p) => `${p}/${viewId}`)
 
     // if no viewId is specified, check root routes to views (without ids)
     // or if current active view is the asked one
@@ -615,7 +617,7 @@ export const isCurrentlyOnView = (viewId: string = '', viewsState: viewsStateTyp
 
     // keep this syntax, no urls.some(url => currentUrl.includes(url)) since we want the pathname to be initiated on
     // each call of the parent function
-    return urls.some(url => currentUrl.includes(url)) || ['/app', '/app/'].some(url => currentUrl.endsWith(url))
+    return urls.some((url) => currentUrl.includes(url)) || ['/app', '/app/'].some((url) => currentUrl.endsWith(url))
 }
 
 /**
@@ -661,7 +663,7 @@ export function emoji(emojiContainer: string | {}): string | {} {
 }
 
 export function getActionTemplate(actionName: string): actionTemplateType {
-    return ACTION_TEMPLATES.find(template => template.name === actionName) || {}
+    return ACTION_TEMPLATES.find((template) => template.name === actionName) || {}
 }
 
 export const createImmutableSelector = createSelectorCreator(defaultMemoize, Immutable.is)
@@ -910,7 +912,7 @@ export const getLanguageDisplayName = (locale: string): ?string => {
         return null
     }
 
-    const langObj = _find(TICKET_LANGUAGES, lang => {
+    const langObj = _find(TICKET_LANGUAGES, (lang) => {
         return lang.localeName === locale
     })
 

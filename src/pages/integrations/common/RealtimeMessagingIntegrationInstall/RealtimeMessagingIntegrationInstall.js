@@ -18,15 +18,16 @@ import {
     Row
 } from 'reactstrap'
 
-import css from './RealtimeMessagingIntegrationInstall.less'
 import {notify} from '../../../../state/notifications/actions'
+import PageHeader from '../../../common/components/PageHeader'
+import RealtimeMessagingIntegrationNavigation from '../RealtimeMessagingIntegrationNavigation'
+
+import css from './RealtimeMessagingIntegrationInstall.less'
 
 import * as integrationSelectors from './../../../../state/integrations/selectors'
 import * as integrationHelpers from './../../../../state/integrations/helpers'
 
 import {renderChatCodeSnippet, renderFacebookCodeSnippet} from './utils'
-import PageHeader from '../../../common/components/PageHeader'
-import RealtimeMessagingIntegrationNavigation from '../RealtimeMessagingIntegrationNavigation'
 
 
 type Props = {

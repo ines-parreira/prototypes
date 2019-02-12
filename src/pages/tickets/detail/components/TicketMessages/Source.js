@@ -1,13 +1,15 @@
 //@flow
 import React from 'react'
-import css from './Source.less'
-import SourceIcon from '../../../../common/components/SourceIcon'
 import {Popover, PopoverBody} from 'reactstrap'
-import {DatetimeLabel} from '../../../../common/utils/labels'
-import {type Source as SourceType} from '../../../../../models/ticketElement/types'
 import classnames from 'classnames'
 import {isArray as _isArray} from 'lodash'
+
+import SourceIcon from '../../../../common/components/SourceIcon'
+import {DatetimeLabel} from '../../../../common/utils/labels'
+import {type Source as SourceType} from '../../../../../models/ticketElement/types'
 import {getPersonLabelFromSource} from '../../../common/utils'
+
+import css from './Source.less'
 
 type Props = {
     id: string,

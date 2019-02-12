@@ -8,8 +8,9 @@ import {
     Input,
 } from 'reactstrap'
 
-import css from './ColorPicker.less'
 import {DEFAULT_TAG_COLOR} from '../../../config'
+
+import css from './ColorPicker.less'
 
 const colors = [
     '#EB144C', // red

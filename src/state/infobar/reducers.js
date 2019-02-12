@@ -1,10 +1,12 @@
 // @flow
 import {fromJS} from 'immutable'
+import type {Map} from 'immutable'
+
+import type {actionType} from '../types'
+
 import * as constants from './constants'
 import * as utils from './utils'
 
-import type {Map} from 'immutable'
-import type {actionType} from '../types'
 
 export const initialState = fromJS({
     _internal: {
@@ -40,7 +42,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
 
             const actionIndex = state
                 .get('pendingActionsCallbacks')
-                .findIndex(pendingAction => pendingAction.get('id') === actionId)
+                .findIndex((pendingAction) => pendingAction.get('id') === actionId)
 
             if (!~actionIndex) {
                 return state

@@ -10,9 +10,10 @@ import {
 import _get from 'lodash/get'
 import _noop from 'lodash/noop'
 
+import type {Node} from 'react'
+
 import css from './ConfirmButton.less'
 
-import type {Node} from 'react'
 
 type Props = {
     id?: string,

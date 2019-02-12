@@ -21,6 +21,7 @@ import BooleanField from '../../common/forms/BooleanField'
 import {updateOrCreateIntegration} from '../../../state/integrations/actions'
 import {hoursToSeconds} from '../../../utils'
 import PageHeader from '../../common/components/PageHeader'
+
 import RealtimeMessagingIntegrationNavigation from './RealtimeMessagingIntegrationNavigation'
 
 @connect(null, {
@@ -225,7 +226,7 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
                                                     name="emailCaptureOnlineTriggerText"
                                                     label="Email capture text"
                                                     value={emailCaptureOnlineTriggerText}
-                                                    onChange={value => this.setState({emailCaptureOnlineTriggerText: value})}
+                                                    onChange={(value) => this.setState({emailCaptureOnlineTriggerText: value})}
                                                     rows="3"
                                                 />
 
@@ -234,7 +235,7 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
                                                     name="emailCaptureOnlineThanksText"
                                                     label="Thanks for your email message"
                                                     value={emailCaptureOnlineThanksText}
-                                                    onChange={value => this.setState({emailCaptureOnlineThanksText: value})}
+                                                    onChange={(value) => this.setState({emailCaptureOnlineThanksText: value})}
                                                     rows="3"
                                                 />
                                             </div>
@@ -245,7 +246,7 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
                                                     name="emailCaptureOfflineTriggerText"
                                                     label="Email capture text"
                                                     value={emailCaptureOfflineTriggerText}
-                                                    onChange={value => this.setState({emailCaptureOfflineTriggerText: value})}
+                                                    onChange={(value) => this.setState({emailCaptureOfflineTriggerText: value})}
                                                     rows="3"
                                                 />
 
@@ -254,7 +255,7 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
                                                     name="emailCaptureOfflineThanksText"
                                                     label="Thanks for your email message"
                                                     value={emailCaptureOfflineThanksText}
-                                                    onChange={value => this.setState({emailCaptureOfflineThanksText: value})}
+                                                    onChange={(value) => this.setState({emailCaptureOfflineThanksText: value})}
                                                     rows="3"
                                                 />
                                             </div>
@@ -280,7 +281,7 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
                                     type="checkbox"
                                     label="Enable auto-responder when no agent is available for chat"
                                     value={autoResponderEnabled}
-                                    onChange={value => this.setState({autoResponderEnabled: value})}
+                                    onChange={(value) => this.setState({autoResponderEnabled: value})}
                                 />
                             </div>
 
@@ -289,7 +290,7 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
                                 name="autoResponderText"
                                 label="Auto-responder text"
                                 value={autoResponderText}
-                                onChange={value => this.setState({autoResponderText: value})}
+                                onChange={(value) => this.setState({autoResponderText: value})}
                                 rows="3"
                                 required
                             />
@@ -306,7 +307,7 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
                                 help="After a certain period without any new message on a chat ticket, Gorgias will create
                                 a new ticket the next time the customer contacts you over chat."
                                 value={timeBeforeSplit}
-                                onChange={timeBeforeSplit => this.setState({timeBeforeSplit})}
+                                onChange={(timeBeforeSplit) => this.setState({timeBeforeSplit})}
                             >
                                 {
                                     TIMES_BEFORE_SPLIT.map((interval, idx) => (

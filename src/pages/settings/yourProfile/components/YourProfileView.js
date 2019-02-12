@@ -8,14 +8,16 @@ import {
     Container, Form, FormGroup, FormText, Button, Label, Row, Col
 } from 'reactstrap'
 
-import {AVAILABLE_LANGUAGES} from './../../../../config'
+import {Link} from 'react-router'
 
 import BooleanField from '../../../common/forms/BooleanField'
+
 import InputField from '../../../common/forms/InputField'
 import Avatar from '../../../common/components/Avatar'
 import FileField from '../../../common/forms/FileField'
 import PageHeader from '../../../common/components/PageHeader'
-import {Link} from 'react-router'
+
+import {AVAILABLE_LANGUAGES} from './../../../../config'
 
 const defaultContent = {
     name: '',
@@ -80,7 +82,7 @@ class YourProfileView extends React.Component {
 
         this.setState({loadingPreferences: true})
 
-        const newSettings = this.props.preferences.update('data', data => data.mergeDeep(this.state.preferences)).toJS()
+        const newSettings = this.props.preferences.update('data', (data) => data.mergeDeep(this.state.preferences)).toJS()
 
         return this.props.submitSetting(newSettings, true)
             .then(() => {
@@ -113,7 +115,7 @@ class YourProfileView extends React.Component {
                                     placeholder="John Doe"
                                     required
                                     value={this.state.name}
-                                    onChange={name => this.setState({name})}
+                                    onChange={(name) => this.setState({name})}
                                 />
                                 <InputField
                                     type="email"
@@ -122,7 +124,7 @@ class YourProfileView extends React.Component {
                                     placeholder="john.doe@acme.com"
                                     required
                                     value={this.state.email}
-                                    onChange={email => this.setState({email})}
+                                    onChange={(email) => this.setState({email})}
                                 />
                                 <InputField
                                     type="text"
@@ -138,14 +140,14 @@ class YourProfileView extends React.Component {
                                         </span>
                                     }
                                     value={this.state.bio}
-                                    onChange={bio => this.setState({bio})}
+                                    onChange={(bio) => this.setState({bio})}
                                 />
                                 <InputField
                                     type="select"
                                     name="timezone"
                                     label="Timezone"
                                     value={this.state.timezone}
-                                    onChange={timezone => this.setState({timezone})}
+                                    onChange={(timezone) => this.setState({timezone})}
                                 >
                                     {
                                         moment.tz.names().map((name, idx) => (
@@ -164,7 +166,7 @@ class YourProfileView extends React.Component {
                                     label="Language"
                                     help="Changing the language also changes the time format"
                                     value={this.state.language}
-                                    onChange={language => this.setState({language})}
+                                    onChange={(language) => this.setState({language})}
                                 >
                                     {
                                         AVAILABLE_LANGUAGES.map((locale, idx) => (
@@ -241,7 +243,7 @@ class YourProfileView extends React.Component {
                                 type="checkbox"
                                 label="Display macros by default on emails"
                                 value={this.state.preferences.get('show_macros')}
-                                onChange={value => this.setState({preferences: this.state.preferences.set('show_macros', value)})}
+                                onChange={(value) => this.setState({preferences: this.state.preferences.set('show_macros', value)})}
                             />
                         </FormGroup>
 

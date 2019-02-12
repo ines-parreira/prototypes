@@ -3,6 +3,7 @@ import {mount} from 'enzyme'
 import {Map} from 'immutable'
 import _noop from 'lodash/noop'
 import React from 'react'
+
 import MultiSelectOptionsField from '../../../forms/MultiSelectOptionsField'
 import {FilterMultiSelectField} from '../FilterMultiSelectField'
 

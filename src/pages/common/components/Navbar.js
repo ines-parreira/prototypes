@@ -16,8 +16,9 @@ import * as currentUserSelectors from '../../../state/currentUser/selectors'
 
 import ToggleButton from '../../../pages/common/components/ToggleButton'
 import './Navbar.less'
-import Avatar from './Avatar/Avatar'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker'
+
+import Avatar from './Avatar/Avatar'
 
 // A <Link /> with some default styles
 const NavLink = (props) => {
@@ -121,7 +122,7 @@ export default class Navbar extends React.Component {
 
     _updateShowChatPreferences = () => {
         const {currentUserPreferences, submitSetting} = this.props
-        const newPreferences = currentUserPreferences.updateIn(['data', 'available_for_chat'], status => !status)
+        const newPreferences = currentUserPreferences.updateIn(['data', 'available_for_chat'], (status) => !status)
         return submitSetting(newPreferences.toJS())
     }
 

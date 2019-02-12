@@ -1,7 +1,8 @@
-import createLink from '../link'
-import { convertFromHTML } from '../../../../../../../utils/editor'
 import { shallow } from 'enzyme'
 import * as React from 'react'
+
+import createLink from '../link'
+import { convertFromHTML } from '../../../../../../../utils/editor'
 import LinkPopover from '../../components/LinkPopover'
 
 describe('link decorator', () => {

@@ -1,6 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+
 import {OVERVIEW, SATISFACTION_SURVEYS, stats as statsConfig} from '../../../../../../config/stats'
 import KeyMetricStat from '../KeyMetricStat'
 

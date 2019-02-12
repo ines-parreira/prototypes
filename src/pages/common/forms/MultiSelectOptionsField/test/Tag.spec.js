@@ -2,6 +2,7 @@
 import {mount, render} from 'enzyme'
 import _noop from 'lodash/noop'
 import React from 'react'
+
 import Tag from '../Tag'
 import type {Option} from '../types'
 

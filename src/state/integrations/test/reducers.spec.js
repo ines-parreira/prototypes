@@ -1,4 +1,5 @@
 import {fromJS} from 'immutable'
+
 import {integrationsState} from '../../../fixtures/integrations'
 import {getIntegrationsState, getEmailIntegrations} from '../selectors'
 import reducers from '../reducers'
@@ -16,7 +17,7 @@ describe('integrations reducers', () => {
         }
         const newState = reducers(state.integrations, action)
         const expected = getIntegrationsState(state).update('integrations', (integrations) => (
-            integrations.valueSeq().filter(int => int.get('id') !== action.id).toList()
+            integrations.valueSeq().filter((int) => int.get('id') !== action.id).toList()
         )).setIn(['state', 'loading', 'delete'], false)
 
         expect(newState).toEqual(expected)

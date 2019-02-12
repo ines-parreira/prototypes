@@ -8,8 +8,9 @@ import {
     Modifier,
     SelectionState,
 } from 'draft-js'
-import * as utils from '../editor'
 import React, {type Node} from 'react'
+
+import * as utils from '../editor'
 import {isValidSelectionKey} from '../editor'
 
 describe('editor utils', () => {
@@ -61,7 +62,7 @@ describe('editor utils', () => {
             const wrappedHTML = utils.convertToHTML(editorState.getCurrentContent())
             // convert resulted html back to ContentState
             const contentState = utils.convertFromHTML(wrappedHTML)
-            expect(contentState.getBlocksAsArray().find(b => b.type === 'atomic')).toBeTruthy()
+            expect(contentState.getBlocksAsArray().find((b) => b.type === 'atomic')).toBeTruthy()
         })
 
         it('should convert links with {{variables}} to html', () => {

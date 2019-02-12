@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
 import classnames from 'classnames'
+
 import type {SourceType} from '../../../models/ticketElement/types'
 
 type Props = {

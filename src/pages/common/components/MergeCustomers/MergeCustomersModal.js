@@ -8,7 +8,6 @@ import {Button, Form} from 'reactstrap'
 
 import Modal from '../Modal'
 
-import {JSONTree} from './../JSONTree'
 
 import BinaryChoiceField from '../BinaryChoiceField'
 import MultiSelectBinaryChoiceField from '../MultiSelectBinaryChoiceField'
@@ -17,6 +16,8 @@ import {isCustomerDataPresent, isCustomerDataValid} from '../infobar/utils'
 import ConfirmButton from '../ConfirmButton'
 import Tooltip from '../Tooltip'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
+
+import {JSONTree} from './../JSONTree'
 
 const defaultContent = {
     name: '',
@@ -75,7 +76,7 @@ class MergeCustomersModal extends React.Component {
     _generateChannelOptions = (customer) => {
         return (
             customer.get('channels', fromJS([]))
-                .filter(channel => !!channel) // removing falsey values
+                .filter((channel) => !!channel) // removing falsey values
                 .map((channel, idx) => ({
                     label: (
                         <div key={idx}>
@@ -166,7 +167,7 @@ class MergeCustomersModal extends React.Component {
                                 }
                             ]}
                             value={this.state.name}
-                            onChange={name => this.setState({name})}
+                            onChange={(name) => this.setState({name})}
                         />
                         <BinaryChoiceField
                             label="Primary email"
@@ -214,7 +215,7 @@ class MergeCustomersModal extends React.Component {
                                 }
                             ]}
                             value={this.state.email}
-                            onChange={email => this.setState({email})}
+                            onChange={(email) => this.setState({email})}
                         />
                         <MultiSelectBinaryChoiceField
                             label="Contact info"
@@ -242,7 +243,7 @@ class MergeCustomersModal extends React.Component {
                             ]}
                             propertiesToCompare={['address', 'type']}
                             value={this.state.channels}
-                            onChange={channels => this.setState({channels})}
+                            onChange={(channels) => this.setState({channels})}
                         />
                         <BinaryChoiceField
                             label="Customer data"
@@ -258,7 +259,7 @@ class MergeCustomersModal extends React.Component {
                                 }
                             ]}
                             value={_omit(this.state.data, ['_shopify'])}
-                            onChange={data => this.setState({data})}
+                            onChange={(data) => this.setState({data})}
                         />
                     </div>
 

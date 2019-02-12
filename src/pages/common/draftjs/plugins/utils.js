@@ -3,11 +3,13 @@ import {AtomicBlockUtils, EditorState, Modifier, RichUtils} from 'draft-js'
 import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
 import _get from 'lodash/get'
+
 import {uploadFiles} from '../../../../utils'
 import {ATTACHMENT_SIZE_ERROR, getMaxAttachmentSize} from '../../../../utils/file'
 import {DEFAULT_IMAGE_WIDTH} from '../../../../config/editor'
-import type {PluginMethods} from './types'
 import {getEntitySelectionState} from '../../../../utils/editor'
+
+import type {PluginMethods} from './types'
 
 const uploadPicture = (file) => {
     return uploadFiles([file])

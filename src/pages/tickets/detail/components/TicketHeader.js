@@ -14,9 +14,13 @@ import {
     PopoverBody,
 } from 'reactstrap'
 
+import type {Map} from 'immutable'
+
 import shortcutManager from '../../../../services/shortcutManager'
 import EditableTitle from '../../../common/components/EditableTitle'
 import MergeTicketsContainer from '../../../common/components/MergeTickets/MergeTicketsContainer'
+import * as ticketActions from '../../../../state/ticket/actions'
+
 import TicketTags from './TicketDetails/TicketTags'
 import TicketRequest from './TicketDetails/TicketRequest'
 import TicketStatus from './TicketDetails/TicketStatus'
@@ -26,11 +30,9 @@ import TicketSnooze from './TicketDetails/TicketSnooze'
 import TicketSnoozePicker from './TicketDetails/TicketSnoozePicker'
 import TicketTrash from './TicketDetails/TicketTrash'
 
-import * as ticketActions from '../../../../state/ticket/actions'
 
 import css from './TicketHeader.less'
 
-import type {Map} from 'immutable'
 
 type Props = {
     ticket: Map<*,*>,

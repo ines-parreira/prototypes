@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
 import {Badge} from 'reactstrap'
+
 import css from './Tag.less'
 import type {Option} from './types'
 

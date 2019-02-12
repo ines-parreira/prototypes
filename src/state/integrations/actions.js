@@ -5,11 +5,12 @@ import {browserHistory} from 'react-router'
 import moment from 'moment'
 import {fromJS, type Map} from 'immutable'
 
+import {notify} from '../notifications/actions'
+import type {dispatchType, getStateType} from '../types'
+
 import * as constants from './constants'
 import * as integrationSelectors from './selectors'
-import {notify} from '../notifications/actions'
 
-import type {dispatchType, getStateType} from '../types'
 
 type integrationType = {
     type: string,
@@ -369,7 +370,7 @@ export function importEmails(integration: Map<*,*>) {
             integration.toJS()
         )
             .then((json = {}) => json.data)
-            .then(resp => {
+            .then((resp) => {
                 dispatch(notify({
                     status: 'success',
                     message: 'Importation successfully started'
@@ -378,7 +379,7 @@ export function importEmails(integration: Map<*,*>) {
                     type: constants.GMAIL_INTEGRATION_IMPORT_SUCCESS,
                     resp
                 })
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: constants.GMAIL_INTEGRATION_IMPORT_ERROR,
                     error,

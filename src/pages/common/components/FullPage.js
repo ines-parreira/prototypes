@@ -10,6 +10,7 @@ import {
 import _last from 'lodash/last'
 
 import appCss from '../../App.less'
+
 import css from './FullPage.less'
 
 @withRouter

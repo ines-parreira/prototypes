@@ -2,11 +2,13 @@
 import axios from 'axios'
 import {browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
+
 import {notify} from '../notifications/actions'
 import * as segmentTracker from '../../store/middlewares/segmentTracker'
+import type {dispatchType, getStateType} from '../types'
+
 import * as constants from './constants'
 
-import type {dispatchType, getStateType} from '../types'
 type creditCardType = {
     expDate: string,
     name: string,
@@ -154,11 +156,11 @@ export function updateCreditCard(creditCard: creditCardType) {
                 })
 
             })
-        } else {
-            return dispatch({
-                type: constants.UPDATE_CREDIT_CARD_ERROR,
-                reason: 'Unable to update credit card. Please reload this page.'
-            })
-        }
+        } 
+        return dispatch({
+            type: constants.UPDATE_CREDIT_CARD_ERROR,
+            reason: 'Unable to update credit card. Please reload this page.'
+        })
+        
     }
 }

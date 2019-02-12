@@ -1,7 +1,8 @@
 import React from 'react'
-import InfobarCustomerActions from '../InfobarCustomerActions'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+
+import InfobarCustomerActions from '../InfobarCustomerActions'
 
 const commonProps = {
     customer: fromJS({

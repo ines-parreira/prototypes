@@ -5,8 +5,9 @@ import {Button} from 'reactstrap'
 
 import Tooltip from '../../../../common/components/Tooltip'
 
-import css from './TicketStatus.less'
 import headerCss from '../TicketHeader.less'
+
+import css from './TicketStatus.less'
 
 export default class TicketStatus extends React.Component {
     render() {

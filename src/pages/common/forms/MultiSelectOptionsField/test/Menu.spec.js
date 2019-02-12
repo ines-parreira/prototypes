@@ -3,6 +3,7 @@ import {mount} from 'enzyme'
 import _noop from 'lodash/noop'
 import React from 'react'
 import {DropdownItem} from 'reactstrap'
+
 import Menu from '../Menu'
 import MenuItem from '../MenuItem'
 import type {Option} from '../types'

@@ -4,6 +4,7 @@
 // resulting html and text.
 import {fromJS} from 'immutable'
 import {ContentState} from 'draft-js'
+
 import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
 import {convertToHTML} from '../../../utils/editor'

@@ -29,7 +29,7 @@ class ShowMoreFieldsDropdown extends React.Component {
     }
 
     render() {
-        const visibleFieldsNames = this.props.visibleFields.map(field => field.get('name'))
+        const visibleFieldsNames = this.props.visibleFields.map((field) => field.get('name'))
 
         return (
             <UncontrolledDropdown

@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
 import {shallow} from 'enzyme'
+
 import Header from '../Header'
 import Meta from '../Meta'
 import {message} from '../../../../../../models/ticketElement/tests/mocks'

@@ -1,11 +1,12 @@
 import {fromJS} from 'immutable'
 
-import * as types from './constants'
 import * as customerTypes from '../customers/constants'
 import ticketReplyCache from '../newMessage/ticketReplyCache'
 import * as newMessageTypes from '../newMessage/constants'
-import {getPendingMessageIndex} from './utils'
 import {compare} from '../../utils'
+
+import {getPendingMessageIndex} from './utils'
+import * as types from './constants'
 
 export const initialState = fromJS({
     state: {
@@ -125,9 +126,9 @@ export default (state = initialState, action) => {
         case types.ADD_TICKET_TAGS: {
             let tags = action.args.get('tags')
             let ticketTags = state.get('tags', fromJS([]))
-            const existingTagNames = ticketTags.map(x => x.get('name'))
+            const existingTagNames = ticketTags.map((x) => x.get('name'))
 
-            tags = tags ? tags.split(',').map(t => t.trim()) : []
+            tags = tags ? tags.split(',').map((t) => t.trim()) : []
 
             tags.forEach((newTag) => {
                 if (!existingTagNames.includes(newTag)) {
@@ -142,7 +143,7 @@ export default (state = initialState, action) => {
             const tag = action.args.get('tag')
             const ticketTags = state.get('tags', fromJS([]))
 
-            const index = ticketTags.findIndex(t => t.get('name') === tag)
+            const index = ticketTags.findIndex((t) => t.get('name') === tag)
 
             if (!~index) {
                 return state

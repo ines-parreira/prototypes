@@ -51,5 +51,5 @@ export const actions = [{
 }]
 
 export const getActionByName = (name) => {
-    return actions.find(action => action.name === name)
+    return actions.find((action) => action.name === name)
 }

@@ -8,19 +8,21 @@ import {
     Container,
 } from 'reactstrap'
 
+import type {List, Map} from 'immutable'
+
 import Loader from '../../common/components/Loader'
 import Pagination from '../../common/components/Pagination'
 
-import Row from './Row'
 
 import * as actions from '../../../state/agents/actions'
 import * as selectors from '../../../state/agents/selectors'
 import PageHeader from '../../common/components/PageHeader'
 import SecondaryNavbar from '../../common/components/SecondaryNavbar/SecondaryNavbar'
 
+import Row from './Row'
+
 import css from './List.less'
 
-import type {List, Map} from 'immutable'
 
 type Props = {
     agents: List<*>,

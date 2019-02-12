@@ -2,9 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import Infobar from '../../common/components/infobar/Infobar'
 import {fromJS} from 'immutable'
 import {withRouter} from 'react-router'
+
+import Infobar from '../../common/components/infobar/Infobar'
 
 import * as WidgetActions from '../../../state/widgets/actions'
 import * as InfobarActions from '../../../state/infobar/actions'

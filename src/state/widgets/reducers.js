@@ -1,23 +1,25 @@
 // @flow
-import * as types from './constants'
 import {fromJS} from 'immutable'
 import _isObject from 'lodash/isObject'
 import _last from 'lodash/last'
 import _initial from 'lodash/initial'
+import type {Map} from 'immutable'
+
 import {
     isRootSource,
     stripLastListsFromPath,
     jsonToWidget,
     makeWrapper,
 } from '../../pages/common/components/infobar/utils'
+import type {actionType} from '../types'
+
 import {
     itemsWithContext,
     itemsWithUpdatedWidgets,
     reorderWidgets,
 } from './utils'
 
-import type {Map} from 'immutable'
-import type {actionType} from '../types'
+import * as types from './constants'
 
 export const initialState = fromJS({
     items: [],

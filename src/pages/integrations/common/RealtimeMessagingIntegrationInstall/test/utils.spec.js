@@ -1,4 +1,5 @@
 import {fromJS} from 'immutable'
+
 import {renderChatCodeSnippet, renderFacebookCodeSnippet} from '../utils'
 
 describe('chat utils', () => {

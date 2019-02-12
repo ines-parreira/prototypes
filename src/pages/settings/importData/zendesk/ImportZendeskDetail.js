@@ -7,10 +7,11 @@ import classnames from 'classnames'
 import {Breadcrumb, BreadcrumbItem, Button, Container, Form} from 'reactstrap'
 
 import InputField from '../../../common/forms/InputField'
-import * as integrationActions from './../../../../state/integrations/actions'
 
 import * as utils from '../../../../utils'
 import PageHeader from '../../../common/components/PageHeader'
+
+import * as integrationActions from './../../../../state/integrations/actions'
 
 @connect(null, {
     createIntegration: integrationActions.createImportIntegration,

@@ -3,6 +3,7 @@ import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import {browserHistory} from 'react-router'
+
 import Search from '../../Search'
 import configureStore from '../../../../../store/configureStore'
 import * as viewsFixtures from '../../../../../fixtures/views'

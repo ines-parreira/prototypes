@@ -1,5 +1,6 @@
 import {fromJS} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
+
 import {getInternal, getRule, getRules} from '../selectors'
 
 jest.addMatchers(immutableMatchers)

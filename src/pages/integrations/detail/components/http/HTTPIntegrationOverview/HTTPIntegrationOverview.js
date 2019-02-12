@@ -22,6 +22,7 @@ import ObjectListField from '../ObjectListField'
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
 import InputField from '../../../../../common/forms/InputField'
 import BooleanField from '../../../../../common/forms/BooleanField'
+
 import {DEFAULT_FORM} from './constants'
 import JSONBody from './JSONBody'
 

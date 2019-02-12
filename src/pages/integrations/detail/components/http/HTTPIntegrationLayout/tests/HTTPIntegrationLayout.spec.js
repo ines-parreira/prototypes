@@ -1,7 +1,8 @@
-import HTTPIntegrationLayout from '../HTTPIntegrationLayout'
 import {shallow} from 'enzyme'
 import React from 'react'
 import {fromJS} from 'immutable'
+
+import HTTPIntegrationLayout from '../HTTPIntegrationLayout'
 
 const HTTPintegration = fromJS({
     id: 1,

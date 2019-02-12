@@ -2,10 +2,12 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
+
 import * as IntegrationsActions from '../../../state/integrations/actions'
-import IntegrationList from './components/IntegrationList'
 import {planIntegrations, currentPlan} from '../../../state/billing/selectors'
 import {getActiveIntegrations} from '../../../state/integrations/selectors'
+
+import IntegrationList from './components/IntegrationList'
 
 
 type Props = {

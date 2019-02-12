@@ -4,9 +4,10 @@ import {fromJS} from 'immutable'
 import _pick from 'lodash/pick'
 import _get from 'lodash/get'
 
+import type {Map} from 'immutable'
+
 import {notify} from '../notifications/actions'
 
-import type {Map} from 'immutable'
 import type {dispatchType, thunkActionType} from '../types'
 
 type fetchMacrosParamsTypes = {

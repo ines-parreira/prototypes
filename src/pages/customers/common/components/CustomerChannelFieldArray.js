@@ -56,7 +56,7 @@ class CustomerChannelFieldArray extends React.Component {
                                     name={`${contact}.address`}
                                     placeholder={placeholder}
                                     value={contact.address}
-                                    onChange={address => this._update(index, 'address', address)}
+                                    onChange={(address) => this._update(index, 'address', address)}
                                     error={errors[index] && errors[index].address}
                                 />
                             </Col>

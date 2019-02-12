@@ -26,7 +26,7 @@ export default class Operator extends React.Component {
                 type="select"
                 value={selected}
                 bsSize="sm"
-                onChange={e => onChange(this.props.index, e.target.value)}
+                onChange={(e) => onChange(this.props.index, e.target.value)}
             >
                 {
                     options.map((option, index) => (

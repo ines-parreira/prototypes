@@ -3,7 +3,6 @@ import {browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
 import {ContentState} from 'draft-js'
 
-import socketManager from '../../services/socketManager'
 
 import _isNull from 'lodash/isNull'
 import _assign from 'lodash/assign'
@@ -11,7 +10,8 @@ import _pick from 'lodash/pick'
 import _throttle from 'lodash/throttle'
 import axios from 'axios'
 
-import * as constants from './constants'
+import type {Map, List} from 'immutable'
+
 import * as ticketConstants from '../ticket/constants'
 
 import {notify} from '../notifications/actions'
@@ -38,14 +38,16 @@ import {
 import * as integrationSelectors from '../integrations/selectors'
 import * as ticketSelectors from '../ticket/selectors'
 import * as agentSelectors from '../agents/selectors'
-import * as selectors from './selectors'
-import * as responseUtils from './responseUtils'
 import {AGENT_TYPING_STARTED, AGENT_TYPING_STOPPED} from '../../config/socketConstants'
 
-import type {Map, List} from 'immutable'
+import socketManager from '../../services/socketManager'
 import type {dispatchType, getStateType, currentUserType} from '../types'
 import type {attachmentType} from '../../types'
 import {getMomentNow} from '../../utils/date'
+
+import * as responseUtils from './responseUtils'
+import * as selectors from './selectors'
+import * as constants from './constants'
 
 type userType = {
     id: string,
@@ -399,14 +401,14 @@ export const updatePotentialCustomers = (query: string) => (dispatch: dispatchTy
         query
     })
         .then((json = {}) => json.data)
-        .then(resp => {
+        .then((resp) => {
             return resp.data.map((result) => {
                 return {
                     ...result,
                     ...result.user
                 }
             })
-        }, error => {
+        }, (error) => {
             return dispatch({
                 type: 'ERROR',
                 error,
@@ -490,7 +492,7 @@ export function prepareTicketDataToSend(dispatch: dispatchType, getState: getSta
         }
 
         if (actionsForMacro) {
-            data.newMessage.actions = actionsForMacro.map(curAction => formatAction(
+            data.newMessage.actions = actionsForMacro.map((curAction) => formatAction(
                 curAction,
                 fromJS(getActionTemplate(curAction.get('name'))),
                 {ticket: ticket.toJS(), currentUser: currentUser.toJS()}
@@ -543,7 +545,7 @@ export const formatAction = (action: Map<*, *>, template: Map<*, *>, context: {}
     action.get('arguments').forEach((value, key) => {
         if (template.getIn(['arguments', key, 'type']) === 'listDict') {
             newArgs = newArgs.set(key, fromJS({}))
-            value.forEach(element => {
+            value.forEach((element) => {
                 if (element.get('value') !== '') {
                     newArgs = newArgs.setIn(
                         [key, renderTemplate(element.get('key'), context)],

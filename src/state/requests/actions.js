@@ -1,10 +1,11 @@
 // @flow
 import axios from 'axios'
 
-import * as constants from './constants'
 import {notify} from '../notifications/actions'
 
 import type {dispatchType, thunkActionType} from '../types'
+
+import * as constants from './constants'
 
 type Request = {
     id: number,

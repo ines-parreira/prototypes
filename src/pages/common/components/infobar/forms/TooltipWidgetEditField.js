@@ -46,7 +46,7 @@ class TooltipWidgetEditField extends React.Component {
                     label="Title"
                     required
                     value={this.state.title}
-                    onChange={title => this.setState({title})}
+                    onChange={(title) => this.setState({title})}
                 />
                 <InputField
                     type="select"
@@ -54,7 +54,7 @@ class TooltipWidgetEditField extends React.Component {
                     label="Type"
                     required
                     value={this.state.type}
-                    onChange={type => this.setState({type})}
+                    onChange={(type) => this.setState({type})}
                 >
                     <option value="text">Text</option>
                     <option value="date">Date</option>

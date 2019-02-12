@@ -27,6 +27,7 @@ import css from '../Infobar.less'
 
 import type {reactRouterLocation} from '../../../../../types'
 import {startEditionMode, stopEditionMode, submitWidgets} from '../../../../../state/widgets/actions'
+
 import InfobarWidgetsEditionTools from './InfobarWidgetsEditionTools'
 import InfobarCustomerActions from './InfobarCustomerActions'
 

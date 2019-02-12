@@ -1,11 +1,13 @@
 // @flow
 import {fromJS} from 'immutable'
-import * as constants from './constants'
 
 export const initialState = fromJS({})
 
 import type {Map} from 'immutable'
+
 import type {actionType} from '../types'
+
+import * as constants from './constants'
 
 export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
     switch (action.type) {

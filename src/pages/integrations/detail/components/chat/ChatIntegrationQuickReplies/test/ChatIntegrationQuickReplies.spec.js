@@ -1,9 +1,10 @@
 import React from 'react'
 import {mount} from 'enzyme'
 import {fromJS} from 'immutable'
-import ChatIntegrationQuickReplies from '../ChatIntegrationQuickReplies'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import ChatIntegrationQuickReplies from '../ChatIntegrationQuickReplies'
 
 const mockStore = configureMockStore([thunk])
 

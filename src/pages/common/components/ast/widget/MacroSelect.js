@@ -4,13 +4,14 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {fromJS, List} from 'immutable'
 
+import type {Map} from 'immutable'
+
 import {getActionTemplate} from './../../../../../utils'
 
 import Select from './ReactSelect'
 
 import * as macroActions from './../../../../../state/macro/actions'
 
-import type {Map} from 'immutable'
 
 type Props = {
     actions: Object,

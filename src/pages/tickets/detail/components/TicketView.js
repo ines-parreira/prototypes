@@ -6,15 +6,9 @@ import classnames from 'classnames'
 import _noop from 'lodash/noop'
 import {Button} from 'reactstrap'
 
-import TicketHeader from './TicketHeader'
-import TicketBody from './TicketBody'
 
 import {AgentLabel} from '../../../common/utils/labels'
 import Timeline from '../../../common/components/timeline/Timeline'
-import ReplyMessageChannel from './ReplyArea/ReplyMessageChannel'
-import TicketReplyArea from './ReplyArea/TicketReplyArea'
-import TicketSubmitButtons from './ReplyArea/TicketSubmitButtons'
-import HistoryButton from './HistoryButton'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
 import * as tagsSelectors from '../../../../state/tags/selectors'
@@ -22,9 +16,16 @@ import * as customersSelectors from '../../../../state/customers/selectors'
 import * as agentSelectors from '../../../../state/agents/selectors'
 import * as ticketSelectors from '../../../../state/ticket/selectors'
 
-import css from './TicketView.less'
 import appCss from '../../../App.less'
 import {getCustomersState} from '../../../../state/customers/selectors'
+
+import css from './TicketView.less'
+import HistoryButton from './HistoryButton'
+import TicketSubmitButtons from './ReplyArea/TicketSubmitButtons'
+import TicketReplyArea from './ReplyArea/TicketReplyArea'
+import ReplyMessageChannel from './ReplyArea/ReplyMessageChannel'
+import TicketBody from './TicketBody'
+import TicketHeader from './TicketHeader'
 
 @connect((state) => {
     return {
@@ -298,7 +299,7 @@ export default class TicketView extends React.Component {
                         [css.historyDisplayed]: isHistoryDisplayed,
                         'mt-3': isCreating,
                     })}
-                    ref={ref => this.ticketContentRef = ref}
+                    ref={(ref) => this.ticketContentRef = ref}
                     tabIndex="1"
                 >
                     {
@@ -313,7 +314,7 @@ export default class TicketView extends React.Component {
                     <form
                         className={classnames('d-print-none', css.newMessageForm)}
                         onSubmit={this._handleSubmit}
-                        ref={ref => this.newMessageFormRef = ref}
+                        ref={(ref) => this.newMessageFormRef = ref}
                     >
                         <ReplyMessageChannel
                             actions={this.props.actions}

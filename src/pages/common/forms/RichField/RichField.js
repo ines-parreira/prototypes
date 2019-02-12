@@ -3,9 +3,11 @@ import {EditorState} from 'draft-js'
 import 'draft-js/dist/Draft.css'
 import _isEqual from 'lodash/isEqual'
 import React from 'react'
+
 import {contentStateFromTextOrHTML, convertToHTML} from '../../../../utils/editor'
 import {attachEntitiesToVariables} from '../../draftjs/plugins/variables/utils'
 import InputField from '../InputField'
+
 import RichFieldEditor, {type Props as RichFieldEditorProps} from './RichFieldEditor'
 
 type Props = {

@@ -1,3 +1,5 @@
+import {fromJS} from 'immutable'
+
 import {
     getIntegrationsState,
     getIntegrations,
@@ -13,7 +15,6 @@ import {
     getCurrentIntegration, getFacebookOnboardingPages, getFacebookOnboardingMeta,
 } from '../selectors'
 import {integrationsState} from '../../../fixtures/integrations'
-import {fromJS} from 'immutable'
 
 const state = {
     integrations: fromJS(integrationsState),
@@ -37,7 +38,7 @@ describe('integrations selectors', () => {
 
     it('should get email integrations', () => {
         const integrations = getEmailIntegrations(state)
-        const expected = getIntegrations(state).filter(inte => ['email', 'gmail'].includes(inte.get('type', '')))
+        const expected = getIntegrations(state).filter((inte) => ['email', 'gmail'].includes(inte.get('type', '')))
 
         expect(integrations.equals(expected)).toEqual(true)
     })

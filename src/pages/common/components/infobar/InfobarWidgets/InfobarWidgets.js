@@ -1,18 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import InfobarWidget from '../InfobarWidget'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
+import _isEqual from 'lodash/isEqual'
+
+import InfobarWidget from '../InfobarWidget'
 import DragWrapper from '../../dragging/WidgetsDragWrapper'
 import {compare} from '../../../../../utils'
 import {canDisplayWidget} from '../utils'
 import {getSourcePathFromContext} from '../../../../../state/widgets/utils'
-import _isEqual from 'lodash/isEqual'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 
-import css from './InfobarWidgets.less'
 import PlaceholderWidget from '../widgets/PlaceholderWidget'
+
+import css from './InfobarWidgets.less'
 
 class InfobarWidgets extends React.Component {
     shouldComponentUpdate(nextProps) {

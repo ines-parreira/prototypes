@@ -83,7 +83,7 @@ class StatsView extends React.Component<Props> {
     _fetchStats = (stats, meta, filters) => {
         this._updateLoadingStatsState(stats, true)
 
-        stats.forEach(stat => {
+        stats.forEach((stat) => {
             this.props.fetchStat(stat, meta, filters).then(() => {
                 this._updateLoadingStatsState([stat], false)
             })
@@ -171,7 +171,7 @@ class StatsView extends React.Component<Props> {
                     key="tags-filter"
                     plural="tags"
                     singular="tag"
-                    items={this.state.tags.map(tag => ({label: tag.name, value: tag.id}))}
+                    items={this.state.tags.map((tag) => ({label: tag.name, value: tag.id}))}
                     input={this._makeInputControl('tags')}
                     onSearch={this._onSearchTags}
                 />

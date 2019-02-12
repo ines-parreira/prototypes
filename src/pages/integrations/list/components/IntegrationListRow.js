@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import classnames from 'classnames'
+
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
 import {getIconFromUrl} from '../../../../state/integrations/helpers'

@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import InputField from './InputField'
 import classnames from 'classnames'
 import {
     FormGroup,
@@ -9,9 +8,11 @@ import {
     FormText,
 } from 'reactstrap'
 
+import {defined} from '../../../utils'
+
 import Errors from './Errors'
 
-import {defined} from '../../../utils'
+import InputField from './InputField'
 
 import css from './InputField.less'
 

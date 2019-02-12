@@ -1,6 +1,7 @@
 // @flow
 // The code below checks if we have a new Gorgias release
 import axios from 'axios'
+
 import {notify} from '../state/notifications/actions'
 import type {dispatchType} from '../state/types'
 

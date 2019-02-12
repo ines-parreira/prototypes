@@ -3,11 +3,12 @@ import React from 'react'
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 
+import type {Node} from 'react'
+
 import {getAvatar, getAvatarFromCache} from './utils'
 
 import css from './Avatar.less'
 
-import type {Node} from 'react'
 
 type Props = {
     email: string,
@@ -99,7 +100,7 @@ export default class Avatar extends React.Component<Props, State> {
             return ''
         }
 
-        const splitName = name.split(' ').filter(text => text.length > 0)
+        const splitName = name.split(' ').filter((text) => text.length > 0)
 
         if (splitName.length > 1) {
             return `${splitName[0][0]}${splitName[1][0]}`

@@ -1,14 +1,16 @@
 // @flow
 import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
+import type {List, Map} from 'immutable'
+
 import {createImmutableSelector} from '../../utils'
 
 import * as currentUserSelectors from '../currentUser/selectors'
 
 // types
 import type {currentUserType, stateType, thunkActionType} from '../types'
+
 import type {agentsType} from './types'
-import type {List, Map} from 'immutable'
 
 type ticketIdType = string
 
@@ -16,17 +18,17 @@ export const getState = (state: stateType) => state.agents || fromJS({})
 
 export const getPaginatedAgents = createImmutableSelector(
     [getState],
-    state => state.getIn(['pagination', 'data']) || fromJS([])
+    (state) => state.getIn(['pagination', 'data']) || fromJS([])
 )
 
 export const getPagination = createImmutableSelector(
     [getState],
-    state => state.getIn(['pagination', 'meta']) || fromJS({})
+    (state) => state.getIn(['pagination', 'meta']) || fromJS({})
 )
 
 export const getAgents = createImmutableSelector(
     [getState],
-    state => state.get('all') || fromJS([])
+    (state) => state.get('all') || fromJS([])
 )
 
 export const getOtherAgents = createSelector(

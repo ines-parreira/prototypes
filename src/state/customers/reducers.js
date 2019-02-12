@@ -1,11 +1,13 @@
 // @flow
 import {fromJS} from 'immutable'
-import * as constants from './constants'
+import type {Map} from 'immutable'
+
 import * as ticketConstants from '../ticket/constants'
 import * as viewsConstants from '../views/constants'
 
-import type {Map} from 'immutable'
 import type {actionType} from '../types'
+
+import * as constants from './constants'
 
 export const initialState = fromJS({
     active: {},
@@ -64,7 +66,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
 
                 // if updated customer is in current items list, update it
                 newState = newState.set('items',
-                    items.set(items.findIndex(item => item.get('id') === customerId), customer)
+                    items.set(items.findIndex((item) => item.get('id') === customerId), customer)
                 )
 
                 // if updated customer is the active one, update the active one
@@ -79,7 +81,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
         case constants.DELETE_CUSTOMER_SUCCESS: {
             return state
                 .merge({
-                    items: state.get('items').filter(item => item.get('id') !== action.customerId),
+                    items: state.get('items').filter((item) => item.get('id') !== action.customerId),
                 })
         }
 
@@ -132,7 +134,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
 
             const newItems = state
                 .get('items', fromJS([]))
-                .filter(item => !action.ids.includes(item.get('id')))
+                .filter((item) => !action.ids.includes(item.get('id')))
 
             return state.set('items', newItems)
         }

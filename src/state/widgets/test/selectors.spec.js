@@ -1,3 +1,6 @@
+import {fromJS} from 'immutable'
+import * as immutableMatchers from 'jest-immutable-matchers'
+
 import {
     getContext, getSources,
     getSourcesWithCustomer,
@@ -6,8 +9,6 @@ import {
     getWidgetsWithContext, hasWidgets,
     hasWidgetsWithContext, isEditing
 } from '../selectors'
-import {fromJS} from 'immutable'
-import * as immutableMatchers from 'jest-immutable-matchers'
 
 jest.addMatchers(immutableMatchers)
 

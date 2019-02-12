@@ -1,14 +1,8 @@
 // @flow
-import * as types from './constants'
 import {fromJS} from 'immutable'
 import {convertToRaw, ContentState} from 'draft-js'
-import {convertToHTML} from '../../utils/editor'
-import * as responseUtils from './responseUtils'
-import {getReceiversProperties} from './selectors'
 
-import * as ticketConfig from '../../config/ticket'
 
-import * as ticketTypes from '../ticket/constants'
 
 import _pick from 'lodash/pick'
 import _assign from 'lodash/assign'
@@ -16,13 +10,21 @@ import _omit from 'lodash/omit'
 import _forOwn from 'lodash/forOwn'
 import _get from 'lodash/get'
 
+import type {Map} from 'immutable'
+
 import {
     getSourceTypeOfResponse,
     getChannelFromSourceType,
 } from '../ticket/utils'
 
-import type {Map} from 'immutable'
+import * as ticketTypes from '../ticket/constants'
+import * as ticketConfig from '../../config/ticket'
+import {convertToHTML} from '../../utils/editor'
 import type {actionType} from '../types'
+
+import {getReceiversProperties} from './selectors'
+import * as responseUtils from './responseUtils'
+import * as types from './constants'
 
 export const makeNewMessage = (channel: string, sourceType: string) => {
     return fromJS({
@@ -124,11 +126,11 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
             const macros = state.getIn(['newMessage', 'macros']) || fromJS([])
 
             // if macro already added, do not do anything
-            if (macros.find(macro => macro.id === macroId)) {
+            if (macros.find((macro) => macro.id === macroId)) {
                 return state
             }
 
-            return state.updateIn(['newMessage', 'macros'], macros => macros.push({id: macroId}))
+            return state.updateIn(['newMessage', 'macros'], (macros) => macros.push({id: macroId}))
         }
 
         case ticketTypes.CLEAR_TICKET: {

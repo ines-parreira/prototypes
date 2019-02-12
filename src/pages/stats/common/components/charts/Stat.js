@@ -1,18 +1,20 @@
 // @flow
 import React, {Component} from 'react'
 import {fromJS} from 'immutable'
-import BarStat from './BarStat'
-import KeyMetricStat from './KeyMetricStat/KeyMetricStat'
-import TableStat from './TableStat/TableStat'
-import LineStat from './LineStat'
 import {Button} from 'reactstrap'
-import {downloadStatistic} from '../../../../../state/stats/actions'
 import {connect} from 'react-redux'
+
+import {downloadStatistic} from '../../../../../state/stats/actions'
 import * as tagsSelectors from '../../../../../state/tags/selectors'
 import {TICKETS_PER_TAG} from '../../../../../config/stats'
 import css from '../../../style.less'
 import Tooltip from '../../../../common/components/Tooltip'
 import Loader from '../../../../common/components/Loader/Loader'
+
+import LineStat from './LineStat'
+import TableStat from './TableStat/TableStat'
+import KeyMetricStat from './KeyMetricStat/KeyMetricStat'
+import BarStat from './BarStat'
 
 
 type Props = {

@@ -4,6 +4,7 @@
 
 import decorateComponentWithProps from 'decorate-component-with-props'
 import {Map} from 'immutable'
+
 import Mention from './Mention'
 import MentionSuggestions from './MentionSuggestions'
 import MentionSuggestionsPortal from './MentionSuggestionsPortal'

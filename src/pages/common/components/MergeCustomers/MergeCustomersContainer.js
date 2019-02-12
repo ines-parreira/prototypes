@@ -2,10 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
+
 import {mergeCustomers} from '../../../../state/customers/actions'
+import {makeIsLoading} from '../../../../state/customers/selectors'
+
 import MergeCustomersModal from './MergeCustomersModal'
 
-import {makeIsLoading} from '../../../../state/customers/selectors'
 import {getMessages} from './../../../../state/ticket/selectors'
 
 class MergeCustomersContainer extends React.Component {

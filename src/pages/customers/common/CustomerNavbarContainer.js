@@ -2,10 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
+
 import * as ViewsActions from '../../../state/views/actions'
-import CustomersNavbarView from './components/CustomersNavbarView'
 import Navbar from '../../common/components/Navbar'
 import {getSettingsByType} from '../../../state/currentUser/selectors'
+
+import CustomersNavbarView from './components/CustomersNavbarView'
 
 class CustomerNavbarContainer extends React.Component {
     componentWillMount() {

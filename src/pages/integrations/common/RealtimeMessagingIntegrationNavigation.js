@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
 import {Link} from 'react-router'
+
 import SecondaryNavbar from '../../common/components/SecondaryNavbar/SecondaryNavbar'
 
 type Props = {

@@ -2,12 +2,14 @@
 import React from 'react'
 import {fromJS} from 'immutable'
 import classNamesBind from 'classnames/bind'
-import Meta from './Meta'
+
 import {AgentLabel, CustomerLabel} from '../../../../common/utils/labels'
 import {isForwardedMessage} from '../../../../../state/ticket/utils'
+import type {TicketMessage} from '../../../../../models/ticketElement/types'
+
+import Meta from './Meta'
 import Source from './Source'
 import css from './Header.less'
-import type {TicketMessage} from '../../../../../models/ticketElement/types'
 import SourceDetails from './SourceDetails'
 
 const classNames = classNamesBind.bind(css)

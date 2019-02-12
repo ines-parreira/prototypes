@@ -4,10 +4,11 @@ import {shallow} from 'enzyme'
 import _noop from 'lodash/noop'
 import _assign from 'lodash/assign'
 
-import TicketMacros from '../TicketMacros'
 
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import TicketMacros from '../TicketMacros'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

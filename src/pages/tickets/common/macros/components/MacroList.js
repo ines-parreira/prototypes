@@ -3,13 +3,14 @@ import React from 'react'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
+import type {Map} from 'immutable'
+
 import InfiniteScroll from '../../../../common/components/InfiniteScroll'
 import {scrollToReactNode} from '../../../../common/utils/keyboard'
 import {isMacroDisabled} from '../utils'
 
 import css from './MacroList.less'
 
-import type {Map} from 'immutable'
 
 type Props = {
     macros: Map<*,*>,

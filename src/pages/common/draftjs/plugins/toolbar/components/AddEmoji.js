@@ -2,10 +2,12 @@
 import React from 'react'
 import {Picker} from 'emoji-mart'
 import 'emoji-mart/css/emoji-mart.css'
-import Popover from './ButtonPopover'
+import { EditorState } from 'draft-js'
+
 import type { ActionInjectedProps } from '../types'
 import {insertText} from '../../../../../../utils'
-import { EditorState } from 'draft-js'
+
+import Popover from './ButtonPopover'
 
 type Props = ActionInjectedProps
 

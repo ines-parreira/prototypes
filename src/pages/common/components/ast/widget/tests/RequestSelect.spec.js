@@ -1,9 +1,10 @@
 import React from 'react'
-import RequestSelectContainer, {RequestSelect} from '../RequestSelect'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import RequestSelectContainer, {RequestSelect} from '../RequestSelect'
 import Select from '../Select'
 
 const middlewares = [thunk]

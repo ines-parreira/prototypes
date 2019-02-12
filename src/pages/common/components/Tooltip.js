@@ -2,9 +2,10 @@
 import React from 'react'
 import {UncontrolledTooltip} from 'reactstrap'
 
+import type {Node} from 'react'
+
 import {isTouchDevice} from '../utils/mobile'
 
-import type {Node} from 'react'
 
 type Props = {
     children: Node,

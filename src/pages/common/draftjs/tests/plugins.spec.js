@@ -1,15 +1,16 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-import * as utils from './utils'
 
-import TestEditor from './TestEditor'
 
 import {convertFromHTML} from '../../../../utils/editor'
 
 import createToolbarPlugin from '../plugins/toolbar'
 import {variable as variableDecorator} from '../plugins/variables/decorators'
 import {attachEntitiesToVariables} from '../plugins/variables/utils'
+
+import TestEditor from './TestEditor'
+import * as utils from './utils'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')

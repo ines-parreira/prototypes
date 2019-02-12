@@ -7,8 +7,9 @@ import type {List} from 'immutable'
 import {fileIconFromContentType} from '../../../common/utils'
 import shortcutManager from '../../../../../services/shortcutManager'
 
-import css from './TicketAttachments.less'
 import {proxifyURL} from '../../../../../utils'
+
+import css from './TicketAttachments.less'
 
 // TODO (@pwlmaciejewski): Once we upgrade Immutable to v4 it should be a RecordOf<MessageAttachment>
 type Attachment = any

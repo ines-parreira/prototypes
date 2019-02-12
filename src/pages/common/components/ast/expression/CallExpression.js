@@ -5,13 +5,14 @@ import {List} from 'immutable'
 import {upperFirst} from 'lodash'
 
 import Action, {actionsConfig} from '../actions/Action'
-import Expression from './Expression'
 import Hoverable from '../../Hoverable'
-import ObjectExpression from './ObjectExpression'
 import {DeleteBinaryExpression} from '../operations'
 
 import {getSyntaxTreeLeaves} from '../utils'
 import {OBJECT_DEFINITIONS} from '../../../../../state/rules/constants'
+
+import ObjectExpression from './ObjectExpression'
+import Expression from './Expression'
 
 /*
  Standard interface CallExpression <: Expression {

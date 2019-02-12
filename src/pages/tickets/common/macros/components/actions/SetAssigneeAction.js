@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
+
 import TicketAssignee from '../../../../detail/components/TicketDetails/TicketAssignee'
 
 export default class SetAssigneeAction extends React.Component {
@@ -14,7 +15,7 @@ export default class SetAssigneeAction extends React.Component {
             <TicketAssignee
                 currentAssignee={action.getIn(['arguments', 'assignee_user', 'name'])}
                 agents={agents}
-                setAgent={assignee => this.setAssignee(assignee)}
+                setAgent={(assignee) => this.setAssignee(assignee)}
                 suffix="macro-modal"
             />
         )

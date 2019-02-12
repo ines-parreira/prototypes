@@ -1,10 +1,12 @@
 // @flow
 import {fromJS} from 'immutable'
 
-import * as constants from './constants'
 
 import type {Map} from 'immutable'
+
 import type {actionType} from '../types'
+
+import * as constants from './constants'
 
 export const requestInitial = fromJS({
     id: 'new',

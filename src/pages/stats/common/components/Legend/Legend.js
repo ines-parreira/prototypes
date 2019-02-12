@@ -1,7 +1,8 @@
 // @flow
 import React, {Component} from 'react'
-import css from './Legend.less'
 import _isArray from 'lodash/isArray'
+
+import css from './Legend.less'
 
 type Props = {
     labels: Array<Object>

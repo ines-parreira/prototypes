@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import classnames from 'classnames'
+
 import css from '../Toolbar.less'
 
 type Props = {

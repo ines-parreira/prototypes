@@ -1,4 +1,5 @@
 import {fromJS} from 'immutable'
+
 import * as utils from '../utils'
 import schemasJSON from '../../../fixtures/openapi'
 import {findProperty, toImmutable} from '../../../utils'

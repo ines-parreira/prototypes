@@ -12,8 +12,9 @@ import {SATISFACTION_SURVEY_MAX_SCORE, SATISFACTION_SURVEY_MIN_SCORE,
         SATISFACTION_SURVEY_MAX_COMMENT_LENGTH} from '../../../../../../config/stats'
 import {renderDifference, comparedPeriodString, formatCurrency} from '../../../utils'
 
-import css from './TableStat.less'
 import DistributionVariantStat from '../DistributionVariantStat'
+
+import css from './TableStat.less'
 
 
 @withRouter

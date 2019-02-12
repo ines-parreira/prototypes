@@ -1,9 +1,11 @@
 //@flow
 import React, {type Node} from 'react'
-import type {Meta, Source} from '../../../../../models/ticketElement/types'
-import css from './Meta.less'
 import {Link} from 'react-router'
 import classnames from 'classnames'
+
+import type {Meta, Source} from '../../../../../models/ticketElement/types'
+
+import css from './Meta.less'
 
 type Props = {
     messageId?: string,

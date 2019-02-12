@@ -1,6 +1,7 @@
 // @flow
 import {fromJS} from 'immutable'
 import type {List} from 'immutable'
+
 import type {actionType} from '../types'
 
 import * as constants from './constants'

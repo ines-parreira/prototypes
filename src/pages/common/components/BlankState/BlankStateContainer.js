@@ -4,12 +4,14 @@ import {connect} from 'react-redux'
 import moment from 'moment'
 import throttle from 'lodash/throttle'
 
-import BlankState from './components/BlankState'
+import {fromJS} from 'immutable'
+
 import {fetchStat} from '../../../../state/stats/actions'
 import {TICKETS_CLOSED_PER_AGENT} from '../../../../config/stats'
 
+import BlankState from './components/BlankState'
+
 import {getStat} from './../../../../state/stats/selectors'
-import {fromJS} from 'immutable'
 
 const TICKET_CLOSED_BY_CURRENT_AGENT_7_DAYS = 'ticket-closed-current-agent-7-days'
 

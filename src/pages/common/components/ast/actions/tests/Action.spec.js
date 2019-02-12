@@ -1,5 +1,6 @@
-import schemasJSON from '../../../../../../fixtures/openapi.json'
 import {fromJS} from 'immutable'
+
+import schemasJSON from '../../../../../../fixtures/openapi.json'
 import {validateEmailList, validateBody, validateSendEmail, validateTags} from '../Action'
 const schemas = fromJS(schemasJSON)
 

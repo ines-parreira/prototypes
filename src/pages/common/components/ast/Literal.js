@@ -1,9 +1,10 @@
 // @flow
 import React from 'react'
 
+import {UNARY_OPERATORS} from '../../../../config'
+
 import Errors from './Errors'
 import Widget from './Widget'
-import {UNARY_OPERATORS} from '../../../../config'
 
 /*
  interface Literal <: Node, Expression {

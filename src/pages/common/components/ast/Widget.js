@@ -8,19 +8,12 @@ import _get from 'lodash/get'
 import _isArray from 'lodash/isArray'
 import _isUndefined from 'lodash/isUndefined'
 
-import Select from './widget/ReactSelect'
-import StatusSelect from './widget/StatusSelect'
-import MacroSelect from './widget/MacroSelect'
-import RequestSelect from './widget/RequestSelect'
-import AssigneeSelect from './widget/AssigneeSelect'
-import IntegrationSelect from './widget/IntegrationSelect'
 import DatetimePicker from '../../../common/forms/DatetimePicker'
 
 import InputField from '../../forms/InputField'
 
 import {humanizeString} from '../../../../utils'
 import {convertToHTML} from '../../../../utils/editor'
-import TagsSelect from './widget/TagsSelect'
 import MultiSelectField from '../../forms/MultiSelectField'
 import {
     collectionOperators, caseInsensitiveOperators, deprecatedOperators, timedeltaOperators
@@ -29,6 +22,14 @@ import {removeSuffix} from '../../../../utils/string'
 import TimedeltaPicker from '../../forms/TimedeltaPicker'
 import RichFieldWithVariables from '../../forms/RichFieldWithVariables'
 import {makeHasIntegrationOfTypes} from '../../../../state/integrations/selectors'
+
+import TagsSelect from './widget/TagsSelect'
+import IntegrationSelect from './widget/IntegrationSelect'
+import AssigneeSelect from './widget/AssigneeSelect'
+import RequestSelect from './widget/RequestSelect'
+import MacroSelect from './widget/MacroSelect'
+import StatusSelect from './widget/StatusSelect'
+import Select from './widget/ReactSelect'
 
 
 type Props = {

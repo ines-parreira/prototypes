@@ -1,6 +1,7 @@
 import React from 'react'
-import RestrictedSatisfactionSurvey from '../RestrictedSatisfactionSurvey'
 import {shallow} from 'enzyme'
+
+import RestrictedSatisfactionSurvey from '../RestrictedSatisfactionSurvey'
 
 
 describe('RestrictedSatisfactionSurvey', () => {

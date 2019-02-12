@@ -1,10 +1,11 @@
 // @flow
 import {fromJS} from 'immutable'
 
+import type {Map} from 'immutable'
+
 import {getActionTemplate} from '../../../../utils'
 import {getDefaultMacro} from '../../../../state/macro/utils'
 
-import type {Map} from 'immutable'
 
 export const isMacroDisabled = (macro: Object, disableExternalActions?: boolean) => {
     if (!disableExternalActions) {

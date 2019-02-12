@@ -1,7 +1,9 @@
 //@flow
 import React from 'react'
-import Container from './Container'
+
 import {TicketMessage} from '../../../../../models/ticketElement'
+
+import Container from './Container'
 import Message from './Message'
 
 type Props = {

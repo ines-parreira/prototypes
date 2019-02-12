@@ -1,6 +1,7 @@
 //@flow
 import {shallow} from 'enzyme'
 import React from 'react'
+
 import Meta from '../Meta'
 
 describe('ticket message meta', () => {

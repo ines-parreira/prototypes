@@ -99,7 +99,7 @@ export default class Actions extends React.Component {
             return null
         }
 
-        const backActions = message.actions.filter(action => getActionTemplate(action.name).execution === 'back')
+        const backActions = message.actions.filter((action) => getActionTemplate(action.name).execution === 'back')
 
         if (backActions.length === 0) {
             return null

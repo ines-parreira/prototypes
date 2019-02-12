@@ -1,6 +1,7 @@
 // @flow
 import classnames from 'classnames'
 import React, { type Node } from 'react'
+
 import css from './Toolbar.less'
 import type { ActionName, ActionInjectedProps } from './types'
 import { AddEmoji, Bold, Italic, Underline } from './components'

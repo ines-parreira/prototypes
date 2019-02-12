@@ -1,5 +1,6 @@
-import {renderTemplate} from '../template'
 import moment from 'moment'
+
+import {renderTemplate} from '../template'
 
 describe('components utils : template', () => {
     describe('renderTemplate', () => {

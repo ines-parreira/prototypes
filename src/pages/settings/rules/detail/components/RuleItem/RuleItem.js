@@ -22,11 +22,12 @@ import Errors from '../../../../../common/components/ast/Errors'
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
 
 import * as rulesHelpers from '../../../../../../state/rules/helpers'
-import css from './RuleItem.less'
 
 import {toJS} from '../../../../../../utils'
 import ToggleButton from '../../../../../common/components/ToggleButton'
 import {getMomentUtcISOString} from '../../../../../../utils/date'
+
+import css from './RuleItem.less'
 
 
 type Props = {

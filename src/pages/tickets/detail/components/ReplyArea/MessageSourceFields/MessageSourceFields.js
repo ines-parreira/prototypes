@@ -2,8 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
-import ReceiversSelectField from './components/ReceiversSelectField'
-import SenderSelectField from './components/SenderSelectField'
+import _upperFirst from 'lodash/upperFirst'
+import _uniq from 'lodash/uniq'
+import _difference from 'lodash/difference'
+import _xor from 'lodash/xor'
+
 import * as newMessageActions from '../../../../../../state/newMessage/actions'
 import {
     getNewMessageType,
@@ -16,10 +19,9 @@ import {
 } from '../../../../../../state/newMessage/selectors'
 import * as integrationSelectors from '../../../../../../state/integrations/selectors'
 import {getPersonLabelFromSource} from '../../../../common/utils'
-import _upperFirst from 'lodash/upperFirst'
-import _uniq from 'lodash/uniq'
-import _difference from 'lodash/difference'
-import _xor from 'lodash/xor'
+
+import SenderSelectField from './components/SenderSelectField'
+import ReceiversSelectField from './components/ReceiversSelectField'
 
 import css from './MessageSourceFields.less'
 

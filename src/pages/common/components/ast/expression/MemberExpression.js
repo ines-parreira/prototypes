@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+
 import Expression from '../expression/Expression'
 
 import {getSyntaxTreeLeaves} from '../utils'

@@ -1,6 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+
 import index, {SubscriptionAfterTitle, AfterContent, AfterTitle} from './../Charge'
 
 const BeforeContent = index().BeforeContent

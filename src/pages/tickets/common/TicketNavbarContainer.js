@@ -4,10 +4,11 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 
 import * as ViewsActions from '../../../state/views/actions'
-import TicketsNavbarView from './components/TicketsNavbarView'
 import RecentChats from '../../common/components/RecentChats'
 import Navbar from '../../common/components/Navbar'
 import {getSettingsByType} from '../../../state/currentUser/selectors'
+
+import TicketsNavbarView from './components/TicketsNavbarView'
 
 class TicketNavbarContainer extends React.Component {
     componentWillMount() {

@@ -2,8 +2,9 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import _noop from 'lodash/noop'
 
-import MultiSelectAsyncField from './'
 import {isEmail} from '../../../../../../../../utils'
+
+import MultiSelectAsyncField from './'
 
 describe('MultiSelectAsyncField component', () => {
     const minProps = {
@@ -78,7 +79,7 @@ describe('MultiSelectAsyncField component', () => {
     })
 
     it('add recipients on change input with multiples addresses', () => {
-        const onChange = jest.fn(values => values)
+        const onChange = jest.fn((values) => values)
 
         const component = shallow(
             <MultiSelectAsyncField

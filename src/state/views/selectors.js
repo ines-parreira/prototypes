@@ -1,14 +1,16 @@
 // @flow
 import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
+import type {Map, List} from 'immutable'
+import moment from 'moment/moment'
+
 import {createImmutableSelector} from '../../utils'
-import {sortViews} from './utils'
 import * as viewsConfig from '../../config/views'
 import {getSettingsByType as getCurrentUserSettingsByType} from '../currentUser/selectors'
 
-import type {Map, List} from 'immutable'
 import type {stateType} from '../types'
-import moment from 'moment/moment'
+
+import {sortViews} from './utils'
 
 export const getViewsState = (state: stateType) => state.views || fromJS({})
 

@@ -35,7 +35,7 @@ class PollingManager {
 
 
     stop = () => {
-        Object.keys(this.intervals).forEach(interval => this._stopInterval(interval))
+        Object.keys(this.intervals).forEach((interval) => this._stopInterval(interval))
     }
 
     _stopInterval = (interval) => {

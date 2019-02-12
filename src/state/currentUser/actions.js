@@ -1,12 +1,14 @@
 // @flow
 import axios from 'axios'
-import * as constants from './constants'
 import _isUndefined from 'lodash/isUndefined'
+
 import {notify} from '../notifications/actions'
 
 // types
 import type {dispatchType, getStateType} from '../types'
 import {fetchChats} from '../chats/actions'
+
+import * as constants from './constants'
 import * as currentUserSelectors from './selectors'
 
 export const changePassword = (oldPassword: string, newPassword: string) => ((dispatch: dispatchType): Promise<dispatchType> => {
@@ -17,7 +19,7 @@ export const changePassword = (oldPassword: string, newPassword: string) => ((di
         new_password: newPassword,
     })
         .then((json = {}) => json.data)
-        .then(resp => {
+        .then((resp) => {
             dispatch({
                 type: constants.CHANGE_PASSWORD_SUCCESS,
                 resp
@@ -26,7 +28,7 @@ export const changePassword = (oldPassword: string, newPassword: string) => ((di
                 status: 'success',
                 message: 'Password successfully changed!'
             }))
-        }, error => {
+        }, (error) => {
             return dispatch({
                 type: constants.CHANGE_PASSWORD_ERROR,
                 error,
@@ -43,7 +45,7 @@ export function updateCurrentUser(data: {}) {
 
         return axios.put('/api/users/0/', data)
             .then((json = {}) => json.data)
-            .then(resp => {
+            .then((resp) => {
                 dispatch({
                     type: constants.SUBMIT_CURRENT_USER_SUCCESS,
                     resp
@@ -55,7 +57,7 @@ export function updateCurrentUser(data: {}) {
                 }))
 
                 return resp
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: constants.SUBMIT_CURRENT_USER_ERROR,
                     error,
@@ -87,7 +89,7 @@ export function submitSetting(data: {id?: string, type: string, data: Object}, n
 
         return promise
             .then((json = {}) => json.data)
-            .then(resp => {
+            .then((resp) => {
                 dispatch({
                     type: constants.SUBMIT_SETTING_SUCCESS,
                     settingType: data.type,
@@ -108,7 +110,7 @@ export function submitSetting(data: {id?: string, type: string, data: Object}, n
                 }
 
                 return resp
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: constants.SUBMIT_SETTING_ERROR,
                     settingType: data.type,
