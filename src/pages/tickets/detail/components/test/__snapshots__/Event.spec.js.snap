@@ -28,6 +28,7 @@ exports[`Event component should display correctly a failed event for a Recharge 
          
         <a
           href="https://my-store.myshopify.com/tools/recurring/customers/sd478fs57dfds4f1/orders"
+          rel="noopener noreferrer"
           target="_blank"
         >
           8
@@ -157,6 +158,7 @@ exports[`Event component should display correctly a failed event for a Recharge 
          
         <a
           href="https://my-store.myshopify.com/tools/recurring/customers/sd478fs57dfds4f1/subscriptions/6"
+          rel="noopener noreferrer"
           target="_blank"
         >
           6
@@ -277,6 +279,7 @@ exports[`Event component should display correctly a failed event for a Shopify I
          
         <a
           href="https://my-store.myshopify.com/admin/orders/3"
+          rel="noopener noreferrer"
           target="_blank"
         >
           2 × Beautiful butterfly
@@ -415,6 +418,7 @@ exports[`Event component should display correctly a failed event for a Shopify O
          
         <a
           href="https://my-store.myshopify.com/admin/orders/3"
+          rel="noopener noreferrer"
           target="_blank"
         >
           #1234
@@ -535,6 +539,7 @@ exports[`Event component should display correctly a successful event for a Recha
          
         <a
           href="https://my-store.myshopify.com/tools/recurring/customers/sd478fs57dfds4f1/orders"
+          rel="noopener noreferrer"
           target="_blank"
         >
           8
@@ -653,6 +658,7 @@ exports[`Event component should display correctly a successful event for a Recha
          
         <a
           href="https://my-store.myshopify.com/tools/recurring/customers/sd478fs57dfds4f1/subscriptions/6"
+          rel="noopener noreferrer"
           target="_blank"
         >
           6
@@ -762,6 +768,7 @@ exports[`Event component should display correctly a successful event for a Shopi
          
         <a
           href="https://my-store.myshopify.com/admin/orders/3"
+          rel="noopener noreferrer"
           target="_blank"
         >
           2 × Beautiful butterfly
@@ -889,6 +896,7 @@ exports[`Event component should display correctly a successful event for a Shopi
          
         <a
           href="https://my-store.myshopify.com/admin/orders/3"
+          rel="noopener noreferrer"
           target="_blank"
         >
           #1234

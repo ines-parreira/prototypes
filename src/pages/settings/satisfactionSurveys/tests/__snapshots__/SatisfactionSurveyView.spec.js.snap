@@ -3292,6 +3292,7 @@ exports[`SatisfactionSurveyView render should render the upgrade to pro componen
                                 >
                                   <a
                                     href="/static/private/img/presentationals/satisfaction-survey-stats.png"
+                                    rel="noopener noreferrer"
                                     target="_blank"
                                   >
                                     <img
@@ -3315,6 +3316,7 @@ exports[`SatisfactionSurveyView render should render the upgrade to pro componen
                                 >
                                   <a
                                     href="/static/private/img/presentationals/satisfaction-survey-ticket-details.png"
+                                    rel="noopener noreferrer"
                                     target="_blank"
                                   >
                                     <img

@@ -27,7 +27,7 @@ describe('multi select options field tag', () => {
                 {...defaultOptions}
             />
         )
-        expect(render(wrapper.find('span').last()).html()).toEqual(render(option.displayLabel).html())
+        expect(render((wrapper.find('span').last(): any)).html()).toEqual(render((option.displayLabel: any)).html())
         wrapper.setProps({
             option: {
                 ...option,
