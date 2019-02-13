@@ -10,10 +10,8 @@ type Props = {
     location: Object
 }
 
-export default class SettingsNavbar extends React.Component<Props>{
-    static propTypes = {
-    }
-
+export default class SettingsNavbar extends React.Component<Props> {
+    static propTypes = {}
     static contextTypes = {
         closePanel: PropTypes.func.isRequired,
     }
@@ -34,6 +32,7 @@ export default class SettingsNavbar extends React.Component<Props>{
                 to: 'change-password',
                 text: 'Change password'
             }, {
+                requiredRole: 'admin',
                 to: 'api',
                 text: 'REST API',
                 className: 'd-none d-md-block',
@@ -47,6 +46,7 @@ export default class SettingsNavbar extends React.Component<Props>{
                 text: 'Integrations',
                 className: 'd-none d-md-block',
             }, {
+                requiredRole: 'admin',
                 to: 'rules',
                 text: 'Rules',
                 className: 'd-none d-md-block',
@@ -60,7 +60,7 @@ export default class SettingsNavbar extends React.Component<Props>{
                 text: 'Billing & Usage',
                 className: 'd-none d-md-block',
             }, {
-                requiredRole: 'admin',
+                requiredRole: 'agent',
                 to: 'manage-tags',
                 text: 'Tags',
                 className: 'd-none d-md-block',
@@ -97,43 +97,50 @@ export default class SettingsNavbar extends React.Component<Props>{
         return (
             <div>
                 {
-                    categories.map(({name, icon, links}, index) => (
-                        <div
-                            className="item"
-                            key={index}
-                        >
-                            <h4><i className="material-icons">{icon}</i> {name}</h4>
+                    categories.map(({name, icon, links}, index) => {
+                        if (!links.length) {
+                            return null
+                        }
 
-                            <div className="menu">
-                                {
-                                    links.map(({to, text, requiredRole, className}) => {
-                                        // hide link if user hasn't the required role
-                                        if (requiredRole && !hasRole(currentUser, requiredRole)) {
-                                            return
-                                        }
+                        return (
+                            <div
+                                className="item"
+                                key={index}
+                            >
+                                <h4><i className="material-icons">{icon}</i> {name}</h4>
 
-                                        const isActive = pathname.split('/').includes(to)
-                                            || (/settings\/?$/.test(pathname) && to === 'profile')
+                                <div className="menu">
+                                    {
+                                        links.map(({to, text, requiredRole, className}) => {
+                                            // hide link if user hasn't the required role
+                                            if (requiredRole && !hasRole(currentUser, requiredRole)) {
+                                                return
+                                            }
 
-                                        return (
-                                            <Link
-                                                key={to}
-                                                to={`/app/settings/${to}`}
-                                                className={classnames(className, 'item', {
-                                                    active: isActive,
-                                                })}
-                                                onClick={() => {
-                                                    this.context.closePanel()
-                                                }}
-                                            >
-                                                {text}
-                                            </Link>
-                                        )
-                                    })
-                                }
+                                            const isActive = pathname.split('/').includes(to)
+                                                || (/settings\/?$/.test(pathname) && to === 'profile')
+
+                                            return (
+                                                <Link
+                                                    key={to}
+                                                    to={`/app/settings/${to}`}
+                                                    className={classnames(className, 'item', {
+                                                        active: isActive,
+                                                    })}
+                                                    onClick={() => {
+                                                        this.context.closePanel()
+                                                    }}
+                                                >
+                                                    {text}
+                                                </Link>
+                                            )
+                                        })
+                                    }
+                                </div>
                             </div>
-                        </div>
-                    ))
+                        )
+                    })
+
                 }
             </div>
         )

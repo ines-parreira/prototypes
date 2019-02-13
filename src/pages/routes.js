@@ -326,7 +326,7 @@ export default (
             <Route
                 path="manage-tags"
                 components={{
-                    content: UserRoleRequired(ManageTagsContainer, 'admin'),
+                    content: UserRoleRequired(ManageTagsContainer, 'agent'),
                     navbar: SettingsNavbarContainer
                 }}
             />
