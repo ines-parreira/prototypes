@@ -204,7 +204,7 @@ class FilterTopbar extends React.Component {
                         <DropdownToggle
                             caret
                             type="button"
-                            color="primary"
+                            color="secondary"
                             size="sm"
                             className="mr-2"
                             onClick={() => {
