@@ -214,7 +214,7 @@ class FilterTopbar extends React.Component {
                             <i className="material-icons mr-2">
                                 add
                             </i>
-                            Add rule
+                            Add filter
                         </DropdownToggle>
                         <DropdownMenu>
                             {
