@@ -522,7 +522,6 @@ export function guessFieldValueFromRawData(data, type) {
                         <a
                             href={data}
                             target="_blank"
-                            rel="noopener noreferrer"
                         >
                             {data.length > 60 ? `${data.slice(0, 57)}...` : data}
                         </a>
@@ -536,7 +535,6 @@ export function guessFieldValueFromRawData(data, type) {
                         <a
                             href={`mailto:${data}`}
                             target="_blank"
-                            rel="noopener noreferrer"
                         >
                             {data}
                         </a>

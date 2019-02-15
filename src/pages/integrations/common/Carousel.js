@@ -41,7 +41,6 @@ export default class Carousel extends React.Component {
                                 <a
                                     href={url}
                                     target="_blank"
-                                    rel="noopener noreferrer"
                                 >
                                     <img
                                         src={url}

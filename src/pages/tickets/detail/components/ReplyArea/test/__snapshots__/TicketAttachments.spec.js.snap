@@ -84,7 +84,6 @@ exports[`TicketAttachments component private should display both an error messag
     href="http://gorgias.io/bar"
     key="0"
     onClick={[Function]}
-    rel="noopener noreferrer"
     style={
       Object {
         "backgroundImage": "url(http://proxy-url/120x80,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar)",
@@ -116,7 +115,6 @@ exports[`TicketAttachments component private should display both an error messag
     href="http://gorgias.io/foo"
     key="1"
     onClick={[Function]}
-    rel="noopener noreferrer"
     style={
       Object {
         "backgroundImage": "url(http://proxy-url/120x80,sSfpnD-PAiV-KrmrNl6gZ9Cq7eu50_7Sd3bZqOar3Jt4/http://gorgias.io/foo)",
@@ -193,7 +191,6 @@ exports[`TicketAttachments component read-only should match snapshot 1`] = `
     href="http://gorgias.io/bar"
     key="0"
     onClick={[Function]}
-    rel="noopener noreferrer"
     style={
       Object {
         "backgroundImage": "url(http://proxy-url/120x80,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar)",
@@ -225,7 +222,6 @@ exports[`TicketAttachments component read-only should match snapshot 1`] = `
     href="foo"
     key="1"
     onClick={[Function]}
-    rel="noopener noreferrer"
     style={null}
     target="_blank"
   >

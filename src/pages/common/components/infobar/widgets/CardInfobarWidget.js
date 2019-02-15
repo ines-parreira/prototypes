@@ -121,7 +121,6 @@ class CardInfobarWidget extends React.Component {
                     <a
                         href={renderTemplate(link, source)}
                         target="_blank"
-                        rel="noopener noreferrer"
                     >
                         {renderTemplate(title, source)}
                     </a>

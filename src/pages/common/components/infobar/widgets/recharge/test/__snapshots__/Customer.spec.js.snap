@@ -3,7 +3,6 @@
 exports[`Customer TitleWrapper should render 1`] = `
 <a
   href="https://mystore.myshopify.com/tools/recurring/customers/a8s4d86as54d/"
-  rel="noopener noreferrer"
   target="_blank"
 />
 `;

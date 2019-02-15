@@ -92,7 +92,6 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
             <a
                 href={`https://${shopName}.myshopify.com/admin/customers/${(source.get('id') || '').toString()}`}
                 target="_blank"
-                rel="noopener noreferrer"
             >
                 {children}
             </a>

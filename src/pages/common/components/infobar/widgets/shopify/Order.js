@@ -262,7 +262,6 @@ class TitleWrapper extends React.Component<TitleWrapperProps> { // eslint-disabl
             <a
                 href={`https://${shopName}.myshopify.com/admin/orders/${(source.get('id') || '').toString()}`}
                 target="_blank"
-                rel="noopener noreferrer"
             >
                 {children}
             </a>

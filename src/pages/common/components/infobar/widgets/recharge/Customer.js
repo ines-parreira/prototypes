@@ -32,7 +32,6 @@ export class TitleWrapper extends React.Component<Props> { // eslint-disable-lin
             <a
                 href={`https://${storeName}.myshopify.com/tools/recurring/customers/${customerHash}/`}
                 target="_blank"
-                rel="noopener noreferrer"
             >
                 {children}
             </a>
