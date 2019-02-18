@@ -3,16 +3,9 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import classnames from 'classnames'
-import {
-    Container,
-    Button,
-    Form,
-    Popover,
-    PopoverHeader,
-    PopoverBody,
-} from 'reactstrap'
+import {Button, Container, Form, Popover, PopoverBody, PopoverHeader,} from 'reactstrap'
 
-import type {Map, List} from 'immutable'
+import type {List, Map} from 'immutable'
 
 import InputField from '../../common/forms/InputField'
 
@@ -20,19 +13,17 @@ import Pagination from '../../common/components/Pagination'
 import Loader from '../../common/components/Loader'
 import PageHeader from '../../common/components/PageHeader'
 import Video from '../../common/components/Video'
+import Search from '../../common/components/Search'
 
 import * as tagsActions from '../../../state/tags/actions'
 import * as tagsSelectors from '../../../state/tags/selectors'
 
 import Table from './Table'
-
 import css from './ManageTags.less'
-
-
 
 type Props = {
     tags: List<*>,
-    meta: Map<*,*>,
+    meta: Map<*, *>,
     currentPage: number,
     numberPages: number,
     fetch: typeof tagsActions.fetchTags,
@@ -46,6 +37,7 @@ type Props = {
 
 type State = {
     sort: string,
+    search: string,
     reverse: boolean,
     newTag: string,
     showCreationPopup: boolean,
@@ -59,6 +51,7 @@ export class ManageTags extends Component<Props, State> {
     state = {
         sort: 'usage',
         reverse: true,
+        search: '',
         newTag: '',
         showCreationPopup: false,
         askMergeConfirmation: false,
@@ -84,16 +77,22 @@ export class ManageTags extends Component<Props, State> {
             // needed in case user deletes all tags on the last page. We want to now fetch tags for previous page
             this.props.setPage(nextNumPages)
         } else if (currentPage !== nextPage) {
-            this.props.fetch(nextPage, this.state.sort, this.state.reverse)
+            this.props.fetch(nextPage, this.state.sort, this.state.reverse, this.state.search)
         }
     }
 
     _fetchPage = () => {
-        this.props.fetch(this.props.currentPage, this.state.sort, this.state.reverse)
+        this.props.fetch(this.props.currentPage, this.state.sort, this.state.reverse, this.state.search)
+    }
+
+    _onSearch = (search: string) => {
+        this.setState({search}, () => {
+            this.props.fetch(1, this.state.sort, this.state.reverse, search)
+        })
     }
 
     _onSort = (sort: string, reverse: boolean) => {
-        this.props.fetch(this.props.currentPage, sort, reverse)
+        this.props.fetch(this.props.currentPage, sort, reverse, this.state.search)
             .then(() => {
                 this.setState({
                     sort,
@@ -147,6 +146,7 @@ export class ManageTags extends Component<Props, State> {
             })
         })
     }
+
 
     _toggleCreationPopup = () => {
         this.setState({showCreationPopup: !this.state.showCreationPopup})
@@ -257,7 +257,15 @@ export class ManageTags extends Component<Props, State> {
                             )
                         }
 
-                        <span>
+                        <div className="d-flex">
+                            <Search
+                                bindKey
+                                forcedQuery={this.state.search}
+                                onChange={this._onSearch}
+                                placeholder="Search tags by name..."
+                                searchDebounceTime={300}
+                                className="mr-2"
+                            />
                             <Button
                                 id="create-tag-button"
                                 color="success"
@@ -302,7 +310,7 @@ export class ManageTags extends Component<Props, State> {
                                     </Form>
                                 </PopoverBody>
                             </Popover>
-                        </span>
+                        </div>
                     </div>
                 </PageHeader>
 

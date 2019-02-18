@@ -33,7 +33,7 @@ export function addTags(tags: Array<string> | string) {
     }
 }
 
-export function fetchTags(page: ?number, sort: string = 'usage', reverse: boolean = true): thunkActionType {
+export function fetchTags(page: ?number, sort: string = 'usage', reverse: boolean = true, search: string = ''): thunkActionType {
     return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
         dispatch({
             type: constants.FETCH_TAG_LIST_START
@@ -48,7 +48,8 @@ export function fetchTags(page: ?number, sort: string = 'usage', reverse: boolea
             params: {
                 page,
                 order_by: sort,
-                order_dir: reverse ? 'desc' : 'asc'
+                order_dir: reverse ? 'desc' : 'asc',
+                search
             }
         })
             .then((json = {}) => json.data)
@@ -235,7 +236,7 @@ export const merge = (ids: List<*>): thunkActionType => {
  * @param page
  * @returns {{type: *, page: *}}
  */
-export function setPage(page: number): actionType & {page: number} {
+export function setPage(page: number): actionType & { page: number } {
     return {
         type: constants.SET_TAG_LIST_PAGE,
         page,

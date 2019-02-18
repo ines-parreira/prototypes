@@ -66,6 +66,15 @@ describe('tags actions', () => {
             return store.dispatch(actions.fetchTags(1, 'usage', false))
         })
 
+        it('params search', () => {
+            mockServer.onGet('/api/tags/')
+                .reply(({params}) => {
+                    expect(params).toMatchSnapshot()
+                    return [200]
+                })
+            return store.dispatch(actions.fetchTags(1, 'name', false, 'something'))
+        })
+
         it('fetch list also sorts', () => {
             mockServer
                 .onGet('/api/tags/')

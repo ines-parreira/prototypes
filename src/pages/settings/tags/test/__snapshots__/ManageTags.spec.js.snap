@@ -119,7 +119,19 @@ exports[`ManageTags component mounts correctly 1`] = `
           </PopoverBody>
         </Popover>
       </span>
-      <span>
+      <div
+        className="d-flex"
+      >
+        <Search
+          bindKey={true}
+          className="mr-2"
+          disabled={false}
+          forcedQuery=""
+          onChange={[Function]}
+          placeholder="Search tags by name..."
+          searchDebounceTime={300}
+          style={Object {}}
+        />
         <Button
           color="success"
           id="create-tag-button"
@@ -187,7 +199,7 @@ exports[`ManageTags component mounts correctly 1`] = `
             </Form>
           </PopoverBody>
         </Popover>
-      </span>
+      </div>
     </div>
   </PageHeader>
   <Container
