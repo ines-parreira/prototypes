@@ -1,14 +1,14 @@
 // @flow
 import axios from 'axios'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import _pick from 'lodash/pick'
 import _get from 'lodash/get'
 
-import type {Map} from 'immutable'
-
 import {notify} from '../notifications/actions'
-
 import type {dispatchType, thunkActionType} from '../types'
+
+import * as constants from './constants'
+
 
 type fetchMacrosParamsTypes = {
     search?: string,
@@ -100,10 +100,12 @@ export const deleteMacro = (macroId: string): thunkActionType =>
                 }))
 
                 return Promise.resolve(resp)
-            }, () => {
+            }, (error) => {
                 return dispatch({
-                    status: 'error',
-                    message: 'Failed to delete macro'
+                    type: constants.DELETE_MACRO_ERROR,
+                    reason: 'Failed to delete the integration',
+                    verbose: true,
+                    error,
                 })
             })
     }

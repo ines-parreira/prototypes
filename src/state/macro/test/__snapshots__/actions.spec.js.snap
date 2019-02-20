@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`macro actions should dispatch a notify action on success 1`] = `Array []`;
+
+exports[`macro actions should dispatch an error action 1`] = `
+Array [
+  Object {
+    "error": [Error: Request failed with status code 404],
+    "reason": "Failed to delete the integration",
+    "type": "DELETE_MACRO_ERROR",
+    "verbose": true,
+  },
+]
+`;

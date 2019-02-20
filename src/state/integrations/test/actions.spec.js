@@ -148,6 +148,18 @@ describe('integrations actions', () => {
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
+    it('delete integration error', () => {
+        const integration = fromJS({
+            id: 1,
+            type: 'email',
+        })
+
+        mockServer.onDelete('/api/integrations/1/').reply(400)
+
+        return store.dispatch(actions.deleteIntegration(integration))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
     describe('verifyEmailIntegration action', () => {
         it('should dispatch an EMAIL_INTEGRATION_VERIFIED action on success', () => {
             store = mockStore({integrations: fromJS({integration: {id: 1}})})

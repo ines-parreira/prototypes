@@ -146,6 +146,12 @@ describe('tags actions', () => {
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
+    it('remove error', () => {
+        mockServer.onDelete('/api/tags/1/').reply(400)
+        return store.dispatch(actions.remove(1))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
     it('bulkDelete', () => {
         mockServer.onDelete('/api/tags/')
             .reply((config) => {
@@ -157,6 +163,20 @@ describe('tags actions', () => {
             })
 
         return store.dispatch(actions.bulkDelete([1, 2]))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
+    it('bulkDelete error', () => {
+        mockServer.onDelete('/api/tags/')
+            .reply((config) => {
+                if (_isEqual(config.data, {ids: [1, 2]})) {
+                    return [204]
+                }
+
+                return [404]
+            })
+
+        return store.dispatch(actions.bulkDelete([5]))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
@@ -180,6 +200,21 @@ describe('tags actions', () => {
                 expect(expectedActions).toMatchSnapshot()
             })
     })
+
+    it('merge error', () => {
+        mockServer.onPut('/api/tags/3/merge/')
+            .reply((config) => {
+                if (_isEqual(config.data, {source_tags_ids: [1, 2]})) {
+                    return [200]
+                }
+
+                return [400]
+            })
+
+        return store.dispatch(actions.merge(fromJS([2, 3])))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
 
     it('setPage', () => {
         store.dispatch(actions.setPage(1))

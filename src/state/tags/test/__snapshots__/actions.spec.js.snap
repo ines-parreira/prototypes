@@ -16,8 +16,18 @@ exports[`tags actions bulkDelete 1`] = `
 Array [
   Object {
     "error": [Error: Request failed with status code 404],
-    "reason": "Unable to delete tags, please try again.",
-    "type": "ERROR",
+    "type": "REMOVE_TAG_ERROR",
+    "verbose": true,
+  },
+]
+`;
+
+exports[`tags actions bulkDelete error 1`] = `
+Array [
+  Object {
+    "error": [Error: Request failed with status code 404],
+    "type": "REMOVE_TAG_ERROR",
+    "verbose": true,
   },
 ]
 `;
@@ -131,7 +141,34 @@ Array [
 ]
 `;
 
+exports[`tags actions merge error 1`] = `
+Array [
+  Object {
+    "ids": Immutable.List [
+      2,
+      3,
+],
+    "type": "MERGE_TAGS",
+  },
+  Object {
+    "error": [Error: Request failed with status code 400],
+    "reason": "Unable to merge these tags",
+    "type": "ERROR",
+  },
+]
+`;
+
 exports[`tags actions remove 1`] = `Array []`;
+
+exports[`tags actions remove error 1`] = `
+Array [
+  Object {
+    "error": [Error: Request failed with status code 400],
+    "type": "REMOVE_TAG_ERROR",
+    "verbose": true,
+  },
+]
+`;
 
 exports[`tags actions save 1`] = `
 Array [

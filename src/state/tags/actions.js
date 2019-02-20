@@ -182,7 +182,11 @@ export const remove = (id: string): thunkActionType => {
                     message: 'Tag deleted successfully',
                 }))
             }, (error) => {
-                return dispatch(createErrorNotification(error, 'Unable to delete the tag, please try again.'))
+                return dispatch({
+                    type: constants.REMOVE_TAG_ERROR,
+                    verbose: true,
+                    error
+                })
             })
     }
 }
@@ -200,7 +204,11 @@ export const bulkDelete = (ids: Array<string>): thunkActionType => {
                     message: `${ids.length} tags deleted successfully`
                 }))
             }, (error) => {
-                return dispatch(createErrorNotification(error, 'Unable to delete tags, please try again.'))
+                return dispatch({
+                    type: constants.REMOVE_TAG_ERROR,
+                    verbose: true,
+                    error
+                })
             })
     }
 }

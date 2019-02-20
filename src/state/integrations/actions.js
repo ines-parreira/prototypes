@@ -210,8 +210,9 @@ export function deleteIntegration(integration: Map<*,*>) {
             }, (error) => {
                 return dispatch({
                     type: constants.DELETE_INTEGRATION_ERROR,
+                    reason: 'Failed to delete the integration',
+                    verbose: true,
                     error,
-                    reason: 'Failed to delete the integration'
                 })
             })
     }

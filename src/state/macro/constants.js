@@ -1,0 +1,1 @@
+export const DELETE_MACRO_ERROR = 'DELETE_MACRO_ERROR'

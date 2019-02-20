@@ -8,6 +8,11 @@ import * as actions from '../actions'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
+jest.mock('../../notifications/actions', () => {
+    return {
+        notify: jest.fn(() => (args) => args),
+    }
+})
 
 describe('macro actions', () => {
     let store
@@ -70,5 +75,19 @@ describe('macro actions', () => {
                     })
                 })
         })
+    })
+
+    it('should dispatch a notify action on success', () => {
+        mockServer.onDelete('/api/macros/1/').reply(200)
+
+        return store.dispatch(actions.deleteMacro(1))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
+    it('should dispatch an error action', () => {
+        mockServer.onDelete('/api/integrations/1/').reply(400)
+
+        return store.dispatch(actions.deleteMacro(1))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 })
