@@ -7,6 +7,7 @@ import MockAdapter from 'axios-mock-adapter'
 
 import * as actions from '../actions'
 import {initialState} from '../reducers'
+import {AGENT_ROLE} from '../../../config/user'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -32,7 +33,7 @@ describe('agents actions', () => {
         const data = {
             name: 'Alex',
             email: 'alex@gorgias.io',
-            role: 'agent'
+            role: AGENT_ROLE
         }
 
         mockServer.onPost('/api/users/').reply(200, {data})
@@ -77,7 +78,7 @@ describe('agents actions', () => {
             id: 2,
             name: 'Alex',
             email: 'alex@gorgias.io',
-            role: 'agent'
+            role: AGENT_ROLE
         }
 
         mockServer.onPut('/api/users/2/').reply(200, {data})

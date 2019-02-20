@@ -6,14 +6,16 @@ import classnames from 'classnames'
 import _isObject from 'lodash/isObject'
 import _isArray from 'lodash/isArray'
 import _isString from 'lodash/isString'
+import _capitalize from 'lodash/capitalize'
 import {Badge} from 'reactstrap'
 
 import type {Node} from 'react'
 import type {Map} from 'immutable'
 
+import {ADMIN_ROLE, AGENT_ROLE, BASIC_AGENT_ROLE, LITE_AGENT_ROLE, OBSERVER_AGENT_ROLE, STAFF_ROLE} from '../../../config/user'
 import Tooltip from '../components/Tooltip'
 import Avatar from '../components/Avatar'
-import {formatDatetime, toJS, isImmutable} from '../../../utils'
+import {formatDatetime, toJS, isImmutable, humanizeString} from '../../../utils'
 
 import * as customersHelpers from '../../../state/customers/helpers'
 import {DEFAULT_TAG_COLOR} from '../../../config'
@@ -179,7 +181,7 @@ StatusLabel.displayName = 'StatusLabel'
  * CHANNEL
  */
 
-export const ChannelLabel = ({channel}: {channel: SourceType}) => (
+export const ChannelLabel = ({channel}: { channel: SourceType }) => (
     <SourceIcon
         type={channel}
         className="text-secondary"
@@ -235,18 +237,27 @@ export const RoleLabel = ({roles = 'user'}: { roles: string }) => {
         }
     }
 
-    let color = 'secondary'
-    let role = 'User'
+    let color = null
+    let role = null
 
-    if (roles.includes('staff')) {
+    if (roles.includes(STAFF_ROLE)) {
+        color = 'dark'
+        role = _capitalize(STAFF_ROLE)
+    } else if (roles.includes(ADMIN_ROLE)) {
         color = 'danger'
-        role = 'Staff'
-    } else if (roles.includes('admin')) {
-        color = 'info'
-        role = 'Admin'
-    } else if (roles.includes('agent')) {
+        role = _capitalize(ADMIN_ROLE)
+    } else if (roles.includes(AGENT_ROLE)) {
         color = 'warning'
-        role = 'Agent'
+        role = 'Lead agent'
+    } else if (roles.includes(BASIC_AGENT_ROLE)) {
+        color = 'info'
+        role = _capitalize(humanizeString(BASIC_AGENT_ROLE))
+    } else if (roles.includes(LITE_AGENT_ROLE)) {
+        color = 'primary'
+        role = _capitalize(humanizeString(LITE_AGENT_ROLE))
+    } else if (roles.includes(OBSERVER_AGENT_ROLE)) {
+        color = 'success'
+        role = _capitalize(humanizeString(OBSERVER_AGENT_ROLE))
     }
 
     return (

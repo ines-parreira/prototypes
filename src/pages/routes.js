@@ -1,6 +1,8 @@
 import React from 'react'
 import {IndexRoute, Route} from 'react-router'
 
+import {ADMIN_ROLE, AGENT_ROLE} from '../config/user'
+
 import App from './App'
 import IntegrationDetailContainer from './integrations/detail/IntegrationDetailContainer'
 import IntegrationListContainer from './integrations/list/IntegrationListContainer'
@@ -37,8 +39,10 @@ import ImportZendeskDetail from './settings/importData/zendesk/ImportZendeskDeta
 import SatisfactionSurveyView from './settings/satisfactionSurveys/SatisfactionSurveyView'
 
 import * as Team from './settings/team'
+
 import UserAuditList from './settings/team/UsersAudit/UserAuditList'
 import BusinessHours from './settings/businessHours/BusinessHours'
+
 
 export default (
     <Route
@@ -268,28 +272,28 @@ export default (
             <Route
                 path="audit"
                 components={{
-                    content: UserRoleRequired(UserAuditList, 'admin'),
+                    content: UserRoleRequired(UserAuditList, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer
                 }}
             />
             <Route path="team">
                 <IndexRoute
                     components={{
-                        content: UserRoleRequired(Team.List, 'admin'),
+                        content: UserRoleRequired(Team.List, ADMIN_ROLE),
                         navbar: SettingsNavbarContainer
                     }}
                 />
                 <Route
                     path="add"
                     components={{
-                        content: UserRoleRequired(Team.Form, 'admin'),
+                        content: UserRoleRequired(Team.Form, ADMIN_ROLE),
                         navbar: SettingsNavbarContainer
                     }}
                 />
                 <Route
                     path="update/:id"
                     components={{
-                        content: UserRoleRequired(Team.Form, 'admin'),
+                        content: UserRoleRequired(Team.Form, ADMIN_ROLE),
                         navbar: SettingsNavbarContainer
                     }}
                 />
@@ -297,28 +301,28 @@ export default (
             <Route path="billing">
                 <IndexRoute
                     components={{
-                        content: UserRoleRequired(BillingContainer, 'admin'),
+                        content: UserRoleRequired(BillingContainer, ADMIN_ROLE),
                         navbar: SettingsNavbarContainer
                     }}
                 />
                 <Route
                     path="add-credit-card"
                     components={{
-                        content: UserRoleRequired(CreditCardContainer, 'admin'),
+                        content: UserRoleRequired(CreditCardContainer, ADMIN_ROLE),
                         navbar: SettingsNavbarContainer
                     }}
                 />
                 <Route
                     path="update-credit-card"
                     components={{
-                        content: UserRoleRequired(CreditCardContainer, 'admin'),
+                        content: UserRoleRequired(CreditCardContainer, ADMIN_ROLE),
                         navbar: SettingsNavbarContainer
                     }}
                 />
                 <Route
                     path="plans"
                     components={{
-                        content: UserRoleRequired(BillingPlansContainer, 'admin'),
+                        content: UserRoleRequired(BillingPlansContainer, ADMIN_ROLE),
                         navbar: SettingsNavbarContainer
                     }}
                 />
@@ -326,28 +330,28 @@ export default (
             <Route
                 path="manage-tags"
                 components={{
-                    content: UserRoleRequired(ManageTagsContainer, 'agent'),
+                    content: UserRoleRequired(ManageTagsContainer, AGENT_ROLE),
                     navbar: SettingsNavbarContainer
                 }}
             />
             <Route path="requests">
                 <IndexRoute
                     components={{
-                        content: UserRoleRequired(ManageRequestsContainer, 'admin'),
+                        content: UserRoleRequired(ManageRequestsContainer, ADMIN_ROLE),
                         navbar: SettingsNavbarContainer
                     }}
                 />
                 <Route
                     path="add"
                     components={{
-                        content: UserRoleRequired(ManageRequestItemContainer, 'admin'),
+                        content: UserRoleRequired(ManageRequestItemContainer, ADMIN_ROLE),
                         navbar: SettingsNavbarContainer
                     }}
                 />
                 <Route
                     path="update/:id"
                     components={{
-                        content: UserRoleRequired(ManageRequestItemContainer, 'admin'),
+                        content: UserRoleRequired(ManageRequestItemContainer, ADMIN_ROLE),
                         navbar: SettingsNavbarContainer
                     }}
                 />
@@ -355,14 +359,14 @@ export default (
             <Route path="import-data">
                 <IndexRoute
                     components={{
-                        content: UserRoleRequired(ImportDataContainer, 'admin'),
+                        content: UserRoleRequired(ImportDataContainer, ADMIN_ROLE),
                         navbar: SettingsNavbarContainer
                     }}
                 />
                 <Route
                     path="zendesk"
                     components={{
-                        content: UserRoleRequired(ImportZendeskDetail, 'admin'),
+                        content: UserRoleRequired(ImportZendeskDetail, ADMIN_ROLE),
                         navbar: SettingsNavbarContainer
                     }}
                 />
@@ -370,14 +374,14 @@ export default (
             <Route
                 path="satisfaction-surveys"
                 components={{
-                    content: UserRoleRequired(SatisfactionSurveyView, 'admin'),
+                    content: UserRoleRequired(SatisfactionSurveyView, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer
                 }}
             />
             <Route
                 path="business-hours"
                 components={{
-                    content: UserRoleRequired(BusinessHours, 'admin'),
+                    content: UserRoleRequired(BusinessHours, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer
                 }}
             />

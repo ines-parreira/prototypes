@@ -1,3 +1,5 @@
+import {ADMIN_ROLE, AGENT_ROLE, STAFF_ROLE} from '../config/user'
+
 export const currentUser = {
     lastname: 'Plugaru',
     settings: [
@@ -151,15 +153,15 @@ export const currentUser = {
     roles: [
         {
             id: 2,
-            name: 'agent'
+            name: AGENT_ROLE
         },
         {
             id: 3,
-            name: 'admin'
+            name: ADMIN_ROLE
         },
         {
             id: 4,
-            name: 'staff'
+            name: STAFF_ROLE
         }
     ],
     customer: null,

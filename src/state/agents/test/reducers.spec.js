@@ -4,6 +4,7 @@ import {fromJS} from 'immutable'
 
 import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
+import {AGENT_ROLE, USER_ROLES} from '../../../config/user'
 
 jest.addMatchers(immutableMatchers)
 
@@ -33,7 +34,7 @@ describe('agents reducers', () => {
             reducer(
                 initialState, {
                     type: types.FETCH_USER_LIST_SUCCESS,
-                    roles: ['agent'],
+                    roles: [AGENT_ROLE],
                     resp,
                 }
             )
@@ -43,7 +44,7 @@ describe('agents reducers', () => {
             reducer(
                 initialState, {
                     type: types.FETCH_USER_LIST_SUCCESS,
-                    roles: ['agent', 'admin'],
+                    roles: USER_ROLES,
                     resp,
                 }
             )

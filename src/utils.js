@@ -15,7 +15,6 @@ import _flatMapDeep from 'lodash/flatMapDeep'
 import _get from 'lodash/get'
 import _has from 'lodash/has'
 import _isNumber from 'lodash/isNumber'
-import _isObject from 'lodash/isObject'
 import _isString from 'lodash/isString'
 import _last from 'lodash/last'
 import _map from 'lodash/map'
@@ -31,8 +30,10 @@ import TICKET_LANGUAGES from './config/ticketLanguages'
 import {AUTHORIZED_NOTIFICATION_TYPES, type notificationType} from './state/notifications/actions'
 import type {viewsStateType} from './state/views/types'
 import type {actionTemplateType, esprimaParse, reactRouterRoute, schemasType} from './types'
+import {ADMIN_ROLE, USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user'
+import {getHighestRole} from './state/agents/helpers'
 
-type userType = { roles: Array<string | { name: string }> } | Map<*, *>
+type userType = Map<*, *>
 type messageType = {
     created_datetime: Date,
     source: { type: string }
@@ -511,69 +512,18 @@ export const fieldPath = (field: {} | Iterable<*, *> = {}): string => {
 }
 
 /**
- * Test if user is agent
- * @param user
- * @returns {boolean}
- */
-export const isAgent = (user: userType): boolean => {
-    if (isImmutable(user)) {
-        // $FlowFixMe
-        user = user.toJS()
-    }
-
-    // flow has issues with changing var type
-    // user.roles = List to user.roles = Array<{}>
-    let roles = user.roles || []
-
-    // $FlowFixMe
-    if (roles[0] && _isObject(roles[0])) {
-        // $FlowFixMe
-        roles = roles.map((role) => role.name)
-    }
-
-    // $FlowFixMe
-    return roles.includes('agent')
-        // $FlowFixMe
-        || roles.includes('admin')
-        // $FlowFixMe
-        || roles.includes('staff')
-}
-
-/**
  * Test if user is admin
  * @param user
  * @returns {boolean}
  */
 export const isAdmin = (user: userType): boolean => {
-    if (isImmutable(user)) {
-        // $FlowFixMe
-        user = user.toJS()
-    }
-
-    let roles = user.roles || []
-
-    // $FlowFixMe
-    if (roles[0] && _isObject(roles[0])) {
-        // $FlowFixMe
-        roles = roles.map((role) => role.name)
-    }
-
-    // $FlowFixMe
-    return roles.includes('admin')
-        // $FlowFixMe
-        || roles.includes('staff')
+    return hasRole(user, ADMIN_ROLE)
 }
 
 // Check if a user has a role
 export function hasRole(user: userType, requiredRole: string): boolean {
-    switch (requiredRole) {
-        case 'agent':
-            return isAgent(user)
-        case 'admin':
-            return isAdmin(user)
-        default:
-            return false
-    }
+    const userRole = getHighestRole(user)
+    return USER_ROLES_ORDERED_BY_PRIVILEGES.indexOf(userRole) >= USER_ROLES_ORDERED_BY_PRIVILEGES.indexOf(requiredRole)
 }
 
 /**

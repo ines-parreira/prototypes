@@ -1,3 +1,5 @@
+import {USER_ROLE} from '../config/user'
+
 export const customer = {
     lastname: 'Bon',
     meta: null,
@@ -31,7 +33,7 @@ export const customer = {
     email: 'jeanbon@gorgias.io',
     roles: [
         {
-            name: 'user',
+            name: USER_ROLE,
             id: 1
         }
     ],

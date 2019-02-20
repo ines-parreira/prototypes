@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import {Link} from 'react-router'
 
 import {hasRole} from '../../../../utils'
+import {ADMIN_ROLE, AGENT_ROLE} from '../../../../config/user'
 
 type Props = {
     currentUser: Object,
@@ -32,7 +33,7 @@ export default class SettingsNavbar extends React.Component<Props> {
                 to: 'change-password',
                 text: 'Change password'
             }, {
-                requiredRole: 'admin',
+                requiredRole: ADMIN_ROLE,
                 to: 'api',
                 text: 'REST API',
                 className: 'd-none d-md-block',
@@ -41,36 +42,36 @@ export default class SettingsNavbar extends React.Component<Props> {
             name: 'General',
             icon: 'settings',
             links: [{
-                requiredRole: 'admin',
+                requiredRole: ADMIN_ROLE,
                 to: 'integrations',
                 text: 'Integrations',
                 className: 'd-none d-md-block',
             }, {
-                requiredRole: 'admin',
+                requiredRole: ADMIN_ROLE,
                 to: 'rules',
                 text: 'Rules',
                 className: 'd-none d-md-block',
             }, {
-                requiredRole: 'admin',
+                requiredRole: ADMIN_ROLE,
                 to: 'team',
                 text: 'Team members'
             }, {
-                requiredRole: 'admin',
+                requiredRole: ADMIN_ROLE,
                 to: 'billing',
                 text: 'Billing & Usage',
                 className: 'd-none d-md-block',
             }, {
-                requiredRole: 'agent',
+                requiredRole: AGENT_ROLE,
                 to: 'manage-tags',
                 text: 'Tags',
                 className: 'd-none d-md-block',
             }, {
-                requiredRole: 'admin',
+                requiredRole: ADMIN_ROLE,
                 to: 'import-data',
                 text: 'Import data',
                 className: 'd-none d-md-block'
             }, {
-                requiredRole: 'admin',
+                requiredRole: ADMIN_ROLE,
                 to: 'business-hours',
                 text: 'Business hours',
                 className: 'd-none d-md-block'
@@ -80,7 +81,7 @@ export default class SettingsNavbar extends React.Component<Props> {
         // @xarg: temporary hiding of the requests navigation
         if (window.DEVELOPMENT || document.cookie.includes('is_gorgias_staff')) {
             categories[1].links.push({
-                requiredRole: 'admin',
+                requiredRole: ADMIN_ROLE,
                 to: 'requests',
                 text: 'Requests',
                 className: 'd-none d-md-block hidden-sm-down',
@@ -88,7 +89,7 @@ export default class SettingsNavbar extends React.Component<Props> {
         }
 
         categories[1].links.splice(2, 0, {
-            requiredRole: 'admin',
+            requiredRole: ADMIN_ROLE,
             to: 'satisfaction-surveys',
             text: 'Satisfaction',
             className: 'd-none d-md-block'

@@ -1,3 +1,5 @@
+import {ADMIN_ROLE, AGENT_ROLE, STAFF_ROLE} from '../config/user'
+
 export const agents = [
     {
         lastname: 'Support',
@@ -11,15 +13,15 @@ export const agents = [
         email: 'support@acme.gorgias.io',
         roles: [
             {
-                name: 'agent',
+                name: AGENT_ROLE,
                 id: 2
             },
             {
-                name: 'admin',
+                name: ADMIN_ROLE,
                 id: 3
             },
             {
-                name: 'staff',
+                name: STAFF_ROLE,
                 id: 4
             }
         ],
@@ -37,7 +39,7 @@ export const agents = [
         email: 'agent-smith@gorgias.io',
         roles: [
             {
-                name: 'agent',
+                name: AGENT_ROLE,
                 id: 2
             }
         ],

@@ -5,6 +5,8 @@ import type {Map} from 'immutable'
 
 import {actionType} from '../types'
 
+import {USER_ROLES} from '../../config/user'
+
 import * as constants from './constants.js'
 import * as agentsConstants from './constants'
 
@@ -30,7 +32,7 @@ export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> =>
             let newState = state
 
             // This is a bit lame but that's the proper definition of an agent.
-            if (_isEqual(action.roles, ['agent', 'admin'])) {
+            if (_isEqual(action.roles, USER_ROLES)) {
                 newState = newState.set('all', fromJS(action.resp.data))
             }
 

@@ -5,6 +5,8 @@ import {bindActionCreators} from 'redux'
 import {fromJS, List, Map} from 'immutable'
 import {Input} from 'reactstrap'
 
+import {USER_ROLES} from '../../../../../config/user'
+
 import Select from './ReactSelect'
 
 import * as userActions from './../../../../../state/agents/actions'
@@ -24,7 +26,7 @@ class AssigneeSelect extends React.Component<Props> {
         const {actions, agents} = this.props
 
         if (agents.isEmpty()) {
-            actions.fetchUsers(['agent', 'admin'])
+            actions.fetchUsers(USER_ROLES)
         }
     }
 

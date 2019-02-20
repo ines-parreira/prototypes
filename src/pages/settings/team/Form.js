@@ -16,6 +16,7 @@ import {
 
 import {toJS} from '../../../utils'
 import Loader from '../../common/components/Loader'
+import {ADMIN_ROLE, AGENT_ROLE, BASIC_AGENT_ROLE, LITE_AGENT_ROLE, OBSERVER_AGENT_ROLE} from '../../../config/user'
 
 import InputField from '../../common/forms/InputField'
 
@@ -54,7 +55,7 @@ export default class Form extends React.Component {
         isFetching: false,
         isSubmitting: false,
         name: '',
-        role: 'agent',
+        role: BASIC_AGENT_ROLE,
     }
 
     componentDidMount() {
@@ -78,7 +79,7 @@ export default class Form extends React.Component {
                     email: agent.email,
                     isFetching: false,
                     name: agent.name,
-                    role: toJS(role.get('name')),
+                    role
                 })
             })
     }
@@ -182,10 +183,20 @@ export default class Form extends React.Component {
                             value={this.state.role}
                             onChange={(value) => this.setState({role: value})}
                             required
-                            help="Agents can view & respond to tickets. Admins can add/remove team members, manage tags & billing."
+                            help={
+                                <div style={{paddingLeft: '10px'}}>
+                                    <li><b>Observer agent</b>: Able to view customers, tickets and send internal notes.</li>
+                                    <li><b>Lite agent</b>: Able to modify customers, tickets and send messages.</li>
+                                    <li><b>Basic agent</b>: Able to modify customers, tickets, send messages and perform integrations-related actions.</li>
+                                    <li><b>Lead agent</b>: Able to manage customers, tickets, tags, send messages and perform integrations-related actions.</li>
+                                    <li><b>Admin</b>: Able to manage everything. (billing info, users, integrations, rules, tickets, customers, etc...)</li>
+                                </div>}
                         >
-                            <option value="agent">Agent</option>
-                            <option value="admin">Admin</option>
+                            <option value={OBSERVER_AGENT_ROLE}>Observer agent</option>
+                            <option value={LITE_AGENT_ROLE}>Lite agent</option>
+                            <option value={BASIC_AGENT_ROLE}>Basic agent</option>
+                            <option value={AGENT_ROLE}>Lead agent</option>
+                            <option value={ADMIN_ROLE}>Admin</option>
                         </InputField>
                         <FormGroup>
                             <Button

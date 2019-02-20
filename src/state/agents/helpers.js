@@ -2,7 +2,10 @@
 import {fromJS} from 'immutable'
 
 import type {Map} from 'immutable'
-type userType = Map<*,*>
+
+import {USER_ROLES_ORDERED_BY_PRIVILEGES} from '../../config/user'
+
+type userType = Map<*, *>
 
 export const isStaff = (user: userType): boolean => {
     if (!user) {
@@ -18,24 +21,19 @@ export const isStaff = (user: userType): boolean => {
  * @param user
  * @returns {any}
  */
-export const getHighestRole = (user: userType): Map<*,*> => {
+export const getHighestRole = (user: userType): ?string => {
     if (!user) {
-        return fromJS({})
+        return null
     }
 
-    const roles = user.get('roles', fromJS([])).map((role) => role.get('name'))
-    let role
-    if (roles.includes('staff')) {
-        role = 'staff'
-    } else if (roles.includes('admin')) {
-        role = 'admin'
-    } else if (roles.includes('agent')) {
-        role = 'agent'
+    const userRoles = user.get('roles', fromJS([])).map((role) => role.get('name')).toJS()
+    const roles = USER_ROLES_ORDERED_BY_PRIVILEGES.slice().reverse()
+
+    for (let role of roles) {
+        if (userRoles.includes(role)) {
+            return role
+        }
     }
 
-    if (role) {
-        return fromJS({name: role})
-    }
-
-    return fromJS({})
+    return null
 }

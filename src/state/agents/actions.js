@@ -3,6 +3,7 @@ import axios from 'axios'
 
 import type {Map} from 'immutable'
 
+import {USER_ROLES} from '../../config/user'
 import {toImmutable, toJS} from '../../utils'
 import {notify} from '../notifications/actions'
 import type {dispatchType} from '../types'
@@ -107,7 +108,7 @@ export const fetchAgent = (id: string) => (dispatch: dispatchType): Promise<disp
 export const fetchPagination = (page: number = 1) => (dispatch: dispatchType): Promise<dispatchType> => {
     return axios.get('/api/users/', {
         params: {
-            roles: ['admin', 'agent', 'staff'],
+            roles: USER_ROLES,
             page:  page.toString()
         }})
         .then((json = {}) => json.data)

@@ -5,6 +5,7 @@ import plan from '../fixtures/plan'
 import * as utils from '../utils'
 import TICKET_LANGUAGES from '../config/ticketLanguages'
 import schemasJSON from '../fixtures/openapi'
+import {ADMIN_ROLE, AGENT_ROLE, BASIC_AGENT_ROLE, LITE_AGENT_ROLE, OBSERVER_AGENT_ROLE, STAFF_ROLE} from '../config/user'
 
 describe('global utils', () => {
     describe('formatDatetime', () => {
@@ -248,35 +249,45 @@ describe('global utils', () => {
     })
 
     describe('hasRole', () => {
+        it('should determine if user has required role (observer agent)', () => {
+            const user = fromJS({
+                roles: [{
+                    name: OBSERVER_AGENT_ROLE,
+                }],
+            })
+            expect(utils.hasRole(user, OBSERVER_AGENT_ROLE)).toEqual(true)
+            expect(utils.hasRole(user, LITE_AGENT_ROLE)).toEqual(false)
+            expect(utils.hasRole(user, BASIC_AGENT_ROLE)).toEqual(false)
+            expect(utils.hasRole(user, AGENT_ROLE)).toEqual(false)
+            expect(utils.hasRole(user, ADMIN_ROLE)).toEqual(false)
+            expect(utils.hasRole(user, STAFF_ROLE)).toEqual(false)
+        })
         it('should determine if user has required role (agent)', () => {
             const user = fromJS({
                 roles: [{
-                    name: 'agent',
+                    name: AGENT_ROLE,
                 }],
             })
-            expect(utils.hasRole(user, 'agent')).toEqual(true)
-            expect(utils.hasRole(user, 'admin')).toEqual(false)
-            expect(utils.hasRole(user, 'staff')).toEqual(false)
+            expect(utils.hasRole(user, OBSERVER_AGENT_ROLE)).toEqual(true)
+            expect(utils.hasRole(user, LITE_AGENT_ROLE)).toEqual(true)
+            expect(utils.hasRole(user, BASIC_AGENT_ROLE)).toEqual(true)
+            expect(utils.hasRole(user, AGENT_ROLE)).toEqual(true)
+            expect(utils.hasRole(user, ADMIN_ROLE)).toEqual(false)
+            expect(utils.hasRole(user, STAFF_ROLE)).toEqual(false)
         })
 
-        it('should determine if user has required role (admin)', () => {
-            // as admin
-            let user = fromJS({
+        it('should determine if user has required role (staff)', () => {
+            const user = fromJS({
                 roles: [{
-                    name: 'admin',
+                    name: STAFF_ROLE,
                 }],
             })
-            expect(utils.hasRole(user, 'agent')).toEqual(true)
-            expect(utils.hasRole(user, 'admin')).toEqual(true)
-
-            // as staff
-            user = fromJS({
-                roles: [{
-                    name: 'staff',
-                }],
-            })
-            expect(utils.hasRole(user, 'agent')).toEqual(true)
-            expect(utils.hasRole(user, 'admin')).toEqual(true)
+            expect(utils.hasRole(user, OBSERVER_AGENT_ROLE)).toEqual(true)
+            expect(utils.hasRole(user, LITE_AGENT_ROLE)).toEqual(true)
+            expect(utils.hasRole(user, BASIC_AGENT_ROLE)).toEqual(true)
+            expect(utils.hasRole(user, AGENT_ROLE)).toEqual(true)
+            expect(utils.hasRole(user, ADMIN_ROLE)).toEqual(true)
+            expect(utils.hasRole(user, STAFF_ROLE)).toEqual(true)
         })
     })
 
