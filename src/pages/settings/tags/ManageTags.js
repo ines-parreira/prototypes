@@ -183,9 +183,18 @@ export class ManageTags extends Component<Props, State> {
             <div className={classnames('full-width', {manageTagsClassName: selected > 0})}>
                 <PageHeader title="Manage tags">
                     <div className="manage-tags-bulk-actions">
-                        {
-                            selected > 1 && (
-                                <span>
+                        <div className="d-flex">
+                            <Search
+                                bindKey
+                                forcedQuery={this.state.search}
+                                onChange={this._onSearch}
+                                placeholder="Search tags by name..."
+                                searchDebounceTime={300}
+                                className="mr-2"
+                            />
+                            {
+                                selected > 1 && (
+                                    <span>
                                         <Button
                                             id="bulk-merge-button"
                                             color="secondary"
@@ -218,11 +227,11 @@ export class ManageTags extends Component<Props, State> {
                                             </PopoverBody>
                                         </Popover>
                                     </span>
-                            )
-                        }
-                        {
-                            selected > 0 && (
-                                <span>
+                                )
+                            }
+                            {
+                                selected > 0 && (
+                                    <span>
                                         <Button
                                             id="bulk-remove-button"
                                             color="secondary"
@@ -254,18 +263,10 @@ export class ManageTags extends Component<Props, State> {
                                             </PopoverBody>
                                         </Popover>
                                     </span>
-                            )
-                        }
+                                )
+                            }
 
-                        <div className="d-flex">
-                            <Search
-                                bindKey
-                                forcedQuery={this.state.search}
-                                onChange={this._onSearch}
-                                placeholder="Search tags by name..."
-                                searchDebounceTime={300}
-                                className="mr-2"
-                            />
+
                             <Button
                                 id="create-tag-button"
                                 color="success"
