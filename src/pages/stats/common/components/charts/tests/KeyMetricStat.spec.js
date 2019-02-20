@@ -25,6 +25,13 @@ const barStat = fromJS({
         value: 20,
         type: 'percent',
         name: 'total_one_touch_tickets'
+    }, {
+        more_is_better: true,
+        delta: 0,
+        value: 20,
+        type: 'currency',
+        currency: 'AUD',
+        name: 'total_messages_sent'
     }],
     meta: {
         previous_start_datetime: '2017-09-05 00:00:00',

@@ -1,6 +1,5 @@
 import {fromJS} from 'immutable'
 import moment from 'moment-timezone'
-import numbro from 'numbro'
 import Promise from 'promise-polyfill'
 import includes from 'array-includes'
 
@@ -25,13 +24,6 @@ const initMoment = (currentUser) => {
     }
 }
 
-const initNumbro = (currentUser) => {
-    // set default locale and timezone
-    if (currentUser.language) {
-        numbro.setLanguage(currentUser.language)
-    }
-}
-
 // `configureStore` below needs an object as the parameter so here we're making an
 // object with immutable object props from a plain JS object.
 const toImmutableProps = (plainObject) => {
@@ -48,7 +40,6 @@ const initialState = window.GORGIAS_STATE || {}
 
 if (initialState.currentUser) {
     initMoment(initialState.currentUser)
-    initNumbro(initialState.currentUser)
 }
 
 const recentViews = recentViewsStorage.get()

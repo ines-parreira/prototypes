@@ -76,7 +76,7 @@ export default class TableStat extends React.Component {
                 />
             }
             case 'currency': {
-                return formatCurrency(metric.get('value'), metric.get('format'), metric.get('placeholder'))
+                return formatCurrency(metric.get('value'), metric.get('currency'))
             }
             case 'customer-link': {
                 return <Link to={`/app/customer/${metric.get('customer_id')}`}>{metric.get('customer_name')}</Link>

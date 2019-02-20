@@ -193,6 +193,68 @@ exports[`KeyMetricStat should render a key metrics chart 1`] = `
       </div>
     </div>
   </div>
+  <div
+    className="metric"
+    key="total_messages_sent"
+  >
+    <div
+      className="label"
+    >
+      Messages sent
+      <span>
+        <i
+          className="info-icon help-icon material-icons ml-2"
+          id="title-total_messages_sent"
+        >
+          info_outline
+        </i>
+        <Tooltip
+          delay={0}
+          placement="top"
+          target="title-total_messages_sent"
+        >
+          Number of messages sent by agents and rules.
+        </Tooltip>
+      </span>
+    </div>
+    <div
+      className="mt-3 statsDisplay"
+    >
+      <div>
+        <div
+          className="value"
+        >
+          A$20
+        </div>
+        <span
+          className="diff"
+          id="value-3"
+        >
+          <span>
+            <i
+              className="stats-difference neutral material-icons font-weight-bold mr-1"
+              style={
+                Object {
+                  "fontSize": "15px",
+                }
+              }
+            >
+              arrow_forward
+            </i>
+            0
+            %
+          </span>
+          <Tooltip
+            delay={0}
+            placement="top"
+            target="value-3"
+          >
+            Compared to : Sep 05, 2017 - Sep 06, 2017
+          </Tooltip>
+        </span>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 

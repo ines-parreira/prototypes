@@ -1,6 +1,5 @@
 import React from 'react'
 import moment from 'moment'
-import numbro from 'numbro'
 import _isUndefined from 'lodash/isUndefined'
 import _isNumber from 'lodash/isNumber'
 
@@ -68,13 +67,18 @@ export const formatPercent = (value) => {
 }
 
 // format a value and display it as a currency
-export const formatCurrency = (value, format, placeholder) => {
-    if (!format) {
+export const formatCurrency = (value, currency) => {
+    if (!currency) {
         return value
     }
 
-    const formattedValue = numbro(value).format({thousandSeparated: true})
-    return format.replace(placeholder, formattedValue)
+    // For now, we don't store the country, an we'll use en-us
+    return value.toLocaleString('en-us', {
+        style: 'currency',
+        currency: currency,
+        maximumFractionDigits: 0,
+        minimumFractionDigits: 0
+    })
 }
 
 /**

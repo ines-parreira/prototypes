@@ -26,10 +26,14 @@ const tableStatData = fromJS({
             }, {
                 name: 'Delta',
                 type: 'delta'
+            }, {
+                name: 'Sales',
+                type: 'currency',
+                currency: 'AUD'
             }]
         },
         lines: [
-            ['refund', 42, 12, 93, 3, -1]
+            ['refund', 42, 12, 93, 3, -1, 3.50]
         ],
     },
     name: 'tickets_per_tag',

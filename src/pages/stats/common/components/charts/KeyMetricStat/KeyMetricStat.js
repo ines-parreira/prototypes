@@ -85,7 +85,7 @@ export default class KeyMetricStat extends Component<Props> {
             case 'percent':
                 return formatPercent(value)
             case 'currency':
-                return formatCurrency(value, metric.get('format'), metric.get('placeholder'))
+                return formatCurrency(value, metric.get('currency'))
             default:
                 return value
         }
