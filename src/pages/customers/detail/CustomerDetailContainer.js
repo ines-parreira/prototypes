@@ -31,10 +31,9 @@ class CustomerDetailContainer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const {params, actions} = this.props
+        const {params} = this.props
 
         if (nextProps.params.customerId !== params.customerId) {
-            actions.clearCustomer()
             this._fetchCustomer(nextProps.params.customerId)
         }
     }
