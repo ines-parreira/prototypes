@@ -1,5 +1,5 @@
 // @flow
-import React from 'react'
+import React, {type ComponentType} from 'react'
 
 import MultiSelectOptionsField, {type Option} from './MultiSelectOptionsField'
 
@@ -14,6 +14,7 @@ type Props = {
     className?: string,
     caseInsensitive?: boolean,
     onChange: any[] => void,
+    dropdownMenu?: ComponentType<*>
 }
 
 // Deprecated: Use MultiSelectOptionsField instead
@@ -24,7 +25,7 @@ export default class MultiSelectField extends React.Component<Props> {
         plural: 'items',
         singular: 'item',
         tagColor: '#0275d8',
-        values: [],
+        values: []
     }
 
     _onChange = (options: Option[]) => {
@@ -51,6 +52,7 @@ export default class MultiSelectField extends React.Component<Props> {
                 style={this.props.style}
                 className={this.props.className}
                 caseInsensitive={this.props.caseInsensitive}
+                dropdownMenu={this.props.dropdownMenu}
                 matchInput
             />
         )

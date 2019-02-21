@@ -83,7 +83,7 @@ const resetContentState = (state: Map<*,*>) => {
         .setIn(['state', 'selectionState'], null)
 }
 
-export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
+export default function reducer(state: Map<*,*> = initialState, action: actionType): Map<*,*> {
     switch (action.type) {
         case types.NEW_MESSAGE_ADD_ATTACHMENT_START: {
             return state.setIn(['_internal', 'loading', 'addAttachment'], true)

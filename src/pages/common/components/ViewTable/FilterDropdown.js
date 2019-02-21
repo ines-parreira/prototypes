@@ -1,36 +1,47 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+// @flow
+import {fromJS, type List, type Map} from 'immutable'
+import React, {type ComponentType} from 'react'
 import {connect} from 'react-redux'
-import {fromJS} from 'immutable'
-import {
-    Dropdown,
-    DropdownMenu,
-    DropdownItem,
-    DropdownToggle,
-} from 'reactstrap'
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle,} from 'reactstrap'
 
-import Search from '../Search'
-import {RenderLabel} from '../../utils/labels'
-import {resolveLiteral, isImmutable, fieldPath, getLanguageDisplayName} from '../../../../utils'
-import {fieldEnumSearch} from '../../../../state/views/actions'
-
-import * as schemasSelectors from '../../../../state/schemas/selectors'
 import * as customersHelpers from '../../../../state/customers/helpers'
+import * as schemasSelectors from '../../../../state/schemas/selectors'
+import {fieldEnumSearch} from '../../../../state/views/actions'
+import {fieldPath, getLanguageDisplayName, isImmutable, resolveLiteral} from '../../../../utils'
+import {RenderLabel} from '../../utils/labels'
+import Search from '../Search'
 
-class FilterDropdown extends React.Component {
-    state = {
-        isLoading: false,
+type Props = {
+    viewConfig: Map<*, *>,
+    field: Map<*, *>,
+    schemas: Map<*, *>,
+    updateFieldFilter: string => void,
+    updateFieldFilterOperator: string => void,
+    fieldEnumSearch: typeof fieldEnumSearch,
+    toggleDropdown: () => void,
+    menu: ComponentType<*>
+}
+
+type State = {
+    isLoading: boolean,
+    enum: List<*>
+}
+
+class FilterDropdown extends React.Component<Props, State> {
+    static defaultProps: $Shape<Props> = {
+        menu: DropdownMenu
     }
 
     constructor(props) {
         super(props)
         this.state = {
+            isLoading: false,
             enum: props.field.getIn(['filter', 'enum'], fromJS([]))
         }
     }
 
     componentDidMount() {
-        this.onSearch()
+        this.onSearch('')
     }
 
     _left = () => {
@@ -56,7 +67,7 @@ class FilterDropdown extends React.Component {
     }
 
     // query search from server and save it in state
-    onSearch = (query) => {
+    onSearch = (query: string) => {
         // Fields that already have an enum don't need to have a search
         if (this.props.field.getIn(['filter', 'enum'])) {
             return
@@ -188,7 +199,7 @@ class FilterDropdown extends React.Component {
     }
 
     render() {
-        const field = this.props.field
+        const {field, menu: Menu} = this.props
 
         if (!(field.get('filter') || this.state.enum)) {
             return null
@@ -202,7 +213,7 @@ class FilterDropdown extends React.Component {
         }
 
         if (field.get('name') === 'language') {
-            Object.assign(style, {height: '230px', overflow: 'scroll'})
+            Object.assign((style: any), {height: '230px', overflow: 'scroll'})
         }
 
         return (
@@ -210,26 +221,14 @@ class FilterDropdown extends React.Component {
                 isOpen
                 toggle={this.props.toggleDropdown}
             >
-                <DropdownToggle tag="span"></DropdownToggle>
-                <DropdownMenu
-                    style={style}
-                >
+                <DropdownToggle tag="span"/>
+                <Menu style={style}>
                     {this.renderSearch()}
                     {this.renderEnum()}
-                </DropdownMenu>
+                </Menu>
             </Dropdown>
         )
     }
-}
-
-FilterDropdown.propTypes = {
-    viewConfig: PropTypes.object.isRequired,
-    field: PropTypes.object.isRequired,
-    schemas: PropTypes.object.isRequired,
-    updateFieldFilter: PropTypes.func.isRequired,
-    updateFieldFilterOperator: PropTypes.func.isRequired,
-    fieldEnumSearch: PropTypes.func.isRequired,
-    toggleDropdown: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => {

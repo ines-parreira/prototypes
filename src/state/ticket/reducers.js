@@ -44,7 +44,7 @@ export const initialState = fromJS({
     }
 })
 
-export default (state = initialState, action) => {
+export default function reducer(state = initialState, action) {
     switch (action.type) {
         case newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START: {
             if (!action.retry) {

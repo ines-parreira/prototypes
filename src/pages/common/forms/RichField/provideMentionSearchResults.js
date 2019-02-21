@@ -23,7 +23,9 @@ export type InjectedProps = {
     onMentionSearchChange: MentionSearchChangeArgs => void
 }
 
-export default <Props: RequiredProps>(WrappedComponent: React.ComponentType<Props & InjectedProps>): React.ComponentType<Props> => {
+export default function  provideMentionSearchResults<Props: RequiredProps>(
+    WrappedComponent: React.ComponentType<Props & InjectedProps>
+): React.ComponentType<Props> {
     class Wrapper extends React.Component<Props, State> {
         constructor(props: Props) {
             super(props)

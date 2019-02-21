@@ -8,7 +8,7 @@ import {linkify} from '../../../../../../utils/editor'
 import LinkPopover from '../components/LinkPopover'
 
 
-export default (): Decorator => ({
+const foundUrl = (): Decorator => ({
     strategy: (contentBlock: ContentBlock, callback: DecoratorStrategyCallback, contentState: ContentState) => {
         // BUG double-closing curly braces, brackets, etc. break linkify-it detection,
         // because they're not valid URL characters.
@@ -53,3 +53,5 @@ export default (): Decorator => ({
         )
     }
 })
+
+export default foundUrl

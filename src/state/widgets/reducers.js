@@ -39,7 +39,7 @@ export const initialState = fromJS({
     }
 })
 
-export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
+export default function reducer(state: Map<*,*> = initialState, action: actionType): Map<*,*> {
     switch (action.type) {
         case types.FETCH_WIDGETS_SUCCESS: {
             const receivedItems = fromJS(action.items)

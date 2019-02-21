@@ -22,11 +22,11 @@ exports[`Header should display header 1`] = `
         }
       />
     </div>
-    <Component
+    <Meta
       via="email"
     />
   </div>
-  <Component
+  <SourceDetails
     className="sourceDetails"
     isLastRead={false}
     message={

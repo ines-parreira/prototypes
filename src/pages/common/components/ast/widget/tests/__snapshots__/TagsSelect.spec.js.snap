@@ -42,6 +42,7 @@ exports[`ast widgets TagsSelect MultiSelectField should render array as value 1`
 exports[`ast widgets TagsSelect MultiSelectField should render string as value 1`] = `
 <MultiSelectField
   allowCustomValues={true}
+  dropdownMenu={[Function]}
   onChange={[Function]}
   options={
     Array [

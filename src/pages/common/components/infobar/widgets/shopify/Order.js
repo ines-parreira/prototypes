@@ -14,8 +14,7 @@ import ActionButtonsGroup from '../ActionButtonsGroup'
 
 import type {ActionType} from './../types'
 
-
-export default () => {
+export default function Order() {
     return {
         AfterTitle, // eslint-disable-line
         BeforeContent, // eslint-disable-line

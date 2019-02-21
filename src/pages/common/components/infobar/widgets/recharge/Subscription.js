@@ -15,7 +15,7 @@ import ActionButtonsGroup from '../ActionButtonsGroup'
 
 import * as ticketSelectors from './../../../../../../state/ticket/selectors'
 
-export default () => {
+export default function Subscription() {
     return {
         AfterTitle, // eslint-disable-line
         BeforeContent, // eslint-disable-line

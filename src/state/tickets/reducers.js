@@ -17,7 +17,7 @@ export const initialState = fromJS({
     items: [],
 })
 
-export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
+export default function reducer(state: Map<*,*> = initialState, action: actionType): Map<*,*> {
     switch (action.type) {
         case types.UPDATE_CURSOR: {
             return state.set('cursor', action.cursor)

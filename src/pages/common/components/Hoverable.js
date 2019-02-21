@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
  * @param ComposedComponent
  * @returns {{}}
  */
-export default (ComposedComponent) => {
+export default function Hoverable(ComposedComponent) {
     return class extends React.Component {
         static propTypes = {
             hoverableClassName: PropTypes.string,

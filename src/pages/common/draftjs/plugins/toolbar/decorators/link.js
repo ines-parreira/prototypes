@@ -13,7 +13,7 @@ type Config = {
     onLinkEdit: (entityKey: string, text: string, url: string) => void
 }
 
-export default (config: Config): Decorator => ({
+const link = (config: Config): Decorator => ({
     strategy: (contentBlock: ContentBlock, callback: DecoratorStrategyCallback, contentState: ContentState) => {
         contentBlock.findEntityRanges(
             (character) => {
@@ -43,3 +43,5 @@ export default (config: Config): Decorator => ({
         )
     },
 })
+
+export default link

@@ -29,7 +29,7 @@ export function setFilters(filters: Object): actionType {
  * @param {String} label - the key under which the statistic will be saved in the reducer
  * @returns {Promise}
  */
-export function fetchStat(name: string, meta: {} = {}, filters: {} = {}, label: string) {
+export function fetchStat(name: string, meta: {} = {}, filters: {} = {}, label?: string) {
     return (dispatch: dispatchType) => {
         const params = {
             ...meta,

@@ -23,7 +23,7 @@ export type Config = {
     onLinkCreate: (text: string) => void
 }
 
-export default (config: Config) => {
+export default function toolbarPlugin(config: Config) {
     const isLinkDisplayed = () => Toolbar.isDisplayedAction('LINK', config.getDisplayedActions())
 
     return ({

@@ -1,22 +1,46 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-    Label,
-    Input,
-} from 'reactstrap'
+// @flow
+import classNames from 'classnames/bind'
+import React, {type ComponentType} from 'react'
+import {DropdownItem, DropdownMenu, DropdownToggle, Input, Label, UncontrolledDropdown} from 'reactstrap'
 
 import css from './SearchableSelectField.less'
 
-class SearchableSelectField extends React.Component {
+type Item = {
+    label?: string,
+    value?: string
+}
+
+type Props = {
+    items: Item[],
+    input: {
+        value: string[],
+        onChange: string[] => void
+    },
+    plural: string,
+    singular: string,
+    isDisabled: boolean,
+    onSearch?: string => void,
+    dropdownMenu: ComponentType<*>
+}
+
+type State = {
+    search: string
+}
+
+class SearchableSelectField extends React.Component<Props, State> {
+    static defaultProps = {
+        items: [],
+        plural: 'items',
+        singular: 'item',
+        isDisabled: false,
+        dropdownMenu: DropdownMenu
+    }
+
     state = {
         search: ''
     }
 
-    _handleSearchChange = (text) => {
+    _handleSearchChange = (text: string) => {
         this.setState({
             search: text,
         })
@@ -26,7 +50,7 @@ class SearchableSelectField extends React.Component {
         }
     }
 
-    _handleOptionClick = (value) => {
+    _handleOptionClick = (value: string) => {
         const input = this.props.input
 
         if (this.props.isDisabled) {
@@ -54,15 +78,16 @@ class SearchableSelectField extends React.Component {
         this.props.input.onChange([])
     }
 
-    // items = [{label: 'Label', value: 2}]
     render() {
-        const {items, input, plural, singular, isDisabled} = this.props
+        const {items, input, plural, singular, isDisabled, dropdownMenu: DropdownMenu} = this.props
         const {search} = this.state
 
         const hasSelectedItems = !!input.value.length
 
         // filter items by text search
-        const filteredItems = items.filter((item) => item.label.toLowerCase().includes(search.toLowerCase()))
+        const filteredItems = items.filter((item) => {
+            return item.label && item.label.toLowerCase().includes(search.toLowerCase())
+        })
 
         return (
             <UncontrolledDropdown
@@ -89,8 +114,8 @@ class SearchableSelectField extends React.Component {
                     }
                 </DropdownToggle>
                 <DropdownMenu
-                    right
                     className={css.dropdown}
+                    right
                 >
                     <DropdownItem
                         header
@@ -112,27 +137,32 @@ class SearchableSelectField extends React.Component {
                                 </DropdownItem>
                             ) : (
                                 filteredItems.map((item) => {
-                                    const isChecked = input.value.includes(item.value)
+                                    const isChecked = item.value ? input.value.includes(item.value) : false
 
                                     return (
                                         <DropdownItem
                                             key={item.value}
-                                            onClick={(e) => {
-                                                e.preventDefault()
-                                                e.stopPropagation()
-                                                this._handleOptionClick(item.value)
-                                            }}
-                                            toggle={false}
-                                        >
-                                            <Label check>
-                                                <input
-                                                    className="mr-2"
-                                                    type="checkbox"
-                                                    checked={isChecked}
+                                            tag={(props) => (
+                                                <Label
+                                                    {...props}
+                                                    check
                                                 />
-                                                {' '}
-                                                {item.label}
-                                            </Label>
+                                            )}
+                                            toggle={false}
+                                            className={css.dropdownItem}
+                                        >
+                                            <input
+                                                className={classNames('mr-2', css.checkbox)}
+                                                type="checkbox"
+                                                checked={isChecked}
+                                                onChange={() => {
+                                                    if (item.value) {
+                                                        this._handleOptionClick(item.value)
+                                                    }
+                                                }}
+                                            />
+                                            {' '}
+                                            {item.label}
                                         </DropdownItem>
                                     )
                                 })
@@ -158,22 +188,6 @@ class SearchableSelectField extends React.Component {
             </UncontrolledDropdown>
         )
     }
-}
-
-SearchableSelectField.propTypes = {
-    items: PropTypes.array.isRequired,
-    input: PropTypes.object.isRequired,
-    plural: PropTypes.string.isRequired,
-    singular: PropTypes.string.isRequired,
-    isDisabled: PropTypes.bool.isRequired,
-    onSearch: PropTypes.func,
-}
-
-SearchableSelectField.defaultProps = {
-    items: [],
-    plural: 'items',
-    singular: 'item',
-    isDisabled: false,
 }
 
 export default SearchableSelectField

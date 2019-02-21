@@ -1,12 +1,12 @@
 //@flow
-import React from 'react'
 import classNamesBind from 'classnames/bind'
+import React from 'react'
 
-import {DatetimeLabel} from '../../../../common/utils/labels'
 import type {TicketMessage} from '../../../../../models/ticketElement'
+import {DatetimeLabel} from '../../../../common/utils/labels'
 
-import SourceActions from './SourceActions'
 import SeenIndicator from './SeenIndicator'
+import SourceActions from './SourceActions'
 import css from './SourceDetails.less'
 
 const classNames = classNamesBind.bind(css)
@@ -18,7 +18,7 @@ type Props = {
     className?: string
 }
 
-export default (props: Props) => {
+export default function SourceDetails(props: Props) {
     const {message, isLastRead, timezone} = props
     return (
         <div className={classNames('wrapper', props.className)}>

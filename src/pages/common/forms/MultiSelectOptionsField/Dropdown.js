@@ -2,7 +2,7 @@
 import _isEqual from 'lodash/isEqual'
 import _max from 'lodash/max'
 import _min from 'lodash/min'
-import React from 'react'
+import React, {type ComponentType} from 'react'
 import {DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap'
 
 import css from './Dropdown.less'
@@ -20,7 +20,8 @@ type Props = {
     onFocus: () => void,
     onBlur: () => void,
     onSelect: Option => void,
-    onDelete: () => void
+    onDelete: () => void,
+    menu: ComponentType<*>
 }
 
 type State = {
@@ -28,6 +29,10 @@ type State = {
 }
 
 export default class Dropdown extends React.Component<Props, State> {
+    static defaultProps = {
+        menu: DropdownMenu
+    }
+
     state: State = {
         activeIndex: 0
     }
@@ -72,7 +77,7 @@ export default class Dropdown extends React.Component<Props, State> {
     }
 
     render() {
-        const {isFocused, options, value, onChange, onDelete, onFocus, onBlur, placeholder} = this.props
+        const {isFocused, options, value, onChange, onDelete, onFocus, onBlur, placeholder, menu: CustomDropdownMenu} = this.props
         return (
             <div className={css['input-container']}>
                 <UncontrolledDropdown
@@ -95,7 +100,7 @@ export default class Dropdown extends React.Component<Props, State> {
                             onChange={onChange}
                         />
                     </DropdownToggle>
-                    <DropdownMenu className={css.options}>
+                    <CustomDropdownMenu className={css.options}>
                         <Menu
                             isLoading={this.props.isLoading}
                             options={options}
@@ -103,7 +108,7 @@ export default class Dropdown extends React.Component<Props, State> {
                             onActivate={this._onOptionActivate}
                             onSelect={this.props.onSelect}
                         />
-                    </DropdownMenu>
+                    </CustomDropdownMenu>
                 </UncontrolledDropdown>
             </div>
         )

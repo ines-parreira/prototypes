@@ -13,7 +13,7 @@ type Props = {
     onToggle: () => void
 }
 
-export default (props: Props) => (
+const Button = (props: Props) => (
     <button
         type="button"
         className={classnames(css.button, 'btn btn-secondary btn-transparent', {
@@ -34,3 +34,5 @@ export default (props: Props) => (
         </i>
     </button>
 )
+
+export default Button

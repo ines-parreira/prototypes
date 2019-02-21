@@ -13,7 +13,7 @@ export const initialState = fromJS({
     event: {},
 })
 
-export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
+export default function reducer(state: Map<*,*> = initialState, action: actionType): Map<*,*> {
     switch (action.type) {
         case constants.FETCH_HTTP_INTEGRATION_EVENTS_SUCCESS:
             return state.set('events', fromJS(action.events))

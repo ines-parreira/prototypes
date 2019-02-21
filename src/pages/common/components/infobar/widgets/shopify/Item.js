@@ -6,7 +6,7 @@ import {Badge} from 'reactstrap'
 
 import ActionButtonsGroup from '../ActionButtonsGroup'
 
-export default () => { // eslint-disable-line
+export default function Item() { // eslint-disable-line
     return {
         AfterTitle, // eslint-disable-line
         BeforeContent, // eslint-disable-line
@@ -172,4 +172,3 @@ class Wrapper extends React.Component { // eslint-disable-line
         return this.props.children
     }
 }
-

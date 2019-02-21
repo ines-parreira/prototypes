@@ -34,23 +34,7 @@ type State = {
     isDownloading: boolean
 }
 
-@connect((state, props) => {
-    // Only `ticket-per-tags` stats needs colors of tags
-    if (props.name !== TICKETS_PER_TAG) {
-        return {
-            tagColors: null
-        }
-    }
-
-    return {
-        tagColors: tagsSelectors.getTags(state).reduce((tagColors, tag) => {
-            return tagColors.set(tag.get('name'), tag.get('decoration'))
-        }, fromJS({}))
-    }
-}, {
-    downloadStatistic
-})
-export default class Stat extends Component<Props, State> {
+export class Stat extends Component<Props, State> {
     static defaultProps = {
         downloadable: false,
         isLoading: false
@@ -154,3 +138,20 @@ export default class Stat extends Component<Props, State> {
         )
     }
 }
+
+export default connect((state, props) => {
+    // Only `ticket-per-tags` stats needs colors of tags
+    if (props.name !== TICKETS_PER_TAG) {
+        return {
+            tagColors: null
+        }
+    }
+
+    return {
+        tagColors: tagsSelectors.getTags(state).reduce((tagColors, tag) => {
+            return tagColors.set(tag.get('name'), tag.get('decoration'))
+        }, fromJS({}))
+    }
+}, {
+    downloadStatistic
+})(Stat)

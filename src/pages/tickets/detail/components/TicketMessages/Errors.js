@@ -14,7 +14,7 @@ type Props = {
     setStatus: () => void
 }
 
-export default (props: Props) => {
+const Errors = (props: Props) => {
     const {message, loading, hasActionError, ticketId, setStatus} = props
     return [
         !loading && hasActionError && (
@@ -44,3 +44,5 @@ export default (props: Props) => {
         ),
     ]
 }
+
+export default Errors

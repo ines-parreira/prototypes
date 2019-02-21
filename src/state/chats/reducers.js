@@ -20,7 +20,7 @@ type defaultActionType = actionType & {
 const sortChats = (ticket) => -moment(ticket.get('last_message_datetime'))
 
 
-export default (state: Map<*, *> = initialState, action: defaultActionType): Map<*, *> => {
+export default function reducer(state: Map<*, *> = initialState, action: defaultActionType): Map<*, *> {
     switch (action.type) {
         case constants.SET_CHATS: {
             return state.update('tickets', () => fromJS(action.tickets).sortBy(sortChats))

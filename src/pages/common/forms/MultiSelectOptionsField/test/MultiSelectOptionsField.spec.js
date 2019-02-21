@@ -3,6 +3,8 @@ import {mount, render} from 'enzyme'
 import _noop from 'lodash/noop'
 import React from 'react'
 
+import TagDropdownMenu from '../../../components/TagDropdownMenu/TagDropdownMenu'
+
 import Dropdown from '../Dropdown'
 import MultiSelectField from '../MultiSelectOptionsField'
 import OptionTag from '../Tag'
@@ -389,6 +391,17 @@ describe('MultiSelectField', () => {
             )
             wrapper.find(Dropdown).prop('onSelect')(options[1])
             expect(onChangeSpy.mock.calls).toHaveLength(0)
+        })
+
+        it('should support custom DropdownMenu', () => {
+            const wrapper = mount(
+                <MultiSelectField
+                    {...minProps}
+                    {...props}
+                    dropdownMenu={TagDropdownMenu}
+                />
+            )
+            expect(wrapper.find(TagDropdownMenu)).toHaveLength(1)
         })
     })
 })

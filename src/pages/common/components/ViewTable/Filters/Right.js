@@ -13,6 +13,7 @@ import * as viewsSelectors from '../../../../../state/views/selectors'
 import {getTags} from '../../../../../state/tags/selectors'
 
 import {timedeltaOperators} from '../../../../../config/rules'
+import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu'
 
 import FilterDropdown from '../FilterDropdown'
 import DatetimePicker from '../../../forms/DatetimePicker'
@@ -190,6 +191,7 @@ export default class Right extends React.Component {
                         plural='tags'
                         onChange={(options) => updateFieldFilter(index, options.map((option) => option.value))}
                         mapSearchResults={this._mapTagSearchResultsToOptions}
+                        dropdownMenu={TagDropdownMenu}
                     />
                 )
             }
@@ -238,6 +240,7 @@ export default class Right extends React.Component {
                             updateFieldFilter={(value) => updateFieldFilter(index, value)}
                             updateFieldFilterOperator={(value) => updateFieldFilterOperator(index, value)}
                             toggleDropdown={this._toggleDropdown}
+                            menu={field.get('name') === 'tags' ? TagDropdownMenu : undefined}
                         />
                     )
                 }

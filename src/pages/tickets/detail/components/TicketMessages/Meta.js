@@ -1,9 +1,9 @@
 //@flow
+import classnames from 'classnames'
 import React, {type Node} from 'react'
 import {Link} from 'react-router'
-import classnames from 'classnames'
 
-import type {Meta, Source} from '../../../../../models/ticketElement/types'
+import type {Meta as MetaType, Source} from '../../../../../models/ticketElement/types'
 
 import css from './Meta.less'
 
@@ -12,7 +12,7 @@ type Props = {
     via: string,
     integrationId?: string,
     ruleId?: string,
-    meta?: Meta,
+    meta?: MetaType,
     source?: Source
 }
 
@@ -22,7 +22,7 @@ const From = (props: {children?: Node}) => (
     </span>
 )
 
-export default (props: Props) => {
+export default function Meta(props: Props) {
     const {meta, source, messageId} = props
     const widgets = []
 

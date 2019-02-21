@@ -19,7 +19,7 @@ exports[`Container should render container 1`] = `
   <div
     className="bodyWrapper"
   >
-    <Component
+    <Header
       hasError={false}
       id="some-header"
       isLastRead={false}

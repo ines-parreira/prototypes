@@ -17,7 +17,7 @@ export const initialState = fromJS({
     rules: {}
 })
 
-export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
+export default function reducer(state: Map<*,*> = initialState, action: actionType): Map<*,*> {
     switch (action.type) {
         case constants.ADD_RULE_END: {
             const rule = action.rule

@@ -9,7 +9,7 @@ import type {actionType} from '../types'
 
 import * as constants from './constants'
 
-export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
+export default function reducer(state: Map<*,*> = initialState, action: actionType): Map<*,*> {
     switch (action.type) {
         case constants.FETCH_INVOICES_SUCCESS:
             return state.set('invoices', fromJS(action.resp))

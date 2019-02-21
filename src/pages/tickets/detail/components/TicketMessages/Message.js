@@ -1,15 +1,15 @@
 //@flow
-import React from 'react'
 import classNamesBind from 'classnames/bind'
+import React from 'react'
 
-import {TicketMessage, isFailed, isPending, hasFailedAction} from '../../../../../models/ticketElement'
+import {hasFailedAction, isFailed, isPending, TicketMessage} from '../../../../../models/ticketElement'
 
 import Actions from './Actions'
-import Body from './Body'
 import Attachments from './Attachments'
+import Body from './Body'
 import Errors from './Errors'
-import SourceDetails from './SourceDetails'
 import css from './Message.less'
+import SourceDetails from './SourceDetails'
 
 const classNames = classNamesBind.bind(css)
 
@@ -22,7 +22,7 @@ type Props = {
     timezone: string
 }
 
-export default (props: Props) => {
+export default function Message(props: Props) {
     const {message} = props
     const hasError = isFailed(message)
     return (

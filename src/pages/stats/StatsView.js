@@ -1,41 +1,49 @@
-import React from 'react'
+// @flow
 import update from 'immutability-helper'
-import moment from 'moment'
-import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import _debounce from 'lodash/debounce'
 import _find from 'lodash/find'
-import {Container, Button, Popover, PopoverBody} from 'reactstrap'
+import moment from 'moment'
+import React from 'react'
+import {connect} from 'react-redux'
+import {Button, Container, Popover, PopoverBody} from 'reactstrap'
 
 import {stats as statsConfig} from '../../config/stats'
+import * as statsActions from '../../state/stats/actions'
 import {fieldEnumSearch} from '../../state/views/actions'
 import PageHeader from '../common/components/PageHeader'
-import * as statsActions from '../../state/stats/actions'
+import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMenu'
 
-import PeriodPicker from './common/PeriodPicker'
-import SearchableSelectField from './common/SearchableSelectField'
 import Stat from './common/components/charts/Stat'
+import PeriodPicker from './common/PeriodPicker'
 import RestrictedSatisfactionSurvey from './common/RestrictedSatisfactionSurvey'
 import RevenueUpgrade from './common/RevenueUpgrade'
-
+import SearchableSelectField from './common/SearchableSelectField'
 
 type Props = {
     config: Object,
-    channels: Array,
-    agents: Array,
-    tags: Array,
+    channels: any[],
+    agents: any[],
+    tags: any[],
     stats: Object,
     meta: Object,
     filters: Object,
     currentAccount: Object,
-    fetchStat: typeof statsActions.fetchStat,
+    fetchStat: (any, any, any) => Promise<*>,
     setMeta: typeof statsActions.setMeta,
     setFilters: typeof statsActions.setFilters,
-    fieldEnumSearch: typeof statsActions.fieldEnumSearch
+    fieldEnumSearch: typeof fieldEnumSearch
 }
 
+type State = {
+    tags: any[],
+    loadings: {},
+    isLightboxOpen: boolean,
+    descriptionPopoverOpen: boolean,
+    currentImage: number
+}
 
-class StatsView extends React.Component<Props> {
+class StatsView extends React.Component<Props, State> {
     constructor(props) {
         super(props)
 
@@ -167,14 +175,22 @@ class StatsView extends React.Component<Props> {
             },
             {
                 type: 'tags',
-                render: () => <SearchableSelectField
-                    key="tags-filter"
-                    plural="tags"
-                    singular="tag"
-                    items={this.state.tags.map((tag) => ({label: tag.name, value: tag.id}))}
-                    input={this._makeInputControl('tags')}
-                    onSearch={this._onSearchTags}
-                />
+                render: () => (
+                    <SearchableSelectField
+                        key="tags-filter"
+                        plural="tags"
+                        singular="tag"
+                        items={this.state.tags.map((tag) => ({label: tag.name, value: tag.id}))}
+                        input={this._makeInputControl('tags')}
+                        onSearch={this._onSearchTags}
+                        dropdownMenu={(props) => (
+                            <TagDropdownMenu
+                                {...props}
+                                wide
+                            />
+                        )}
+                    />
+                )
             },
             {
                 type: 'channels',
@@ -201,9 +217,9 @@ class StatsView extends React.Component<Props> {
                             switch(filter.variant) {
                                 case 'star':
                                     return {
-                                        value: scoreValue,
-                                        label: (Array(filter.minValue + scoreValue - 1).fill('★').join('') +
-                                                Array(filter.maxValue - scoreValue).fill('☆').join(''))
+                                        value: scoreValue.toString(),
+                                        label: Array(filter.minValue + scoreValue - 1).fill('★').join('') +
+                                                Array(filter.maxValue - scoreValue).fill('☆').join('')
                                     }
                                 default:
                                     return {}
@@ -262,7 +278,7 @@ class StatsView extends React.Component<Props> {
                                 const filter = _find(configFilters, (configFilter) => {
                                     return configFilter.type === availableFilter.type
                                 })
-                                return filter && availableFilter.render(filter)
+                                return filter && (availableFilter: any).render(filter)
                             }
                         )}
                     </div>
@@ -295,6 +311,7 @@ class StatsView extends React.Component<Props> {
                                     name={statName}
                                     config={statConfig}
                                     filters={filters}
+                                    meta={{}}
                                     {...statProps}
                                 />
                             </div>

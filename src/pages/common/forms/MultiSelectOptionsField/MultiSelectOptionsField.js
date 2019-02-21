@@ -1,7 +1,7 @@
 // @flow
 import classNames from 'classnames'
 import _isEqual from 'lodash/isEqual'
-import React from 'react'
+import React, {type ComponentType} from 'react'
 
 import Dropdown from './Dropdown'
 import css from './MultiSelectOptionsField.less'
@@ -21,7 +21,8 @@ type Props = {
     caseInsensitive?: boolean,
     onChange: Option[] => void,
     onInputChange?: string => void,
-    loading?: boolean
+    loading?: boolean,
+    dropdownMenu?: ComponentType<*>
 }
 
 type State = {
@@ -171,7 +172,7 @@ export default class MultiSelectOptionsField extends React.Component<Props, Stat
     }
 
     render() {
-        const {className, style, selectedOptions, tagColor, plural, allowCustomOptions} = this.props
+        const {className, style, selectedOptions, tagColor, plural, allowCustomOptions, dropdownMenu} = this.props
         const {isFocused, filteredOptions, input} = this.state
 
         let displayOptions = filteredOptions
@@ -207,6 +208,7 @@ export default class MultiSelectOptionsField extends React.Component<Props, Stat
                         onBlur={this._blur}
                         onSelect={this._onDropdownSelect}
                         onDelete={this._onDropdownDelete}
+                        menu={dropdownMenu}
                     />
                 </div>
             </div>

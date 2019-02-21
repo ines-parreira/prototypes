@@ -24,7 +24,9 @@ export type InjectedProps = {
     onLinkClose: () => void
 } & State
 
-export default <Props: RequiredProps>(WrappedComponent: React.ComponentType<Props & InjectedProps>): React.ComponentType<Props> => {
+export default function provideToolbarPlugin<Props: RequiredProps>(
+    WrappedComponent: React.ComponentType<Props & InjectedProps>
+): React.ComponentType<Props> {
     class Wrapper extends React.Component<Props, State> {
         state: State = {
             linkIsOpen: false,

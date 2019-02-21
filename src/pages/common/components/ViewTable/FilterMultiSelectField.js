@@ -1,7 +1,7 @@
 // @flow
 import type {Map} from 'immutable'
 import _debounce from 'lodash/debounce'
-import React from 'react'
+import React, {type ComponentType} from 'react'
 import {connect} from 'react-redux'
 
 import {fieldEnumSearch} from '../../../../state/views/actions'
@@ -14,7 +14,8 @@ type Props = {
     onChange: Option[] => void,
     field: Map<*, *>,
     fieldEnumSearch: (Map<*, *>, string) => Map<*, *>,
-    mapSearchResults: <T>(searchResults: T[]) => Option[]
+    mapSearchResults: <T>(searchResults: T[]) => Option[],
+    dropdownMenu?: ComponentType<*>
 }
 
 type State = {
@@ -68,6 +69,7 @@ export class FilterMultiSelectField extends React.Component<Props, State> {
                 selectedOptions={this.props.selectedOptions}
                 onInputChange={(input) => this._onInputChange(input)}
                 onChange={this._onChange}
+                dropdownMenu={this.props.dropdownMenu}
             />
         )
     }

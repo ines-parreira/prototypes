@@ -33,6 +33,7 @@ import type {currentUserType} from '../../../../../state/types'
 import type {agentsType} from '../../../../../state/agents/types'
 import type {viewType} from '../../../../../state/views/types'
 import {AgentLabel} from '../../../../common/utils/labels'
+import TagDropdownMenu from '../../../../common/components/TagDropdownMenu/TagDropdownMenu'
 
 import css from './TicketListActions.less'
 
@@ -450,10 +451,9 @@ class TicketListActions extends React.Component<Props, State> {
                     >
                         Add tag
                     </DropdownToggle>
-                    <DropdownMenu
+                    <TagDropdownMenu
                         right
                         disabled={!areItemsSelected}
-                        style={{width: '230px'}}
                     >
                         <DropdownItem
                             header
@@ -478,7 +478,7 @@ class TicketListActions extends React.Component<Props, State> {
                         </DropdownItem>
                         <DropdownItem divider/>
                         {this._renderTagsMenu()}
-                    </DropdownMenu>
+                    </TagDropdownMenu>
                 </ButtonDropdown>
                 <UncontrolledButtonDropdown
                     size="sm"

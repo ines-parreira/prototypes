@@ -19,7 +19,7 @@ export const initialState = fromJS({
     pendingActionsCallbacks: [],
 })
 
-export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
+export default function reducer(state: Map<*,*> = initialState, action: actionType): Map<*,*> {
     switch (action.type) {
         case constants.EXECUTE_ACTION_START: {
             if (!action.callback) {

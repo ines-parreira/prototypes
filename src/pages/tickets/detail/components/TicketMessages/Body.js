@@ -16,7 +16,7 @@ type Props = {
     hasError?: boolean
 }
 
-export default (props: Props) => {
+const Body = (props: Props) => {
     const {message, className} = props
     return (
         <div className={classNames(css.component, className, {
@@ -34,3 +34,5 @@ export default (props: Props) => {
         </div>
     )
 }
+
+export default Body

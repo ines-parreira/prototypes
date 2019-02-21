@@ -11,7 +11,7 @@ const initialState = fromJS({
     openedPanel: null,
 })
 
-export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
+export default function reducer(state: Map<*,*> = initialState, action: actionType): Map<*,*> {
     switch (action.type) {
         case types.OPEN_PANEL: {
             return state.set('openedPanel', action.panelName)

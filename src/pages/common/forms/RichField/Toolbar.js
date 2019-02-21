@@ -22,7 +22,7 @@ type Props = {
     pluginMethods?: PluginMethods
 }
 
-export default (props: Props) => {
+export default function RichFieldToolbar(props: Props) {
     const {pluginMethods} = props
 
     if (!pluginMethods) {

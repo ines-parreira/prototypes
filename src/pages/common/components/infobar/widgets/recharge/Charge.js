@@ -15,7 +15,7 @@ import {humanizeString, toJS} from '../../../../../../utils'
 
 import ActionButtonsGroup from '../ActionButtonsGroup'
 
-export default () => {
+export default function Charge() {
     return {
         AfterTitle, // eslint-disable-line
         BeforeContent, // eslint-disable-line

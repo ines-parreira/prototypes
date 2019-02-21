@@ -1,15 +1,15 @@
 //@flow
 import React from 'react'
 
-import Tooltip from '../../../../common/components/Tooltip'
 import {formatDatetime} from '../../../../../utils'
+import Tooltip from '../../../../common/components/Tooltip'
 
 type Props = {
     openedDatetime?: string,
     timezone: string,
 }
 
-export default (props: Props) => {
+export default function SeenIndicator(props: Props) {
     const {openedDatetime, timezone} = props
     return (
         <span>

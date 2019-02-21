@@ -1,15 +1,15 @@
 //@flow
-import React from 'react'
-import {fromJS} from 'immutable'
 import classNamesBind from 'classnames/bind'
+import {fromJS} from 'immutable'
+import React from 'react'
 
-import {AgentLabel, CustomerLabel} from '../../../../common/utils/labels'
-import {isForwardedMessage} from '../../../../../state/ticket/utils'
 import type {TicketMessage} from '../../../../../models/ticketElement/types'
+import {isForwardedMessage} from '../../../../../state/ticket/utils'
+import {AgentLabel, CustomerLabel} from '../../../../common/utils/labels'
 
+import css from './Header.less'
 import Meta from './Meta'
 import Source from './Source'
-import css from './Header.less'
 import SourceDetails from './SourceDetails'
 
 const classNames = classNamesBind.bind(css)
@@ -22,7 +22,7 @@ type Props = {
     hasError?: boolean
 }
 
-export default (props: Props) => {
+export default function Header(props: Props) {
     const {message, timezone, isLastRead, hasError} = props
     const sender = fromJS(message.sender || {})
     const isForwarded = isForwardedMessage(message)

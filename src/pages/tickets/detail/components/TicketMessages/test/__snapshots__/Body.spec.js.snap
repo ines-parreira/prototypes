@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Body should display the Facebook carousel if there's matching metadata 1`] = `
-<Component
+<Body
   message={
     Object {
       "body_html": "",
@@ -365,5 +365,5 @@ exports[`Body should display the Facebook carousel if there's matching metadata 
       </div>
     </FacebookCarousel>
   </div>
-</Component>
+</Body>
 `;

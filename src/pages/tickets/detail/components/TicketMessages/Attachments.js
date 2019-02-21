@@ -14,7 +14,7 @@ type Props = {
     message: TicketMessage
 }
 
-export default (props: Props) => {
+const Attachments = (props: Props) => {
     const {message} = props
 
     if (!message.attachments || !message.attachments.length) {
@@ -33,3 +33,5 @@ export default (props: Props) => {
         </div>
     )
 }
+
+export default Attachments

@@ -5,7 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import ActionButtonsGroup from '../ActionButtonsGroup'
 import type {ActionType} from '../types'
 
-export default () => {
+export default function Customer() {
     return {
         editionHiddenFields: ['link'],
         TitleWrapper, // eslint-disable-line,

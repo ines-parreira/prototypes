@@ -189,16 +189,9 @@ exports[`TicketListActions component should display options for agents assignati
       >
         Add tag
       </DropdownToggle>
-      <DropdownMenu
+      <TagDropdownMenu
         disabled={false}
-        flip={true}
         right={true}
-        style={
-          Object {
-            "width": "230px",
-          }
-        }
-        tag="div"
       >
         <DropdownItem
           className="mb-2"
@@ -218,7 +211,7 @@ exports[`TicketListActions component should display options for agents assignati
           tag="button"
           toggle={true}
         />
-      </DropdownMenu>
+      </TagDropdownMenu>
     </ButtonDropdown>
     <UncontrolledButtonDropdown
       size="sm"
@@ -493,16 +486,9 @@ exports[`TicketListActions component should display special actions for trash vi
       >
         Add tag
       </DropdownToggle>
-      <DropdownMenu
+      <TagDropdownMenu
         disabled={true}
-        flip={true}
         right={true}
-        style={
-          Object {
-            "width": "230px",
-          }
-        }
-        tag="div"
       >
         <DropdownItem
           className="mb-2"
@@ -522,7 +508,7 @@ exports[`TicketListActions component should display special actions for trash vi
           tag="button"
           toggle={true}
         />
-      </DropdownMenu>
+      </TagDropdownMenu>
     </ButtonDropdown>
     <UncontrolledButtonDropdown
       size="sm"
@@ -805,16 +791,9 @@ exports[`TicketListActions component should display when nothing is selected 1`]
       >
         Add tag
       </DropdownToggle>
-      <DropdownMenu
+      <TagDropdownMenu
         disabled={true}
-        flip={true}
         right={true}
-        style={
-          Object {
-            "width": "230px",
-          }
-        }
-        tag="div"
       >
         <DropdownItem
           className="mb-2"
@@ -834,7 +813,7 @@ exports[`TicketListActions component should display when nothing is selected 1`]
           tag="button"
           toggle={true}
         />
-      </DropdownMenu>
+      </TagDropdownMenu>
     </ButtonDropdown>
     <UncontrolledButtonDropdown
       size="sm"
@@ -1107,16 +1086,9 @@ exports[`TicketListActions component should display when some tickets are select
       >
         Add tag
       </DropdownToggle>
-      <DropdownMenu
+      <TagDropdownMenu
         disabled={false}
-        flip={true}
         right={true}
-        style={
-          Object {
-            "width": "230px",
-          }
-        }
-        tag="div"
       >
         <DropdownItem
           className="mb-2"
@@ -1136,7 +1108,7 @@ exports[`TicketListActions component should display when some tickets are select
           tag="button"
           toggle={true}
         />
-      </DropdownMenu>
+      </TagDropdownMenu>
     </ButtonDropdown>
     <UncontrolledButtonDropdown
       size="sm"

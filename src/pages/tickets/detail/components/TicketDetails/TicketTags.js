@@ -1,16 +1,16 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
+import classnames from 'classnames'
 import {fromJS} from 'immutable'
-import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Input} from 'reactstrap'
 import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
-
-import classnames from 'classnames'
+import PropTypes from 'prop-types'
+import React from 'react'
+import {connect} from 'react-redux'
+import {Dropdown, DropdownItem, DropdownToggle, Input} from 'reactstrap'
 
 import shortcutManager from '../../../../../services/shortcutManager'
-import {TagLabel} from '../../../../common/utils/labels'
 import {fieldEnumSearch} from '../../../../../state/views/actions'
+import TagDropdownMenu from '../../../../common/components/TagDropdownMenu/TagDropdownMenu'
+import {TagLabel} from '../../../../common/utils/labels'
 
 import css from './TicketTags.less'
 
@@ -203,7 +203,7 @@ export class TicketTags extends React.Component {
                             )
                         }
                     </DropdownToggle>
-                    <DropdownMenu className={css.dropdown}>
+                    <TagDropdownMenu>
                         <DropdownItem
                             header
                         >
@@ -226,7 +226,7 @@ export class TicketTags extends React.Component {
                         </DropdownItem>
                         <DropdownItem divider />
                         {this._displayMenu()}
-                    </DropdownMenu>
+                    </TagDropdownMenu>
                 </Dropdown>
             </div>
         )

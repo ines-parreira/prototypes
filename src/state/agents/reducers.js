@@ -18,7 +18,7 @@ export const initialState = fromJS({
 
 })
 
-export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
+export default function reducer (state: Map<*,*> = initialState, action: actionType): Map<*,*> {
     switch (action.type) {
         case constants.FETCH_AGENTS_PAGINATION_SUCCESS: {
             return state.set('pagination', fromJS(action.resp))

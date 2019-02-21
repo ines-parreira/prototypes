@@ -8,7 +8,7 @@ import * as constants from './constants'
 
 export const initialState = fromJS([])
 
-export default (state: List<*> = initialState, action: actionType): List<*> => {
+export default function reducer(state: List<*> = initialState, action: actionType): List<*> {
     switch (action.type) {
         case constants.FETCH_USER_AUTHS_SUCCESS: {
             return fromJS(action.resp)

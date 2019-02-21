@@ -5,7 +5,7 @@ import type {Map} from 'immutable'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
 
-export default () => {
+export default function Customer() {
     return {
         TitleWrapper, // eslint-disable-line
     }

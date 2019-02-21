@@ -10,7 +10,7 @@ export const initialState = fromJS({
     meta: {}
 })
 
-export default (state: Map<*, *> = initialState, action: actionType): Map<*, *> => {
+export default function reducer(state: Map<*, *> = initialState, action: actionType): Map<*, *> {
     switch (action.type) {
         case constants.FETCH_USERS_AUDIT_SUCCESS: {
             return fromJS({

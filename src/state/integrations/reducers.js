@@ -46,7 +46,7 @@ export const initialState = fromJS({
  * If we see 'flickering' in the frontend we should update the state here instead of waiting for the integrations
  * to be fetched.
  */
-export default (state: Map<*,*> = initialState, action: defaultActionType): Map<*,*> => {
+export default function reducer(state: Map<*,*> = initialState, action: defaultActionType): Map<*,*> {
     switch (action.type) {
         case constants.FETCH_INTEGRATION_START:
             return state.setIn(['state', 'loading', 'integration'], true)

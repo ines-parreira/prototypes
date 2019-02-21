@@ -27,7 +27,7 @@ export const initialState = fromJS({
     }
 })
 
-export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
+export default function reducer(state: Map<*,*> = initialState, action: actionType): Map<*,*> {
     const items = state.get('items', fromJS([]))
 
     switch (action.type) {

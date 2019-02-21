@@ -13,7 +13,7 @@ export const initialState = fromJS({
     items: []
 })
 
-export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
+export default function reducer(state: Map<*,*> = initialState, action: actionType): Map<*,*> {
     switch (action.type) {
         case constants.FETCH_TAG_LIST_SUCCESS:
             return state

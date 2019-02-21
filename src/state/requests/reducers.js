@@ -18,7 +18,7 @@ export const requestsInitial = fromJS({
     items: []
 })
 
-export default (state: Map<*, *> = requestsInitial, action: actionType): Map<*, *> => {
+export default function reducer(state: Map<*, *> = requestsInitial, action: actionType): Map<*, *> {
     switch (action.type) {
         case constants.CREATE_REQUEST_SUCCESS:
             // Flow auto-detects all properties in Map as boolean, because of above.

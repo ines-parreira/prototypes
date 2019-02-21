@@ -5,6 +5,8 @@
 import findWithRegex from 'find-with-regex'
 import _ from 'lodash'
 
-export default (trigger, regExp) => (contentBlock, callback) => {
+const mentionSuggestionStrategy = (trigger, regExp) => (contentBlock, callback) => {
     findWithRegex(new RegExp(`(\\s|^)${_.escapeRegExp(trigger)}${regExp}`, 'g'), contentBlock, callback)
 }
+
+export default mentionSuggestionStrategy
