@@ -108,7 +108,7 @@ exports[`RuleItem component should render 1`] = `
         className="full-width"
       >
         <Form
-          id="rule-form"
+          id="rule-form-17"
           onSubmit={[Function]}
           tag="form"
         >
@@ -198,7 +198,7 @@ exports[`RuleItem component should render 1`] = `
             <Button
               color="success"
               disabled={false}
-              form="rule-form"
+              form="rule-form-17"
               tag="button"
               type="submit"
             >
@@ -379,7 +379,7 @@ exports[`RuleItem component should render errors when there is no trigger select
         className="full-width"
       >
         <Form
-          id="rule-form"
+          id="rule-form-17"
           onSubmit={[Function]}
           tag="form"
         >
@@ -468,7 +468,7 @@ exports[`RuleItem component should render errors when there is no trigger select
             <Button
               color="success"
               disabled={true}
-              form="rule-form"
+              form="rule-form-17"
               tag="button"
               type="submit"
             >

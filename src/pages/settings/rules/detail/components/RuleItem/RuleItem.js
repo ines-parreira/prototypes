@@ -187,6 +187,8 @@ export default class RuleItem extends React.Component<Props, State> {
     }
 
     _renderButtons() {
+        const {rule} = this.props
+
         return (
             <div className={css['buttons-container']}>
                 <div>
@@ -195,7 +197,7 @@ export default class RuleItem extends React.Component<Props, State> {
                             color="success"
                             type="submit"
                             disabled={this.state.isSubmitting || !this._canSubmit()}
-                            form="rule-form"
+                            form={`rule-form-${rule.get('id')}`}
                         >
                             Save rule
                         </Button>
@@ -326,7 +328,7 @@ export default class RuleItem extends React.Component<Props, State> {
                     <div className={css.row}>
                         <div className="full-width">
                             <BootstrapForm
-                                id="rule-form"
+                                id={`rule-form-${rule.get('id')}`}
                                 onSubmit={this._handleSubmit}
                             >
                                 <FormGroup className="mb-1">
