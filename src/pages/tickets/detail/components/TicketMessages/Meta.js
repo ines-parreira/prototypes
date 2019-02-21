@@ -38,6 +38,7 @@ export default function Meta(props: Props) {
                 from <a
                     target="_blank"
                     href={meta.current_page}
+                    rel="noopener noreferrer"
                 >
                     {displayString}
                 </a>
@@ -76,6 +77,7 @@ export default function Meta(props: Props) {
                 <a
                     target="_blank"
                     href={link}
+                    rel="noopener noreferrer"
                 >
                     {type}
                 </a>

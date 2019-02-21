@@ -153,6 +153,7 @@ export default class TicketAttachments extends React.Component<Props, State> {
                                 key={idx}
                                 style={this.setImagePreview(attachment)}
                                 onClick={(e) => this.openLightbox(e, attachment, images)}
+                                rel="noopener noreferrer"
                             >
                                 <div className={css.itemMeta}>
                                     <div className={css.metaName}>

@@ -205,6 +205,7 @@ export default class Event extends React.Component {
                                     <a
                                         href={objectLink}
                                         target="_blank"
+                                        rel="noopener noreferrer"
                                     >
                                         {objectLabel}
                                     </a>

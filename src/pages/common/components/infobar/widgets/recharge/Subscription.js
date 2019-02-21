@@ -181,6 +181,7 @@ export class TitleWrapper extends React.Component { // eslint-disable-line
             <a
                 href={`https://${storeName}.myshopify.com/tools/recurring/customers/${customerHash}/subscriptions/${source.get('id')}/`}
                 target="_blank"
+                rel="noopener noreferrer"
             >
                 {children}
             </a>

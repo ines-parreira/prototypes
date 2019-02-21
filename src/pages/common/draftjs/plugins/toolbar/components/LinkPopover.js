@@ -90,7 +90,7 @@ export default class LinkPopover extends React.Component<Props, State> {
                         className={css.url}
                         href={this.props.url}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                     >
                         {this.props.url}
                     </a>
