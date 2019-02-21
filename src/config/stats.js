@@ -709,7 +709,7 @@ How many surveys have been sent, response rate, average scores and more. <a href
         name: 'Revenue (Beta)',
         description: `Revenue statistics allow you to measure how much money your support team is generating by 
 helping customers through the purchasing journey.<br/> 
-<a href="https://docs.gorgias.io/admin-guide-to-gorgias/revenue-statistics">Learn how it works</a>.`,
+<a href="https://docs.gorgias.io/admin-guide-to-gorgias/revenue-statistics" target="_blank">Learn how it works</a>.`,
         filters: [
             {
                 type: 'channels',
