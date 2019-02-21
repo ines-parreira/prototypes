@@ -4,8 +4,7 @@ import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
-import {AfterTitle} from '../Subscription'
-import {TitleWrapper} from '../Subscription'
+import {AfterTitle, TitleWrapper} from '../Subscription'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -49,43 +48,128 @@ describe('Subscription', () => {
         let store
         let integrationId = 12
         let customerId = 456
-
-        beforeEach(() => {
-            store = mockStore({
-                ticket: fromJS({
+        const customerData = {
+            integrations: {
+                [integrationId]: {
                     customer: {
-                        integrations: {
-                            [integrationId]: {
-                                customer: {
-                                    id: customerId,
-                                    hash: 'asd1as2d3'
-                                }
-                            }
-                        }
+                        id: customerId,
+                        hash: 'asd1as2d3'
                     }
-                })
+                }
+            }
+        }
+
+        const ticketState = {ticket: fromJS({customer: customerData})}
+        const customerState = {customers: fromJS({active: customerData})}
+        const subscriptionData = fromJS({
+            id: 789,
+            customer_id: customerId
+        })
+        const context = {
+            integration: fromJS({
+                id: integrationId,
+                meta: {store_name: 'mystore'}
+            })
+        }
+
+        beforeAll(() => {
+            Object.defineProperty(window.location, 'pathname', {writable: true})
+        })
+
+        afterAll(() => {
+            Object.defineProperty(window.location, 'pathname', {writable: false})
+        })
+
+        it('should not render any link because no customer hash is available', () => {
+            window.location.pathname = ''
+
+            let component = shallow((
+                <TitleWrapper
+                    store={mockStore({})}
+                    source={subscriptionData}
+                    template={fromJS({})}
+                />
+            ), {context}).dive()
+
+            expect(component).toMatchSnapshot()
+
+            component = shallow((
+                <TitleWrapper
+                    store={mockStore({})}
+                    source={subscriptionData}
+                    template={fromJS({
+                        meta: {link: 'https://gorgias.io/{{customerHash}}/'}
+                    })}
+                />
+            ), {context}).dive()
+
+            expect(component).toMatchSnapshot()
+        })
+
+        describe('ticket context', () => {
+            beforeEach(() => {
+                store = mockStore(ticketState)
+                window.location.pathname = '/app/ticket/'
+            })
+
+            it('should render default link because no custom link is set', () => {
+                const component = shallow((
+                    <TitleWrapper
+                        store={store}
+                        source={subscriptionData}
+                        template={fromJS({})}
+                    />
+                ), {context}).dive()
+
+                expect(component).toMatchSnapshot()
+            })
+
+            it('should render custom link because it is set', () => {
+                const component = shallow((
+                    <TitleWrapper
+                        store={store}
+                        source={subscriptionData}
+                        template={fromJS({
+                            meta: {link: 'https://gorgias.io/{{customerHash}}/'}
+                        })}
+                    />
+                ), {context}).dive()
+
+                expect(component).toMatchSnapshot()
             })
         })
 
-        it('should render', () => {
-            const component = shallow((
-                <TitleWrapper
-                    store={store}
-                    source={fromJS({
-                        id: 789,
-                        customer_id: customerId
-                    })}
-                />
-            ), {
-                context: {
-                    integration: fromJS({
-                        id: integrationId,
-                        meta: {store_name: 'mystore'}
-                    })
-                }
-            }).dive()
+        describe('customer context', () => {
+            beforeEach(() => {
+                store = mockStore(customerState)
+                window.location.pathname = '/app/customer/'
+            })
 
-            expect(component).toMatchSnapshot()
+            it('should render default link because no custom link is set', () => {
+                const component = shallow((
+                    <TitleWrapper
+                        store={store}
+                        source={subscriptionData}
+                        template={fromJS({})}
+                    />
+                ), {context}).dive()
+
+                expect(component).toMatchSnapshot()
+            })
+
+            it('should render custom link because it is set', () => {
+                const component = shallow((
+                    <TitleWrapper
+                        store={store}
+                        source={subscriptionData}
+                        template={fromJS({
+                            meta: {link: 'https://gorgias.io/{{customerHash}}/'}
+                        })}
+                    />
+                ), {context}).dive()
+
+                expect(component).toMatchSnapshot()
+            })
         })
     })
 })

@@ -3,6 +3,7 @@ import React, {type Node} from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {fromJS, type Map} from 'immutable'
+import {connect} from 'react-redux'
 import {
     Badge,
     CardBody,
@@ -11,18 +12,21 @@ import {
 import _lowerCase from 'lodash/lowerCase'
 import _groupBy from 'lodash/groupBy'
 
-import {humanizeString, toJS} from '../../../../../../utils'
+import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../state/customers/selectors'
+import * as ticketSelectors from '../../../../../../state/ticket/selectors'
+
+import {devLog, humanizeString, isCurrentlyOnTicket, toJS} from '../../../../../../utils'
+import {renderTemplate} from '../../../../utils/template'
 
 import ActionButtonsGroup from '../ActionButtonsGroup'
 
 export default function Charge() {
     return {
-        AfterTitle, // eslint-disable-line
-        BeforeContent, // eslint-disable-line
-        AfterContent, // eslint-disable-line
-        editionHiddenFields: ['link'],
-        TitleWrapper, // eslint-disable-line
-        Wrapper, // eslint-disable-line
+        AfterTitle,
+        BeforeContent,
+        AfterContent,
+        TitleWrapper,
+        Wrapper,
     }
 }
 
@@ -288,21 +292,50 @@ export class AfterContent extends React.Component<AfterContentProps> { // eslint
 
 type TitleWrapperProps = {
     children: ?Node,
-    source: Map<*,*>
+    source: Map<*,*>,
+    template: Map<*,*>,
+    getIntegrationData: (number, number) => Map<*,*>
 }
 
-class TitleWrapper extends React.Component<TitleWrapperProps> { // eslint-disable-line
+@connect((state) => {
+    return {
+        getIntegrationData: (integrationId, customerId) => {
+            const integrationData = isCurrentlyOnTicket()
+                ? ticketSelectors.getIntegrationDataByIntegrationId(integrationId)(state)
+                : getActiveCustomerIntegrationDataByIntegrationId(integrationId)(state)
+
+            if (integrationData.getIn(['customer', 'id']) !== customerId) {
+                devLog('[INFOBAR][recharge][charge] Could not find integration data for customer.', {
+                    customerId, integrationId
+                })
+                return fromJS({})
+            }
+
+            return integrationData
+        }
+    }
+})
+export class TitleWrapper extends React.Component<TitleWrapperProps> {
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
     }
 
     render() {
-        const {children} = this.props  // , source, getIntegrationData
-        // const customerHash = getIntegrationData(this.context.integration.get('id')).getIn(['customer', 'hash'])
+        const {children, template, source, getIntegrationData} = this.props
+        const {integration} = this.context
+        const customerHash = getIntegrationData(integration.get('id'), source.get('customer_id'))
+            .getIn(['customer', 'hash'])
+
+        let link = null
+        let customLink = template.getIn(['meta', 'link'])
+
+        if (customLink && customerHash) {
+            link = renderTemplate(customLink, source.set('customerHash', customerHash).toJS())
+        }
 
         return (
             <a
-                // href={`https://shopifysubscriptions.com/customers/${customerHash}/subscriptions/items/${source.get('id')}/`}
+                href={link}
                 target="_blank"
             >
                 {children}
@@ -317,7 +350,7 @@ type WrapperProps = {
     source: Map<*,*>
 }
 
-class Wrapper extends React.Component<WrapperProps> { // eslint-disable-line
+class Wrapper extends React.Component<WrapperProps> {
     static childContextTypes = {
         charge: ImmutablePropTypes.map.isRequired,
         chargeId: PropTypes.number,

@@ -78,9 +78,49 @@ exports[`Subscription AfterTitle should display only the cancel action because t
 />
 `;
 
-exports[`Subscription TitleWrapper should render 1`] = `
+exports[`Subscription TitleWrapper customer context should render custom link because it is set 1`] = `
 <a
-  href="https://mystore.myshopify.com/tools/recurring/customers/asd1as2d3/subscriptions/789/"
+  href="https://gorgias.io/asd1as2d3/"
+  rel="noopener noreferrer"
+  target="_blank"
+/>
+`;
+
+exports[`Subscription TitleWrapper customer context should render default link because no custom link is set 1`] = `
+<a
+  href="https://mystore.myshopify.com/tools/recurring/customers/asd1as2d3/"
+  rel="noopener noreferrer"
+  target="_blank"
+/>
+`;
+
+exports[`Subscription TitleWrapper should not render any link because no customer hash is available 1`] = `
+<a
+  href={null}
+  rel="noopener noreferrer"
+  target="_blank"
+/>
+`;
+
+exports[`Subscription TitleWrapper should not render any link because no customer hash is available 2`] = `
+<a
+  href={null}
+  rel="noopener noreferrer"
+  target="_blank"
+/>
+`;
+
+exports[`Subscription TitleWrapper ticket context should render custom link because it is set 1`] = `
+<a
+  href="https://gorgias.io/asd1as2d3/"
+  rel="noopener noreferrer"
+  target="_blank"
+/>
+`;
+
+exports[`Subscription TitleWrapper ticket context should render default link because no custom link is set 1`] = `
+<a
+  href="https://mystore.myshopify.com/tools/recurring/customers/asd1as2d3/"
   rel="noopener noreferrer"
   target="_blank"
 />

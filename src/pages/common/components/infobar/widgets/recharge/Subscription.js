@@ -1,13 +1,15 @@
-import React from 'react'
+// @flow
+import React, {type Node} from 'react'
+import {fromJS, type Map} from 'immutable'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
-import {fromJS} from 'immutable'
 import {
     Badge
 } from 'reactstrap'
 
-import {humanizeString} from '../../../../../../utils'
+import {devLog, humanizeString, isCurrentlyOnTicket} from '../../../../../../utils'
+import {renderTemplate} from '../../../../utils/template'
 
 import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../state/customers/selectors'
 
@@ -17,20 +19,20 @@ import * as ticketSelectors from './../../../../../../state/ticket/selectors'
 
 export default function Subscription() {
     return {
-        AfterTitle, // eslint-disable-line
-        BeforeContent, // eslint-disable-line
-        editionHiddenFields: ['link'],
-        TitleWrapper, // eslint-disable-line
-        Wrapper, // eslint-disable-line
+        AfterTitle,
+        BeforeContent,
+        TitleWrapper,
+        Wrapper,
     }
 }
 
-export class AfterTitle extends React.Component { // eslint-disable-line
-    static propTypes = {
-        isEditing: PropTypes.bool.isRequired,
-        source: ImmutablePropTypes.map.isRequired,
-    }
 
+type AfterTitleProps = {
+    isEditing: boolean,
+    source: Map<*,*>
+}
+
+export class AfterTitle extends React.Component<AfterTitleProps> {
     static contextTypes = {
         integrationId: PropTypes.number,
         isSubscriptionCancelled: PropTypes.bool.isRequired,
@@ -106,16 +108,17 @@ export class AfterTitle extends React.Component { // eslint-disable-line
     }
 }
 
+
 const statusColors = {
     active: 'success',
     cancelled: 'danger',
 }
 
-class BeforeContent extends React.Component { // eslint-disable-line
-    static propTypes = {
-        source: ImmutablePropTypes.map.isRequired,
-    }
+type BeforeContentProps = {
+    source: Map<*,*>
+}
 
+class BeforeContent extends React.Component<BeforeContentProps> {
     render() {
         const {source} = this.props
 
@@ -138,48 +141,59 @@ class BeforeContent extends React.Component { // eslint-disable-line
     }
 }
 
+
+type TitleWrapperProps = {
+    children: ?Node,
+    source: Map<*,*>,
+    template: Map<*,*>,
+    getIntegrationData: (number, number) => Map<*,*>
+}
+
 @connect((state) => {
     return {
         getIntegrationData: (integrationId, customerId) => {
-            // Here we don't know if we're in a ticket- or customer- context.
-            // So we get both data from the ticket.customer and the active customer, and if any match
-            // the subscription's customer_id, then it means it's the correct data.
-            const ticketData = ticketSelectors.getIntegrationDataByIntegrationId(integrationId)(state)
-            const customerData = getActiveCustomerIntegrationDataByIntegrationId(integrationId)(state)
+            const integrationData = isCurrentlyOnTicket()
+                ? ticketSelectors.getIntegrationDataByIntegrationId(integrationId)(state)
+                : getActiveCustomerIntegrationDataByIntegrationId(integrationId)(state)
 
-            if (ticketData.getIn(['customer', 'id']) === customerId) {
-                return ticketData
+            if (integrationData.getIn(['customer', 'id']) !== customerId) {
+                devLog('[INFOBAR][recharge][subscription] Could not find integration data for customer.', {
+                    customerId, integrationId
+                })
+                return fromJS({})
             }
 
-            if (customerData.getIn(['customer', 'id']) === customerId) {
-                return customerData
-            }
-
-            return fromJS({})
+            return integrationData
         }
     }
 })
-export class TitleWrapper extends React.Component { // eslint-disable-line
-    static propTypes = {
-        children: PropTypes.node,
-        source: ImmutablePropTypes.map.isRequired,
-        getIntegrationData: PropTypes.func.isRequired
-    }
-
+export class TitleWrapper extends React.Component<TitleWrapperProps> {
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
     }
 
     render() {
-        const {children, source, getIntegrationData} = this.props
+        const {children, source, getIntegrationData, template} = this.props
         const {integration} = this.context
         const storeName = integration.getIn(['meta', 'store_name'])
         const customerHash = getIntegrationData(integration.get('id'), source.get('customer_id'))
             .getIn(['customer', 'hash'])
 
+        let link = null
+
+        if (customerHash) {
+            link = `https://${storeName}.myshopify.com/tools/recurring/customers/${customerHash}/`
+
+            let customLink = template.getIn(['meta', 'link'])
+
+            if (customLink) {
+                link = renderTemplate(customLink, source.set('customerHash', customerHash).toJS())
+            }
+        }
+
         return (
             <a
-                href={`https://${storeName}.myshopify.com/tools/recurring/customers/${customerHash}/subscriptions/${source.get('id')}/`}
+                href={link}
                 target="_blank"
                 rel="noopener noreferrer"
             >
@@ -189,12 +203,13 @@ export class TitleWrapper extends React.Component { // eslint-disable-line
     }
 }
 
-class Wrapper extends React.Component { // eslint-disable-line
-    static propTypes = {
-        children: PropTypes.node,
-        source: ImmutablePropTypes.map.isRequired,
-    }
 
+type WrapperProps = {
+    children: Node,
+    source: Map<*,*>
+}
+
+class Wrapper extends React.Component<WrapperProps> {
     static childContextTypes = {
         order: ImmutablePropTypes.map.isRequired,
         orderId: PropTypes.number,

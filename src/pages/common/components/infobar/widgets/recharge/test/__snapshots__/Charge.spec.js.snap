@@ -463,3 +463,45 @@ exports[`Charge SubscriptionAfterTitle should not display any action if the char
 exports[`Charge SubscriptionAfterTitle should return null if isEditing 1`] = `""`;
 
 exports[`Charge SubscriptionAfterTitle should return null if there's no integrationId 1`] = `""`;
+
+exports[`Charge TitleWrapper customer context should not render any link because no custom link is set 1`] = `
+<a
+  href={null}
+  target="_blank"
+/>
+`;
+
+exports[`Charge TitleWrapper customer context should render custom link because it is set 1`] = `
+<a
+  href="https://gorgias.io/asd1as2d3/"
+  target="_blank"
+/>
+`;
+
+exports[`Charge TitleWrapper should not render any link because no customer hash is available 1`] = `
+<a
+  href={null}
+  target="_blank"
+/>
+`;
+
+exports[`Charge TitleWrapper should not render any link because no customer hash is available 2`] = `
+<a
+  href={null}
+  target="_blank"
+/>
+`;
+
+exports[`Charge TitleWrapper ticket context should not render any link because no custom link is set 1`] = `
+<a
+  href={null}
+  target="_blank"
+/>
+`;
+
+exports[`Charge TitleWrapper ticket context should render custom link because it is set 1`] = `
+<a
+  href="https://gorgias.io/asd1as2d3/"
+  target="_blank"
+/>
+`;

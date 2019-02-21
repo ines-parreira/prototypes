@@ -1,11 +1,16 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import index, {SubscriptionAfterTitle, AfterContent, AfterTitle} from './../Charge'
+import index, {SubscriptionAfterTitle, AfterContent, AfterTitle, TitleWrapper} from './../Charge'
 
 const BeforeContent = index().BeforeContent
 const Wrapper = index().Wrapper
+
+const middlewares = [thunk]
+const mockStore = configureMockStore(middlewares)
 
 describe('Charge', () => {
     describe('SubscriptionAfterTitle', () => {
@@ -160,7 +165,7 @@ describe('Charge', () => {
                     isEditing={true}
                     source={fromJS({})}
                 />
-            , options)
+                , options)
 
             expect(component).toMatchSnapshot()
 
@@ -169,7 +174,7 @@ describe('Charge', () => {
                     isEditing={false}
                     source={fromJS({})}
                 />
-            , {context: {integrationId: null}})
+                , {context: {integrationId: null}})
 
             expect(component).toMatchSnapshot()
         })
@@ -184,7 +189,7 @@ describe('Charge', () => {
                         total_refunds: 0.00
                     })}
                 />
-            , options)
+                , options)
 
             expect(component).toMatchSnapshot()
 
@@ -197,7 +202,7 @@ describe('Charge', () => {
                         total_refunds: 8.00
                     })}
                 />
-            , options)
+                , options)
 
             expect(component).toMatchSnapshot()
         })
@@ -212,7 +217,7 @@ describe('Charge', () => {
                         total_refunds: 0.00
                     })}
                 />
-            , options)
+                , options)
 
             expect(component).toMatchSnapshot()
 
@@ -225,7 +230,7 @@ describe('Charge', () => {
                         total_refunds: null
                     })}
                 />
-            , options)
+                , options)
 
             expect(component).toMatchSnapshot()
         })
@@ -239,9 +244,138 @@ describe('Charge', () => {
                         total_price: '18.00'
                     })}
                 />
-            , options)
+                , options)
 
             expect(component).toMatchSnapshot()
+        })
+    })
+
+    describe('TitleWrapper', () => {
+        let store
+        let integrationId = 12
+        let customerId = 456
+        const customerData = {
+            integrations: {
+                [integrationId]: {
+                    customer: {
+                        id: customerId,
+                        hash: 'asd1as2d3'
+                    }
+                }
+            }
+        }
+
+        const ticketState = {ticket: fromJS({customer: customerData})}
+        const customerState = {customers: fromJS({active: customerData})}
+        const chargeData = fromJS({
+            id: 789,
+            customer_id: customerId
+        })
+        const context = {
+            integration: fromJS({
+                id: integrationId,
+                meta: {store_name: 'mystore'}
+            })
+        }
+
+        beforeAll(() => {
+            Object.defineProperty(window.location, 'pathname', {writable: true})
+        })
+
+        afterAll(() => {
+            Object.defineProperty(window.location, 'pathname', {writable: false})
+        })
+
+        it('should not render any link because no customer hash is available', () => {
+            window.location.pathname = ''
+
+            let component = shallow((
+                <TitleWrapper
+                    store={mockStore({})}
+                    source={chargeData}
+                    template={fromJS({})}
+                />
+            ), {context}).dive()
+
+            expect(component).toMatchSnapshot()
+
+            component = shallow((
+                <TitleWrapper
+                    store={mockStore({})}
+                    source={chargeData}
+                    template={fromJS({
+                        meta: {link: 'https://gorgias.io/{{customerHash}}/'}
+                    })}
+                />
+            ), {context}).dive()
+
+            expect(component).toMatchSnapshot()
+        })
+
+        describe('ticket context', () => {
+            beforeEach(() => {
+                store = mockStore(ticketState)
+                window.location.pathname = '/app/ticket/'
+            })
+
+            it('should not render any link because no custom link is set', () => {
+                const component = shallow((
+                    <TitleWrapper
+                        store={store}
+                        source={chargeData}
+                        template={fromJS({})}
+                    />
+                ), {context}).dive()
+
+                expect(component).toMatchSnapshot()
+            })
+
+            it('should render custom link because it is set', () => {
+                const component = shallow((
+                    <TitleWrapper
+                        store={store}
+                        source={chargeData}
+                        template={fromJS({
+                            meta: {link: 'https://gorgias.io/{{customerHash}}/'}
+                        })}
+                    />
+                ), {context}).dive()
+
+                expect(component).toMatchSnapshot()
+            })
+        })
+
+        describe('customer context', () => {
+            beforeEach(() => {
+                store = mockStore(customerState)
+                window.location.pathname = '/app/customer/'
+            })
+
+            it('should not render any link because no custom link is set', () => {
+                const component = shallow((
+                    <TitleWrapper
+                        store={store}
+                        source={chargeData}
+                        template={fromJS({})}
+                    />
+                ), {context}).dive()
+
+                expect(component).toMatchSnapshot()
+            })
+
+            it('should render custom link because it is set', () => {
+                const component = shallow((
+                    <TitleWrapper
+                        store={store}
+                        source={chargeData}
+                        template={fromJS({
+                            meta: {link: 'https://gorgias.io/{{customerHash}}/'}
+                        })}
+                    />
+                ), {context}).dive()
+
+                expect(component).toMatchSnapshot()
+            })
         })
     })
 })
