@@ -103,7 +103,7 @@ export const deleteMacro = (macroId: string): thunkActionType =>
             }, (error) => {
                 return dispatch({
                     type: constants.DELETE_MACRO_ERROR,
-                    reason: 'Failed to delete the integration',
+                    reason: 'Failed to delete macro',
                     verbose: true,
                     error,
                 })
