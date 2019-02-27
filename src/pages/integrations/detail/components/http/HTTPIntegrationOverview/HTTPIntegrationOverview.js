@@ -28,10 +28,10 @@ import JSONBody from './JSONBody'
 
 
 type Props = {
-    integration: Map<*,*>,
+    integration: Map<*, *>,
     isUpdate: boolean,
     actions: Object,
-    loading: Map<*,*>
+    loading: Map<*, *>
 }
 
 type State = {
@@ -87,18 +87,17 @@ export default class HTTPIntegrationOverview extends React.Component<Props, Stat
         }
     }
 
-    _getIntegration = (integration: Map<*,*>) => {
+    _getIntegration = (integration: Map<*, *>) => {
         let isJsonBody = integration.getIn(['http', 'request_content_type']) === JSON_CONTENT_TYPE
         let formData = toJS(integration.getIn(['http', 'form']))
         if (!isJsonBody) {
             formData = this._objectToParameters(formData)
         }
+        const headers = integration.getIn(['http', 'headers'])
         return {
             name: integration.get('name'),
             description: integration.get('description') || '',
-            headers: this._objectToParameters(
-                (integration.getIn(['http', 'headers']) || {}).toJS()
-            ),
+            headers: this._objectToParameters(headers ? headers.toJS() : {}),
             url: integration.getIn(['http', 'url']),
             method: integration.getIn(['http', 'method']),
             requestContentType: integration.getIn(['http', 'request_content_type']),

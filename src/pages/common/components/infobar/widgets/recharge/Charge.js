@@ -337,6 +337,7 @@ export class TitleWrapper extends React.Component<TitleWrapperProps> {
             <a
                 href={link}
                 target="_blank"
+                rel="noreferrer noopener"
             >
                 {children}
             </a>

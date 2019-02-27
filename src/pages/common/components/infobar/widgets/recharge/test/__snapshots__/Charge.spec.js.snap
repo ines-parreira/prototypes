@@ -467,6 +467,7 @@ exports[`Charge SubscriptionAfterTitle should return null if there's no integrat
 exports[`Charge TitleWrapper customer context should not render any link because no custom link is set 1`] = `
 <a
   href={null}
+  rel="noreferrer noopener"
   target="_blank"
 />
 `;
@@ -474,6 +475,7 @@ exports[`Charge TitleWrapper customer context should not render any link because
 exports[`Charge TitleWrapper customer context should render custom link because it is set 1`] = `
 <a
   href="https://gorgias.io/asd1as2d3/"
+  rel="noreferrer noopener"
   target="_blank"
 />
 `;
@@ -481,6 +483,7 @@ exports[`Charge TitleWrapper customer context should render custom link because 
 exports[`Charge TitleWrapper should not render any link because no customer hash is available 1`] = `
 <a
   href={null}
+  rel="noreferrer noopener"
   target="_blank"
 />
 `;
@@ -488,6 +491,7 @@ exports[`Charge TitleWrapper should not render any link because no customer hash
 exports[`Charge TitleWrapper should not render any link because no customer hash is available 2`] = `
 <a
   href={null}
+  rel="noreferrer noopener"
   target="_blank"
 />
 `;
@@ -495,6 +499,7 @@ exports[`Charge TitleWrapper should not render any link because no customer hash
 exports[`Charge TitleWrapper ticket context should not render any link because no custom link is set 1`] = `
 <a
   href={null}
+  rel="noreferrer noopener"
   target="_blank"
 />
 `;
@@ -502,6 +507,7 @@ exports[`Charge TitleWrapper ticket context should not render any link because n
 exports[`Charge TitleWrapper ticket context should render custom link because it is set 1`] = `
 <a
   href="https://gorgias.io/asd1as2d3/"
+  rel="noreferrer noopener"
   target="_blank"
 />
 `;
