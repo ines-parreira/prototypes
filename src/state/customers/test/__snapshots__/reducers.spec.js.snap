@@ -172,10 +172,24 @@ Object {
     "hasHistory": true,
     "tickets": Array [
       Object {
+        "created_datetime": "2018-01-01",
         "id": 1,
       },
       Object {
+        "created_datetime": "2018-01-02",
         "id": 2,
+      },
+      Object {
+        "created_datetime": "2018-01-03",
+        "id": 5,
+      },
+      Object {
+        "created_datetime": "2018-01-04",
+        "id": 4,
+      },
+      Object {
+        "created_datetime": "2018-01-05",
+        "id": 3,
       },
     ],
     "triedLoading": true,

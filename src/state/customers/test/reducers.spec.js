@@ -172,7 +172,13 @@ describe('customers reducers', () => {
                         meta: {
                             item_count: 2,
                         },
-                        data: [{id: 1}, {id: 2}],
+                        data: [
+                            {id: 1, created_datetime: '2018-01-01',},
+                            {id: 2, created_datetime: '2018-01-02',},
+                            {id: 3, created_datetime: '2018-01-05',},
+                            {id: 4, created_datetime: '2018-01-04',},
+                            {id: 5, created_datetime: '2018-01-03',},
+                        ],
                     },
                 }
             ).toJS()

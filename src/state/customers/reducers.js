@@ -1,6 +1,6 @@
 // @flow
-import {fromJS} from 'immutable'
-import type {Map} from 'immutable'
+import {fromJS, type Map} from 'immutable'
+import _sortBy from 'lodash/sortBy'
 
 import * as ticketConstants from '../ticket/constants'
 import * as viewsConstants from '../views/constants'
@@ -93,9 +93,11 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
 
         case constants.FETCH_CUSTOMER_HISTORY_SUCCESS: {
             const hasHistory = action.resp.meta.item_count > 1
+            const tickets: Array<Object> = action.resp.data
+            const sortedTickets = _sortBy(tickets, ['created_datetime'])
 
             return state
-                .setIn(['customerHistory', 'tickets'], fromJS(action.resp.data))
+                .setIn(['customerHistory', 'tickets'], fromJS(sortedTickets))
                 .setIn(['_internal', 'loading', 'history'], false)
                 .setIn(['customerHistory', 'hasHistory'], hasHistory)
         }
