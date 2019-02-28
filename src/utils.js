@@ -908,5 +908,7 @@ export const transformSystemMessagesToNotifications = (systemMessages: Array<sys
  * Display experimental features when in development or when a Gorgias staff is logged in
  */
 export const shouldDisplayExperiment = (): boolean => {
-    return window.DEVELOPMENT || document.cookie.includes('is_gorgias_staff')
+    return window.DEVELOPMENT ||
+        window.location.hostname === 'gorgias.gorgias.io' ||
+        document.cookie.includes('is_gorgias_staff')
 }
