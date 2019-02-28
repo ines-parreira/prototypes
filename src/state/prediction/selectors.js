@@ -27,7 +27,7 @@ export const getContext = createSelector(
         const integrations = ticket.getIn(['customer', 'integrations'])
         if (integrations) {
             integrations.forEach((integration) => {
-                if (integration.get('__integration_type__') === 'shopify') {
+                if (integration && integration.get('__integration_type__') === 'shopify') {
                     const lastOrderName = integration.getIn(['customer', 'last_order_name']) || ''
                     if (lastOrderName) {
                         context = context.mergeDeep({
