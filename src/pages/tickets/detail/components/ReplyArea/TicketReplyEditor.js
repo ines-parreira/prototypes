@@ -15,9 +15,10 @@ import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {notify} from '../../../../../state/notifications/actions'
 
 import type {attachmentType} from '../../../../../types'
-import {humanizeString} from '../../../../../utils'
+import {humanizeString, shouldDisplayExperiment} from '../../../../../utils'
 import {ATTACHMENT_SIZE_ERROR, getMaxAttachmentSize} from '../../../../../utils/file'
 import RichField from '../../../../common/forms/RichField'
+import {getContext} from '../../../../../state/prediction/selectors'
 
 import css from './TicketReplyEditor.less'
 
@@ -53,10 +54,11 @@ type validationRegexType = string | RegExp
 
 type Props = {
     actions: {},
-    agents:  agentsType,
-    newMessage: Map<*,*>,
+    agents: agentsType,
+    newMessage: Map<*, *>,
     newMessageType: string,
-    ticket: Map<*,*>,
+    ticket: Map<*, *>,
+    predictionContext: Map<*, *>,
     attachments: List<*>,
 
     addAttachments: typeof newMessageActions.addAttachments,
@@ -159,7 +161,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
             this.props.notify({
                 status: 'warning',
                 message: `When using ${humanizeString(newMessageType)}, you can either send a text message, or an ` +
-                'attachment, but not both at the same time.'
+                    'attachment, but not both at the same time.'
             })
 
             return false
@@ -319,6 +321,11 @@ export class TicketReplyEditor extends React.Component<Props, State> {
 
         const canInsertInlineImages = (newMessageType === 'email')
 
+        let predictionProps = {}
+        if (shouldDisplayExperiment()) {
+            predictionProps.predictionContext = this.props.predictionContext
+        }
+
         return (
             <div className={css.component}>
                 <RichField
@@ -334,7 +341,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
                         html: newMessage.getIn(['newMessage', 'body_html']),
                     }}
                     onChange={this._onEditorChange}
-                    attachFiles = {(files) => {
+                    attachFiles={(files) => {
                         return this._handleFiles(files, attachmentInputProps.accept)
                     }}
                     tabIndex="4"
@@ -349,6 +356,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
                     canDropFiles
                     signature
                     spellCheck
+                    {...predictionProps}
                 />
             </div>
         )
@@ -361,6 +369,7 @@ function mapStateToProps(state) {
         attachments: newMessageSelectors.getNewMessageAttachments(state),
         newMessage: state.newMessage,
         agents: getOtherAgents(state),
+        predictionContext: getContext(state),
     }
 }
 

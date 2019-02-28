@@ -73,6 +73,11 @@ export function convertToHTML(contentState: ContentState): string {
                 }
             }
 
+            // don't output predictions in html
+            if (entity.type === 'prediction') {
+                return ''
+            }
+
             return originalText
         }
     })(contentState), (str) => {

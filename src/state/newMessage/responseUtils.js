@@ -4,6 +4,7 @@ import type {Map} from 'immutable'
 import {fromJS} from 'immutable'
 import _findIndex from 'lodash/findIndex'
 import _pick from 'lodash/pick'
+import _pickBy from 'lodash/pickBy'
 import _take from 'lodash/take'
 import _takeRight from 'lodash/takeRight'
 
@@ -172,7 +173,7 @@ export const updateCache = (context: contextType) => {
     ) {
         // TODO (@xarg): We also need to keep the attachments in the cache
         ticketReplyCache.set(action.ticketId, {
-            contentState: convertToRaw(contentState),
+            contentState: convertToRawWithoutPredictions(contentState),
             selectionState,
             sourceType: sourceType,
         })
@@ -213,6 +214,25 @@ export const addCache = (context: contextType): contextType => {
     context = getCache(context)
 
     return _markCacheAdded(context)
+}
+
+/**
+ * Return a raw content state without any prediction entities
+ *
+ * @param contentState
+ * @return {{blocks: Array, entityMap: {}}}
+ */
+export const convertToRawWithoutPredictions = (contentState: ContentState) => {
+    // don't cache predictions
+    const rawContent = convertToRaw(contentState)
+    let newRaw = {blocks: [], entityMap: {}}
+
+    newRaw.blocks = rawContent.blocks.slice()
+    newRaw.entityMap = _pickBy(rawContent.entityMap, (val) => {
+        return val.type !== 'prediction'
+    })
+
+    return newRaw
 }
 
 /**

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {Link} from 'react-router'
 
-import {hasRole} from '../../../../utils'
+import {hasRole, shouldDisplayExperiment} from '../../../../utils'
 import {ADMIN_ROLE, AGENT_ROLE} from '../../../../config/user'
 
 type Props = {
@@ -78,8 +78,7 @@ export default class SettingsNavbar extends React.Component<Props> {
             }]
         }]
 
-        // @xarg: temporary hiding of the requests navigation
-        if (window.DEVELOPMENT || document.cookie.includes('is_gorgias_staff')) {
+        if (shouldDisplayExperiment()) {
             categories[1].links.push({
                 requiredRole: ADMIN_ROLE,
                 to: 'requests',

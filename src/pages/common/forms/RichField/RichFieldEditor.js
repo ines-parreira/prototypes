@@ -11,11 +11,14 @@ import _noop from 'lodash/noop'
 import React, {type ElementRef} from 'react'
 
 import {scrollToReactNode} from '../../../common/utils/keyboard'
+
 import createConnectedLinksPlugin from '../../draftjs/plugins/connectedLinks'
 import createDndUploadPlugin from '../../draftjs/plugins/dndUpload'
 import createMentionPlugin from '../../draftjs/plugins/mentions'
 import createPasteImagePlugin from '../../draftjs/plugins/pasteImage'
 import createVariablesPlugin from '../../draftjs/plugins/variables'
+import createPredictionPlugin from '../../draftjs/plugins/prediction'
+
 import InputField from '../InputField'
 import type {ActionName} from '../../draftjs/plugins/toolbar/types'
 import {type Plugin} from '../../draftjs/plugins/types'
@@ -109,7 +112,7 @@ export class RichFieldEditor extends InputField<Props, State> {
         this.connectedLinksPlugin = createConnectedLinksPlugin()
         this.variablesPlugin = createVariablesPlugin()
 
-        return [
+        const plugins = [
             this.dndPlugin,
             this.blockBreakoutPlugin,
             this.resizeablePlugin,
@@ -119,6 +122,16 @@ export class RichFieldEditor extends InputField<Props, State> {
             this.variablesPlugin,
             this.pasteImage,
         ]
+
+        if (this.props.predictionContext) {
+            this.predictionPlugin = createPredictionPlugin({
+                context: this.props.predictionContext
+            })
+
+            plugins.push(this.predictionPlugin)
+        }
+
+        return plugins
     }
 
     componentDidUpdate(prevProps: Props) {
@@ -240,7 +253,7 @@ export class RichFieldEditor extends InputField<Props, State> {
     }
 
     _getField = () => {
-        const {required, displayOnly, signature} = this.props
+        const {required, displayOnly, signature, ticket} = this.props
         const {MentionSuggestions} = this.mentionPlugin
         return (
             <div
@@ -275,6 +288,7 @@ export class RichFieldEditor extends InputField<Props, State> {
                         editorKey={this.props.editorKey}
                         tabIndex={this.props.tabIndex}
                         spellCheck={this.props.spellCheck}
+                        ticket={ticket}
                     />
                     <MentionSuggestions
                         onSearchChange={this.props.onMentionSearchChange}

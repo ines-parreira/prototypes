@@ -10,6 +10,7 @@ import {removeRequest, setRequest} from '../../../../../state/ticket/actions'
 import {getRequests, getLatestRequest} from '../../../../../state/requests/selectors'
 
 import headerCss from '../TicketHeader.less'
+import {shouldDisplayExperiment} from '../../../../../utils'
 
 type Props = {
     request: Object,
@@ -28,8 +29,10 @@ export class TicketRequest extends React.Component<Props, State> {
     static defaultProps = {
         request: fromJS({}),
         requests: fromJS([]),
-        setRequest: () => {},
-        removeRequest: () => {},
+        setRequest: () => {
+        },
+        removeRequest: () => {
+        },
     }
 
     state = {
@@ -39,10 +42,6 @@ export class TicketRequest extends React.Component<Props, State> {
 
     _toggle = () => {
         this.setState({dropdownOpen: !this.state.dropdownOpen})
-    }
-
-    _shouldDisplay() {
-        return window.DEVELOPMENT || document.cookie.includes('is_gorgias_staff')
     }
 
     _onChange = (action: Function) => {
@@ -56,7 +55,7 @@ export class TicketRequest extends React.Component<Props, State> {
         const {request, requests, setRequest, removeRequest} = this.props
         const {isLoading} = this.state
 
-        if (!this._shouldDisplay()) {
+        if (!shouldDisplayExperiment()) {
             return null
         }
 
