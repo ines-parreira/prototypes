@@ -97,6 +97,9 @@ const predictionPlugin = (config: { context: Map<*, *> }) => {
 
             // only from current block
             const currentBlock = contentState.getBlockForKey(currentBlockKey)
+            if (!currentBlock) {
+                return editorState
+            }
 
             const start = selection.getStartOffset()
             const end = selection.getEndOffset()
