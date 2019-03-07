@@ -8,7 +8,7 @@ import InputField from '../../../../common/forms/InputField'
 const defaultValues = {
     dirty: false,
     submitting: false,
-    name: '',
+    title: '',
     description: '',
 }
 
@@ -22,7 +22,7 @@ class RuleForm extends React.Component {
         })
 
         return this.props.onSubmit({
-            name: this.state.name,
+            title: this.state.title,
             description: this.state.description
         }).then((res) => {
             this.setState(defaultValues)
@@ -46,11 +46,11 @@ class RuleForm extends React.Component {
                     <div className="content">
                         <InputField
                             type="text"
-                            name="name"
+                            name="title"
                             label="Name"
                             required
-                            value={this.state.name}
-                            onChange={(name) => this._updateField({name})}
+                            value={this.state.title}
+                            onChange={(title) => this._updateField({title})}
                         />
                         <InputField
                             type="textarea"
