@@ -13,6 +13,7 @@ import {
     BreadcrumbItem,
 } from 'reactstrap'
 
+import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from '../../../../../../constants/integration'
 import {notify} from '../../../../../../state/notifications/actions'
 
 import InputField from '../../../../../common/forms/InputField'
@@ -71,9 +72,11 @@ class EmailIntegrationCreate extends React.Component {
 
     _setName = (name) => {
         const {errors} = this.state
+        const invalidNameRegexp = new RegExp(`[${EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS.join('')}]`)
 
-        if (name && /[@]+/.test(name)) {
-            errors.name = 'The name of your Email integration cannot contain a "@".'
+        if (name && invalidNameRegexp.test(name)) {
+            errors.name = 'The name of your Email integration cannot contain these characters: '+
+                          `${EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS.join(' ')}`
         } else {
             errors.name = null
         }
@@ -94,7 +97,8 @@ class EmailIntegrationCreate extends React.Component {
 
         const {errors} = this.state
 
-        const nameHelp = 'The name that customers will see when they receive emails from you. Cannot contain a "@".'
+        const nameHelp = 'The name that customers will see when they receive emails from you. ' +
+                         `Cannot contain these characters: ${EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS.join(' ')}`
 
         const hasErrors = Object.values(errors).some((val) => val != null)
 

@@ -32,6 +32,7 @@ import InputField from '../../../../../common/forms/InputField'
 import BooleanField from '../../../../../common/forms/BooleanField'
 import RichFieldWithVariables from '../../../../../common/forms/RichFieldWithVariables'
 import PageHeader from '../../../../../common/components/PageHeader'
+import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from '../../../../../../constants/integration'
 
 
 class EmailIntegrationUpdate extends React.Component {
@@ -270,9 +271,11 @@ class EmailIntegrationUpdate extends React.Component {
 
     _setName = (name) => {
         const {errors} = this.state
+        const invalidNameRegexp = new RegExp(`[${EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS.join('')}]`)
 
-        if (name && /[@]+/.test(name)) {
-            errors.name = 'The name of your Email integration cannot contain a "@".'
+        if (name && invalidNameRegexp.test(name)) {
+            errors.name = 'The name of your Email integration cannot contain these characters: ' +
+                          `${EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS.join(' ')}`
         } else {
             errors.name = null
         }
@@ -318,7 +321,8 @@ class EmailIntegrationUpdate extends React.Component {
 
         const hasErrors = Object.values(errors).some((val) => val != null)
 
-        const nameHelp = 'The name that customers will see when they receive emails from you. Cannot contain a "@".'
+        const nameHelp = 'The name that customers will see when they receive emails from you. ' +
+                         `Cannot contain these characters: ${EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS.join(' ')}`
 
         return (
             <div className="mt-4">
