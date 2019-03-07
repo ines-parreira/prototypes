@@ -13,7 +13,7 @@ type operationType = 'UPDATE' | 'INSERT' | 'DELETE' | 'UPDATE_LOGICAL_OPERATOR' 
 
 export const addRuleStart = (type: string, code: string) => ({
     type: constants.ADD_RULE_START,
-    title: type,
+    name: type,
     code
 })
 
@@ -212,4 +212,3 @@ export function updateOrder(priorities: {}) {
             })
     }
 }
-

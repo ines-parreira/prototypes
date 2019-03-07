@@ -9,7 +9,7 @@ import {getMomentUtcISOString} from '../../../../../../../utils/date'
 const commonProps = {
     rule: fromJS({
         id: 17,
-        title: 'my rule',
+        name: 'my rule',
         code_ast: {},
         code: {}
     }),
@@ -63,7 +63,7 @@ describe('RuleItem component', () => {
             ).setState({
                 description,
                 eventTypes,
-                title: commonProps.rule.get('title')
+                name: commonProps.rule.get('name')
             })
 
             const instance = component.instance()
@@ -71,7 +71,7 @@ describe('RuleItem component', () => {
                 expect(commonProps.actions.rules.create).toHaveBeenCalledWith({
                     description,
                     event_types: eventTypes.join(','),
-                    title: `${commonProps.rule.get('title')} - copy`,
+                    name: `${commonProps.rule.get('name')} - copy`,
                     code: commonProps.rule.get('code'),
                     code_ast: commonProps.rule.get('code_ast'),
                     deactivated_datetime: getMomentUtcISOString()
@@ -81,11 +81,11 @@ describe('RuleItem component', () => {
             })
         })
 
-        it('should not add `- copy` at the end of the title of the new rule, when it is not the same as the title of the old rule', () => {
+        it('should not add `- copy` at the end of the name of the new rule, when it is not the same as the name of the old rule', () => {
             const toggleOpeningSpy = jest.fn()
             const description = 'foo'
             const eventTypes = ['ticket-updated']
-            const title = 'WAYOU'
+            const name = 'WAYOU'
             const component = shallow(
                 <RuleItem
                     {...commonProps}
@@ -94,7 +94,7 @@ describe('RuleItem component', () => {
             ).setState({
                 description,
                 eventTypes,
-                title
+                name
             })
 
             const instance = component.instance()
@@ -102,7 +102,7 @@ describe('RuleItem component', () => {
                 expect(commonProps.actions.rules.create).toHaveBeenCalledWith({
                     description,
                     event_types: eventTypes.join(','),
-                    title,
+                    name,
                     code: commonProps.rule.get('code'),
                     code_ast: commonProps.rule.get('code_ast'),
                     deactivated_datetime: getMomentUtcISOString()
