@@ -75,7 +75,7 @@ class RuleRow extends React.Component<Props, State> {
                     <a onClick={() => this.props.toggleOpening(rule.get('id'))}>
                         <div>
                             <span className="mr-2">
-                                <b>{rule.get('title')}</b>
+                                <b>{rule.get('name')}</b>
                                 {
                                     rule.get('type') === 'system' && (
                                         <Badge

@@ -30,7 +30,7 @@ exports[`RuleItem component should render 1`] = `
           className="d-flex justify-content-between align-items-center mb-1"
         >
           <EditableTitle
-            className="font-weight-bold title"
+            className="font-weight-bold name"
             onChange={[Function]}
             placeholder="Name"
             size="md"
@@ -168,7 +168,7 @@ exports[`RuleItem component should render 1`] = `
               rule={
                 Immutable.Map {
                   id: 17,
-                  title: "my rule",
+                  name: "my rule",
                   code_ast: Immutable.Map {
                   },
                   code: Immutable.Map {
@@ -301,7 +301,7 @@ exports[`RuleItem component should render errors when there is no trigger select
           className="d-flex justify-content-between align-items-center mb-1"
         >
           <EditableTitle
-            className="font-weight-bold title"
+            className="font-weight-bold name"
             onChange={[Function]}
             placeholder="Name"
             size="md"
@@ -442,7 +442,7 @@ exports[`RuleItem component should render errors when there is no trigger select
               rule={
                 Immutable.Map {
                   id: 17,
-                  title: "my rule",
+                  name: "my rule",
                   code_ast: Immutable.Map {
                   },
                   code: Immutable.Map {

@@ -43,7 +43,7 @@ type State = {
     isDeleting: boolean,
     isResetting: boolean,
     isSubmitting: boolean,
-    title: string,
+    name: string,
     showConfirmation: boolean,
 }
 
@@ -55,7 +55,7 @@ export default class RuleItem extends React.Component<Props, State> {
         isDeleting: false,
         isResetting: false,
         isSubmitting: false,
-        title: '',
+        name: '',
         showConfirmation: false,
     }
 
@@ -69,7 +69,7 @@ export default class RuleItem extends React.Component<Props, State> {
         this.setState({
             description: rule.get('description') || '',
             eventTypes: rulesHelpers.eventTypes(rule),
-            title: rule.get('title') || '',
+            name: rule.get('name') || '',
         })
     }
 
@@ -92,7 +92,7 @@ export default class RuleItem extends React.Component<Props, State> {
                 id: rule.get('id'),
                 description: this.state.description,
                 event_types: this.state.eventTypes.join(','),
-                title: this.state.title,
+                name: this.state.name,
                 code: rule.get('code'),
                 code_ast: rule.get('code_ast'),
             }).then(() => {
@@ -163,16 +163,16 @@ export default class RuleItem extends React.Component<Props, State> {
 
         this.setState({isSubmitting: true})
         if (this._canSubmit()) {
-            let title = this.state.title
+            let name = this.state.name
 
-            if (title === rule.get('title')) {
-                title = `${title} - copy`
+            if (name === rule.get('name')) {
+                name = `${name} - copy`
             }
 
             return actions.rules.create({
                 description: this.state.description,
                 event_types: this.state.eventTypes.join(','),
-                title: title,
+                name,
                 code: rule.get('code'),
                 code_ast: rule.get('code_ast'),
                 deactivated_datetime: getMomentUtcISOString()
@@ -274,11 +274,11 @@ export default class RuleItem extends React.Component<Props, State> {
                         <div className={classnames(css.col, css['center-col'])}>
                             <div className="d-flex justify-content-between align-items-center mb-1">
                                 <EditableTitle
-                                    title={this.state.title}
+                                    title={this.state.name}
                                     placeholder="Name"
                                     size="md"
-                                    className={classnames('font-weight-bold', css.title)}
-                                    onChange={(value) => this.setState({title: value})}
+                                    className={classnames('font-weight-bold', css.name)}
+                                    onChange={(value) => this.setState({name: value})}
                                 />
                             </div>
                             <FormGroup className="mb-0">

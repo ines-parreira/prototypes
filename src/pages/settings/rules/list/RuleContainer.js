@@ -12,7 +12,7 @@ import RulesView from './components/RulesView'
 const mapStateToProps = (state) => {
     return {
         rules: getRules(state)
-            .sortBy((rule) => rule.get('title')) // sort by title rules with same priority
+            .sortBy((rule) => rule.get('name')) // sort by name rules with same priority
             .sortBy((rule) => -rule.get('priority')) // sort by priority (highest first)
             .filter((rule) => rule.get('type') !== 'system'), // hide system rules,
     }
