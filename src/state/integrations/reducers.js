@@ -2,6 +2,8 @@
 import {fromJS, type Map} from 'immutable'
 import moment from 'moment'
 
+import {FACEBOOK_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE} from '../../constants/integration'
+
 import type {actionType} from '../types'
 
 import * as constants from './constants.js'
@@ -31,8 +33,14 @@ export const initialState = fromJS({
     },
 
     extra: {
-        facebook: {
-            onboardingPages: {
+        [FACEBOOK_INTEGRATION_TYPE]: {
+            onboardingIntegrations: {
+                data: [],
+                meta: {}
+            }
+        },
+        [OUTLOOK_INTEGRATION_TYPE]: {
+            onboardingIntegrations: {
                 data: [],
                 meta: {}
             }
@@ -100,11 +108,11 @@ export default function reducer(state: Map<*,*> = initialState, action: defaultA
         case constants.TEST_HTTP_INTEGRATION_START:
             return state.setIn(['state', 'loading', 'testing'], true)
 
-        case constants.GMAIL_INTEGRATION_IMPORT_START:
+        case constants.EMAIL_INTEGRATION_IMPORT_START:
             return state.setIn(['state', 'loading', 'import'], action.id)
 
-        case constants.GMAIL_INTEGRATION_IMPORT_ERROR:
-        case constants.GMAIL_INTEGRATION_IMPORT_SUCCESS:
+        case constants.EMAIL_INTEGRATION_IMPORT_ERROR:
+        case constants.EMAIL_INTEGRATION_IMPORT_SUCCESS:
             return state.setIn(['state', 'loading', 'import'], false)
                 .set('integration', fromJS(action.resp))
 
@@ -123,14 +131,14 @@ export default function reducer(state: Map<*,*> = initialState, action: defaultA
                 )
         }
 
-        case constants.FETCH_FACEBOOK_ONBOARDING_PAGES_SUCCESS: {
-            const currentPage = state.getIn(['extra', 'facebook', 'onboardingPages', 'meta', 'page'])
+        case constants.FETCH_ONBOARDING_INTEGRATIONS_SUCCESS: {
+            const currentPage = state.getIn(['extra', action.integrationType, 'onboardingIntegrations', 'meta', 'page'])
 
             if (!currentPage || action.forceOverride || action.resp.meta.page === currentPage) {
-                return state.setIn(['extra', 'facebook', 'onboardingPages'], fromJS(action.resp))
+                return state.setIn(['extra', action.integrationType, 'onboardingIntegrations'], fromJS(action.resp))
             }
 
-            return state.setIn(['extra', 'facebook', 'onboardingPages', 'meta'], fromJS(action.resp.meta))
+            return state.setIn(['extra', action.integrationType, 'onboardingIntegrations', 'meta'], fromJS(action.resp.meta))
         }
 
         default:

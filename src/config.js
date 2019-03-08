@@ -3,6 +3,8 @@ import axios from 'axios'
 import _find from 'lodash/find'
 import _get from 'lodash/get'
 
+import {EMAIL_INTEGRATION_TYPE, EMAIL_INTEGRATION_TYPES} from './constants/integration'
+
 import {daysToHours, hoursToSeconds} from './utils'
 
 // TODO @LouisBarranqueiro switch all configuration to modular version
@@ -119,8 +121,8 @@ export const DEFAULT_SOURCE_PATHS = {
 // A list of integration types along with descriptions that will be displayed in the integrations summary
 export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
-        type: 'email',
-        subTypes: ['email', 'gmail'],
+        type: EMAIL_INTEGRATION_TYPE,
+        subTypes: EMAIL_INTEGRATION_TYPES,
         title: 'Email',
         description: 'Connect your support email addresses and respond to your customers from Gorgias',
     },

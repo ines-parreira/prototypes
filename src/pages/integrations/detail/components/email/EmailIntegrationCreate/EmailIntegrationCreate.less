@@ -2,17 +2,30 @@
     max-width: 400px !important;
 }
 
-:local .gmailButton {
+:local .connectButton {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #4285F4;
-  border-color: #4285F4;
   padding: 0;
 
-  &:hover {
-    background-color: #3f80db !important;
-    border-color: #3f80db !important;
+  &.gmailButton {
+    background: #4285F4;
+    border-color: #4285F4;
+
+    &:hover {
+      background-color: #3f80db !important;
+      border-color: #3f80db !important;
+    }
+  }
+
+  &.outlookButton {
+    background-color: #EB3C02;
+    border-color: #EB3C02;
+
+    &:hover {
+      background-color: #e13c02 !important;
+      border-color: #e13c02 !important;
+    }
   }
 
   div {

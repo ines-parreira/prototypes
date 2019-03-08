@@ -2,7 +2,7 @@
 import React from 'react'
 import {fromJS} from 'immutable'
 
-import type {TicketMessage} from '../../../../../models/ticketElement/types'
+import type {TicketMessage} from '../../../../../models/ticket/types'
 
 import Error from './Error'
 

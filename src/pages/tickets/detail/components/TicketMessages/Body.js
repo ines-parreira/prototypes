@@ -3,7 +3,7 @@ import React from 'react'
 import classNamesBind from 'classnames/bind'
 
 import FacebookCarousel from '../FacebookCarousel'
-import type {TicketMessage} from '../../../../../models/ticketElement/types'
+import type {TicketMessage} from '../../../../../models/ticket/types'
 
 import css from './Body.less'
 import Content from './Content'

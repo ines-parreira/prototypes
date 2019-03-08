@@ -2,7 +2,7 @@
 import classNamesBind from 'classnames/bind'
 import React from 'react'
 
-import {hasFailedAction, isFailed, isPending, TicketMessage} from '../../../../../models/ticketElement'
+import {hasFailedAction, isFailed, isPending, TicketMessage} from '../../../../../models/ticket'
 
 import Actions from './Actions'
 import Attachments from './Attachments'

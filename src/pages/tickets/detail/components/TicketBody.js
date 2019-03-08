@@ -16,8 +16,8 @@ import type {
     TicketMessage,
     TicketEvent,
     TicketSatisfactionSurvey,
-} from '../../../../models/ticketElement/types'
-import {isTicketMessage, isTicketEvent, isTicketSatisfactionSurvey} from '../../../../models/ticketElement'
+} from '../../../../models/ticket/types'
+import {isTicketMessage, isTicketEvent, isTicketSatisfactionSurvey} from '../../../../models/ticket'
 
 import TicketMessages from './TicketMessages'
 import SatisfactionSurvey from './SatisfactionSurvey'

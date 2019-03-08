@@ -4,7 +4,7 @@ import classNamesBind from 'classnames/bind'
 import {connect} from 'react-redux'
 
 import * as infobarActions from '../../../../../state/infobar/actions'
-import type {Meta, Source} from '../../../../../models/ticketElement/types'
+import type {Meta, Source} from '../../../../../models/ticket/types'
 
 import css from './SourceActions.less'
 

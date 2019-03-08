@@ -7,6 +7,12 @@ import moment from 'moment'
 
 import type {Map, List} from 'immutable'
 
+import {
+    EMAIL_INTEGRATION_TYPE,
+    FACEBOOK_INTEGRATION_TYPE,
+    SHOPIFY_INTEGRATION_TYPE, SMOOCH_INSIDE_INTEGRATION_TYPE, SMOOCH_INTEGRATION_TYPE
+} from '../../../constants/integration'
+
 import {isAdmin} from '../../../utils'
 
 import InfobarLayout from '../../common/components/infobar/InfobarLayout'
@@ -53,14 +59,14 @@ class TicketListInfobarContainer extends React.Component<Props> {
         const hasVerifiedEmailIntegration = emailIntegrations
             .filter((integration) => !integration.getIn(['meta', 'address']).endsWith('.gorgias.io')) // remove generated gorgias addresses
             .some((integration) => {
-                // gmail is connected or forwarding is on
-                return integration.get('type') === 'gmail' || integration.getIn(['meta', 'verified'])
+                // gmail or outlook is connected or forwarding is on
+                return integration.get('type') !== EMAIL_INTEGRATION_TYPE || integration.getIn(['meta', 'verified'])
             })
 
-        const hasConnectedFacebook = hasIntegrationsOfTypes('facebook')
-        const hasShopifyIntegration = hasIntegrationsOfTypes('shopify')
+        const hasConnectedFacebook = hasIntegrationsOfTypes(FACEBOOK_INTEGRATION_TYPE)
+        const hasShopifyIntegration = hasIntegrationsOfTypes(SHOPIFY_INTEGRATION_TYPE)
 
-        const hasConnectedChat = hasIntegrationsOfTypes(['smooch', 'smooch_inside'])
+        const hasConnectedChat = hasIntegrationsOfTypes([SMOOCH_INTEGRATION_TYPE, SMOOCH_INSIDE_INTEGRATION_TYPE])
 
         const hasInvitedTeamMembers = agents.size > 1
 

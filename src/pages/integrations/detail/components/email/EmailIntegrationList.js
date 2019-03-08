@@ -1,23 +1,32 @@
+// @flow
 import React from 'react'
-import PropTypes from 'prop-types'
+import type {List, Map} from 'immutable'
 import {Link, browserHistory} from 'react-router'
 import classnames from 'classnames'
 import {Button} from 'reactstrap'
+
+import {
+    EMAIL_INTEGRATION_TYPES,
+    GMAIL_INTEGRATION_TYPE,
+    OUTLOOK_INTEGRATION_TYPE
+} from '../../../../../constants/integration'
 
 import ForwardIcon from '../ForwardIcon'
 import IntegrationList from '../IntegrationList'
 import {getIntegrationsByTypes} from '../../../../../state/integrations/helpers'
 import gmailImg from '../../../../../../img/integrations/gmail.png'
+import outlookImg from '../../../../../../img/integrations/outlook.png'
 
 import css from './EmailIntegrationList.less'
 
-export default class EmailIntegrationList extends React.Component {
-    static propTypes = {
-        integrations: PropTypes.object.isRequired,
-        loading: PropTypes.object.isRequired,
-        actions: PropTypes.object.isRequired,
-    }
 
+type Props = {
+    integrations: List<Map<*,*>>,
+    loading: Object,
+    actions: Object
+}
+
+export default class EmailIntegrationList extends React.Component<Props> {
     render() {
         const {integrations, loading} = this.props
 
@@ -32,27 +41,35 @@ export default class EmailIntegrationList extends React.Component {
         const integrationToItemDisplay = (integration) => {
             const active = !integration.get('deactivated_datetime')
             const isRowSubmitting = isSubmitting === integration.get('id')
-            const isGmail = integration.get('type') === 'gmail'
+            const isGmail = integration.get('type') === GMAIL_INTEGRATION_TYPE
+            const isOutlook = integration.get('type') === OUTLOOK_INTEGRATION_TYPE
 
             const isVerified = integration.getIn(['meta', 'verified'], true)
 
             let editLink = `/app/settings/integrations/email/${integration.get('id')}${isVerified || isGmail ? '' : '/verification'}`
 
+            let imgComponent = (
+                <i className={classnames(css.icon, 'material-icons')}>
+                    email
+                </i>
+            )
+
+            if (isGmail) {
+                imgComponent = <img
+                    src={gmailImg}
+                    width="22"
+                />
+            } else if (isOutlook) {
+                imgComponent = <img
+                    src={outlookImg}
+                    width="22"
+                />
+            }
+
             return (
                 <tr key={integration.get('id')}>
                     <td className="smallest">
-                        {
-                            isGmail ? (
-                                    <img
-                                        src={gmailImg}
-                                        width="22"
-                                    />
-                                ) : (
-                                    <i className={classnames(css.icon, 'material-icons')}>
-                                        email
-                                    </i>
-                                )
-                        }
+                        {imgComponent}
                     </td>
                     <td className="link-full-td">
                         <Link to={editLink}>
@@ -80,6 +97,14 @@ export default class EmailIntegrationList extends React.Component {
                                     </Button>
                                 )
                             }
+                            {
+                                !active && isOutlook && (
+                                    <div>
+                                        <i className={classnames('material-icons mr-2 yellow')}>warning</i>
+                                        This integration is deactivated, please delete and re-add it.
+                                    </div>
+                                )
+                            }
                         </div>
                     </td>
 
@@ -103,7 +128,7 @@ export default class EmailIntegrationList extends React.Component {
         return (
             <IntegrationList
                 integrationType="email"
-                integrations={getIntegrationsByTypes(integrations, ['email', 'gmail'])}
+                integrations={getIntegrationsByTypes(integrations, EMAIL_INTEGRATION_TYPES)}
                 longTypeDescription={longTypeDescription}
                 createIntegration={() => browserHistory.push('/app/settings/integrations/email/new')}
                 createIntegrationButtonText="Add email address"

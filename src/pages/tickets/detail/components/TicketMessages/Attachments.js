@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 import classNamesBind from 'classnames/bind'
 
 import TicketAttachments from '../ReplyArea/TicketAttachments'
-import type {TicketMessage} from '../../../../../models/ticketElement/types'
+import type {TicketMessage} from '../../../../../models/ticket/types'
 
 import css from './Attachments.less'
 

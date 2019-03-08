@@ -14,7 +14,7 @@ import {
 } from 'reactstrap'
 
 import {AVAILABLE_HTTP_METHODS, FORM_CONTENT_TYPE, HTTP_METHOD_GET, JSON_CONTENT_TYPE} from '../../../../../../config'
-import {TICKET_CREATED, TICKET_MESSAGE_CREATED, TICKET_UPDATED} from '../../../../../../constants/events'
+import {TICKET_CREATED, TICKET_MESSAGE_CREATED, TICKET_UPDATED} from '../../../../../../constants/event'
 import {toJS, validateWebhookURL, validateWebhookURLToPattern, hasUnicodeChars} from '../../../../../../utils'
 
 import Loader from '../../../../../common/components/Loader'

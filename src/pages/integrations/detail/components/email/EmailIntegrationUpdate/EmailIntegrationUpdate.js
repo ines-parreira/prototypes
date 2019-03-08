@@ -6,6 +6,7 @@ import {connect} from 'react-redux'
 import _capitalize from 'lodash/capitalize'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
+
 import {
     Container,
     Form,
@@ -18,6 +19,12 @@ import {
     Input,
     FormGroup,
 } from 'reactstrap'
+
+import {
+    EMAIL_INTEGRATION_TYPE,
+    GMAIL_INTEGRATION_TYPE,
+    OUTLOOK_INTEGRATION_TYPE
+} from '../../../../../../constants/integration'
 
 import {isGorgiasSupportAddress} from '../../../../../../utils'
 import {convertToHTML} from '../../../../../../utils/editor'
@@ -79,7 +86,7 @@ class EmailIntegrationUpdate extends React.Component {
             import_spam: integration.getIn(['meta', 'import_spam']) || false,
         }
 
-        if (integration.get('type') === 'gmail') {
+        if (integration.get('type') === GMAIL_INTEGRATION_TYPE) {
             data.use_gmail_categories = integration.getIn(['meta', 'use_gmail_categories']) || false
         }
         return data
@@ -127,7 +134,7 @@ class EmailIntegrationUpdate extends React.Component {
             })
     }
 
-    _importEmails = () => {
+    _gmailImportEmails = () => {
         const {integration, importEmails} = this.props
 
         return importEmails(fromJS({
@@ -138,12 +145,18 @@ class EmailIntegrationUpdate extends React.Component {
         }))
     }
 
-    _renderImportation = () => {
+    _outlookImportEmails = () => {
+        const {integration, importEmails} = this.props
+
+        return importEmails(fromJS({
+            id: integration.get('id'),
+            meta: integration.get('meta').setIn(['import_state', 'enabled'], true)
+        }))
+    }
+
+    _renderImport = (importActivated, status, mailsImported, importDescription, importMethod) => {
         const {integration, loading} = this.props
         const email = integration.getIn(['meta', 'address'], '')
-        const importActivated = integration.getIn(['meta', 'import_activated'], false)
-        const status = integration.getIn(['meta', 'importation', 'status'], false)
-        const mailsImported = integration.getIn(['meta', 'importation', 'count'], 0)
 
         const isLoading = loading.get('import') === integration.get('id')
         const isImporting = status === 'started' || (importActivated && !status)
@@ -173,11 +186,9 @@ class EmailIntegrationUpdate extends React.Component {
                 </h2>
                 <p>
                     {
-                        importActivated ? statusSentence : (
-                            <span>
-                                    We will import the last <b>{GMAIL_IMPORTED_THREADS}</b> emails from <b>{email}</b> into Gorgias.
-                                </span>
-                        )
+                        importActivated
+                            ? statusSentence
+                            : <span>We will import {importDescription} from <b>{email}</b> into Gorgias.</span>
                     }
                 </p>
                 {
@@ -185,7 +196,7 @@ class EmailIntegrationUpdate extends React.Component {
                         <ConfirmButton
                             color="primary"
                             loading={isLoading}
-                            confirm={this._importEmails}
+                            confirm={importMethod}
                             content="Are you sure you want to import emails?"
                         >
                             Import emails
@@ -194,6 +205,24 @@ class EmailIntegrationUpdate extends React.Component {
                 }
             </div>
         )
+    }
+
+    _gmailRenderImport = () => {
+        const {integration} = this.props
+        const importActivated = integration.getIn(['meta', 'import_activated'], false)
+        const status = integration.getIn(['meta', 'importation', 'status'], false)
+        const mailsImported = integration.getIn(['meta', 'importation', 'count'], 0)
+        const importDescription = <span>the last <b>{GMAIL_IMPORTED_THREADS}</b> emails</span>
+        return this._renderImport(importActivated, status, mailsImported, importDescription, this._gmailImportEmails)
+    }
+
+    _outlookRenderImport = () => {
+        const {integration} = this.props
+        const importActivated = integration.getIn(['meta', 'import_state', 'enabled'], false)
+        const status = integration.getIn(['meta', 'import_state', 'is_over'], false)
+        const mailsImported = integration.getIn(['meta', 'import_state', 'count'], 0)
+        const importDescription = <span>the last <b>month</b> of emails</span>
+        return this._renderImport(importActivated, status, mailsImported, importDescription, this._outlookImportEmails)
     }
 
     _renderInstructions = () => {
@@ -310,7 +339,8 @@ class EmailIntegrationUpdate extends React.Component {
         const isSubmitting = loading.get('updateIntegration') === integration.get('id')
         const isDeactivated = !!integration.get('deactivated_datetime')
         const isDeleting = loading.get('delete') === integration.get('id')
-        const isGmail = integration.get('type') === 'gmail'
+        const isGmail = integration.get('type') === GMAIL_INTEGRATION_TYPE
+        const isOutlook = integration.get('type') === OUTLOOK_INTEGRATION_TYPE
 
         const {
             errors,
@@ -371,19 +401,24 @@ class EmailIntegrationUpdate extends React.Component {
                             onChange={this._updateSignature}
                         />
                     </FormGroup>
-                    <FormGroup>
-                        <BooleanField
-                            name="import_spam"
-                            type="checkbox"
-                            label="Import spam emails"
-                            help="Imported spam emails will be placed in the Spam ticket view and will not be counted in statistics. Spam tickets are automatically deleted after 30 days."
-                            value={import_spam}
-                            onChange={(value) => this.setState({
-                                dirty: true,
-                                import_spam: value
-                            })}
-                        />
-                    </FormGroup>
+                    {
+                        !isOutlook && (
+                            <FormGroup>
+                                <BooleanField
+                                    name="import_spam"
+                                    type="checkbox"
+                                    label="Import spam emails"
+                                    help="Imported spam emails will be placed in the Spam ticket view and will not be
+                                    counted in statistics. Spam tickets are automatically deleted after 30 days."
+                                    value={import_spam}
+                                    onChange={(value) => this.setState({
+                                        dirty: true,
+                                        import_spam: value
+                                    })}
+                                />
+                            </FormGroup>
+                        )
+                    }
                     <div>
                         <Button
                             type="submit"
@@ -458,9 +493,11 @@ class EmailIntegrationUpdate extends React.Component {
                     fluid
                     className="page-container"
                 >
-                    {integration.get('type') === 'email' && this._renderInstructions()}
+                    {integration.get('type') === EMAIL_INTEGRATION_TYPE && this._renderInstructions()}
 
-                    {integration.get('type') === 'gmail' && this._renderImportation()}
+                    {integration.get('type') === GMAIL_INTEGRATION_TYPE && this._gmailRenderImport()}
+
+                    {integration.get('type') === OUTLOOK_INTEGRATION_TYPE && this._outlookRenderImport()}
 
                     {this._renderSettings()}
                 </Container>

@@ -1,15 +1,18 @@
 // @flow
 import React from 'react'
+
 import classnames from 'classnames'
 
-import type {SourceType} from '../../../models/ticketElement/types'
+import {EMAIL_INTEGRATION_TYPE, GMAIL_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE} from '../../../constants/integration'
+import type {IntegrationType} from '../../../models/integration'
+import type {SourceType} from '../../../models/ticket/types'
 
 type Props = {
     type?: SourceType,
     className?: string,
 }
 
-const sourceTypeToIcon = (sourceType?: SourceType) => {
+const sourceTypeToIcon = (sourceType?: SourceType | IntegrationType ) => {
     const icon = {
         name: 'live_help',
         custom: false,
@@ -21,8 +24,9 @@ const sourceTypeToIcon = (sourceType?: SourceType) => {
             icon.name = 'note'
             icon.extra = 'text-warning'
             break
-        case 'email':
-        case 'gmail':
+        case EMAIL_INTEGRATION_TYPE:
+        case GMAIL_INTEGRATION_TYPE:
+        case OUTLOOK_INTEGRATION_TYPE:
             icon.name = 'email'
             break
         case 'email-forward':

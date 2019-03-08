@@ -1,5 +1,5 @@
+// @flow
 import React from 'react'
-import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import {Link, browserHistory, withRouter} from 'react-router'
@@ -14,6 +14,8 @@ import {
 } from 'reactstrap'
 
 import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from '../../../../../../constants/integration'
+import {getRedirectUri} from '../../../../../../state/integrations/selectors'
+
 import {notify} from '../../../../../../state/notifications/actions'
 
 import InputField from '../../../../../common/forms/InputField'
@@ -21,10 +23,36 @@ import InputField from '../../../../../common/forms/InputField'
 import PageHeader from '../../../../../common/components/PageHeader'
 
 import googleLogo from './../../../../../../../../public/img/google-icon.svg'
+import officeLogo from './../../../../../../../../public/img/office-transparent.png'
+
 import css from './EmailIntegrationCreate.less'
 
 
-class EmailIntegrationCreate extends React.Component {
+type Props = {
+    domain: string,
+    outlookRedirectUri: string,
+    actions: Object,
+    loading: Object,
+    location: Object,
+    notify: (Object) => Promise<*>,
+}
+
+type State = {
+    name: string,
+    email: string,
+    errors: Object,
+    dirty: boolean
+}
+
+
+class EmailIntegrationCreate extends React.Component<Props, State> {
+    state = {
+        name: '',
+        email: '',
+        errors: {},
+        dirty: false
+    }
+
     componentDidMount() {
         // display message from url
         const {
@@ -40,13 +68,6 @@ class EmailIntegrationCreate extends React.Component {
             // remove error from url
             browserHistory.push(window.location.pathname)
         }
-    }
-
-    state = {
-        name: '',
-        email: '',
-        errors: {},
-        dirty: false
     }
 
     _handleSubmit = (e) => {
@@ -90,11 +111,7 @@ class EmailIntegrationCreate extends React.Component {
     }
 
     render() {
-        const {
-            domain,
-            loading,
-        } = this.props
-
+        const {domain, loading, outlookRedirectUri} = this.props
         const {errors} = this.state
 
         const nameHelp = 'The name that customers will see when they receive emails from you. ' +
@@ -131,7 +148,7 @@ class EmailIntegrationCreate extends React.Component {
                             tag="a"
                             href="/integrations/gmail/auth"
                             block
-                            className={classnames('mb-2', css.gmailButton)}
+                            className={classnames('mb-2', css.connectButton, css.gmailButton)}
                         >
                             <img
                                 src={googleLogo}
@@ -143,6 +160,26 @@ class EmailIntegrationCreate extends React.Component {
                         <p className="text-muted text-center">
                             Improve email deliverability, keep your data on your Google account, import last 1000 emails
                             (optional)
+                        </p>
+
+                        <div className="divider">OR</div>
+
+                        <Button
+                            tag="a"
+                            href={outlookRedirectUri}
+                            block
+                            className={classnames('mb-2', css.connectButton, css.outlookButton)}
+                        >
+                            <img
+                                src={officeLogo}
+                                style={{height: '50px'}}
+                            />
+                            <div>Connect Office365 email account</div>
+                        </Button>
+
+                        <p className="text-muted text-center">
+                            Improve email deliverability, keep your data on your Outlook.com account, import last
+                            month of emails (optional)
                         </p>
 
                         <div className="divider">OR</div>
@@ -190,17 +227,9 @@ class EmailIntegrationCreate extends React.Component {
     }
 }
 
-
-EmailIntegrationCreate.propTypes = {
-    domain: PropTypes.string.isRequired,
-    actions: PropTypes.object.isRequired,
-    loading: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
-    notify: PropTypes.func.isRequired,
-}
-
 const mapStateToProps = (state) => ({
     domain: state.currentAccount.get('domain'),
+    outlookRedirectUri: getRedirectUri('outlook')(state)
 })
 
 export default withRouter(connect(mapStateToProps, {notify})(EmailIntegrationCreate))

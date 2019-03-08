@@ -7,6 +7,7 @@ import _pickBy from 'lodash/pickBy'
 
 import {SOURCE_VALUE_PROP} from '../../config'
 import * as ticketConfig from '../../config/ticket'
+import {EMAIL_INTEGRATION_TYPES} from '../../constants/integration'
 import {getPersonLabelFromSource} from '../../pages/tickets/common/utils'
 import {getActionTemplate, toImmutable} from '../../utils'
 import {renderTemplate} from '../../pages/common/utils/template'
@@ -336,7 +337,8 @@ export function getNewMessageSender(ticket, newMessageSourceType, channels) {
 
         if (!sender.isEmpty() && newMessageSourceType === 'email') {
             sender = channels.find(
-                (channel) => channel.get('address') === sender.get('address') && ['email', 'gmail'].includes(channel.get('type'))
+                (channel) => channel.get('address') === sender.get('address')
+                    && EMAIL_INTEGRATION_TYPES.includes(channel.get('type'))
             ) || preferredChannel
         }
 

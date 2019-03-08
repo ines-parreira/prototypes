@@ -11,6 +11,7 @@ import * as IntegrationsSelectors from '../../../state/integrations/selectors'
 
 import AircallIntegrationList from './components/aircall/AircallIntegrationList'
 import AircallIntegrationCreate from './components/aircall/AircallIntegrationCreate'
+import OutlookIntegrationSetup from './components/email/outlook/OutlookIntegrationSetup'
 
 import FacebookIntegrationDetail from './components/facebook/FacebookIntegrationDetail'
 import FacebookIntegrationList from './components/facebook/FacebookIntegrationList'
@@ -79,8 +80,6 @@ class IntegrationDetailContainer extends React.Component {
         const isDetail = !!params.integrationId
         const isUpdate = isDetail && params.integrationId !== 'new'
         const isSetup = params.integrationId === 'setup'
-        const isForwarding = params.extra === 'forwarding'
-        const isVerification = params.extra === 'verification'
         let integration = integrations.get('integration', fromJS({}))
 
         // clear cached integration
@@ -113,8 +112,17 @@ class IntegrationDetailContainer extends React.Component {
 
             case 'email':
                 if (isDetail) {
+                    if (isSetup) {
+                        return (
+                            <OutlookIntegrationSetup
+                                actions={actions}
+                                loading={commonProps.loading}
+                            />
+                        )
+                    }
+
                     if (isUpdate) {
-                        if (isForwarding) {
+                        if (params.extra === 'forwarding') {
                             return (
                                 <EmailIntegrationCreateForwarding
                                     actions={actions}
@@ -123,7 +131,7 @@ class IntegrationDetailContainer extends React.Component {
                             )
                         }
 
-                        if (isVerification) {
+                        if (params.extra === 'verification') {
                             return (
                                 <EmailIntegrationCreateVerification
                                     actions={actions}
@@ -168,17 +176,17 @@ class IntegrationDetailContainer extends React.Component {
                         )
                     }
 
-                    if (params.extra === 'customer_chat') {
-                        return (
-                            <RealtimeMessagingIntegrationInstall
-                                actions={actions}
-                                loading={commonProps.loading}
-                                integration={commonProps.integration}
-                            />
-                        )
-                    }
-
                     if (isUpdate) {
+                        if (params.extra === 'customer_chat') {
+                            return (
+                                <RealtimeMessagingIntegrationInstall
+                                    actions={actions}
+                                    loading={commonProps.loading}
+                                    integration={commonProps.integration}
+                                />
+                            )
+                        }
+
                         if (params.extra === 'preferences') {
                             return (
                                 <RealtimeMessagingIntegrationPreferences

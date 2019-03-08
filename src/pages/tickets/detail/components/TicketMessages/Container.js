@@ -6,7 +6,7 @@ import {fromJS} from 'immutable/dist/immutable'
 
 import {scrollToReactNode} from '../../../../common/utils/keyboard'
 import Avatar from '../../../../common/components/Avatar'
-import {TicketMessage, isFailed, isPending} from '../../../../../models/ticketElement'
+import {TicketMessage, isFailed, isPending} from '../../../../../models/ticket'
 
 import css from './Container.less'
 import Header from './Header'

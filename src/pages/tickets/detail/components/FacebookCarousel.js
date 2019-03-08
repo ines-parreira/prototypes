@@ -13,7 +13,7 @@ import {
 } from 'reactstrap'
 import Slider from 'react-slick'
 
-import type {FacebookCarouselTemplate} from '../../../../models/ticketElement/types'
+import type {FacebookCarouselTemplate} from '../../../../models/ticket/types'
 
 import css from './FacebookCarousel.less'
 

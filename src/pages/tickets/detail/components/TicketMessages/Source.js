@@ -6,7 +6,7 @@ import {isArray as _isArray} from 'lodash'
 
 import SourceIcon from '../../../../common/components/SourceIcon'
 import {DatetimeLabel} from '../../../../common/utils/labels'
-import {type Source as SourceType} from '../../../../../models/ticketElement/types'
+import {type Source as SourceType} from '../../../../../models/ticket/types'
 import {getPersonLabelFromSource} from '../../../common/utils'
 
 import css from './Source.less'

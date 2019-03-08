@@ -1,7 +1,7 @@
 //@flow
 import React from 'react'
 
-import {TicketMessage} from '../../../../../models/ticketElement'
+import {TicketMessage} from '../../../../../models/ticket'
 
 import Container from './Container'
 import Message from './Message'

@@ -15,13 +15,13 @@ describe('FacebookIntegrationSetup', () => {
             updateIntegration: false
         }),
         actions: {
-            fetchFacebookOnboardingPages: () => Promise.resolve(),
+            fetchFacebookOnboardingIntegrations: () => Promise.resolve(),
             activateFacebookOnboardingPage: () => Promise.resolve(),
             fetchIntegrations: () => Promise.resolve(),
         }
     }
 
-    const onboardingPages = fromJS({
+    const onboardingIntegrations = fromJS({
         data: [{
             id: 1,
             facebook: {
@@ -38,7 +38,8 @@ describe('FacebookIntegrationSetup', () => {
         }
     })
 
-    const notEmptyInitialState = initialState.setIn(['extra', 'facebook', 'onboardingPages'], onboardingPages)
+    const notEmptyInitialState = initialState
+        .setIn(['extra', 'facebook', 'onboardingIntegrations'], onboardingIntegrations)
 
     it('should render an empty list because there is no integrations to display', () => {
         const component = shallow(
@@ -83,8 +84,8 @@ describe('FacebookIntegrationSetup', () => {
             />
         ).dive().setState({
             selectedIntegrations: fromJS({}).set(
-                onboardingPages.getIn(['data', 0, 'id']),
-                onboardingPages.getIn(['data', 0]).setIn(['facebook', 'settings'], fromJS({
+                onboardingIntegrations.getIn(['data', 0, 'id']),
+                onboardingIntegrations.getIn(['data', 0]).setIn(['facebook', 'settings'], fromJS({
                     messenger_enabled: true,
                     posts_enabled: true,
                     instagram_comments_enabled: false,
@@ -100,7 +101,7 @@ describe('FacebookIntegrationSetup', () => {
             <FacebookIntegrationSetup
                 store={mockStore({
                     integrations: notEmptyInitialState.setIn(
-                        ['extra', 'facebook', 'onboardingPages', 'data', 0, 'meta', 'instagram', 'id'],
+                        ['extra', 'facebook', 'onboardingIntegrations', 'data', 0, 'meta', 'instagram', 'id'],
                         'foo'
                     )
                 })}
@@ -108,8 +109,8 @@ describe('FacebookIntegrationSetup', () => {
             />
         ).dive().setState({
             selectedIntegrations: fromJS({}).set(
-                onboardingPages.getIn(['data', 0, 'id']),
-                onboardingPages.getIn(['data', 0]).setIn(['facebook', 'settings'], fromJS({
+                onboardingIntegrations.getIn(['data', 0, 'id']),
+                onboardingIntegrations.getIn(['data', 0]).setIn(['facebook', 'settings'], fromJS({
                     messenger_enabled: true,
                     posts_enabled: true,
                     instagram_comments_enabled: true,

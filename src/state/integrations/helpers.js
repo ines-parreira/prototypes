@@ -1,16 +1,15 @@
 // @flow
-import {fromJS} from 'immutable'
+import {fromJS, type List, type Map} from 'immutable'
 import _find from 'lodash/find'
 
-import type {Map} from 'immutable'
-
 import {INTEGRATION_TYPE_DESCRIPTIONS} from '../../config'
-type integrationsType = Array<Map<*,*>>
+
+type integrationsType = List<Map<*,*>>
 
 /**
  * Compute the number of active integrations for each type
  */
-const getIntegrationsCountPerType = (integrations = []): Object => {
+const getIntegrationsCountPerType = (integrations: integrationsType = fromJS([])): Object => {
     return integrations
         .reduce((accumulator, item) => {
             const newAccumulator = accumulator
@@ -33,7 +32,7 @@ const getIntegrationsCountPerType = (integrations = []): Object => {
  * @param integrations
  * @returns {*}
  */
-export const getIntegrationsList = (integrations: integrationsType = []): Map<*,*> => {
+export const getIntegrationsList = (integrations: integrationsType = fromJS([])): Map<*,*> => {
     const counts = getIntegrationsCountPerType(integrations)
     return fromJS(INTEGRATION_TYPE_DESCRIPTIONS.map((typeDescription: Object) => {
         let count = 0
@@ -56,7 +55,9 @@ export const getIntegrationsList = (integrations: integrationsType = []): Map<*,
     }))
 }
 
-export const getIntegrationsByTypes = (integrations: integrationsType = [], types: Array<string> = []): integrationsType => (
+export const getIntegrationsByTypes = (
+    integrations: integrationsType = fromJS([]), types: Array<string> = []
+): integrationsType => (
     integrations.filter((inte) => types.includes(inte.get('type', '')))
 )
 

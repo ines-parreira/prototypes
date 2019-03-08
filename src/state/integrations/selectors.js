@@ -3,6 +3,12 @@ import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
 import _isArray from 'lodash/isArray'
 
+import {
+    EMAIL_INTEGRATION_TYPE,
+    EMAIL_INTEGRATION_TYPES,
+    MESSAGING_INTEGRATION_TYPES
+} from '../../constants/integration'
+
 import {compare} from '../../utils'
 
 import type {stateType} from '../types'
@@ -62,19 +68,19 @@ export const getFacebookIntegrations = createSelector(
         .sort((a, b) => compare(a.getIn(['facebook', 'name']), b.getIn(['facebook', 'name'])))
 )
 
-export const getFacebookOnboardingPages = createSelector(
+export const getOnboardingIntegrations = (integrationType: string) => createSelector(
     [getIntegrationsState],
-    (state) => state.getIn(['extra', 'facebook', 'onboardingPages', 'data']) || fromJS([])
+    (state) => state.getIn(['extra', integrationType, 'onboardingIntegrations', 'data']) || fromJS([])
 )
 
-export const getFacebookOnboardingMeta = createSelector(
+export const getOnboardingMeta = (integrationType: string) => createSelector(
     [getIntegrationsState],
-    (state) => state.getIn(['extra', 'facebook', 'onboardingPages', 'meta']) || fromJS({})
+    (state) => state.getIn(['extra', integrationType, 'onboardingIntegrations', 'meta']) || fromJS({})
 )
 
 export const getEmailIntegrations = createSelector(
     [getIntegrations],
-    (state) => state.filter((integration) => ['email', 'gmail'].includes(integration.get('type')))
+    (state) => state.filter((integration) => EMAIL_INTEGRATION_TYPES.includes(integration.get('type')))
 )
 
 // return email and gmail integrations formatted as channel
@@ -86,8 +92,8 @@ export const getChannels = createSelector(
         return integrations.map((integration) => {
             let type = integration.get('type')
 
-            if (integration.get('type') === 'gmail') {
-                type = 'email'
+            if (EMAIL_INTEGRATION_TYPES.includes(integration.get('type'))) {
+                type = EMAIL_INTEGRATION_TYPE
             }
 
             return fromJS({
@@ -97,7 +103,8 @@ export const getChannels = createSelector(
                 address: integration.getIn(['meta', 'address']),
                 preferred: integration.getIn(['meta', 'preferred']),
                 signature: nestedReplace(integration.getIn(['meta', 'signature']), state),
-                verified: integration.get('type') !== 'email' || integration.getIn(['meta', 'verified'], false)
+                verified: integration.get('type') !== EMAIL_INTEGRATION_TYPE
+                    || integration.getIn(['meta', 'verified'], false)
             })
         })
     }
@@ -132,7 +139,7 @@ export const makeGetRedirectUri = (state: stateType) => (type: string) => getRed
 
 // return the list of integration used to send messages from the helpdesk
 export const getMessagingIntegrations = createSelector(
-    [getIntegrationsByTypes(['aircall', 'email', 'gmail', 'smooch', 'smooch_inside', 'facebook'])],
+    [getIntegrationsByTypes(MESSAGING_INTEGRATION_TYPES)],
     (integrations) => {
         return integrations.map((inte) => {
             if (inte.get('type') === 'facebook') {

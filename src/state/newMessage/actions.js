@@ -1,6 +1,6 @@
 // @flow
 import {browserHistory} from 'react-router'
-import {fromJS} from 'immutable'
+import {fromJS, type Map, type List} from 'immutable'
 import {ContentState} from 'draft-js'
 
 
@@ -10,7 +10,7 @@ import _pick from 'lodash/pick'
 import _throttle from 'lodash/throttle'
 import axios from 'axios'
 
-import type {Map, List} from 'immutable'
+import {EMAIL_INTEGRATION_TYPES} from '../../constants/integration'
 
 import * as ticketConstants from '../ticket/constants'
 
@@ -246,7 +246,7 @@ export const setSender = (sender: ?string) => (dispatch: dispatchType, getState:
             message: `You cannot send messages using ${_sender.get('address')}, because this address is not verified yet.`
         }))
         _sender = channels.find(
-            (channel) => channel.get('verified') === true && ['email', 'gmail'].includes(channel.type)
+            (channel) => channel.get('verified') === true && EMAIL_INTEGRATION_TYPES.includes(channel.type)
         ) || fromJS({})
     }
 

@@ -1,9 +1,11 @@
 // @flow
 import axios from 'axios'
-import {sortBy as _sortBy} from 'lodash'
+import {sortBy as _sortBy, capitalize as _capitalize} from 'lodash'
 import {browserHistory} from 'react-router'
 import moment from 'moment'
 import {fromJS, type Map} from 'immutable'
+
+import {FACEBOOK_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE} from '../../constants/integration'
 
 import {notify} from '../notifications/actions'
 import type {dispatchType, getStateType} from '../types'
@@ -47,31 +49,83 @@ export function fetchIntegrations() {
 }
 
 /**
- * Fetch Facebook pages which can be added as integrations by the current agent.
+ * Fetch deleted integrations which can be activated by the current agent.
  *
  * @param page: the page of the list that we want
+ * @param integrationType: the type of deleted integrations we want to fetch
  * @param forceOverride: whether the result should be forcefully set in the reducer, or only set if the page of the
  *   response's meta matches the page currently set in the reducer
  */
-export function fetchFacebookOnboardingPages(page: number = 1, forceOverride: boolean = true) {
+function fetchOnboardingIntegrations(page: number = 1, integrationType: string, forceOverride: boolean = true) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
-            type: constants.FETCH_FACEBOOK_ONBOARDING_PAGES_START
+            type: constants.FETCH_ONBOARDING_INTEGRATIONS_START
         })
 
-        return axios.get('/integrations/facebook/onboarding-pages/', {params: {page}})
+        return axios.get(`/integrations/${integrationType}/onboarding-integrations/`, {params: {page}})
             .then((json = {}) => json.data)
             .then((resp) => {
                 return dispatch({
-                    type: constants.FETCH_FACEBOOK_ONBOARDING_PAGES_SUCCESS,
+                    type: constants.FETCH_ONBOARDING_INTEGRATIONS_SUCCESS,
+                    integrationType,
                     resp,
                     forceOverride
                 })
             }, (error) => {
                 return dispatch({
-                    type: constants.FETCH_FACEBOOK_ONBOARDING_PAGES_ERROR,
+                    type: constants.FETCH_ONBOARDING_INTEGRATIONS_ERROR,
+                    integrationType,
                     error,
-                    reason: 'Failed to fetch Facebook pages'
+                    reason: 'Failed to fetch onboarding integrations'
+                })
+            })
+    }
+}
+
+/**
+ * Fetch Facebook deleted integrations which can be activated by the current agent.
+ *
+ * @param page: the page of the list that we want
+ * @param forceOverride: whether the result should be forcefully set in the reducer, or only set if the page of the
+ *   response's meta matches the page currently set in the reducer
+ */
+export function fetchFacebookOnboardingIntegrations(page: number = 1, forceOverride: boolean = true) {
+    return fetchOnboardingIntegrations(page, FACEBOOK_INTEGRATION_TYPE, forceOverride)
+}
+
+/**
+ * Fetch Outlook deleted integrations which can be activated by the current agent.
+ *
+ * @param page: the page of the list that we want
+ * @param forceOverride: whether the result should be forcefully set in the reducer, or only set if the page of the
+ *   response's meta matches the page currently set in the reducer
+ */
+export function fetchOutlookOnboardingIntegrations(page: number = 1, forceOverride: boolean = true) {
+    return fetchOnboardingIntegrations(page, OUTLOOK_INTEGRATION_TYPE, forceOverride)
+}
+
+export function activateOnboardingIntegrations(data: Array<{}>, integrationType: string) {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
+        dispatch({
+            type: constants.ACTIVATE_ONBOARDING_INTEGRATIONS_START
+        })
+
+        return axios.put(`/integrations/${integrationType}/onboarding-integrations/`, data)
+            .then((json = {}) => json.data)
+            .then((resp) => {
+                dispatch(notify({
+                    status: 'success',
+                    message: `${_capitalize(integrationType)} integration${data.length > 1 ? 's' : ''} successfully activated.`
+                }))
+                return dispatch({
+                    type: constants.ACTIVATE_ONBOARDING_INTEGRATIONS_SUCCESS,
+                    resp
+                })
+            }, (error) => {
+                return dispatch({
+                    type: constants.ACTIVATE_ONBOARDING_INTEGRATIONS_ERROR,
+                    error,
+                    reason: `Failed to activate your ${_capitalize(integrationType)} integration`
                 })
             })
     }
@@ -362,7 +416,7 @@ export function updateOrCreateIntegration(integration: Map<*,*>, action: {}) {
 export function importEmails(integration: Map<*,*>) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
-            type: constants.GMAIL_INTEGRATION_IMPORT_START,
+            type: constants.EMAIL_INTEGRATION_IMPORT_START,
             id: integration.get('id')
         })
 
@@ -374,44 +428,17 @@ export function importEmails(integration: Map<*,*>) {
             .then((resp) => {
                 dispatch(notify({
                     status: 'success',
-                    message: 'Importation successfully started'
+                    message: 'Import successfully started'
                 }))
                 return dispatch({
-                    type: constants.GMAIL_INTEGRATION_IMPORT_SUCCESS,
+                    type: constants.EMAIL_INTEGRATION_IMPORT_SUCCESS,
                     resp
                 })
             }, (error) => {
                 return dispatch({
-                    type: constants.GMAIL_INTEGRATION_IMPORT_ERROR,
+                    type: constants.EMAIL_INTEGRATION_IMPORT_ERROR,
                     error,
                     reason: 'Failed to start importation'
-                })
-            })
-    }
-}
-
-export function activateFacebookOnboardingPage(data: Array<{}>) {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
-        dispatch({
-            type: constants.ACTIVATE_FACEBOOK_ONBOARDING_PAGES_START
-        })
-
-        return axios.put('/integrations/facebook/onboarding-pages/', data)
-            .then((json = {}) => json.data)
-            .then((resp) => {
-                dispatch(notify({
-                    status: 'success',
-                    message: `Facebook page${data.length > 1 ? 's' : ''} successfully activated.`
-                }))
-                return dispatch({
-                    type: constants.ACTIVATE_FACEBOOK_ONBOARDING_PAGES_SUCCESS,
-                    resp
-                })
-            }, (error) => {
-                return dispatch({
-                    type: constants.ACTIVATE_FACEBOOK_ONBOARDING_PAGES_ERROR,
-                    error,
-                    reason: 'Failed to activate your Facebook page'
                 })
             })
     }

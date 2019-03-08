@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import React, {type Node} from 'react'
 import {Link} from 'react-router'
 
-import type {Meta as MetaType, Source} from '../../../../../models/ticketElement/types'
+import type {Meta as MetaType, Source} from '../../../../../models/ticket/types'
 
 import css from './Meta.less'
 

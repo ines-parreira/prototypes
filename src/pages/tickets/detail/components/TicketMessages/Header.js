@@ -3,7 +3,7 @@ import classNamesBind from 'classnames/bind'
 import {fromJS} from 'immutable'
 import React from 'react'
 
-import type {TicketMessage} from '../../../../../models/ticketElement/types'
+import type {TicketMessage} from '../../../../../models/ticket/types'
 import {isForwardedMessage} from '../../../../../state/ticket/utils'
 import {AgentLabel, CustomerLabel} from '../../../../common/utils/labels'
 

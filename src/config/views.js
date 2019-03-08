@@ -5,6 +5,7 @@ import _isUndefined from 'lodash/isUndefined'
 
 import {stripHTML, getLanguageDisplayName, getAST} from '../utils'
 import {TagLabel} from '../pages/common/utils/labels'
+import {EMAIL_INTEGRATION_TYPES} from '../constants/integration'
 
 import * as ticketConfig from './ticket'
 import TICKET_LANGUAGES from './ticketLanguages'
@@ -268,7 +269,7 @@ export const views = fromJS([{
                         if (!inte) {
                             return ''
                         }
-                        if (['email', 'gmail'].includes(inte.get('type'))) {
+                        if (EMAIL_INTEGRATION_TYPES.includes(inte.get('type'))) {
                             return `${inte.get('name', '')} <${inte.get('address', '')}>`
                         }
                         return inte.get('name', '')

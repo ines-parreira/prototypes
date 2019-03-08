@@ -1,7 +1,7 @@
 // @flow
-import React from 'react'
+import React, {type Node} from 'react'
 import {connect} from 'react-redux'
-import {fromJS} from 'immutable'
+import {fromJS, type Map} from 'immutable'
 import classnames from 'classnames'
 import _isObject from 'lodash/isObject'
 import _isArray from 'lodash/isArray'
@@ -9,8 +9,7 @@ import _isString from 'lodash/isString'
 import _capitalize from 'lodash/capitalize'
 import {Badge} from 'reactstrap'
 
-import type {Node} from 'react'
-import type {Map} from 'immutable'
+import {EMAIL_INTEGRATION_TYPES} from '../../../constants/integration'
 
 import {ADMIN_ROLE, AGENT_ROLE, BASIC_AGENT_ROLE, LITE_AGENT_ROLE, OBSERVER_AGENT_ROLE, STAFF_ROLE} from '../../../config/user'
 import Tooltip from '../components/Tooltip'
@@ -21,7 +20,7 @@ import * as customersHelpers from '../../../state/customers/helpers'
 import {DEFAULT_TAG_COLOR} from '../../../config'
 import SourceIcon from '../components/SourceIcon'
 
-import type {SourceType} from '../../../models/ticketElement/types'
+import type {SourceType} from '../../../models/ticket/types'
 
 import css from './labels.less'
 
@@ -196,7 +195,7 @@ export const IntegrationsDetailLabel = ({integration}: { integration: Map<*, *> 
     let label = integration.get('name', integration.get('address'))
     let address = integration.get('address') || integration.getIn(['meta', 'address'])
 
-    if (['email', 'gmail'].includes(type) && address) {
+    if (EMAIL_INTEGRATION_TYPES.includes(type) && address) {
         label = `${integration.get('name')} <${address}>`
     } else if (type === 'aircall' && address) {
         label = `${integration.get('name')} (${address})`

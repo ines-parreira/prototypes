@@ -1,5 +1,7 @@
 import {fromJS} from 'immutable'
 
+import {FACEBOOK_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE} from '../../../constants/integration'
+
 import {integrationsState} from '../../../fixtures/integrations'
 import {getIntegrationsState, getEmailIntegrations} from '../selectors'
 import reducers from '../reducers'
@@ -40,85 +42,94 @@ describe('integrations reducers', () => {
         expect(newState).toEqual(expected)
     })
 
-    describe('FETCH_FACEBOOK_ONBOARDING_PAGES_SUCCESS case', () => {
-        it('should set the data because there is no current page', () => {
-            const onboardingPages = {
-                data: [{id: 1}],
-                meta: {
-                    page: 1,
-                    nb_pages: 1,
-                    item_count: 1,
-                }
-            }
+    describe('FETCH_ONBOARDING_INTEGRATIONS_SUCCESS case', () => {
+        const integrationTypes = [FACEBOOK_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE]
 
-            expect(reducers(state.integrations, {
-                type: types.FETCH_FACEBOOK_ONBOARDING_PAGES_SUCCESS,
-                resp: onboardingPages
-            })).toEqual(
-                getIntegrationsState(state).setIn(['extra', 'facebook', 'onboardingPages'], fromJS(onboardingPages))
-            )
+        integrationTypes.forEach((integrationType) => {
+            it(`should set the data because there is no current page (${integrationType})`, () => {
+                const onboardingIntegrations = {
+                    data: [{id: 1}],
+                    meta: {
+                        page: 1,
+                        nb_pages: 1,
+                        item_count: 1,
+                    }
+                }
+
+                expect(reducers(state.integrations, {
+                    type: types.FETCH_ONBOARDING_INTEGRATIONS_SUCCESS,
+                    resp: onboardingIntegrations,
+                    integrationType
+                })).toEqual(
+                    getIntegrationsState(state).setIn(['extra', integrationType, 'onboardingIntegrations'], fromJS(onboardingIntegrations))
+                )
+            })
+
+            it(`should set the data because the forceOverride flag is set (${integrationType})`, () => {
+                const integrationsState = state.integrations.setIn(['extra', integrationType, 'onboardingIntegrations', 'meta', 'page'], 1)
+                const onboardingIntegrations = {
+                    data: [{id: 1}],
+                    meta: {
+                        page: 2,
+                        nb_pages: 2,
+                        item_count: 1,
+                    }
+                }
+
+                expect(reducers(integrationsState, {
+                    type: types.FETCH_ONBOARDING_INTEGRATIONS_SUCCESS,
+                    resp: onboardingIntegrations,
+                    forceOverride: true,
+                    integrationType
+                })).toEqual(
+                    getIntegrationsState({integrations: integrationsState})
+                        .setIn(['extra', integrationType, 'onboardingIntegrations'], fromJS(onboardingIntegrations))
+                )
+            })
+
+            it(`should set the data because the page of the response matches the current page (${integrationType})`, () => {
+                const integrationsState = state.integrations.setIn(['extra', integrationType, 'onboardingIntegrations', 'meta', 'page'], 1)
+                const onboardingIntegrations = {
+                    data: [{id: 1}],
+                    meta: {
+                        page: 1,
+                        nb_pages: 2,
+                        item_count: 1,
+                    }
+                }
+
+                expect(reducers(integrationsState, {
+                    type: types.FETCH_ONBOARDING_INTEGRATIONS_SUCCESS,
+                    resp: onboardingIntegrations,
+                    integrationType
+                })).toEqual(
+                    getIntegrationsState({integrations: integrationsState})
+                        .setIn(['extra', integrationType, 'onboardingIntegrations'], fromJS(onboardingIntegrations))
+                )
+            })
+
+            it('should not set the data but still set the meta because there is a current page different from the page ' +
+                `associated with the response, and the forceOverride flag is not set  (${integrationType})`, () => {
+                const integrationsState = state.integrations.setIn(['extra', integrationType, 'onboardingIntegrations', 'meta', 'page'], 1)
+                const onboardingIntegrations = {
+                    data: [{id: 1}],
+                    meta: {
+                        page: 2,
+                        nb_pages: 2,
+                        item_count: 1,
+                    }
+                }
+
+                expect(reducers(integrationsState, {
+                    type: types.FETCH_ONBOARDING_INTEGRATIONS_SUCCESS,
+                    resp: onboardingIntegrations,
+                    integrationType
+                })).toEqual(
+                    getIntegrationsState({integrations: integrationsState})
+                        .setIn(['extra', integrationType, 'onboardingIntegrations', 'meta'], fromJS(onboardingIntegrations.meta))
+                )
+            })
         })
 
-        it('should set the data because the forceOverride flag is set', () => {
-            const integrationsState = state.integrations.setIn(['extra', 'facebook', 'onboardingPages', 'meta', 'page'], 1)
-            const onboardingPages = {
-                data: [{id: 1}],
-                meta: {
-                    page: 2,
-                    nb_pages: 2,
-                    item_count: 1,
-                }
-            }
-
-            expect(reducers(integrationsState, {
-                type: types.FETCH_FACEBOOK_ONBOARDING_PAGES_SUCCESS,
-                resp: onboardingPages,
-                forceOverride: true
-            })).toEqual(
-                getIntegrationsState({integrations: integrationsState})
-                    .setIn(['extra', 'facebook', 'onboardingPages'], fromJS(onboardingPages))
-            )
-        })
-
-        it('should set the data because the page of the response matches the current page', () => {
-            const integrationsState = state.integrations.setIn(['extra', 'facebook', 'onboardingPages', 'meta', 'page'], 1)
-            const onboardingPages = {
-                data: [{id: 1}],
-                meta: {
-                    page: 1,
-                    nb_pages: 2,
-                    item_count: 1,
-                }
-            }
-
-            expect(reducers(integrationsState, {
-                type: types.FETCH_FACEBOOK_ONBOARDING_PAGES_SUCCESS,
-                resp: onboardingPages,
-            })).toEqual(
-                getIntegrationsState({integrations: integrationsState})
-                    .setIn(['extra', 'facebook', 'onboardingPages'], fromJS(onboardingPages))
-            )
-        })
-
-        it('should not set the data but still set the meta because there is a current page different from the page ' +
-            'associated with the response, and the forceOverride flag is not set', () => {
-            const integrationsState = state.integrations.setIn(['extra', 'facebook', 'onboardingPages', 'meta', 'page'], 1)
-            const onboardingPages = {
-                data: [{id: 1}],
-                meta: {
-                    page: 2,
-                    nb_pages: 2,
-                    item_count: 1,
-                }
-            }
-
-            expect(reducers(integrationsState, {
-                type: types.FETCH_FACEBOOK_ONBOARDING_PAGES_SUCCESS,
-                resp: onboardingPages,
-            })).toEqual(
-                getIntegrationsState({integrations: integrationsState})
-                    .setIn(['extra', 'facebook', 'onboardingPages', 'meta'], fromJS(onboardingPages.meta))
-            )
-        })
     })
 })

@@ -1,5 +1,7 @@
 import {fromJS} from 'immutable'
 
+import {FACEBOOK_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE} from '../../../constants/integration'
+
 import {
     getIntegrationsState,
     getIntegrations,
@@ -12,7 +14,7 @@ import {
     getChatIntegrationCampaignById,
     getChannelByTypeAndAddress,
     getChannelSignature,
-    getCurrentIntegration, getFacebookOnboardingPages, getFacebookOnboardingMeta,
+    getCurrentIntegration, getOnboardingIntegrations, getOnboardingMeta,
 } from '../selectors'
 import {integrationsState} from '../../../fixtures/integrations'
 
@@ -310,37 +312,41 @@ describe('integrations selectors', () => {
         })
     })
 
-    describe('getFacebookOnboardingPages selector', () => {
-        it('should return an empty list because there is no integrations in the state', () => {
-            expect(getFacebookOnboardingPages({})).toEqual(fromJS([]))
-        })
+    describe('getOnboardingIntegrations selector', () => {
+        [FACEBOOK_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE].forEach((integrationType) => {
+            it(`should return an empty list because there is no integrations in the state (${integrationType})`, () => {
+                expect(getOnboardingIntegrations(integrationType)({})).toEqual(fromJS([]))
+            })
 
-        it('should return the list of onboarding pages from the state', () => {
-            const page = {id: 1, name: 'foo'}
-            const state = {
-                integrations: fromJS({
-                    extra: {facebook: {onboardingPages: {data: [page]}}}
-                })
-            }
+            it(`should return the list of onboarding pages from the state (${integrationType})`, () => {
+                const page = {id: 1, name: 'foo'}
+                const state = {
+                    integrations: fromJS({
+                        extra: {[integrationType]: {onboardingIntegrations: {data: [page]}}}
+                    })
+                }
 
-            expect(getFacebookOnboardingPages(state).toJS()).toEqual([page])
+                expect(getOnboardingIntegrations(integrationType)(state).toJS()).toEqual([page])
+            })
         })
     })
 
-    describe('getFacebookOnboardingMeta selector', () => {
-        it('should return an empty map because there is no meta in the state', () => {
-            expect(getFacebookOnboardingMeta({})).toEqual(fromJS({}))
-        })
+    describe('getOnboardingMeta selector', () => {
+        [FACEBOOK_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE].forEach((integrationType) => {
+            it(`should return an empty map because there is no meta in the state (${integrationType})`, () => {
+                expect(getOnboardingMeta(integrationType)({})).toEqual(fromJS({}))
+            })
 
-        it('should return the meta of onboarding pages from the state', () => {
-            const meta = {page: 1}
-            const state = {
-                integrations: fromJS({
-                    extra: {facebook: {onboardingPages: {meta}}}
-                })
-            }
+            it('should return the meta of onboarding pages from the state', () => {
+                const meta = {page: 1}
+                const state = {
+                    integrations: fromJS({
+                        extra: {[integrationType]: {onboardingIntegrations: {meta}}}
+                    })
+                }
 
-            expect(getFacebookOnboardingMeta(state).toJS()).toEqual(meta)
+                expect(getOnboardingMeta(integrationType)(state).toJS()).toEqual(meta)
+            })
         })
     })
 })

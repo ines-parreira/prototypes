@@ -16,6 +16,8 @@ import {
     Alert,
 } from 'reactstrap'
 
+import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../constants/integration'
+
 import Loader from '../../../../common/components/Loader'
 import ToggleButton from '../../../../common/components/ToggleButton'
 import PageHeader from '../../../../common/components/PageHeader'
@@ -46,8 +48,8 @@ type State = {
 @connect((state) => {
     // Here we only want the DELETED integrations of the current_user
     return {
-        integrations: integrationsSelectors.getFacebookOnboardingPages(state),
-        pagination: integrationsSelectors.getFacebookOnboardingMeta(state)
+        integrations: integrationsSelectors.getOnboardingIntegrations(FACEBOOK_INTEGRATION_TYPE)(state),
+        pagination: integrationsSelectors.getOnboardingMeta(FACEBOOK_INTEGRATION_TYPE)(state)
     }
 })
 export default class FacebookIntegrationSetup extends React.Component<Props, State> {
@@ -82,7 +84,7 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
             .map((integration) => fromJS(integration).set('deleted_datetime', null))
             .toList().toJS()
 
-        actions.activateFacebookOnboardingPage(data).then(() => actions.fetchIntegrations())
+        actions.activateOnboardingIntegrations(data, FACEBOOK_INTEGRATION_TYPE).then(() => actions.fetchIntegrations())
         browserHistory.push('/app/settings/integrations/facebook')
     }
 
@@ -118,7 +120,7 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
             this.setState({isLoading: true})
         }
 
-        this.props.actions.fetchFacebookOnboardingPages(page, !silent).then(() => {
+        this.props.actions.fetchFacebookOnboardingIntegrations(page, !silent).then(() => {
             if (!silent) {
                 this.setState({isLoading: false})
             }

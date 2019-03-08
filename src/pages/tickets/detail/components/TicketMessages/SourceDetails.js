@@ -2,7 +2,7 @@
 import classNamesBind from 'classnames/bind'
 import React from 'react'
 
-import type {TicketMessage} from '../../../../../models/ticketElement'
+import type {TicketMessage} from '../../../../../models/ticket'
 import {DatetimeLabel} from '../../../../common/utils/labels'
 
 import SeenIndicator from './SeenIndicator'
