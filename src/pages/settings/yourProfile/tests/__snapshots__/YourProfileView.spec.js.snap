@@ -6,6 +6,7 @@ Object {
   "email": "",
   "language": "",
   "name": "",
+  "password_confirmation": null,
   "timezone": "",
 }
 `;
@@ -32,6 +33,24 @@ Array [
         "profile_picture_url": undefined,
       },
       "name": "Alex Plugaru",
+      "timezone": "EST",
+    },
+  ],
+]
+`;
+
+exports[`YourProfileView _handleSubmit should submit user data and reset the password confirmation field because the email field was marked as changed 1`] = `
+Array [
+  Array [
+    Object {
+      "bio": "CTO",
+      "email": "alex@gorgias.io",
+      "language": "en",
+      "meta": Object {
+        "profile_picture_url": undefined,
+      },
+      "name": "Alex Plugaru",
+      "password_confirmation": "a-password",
       "timezone": "EST",
     },
   ],

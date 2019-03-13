@@ -1,5 +1,5 @@
+// @flow
 import React from 'react'
-import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
@@ -22,12 +22,23 @@ import {AVAILABLE_LANGUAGES} from './../../../../config'
 const defaultContent = {
     name: '',
     email: '',
+    password_confirmation: null,
     bio: '',
     timezone: '',
-    language: ''
+    language: '',
 }
 
-class YourProfileView extends React.Component {
+type Props = {
+    updateCurrentUser: (Object) => void,
+    currentUser: Object,
+    submitSetting: (Object) => void,
+    preferences: Object,
+    isLoading: boolean
+}
+
+
+export default class YourProfileView extends React.Component<Props> {
+
     constructor(props) {
         super(props)
 
@@ -36,6 +47,7 @@ class YourProfileView extends React.Component {
         this.state = _merge({
             loadingPreferences: false,
             preferences: props.preferences.get('data'),
+            emailHasChanged: false
         }, this._getForm(props))
 
         if (!this.props.currentUser.isEmpty()) {
@@ -63,8 +75,8 @@ class YourProfileView extends React.Component {
         )
     }
 
-    _handleSubmit = (e) => {
-        e.preventDefault()
+    _handleSubmit = (event) => {
+        event.preventDefault()
         const normalizedValues = _merge(
             _pick(this.state, Object.keys(defaultContent)),
             {
@@ -75,6 +87,21 @@ class YourProfileView extends React.Component {
         )
 
         return this.props.updateCurrentUser(normalizedValues)
+            .then((user) => {
+                if (user.email === normalizedValues.email) {
+                    this.setState({
+                        hasChangedEmail: false,
+                        password_confirmation: null
+                    })
+                }
+            })
+    }
+
+    _onEmailChange = (email) => {
+        this.setState({
+            email,
+            hasChangedEmail: (this.props.currentUser.get('email') !== email)
+        })
     }
 
     _savePreferences = (e) => {
@@ -91,6 +118,7 @@ class YourProfileView extends React.Component {
     }
 
     render() {
+        const {hasChangedEmail, password_confirmation} = this.state
         const {isLoading} = this.props
         const loadingUser = isLoading && !this.state.loadingPreferences
 
@@ -124,8 +152,20 @@ class YourProfileView extends React.Component {
                                     placeholder="john.doe@acme.com"
                                     required
                                     value={this.state.email}
-                                    onChange={(email) => this.setState({email})}
+                                    onChange={this._onEmailChange}
                                 />
+                              {hasChangedEmail ?
+                                <InputField
+                                  type="password"
+                                  name="password_confirmation"
+                                  label="Password confirmation"
+                                  placeholder="Your password"
+                                  required
+                                  value={password_confirmation}
+                                  onChange={(password_confirmation) => this.setState({password_confirmation})}
+                                />
+                                : null
+                              }
                                 <InputField
                                     type="text"
                                     name="bio"
@@ -265,13 +305,3 @@ class YourProfileView extends React.Component {
         )
     }
 }
-
-YourProfileView.propTypes = {
-    updateCurrentUser: PropTypes.func.isRequired,
-    currentUser: PropTypes.object.isRequired,
-    submitSetting: PropTypes.func.isRequired,
-    preferences: PropTypes.object.isRequired,
-    isLoading: PropTypes.bool
-}
-
-export default YourProfileView

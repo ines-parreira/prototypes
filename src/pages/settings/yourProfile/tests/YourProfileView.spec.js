@@ -29,9 +29,10 @@ describe('YourProfileView', () => {
 
     describe('_handleSubmit', () => {
         it('should submit user data', () => {
+            const updateCurrentUserSpy = jest.fn(() => Promise.resolve(currentUser))
             const component = shallow(
                 <YourProfileView
-                    updateCurrentUser={mockUpdateCurrentUser}
+                    updateCurrentUser={updateCurrentUserSpy}
                     currentUser={fromJS(currentUser)}
                     submitSetting={jest.fn()}
                     preferences={fromJS({data: {}})}
@@ -39,7 +40,28 @@ describe('YourProfileView', () => {
             ).instance()
 
             component._handleSubmit({preventDefault: jest.fn()})
-            expect(mockUpdateCurrentUser.mock.calls).toMatchSnapshot()
+            expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
+        })
+
+        it('should submit user data and reset the password confirmation field ' +
+            'because the email field was marked as changed', (done) => {
+            const updateCurrentUserSpy = jest.fn(() => Promise.resolve(currentUser))
+            const component = shallow(
+                <YourProfileView
+                    updateCurrentUser={updateCurrentUserSpy}
+                    currentUser={fromJS(currentUser)}
+                    submitSetting={jest.fn()}
+                    preferences={fromJS({data: {}})}
+                />
+            ).instance()
+            component.setState({password_confirmation: 'a-password', hasChangedEmail: true})
+
+            component._handleSubmit({preventDefault: jest.fn()}).then(() => {
+                expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
+                expect(component.state.hasChangedEmail).toBe(false)
+                expect(component.state.password_confirmation).toBe(null)
+                done()
+            })
         })
     })
 
