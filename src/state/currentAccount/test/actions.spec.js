@@ -53,6 +53,20 @@ describe('current account actions', () => {
         })
     })
 
+    describe('update account owner', () => {
+        it('update account owner', (done) => {
+            const userId = 1
+
+            mockServer.onPut(`/api/account/set-owner/${userId}/`).reply(202)
+
+            return store.dispatch(actions.updateAccountOwner(userId))
+                .then(() => {
+                    expect(store.getActions()).toMatchSnapshot()
+                    done()
+                })
+        })
+    })
+
     describe('update subscription', () => {
         it('update subscription', () => {
             const subscription = {plan: 'basic'}

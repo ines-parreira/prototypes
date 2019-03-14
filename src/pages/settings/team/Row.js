@@ -2,6 +2,7 @@
 import React from 'react'
 import {Link} from 'react-router'
 import classnames from 'classnames'
+import {Badge} from 'reactstrap'
 
 import type {Map} from 'immutable'
 
@@ -16,6 +17,7 @@ import css from './Row.less'
 type Props = {
     agent: Map<*,*>,
     currentPage: number,
+    isAccountOwner: boolean,
     deleteAgent: (id: string, currentPage: number) => Promise<*>,
     fetchAgents: (T: number) => Promise<*>,
     last: boolean,
@@ -40,7 +42,7 @@ export default class Row extends React.Component<Props> {
     }
 
     render() {
-        const {agent} = this.props
+        const {agent, isAccountOwner} = this.props
         const editLink = `/app/settings/team/update/${agent.get('id')}`
 
         return (
@@ -68,6 +70,16 @@ export default class Row extends React.Component<Props> {
                         <RoleLabel
                             roles={agent.get('roles')}
                         />
+                        {
+                            isAccountOwner && (
+                                <Badge
+                                    color='dark'
+                                    pill
+                                >
+                                    Account Owner
+                                </Badge>
+                            )
+                        }
                     </span>
                     <span className={css.delete}>
                         <DeleteAgent

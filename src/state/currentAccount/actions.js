@@ -99,3 +99,29 @@ export function updateSubscription(subscription: {}) {
             })
     }
 }
+
+/**
+ * Transfer the current account ownership to a user
+ * @param {number} userId - The user ID
+ * @returns {Function} the async action thunk
+ */
+export const updateAccountOwner = (userId: number) => (dispatch: dispatchType): Promise<dispatchType> => {
+    return axios.put(`/api/account/set-owner/${userId}/`)
+        .then((resp = {}) => resp.data)
+        .then(() => {
+            dispatch(notify({
+                status: 'success',
+                message: 'The account owner was successfully​ changed.',
+            }))
+            return dispatch({
+                type: constants.UPDATE_ACCOUNT_OWNER_SUCCESS,
+                userId,
+            })
+        }, (error) => {
+            return dispatch({
+                type: constants.UPDATE_ACCOUNT_OWNER_ERROR,
+                error,
+                reason: 'Failed to change the account owner. Please try again in a few seconds.',
+            })
+        })
+}

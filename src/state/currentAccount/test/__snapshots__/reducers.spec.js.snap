@@ -38,6 +38,16 @@ Object {
 }
 `;
 
+exports[`current account reducers update account owner 1`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {},
+  },
+  "settings": Array [],
+  "user_id": 1,
+}
+`;
+
 exports[`current account reducers update setting 1`] = `
 Object {
   "_internal": Object {

@@ -1,11 +1,12 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+//@flow
+import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
 import {browserHistory, Link} from 'react-router'
 import _pick from 'lodash/pick'
 import {
+    Badge,
     Breadcrumb,
     BreadcrumbItem,
     Button,
@@ -16,19 +17,47 @@ import {
 
 import {toJS} from '../../../utils'
 import Loader from '../../common/components/Loader'
+import ConfirmButton from '../../common/components/ConfirmButton'
 import {ADMIN_ROLE, AGENT_ROLE, BASIC_AGENT_ROLE, LITE_AGENT_ROLE, OBSERVER_AGENT_ROLE} from '../../../config/user'
 
 import InputField from '../../common/forms/InputField'
 
 import * as actions from '../../../state/agents/actions'
+import {updateAccountOwner} from '../../../state/currentAccount/actions'
 import * as helpers from '../../../state/agents/helpers'
 import PageHeader from '../../common/components/PageHeader'
 
 import DeleteAgent from './DeleteAgent'
 
+
+type Props = {
+    agentId: number,
+    currentUserId: number,
+    accountOwnerId: number,
+    createAgent: (Object) => Promise<Object>,
+    deleteAgent: (number) => Promise<Object>,
+    fetchAgent: (number) => Promise<Object>,
+    inviteAgent: Function,
+    updateAgent: (number, Object) => Promise<Object>,
+    updateAccountOwner: Function,
+}
+
+type State = {
+    agent: Map<*, *>,
+    email: string,
+    errors: Object,
+    isInviting: boolean,
+    isFetching: boolean,
+    isSubmitting: boolean,
+    name: string,
+    role: ?string,
+}
+
 @connect((state, ownProps) => {
     return {
-        agentId: ownProps.params.id,
+        agentId: parseInt(ownProps.params.id),
+        accountOwnerId: state.currentAccount.get('user_id'),
+        currentUserId: state.currentUser.get('id')
     }
 }, {
     createAgent: actions.createAgent,
@@ -36,17 +65,9 @@ import DeleteAgent from './DeleteAgent'
     fetchAgent: actions.fetchAgent,
     inviteAgent: actions.inviteAgent,
     updateAgent: actions.updateAgent,
+    updateAccountOwner
 })
-export default class Form extends React.Component {
-    static propTypes = {
-        agentId: PropTypes.string,
-        createAgent: PropTypes.func.isRequired,
-        deleteAgent: PropTypes.func.isRequired,
-        fetchAgent: PropTypes.func.isRequired,
-        inviteAgent: PropTypes.func.isRequired,
-        updateAgent: PropTypes.func.isRequired,
-    }
-
+export default class Form extends Component<Props, State> {
     state = {
         agent: fromJS({}),
         email: '',
@@ -68,7 +89,7 @@ export default class Form extends React.Component {
         return !!this.props.agentId
     }
 
-    _fetchAgent = (id) => {
+    _fetchAgent = (id: number) => {
         this.setState({isFetching: true})
         return this.props.fetchAgent(id)
             .then((resp) => {
@@ -101,7 +122,7 @@ export default class Form extends React.Component {
             })
     }
 
-    _onSubmit = (e) => {
+    _onSubmit = (e: SyntheticEvent<*>) => {
         e.preventDefault()
         const form = _pick(this.state, ['email', 'name'])
         form.roles = [{name: this.state.role}]
@@ -131,6 +152,8 @@ export default class Form extends React.Component {
         }
 
         const isUpdate = this._isUpdate()
+        const isCurrentUserAccountOwner = this.props.accountOwnerId === this.props.currentUserId
+        const isAgentAccountOwner = this.props.agentId === this.props.accountOwnerId
 
         return (
             <div className="full-width">
@@ -141,9 +164,21 @@ export default class Form extends React.Component {
                         </BreadcrumbItem>
                         <BreadcrumbItem active>
                             {isUpdate ? `Edit ${agent.get('name')}` : 'Add team member'}
+                            {
+                                isAgentAccountOwner && (
+                                    <Badge
+                                        className={'ml-2 align-middle'}
+                                        color='dark'
+                                        pill
+                                    >
+                                        Account Owner
+                                    </Badge>
+                                )
+                            }
                         </BreadcrumbItem>
                     </Breadcrumb>
                 )}/>
+
 
                 <Container
                     fluid
@@ -219,8 +254,22 @@ export default class Form extends React.Component {
                                             className={classnames({'btn-loading': this.state.isInviting})}
                                             disabled={this.state.isInviting}
                                         >
-                                             <i className="material-icons">mail</i> Re-send invitation email
+                                            <i className="material-icons">mail</i> Re-send invitation email
                                         </Button>
+                                        {
+                                            isCurrentUserAccountOwner && !isAgentAccountOwner && (
+                                                <ConfirmButton
+                                                    type="button"
+                                                    color="danger"
+                                                    outline
+                                                    className={'ml-2'}
+                                                    confirm={() => this.props.updateAccountOwner(this.props.agentId)}
+                                                    content={`Are you sure you want transfer ownership of this Gorgias account to ${this.state.name}?`}
+                                                >
+                                                    Set as account owner
+                                                </ConfirmButton>
+                                            )
+                                        }
                                         <DeleteAgent
                                             action={this._delete}
                                             className="float-right"
