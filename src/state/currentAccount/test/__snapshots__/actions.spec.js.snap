@@ -39,15 +39,6 @@ Array [
 ]
 `;
 
-exports[`current account actions update account owner update account owner 1`] = `
-Array [
-  Object {
-    "type": "UPDATE_ACCOUNT_OWNER_SUCCESS",
-    "userId": 1,
-  },
-]
-`;
-
 exports[`current account actions update subscription update subscription 1`] = `
 Array [
   Object {

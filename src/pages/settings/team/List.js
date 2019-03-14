@@ -27,7 +27,6 @@ import css from './List.less'
 type Props = {
     agents: List<*>,
     pagination: Map<*,*>,
-    accountOwnerId: number,
     fetchAgents: (T: number) => Promise<*>,
     deleteAgent: (T: string) => Promise<*>,
 }
@@ -40,7 +39,6 @@ type State = {
     return {
         agents: selectors.getPaginatedAgents(state),
         pagination: selectors.getPagination(state),
-        accountOwnerId: state.currentAccount.get('user_id'),
     }
 }, {
     fetchAgents: actions.fetchPagination,
@@ -102,12 +100,10 @@ export default class TeamList extends React.Component<Props, State> {
                     <div className={css.list}>
                         {
                             agents.map((agent, index) => {
-                                const agentId = agent.get('id')
                                 return (
                                     <Row
-                                        key={agentId}
+                                        key={agent.get('id')}
                                         agent={agent}
-                                        isAccountOwner={agentId == this.props.accountOwnerId}
                                         deleteAgent={deleteAgent}
                                         fetchAgents={fetchAgents}
                                         currentPage={currentPage}

@@ -71,21 +71,6 @@ describe('current account reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('update account owner', (done) => {
-        // success
-        expect(
-            reducer(
-                initialState,
-                {
-                    type: types.UPDATE_ACCOUNT_OWNER_SUCCESS,
-                    userId: 1,
-                }
-            ).toJS()
-        ).toMatchSnapshot()
-        done()
-    })
-
-
     describe('update subscription', () => {
         it('without any existing subscription', () => {
             const state = initialState.set('current_subscription', null)
