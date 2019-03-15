@@ -56,13 +56,13 @@ const HistoryButton = (props: Props) => {
                     )
                     : (
                         <span>
-                        <i className={classnames(css.icon, css.iconHistory, 'material-icons md-2')}>
+                            <i className={classnames(css.icon, css.iconHistory, 'material-icons md-2')}>
                             history
-                        </i>
-                        <i className={classnames(css.icon, css.iconArrowDown, 'material-icons md-2')}>
+                            </i>
+                            <i className={classnames(css.icon, css.iconArrowDown, 'material-icons md-2')}>
                             arrow_downward
-                        </i>
-                    </span>
+                            </i>
+                        </span>
                     )
             }
 

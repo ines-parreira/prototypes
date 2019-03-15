@@ -77,18 +77,18 @@ export default class RichFieldWithVariables extends Component<Props> {
                                     ))}
                                 </DropdownMenu>
                             </UncontrolledButtonDropdown>
-                            ) : (
-                                <Button
-                                    key={index}
-                                    color="link"
-                                    style={{color: 'inherit'}}
-                                    onClick={() => {
-                                        this._insertText(category.value)
-                                    }}
-                                >
-                                    {category.name}
-                                </Button>
-                            )))
+                        ) : (
+                            <Button
+                                key={index}
+                                color="link"
+                                style={{color: 'inherit'}}
+                                onClick={() => {
+                                    this._insertText(category.value)
+                                }}
+                            >
+                                {category.name}
+                            </Button>
+                        )))
                     }
                 </div>
                 <RichField

@@ -32,23 +32,23 @@ exports[`BuildFinalTicket component should display all fields because everything
         Object {
           "label": <span>
             <i
-                  className="material-icons mr-2"
+              className="material-icons mr-2"
             >
-                  person
+              person
             </i>
             Maria Curie
-      </span>,
+          </span>,
           "value": 22,
         },
         Object {
           "label": <span>
             <i
-                  className="material-icons mr-2"
+              className="material-icons mr-2"
             >
-                  person
+              person
             </i>
             Pedro Curie
-      </span>,
+          </span>,
           "value": 33,
         },
       ]
@@ -64,31 +64,31 @@ exports[`BuildFinalTicket component should display all fields because everything
         Object {
           "label": <span>
             <Avatar
-                  className="d-inline-block mr-2"
-                  email=""
-                  google={false}
-                  name="John Smith"
-                  size={26}
-                  style={Object {}}
-                  url=""
+              className="d-inline-block mr-2"
+              email=""
+              google={false}
+              name="John Smith"
+              size={26}
+              style={Object {}}
+              url=""
             />
             John Smith
-      </span>,
+          </span>,
           "value": 1,
         },
         Object {
           "label": <span>
             <Avatar
-                  className="d-inline-block mr-2"
-                  email=""
-                  google={false}
-                  name="Jack Ryan"
-                  size={26}
-                  style={Object {}}
-                  url=""
+              className="d-inline-block mr-2"
+              email=""
+              google={false}
+              name="Jack Ryan"
+              size={26}
+              style={Object {}}
+              url=""
             />
             Jack Ryan
-      </span>,
+          </span>,
           "value": 2,
         },
       ]
@@ -112,31 +112,31 @@ exports[`BuildFinalTicket component should display the assignee field because th
         Object {
           "label": <span>
             <Avatar
-                  className="d-inline-block mr-2"
-                  email=""
-                  google={false}
-                  name="John Smith"
-                  size={26}
-                  style={Object {}}
-                  url=""
+              className="d-inline-block mr-2"
+              email=""
+              google={false}
+              name="John Smith"
+              size={26}
+              style={Object {}}
+              url=""
             />
             John Smith
-      </span>,
+          </span>,
           "value": 1,
         },
         Object {
           "label": <span>
             <Avatar
-                  className="d-inline-block mr-2"
-                  email=""
-                  google={false}
-                  name="Jack Ryan"
-                  size={26}
-                  style={Object {}}
-                  url=""
+              className="d-inline-block mr-2"
+              email=""
+              google={false}
+              name="Jack Ryan"
+              size={26}
+              style={Object {}}
+              url=""
             />
             Jack Ryan
-      </span>,
+          </span>,
           "value": 2,
         },
       ]
@@ -160,23 +160,23 @@ exports[`BuildFinalTicket component should display the customer field because th
         Object {
           "label": <span>
             <i
-                  className="material-icons mr-2"
+              className="material-icons mr-2"
             >
-                  person
+              person
             </i>
             Maria Curie
-      </span>,
+          </span>,
           "value": 22,
         },
         Object {
           "label": <span>
             <i
-                  className="material-icons mr-2"
+              className="material-icons mr-2"
             >
-                  person
+              person
             </i>
             Pedro Curie
-      </span>,
+          </span>,
           "value": 33,
         },
       ]

@@ -14,7 +14,7 @@ export default class ColorField extends InputField {
             inline, // eslint-disable-line
             label, // eslint-disable-line
             name, // eslint-disable-line
-            ...rest,
+            ...rest
         } = this.props
 
         return (

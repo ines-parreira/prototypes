@@ -65,11 +65,11 @@ export default class PlaceholderWidget extends React.Component<Props> {
                         </i>
                     </span>
                     <h5 className={classnames(css.title)}>
-                    {
-                        integration
-                            ? `Widget for ${integration.get('name')} data`
-                            : `Widget for ${_capitalize(this._renderWidgetType(widget.get('type')))} data`
-                    }
+                        {
+                            integration
+                                ? `Widget for ${integration.get('name')} data`
+                                : `Widget for ${_capitalize(this._renderWidgetType(widget.get('type')))} data`
+                        }
                     </h5>
                 </CardBody>
             </Card>

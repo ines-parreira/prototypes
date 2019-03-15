@@ -274,11 +274,11 @@ export class AfterContent extends React.Component<AfterContentProps> { // eslint
                                     />
                                 </CardBody>
                                 <CardBody className="content">
-                                {
-                                    chargeSubscriptions[k].map((item) => {
-                                        return <span key={`${k}-${item.id}`}>{item.title} ({item.quantity})</span>
-                                    })
-                                }
+                                    {
+                                        chargeSubscriptions[k].map((item) => {
+                                            return <span key={`${k}-${item.id}`}>{item.title} ({item.quantity})</span>
+                                        })
+                                    }
                                 </CardBody>
                             </div>
                         )
@@ -337,7 +337,7 @@ export class TitleWrapper extends React.Component<TitleWrapperProps> {
             <a
                 href={link}
                 target="_blank"
-                rel="noreferrer noopener"
+                rel="noopener noreferrer"
             >
                 {children}
             </a>

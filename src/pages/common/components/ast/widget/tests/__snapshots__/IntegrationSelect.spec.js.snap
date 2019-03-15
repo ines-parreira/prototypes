@@ -11,42 +11,42 @@ exports[`ast widgets IntegrationSelect should render a SelectField 1`] = `
       Object {
         "label": <RenderLabel
           field={
-                Immutable.Map {
-                      name: "integrations",
-                }
+            Immutable.Map {
+              "name": "integrations",
+            }
           }
           value={
-                Immutable.Map {
-                      id: 1,
-                      name: "Acme Support",
-                      type: "email",
-                      meta: Immutable.Map {
-                            address: "support@acme.gorgias.io",
-                      },
-                }
+            Immutable.Map {
+              "id": 1,
+              "name": "Acme Support",
+              "type": "email",
+              "meta": Immutable.Map {
+                "address": "support@acme.gorgias.io",
+              },
+            }
           }
-    />,
+        />,
         "text": "Acme Support",
         "value": 1,
       },
       Object {
         "label": <RenderLabel
           field={
-                Immutable.Map {
-                      name: "integrations",
-                }
+            Immutable.Map {
+              "name": "integrations",
+            }
           }
           value={
-                Immutable.Map {
-                      id: 2,
-                      name: "Acme Chat",
-                      type: "smooch_inside",
-                      meta: Immutable.Map {
-                            app_id: "123456uy5tr1d2g3h4",
-                      },
-                }
+            Immutable.Map {
+              "id": 2,
+              "name": "Acme Chat",
+              "type": "smooch_inside",
+              "meta": Immutable.Map {
+                "app_id": "123456uy5tr1d2g3h4",
+              },
+            }
           }
-    />,
+        />,
         "text": "Acme Chat",
         "value": 2,
       },

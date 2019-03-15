@@ -61,7 +61,7 @@ export default class JsonField extends InputField {
             name, // eslint-disable-line
             onChange, // eslint-disable-line
             value, // eslint-disable-line
-            ...rest,
+            ...rest
         } = this.props
 
         const isInvalid = !this.state.isJsonValid

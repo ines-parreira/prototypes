@@ -40,12 +40,12 @@ export default class SatisfactionSurvey extends React.Component<PropTypes> {
         }
 
         return <div>
-                <span className='mr-1'>To be sent</span>
-                <DatetimeLabel
-                    dateTime={shouldSendDatetime}
-                    timezone={timezone}
-                />
-            </div>
+            <span className='mr-1'>To be sent</span>
+            <DatetimeLabel
+                dateTime={shouldSendDatetime}
+                timezone={timezone}
+            />
+        </div>
     }
 
     render() {

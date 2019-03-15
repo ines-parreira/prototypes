@@ -128,9 +128,9 @@ export class BillingPlans extends React.Component<Props, State> {
                             <dd>
                                 Yes you can. Switching between monthly/yearly plans
                                 will <a target="_blank"
-                                        rel="noreferrer noopener"
-                                        href="https://stripe.com/docs/subscriptions/upgrading-downgrading#understanding-proration"
-                            >prorate</a> your subscription. See the question below for switching from yearly to monthly
+                                    rel="noreferrer noopener"
+                                    href="https://stripe.com/docs/subscriptions/upgrading-downgrading#understanding-proration"
+                                >prorate</a> your subscription. See the question below for switching from yearly to monthly
                                 plans.
                             </dd>
 

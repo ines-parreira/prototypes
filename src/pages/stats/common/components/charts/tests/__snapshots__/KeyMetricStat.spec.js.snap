@@ -25,7 +25,7 @@ exports[`KeyMetricStat should render a key metrics chart 1`] = `
           target="title-median_first_response_time"
         >
           The time between the first message from a customer and the first response from an agent.
-                           Messages sent by rules are not taken into account. (median)
+                 Messages sent by rules are not taken into account. (median)
         </Tooltip>
       </span>
     </div>
@@ -88,8 +88,8 @@ exports[`KeyMetricStat should render a key metrics chart 1`] = `
           target="title-median_resolution_time"
         >
           The time between the first message from a customer and the moment the ticket
-                             has been closed by an agent or a rule. Only tickets with at least one response
-                             from an agent or a rule are taken into account. (median)
+                   has been closed by an agent or a rule. Only tickets with at least one response
+                   from an agent or a rule are taken into account. (median)
         </Tooltip>
       </span>
     </div>
@@ -362,21 +362,21 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
       <DistributionKeyMetricStat
         config={
           Immutable.Map {
-            label: "Response Distribution",
-            tooltip: "Percentage of responses, grouped by the given score.",
-            type: "distribution",
-            variant: "star",
-            minValue: 1,
-            maxValue: 5,
+            "label": "Response Distribution",
+            "tooltip": "Percentage of responses, grouped by the given score.",
+            "type": "distribution",
+            "variant": "star",
+            "minValue": 1,
+            "maxValue": 5,
           }
         }
         formattedValue={
           Immutable.Map {
-            1: 12,
-            2: 38,
-            3: 14.5,
-            4: 14.5,
-            5: 21,
+            "1": 12,
+            "2": 38,
+            "3": 14.5,
+            "4": 14.5,
+            "5": 21,
           }
         }
       />

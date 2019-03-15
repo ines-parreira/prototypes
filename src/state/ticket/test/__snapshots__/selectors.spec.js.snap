@@ -3,55 +3,55 @@
 exports[`ticket selectors getBody 1`] = `
 Immutable.List [
   Immutable.Map {
-    id: 2,
-    created_datetime: "2017-06-29T21:00:00",
-    isEvent: true,
+    "id": 2,
+    "created_datetime": "2017-06-29T21:00:00",
+    "isEvent": true,
   },
   Immutable.Map {
-    id: 1,
-    created_datetime: "2017-06-31T21:00:00",
-    isEvent: true,
+    "id": 1,
+    "created_datetime": "2017-06-31T21:00:00",
+    "isEvent": true,
   },
   Immutable.Map {
-    id: 1,
-    opened_datetime: "2017-07-25T22:00:00",
-    sent_datetime: "2017-07-25T21:01:00",
-    created_datetime: "2017-07-24T21:00:00",
-    isMessage: true,
+    "id": 1,
+    "opened_datetime": "2017-07-25T22:00:00",
+    "sent_datetime": "2017-07-25T21:01:00",
+    "created_datetime": "2017-07-24T21:00:00",
+    "isMessage": true,
   },
   Immutable.Map {
-    id: 2,
-    opened_datetime: "2017-07-29T22:00:00",
-    sent_datetime: "2017-07-29T21:01:00",
-    created_datetime: "2017-07-29T21:00:00",
-    isMessage: true,
+    "id": 2,
+    "opened_datetime": "2017-07-29T22:00:00",
+    "sent_datetime": "2017-07-29T21:01:00",
+    "created_datetime": "2017-07-29T21:00:00",
+    "isMessage": true,
   },
   Immutable.Map {
-    id: 3,
-    opened_datetime: null,
-    sent_datetime: "2017-07-31T21:01:00",
-    created_datetime: "2017-07-31T21:00:00",
-    isMessage: true,
+    "id": 3,
+    "opened_datetime": null,
+    "sent_datetime": "2017-07-31T21:01:00",
+    "created_datetime": "2017-07-31T21:00:00",
+    "isMessage": true,
   },
   Immutable.Map {
-    created_datetime: "2017-08-29T21:00:00",
-    failed_datetime: "2017-08-29T21:01:00",
-    isPending: false,
-    isMessage: true,
+    "created_datetime": "2017-08-29T21:00:00",
+    "failed_datetime": "2017-08-29T21:01:00",
+    "isPending": false,
+    "isMessage": true,
   },
   Immutable.Map {
-    created_datetime: "2017-08-31T21:00:00",
-    isPending: true,
-    isMessage: true,
+    "created_datetime": "2017-08-31T21:00:00",
+    "isPending": true,
+    "isMessage": true,
   },
 ]
 `;
 
 exports[`ticket selectors getLastMessage 1`] = `
 Immutable.Map {
-  id: 3,
-  opened_datetime: null,
-  sent_datetime: "2017-07-31T21:01:00",
-  created_datetime: "2017-07-31T21:00:00",
+  "id": 3,
+  "opened_datetime": null,
+  "sent_datetime": "2017-07-31T21:01:00",
+  "created_datetime": "2017-07-31T21:00:00",
 }
 `;

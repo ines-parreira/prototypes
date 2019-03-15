@@ -111,41 +111,41 @@ export default class AddImage extends React.Component<Props, State> {
                 </div>
                 {
                     this.state.mode === 'upload' ? (
-                            <FileField
-                                key="file"
-                                accept="image/*"
-                                placeholder="Select image..."
-                                onClick={this._updateMaxSize}
-                                onChange={this._handleImage}
-                                maxSize={this.state.maxSize}
-                                returnFiles
-                                inline
-                                noPreview
+                        <FileField
+                            key="file"
+                            accept="image/*"
+                            placeholder="Select image..."
+                            onClick={this._updateMaxSize}
+                            onChange={this._handleImage}
+                            maxSize={this.state.maxSize}
+                            returnFiles
+                            inline
+                            noPreview
+                        />
+                    ) : (
+                        <div className="flex">
+                            <input
+                                className="form-control"
+                                key="url"
+                                ref="input"
+                                type="text"
+                                placeholder="External image url..."
+                                onChange={(e) => this.setState({url: e.target.value})}
+                                value={this.state.url}
+                                onKeyDown={this._onKeyDown}
+                                autoFocus
                             />
-                        ) : (
-                            <div className="flex">
-                                <input
-                                    className="form-control"
-                                    key="url"
-                                    ref="input"
-                                    type="text"
-                                    placeholder="External image url..."
-                                    onChange={(e) => this.setState({url: e.target.value})}
-                                    value={this.state.url}
-                                    onKeyDown={this._onKeyDown}
-                                    autoFocus
-                                />
-                                <Button
-                                    type="button"
-                                    color="primary"
-                                    className="ml-2"
-                                    disabled={!this.state.url}
-                                    onClick={this._submit}
-                                >
+                            <Button
+                                type="button"
+                                color="primary"
+                                className="ml-2"
+                                disabled={!this.state.url}
+                                onClick={this._submit}
+                            >
                                     Insert
-                                </Button>
-                            </div>
-                        )
+                            </Button>
+                        </div>
+                    )
                 }
             </Popover>
         )

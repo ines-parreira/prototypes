@@ -23,73 +23,73 @@ exports[`SelectTargetTicket component should render 1`] = `
     <Connect(Table)
       config={
         Immutable.Map {
-          mainField: "details",
-          cell: [Function],
-          plural: "tickets",
-          newView: [Function],
-          routeList: "tickets",
-          name: "ticket",
-          searchView: [Function],
-          singular: "ticket",
-          fields: Immutable.List [
+          "mainField": "details",
+          "cell": [Function],
+          "plural": "tickets",
+          "newView": [Function],
+          "routeList": "tickets",
+          "name": "ticket",
+          "searchView": [Function],
+          "singular": "ticket",
+          "fields": Immutable.List [
             Immutable.Map {
-              name: "details",
-              title: "Details",
+              "name": "details",
+              "title": "Details",
             },
             Immutable.Map {
-              name: "subject",
-              title: "Subject",
+              "name": "subject",
+              "title": "Subject",
             },
             Immutable.Map {
-              name: "integrations",
-              title: "Integration",
-              path: "messages.integration_id",
-              filter: Immutable.Map {
-                type: "integration",
+              "name": "integrations",
+              "title": "Integration",
+              "path": "messages.integration_id",
+              "filter": Immutable.Map {
+                "type": "integration",
               },
-              dropdown: Immutable.Map {
-                width: "350px",
-              },
-            },
-            Immutable.Map {
-              name: "tags",
-              title: "Tags",
-              path: "tags.name",
-              filter: Immutable.Map {
-                type: "tag",
+              "dropdown": Immutable.Map {
+                "width": "350px",
               },
             },
             Immutable.Map {
-              name: "customer",
-              title: "Customer",
-              path: "customer.id",
-              filter: Immutable.Map {
-                type: "customer",
+              "name": "tags",
+              "title": "Tags",
+              "path": "tags.name",
+              "filter": Immutable.Map {
+                "type": "tag",
               },
             },
             Immutable.Map {
-              name: "assignee",
-              title: "Assignee",
-              path: "assignee_user.id",
-              filter: Immutable.Map {
-                type: "agent",
+              "name": "customer",
+              "title": "Customer",
+              "path": "customer.id",
+              "filter": Immutable.Map {
+                "type": "customer",
               },
             },
             Immutable.Map {
-              name: "status",
-              title: "Status",
-              filter: Immutable.Map {
-                enum: Immutable.List [
+              "name": "assignee",
+              "title": "Assignee",
+              "path": "assignee_user.id",
+              "filter": Immutable.Map {
+                "type": "agent",
+              },
+            },
+            Immutable.Map {
+              "name": "status",
+              "title": "Status",
+              "filter": Immutable.Map {
+                "enum": Immutable.List [
                   "open",
                   "closed",
                 ],
               },
             },
             Immutable.Map {
-              name: "language",
-              title: "Language",
-              filter: Immutable.Map {
-                enum: Immutable.List [
+              "name": "language",
+              "title": "Language",
+              "filter": Immutable.Map {
+                "enum": Immutable.List [
                   "af",
                   "ar",
                   "bg",
@@ -147,10 +147,10 @@ exports[`SelectTargetTicket component should render 1`] = `
               },
             },
             Immutable.Map {
-              name: "channel",
-              title: "Channel",
-              filter: Immutable.Map {
-                enum: Immutable.List [
+              "name": "channel",
+              "title": "Channel",
+              "filter": Immutable.Map {
+                "enum": Immutable.List [
                   "aircall",
                   "api",
                   "chat",
@@ -165,90 +165,90 @@ exports[`SelectTargetTicket component should render 1`] = `
               },
             },
             Immutable.Map {
-              name: "created",
-              title: "Created",
-              path: "created_datetime",
-              filter: Immutable.Map {
-                sort: Immutable.Map {
-                  created_datetime: "desc",
+              "name": "created",
+              "title": "Created",
+              "path": "created_datetime",
+              "filter": Immutable.Map {
+                "sort": Immutable.Map {
+                  "created_datetime": "desc",
                 },
               },
             },
             Immutable.Map {
-              name: "updated",
-              title: "Updated",
-              path: "updated_datetime",
-              filter: Immutable.Map {
-                sort: Immutable.Map {
-                  updated_datetime: "desc",
+              "name": "updated",
+              "title": "Updated",
+              "path": "updated_datetime",
+              "filter": Immutable.Map {
+                "sort": Immutable.Map {
+                  "updated_datetime": "desc",
                 },
               },
             },
             Immutable.Map {
-              name: "last_message",
-              title: "Last message",
-              path: "last_message_datetime",
-              filter: Immutable.Map {
-                sort: Immutable.Map {
-                  last_message_datetime: "desc",
+              "name": "last_message",
+              "title": "Last message",
+              "path": "last_message_datetime",
+              "filter": Immutable.Map {
+                "sort": Immutable.Map {
+                  "last_message_datetime": "desc",
                 },
               },
             },
             Immutable.Map {
-              name: "last_received_message",
-              title: "Last received message",
-              path: "last_received_message_datetime",
-              filter: Immutable.Map {
-                sort: Immutable.Map {
-                  last_received_message_datetime: "desc",
+              "name": "last_received_message",
+              "title": "Last received message",
+              "path": "last_received_message_datetime",
+              "filter": Immutable.Map {
+                "sort": Immutable.Map {
+                  "last_received_message_datetime": "desc",
                 },
               },
             },
             Immutable.Map {
-              name: "closed",
-              title: "Closed",
-              path: "closed_datetime",
-              filter: Immutable.Map {
-                sort: Immutable.Map {
-                  closed_datetime: "desc",
+              "name": "closed",
+              "title": "Closed",
+              "path": "closed_datetime",
+              "filter": Immutable.Map {
+                "sort": Immutable.Map {
+                  "closed_datetime": "desc",
                 },
               },
             },
             Immutable.Map {
-              name: "snooze",
-              title: "Snooze",
-              path: "snooze_datetime",
-              filter: Immutable.Map {
-                sort: Immutable.Map {
-                  snooze_datetime: "desc",
+              "name": "snooze",
+              "title": "Snooze",
+              "path": "snooze_datetime",
+              "filter": Immutable.Map {
+                "sort": Immutable.Map {
+                  "snooze_datetime": "desc",
                 },
               },
             },
           ],
-          api: "tickets",
-          type: "ticket-list",
-          routeItem: "ticket",
+          "api": "tickets",
+          "type": "ticket-list",
+          "routeItem": "ticket",
         }
       }
       fields={
         Immutable.List [
           Immutable.Map {
-            name: "details",
-            title: "Details",
+            "name": "details",
+            "title": "Details",
           },
           Immutable.Map {
-            name: "customer",
-            title: "Customer",
-            path: "customer.id",
-            filter: Immutable.Map {
-              type: "customer",
+            "name": "customer",
+            "title": "Customer",
+            "path": "customer.id",
+            "filter": Immutable.Map {
+              "type": "customer",
             },
           },
           Immutable.Map {
-            name: "channel",
-            title: "Channel",
-            filter: Immutable.Map {
-              enum: Immutable.List [
+            "name": "channel",
+            "title": "Channel",
+            "filter": Immutable.Map {
+              "enum": Immutable.List [
                 "aircall",
                 "api",
                 "chat",
@@ -263,12 +263,12 @@ exports[`SelectTargetTicket component should render 1`] = `
             },
           },
           Immutable.Map {
-            name: "created",
-            title: "Created",
-            path: "created_datetime",
-            filter: Immutable.Map {
-              sort: Immutable.Map {
-                created_datetime: "desc",
+            "name": "created",
+            "title": "Created",
+            "path": "created_datetime",
+            "filter": Immutable.Map {
+              "sort": Immutable.Map {
+                "created_datetime": "desc",
               },
             },
           },
@@ -276,49 +276,46 @@ exports[`SelectTargetTicket component should render 1`] = `
       }
       isLoading={[Function]}
       isSearch={true}
-      items={
-        Immutable.List [
-        ]
-      }
+      items={Immutable.List []}
       onItemClick={
         Immutable.Map {
-          subject: "foo",
-          assignee_user: Immutable.Map {
-            id: 1,
-            name: "John Smith",
+          "subject": "foo",
+          "assignee_user": Immutable.Map {
+            "id": 1,
+            "name": "John Smith",
           },
-          customer: Immutable.Map {
-            id: 22,
-            name: "Maria Curie",
+          "customer": Immutable.Map {
+            "id": 22,
+            "name": "Maria Curie",
           },
         }
       }
       onPageChange={[Function]}
       pagination={
         Immutable.Map {
-          nb_pages: 1,
-          page: 1,
+          "nb_pages": 1,
+          "page": 1,
         }
       }
       selectable={false}
       type="ticket"
       view={
         Immutable.Map {
-          search: undefined,
-          order_by: "created_datetime",
-          slug: "merge-tickets",
-          dirty: true,
-          fields: Immutable.List [
+          "search": undefined,
+          "order_by": "created_datetime",
+          "slug": "merge-tickets",
+          "dirty": true,
+          "fields": Immutable.List [
             "details",
             "customer",
             "channel",
             "created",
           ],
-          type: "ticket-list",
-          filters: "neq(ticket.id, undefined)",
-          order_dir: "desc",
-          filters_ast: Immutable.Map {
-            loc: SourceLocation {
+          "type": "ticket-list",
+          "filters": "neq(ticket.id, undefined)",
+          "order_dir": "desc",
+          "filters_ast": Immutable.Map {
+            "loc": SourceLocation {
               "end": Object {
                 "column": 25,
                 "line": 1,
@@ -328,10 +325,10 @@ exports[`SelectTargetTicket component should render 1`] = `
                 "line": 1,
               },
             },
-            type: "Program",
-            body: Immutable.List [
+            "type": "Program",
+            "body": Immutable.List [
               Immutable.Map {
-                loc: SourceLocation {
+                "loc": SourceLocation {
                   "end": Object {
                     "column": 25,
                     "line": 1,
@@ -341,9 +338,9 @@ exports[`SelectTargetTicket component should render 1`] = `
                     "line": 1,
                   },
                 },
-                type: "ExpressionStatement",
-                expression: Immutable.Map {
-                  loc: WrappingSourceLocation {
+                "type": "ExpressionStatement",
+                "expression": Immutable.Map {
+                  "loc": WrappingSourceLocation {
                     "end": Object {
                       "column": 25,
                       "line": 1,
@@ -353,9 +350,9 @@ exports[`SelectTargetTicket component should render 1`] = `
                       "line": 1,
                     },
                   },
-                  type: "CallExpression",
-                  callee: Immutable.Map {
-                    loc: SourceLocation {
+                  "type": "CallExpression",
+                  "callee": Immutable.Map {
+                    "loc": SourceLocation {
                       "end": Object {
                         "column": 3,
                         "line": 1,
@@ -365,12 +362,12 @@ exports[`SelectTargetTicket component should render 1`] = `
                         "line": 1,
                       },
                     },
-                    type: "Identifier",
-                    name: "neq",
+                    "type": "Identifier",
+                    "name": "neq",
                   },
-                  arguments: Immutable.List [
+                  "arguments": Immutable.List [
                     Immutable.Map {
-                      loc: WrappingSourceLocation {
+                      "loc": WrappingSourceLocation {
                         "end": Object {
                           "column": 13,
                           "line": 1,
@@ -380,10 +377,10 @@ exports[`SelectTargetTicket component should render 1`] = `
                           "line": 1,
                         },
                       },
-                      type: "MemberExpression",
-                      computed: false,
-                      object: Immutable.Map {
-                        loc: SourceLocation {
+                      "type": "MemberExpression",
+                      "computed": false,
+                      "object": Immutable.Map {
+                        "loc": SourceLocation {
                           "end": Object {
                             "column": 10,
                             "line": 1,
@@ -393,11 +390,11 @@ exports[`SelectTargetTicket component should render 1`] = `
                             "line": 1,
                           },
                         },
-                        type: "Identifier",
-                        name: "ticket",
+                        "type": "Identifier",
+                        "name": "ticket",
                       },
-                      property: Immutable.Map {
-                        loc: SourceLocation {
+                      "property": Immutable.Map {
+                        "loc": SourceLocation {
                           "end": Object {
                             "column": 13,
                             "line": 1,
@@ -407,12 +404,12 @@ exports[`SelectTargetTicket component should render 1`] = `
                             "line": 1,
                           },
                         },
-                        type: "Identifier",
-                        name: "id",
+                        "type": "Identifier",
+                        "name": "id",
                       },
                     },
                     Immutable.Map {
-                      loc: SourceLocation {
+                      "loc": SourceLocation {
                         "end": Object {
                           "column": 24,
                           "line": 1,
@@ -422,14 +419,14 @@ exports[`SelectTargetTicket component should render 1`] = `
                           "line": 1,
                         },
                       },
-                      type: "Identifier",
-                      name: "undefined",
+                      "type": "Identifier",
+                      "name": "undefined",
                     },
                   ],
                 },
               },
             ],
-            sourceType: "script",
+            "sourceType": "script",
           },
         }
       }

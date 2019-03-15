@@ -12,6 +12,9 @@ import * as socketConstants from '../../../config/socketConstants'
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
+const windowLocation = JSON.stringify(window.location)
+delete window.location
+window.location = JSON.parse(windowLocation)
 
 describe('actions', () => {
     let store
@@ -24,7 +27,6 @@ describe('actions', () => {
         })
 
         it('should not fetch (not on a view)', () => {
-            Object.defineProperty(window.location, 'pathname', {writable: true})
             window.location.pathname = '/app/ticket/12/'
             store = mockStore({views: initialState})
 
@@ -33,7 +35,6 @@ describe('actions', () => {
         })
 
         it('should not fetch tickets (editing view)', () => {
-            Object.defineProperty(window.location, 'pathname', {writable: true})
             window.location.pathname = '/app/tickets/12/'
             const state = initialState.set('active', fromJS({
                 id: 1,
@@ -46,7 +47,6 @@ describe('actions', () => {
         })
 
         it('should not fetch tickets (already fetching tickets)', () => {
-            Object.defineProperty(window.location, 'pathname', {writable: true})
             window.location.pathname = '/app/tickets/12/'
             const state = initialState.mergeDeep(fromJS({
                 active: {id: 1},
@@ -63,7 +63,6 @@ describe('actions', () => {
         })
 
         it('should not fetch tickets (already fetching tickets)', () => {
-            Object.defineProperty(window.location, 'pathname', {writable: true})
             window.location.pathname = '/app/tickets/12/'
             const state = initialState.mergeDeep(fromJS({
                 active: {id: 1},
@@ -80,7 +79,6 @@ describe('actions', () => {
         })
 
         it('should fetch tickets', () => {
-            Object.defineProperty(window.location, 'pathname', {writable: true})
             const state = initialState.set('active', fromJS({id: 1}))
             window.location.pathname = '/app/tickets/12/'
 
@@ -102,7 +100,6 @@ describe('actions', () => {
         })
 
         it('should not fetch views counts (not on a ticket and not on a view)', () => {
-            Object.defineProperty(window.location, 'pathname', {writable: true})
             window.location.pathname = '/app/rules/'
             store = mockStore({views: initialState})
             expect(store.dispatch(actions.fetchRecentViewsCounts())).toBe(undefined)
@@ -111,7 +108,6 @@ describe('actions', () => {
         })
 
         it('should not fetch views counts (counts not expired)', () => {
-            Object.defineProperty(window.location, 'pathname', {writable: true})
             window.location.pathname = '/app/tickets/1/'
             const state = initialState.mergeDeep(fromJS({
                 active: {id: 1},
@@ -126,7 +122,6 @@ describe('actions', () => {
         })
 
         it('should not fetch views counts (active view count expired)', () => {
-            Object.defineProperty(window.location, 'pathname', {writable: true})
             window.location.pathname = '/app/tickets/1/'
 
             const expireAt = moment.utc().subtract(RECENT_VIEWS_COUNTS_TIMEOUT + 1, 's').toISOString()
@@ -145,7 +140,6 @@ describe('actions', () => {
         })
 
         it('should fetch views counts (active view count expired)', () => {
-            Object.defineProperty(window.location, 'pathname', {writable: true})
             window.location.pathname = '/app/tickets/1/'
 
             const expiredDt = moment.utc().subtract(RECENT_VIEWS_COUNTS_TIMEOUT + 1, 's').toISOString()
@@ -178,7 +172,6 @@ describe('actions', () => {
         })
 
         it('should not fetch views counts (not on a ticket)', () => {
-            Object.defineProperty(window.location, 'pathname', {writable: true})
             window.location.pathname = '/app/tickets/'
             store = mockStore({views: initialState})
             expect(store.dispatch(actions.fetchActiveViewCount())).toBe(undefined)
@@ -187,7 +180,6 @@ describe('actions', () => {
         })
 
         it('should not fetch views counts (counts not expired)', () => {
-            Object.defineProperty(window.location, 'pathname', {writable: true})
             window.location.pathname = '/app/ticket/1/'
             const state = initialState.mergeDeep(fromJS({
                 active: {id: 1},
@@ -202,7 +194,6 @@ describe('actions', () => {
         })
 
         it('should fetch views counts', () => {
-            Object.defineProperty(window.location, 'pathname', {writable: true})
             window.location.pathname = '/app/ticket/1/'
 
             const expiredDt = moment.utc().subtract(ACTIVE_VIEW_COUNT_TIMEOUT + 1, 's').toISOString()

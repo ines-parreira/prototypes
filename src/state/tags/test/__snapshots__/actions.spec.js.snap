@@ -130,7 +130,7 @@ Array [
       1,
       2,
       3,
-],
+    ],
     "type": "MERGE_TAGS",
   },
   Object {
@@ -147,7 +147,7 @@ Array [
     "ids": Immutable.List [
       2,
       3,
-],
+    ],
     "type": "MERGE_TAGS",
   },
   Object {

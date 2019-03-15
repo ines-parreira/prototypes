@@ -73,14 +73,14 @@ exports[`HTTPIntegrationEvent component should render the data of HTTP request (
           name="Headers"
           value={
             Immutable.Map {
-              headersKey1: "headersValue1",
+              "headersKey1": "headersValue1",
             }
           }
         >
           <HTTPIntegrationEventParams
             params={
               Immutable.Map {
-                headersKey1: "headersValue1",
+                "headersKey1": "headersValue1",
               }
             }
           />
@@ -134,7 +134,7 @@ exports[`HTTPIntegrationEvent component should render the data of HTTP request (
           <HTTPIntegrationEventParams
             params={
               Immutable.Map {
-                headersKey1: "headersValue1",
+                "headersKey1": "headersValue1",
               }
             }
           />
@@ -201,14 +201,14 @@ exports[`HTTPIntegrationEvent component should render the data of HTTP request (
           name="Headers"
           value={
             Immutable.Map {
-              headersKey1: "headersValue1",
+              "headersKey1": "headersValue1",
             }
           }
         >
           <HTTPIntegrationEventParams
             params={
               Immutable.Map {
-                headersKey1: "headersValue1",
+                "headersKey1": "headersValue1",
               }
             }
           />
@@ -217,14 +217,14 @@ exports[`HTTPIntegrationEvent component should render the data of HTTP request (
           name="Params"
           value={
             Immutable.Map {
-              paramKey1: "paramValue1",
+              "paramKey1": "paramValue1",
             }
           }
         >
           <HTTPIntegrationEventParams
             params={
               Immutable.Map {
-                paramKey1: "paramValue1",
+                "paramKey1": "paramValue1",
               }
             }
           />
@@ -232,16 +232,16 @@ exports[`HTTPIntegrationEvent component should render the data of HTTP request (
         <HTTPIntegrationEventItem
           name="Body"
           value="{
-            \\"bodyKey1\\": \\"bodyValue1\\"
-        }"
+    \\"bodyKey1\\": \\"bodyValue1\\"
+}"
         >
           <InputField
             readOnly={true}
             rows={3}
             type="textarea"
             value="{
-              \\"bodyKey1\\": \\"bodyValue1\\"
-          }"
+    \\"bodyKey1\\": \\"bodyValue1\\"
+}"
           />
         </HTTPIntegrationEventItem>
       </Container>
@@ -281,7 +281,7 @@ exports[`HTTPIntegrationEvent component should render the data of HTTP request (
           <HTTPIntegrationEventParams
             params={
               Immutable.Map {
-                headersKey1: "headersValue1",
+                "headersKey1": "headersValue1",
               }
             }
           />
@@ -289,16 +289,16 @@ exports[`HTTPIntegrationEvent component should render the data of HTTP request (
         <HTTPIntegrationEventItem
           name="Body"
           value="{
-            \\"bodyKey1\\": \\"bodyValue1\\"
-        }"
+    \\"bodyKey1\\": \\"bodyValue1\\"
+}"
         >
           <InputField
             readOnly={true}
             rows={3}
             type="textarea"
             value="{
-              \\"bodyKey1\\": \\"bodyValue1\\"
-          }"
+    \\"bodyKey1\\": \\"bodyValue1\\"
+}"
           />
         </HTTPIntegrationEventItem>
       </Container>
@@ -359,14 +359,14 @@ exports[`HTTPIntegrationEvent component should render the data of a HTTP request
           name="Headers"
           value={
             Immutable.Map {
-              headersKey1: "headersValue1",
+              "headersKey1": "headersValue1",
             }
           }
         >
           <HTTPIntegrationEventParams
             params={
               Immutable.Map {
-                headersKey1: "headersValue1",
+                "headersKey1": "headersValue1",
               }
             }
           />
@@ -375,14 +375,14 @@ exports[`HTTPIntegrationEvent component should render the data of a HTTP request
           name="Params"
           value={
             Immutable.Map {
-              paramKey1: "paramValue1",
+              "paramKey1": "paramValue1",
             }
           }
         >
           <HTTPIntegrationEventParams
             params={
               Immutable.Map {
-                paramKey1: "paramValue1",
+                "paramKey1": "paramValue1",
               }
             }
           />
@@ -391,14 +391,14 @@ exports[`HTTPIntegrationEvent component should render the data of a HTTP request
           name="Body"
           value={
             Immutable.Map {
-              bodyKey1: "bodyValue1",
+              "bodyKey1": "bodyValue1",
             }
           }
         >
           <HTTPIntegrationEventParams
             params={
               Immutable.Map {
-                bodyKey1: "bodyValue1",
+                "bodyKey1": "bodyValue1",
               }
             }
           />
@@ -440,7 +440,7 @@ exports[`HTTPIntegrationEvent component should render the data of a HTTP request
           <HTTPIntegrationEventParams
             params={
               Immutable.Map {
-                headersKey1: "headersValue1",
+                "headersKey1": "headersValue1",
               }
             }
           />
@@ -466,26 +466,26 @@ exports[`HTTPIntegrationEvent container should render a HTTPIntegrationEvent com
 <HTTPIntegrationEvent
   event={
     Immutable.Map {
-      created_datetime: "nowTimestamp",
-      request: Immutable.Map {
-        method: "GET",
-        url: "https://api.gorgias.io",
-        status: 200,
-        headers: Immutable.Map {
-          headersKey1: "headersValue1",
+      "created_datetime": "nowTimestamp",
+      "request": Immutable.Map {
+        "method": "GET",
+        "url": "https://api.gorgias.io",
+        "status": 200,
+        "headers": Immutable.Map {
+          "headersKey1": "headersValue1",
         },
-        params: Immutable.Map {
-          paramKey1: "paramValue1",
+        "params": Immutable.Map {
+          "paramKey1": "paramValue1",
         },
-        body: Immutable.Map {
-          bodyKey1: "bodyValue1",
+        "body": Immutable.Map {
+          "bodyKey1": "bodyValue1",
         },
       },
-      response: Immutable.Map {
-        headers: Immutable.Map {
-          headersKey1: "headersValue1",
+      "response": Immutable.Map {
+        "headers": Immutable.Map {
+          "headersKey1": "headersValue1",
         },
-        body: "<html><body>Hello world!</body></html>",
+        "body": "<html><body>Hello world!</body></html>",
       },
     }
   }

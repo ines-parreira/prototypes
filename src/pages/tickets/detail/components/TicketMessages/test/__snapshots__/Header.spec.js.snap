@@ -13,11 +13,11 @@ exports[`Header should display header 1`] = `
       <CustomerLabel
         customer={
           Immutable.Map {
-            id: 1,
-            email: "john.doe@example.com",
-            name: "John Doe",
-            firstname: "John",
-            lastname: "Doe",
+            "id": 1,
+            "email": "john.doe@example.com",
+            "name": "John Doe",
+            "firstname": "John",
+            "lastname": "Doe",
           }
         }
       />

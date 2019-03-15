@@ -63,43 +63,34 @@ exports[`ManageTags Table component should display the same number of rows as th
   <tbody>
     <Connect(Row)
       key="0"
-      meta={
-        Immutable.Map {
-        }
-      }
+      meta={Immutable.Map {}}
       refresh={[Function]}
       row={
         Immutable.Map {
-          id: 1,
-          name: "refund",
+          "id": 1,
+          "name": "refund",
         }
       }
     />
     <Connect(Row)
       key="1"
-      meta={
-        Immutable.Map {
-        }
-      }
+      meta={Immutable.Map {}}
       refresh={[Function]}
       row={
         Immutable.Map {
-          id: 2,
-          name: "billing",
+          "id": 2,
+          "name": "billing",
         }
       }
     />
     <Connect(Row)
       key="2"
-      meta={
-        Immutable.Map {
-        }
-      }
+      meta={Immutable.Map {}}
       refresh={[Function]}
       row={
         Immutable.Map {
-          id: 3,
-          name: "shipping",
+          "id": 3,
+          "name": "shipping",
         }
       }
     />

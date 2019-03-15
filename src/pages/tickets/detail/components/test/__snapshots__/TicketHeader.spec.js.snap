@@ -193,9 +193,9 @@ exports[`TicketHeader component should render existing ticket 1`] = `
     isOpen={false}
     sourceTicket={
       Immutable.Map {
-        id: 1,
-        subject: "foo",
-        status: "open",
+        "id": 1,
+        "subject": "foo",
+        "status": "open",
       }
     }
     toggleModal={[Function]}
@@ -252,8 +252,8 @@ exports[`TicketHeader component should render new ticket 1`] = `
     isOpen={false}
     sourceTicket={
       Immutable.Map {
-        subject: "foo",
-        status: "open",
+        "subject": "foo",
+        "status": "open",
       }
     }
     toggleModal={[Function]}
@@ -454,10 +454,10 @@ exports[`TicketHeader component should render spam ticket 1`] = `
     isOpen={false}
     sourceTicket={
       Immutable.Map {
-        id: 1,
-        spam: true,
-        subject: "foo",
-        status: "open",
+        "id": 1,
+        "spam": true,
+        "subject": "foo",
+        "status": "open",
       }
     }
     toggleModal={[Function]}
@@ -614,10 +614,10 @@ exports[`TicketHeader component should render trashed ticket 1`] = `
     isOpen={false}
     sourceTicket={
       Immutable.Map {
-        id: 1,
-        trashed_datetime: true,
-        subject: "foo",
-        status: "open",
+        "id": 1,
+        "trashed_datetime": true,
+        "subject": "foo",
+        "status": "open",
       }
     }
     toggleModal={[Function]}

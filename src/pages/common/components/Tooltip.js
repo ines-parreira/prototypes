@@ -22,7 +22,7 @@ export default class Tooltip extends React.Component<Props> {
     render() {
         const {
             children,
-            ...rest,
+            ...rest
         } = this.props
 
         const extraProps = {}

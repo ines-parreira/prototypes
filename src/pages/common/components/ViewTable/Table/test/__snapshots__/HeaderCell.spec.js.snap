@@ -7,14 +7,8 @@ exports[`ViewTable::Table::HeaderCell default cell 1`] = `
       className="cell-wrapper"
     >
       <ActionsComponent
-        selectedItemsIds={
-          Immutable.List [
-          ]
-        }
-        view={
-          Immutable.Map {
-          }
-        }
+        selectedItemsIds={Immutable.List []}
+        view={Immutable.Map {}}
       />
     </div>
   </div>
@@ -28,86 +22,80 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
       className="cell-wrapper"
     >
       <ActionsComponent
-        selectedItemsIds={
-          Immutable.List [
-          ]
-        }
-        view={
-          Immutable.Map {
-          }
-        }
+        selectedItemsIds={Immutable.List []}
+        view={Immutable.Map {}}
       />
     </div>
     <Connect(ShowMoreFieldsDropdown)
       config={
         Immutable.Map {
-          mainField: "details",
-          cell: [Function],
-          plural: "tickets",
-          newView: [Function],
-          routeList: "tickets",
-          name: "ticket",
-          searchView: [Function],
-          singular: "ticket",
-          fields: Immutable.List [
+          "mainField": "details",
+          "cell": [Function],
+          "plural": "tickets",
+          "newView": [Function],
+          "routeList": "tickets",
+          "name": "ticket",
+          "searchView": [Function],
+          "singular": "ticket",
+          "fields": Immutable.List [
             Immutable.Map {
-              name: "details",
-              title: "Details",
+              "name": "details",
+              "title": "Details",
             },
             Immutable.Map {
-              name: "subject",
-              title: "Subject",
+              "name": "subject",
+              "title": "Subject",
             },
             Immutable.Map {
-              name: "integrations",
-              title: "Integration",
-              path: "messages.integration_id",
-              filter: Immutable.Map {
-                type: "integration",
+              "name": "integrations",
+              "title": "Integration",
+              "path": "messages.integration_id",
+              "filter": Immutable.Map {
+                "type": "integration",
               },
-              dropdown: Immutable.Map {
-                width: "350px",
-              },
-            },
-            Immutable.Map {
-              name: "tags",
-              title: "Tags",
-              path: "tags.name",
-              filter: Immutable.Map {
-                type: "tag",
+              "dropdown": Immutable.Map {
+                "width": "350px",
               },
             },
             Immutable.Map {
-              name: "customer",
-              title: "Customer",
-              path: "customer.id",
-              filter: Immutable.Map {
-                type: "customer",
+              "name": "tags",
+              "title": "Tags",
+              "path": "tags.name",
+              "filter": Immutable.Map {
+                "type": "tag",
               },
             },
             Immutable.Map {
-              name: "assignee",
-              title: "Assignee",
-              path: "assignee_user.id",
-              filter: Immutable.Map {
-                type: "agent",
+              "name": "customer",
+              "title": "Customer",
+              "path": "customer.id",
+              "filter": Immutable.Map {
+                "type": "customer",
               },
             },
             Immutable.Map {
-              name: "status",
-              title: "Status",
-              filter: Immutable.Map {
-                enum: Immutable.List [
+              "name": "assignee",
+              "title": "Assignee",
+              "path": "assignee_user.id",
+              "filter": Immutable.Map {
+                "type": "agent",
+              },
+            },
+            Immutable.Map {
+              "name": "status",
+              "title": "Status",
+              "filter": Immutable.Map {
+                "enum": Immutable.List [
                   "open",
                   "closed",
                 ],
               },
             },
             Immutable.Map {
-              name: "language",
-              title: "Language",
-              filter: Immutable.Map {
-                enum: Immutable.List [
+              "name": "language",
+              "title": "Language",
+              "filter": Immutable.Map {
+                "enum": Immutable.List [
                   "af",
                   "ar",
                   "bg",
@@ -165,10 +153,10 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
               },
             },
             Immutable.Map {
-              name: "channel",
-              title: "Channel",
-              filter: Immutable.Map {
-                enum: Immutable.List [
+              "name": "channel",
+              "title": "Channel",
+              "filter": Immutable.Map {
+                "enum": Immutable.List [
                   "aircall",
                   "api",
                   "chat",
@@ -183,131 +171,131 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
               },
             },
             Immutable.Map {
-              name: "created",
-              title: "Created",
-              path: "created_datetime",
-              filter: Immutable.Map {
-                sort: Immutable.Map {
-                  created_datetime: "desc",
+              "name": "created",
+              "title": "Created",
+              "path": "created_datetime",
+              "filter": Immutable.Map {
+                "sort": Immutable.Map {
+                  "created_datetime": "desc",
                 },
               },
             },
             Immutable.Map {
-              name: "updated",
-              title: "Updated",
-              path: "updated_datetime",
-              filter: Immutable.Map {
-                sort: Immutable.Map {
-                  updated_datetime: "desc",
+              "name": "updated",
+              "title": "Updated",
+              "path": "updated_datetime",
+              "filter": Immutable.Map {
+                "sort": Immutable.Map {
+                  "updated_datetime": "desc",
                 },
               },
             },
             Immutable.Map {
-              name: "last_message",
-              title: "Last message",
-              path: "last_message_datetime",
-              filter: Immutable.Map {
-                sort: Immutable.Map {
-                  last_message_datetime: "desc",
+              "name": "last_message",
+              "title": "Last message",
+              "path": "last_message_datetime",
+              "filter": Immutable.Map {
+                "sort": Immutable.Map {
+                  "last_message_datetime": "desc",
                 },
               },
             },
             Immutable.Map {
-              name: "last_received_message",
-              title: "Last received message",
-              path: "last_received_message_datetime",
-              filter: Immutable.Map {
-                sort: Immutable.Map {
-                  last_received_message_datetime: "desc",
+              "name": "last_received_message",
+              "title": "Last received message",
+              "path": "last_received_message_datetime",
+              "filter": Immutable.Map {
+                "sort": Immutable.Map {
+                  "last_received_message_datetime": "desc",
                 },
               },
             },
             Immutable.Map {
-              name: "closed",
-              title: "Closed",
-              path: "closed_datetime",
-              filter: Immutable.Map {
-                sort: Immutable.Map {
-                  closed_datetime: "desc",
+              "name": "closed",
+              "title": "Closed",
+              "path": "closed_datetime",
+              "filter": Immutable.Map {
+                "sort": Immutable.Map {
+                  "closed_datetime": "desc",
                 },
               },
             },
             Immutable.Map {
-              name: "snooze",
-              title: "Snooze",
-              path: "snooze_datetime",
-              filter: Immutable.Map {
-                sort: Immutable.Map {
-                  snooze_datetime: "desc",
+              "name": "snooze",
+              "title": "Snooze",
+              "path": "snooze_datetime",
+              "filter": Immutable.Map {
+                "sort": Immutable.Map {
+                  "snooze_datetime": "desc",
                 },
               },
             },
           ],
-          api: "tickets",
-          type: "ticket-list",
-          routeItem: "ticket",
+          "api": "tickets",
+          "type": "ticket-list",
+          "routeItem": "ticket",
         }
       }
       fields={
         Immutable.List [
           Immutable.Map {
-            name: "details",
-            title: "Details",
+            "name": "details",
+            "title": "Details",
           },
           Immutable.Map {
-            name: "subject",
-            title: "Subject",
+            "name": "subject",
+            "title": "Subject",
           },
           Immutable.Map {
-            name: "integrations",
-            title: "Integration",
-            path: "messages.integration_id",
-            filter: Immutable.Map {
-              type: "integration",
+            "name": "integrations",
+            "title": "Integration",
+            "path": "messages.integration_id",
+            "filter": Immutable.Map {
+              "type": "integration",
             },
-            dropdown: Immutable.Map {
-              width: "350px",
-            },
-          },
-          Immutable.Map {
-            name: "tags",
-            title: "Tags",
-            path: "tags.name",
-            filter: Immutable.Map {
-              type: "tag",
+            "dropdown": Immutable.Map {
+              "width": "350px",
             },
           },
           Immutable.Map {
-            name: "customer",
-            title: "Customer",
-            path: "customer.id",
-            filter: Immutable.Map {
-              type: "customer",
+            "name": "tags",
+            "title": "Tags",
+            "path": "tags.name",
+            "filter": Immutable.Map {
+              "type": "tag",
             },
           },
           Immutable.Map {
-            name: "assignee",
-            title: "Assignee",
-            path: "assignee_user.id",
-            filter: Immutable.Map {
-              type: "agent",
+            "name": "customer",
+            "title": "Customer",
+            "path": "customer.id",
+            "filter": Immutable.Map {
+              "type": "customer",
             },
           },
           Immutable.Map {
-            name: "status",
-            title: "Status",
-            filter: Immutable.Map {
-              enum: Immutable.List [
+            "name": "assignee",
+            "title": "Assignee",
+            "path": "assignee_user.id",
+            "filter": Immutable.Map {
+              "type": "agent",
+            },
+          },
+          Immutable.Map {
+            "name": "status",
+            "title": "Status",
+            "filter": Immutable.Map {
+              "enum": Immutable.List [
                 "open",
                 "closed",
               ],
             },
           },
           Immutable.Map {
-            name: "language",
-            title: "Language",
-            filter: Immutable.Map {
-              enum: Immutable.List [
+            "name": "language",
+            "title": "Language",
+            "filter": Immutable.Map {
+              "enum": Immutable.List [
                 "af",
                 "ar",
                 "bg",
@@ -365,10 +353,10 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
             },
           },
           Immutable.Map {
-            name: "channel",
-            title: "Channel",
-            filter: Immutable.Map {
-              enum: Immutable.List [
+            "name": "channel",
+            "title": "Channel",
+            "filter": Immutable.Map {
+              "enum": Immutable.List [
                 "aircall",
                 "api",
                 "chat",
@@ -383,62 +371,62 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
             },
           },
           Immutable.Map {
-            name: "created",
-            title: "Created",
-            path: "created_datetime",
-            filter: Immutable.Map {
-              sort: Immutable.Map {
-                created_datetime: "desc",
+            "name": "created",
+            "title": "Created",
+            "path": "created_datetime",
+            "filter": Immutable.Map {
+              "sort": Immutable.Map {
+                "created_datetime": "desc",
               },
             },
           },
           Immutable.Map {
-            name: "updated",
-            title: "Updated",
-            path: "updated_datetime",
-            filter: Immutable.Map {
-              sort: Immutable.Map {
-                updated_datetime: "desc",
+            "name": "updated",
+            "title": "Updated",
+            "path": "updated_datetime",
+            "filter": Immutable.Map {
+              "sort": Immutable.Map {
+                "updated_datetime": "desc",
               },
             },
           },
           Immutable.Map {
-            name: "last_message",
-            title: "Last message",
-            path: "last_message_datetime",
-            filter: Immutable.Map {
-              sort: Immutable.Map {
-                last_message_datetime: "desc",
+            "name": "last_message",
+            "title": "Last message",
+            "path": "last_message_datetime",
+            "filter": Immutable.Map {
+              "sort": Immutable.Map {
+                "last_message_datetime": "desc",
               },
             },
           },
           Immutable.Map {
-            name: "last_received_message",
-            title: "Last received message",
-            path: "last_received_message_datetime",
-            filter: Immutable.Map {
-              sort: Immutable.Map {
-                last_received_message_datetime: "desc",
+            "name": "last_received_message",
+            "title": "Last received message",
+            "path": "last_received_message_datetime",
+            "filter": Immutable.Map {
+              "sort": Immutable.Map {
+                "last_received_message_datetime": "desc",
               },
             },
           },
           Immutable.Map {
-            name: "closed",
-            title: "Closed",
-            path: "closed_datetime",
-            filter: Immutable.Map {
-              sort: Immutable.Map {
-                closed_datetime: "desc",
+            "name": "closed",
+            "title": "Closed",
+            "path": "closed_datetime",
+            "filter": Immutable.Map {
+              "sort": Immutable.Map {
+                "closed_datetime": "desc",
               },
             },
           },
           Immutable.Map {
-            name: "snooze",
-            title: "Snooze",
-            path: "snooze_datetime",
-            filter: Immutable.Map {
-              sort: Immutable.Map {
-                snooze_datetime: "desc",
+            "name": "snooze",
+            "title": "Snooze",
+            "path": "snooze_datetime",
+            "filter": Immutable.Map {
+              "sort": Immutable.Map {
+                "snooze_datetime": "desc",
               },
             },
           },
@@ -447,22 +435,22 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
       visibleFields={
         Immutable.List [
           Immutable.Map {
-            name: "details",
-            title: "Details",
+            "name": "details",
+            "title": "Details",
           },
           Immutable.Map {
-            name: "subject",
-            title: "Subject",
+            "name": "subject",
+            "title": "Subject",
           },
           Immutable.Map {
-            name: "integrations",
-            title: "Integration",
-            path: "messages.integration_id",
-            filter: Immutable.Map {
-              type: "integration",
+            "name": "integrations",
+            "title": "Integration",
+            "path": "messages.integration_id",
+            "filter": Immutable.Map {
+              "type": "integration",
             },
-            dropdown: Immutable.Map {
-              width: "350px",
+            "dropdown": Immutable.Map {
+              "width": "350px",
             },
           },
         ]

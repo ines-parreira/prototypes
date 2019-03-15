@@ -176,30 +176,30 @@ exports[`TicketBody should display events with messages 1`] = `
   <Connect(Event)
     event={
       Immutable.Map {
-        channel: "email",
-        public: true,
-        subject: "Some subject",
-        uri: "http://example.com/messages/1",
-        via: "email",
-        receiver: Immutable.Map {
-          id: 2,
-          email: "mary.poppins@example.com",
-          name: "Mary Poppins",
-          firstname: "Mary",
-          lastname: "Poppins",
+        "channel": "email",
+        "public": true,
+        "subject": "Some subject",
+        "uri": "http://example.com/messages/1",
+        "via": "email",
+        "receiver": Immutable.Map {
+          "id": 2,
+          "email": "mary.poppins@example.com",
+          "name": "Mary Poppins",
+          "firstname": "Mary",
+          "lastname": "Poppins",
         },
-        from_agent: false,
-        isEvent: true,
-        created_datetime: "2017-07-01T19:00:00",
-        sender: Immutable.Map {
-          id: 1,
-          email: "john.doe@example.com",
-          name: "John Doe",
-          firstname: "John",
-          lastname: "Doe",
+        "from_agent": false,
+        "isEvent": true,
+        "created_datetime": "2017-07-01T19:00:00",
+        "sender": Immutable.Map {
+          "id": 1,
+          "email": "john.doe@example.com",
+          "name": "John Doe",
+          "firstname": "John",
+          "lastname": "Doe",
         },
-        id: 1,
-        isMessage: false,
+        "id": 1,
+        "isMessage": false,
       }
     }
     isLast={true}

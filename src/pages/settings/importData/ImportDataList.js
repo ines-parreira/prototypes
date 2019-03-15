@@ -17,39 +17,39 @@ export default class ImportDataList extends React.Component {
         return (
             <Table hover>
                 <tbody>
-                {
-                    config.map((c, idx) => {
-                        return (
-                            <tr key={idx}>
-                                <td className="smallest">
-                                    <img
-                                        style={{
-                                            maxWidth: '35px',
-                                            overflow: 'hidden',
-                                        }}
-                                        className="rounded"
-                                        src={c.img}
-                                    />
-                                </td>
-                                <td className="link-full-td">
-                                    <Link to={c.link}>
-                                        <div>
-                                            <b className="mr-2">{c.title}</b>
-                                            <span className="text-faded">
-                                                {c.description}
-                                            </span>
-                                        </div>
-                                    </Link>
-                                </td>
-                                <td className="smallest align-middle">
-                                    <i className="material-icons">
+                    {
+                        config.map((c, idx) => {
+                            return (
+                                <tr key={idx}>
+                                    <td className="smallest">
+                                        <img
+                                            style={{
+                                                maxWidth: '35px',
+                                                overflow: 'hidden',
+                                            }}
+                                            className="rounded"
+                                            src={c.img}
+                                        />
+                                    </td>
+                                    <td className="link-full-td">
+                                        <Link to={c.link}>
+                                            <div>
+                                                <b className="mr-2">{c.title}</b>
+                                                <span className="text-faded">
+                                                    {c.description}
+                                                </span>
+                                            </div>
+                                        </Link>
+                                    </td>
+                                    <td className="smallest align-middle">
+                                        <i className="material-icons">
                                         chevron_right
-                                    </i>
-                                </td>
-                            </tr>
-                        )
-                    })
-                }
+                                        </i>
+                                    </td>
+                                </tr>
+                            )
+                        })
+                    }
                 </tbody>
             </Table>
         )

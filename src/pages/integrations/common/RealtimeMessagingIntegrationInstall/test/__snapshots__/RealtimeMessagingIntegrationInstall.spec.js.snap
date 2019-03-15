@@ -48,14 +48,14 @@ exports[`RealtimeMessagingIntegrationInstall component should display a placehol
   <RealtimeMessagingIntegrationNavigation
     integration={
       Immutable.Map {
-        id: 2,
-        name: "mychat",
-        type: "smooch_inside",
-        meta: Immutable.Map {
-          shopify_integration_ids: Immutable.List [
+        "id": 2,
+        "name": "mychat",
+        "type": "smooch_inside",
+        "meta": Immutable.Map {
+          "shopify_integration_ids": Immutable.List [
             1,
           ],
-          script_url: "config.gorgias.io/foo/chat/bar",
+          "script_url": "config.gorgias.io/foo/chat/bar",
         },
       }
     }
@@ -196,11 +196,11 @@ exports[`RealtimeMessagingIntegrationInstall component should display a placehol
                     }
                   >
                     &lt;!-- Gorgias Chat Widget Start --&gt;
-                    &lt;div id="gorgias-chat"&gt;
-                    &lt;script&gt;window.gorgiasChatParameters = {}&lt;/script&gt;
-                    &lt;script src="config.gorgias.io/foo/chat/bar" defer&gt;&lt;/script&gt;
-                    &lt;/div&gt;
-                    &lt;!-- Gorgias Chat Widget End --&gt;
+&lt;div id="gorgias-chat"&gt;
+&lt;script&gt;window.gorgiasChatParameters = {}&lt;/script&gt;
+&lt;script src="config.gorgias.io/foo/chat/bar" defer&gt;&lt;/script&gt;
+&lt;/div&gt;
+&lt;!-- Gorgias Chat Widget End --&gt;
                   </pre>
                 </Alert>
               </Card>
@@ -276,21 +276,21 @@ exports[`RealtimeMessagingIntegrationInstall component should display the code s
   <RealtimeMessagingIntegrationNavigation
     integration={
       Immutable.Map {
-        id: 2,
-        name: "mychat",
-        type: "smooch_inside",
-        decoration: Immutable.Map {
-          header_color: "#789456",
-          chat_icon_color: "#AB7891",
-          conversation_color: "#B7B7B7",
-          header_text: "some window title",
-          introduction_text: "some introduction text",
-          input_placeholder: "type here to send messages",
-          send_button_text: "Lets goooo",
+        "id": 2,
+        "name": "mychat",
+        "type": "smooch_inside",
+        "decoration": Immutable.Map {
+          "header_color": "#789456",
+          "chat_icon_color": "#AB7891",
+          "conversation_color": "#B7B7B7",
+          "header_text": "some window title",
+          "introduction_text": "some introduction text",
+          "input_placeholder": "type here to send messages",
+          "send_button_text": "Lets goooo",
         },
-        meta: Immutable.Map {
-          app_token: "a86sd47a56sd4asd",
-          script_url: "config.gorgias.io/foo/chat/bar",
+        "meta": Immutable.Map {
+          "app_token": "a86sd47a56sd4asd",
+          "script_url": "config.gorgias.io/foo/chat/bar",
         },
       }
     }
@@ -414,11 +414,11 @@ exports[`RealtimeMessagingIntegrationInstall component should display the code s
                     }
                   >
                     &lt;!-- Gorgias Chat Widget Start --&gt;
-                    &lt;div id="gorgias-chat"&gt;
-                    &lt;script&gt;window.gorgiasChatParameters = {}&lt;/script&gt;
-                    &lt;script src="config.gorgias.io/foo/chat/bar" defer&gt;&lt;/script&gt;
-                    &lt;/div&gt;
-                    &lt;!-- Gorgias Chat Widget End --&gt;
+&lt;div id="gorgias-chat"&gt;
+&lt;script&gt;window.gorgiasChatParameters = {}&lt;/script&gt;
+&lt;script src="config.gorgias.io/foo/chat/bar" defer&gt;&lt;/script&gt;
+&lt;/div&gt;
+&lt;!-- Gorgias Chat Widget End --&gt;
                   </pre>
                 </Alert>
               </Card>
@@ -494,14 +494,14 @@ exports[`RealtimeMessagingIntegrationInstall component should display the list o
   <RealtimeMessagingIntegrationNavigation
     integration={
       Immutable.Map {
-        id: 2,
-        name: "mychat",
-        type: "smooch_inside",
-        meta: Immutable.Map {
-          shopify_integration_ids: Immutable.List [
+        "id": 2,
+        "name": "mychat",
+        "type": "smooch_inside",
+        "meta": Immutable.Map {
+          "shopify_integration_ids": Immutable.List [
             2,
           ],
-          script_url: "config.gorgias.io/foo/chat/bar",
+          "script_url": "config.gorgias.io/foo/chat/bar",
         },
       }
     }
@@ -625,11 +625,11 @@ exports[`RealtimeMessagingIntegrationInstall component should display the list o
                     }
                   >
                     &lt;!-- Gorgias Chat Widget Start --&gt;
-                    &lt;div id="gorgias-chat"&gt;
-                    &lt;script&gt;window.gorgiasChatParameters = {}&lt;/script&gt;
-                    &lt;script src="config.gorgias.io/foo/chat/bar" defer&gt;&lt;/script&gt;
-                    &lt;/div&gt;
-                    &lt;!-- Gorgias Chat Widget End --&gt;
+&lt;div id="gorgias-chat"&gt;
+&lt;script&gt;window.gorgiasChatParameters = {}&lt;/script&gt;
+&lt;script src="config.gorgias.io/foo/chat/bar" defer&gt;&lt;/script&gt;
+&lt;/div&gt;
+&lt;!-- Gorgias Chat Widget End --&gt;
                   </pre>
                 </Alert>
               </Card>

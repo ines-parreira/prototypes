@@ -161,87 +161,87 @@ export class ManageRequests extends React.Component<Props, State> {
                     </div>
                     <table className="view-table">
                         <thead>
-                        <tr>
-                            <td
-                                className="cell-wrapper cell-short clickable"
-                                onClick={this._toggleSelectAll}
-                            >
-                                <input
-                                    type="checkbox"
-                                    checked={selectedAll}
-                                />
-                            </td>
-                            <td colSpan={2}>
-                                <div className="cell-wrapper">Requests</div>
-                            </td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {requests.map((r, i) => (
-                            <tr key={i}>
+                            <tr>
                                 <td
                                     className="cell-wrapper cell-short clickable"
-                                    onClick={() => this._toggleSelectItem(r.get('id'))}
+                                    onClick={this._toggleSelectAll}
                                 >
                                     <input
                                         type="checkbox"
-                                        checked={selectedItems.includes(r.get('id'))}
+                                        checked={selectedAll}
                                     />
                                 </td>
-                                <td>
-                                    <div className="cell-wrapper">
-                                        {r.get('name')}
-                                    </div>
-                                </td>
-                                <td className="smallest">
-                                    <div className="cell-wrapper">
-                                        <Link
-                                            to={`/app/settings/requests/update/${r.get('id')}`}
-                                            className="p-0 mr-3 btn-link"
-                                        >
-                                            <i className="material-icons mr-1">
-                                                edit
-                                            </i>
-                                            Edit
-                                        </Link>
-
-                                        <Button
-                                            id={`remove-button-${r.get('id')}`}
-                                            type="button"
-                                            color="link"
-                                            onClick={() => this._toggleRemoveConfirmation(r.get('id'))}
-                                            className="p-0"
-                                        >
-                                            <i className="material-icons mr-1">
-                                                clear
-                                            </i>
-                                            Delete
-                                        </Button>
-                                        <Popover
-                                            placement="left"
-                                            isOpen={askDeleteConfirmation[r.get('id')]}
-                                            target={`remove-button-${r.get('id')}`}
-                                            toggle={() => this._toggleRemoveConfirmation(r.get('id'))}
-                                        >
-                                            <PopoverHeader>Are you sure?</PopoverHeader>
-                                            <PopoverBody>
-                                                <p>
-                                                    Are you sure you want to delete this request?{' '}
-                                                    <b>All it's training data will be lost.</b>.
-                                                </p>
-                                                <Button
-                                                    type="submit"
-                                                    color="danger"
-                                                    onClick={() => this._onDelete(r.get('id'))}
-                                                >
-                                                    Confirm
-                                                </Button>
-                                            </PopoverBody>
-                                        </Popover>
-                                    </div>
+                                <td colSpan={2}>
+                                    <div className="cell-wrapper">Requests</div>
                                 </td>
                             </tr>
-                        )).toList()}
+                        </thead>
+                        <tbody>
+                            {requests.map((r, i) => (
+                                <tr key={i}>
+                                    <td
+                                        className="cell-wrapper cell-short clickable"
+                                        onClick={() => this._toggleSelectItem(r.get('id'))}
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedItems.includes(r.get('id'))}
+                                        />
+                                    </td>
+                                    <td>
+                                        <div className="cell-wrapper">
+                                            {r.get('name')}
+                                        </div>
+                                    </td>
+                                    <td className="smallest">
+                                        <div className="cell-wrapper">
+                                            <Link
+                                                to={`/app/settings/requests/update/${r.get('id')}`}
+                                                className="p-0 mr-3 btn-link"
+                                            >
+                                                <i className="material-icons mr-1">
+                                                edit
+                                                </i>
+                                            Edit
+                                            </Link>
+
+                                            <Button
+                                                id={`remove-button-${r.get('id')}`}
+                                                type="button"
+                                                color="link"
+                                                onClick={() => this._toggleRemoveConfirmation(r.get('id'))}
+                                                className="p-0"
+                                            >
+                                                <i className="material-icons mr-1">
+                                                clear
+                                                </i>
+                                            Delete
+                                            </Button>
+                                            <Popover
+                                                placement="left"
+                                                isOpen={askDeleteConfirmation[r.get('id')]}
+                                                target={`remove-button-${r.get('id')}`}
+                                                toggle={() => this._toggleRemoveConfirmation(r.get('id'))}
+                                            >
+                                                <PopoverHeader>Are you sure?</PopoverHeader>
+                                                <PopoverBody>
+                                                    <p>
+                                                    Are you sure you want to delete this request?{' '}
+                                                        <b>All it's training data will be lost.</b>.
+                                                    </p>
+                                                    <Button
+                                                        type="submit"
+                                                        color="danger"
+                                                        onClick={() => this._onDelete(r.get('id'))}
+                                                    >
+                                                    Confirm
+                                                    </Button>
+                                                </PopoverBody>
+                                            </Popover>
+                                        </div>
+                                    </td>
+                                </tr>
+                            )).toList()}
                         </tbody>
                     </table>
                 </Container>

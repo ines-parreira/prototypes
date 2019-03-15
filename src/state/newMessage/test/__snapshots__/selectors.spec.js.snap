@@ -2,7 +2,7 @@
 
 exports[`selectors new message getNewMessageSignature() should return a rendered signature (email address) 1`] = `
 Immutable.Map {
-  text: "Cheers, Steve",
-  html: "Cheers, <strong>Steve</strong>",
+  "text": "Cheers, Steve",
+  "html": "Cheers, <strong>Steve</strong>",
 }
 `;

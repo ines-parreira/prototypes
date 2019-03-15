@@ -20,7 +20,7 @@ exports[`Stat should render a bar chart 1`] = `
     <BarStat
       config={
         Immutable.Map {
-          style: "bar",
+          "style": "bar",
         }
       }
       context={
@@ -28,22 +28,13 @@ exports[`Stat should render a bar chart 1`] = `
           "tagColors": null,
         }
       }
-      data={
-        Immutable.Map {
-        }
-      }
+      data={Immutable.Map {}}
       downloadStatistic={[Function]}
       downloadable={false}
       isLoading={false}
       label="Stat label"
-      legend={
-        Immutable.Map {
-        }
-      }
-      meta={
-        Immutable.Map {
-        }
-      }
+      legend={Immutable.Map {}}
+      meta={Immutable.Map {}}
       name="stat_name"
       store={
         Object {
@@ -81,7 +72,7 @@ exports[`Stat should render a key metrics chart 1`] = `
     <KeyMetricStat
       config={
         Immutable.Map {
-          style: "key-metrics",
+          "style": "key-metrics",
         }
       }
       context={
@@ -89,22 +80,13 @@ exports[`Stat should render a key metrics chart 1`] = `
           "tagColors": null,
         }
       }
-      data={
-        Immutable.Map {
-        }
-      }
+      data={Immutable.Map {}}
       downloadStatistic={[Function]}
       downloadable={false}
       isLoading={false}
       label="Stat label"
-      legend={
-        Immutable.Map {
-        }
-      }
-      meta={
-        Immutable.Map {
-        }
-      }
+      legend={Immutable.Map {}}
+      meta={Immutable.Map {}}
       name="stat_name"
       store={
         Object {
@@ -142,7 +124,7 @@ exports[`Stat should render a line chart 1`] = `
     <LineStat
       config={
         Immutable.Map {
-          style: "line",
+          "style": "line",
         }
       }
       context={
@@ -150,22 +132,13 @@ exports[`Stat should render a line chart 1`] = `
           "tagColors": null,
         }
       }
-      data={
-        Immutable.Map {
-        }
-      }
+      data={Immutable.Map {}}
       downloadStatistic={[Function]}
       downloadable={false}
       isLoading={false}
       label="Stat label"
-      legend={
-        Immutable.Map {
-        }
-      }
-      meta={
-        Immutable.Map {
-        }
-      }
+      legend={Immutable.Map {}}
+      meta={Immutable.Map {}}
       name="stat_name"
       store={
         Object {
@@ -203,7 +176,7 @@ exports[`Stat should render a table chart 1`] = `
     <withRouter(TableStat)
       config={
         Immutable.Map {
-          style: "table",
+          "style": "table",
         }
       }
       context={
@@ -211,22 +184,13 @@ exports[`Stat should render a table chart 1`] = `
           "tagColors": null,
         }
       }
-      data={
-        Immutable.Map {
-        }
-      }
+      data={Immutable.Map {}}
       downloadStatistic={[Function]}
       downloadable={false}
       isLoading={false}
       label="Stat label"
-      legend={
-        Immutable.Map {
-        }
-      }
-      meta={
-        Immutable.Map {
-        }
-      }
+      legend={Immutable.Map {}}
+      meta={Immutable.Map {}}
       name="stat_name"
       store={
         Object {

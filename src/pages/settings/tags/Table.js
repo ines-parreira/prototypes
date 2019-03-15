@@ -76,48 +76,48 @@ class Table extends Component<Props> {
         return (
             <table className={classnames('view-table', css.table)}>
                 <thead>
-                <tr>
-                    <td
-                        className="cell-wrapper cell-short clickable"
-                        onClick={onSelectAll}
-                    >
-                        <input
-                            type="checkbox"
-                            checked={selectAll}
-                        />
-                    </td>
-                    {
-                        columns.map((column, i) => (
-                            <td key={i}>
-                                <div
-                                    className="cell-wrapper"
-                                    onClick={this._onSort(column.field)}
-                                >
-                                    <div>
-                                        <span>
-                                            {column.title}
-                                        </span>
-                                        {this._sortIcon(sort, reverse, column.field)}
+                    <tr>
+                        <td
+                            className="cell-wrapper cell-short clickable"
+                            onClick={onSelectAll}
+                        >
+                            <input
+                                type="checkbox"
+                                checked={selectAll}
+                            />
+                        </td>
+                        {
+                            columns.map((column, i) => (
+                                <td key={i}>
+                                    <div
+                                        className="cell-wrapper"
+                                        onClick={this._onSort(column.field)}
+                                    >
+                                        <div>
+                                            <span>
+                                                {column.title}
+                                            </span>
+                                            {this._sortIcon(sort, reverse, column.field)}
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                        ))
-                    }
-                    <td/>
-                </tr>
+                                </td>
+                            ))
+                        }
+                        <td/>
+                    </tr>
                 </thead>
 
                 <tbody>
-                {
-                    tags.map((tag, i) => (
-                        <Row
-                            key={i}
-                            row={tag}
-                            refresh={this.props.refresh}
-                            meta={getSelectedTagMeta(tag.get('id'))}
-                        />
-                    ))
-                }
+                    {
+                        tags.map((tag, i) => (
+                            <Row
+                                key={i}
+                                row={tag}
+                                refresh={this.props.refresh}
+                                meta={getSelectedTagMeta(tag.get('id'))}
+                            />
+                        ))
+                    }
                 </tbody>
             </table>
         )

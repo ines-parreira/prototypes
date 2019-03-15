@@ -269,10 +269,10 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             // remove the widget
             return state
                 .setIn(widgetsPath, reorderWidgets(
-                        state
-                            .getIn(widgetsPath, fromJS({}))
-                            .removeIn(newTemplatePath.split('.'))
-                    )
+                    state
+                        .getIn(widgetsPath, fromJS({}))
+                        .removeIn(newTemplatePath.split('.'))
+                )
                 )
                 .setIn(['_internal', 'isDirty'], true)
         }

@@ -2,11 +2,11 @@
 
 exports[`tickets reducers bulk delete 1`] = `
 Immutable.Map {
-  cursor: null,
-  items: Immutable.List [
+  "cursor": null,
+  "items": Immutable.List [
     Immutable.Map {
-      id: 3,
-      name: "Another nice ticket",
+      "id": 3,
+      "name": "Another nice ticket",
     },
   ],
 }
@@ -14,13 +14,13 @@ Immutable.Map {
 
 exports[`tickets reducers fetch list 1`] = `
 Immutable.Map {
-  cursor: null,
-  items: Immutable.List [
+  "cursor": null,
+  "items": Immutable.List [
     Immutable.Map {
-      name: "A ticket",
+      "name": "A ticket",
     },
     Immutable.Map {
-      name: "Another ticket",
+      "name": "Another ticket",
     },
   ],
 }
@@ -28,24 +28,23 @@ Immutable.Map {
 
 exports[`tickets reducers fetch list 2`] = `
 Immutable.Map {
-  cursor: null,
-  items: Immutable.List [
-  ],
+  "cursor": null,
+  "items": Immutable.List [],
 }
 `;
 
 exports[`tickets reducers fetch ticket 1`] = `
 Immutable.Map {
-  cursor: null,
-  items: Immutable.List [
+  "cursor": null,
+  "items": Immutable.List [
     Immutable.Map {
-      id: 1,
-      name: "A ticket",
+      "id": 1,
+      "name": "A ticket",
     },
     Immutable.Map {
-      id: 2,
-      name: "Another ticket",
-      is_unread: false,
+      "id": 2,
+      "name": "Another ticket",
+      "is_unread": false,
     },
   ],
 }
@@ -53,15 +52,15 @@ Immutable.Map {
 
 exports[`tickets reducers fetch ticket 2`] = `
 Immutable.Map {
-  cursor: null,
-  items: Immutable.List [
+  "cursor": null,
+  "items": Immutable.List [
     Immutable.Map {
-      id: 1,
-      name: "A ticket",
+      "id": 1,
+      "name": "A ticket",
     },
     Immutable.Map {
-      id: 2,
-      name: "Another ticket",
+      "id": 2,
+      "name": "Another ticket",
     },
   ],
 }

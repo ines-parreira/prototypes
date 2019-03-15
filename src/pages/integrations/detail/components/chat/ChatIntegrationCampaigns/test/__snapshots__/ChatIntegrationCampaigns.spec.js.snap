@@ -4,12 +4,11 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
 <Connect(ChatIntegrationCampaigns)
   integration={
     Immutable.Map {
-      id: 118,
-      type: "smooch_inside",
-      name: "My new chat",
-      meta: Immutable.Map {
-        campaigns: Immutable.List [
-        ],
+      "id": 118,
+      "type": "smooch_inside",
+      "name": "My new chat",
+      "meta": Immutable.Map {
+        "campaigns": Immutable.List [],
       },
     }
   }
@@ -28,12 +27,11 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
   <ChatIntegrationCampaigns
     integration={
       Immutable.Map {
-        id: 118,
-        type: "smooch_inside",
-        name: "My new chat",
-        meta: Immutable.Map {
-          campaigns: Immutable.List [
-          ],
+        "id": 118,
+        "type": "smooch_inside",
+        "name": "My new chat",
+        "meta": Immutable.Map {
+          "campaigns": Immutable.List [],
         },
       }
     }
@@ -191,12 +189,11 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
       <RealtimeMessagingIntegrationNavigation
         integration={
           Immutable.Map {
-            id: 118,
-            type: "smooch_inside",
-            name: "My new chat",
-            meta: Immutable.Map {
-              campaigns: Immutable.List [
-              ],
+            "id": 118,
+            "type": "smooch_inside",
+            "name": "My new chat",
+            "meta": Immutable.Map {
+              "campaigns": Immutable.List [],
             },
           }
         }
@@ -319,20 +316,20 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
 <Connect(ChatIntegrationCampaigns)
   integration={
     Immutable.Map {
-      id: 118,
-      type: "smooch_inside",
-      name: "My new chat",
-      meta: Immutable.Map {
-        campaigns: Immutable.List [
+      "id": 118,
+      "type": "smooch_inside",
+      "name": "My new chat",
+      "meta": Immutable.Map {
+        "campaigns": Immutable.List [
           Immutable.Map {
-            id: "156a4d-fg68h40-sd6f4",
-            name: "Super campaign",
-            deactivated_datetime: null,
+            "id": "156a4d-fg68h40-sd6f4",
+            "name": "Super campaign",
+            "deactivated_datetime": null,
           },
           Immutable.Map {
-            id: "not-so-good-campaign-d8f9-fds486-sf78",
-            name: "Not so good campaign",
-            deactivated_datetime: "2017-10-06T17:17:56.565Z",
+            "id": "not-so-good-campaign-d8f9-fds486-sf78",
+            "name": "Not so good campaign",
+            "deactivated_datetime": "2017-10-06T17:17:56.565Z",
           },
         ],
       },
@@ -353,20 +350,20 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
   <ChatIntegrationCampaigns
     integration={
       Immutable.Map {
-        id: 118,
-        type: "smooch_inside",
-        name: "My new chat",
-        meta: Immutable.Map {
-          campaigns: Immutable.List [
+        "id": 118,
+        "type": "smooch_inside",
+        "name": "My new chat",
+        "meta": Immutable.Map {
+          "campaigns": Immutable.List [
             Immutable.Map {
-              id: "156a4d-fg68h40-sd6f4",
-              name: "Super campaign",
-              deactivated_datetime: null,
+              "id": "156a4d-fg68h40-sd6f4",
+              "name": "Super campaign",
+              "deactivated_datetime": null,
             },
             Immutable.Map {
-              id: "not-so-good-campaign-d8f9-fds486-sf78",
-              name: "Not so good campaign",
-              deactivated_datetime: "2017-10-06T17:17:56.565Z",
+              "id": "not-so-good-campaign-d8f9-fds486-sf78",
+              "name": "Not so good campaign",
+              "deactivated_datetime": "2017-10-06T17:17:56.565Z",
             },
           ],
         },
@@ -526,20 +523,20 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
       <RealtimeMessagingIntegrationNavigation
         integration={
           Immutable.Map {
-            id: 118,
-            type: "smooch_inside",
-            name: "My new chat",
-            meta: Immutable.Map {
-              campaigns: Immutable.List [
+            "id": 118,
+            "type": "smooch_inside",
+            "name": "My new chat",
+            "meta": Immutable.Map {
+              "campaigns": Immutable.List [
                 Immutable.Map {
-                  id: "156a4d-fg68h40-sd6f4",
-                  name: "Super campaign",
-                  deactivated_datetime: null,
+                  "id": "156a4d-fg68h40-sd6f4",
+                  "name": "Super campaign",
+                  "deactivated_datetime": null,
                 },
                 Immutable.Map {
-                  id: "not-so-good-campaign-d8f9-fds486-sf78",
-                  name: "Not so good campaign",
-                  deactivated_datetime: "2017-10-06T17:17:56.565Z",
+                  "id": "not-so-good-campaign-d8f9-fds486-sf78",
+                  "name": "Not so good campaign",
+                  "deactivated_datetime": "2017-10-06T17:17:56.565Z",
                 },
               ],
             },

@@ -3,30 +3,7 @@
 exports[`actions new message addSignature() should dispatch NEW_MESSAGE_ADD_SIGNATURE action 1`] = `
 Array [
   Object {
-    "contentState": Object {
-      "blockMap": Object {
-        "someRandomKey": Object {
-          "characterList": Array [
-            Object {
-              "entity": null,
-              "style": Array [],
-            },
-            Object {
-              "entity": null,
-              "style": Array [],
-            },
-            Object {
-              "entity": null,
-              "style": Array [],
-            },
-          ],
-          "data": Object {},
-          "depth": 0,
-          "key": "someRandomKey",
-          "text": "foo",
-          "type": "unstyled",
-        },
-      },
+    "contentState": Immutable.Record {
       "entityMap": Object {
         "__add": [Function],
         "__create": [Function],
@@ -41,27 +18,50 @@ Array [
         "mergeData": [Function],
         "replaceData": [Function],
       },
-      "selectionAfter": Object {
-        "anchorKey": "someRandomKey",
-        "anchorOffset": 0,
-        "focusKey": "someRandomKey",
-        "focusOffset": 0,
-        "hasFocus": false,
-        "isBackward": false,
+      "blockMap": Immutable.OrderedMap {
+        "someRandomKey": Immutable.Record {
+          "key": "someRandomKey",
+          "type": "unstyled",
+          "text": "foo",
+          "characterList": Immutable.List [
+            Immutable.Record {
+              "style": Immutable.OrderedSet [],
+              "entity": null,
+            },
+            Immutable.Record {
+              "style": Immutable.OrderedSet [],
+              "entity": null,
+            },
+            Immutable.Record {
+              "style": Immutable.OrderedSet [],
+              "entity": null,
+            },
+          ],
+          "depth": 0,
+          "data": Immutable.Map {},
+        },
       },
-      "selectionBefore": Object {
+      "selectionBefore": Immutable.Record {
         "anchorKey": "someRandomKey",
         "anchorOffset": 0,
         "focusKey": "someRandomKey",
         "focusOffset": 0,
-        "hasFocus": false,
         "isBackward": false,
+        "hasFocus": false,
+      },
+      "selectionAfter": Immutable.Record {
+        "anchorKey": "someRandomKey",
+        "anchorOffset": 0,
+        "focusKey": "someRandomKey",
+        "focusOffset": 0,
+        "isBackward": false,
+        "hasFocus": false,
       },
     },
     "signature": Immutable.Map {
-      text: "Cheers, Steve",
-      html: "Cheers, <strong>Steve</strong>",
-},
+      "text": "Cheers, Steve",
+      "html": "Cheers, <strong>Steve</strong>",
+    },
     "type": "NEW_MESSAGE_ADD_SIGNATURE",
   },
 ]
@@ -76,54 +76,53 @@ Array [
   Object {
     "messages": Immutable.List [
       Immutable.Map {
-            source: Immutable.Map {
-                  to: Immutable.List [
-                        Immutable.Map {
-                              name: "Marc",
-                              address: "marc.wall@gmail.com",
-                        },
-                        Immutable.Map {
-                              name: "Acme Support",
-                              address: "support@acme.gorgias.io",
-                        },
-                  ],
-                  from: Immutable.Map {
-                        name: "Steve Frizeli",
-                        address: "marie.curie@gmail.com",
-                  },
-                  type: "email",
+        "source": Immutable.Map {
+          "to": Immutable.List [
+            Immutable.Map {
+              "name": "Marc",
+              "address": "marc.wall@gmail.com",
             },
-            id: 151,
-            from_agent: false,
-            attachments: Immutable.List [
-                  Immutable.Map {
-                        url: "foo",
-                  },
-                  Immutable.Map {
-                        url: "bar",
-                  },
-            ],
+            Immutable.Map {
+              "name": "Acme Support",
+              "address": "support@acme.gorgias.io",
+            },
+          ],
+          "from": Immutable.Map {
+            "name": "Steve Frizeli",
+            "address": "marie.curie@gmail.com",
+          },
+          "type": "email",
+        },
+        "id": 151,
+        "from_agent": false,
+        "attachments": Immutable.List [
+          Immutable.Map {
+            "url": "foo",
+          },
+          Immutable.Map {
+            "url": "bar",
+          },
+        ],
       },
       Immutable.Map {
-            source: Immutable.Map {
-                  cc: Immutable.List [
-                  ],
-                  to: Immutable.List [
-                        Immutable.Map {
-                              name: "Steve Frizeli",
-                              address: "steve.frizeli@gmail.com",
-                        },
-                  ],
-                  from: Immutable.Map {
-                        name: "Acme Support",
-                        address: "support@acme.gorgias.io",
-                  },
-                  type: "email",
+        "source": Immutable.Map {
+          "cc": Immutable.List [],
+          "to": Immutable.List [
+            Immutable.Map {
+              "name": "Steve Frizeli",
+              "address": "steve.frizeli@gmail.com",
             },
-            id: 152,
-            from_agent: true,
+          ],
+          "from": Immutable.Map {
+            "name": "Acme Support",
+            "address": "support@acme.gorgias.io",
+          },
+          "type": "email",
+        },
+        "id": 152,
+        "from_agent": true,
       },
-],
+    ],
     "sourceType": "email",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
@@ -135,9 +134,9 @@ Array [
   },
   Object {
     "sender": Immutable.Map {
-      name: "Acme Support",
-      address: "support@acme.gorgias.io",
-},
+      "name": "Acme Support",
+      "address": "support@acme.gorgias.io",
+    },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
   Object {
@@ -165,46 +164,45 @@ Array [
   Object {
     "messages": Immutable.List [
       Immutable.Map {
-            source: Immutable.Map {
-                  to: Immutable.List [
-                        Immutable.Map {
-                              name: "Marc",
-                              address: "marc.wall@gmail.com",
-                        },
-                        Immutable.Map {
-                              name: "Acme Support",
-                              address: "support@acme.gorgias.io",
-                        },
-                  ],
-                  from: Immutable.Map {
-                        name: "Steve Frizeli",
-                        address: "marie.curie@gmail.com",
-                  },
-                  type: "email",
+        "source": Immutable.Map {
+          "to": Immutable.List [
+            Immutable.Map {
+              "name": "Marc",
+              "address": "marc.wall@gmail.com",
             },
-            id: 151,
-            from_agent: false,
+            Immutable.Map {
+              "name": "Acme Support",
+              "address": "support@acme.gorgias.io",
+            },
+          ],
+          "from": Immutable.Map {
+            "name": "Steve Frizeli",
+            "address": "marie.curie@gmail.com",
+          },
+          "type": "email",
+        },
+        "id": 151,
+        "from_agent": false,
       },
       Immutable.Map {
-            source: Immutable.Map {
-                  cc: Immutable.List [
-                  ],
-                  to: Immutable.List [
-                        Immutable.Map {
-                              name: "Steve Frizeli",
-                              address: "steve.frizeli@gmail.com",
-                        },
-                  ],
-                  from: Immutable.Map {
-                        name: "Acme Support",
-                        address: "support@acme.gorgias.io",
-                  },
-                  type: "email",
+        "source": Immutable.Map {
+          "cc": Immutable.List [],
+          "to": Immutable.List [
+            Immutable.Map {
+              "name": "Steve Frizeli",
+              "address": "steve.frizeli@gmail.com",
             },
-            id: 152,
-            from_agent: true,
+          ],
+          "from": Immutable.Map {
+            "name": "Acme Support",
+            "address": "support@acme.gorgias.io",
+          },
+          "type": "email",
+        },
+        "id": 152,
+        "from_agent": true,
       },
-],
+    ],
     "sourceType": "email",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
@@ -216,9 +214,9 @@ Array [
   },
   Object {
     "sender": Immutable.Map {
-      name: "Acme Support",
-      address: "support@acme.gorgias.io",
-},
+      "name": "Acme Support",
+      "address": "support@acme.gorgias.io",
+    },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
   Object {
@@ -242,62 +240,61 @@ Array [
   Object {
     "messages": Immutable.List [
       Immutable.Map {
-            source: Immutable.Map {
-                  to: Immutable.List [
-                        Immutable.Map {
-                              name: "Marc",
-                              address: "marc.wall@gmail.com",
-                        },
-                        Immutable.Map {
-                              name: "Acme Support",
-                              address: "support@acme.gorgias.io",
-                        },
-                  ],
-                  from: Immutable.Map {
-                        name: "Steve Frizeli",
-                        address: "marie.curie@gmail.com",
-                  },
-                  type: "email",
+        "source": Immutable.Map {
+          "to": Immutable.List [
+            Immutable.Map {
+              "name": "Marc",
+              "address": "marc.wall@gmail.com",
             },
-            id: 151,
-            from_agent: false,
-            attachments: Immutable.List [
-                  Immutable.Map {
-                        url: "foo",
-                  },
-                  Immutable.Map {
-                        url: "bar",
-                  },
-            ],
+            Immutable.Map {
+              "name": "Acme Support",
+              "address": "support@acme.gorgias.io",
+            },
+          ],
+          "from": Immutable.Map {
+            "name": "Steve Frizeli",
+            "address": "marie.curie@gmail.com",
+          },
+          "type": "email",
+        },
+        "id": 151,
+        "from_agent": false,
+        "attachments": Immutable.List [
+          Immutable.Map {
+            "url": "foo",
+          },
+          Immutable.Map {
+            "url": "bar",
+          },
+        ],
       },
       Immutable.Map {
-            source: Immutable.Map {
-                  cc: Immutable.List [
-                  ],
-                  to: Immutable.List [
-                        Immutable.Map {
-                              name: "Steve Frizeli",
-                              address: "steve.frizeli@gmail.com",
-                        },
-                  ],
-                  from: Immutable.Map {
-                        name: "Acme Support",
-                        address: "support@acme.gorgias.io",
-                  },
-                  type: "email",
+        "source": Immutable.Map {
+          "cc": Immutable.List [],
+          "to": Immutable.List [
+            Immutable.Map {
+              "name": "Steve Frizeli",
+              "address": "steve.frizeli@gmail.com",
             },
-            id: 152,
-            from_agent: true,
-            attachments: Immutable.List [
-                  Immutable.Map {
-                        url: "baz",
-                  },
-                  Immutable.Map {
-                        url: "far",
-                  },
-            ],
+          ],
+          "from": Immutable.Map {
+            "name": "Acme Support",
+            "address": "support@acme.gorgias.io",
+          },
+          "type": "email",
+        },
+        "id": 152,
+        "from_agent": true,
+        "attachments": Immutable.List [
+          Immutable.Map {
+            "url": "baz",
+          },
+          Immutable.Map {
+            "url": "far",
+          },
+        ],
       },
-],
+    ],
     "sourceType": "email",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
@@ -309,9 +306,9 @@ Array [
   },
   Object {
     "sender": Immutable.Map {
-      name: "Acme Support",
-      address: "support@acme.gorgias.io",
-},
+      "name": "Acme Support",
+      "address": "support@acme.gorgias.io",
+    },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
   Object {
@@ -348,47 +345,47 @@ Array [
   Object {
     "messages": Immutable.List [
       Immutable.Map {
-            source: Immutable.Map {
-                  type: "instagram-media",
-                  from: Immutable.Map {
-                        address: "1232353100194770",
-                        name: "myinstagrampage",
-                  },
-                  to: Immutable.List [
-                        Immutable.Map {
-                              address: "a4sd684a6sd4a5sd",
-                              name: "instagramuser",
-                        },
-                  ],
-                  extra: Immutable.Map {
-                        media_id: "519388858269125_626477354226941",
-                        permalink: "https://instagram.com/foobar",
-                  },
+        "source": Immutable.Map {
+          "type": "instagram-media",
+          "from": Immutable.Map {
+            "address": "1232353100194770",
+            "name": "myinstagrampage",
+          },
+          "to": Immutable.List [
+            Immutable.Map {
+              "address": "a4sd684a6sd4a5sd",
+              "name": "instagramuser",
             },
-            id: 153,
-            from_agent: true,
+          ],
+          "extra": Immutable.Map {
+            "media_id": "519388858269125_626477354226941",
+            "permalink": "https://instagram.com/foobar",
+          },
+        },
+        "id": 153,
+        "from_agent": true,
       },
       Immutable.Map {
-            source: Immutable.Map {
-                  type: "instagram-comment",
-                  from: Immutable.Map {
-                        address: "a4sd684a6sd4a5sd",
-                        name: "instagramuser",
-                  },
-                  to: Immutable.List [
-                        Immutable.Map {
-                              address: "1232353100194770",
-                              name: "myinstagrampage",
-                        },
-                  ],
-                  extra: Immutable.Map {
-                        media_id: "519388858269125_626477354226941",
-                  },
+        "source": Immutable.Map {
+          "type": "instagram-comment",
+          "from": Immutable.Map {
+            "address": "a4sd684a6sd4a5sd",
+            "name": "instagramuser",
+          },
+          "to": Immutable.List [
+            Immutable.Map {
+              "address": "1232353100194770",
+              "name": "myinstagrampage",
             },
-            id: 189,
-            from_agent: false,
+          ],
+          "extra": Immutable.Map {
+            "media_id": "519388858269125_626477354226941",
+          },
+        },
+        "id": 189,
+        "from_agent": false,
       },
-],
+    ],
     "sourceType": "instagram-comment",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
@@ -410,164 +407,163 @@ Array [
   },
   Object {
     "sender": Immutable.Map {
-      name: "myinstagrampage",
-      address: "1232353100194770",
-},
+      "name": "myinstagrampage",
+      "address": "1232353100194770",
+    },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
   Object {
     "appliedMacro": undefined,
     "args": Immutable.Map {
-      contentState: Object {
-            "blockMap": Object {
-              "someRandomKey": Object {
-                "characterList": Array [
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                ],
-                "data": Object {},
-                "depth": 0,
-                "key": "someRandomKey",
-                "text": "@instauser ",
-                "type": "unstyled",
+      "contentState": Immutable.Record {
+        "entityMap": Object {
+          "__add": [Function],
+          "__create": [Function],
+          "__get": [Function],
+          "__getLastCreatedEntityKey": [Function],
+          "__mergeData": [Function],
+          "__replaceData": [Function],
+          "add": [Function],
+          "create": [Function],
+          "get": [Function],
+          "getLastCreatedEntityKey": [Function],
+          "mergeData": [Function],
+          "replaceData": [Function],
+        },
+        "blockMap": Immutable.OrderedMap {
+          "someRandomKey": Immutable.Record {
+            "key": "someRandomKey",
+            "type": "unstyled",
+            "text": "@instauser ",
+            "characterList": Immutable.List [
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
               },
-            },
-            "entityMap": Object {
-              "__add": [Function],
-              "__create": [Function],
-              "__get": [Function],
-              "__getLastCreatedEntityKey": [Function],
-              "__mergeData": [Function],
-              "__replaceData": [Function],
-              "add": [Function],
-              "create": [Function],
-              "get": [Function],
-              "getLastCreatedEntityKey": [Function],
-              "mergeData": [Function],
-              "replaceData": [Function],
-            },
-            "selectionAfter": Object {
-              "anchorKey": "someRandomKey",
-              "anchorOffset": 0,
-              "focusKey": "someRandomKey",
-              "focusOffset": 0,
-              "hasFocus": false,
-              "isBackward": false,
-            },
-            "selectionBefore": Object {
-              "anchorKey": "someRandomKey",
-              "anchorOffset": 0,
-              "focusKey": "someRandomKey",
-              "focusOffset": 0,
-              "hasFocus": false,
-              "isBackward": false,
-            },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+            ],
+            "depth": 0,
+            "data": Immutable.Map {},
           },
-      selectionState: Object {
-            "anchorKey": "someRandomKey",
-            "anchorOffset": 11,
-            "focusKey": "someRandomKey",
-            "focusOffset": 11,
-            "hasFocus": false,
-            "isBackward": false,
-          },
-      dirty: true,
-      forceFocus: true,
-      forceUpdate: true,
-},
+        },
+        "selectionBefore": Immutable.Record {
+          "anchorKey": "someRandomKey",
+          "anchorOffset": 0,
+          "focusKey": "someRandomKey",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+        "selectionAfter": Immutable.Record {
+          "anchorKey": "someRandomKey",
+          "anchorOffset": 0,
+          "focusKey": "someRandomKey",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+      },
+      "selectionState": Immutable.Record {
+        "anchorKey": "someRandomKey",
+        "anchorOffset": 11,
+        "focusKey": "someRandomKey",
+        "focusOffset": 11,
+        "isBackward": false,
+        "hasFocus": false,
+      },
+      "dirty": true,
+      "forceFocus": true,
+      "forceUpdate": true,
+    },
     "currentUser": undefined,
     "forceFocus": true,
     "forceUpdate": true,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
+    "signature": Immutable.Map {},
     "ticket": Immutable.Map {
-      messages: Immutable.List [
-            Immutable.Map {
-                  source: Immutable.Map {
-                        type: "instagram-media",
-                        from: Immutable.Map {
-                              address: "1232353100194770",
-                              name: "myinstagrampage",
-                        },
-                        to: Immutable.List [
-                              Immutable.Map {
-                                    address: "a4sd684a6sd4a5sd",
-                                    name: "instagramuser",
-                              },
-                        ],
-                        extra: Immutable.Map {
-                              media_id: "519388858269125_626477354226941",
-                              permalink: "https://instagram.com/foobar",
-                        },
-                  },
-                  id: 153,
-                  from_agent: true,
+      "messages": Immutable.List [
+        Immutable.Map {
+          "source": Immutable.Map {
+            "type": "instagram-media",
+            "from": Immutable.Map {
+              "address": "1232353100194770",
+              "name": "myinstagrampage",
             },
-            Immutable.Map {
-                  source: Immutable.Map {
-                        type: "instagram-comment",
-                        from: Immutable.Map {
-                              address: "a4sd684a6sd4a5sd",
-                              name: "instagramuser",
-                        },
-                        to: Immutable.List [
-                              Immutable.Map {
-                                    address: "1232353100194770",
-                                    name: "myinstagrampage",
-                              },
-                        ],
-                        extra: Immutable.Map {
-                              media_id: "519388858269125_626477354226941",
-                        },
-                  },
-                  id: 189,
-                  from_agent: false,
+            "to": Immutable.List [
+              Immutable.Map {
+                "address": "a4sd684a6sd4a5sd",
+                "name": "instagramuser",
+              },
+            ],
+            "extra": Immutable.Map {
+              "media_id": "519388858269125_626477354226941",
+              "permalink": "https://instagram.com/foobar",
             },
+          },
+          "id": 153,
+          "from_agent": true,
+        },
+        Immutable.Map {
+          "source": Immutable.Map {
+            "type": "instagram-comment",
+            "from": Immutable.Map {
+              "address": "a4sd684a6sd4a5sd",
+              "name": "instagramuser",
+            },
+            "to": Immutable.List [
+              Immutable.Map {
+                "address": "1232353100194770",
+                "name": "myinstagrampage",
+              },
+            ],
+            "extra": Immutable.Map {
+              "media_id": "519388858269125_626477354226941",
+            },
+          },
+          "id": 189,
+          "from_agent": false,
+        },
       ],
-},
+    },
     "ticketId": undefined,
     "type": "setResponseText",
   },
@@ -583,47 +579,47 @@ Array [
   Object {
     "messages": Immutable.List [
       Immutable.Map {
-            source: Immutable.Map {
-                  type: "instagram-media",
-                  from: Immutable.Map {
-                        address: "1232353100194770",
-                        name: "myinstagrampage",
-                  },
-                  to: Immutable.List [
-                        Immutable.Map {
-                              address: "a4sd684a6sd4a5sd",
-                              name: "instagramuser",
-                        },
-                  ],
-                  extra: Immutable.Map {
-                        media_id: "519388858269125_626477354226941",
-                        permalink: "https://instagram.com/foobar",
-                  },
+        "source": Immutable.Map {
+          "type": "instagram-media",
+          "from": Immutable.Map {
+            "address": "1232353100194770",
+            "name": "myinstagrampage",
+          },
+          "to": Immutable.List [
+            Immutable.Map {
+              "address": "a4sd684a6sd4a5sd",
+              "name": "instagramuser",
             },
-            id: 153,
-            from_agent: true,
+          ],
+          "extra": Immutable.Map {
+            "media_id": "519388858269125_626477354226941",
+            "permalink": "https://instagram.com/foobar",
+          },
+        },
+        "id": 153,
+        "from_agent": true,
       },
       Immutable.Map {
-            source: Immutable.Map {
-                  type: "instagram-comment",
-                  from: Immutable.Map {
-                        address: "a4sd684a6sd4a5sd",
-                        name: "instagramuser",
-                  },
-                  to: Immutable.List [
-                        Immutable.Map {
-                              address: "1232353100194770",
-                              name: "myinstagrampage",
-                        },
-                  ],
-                  extra: Immutable.Map {
-                        media_id: "519388858269125_626477354226941",
-                  },
+        "source": Immutable.Map {
+          "type": "instagram-comment",
+          "from": Immutable.Map {
+            "address": "a4sd684a6sd4a5sd",
+            "name": "instagramuser",
+          },
+          "to": Immutable.List [
+            Immutable.Map {
+              "address": "1232353100194770",
+              "name": "myinstagrampage",
             },
-            id: 189,
-            from_agent: false,
+          ],
+          "extra": Immutable.Map {
+            "media_id": "519388858269125_626477354226941",
+          },
+        },
+        "id": 189,
+        "from_agent": false,
       },
-],
+    ],
     "sourceType": "instagram-comment",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
@@ -645,9 +641,9 @@ Array [
   },
   Object {
     "sender": Immutable.Map {
-      name: "myinstagrampage",
-      address: "1232353100194770",
-},
+      "name": "myinstagrampage",
+      "address": "1232353100194770",
+    },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
 ]
@@ -662,47 +658,47 @@ Array [
   Object {
     "messages": Immutable.List [
       Immutable.Map {
-            source: Immutable.Map {
-                  type: "instagram-media",
-                  from: Immutable.Map {
-                        address: "1232353100194770",
-                        name: "myinstagrampage",
-                  },
-                  to: Immutable.List [
-                        Immutable.Map {
-                              address: "a4sd684a6sd4a5sd",
-                              name: "instagramuser",
-                        },
-                  ],
-                  extra: Immutable.Map {
-                        media_id: "519388858269125_626477354226941",
-                        permalink: "https://instagram.com/foobar",
-                  },
+        "source": Immutable.Map {
+          "type": "instagram-media",
+          "from": Immutable.Map {
+            "address": "1232353100194770",
+            "name": "myinstagrampage",
+          },
+          "to": Immutable.List [
+            Immutable.Map {
+              "address": "a4sd684a6sd4a5sd",
+              "name": "instagramuser",
             },
-            id: 153,
-            from_agent: true,
+          ],
+          "extra": Immutable.Map {
+            "media_id": "519388858269125_626477354226941",
+            "permalink": "https://instagram.com/foobar",
+          },
+        },
+        "id": 153,
+        "from_agent": true,
       },
       Immutable.Map {
-            source: Immutable.Map {
-                  type: "instagram-comment",
-                  from: Immutable.Map {
-                        address: "a4sd684a6sd4a5sd",
-                        name: "instagramuser",
-                  },
-                  to: Immutable.List [
-                        Immutable.Map {
-                              address: "1232353100194770",
-                              name: "myinstagrampage",
-                        },
-                  ],
-                  extra: Immutable.Map {
-                        media_id: "519388858269125_626477354226941",
-                  },
+        "source": Immutable.Map {
+          "type": "instagram-comment",
+          "from": Immutable.Map {
+            "address": "a4sd684a6sd4a5sd",
+            "name": "instagramuser",
+          },
+          "to": Immutable.List [
+            Immutable.Map {
+              "address": "1232353100194770",
+              "name": "myinstagrampage",
             },
-            id: 189,
-            from_agent: false,
+          ],
+          "extra": Immutable.Map {
+            "media_id": "519388858269125_626477354226941",
+          },
+        },
+        "id": 189,
+        "from_agent": false,
       },
-],
+    ],
     "sourceType": "instagram-comment",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
@@ -724,9 +720,9 @@ Array [
   },
   Object {
     "sender": Immutable.Map {
-      name: "myinstagrampage",
-      address: "1232353100194770",
-},
+      "name": "myinstagrampage",
+      "address": "1232353100194770",
+    },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
 ]
@@ -741,46 +737,45 @@ Array [
   Object {
     "messages": Immutable.List [
       Immutable.Map {
-            source: Immutable.Map {
-                  to: Immutable.List [
-                        Immutable.Map {
-                              name: "Marc",
-                              address: "marc.wall@gmail.com",
-                        },
-                        Immutable.Map {
-                              name: "Acme Support",
-                              address: "support@acme.gorgias.io",
-                        },
-                  ],
-                  from: Immutable.Map {
-                        name: "Steve Frizeli",
-                        address: "marie.curie@gmail.com",
-                  },
-                  type: "email",
+        "source": Immutable.Map {
+          "to": Immutable.List [
+            Immutable.Map {
+              "name": "Marc",
+              "address": "marc.wall@gmail.com",
             },
-            id: 151,
-            from_agent: false,
+            Immutable.Map {
+              "name": "Acme Support",
+              "address": "support@acme.gorgias.io",
+            },
+          ],
+          "from": Immutable.Map {
+            "name": "Steve Frizeli",
+            "address": "marie.curie@gmail.com",
+          },
+          "type": "email",
+        },
+        "id": 151,
+        "from_agent": false,
       },
       Immutable.Map {
-            source: Immutable.Map {
-                  cc: Immutable.List [
-                  ],
-                  to: Immutable.List [
-                        Immutable.Map {
-                              name: "Steve Frizeli",
-                              address: "steve.frizeli@gmail.com",
-                        },
-                  ],
-                  from: Immutable.Map {
-                        name: "Acme Support",
-                        address: "support@acme.gorgias.io",
-                  },
-                  type: "email",
+        "source": Immutable.Map {
+          "cc": Immutable.List [],
+          "to": Immutable.List [
+            Immutable.Map {
+              "name": "Steve Frizeli",
+              "address": "steve.frizeli@gmail.com",
             },
-            id: 152,
-            from_agent: true,
+          ],
+          "from": Immutable.Map {
+            "name": "Acme Support",
+            "address": "support@acme.gorgias.io",
+          },
+          "type": "email",
+        },
+        "id": 152,
+        "from_agent": true,
       },
-],
+    ],
     "sourceType": "email",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
@@ -802,9 +797,9 @@ Array [
   },
   Object {
     "sender": Immutable.Map {
-      name: "Acme Support",
-      address: "support@acme.gorgias.io",
-},
+      "name": "Acme Support",
+      "address": "support@acme.gorgias.io",
+    },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
 ]
@@ -819,46 +814,45 @@ Array [
   Object {
     "messages": Immutable.List [
       Immutable.Map {
-            source: Immutable.Map {
-                  to: Immutable.List [
-                        Immutable.Map {
-                              name: "Marc",
-                              address: "marc.wall@gmail.com",
-                        },
-                        Immutable.Map {
-                              name: "Acme Support",
-                              address: "support@acme.gorgias.io",
-                        },
-                  ],
-                  from: Immutable.Map {
-                        name: "Steve Frizeli",
-                        address: "marie.curie@gmail.com",
-                  },
-                  type: "email",
+        "source": Immutable.Map {
+          "to": Immutable.List [
+            Immutable.Map {
+              "name": "Marc",
+              "address": "marc.wall@gmail.com",
             },
-            id: 151,
-            from_agent: false,
+            Immutable.Map {
+              "name": "Acme Support",
+              "address": "support@acme.gorgias.io",
+            },
+          ],
+          "from": Immutable.Map {
+            "name": "Steve Frizeli",
+            "address": "marie.curie@gmail.com",
+          },
+          "type": "email",
+        },
+        "id": 151,
+        "from_agent": false,
       },
       Immutable.Map {
-            source: Immutable.Map {
-                  cc: Immutable.List [
-                  ],
-                  to: Immutable.List [
-                        Immutable.Map {
-                              name: "Steve Frizeli",
-                              address: "steve.frizeli@gmail.com",
-                        },
-                  ],
-                  from: Immutable.Map {
-                        name: "Acme Support",
-                        address: "support@acme.gorgias.io",
-                  },
-                  type: "email",
+        "source": Immutable.Map {
+          "cc": Immutable.List [],
+          "to": Immutable.List [
+            Immutable.Map {
+              "name": "Steve Frizeli",
+              "address": "steve.frizeli@gmail.com",
             },
-            id: 152,
-            from_agent: true,
+          ],
+          "from": Immutable.Map {
+            "name": "Acme Support",
+            "address": "support@acme.gorgias.io",
+          },
+          "type": "email",
+        },
+        "id": 152,
+        "from_agent": true,
       },
-],
+    ],
     "sourceType": "chat",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
@@ -880,9 +874,9 @@ Array [
   },
   Object {
     "sender": Immutable.Map {
-      name: "Acme Support",
-      address: "support@acme.gorgias.io",
-},
+      "name": "Acme Support",
+      "address": "support@acme.gorgias.io",
+    },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
 ]
@@ -897,46 +891,45 @@ Array [
   Object {
     "messages": Immutable.List [
       Immutable.Map {
-            source: Immutable.Map {
-                  to: Immutable.List [
-                        Immutable.Map {
-                              name: "Marc",
-                              address: "marc.wall@gmail.com",
-                        },
-                        Immutable.Map {
-                              name: "Acme Support",
-                              address: "support@acme.gorgias.io",
-                        },
-                  ],
-                  from: Immutable.Map {
-                        name: "Steve Frizeli",
-                        address: "marie.curie@gmail.com",
-                  },
-                  type: "email",
+        "source": Immutable.Map {
+          "to": Immutable.List [
+            Immutable.Map {
+              "name": "Marc",
+              "address": "marc.wall@gmail.com",
             },
-            id: 151,
-            from_agent: false,
+            Immutable.Map {
+              "name": "Acme Support",
+              "address": "support@acme.gorgias.io",
+            },
+          ],
+          "from": Immutable.Map {
+            "name": "Steve Frizeli",
+            "address": "marie.curie@gmail.com",
+          },
+          "type": "email",
+        },
+        "id": 151,
+        "from_agent": false,
       },
       Immutable.Map {
-            source: Immutable.Map {
-                  cc: Immutable.List [
-                  ],
-                  to: Immutable.List [
-                        Immutable.Map {
-                              name: "Steve Frizeli",
-                              address: "steve.frizeli@gmail.com",
-                        },
-                  ],
-                  from: Immutable.Map {
-                        name: "Acme Support",
-                        address: "support@acme.gorgias.io",
-                  },
-                  type: "email",
+        "source": Immutable.Map {
+          "cc": Immutable.List [],
+          "to": Immutable.List [
+            Immutable.Map {
+              "name": "Steve Frizeli",
+              "address": "steve.frizeli@gmail.com",
             },
-            id: 152,
-            from_agent: true,
+          ],
+          "from": Immutable.Map {
+            "name": "Acme Support",
+            "address": "support@acme.gorgias.io",
+          },
+          "type": "email",
+        },
+        "id": 152,
+        "from_agent": true,
       },
-],
+    ],
     "sourceType": "facebook-comment",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
@@ -958,9 +951,9 @@ Array [
   },
   Object {
     "sender": Immutable.Map {
-      name: "Acme Support",
-      address: "support@acme.gorgias.io",
-},
+      "name": "Acme Support",
+      "address": "support@acme.gorgias.io",
+    },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
 ]
@@ -975,46 +968,45 @@ Array [
   Object {
     "messages": Immutable.List [
       Immutable.Map {
-            source: Immutable.Map {
-                  to: Immutable.List [
-                        Immutable.Map {
-                              name: "Marc",
-                              address: "marc.wall@gmail.com",
-                        },
-                        Immutable.Map {
-                              name: "Acme Support",
-                              address: "support@acme.gorgias.io",
-                        },
-                  ],
-                  from: Immutable.Map {
-                        name: "Steve Frizeli",
-                        address: "marie.curie@gmail.com",
-                  },
-                  type: "email",
+        "source": Immutable.Map {
+          "to": Immutable.List [
+            Immutable.Map {
+              "name": "Marc",
+              "address": "marc.wall@gmail.com",
             },
-            id: 151,
-            from_agent: false,
+            Immutable.Map {
+              "name": "Acme Support",
+              "address": "support@acme.gorgias.io",
+            },
+          ],
+          "from": Immutable.Map {
+            "name": "Steve Frizeli",
+            "address": "marie.curie@gmail.com",
+          },
+          "type": "email",
+        },
+        "id": 151,
+        "from_agent": false,
       },
       Immutable.Map {
-            source: Immutable.Map {
-                  cc: Immutable.List [
-                  ],
-                  to: Immutable.List [
-                        Immutable.Map {
-                              name: "Steve Frizeli",
-                              address: "steve.frizeli@gmail.com",
-                        },
-                  ],
-                  from: Immutable.Map {
-                        name: "Acme Support",
-                        address: "support@acme.gorgias.io",
-                  },
-                  type: "email",
+        "source": Immutable.Map {
+          "cc": Immutable.List [],
+          "to": Immutable.List [
+            Immutable.Map {
+              "name": "Steve Frizeli",
+              "address": "steve.frizeli@gmail.com",
             },
-            id: 152,
-            from_agent: true,
+          ],
+          "from": Immutable.Map {
+            "name": "Acme Support",
+            "address": "support@acme.gorgias.io",
+          },
+          "type": "email",
+        },
+        "id": 152,
+        "from_agent": true,
       },
-],
+    ],
     "sourceType": "facebook-message",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
@@ -1036,9 +1028,9 @@ Array [
   },
   Object {
     "sender": Immutable.Map {
-      name: "Acme Support",
-      address: "support@acme.gorgias.io",
-},
+      "name": "Acme Support",
+      "address": "support@acme.gorgias.io",
+    },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
 ]
@@ -1049,112 +1041,110 @@ Array [
   Object {
     "appliedMacro": undefined,
     "args": Immutable.Map {
-      contentState: Object {
-            "blockMap": Object {
-              "someRandomKey": Object {
-                "characterList": Array [
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                ],
-                "data": Object {},
-                "depth": 0,
-                "key": "someRandomKey",
-                "text": "foo",
-                "type": "unstyled",
+      "contentState": Immutable.Record {
+        "entityMap": Object {
+          "__add": [Function],
+          "__create": [Function],
+          "__get": [Function],
+          "__getLastCreatedEntityKey": [Function],
+          "__mergeData": [Function],
+          "__replaceData": [Function],
+          "add": [Function],
+          "create": [Function],
+          "get": [Function],
+          "getLastCreatedEntityKey": [Function],
+          "mergeData": [Function],
+          "replaceData": [Function],
+        },
+        "blockMap": Immutable.OrderedMap {
+          "someRandomKey": Immutable.Record {
+            "key": "someRandomKey",
+            "type": "unstyled",
+            "text": "foo",
+            "characterList": Immutable.List [
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
               },
-            },
-            "entityMap": Object {
-              "__add": [Function],
-              "__create": [Function],
-              "__get": [Function],
-              "__getLastCreatedEntityKey": [Function],
-              "__mergeData": [Function],
-              "__replaceData": [Function],
-              "add": [Function],
-              "create": [Function],
-              "get": [Function],
-              "getLastCreatedEntityKey": [Function],
-              "mergeData": [Function],
-              "replaceData": [Function],
-            },
-            "selectionAfter": Object {
-              "anchorKey": "someRandomKey",
-              "anchorOffset": 0,
-              "focusKey": "someRandomKey",
-              "focusOffset": 0,
-              "hasFocus": false,
-              "isBackward": false,
-            },
-            "selectionBefore": Object {
-              "anchorKey": "someRandomKey",
-              "anchorOffset": 0,
-              "focusKey": "someRandomKey",
-              "focusOffset": 0,
-              "hasFocus": false,
-              "isBackward": false,
-            },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+            ],
+            "depth": 0,
+            "data": Immutable.Map {},
           },
-},
+        },
+        "selectionBefore": Immutable.Record {
+          "anchorKey": "someRandomKey",
+          "anchorOffset": 0,
+          "focusKey": "someRandomKey",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+        "selectionAfter": Immutable.Record {
+          "anchorKey": "someRandomKey",
+          "anchorOffset": 0,
+          "focusKey": "someRandomKey",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+      },
+    },
     "currentUser": undefined,
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
+    "signature": Immutable.Map {},
     "ticket": Immutable.Map {
-      messages: Immutable.List [
-            Immutable.Map {
-                  source: Immutable.Map {
-                        to: Immutable.List [
-                              Immutable.Map {
-                                    name: "Marc",
-                                    address: "marc.wall@gmail.com",
-                              },
-                              Immutable.Map {
-                                    name: "Acme Support",
-                                    address: "support@acme.gorgias.io",
-                              },
-                        ],
-                        from: Immutable.Map {
-                              name: "Steve Frizeli",
-                              address: "marie.curie@gmail.com",
-                        },
-                        type: "email",
-                  },
-                  id: 151,
-                  from_agent: false,
+      "messages": Immutable.List [
+        Immutable.Map {
+          "source": Immutable.Map {
+            "to": Immutable.List [
+              Immutable.Map {
+                "name": "Marc",
+                "address": "marc.wall@gmail.com",
+              },
+              Immutable.Map {
+                "name": "Acme Support",
+                "address": "support@acme.gorgias.io",
+              },
+            ],
+            "from": Immutable.Map {
+              "name": "Steve Frizeli",
+              "address": "marie.curie@gmail.com",
             },
-            Immutable.Map {
-                  source: Immutable.Map {
-                        cc: Immutable.List [
-                        ],
-                        to: Immutable.List [
-                              Immutable.Map {
-                                    name: "Steve Frizeli",
-                                    address: "steve.frizeli@gmail.com",
-                              },
-                        ],
-                        from: Immutable.Map {
-                              name: "Acme Support",
-                              address: "support@acme.gorgias.io",
-                        },
-                        type: "email",
-                  },
-                  id: 152,
-                  from_agent: true,
+            "type": "email",
+          },
+          "id": 151,
+          "from_agent": false,
+        },
+        Immutable.Map {
+          "source": Immutable.Map {
+            "cc": Immutable.List [],
+            "to": Immutable.List [
+              Immutable.Map {
+                "name": "Steve Frizeli",
+                "address": "steve.frizeli@gmail.com",
+              },
+            ],
+            "from": Immutable.Map {
+              "name": "Acme Support",
+              "address": "support@acme.gorgias.io",
             },
+            "type": "email",
+          },
+          "id": 152,
+          "from_agent": true,
+        },
       ],
-},
+    },
     "ticketId": undefined,
     "type": "setResponseText",
   },
@@ -1166,95 +1156,94 @@ Array [
   Object {
     "appliedMacro": undefined,
     "args": Immutable.Map {
-      contentState: Object {
-            "blockMap": Object {
-              "someRandomKey": Object {
-                "characterList": Array [
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                ],
-                "data": Object {},
-                "depth": 0,
-                "key": "someRandomKey",
-                "text": "signature",
-                "type": "unstyled",
+      "contentState": Immutable.Record {
+        "entityMap": Object {
+          "__add": [Function],
+          "__create": [Function],
+          "__get": [Function],
+          "__getLastCreatedEntityKey": [Function],
+          "__mergeData": [Function],
+          "__replaceData": [Function],
+          "add": [Function],
+          "create": [Function],
+          "get": [Function],
+          "getLastCreatedEntityKey": [Function],
+          "mergeData": [Function],
+          "replaceData": [Function],
+        },
+        "blockMap": Immutable.OrderedMap {
+          "someRandomKey": Immutable.Record {
+            "key": "someRandomKey",
+            "type": "unstyled",
+            "text": "signature",
+            "characterList": Immutable.List [
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
               },
-            },
-            "entityMap": Object {
-              "__add": [Function],
-              "__create": [Function],
-              "__get": [Function],
-              "__getLastCreatedEntityKey": [Function],
-              "__mergeData": [Function],
-              "__replaceData": [Function],
-              "add": [Function],
-              "create": [Function],
-              "get": [Function],
-              "getLastCreatedEntityKey": [Function],
-              "mergeData": [Function],
-              "replaceData": [Function],
-            },
-            "selectionAfter": Object {
-              "anchorKey": "someRandomKey",
-              "anchorOffset": 0,
-              "focusKey": "someRandomKey",
-              "focusOffset": 0,
-              "hasFocus": false,
-              "isBackward": false,
-            },
-            "selectionBefore": Object {
-              "anchorKey": "someRandomKey",
-              "anchorOffset": 0,
-              "focusKey": "someRandomKey",
-              "focusOffset": 0,
-              "hasFocus": false,
-              "isBackward": false,
-            },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+            ],
+            "depth": 0,
+            "data": Immutable.Map {},
           },
-},
+        },
+        "selectionBefore": Immutable.Record {
+          "anchorKey": "someRandomKey",
+          "anchorOffset": 0,
+          "focusKey": "someRandomKey",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+        "selectionAfter": Immutable.Record {
+          "anchorKey": "someRandomKey",
+          "anchorOffset": 0,
+          "focusKey": "someRandomKey",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+      },
+    },
     "currentUser": undefined,
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
+    "signature": Immutable.Map {},
     "ticket": Immutable.Map {
-      id: 1,
-},
+      "id": 1,
+    },
     "ticketId": 1,
     "type": "setResponseText",
   },
@@ -1266,71 +1255,70 @@ Array [
   Object {
     "appliedMacro": undefined,
     "args": Immutable.Map {
-      contentState: Object {
-            "blockMap": Object {
-              "someRandomKey": Object {
-                "characterList": Array [
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                ],
-                "data": Object {},
-                "depth": 0,
-                "key": "someRandomKey",
-                "text": "foo",
-                "type": "unstyled",
+      "contentState": Immutable.Record {
+        "entityMap": Object {
+          "__add": [Function],
+          "__create": [Function],
+          "__get": [Function],
+          "__getLastCreatedEntityKey": [Function],
+          "__mergeData": [Function],
+          "__replaceData": [Function],
+          "add": [Function],
+          "create": [Function],
+          "get": [Function],
+          "getLastCreatedEntityKey": [Function],
+          "mergeData": [Function],
+          "replaceData": [Function],
+        },
+        "blockMap": Immutable.OrderedMap {
+          "someRandomKey": Immutable.Record {
+            "key": "someRandomKey",
+            "type": "unstyled",
+            "text": "foo",
+            "characterList": Immutable.List [
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
               },
-            },
-            "entityMap": Object {
-              "__add": [Function],
-              "__create": [Function],
-              "__get": [Function],
-              "__getLastCreatedEntityKey": [Function],
-              "__mergeData": [Function],
-              "__replaceData": [Function],
-              "add": [Function],
-              "create": [Function],
-              "get": [Function],
-              "getLastCreatedEntityKey": [Function],
-              "mergeData": [Function],
-              "replaceData": [Function],
-            },
-            "selectionAfter": Object {
-              "anchorKey": "someRandomKey",
-              "anchorOffset": 0,
-              "focusKey": "someRandomKey",
-              "focusOffset": 0,
-              "hasFocus": false,
-              "isBackward": false,
-            },
-            "selectionBefore": Object {
-              "anchorKey": "someRandomKey",
-              "anchorOffset": 0,
-              "focusKey": "someRandomKey",
-              "focusOffset": 0,
-              "hasFocus": false,
-              "isBackward": false,
-            },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+            ],
+            "depth": 0,
+            "data": Immutable.Map {},
           },
-},
+        },
+        "selectionBefore": Immutable.Record {
+          "anchorKey": "someRandomKey",
+          "anchorOffset": 0,
+          "focusKey": "someRandomKey",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+        "selectionAfter": Immutable.Record {
+          "anchorKey": "someRandomKey",
+          "anchorOffset": 0,
+          "focusKey": "someRandomKey",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+      },
+    },
     "currentUser": undefined,
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
+    "signature": Immutable.Map {},
     "ticket": Immutable.Map {
-      id: 1,
-},
+      "id": 1,
+    },
     "ticketId": 1,
     "type": "setResponseText",
   },
@@ -1342,60 +1330,59 @@ Array [
   Object {
     "appliedMacro": undefined,
     "args": Immutable.Map {
-      contentState: Object {
-            "blockMap": Object {
-              "someRandomKey": Object {
-                "characterList": Array [],
-                "data": Object {},
-                "depth": 0,
-                "key": "someRandomKey",
-                "text": "",
-                "type": "unstyled",
-              },
-            },
-            "entityMap": Object {
-              "__add": [Function],
-              "__create": [Function],
-              "__get": [Function],
-              "__getLastCreatedEntityKey": [Function],
-              "__mergeData": [Function],
-              "__replaceData": [Function],
-              "add": [Function],
-              "create": [Function],
-              "get": [Function],
-              "getLastCreatedEntityKey": [Function],
-              "mergeData": [Function],
-              "replaceData": [Function],
-            },
-            "selectionAfter": Object {
-              "anchorKey": "someRandomKey",
-              "anchorOffset": 0,
-              "focusKey": "someRandomKey",
-              "focusOffset": 0,
-              "hasFocus": false,
-              "isBackward": false,
-            },
-            "selectionBefore": Object {
-              "anchorKey": "someRandomKey",
-              "anchorOffset": 0,
-              "focusKey": "someRandomKey",
-              "focusOffset": 0,
-              "hasFocus": false,
-              "isBackward": false,
-            },
+      "contentState": Immutable.Record {
+        "entityMap": Object {
+          "__add": [Function],
+          "__create": [Function],
+          "__get": [Function],
+          "__getLastCreatedEntityKey": [Function],
+          "__mergeData": [Function],
+          "__replaceData": [Function],
+          "add": [Function],
+          "create": [Function],
+          "get": [Function],
+          "getLastCreatedEntityKey": [Function],
+          "mergeData": [Function],
+          "replaceData": [Function],
+        },
+        "blockMap": Immutable.OrderedMap {
+          "someRandomKey": Immutable.Record {
+            "key": "someRandomKey",
+            "type": "unstyled",
+            "text": "",
+            "characterList": Immutable.List [],
+            "depth": 0,
+            "data": Immutable.Map {},
           },
-},
+        },
+        "selectionBefore": Immutable.Record {
+          "anchorKey": "someRandomKey",
+          "anchorOffset": 0,
+          "focusKey": "someRandomKey",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+        "selectionAfter": Immutable.Record {
+          "anchorKey": "someRandomKey",
+          "anchorOffset": 0,
+          "focusKey": "someRandomKey",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+      },
+    },
     "currentUser": Immutable.Map {
-      id: 1,
-},
+      "id": 1,
+    },
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
+    "signature": Immutable.Map {},
     "ticket": Immutable.Map {
-      id: 1,
-},
+      "id": 1,
+    },
     "ticketId": 1,
     "type": "setResponseText",
   },
@@ -1407,60 +1394,59 @@ Array [
   Object {
     "appliedMacro": undefined,
     "args": Immutable.Map {
-      contentState: Object {
-            "blockMap": Object {
-              "someRandomKey": Object {
-                "characterList": Array [],
-                "data": Object {},
-                "depth": 0,
-                "key": "someRandomKey",
-                "text": "",
-                "type": "unstyled",
-              },
-            },
-            "entityMap": Object {
-              "__add": [Function],
-              "__create": [Function],
-              "__get": [Function],
-              "__getLastCreatedEntityKey": [Function],
-              "__mergeData": [Function],
-              "__replaceData": [Function],
-              "add": [Function],
-              "create": [Function],
-              "get": [Function],
-              "getLastCreatedEntityKey": [Function],
-              "mergeData": [Function],
-              "replaceData": [Function],
-            },
-            "selectionAfter": Object {
-              "anchorKey": "someRandomKey",
-              "anchorOffset": 0,
-              "focusKey": "someRandomKey",
-              "focusOffset": 0,
-              "hasFocus": false,
-              "isBackward": false,
-            },
-            "selectionBefore": Object {
-              "anchorKey": "someRandomKey",
-              "anchorOffset": 0,
-              "focusKey": "someRandomKey",
-              "focusOffset": 0,
-              "hasFocus": false,
-              "isBackward": false,
-            },
+      "contentState": Immutable.Record {
+        "entityMap": Object {
+          "__add": [Function],
+          "__create": [Function],
+          "__get": [Function],
+          "__getLastCreatedEntityKey": [Function],
+          "__mergeData": [Function],
+          "__replaceData": [Function],
+          "add": [Function],
+          "create": [Function],
+          "get": [Function],
+          "getLastCreatedEntityKey": [Function],
+          "mergeData": [Function],
+          "replaceData": [Function],
+        },
+        "blockMap": Immutable.OrderedMap {
+          "someRandomKey": Immutable.Record {
+            "key": "someRandomKey",
+            "type": "unstyled",
+            "text": "",
+            "characterList": Immutable.List [],
+            "depth": 0,
+            "data": Immutable.Map {},
           },
-},
+        },
+        "selectionBefore": Immutable.Record {
+          "anchorKey": "someRandomKey",
+          "anchorOffset": 0,
+          "focusKey": "someRandomKey",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+        "selectionAfter": Immutable.Record {
+          "anchorKey": "someRandomKey",
+          "anchorOffset": 0,
+          "focusKey": "someRandomKey",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+      },
+    },
     "currentUser": Immutable.Map {
-      id: 1,
-},
+      "id": 1,
+    },
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
+    "signature": Immutable.Map {},
     "ticket": Immutable.Map {
-      id: 1,
-},
+      "id": 1,
+    },
     "ticketId": 1,
     "type": "setResponseText",
   },
@@ -1472,71 +1458,70 @@ Array [
   Object {
     "appliedMacro": undefined,
     "args": Immutable.Map {
-      contentState: Object {
-            "blockMap": Object {
-              "someRandomKey": Object {
-                "characterList": Array [
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                ],
-                "data": Object {},
-                "depth": 0,
-                "key": "someRandomKey",
-                "text": "foo",
-                "type": "unstyled",
+      "contentState": Immutable.Record {
+        "entityMap": Object {
+          "__add": [Function],
+          "__create": [Function],
+          "__get": [Function],
+          "__getLastCreatedEntityKey": [Function],
+          "__mergeData": [Function],
+          "__replaceData": [Function],
+          "add": [Function],
+          "create": [Function],
+          "get": [Function],
+          "getLastCreatedEntityKey": [Function],
+          "mergeData": [Function],
+          "replaceData": [Function],
+        },
+        "blockMap": Immutable.OrderedMap {
+          "someRandomKey": Immutable.Record {
+            "key": "someRandomKey",
+            "type": "unstyled",
+            "text": "foo",
+            "characterList": Immutable.List [
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
               },
-            },
-            "entityMap": Object {
-              "__add": [Function],
-              "__create": [Function],
-              "__get": [Function],
-              "__getLastCreatedEntityKey": [Function],
-              "__mergeData": [Function],
-              "__replaceData": [Function],
-              "add": [Function],
-              "create": [Function],
-              "get": [Function],
-              "getLastCreatedEntityKey": [Function],
-              "mergeData": [Function],
-              "replaceData": [Function],
-            },
-            "selectionAfter": Object {
-              "anchorKey": "someRandomKey",
-              "anchorOffset": 0,
-              "focusKey": "someRandomKey",
-              "focusOffset": 0,
-              "hasFocus": false,
-              "isBackward": false,
-            },
-            "selectionBefore": Object {
-              "anchorKey": "someRandomKey",
-              "anchorOffset": 0,
-              "focusKey": "someRandomKey",
-              "focusOffset": 0,
-              "hasFocus": false,
-              "isBackward": false,
-            },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+            ],
+            "depth": 0,
+            "data": Immutable.Map {},
           },
-},
+        },
+        "selectionBefore": Immutable.Record {
+          "anchorKey": "someRandomKey",
+          "anchorOffset": 0,
+          "focusKey": "someRandomKey",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+        "selectionAfter": Immutable.Record {
+          "anchorKey": "someRandomKey",
+          "anchorOffset": 0,
+          "focusKey": "someRandomKey",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+      },
+    },
     "currentUser": undefined,
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
+    "signature": Immutable.Map {},
     "ticket": Immutable.Map {
-      id: 1,
-},
+      "id": 1,
+    },
     "ticketId": 1,
     "type": "setResponseText",
   },
@@ -1547,9 +1532,9 @@ exports[`actions new message setSender action with address 1`] = `
 Array [
   Object {
     "sender": Immutable.Map {
-      name: "Acme Support",
-      address: "support@acme.gorgias.io",
-},
+      "name": "Acme Support",
+      "address": "support@acme.gorgias.io",
+    },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
 ]
@@ -1586,9 +1571,9 @@ Array [
       "mention_ids": Array [],
       "public": true,
       "sender": Immutable.Map {
-        id: 1,
-        name: "foo",
-},
+        "id": 1,
+        "name": "foo",
+      },
       "source": Object {
         "extra": Object {
           "media_id": "519388858269125_626477354226941",
@@ -1606,47 +1591,47 @@ Array [
     "messageId": "nowTimestamp",
     "messages": Immutable.List [
       Immutable.Map {
-            source: Immutable.Map {
-                  type: "instagram-media",
-                  from: Immutable.Map {
-                        address: "1232353100194770",
-                        name: "myinstagrampage",
-                  },
-                  to: Immutable.List [
-                        Immutable.Map {
-                              address: "a4sd684a6sd4a5sd",
-                              name: "instagramuser",
-                        },
-                  ],
-                  extra: Immutable.Map {
-                        media_id: "519388858269125_626477354226941",
-                        permalink: "https://instagram.com/foobar",
-                  },
+        "source": Immutable.Map {
+          "type": "instagram-media",
+          "from": Immutable.Map {
+            "address": "1232353100194770",
+            "name": "myinstagrampage",
+          },
+          "to": Immutable.List [
+            Immutable.Map {
+              "address": "a4sd684a6sd4a5sd",
+              "name": "instagramuser",
             },
-            id: 153,
-            from_agent: true,
+          ],
+          "extra": Immutable.Map {
+            "media_id": "519388858269125_626477354226941",
+            "permalink": "https://instagram.com/foobar",
+          },
+        },
+        "id": 153,
+        "from_agent": true,
       },
       Immutable.Map {
-            source: Immutable.Map {
-                  type: "instagram-comment",
-                  from: Immutable.Map {
-                        address: "a4sd684a6sd4a5sd",
-                        name: "instagramuser",
-                  },
-                  to: Immutable.List [
-                        Immutable.Map {
-                              address: "1232353100194770",
-                              name: "myinstagrampage",
-                        },
-                  ],
-                  extra: Immutable.Map {
-                        media_id: "519388858269125_626477354226941",
-                  },
+        "source": Immutable.Map {
+          "type": "instagram-comment",
+          "from": Immutable.Map {
+            "address": "a4sd684a6sd4a5sd",
+            "name": "instagramuser",
+          },
+          "to": Immutable.List [
+            Immutable.Map {
+              "address": "1232353100194770",
+              "name": "myinstagrampage",
             },
-            id: 189,
-            from_agent: false,
+          ],
+          "extra": Immutable.Map {
+            "media_id": "519388858269125_626477354226941",
+          },
+        },
+        "id": 189,
+        "from_agent": false,
       },
-],
+    ],
     "resetMessage": true,
     "retry": false,
     "status": undefined,
@@ -1660,64 +1645,63 @@ Array [
   Object {
     "appliedMacro": undefined,
     "args": Immutable.Map {
-      forceFocus: true,
-      forceUpdate: true,
-},
+      "forceFocus": true,
+      "forceUpdate": true,
+    },
     "currentUser": Immutable.Map {
-      id: 1,
-      name: "foo",
-},
+      "id": 1,
+      "name": "foo",
+    },
     "forceFocus": true,
     "forceUpdate": true,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
+    "signature": Immutable.Map {},
     "ticket": Immutable.Map {
-      messages: Immutable.List [
-            Immutable.Map {
-                  source: Immutable.Map {
-                        type: "instagram-media",
-                        from: Immutable.Map {
-                              address: "1232353100194770",
-                              name: "myinstagrampage",
-                        },
-                        to: Immutable.List [
-                              Immutable.Map {
-                                    address: "a4sd684a6sd4a5sd",
-                                    name: "instagramuser",
-                              },
-                        ],
-                        extra: Immutable.Map {
-                              media_id: "519388858269125_626477354226941",
-                              permalink: "https://instagram.com/foobar",
-                        },
-                  },
-                  id: 153,
-                  from_agent: true,
+      "messages": Immutable.List [
+        Immutable.Map {
+          "source": Immutable.Map {
+            "type": "instagram-media",
+            "from": Immutable.Map {
+              "address": "1232353100194770",
+              "name": "myinstagrampage",
             },
-            Immutable.Map {
-                  source: Immutable.Map {
-                        type: "instagram-comment",
-                        from: Immutable.Map {
-                              address: "a4sd684a6sd4a5sd",
-                              name: "instagramuser",
-                        },
-                        to: Immutable.List [
-                              Immutable.Map {
-                                    address: "1232353100194770",
-                                    name: "myinstagrampage",
-                              },
-                        ],
-                        extra: Immutable.Map {
-                              media_id: "519388858269125_626477354226941",
-                        },
-                  },
-                  id: 189,
-                  from_agent: false,
+            "to": Immutable.List [
+              Immutable.Map {
+                "address": "a4sd684a6sd4a5sd",
+                "name": "instagramuser",
+              },
+            ],
+            "extra": Immutable.Map {
+              "media_id": "519388858269125_626477354226941",
+              "permalink": "https://instagram.com/foobar",
             },
+          },
+          "id": 153,
+          "from_agent": true,
+        },
+        Immutable.Map {
+          "source": Immutable.Map {
+            "type": "instagram-comment",
+            "from": Immutable.Map {
+              "address": "a4sd684a6sd4a5sd",
+              "name": "instagramuser",
+            },
+            "to": Immutable.List [
+              Immutable.Map {
+                "address": "1232353100194770",
+                "name": "myinstagrampage",
+              },
+            ],
+            "extra": Immutable.Map {
+              "media_id": "519388858269125_626477354226941",
+            },
+          },
+          "id": 189,
+          "from_agent": false,
+        },
       ],
-      id: 12,
-},
+      "id": 12,
+    },
     "ticketId": 12,
     "type": "setResponseText",
   },
@@ -1735,56 +1719,56 @@ Array [
   },
   Object {
     "sender": Immutable.Map {
-      name: "myinstagrampage",
-      address: "1232353100194770",
-},
+      "name": "myinstagrampage",
+      "address": "1232353100194770",
+    },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
   Object {
     "messageId": "nowTimestamp",
     "messages": Immutable.List [
       Immutable.Map {
-            source: Immutable.Map {
-                  type: "instagram-media",
-                  from: Immutable.Map {
-                        address: "1232353100194770",
-                        name: "myinstagrampage",
-                  },
-                  to: Immutable.List [
-                        Immutable.Map {
-                              address: "a4sd684a6sd4a5sd",
-                              name: "instagramuser",
-                        },
-                  ],
-                  extra: Immutable.Map {
-                        media_id: "519388858269125_626477354226941",
-                        permalink: "https://instagram.com/foobar",
-                  },
+        "source": Immutable.Map {
+          "type": "instagram-media",
+          "from": Immutable.Map {
+            "address": "1232353100194770",
+            "name": "myinstagrampage",
+          },
+          "to": Immutable.List [
+            Immutable.Map {
+              "address": "a4sd684a6sd4a5sd",
+              "name": "instagramuser",
             },
-            id: 153,
-            from_agent: true,
+          ],
+          "extra": Immutable.Map {
+            "media_id": "519388858269125_626477354226941",
+            "permalink": "https://instagram.com/foobar",
+          },
+        },
+        "id": 153,
+        "from_agent": true,
       },
       Immutable.Map {
-            source: Immutable.Map {
-                  type: "instagram-comment",
-                  from: Immutable.Map {
-                        address: "a4sd684a6sd4a5sd",
-                        name: "instagramuser",
-                  },
-                  to: Immutable.List [
-                        Immutable.Map {
-                              address: "1232353100194770",
-                              name: "myinstagrampage",
-                        },
-                  ],
-                  extra: Immutable.Map {
-                        media_id: "519388858269125_626477354226941",
-                  },
+        "source": Immutable.Map {
+          "type": "instagram-comment",
+          "from": Immutable.Map {
+            "address": "a4sd684a6sd4a5sd",
+            "name": "instagramuser",
+          },
+          "to": Immutable.List [
+            Immutable.Map {
+              "address": "1232353100194770",
+              "name": "myinstagrampage",
             },
-            id: 189,
-            from_agent: false,
+          ],
+          "extra": Immutable.Map {
+            "media_id": "519388858269125_626477354226941",
+          },
+        },
+        "id": 189,
+        "from_agent": false,
       },
-],
+    ],
     "resetMessage": true,
     "resp": Object {
       "messages": Array [
@@ -1805,47 +1789,47 @@ Array [
   Object {
     "messages": Immutable.List [
       Immutable.Map {
-            source: Immutable.Map {
-                  type: "instagram-media",
-                  from: Immutable.Map {
-                        address: "1232353100194770",
-                        name: "myinstagrampage",
-                  },
-                  to: Immutable.List [
-                        Immutable.Map {
-                              address: "a4sd684a6sd4a5sd",
-                              name: "instagramuser",
-                        },
-                  ],
-                  extra: Immutable.Map {
-                        media_id: "519388858269125_626477354226941",
-                        permalink: "https://instagram.com/foobar",
-                  },
+        "source": Immutable.Map {
+          "type": "instagram-media",
+          "from": Immutable.Map {
+            "address": "1232353100194770",
+            "name": "myinstagrampage",
+          },
+          "to": Immutable.List [
+            Immutable.Map {
+              "address": "a4sd684a6sd4a5sd",
+              "name": "instagramuser",
             },
-            id: 153,
-            from_agent: true,
+          ],
+          "extra": Immutable.Map {
+            "media_id": "519388858269125_626477354226941",
+            "permalink": "https://instagram.com/foobar",
+          },
+        },
+        "id": 153,
+        "from_agent": true,
       },
       Immutable.Map {
-            source: Immutable.Map {
-                  type: "instagram-comment",
-                  from: Immutable.Map {
-                        address: "a4sd684a6sd4a5sd",
-                        name: "instagramuser",
-                  },
-                  to: Immutable.List [
-                        Immutable.Map {
-                              address: "1232353100194770",
-                              name: "myinstagrampage",
-                        },
-                  ],
-                  extra: Immutable.Map {
-                        media_id: "519388858269125_626477354226941",
-                  },
+        "source": Immutable.Map {
+          "type": "instagram-comment",
+          "from": Immutable.Map {
+            "address": "a4sd684a6sd4a5sd",
+            "name": "instagramuser",
+          },
+          "to": Immutable.List [
+            Immutable.Map {
+              "address": "1232353100194770",
+              "name": "myinstagrampage",
             },
-            id: 189,
-            from_agent: false,
+          ],
+          "extra": Immutable.Map {
+            "media_id": "519388858269125_626477354226941",
+          },
+        },
+        "id": 189,
+        "from_agent": false,
       },
-],
+    ],
     "sourceType": "instagram-comment",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
@@ -1867,192 +1851,191 @@ Array [
   },
   Object {
     "sender": Immutable.Map {
-      name: "myinstagrampage",
-      address: "1232353100194770",
-},
+      "name": "myinstagrampage",
+      "address": "1232353100194770",
+    },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
   Object {
     "appliedMacro": undefined,
     "args": Immutable.Map {
-      contentState: Object {
-            "blockMap": Object {
-              "someRandomKey": Object {
-                "characterList": Array [
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                ],
-                "data": Object {},
-                "depth": 0,
-                "key": "someRandomKey",
-                "text": "@messagereceiver ",
-                "type": "unstyled",
+      "contentState": Immutable.Record {
+        "entityMap": Object {
+          "__add": [Function],
+          "__create": [Function],
+          "__get": [Function],
+          "__getLastCreatedEntityKey": [Function],
+          "__mergeData": [Function],
+          "__replaceData": [Function],
+          "add": [Function],
+          "create": [Function],
+          "get": [Function],
+          "getLastCreatedEntityKey": [Function],
+          "mergeData": [Function],
+          "replaceData": [Function],
+        },
+        "blockMap": Immutable.OrderedMap {
+          "someRandomKey": Immutable.Record {
+            "key": "someRandomKey",
+            "type": "unstyled",
+            "text": "@messagereceiver ",
+            "characterList": Immutable.List [
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
               },
-            },
-            "entityMap": Object {
-              "__add": [Function],
-              "__create": [Function],
-              "__get": [Function],
-              "__getLastCreatedEntityKey": [Function],
-              "__mergeData": [Function],
-              "__replaceData": [Function],
-              "add": [Function],
-              "create": [Function],
-              "get": [Function],
-              "getLastCreatedEntityKey": [Function],
-              "mergeData": [Function],
-              "replaceData": [Function],
-            },
-            "selectionAfter": Object {
-              "anchorKey": "someRandomKey",
-              "anchorOffset": 0,
-              "focusKey": "someRandomKey",
-              "focusOffset": 0,
-              "hasFocus": false,
-              "isBackward": false,
-            },
-            "selectionBefore": Object {
-              "anchorKey": "someRandomKey",
-              "anchorOffset": 0,
-              "focusKey": "someRandomKey",
-              "focusOffset": 0,
-              "hasFocus": false,
-              "isBackward": false,
-            },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+              Immutable.Record {
+                "style": Immutable.OrderedSet [],
+                "entity": null,
+              },
+            ],
+            "depth": 0,
+            "data": Immutable.Map {},
           },
-      selectionState: Object {
-            "anchorKey": "someRandomKey",
-            "anchorOffset": 17,
-            "focusKey": "someRandomKey",
-            "focusOffset": 17,
-            "hasFocus": false,
-            "isBackward": false,
-          },
-      dirty: true,
-      forceFocus: true,
-      forceUpdate: true,
-},
+        },
+        "selectionBefore": Immutable.Record {
+          "anchorKey": "someRandomKey",
+          "anchorOffset": 0,
+          "focusKey": "someRandomKey",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+        "selectionAfter": Immutable.Record {
+          "anchorKey": "someRandomKey",
+          "anchorOffset": 0,
+          "focusKey": "someRandomKey",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+      },
+      "selectionState": Immutable.Record {
+        "anchorKey": "someRandomKey",
+        "anchorOffset": 17,
+        "focusKey": "someRandomKey",
+        "focusOffset": 17,
+        "isBackward": false,
+        "hasFocus": false,
+      },
+      "dirty": true,
+      "forceFocus": true,
+      "forceUpdate": true,
+    },
     "currentUser": Immutable.Map {
-      id: 1,
-      name: "foo",
-},
+      "id": 1,
+      "name": "foo",
+    },
     "forceFocus": true,
     "forceUpdate": true,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
+    "signature": Immutable.Map {},
     "ticket": Immutable.Map {
-      messages: Immutable.List [
-            Immutable.Map {
-                  source: Immutable.Map {
-                        type: "instagram-media",
-                        from: Immutable.Map {
-                              address: "1232353100194770",
-                              name: "myinstagrampage",
-                        },
-                        to: Immutable.List [
-                              Immutable.Map {
-                                    address: "a4sd684a6sd4a5sd",
-                                    name: "instagramuser",
-                              },
-                        ],
-                        extra: Immutable.Map {
-                              media_id: "519388858269125_626477354226941",
-                              permalink: "https://instagram.com/foobar",
-                        },
-                  },
-                  id: 153,
-                  from_agent: true,
+      "messages": Immutable.List [
+        Immutable.Map {
+          "source": Immutable.Map {
+            "type": "instagram-media",
+            "from": Immutable.Map {
+              "address": "1232353100194770",
+              "name": "myinstagrampage",
             },
-            Immutable.Map {
-                  source: Immutable.Map {
-                        type: "instagram-comment",
-                        from: Immutable.Map {
-                              address: "a4sd684a6sd4a5sd",
-                              name: "instagramuser",
-                        },
-                        to: Immutable.List [
-                              Immutable.Map {
-                                    address: "1232353100194770",
-                                    name: "myinstagrampage",
-                              },
-                        ],
-                        extra: Immutable.Map {
-                              media_id: "519388858269125_626477354226941",
-                        },
-                  },
-                  id: 189,
-                  from_agent: false,
+            "to": Immutable.List [
+              Immutable.Map {
+                "address": "a4sd684a6sd4a5sd",
+                "name": "instagramuser",
+              },
+            ],
+            "extra": Immutable.Map {
+              "media_id": "519388858269125_626477354226941",
+              "permalink": "https://instagram.com/foobar",
             },
+          },
+          "id": 153,
+          "from_agent": true,
+        },
+        Immutable.Map {
+          "source": Immutable.Map {
+            "type": "instagram-comment",
+            "from": Immutable.Map {
+              "address": "a4sd684a6sd4a5sd",
+              "name": "instagramuser",
+            },
+            "to": Immutable.List [
+              Immutable.Map {
+                "address": "1232353100194770",
+                "name": "myinstagrampage",
+              },
+            ],
+            "extra": Immutable.Map {
+              "media_id": "519388858269125_626477354226941",
+            },
+          },
+          "id": 189,
+          "from_agent": false,
+        },
       ],
-      id: 12,
-},
+      "id": 12,
+    },
     "ticketId": 12,
     "type": "setResponseText",
   },
@@ -2072,9 +2055,9 @@ Array [
       "mention_ids": Array [],
       "public": true,
       "sender": Immutable.Map {
-        id: 1,
-        name: "foo",
-},
+        "id": 1,
+        "name": "foo",
+      },
       "source": Object {
         "bcc": Array [],
         "cc": Array [],
@@ -2086,8 +2069,7 @@ Array [
       "via": "helpdesk",
     },
     "messageId": "nowTimestamp",
-    "messages": Immutable.List [
-],
+    "messages": Immutable.List [],
     "resetMessage": true,
     "retry": false,
     "status": undefined,
@@ -2101,58 +2083,53 @@ Array [
   Object {
     "appliedMacro": null,
     "args": Immutable.Map {
-      forceFocus: true,
-      forceUpdate: true,
-},
+      "forceFocus": true,
+      "forceUpdate": true,
+    },
     "currentUser": Immutable.Map {
-      id: 1,
-      name: "foo",
-},
+      "id": 1,
+      "name": "foo",
+    },
     "forceFocus": true,
     "forceUpdate": true,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
+    "signature": Immutable.Map {},
     "ticket": Immutable.Map {
-      trashed_datetime: null,
-      channel: "email",
-      priority: "normal",
-      reply_options: Immutable.Map {
-            email: Immutable.Map {
-                  answerable: true,
-            },
+      "trashed_datetime": null,
+      "channel": "email",
+      "priority": "normal",
+      "reply_options": Immutable.Map {
+        "email": Immutable.Map {
+          "answerable": true,
+        },
       },
-      spam: false,
-      subject: "",
-      messages: Immutable.List [
-      ],
-      via: "helpdesk",
-      receiver: null,
-      state: Immutable.Map {
-            dirty: false,
-            latestEventDatetime: null,
-            appliedMacro: null,
+      "spam": false,
+      "subject": "",
+      "messages": Immutable.List [],
+      "via": "helpdesk",
+      "receiver": null,
+      "state": Immutable.Map {
+        "dirty": false,
+        "latestEventDatetime": null,
+        "appliedMacro": null,
       },
-      status: "open",
-      sender: null,
-      tags: Immutable.List [
-      ],
-      events: Immutable.List [
-      ],
-      assignee_user: null,
-      id: 12,
-      _internal: Immutable.Map {
-            displayHistory: false,
-            shouldDisplayHistoryOnNextPage: false,
-            loading: Immutable.Map {
-                  fetchTicket: false,
-                  deleteMessage: false,
-            },
-            pendingMessages: Immutable.List [
-            ],
+      "status": "open",
+      "sender": null,
+      "tags": Immutable.List [],
+      "events": Immutable.List [],
+      "assignee_user": null,
+      "id": 12,
+      "_internal": Immutable.Map {
+        "displayHistory": false,
+        "shouldDisplayHistoryOnNextPage": false,
+        "loading": Immutable.Map {
+          "fetchTicket": false,
+          "deleteMessage": false,
+        },
+        "pendingMessages": Immutable.List [],
       },
-      customer: null,
-},
+      "customer": null,
+    },
     "ticketId": 12,
     "type": "setResponseText",
   },
@@ -2165,15 +2142,14 @@ Array [
   },
   Object {
     "sender": Immutable.Map {
-      name: "Acme Support",
-      address: "support@acme.gorgias.io",
-},
+      "name": "Acme Support",
+      "address": "support@acme.gorgias.io",
+    },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
   Object {
     "messageId": "nowTimestamp",
-    "messages": Immutable.List [
-],
+    "messages": Immutable.List [],
     "resetMessage": true,
     "resp": Object {
       "messages": Array [],

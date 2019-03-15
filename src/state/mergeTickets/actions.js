@@ -20,9 +20,9 @@ export const PER_PAGE = 5
  * using the `searchQuery`
  */
 export function searchTickets(searchQuery: string,
-                       sourceTicketId: number,
-                       page?: number = 1,
-                       customerId: ?number = null): thunkActionType {
+    sourceTicketId: number,
+    page?: number = 1,
+    customerId: ?number = null): thunkActionType {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         const view = defaultMergeTicketsView(sourceTicketId, searchQuery, customerId)
 

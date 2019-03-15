@@ -40,32 +40,30 @@ exports[`TicketMacros component should display macros list, and selected macro 1
       className="macroList"
       currentMacro={
         Immutable.Map {
-          id: 2,
-          name: "Order my refund",
-          actions: Immutable.List [
-          ],
+          "id": 2,
+          "name": "Order my refund",
+          "actions": Immutable.List [],
         }
       }
       fetchMacros={[Function]}
       macros={
         Immutable.List [
           Immutable.Map {
-            id: 1,
-            name: "Refund my order",
-            actions: Immutable.List [
+            "id": 1,
+            "name": "Refund my order",
+            "actions": Immutable.List [
               Immutable.Map {
-                name: "setResponseText",
+                "name": "setResponseText",
               },
               Immutable.Map {
-                name: "addAttachments",
+                "name": "addAttachments",
               },
             ],
           },
           Immutable.Map {
-            id: 2,
-            name: "Order my refund",
-            actions: Immutable.List [
-            ],
+            "id": 2,
+            "name": "Order my refund",
+            "actions": Immutable.List [],
           },
         ]
       }
@@ -203,10 +201,9 @@ exports[`TicketMacros component should display macros list, and selected macro 1
         displayHTML={true}
         macro={
           Immutable.Map {
-            id: 2,
-            name: "Order my refund",
-            actions: Immutable.List [
-            ],
+            "id": 2,
+            "name": "Order my refund",
+            "actions": Immutable.List [],
           }
         }
       />

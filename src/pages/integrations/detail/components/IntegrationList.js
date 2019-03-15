@@ -126,7 +126,7 @@ class IntegrationList extends React.Component {
                             hover
                         >
                             <tbody>
-                            {integrations.valueSeq().map(integrationToItemDisplay)}
+                                {integrations.valueSeq().map(integrationToItemDisplay)}
                             </tbody>
                         </Table>
                     )

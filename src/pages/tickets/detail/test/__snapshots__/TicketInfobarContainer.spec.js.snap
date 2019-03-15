@@ -32,29 +32,18 @@ exports[`TicketInfobarContainer component should render infobar for new ticket 1
     }
   }
   context="ticket"
-  customer={
-    Immutable.Map {
-    }
-  }
+  customer={Immutable.Map {}}
   identifier="new"
-  infobar={
-    Immutable.Map {
-    }
-  }
+  infobar={Immutable.Map {}}
   isRouteEditingWidgets={false}
   sources={
     Immutable.Map {
-      ticket: Immutable.Map {
-        customer: Immutable.Map {
-        },
+      "ticket": Immutable.Map {
+        "customer": Immutable.Map {},
       },
-      customer: Immutable.Map {
-      },
+      "customer": Immutable.Map {},
     }
   }
-  widgets={
-    Immutable.Map {
-    }
-  }
+  widgets={Immutable.Map {}}
 />
 `;

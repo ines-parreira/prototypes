@@ -8,20 +8,10 @@ exports[`DraftJS Plugins render bold text 1`] = `
     className="DraftEditor-editorContainer"
   >
     <div
-      aria-activedescendant={undefined}
-      aria-autocomplete={undefined}
-      aria-controls={undefined}
       aria-describedby="placeholder-123"
       aria-expanded={null}
-      aria-label={undefined}
-      aria-labelledby={undefined}
-      aria-multiline={undefined}
-      autoCapitalize={undefined}
-      autoComplete={undefined}
-      autoCorrect={undefined}
       className="notranslate public-DraftEditor-content"
       contentEditable={true}
-      data-testid={undefined}
       onBeforeInput={[Function]}
       onBlur={[Function]}
       onCompositionEnd={[Function]}
@@ -54,7 +44,6 @@ exports[`DraftJS Plugins render bold text 1`] = `
         }
       }
       suppressContentEditableWarning={true}
-      tabIndex={undefined}
     >
       <div
         data-contents="true"
@@ -119,20 +108,10 @@ exports[`DraftJS Plugins render link found in text 1`] = `
     className="DraftEditor-editorContainer"
   >
     <div
-      aria-activedescendant={undefined}
-      aria-autocomplete={undefined}
-      aria-controls={undefined}
       aria-describedby="placeholder-123"
       aria-expanded={null}
-      aria-label={undefined}
-      aria-labelledby={undefined}
-      aria-multiline={undefined}
-      autoCapitalize={undefined}
-      autoComplete={undefined}
-      autoCorrect={undefined}
       className="notranslate public-DraftEditor-content"
       contentEditable={true}
-      data-testid={undefined}
       onBeforeInput={[Function]}
       onBlur={[Function]}
       onCompositionEnd={[Function]}
@@ -165,7 +144,6 @@ exports[`DraftJS Plugins render link found in text 1`] = `
         }
       }
       suppressContentEditableWarning={true}
-      tabIndex={undefined}
     >
       <div
         data-contents="true"
@@ -216,20 +194,10 @@ exports[`DraftJS Plugins render simple text 1`] = `
     className="DraftEditor-editorContainer"
   >
     <div
-      aria-activedescendant={undefined}
-      aria-autocomplete={undefined}
-      aria-controls={undefined}
       aria-describedby="placeholder-123"
       aria-expanded={null}
-      aria-label={undefined}
-      aria-labelledby={undefined}
-      aria-multiline={undefined}
-      autoCapitalize={undefined}
-      autoComplete={undefined}
-      autoCorrect={undefined}
       className="notranslate public-DraftEditor-content"
       contentEditable={true}
-      data-testid={undefined}
       onBeforeInput={[Function]}
       onBlur={[Function]}
       onCompositionEnd={[Function]}
@@ -262,7 +230,6 @@ exports[`DraftJS Plugins render simple text 1`] = `
         }
       }
       suppressContentEditableWarning={true}
-      tabIndex={undefined}
     >
       <div
         data-contents="true"

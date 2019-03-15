@@ -17,12 +17,12 @@ describe('HTTP action component', () => {
 
     beforeEach(() => {
         component = shallow(
-           <HttpAction
-               action={action}
-               index={1}
-               updateActionArgs={() => Promise.resolve()}
-               updateActionTitle={() => Promise.resolve()}
-           />
+            <HttpAction
+                action={action}
+                index={1}
+                updateActionArgs={() => Promise.resolve()}
+                updateActionTitle={() => Promise.resolve()}
+            />
         )
     })
 

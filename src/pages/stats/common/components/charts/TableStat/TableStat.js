@@ -9,7 +9,7 @@ import {Link, withRouter} from 'react-router'
 import Tooltip from '../../../../../common/components/Tooltip'
 import {DatetimeLabel} from '../../../../../common/utils/labels'
 import {SATISFACTION_SURVEY_MAX_SCORE, SATISFACTION_SURVEY_MIN_SCORE,
-        SATISFACTION_SURVEY_MAX_COMMENT_LENGTH} from '../../../../../../config/stats'
+    SATISFACTION_SURVEY_MAX_COMMENT_LENGTH} from '../../../../../../config/stats'
 import {renderDifference, comparedPeriodString, formatCurrency} from '../../../utils'
 
 import DistributionVariantStat from '../DistributionVariantStat'
@@ -84,7 +84,7 @@ export default class TableStat extends React.Component {
             case 'satisfaction-survey-link': {
                 return <Link to={`/app/ticket/${metric.get('ticket_id')}#satisfactionSurvey`}>
                     {_truncate(metric.get('comment') || 'Go to ticket',
-                               {length: SATISFACTION_SURVEY_MAX_COMMENT_LENGTH})}
+                        {length: SATISFACTION_SURVEY_MAX_COMMENT_LENGTH})}
                 </Link>
             }
             default:
@@ -102,46 +102,46 @@ export default class TableStat extends React.Component {
                     There is no data for this period.
                 </div>
             ) :
-            <Table
-                hover
-                className={css.table}
-            >
-                <thead>
-                    <tr>
-                        {data.getIn(['axes', 'x']).map((axe, index) => {
-                            return (
-                                <th
-                                    key={index}
-                                    className={css[`${axe.get('type')}`]}
-                                >
-                                    <span className={css['cell-wrapper']}>
-                                        {axe.get('name').toUpperCase()}
-                                    </span>
-                                </th>
-                            )
-                        })}
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.get('lines').map((line, lineIdx) =>
-                        <tr key={lineIdx}>
-                            {line.map((metric, metricIdx) => {
-                                const type = data.getIn(['axes', 'x', metricIdx, 'type'])
+                <Table
+                    hover
+                    className={css.table}
+                >
+                    <thead>
+                        <tr>
+                            {data.getIn(['axes', 'x']).map((axe, index) => {
                                 return (
-                                    <td
-                                        key={metricIdx}
-                                        className={css[`${type}`]}
+                                    <th
+                                        key={index}
+                                        className={css[`${axe.get('type')}`]}
                                     >
                                         <span className={css['cell-wrapper']}>
-                                            {this._renderCell(line, metric, type, lineIdx)}
+                                            {axe.get('name').toUpperCase()}
                                         </span>
-                                    </td>
+                                    </th>
                                 )
                             })}
                         </tr>
-                    ).toList()}
-                </tbody>
-            </Table>
+                    </thead>
+                    <tbody>
+                        {data.get('lines').map((line, lineIdx) =>
+                            <tr key={lineIdx}>
+                                {line.map((metric, metricIdx) => {
+                                    const type = data.getIn(['axes', 'x', metricIdx, 'type'])
+                                    return (
+                                        <td
+                                            key={metricIdx}
+                                            className={css[`${type}`]}
+                                        >
+                                            <span className={css['cell-wrapper']}>
+                                                {this._renderCell(line, metric, type, lineIdx)}
+                                            </span>
+                                        </td>
+                                    )
+                                })}
+                            </tr>
+                        ).toList()}
+                    </tbody>
+                </Table>
         )
     }
 }

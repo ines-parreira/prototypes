@@ -120,7 +120,7 @@ export default class Search extends React.Component {
             bindKey, // eslint-disable-line
             searchDebounceTime, // eslint-disable-line
             location, // eslint-disable-line
-            ...rest,
+            ...rest
         } = this.props
 
         return (

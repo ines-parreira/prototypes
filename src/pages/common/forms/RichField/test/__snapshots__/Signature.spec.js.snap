@@ -5,19 +5,9 @@ exports[`Signature should render the signature button 1`] = `
   addSignature={[Function]}
   editorState={
     EditorState {
-      "_immutable": Object {
+      "_immutable": Immutable.Record {
         "allowUndo": true,
-        "currentContent": Object {
-          "blockMap": Object {
-            "123": Object {
-              "characterList": Array [],
-              "data": Object {},
-              "depth": 0,
-              "key": "123",
-              "text": "",
-              "type": "unstyled",
-            },
-          },
+        "currentContent": Immutable.Record {
           "entityMap": Object {
             "__add": [Function],
             "__create": [Function],
@@ -32,25 +22,35 @@ exports[`Signature should render the signature button 1`] = `
             "mergeData": [Function],
             "replaceData": [Function],
           },
-          "selectionAfter": Object {
-            "anchorKey": "123",
-            "anchorOffset": 0,
-            "focusKey": "123",
-            "focusOffset": 0,
-            "hasFocus": false,
-            "isBackward": false,
+          "blockMap": Immutable.OrderedMap {
+            "123": Immutable.Record {
+              "key": "123",
+              "type": "unstyled",
+              "text": "",
+              "characterList": Immutable.List [],
+              "depth": 0,
+              "data": Immutable.Map {},
+            },
           },
-          "selectionBefore": Object {
+          "selectionBefore": Immutable.Record {
             "anchorKey": "123",
             "anchorOffset": 0,
             "focusKey": "123",
             "focusOffset": 0,
-            "hasFocus": false,
             "isBackward": false,
+            "hasFocus": false,
+          },
+          "selectionAfter": Immutable.Record {
+            "anchorKey": "123",
+            "anchorOffset": 0,
+            "focusKey": "123",
+            "focusOffset": 0,
+            "isBackward": false,
+            "hasFocus": false,
           },
         },
         "decorator": null,
-        "directionMap": Object {
+        "directionMap": Immutable.OrderedMap {
           "123": "LTR",
         },
         "forceSelection": false,
@@ -58,39 +58,39 @@ exports[`Signature should render the signature button 1`] = `
         "inlineStyleOverride": null,
         "lastChangeType": null,
         "nativelyRenderedContent": null,
-        "redoStack": Array [],
-        "selection": Object {
+        "redoStack": Immutable.Stack [],
+        "selection": Immutable.Record {
           "anchorKey": "123",
           "anchorOffset": 0,
           "focusKey": "123",
           "focusOffset": 0,
-          "hasFocus": false,
           "isBackward": false,
+          "hasFocus": false,
         },
-        "treeMap": Object {
-          "123": Array [
-            Object {
-              "decoratorKey": null,
+        "treeMap": Immutable.OrderedMap {
+          "123": Immutable.List [
+            Immutable.Record {
+              "start": 0,
               "end": 0,
-              "leaves": Array [
-                Object {
-                  "end": 0,
+              "decoratorKey": null,
+              "leaves": Immutable.List [
+                Immutable.Record {
                   "start": 0,
+                  "end": 0,
                 },
               ],
-              "start": 0,
             },
           ],
         },
-        "undoStack": Array [],
+        "undoStack": Immutable.Stack [],
       },
     }
   }
   isDirty={false}
   signature={
     Immutable.Map {
-      text: "cheers, Steve",
-      html: "cheers, <strong>Steve</strong>",
+      "text": "cheers, Steve",
+      "html": "cheers, <strong>Steve</strong>",
     }
   }
   store={

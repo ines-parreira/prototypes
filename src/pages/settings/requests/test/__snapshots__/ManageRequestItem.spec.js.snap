@@ -6,12 +6,12 @@ exports[`ManageRequestItem component should display a selected request 1`] = `
   requests={
     Immutable.List [
       Immutable.Map {
-        id: 1,
-        name: "a",
+        "id": 1,
+        "name": "a",
       },
       Immutable.Map {
-        id: 2,
-        name: "b",
+        "id": 2,
+        "name": "b",
       },
     ]
   }
@@ -286,10 +286,7 @@ exports[`ManageRequestItem component should display a selected request 1`] = `
 
 exports[`ManageRequestItem component should display empty 1`] = `
 <ManageRequestItem
-  requests={
-    Immutable.List [
-    ]
-  }
+  requests={Immutable.List []}
 >
   <div
     className="full-width"

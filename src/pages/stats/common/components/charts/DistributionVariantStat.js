@@ -40,21 +40,21 @@ export default class DistributionVariantStat extends Component<Props> {
             },
             default: {
                 fill: (key) => <i key={key}
-                                  className={classNames('material-icons', css[`${variant}-fill`])}>star_rate</i>,
+                    className={classNames('material-icons', css[`${variant}-fill`])}>star_rate</i>,
                 empty: (key) => <i key={key}
-                                   className={classNames('material-icons', css[`${variant}-empty`])}>star_rate</i>,
+                    className={classNames('material-icons', css[`${variant}-empty`])}>star_rate</i>,
             }
         })
 
         const variantComponent = VARIANTS.get(variant, 'default')
 
         return <span className={classNames(css.distribution)}>
-                {
-                    _rangeRight(minValue, maxValue + 1).map((index) => (
-                        index <= maxValue - currentValue
-                            ? variantComponent.get('empty')(index) : variantComponent.get('fill')(index)
-                    ))
-                }
-            </span>
+            {
+                _rangeRight(minValue, maxValue + 1).map((index) => (
+                    index <= maxValue - currentValue
+                        ? variantComponent.get('empty')(index) : variantComponent.get('fill')(index)
+                ))
+            }
+        </span>
     }
 }

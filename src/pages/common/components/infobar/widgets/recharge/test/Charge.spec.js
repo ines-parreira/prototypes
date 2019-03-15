@@ -12,6 +12,10 @@ const Wrapper = index().Wrapper
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
+const windowLocation = JSON.stringify(window.location)
+delete window.location
+window.location = JSON.parse(windowLocation)
+
 describe('Charge', () => {
     describe('SubscriptionAfterTitle', () => {
         it('should return null if isEditing', () => {
@@ -277,14 +281,6 @@ describe('Charge', () => {
                 meta: {store_name: 'mystore'}
             })
         }
-
-        beforeAll(() => {
-            Object.defineProperty(window.location, 'pathname', {writable: true})
-        })
-
-        afterAll(() => {
-            Object.defineProperty(window.location, 'pathname', {writable: false})
-        })
 
         it('should not render any link because no customer hash is available', () => {
             window.location.pathname = ''

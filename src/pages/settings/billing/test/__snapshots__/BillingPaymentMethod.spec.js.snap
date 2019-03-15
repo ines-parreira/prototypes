@@ -2,14 +2,11 @@
 
 exports[`BillingPaymentMethod Shopify should render a button 1`] = `
 <BillingPaymentMethod
-  creditCard={
-    Immutable.Map {
-    }
-  }
+  creditCard={Immutable.Map {}}
   currentPlan={
     Immutable.Map {
-      amount: 12,
-      currencySign: "$",
+      "amount": 12,
+      "currencySign": "$",
     }
   }
   fetchCreditCard={[Function]}
@@ -19,7 +16,7 @@ exports[`BillingPaymentMethod Shopify should render a button 1`] = `
   shopifyBillingStatus="inactive"
   subscription={
     Immutable.Map {
-      plan: "basic-usd-1",
+      "plan": "basic-usd-1",
     }
   }
 >
@@ -172,14 +169,8 @@ exports[`BillingPaymentMethod Shopify should render a disabled button 1`] = `
 
 exports[`BillingPaymentMethod Shopify should render an active status 1`] = `
 <BillingPaymentMethod
-  creditCard={
-    Immutable.Map {
-    }
-  }
-  currentPlan={
-    Immutable.Map {
-    }
-  }
+  creditCard={Immutable.Map {}}
+  currentPlan={Immutable.Map {}}
   fetchCreditCard={[Function]}
   fetchPaymentMethod={[Function]}
   paymentIsActive={true}
@@ -187,7 +178,7 @@ exports[`BillingPaymentMethod Shopify should render an active status 1`] = `
   shopifyBillingStatus="active"
   subscription={
     Immutable.Map {
-      plan: "basic-usd-1",
+      "plan": "basic-usd-1",
     }
   }
 >
@@ -235,21 +226,15 @@ exports[`BillingPaymentMethod Shopify should render an active status 1`] = `
 
 exports[`BillingPaymentMethod Stripe should render a button 1`] = `
 <BillingPaymentMethod
-  creditCard={
-    Immutable.Map {
-    }
-  }
-  currentPlan={
-    Immutable.Map {
-    }
-  }
+  creditCard={Immutable.Map {}}
+  currentPlan={Immutable.Map {}}
   fetchCreditCard={[Function]}
   fetchPaymentMethod={[Function]}
   paymentIsActive={true}
   paymentMethod="stripe"
   subscription={
     Immutable.Map {
-      plan: "basic-usd-1",
+      "plan": "basic-usd-1",
     }
   }
 >
@@ -380,23 +365,20 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
 <BillingPaymentMethod
   creditCard={
     Immutable.Map {
-      brand: "Visa",
-      last4: 4242,
-      exp_month: 9,
-      exp_year: 2017,
+      "brand": "Visa",
+      "last4": 4242,
+      "exp_month": 9,
+      "exp_year": 2017,
     }
   }
-  currentPlan={
-    Immutable.Map {
-    }
-  }
+  currentPlan={Immutable.Map {}}
   fetchCreditCard={[Function]}
   fetchPaymentMethod={[Function]}
   paymentIsActive={true}
   paymentMethod="stripe"
   subscription={
     Immutable.Map {
-      plan: "basic-usd-1",
+      "plan": "basic-usd-1",
     }
   }
 >
@@ -621,14 +603,8 @@ exports[`BillingPaymentMethod Stripe should render a disabled button 1`] = `
 
 exports[`BillingPaymentMethod Stripe should render a loader 1`] = `
 <BillingPaymentMethod
-  creditCard={
-    Immutable.Map {
-    }
-  }
-  currentPlan={
-    Immutable.Map {
-    }
-  }
+  creditCard={Immutable.Map {}}
+  currentPlan={Immutable.Map {}}
   fetchCreditCard={[Function]}
   fetchPaymentMethod={[Function]}
   paymentIsActive={true}

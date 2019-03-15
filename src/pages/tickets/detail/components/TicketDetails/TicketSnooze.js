@@ -19,7 +19,7 @@ export default class TicketSnooze extends Component<Props> {
         return (
             <div className="d-inline-block mr-3">
                 <i id="ticket-header-snooze-icon"
-                   className="icon material-icons md-2">
+                    className="icon material-icons md-2">
                     snooze
                 </i>
                 <Tooltip

@@ -7,12 +7,12 @@ exports[`Subscription AfterTitle should display only the activate action because
       Object {
         "child": <div>
           <i
-                className="material-icons mr-2"
+            className="material-icons mr-2"
           >
-                refresh
+            refresh
           </i>
           Activate
-    </div>,
+        </div>,
         "key": "activate",
         "options": Array [
           Object {
@@ -21,12 +21,12 @@ exports[`Subscription AfterTitle should display only the activate action because
         ],
         "title": <div>
           <i
-                className="material-icons mr-2"
+            className="material-icons mr-2"
           >
-                refresh
+            refresh
           </i>
           Activate subscription
-    </div>,
+        </div>,
         "tooltip": "This will activate the subscription in Recharge.",
       },
     ]
@@ -46,12 +46,12 @@ exports[`Subscription AfterTitle should display only the cancel action because t
       Object {
         "child": <div>
           <i
-                className="material-icons mr-2"
+            className="material-icons mr-2"
           >
-                refresh
+            refresh
           </i>
           Cancel
-    </div>,
+        </div>,
         "key": "cancel",
         "options": Array [
           Object {
@@ -60,12 +60,12 @@ exports[`Subscription AfterTitle should display only the cancel action because t
         ],
         "title": <div>
           <i
-                className="material-icons mr-2"
+            className="material-icons mr-2"
           >
-                refresh
+            refresh
           </i>
           Cancel subscription
-    </div>,
+        </div>,
         "tooltip": "This will cancel the subscription in Recharge.",
       },
     ]

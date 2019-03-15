@@ -136,16 +136,16 @@ export class HTTPIntegrationEvents extends Component<Props, State> {
                         className="view-table table-integrations"
                     >
                         <thead>
-                        <tr>
-                            <th>Method</th>
-                            <th>URL</th>
-                            <th>Status code</th>
-                            <th>Sent</th>
-                            <th/>
-                        </tr>
+                            <tr>
+                                <th>Method</th>
+                                <th>URL</th>
+                                <th>Status code</th>
+                                <th>Sent</th>
+                                <th/>
+                            </tr>
                         </thead>
                         <tbody>
-                        {events.map(this._renderEvent)}
+                            {events.map(this._renderEvent)}
                         </tbody>
                     </Table>
                 }

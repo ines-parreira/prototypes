@@ -7,6 +7,10 @@ import TICKET_LANGUAGES from '../config/ticketLanguages'
 import schemasJSON from '../fixtures/openapi'
 import {ADMIN_ROLE, AGENT_ROLE, BASIC_AGENT_ROLE, LITE_AGENT_ROLE, OBSERVER_AGENT_ROLE, STAFF_ROLE} from '../config/user'
 
+const windowLocation = JSON.stringify(window.location)
+delete window.location
+window.location = JSON.parse(windowLocation)
+
 describe('global utils', () => {
     describe('formatDatetime', () => {
         /* We reset the moment language with its default value.
@@ -164,14 +168,6 @@ describe('global utils', () => {
     })
 
     describe('isCurrentlyOnTicket', () => {
-        beforeAll(() => {
-            Object.defineProperty(window.location, 'pathname', {writable: true})
-        })
-
-        afterAll(() => {
-            Object.defineProperty(window.location, 'pathname', {writable: false})
-        })
-
         it('should be true', () => {
             window.location.pathname = '/app/ticket/'
             expect(utils.isCurrentlyOnTicket()).toBe(true)

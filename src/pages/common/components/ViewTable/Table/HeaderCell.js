@@ -98,27 +98,27 @@ export default class HeaderCell extends React.Component {
                     <div className="cell-wrapper">
                         {
                             isMainField ? (
-                                    ActionsComponent ? (
-                                        <ActionsComponent
-                                            view={this.props.activeView}
-                                            selectedItemsIds={this.props.selectedItemsIds}
-                                        />
-                                    ) : null
-                                ) : (
-                                    <div
-                                        onClick={onClick}
-                                        className={classnames({
-                                            clickable: action === 'sort',
-                                        })}
-                                    >
-                                        <span>
-                                            {field.get('title')}
-                                        </span>
-                                        {
-                                            action === 'sort' && this._renderOrderIcon(fieldPath === orderBy)
-                                        }
-                                    </div>
-                                )
+                                ActionsComponent ? (
+                                    <ActionsComponent
+                                        view={this.props.activeView}
+                                        selectedItemsIds={this.props.selectedItemsIds}
+                                    />
+                                ) : null
+                            ) : (
+                                <div
+                                    onClick={onClick}
+                                    className={classnames({
+                                        clickable: action === 'sort',
+                                    })}
+                                >
+                                    <span>
+                                        {field.get('title')}
+                                    </span>
+                                    {
+                                        action === 'sort' && this._renderOrderIcon(fieldPath === orderBy)
+                                    }
+                                </div>
+                            )
                         }
                     </div>
                     {

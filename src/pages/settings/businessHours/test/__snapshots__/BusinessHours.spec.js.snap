@@ -63,9 +63,9 @@ exports[`BusinessHours component should render default values 1`] = `
               <BusinessHoursForm
                 businessHour={
                   Immutable.Map {
-                    days: "1,2,3,4,5",
-                    from_time: "09:00",
-                    to_time: "17:00",
+                    "days": "1,2,3,4,5",
+                    "from_time": "09:00",
+                    "to_time": "17:00",
                   }
                 }
                 onChange={[Function]}
@@ -154,21 +154,21 @@ exports[`BusinessHours component should render values from state 1`] = `
   <BusinessHours
     businessHoursSettings={
       Immutable.Map {
-        type: "business-hours",
-        data: Immutable.Map {
-          business_hours: Immutable.List [
+        "type": "business-hours",
+        "data": Immutable.Map {
+          "business_hours": Immutable.List [
             Immutable.Map {
-              days: "2",
-              from_time: "10:00",
-              to_time: "17:00",
+              "days": "2",
+              "from_time": "10:00",
+              "to_time": "17:00",
             },
             Immutable.Map {
-              days: "4",
-              from_time: "11:00",
-              to_time: "17:00",
+              "days": "4",
+              "from_time": "11:00",
+              "to_time": "17:00",
             },
           ],
-          timezone: "US/Pacific",
+          "timezone": "US/Pacific",
         },
       }
     }
@@ -273,9 +273,9 @@ exports[`BusinessHours component should render values from state 1`] = `
                           <BusinessHoursForm
                             businessHour={
                               Immutable.Map {
-                                days: "2",
-                                from_time: "10:00",
-                                to_time: "17:00",
+                                "days": "2",
+                                "from_time": "10:00",
+                                "to_time": "17:00",
                               }
                             }
                             onChange={[Function]}
@@ -293,21 +293,21 @@ exports[`BusinessHours component should render values from state 1`] = `
                                     Object {
                                       "label": <i>
                                         Everyday
-                                  </i>,
+                                      </i>,
                                       "text": "Everyday",
                                       "value": "1,2,3,4,5,6,7",
                                     },
                                     Object {
                                       "label": <i>
                                         Weekdays
-                                  </i>,
+                                      </i>,
                                       "text": "Weekdays",
                                       "value": "1,2,3,4,5",
                                     },
                                     Object {
                                       "label": <i>
                                         Weekend
-                                  </i>,
+                                      </i>,
                                       "text": "Weekend",
                                       "value": "6,7",
                                     },
@@ -676,9 +676,9 @@ exports[`BusinessHours component should render values from state 1`] = `
                           <BusinessHoursForm
                             businessHour={
                               Immutable.Map {
-                                days: "4",
-                                from_time: "11:00",
-                                to_time: "17:00",
+                                "days": "4",
+                                "from_time": "11:00",
+                                "to_time": "17:00",
                               }
                             }
                             onChange={[Function]}
@@ -696,21 +696,21 @@ exports[`BusinessHours component should render values from state 1`] = `
                                     Object {
                                       "label": <i>
                                         Everyday
-                                  </i>,
+                                      </i>,
                                       "text": "Everyday",
                                       "value": "1,2,3,4,5,6,7",
                                     },
                                     Object {
                                       "label": <i>
                                         Weekdays
-                                  </i>,
+                                      </i>,
                                       "text": "Weekdays",
                                       "value": "1,2,3,4,5",
                                     },
                                     Object {
                                       "label": <i>
                                         Weekend
-                                  </i>,
+                                      </i>,
                                       "text": "Weekend",
                                       "value": "6,7",
                                     },

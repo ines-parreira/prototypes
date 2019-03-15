@@ -93,13 +93,13 @@ export default class JSONBody extends React.Component<Props, State> {
                             />
                             <FormText color="muted">
                                 See full list of variables{' '}
-                                    <a
-                                        href="https://api.gorgias.io/#Customer-object"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
+                                <a
+                                    href="https://api.gorgias.io/#Customer-object"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
                                         here
-                                    </a>
+                                </a>
                             </FormText>
                         </div>
                     ) : null

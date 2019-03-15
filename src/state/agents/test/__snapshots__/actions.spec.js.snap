@@ -4,12 +4,12 @@ exports[`agents actions create agent 1`] = `
 Array [
   Object {
     "resp": Immutable.Map {
-      data: Immutable.Map {
-            name: "Alex",
-            email: "alex@gorgias.io",
-            role: "agent",
+      "data": Immutable.Map {
+        "name": "Alex",
+        "email": "alex@gorgias.io",
+        "role": "agent",
       },
-},
+    },
     "type": "CREATE_AGENT_SUCCESS",
   },
 ]
@@ -29,12 +29,12 @@ exports[`agents actions fetch agents 1`] = `
 Array [
   Object {
     "resp": Immutable.Map {
-      data: Immutable.List [
-            Immutable.Map {
-                  id: 1,
-            },
+      "data": Immutable.List [
+        Immutable.Map {
+          "id": 1,
+        },
       ],
-},
+    },
     "type": "FETCH_AGENTS_PAGINATION_SUCCESS",
   },
 ]
@@ -54,13 +54,13 @@ exports[`agents actions update agent 1`] = `
 Array [
   Object {
     "resp": Immutable.Map {
-      data: Immutable.Map {
-            id: 2,
-            name: "Alex",
-            email: "alex@gorgias.io",
-            role: "agent",
+      "data": Immutable.Map {
+        "id": 2,
+        "name": "Alex",
+        "email": "alex@gorgias.io",
+        "role": "agent",
       },
-},
+    },
     "type": "UPDATE_AGENT_SUCCESS",
   },
 ]

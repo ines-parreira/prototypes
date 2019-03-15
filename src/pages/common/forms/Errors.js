@@ -16,7 +16,7 @@ export default class Errors extends React.Component {
         const {
             children,
             tag: Tag,
-            ...rest,
+            ...rest
         } = this.props
 
         return (

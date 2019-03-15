@@ -84,31 +84,31 @@ export default class FacebookCarousel extends React.Component<Props> {
                                                         vertical
                                                         className={css.buttons}
                                                     >
-                                                    {
-                                                        buttons.map((button, idx) => {
-                                                            if (button.type === 'web_url') {
-                                                                return (
-                                                                    <Button
-                                                                        key={idx}
-                                                                        tag="a"
-                                                                        href={button.url}
-                                                                        target="_blank"
-                                                                    >
-                                                                        {button.title}
-                                                                    </Button>
-                                                                )
-                                                            } else if (button.type === 'element_share') {
-                                                                return (
-                                                                    <Button
-                                                                        key={idx}
-                                                                        disabled
-                                                                    >
+                                                        {
+                                                            buttons.map((button, idx) => {
+                                                                if (button.type === 'web_url') {
+                                                                    return (
+                                                                        <Button
+                                                                            key={idx}
+                                                                            tag="a"
+                                                                            href={button.url}
+                                                                            target="_blank"
+                                                                        >
+                                                                            {button.title}
+                                                                        </Button>
+                                                                    )
+                                                                } else if (button.type === 'element_share') {
+                                                                    return (
+                                                                        <Button
+                                                                            key={idx}
+                                                                            disabled
+                                                                        >
                                                                         Share
-                                                                    </Button>
-                                                                )
-                                                            }
-                                                        })
-                                                    }
+                                                                        </Button>
+                                                                    )
+                                                                }
+                                                            })
+                                                        }
                                                     </ButtonGroup>
                                                 </Card>
                                             </div>

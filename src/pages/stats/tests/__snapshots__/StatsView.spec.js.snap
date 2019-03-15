@@ -2,37 +2,21 @@
 
 exports[`StatsView render satisfaction surveys should render current survey stats 1`] = `
 <Connect(StatsView)
-  agents={
-    Immutable.List [
-    ]
-  }
-  channels={
-    Immutable.List [
-    ]
-  }
+  agents={Immutable.List []}
+  channels={Immutable.List []}
   config={
     Immutable.Map {
-      name: "Satisfaction",
-      stats: Immutable.List [
-      ],
+      "name": "Satisfaction",
+      "stats": Immutable.List [],
     }
   }
-  fetchStat={[Function]}
-  fieldEnumSearch={[Function]}
-  filters={
-    Immutable.List [
-    ]
-  }
-  meta={
-    Immutable.List [
-    ]
-  }
-  setFilters={[Function]}
-  setMeta={[Function]}
-  stats={
-    Immutable.List [
-    ]
-  }
+  fetchStat={[MockFunction]}
+  fieldEnumSearch={[MockFunction]}
+  filters={Immutable.List []}
+  meta={Immutable.List []}
+  setFilters={[MockFunction]}
+  setMeta={[MockFunction]}
+  stats={Immutable.List []}
   store={
     Object {
       "clearActions": [Function],
@@ -43,57 +27,37 @@ exports[`StatsView render satisfaction surveys should render current survey stat
       "subscribe": [Function],
     }
   }
-  tags={
-    Immutable.List [
-    ]
-  }
+  tags={Immutable.List []}
 >
   <StatsView
-    agents={
-      Immutable.List [
-      ]
-    }
-    channels={
-      Immutable.List [
-      ]
-    }
+    agents={Immutable.List []}
+    channels={Immutable.List []}
     config={
       Immutable.Map {
-        name: "Satisfaction",
-        stats: Immutable.List [
-        ],
+        "name": "Satisfaction",
+        "stats": Immutable.List [],
       }
     }
     currentAccount={
       Immutable.Map {
-        extra_features: Immutable.List [
+        "extra_features": Immutable.List [
           "satisfaction-surveys",
         ],
-        settings: Immutable.List [
+        "settings": Immutable.List [
           Immutable.Map {
-            data: Immutable.Map {
-            },
-            type: "satisfaction-surveys",
+            "data": Immutable.Map {},
+            "type": "satisfaction-surveys",
           },
         ],
       }
     }
-    fetchStat={[Function]}
+    fetchStat={[MockFunction]}
     fieldEnumSearch={[Function]}
-    filters={
-      Immutable.List [
-      ]
-    }
-    meta={
-      Immutable.List [
-      ]
-    }
-    setFilters={[Function]}
-    setMeta={[Function]}
-    stats={
-      Immutable.List [
-      ]
-    }
+    filters={Immutable.List []}
+    meta={Immutable.List []}
+    setFilters={[MockFunction]}
+    setMeta={[MockFunction]}
+    stats={Immutable.List []}
     store={
       Object {
         "clearActions": [Function],
@@ -104,10 +68,7 @@ exports[`StatsView render satisfaction surveys should render current survey stat
         "subscribe": [Function],
       }
     }
-    tags={
-      Immutable.List [
-      ]
-    }
+    tags={Immutable.List []}
   >
     <div
       className="stats full-width"
@@ -158,37 +119,21 @@ exports[`StatsView render satisfaction surveys should render current survey stat
 
 exports[`StatsView render satisfaction surveys should render the upgrade to pro component 1`] = `
 <Connect(StatsView)
-  agents={
-    Immutable.List [
-    ]
-  }
-  channels={
-    Immutable.List [
-    ]
-  }
+  agents={Immutable.List []}
+  channels={Immutable.List []}
   config={
     Immutable.Map {
-      name: "Satisfaction",
-      stats: Immutable.List [
-      ],
+      "name": "Satisfaction",
+      "stats": Immutable.List [],
     }
   }
-  fetchStat={[Function]}
-  fieldEnumSearch={[Function]}
-  filters={
-    Immutable.List [
-    ]
-  }
-  meta={
-    Immutable.List [
-    ]
-  }
-  setFilters={[Function]}
-  setMeta={[Function]}
-  stats={
-    Immutable.List [
-    ]
-  }
+  fetchStat={[MockFunction]}
+  fieldEnumSearch={[MockFunction]}
+  filters={Immutable.List []}
+  meta={Immutable.List []}
+  setFilters={[MockFunction]}
+  setMeta={[MockFunction]}
+  stats={Immutable.List []}
   store={
     Object {
       "clearActions": [Function],
@@ -199,56 +144,35 @@ exports[`StatsView render satisfaction surveys should render the upgrade to pro 
       "subscribe": [Function],
     }
   }
-  tags={
-    Immutable.List [
-    ]
-  }
+  tags={Immutable.List []}
 >
   <StatsView
-    agents={
-      Immutable.List [
-      ]
-    }
-    channels={
-      Immutable.List [
-      ]
-    }
+    agents={Immutable.List []}
+    channels={Immutable.List []}
     config={
       Immutable.Map {
-        name: "Satisfaction",
-        stats: Immutable.List [
-        ],
+        "name": "Satisfaction",
+        "stats": Immutable.List [],
       }
     }
     currentAccount={
       Immutable.Map {
-        extra_features: Immutable.List [
-        ],
-        settings: Immutable.List [
+        "extra_features": Immutable.List [],
+        "settings": Immutable.List [
           Immutable.Map {
-            data: Immutable.Map {
-            },
-            type: "satisfaction-surveys",
+            "data": Immutable.Map {},
+            "type": "satisfaction-surveys",
           },
         ],
       }
     }
-    fetchStat={[Function]}
+    fetchStat={[MockFunction]}
     fieldEnumSearch={[Function]}
-    filters={
-      Immutable.List [
-      ]
-    }
-    meta={
-      Immutable.List [
-      ]
-    }
-    setFilters={[Function]}
-    setMeta={[Function]}
-    stats={
-      Immutable.List [
-      ]
-    }
+    filters={Immutable.List []}
+    meta={Immutable.List []}
+    setFilters={[MockFunction]}
+    setMeta={[MockFunction]}
+    stats={Immutable.List []}
     store={
       Object {
         "clearActions": [Function],
@@ -259,10 +183,7 @@ exports[`StatsView render satisfaction surveys should render the upgrade to pro 
         "subscribe": [Function],
       }
     }
-    tags={
-      Immutable.List [
-      ]
-    }
+    tags={Immutable.List []}
   >
     <div
       className="stats full-width"

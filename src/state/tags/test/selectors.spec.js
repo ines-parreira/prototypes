@@ -42,7 +42,7 @@ describe('tags selectors', () => {
                         selectAll: true
                     }
                 })  // We need to do that separately, else JS transforms the `int` key into a string
-                    .setIn(['meta', selectedTagId], fromJS({selected: true}))
+                .setIn(['meta', selectedTagId], fromJS({selected: true}))
         }
     })
 

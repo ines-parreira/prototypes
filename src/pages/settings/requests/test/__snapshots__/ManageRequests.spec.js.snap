@@ -3,10 +3,7 @@
 exports[`ManageRequests component should display loader 1`] = `
 <ManageRequests
   fetchRequests={[Function]}
-  requests={
-    Immutable.Map {
-    }
-  }
+  requests={Immutable.Map {}}
 >
   <Loader
     inline={false}
@@ -38,12 +35,12 @@ exports[`ManageRequests component should display requests 1`] = `
   requests={
     Immutable.List [
       Immutable.Map {
-        id: 123,
-        name: "missing items",
+        "id": 123,
+        "name": "missing items",
       },
       Immutable.Map {
-        id: 125,
-        name: "order status",
+        "id": 125,
+        "name": "order status",
       },
     ]
   }
@@ -419,10 +416,7 @@ exports[`ManageRequests component should display requests 1`] = `
 exports[`ManageRequests component should load with empty props 1`] = `
 <ManageRequests
   fetchRequests={[Function]}
-  requests={
-    Immutable.Map {
-    }
-  }
+  requests={Immutable.Map {}}
 >
   <div
     className="full-width"

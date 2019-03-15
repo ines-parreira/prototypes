@@ -2,25 +2,25 @@
 
 exports[`billing reducers fetch credit card 1`] = `
 Immutable.Map {
-  creditCard: Immutable.Map {
-    brand: "visa",
-    last4: "4242",
-    exp_month: 12,
-    exp_year: 35,
+  "creditCard": Immutable.Map {
+    "brand": "visa",
+    "last4": "4242",
+    "exp_month": 12,
+    "exp_year": 35,
   },
 }
 `;
 
 exports[`billing reducers fetch current usage 1`] = `
 Immutable.Map {
-  currentUsage: Immutable.Map {
-    data: Immutable.Map {
-      cost: 12.35,
-      ticket: 12323,
+  "currentUsage": Immutable.Map {
+    "data": Immutable.Map {
+      "cost": 12.35,
+      "ticket": 12323,
     },
-    meta: Immutable.Map {
-      startDate: "2016-11-13T18:30:19+00:00",
-      endDate: "2016-12-13T18:30:19+00:00",
+    "meta": Immutable.Map {
+      "startDate": "2016-11-13T18:30:19+00:00",
+      "endDate": "2016-12-13T18:30:19+00:00",
     },
   },
 }
@@ -28,13 +28,12 @@ Immutable.Map {
 
 exports[`billing reducers fetch invoices 1`] = `
 Immutable.Map {
-  invoices: Immutable.List [
+  "invoices": Immutable.List [
     Immutable.Map {
-      metadata: Immutable.Map {
-      },
-      paid: true,
-      date: "2016-11-13T18:30:19+00:00",
-      amount_due: 1234,
+      "metadata": Immutable.Map {},
+      "paid": true,
+      "date": "2016-11-13T18:30:19+00:00",
+      "amount_due": 1234,
     },
   ],
 }
@@ -42,20 +41,20 @@ Immutable.Map {
 
 exports[`billing reducers update credit card 1`] = `
 Immutable.Map {
-  creditCard: Immutable.Map {
-    brand: "visa",
-    last4: "4242",
-    exp_month: 12,
-    exp_year: 35,
+  "creditCard": Immutable.Map {
+    "brand": "visa",
+    "last4": "4242",
+    "exp_month": 12,
+    "exp_year": 35,
   },
 }
 `;
 
 exports[`billing reducers update subscription 1`] = `
 Immutable.Map {
-  currentUsage: Immutable.Map {
-    data: Immutable.Map {
-      plan: "plan",
+  "currentUsage": Immutable.Map {
+    "data": Immutable.Map {
+      "plan": "plan",
     },
   },
 }

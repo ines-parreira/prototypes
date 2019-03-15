@@ -209,36 +209,36 @@ export default class FacebookIntegrationDetail extends React.Component {
                         {
                             !isDisabled && (
                                 <span>
-                                <Button
-                                    type="submit"
-                                    color="warning"
-                                    outline
-                                    id="disable-integration-button"
-                                    onClick={this._toggleDisableConfirmation}
-                                >
+                                    <Button
+                                        type="submit"
+                                        color="warning"
+                                        outline
+                                        id="disable-integration-button"
+                                        onClick={this._toggleDisableConfirmation}
+                                    >
                                     Disable this page
-                                </Button>
-                                <Popover
-                                    placement="bottom"
-                                    isOpen={this.state.askDisableConfirmation}
-                                    target="disable-integration-button"
-                                    toggle={this._toggleDisableConfirmation}
-                                >
-                                    <PopoverHeader>Are you sure?</PopoverHeader>
-                                    <PopoverBody>
-                                        <p>
+                                    </Button>
+                                    <Popover
+                                        placement="bottom"
+                                        isOpen={this.state.askDisableConfirmation}
+                                        target="disable-integration-button"
+                                        toggle={this._toggleDisableConfirmation}
+                                    >
+                                        <PopoverHeader>Are you sure?</PopoverHeader>
+                                        <PopoverBody>
+                                            <p>
                                             This page will not be synchronised with Gorgias anymore.
-                                        </p>
-                                        <Button
-                                            type="submit"
-                                            color="success"
-                                            onClick={this._disable}
-                                        >
+                                            </p>
+                                            <Button
+                                                type="submit"
+                                                color="success"
+                                                onClick={this._disable}
+                                            >
                                             Confirm
-                                        </Button>
-                                    </PopoverBody>
-                                </Popover>
-                            </span>
+                                            </Button>
+                                        </PopoverBody>
+                                    </Popover>
+                                </span>
                             )
                         }
                         <ConfirmButton

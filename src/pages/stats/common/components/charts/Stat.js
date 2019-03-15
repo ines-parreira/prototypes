@@ -106,7 +106,7 @@ export class Stat extends Component<Props, State> {
                                         {helpText}
                                     </Tooltip>
                                 </span>
-                            : null}
+                                : null}
                         </h5>
                         {downloadable && !isLoading ?
                             <Button

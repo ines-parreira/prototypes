@@ -2,11 +2,11 @@
 
 exports[`reducers stats receive data 1`] = `
 Immutable.Map {
-  0: 1,
-  1: 2,
-  2: 3,
-  meta: Immutable.Map {
-    start_datetime: "now",
+  "0": 1,
+  "1": 2,
+  "2": 3,
+  "meta": Immutable.Map {
+    "start_datetime": "now",
   },
 }
 `;

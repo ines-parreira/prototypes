@@ -14,19 +14,18 @@ exports[`SatisfactionSurveyView render should render current survey settings for
       "subscribe": [Function],
     }
   }
-  submitSetting={[Function]}
+  submitSetting={[MockFunction]}
 >
   <SatisfactionSurveyView
     currentAccount={
       Immutable.Map {
-        extra_features: Immutable.List [
+        "extra_features": Immutable.List [
           "satisfaction-surveys",
         ],
-        settings: Immutable.List [
+        "settings": Immutable.List [
           Immutable.Map {
-            data: Immutable.Map {
-            },
-            type: "satisfaction-surveys",
+            "data": Immutable.Map {},
+            "type": "satisfaction-surveys",
           },
         ],
       }
@@ -44,9 +43,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
     submitSetting={[Function]}
     surveysSettings={
       Immutable.Map {
-        data: Immutable.Map {
-        },
-        type: "satisfaction-surveys",
+        "data": Immutable.Map {},
+        "type": "satisfaction-surveys",
       }
     }
   >
@@ -753,19 +751,9 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                       allowExternalChanges={true}
                                       editorState={
                                         EditorState {
-                                          "_immutable": Object {
+                                          "_immutable": Immutable.Record {
                                             "allowUndo": true,
-                                            "currentContent": Object {
-                                              "blockMap": Object {
-                                                "someRandomKey": Object {
-                                                  "characterList": Array [],
-                                                  "data": Object {},
-                                                  "depth": 0,
-                                                  "key": "someRandomKey",
-                                                  "text": "",
-                                                  "type": "unstyled",
-                                                },
-                                              },
+                                            "currentContent": Immutable.Record {
                                               "entityMap": Object {
                                                 "__add": [Function],
                                                 "__create": [Function],
@@ -780,52 +768,62 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                 "mergeData": [Function],
                                                 "replaceData": [Function],
                                               },
-                                              "selectionAfter": Object {
-                                                "anchorKey": "someRandomKey",
-                                                "anchorOffset": 0,
-                                                "focusKey": "someRandomKey",
-                                                "focusOffset": 0,
-                                                "hasFocus": false,
-                                                "isBackward": false,
+                                              "blockMap": Immutable.OrderedMap {
+                                                "someRandomKey": Immutable.Record {
+                                                  "key": "someRandomKey",
+                                                  "type": "unstyled",
+                                                  "text": "",
+                                                  "characterList": Immutable.List [],
+                                                  "depth": 0,
+                                                  "data": Immutable.Map {},
+                                                },
                                               },
-                                              "selectionBefore": Object {
+                                              "selectionBefore": Immutable.Record {
                                                 "anchorKey": "someRandomKey",
                                                 "anchorOffset": 0,
                                                 "focusKey": "someRandomKey",
                                                 "focusOffset": 0,
-                                                "hasFocus": true,
                                                 "isBackward": false,
+                                                "hasFocus": true,
+                                              },
+                                              "selectionAfter": Immutable.Record {
+                                                "anchorKey": "someRandomKey",
+                                                "anchorOffset": 0,
+                                                "focusKey": "someRandomKey",
+                                                "focusOffset": 0,
+                                                "isBackward": false,
+                                                "hasFocus": false,
                                               },
                                             },
                                             "decorator": MultiDecorator {
                                               "decorators": Immutable.List [
                                                 CompositeDraftDecorator {
-                                                        "_decorators": Array [
-                                                          Object {
-                                                            "component": [Function],
-                                                            "strategy": [Function],
-                                                          },
-                                                          Object {
-                                                            "component": [Function],
-                                                            "strategy": [Function],
-                                                          },
-                                                          Object {
-                                                            "component": [Function],
-                                                            "strategy": [Function],
-                                                          },
-                                                          Object {
-                                                            "component": [Function],
-                                                            "strategy": [Function],
-                                                          },
-                                                          Object {
-                                                            "component": [Function],
-                                                            "strategy": [Function],
-                                                          },
-                                                        ],
-                                                      },
-                                        ],
+                                                  "_decorators": Array [
+                                                    Object {
+                                                      "component": [Function],
+                                                      "strategy": [Function],
+                                                    },
+                                                    Object {
+                                                      "component": [Function],
+                                                      "strategy": [Function],
+                                                    },
+                                                    Object {
+                                                      "component": [Function],
+                                                      "strategy": [Function],
+                                                    },
+                                                    Object {
+                                                      "component": [Function],
+                                                      "strategy": [Function],
+                                                    },
+                                                    Object {
+                                                      "component": [Function],
+                                                      "strategy": [Function],
+                                                    },
+                                                  ],
+                                                },
+                                              ],
                                             },
-                                            "directionMap": Object {
+                                            "directionMap": Immutable.OrderedMap {
                                               "someRandomKey": "LTR",
                                             },
                                             "forceSelection": false,
@@ -833,42 +831,32 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                             "inlineStyleOverride": null,
                                             "lastChangeType": undefined,
                                             "nativelyRenderedContent": null,
-                                            "redoStack": Array [],
-                                            "selection": Object {
+                                            "redoStack": Immutable.Stack [],
+                                            "selection": Immutable.Record {
                                               "anchorKey": "someRandomKey",
                                               "anchorOffset": 0,
                                               "focusKey": "someRandomKey",
                                               "focusOffset": 0,
-                                              "hasFocus": false,
                                               "isBackward": false,
+                                              "hasFocus": false,
                                             },
-                                            "treeMap": Object {
-                                              "someRandomKey": Array [
-                                                Object {
-                                                  "decoratorKey": null,
+                                            "treeMap": Immutable.OrderedMap {
+                                              "someRandomKey": Immutable.List [
+                                                Immutable.Record {
+                                                  "start": 0,
                                                   "end": 0,
-                                                  "leaves": Array [
-                                                    Object {
-                                                      "end": 0,
+                                                  "decoratorKey": null,
+                                                  "leaves": Immutable.List [
+                                                    Immutable.Record {
                                                       "start": 0,
+                                                      "end": 0,
                                                     },
                                                   ],
-                                                  "start": 0,
                                                 },
                                               ],
                                             },
-                                            "undoStack": Array [
-                                              Object {
-                                                "blockMap": Object {
-                                                  "someRandomKey": Object {
-                                                    "characterList": Array [],
-                                                    "data": Object {},
-                                                    "depth": 0,
-                                                    "key": "someRandomKey",
-                                                    "text": "",
-                                                    "type": "unstyled",
-                                                  },
-                                                },
+                                            "undoStack": Immutable.Stack [
+                                              Immutable.Record {
                                                 "entityMap": Object {
                                                   "__add": [Function],
                                                   "__create": [Function],
@@ -883,21 +871,31 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                   "mergeData": [Function],
                                                   "replaceData": [Function],
                                                 },
-                                                "selectionAfter": Object {
-                                                  "anchorKey": "someRandomKey",
-                                                  "anchorOffset": 0,
-                                                  "focusKey": "someRandomKey",
-                                                  "focusOffset": 0,
-                                                  "hasFocus": false,
-                                                  "isBackward": false,
+                                                "blockMap": Immutable.OrderedMap {
+                                                  "someRandomKey": Immutable.Record {
+                                                    "key": "someRandomKey",
+                                                    "type": "unstyled",
+                                                    "text": "",
+                                                    "characterList": Immutable.List [],
+                                                    "depth": 0,
+                                                    "data": Immutable.Map {},
+                                                  },
                                                 },
-                                                "selectionBefore": Object {
+                                                "selectionBefore": Immutable.Record {
                                                   "anchorKey": "someRandomKey",
                                                   "anchorOffset": 0,
                                                   "focusKey": "someRandomKey",
                                                   "focusOffset": 0,
-                                                  "hasFocus": false,
                                                   "isBackward": false,
+                                                  "hasFocus": false,
+                                                },
+                                                "selectionAfter": Immutable.Record {
+                                                  "anchorKey": "someRandomKey",
+                                                  "anchorOffset": 0,
+                                                  "focusKey": "someRandomKey",
+                                                  "focusOffset": 0,
+                                                  "isBackward": false,
+                                                  "hasFocus": false,
                                                 },
                                               },
                                             ],
@@ -922,19 +920,9 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                         createToolbarPlugin={[Function]}
                                         editorState={
                                           EditorState {
-                                            "_immutable": Object {
+                                            "_immutable": Immutable.Record {
                                               "allowUndo": true,
-                                              "currentContent": Object {
-                                                "blockMap": Object {
-                                                  "someRandomKey": Object {
-                                                    "characterList": Array [],
-                                                    "data": Object {},
-                                                    "depth": 0,
-                                                    "key": "someRandomKey",
-                                                    "text": "",
-                                                    "type": "unstyled",
-                                                  },
-                                                },
+                                              "currentContent": Immutable.Record {
                                                 "entityMap": Object {
                                                   "__add": [Function],
                                                   "__create": [Function],
@@ -949,52 +937,62 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                   "mergeData": [Function],
                                                   "replaceData": [Function],
                                                 },
-                                                "selectionAfter": Object {
-                                                  "anchorKey": "someRandomKey",
-                                                  "anchorOffset": 0,
-                                                  "focusKey": "someRandomKey",
-                                                  "focusOffset": 0,
-                                                  "hasFocus": false,
-                                                  "isBackward": false,
+                                                "blockMap": Immutable.OrderedMap {
+                                                  "someRandomKey": Immutable.Record {
+                                                    "key": "someRandomKey",
+                                                    "type": "unstyled",
+                                                    "text": "",
+                                                    "characterList": Immutable.List [],
+                                                    "depth": 0,
+                                                    "data": Immutable.Map {},
+                                                  },
                                                 },
-                                                "selectionBefore": Object {
+                                                "selectionBefore": Immutable.Record {
                                                   "anchorKey": "someRandomKey",
                                                   "anchorOffset": 0,
                                                   "focusKey": "someRandomKey",
                                                   "focusOffset": 0,
-                                                  "hasFocus": true,
                                                   "isBackward": false,
+                                                  "hasFocus": true,
+                                                },
+                                                "selectionAfter": Immutable.Record {
+                                                  "anchorKey": "someRandomKey",
+                                                  "anchorOffset": 0,
+                                                  "focusKey": "someRandomKey",
+                                                  "focusOffset": 0,
+                                                  "isBackward": false,
+                                                  "hasFocus": false,
                                                 },
                                               },
                                               "decorator": MultiDecorator {
                                                 "decorators": Immutable.List [
                                                   CompositeDraftDecorator {
-                                                          "_decorators": Array [
-                                                            Object {
-                                                              "component": [Function],
-                                                              "strategy": [Function],
-                                                            },
-                                                            Object {
-                                                              "component": [Function],
-                                                              "strategy": [Function],
-                                                            },
-                                                            Object {
-                                                              "component": [Function],
-                                                              "strategy": [Function],
-                                                            },
-                                                            Object {
-                                                              "component": [Function],
-                                                              "strategy": [Function],
-                                                            },
-                                                            Object {
-                                                              "component": [Function],
-                                                              "strategy": [Function],
-                                                            },
-                                                          ],
-                                                        },
-                                          ],
+                                                    "_decorators": Array [
+                                                      Object {
+                                                        "component": [Function],
+                                                        "strategy": [Function],
+                                                      },
+                                                      Object {
+                                                        "component": [Function],
+                                                        "strategy": [Function],
+                                                      },
+                                                      Object {
+                                                        "component": [Function],
+                                                        "strategy": [Function],
+                                                      },
+                                                      Object {
+                                                        "component": [Function],
+                                                        "strategy": [Function],
+                                                      },
+                                                      Object {
+                                                        "component": [Function],
+                                                        "strategy": [Function],
+                                                      },
+                                                    ],
+                                                  },
+                                                ],
                                               },
-                                              "directionMap": Object {
+                                              "directionMap": Immutable.OrderedMap {
                                                 "someRandomKey": "LTR",
                                               },
                                               "forceSelection": false,
@@ -1002,42 +1000,32 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               "inlineStyleOverride": null,
                                               "lastChangeType": undefined,
                                               "nativelyRenderedContent": null,
-                                              "redoStack": Array [],
-                                              "selection": Object {
+                                              "redoStack": Immutable.Stack [],
+                                              "selection": Immutable.Record {
                                                 "anchorKey": "someRandomKey",
                                                 "anchorOffset": 0,
                                                 "focusKey": "someRandomKey",
                                                 "focusOffset": 0,
-                                                "hasFocus": false,
                                                 "isBackward": false,
+                                                "hasFocus": false,
                                               },
-                                              "treeMap": Object {
-                                                "someRandomKey": Array [
-                                                  Object {
-                                                    "decoratorKey": null,
+                                              "treeMap": Immutable.OrderedMap {
+                                                "someRandomKey": Immutable.List [
+                                                  Immutable.Record {
+                                                    "start": 0,
                                                     "end": 0,
-                                                    "leaves": Array [
-                                                      Object {
-                                                        "end": 0,
+                                                    "decoratorKey": null,
+                                                    "leaves": Immutable.List [
+                                                      Immutable.Record {
                                                         "start": 0,
+                                                        "end": 0,
                                                       },
                                                     ],
-                                                    "start": 0,
                                                   },
                                                 ],
                                               },
-                                              "undoStack": Array [
-                                                Object {
-                                                  "blockMap": Object {
-                                                    "someRandomKey": Object {
-                                                      "characterList": Array [],
-                                                      "data": Object {},
-                                                      "depth": 0,
-                                                      "key": "someRandomKey",
-                                                      "text": "",
-                                                      "type": "unstyled",
-                                                    },
-                                                  },
+                                              "undoStack": Immutable.Stack [
+                                                Immutable.Record {
                                                   "entityMap": Object {
                                                     "__add": [Function],
                                                     "__create": [Function],
@@ -1052,21 +1040,31 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                     "mergeData": [Function],
                                                     "replaceData": [Function],
                                                   },
-                                                  "selectionAfter": Object {
-                                                    "anchorKey": "someRandomKey",
-                                                    "anchorOffset": 0,
-                                                    "focusKey": "someRandomKey",
-                                                    "focusOffset": 0,
-                                                    "hasFocus": false,
-                                                    "isBackward": false,
+                                                  "blockMap": Immutable.OrderedMap {
+                                                    "someRandomKey": Immutable.Record {
+                                                      "key": "someRandomKey",
+                                                      "type": "unstyled",
+                                                      "text": "",
+                                                      "characterList": Immutable.List [],
+                                                      "depth": 0,
+                                                      "data": Immutable.Map {},
+                                                    },
                                                   },
-                                                  "selectionBefore": Object {
+                                                  "selectionBefore": Immutable.Record {
                                                     "anchorKey": "someRandomKey",
                                                     "anchorOffset": 0,
                                                     "focusKey": "someRandomKey",
                                                     "focusOffset": 0,
-                                                    "hasFocus": false,
                                                     "isBackward": false,
+                                                    "hasFocus": false,
+                                                  },
+                                                  "selectionAfter": Immutable.Record {
+                                                    "anchorKey": "someRandomKey",
+                                                    "anchorOffset": 0,
+                                                    "focusKey": "someRandomKey",
+                                                    "focusOffset": 0,
+                                                    "isBackward": false,
+                                                    "hasFocus": false,
                                                   },
                                                 },
                                               ],
@@ -1101,19 +1099,9 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                           createToolbarPlugin={[Function]}
                                           editorState={
                                             EditorState {
-                                              "_immutable": Object {
+                                              "_immutable": Immutable.Record {
                                                 "allowUndo": true,
-                                                "currentContent": Object {
-                                                  "blockMap": Object {
-                                                    "someRandomKey": Object {
-                                                      "characterList": Array [],
-                                                      "data": Object {},
-                                                      "depth": 0,
-                                                      "key": "someRandomKey",
-                                                      "text": "",
-                                                      "type": "unstyled",
-                                                    },
-                                                  },
+                                                "currentContent": Immutable.Record {
                                                   "entityMap": Object {
                                                     "__add": [Function],
                                                     "__create": [Function],
@@ -1128,52 +1116,62 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                     "mergeData": [Function],
                                                     "replaceData": [Function],
                                                   },
-                                                  "selectionAfter": Object {
-                                                    "anchorKey": "someRandomKey",
-                                                    "anchorOffset": 0,
-                                                    "focusKey": "someRandomKey",
-                                                    "focusOffset": 0,
-                                                    "hasFocus": false,
-                                                    "isBackward": false,
+                                                  "blockMap": Immutable.OrderedMap {
+                                                    "someRandomKey": Immutable.Record {
+                                                      "key": "someRandomKey",
+                                                      "type": "unstyled",
+                                                      "text": "",
+                                                      "characterList": Immutable.List [],
+                                                      "depth": 0,
+                                                      "data": Immutable.Map {},
+                                                    },
                                                   },
-                                                  "selectionBefore": Object {
+                                                  "selectionBefore": Immutable.Record {
                                                     "anchorKey": "someRandomKey",
                                                     "anchorOffset": 0,
                                                     "focusKey": "someRandomKey",
                                                     "focusOffset": 0,
-                                                    "hasFocus": true,
                                                     "isBackward": false,
+                                                    "hasFocus": true,
+                                                  },
+                                                  "selectionAfter": Immutable.Record {
+                                                    "anchorKey": "someRandomKey",
+                                                    "anchorOffset": 0,
+                                                    "focusKey": "someRandomKey",
+                                                    "focusOffset": 0,
+                                                    "isBackward": false,
+                                                    "hasFocus": false,
                                                   },
                                                 },
                                                 "decorator": MultiDecorator {
                                                   "decorators": Immutable.List [
                                                     CompositeDraftDecorator {
-                                                            "_decorators": Array [
-                                                              Object {
-                                                                "component": [Function],
-                                                                "strategy": [Function],
-                                                              },
-                                                              Object {
-                                                                "component": [Function],
-                                                                "strategy": [Function],
-                                                              },
-                                                              Object {
-                                                                "component": [Function],
-                                                                "strategy": [Function],
-                                                              },
-                                                              Object {
-                                                                "component": [Function],
-                                                                "strategy": [Function],
-                                                              },
-                                                              Object {
-                                                                "component": [Function],
-                                                                "strategy": [Function],
-                                                              },
-                                                            ],
-                                                          },
-                                            ],
+                                                      "_decorators": Array [
+                                                        Object {
+                                                          "component": [Function],
+                                                          "strategy": [Function],
+                                                        },
+                                                        Object {
+                                                          "component": [Function],
+                                                          "strategy": [Function],
+                                                        },
+                                                        Object {
+                                                          "component": [Function],
+                                                          "strategy": [Function],
+                                                        },
+                                                        Object {
+                                                          "component": [Function],
+                                                          "strategy": [Function],
+                                                        },
+                                                        Object {
+                                                          "component": [Function],
+                                                          "strategy": [Function],
+                                                        },
+                                                      ],
+                                                    },
+                                                  ],
                                                 },
-                                                "directionMap": Object {
+                                                "directionMap": Immutable.OrderedMap {
                                                   "someRandomKey": "LTR",
                                                 },
                                                 "forceSelection": false,
@@ -1181,42 +1179,32 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                 "inlineStyleOverride": null,
                                                 "lastChangeType": undefined,
                                                 "nativelyRenderedContent": null,
-                                                "redoStack": Array [],
-                                                "selection": Object {
+                                                "redoStack": Immutable.Stack [],
+                                                "selection": Immutable.Record {
                                                   "anchorKey": "someRandomKey",
                                                   "anchorOffset": 0,
                                                   "focusKey": "someRandomKey",
                                                   "focusOffset": 0,
-                                                  "hasFocus": false,
                                                   "isBackward": false,
+                                                  "hasFocus": false,
                                                 },
-                                                "treeMap": Object {
-                                                  "someRandomKey": Array [
-                                                    Object {
-                                                      "decoratorKey": null,
+                                                "treeMap": Immutable.OrderedMap {
+                                                  "someRandomKey": Immutable.List [
+                                                    Immutable.Record {
+                                                      "start": 0,
                                                       "end": 0,
-                                                      "leaves": Array [
-                                                        Object {
-                                                          "end": 0,
+                                                      "decoratorKey": null,
+                                                      "leaves": Immutable.List [
+                                                        Immutable.Record {
                                                           "start": 0,
+                                                          "end": 0,
                                                         },
                                                       ],
-                                                      "start": 0,
                                                     },
                                                   ],
                                                 },
-                                                "undoStack": Array [
-                                                  Object {
-                                                    "blockMap": Object {
-                                                      "someRandomKey": Object {
-                                                        "characterList": Array [],
-                                                        "data": Object {},
-                                                        "depth": 0,
-                                                        "key": "someRandomKey",
-                                                        "text": "",
-                                                        "type": "unstyled",
-                                                      },
-                                                    },
+                                                "undoStack": Immutable.Stack [
+                                                  Immutable.Record {
                                                     "entityMap": Object {
                                                       "__add": [Function],
                                                       "__create": [Function],
@@ -1231,21 +1219,31 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                       "mergeData": [Function],
                                                       "replaceData": [Function],
                                                     },
-                                                    "selectionAfter": Object {
-                                                      "anchorKey": "someRandomKey",
-                                                      "anchorOffset": 0,
-                                                      "focusKey": "someRandomKey",
-                                                      "focusOffset": 0,
-                                                      "hasFocus": false,
-                                                      "isBackward": false,
+                                                    "blockMap": Immutable.OrderedMap {
+                                                      "someRandomKey": Immutable.Record {
+                                                        "key": "someRandomKey",
+                                                        "type": "unstyled",
+                                                        "text": "",
+                                                        "characterList": Immutable.List [],
+                                                        "depth": 0,
+                                                        "data": Immutable.Map {},
+                                                      },
                                                     },
-                                                    "selectionBefore": Object {
+                                                    "selectionBefore": Immutable.Record {
                                                       "anchorKey": "someRandomKey",
                                                       "anchorOffset": 0,
                                                       "focusKey": "someRandomKey",
                                                       "focusOffset": 0,
-                                                      "hasFocus": false,
                                                       "isBackward": false,
+                                                      "hasFocus": false,
+                                                    },
+                                                    "selectionAfter": Immutable.Record {
+                                                      "anchorKey": "someRandomKey",
+                                                      "anchorOffset": 0,
+                                                      "focusKey": "someRandomKey",
+                                                      "focusOffset": 0,
+                                                      "isBackward": false,
+                                                      "hasFocus": false,
                                                     },
                                                   },
                                                 ],
@@ -1256,10 +1254,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                           linkIsOpen={false}
                                           linkText=""
                                           linkUrl=""
-                                          mentionSearchResults={
-                                            Immutable.List [
-                                            ]
-                                          }
+                                          mentionSearchResults={Immutable.List []}
                                           name="survey_email"
                                           notify={[Function]}
                                           onBlur={[Function]}
@@ -1313,19 +1308,9 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                       defaultKeyBindings={true}
                                                       editorState={
                                                         EditorState {
-                                                          "_immutable": Object {
+                                                          "_immutable": Immutable.Record {
                                                             "allowUndo": true,
-                                                            "currentContent": Object {
-                                                              "blockMap": Object {
-                                                                "someRandomKey": Object {
-                                                                  "characterList": Array [],
-                                                                  "data": Object {},
-                                                                  "depth": 0,
-                                                                  "key": "someRandomKey",
-                                                                  "text": "",
-                                                                  "type": "unstyled",
-                                                                },
-                                                              },
+                                                            "currentContent": Immutable.Record {
                                                               "entityMap": Object {
                                                                 "__add": [Function],
                                                                 "__create": [Function],
@@ -1340,52 +1325,62 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                 "mergeData": [Function],
                                                                 "replaceData": [Function],
                                                               },
-                                                              "selectionAfter": Object {
-                                                                "anchorKey": "someRandomKey",
-                                                                "anchorOffset": 0,
-                                                                "focusKey": "someRandomKey",
-                                                                "focusOffset": 0,
-                                                                "hasFocus": false,
-                                                                "isBackward": false,
+                                                              "blockMap": Immutable.OrderedMap {
+                                                                "someRandomKey": Immutable.Record {
+                                                                  "key": "someRandomKey",
+                                                                  "type": "unstyled",
+                                                                  "text": "",
+                                                                  "characterList": Immutable.List [],
+                                                                  "depth": 0,
+                                                                  "data": Immutable.Map {},
+                                                                },
                                                               },
-                                                              "selectionBefore": Object {
+                                                              "selectionBefore": Immutable.Record {
                                                                 "anchorKey": "someRandomKey",
                                                                 "anchorOffset": 0,
                                                                 "focusKey": "someRandomKey",
                                                                 "focusOffset": 0,
-                                                                "hasFocus": true,
                                                                 "isBackward": false,
+                                                                "hasFocus": true,
+                                                              },
+                                                              "selectionAfter": Immutable.Record {
+                                                                "anchorKey": "someRandomKey",
+                                                                "anchorOffset": 0,
+                                                                "focusKey": "someRandomKey",
+                                                                "focusOffset": 0,
+                                                                "isBackward": false,
+                                                                "hasFocus": false,
                                                               },
                                                             },
                                                             "decorator": MultiDecorator {
                                                               "decorators": Immutable.List [
                                                                 CompositeDraftDecorator {
-                                                                        "_decorators": Array [
-                                                                          Object {
-                                                                            "component": [Function],
-                                                                            "strategy": [Function],
-                                                                          },
-                                                                          Object {
-                                                                            "component": [Function],
-                                                                            "strategy": [Function],
-                                                                          },
-                                                                          Object {
-                                                                            "component": [Function],
-                                                                            "strategy": [Function],
-                                                                          },
-                                                                          Object {
-                                                                            "component": [Function],
-                                                                            "strategy": [Function],
-                                                                          },
-                                                                          Object {
-                                                                            "component": [Function],
-                                                                            "strategy": [Function],
-                                                                          },
-                                                                        ],
-                                                                      },
-                                                        ],
+                                                                  "_decorators": Array [
+                                                                    Object {
+                                                                      "component": [Function],
+                                                                      "strategy": [Function],
+                                                                    },
+                                                                    Object {
+                                                                      "component": [Function],
+                                                                      "strategy": [Function],
+                                                                    },
+                                                                    Object {
+                                                                      "component": [Function],
+                                                                      "strategy": [Function],
+                                                                    },
+                                                                    Object {
+                                                                      "component": [Function],
+                                                                      "strategy": [Function],
+                                                                    },
+                                                                    Object {
+                                                                      "component": [Function],
+                                                                      "strategy": [Function],
+                                                                    },
+                                                                  ],
+                                                                },
+                                                              ],
                                                             },
-                                                            "directionMap": Object {
+                                                            "directionMap": Immutable.OrderedMap {
                                                               "someRandomKey": "LTR",
                                                             },
                                                             "forceSelection": false,
@@ -1393,42 +1388,32 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                             "inlineStyleOverride": null,
                                                             "lastChangeType": undefined,
                                                             "nativelyRenderedContent": null,
-                                                            "redoStack": Array [],
-                                                            "selection": Object {
+                                                            "redoStack": Immutable.Stack [],
+                                                            "selection": Immutable.Record {
                                                               "anchorKey": "someRandomKey",
                                                               "anchorOffset": 0,
                                                               "focusKey": "someRandomKey",
                                                               "focusOffset": 0,
-                                                              "hasFocus": false,
                                                               "isBackward": false,
+                                                              "hasFocus": false,
                                                             },
-                                                            "treeMap": Object {
-                                                              "someRandomKey": Array [
-                                                                Object {
-                                                                  "decoratorKey": null,
+                                                            "treeMap": Immutable.OrderedMap {
+                                                              "someRandomKey": Immutable.List [
+                                                                Immutable.Record {
+                                                                  "start": 0,
                                                                   "end": 0,
-                                                                  "leaves": Array [
-                                                                    Object {
-                                                                      "end": 0,
+                                                                  "decoratorKey": null,
+                                                                  "leaves": Immutable.List [
+                                                                    Immutable.Record {
                                                                       "start": 0,
+                                                                      "end": 0,
                                                                     },
                                                                   ],
-                                                                  "start": 0,
                                                                 },
                                                               ],
                                                             },
-                                                            "undoStack": Array [
-                                                              Object {
-                                                                "blockMap": Object {
-                                                                  "someRandomKey": Object {
-                                                                    "characterList": Array [],
-                                                                    "data": Object {},
-                                                                    "depth": 0,
-                                                                    "key": "someRandomKey",
-                                                                    "text": "",
-                                                                    "type": "unstyled",
-                                                                  },
-                                                                },
+                                                            "undoStack": Immutable.Stack [
+                                                              Immutable.Record {
                                                                 "entityMap": Object {
                                                                   "__add": [Function],
                                                                   "__create": [Function],
@@ -1443,21 +1428,31 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                   "mergeData": [Function],
                                                                   "replaceData": [Function],
                                                                 },
-                                                                "selectionAfter": Object {
-                                                                  "anchorKey": "someRandomKey",
-                                                                  "anchorOffset": 0,
-                                                                  "focusKey": "someRandomKey",
-                                                                  "focusOffset": 0,
-                                                                  "hasFocus": false,
-                                                                  "isBackward": false,
+                                                                "blockMap": Immutable.OrderedMap {
+                                                                  "someRandomKey": Immutable.Record {
+                                                                    "key": "someRandomKey",
+                                                                    "type": "unstyled",
+                                                                    "text": "",
+                                                                    "characterList": Immutable.List [],
+                                                                    "depth": 0,
+                                                                    "data": Immutable.Map {},
+                                                                  },
                                                                 },
-                                                                "selectionBefore": Object {
+                                                                "selectionBefore": Immutable.Record {
                                                                   "anchorKey": "someRandomKey",
                                                                   "anchorOffset": 0,
                                                                   "focusKey": "someRandomKey",
                                                                   "focusOffset": 0,
-                                                                  "hasFocus": false,
                                                                   "isBackward": false,
+                                                                  "hasFocus": false,
+                                                                },
+                                                                "selectionAfter": Immutable.Record {
+                                                                  "anchorKey": "someRandomKey",
+                                                                  "anchorOffset": 0,
+                                                                  "focusKey": "someRandomKey",
+                                                                  "focusOffset": 0,
+                                                                  "isBackward": false,
+                                                                  "hasFocus": false,
                                                                 },
                                                               },
                                                             ],
@@ -1542,52 +1537,52 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                         ariaHasPopup="false"
                                                         blockRenderMap={
                                                           Immutable.Map {
-                                                            ordered-list-item: Object {
+                                                            "ordered-list-item": Object {
                                                               "element": "li",
                                                               "wrapper": <ol
                                                                 className="public-DraftStyleDefault-ol"
-                                                            />,
+                                                              />,
                                                             },
-                                                            header-six: Object {
+                                                            "header-six": Object {
                                                               "element": "h6",
                                                             },
-                                                            header-four: Object {
+                                                            "header-four": Object {
                                                               "element": "h4",
                                                             },
-                                                            header-one: Object {
+                                                            "header-one": Object {
                                                               "element": "h1",
                                                             },
-                                                            unordered-list-item: Object {
+                                                            "unordered-list-item": Object {
                                                               "element": "li",
                                                               "wrapper": <ul
                                                                 className="public-DraftStyleDefault-ul"
-                                                            />,
+                                                              />,
                                                             },
-                                                            atomic: Object {
+                                                            "atomic": Object {
                                                               "element": "figure",
                                                             },
-                                                            unstyled: Object {
+                                                            "unstyled": Object {
                                                               "aliasedElements": Array [
                                                                 "p",
                                                               ],
                                                               "element": "div",
                                                             },
-                                                            header-two: Object {
+                                                            "header-two": Object {
                                                               "element": "h2",
                                                             },
-                                                            code-block: Object {
+                                                            "code-block": Object {
                                                               "element": "pre",
                                                               "wrapper": <pre
                                                                 className="public-DraftStyleDefault-pre"
-                                                            />,
+                                                              />,
                                                             },
-                                                            blockquote: Object {
+                                                            "blockquote": Object {
                                                               "element": "blockquote",
                                                             },
-                                                            header-five: Object {
+                                                            "header-five": Object {
                                                               "element": "h5",
                                                             },
-                                                            header-three: Object {
+                                                            "header-three": Object {
                                                               "element": "h3",
                                                             },
                                                           }
@@ -1600,19 +1595,9 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                         defaultKeyBindings={true}
                                                         editorState={
                                                           EditorState {
-                                                            "_immutable": Object {
+                                                            "_immutable": Immutable.Record {
                                                               "allowUndo": true,
-                                                              "currentContent": Object {
-                                                                "blockMap": Object {
-                                                                  "someRandomKey": Object {
-                                                                    "characterList": Array [],
-                                                                    "data": Object {},
-                                                                    "depth": 0,
-                                                                    "key": "someRandomKey",
-                                                                    "text": "",
-                                                                    "type": "unstyled",
-                                                                  },
-                                                                },
+                                                              "currentContent": Immutable.Record {
                                                                 "entityMap": Object {
                                                                   "__add": [Function],
                                                                   "__create": [Function],
@@ -1627,52 +1612,62 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                   "mergeData": [Function],
                                                                   "replaceData": [Function],
                                                                 },
-                                                                "selectionAfter": Object {
-                                                                  "anchorKey": "someRandomKey",
-                                                                  "anchorOffset": 0,
-                                                                  "focusKey": "someRandomKey",
-                                                                  "focusOffset": 0,
-                                                                  "hasFocus": false,
-                                                                  "isBackward": false,
+                                                                "blockMap": Immutable.OrderedMap {
+                                                                  "someRandomKey": Immutable.Record {
+                                                                    "key": "someRandomKey",
+                                                                    "type": "unstyled",
+                                                                    "text": "",
+                                                                    "characterList": Immutable.List [],
+                                                                    "depth": 0,
+                                                                    "data": Immutable.Map {},
+                                                                  },
                                                                 },
-                                                                "selectionBefore": Object {
+                                                                "selectionBefore": Immutable.Record {
                                                                   "anchorKey": "someRandomKey",
                                                                   "anchorOffset": 0,
                                                                   "focusKey": "someRandomKey",
                                                                   "focusOffset": 0,
-                                                                  "hasFocus": true,
                                                                   "isBackward": false,
+                                                                  "hasFocus": true,
+                                                                },
+                                                                "selectionAfter": Immutable.Record {
+                                                                  "anchorKey": "someRandomKey",
+                                                                  "anchorOffset": 0,
+                                                                  "focusKey": "someRandomKey",
+                                                                  "focusOffset": 0,
+                                                                  "isBackward": false,
+                                                                  "hasFocus": false,
                                                                 },
                                                               },
                                                               "decorator": MultiDecorator {
                                                                 "decorators": Immutable.List [
                                                                   CompositeDraftDecorator {
-                                                                          "_decorators": Array [
-                                                                            Object {
-                                                                              "component": [Function],
-                                                                              "strategy": [Function],
-                                                                            },
-                                                                            Object {
-                                                                              "component": [Function],
-                                                                              "strategy": [Function],
-                                                                            },
-                                                                            Object {
-                                                                              "component": [Function],
-                                                                              "strategy": [Function],
-                                                                            },
-                                                                            Object {
-                                                                              "component": [Function],
-                                                                              "strategy": [Function],
-                                                                            },
-                                                                            Object {
-                                                                              "component": [Function],
-                                                                              "strategy": [Function],
-                                                                            },
-                                                                          ],
-                                                                        },
-                                                          ],
+                                                                    "_decorators": Array [
+                                                                      Object {
+                                                                        "component": [Function],
+                                                                        "strategy": [Function],
+                                                                      },
+                                                                      Object {
+                                                                        "component": [Function],
+                                                                        "strategy": [Function],
+                                                                      },
+                                                                      Object {
+                                                                        "component": [Function],
+                                                                        "strategy": [Function],
+                                                                      },
+                                                                      Object {
+                                                                        "component": [Function],
+                                                                        "strategy": [Function],
+                                                                      },
+                                                                      Object {
+                                                                        "component": [Function],
+                                                                        "strategy": [Function],
+                                                                      },
+                                                                    ],
+                                                                  },
+                                                                ],
                                                               },
-                                                              "directionMap": Object {
+                                                              "directionMap": Immutable.OrderedMap {
                                                                 "someRandomKey": "LTR",
                                                               },
                                                               "forceSelection": false,
@@ -1680,42 +1675,32 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                               "inlineStyleOverride": null,
                                                               "lastChangeType": undefined,
                                                               "nativelyRenderedContent": null,
-                                                              "redoStack": Array [],
-                                                              "selection": Object {
+                                                              "redoStack": Immutable.Stack [],
+                                                              "selection": Immutable.Record {
                                                                 "anchorKey": "someRandomKey",
                                                                 "anchorOffset": 0,
                                                                 "focusKey": "someRandomKey",
                                                                 "focusOffset": 0,
-                                                                "hasFocus": false,
                                                                 "isBackward": false,
+                                                                "hasFocus": false,
                                                               },
-                                                              "treeMap": Object {
-                                                                "someRandomKey": Array [
-                                                                  Object {
-                                                                    "decoratorKey": null,
+                                                              "treeMap": Immutable.OrderedMap {
+                                                                "someRandomKey": Immutable.List [
+                                                                  Immutable.Record {
+                                                                    "start": 0,
                                                                     "end": 0,
-                                                                    "leaves": Array [
-                                                                      Object {
-                                                                        "end": 0,
+                                                                    "decoratorKey": null,
+                                                                    "leaves": Immutable.List [
+                                                                      Immutable.Record {
                                                                         "start": 0,
+                                                                        "end": 0,
                                                                       },
                                                                     ],
-                                                                    "start": 0,
                                                                   },
                                                                 ],
                                                               },
-                                                              "undoStack": Array [
-                                                                Object {
-                                                                  "blockMap": Object {
-                                                                    "someRandomKey": Object {
-                                                                      "characterList": Array [],
-                                                                      "data": Object {},
-                                                                      "depth": 0,
-                                                                      "key": "someRandomKey",
-                                                                      "text": "",
-                                                                      "type": "unstyled",
-                                                                    },
-                                                                  },
+                                                              "undoStack": Immutable.Stack [
+                                                                Immutable.Record {
                                                                   "entityMap": Object {
                                                                     "__add": [Function],
                                                                     "__create": [Function],
@@ -1730,21 +1715,31 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                     "mergeData": [Function],
                                                                     "replaceData": [Function],
                                                                   },
-                                                                  "selectionAfter": Object {
-                                                                    "anchorKey": "someRandomKey",
-                                                                    "anchorOffset": 0,
-                                                                    "focusKey": "someRandomKey",
-                                                                    "focusOffset": 0,
-                                                                    "hasFocus": false,
-                                                                    "isBackward": false,
+                                                                  "blockMap": Immutable.OrderedMap {
+                                                                    "someRandomKey": Immutable.Record {
+                                                                      "key": "someRandomKey",
+                                                                      "type": "unstyled",
+                                                                      "text": "",
+                                                                      "characterList": Immutable.List [],
+                                                                      "depth": 0,
+                                                                      "data": Immutable.Map {},
+                                                                    },
                                                                   },
-                                                                  "selectionBefore": Object {
+                                                                  "selectionBefore": Immutable.Record {
                                                                     "anchorKey": "someRandomKey",
                                                                     "anchorOffset": 0,
                                                                     "focusKey": "someRandomKey",
                                                                     "focusOffset": 0,
-                                                                    "hasFocus": false,
                                                                     "isBackward": false,
+                                                                    "hasFocus": false,
+                                                                  },
+                                                                  "selectionAfter": Immutable.Record {
+                                                                    "anchorKey": "someRandomKey",
+                                                                    "anchorOffset": 0,
+                                                                    "focusKey": "someRandomKey",
+                                                                    "focusOffset": 0,
+                                                                    "isBackward": false,
+                                                                    "hasFocus": false,
                                                                   },
                                                                 },
                                                               ],
@@ -1883,52 +1878,52 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                               <DraftEditorContents
                                                                 blockRenderMap={
                                                                   Immutable.Map {
-                                                                    ordered-list-item: Object {
+                                                                    "ordered-list-item": Object {
                                                                       "element": "li",
                                                                       "wrapper": <ol
                                                                         className="public-DraftStyleDefault-ol"
-                                                                    />,
+                                                                      />,
                                                                     },
-                                                                    header-six: Object {
+                                                                    "header-six": Object {
                                                                       "element": "h6",
                                                                     },
-                                                                    header-four: Object {
+                                                                    "header-four": Object {
                                                                       "element": "h4",
                                                                     },
-                                                                    header-one: Object {
+                                                                    "header-one": Object {
                                                                       "element": "h1",
                                                                     },
-                                                                    unordered-list-item: Object {
+                                                                    "unordered-list-item": Object {
                                                                       "element": "li",
                                                                       "wrapper": <ul
                                                                         className="public-DraftStyleDefault-ul"
-                                                                    />,
+                                                                      />,
                                                                     },
-                                                                    atomic: Object {
+                                                                    "atomic": Object {
                                                                       "element": "figure",
                                                                     },
-                                                                    unstyled: Object {
+                                                                    "unstyled": Object {
                                                                       "aliasedElements": Array [
                                                                         "p",
                                                                       ],
                                                                       "element": "div",
                                                                     },
-                                                                    header-two: Object {
+                                                                    "header-two": Object {
                                                                       "element": "h2",
                                                                     },
-                                                                    code-block: Object {
+                                                                    "code-block": Object {
                                                                       "element": "pre",
                                                                       "wrapper": <pre
                                                                         className="public-DraftStyleDefault-pre"
-                                                                    />,
+                                                                      />,
                                                                     },
-                                                                    blockquote: Object {
+                                                                    "blockquote": Object {
                                                                       "element": "blockquote",
                                                                     },
-                                                                    header-five: Object {
+                                                                    "header-five": Object {
                                                                       "element": "h5",
                                                                     },
-                                                                    header-three: Object {
+                                                                    "header-three": Object {
                                                                       "element": "h3",
                                                                     },
                                                                   }
@@ -1958,19 +1953,9 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                 editorKey="someRandomKey"
                                                                 editorState={
                                                                   EditorState {
-                                                                    "_immutable": Object {
+                                                                    "_immutable": Immutable.Record {
                                                                       "allowUndo": true,
-                                                                      "currentContent": Object {
-                                                                        "blockMap": Object {
-                                                                          "someRandomKey": Object {
-                                                                            "characterList": Array [],
-                                                                            "data": Object {},
-                                                                            "depth": 0,
-                                                                            "key": "someRandomKey",
-                                                                            "text": "",
-                                                                            "type": "unstyled",
-                                                                          },
-                                                                        },
+                                                                      "currentContent": Immutable.Record {
                                                                         "entityMap": Object {
                                                                           "__add": [Function],
                                                                           "__create": [Function],
@@ -1985,52 +1970,62 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                           "mergeData": [Function],
                                                                           "replaceData": [Function],
                                                                         },
-                                                                        "selectionAfter": Object {
-                                                                          "anchorKey": "someRandomKey",
-                                                                          "anchorOffset": 0,
-                                                                          "focusKey": "someRandomKey",
-                                                                          "focusOffset": 0,
-                                                                          "hasFocus": false,
-                                                                          "isBackward": false,
+                                                                        "blockMap": Immutable.OrderedMap {
+                                                                          "someRandomKey": Immutable.Record {
+                                                                            "key": "someRandomKey",
+                                                                            "type": "unstyled",
+                                                                            "text": "",
+                                                                            "characterList": Immutable.List [],
+                                                                            "depth": 0,
+                                                                            "data": Immutable.Map {},
+                                                                          },
                                                                         },
-                                                                        "selectionBefore": Object {
+                                                                        "selectionBefore": Immutable.Record {
                                                                           "anchorKey": "someRandomKey",
                                                                           "anchorOffset": 0,
                                                                           "focusKey": "someRandomKey",
                                                                           "focusOffset": 0,
-                                                                          "hasFocus": true,
                                                                           "isBackward": false,
+                                                                          "hasFocus": true,
+                                                                        },
+                                                                        "selectionAfter": Immutable.Record {
+                                                                          "anchorKey": "someRandomKey",
+                                                                          "anchorOffset": 0,
+                                                                          "focusKey": "someRandomKey",
+                                                                          "focusOffset": 0,
+                                                                          "isBackward": false,
+                                                                          "hasFocus": false,
                                                                         },
                                                                       },
                                                                       "decorator": MultiDecorator {
                                                                         "decorators": Immutable.List [
                                                                           CompositeDraftDecorator {
-                                                                                  "_decorators": Array [
-                                                                                    Object {
-                                                                                      "component": [Function],
-                                                                                      "strategy": [Function],
-                                                                                    },
-                                                                                    Object {
-                                                                                      "component": [Function],
-                                                                                      "strategy": [Function],
-                                                                                    },
-                                                                                    Object {
-                                                                                      "component": [Function],
-                                                                                      "strategy": [Function],
-                                                                                    },
-                                                                                    Object {
-                                                                                      "component": [Function],
-                                                                                      "strategy": [Function],
-                                                                                    },
-                                                                                    Object {
-                                                                                      "component": [Function],
-                                                                                      "strategy": [Function],
-                                                                                    },
-                                                                                  ],
-                                                                                },
-                                                                  ],
+                                                                            "_decorators": Array [
+                                                                              Object {
+                                                                                "component": [Function],
+                                                                                "strategy": [Function],
+                                                                              },
+                                                                              Object {
+                                                                                "component": [Function],
+                                                                                "strategy": [Function],
+                                                                              },
+                                                                              Object {
+                                                                                "component": [Function],
+                                                                                "strategy": [Function],
+                                                                              },
+                                                                              Object {
+                                                                                "component": [Function],
+                                                                                "strategy": [Function],
+                                                                              },
+                                                                              Object {
+                                                                                "component": [Function],
+                                                                                "strategy": [Function],
+                                                                              },
+                                                                            ],
+                                                                          },
+                                                                        ],
                                                                       },
-                                                                      "directionMap": Object {
+                                                                      "directionMap": Immutable.OrderedMap {
                                                                         "someRandomKey": "LTR",
                                                                       },
                                                                       "forceSelection": false,
@@ -2038,42 +2033,32 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                       "inlineStyleOverride": null,
                                                                       "lastChangeType": undefined,
                                                                       "nativelyRenderedContent": null,
-                                                                      "redoStack": Array [],
-                                                                      "selection": Object {
+                                                                      "redoStack": Immutable.Stack [],
+                                                                      "selection": Immutable.Record {
                                                                         "anchorKey": "someRandomKey",
                                                                         "anchorOffset": 0,
                                                                         "focusKey": "someRandomKey",
                                                                         "focusOffset": 0,
-                                                                        "hasFocus": false,
                                                                         "isBackward": false,
+                                                                        "hasFocus": false,
                                                                       },
-                                                                      "treeMap": Object {
-                                                                        "someRandomKey": Array [
-                                                                          Object {
-                                                                            "decoratorKey": null,
+                                                                      "treeMap": Immutable.OrderedMap {
+                                                                        "someRandomKey": Immutable.List [
+                                                                          Immutable.Record {
+                                                                            "start": 0,
                                                                             "end": 0,
-                                                                            "leaves": Array [
-                                                                              Object {
-                                                                                "end": 0,
+                                                                            "decoratorKey": null,
+                                                                            "leaves": Immutable.List [
+                                                                              Immutable.Record {
                                                                                 "start": 0,
+                                                                                "end": 0,
                                                                               },
                                                                             ],
-                                                                            "start": 0,
                                                                           },
                                                                         ],
                                                                       },
-                                                                      "undoStack": Array [
-                                                                        Object {
-                                                                          "blockMap": Object {
-                                                                            "someRandomKey": Object {
-                                                                              "characterList": Array [],
-                                                                              "data": Object {},
-                                                                              "depth": 0,
-                                                                              "key": "someRandomKey",
-                                                                              "text": "",
-                                                                              "type": "unstyled",
-                                                                            },
-                                                                          },
+                                                                      "undoStack": Immutable.Stack [
+                                                                        Immutable.Record {
                                                                           "entityMap": Object {
                                                                             "__add": [Function],
                                                                             "__create": [Function],
@@ -2088,21 +2073,31 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                             "mergeData": [Function],
                                                                             "replaceData": [Function],
                                                                           },
-                                                                          "selectionAfter": Object {
-                                                                            "anchorKey": "someRandomKey",
-                                                                            "anchorOffset": 0,
-                                                                            "focusKey": "someRandomKey",
-                                                                            "focusOffset": 0,
-                                                                            "hasFocus": false,
-                                                                            "isBackward": false,
+                                                                          "blockMap": Immutable.OrderedMap {
+                                                                            "someRandomKey": Immutable.Record {
+                                                                              "key": "someRandomKey",
+                                                                              "type": "unstyled",
+                                                                              "text": "",
+                                                                              "characterList": Immutable.List [],
+                                                                              "depth": 0,
+                                                                              "data": Immutable.Map {},
+                                                                            },
                                                                           },
-                                                                          "selectionBefore": Object {
+                                                                          "selectionBefore": Immutable.Record {
                                                                             "anchorKey": "someRandomKey",
                                                                             "anchorOffset": 0,
                                                                             "focusKey": "someRandomKey",
                                                                             "focusOffset": 0,
-                                                                            "hasFocus": false,
                                                                             "isBackward": false,
+                                                                            "hasFocus": false,
+                                                                          },
+                                                                          "selectionAfter": Immutable.Record {
+                                                                            "anchorKey": "someRandomKey",
+                                                                            "anchorOffset": 0,
+                                                                            "focusKey": "someRandomKey",
+                                                                            "focusOffset": 0,
+                                                                            "isBackward": false,
+                                                                            "hasFocus": false,
                                                                           },
                                                                         },
                                                                       ],
@@ -2123,28 +2118,18 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                   >
                                                                     <DraftEditorBlock
                                                                       block={
-                                                                        Object {
-                                                                          "characterList": Array [],
-                                                                          "data": Object {},
-                                                                          "depth": 0,
+                                                                        Immutable.Record {
                                                                           "key": "someRandomKey",
-                                                                          "text": "",
                                                                           "type": "unstyled",
+                                                                          "text": "",
+                                                                          "characterList": Immutable.List [],
+                                                                          "depth": 0,
+                                                                          "data": Immutable.Map {},
                                                                         }
                                                                       }
                                                                       blockStyleFn={[Function]}
                                                                       contentState={
-                                                                        Object {
-                                                                          "blockMap": Object {
-                                                                            "someRandomKey": Object {
-                                                                              "characterList": Array [],
-                                                                              "data": Object {},
-                                                                              "depth": 0,
-                                                                              "key": "someRandomKey",
-                                                                              "text": "",
-                                                                              "type": "unstyled",
-                                                                            },
-                                                                          },
+                                                                        Immutable.Record {
                                                                           "entityMap": Object {
                                                                             "__add": [Function],
                                                                             "__create": [Function],
@@ -2159,21 +2144,31 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                             "mergeData": [Function],
                                                                             "replaceData": [Function],
                                                                           },
-                                                                          "selectionAfter": Object {
-                                                                            "anchorKey": "someRandomKey",
-                                                                            "anchorOffset": 0,
-                                                                            "focusKey": "someRandomKey",
-                                                                            "focusOffset": 0,
-                                                                            "hasFocus": false,
-                                                                            "isBackward": false,
+                                                                          "blockMap": Immutable.OrderedMap {
+                                                                            "someRandomKey": Immutable.Record {
+                                                                              "key": "someRandomKey",
+                                                                              "type": "unstyled",
+                                                                              "text": "",
+                                                                              "characterList": Immutable.List [],
+                                                                              "depth": 0,
+                                                                              "data": Immutable.Map {},
+                                                                            },
                                                                           },
-                                                                          "selectionBefore": Object {
+                                                                          "selectionBefore": Immutable.Record {
                                                                             "anchorKey": "someRandomKey",
                                                                             "anchorOffset": 0,
                                                                             "focusKey": "someRandomKey",
                                                                             "focusOffset": 0,
-                                                                            "hasFocus": true,
                                                                             "isBackward": false,
+                                                                            "hasFocus": true,
+                                                                          },
+                                                                          "selectionAfter": Immutable.Record {
+                                                                            "anchorKey": "someRandomKey",
+                                                                            "anchorOffset": 0,
+                                                                            "focusKey": "someRandomKey",
+                                                                            "focusOffset": 0,
+                                                                            "isBackward": false,
+                                                                            "hasFocus": false,
                                                                           },
                                                                         }
                                                                       }
@@ -2201,30 +2196,30 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                         MultiDecorator {
                                                                           "decorators": Immutable.List [
                                                                             CompositeDraftDecorator {
-                                                                                "_decorators": Array [
-                                                                                  Object {
-                                                                                    "component": [Function],
-                                                                                    "strategy": [Function],
-                                                                                  },
-                                                                                  Object {
-                                                                                    "component": [Function],
-                                                                                    "strategy": [Function],
-                                                                                  },
-                                                                                  Object {
-                                                                                    "component": [Function],
-                                                                                    "strategy": [Function],
-                                                                                  },
-                                                                                  Object {
-                                                                                    "component": [Function],
-                                                                                    "strategy": [Function],
-                                                                                  },
-                                                                                  Object {
-                                                                                    "component": [Function],
-                                                                                    "strategy": [Function],
-                                                                                  },
-                                                                                ],
-                                                                              },
-                                                                        ],
+                                                                              "_decorators": Array [
+                                                                                Object {
+                                                                                  "component": [Function],
+                                                                                  "strategy": [Function],
+                                                                                },
+                                                                                Object {
+                                                                                  "component": [Function],
+                                                                                  "strategy": [Function],
+                                                                                },
+                                                                                Object {
+                                                                                  "component": [Function],
+                                                                                  "strategy": [Function],
+                                                                                },
+                                                                                Object {
+                                                                                  "component": [Function],
+                                                                                  "strategy": [Function],
+                                                                                },
+                                                                                Object {
+                                                                                  "component": [Function],
+                                                                                  "strategy": [Function],
+                                                                                },
+                                                                              ],
+                                                                            },
+                                                                          ],
                                                                         }
                                                                       }
                                                                       direction="LTR"
@@ -2232,27 +2227,27 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                       key="someRandomKey"
                                                                       offsetKey="someRandomKey-0-0"
                                                                       selection={
-                                                                        Object {
+                                                                        Immutable.Record {
                                                                           "anchorKey": "someRandomKey",
                                                                           "anchorOffset": 0,
                                                                           "focusKey": "someRandomKey",
                                                                           "focusOffset": 0,
-                                                                          "hasFocus": false,
                                                                           "isBackward": false,
+                                                                          "hasFocus": false,
                                                                         }
                                                                       }
                                                                       tree={
                                                                         Immutable.List [
-                                                                          Object {
-                                                                            "decoratorKey": null,
+                                                                          Immutable.Record {
+                                                                            "start": 0,
                                                                             "end": 0,
-                                                                            "leaves": Array [
-                                                                              Object {
-                                                                                "end": 0,
+                                                                            "decoratorKey": null,
+                                                                            "leaves": Immutable.List [
+                                                                              Immutable.Record {
                                                                                 "start": 0,
+                                                                                "end": 0,
                                                                               },
                                                                             ],
-                                                                            "start": 0,
                                                                           },
                                                                         ]
                                                                       }
@@ -2263,13 +2258,13 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                       >
                                                                         <DraftEditorLeaf
                                                                           block={
-                                                                            Object {
-                                                                              "characterList": Array [],
-                                                                              "data": Object {},
-                                                                              "depth": 0,
+                                                                            Immutable.Record {
                                                                               "key": "someRandomKey",
-                                                                              "text": "",
                                                                               "type": "unstyled",
+                                                                              "text": "",
+                                                                              "characterList": Immutable.List [],
+                                                                              "depth": 0,
+                                                                              "data": Immutable.Map {},
                                                                             }
                                                                           }
                                                                           customStyleMap={
@@ -2297,20 +2292,17 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                           key="someRandomKey-0-0"
                                                                           offsetKey="someRandomKey-0-0"
                                                                           selection={
-                                                                            Object {
+                                                                            Immutable.Record {
                                                                               "anchorKey": "someRandomKey",
                                                                               "anchorOffset": 0,
                                                                               "focusKey": "someRandomKey",
                                                                               "focusOffset": 0,
-                                                                              "hasFocus": false,
                                                                               "isBackward": false,
+                                                                              "hasFocus": false,
                                                                             }
                                                                           }
                                                                           start={0}
-                                                                          styleSet={
-                                                                            Immutable.OrderedSet [
-                                                                            ]
-                                                                          }
+                                                                          styleSet={Immutable.OrderedSet []}
                                                                           text=""
                                                                         >
                                                                           <span
@@ -2338,10 +2330,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                     <Decorated(MentionSuggestions)
                                                       canAddMention={false}
                                                       onSearchChange={[Function]}
-                                                      suggestions={
-                                                        Immutable.List [
-                                                        ]
-                                                      }
+                                                      suggestions={Immutable.List []}
                                                     >
                                                       <MentionSuggestions
                                                         ariaProps={
@@ -2382,10 +2371,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                             "updatePortalClientRect": [Function],
                                                           }
                                                         }
-                                                        suggestions={
-                                                          Immutable.List [
-                                                          ]
-                                                        }
+                                                        suggestions={Immutable.List []}
                                                         theme={
                                                           Object {
                                                             "mention": "mention",
@@ -2406,19 +2392,9 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                     createToolbarPlugin={[Function]}
                                                     editorState={
                                                       EditorState {
-                                                        "_immutable": Object {
+                                                        "_immutable": Immutable.Record {
                                                           "allowUndo": true,
-                                                          "currentContent": Object {
-                                                            "blockMap": Object {
-                                                              "someRandomKey": Object {
-                                                                "characterList": Array [],
-                                                                "data": Object {},
-                                                                "depth": 0,
-                                                                "key": "someRandomKey",
-                                                                "text": "",
-                                                                "type": "unstyled",
-                                                              },
-                                                            },
+                                                          "currentContent": Immutable.Record {
                                                             "entityMap": Object {
                                                               "__add": [Function],
                                                               "__create": [Function],
@@ -2433,52 +2409,62 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                               "mergeData": [Function],
                                                               "replaceData": [Function],
                                                             },
-                                                            "selectionAfter": Object {
-                                                              "anchorKey": "someRandomKey",
-                                                              "anchorOffset": 0,
-                                                              "focusKey": "someRandomKey",
-                                                              "focusOffset": 0,
-                                                              "hasFocus": false,
-                                                              "isBackward": false,
+                                                            "blockMap": Immutable.OrderedMap {
+                                                              "someRandomKey": Immutable.Record {
+                                                                "key": "someRandomKey",
+                                                                "type": "unstyled",
+                                                                "text": "",
+                                                                "characterList": Immutable.List [],
+                                                                "depth": 0,
+                                                                "data": Immutable.Map {},
+                                                              },
                                                             },
-                                                            "selectionBefore": Object {
+                                                            "selectionBefore": Immutable.Record {
                                                               "anchorKey": "someRandomKey",
                                                               "anchorOffset": 0,
                                                               "focusKey": "someRandomKey",
                                                               "focusOffset": 0,
-                                                              "hasFocus": true,
                                                               "isBackward": false,
+                                                              "hasFocus": true,
+                                                            },
+                                                            "selectionAfter": Immutable.Record {
+                                                              "anchorKey": "someRandomKey",
+                                                              "anchorOffset": 0,
+                                                              "focusKey": "someRandomKey",
+                                                              "focusOffset": 0,
+                                                              "isBackward": false,
+                                                              "hasFocus": false,
                                                             },
                                                           },
                                                           "decorator": MultiDecorator {
                                                             "decorators": Immutable.List [
                                                               CompositeDraftDecorator {
-                                                                      "_decorators": Array [
-                                                                        Object {
-                                                                          "component": [Function],
-                                                                          "strategy": [Function],
-                                                                        },
-                                                                        Object {
-                                                                          "component": [Function],
-                                                                          "strategy": [Function],
-                                                                        },
-                                                                        Object {
-                                                                          "component": [Function],
-                                                                          "strategy": [Function],
-                                                                        },
-                                                                        Object {
-                                                                          "component": [Function],
-                                                                          "strategy": [Function],
-                                                                        },
-                                                                        Object {
-                                                                          "component": [Function],
-                                                                          "strategy": [Function],
-                                                                        },
-                                                                      ],
-                                                                    },
-                                                      ],
+                                                                "_decorators": Array [
+                                                                  Object {
+                                                                    "component": [Function],
+                                                                    "strategy": [Function],
+                                                                  },
+                                                                  Object {
+                                                                    "component": [Function],
+                                                                    "strategy": [Function],
+                                                                  },
+                                                                  Object {
+                                                                    "component": [Function],
+                                                                    "strategy": [Function],
+                                                                  },
+                                                                  Object {
+                                                                    "component": [Function],
+                                                                    "strategy": [Function],
+                                                                  },
+                                                                  Object {
+                                                                    "component": [Function],
+                                                                    "strategy": [Function],
+                                                                  },
+                                                                ],
+                                                              },
+                                                            ],
                                                           },
-                                                          "directionMap": Object {
+                                                          "directionMap": Immutable.OrderedMap {
                                                             "someRandomKey": "LTR",
                                                           },
                                                           "forceSelection": false,
@@ -2486,42 +2472,32 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                           "inlineStyleOverride": null,
                                                           "lastChangeType": undefined,
                                                           "nativelyRenderedContent": null,
-                                                          "redoStack": Array [],
-                                                          "selection": Object {
+                                                          "redoStack": Immutable.Stack [],
+                                                          "selection": Immutable.Record {
                                                             "anchorKey": "someRandomKey",
                                                             "anchorOffset": 0,
                                                             "focusKey": "someRandomKey",
                                                             "focusOffset": 0,
-                                                            "hasFocus": false,
                                                             "isBackward": false,
+                                                            "hasFocus": false,
                                                           },
-                                                          "treeMap": Object {
-                                                            "someRandomKey": Array [
-                                                              Object {
-                                                                "decoratorKey": null,
+                                                          "treeMap": Immutable.OrderedMap {
+                                                            "someRandomKey": Immutable.List [
+                                                              Immutable.Record {
+                                                                "start": 0,
                                                                 "end": 0,
-                                                                "leaves": Array [
-                                                                  Object {
-                                                                    "end": 0,
+                                                                "decoratorKey": null,
+                                                                "leaves": Immutable.List [
+                                                                  Immutable.Record {
                                                                     "start": 0,
+                                                                    "end": 0,
                                                                   },
                                                                 ],
-                                                                "start": 0,
                                                               },
                                                             ],
                                                           },
-                                                          "undoStack": Array [
-                                                            Object {
-                                                              "blockMap": Object {
-                                                                "someRandomKey": Object {
-                                                                  "characterList": Array [],
-                                                                  "data": Object {},
-                                                                  "depth": 0,
-                                                                  "key": "someRandomKey",
-                                                                  "text": "",
-                                                                  "type": "unstyled",
-                                                                },
-                                                              },
+                                                          "undoStack": Immutable.Stack [
+                                                            Immutable.Record {
                                                               "entityMap": Object {
                                                                 "__add": [Function],
                                                                 "__create": [Function],
@@ -2536,21 +2512,31 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                 "mergeData": [Function],
                                                                 "replaceData": [Function],
                                                               },
-                                                              "selectionAfter": Object {
-                                                                "anchorKey": "someRandomKey",
-                                                                "anchorOffset": 0,
-                                                                "focusKey": "someRandomKey",
-                                                                "focusOffset": 0,
-                                                                "hasFocus": false,
-                                                                "isBackward": false,
+                                                              "blockMap": Immutable.OrderedMap {
+                                                                "someRandomKey": Immutable.Record {
+                                                                  "key": "someRandomKey",
+                                                                  "type": "unstyled",
+                                                                  "text": "",
+                                                                  "characterList": Immutable.List [],
+                                                                  "depth": 0,
+                                                                  "data": Immutable.Map {},
+                                                                },
                                                               },
-                                                              "selectionBefore": Object {
+                                                              "selectionBefore": Immutable.Record {
                                                                 "anchorKey": "someRandomKey",
                                                                 "anchorOffset": 0,
                                                                 "focusKey": "someRandomKey",
                                                                 "focusOffset": 0,
-                                                                "hasFocus": false,
                                                                 "isBackward": false,
+                                                                "hasFocus": false,
+                                                              },
+                                                              "selectionAfter": Immutable.Record {
+                                                                "anchorKey": "someRandomKey",
+                                                                "anchorOffset": 0,
+                                                                "focusKey": "someRandomKey",
+                                                                "focusOffset": 0,
+                                                                "isBackward": false,
+                                                                "hasFocus": false,
                                                               },
                                                             },
                                                           ],
@@ -2561,10 +2547,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                     linkIsOpen={false}
                                                     linkText=""
                                                     linkUrl=""
-                                                    mentionSearchResults={
-                                                      Immutable.List [
-                                                      ]
-                                                    }
+                                                    mentionSearchResults={Immutable.List []}
                                                     name="survey_email"
                                                     notify={[Function]}
                                                     onBlur={[Function]}
@@ -2606,7 +2589,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                       getReadOnly={[Function]}
                                                       imageAction={
                                                         <AddImage
-                                                          attachments={undefined}
                                                           getEditorRef={[Function]}
                                                           getEditorState={[Function]}
                                                           getPlugins={[Function]}
@@ -2618,7 +2600,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                       }
                                                       linkAction={
                                                         <AddLink
-                                                          entityKey={undefined}
                                                           getEditorRef={[Function]}
                                                           getEditorState={[Function]}
                                                           getPlugins={[Function]}
@@ -3000,18 +2981,16 @@ exports[`SatisfactionSurveyView render should render the upgrade to pro componen
       "subscribe": [Function],
     }
   }
-  submitSetting={[Function]}
+  submitSetting={[MockFunction]}
 >
   <SatisfactionSurveyView
     currentAccount={
       Immutable.Map {
-        extra_features: Immutable.List [
-        ],
-        settings: Immutable.List [
+        "extra_features": Immutable.List [],
+        "settings": Immutable.List [
           Immutable.Map {
-            data: Immutable.Map {
-            },
-            type: "satisfaction-surveys",
+            "data": Immutable.Map {},
+            "type": "satisfaction-surveys",
           },
         ],
       }
@@ -3029,9 +3008,8 @@ exports[`SatisfactionSurveyView render should render the upgrade to pro componen
     submitSetting={[Function]}
     surveysSettings={
       Immutable.Map {
-        data: Immutable.Map {
-        },
-        type: "satisfaction-surveys",
+        "data": Immutable.Map {},
+        "type": "satisfaction-surveys",
       }
     }
   >

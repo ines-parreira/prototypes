@@ -165,11 +165,11 @@ class EmailIntegrationUpdate extends React.Component {
             <span>
                     We are currently importing emails from <strong>{email}</strong> into Gorgias.
                     You can see it's progress here: <Link to="/app/tickets">All tickets</Link>
-                </span>
+            </span>
         ) : (
             <span>
                     Completed: <b>{mailsImported}</b> emails have been imported.
-                </span>
+            </span>
         )
 
         return (

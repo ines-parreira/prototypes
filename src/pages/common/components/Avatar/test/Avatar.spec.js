@@ -3,25 +3,28 @@ import {shallow, mount} from 'enzyme'
 
 import {getAvatar} from '../utils'
 import Avatar from '../Avatar'
+import {mockImageOnload} from '../../../../../test/utils'
 
 describe('Avatar component', () => {
+    mockImageOnload()
+
     it('should render default with no props', () => {
         const component = shallow(
-            <Avatar />
+            <Avatar/>
         )
         expect(component).toMatchSnapshot()
     })
 
     it('should render with className', () => {
         const component = shallow(
-            <Avatar className="marie-curie" />
+            <Avatar className="marie-curie"/>
         )
         expect(component).toMatchSnapshot()
     })
 
     it('should render only the initials', () => {
         const component = shallow(
-            <Avatar name="Marie Curie" />
+            <Avatar name="Marie Curie"/>
         )
         expect(component).toMatchSnapshot()
     })
@@ -45,7 +48,7 @@ describe('Avatar component', () => {
 
     it('should render image in visible container', (done) => {
         const component = mount(
-            <Avatar email="pizza@gorgias.io" />
+            <Avatar email="pizza@gorgias.io"/>
         )
         // wait for image url to return
         global.jestSetTimeout(() => {
@@ -59,7 +62,7 @@ describe('Avatar component', () => {
         document.body.appendChild(container)
         container.style.display = 'none'
         const component = mount(
-            <Avatar email="pepperoni@gorgias.io" />,
+            <Avatar email="pepperoni@gorgias.io"/>,
             {attachTo: container}
         )
         global.jestSetTimeout(() => {

@@ -92,32 +92,32 @@ export default class ChatIntegrationCampaigns extends React.Component {
                             hover
                         >
                             <tbody>
-                            {
-                                campaigns.map((campaign) => {
-                                    const editLink = `/app/settings/integrations/${integration.get('type')}/${integration.get('id')}/campaigns/${campaign.get('id')}`
+                                {
+                                    campaigns.map((campaign) => {
+                                        const editLink = `/app/settings/integrations/${integration.get('type')}/${integration.get('id')}/campaigns/${campaign.get('id')}`
 
-                                    return (
-                                        <tr key={campaign.get('id')}>
-                                            <td className="link-full-td">
-                                                <Link to={editLink}>
-                                                    <div>
-                                                        <b>{campaign.get('name')}</b>
-                                                    </div>
-                                                </Link>
-                                            </td>
-                                            <td className="smallest align-middle">
-                                                <ToggleButton
-                                                    value={!campaign.get('deactivated_datetime')}
-                                                    onChange={() => this.toggleCampaign(campaign)}
-                                                />
-                                            </td>
-                                            <td className="smallest align-middle">
-                                                <ForwardIcon href={editLink} />
-                                            </td>
-                                        </tr>
-                                    )
-                                })
-                            }
+                                        return (
+                                            <tr key={campaign.get('id')}>
+                                                <td className="link-full-td">
+                                                    <Link to={editLink}>
+                                                        <div>
+                                                            <b>{campaign.get('name')}</b>
+                                                        </div>
+                                                    </Link>
+                                                </td>
+                                                <td className="smallest align-middle">
+                                                    <ToggleButton
+                                                        value={!campaign.get('deactivated_datetime')}
+                                                        onChange={() => this.toggleCampaign(campaign)}
+                                                    />
+                                                </td>
+                                                <td className="smallest align-middle">
+                                                    <ForwardIcon href={editLink} />
+                                                </td>
+                                            </tr>
+                                        )
+                                    })
+                                }
                             </tbody>
                         </Table>
                     )

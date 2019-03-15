@@ -49,31 +49,31 @@ export class BillingInvoices extends Component {
                 </p>
                 <Table striped>
                     <thead>
-                    <tr>
-                        <th>Status</th>
-                        <th>Date</th>
-                        <th>Amount</th>
-                        <th>Description</th>
-                    </tr>
+                        <tr>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    {invoices.map((invoice) => {
-                        const paid = invoice.get('paid')
-                        return (
-                            <tr key={invoice.get('id')}>
-                                <td>
-                                    {paid ? (
-                                        <Badge color="success">Paid</Badge>
-                                    ) : (
-                                        <Badge color="danger">Unpaid</Badge>
-                                    )}
-                                </td>
-                                <td>{moment.unix(invoice.get('date')).format('LL')}</td>
-                                <td>{`$${invoice.get('amount_due') / 100}`} </td>
-                                <td>{invoice.get('description') || '-'} </td>
-                            </tr>
-                        )
-                    })}
+                        {invoices.map((invoice) => {
+                            const paid = invoice.get('paid')
+                            return (
+                                <tr key={invoice.get('id')}>
+                                    <td>
+                                        {paid ? (
+                                            <Badge color="success">Paid</Badge>
+                                        ) : (
+                                            <Badge color="danger">Unpaid</Badge>
+                                        )}
+                                    </td>
+                                    <td>{moment.unix(invoice.get('date')).format('LL')}</td>
+                                    <td>{`$${invoice.get('amount_due') / 100}`} </td>
+                                    <td>{invoice.get('description') || '-'} </td>
+                                </tr>
+                            )
+                        })}
                     </tbody>
                 </Table>
             </div>

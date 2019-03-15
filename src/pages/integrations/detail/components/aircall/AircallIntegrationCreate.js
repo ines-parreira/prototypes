@@ -88,7 +88,7 @@ export default class AircallIntegrationCreate extends Component {
                                     Gorgias will automatically create an Aircall integration for each of your Aircall
                                     numbers when you will receive or make a call.
                                 </p>
-                                <label>Webhook url</label>
+                                <label htmlFor="webhookUrl">Webhook url</label>
                                 <InputGroup>
                                     <Input
                                         id="webhookUrl"

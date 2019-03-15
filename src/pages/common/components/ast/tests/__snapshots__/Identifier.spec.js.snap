@@ -26,7 +26,7 @@ exports[`Identifier component should render 1`] = `
     }
     rule={
       Immutable.Map {
-        foo: "rule",
+        "foo": "rule",
       }
     }
     value="eq"

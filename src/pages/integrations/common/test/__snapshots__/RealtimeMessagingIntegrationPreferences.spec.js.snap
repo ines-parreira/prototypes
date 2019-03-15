@@ -4,8 +4,8 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
 <Connect(RealtimeMessagingIntegrationPreferences)
   integration={
     Immutable.Map {
-      id: 2,
-      type: "facebook",
+      "id": 2,
+      "type": "facebook",
     }
   }
   store={
@@ -22,8 +22,8 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
   <RealtimeMessagingIntegrationPreferences
     integration={
       Immutable.Map {
-        id: 2,
-        type: "facebook",
+        "id": 2,
+        "type": "facebook",
       }
     }
     store={
@@ -153,8 +153,8 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
       <RealtimeMessagingIntegrationNavigation
         integration={
           Immutable.Map {
-            id: 2,
-            type: "facebook",
+            "id": 2,
+            "type": "facebook",
           }
         }
       >
@@ -520,8 +520,8 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
 <Connect(RealtimeMessagingIntegrationPreferences)
   integration={
     Immutable.Map {
-      id: 2,
-      type: "smooch",
+      "id": 2,
+      "type": "smooch",
     }
   }
   store={
@@ -538,8 +538,8 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
   <RealtimeMessagingIntegrationPreferences
     integration={
       Immutable.Map {
-        id: 2,
-        type: "smooch",
+        "id": 2,
+        "type": "smooch",
       }
     }
     store={
@@ -669,8 +669,8 @@ exports[`RealtimeMessagingIntegrationPreferences component should not render ema
       <RealtimeMessagingIntegrationNavigation
         integration={
           Immutable.Map {
-            id: 2,
-            type: "smooch",
+            "id": 2,
+            "type": "smooch",
           }
         }
       >
@@ -1020,8 +1020,8 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
 <Connect(RealtimeMessagingIntegrationPreferences)
   integration={
     Immutable.Map {
-      id: 2,
-      type: "smooch_inside",
+      "id": 2,
+      "type": "smooch_inside",
     }
   }
   store={
@@ -1038,8 +1038,8 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
   <RealtimeMessagingIntegrationPreferences
     integration={
       Immutable.Map {
-        id: 2,
-        type: "smooch_inside",
+        "id": 2,
+        "type": "smooch_inside",
       }
     }
     store={
@@ -1169,8 +1169,8 @@ exports[`RealtimeMessagingIntegrationPreferences component should render the cha
       <RealtimeMessagingIntegrationNavigation
         integration={
           Immutable.Map {
-            id: 2,
-            type: "smooch_inside",
+            "id": 2,
+            "type": "smooch_inside",
           }
         }
       >

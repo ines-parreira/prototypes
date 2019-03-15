@@ -296,8 +296,8 @@ export default class MacroModal extends React.Component<Props, State> {
                                                 {
                                                     isCreatingMacro ? (
                                                         <form id="macro_form"
-                                                              className="d-inline-block"
-                                                              onSubmit={(e) => (this._createMacro(e))}
+                                                            className="d-inline-block"
+                                                            onSubmit={(e) => (this._createMacro(e))}
                                                         >
                                                             <Button
                                                                 type="submit"
@@ -309,8 +309,8 @@ export default class MacroModal extends React.Component<Props, State> {
                                                     ) : (
                                                         <div>
                                                             <form id="update_macro_form"
-                                                                  className="d-inline-block"
-                                                                  onSubmit={(e) => (this._updateMacro(e))}
+                                                                className="d-inline-block"
+                                                                onSubmit={(e) => (this._updateMacro(e))}
                                                             >
                                                                 <Button
                                                                     type="submit"
@@ -320,8 +320,8 @@ export default class MacroModal extends React.Component<Props, State> {
                                                                 </Button>
                                                             </form>
                                                             <form id="duplicate_macro_form"
-                                                                  className="d-inline-block ml-1"
-                                                                  onSubmit={(e) => (this._duplicateMacro(e))}
+                                                                className="d-inline-block ml-1"
+                                                                onSubmit={(e) => (this._duplicateMacro(e))}
                                                             >
                                                                 <Button
                                                                     type="submit"

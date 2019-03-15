@@ -16,14 +16,14 @@ exports[`MergeTicketsContainer component should render a closed modal because is
     customerId={22}
     sourceTicket={
       Immutable.Map {
-        subject: "foo",
-        assignee_user: Immutable.Map {
-          id: 1,
-          name: "John Smith",
+        "subject": "foo",
+        "assignee_user": Immutable.Map {
+          "id": 1,
+          "name": "John Smith",
         },
-        customer: Immutable.Map {
-          id: 22,
-          name: "Maria Curie",
+        "customer": Immutable.Map {
+          "id": 22,
+          "name": "Maria Curie",
         },
       }
     }
@@ -106,27 +106,27 @@ exports[`MergeTicketsContainer component should render the build component if th
     finalTicket={null}
     sourceTicket={
       Immutable.Map {
-        subject: "foo",
-        assignee_user: Immutable.Map {
-          id: 1,
-          name: "John Smith",
+        "subject": "foo",
+        "assignee_user": Immutable.Map {
+          "id": 1,
+          "name": "John Smith",
         },
-        customer: Immutable.Map {
-          id: 22,
-          name: "Maria Curie",
+        "customer": Immutable.Map {
+          "id": 22,
+          "name": "Maria Curie",
         },
       }
     }
     targetTicket={
       Immutable.Map {
-        subject: "foo",
-        assignee_user: Immutable.Map {
-          id: 1,
-          name: "John Smith",
+        "subject": "foo",
+        "assignee_user": Immutable.Map {
+          "id": 1,
+          "name": "John Smith",
         },
-        customer: Immutable.Map {
-          id: 22,
-          name: "Maria Curie",
+        "customer": Immutable.Map {
+          "id": 22,
+          "name": "Maria Curie",
         },
       }
     }
@@ -151,14 +151,14 @@ exports[`MergeTicketsContainer component should render the selection component i
     customerId={22}
     sourceTicket={
       Immutable.Map {
-        subject: "foo",
-        assignee_user: Immutable.Map {
-          id: 1,
-          name: "John Smith",
+        "subject": "foo",
+        "assignee_user": Immutable.Map {
+          "id": 1,
+          "name": "John Smith",
         },
-        customer: Immutable.Map {
-          id: 22,
-          name: "Maria Curie",
+        "customer": Immutable.Map {
+          "id": 22,
+          "name": "Maria Curie",
         },
       }
     }

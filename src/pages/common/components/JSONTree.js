@@ -53,27 +53,27 @@ const ObjectComponent = ({data, root = false, last = false}) => {
         <div className="object">
             <span>{root && leftBracket}</span>
             <div className="content">
-            {
-                data.map((v, k) => {
-                    idx++
-                    const childNode = switchComponent(v, false, idx >= data.size)
-                    const isObject = childNode.type.name && childNode.type.name === 'ObjectComponent'
-                    const isArray = childNode.type.name && childNode.type.name === 'ArrayComponent'
+                {
+                    data.map((v, k) => {
+                        idx++
+                        const childNode = switchComponent(v, false, idx >= data.size)
+                        const isObject = childNode.type.name && childNode.type.name === 'ObjectComponent'
+                        const isArray = childNode.type.name && childNode.type.name === 'ArrayComponent'
 
-                    return (
-                        <div
-                            key={`${k}-${idx}`}
-                            className="field"
-                        >
-                            <span className="string-key">"{k}": </span>
-                            {isObject && leftBracket}
-                            {isArray && leftArrayBracket}
-                            {childNode}
-                            {idx < data.size && !isObject && !isArray && ','}
-                        </div>
-                    )
-                }).toList().toJS()
-            }
+                        return (
+                            <div
+                                key={`${k}-${idx}`}
+                                className="field"
+                            >
+                                <span className="string-key">"{k}": </span>
+                                {isObject && leftBracket}
+                                {isArray && leftArrayBracket}
+                                {childNode}
+                                {idx < data.size && !isObject && !isArray && ','}
+                            </div>
+                        )
+                    }).toList().toJS()
+                }
             </div>
             <span>{rightBracket}{!last && ','}</span>
         </div>
@@ -95,23 +95,23 @@ const ArrayComponent = ({data, root = false, last = false}) => {
         <div className="object">
             <span>{root && leftBracket}</span>
             <div className="content">
-            {
-                data.map((v, idx) => {
-                    const childNode = switchComponent(v, true, idx >= data.size - 1)
-                    const isObject = childNode.type.name && childNode.type.name === 'ObjectComponent'
-                    const isArray = childNode.type.name && childNode.type.name === 'ArrayComponent'
+                {
+                    data.map((v, idx) => {
+                        const childNode = switchComponent(v, true, idx >= data.size - 1)
+                        const isObject = childNode.type.name && childNode.type.name === 'ObjectComponent'
+                        const isArray = childNode.type.name && childNode.type.name === 'ArrayComponent'
 
-                    return (
-                        <div
-                            key={idx}
-                            className="field"
-                        >
-                            {childNode}
-                            {idx < data.size - 1 && !isObject && !isArray && ','}
-                        </div>
-                    )
-                })
-            }
+                        return (
+                            <div
+                                key={idx}
+                                className="field"
+                            >
+                                {childNode}
+                                {idx < data.size - 1 && !isObject && !isArray && ','}
+                            </div>
+                        )
+                    })
+                }
             </div>
             <span>{rightBracket}{!last && ','}</span>
         </div>

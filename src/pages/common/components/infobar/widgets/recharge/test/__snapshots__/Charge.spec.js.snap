@@ -24,8 +24,8 @@ exports[`Charge AfterContent should aggregate line_items by subscriptions 1`] = 
         isEditing={false}
         source={
           Immutable.Map {
-            charge_id: undefined,
-            subscription_id: "1",
+            "charge_id": undefined,
+            "subscription_id": "1",
           }
         }
       />
@@ -72,8 +72,8 @@ exports[`Charge AfterContent should aggregate line_items by subscriptions 1`] = 
         isEditing={false}
         source={
           Immutable.Map {
-            charge_id: undefined,
-            subscription_id: "2",
+            "charge_id": undefined,
+            "subscription_id": "2",
           }
         }
       />
@@ -102,12 +102,12 @@ exports[`Charge AfterTitle should display the refund action when the status is S
       Object {
         "child": <div>
           <i
-                className="material-icons mr-2"
+            className="material-icons mr-2"
           >
-                refresh
+            refresh
           </i>
           Refund
-    </div>,
+        </div>,
         "key": "refund",
         "options": Array [
           Object {
@@ -129,12 +129,12 @@ exports[`Charge AfterTitle should display the refund action when the status is S
         ],
         "title": <div>
           <i
-                className="material-icons mr-2"
+            className="material-icons mr-2"
           >
-                refresh
+            refresh
           </i>
           Refund charge
-    </div>,
+        </div>,
         "tooltip": "This will refund the charge in Recharge with the amount specified below.",
       },
     ]
@@ -154,12 +154,12 @@ exports[`Charge AfterTitle should display the refund action when the status is S
       Object {
         "child": <div>
           <i
-                className="material-icons mr-2"
+            className="material-icons mr-2"
           >
-                refresh
+            refresh
           </i>
           Refund
-    </div>,
+        </div>,
         "key": "refund",
         "options": Array [
           Object {
@@ -181,12 +181,12 @@ exports[`Charge AfterTitle should display the refund action when the status is S
         ],
         "title": <div>
           <i
-                className="material-icons mr-2"
+            className="material-icons mr-2"
           >
-                refresh
+            refresh
           </i>
           Refund charge
-    </div>,
+        </div>,
         "tooltip": "This will refund the charge in Recharge with the amount specified below.",
       },
     ]
@@ -206,12 +206,12 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
       Object {
         "child": <div>
           <i
-                className="material-icons mr-2"
+            className="material-icons mr-2"
           >
-                refresh
+            refresh
           </i>
           Refund
-    </div>,
+        </div>,
         "key": "refund",
         "options": Array [
           Object {
@@ -233,12 +233,12 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
         ],
         "title": <div>
           <i
-                className="material-icons mr-2"
+            className="material-icons mr-2"
           >
-                refresh
+            refresh
           </i>
           Refund charge
-    </div>,
+        </div>,
         "tooltip": "This will refund the charge in Recharge with the amount specified below.",
       },
     ]
@@ -258,12 +258,12 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
       Object {
         "child": <div>
           <i
-                className="material-icons mr-2"
+            className="material-icons mr-2"
           >
-                refresh
+            refresh
           </i>
           Refund
-    </div>,
+        </div>,
         "key": "refund",
         "options": Array [
           Object {
@@ -285,12 +285,12 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
         ],
         "title": <div>
           <i
-                className="material-icons mr-2"
+            className="material-icons mr-2"
           >
-                refresh
+            refresh
           </i>
           Refund charge
-    </div>,
+        </div>,
         "tooltip": "This will refund the charge in Recharge with the amount specified below.",
       },
     ]
@@ -375,12 +375,12 @@ exports[`Charge SubscriptionAfterTitle should display the skipCharge action if t
       Object {
         "child": <div>
           <i
-                className="material-icons mr-1"
+            className="material-icons mr-1"
           >
-                block
+            block
           </i>
           Skip
-    </div>,
+        </div>,
         "key": "skip",
         "options": Array [
           Object {
@@ -389,12 +389,12 @@ exports[`Charge SubscriptionAfterTitle should display the skipCharge action if t
         ],
         "title": <div>
           <i
-                className="material-icons mr-1"
+            className="material-icons mr-1"
           >
-                block
+            block
           </i>
           Skip charge on subscription
-    </div>,
+        </div>,
         "tooltip": "Skip the charge for this subscription on Recharge. No order will be created and no item will be shipped.",
       },
     ]
@@ -415,12 +415,12 @@ exports[`Charge SubscriptionAfterTitle should display the unskipCharge action if
       Object {
         "child": <div>
           <i
-                className="material-icons mr-1"
+            className="material-icons mr-1"
           >
-                autorenew
+            autorenew
           </i>
           Unskip
-    </div>,
+        </div>,
         "key": "unskip",
         "options": Array [
           Object {
@@ -429,12 +429,12 @@ exports[`Charge SubscriptionAfterTitle should display the unskipCharge action if
         ],
         "title": <div>
           <i
-                className="material-icons mr-1"
+            className="material-icons mr-1"
           >
-                block
+            block
           </i>
           Unskip charge on subscription
-    </div>,
+        </div>,
         "tooltip": "Unskip the charge for this subscription on Recharge.",
       },
     ]
@@ -467,7 +467,7 @@ exports[`Charge SubscriptionAfterTitle should return null if there's no integrat
 exports[`Charge TitleWrapper customer context should not render any link because no custom link is set 1`] = `
 <a
   href={null}
-  rel="noreferrer noopener"
+  rel="noopener noreferrer"
   target="_blank"
 />
 `;
@@ -475,7 +475,7 @@ exports[`Charge TitleWrapper customer context should not render any link because
 exports[`Charge TitleWrapper customer context should render custom link because it is set 1`] = `
 <a
   href="https://gorgias.io/asd1as2d3/"
-  rel="noreferrer noopener"
+  rel="noopener noreferrer"
   target="_blank"
 />
 `;
@@ -483,7 +483,7 @@ exports[`Charge TitleWrapper customer context should render custom link because 
 exports[`Charge TitleWrapper should not render any link because no customer hash is available 1`] = `
 <a
   href={null}
-  rel="noreferrer noopener"
+  rel="noopener noreferrer"
   target="_blank"
 />
 `;
@@ -491,7 +491,7 @@ exports[`Charge TitleWrapper should not render any link because no customer hash
 exports[`Charge TitleWrapper should not render any link because no customer hash is available 2`] = `
 <a
   href={null}
-  rel="noreferrer noopener"
+  rel="noopener noreferrer"
   target="_blank"
 />
 `;
@@ -499,7 +499,7 @@ exports[`Charge TitleWrapper should not render any link because no customer hash
 exports[`Charge TitleWrapper ticket context should not render any link because no custom link is set 1`] = `
 <a
   href={null}
-  rel="noreferrer noopener"
+  rel="noopener noreferrer"
   target="_blank"
 />
 `;
@@ -507,7 +507,7 @@ exports[`Charge TitleWrapper ticket context should not render any link because n
 exports[`Charge TitleWrapper ticket context should render custom link because it is set 1`] = `
 <a
   href="https://gorgias.io/asd1as2d3/"
-  rel="noreferrer noopener"
+  rel="noopener noreferrer"
   target="_blank"
 />
 `;

@@ -176,10 +176,7 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
         </div>
         <ChatIntegrationPreview
           conversationColor="#0d87dd"
-          currentUser={
-            Immutable.Map {
-            }
-          }
+          currentUser={Immutable.Map {}}
           inputPlaceholder="Type a message..."
           introductionText="What can we do for you?"
           isOnline={true}
@@ -242,9 +239,9 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
   <RealtimeMessagingIntegrationNavigation
     integration={
       Immutable.Map {
-        id: 2,
-        name: "hellosmoochintegration",
-        type: "smooch_inside",
+        "id": 2,
+        "name": "hellosmoochintegration",
+        "type": "smooch_inside",
       }
     }
   />
@@ -405,10 +402,7 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
         </div>
         <ChatIntegrationPreview
           conversationColor="#0d87dd"
-          currentUser={
-            Immutable.Map {
-            }
-          }
+          currentUser={Immutable.Map {}}
           inputPlaceholder="Type a message..."
           introductionText="What can we do for you?"
           isOnline={true}
@@ -471,9 +465,9 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
   <RealtimeMessagingIntegrationNavigation
     integration={
       Immutable.Map {
-        id: 2,
-        name: "hellosmoochintegration",
-        type: "smooch_inside",
+        "id": 2,
+        "name": "hellosmoochintegration",
+        "type": "smooch_inside",
       }
     }
   />
@@ -634,10 +628,7 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
         </div>
         <ChatIntegrationPreview
           conversationColor="#0d87dd"
-          currentUser={
-            Immutable.Map {
-            }
-          }
+          currentUser={Immutable.Map {}}
           inputPlaceholder="Type a message..."
           introductionText="What can we do for you?"
           isOnline={true}

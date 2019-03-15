@@ -128,7 +128,7 @@ export class FileField extends InputField<Props, State> {
             uploadType, // eslint-disable-line
             maxSize, // eslint-disable-line
             value,
-            ...rest,
+            ...rest
         } = this.props
 
         const {isUploading} = this.state
@@ -155,17 +155,17 @@ export class FileField extends InputField<Props, State> {
                 >
                     {
                         isUploading ? (
-                                <div>
-                                    <i className="material-icons md-spin mr-2">
+                            <div>
+                                <i className="material-icons md-spin mr-2">
                                         refresh
-                                    </i>
+                                </i>
                                     Uploading...
-                                </div>
-                            ) : (
-                                <div>
-                                    {placeholder}
-                                </div>
-                            )
+                            </div>
+                        ) : (
+                            <div>
+                                {placeholder}
+                            </div>
+                        )
                     }
                     <Input
                         id={this.id}

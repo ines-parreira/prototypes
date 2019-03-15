@@ -20,7 +20,7 @@ Object {
   },
   "pendingActionsCallbacks": Array [
     Object {
-      "callback": [Function],
+      "callback": [MockFunction],
       "id": "shopifyRefundShippingCostOfOrder-34-5-4194477515",
     },
   ],

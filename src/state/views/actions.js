@@ -168,9 +168,9 @@ export function submitView(view: viewType): thunkActionType {
             promise = axios.put(`/api/views/${view.get('id')}/`, view.delete('dirty').delete('editMode').toJS())
         } else {
             const orders = views.get('items', fromJS([]))
-                    .filter((item) => item.get('type') === view.get('type'))
-                    .map((item) => item.get('display_order', 0))
-                    .toJS()
+                .filter((item) => item.get('type') === view.get('type'))
+                .map((item) => item.get('display_order', 0))
+                .toJS()
                 || [0]
             promise = axios.post(
                 '/api/views/',

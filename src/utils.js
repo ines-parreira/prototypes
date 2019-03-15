@@ -757,14 +757,14 @@ export const errorToChildren = (incomingError: { response: { data: { error: { da
     return `
         <ul className="m-0">
             ${
-        //$FlowFixMe
-        _map(data, (fieldErrors, fieldName) => {
-            // $FlowFixMe
-            return _valuesDeep(fieldErrors).map((fieldError) => {
-                return `<li>${fieldName}: ${fieldError}</li>`
-            }).join('')
+    //$FlowFixMe
+    _map(data, (fieldErrors, fieldName) => {
+        // $FlowFixMe
+        return _valuesDeep(fieldErrors).map((fieldError) => {
+            return `<li>${fieldName}: ${fieldError}</li>`
         }).join('')
-        }
+    }).join('')
+}
         </ul>
     `
 }

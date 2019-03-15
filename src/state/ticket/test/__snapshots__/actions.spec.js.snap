@@ -4,8 +4,8 @@ exports[`ticket actions addTags 1`] = `
 Array [
   Object {
     "args": Immutable.Map {
-      tags: "refund, billing",
-},
+      "tags": "refund, billing",
+    },
     "type": "addTags",
   },
 ]
@@ -15,167 +15,152 @@ exports[`ticket actions applyMacro 1`] = `
 Array [
   Object {
     "macro": Immutable.Map {
-      id: 1,
-      actions: Immutable.List [
-            Immutable.Map {
-                  type: "user",
-                  name: "setResponseText",
-                  arguments: Immutable.Map {
-                        contentState: Immutable.Map {
-                        },
-                        selectionState: Immutable.Map {
-                        },
-                  },
-            },
-            Immutable.Map {
-                  type: "user",
-                  name: "addTags",
-                  arguments: Immutable.Map {
-                        tags: "refund, billing",
-                  },
-            },
+      "id": 1,
+      "actions": Immutable.List [
+        Immutable.Map {
+          "type": "user",
+          "name": "setResponseText",
+          "arguments": Immutable.Map {
+            "contentState": Immutable.Map {},
+            "selectionState": Immutable.Map {},
+          },
+        },
+        Immutable.Map {
+          "type": "user",
+          "name": "addTags",
+          "arguments": Immutable.Map {
+            "tags": "refund, billing",
+          },
+        },
       ],
-},
+    },
     "ticketId": 1,
     "type": "APPLY_MACRO",
   },
   Object {
     "appliedMacro": null,
     "args": Immutable.Map {
-      contentState: Immutable.Map {
-      },
-      selectionState: Immutable.Map {
-      },
-},
+      "contentState": Immutable.Map {},
+      "selectionState": Immutable.Map {},
+    },
     "currentUser": Immutable.Map {
-      id: 1,
-},
+      "id": 1,
+    },
     "fromMacro": true,
     "ticket": Immutable.Map {
-      trashed_datetime: null,
-      channel: "email",
-      priority: "normal",
-      reply_options: Immutable.Map {
-            email: Immutable.Map {
-                  answerable: true,
-            },
+      "trashed_datetime": null,
+      "channel": "email",
+      "priority": "normal",
+      "reply_options": Immutable.Map {
+        "email": Immutable.Map {
+          "answerable": true,
+        },
       },
-      spam: false,
-      subject: "",
-      messages: Immutable.List [
-      ],
-      via: "helpdesk",
-      receiver: null,
-      state: Immutable.Map {
-            dirty: false,
-            latestEventDatetime: null,
-            appliedMacro: null,
+      "spam": false,
+      "subject": "",
+      "messages": Immutable.List [],
+      "via": "helpdesk",
+      "receiver": null,
+      "state": Immutable.Map {
+        "dirty": false,
+        "latestEventDatetime": null,
+        "appliedMacro": null,
       },
-      status: "open",
-      sender: null,
-      tags: Immutable.List [
-      ],
-      events: Immutable.List [
-      ],
-      assignee_user: null,
-      id: 1,
-      _internal: Immutable.Map {
-            displayHistory: false,
-            shouldDisplayHistoryOnNextPage: false,
-            loading: Immutable.Map {
-                  fetchTicket: false,
-                  deleteMessage: false,
-            },
-            pendingMessages: Immutable.List [
-            ],
+      "status": "open",
+      "sender": null,
+      "tags": Immutable.List [],
+      "events": Immutable.List [],
+      "assignee_user": null,
+      "id": 1,
+      "_internal": Immutable.Map {
+        "displayHistory": false,
+        "shouldDisplayHistoryOnNextPage": false,
+        "loading": Immutable.Map {
+          "fetchTicket": false,
+          "deleteMessage": false,
+        },
+        "pendingMessages": Immutable.List [],
       },
-      customer: null,
-},
+      "customer": null,
+    },
     "ticketId": 1,
     "type": "setResponseText",
   },
   Object {
     "appliedMacro": null,
     "args": Immutable.Map {
-      tags: "refund, billing",
-},
+      "tags": "refund, billing",
+    },
     "currentUser": Immutable.Map {
-      id: 1,
-},
+      "id": 1,
+    },
     "fromMacro": true,
     "ticket": Immutable.Map {
-      trashed_datetime: null,
-      channel: "email",
-      priority: "normal",
-      reply_options: Immutable.Map {
-            email: Immutable.Map {
-                  answerable: true,
-            },
+      "trashed_datetime": null,
+      "channel": "email",
+      "priority": "normal",
+      "reply_options": Immutable.Map {
+        "email": Immutable.Map {
+          "answerable": true,
+        },
       },
-      spam: false,
-      subject: "",
-      messages: Immutable.List [
-      ],
-      via: "helpdesk",
-      receiver: null,
-      state: Immutable.Map {
-            dirty: false,
-            latestEventDatetime: null,
-            appliedMacro: null,
+      "spam": false,
+      "subject": "",
+      "messages": Immutable.List [],
+      "via": "helpdesk",
+      "receiver": null,
+      "state": Immutable.Map {
+        "dirty": false,
+        "latestEventDatetime": null,
+        "appliedMacro": null,
       },
-      status: "open",
-      sender: null,
-      tags: Immutable.List [
-      ],
-      events: Immutable.List [
-      ],
-      assignee_user: null,
-      id: 1,
-      _internal: Immutable.Map {
-            displayHistory: false,
-            shouldDisplayHistoryOnNextPage: false,
-            loading: Immutable.Map {
-                  fetchTicket: false,
-                  deleteMessage: false,
-            },
-            pendingMessages: Immutable.List [
-            ],
+      "status": "open",
+      "sender": null,
+      "tags": Immutable.List [],
+      "events": Immutable.List [],
+      "assignee_user": null,
+      "id": 1,
+      "_internal": Immutable.Map {
+        "displayHistory": false,
+        "shouldDisplayHistoryOnNextPage": false,
+        "loading": Immutable.Map {
+          "fetchTicket": false,
+          "deleteMessage": false,
+        },
+        "pendingMessages": Immutable.List [],
       },
-      customer: null,
-},
+      "customer": null,
+    },
     "ticketId": 1,
     "type": "addTags",
   },
   Object {
     "args": Object {
-      "tags": Immutable.List [
-],
+      "tags": Immutable.List [],
     },
     "type": "TICKET_PARTIAL_UPDATE_START",
   },
   Object {
     "macro": Immutable.Map {
-      id: 1,
-      actions: Immutable.List [
-            Immutable.Map {
-                  type: "user",
-                  name: "setResponseText",
-                  arguments: Immutable.Map {
-                        contentState: Immutable.Map {
-                        },
-                        selectionState: Immutable.Map {
-                        },
-                  },
-            },
-            Immutable.Map {
-                  type: "user",
-                  name: "addTags",
-                  arguments: Immutable.Map {
-                        tags: "refund, billing",
-                  },
-            },
+      "id": 1,
+      "actions": Immutable.List [
+        Immutable.Map {
+          "type": "user",
+          "name": "setResponseText",
+          "arguments": Immutable.Map {
+            "contentState": Immutable.Map {},
+            "selectionState": Immutable.Map {},
+          },
+        },
+        Immutable.Map {
+          "type": "user",
+          "name": "addTags",
+          "arguments": Immutable.Map {
+            "tags": "refund, billing",
+          },
+        },
       ],
-},
+    },
     "type": "NEW_MESSAGE_RECORD_MACRO",
   },
 ]
@@ -185,53 +170,47 @@ exports[`ticket actions applyMacroAction 1`] = `
 Object {
   "appliedMacro": null,
   "args": Immutable.Map {
-    contentState: Immutable.Map {
-    },
-    selectionState: Immutable.Map {
-    },
-},
+    "contentState": Immutable.Map {},
+    "selectionState": Immutable.Map {},
+  },
   "currentUser": undefined,
   "fromMacro": true,
   "ticket": Immutable.Map {
-    trashed_datetime: null,
-    channel: "email",
-    priority: "normal",
-    reply_options: Immutable.Map {
-        email: Immutable.Map {
-            answerable: true,
-        },
+    "trashed_datetime": null,
+    "channel": "email",
+    "priority": "normal",
+    "reply_options": Immutable.Map {
+      "email": Immutable.Map {
+        "answerable": true,
+      },
     },
-    spam: false,
-    subject: "",
-    messages: Immutable.List [
-    ],
-    via: "helpdesk",
-    receiver: null,
-    state: Immutable.Map {
-        dirty: false,
-        latestEventDatetime: null,
-        appliedMacro: null,
+    "spam": false,
+    "subject": "",
+    "messages": Immutable.List [],
+    "via": "helpdesk",
+    "receiver": null,
+    "state": Immutable.Map {
+      "dirty": false,
+      "latestEventDatetime": null,
+      "appliedMacro": null,
     },
-    status: "open",
-    sender: null,
-    tags: Immutable.List [
-    ],
-    events: Immutable.List [
-    ],
-    assignee_user: null,
-    id: 1,
-    _internal: Immutable.Map {
-        displayHistory: false,
-        shouldDisplayHistoryOnNextPage: false,
-        loading: Immutable.Map {
-            fetchTicket: false,
-            deleteMessage: false,
-        },
-        pendingMessages: Immutable.List [
-        ],
+    "status": "open",
+    "sender": null,
+    "tags": Immutable.List [],
+    "events": Immutable.List [],
+    "assignee_user": null,
+    "id": 1,
+    "_internal": Immutable.Map {
+      "displayHistory": false,
+      "shouldDisplayHistoryOnNextPage": false,
+      "loading": Immutable.Map {
+        "fetchTicket": false,
+        "deleteMessage": false,
+      },
+      "pendingMessages": Immutable.List [],
     },
-    customer: null,
-},
+    "customer": null,
+  },
   "ticketId": 1,
   "type": "setResponseText",
 }
@@ -260,8 +239,7 @@ Array [
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
   Object {
-    "sender": Immutable.Map {
-},
+    "sender": Immutable.Map {},
     "type": "NEW_MESSAGE_SET_SENDER",
   },
 ]
@@ -358,56 +336,50 @@ Array [
   },
   Object {
     "appliedMacro": null,
-    "args": Immutable.Map {
-},
+    "args": Immutable.Map {},
     "currentUser": Immutable.Map {
-      id: 1,
-},
+      "id": 1,
+    },
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
+    "signature": Immutable.Map {},
     "ticket": Immutable.Map {
-      trashed_datetime: null,
-      channel: "email",
-      priority: "normal",
-      reply_options: Immutable.Map {
-            email: Immutable.Map {
-                  answerable: true,
-            },
+      "trashed_datetime": null,
+      "channel": "email",
+      "priority": "normal",
+      "reply_options": Immutable.Map {
+        "email": Immutable.Map {
+          "answerable": true,
+        },
       },
-      spam: false,
-      subject: "",
-      messages: Immutable.List [
-      ],
-      via: "helpdesk",
-      receiver: null,
-      state: Immutable.Map {
-            dirty: false,
-            latestEventDatetime: null,
-            appliedMacro: null,
+      "spam": false,
+      "subject": "",
+      "messages": Immutable.List [],
+      "via": "helpdesk",
+      "receiver": null,
+      "state": Immutable.Map {
+        "dirty": false,
+        "latestEventDatetime": null,
+        "appliedMacro": null,
       },
-      status: "open",
-      sender: null,
-      tags: Immutable.List [
-      ],
-      events: Immutable.List [
-      ],
-      assignee_user: null,
-      id: 1,
-      _internal: Immutable.Map {
-            displayHistory: false,
-            shouldDisplayHistoryOnNextPage: false,
-            loading: Immutable.Map {
-                  fetchTicket: false,
-                  deleteMessage: false,
-            },
-            pendingMessages: Immutable.List [
-            ],
+      "status": "open",
+      "sender": null,
+      "tags": Immutable.List [],
+      "events": Immutable.List [],
+      "assignee_user": null,
+      "id": 1,
+      "_internal": Immutable.Map {
+        "displayHistory": false,
+        "shouldDisplayHistoryOnNextPage": false,
+        "loading": Immutable.Map {
+          "fetchTicket": false,
+          "deleteMessage": false,
+        },
+        "pendingMessages": Immutable.List [],
       },
-      customer: null,
-},
+      "customer": null,
+    },
     "ticketId": 1,
     "type": "setResponseText",
   },
@@ -419,8 +391,7 @@ Array [
     "type": "NEW_MESSAGE_SET_SUBJECT",
   },
   Object {
-    "messages": Immutable.List [
-],
+    "messages": Immutable.List [],
     "sourceType": "instagram-comment",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
@@ -436,8 +407,7 @@ Array [
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
   Object {
-    "sender": Immutable.Map {
-},
+    "sender": Immutable.Map {},
     "type": "NEW_MESSAGE_SET_SENDER",
   },
   Object {
@@ -448,8 +418,7 @@ Array [
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
   Object {
-    "sender": Immutable.Map {
-},
+    "sender": Immutable.Map {},
     "type": "NEW_MESSAGE_SET_SENDER",
   },
 ]
@@ -481,56 +450,50 @@ Array [
   },
   Object {
     "appliedMacro": null,
-    "args": Immutable.Map {
-},
+    "args": Immutable.Map {},
     "currentUser": Immutable.Map {
-      id: 1,
-},
+      "id": 1,
+    },
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
+    "signature": Immutable.Map {},
     "ticket": Immutable.Map {
-      trashed_datetime: null,
-      channel: "email",
-      priority: "normal",
-      reply_options: Immutable.Map {
-            email: Immutable.Map {
-                  answerable: true,
-            },
+      "trashed_datetime": null,
+      "channel": "email",
+      "priority": "normal",
+      "reply_options": Immutable.Map {
+        "email": Immutable.Map {
+          "answerable": true,
+        },
       },
-      spam: false,
-      subject: "",
-      messages: Immutable.List [
-      ],
-      via: "helpdesk",
-      receiver: null,
-      state: Immutable.Map {
-            dirty: false,
-            latestEventDatetime: null,
-            appliedMacro: null,
+      "spam": false,
+      "subject": "",
+      "messages": Immutable.List [],
+      "via": "helpdesk",
+      "receiver": null,
+      "state": Immutable.Map {
+        "dirty": false,
+        "latestEventDatetime": null,
+        "appliedMacro": null,
       },
-      status: "open",
-      sender: null,
-      tags: Immutable.List [
-      ],
-      events: Immutable.List [
-      ],
-      assignee_user: null,
-      id: 1,
-      _internal: Immutable.Map {
-            displayHistory: false,
-            shouldDisplayHistoryOnNextPage: false,
-            loading: Immutable.Map {
-                  fetchTicket: false,
-                  deleteMessage: false,
-            },
-            pendingMessages: Immutable.List [
-            ],
+      "status": "open",
+      "sender": null,
+      "tags": Immutable.List [],
+      "events": Immutable.List [],
+      "assignee_user": null,
+      "id": 1,
+      "_internal": Immutable.Map {
+        "displayHistory": false,
+        "shouldDisplayHistoryOnNextPage": false,
+        "loading": Immutable.Map {
+          "fetchTicket": false,
+          "deleteMessage": false,
+        },
+        "pendingMessages": Immutable.List [],
       },
-      customer: null,
-},
+      "customer": null,
+    },
     "ticketId": 1,
     "type": "setResponseText",
   },
@@ -545,8 +508,7 @@ Array [
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
   Object {
-    "sender": Immutable.Map {
-},
+    "sender": Immutable.Map {},
     "type": "NEW_MESSAGE_SET_SENDER",
   },
 ]
@@ -556,53 +518,47 @@ exports[`ticket actions fetchTicket new ticket 1`] = `
 Array [
   Object {
     "appliedMacro": null,
-    "args": Immutable.Map {
-},
+    "args": Immutable.Map {},
     "currentUser": undefined,
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
+    "signature": Immutable.Map {},
     "ticket": Immutable.Map {
-      trashed_datetime: null,
-      channel: "email",
-      priority: "normal",
-      reply_options: Immutable.Map {
-            email: Immutable.Map {
-                  answerable: true,
-            },
+      "trashed_datetime": null,
+      "channel": "email",
+      "priority": "normal",
+      "reply_options": Immutable.Map {
+        "email": Immutable.Map {
+          "answerable": true,
+        },
       },
-      spam: false,
-      subject: "",
-      messages: Immutable.List [
-      ],
-      via: "helpdesk",
-      receiver: null,
-      state: Immutable.Map {
-            dirty: false,
-            latestEventDatetime: null,
-            appliedMacro: null,
+      "spam": false,
+      "subject": "",
+      "messages": Immutable.List [],
+      "via": "helpdesk",
+      "receiver": null,
+      "state": Immutable.Map {
+        "dirty": false,
+        "latestEventDatetime": null,
+        "appliedMacro": null,
       },
-      status: "open",
-      sender: null,
-      tags: Immutable.List [
-      ],
-      events: Immutable.List [
-      ],
-      assignee_user: null,
-      _internal: Immutable.Map {
-            displayHistory: false,
-            shouldDisplayHistoryOnNextPage: false,
-            loading: Immutable.Map {
-                  fetchTicket: false,
-                  deleteMessage: false,
-            },
-            pendingMessages: Immutable.List [
-            ],
+      "status": "open",
+      "sender": null,
+      "tags": Immutable.List [],
+      "events": Immutable.List [],
+      "assignee_user": null,
+      "_internal": Immutable.Map {
+        "displayHistory": false,
+        "shouldDisplayHistoryOnNextPage": false,
+        "loading": Immutable.Map {
+          "fetchTicket": false,
+          "deleteMessage": false,
+        },
+        "pendingMessages": Immutable.List [],
       },
-      customer: null,
-},
+      "customer": null,
+    },
     "ticketId": undefined,
     "type": "setResponseText",
   },
@@ -624,12 +580,12 @@ exports[`ticket actions findAndSetCustomer should set the customer because there
 Array [
   Object {
     "args": Immutable.Map {
-      customer: Immutable.Map {
-            id: 1,
-            name: "foo",
-            email: "foo@gorgias.io",
+      "customer": Immutable.Map {
+        "id": 1,
+        "name": "foo",
+        "email": "foo@gorgias.io",
       },
-},
+    },
     "type": "setCustomer",
   },
 ]
@@ -667,53 +623,47 @@ Array [
   },
   Object {
     "appliedMacro": null,
-    "args": Immutable.Map {
-},
+    "args": Immutable.Map {},
     "currentUser": undefined,
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
+    "signature": Immutable.Map {},
     "ticket": Immutable.Map {
-      trashed_datetime: null,
-      channel: "email",
-      priority: "normal",
-      reply_options: Immutable.Map {
-            email: Immutable.Map {
-                  answerable: true,
-            },
+      "trashed_datetime": null,
+      "channel": "email",
+      "priority": "normal",
+      "reply_options": Immutable.Map {
+        "email": Immutable.Map {
+          "answerable": true,
+        },
       },
-      spam: false,
-      subject: "",
-      messages: Immutable.List [
-      ],
-      via: "helpdesk",
-      receiver: null,
-      state: Immutable.Map {
-            dirty: false,
-            latestEventDatetime: null,
-            appliedMacro: null,
+      "spam": false,
+      "subject": "",
+      "messages": Immutable.List [],
+      "via": "helpdesk",
+      "receiver": null,
+      "state": Immutable.Map {
+        "dirty": false,
+        "latestEventDatetime": null,
+        "appliedMacro": null,
       },
-      status: "open",
-      sender: null,
-      tags: Immutable.List [
-      ],
-      events: Immutable.List [
-      ],
-      assignee_user: null,
-      _internal: Immutable.Map {
-            displayHistory: false,
-            shouldDisplayHistoryOnNextPage: false,
-            loading: Immutable.Map {
-                  fetchTicket: false,
-                  deleteMessage: false,
-            },
-            pendingMessages: Immutable.List [
-            ],
+      "status": "open",
+      "sender": null,
+      "tags": Immutable.List [],
+      "events": Immutable.List [],
+      "assignee_user": null,
+      "_internal": Immutable.Map {
+        "displayHistory": false,
+        "shouldDisplayHistoryOnNextPage": false,
+        "loading": Immutable.Map {
+          "fetchTicket": false,
+          "deleteMessage": false,
+        },
+        "pendingMessages": Immutable.List [],
       },
-      customer: null,
-},
+      "customer": null,
+    },
     "ticketId": undefined,
     "type": "setResponseText",
   },
@@ -728,8 +678,7 @@ Array [
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
   Object {
-    "sender": Immutable.Map {
-},
+    "sender": Immutable.Map {},
     "type": "NEW_MESSAGE_SET_SENDER",
   },
 ]
@@ -771,53 +720,47 @@ Array [
   },
   Object {
     "appliedMacro": null,
-    "args": Immutable.Map {
-},
+    "args": Immutable.Map {},
     "currentUser": undefined,
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
+    "signature": Immutable.Map {},
     "ticket": Immutable.Map {
-      trashed_datetime: null,
-      channel: "email",
-      priority: "normal",
-      reply_options: Immutable.Map {
-            email: Immutable.Map {
-                  answerable: true,
-            },
+      "trashed_datetime": null,
+      "channel": "email",
+      "priority": "normal",
+      "reply_options": Immutable.Map {
+        "email": Immutable.Map {
+          "answerable": true,
+        },
       },
-      spam: false,
-      subject: "",
-      messages: Immutable.List [
-      ],
-      via: "helpdesk",
-      receiver: null,
-      state: Immutable.Map {
-            dirty: false,
-            latestEventDatetime: null,
-            appliedMacro: null,
+      "spam": false,
+      "subject": "",
+      "messages": Immutable.List [],
+      "via": "helpdesk",
+      "receiver": null,
+      "state": Immutable.Map {
+        "dirty": false,
+        "latestEventDatetime": null,
+        "appliedMacro": null,
       },
-      status: "open",
-      sender: null,
-      tags: Immutable.List [
-      ],
-      events: Immutable.List [
-      ],
-      assignee_user: null,
-      _internal: Immutable.Map {
-            displayHistory: false,
-            shouldDisplayHistoryOnNextPage: false,
-            loading: Immutable.Map {
-                  fetchTicket: false,
-                  deleteMessage: false,
-            },
-            pendingMessages: Immutable.List [
-            ],
+      "status": "open",
+      "sender": null,
+      "tags": Immutable.List [],
+      "events": Immutable.List [],
+      "assignee_user": null,
+      "_internal": Immutable.Map {
+        "displayHistory": false,
+        "shouldDisplayHistoryOnNextPage": false,
+        "loading": Immutable.Map {
+          "fetchTicket": false,
+          "deleteMessage": false,
+        },
+        "pendingMessages": Immutable.List [],
       },
-      customer: null,
-},
+      "customer": null,
+    },
     "ticketId": undefined,
     "type": "setResponseText",
   },
@@ -829,8 +772,7 @@ Array [
     "type": "NEW_MESSAGE_SET_SUBJECT",
   },
   Object {
-    "messages": Immutable.List [
-],
+    "messages": Immutable.List [],
     "sourceType": "instagram-comment",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
@@ -846,8 +788,7 @@ Array [
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
   Object {
-    "sender": Immutable.Map {
-},
+    "sender": Immutable.Map {},
     "type": "NEW_MESSAGE_SET_SENDER",
   },
   Object {
@@ -858,8 +799,7 @@ Array [
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
   Object {
-    "sender": Immutable.Map {
-},
+    "sender": Immutable.Map {},
     "type": "NEW_MESSAGE_SET_SENDER",
   },
 ]
@@ -884,53 +824,47 @@ Array [
   },
   Object {
     "appliedMacro": null,
-    "args": Immutable.Map {
-},
+    "args": Immutable.Map {},
     "currentUser": undefined,
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
+    "signature": Immutable.Map {},
     "ticket": Immutable.Map {
-      trashed_datetime: null,
-      channel: "email",
-      priority: "normal",
-      reply_options: Immutable.Map {
-            email: Immutable.Map {
-                  answerable: true,
-            },
+      "trashed_datetime": null,
+      "channel": "email",
+      "priority": "normal",
+      "reply_options": Immutable.Map {
+        "email": Immutable.Map {
+          "answerable": true,
+        },
       },
-      spam: false,
-      subject: "",
-      messages: Immutable.List [
-      ],
-      via: "helpdesk",
-      receiver: null,
-      state: Immutable.Map {
-            dirty: false,
-            latestEventDatetime: null,
-            appliedMacro: null,
+      "spam": false,
+      "subject": "",
+      "messages": Immutable.List [],
+      "via": "helpdesk",
+      "receiver": null,
+      "state": Immutable.Map {
+        "dirty": false,
+        "latestEventDatetime": null,
+        "appliedMacro": null,
       },
-      status: "open",
-      sender: null,
-      tags: Immutable.List [
-      ],
-      events: Immutable.List [
-      ],
-      assignee_user: null,
-      _internal: Immutable.Map {
-            displayHistory: false,
-            shouldDisplayHistoryOnNextPage: false,
-            loading: Immutable.Map {
-                  fetchTicket: false,
-                  deleteMessage: false,
-            },
-            pendingMessages: Immutable.List [
-            ],
+      "status": "open",
+      "sender": null,
+      "tags": Immutable.List [],
+      "events": Immutable.List [],
+      "assignee_user": null,
+      "_internal": Immutable.Map {
+        "displayHistory": false,
+        "shouldDisplayHistoryOnNextPage": false,
+        "loading": Immutable.Map {
+          "fetchTicket": false,
+          "deleteMessage": false,
+        },
+        "pendingMessages": Immutable.List [],
       },
-      customer: null,
-},
+      "customer": null,
+    },
     "ticketId": undefined,
     "type": "setResponseText",
   },
@@ -945,8 +879,7 @@ Array [
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
   Object {
-    "sender": Immutable.Map {
-},
+    "sender": Immutable.Map {},
     "type": "NEW_MESSAGE_SET_SENDER",
   },
 ]
@@ -992,53 +925,47 @@ Array [
   },
   Object {
     "appliedMacro": null,
-    "args": Immutable.Map {
-},
+    "args": Immutable.Map {},
     "currentUser": undefined,
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
+    "signature": Immutable.Map {},
     "ticket": Immutable.Map {
-      trashed_datetime: null,
-      channel: "email",
-      priority: "normal",
-      reply_options: Immutable.Map {
-            email: Immutable.Map {
-                  answerable: true,
-            },
+      "trashed_datetime": null,
+      "channel": "email",
+      "priority": "normal",
+      "reply_options": Immutable.Map {
+        "email": Immutable.Map {
+          "answerable": true,
+        },
       },
-      spam: false,
-      subject: "",
-      messages: Immutable.List [
-      ],
-      via: "helpdesk",
-      receiver: null,
-      state: Immutable.Map {
-            dirty: false,
-            latestEventDatetime: null,
-            appliedMacro: null,
+      "spam": false,
+      "subject": "",
+      "messages": Immutable.List [],
+      "via": "helpdesk",
+      "receiver": null,
+      "state": Immutable.Map {
+        "dirty": false,
+        "latestEventDatetime": null,
+        "appliedMacro": null,
       },
-      status: "open",
-      sender: null,
-      tags: Immutable.List [
-      ],
-      events: Immutable.List [
-      ],
-      assignee_user: null,
-      _internal: Immutable.Map {
-            displayHistory: false,
-            shouldDisplayHistoryOnNextPage: false,
-            loading: Immutable.Map {
-                  fetchTicket: false,
-                  deleteMessage: false,
-            },
-            pendingMessages: Immutable.List [
-            ],
+      "status": "open",
+      "sender": null,
+      "tags": Immutable.List [],
+      "events": Immutable.List [],
+      "assignee_user": null,
+      "_internal": Immutable.Map {
+        "displayHistory": false,
+        "shouldDisplayHistoryOnNextPage": false,
+        "loading": Immutable.Map {
+          "fetchTicket": false,
+          "deleteMessage": false,
+        },
+        "pendingMessages": Immutable.List [],
       },
-      customer: null,
-},
+      "customer": null,
+    },
     "ticketId": undefined,
     "type": "setResponseText",
   },
@@ -1053,8 +980,7 @@ Array [
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
   Object {
-    "sender": Immutable.Map {
-},
+    "sender": Immutable.Map {},
     "type": "NEW_MESSAGE_SET_SENDER",
   },
 ]
@@ -1096,53 +1022,47 @@ Array [
   },
   Object {
     "appliedMacro": null,
-    "args": Immutable.Map {
-},
+    "args": Immutable.Map {},
     "currentUser": undefined,
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
+    "signature": Immutable.Map {},
     "ticket": Immutable.Map {
-      trashed_datetime: null,
-      channel: "email",
-      priority: "normal",
-      reply_options: Immutable.Map {
-            email: Immutable.Map {
-                  answerable: true,
-            },
+      "trashed_datetime": null,
+      "channel": "email",
+      "priority": "normal",
+      "reply_options": Immutable.Map {
+        "email": Immutable.Map {
+          "answerable": true,
+        },
       },
-      spam: false,
-      subject: "",
-      messages: Immutable.List [
-      ],
-      via: "helpdesk",
-      receiver: null,
-      state: Immutable.Map {
-            dirty: false,
-            latestEventDatetime: null,
-            appliedMacro: null,
+      "spam": false,
+      "subject": "",
+      "messages": Immutable.List [],
+      "via": "helpdesk",
+      "receiver": null,
+      "state": Immutable.Map {
+        "dirty": false,
+        "latestEventDatetime": null,
+        "appliedMacro": null,
       },
-      status: "open",
-      sender: null,
-      tags: Immutable.List [
-      ],
-      events: Immutable.List [
-      ],
-      assignee_user: null,
-      _internal: Immutable.Map {
-            displayHistory: false,
-            shouldDisplayHistoryOnNextPage: false,
-            loading: Immutable.Map {
-                  fetchTicket: false,
-                  deleteMessage: false,
-            },
-            pendingMessages: Immutable.List [
-            ],
+      "status": "open",
+      "sender": null,
+      "tags": Immutable.List [],
+      "events": Immutable.List [],
+      "assignee_user": null,
+      "_internal": Immutable.Map {
+        "displayHistory": false,
+        "shouldDisplayHistoryOnNextPage": false,
+        "loading": Immutable.Map {
+          "fetchTicket": false,
+          "deleteMessage": false,
+        },
+        "pendingMessages": Immutable.List [],
       },
-      customer: null,
-},
+      "customer": null,
+    },
     "ticketId": undefined,
     "type": "setResponseText",
   },
@@ -1154,8 +1074,7 @@ Array [
     "type": "NEW_MESSAGE_SET_SUBJECT",
   },
   Object {
-    "messages": Immutable.List [
-],
+    "messages": Immutable.List [],
     "sourceType": "instagram-comment",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
@@ -1171,8 +1090,7 @@ Array [
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
   Object {
-    "sender": Immutable.Map {
-},
+    "sender": Immutable.Map {},
     "type": "NEW_MESSAGE_SET_SENDER",
   },
   Object {
@@ -1183,8 +1101,7 @@ Array [
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
   Object {
-    "sender": Immutable.Map {
-},
+    "sender": Immutable.Map {},
     "type": "NEW_MESSAGE_SET_SENDER",
   },
 ]
@@ -1209,53 +1126,47 @@ Array [
   },
   Object {
     "appliedMacro": null,
-    "args": Immutable.Map {
-},
+    "args": Immutable.Map {},
     "currentUser": undefined,
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
+    "signature": Immutable.Map {},
     "ticket": Immutable.Map {
-      trashed_datetime: null,
-      channel: "email",
-      priority: "normal",
-      reply_options: Immutable.Map {
-            email: Immutable.Map {
-                  answerable: true,
-            },
+      "trashed_datetime": null,
+      "channel": "email",
+      "priority": "normal",
+      "reply_options": Immutable.Map {
+        "email": Immutable.Map {
+          "answerable": true,
+        },
       },
-      spam: false,
-      subject: "",
-      messages: Immutable.List [
-      ],
-      via: "helpdesk",
-      receiver: null,
-      state: Immutable.Map {
-            dirty: false,
-            latestEventDatetime: null,
-            appliedMacro: null,
+      "spam": false,
+      "subject": "",
+      "messages": Immutable.List [],
+      "via": "helpdesk",
+      "receiver": null,
+      "state": Immutable.Map {
+        "dirty": false,
+        "latestEventDatetime": null,
+        "appliedMacro": null,
       },
-      status: "open",
-      sender: null,
-      tags: Immutable.List [
-      ],
-      events: Immutable.List [
-      ],
-      assignee_user: null,
-      _internal: Immutable.Map {
-            displayHistory: false,
-            shouldDisplayHistoryOnNextPage: false,
-            loading: Immutable.Map {
-                  fetchTicket: false,
-                  deleteMessage: false,
-            },
-            pendingMessages: Immutable.List [
-            ],
+      "status": "open",
+      "sender": null,
+      "tags": Immutable.List [],
+      "events": Immutable.List [],
+      "assignee_user": null,
+      "_internal": Immutable.Map {
+        "displayHistory": false,
+        "shouldDisplayHistoryOnNextPage": false,
+        "loading": Immutable.Map {
+          "fetchTicket": false,
+          "deleteMessage": false,
+        },
+        "pendingMessages": Immutable.List [],
       },
-      customer: null,
-},
+      "customer": null,
+    },
     "ticketId": undefined,
     "type": "setResponseText",
   },
@@ -1270,8 +1181,7 @@ Array [
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
   Object {
-    "sender": Immutable.Map {
-},
+    "sender": Immutable.Map {},
     "type": "NEW_MESSAGE_SET_SENDER",
   },
 ]
@@ -1308,53 +1218,47 @@ Array [
   },
   Object {
     "appliedMacro": null,
-    "args": Immutable.Map {
-},
+    "args": Immutable.Map {},
     "currentUser": undefined,
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
+    "signature": Immutable.Map {},
     "ticket": Immutable.Map {
-      trashed_datetime: null,
-      channel: "email",
-      priority: "normal",
-      reply_options: Immutable.Map {
-            email: Immutable.Map {
-                  answerable: true,
-            },
+      "trashed_datetime": null,
+      "channel": "email",
+      "priority": "normal",
+      "reply_options": Immutable.Map {
+        "email": Immutable.Map {
+          "answerable": true,
+        },
       },
-      spam: false,
-      subject: "",
-      messages: Immutable.List [
-      ],
-      via: "helpdesk",
-      receiver: null,
-      state: Immutable.Map {
-            dirty: false,
-            latestEventDatetime: null,
-            appliedMacro: null,
+      "spam": false,
+      "subject": "",
+      "messages": Immutable.List [],
+      "via": "helpdesk",
+      "receiver": null,
+      "state": Immutable.Map {
+        "dirty": false,
+        "latestEventDatetime": null,
+        "appliedMacro": null,
       },
-      status: "open",
-      sender: null,
-      tags: Immutable.List [
-      ],
-      events: Immutable.List [
-      ],
-      assignee_user: null,
-      _internal: Immutable.Map {
-            displayHistory: false,
-            shouldDisplayHistoryOnNextPage: false,
-            loading: Immutable.Map {
-                  fetchTicket: false,
-                  deleteMessage: false,
-            },
-            pendingMessages: Immutable.List [
-            ],
+      "status": "open",
+      "sender": null,
+      "tags": Immutable.List [],
+      "events": Immutable.List [],
+      "assignee_user": null,
+      "_internal": Immutable.Map {
+        "displayHistory": false,
+        "shouldDisplayHistoryOnNextPage": false,
+        "loading": Immutable.Map {
+          "fetchTicket": false,
+          "deleteMessage": false,
+        },
+        "pendingMessages": Immutable.List [],
       },
-      customer: null,
-},
+      "customer": null,
+    },
     "ticketId": undefined,
     "type": "setResponseText",
   },
@@ -1369,8 +1273,7 @@ Array [
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
   Object {
-    "sender": Immutable.Map {
-},
+    "sender": Immutable.Map {},
     "type": "NEW_MESSAGE_SET_SENDER",
   },
 ]
@@ -1401,53 +1304,47 @@ Array [
   },
   Object {
     "appliedMacro": null,
-    "args": Immutable.Map {
-},
+    "args": Immutable.Map {},
     "currentUser": undefined,
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,
-    "signature": Immutable.Map {
-},
+    "signature": Immutable.Map {},
     "ticket": Immutable.Map {
-      trashed_datetime: null,
-      channel: "email",
-      priority: "normal",
-      reply_options: Immutable.Map {
-            email: Immutable.Map {
-                  answerable: true,
-            },
+      "trashed_datetime": null,
+      "channel": "email",
+      "priority": "normal",
+      "reply_options": Immutable.Map {
+        "email": Immutable.Map {
+          "answerable": true,
+        },
       },
-      spam: false,
-      subject: "",
-      messages: Immutable.List [
-      ],
-      via: "helpdesk",
-      receiver: null,
-      state: Immutable.Map {
-            dirty: false,
-            latestEventDatetime: null,
-            appliedMacro: null,
+      "spam": false,
+      "subject": "",
+      "messages": Immutable.List [],
+      "via": "helpdesk",
+      "receiver": null,
+      "state": Immutable.Map {
+        "dirty": false,
+        "latestEventDatetime": null,
+        "appliedMacro": null,
       },
-      status: "open",
-      sender: null,
-      tags: Immutable.List [
-      ],
-      events: Immutable.List [
-      ],
-      assignee_user: null,
-      _internal: Immutable.Map {
-            displayHistory: false,
-            shouldDisplayHistoryOnNextPage: false,
-            loading: Immutable.Map {
-                  fetchTicket: false,
-                  deleteMessage: false,
-            },
-            pendingMessages: Immutable.List [
-            ],
+      "status": "open",
+      "sender": null,
+      "tags": Immutable.List [],
+      "events": Immutable.List [],
+      "assignee_user": null,
+      "_internal": Immutable.Map {
+        "displayHistory": false,
+        "shouldDisplayHistoryOnNextPage": false,
+        "loading": Immutable.Map {
+          "fetchTicket": false,
+          "deleteMessage": false,
+        },
+        "pendingMessages": Immutable.List [],
       },
-      customer: null,
-},
+      "customer": null,
+    },
     "ticketId": undefined,
     "type": "setResponseText",
   },
@@ -1462,8 +1359,7 @@ Array [
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
   Object {
-    "sender": Immutable.Map {
-},
+    "sender": Immutable.Map {},
     "type": "NEW_MESSAGE_SET_SENDER",
   },
 ]
@@ -1489,44 +1385,44 @@ Array [
   Object {
     "messagesDifference": 1,
     "ticket": Immutable.Map {
-      id: 1,
-      subject: "title",
-      messages: Immutable.List [
-            Immutable.Map {
-                  id: 1,
-                  body_text: "hello",
-                  body_html: "<div>hello</div>",
-                  channel: "email",
-            },
+      "id": 1,
+      "subject": "title",
+      "messages": Immutable.List [
+        Immutable.Map {
+          "id": 1,
+          "body_text": "hello",
+          "body_html": "<div>hello</div>",
+          "channel": "email",
+        },
       ],
-      customer: Immutable.Map {
-            id: 1,
-            data: Immutable.Map {
-                  hello: "world!",
-            },
+      "customer": Immutable.Map {
+        "id": 1,
+        "data": Immutable.Map {
+          "hello": "world!",
+        },
       },
-},
+    },
     "type": "MERGE_TICKET",
   },
   Object {
     "ticket": Immutable.Map {
-      id: 1,
-      subject: "title",
-      messages: Immutable.List [
-            Immutable.Map {
-                  id: 1,
-                  body_text: "hello",
-                  body_html: "<div>hello</div>",
-                  channel: "email",
-            },
+      "id": 1,
+      "subject": "title",
+      "messages": Immutable.List [
+        Immutable.Map {
+          "id": 1,
+          "body_text": "hello",
+          "body_html": "<div>hello</div>",
+          "channel": "email",
+        },
       ],
-      customer: Immutable.Map {
-            id: 1,
-            data: Immutable.Map {
-                  hello: "world!",
-            },
+      "customer": Immutable.Map {
+        "id": 1,
+        "data": Immutable.Map {
+          "hello": "world!",
+        },
       },
-},
+    },
     "type": "NEW_MESSAGE_RESET_FROM_TICKET",
   },
   Object {
@@ -1537,8 +1433,7 @@ Array [
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
   Object {
-    "sender": Immutable.Map {
-},
+    "sender": Immutable.Map {},
     "type": "NEW_MESSAGE_SET_SENDER",
   },
 ]
@@ -1557,8 +1452,8 @@ exports[`ticket actions removeTag 1`] = `
 Array [
   Object {
     "args": Immutable.Map {
-      tag: "refund",
-},
+      "tag": "refund",
+    },
     "type": "REMOVE_TICKET_TAG",
   },
 ]
@@ -1568,10 +1463,10 @@ exports[`ticket actions setAgent 1`] = `
 Array [
   Object {
     "args": Immutable.Map {
-      assignee_user: Immutable.Map {
-            id: 1,
+      "assignee_user": Immutable.Map {
+        "id": 1,
       },
-},
+    },
     "type": "setAssignee",
   },
 ]
@@ -1581,11 +1476,11 @@ exports[`ticket actions setCustomer 1`] = `
 Array [
   Object {
     "args": Immutable.Map {
-      customer: Immutable.Map {
-            id: 1,
-            custom: true,
+      "customer": Immutable.Map {
+        "id": 1,
+        "custom": true,
       },
-},
+    },
     "type": "setCustomer",
   },
 ]
@@ -1648,8 +1543,8 @@ exports[`ticket actions setStatus 1`] = `
 Array [
   Object {
     "args": Immutable.Map {
-      status: "open",
-},
+      "status": "open",
+    },
     "type": "setStatus",
   },
 ]
@@ -1659,8 +1554,8 @@ exports[`ticket actions setSubject 1`] = `
 Array [
   Object {
     "args": Immutable.Map {
-      subject: "new title",
-},
+      "subject": "new title",
+    },
     "type": "setSubject",
   },
 ]

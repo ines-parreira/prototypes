@@ -2,25 +2,15 @@
 
 exports[`New message reducers should handle NEW_MESSAGE_SET_SUBJECT 1`] = `
 Immutable.Map {
-  state: Immutable.Map {
-    selectionState: null,
-    signatureAdded: false,
-    forceFocus: false,
-    appliedMacro: null,
-    dirty: false,
-    forceUpdate: false,
-    firstNewMessage: true,
-    contentState: Object {
-      "blockMap": Object {
-        "someRandomKey": Object {
-          "characterList": Array [],
-          "data": Object {},
-          "depth": 0,
-          "key": "someRandomKey",
-          "text": "",
-          "type": "unstyled",
-        },
-      },
+  "state": Immutable.Map {
+    "selectionState": null,
+    "signatureAdded": false,
+    "forceFocus": false,
+    "appliedMacro": null,
+    "dirty": false,
+    "forceUpdate": false,
+    "firstNewMessage": true,
+    "contentState": Immutable.Record {
       "entityMap": Object {
         "__add": [Function],
         "__create": [Function],
@@ -35,56 +25,59 @@ Immutable.Map {
         "mergeData": [Function],
         "replaceData": [Function],
       },
-      "selectionAfter": Object {
+      "blockMap": Immutable.OrderedMap {
+        "someRandomKey": Immutable.Record {
+          "key": "someRandomKey",
+          "type": "unstyled",
+          "text": "",
+          "characterList": Immutable.List [],
+          "depth": 0,
+          "data": Immutable.Map {},
+        },
+      },
+      "selectionBefore": Immutable.Record {
         "anchorKey": "someRandomKey",
         "anchorOffset": 0,
         "focusKey": "someRandomKey",
         "focusOffset": 0,
-        "hasFocus": false,
         "isBackward": false,
+        "hasFocus": false,
       },
-      "selectionBefore": Object {
+      "selectionAfter": Immutable.Record {
         "anchorKey": "someRandomKey",
         "anchorOffset": 0,
         "focusKey": "someRandomKey",
         "focusOffset": 0,
-        "hasFocus": false,
         "isBackward": false,
+        "hasFocus": false,
       },
     },
-    cacheAdded: false,
+    "cacheAdded": false,
   },
-  _internal: Immutable.Map {
-    loading: Immutable.Map {
-      addAttachment: false,
-      submitMessage: false,
+  "_internal": Immutable.Map {
+    "loading": Immutable.Map {
+      "addAttachment": false,
+      "submitMessage": false,
     },
   },
-  newMessage: Immutable.Map {
-    channel: "email",
-    mention_ids: Immutable.List [
-    ],
-    macros: Immutable.List [
-    ],
-    body_html: "",
-    public: true,
-    body_text: "",
-    subject: "Hello World!",
-    via: "helpdesk",
-    from_agent: true,
-    attachments: Immutable.List [
-    ],
-    sender: null,
-    source: Immutable.Map {
-      type: "email",
-      from: Immutable.Map {
-      },
-      to: Immutable.List [
-      ],
-      cc: Immutable.List [
-      ],
-      bcc: Immutable.List [
-      ],
+  "newMessage": Immutable.Map {
+    "channel": "email",
+    "mention_ids": Immutable.List [],
+    "macros": Immutable.List [],
+    "body_html": "",
+    "public": true,
+    "body_text": "",
+    "subject": "Hello World!",
+    "via": "helpdesk",
+    "from_agent": true,
+    "attachments": Immutable.List [],
+    "sender": null,
+    "source": Immutable.Map {
+      "type": "email",
+      "from": Immutable.Map {},
+      "to": Immutable.List [],
+      "cc": Immutable.List [],
+      "bcc": Immutable.List [],
     },
   },
 }

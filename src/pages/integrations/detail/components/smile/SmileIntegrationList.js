@@ -73,11 +73,11 @@ export default class SmileIntegrationList extends React.Component<Props, State> 
                         <Alert color="danger">
                             You need to have at least one Shopify integration to add Smile integrations.
                         </Alert>
-                        ) : (
-                            <Alert color="info">
+                    ) : (
+                        <Alert color="info">
                                 All your Shopify integrations have a Smile integration connected.
-                            </Alert>
-                            )
+                        </Alert>
+                    )
                     )
                 }
 

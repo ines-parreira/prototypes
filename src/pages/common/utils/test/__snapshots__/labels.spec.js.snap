@@ -4,9 +4,9 @@ exports[`components utils : labels RenderLabel ValueRendered should display name
 <IntegrationsDetailLabel
   integration={
     Immutable.Map {
-      type: "aircall",
-      name: "common",
-      address: "aircall style",
+      "type": "aircall",
+      "name": "common",
+      "address": "aircall style",
     }
   }
 >
@@ -30,9 +30,9 @@ exports[`components utils : labels RenderLabel ValueRendered should display name
 <IntegrationsDetailLabel
   integration={
     Immutable.Map {
-      type: "gmail",
-      name: "common",
-      address: "inlined email",
+      "type": "gmail",
+      "name": "common",
+      "address": "inlined email",
     }
   }
 >
@@ -56,10 +56,10 @@ exports[`components utils : labels RenderLabel ValueRendered should display the 
 <IntegrationsDetailLabel
   integration={
     Immutable.Map {
-      type: "email",
-      name: "common",
-      meta: Immutable.Map {
-        address: "specific",
+      "type": "email",
+      "name": "common",
+      "meta": Immutable.Map {
+        "address": "specific",
       },
     }
   }
@@ -84,10 +84,10 @@ exports[`components utils : labels RenderLabel ValueRendered should display the 
 <IntegrationsDetailLabel
   integration={
     Immutable.Map {
-      type: "email",
-      name: "common",
-      meta: Immutable.Map {
-        address: "",
+      "type": "email",
+      "name": "common",
+      "meta": Immutable.Map {
+        "address": "",
       },
     }
   }
@@ -112,10 +112,10 @@ exports[`components utils : labels RenderLabel ValueRendered should display the 
 <IntegrationsDetailLabel
   integration={
     Immutable.Map {
-      type: "facebook",
-      name: "common",
-      meta: Immutable.Map {
-        address: "specific",
+      "type": "facebook",
+      "name": "common",
+      "meta": Immutable.Map {
+        "address": "specific",
       },
     }
   }

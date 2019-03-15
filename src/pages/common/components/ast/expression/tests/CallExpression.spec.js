@@ -37,7 +37,7 @@ describe('CallExpression component', () => {
                     parent={fromJS(['body', 0, 'test'])}
                     callee={callee}
                 />
-            , {context: {hovered: true}})
+                , {context: {hovered: true}})
 
             expect(hoveredComponent).toMatchSnapshot()
         })
@@ -63,7 +63,7 @@ describe('CallExpression component', () => {
                     parent={fromJS(['body', 0, 'test', 'left'])}
                     callee={callee}
                 />
-            , {context: {hovered: true}})
+                , {context: {hovered: true}})
 
             expect(component).toMatchSnapshot()
         })

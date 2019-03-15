@@ -190,20 +190,20 @@ export class UserAuditList extends React.Component<Props, State> {
                         <div>
                             <Table>
                                 <thead>
-                                <tr>
-                                    <th>Team member</th>
-                                    <th>Event</th>
-                                    <th>Object</th>
-                                    <th>Date</th>
-                                </tr>
+                                    <tr>
+                                        <th>Team member</th>
+                                        <th>Event</th>
+                                        <th>Object</th>
+                                        <th>Date</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                {events.map((eventItem) => (
-                                    <UserAuditRow
-                                        key={eventItem.get('id')}
-                                        eventItem={eventItem}
-                                    />
-                                )).toList()}
+                                    {events.map((eventItem) => (
+                                        <UserAuditRow
+                                            key={eventItem.get('id')}
+                                            eventItem={eventItem}
+                                        />
+                                    )).toList()}
                                 </tbody>
                             </Table>
                             <Pagination

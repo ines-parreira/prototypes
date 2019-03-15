@@ -64,7 +64,7 @@ export default class Event extends React.Component {
     _getSubscription = (subscriptionId) => {
         const {integrationData: data} = this.props
         return (data.get('subscriptions') || fromJS([]))
-                .find((subscription) => subscription.get('id').toString() === subscriptionId.toString())
+            .find((subscription) => subscription.get('id').toString() === subscriptionId.toString())
             || fromJS({})
     }
 

@@ -299,20 +299,20 @@ class RealtimeMessagingIntegrationInstall extends React.Component<Props, State> 
                                                 color="info"
                                                 className="m-0"
                                             >
-                                            <pre
-                                                style={{
-                                                    display: 'flex',
-                                                    height: '160px',
-                                                    color: 'inherit'
-                                                }}
-                                                id="code-snippet"
-                                            >
-                                                {
-                                                    isChat
-                                                        ? renderChatCodeSnippet(integration)
-                                                        : renderFacebookCodeSnippet(integration)
-                                                }
-                                            </pre>
+                                                <pre
+                                                    style={{
+                                                        display: 'flex',
+                                                        height: '160px',
+                                                        color: 'inherit'
+                                                    }}
+                                                    id="code-snippet"
+                                                >
+                                                    {
+                                                        isChat
+                                                            ? renderChatCodeSnippet(integration)
+                                                            : renderFacebookCodeSnippet(integration)
+                                                    }
+                                                </pre>
                                             </Alert>
                                         </Card>
 

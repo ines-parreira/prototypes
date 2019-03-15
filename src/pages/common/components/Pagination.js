@@ -25,7 +25,7 @@ export default class Pagination extends React.Component {
         const {
             onChange, // eslint-disable-line
             className,
-            ...properties,
+            ...properties
         } = this.props
 
         properties.pageCount = parseInt(properties.pageCount)

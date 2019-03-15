@@ -2,10 +2,7 @@
 
 exports[`BillingUsage component should display loader 1`] = `
 <BillingUsage
-  currentUsage={
-    Immutable.Map {
-    }
-  }
+  currentUsage={Immutable.Map {}}
   fetchCurrentUsage={[Function]}
 >
   <Loader
@@ -36,26 +33,26 @@ exports[`BillingUsage component should display price 1`] = `
 <BillingUsage
   currentPlan={
     Immutable.Map {
-      name: "Pro",
-      free_tickets: 10,
-      integrations: 5,
-      interval: "month",
+      "name": "Pro",
+      "free_tickets": 10,
+      "integrations": 5,
+      "interval": "month",
     }
   }
   currentSubscription={
     Immutable.Map {
-      start_datetime: "2018-01-01T10:10:10.480Z",
+      "start_datetime": "2018-01-01T10:10:10.480Z",
     }
   }
   currentUsage={
     Immutable.Map {
-      meta: Immutable.Map {
-        start_datetime: "2010-10-10",
-        end_datetime: "2010-10-11",
+      "meta": Immutable.Map {
+        "start_datetime": "2010-10-10",
+        "end_datetime": "2010-10-11",
       },
-      data: Immutable.Map {
-        cost: 10,
-        tickets: 20,
+      "data": Immutable.Map {
+        "cost": 10,
+        "tickets": 20,
       },
     }
   }
@@ -430,28 +427,25 @@ exports[`BillingUsage component should display price 1`] = `
 
 exports[`BillingUsage component should load with empty props 1`] = `
 <BillingUsage
-  activeIntegrations={
-    Immutable.List [
-    ]
-  }
+  activeIntegrations={Immutable.List []}
   currentPlan={
     Immutable.Map {
-      name: "Pro",
-      free_tickets: 10,
-      integrations: 5,
-      interval: "month",
+      "name": "Pro",
+      "free_tickets": 10,
+      "integrations": 5,
+      "interval": "month",
     }
   }
   currentSubscription={
     Immutable.Map {
-      start_datetime: "2018-01-01T10:10:10.480Z",
+      "start_datetime": "2018-01-01T10:10:10.480Z",
     }
   }
   currentUsage={
     Immutable.Map {
-      meta: Immutable.Map {
-        start_datetime: "2010-10-10",
-        end_datetime: "2010-10-11",
+      "meta": Immutable.Map {
+        "start_datetime": "2010-10-10",
+        "end_datetime": "2010-10-11",
       },
     }
   }

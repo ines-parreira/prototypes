@@ -76,8 +76,8 @@ class SocketManager {
         }
     }
 
-    onError = () => {
-        devLog('socket error', arguments)
+    onError = (...args) => {
+        devLog('socket error', args)
     }
 
     /**

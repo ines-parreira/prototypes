@@ -3,13 +3,13 @@
 exports[`auths reducers fetch auths pagination 1`] = `
 Immutable.List [
   Immutable.Map {
-    data: Immutable.Map {
-      token: "onetoken",
+    "data": Immutable.Map {
+      "token": "onetoken",
     },
   },
   Immutable.Map {
-    data: Immutable.Map {
-      token: "secondtoken",
+    "data": Immutable.Map {
+      "token": "secondtoken",
     },
   },
 ]
@@ -18,8 +18,8 @@ Immutable.List [
 exports[`auths reducers reset API key 1`] = `
 Immutable.List [
   Immutable.Map {
-    data: Immutable.Map {
-      token: "newtoken",
+    "data": Immutable.Map {
+      "token": "newtoken",
     },
   },
 ]

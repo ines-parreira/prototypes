@@ -325,10 +325,10 @@ export default class HTTPIntegrationOverview extends React.Component<Props, Stat
                                     You can use <code>{'{{ticket.customer.email}}'}</code> to pass the email of the
                                     ticket customer. See
                                     other <a
-                                    href="https://api.gorgias.io/#Customer-object"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >vars</a>.
+                                        href="https://api.gorgias.io/#Customer-object"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >vars</a>.
                                 </div>
                             )}
                             value={url}

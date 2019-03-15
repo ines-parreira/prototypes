@@ -189,7 +189,7 @@ export function updateFilterValue(ast: astType, index: number, value: string | n
 
         return setIn(ast, index, ['arguments', 1], arrayExpression)
     } 
-        // $FlowFixMe
+    // $FlowFixMe
     const raw = rawify(value)
     return setIn(ast, index, ['arguments', 1], getFirstExpressionOfAST(getAST(raw)))
     

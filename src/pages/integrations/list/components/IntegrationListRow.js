@@ -40,14 +40,14 @@ class IntegrationListRow extends React.Component {
                 <div className={classnames(css.icon, 'd-flex align-items-center justify-content-center')}>
                     {
                         integrationConfig.get('image') ? (
-                                <img
-                                    role="presentation"
-                                    className="logo"
-                                    src={getIconFromUrl(integrationConfig.get('image'))}
-                                />
-                            ) : (
-                                <SourceIcon type={integrationConfig.get('type')} />
-                            )
+                            <img
+                                role="presentation"
+                                className="logo"
+                                src={getIconFromUrl(integrationConfig.get('image'))}
+                            />
+                        ) : (
+                            <SourceIcon type={integrationConfig.get('type')} />
+                        )
                     }
                 </div>
                 <div className="flex-grow mr-1">

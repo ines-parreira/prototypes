@@ -20,8 +20,8 @@ export default class HTTPIntegrationEventParams extends Component<Props> {
                     <li key={key}>
                         <b className="mr-1">{key}:</b>
                         <span className="text-black">
-                        {value}
-                    </span>
+                            {value}
+                        </span>
                     </li>
                 )).valueSeq().toJS()}
             </ul>

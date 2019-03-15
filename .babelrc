@@ -1,18 +1,26 @@
 {
     "presets": [
-        ["env", {
+        ["@babel/env", {
             "targets": {
                 "browsers": [
                     "last 2 versions",
                     "safari >= 7"
                 ]
             },
+            "useBuiltIns": "usage",
             "loose": true
         }],
-        "react",
-        "stage-0"
+        "@babel/react",
+        "@babel/flow"
     ],
     "plugins": [
-        ["transform-decorators-legacy"]
+        [
+            "@babel/plugin-proposal-decorators",
+            {
+                "legacy": true
+            }
+        ],
+        "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-proposal-export-default-from"
     ]
 }

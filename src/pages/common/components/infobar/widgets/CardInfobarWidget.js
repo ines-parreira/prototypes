@@ -248,54 +248,54 @@ class CardInfobarWidget extends React.Component {
                     {!!BeforeContent && <BeforeContent {...this.props} />}
                     {
                         source.isEmpty() ? (
-                                <div className="simple-field">
-                                    <span className="field-label">
-                                        <i>No data</i>
-                                    </span>
-                                </div>
-                            ) : (
-                                shouldDisplayCardContent && (
-                                    <DragWrapper
-                                        actions={editing && editing.actions}
-                                        sort
-                                        group={{
-                                            name: ap.join('.'),
-                                            pull: false,
-                                            put: true
-                                        }}
-                                        templatePath={tp}
-                                        isEditing={isEditing}
-                                        watchDrop
-                                    >
-                                        {
-                                            childWidgets
-                                                .map((w, i) => {
-                                                    const passedTemplate = w
-                                                        .set('templatePath', `${tp}.widgets.${i}`)
+                            <div className="simple-field">
+                                <span className="field-label">
+                                    <i>No data</i>
+                                </span>
+                            </div>
+                        ) : (
+                            shouldDisplayCardContent && (
+                                <DragWrapper
+                                    actions={editing && editing.actions}
+                                    sort
+                                    group={{
+                                        name: ap.join('.'),
+                                        pull: false,
+                                        put: true
+                                    }}
+                                    templatePath={tp}
+                                    isEditing={isEditing}
+                                    watchDrop
+                                >
+                                    {
+                                        childWidgets
+                                            .map((w, i) => {
+                                                const passedTemplate = w
+                                                    .set('templatePath', `${tp}.widgets.${i}`)
 
-                                                    // find first non-text widget,
-                                                    // to auto-expand.
-                                                    if (w.get('type') !== 'text' && !firstNonTextWidget) {
-                                                        firstNonTextWidget = true
-                                                    }
+                                                // find first non-text widget,
+                                                // to auto-expand.
+                                                if (w.get('type') !== 'text' && !firstNonTextWidget) {
+                                                    firstNonTextWidget = true
+                                                }
 
-                                                    return (
-                                                        <InfobarWidget
-                                                            key={`${passedTemplate.get('path')}-${i}`}
-                                                            source={source}
-                                                            parent={template}
-                                                            widget={widget}
-                                                            template={passedTemplate}
-                                                            editing={editing}
-                                                            isEditing={isEditing}
-                                                            open={open && firstNonTextWidget}
-                                                        />
-                                                    )
-                                                })
-                                        }
-                                    </DragWrapper>
-                                )
+                                                return (
+                                                    <InfobarWidget
+                                                        key={`${passedTemplate.get('path')}-${i}`}
+                                                        source={source}
+                                                        parent={template}
+                                                        widget={widget}
+                                                        template={passedTemplate}
+                                                        editing={editing}
+                                                        isEditing={isEditing}
+                                                        open={open && firstNonTextWidget}
+                                                    />
+                                                )
+                                            })
+                                    }
+                                </DragWrapper>
                             )
+                        )
                     }
 
                     {!!AfterContent && <AfterContent {...this.props} />}

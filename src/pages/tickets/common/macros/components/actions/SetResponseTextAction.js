@@ -99,13 +99,13 @@ export default class SetResponseTextAction extends React.Component {
                         </DropdownMenu>
                     </UncontrolledButtonDropdown>
                 ) : (
-                  <Button
-                      color="link"
-                      style={{color: 'inherit'}}
-                      onClick={() => {this._insertText(category.value)}}
-                  >
-                      {category.name}
-                  </Button>
+                    <Button
+                        color="link"
+                        style={{color: 'inherit'}}
+                        onClick={() => {this._insertText(category.value)}}
+                    >
+                        {category.name}
+                    </Button>
                 )
             )
         })

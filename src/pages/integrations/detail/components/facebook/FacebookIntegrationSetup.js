@@ -142,108 +142,108 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
                     Please activate the pages you want to use with Gorgias:
                 </p>
                 <div className="mb-2">
-                {
-                    isLoading ? <Loader></Loader> : integrations.map((integration) => {
-                        const id = integration.get('id')
-                        const page = integration.get('facebook')
+                    {
+                        isLoading ? <Loader></Loader> : integrations.map((integration) => {
+                            const id = integration.get('id')
+                            const page = integration.get('facebook')
 
-                        const instagramIsDisabled = !integration.getIn(['meta', 'instagram', 'id'])
-                        const pageEnabled = selectedIntegrations.has(id)
+                            const instagramIsDisabled = !integration.getIn(['meta', 'instagram', 'id'])
+                            const pageEnabled = selectedIntegrations.has(id)
 
-                        return (
-                            <div
-                                key={id}
-                                className={classnames(css.page, {
-                                    [css.enabled]: !!pageEnabled
-                                })}
-                            >
-                                <div className="d-flex flex-wrap flex-md-nowrap">
-                                    <div className="mr-auto">
-                                        <div>
-                                            <img
-                                                className={classnames('image rounded mr-3 mb-2 mb-md-0', css.icon)}
-                                                src={page.getIn(['picture', 'data', 'url'], pageIconDefault)}
-                                            />
-                                            <div className={classnames(css.details, 'mr-3 text-faded')}>
-                                                <h3 className={classnames(css.name, 'mr-3')}>
-                                                    {page.get('name')}
-                                                </h3>
-                                                <span>{_truncate(page.get('about'), {length: 100})}</span>
+                            return (
+                                <div
+                                    key={id}
+                                    className={classnames(css.page, {
+                                        [css.enabled]: !!pageEnabled
+                                    })}
+                                >
+                                    <div className="d-flex flex-wrap flex-md-nowrap">
+                                        <div className="mr-auto">
+                                            <div>
+                                                <img
+                                                    className={classnames('image rounded mr-3 mb-2 mb-md-0', css.icon)}
+                                                    src={page.getIn(['picture', 'data', 'url'], pageIconDefault)}
+                                                />
+                                                <div className={classnames(css.details, 'mr-3 text-faded')}>
+                                                    <h3 className={classnames(css.name, 'mr-3')}>
+                                                        {page.get('name')}
+                                                    </h3>
+                                                    <span>{_truncate(page.get('about'), {length: 100})}</span>
+                                                </div>
                                             </div>
                                         </div>
+                                        <ToggleButton
+                                            value={pageEnabled}
+                                            onChange={(value) => this._toggleIntegration(integration, value)}
+                                        />
                                     </div>
-                                    <ToggleButton
-                                        value={pageEnabled}
-                                        onChange={(value) => this._toggleIntegration(integration, value)}
-                                    />
-                                </div>
 
-                                <div className={css.settings}>
-                                    <p className="font-weight-medium">
+                                    <div className={css.settings}>
+                                        <p className="font-weight-medium">
                                         Choose the Facebook channels you want to use to communicate with your customers:
-                                    </p>
+                                        </p>
 
-                                    <div className="d-md-flex">
-                                        <FormGroup className="mr-5">
-                                            <BooleanField
-                                                name={`${id}.messenger_enabled`}
-                                                type="checkbox"
-                                                label="Enable Messenger"
-                                                value={this._getSettingValue(id, 'messenger_enabled')}
-                                                onChange={(value) => this._setSettingValue(id, 'messenger_enabled', value)}
-                                            />
-                                            <BooleanField
-                                                name={`${id}.posts_enabled`}
-                                                type="checkbox"
-                                                label="Enable Facebook posts & comments"
-                                                value={this._getSettingValue(id, 'posts_enabled')}
-                                                onChange={(value) => this._setSettingValue(id, 'posts_enabled', value)}
-                                            />
-                                            {!instagramIsDisabled && (
+                                        <div className="d-md-flex">
+                                            <FormGroup className="mr-5">
                                                 <BooleanField
-                                                    name={`${id}.instagram_comments_enabled`}
+                                                    name={`${id}.messenger_enabled`}
                                                     type="checkbox"
-                                                    label="Enable Instagram comments"
-                                                    value={this._getSettingValue(id, 'instagram_comments_enabled')}
-                                                    onChange={(value) => this._setSettingValue(id, 'instagram_comments_enabled', value)}
+                                                    label="Enable Messenger"
+                                                    value={this._getSettingValue(id, 'messenger_enabled')}
+                                                    onChange={(value) => this._setSettingValue(id, 'messenger_enabled', value)}
                                                 />
-                                            )}
-                                        </FormGroup>
-                                        {instagramIsDisabled && (
-                                            <div>
-                                                <Alert
-                                                    color="warning"
-                                                    className="d-flex align-items-center"
-                                                >
-                                                    <i className="material-icons md-3 mr-3">
+                                                <BooleanField
+                                                    name={`${id}.posts_enabled`}
+                                                    type="checkbox"
+                                                    label="Enable Facebook posts & comments"
+                                                    value={this._getSettingValue(id, 'posts_enabled')}
+                                                    onChange={(value) => this._setSettingValue(id, 'posts_enabled', value)}
+                                                />
+                                                {!instagramIsDisabled && (
+                                                    <BooleanField
+                                                        name={`${id}.instagram_comments_enabled`}
+                                                        type="checkbox"
+                                                        label="Enable Instagram comments"
+                                                        value={this._getSettingValue(id, 'instagram_comments_enabled')}
+                                                        onChange={(value) => this._setSettingValue(id, 'instagram_comments_enabled', value)}
+                                                    />
+                                                )}
+                                            </FormGroup>
+                                            {instagramIsDisabled && (
+                                                <div>
+                                                    <Alert
+                                                        color="warning"
+                                                        className="d-flex align-items-center"
+                                                    >
+                                                        <i className="material-icons md-3 mr-3">
                                                         warning
-                                                    </i>
+                                                        </i>
                                                     Create an Instagram account for this page and you will be able to
                                                     enable Instagram comments.
-                                                </Alert>
-                                            </div>
-                                        )}
-                                    </div>
+                                                    </Alert>
+                                                </div>
+                                            )}
+                                        </div>
 
-                                    <p className="font-weight-medium">
+                                        <p className="font-weight-medium">
                                         Import your Facebook data:
-                                    </p>
-                                    <div className="d-md-flex">
-                                        <FormGroup className="mr-5">
-                                            <BooleanField
-                                                name={`${id}.import_history_enabled`}
-                                                type="checkbox"
-                                                label="Import 30 days of history (posts and comments) as closed tickets"
-                                                value={this._getSettingValue(id, 'import_history_enabled')}
-                                                onChange={(value) => this._setSettingValue(id, 'import_history_enabled', value)}
-                                            />
-                                        </FormGroup>
+                                        </p>
+                                        <div className="d-md-flex">
+                                            <FormGroup className="mr-5">
+                                                <BooleanField
+                                                    name={`${id}.import_history_enabled`}
+                                                    type="checkbox"
+                                                    label="Import 30 days of history (posts and comments) as closed tickets"
+                                                    value={this._getSettingValue(id, 'import_history_enabled')}
+                                                    onChange={(value) => this._setSettingValue(id, 'import_history_enabled', value)}
+                                                />
+                                            </FormGroup>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        )
-                    })
-                }
+                            )
+                        })
+                    }
                 </div>
                 <Pagination
                     onChange={(page) => this._fetchPage(page, false)}

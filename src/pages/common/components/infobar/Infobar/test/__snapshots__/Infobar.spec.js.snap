@@ -54,34 +54,34 @@ exports[`Infobar component should render current customer with suggested custome
         <Connect(InfobarCustomerInfo)
           actions={
             Object {
-              "startEditionMode": [Function],
-              "stopEditionMode": [Function],
-              "submitWidgets": [Function],
+              "startEditionMode": [MockFunction],
+              "stopEditionMode": [MockFunction],
+              "submitWidgets": [MockFunction],
             }
           }
           customer={
             Immutable.Map {
-              id: 2,
+              "id": 2,
             }
           }
           infobar={Object {}}
           isEditing={false}
           sources={
             Immutable.Map {
-              ticket: Immutable.Map {
-                customer: Immutable.Map {
-                  id: 2,
+              "ticket": Immutable.Map {
+                "customer": Immutable.Map {
+                  "id": 2,
                 },
               },
-              customer: Immutable.Map {
-                id: 2,
+              "customer": Immutable.Map {
+                "id": 2,
               },
             }
           }
           widgets={
             Immutable.Map {
-              _internal: Immutable.Map {
-                isEditing: false,
+              "_internal": Immutable.Map {
+                "isEditing": false,
               },
             }
           }
@@ -126,34 +126,34 @@ exports[`Infobar component should render current customer with suggested custome
             <Connect(InfobarCustomerInfo)
               actions={
                 Object {
-                  "startEditionMode": [Function],
-                  "stopEditionMode": [Function],
-                  "submitWidgets": [Function],
+                  "startEditionMode": [MockFunction],
+                  "stopEditionMode": [MockFunction],
+                  "submitWidgets": [MockFunction],
                 }
               }
               customer={
                 Immutable.Map {
-                  id: 10,
+                  "id": 10,
                 }
               }
               infobar={Object {}}
               isEditing={false}
               sources={
                 Immutable.Map {
-                  ticket: Immutable.Map {
-                    customer: Immutable.Map {
-                      id: 10,
+                  "ticket": Immutable.Map {
+                    "customer": Immutable.Map {
+                      "id": 10,
                     },
                   },
-                  customer: Immutable.Map {
-                    id: 10,
+                  "customer": Immutable.Map {
+                    "id": 10,
                   },
                 }
               }
               widgets={
                 Immutable.Map {
-                  _internal: Immutable.Map {
-                    isEditing: false,
+                  "_internal": Immutable.Map {
+                    "isEditing": false,
                   },
                 }
               }
@@ -161,7 +161,7 @@ exports[`Infobar component should render current customer with suggested custome
             <Connect(MergeCustomersContainer)
               destinationCustomer={
                 Immutable.Map {
-                  id: 2,
+                  "id": 2,
                 }
               }
               display={false}
@@ -170,7 +170,7 @@ exports[`Infobar component should render current customer with suggested custome
               onSuccess={[Function]}
               sourceCustomer={
                 Immutable.Map {
-                  id: 10,
+                  "id": 10,
                 }
               }
             />
@@ -236,34 +236,34 @@ exports[`Infobar component should render customer context 1`] = `
         <Connect(InfobarCustomerInfo)
           actions={
             Object {
-              "startEditionMode": [Function],
-              "stopEditionMode": [Function],
-              "submitWidgets": [Function],
+              "startEditionMode": [MockFunction],
+              "stopEditionMode": [MockFunction],
+              "submitWidgets": [MockFunction],
             }
           }
           customer={
             Immutable.Map {
-              id: 2,
+              "id": 2,
             }
           }
           infobar={Object {}}
           isEditing={false}
           sources={
             Immutable.Map {
-              ticket: Immutable.Map {
-                customer: Immutable.Map {
-                  id: 2,
+              "ticket": Immutable.Map {
+                "customer": Immutable.Map {
+                  "id": 2,
                 },
               },
-              customer: Immutable.Map {
-                id: 2,
+              "customer": Immutable.Map {
+                "id": 2,
               },
             }
           }
           widgets={
             Immutable.Map {
-              _internal: Immutable.Map {
-                isEditing: false,
+              "_internal": Immutable.Map {
+                "isEditing": false,
               },
             }
           }
@@ -466,10 +466,10 @@ exports[`Infobar component should render search results 1`] = `
           searchResults={
             Immutable.List [
               Immutable.Map {
-                id: 8,
+                "id": 8,
               },
               Immutable.Map {
-                id: 9,
+                "id": 9,
               },
             ]
           }
@@ -550,24 +550,24 @@ exports[`Infobar component should render selected customer 1`] = `
           <InfobarCustomerActions
             customer={
               Immutable.Map {
-                id: 2,
+                "id": 2,
               }
             }
             selectedCustomer={
               Immutable.Map {
-                id: 7,
+                "id": 7,
               }
             }
             setCustomer={[Function]}
             sources={
               Immutable.Map {
-                ticket: Immutable.Map {
-                  customer: Immutable.Map {
-                    id: 2,
+                "ticket": Immutable.Map {
+                  "customer": Immutable.Map {
+                    "id": 2,
                   },
                 },
-                customer: Immutable.Map {
-                  id: 2,
+                "customer": Immutable.Map {
+                  "id": 2,
                 },
               }
             }
@@ -577,34 +577,34 @@ exports[`Infobar component should render selected customer 1`] = `
         <Connect(InfobarCustomerInfo)
           actions={
             Object {
-              "startEditionMode": [Function],
-              "stopEditionMode": [Function],
-              "submitWidgets": [Function],
+              "startEditionMode": [MockFunction],
+              "stopEditionMode": [MockFunction],
+              "submitWidgets": [MockFunction],
             }
           }
           customer={
             Immutable.Map {
-              id: 7,
+              "id": 7,
             }
           }
           infobar={Object {}}
           isEditing={false}
           sources={
             Immutable.Map {
-              ticket: Immutable.Map {
-                customer: Immutable.Map {
-                  id: 7,
+              "ticket": Immutable.Map {
+                "customer": Immutable.Map {
+                  "id": 7,
                 },
               },
-              customer: Immutable.Map {
-                id: 7,
+              "customer": Immutable.Map {
+                "id": 7,
               },
             }
           }
           widgets={
             Immutable.Map {
-              _internal: Immutable.Map {
-                isEditing: false,
+              "_internal": Immutable.Map {
+                "isEditing": false,
               },
             }
           }
@@ -612,7 +612,7 @@ exports[`Infobar component should render selected customer 1`] = `
         <Connect(MergeCustomersContainer)
           destinationCustomer={
             Immutable.Map {
-              id: 2,
+              "id": 2,
             }
           }
           display={false}
@@ -621,7 +621,7 @@ exports[`Infobar component should render selected customer 1`] = `
           onSuccess={[Function]}
           sourceCustomer={
             Immutable.Map {
-              id: 7,
+              "id": 7,
             }
           }
         />
@@ -685,34 +685,34 @@ exports[`Infobar component should render ticket context 1`] = `
         <Connect(InfobarCustomerInfo)
           actions={
             Object {
-              "startEditionMode": [Function],
-              "stopEditionMode": [Function],
-              "submitWidgets": [Function],
+              "startEditionMode": [MockFunction],
+              "stopEditionMode": [MockFunction],
+              "submitWidgets": [MockFunction],
             }
           }
           customer={
             Immutable.Map {
-              id: 2,
+              "id": 2,
             }
           }
           infobar={Object {}}
           isEditing={false}
           sources={
             Immutable.Map {
-              ticket: Immutable.Map {
-                customer: Immutable.Map {
-                  id: 2,
+              "ticket": Immutable.Map {
+                "customer": Immutable.Map {
+                  "id": 2,
                 },
               },
-              customer: Immutable.Map {
-                id: 2,
+              "customer": Immutable.Map {
+                "id": 2,
               },
             }
           }
           widgets={
             Immutable.Map {
-              _internal: Immutable.Map {
-                isEditing: false,
+              "_internal": Immutable.Map {
+                "isEditing": false,
               },
             }
           }
@@ -777,34 +777,34 @@ exports[`Infobar component should render widgets edition mode 1`] = `
         <Connect(InfobarCustomerInfo)
           actions={
             Object {
-              "startEditionMode": [Function],
-              "stopEditionMode": [Function],
-              "submitWidgets": [Function],
+              "startEditionMode": [MockFunction],
+              "stopEditionMode": [MockFunction],
+              "submitWidgets": [MockFunction],
             }
           }
           customer={
             Immutable.Map {
-              id: 2,
+              "id": 2,
             }
           }
           infobar={Object {}}
           isEditing={true}
           sources={
             Immutable.Map {
-              ticket: Immutable.Map {
-                customer: Immutable.Map {
-                  id: 2,
+              "ticket": Immutable.Map {
+                "customer": Immutable.Map {
+                  "id": 2,
                 },
               },
-              customer: Immutable.Map {
-                id: 2,
+              "customer": Immutable.Map {
+                "id": 2,
               },
             }
           }
           widgets={
             Immutable.Map {
-              _internal: Immutable.Map {
-                isEditing: true,
+              "_internal": Immutable.Map {
+                "isEditing": true,
               },
             }
           }
@@ -815,16 +815,16 @@ exports[`Infobar component should render widgets edition mode 1`] = `
   <InfobarWidgetsEditionTools
     actions={
       Object {
-        "startEditionMode": [Function],
-        "stopEditionMode": [Function],
-        "submitWidgets": [Function],
+        "startEditionMode": [MockFunction],
+        "stopEditionMode": [MockFunction],
+        "submitWidgets": [MockFunction],
       }
     }
     context=""
     widgets={
       Immutable.Map {
-        _internal: Immutable.Map {
-          isEditing: true,
+        "_internal": Immutable.Map {
+          "isEditing": true,
         },
       }
     }

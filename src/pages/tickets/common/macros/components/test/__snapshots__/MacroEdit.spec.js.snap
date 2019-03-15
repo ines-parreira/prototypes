@@ -2,17 +2,11 @@
 
 exports[`MacroEdit component should render the macro edit form 1`] = `
 <MacroEdit
-  actions={
-    Immutable.List [
-    ]
-  }
-  agents={
-    Immutable.Map {
-    }
-  }
+  actions={Immutable.List []}
+  agents={Immutable.Map {}}
   currentMacro={
     Immutable.Map {
-      id: 1,
+      "id": 1,
     }
   }
   hasIntegrationOfTypes={[Function]}

@@ -200,8 +200,8 @@ export function getEntitySelectionState(contentState: ContentState, entityKey: s
             },
             (start, end) => {
                 entitySelection = SelectionState.createEmpty(block.getKey())
-                        .set('anchorOffset', start)
-                        .set('focusOffset', end)
+                    .set('anchorOffset', start)
+                    .set('focusOffset', end)
             }
         )
 

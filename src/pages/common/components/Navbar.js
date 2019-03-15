@@ -202,8 +202,8 @@ export default class Navbar extends React.Component {
                     </DropdownToggle>
                     <DropdownMenu>
                         <DropdownItem tag="a"
-                                      className="mt-2"
-                                      toggle={false}
+                            className="mt-2"
+                            toggle={false}
                         >
                             <div className="d-flex justify-content-between align-items-center">
                                 <div>

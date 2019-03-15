@@ -12,21 +12,21 @@ const placeholderRender = (entity) => {
 
     if (entityIsIntegration) {
         return <span>
-          <img
-              className="badge-variable-icon"
-              src={integrationsHelpers.getIconFromType(type)}
-          />
-          {fullName}
-          </span>
+            <img
+                className="badge-variable-icon"
+                src={integrationsHelpers.getIconFromType(type)}
+            />
+            {fullName}
+        </span>
     }
 
     if (type === 'survey') {
         return <span>
-          <i className="material-icons">star_rate</i>
-          <i className="material-icons">star_rate</i>
-          <i className="material-icons">star_rate</i>
-          <i className="material-icons">star_rate</i>
-          <i className="material-icons">star_rate</i>
+            <i className="material-icons">star_rate</i>
+            <i className="material-icons">star_rate</i>
+            <i className="material-icons">star_rate</i>
+            <i className="material-icons">star_rate</i>
+            <i className="material-icons">star_rate</i>
         </span>
     }
 

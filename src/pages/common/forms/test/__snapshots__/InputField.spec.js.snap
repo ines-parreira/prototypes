@@ -126,7 +126,7 @@ exports[`InputField should render a lowercase value and convert any uppercase in
 
 exports[`InputField should render a number input with an onChange handler, and call this handler on change 1`] = `
 <InputField
-  onChange={[Function]}
+  onChange={[MockFunction]}
   type="number"
   value="value"
 >

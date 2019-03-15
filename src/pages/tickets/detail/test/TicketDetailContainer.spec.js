@@ -112,7 +112,7 @@ describe('TicketDetailContainer component', () => {
             <TicketDetailContainer
                 {...minProps}
                 router={router}
-                />
+            />
         ).dive().dive()
 
         expect(customersActions.fetchCustomer).toBeCalledWith(1)
@@ -130,7 +130,7 @@ describe('TicketDetailContainer component', () => {
                 {...minProps}
                 params={{customerId: '1'}}
                 location={{query: {customer:'1'}}}
-                />
+            />
         ).dive().dive()
 
         component.setProps({activeCustomer})
@@ -211,7 +211,7 @@ describe('TicketDetailContainer component', () => {
             <TicketDetailContainer
                 {...minProps}
                 location={{query: {customer:'1'}}}
-                />
+            />
         ).dive().dive()
 
         component.setProps({activeCustomer})
@@ -232,7 +232,7 @@ describe('TicketDetailContainer component', () => {
                 {...minProps}
                 params={{customerId: '1'}}
                 location={{query: {customer:'1'}}}
-                />
+            />
         ).dive().dive()
         component.setProps({activeView: activeView})
         component.setProps({ticket: newTicket})
@@ -249,7 +249,7 @@ describe('TicketDetailContainer component', () => {
                 activeView={activeView}
                 params={{customerId: '1'}}
                 location={{query: {customer:'1'}}}
-                />
+            />
         ).dive().dive()
         component.setProps({ticket: ticket.set('updated_datetime', moment())})
 

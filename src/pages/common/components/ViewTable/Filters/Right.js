@@ -222,14 +222,14 @@ export default class Right extends React.Component {
                 >
                     {
                         node.value === '' ? (
-                                <div className="btn btn-secondary btn-sm dropdown-toggle clickable">
+                            <div className="btn btn-secondary btn-sm dropdown-toggle clickable">
                                     Select a value
-                                </div>
-                            ) : (
-                                <div className="btn btn-light btn-sm dropdown-toggle clickable">
-                                    {displayedValue}
-                                </div>
-                            )
+                            </div>
+                        ) : (
+                            <div className="btn btn-light btn-sm dropdown-toggle clickable">
+                                {displayedValue}
+                            </div>
+                        )
                     }
                 </div>
                 {

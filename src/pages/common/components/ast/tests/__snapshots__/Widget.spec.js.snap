@@ -35,7 +35,7 @@ Object {
         "arguments",
         1,
         "elements",
-],
+      ],
       Array [
         Object {
           "raw": "'hello'",
@@ -53,7 +53,48 @@ Object {
   ],
   "instances": Array [
     Object {
-      "modifyCodeAST": [Function],
+      "modifyCodeAST": [MockFunction] {
+        "calls": Array [
+          Array [
+            Immutable.List [
+              "body",
+              0,
+              "test",
+              "arguments",
+              1,
+              "elements",
+            ],
+            Array [
+              Object {
+                "raw": "'hello'",
+                "type": "Literal",
+                "value": "hello",
+              },
+              Object {
+                "raw": "'you!'",
+                "type": "Literal",
+                "value": "you!",
+              },
+            ],
+            "UPDATE",
+          ],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+        ],
+      },
+    },
+  ],
+  "invocationCallOrder": Array [
+    1,
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
     },
   ],
 }
@@ -70,14 +111,44 @@ Object {
         "arguments",
         1,
         "elements",
-],
+      ],
       "hello you!",
       "UPDATE",
     ],
   ],
   "instances": Array [
     Object {
-      "modifyCodeAST": [Function],
+      "modifyCodeAST": [MockFunction] {
+        "calls": Array [
+          Array [
+            Immutable.List [
+              "body",
+              0,
+              "test",
+              "arguments",
+              1,
+              "elements",
+            ],
+            "hello you!",
+            "UPDATE",
+          ],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+        ],
+      },
+    },
+  ],
+  "invocationCallOrder": Array [
+    2,
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
     },
   ],
 }

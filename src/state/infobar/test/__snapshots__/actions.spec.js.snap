@@ -3,7 +3,7 @@
 exports[`infobar actions execute action fail 1`] = `
 Array [
   Object {
-    "callback": [Function],
+    "callback": [MockFunction],
     "data": Object {
       "action_name": "shopifyRefundShippingCostOfOrder",
       "integration_id": 5,
@@ -35,7 +35,7 @@ Array [
 exports[`infobar actions execute action success 1`] = `
 Array [
   Object {
-    "callback": [Function],
+    "callback": [MockFunction],
     "data": Object {
       "action_name": "shopifyRefundShippingCostOfOrder",
       "integration_id": 5,

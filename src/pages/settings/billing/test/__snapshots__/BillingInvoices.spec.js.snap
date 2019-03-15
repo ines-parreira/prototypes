@@ -6,21 +6,21 @@ exports[`BillingInvoices component should display invoices 1`] = `
   invoices={
     Immutable.List [
       Immutable.Map {
-        id: 123,
-        paid: false,
-        amount_due: 1000,
-        date: 1496701077,
-        metadata: Immutable.Map {
-          tickets: 10,
+        "id": 123,
+        "paid": false,
+        "amount_due": 1000,
+        "date": 1496701077,
+        "metadata": Immutable.Map {
+          "tickets": 10,
         },
       },
       Immutable.Map {
-        id: 125,
-        paid: true,
-        amount_due: 10000,
-        date: 1496701077,
-        metadata: Immutable.Map {
-          tickets: 100,
+        "id": 125,
+        "paid": true,
+        "amount_due": 10000,
+        "date": 1496701077,
+        "metadata": Immutable.Map {
+          "tickets": 100,
         },
       },
     ]
@@ -134,10 +134,7 @@ exports[`BillingInvoices component should display invoices 1`] = `
 exports[`BillingInvoices component should display loader 1`] = `
 <BillingInvoices
   fetchInvoices={[Function]}
-  invoices={
-    Immutable.Map {
-    }
-  }
+  invoices={Immutable.Map {}}
 >
   <Loader
     inline={false}
@@ -166,9 +163,6 @@ exports[`BillingInvoices component should display loader 1`] = `
 exports[`BillingInvoices component should load with empty props 1`] = `
 <BillingInvoices
   fetchInvoices={[Function]}
-  invoices={
-    Immutable.Map {
-    }
-  }
+  invoices={Immutable.Map {}}
 />
 `;

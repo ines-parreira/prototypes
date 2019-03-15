@@ -21,7 +21,7 @@ export default class Errors extends React.Component {
             children,
             inline,
             tag: Tag,
-            ...rest,
+            ...rest
         } = this.props
 
         if (!children) {

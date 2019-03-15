@@ -70,9 +70,9 @@ describe('ActionButton component', () => {
             >
                 {action.child}
             </ActionButton>
-        , {
-            context: defaultContext
-        }).dive()
+            , {
+                context: defaultContext
+            }).dive()
 
         expect(component).toMatchSnapshot()
     })
@@ -108,9 +108,9 @@ describe('ActionButton component', () => {
             >
                 {action.child}
             </ActionButton>
-        , {
-            context: defaultContext
-        }).dive()
+            , {
+                context: defaultContext
+            }).dive()
 
         expect(component).toMatchSnapshot()
     })
@@ -149,9 +149,9 @@ describe('ActionButton component', () => {
             >
                 {action.child}
             </ActionButton>
-        , {
-            context: defaultContext
-        }).dive()
+            , {
+                context: defaultContext
+            }).dive()
 
         expect(component).toMatchSnapshot()
     })
@@ -186,9 +186,9 @@ describe('ActionButton component', () => {
             >
                 {action.child}
             </ActionButton>
-        , {
-            context: defaultContext
-        }).dive()
+            , {
+                context: defaultContext
+            }).dive()
 
         expect(component).toMatchSnapshot()
     })
@@ -220,9 +220,9 @@ describe('ActionButton component', () => {
             >
                 {action.child}
             </ActionButton>
-        , {
-            context: defaultContext
-        }).dive()
+            , {
+                context: defaultContext
+            }).dive()
 
         expect(component).toMatchSnapshot()
     })
@@ -268,9 +268,9 @@ describe('ActionButton component', () => {
             >
                 {action.child}
             </ActionButton>
-        , {
-            context: defaultContext
-        }).dive()
+            , {
+                context: defaultContext
+            }).dive()
 
         expect(component).toMatchSnapshot()
     })
@@ -315,9 +315,9 @@ describe('ActionButton component', () => {
             >
                 {action.child}
             </ActionButton>
-        , {
-            context: defaultContext
-        }).dive()
+            , {
+                context: defaultContext
+            }).dive()
 
         expect(component).toMatchSnapshot()
     })

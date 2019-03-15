@@ -219,7 +219,7 @@ export default class Form extends React.Component {
                                             className={classnames({'btn-loading': this.state.isInviting})}
                                             disabled={this.state.isInviting}
                                         >
-                                             <i className="material-icons">mail</i> Re-send invitation email
+                                            <i className="material-icons">mail</i> Re-send invitation email
                                         </Button>
                                         <DeleteAgent
                                             action={this._delete}

@@ -576,7 +576,7 @@ function onMessageSent(dispatch: dispatchType) {
  * @param action: A parameter to decide on what to do when an action failed. (Retry/ignore/cancel, etc.)
  */
 export function submitTicketMessage(status: ?string, macroActions: ?macroActionsType, action: ?string,
-                                    resetMessage: boolean = true, retryMessage: Map<*, *>) {
+    resetMessage: boolean = true, retryMessage: Map<*, *>) {
     return (dispatch: dispatchType, getState: getStateType): submitTicketMessageType => {
         const {ticket, currentUser, newMessage} = getState()
         // temporary message id

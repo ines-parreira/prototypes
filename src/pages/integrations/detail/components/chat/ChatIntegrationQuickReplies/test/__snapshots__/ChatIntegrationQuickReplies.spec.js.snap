@@ -4,13 +4,12 @@ exports[`ChatIntegrationQuickReplies component should render defaults because th
 <Connect(ChatIntegrationQuickReplies)
   integration={
     Immutable.Map {
-      name: "my chat integration",
-      meta: Immutable.Map {
-      },
-      decoration: Immutable.Map {
-        introduction_text: "this is an intro",
-        input_placeholder: "type something please",
-        main_color: "#123456",
+      "name": "my chat integration",
+      "meta": Immutable.Map {},
+      "decoration": Immutable.Map {
+        "introduction_text": "this is an intro",
+        "input_placeholder": "type something please",
+        "main_color": "#123456",
       },
     }
   }
@@ -29,13 +28,12 @@ exports[`ChatIntegrationQuickReplies component should render defaults because th
   <ChatIntegrationQuickReplies
     integration={
       Immutable.Map {
-        name: "my chat integration",
-        meta: Immutable.Map {
-        },
-        decoration: Immutable.Map {
-          introduction_text: "this is an intro",
-          input_placeholder: "type something please",
-          main_color: "#123456",
+        "name": "my chat integration",
+        "meta": Immutable.Map {},
+        "decoration": Immutable.Map {
+          "introduction_text": "this is an intro",
+          "input_placeholder": "type something please",
+          "main_color": "#123456",
         },
       }
     }
@@ -170,13 +168,12 @@ exports[`ChatIntegrationQuickReplies component should render defaults because th
       <RealtimeMessagingIntegrationNavigation
         integration={
           Immutable.Map {
-            name: "my chat integration",
-            meta: Immutable.Map {
-            },
-            decoration: Immutable.Map {
-              introduction_text: "this is an intro",
-              input_placeholder: "type something please",
-              main_color: "#123456",
+            "name": "my chat integration",
+            "meta": Immutable.Map {},
+            "decoration": Immutable.Map {
+              "introduction_text": "this is an intro",
+              "input_placeholder": "type something please",
+              "main_color": "#123456",
             },
           }
         }
@@ -777,20 +774,20 @@ exports[`ChatIntegrationQuickReplies component should render quick replies from 
 <Connect(ChatIntegrationQuickReplies)
   integration={
     Immutable.Map {
-      name: "my chat integration",
-      meta: Immutable.Map {
-        quick_replies: Immutable.Map {
-          enabled: true,
-          replies: Immutable.List [
+      "name": "my chat integration",
+      "meta": Immutable.Map {
+        "quick_replies": Immutable.Map {
+          "enabled": true,
+          "replies": Immutable.List [
             "foo",
             "bar",
           ],
         },
       },
-      decoration: Immutable.Map {
-        introduction_text: "this is an intro",
-        input_placeholder: "type something please",
-        main_color: "#123456",
+      "decoration": Immutable.Map {
+        "introduction_text": "this is an intro",
+        "input_placeholder": "type something please",
+        "main_color": "#123456",
       },
     }
   }
@@ -809,20 +806,20 @@ exports[`ChatIntegrationQuickReplies component should render quick replies from 
   <ChatIntegrationQuickReplies
     integration={
       Immutable.Map {
-        name: "my chat integration",
-        meta: Immutable.Map {
-          quick_replies: Immutable.Map {
-            enabled: true,
-            replies: Immutable.List [
+        "name": "my chat integration",
+        "meta": Immutable.Map {
+          "quick_replies": Immutable.Map {
+            "enabled": true,
+            "replies": Immutable.List [
               "foo",
               "bar",
             ],
           },
         },
-        decoration: Immutable.Map {
-          introduction_text: "this is an intro",
-          input_placeholder: "type something please",
-          main_color: "#123456",
+        "decoration": Immutable.Map {
+          "introduction_text": "this is an intro",
+          "input_placeholder": "type something please",
+          "main_color": "#123456",
         },
       }
     }
@@ -957,20 +954,20 @@ exports[`ChatIntegrationQuickReplies component should render quick replies from 
       <RealtimeMessagingIntegrationNavigation
         integration={
           Immutable.Map {
-            name: "my chat integration",
-            meta: Immutable.Map {
-              quick_replies: Immutable.Map {
-                enabled: true,
-                replies: Immutable.List [
+            "name": "my chat integration",
+            "meta": Immutable.Map {
+              "quick_replies": Immutable.Map {
+                "enabled": true,
+                "replies": Immutable.List [
                   "foo",
                   "bar",
                 ],
               },
             },
-            decoration: Immutable.Map {
-              introduction_text: "this is an intro",
-              input_placeholder: "type something please",
-              main_color: "#123456",
+            "decoration": Immutable.Map {
+              "introduction_text": "this is an intro",
+              "input_placeholder": "type something please",
+              "main_color": "#123456",
             },
           }
         }

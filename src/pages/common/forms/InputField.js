@@ -69,7 +69,7 @@ export default class InputField extends FormField {
             name, // eslint-disable-line
             onChange, // eslint-disable-line
             className, // eslint-disable-line
-            ...rest,
+            ...rest
         } = this.props
 
         return (
@@ -139,13 +139,13 @@ export default class InputField extends FormField {
                             </span>
                         )
                     }
-                {
-                    error && (
-                        <Errors>
-                            {error}
-                        </Errors>
-                    )
-                }
+                    {
+                        error && (
+                            <Errors>
+                                {error}
+                            </Errors>
+                        )
+                    }
                 </div>
                 {
                     defined(help) && (

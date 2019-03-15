@@ -33,7 +33,7 @@ export default class DonutKeyMetricStat extends Component<Props> {
 
         return <div className={css.container}>
             <svg className={css.donut}
-                    viewBox={`0 0 ${width} ${height}`}>
+                viewBox={`0 0 ${width} ${height}`}>
                 {this._renderPaths()}
             </svg>
             <div className={css.difference}>
@@ -72,10 +72,10 @@ export default class DonutKeyMetricStat extends Component<Props> {
     }
 
     _renderPath = (index: number, value: number, total: number, startAngle: number, fillType: string = 'empty',
-                   single: boolean = false) => {
+        single: boolean = false) => {
         const d = this._getPathData(value, total, startAngle,
-                                  this.props.width, this.props.innerRadius, this.props.outerRadius,
-                                  fillType === 'empty', single)
+            this.props.width, this.props.innerRadius, this.props.outerRadius,
+            fillType === 'empty', single)
 
         return (
             <path
@@ -87,7 +87,7 @@ export default class DonutKeyMetricStat extends Component<Props> {
     }
 
     _getPathData = (data: number, total: number, startAngle: number, width: number,
-                    innerRadius: number, outerRadius: number, reverse: boolean = false, single: boolean = false) => {
+        innerRadius: number, outerRadius: number, reverse: boolean = false, single: boolean = false) => {
         const activeAngle = data / total * 360
         const endAngle = startAngle + activeAngle
 
@@ -100,30 +100,30 @@ export default class DonutKeyMetricStat extends Component<Props> {
 
         let pathData = `M${outerCoords.x1},${outerCoords.y1}
           ${this._getArc(width, outerRadius, largeArcFlagOuter,
-                         parseFloat(outerCoords.x2), parseFloat(outerCoords.y2))}`
+            parseFloat(outerCoords.x2), parseFloat(outerCoords.y2))}`
 
         if (!single) {
             if (reverse) {
                 pathData += this._getArc((outerRadius - innerRadius) * width, 0.3, largeArcFlagInner,
-                                         parseFloat(innerCoords.x2), parseFloat(innerCoords.y2))
+                    parseFloat(innerCoords.x2), parseFloat(innerCoords.y2))
             } else {
                 pathData += this._getArc((outerRadius - innerRadius) * width, 0.3, largeArcFlagOuter,
-                                         parseFloat(innerCoords.x2), parseFloat(innerCoords.y2))
+                    parseFloat(innerCoords.x2), parseFloat(innerCoords.y2))
             }
         } else {
             pathData += `L${innerCoords.x2},${innerCoords.y2}`
         }
 
         pathData += this._getArc(width, innerRadius, largeArcFlagInner,
-                                 parseFloat(innerCoords.x1), parseFloat(innerCoords.y1))
+            parseFloat(innerCoords.x1), parseFloat(innerCoords.y1))
 
         if (!single) {
             if (reverse) {
                 pathData += this._getArc((outerRadius - innerRadius) * width, 0.3, largeArcFlagInner,
-                                         parseFloat(outerCoords.x1), parseFloat(outerCoords.y1))
+                    parseFloat(outerCoords.x1), parseFloat(outerCoords.y1))
             } else {
                 pathData += this._getArc((outerRadius - innerRadius) * width, 0.3, largeArcFlagOuter,
-                                         parseFloat(outerCoords.x1), parseFloat(outerCoords.y1))
+                    parseFloat(outerCoords.x1), parseFloat(outerCoords.y1))
             }
         } else {
             pathData += ' z'

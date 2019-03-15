@@ -35,71 +35,57 @@ Object {
 
 exports[`agents reducers fetch agents pagination 1`] = `
 Immutable.Map {
-  all: Immutable.List [
-  ],
-  pagination: Immutable.Map {
-    data: Immutable.List [
+  "all": Immutable.List [],
+  "pagination": Immutable.Map {
+    "data": Immutable.List [
       Immutable.Map {
-        name: "Alex",
+        "name": "Alex",
       },
       Immutable.Map {
-        name: "Romain",
+        "name": "Romain",
       },
     ],
-    meta: Immutable.Map {
-      nb_pages: 2,
-      page: 1,
+    "meta": Immutable.Map {
+      "nb_pages": 2,
+      "page": 1,
     },
   },
-  locations: Immutable.Map {
-  },
-  typingStatuses: Immutable.Map {
-  },
+  "locations": Immutable.Map {},
+  "typingStatuses": Immutable.Map {},
 }
 `;
 
 exports[`agents reducers fetch users (agents) 1`] = `
 Immutable.Map {
-  all: Immutable.List [
-  ],
-  pagination: Immutable.Map {
-  },
-  locations: Immutable.Map {
-  },
-  typingStatuses: Immutable.Map {
-  },
+  "all": Immutable.List [],
+  "pagination": Immutable.Map {},
+  "locations": Immutable.Map {},
+  "typingStatuses": Immutable.Map {},
 }
 `;
 
 exports[`agents reducers fetch users (agents) 2`] = `
 Immutable.Map {
-  all: Immutable.List [
-  ],
-  pagination: Immutable.Map {
-  },
-  locations: Immutable.Map {
-  },
-  typingStatuses: Immutable.Map {
-  },
+  "all": Immutable.List [],
+  "pagination": Immutable.Map {},
+  "locations": Immutable.Map {},
+  "typingStatuses": Immutable.Map {},
 }
 `;
 
 exports[`agents reducers fetch users (agents) 3`] = `
 Immutable.Map {
-  all: Immutable.List [
+  "all": Immutable.List [
     Immutable.Map {
-      id: 1,
+      "id": 1,
     },
     Immutable.Map {
-      id: 2,
+      "id": 2,
     },
   ],
-  pagination: Immutable.Map {
-  },
-  locations: Immutable.Map {
-  },
-  typingStatuses: Immutable.Map {
-  },
+  "pagination": Immutable.Map {},
+  "locations": Immutable.Map {},
+  "typingStatuses": Immutable.Map {},
 }
 `;
 

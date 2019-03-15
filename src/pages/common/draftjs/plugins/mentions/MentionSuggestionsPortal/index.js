@@ -55,8 +55,8 @@ export default class MentionSuggestionsPortal extends Component {
                     this.searchPortal = element
                 }}
             >
-        {this.props.children}
-      </span>
+                {this.props.children}
+            </span>
         )
     }
 }

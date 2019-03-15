@@ -70,11 +70,11 @@ exports[`BillingPlans component should display a custom plan 1`] = `
         onClick={[Function]}
         plan={
           Immutable.Map {
-            public: true,
-            name: "custom plan",
-            free_tickets: 100,
-            currencySign: "$",
-            integrations: 10,
+            "public": true,
+            "name": "custom plan",
+            "free_tickets": 100,
+            "currencySign": "$",
+            "integrations": 10,
           }
         }
         showFooter={true}
@@ -309,7 +309,7 @@ exports[`BillingPlans component should display matching current plan 1`] = `
         isUpdating={false}
         plan={
           Immutable.Map {
-            name: "Enterprise",
+            "name": "Enterprise",
           }
         }
         showFooter={true}
@@ -543,7 +543,7 @@ exports[`BillingPlans component should display multiple plans 1`] = `
         isUpdating={false}
         plan={
           Immutable.Map {
-            name: "Enterprise",
+            "name": "Enterprise",
           }
         }
         showFooter={true}
@@ -663,19 +663,13 @@ exports[`BillingPlans component should display multiple plans 1`] = `
 
 exports[`BillingPlans component should load with empty props 1`] = `
 <BillingPlans
-  currentPlan={
-    Immutable.Map {
-    }
-  }
+  currentPlan={Immutable.Map {}}
   isAllowedToChangePlan={[Function]}
   notify={[Function]}
-  plans={
-    Immutable.Map {
-    }
-  }
+  plans={Immutable.Map {}}
   subscription={
     Immutable.Map {
-      plan: "some-plan",
+      "plan": "some-plan",
     }
   }
   updateSubscription={[Function]}
@@ -862,7 +856,7 @@ exports[`BillingPlans component should load with empty props 1`] = `
               isUpdating={false}
               plan={
                 Immutable.Map {
-                  name: "Enterprise",
+                  "name": "Enterprise",
                 }
               }
               showFooter={true}

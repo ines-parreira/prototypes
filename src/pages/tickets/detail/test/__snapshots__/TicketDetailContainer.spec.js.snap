@@ -84,10 +84,7 @@ exports[`TicketDetailContainer component should render container for new ticket 
       isTicketHidden={false}
       setStatus={[Function]}
       submit={[Function]}
-      view={
-        Immutable.Map {
-        }
-      }
+      view={Immutable.Map {}}
     />
   </div>
 </SideEffect(DocumentTitle)>

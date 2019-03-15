@@ -127,19 +127,19 @@ exports[`HTTPIntegrationEvents container should render a HTTPIntegrationEvents c
   events={
     Immutable.List [
       Immutable.Map {
-        created_datetime: "nowTimestamp",
-        request: Immutable.Map {
-          method: "GET",
-          url: "https://api.gorgias.io",
-          status: 200,
-          headers: Immutable.Map {
-            headersKey1: "headersValue1",
+        "created_datetime": "nowTimestamp",
+        "request": Immutable.Map {
+          "method": "GET",
+          "url": "https://api.gorgias.io",
+          "status": 200,
+          "headers": Immutable.Map {
+            "headersKey1": "headersValue1",
           },
-          params: Immutable.Map {
-            paramKey1: "paramValue1",
+          "params": Immutable.Map {
+            "paramKey1": "paramValue1",
           },
-          body: Immutable.Map {
-            bodyKey1: "bodyValue1",
+          "body": Immutable.Map {
+            "bodyKey1": "bodyValue1",
           },
         },
       },

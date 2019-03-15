@@ -89,16 +89,16 @@ describe('current account selectors', () => {
     it('paymentIsActive', () => {
         expect(selectors.paymentIsActive(
             setStateWith(setStateWith(state, ['meta', 'shopify_billing', 'active'], true),
-                         ['meta', 'should_pay_with_shopify'], true))).toBe(true)
+                ['meta', 'should_pay_with_shopify'], true))).toBe(true)
         expect(selectors.paymentIsActive(
             setStateWith(setStateWith(state, ['meta', 'shopify_billing', 'active'], false),
-                         ['meta', 'should_pay_with_shopify'], true))).toBe(false)
+                ['meta', 'should_pay_with_shopify'], true))).toBe(false)
         expect(selectors.paymentIsActive(
             setStateWith(setStateWith(state, ['meta', 'hasCreditCard'], true),
-                         ['meta', 'should_pay_with_shopify'], false))).toBe(true)
+                ['meta', 'should_pay_with_shopify'], false))).toBe(true)
         expect(selectors.paymentIsActive(
             setStateWith(setStateWith(state, ['meta', 'hasCreditCard'], false),
-                         ['meta', 'should_pay_with_shopify'], false))).toBe(false)
+                ['meta', 'should_pay_with_shopify'], false))).toBe(false)
         expect(selectors.paymentIsActive({})).toBe(false)
     })
 

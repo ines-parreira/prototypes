@@ -80,11 +80,11 @@ export default class RechargeIntegrationList extends React.Component<Props, Stat
                         <Alert color="danger">
                             You need to have at least one Shopify integration to add Recharge integrations.
                         </Alert>
-                        ) : (
-                            <Alert color="info">
+                    ) : (
+                        <Alert color="info">
                                 All your Shopify integrations have a Recharge integration connected.
-                            </Alert>
-                            )
+                        </Alert>
+                    )
                     )
                 }
 

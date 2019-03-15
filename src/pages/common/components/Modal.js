@@ -43,7 +43,7 @@ export default class Modal extends React.Component {
             headerClassName,
             bodyClassName,
             footerClassName,
-            ...rest,
+            ...rest
         } = this.props
 
         const toggleProps = {}

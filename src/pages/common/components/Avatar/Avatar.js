@@ -89,10 +89,10 @@ export default class Avatar extends React.Component<Props, State> {
             size: this.props.size,
             google: this.props.google
         })
-        .then((image) => this.setState({
-            imageUrl: image.url,
-            isCached: image.isCached
-        }))
+            .then((image) => this.setState({
+                imageUrl: image.url,
+                isCached: image.isCached
+            }))
     }
 
     _getInitials = (name: string) => {

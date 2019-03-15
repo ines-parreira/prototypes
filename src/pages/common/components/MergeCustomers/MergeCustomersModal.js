@@ -174,19 +174,19 @@ class MergeCustomersModal extends React.Component {
                             name="customer.email"
                             tooltip={(
                                 <span>
-                                        <i
-                                            id="merge-primary-email"
-                                            className="material-icons ml-2"
-                                        >
+                                    <i
+                                        id="merge-primary-email"
+                                        className="material-icons ml-2"
+                                    >
                                             help
-                                        </i>
-                                        <Tooltip
-                                            placement="top"
-                                            target="merge-primary-email"
-                                        >
+                                    </i>
+                                    <Tooltip
+                                        placement="top"
+                                        target="merge-primary-email"
+                                    >
                                             This is the email address which will be used to fetch data for the customer
-                                        </Tooltip>
-                                    </span>
+                                    </Tooltip>
+                                </span>
                             )}
                             options={[
                                 {

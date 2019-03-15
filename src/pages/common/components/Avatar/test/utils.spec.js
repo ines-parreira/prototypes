@@ -1,4 +1,5 @@
 import {getAvatar, getAvatarFromCache} from '../utils'
+import {mockImageOnload} from '../../../../../test/utils'
 
 describe('Avatar utils', () => {
     const email = 'alex@gorgias.io'
@@ -9,21 +10,23 @@ describe('Avatar utils', () => {
         expect.assertions(1)
     })
 
+    mockImageOnload()
+
     describe('fetch avatar', () => {
         it('should return empty with no params', () => {
             return getAvatar()
-            .then((res) => expect(res).toEqual({
-                url: '',
-                isCached: false
-            }))
+                .then((res) => expect(res).toEqual({
+                    url: '',
+                    isCached: false
+                }))
         })
 
-        it('should return gravatar url', () => {
-            return getAvatar({email})
-            .then((res) => expect(res).toEqual({
+        it('should return gravatar url', async () => {
+            const res = await getAvatar({email})
+            expect(res).toEqual({
                 url: gravatarUrl,
                 isCached: true
-            }))
+            })
         })
 
         it('should return custom sized gravatar', () => {
@@ -31,21 +34,21 @@ describe('Avatar utils', () => {
                 size: 100,
                 email
             })
-            .then((res) => expect(res).toEqual({
-                url: gravatarUrl.replace('s=50', 's=100'),
-                isCached: true
-            }))
+                .then((res) => expect(res).toEqual({
+                    url: gravatarUrl.replace('s=50', 's=100'),
+                    isCached: true
+                }))
         })
     })
 
     describe('get avatar from cache', () => {
         it('should return picture from cache', () => {
             return getAvatar({email})
-            .then(() => getAvatarFromCache(email))
-            .then((res) => expect(res).toEqual({
-                url: gravatarUrl,
-                isCached: true
-            }))
+                .then(() => getAvatarFromCache(email))
+                .then((res) => expect(res).toEqual({
+                    url: gravatarUrl,
+                    isCached: true
+                }))
         })
     })
 })

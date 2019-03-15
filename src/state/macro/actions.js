@@ -18,7 +18,7 @@ type fetchMacrosParamsTypes = {
 }
 
 export const fetchMacros = (filters: fetchMacrosParamsTypes = {},
-                            orderBy: string = '', orderDir: string = 'asc'): thunkActionType =>
+    orderBy: string = '', orderDir: string = 'asc'): thunkActionType =>
     (dispatch: dispatchType): Promise<dispatchType> => {
         const params = _pick(filters, ['search', 'page'])
         if (orderBy) {

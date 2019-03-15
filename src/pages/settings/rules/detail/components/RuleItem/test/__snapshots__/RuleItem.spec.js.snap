@@ -167,12 +167,10 @@ exports[`RuleItem component should render 1`] = `
               }
               rule={
                 Immutable.Map {
-                  id: 17,
-                  name: "my rule",
-                  code_ast: Immutable.Map {
-                  },
-                  code: Immutable.Map {
-                  },
+                  "id": 17,
+                  "name": "my rule",
+                  "code_ast": Immutable.Map {},
+                  "code": Immutable.Map {},
                 }
               }
               triggers={
@@ -441,12 +439,10 @@ exports[`RuleItem component should render errors when there is no trigger select
               }
               rule={
                 Immutable.Map {
-                  id: 17,
-                  name: "my rule",
-                  code_ast: Immutable.Map {
-                  },
-                  code: Immutable.Map {
-                  },
+                  "id": 17,
+                  "name": "my rule",
+                  "code_ast": Immutable.Map {},
+                  "code": Immutable.Map {},
                 }
               }
               triggers={Array []}

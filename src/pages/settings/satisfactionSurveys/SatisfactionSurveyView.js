@@ -161,8 +161,8 @@ class SatisfactionSurveyView extends React.Component<Props> {
                 >
                     {
                         currentAccount.get('extra_features').includes('satisfaction-surveys')
-                        ? this._renderSettings()
-                        : <RestrictedSatisfactionSurvey />
+                            ? this._renderSettings()
+                            : <RestrictedSatisfactionSurvey />
                     }
                 </Container>
             </div>

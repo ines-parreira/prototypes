@@ -14,21 +14,21 @@ exports[`BusinessHoursForm component should render 1`] = `
         Object {
           "label": <i>
             Everyday
-      </i>,
+          </i>,
           "text": "Everyday",
           "value": "1,2,3,4,5,6,7",
         },
         Object {
           "label": <i>
             Weekdays
-      </i>,
+          </i>,
           "text": "Weekdays",
           "value": "1,2,3,4,5",
         },
         Object {
           "label": <i>
             Weekend
-      </i>,
+          </i>,
           "text": "Weekend",
           "value": "6,7",
         },

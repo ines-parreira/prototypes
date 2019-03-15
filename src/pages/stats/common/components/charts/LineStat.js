@@ -49,8 +49,8 @@ export default class LineStat extends React.Component {
                     <Legend labels={legendLabels}/>
                 </div>
                 {
-                 // Bar chart needs to be alone inside a div otherwise it grows
-                 // indefinitely when the window is resized
+                    // Bar chart needs to be alone inside a div otherwise it grows
+                    // indefinitely when the window is resized
                 }
                 <div>
                     <Line

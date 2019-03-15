@@ -10,10 +10,7 @@ exports[`TicketReply component should render an alert instead of the editor beca
     You cannot respond.
   </div>
   <TicketAttachments
-    attachments={
-      Immutable.List [
-      ]
-    }
+    attachments={Immutable.List []}
     className="p-2"
     deleteAttachment={[Function]}
     removable={true}
@@ -52,26 +49,23 @@ exports[`TicketReply component should render the editor 1`] = `
     richAreaRef={[Function]}
     ticket={
       Immutable.Map {
-        reply_options: Immutable.Map {
-          email: Immutable.Map {
-            answerable: true,
+        "reply_options": Immutable.Map {
+          "email": Immutable.Map {
+            "answerable": true,
           },
-          chat: Immutable.Map {
-            answerable: false,
-            reason: "You cannot respond.",
+          "chat": Immutable.Map {
+            "answerable": false,
+            "reason": "You cannot respond.",
           },
-          facebook-messenger: Immutable.Map {
-            answerable: true,
+          "facebook-messenger": Immutable.Map {
+            "answerable": true,
           },
         },
       }
     }
   />
   <TicketAttachments
-    attachments={
-      Immutable.List [
-      ]
-    }
+    attachments={Immutable.List []}
     className="p-2"
     deleteAttachment={[Function]}
     removable={true}

@@ -24,11 +24,11 @@ type Props = {
 
 export default class KeyMetricStat extends Component<Props> {
     _defaultWrapper = (formattedValue: string, metric: Object, valueTooltipId: string,
-                       tooltipDelta: string) => {
+        tooltipDelta: string) => {
         return <div>
             {
-              (formattedValue || formattedValue === 0) ?
-                  <div className={css.value}>{formattedValue}</div> : <div className={css.value}>n/a</div>
+                (formattedValue || formattedValue === 0) ?
+                    <div className={css.value}>{formattedValue}</div> : <div className={css.value}>n/a</div>
             }
             {this._renderDifference(valueTooltipId, metric, tooltipDelta)}
         </div>
@@ -69,13 +69,13 @@ export default class KeyMetricStat extends Component<Props> {
         const formattedValue = this._formatValue(value, metric)
 
         return config.get('type') === 'donut' ? <DonutKeyMetricStat
-                    value={parseFloat(value)}
-                    maxValue={parseFloat(config.get('maxValue'))}
-                    fill={config.get('fill')}
-                    formattedValue={formattedValue}
-                    label={`${metric.get('delta')}%`}
-                    differenceComponent={this._renderDifference(valueTooltipId, metric, tooltipDelta)}
-                /> : this._defaultWrapper(formattedValue, metric, valueTooltipId, tooltipDelta)
+            value={parseFloat(value)}
+            maxValue={parseFloat(config.get('maxValue'))}
+            fill={config.get('fill')}
+            formattedValue={formattedValue}
+            label={`${metric.get('delta')}%`}
+            differenceComponent={this._renderDifference(valueTooltipId, metric, tooltipDelta)}
+        /> : this._defaultWrapper(formattedValue, metric, valueTooltipId, tooltipDelta)
     }
 
     _formatValue = (value: string, metric: Map<string, *>) => {
