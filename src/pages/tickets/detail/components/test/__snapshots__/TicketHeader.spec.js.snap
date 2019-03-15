@@ -36,30 +36,6 @@ exports[`TicketHeader component should render existing ticket 1`] = `
       <TicketSnoozePicker
         isOpen={false}
         onApply={[Function]}
-        ranges={
-          Object {
-            "In 1 day": Array [
-              "2017-01-01T00:00:00.000Z",
-              "2017-01-01T00:00:00.000Z",
-            ],
-            "In 3 days": Array [
-              "2017-01-01T00:00:00.000Z",
-              "2017-01-01T00:00:00.000Z",
-            ],
-            "In 3 hours": Array [
-              "2017-01-01T00:00:00.000Z",
-              "2017-01-01T00:00:00.000Z",
-            ],
-            "In 6 hours": Array [
-              "2017-01-01T00:00:00.000Z",
-              "2017-01-01T00:00:00.000Z",
-            ],
-            "in 1 week": Array [
-              "2017-01-01T00:00:00.000Z",
-              "2017-01-01T00:00:00.000Z",
-            ],
-          }
-        }
         toggle={[Function]}
       />
       <DropdownMenu
@@ -321,30 +297,6 @@ exports[`TicketHeader component should render spam ticket 1`] = `
       <TicketSnoozePicker
         isOpen={false}
         onApply={[Function]}
-        ranges={
-          Object {
-            "In 1 day": Array [
-              "2017-01-01T00:00:00.000Z",
-              "2017-01-01T00:00:00.000Z",
-            ],
-            "In 3 days": Array [
-              "2017-01-01T00:00:00.000Z",
-              "2017-01-01T00:00:00.000Z",
-            ],
-            "In 3 hours": Array [
-              "2017-01-01T00:00:00.000Z",
-              "2017-01-01T00:00:00.000Z",
-            ],
-            "In 6 hours": Array [
-              "2017-01-01T00:00:00.000Z",
-              "2017-01-01T00:00:00.000Z",
-            ],
-            "in 1 week": Array [
-              "2017-01-01T00:00:00.000Z",
-              "2017-01-01T00:00:00.000Z",
-            ],
-          }
-        }
         toggle={[Function]}
       />
       <DropdownMenu
@@ -549,30 +501,6 @@ exports[`TicketHeader component should render trashed ticket 1`] = `
       <TicketSnoozePicker
         isOpen={false}
         onApply={[Function]}
-        ranges={
-          Object {
-            "In 1 day": Array [
-              "2017-01-01T00:00:00.000Z",
-              "2017-01-01T00:00:00.000Z",
-            ],
-            "In 3 days": Array [
-              "2017-01-01T00:00:00.000Z",
-              "2017-01-01T00:00:00.000Z",
-            ],
-            "In 3 hours": Array [
-              "2017-01-01T00:00:00.000Z",
-              "2017-01-01T00:00:00.000Z",
-            ],
-            "In 6 hours": Array [
-              "2017-01-01T00:00:00.000Z",
-              "2017-01-01T00:00:00.000Z",
-            ],
-            "in 1 week": Array [
-              "2017-01-01T00:00:00.000Z",
-              "2017-01-01T00:00:00.000Z",
-            ],
-          }
-        }
         toggle={[Function]}
       />
       <DropdownMenu
