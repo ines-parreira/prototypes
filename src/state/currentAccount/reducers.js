@@ -30,6 +30,9 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
                 .set('current_subscription', account.get('current_subscription'))
         }
 
+        case constants.UPDATE_ACCOUNT_OWNER_SUCCESS:
+            return state.setIn(['user_id'], action.userId)
+
         case constants.UPDATE_SUBSCRIPTION_SUCCESS:
             return state.update('current_subscription', (subscription) => {
                 if (subscription) {
