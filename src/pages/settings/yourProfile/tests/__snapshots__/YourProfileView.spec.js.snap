@@ -3768,7 +3768,8 @@ exports[`YourProfileView render should render current user profile form 1`] = `
             >
               The image must be square and weight less than 500kB.
               <br />
-              If you don't want to upload your picture here, but have a 
+              If you don't want to upload your picture here, but have a
+               
               <a
                 href="https://en.gravatar.com/"
                 rel="noopener noreferrer"

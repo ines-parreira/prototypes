@@ -10,8 +10,9 @@ import {
 
 import {Link} from 'react-router'
 
-import BooleanField from '../../../common/forms/BooleanField'
+import type {Map} from 'immutable'
 
+import BooleanField from '../../../common/forms/BooleanField'
 import InputField from '../../../common/forms/InputField'
 import Avatar from '../../../common/components/Avatar'
 import FileField from '../../../common/forms/FileField'
@@ -29,17 +30,30 @@ const defaultContent = {
 }
 
 type Props = {
-    updateCurrentUser: (Object) => void,
+    updateCurrentUser: (Object) => Promise<*>,
     currentUser: Object,
-    submitSetting: (Object) => void,
+    submitSetting: (Object, boolean) => Promise<*>,
     preferences: Object,
     isLoading: boolean
 }
 
+type State = {
+    bio: string,
+    email: string,
+    hasChangedEmail: boolean,
+    language: string,
+    loadingPreferences: boolean,
+    name: string,
+    preferences: Map<*, *>,
+    profilePictureUrl: string,
+    password_confirmation: null | string,
+    timezone: string
+}
 
-export default class YourProfileView extends React.Component<Props> {
+export default class YourProfileView extends React.Component<Props, State> {
+    isInitialized: boolean
 
-    constructor(props) {
+    constructor(props: Props) {
         super(props)
 
         this.isInitialized = false
@@ -47,7 +61,7 @@ export default class YourProfileView extends React.Component<Props> {
         this.state = _merge({
             loadingPreferences: false,
             preferences: props.preferences.get('data'),
-            emailHasChanged: false
+            hasChangedEmail: false
         }, this._getForm(props))
 
         if (!this.props.currentUser.isEmpty()) {
@@ -55,14 +69,14 @@ export default class YourProfileView extends React.Component<Props> {
         }
     }
 
-    componentWillUpdate(nextProps) {
+    componentWillUpdate(nextProps: Props) {
         if (!this.isInitialized && !nextProps.currentUser.isEmpty()) {
             this.setState(this._getForm(nextProps))
             this.isInitialized = true
         }
     }
 
-    _getForm(props) {
+    _getForm(props: Props): Object {
         if (props.currentUser.isEmpty()) {
             return defaultContent
         }
@@ -75,7 +89,7 @@ export default class YourProfileView extends React.Component<Props> {
         )
     }
 
-    _handleSubmit = (event) => {
+    _handleSubmit = (event: SyntheticEvent<*>) => {
         event.preventDefault()
         const normalizedValues = _merge(
             _pick(this.state, Object.keys(defaultContent)),
@@ -97,15 +111,15 @@ export default class YourProfileView extends React.Component<Props> {
             })
     }
 
-    _onEmailChange = (email) => {
+    _onEmailChange = (email: string) => {
         this.setState({
             email,
             hasChangedEmail: (this.props.currentUser.get('email') !== email)
         })
     }
 
-    _savePreferences = (e) => {
-        e.preventDefault()
+    _savePreferences = (event: SyntheticEvent<*>) => {
+        event.preventDefault()
 
         this.setState({loadingPreferences: true})
 
@@ -154,18 +168,18 @@ export default class YourProfileView extends React.Component<Props> {
                                     value={this.state.email}
                                     onChange={this._onEmailChange}
                                 />
-                              {hasChangedEmail ?
-                                <InputField
-                                  type="password"
-                                  name="password_confirmation"
-                                  label="Password confirmation"
-                                  placeholder="Your password"
-                                  required
-                                  value={password_confirmation}
-                                  onChange={(password_confirmation) => this.setState({password_confirmation})}
-                                />
-                                : null
-                              }
+                                {hasChangedEmail ?
+                                    <InputField
+                                        type="password"
+                                        name="password_confirmation"
+                                        label="Password confirmation"
+                                        placeholder="Your password"
+                                        required
+                                        value={password_confirmation}
+                                        onChange={(password_confirmation) => this.setState({password_confirmation})}
+                                    />
+                                    : null
+                                }
                                 <InputField
                                     type="text"
                                     name="bio"
@@ -249,11 +263,16 @@ export default class YourProfileView extends React.Component<Props> {
 
                                     <FormText color="muted">
                                         The image must be square and weight less than 500kB.<br/>
-                                        If you don't want to upload your picture here, but have a <a
+                                        If you don't want to upload your picture here, but have a
+                                        {' '}
+                                        <a
                                             href="https://en.gravatar.com/"
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                        >Gravatar</a>{' '}
+                                        >
+                                            Gravatar
+                                        </a>
+                                        {' '}
                                         account, we'll use it.
                                     </FormText>
                                 </FormGroup>

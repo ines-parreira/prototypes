@@ -9,7 +9,6 @@ type Props = {
     datetime?: string,
     isOpen: boolean,
     onApply: Function,
-    ranges: Object,
     toggle: Function
 }
 
