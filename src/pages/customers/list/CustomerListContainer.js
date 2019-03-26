@@ -42,13 +42,9 @@ class CustomerListContainer extends React.Component {
         this.setState({isCustomerFormOpen: false})
     }
 
-    _fetchView = () => {
-        this.props.fetchPage(1)
-    }
-
     render() {
         const {isSearch, isUpdate} = this.state
-        const {customers, urlViewId, activeView, hasActiveView} = this.props
+        const {customers, urlViewId, activeView, hasActiveView, fetchViewItems} = this.props
         let title = 'Loading...'
 
         if (!isUpdate) {
@@ -98,7 +94,7 @@ class CustomerListContainer extends React.Component {
                                 >
                                     <CustomerForm
                                         closeModal={this._closeModal}
-                                        onSuccess={this._fetchView}
+                                        onSuccess={() => fetchViewItems()}
                                     />
                                 </Modal>
                             </div>
@@ -118,7 +114,7 @@ CustomerListContainer.propTypes = {
     urlViewId: PropTypes.string,
     customers: PropTypes.object.isRequired,
     views: PropTypes.object.isRequired,
-    fetchPage: PropTypes.func.isRequired,
+    fetchViewItems: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -134,7 +130,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = {
-    fetchPage: viewsActions.fetchPage,
+    fetchViewItems: viewsActions.fetchViewItems,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerListContainer)

@@ -28,9 +28,7 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
                 return state
             }
 
-            const payload = action.data
-
-            return state.set('items', fromJS(payload.data))
+            return state.set('items', fromJS(action.data.data))
         }
 
         case viewsTypes.BULK_DELETE_SUCCESS: {

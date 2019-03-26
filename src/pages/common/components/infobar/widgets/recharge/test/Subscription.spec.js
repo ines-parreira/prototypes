@@ -9,9 +9,6 @@ import {AfterTitle, TitleWrapper} from '../Subscription'
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-const windowLocation = JSON.stringify(window.location)
-delete window.location
-window.location = JSON.parse(windowLocation)
 
 describe('Subscription', () => {
     describe('AfterTitle', () => {

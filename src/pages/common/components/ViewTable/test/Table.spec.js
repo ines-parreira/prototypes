@@ -14,7 +14,7 @@ jest.mock('../../../../../state/views/actions', () => {
     const _identity = require('lodash/identity')
 
     return {
-        fetchPage: jest.fn(() => _identity),
+        fetchViewItems: jest.fn(() => _identity),
         toggleSelection: jest.fn(() => _identity),
         resetView: jest.fn(() => _identity),
     }
@@ -38,7 +38,7 @@ describe('ViewTable::Table', () => {
         isSearch: false,
         store: configureStore(minStore),
         isLoading: () => false,
-        pagination: fromJS({}),
+        navigation: fromJS({hasPrevItems: false, hasNextItems: false}),
         onPageChange: () => {},
     }
 
@@ -46,7 +46,7 @@ describe('ViewTable::Table', () => {
         jest.clearAllMocks()
     })
 
-    it('empty view', () => {
+    it('should display a view with no fields', () => {
         const component = shallow(
             <Table
                 {...minProps}
@@ -56,12 +56,12 @@ describe('ViewTable::Table', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('default view', () => {
+    it('should display a default view', () => {
         const component = shallow(<Table {...minProps} />).dive()
         expect(component).toMatchSnapshot()
     })
 
-    it('default view not selectable', () => {
+    it('should display a default view with option selectable set to false', () => {
         const component = shallow(
             <Table
                 {...minProps}
@@ -71,7 +71,7 @@ describe('ViewTable::Table', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('default view with no items', () => {
+    it('should display a default view with no items', () => {
         const component = shallow(
             <Table
                 {...minProps}
@@ -81,7 +81,7 @@ describe('ViewTable::Table', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('modified view with no items', () => {
+    it('should display a modified view with no items, should reset the view and fetch first items ', () => {
         const component = shallow(
             <Table
                 {...minProps}
@@ -94,17 +94,17 @@ describe('ViewTable::Table', () => {
         const message = shallow(component.find(BlankState).props().message)
         message.find('a').simulate('click')
         expect(viewsActions.resetView).toBeCalled()
-        expect(viewsActions.fetchPage).toBeCalledWith(1)
+        expect(viewsActions.fetchViewItems).toBeCalledWith()
     })
 
-    it('selects all items on click on select all checkbox', () => {
+    it('should select all items when there is a click on the "select all" checkbox', () => {
         const component = shallow(<Table {...minProps} />).dive()
         const selectAllButton = component.find('thead').find('td').first()
         selectAllButton.simulate('click')
         expect(viewsActions.toggleSelection).toBeCalledWith(fromJS([ticketFixtures.ticket.id]), true)
     })
 
-    it('check the select all checkbox when all items are selected', () => {
+    it('should display all checkboxes as checked when all items are selected', () => {
         const component = shallow(
             <Table
                 {...minProps}

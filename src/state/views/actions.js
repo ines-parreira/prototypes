@@ -1,21 +1,18 @@
 // @flow
 import axios from 'axios'
-import {fromJS} from 'immutable'
+import {fromJS, type Map, type List} from 'immutable'
 import _max from 'lodash/max'
 import {browserHistory} from 'react-router'
 
-
-import type {Map, List} from 'immutable'
-
 import * as viewsConfig from '../../config/views'
 import * as socketConstants from '../../config/socketConstants'
+import {BASE_VIEW_ID, NEXT_VIEW_NAV_DIRECTION, PREV_VIEW_NAV_DIRECTION, VIEW_NAV_DIRECTIONS} from '../../constants/view'
 import {notify} from '../notifications/actions'
 import socketManager from '../../services/socketManager'
 import {getPluralObjectName, getHashOfObj, isCurrentlyOnTicket, isCurrentlyOnView} from '../../utils'
 import type {dispatchType, getStateType, thunkActionType} from '../types'
 
-import {shouldUpdateView, activeViewUrl} from './utils'
-
+import {activeViewUrl} from './utils'
 import * as viewsSelectors from './selectors'
 import * as types from './constants'
 import type {viewType, filterType} from './types'
@@ -250,39 +247,56 @@ export const deleteViewSuccess = (viewId: number): thunkActionType => (dispatch:
     }
 }
 
-export function fetchPage(page: ?number, discreet: boolean = false): thunkActionType {
-    return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
-        const state = getState()
-        let views = state.views
 
+/** Fetch a page of items of a view (tickets or customers) based on the provided cursor and direction.
+ *
+ * @param direction: current, next or prev; indicates which items should be fetched compared to the provided cursor
+ * @param cursor: the point from which to fetch items
+ * @param isPolling: whether or not this was triggered by the polling
+ * @returns {Function}
+ */
+export function fetchViewItems(
+    direction: ?$Values<VIEW_NAV_DIRECTIONS> = null,
+    cursor: ?number,
+    isPolling: ?boolean = false
+): thunkActionType {
+    return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
+        let state = getState()
         const activeView = viewsSelectors.getActiveView(state)
+        const activeViewType = activeView.get('type')
+        const viewConfig = viewsConfig.getConfigByType(activeViewType)
+
+        let navigation = viewsSelectors.getNavigation(state)
+
         const viewId = activeView.get('id')
+
+        let url = `/api/views/${viewId}/items/`
+
+        if (cursor) {
+            url = `${url}?cursor=${cursor}`
+        } else if (direction === NEXT_VIEW_NAV_DIRECTION) {
+            url = navigation.get('next_items')
+        } else if (direction === PREV_VIEW_NAV_DIRECTION) {
+            url = navigation.get('prev_items')
+        }
+
         const isDirty = viewsSelectors.isDirty(state)
 
         if (!viewsSelectors.hasActiveView(state)) {
             return Promise.resolve()
         }
 
-        if (!page) {
-            page = views.getIn(['_internal', 'pagination', 'page'], 1)
-        }
-
-        dispatch(setPage(page))
-
-        const activeViewType = activeView.get('type', 'ticket-list')
-        const viewConfig = viewsConfig.getConfigByType(activeViewType)
-
         if (!isDirty && !viewId) {
             return Promise.resolve()
         }
 
         //$FlowFixMe
-        const filtersHash = getHashOfObj(viewsSelectors.getActiveViewFilters(getState()))
+        const filtersHash = getHashOfObj(viewsSelectors.getActiveViewFilters(state))
 
         dispatch({
             type: types.FETCH_LIST_VIEW_START,
             viewId,
-            discreet,
+            discreet: isPolling,
         })
 
         let promise
@@ -290,41 +304,39 @@ export function fetchPage(page: ?number, discreet: boolean = false): thunkAction
         // when a view is dirty, just send the whole view data rather than just the id
         // this will allow us to test a view before submitting it to the DB
         if (isDirty) {
-            promise = axios.put(`/api/${viewConfig.get('api')}/search/?page=${page}`, {
+            promise = axios.put(url, {
                 view: activeView
                     .delete('dirty')
                     .delete('editMode')
                     .toJS()
             })
         } else {
-            promise = axios.get(`/api/${viewConfig.get('api')}/`, {
-                params: {
-                    view_id: viewId,
-                    page
-                }
-            })
+            promise = axios.get(url)
         }
 
         return promise
             .then((json = {}) => json.data)
             .then((data) => {
-                views = getState().views
-                // if the current view id the same as the received one
-                const isCurrent = views.getIn(['_internal', 'currentViewId']) === viewId
-                    // is the current page the same as the received one
-                    && views.getIn(['_internal', 'pagination', 'page'], 1).toString() === data.meta.page.toString()
-                    // (if somebody has modified the filters while the request was done)
-                    //$FlowFixMe
-                    && filtersHash === getHashOfObj(viewsSelectors.getActiveViewFilters(getState()))
+                state = getState()
 
-                // make sure the incoming ticket list is the one the current user is looking at
-                if (isCurrent) {
-                    dispatch({
-                        type: types.FETCH_LIST_VIEW_SUCCESS,
-                        viewType: activeViewType,
-                        data,
-                    })
+                // If it's a background polling, or we're not on the first page, don't update displayed items because
+                // polling is only enabled on the first page.
+                if (isPolling && !viewsSelectors.isOnFirstPage(state)) {
+                    return
                 }
+
+                const viewHasChanged = viewsSelectors.getActiveView(state).get('id') !== viewId
+                    || filtersHash !== getHashOfObj(viewsSelectors.getActiveViewFilters(state))
+
+                if (viewHasChanged) {
+                    return
+                }
+
+                dispatch({
+                    type: types.FETCH_LIST_VIEW_SUCCESS,
+                    viewType: activeViewType,
+                    data,
+                })
             }, (error) => {
                 return dispatch({
                     type: types.FETCH_LIST_VIEW_ERROR,
@@ -344,7 +356,7 @@ export function toggleSelection(idOrIds: number | List<*>, selectAll: boolean = 
 }
 
 export function bulkUpdate(activeView: viewType, ids: List<*>, key: string, value: any): thunkActionType {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
         const data = {
             ids: ids.toJS(),
             updates: {
@@ -354,6 +366,7 @@ export function bulkUpdate(activeView: viewType, ids: List<*>, key: string, valu
 
         const activeViewType = activeView.get('type', 'ticket-list')
         const viewConfig = viewsConfig.getConfigByType(activeViewType)
+        const navigation = viewsSelectors.getNavigation(getState())
 
         let successMessage = `${ids.size} ${viewConfig.get('plural')}: ${key} successfully set to ${value}!`
 
@@ -406,7 +419,7 @@ export function bulkUpdate(activeView: viewType, ids: List<*>, key: string, valu
                     type: types.BULK_UPDATE_SUCCESS
                 })
 
-                setTimeout(() => dispatch(fetchPage()), 800)
+                setTimeout(() => dispatch(fetchViewItems(null, navigation.get('current_cursor'))), 800)
                 notification.status = 'success'
                 notification.message = successMessage
                 dispatch(notify(notification))
@@ -493,11 +506,15 @@ export const fetchActiveViewTickets = () => (dispatch: dispatchType, getState: g
         || viewsSelectors.isLoading('fetchListDiscreet')(state)
     const isEditing = activeView.get('editMode') || false
 
-    if (!shouldUpdateView(activeView.get('id'), viewsState) || isFetchingView || isEditing) {
+    const shouldUpdateView = activeView.get('id') !== BASE_VIEW_ID
+        && isCurrentlyOnView(activeView.get('id'), viewsState)
+        && viewsSelectors.isOnFirstPage(state)
+
+    if (!shouldUpdateView || isFetchingView || isEditing) {
         return
     }
 
-    return dispatch(fetchPage(null, true))
+    return dispatch(fetchViewItems(null, null, true))
 }
 
 export const fetchVisibleViewsCounts = () => (dispatch: dispatchType, getState: getStateType) => {
@@ -540,13 +557,6 @@ export const fetchRecentViewsCounts = () => (dispatch: dispatchType, getState: g
 }
 
 export const fetchActiveViewCount = () => (dispatch: dispatchType, getState: getStateType) => {
-    // there is already a polling system on ticket view
-    // which fetch view count for the active view
-    // so if the user is not on a ticket, we don't have to fetch new counts
-    if (!isCurrentlyOnTicket()) {
-        return
-    }
-
     const state = getState()
     const activeViewId = viewsSelectors.getActiveView(state).get('id')
     const viewIds = viewsSelectors.getExpiredViewsCounts(viewsConfig.ACTIVE_VIEW_COUNT_TIMEOUT)(state)
@@ -573,9 +583,9 @@ export const updateRecentViews = (viewIds) => ({
 export const gotoActiveView = () => (dispatch: dispatchType, getState: getStateType) => {
     const state = getState()
     const activeView = viewsSelectors.getActiveView(state)
-    const pagination = viewsSelectors.getPagination(state)
+    const navigation = viewsSelectors.getNavigation(state)
     const currentLocation = browserHistory.getCurrentLocation()
-    const newUrl = activeViewUrl(activeView, currentLocation, pagination)
+    const newUrl = activeViewUrl(activeView, currentLocation, navigation)
 
     browserHistory.push(newUrl)
 

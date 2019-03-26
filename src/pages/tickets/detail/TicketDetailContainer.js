@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import ImmutablePropTypes from 'react-immutable-proptypes'
 import {withRouter} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -38,7 +37,6 @@ import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
         activeView: viewsSelectors.getActiveView(state),
         activeCustomer: customersSelectors.getActiveCustomer(state),
         currentUser: state.currentUser,
-        pagination: viewsSelectors.getPagination(state),
         customers: customersSelectors.getCustomersState(state),
         routing: state.routing,
         ticket: state.ticket,
@@ -83,7 +81,6 @@ export default class TicketDetailContainer extends React.Component {
         newMessage: PropTypes.object,
         tickets: PropTypes.object,
         customers: PropTypes.object,
-        pagination: ImmutablePropTypes.map.isRequired,
         activeCustomer: PropTypes.object,
         newMessageSource: PropTypes.object,
 

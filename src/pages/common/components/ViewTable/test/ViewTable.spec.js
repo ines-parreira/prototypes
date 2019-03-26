@@ -2,18 +2,23 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import _merge from 'lodash/merge'
+import {browserHistory} from 'react-router'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import configureStore from '../../../../../store/configureStore'
+import {TICKET_LIST_VIEW_TYPE} from '../../../../../constants/view'
 import * as viewsFixtures from '../../../../../fixtures/views'
 import * as ticketFixtures from '../../../../../fixtures/ticket'
 import * as viewsActions from '../../../../../state/views/actions'
 import ViewTable from '../ViewTable'
 
+const mockStore = configureMockStore([thunk])
+
 jest.mock('../../../../../state/views/actions', () => {
     const _identity = require('lodash/identity')
 
     return {
-        fetchPage: jest.fn(() => _identity),
+        fetchViewItems: jest.fn(() => _identity),
         setViewActive: jest.fn(() => _identity),
         updateView: jest.fn(() => _identity),
     }
@@ -25,6 +30,16 @@ describe('ViewTable::ViewTable', () => {
     const minStore = {
         views: fromJS({
             active: fixtureView,
+            items: [
+                {id: 1, type: TICKET_LIST_VIEW_TYPE},
+                {id: 2, type: TICKET_LIST_VIEW_TYPE},
+                fixtureView,
+            ],
+            _internal: {
+                loading: {
+                    fetchList: false
+                }
+            }
         })
     }
 
@@ -34,31 +49,18 @@ describe('ViewTable::ViewTable', () => {
         isUpdate: true,
         isSearch: false,
         urlViewId: fixtureView.id.toString(), // id of view coming from url
-        store: configureStore(minStore),
-        location: {
-            query: {
-                page: 1,
-            }
-        },
+        store: mockStore(minStore),
+        location: {query: {}},
+        config: fromJS({
+            type: TICKET_LIST_VIEW_TYPE
+        }),
+        navigation: fromJS({}),
+        isLoading: () => false
     }
 
     beforeEach(() => {
         jest.clearAllMocks()
-    })
-
-    describe('connect HOC', () => {
-        it('pass correct currentPage prop when page change in url', () => {
-            const component = shallow(<ViewTable {...minProps} />).dive()
-            expect(component.props()).toHaveProperty('currentPage', 1)
-            component.setProps({
-                location: {
-                    query: {
-                        page: 2,
-                    }
-                },
-            })
-            expect(component.props()).toHaveProperty('currentPage', 2)
-        })
+        minProps.store = mockStore(minStore)
     })
 
     describe('component', () => {
@@ -66,7 +68,7 @@ describe('ViewTable::ViewTable', () => {
             const component = shallow(
                 <ViewTable
                     {...minProps}
-                    store={configureStore({
+                    store={mockStore({
                         ...minStore,
                         views: fromJS({}),
                     })}
@@ -81,15 +83,120 @@ describe('ViewTable::ViewTable', () => {
             expect(component).toMatchSnapshot()
         })
 
-        it('fetch page when page changes', () => {
-            const component = shallow(<ViewTable {...minProps} />).dive().dive()
+        it('should set stored cursor in the URL if loading of the page just finished, stored cursor is different ' +
+            'of URL cursor, and we are not on the first page', () => {
+            const cursor = '1234'
+            const component = shallow(<ViewTable {...minProps}/>).dive().dive()
+
             component.setProps({
-                currentPage: 2,
+                location: {query: {cursor: '789456'}},
+                navigation: fromJS({current_cursor: cursor}),
+                isLoading: () => true,
+                isOnFirstPage: false
             })
-            expect(viewsActions.fetchPage).toBeCalledWith(2)
+
+            // Only start tracking once props have been set above
+            jest.clearAllMocks()
+
+            component.setProps({
+                location: {query: {cursor: '1256'}},
+                navigation: fromJS({current_cursor: cursor, prev_items: 'foo'}),
+                isLoading: () => false,
+                isOnFirstPage: false
+            })
+
+            expect(browserHistory.push).toBeCalledWith({...minProps.location, query: {cursor}})
         })
 
-        it('change view when entering search mode', () => {
+        it('should remove cursor from the URL if loading of the page just finished, stored cursor is different ' +
+            'of URL cursor, and there is no previous items', () => {
+            const storedPush = browserHistory.push
+            const cursor = '1234'
+            const component = shallow(<ViewTable {...minProps}/>).dive().dive()
+
+            component.setProps({
+                location: {query: {cursor: '789456'}},
+                navigation: fromJS({current_cursor: cursor}),
+                isLoading: () => true,
+            })
+
+            // Only start tracking once props have been set above
+            browserHistory.push = jest.fn()
+
+            component.setProps({
+                location: {query: {cursor: '1256'}},
+                navigation: fromJS({current_cursor: cursor}),
+                isLoading: () => false
+            })
+
+            expect(browserHistory.push).toBeCalledWith({...minProps.location, query: {}})
+
+            browserHistory.push = storedPush
+        })
+
+        it('should call fetchViewItems with the URL cursor when URL cursor changes', () => {
+            const component = shallow(<ViewTable {...minProps} />).dive().dive()
+            const cursor = '1523467'
+            component.setProps({location: {query: {cursor}}})
+            expect(viewsActions.fetchViewItems).toBeCalledWith(null, parseInt(cursor))
+        })
+
+        it('should call fetchViewItems with default parameters when there is a stored cursor and no URL cursor ' +
+            'and we are not currently on the first page', () => {
+            const component = shallow(
+                <ViewTable
+                    {...minProps}
+                />
+            ).dive().dive()
+
+            jest.clearAllMocks()
+
+            component.setProps({
+                navigation: fromJS({current_cursor: '12345678'}),
+                isOnFirstPage: false
+            })
+            expect(viewsActions.fetchViewItems).toBeCalledWith(null, null)
+        })
+
+        it('should not call fetchViewItems when there is a stored cursor and no URL cursor and we are not currently ' +
+            'on the first page because a request is currently loading', () => {
+            const component = shallow(
+                <ViewTable
+                    {...minProps}
+                />
+            ).dive().dive()
+
+            jest.clearAllMocks()
+
+            component.setProps({
+                navigation: fromJS({current_cursor: '12345678'}),
+                isOnFirstPage: false,
+                isLoading: () => true
+            })
+            expect(viewsActions.fetchViewItems).not.toBeCalled()
+        })
+
+        it('should not call fetchViewItems when the stored cursor and URL cursor are different and we are not ' +
+            'currently on the first page because a request is currently loading', () => {
+            const component = shallow(
+                <ViewTable
+                    {...minProps}
+                    location={{query: {cursor: '1256'}}}
+                    navigation={fromJS({current_cursor: '1256'})}
+                />
+            ).dive().dive()
+
+            jest.clearAllMocks()
+
+            component.setProps({
+                location: {query: {cursor: '12345678'}},
+                isOnFirstPage: false,
+                isLoading: () => true
+            })
+            expect(viewsActions.fetchViewItems).not.toBeCalled()
+        })
+
+        it('should update the view and call fetchViewItems with default parameters when entering "search" mode', () => {
             const component = shallow(
                 <ViewTable
                     {...minProps}
@@ -100,10 +207,26 @@ describe('ViewTable::ViewTable', () => {
                 isSearch: true,
             })
             expect(viewsActions.updateView).toBeCalled()
-            expect(viewsActions.fetchPage).toBeCalledWith(component.instance().props.currentPage)
+            expect(viewsActions.fetchViewItems).toBeCalledWith()
         })
 
-        it('search again if search query changed while in search mode', () => {
+        it('should set the new view as active and call fetchViewItems with default parameters when entering "add new" ' +
+            'mode', () => {
+            const component = shallow(
+                <ViewTable
+                    {...minProps}
+                    isUpdate
+                />
+            ).dive().dive()
+            component.setProps({
+                isUpdate: false,
+            })
+            expect(viewsActions.updateView).toBeCalled()
+            expect(viewsActions.fetchViewItems).toBeCalledWith()
+        })
+
+        it('should update the view and call fetchViewItems with default parameters because the search query changed ' +
+            'while in search mode', () => {
             const component = shallow(
                 <ViewTable
                     {...minProps}
@@ -123,10 +246,11 @@ describe('ViewTable::ViewTable', () => {
                 })
             })
             expect(viewsActions.updateView).toBeCalled()
-            expect(viewsActions.fetchPage).toBeCalledWith(1)
+            expect(viewsActions.fetchViewItems).toBeCalledWith()
         })
 
-        it('change view when leaving search mode', () => {
+        it('should set the suggested view as active and call fetchViewItems with default parameters when leaving ' +
+            '"search" mode', () => {
             const component = shallow(
                 <ViewTable
                     {...minProps}
@@ -137,24 +261,11 @@ describe('ViewTable::ViewTable', () => {
                 isSearch: false,
             })
             expect(viewsActions.setViewActive).toBeCalled()
-            expect(viewsActions.fetchPage).toBeCalledWith(1)
+            expect(viewsActions.fetchViewItems).toBeCalledWith()
         })
 
-        it('change view when entering "add new" mode', () => {
-            const component = shallow(
-                <ViewTable
-                    {...minProps}
-                    isUpdate
-                />
-            ).dive().dive()
-            component.setProps({
-                isUpdate: false,
-            })
-            expect(viewsActions.updateView).toBeCalled()
-            expect(viewsActions.fetchPage).toBeCalledWith(1)
-        })
-
-        it('change view when leaving "add new" mode', () => {
+        it('should set the suggested view as active and call fetchViewItems with default parameters when leaving ' +
+            '"add new" mode', () => {
             const component = shallow(
                 <ViewTable
                     {...minProps}
@@ -165,7 +276,22 @@ describe('ViewTable::ViewTable', () => {
                 isUpdate: true,
             })
             expect(viewsActions.setViewActive).toBeCalled()
-            expect(viewsActions.fetchPage).toBeCalledWith(1)
+            expect(viewsActions.fetchViewItems).toBeCalledWith()
+        })
+
+        it('should set the suggested view as active and call fetchViewItems with default parameters when suggested ' +
+            'view changed', () => {
+            const component = shallow(
+                <ViewTable
+                    {...minProps}
+                    urlViewId={'1'}
+                />
+            ).dive().dive()
+            component.setProps({
+                urlViewId: '2',
+            })
+            expect(viewsActions.setViewActive).toBeCalled()
+            expect(viewsActions.fetchViewItems).toBeCalledWith()
         })
     })
 })
