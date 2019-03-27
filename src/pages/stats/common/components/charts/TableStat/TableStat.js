@@ -8,9 +8,13 @@ import {Link, withRouter} from 'react-router'
 
 import Tooltip from '../../../../../common/components/Tooltip'
 import {DatetimeLabel} from '../../../../../common/utils/labels'
-import {SATISFACTION_SURVEY_MAX_SCORE, SATISFACTION_SURVEY_MIN_SCORE,
-    SATISFACTION_SURVEY_MAX_COMMENT_LENGTH} from '../../../../../../config/stats'
-import {renderDifference, comparedPeriodString, formatCurrency} from '../../../utils'
+import {
+    SATISFACTION_SURVEY_MAX_COMMENT_LENGTH,
+    SATISFACTION_SURVEY_MAX_SCORE,
+    SATISFACTION_SURVEY_MIN_SCORE,
+    TICKET_MAX_SUBJECT_LENGTH
+} from '../../../../../../config/stats'
+import {comparedPeriodString, formatCurrency, renderDifference} from '../../../utils'
 
 import DistributionVariantStat from '../DistributionVariantStat'
 
@@ -85,6 +89,12 @@ export default class TableStat extends React.Component {
                 return <Link to={`/app/ticket/${metric.get('ticket_id')}#satisfactionSurvey`}>
                     {_truncate(metric.get('comment') || 'Go to ticket',
                         {length: SATISFACTION_SURVEY_MAX_COMMENT_LENGTH})}
+                </Link>
+            }
+            case 'ticket-link': {
+                return <Link to={`/app/ticket/${metric.get('ticket_id')}`}>
+                    {_truncate(metric.get('subject') || `Ticket #${metric.get('ticket_id')}`,
+                        {length: TICKET_MAX_SUBJECT_LENGTH})}
                 </Link>
             }
             default:

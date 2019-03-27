@@ -26,6 +26,7 @@ export const LATEST_SATISFACTION_SURVEYS = 'latest-satisfaction-surveys'
 export const REVENUE_OVERVIEW = 'revenue-overview'
 export const SALES_PER_AGENT = 'sales-per-agent'
 export const PRE_SALE_CONVERTED_TICKETS_PER_DAY = 'pre-sale-converted-tickets-per-day'
+export const PRE_SALE_TICKETS = 'pre-sale-tickets'
 
 const mainBlue = '#152065'
 export const colors = [
@@ -57,6 +58,8 @@ export const chartPointRadius = 4
 export const SATISFACTION_SURVEY_MIN_SCORE = 1
 export const SATISFACTION_SURVEY_MAX_SCORE = 5
 export const SATISFACTION_SURVEY_MAX_COMMENT_LENGTH = 80
+
+export const TICKET_MAX_SUBJECT_LENGTH = 100
 
 // Default configuration for Chart.js
 _merge(defaults, {
@@ -595,6 +598,11 @@ export const stats = fromJS({
             }
         })
     },
+    [PRE_SALE_TICKETS]: {
+        helpText: 'Pre-sale and converted tickets',
+        style: 'table',
+        downloadable: true,
+    },
 })
 
 // Callbacks to format values of datasets or axes
@@ -720,7 +728,7 @@ helping customers through the purchasing journey.<br/>
             }],
         link: 'revenue',
         stats: [
-            REVENUE_OVERVIEW, SALES_PER_AGENT, PRE_SALE_CONVERTED_TICKETS_PER_DAY
+            REVENUE_OVERVIEW, SALES_PER_AGENT, PRE_SALE_CONVERTED_TICKETS_PER_DAY, PRE_SALE_TICKETS
         ]
     },
 })

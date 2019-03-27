@@ -135,14 +135,14 @@ class StatsView extends React.Component<Props, State> {
     }
 
     renderRestrictedFeatures(currentAccount, config) {
-        const missingSatisfactionSurvey = config.get('name') === 'Satisfaction' &&
+        const missingSatisfactionSurvey = config.get('link') === 'satisfaction' &&
             !currentAccount.get('extra_features').includes('satisfaction-surveys')
 
         if (missingSatisfactionSurvey) {
             return <RestrictedSatisfactionSurvey/>
         }
 
-        const missingRevenue = config.get('name') === 'Revenue' &&
+        const missingRevenue = config.get('link') === 'revenue' &&
             !currentAccount.get('extra_features').includes('revenue')
 
         if (missingRevenue) {
