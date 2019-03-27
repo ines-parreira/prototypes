@@ -94,17 +94,9 @@ export const getSelectedItemsIds = createImmutableSelector(
     (state) => state.getIn(['_internal', 'selectedItemsIds'], fromJS([]))
 )
 
-export const getNavigation = createImmutableSelector(
+export const getPagination = createImmutableSelector(
     [getViewsState],
-    (state) => state.getIn(['_internal', 'navigation']) || fromJS({})
-)
-
-/**
- * If there is no previous items, it means we're on the first items of the active view.
- */
-export const isOnFirstPage = createImmutableSelector(
-    [getNavigation],
-    (state) => !state.get('prev_items')
+    (state) => state.getIn(['_internal', 'pagination'], fromJS({}))
 )
 
 export const getLastViewId = createSelector(

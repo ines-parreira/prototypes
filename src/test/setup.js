@@ -154,7 +154,3 @@ if (!supportsOffsetParent()) {
         get: offsetParent
     })
 }
-
-const windowLocation = JSON.stringify(window.location)
-delete window.location
-window.location = JSON.parse(windowLocation)

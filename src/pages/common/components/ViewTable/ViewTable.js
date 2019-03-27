@@ -25,25 +25,21 @@ type Props = {
     ActionsComponent: ?() => {},
     activeView: viewType,
     config: Map<*,*>,
-    currentCursor: string,
-    fetchViewItems: typeof viewsActions.fetchViewItems,
+    currentPage: number,
+    fetchPage: typeof viewsActions.fetchPage,
     getViewIdToDisplay: typeof viewsSelectors.getViewIdToDisplay,
     getView: typeof viewsSelectors.getView,
     hasActiveView: boolean,
 
     isLoading: (string) => boolean,
-    isOnFirstPage: boolean,
-    navigation: Map<*,*>,
+    pagination: Map<*,*>,
     selectedItemsIds: List<*>,
-
-    location: Object,
 
     isSearch: boolean,
     isUpdate: boolean,
     items: List<*>,
     setViewActive: typeof viewsActions.setViewActive,
     type: string,
-    suggestedViewId: ?string,
     urlViewId: ?string,
     updateView: typeof viewsActions.updateView,
     viewButtons: ?Object,
@@ -58,21 +54,16 @@ class ViewTable extends React.Component<Props> {
     }
 
     componentDidMount() {
-        const {getViewIdToDisplay, config, urlViewId, setViewActive, getView, location, fetchViewItems} = this.props
-
-        const suggestedViewId = getViewIdToDisplay(config.get('type'), urlViewId)
+        const suggestedViewId = this.props.getViewIdToDisplay(this.props.config.get('type'), this.props.urlViewId)
 
         //$FlowFixMe
-        setViewActive(getView(suggestedViewId))
-        fetchViewItems(null, location.query.cursor)
+        this.props.setViewActive(this.props.getView(suggestedViewId))
+        this.props.fetchPage(this.props.currentPage)
     }
 
-    componentWillReceiveProps(nextProps: Props) {
-        const {
-            getViewIdToDisplay, fetchViewItems, updateView, setViewActive, getView,
-            isLoading: wasLoading, isUpdate: wasUpdate, isSearch: wasSearch,
-        } = this.props
-        const {config, navigation, location, isLoading, isUpdate, isSearch, isOnFirstPage} = nextProps
+    componentWillReceiveProps(nextProps) {
+        const {getViewIdToDisplay} = this.props
+        const {config} = nextProps
 
         const currentSuggestedViewId = getViewIdToDisplay(this.props.config.get('type'), this.props.urlViewId)
         const nextSuggestedViewId = getViewIdToDisplay(nextProps.config.get('type'), nextProps.urlViewId)
@@ -81,71 +72,66 @@ class ViewTable extends React.Component<Props> {
             return browserHistory.push('/app')
         }
 
-        const urlCursor = location.query.cursor ? parseInt(location.query.cursor) : null
-        const storedCursor = navigation.get('current_cursor') || null
-        const cursorAreDifferent = urlCursor !== storedCursor
+        // if on the same view but page changed, fetch the new page
+        if (currentSuggestedViewId === nextSuggestedViewId && this.props.currentPage !== nextProps.currentPage) {
+            return this.props.fetchPage(nextProps.currentPage)
+        }
 
-        const justFinishedFetching = wasLoading('fetchList') && !isLoading('fetchList')
+        // entering search mode
+        if (!this.props.isSearch && nextProps.isSearch) {
+            this.props.updateView(config.get('searchView')(this._searchQuery(nextProps)), false)
+            return this.props.fetchPage(nextProps.currentPage)
+        }
 
-        const leavingSearchMode = wasSearch && !isSearch
-        const leavingAddNewMode = !wasUpdate && isUpdate
-        const suggestedViewChanged = currentSuggestedViewId !== nextSuggestedViewId
-        const noActiveView = !nextProps.hasActiveView
+        // entering "add new" mode
+        if (this.props.isUpdate && !nextProps.isUpdate) {
+            this.props.updateView(config.get('newView')())
+            return this.props.fetchPage(1)
+        }
 
-        let shouldFetchViewItems = false
+        // in search mode, if search has changed, research again
+        if (nextProps.isSearch && this._searchQuery(this.props) !== this._searchQuery(nextProps)) {
+            this.props.updateView(config.get('searchView')(this._searchQuery(nextProps)), false)
+            return this.props.fetchPage(1)
+        }
 
-        if (!wasSearch && isSearch) {
-            // entering "search" mode
-            updateView(config.get('searchView')(this._searchQuery(nextProps)), false)
-            shouldFetchViewItems = true
-        } else if (wasUpdate && !isUpdate) {
-            // entering "add new" mode
-            updateView(config.get('newView')())
-            shouldFetchViewItems = true
-        } else if (isSearch && this._searchQuery(this.props) !== this._searchQuery(nextProps)) {
-            // in "search" mode, if search query has changed, research again
-            updateView(config.get('searchView')(this._searchQuery(nextProps)), false)
-            shouldFetchViewItems = true
-        } else if (leavingSearchMode || leavingAddNewMode || suggestedViewChanged || noActiveView) {
+        // leaving search mode
+        if (this.props.isSearch && !nextProps.isSearch) {
             //$FlowFixMe
-            setViewActive(getView(nextSuggestedViewId))
-            shouldFetchViewItems = true
+            this.props.setViewActive(this.props.getView(nextSuggestedViewId))
+            return this.props.fetchPage(1)
         }
 
-        if (cursorAreDifferent) {
-            if (justFinishedFetching) {
-                // if the stored cursor has changed after a fetch, update the cursor in the URL
-                const query = location.query
-                const cursorToSet = !isOnFirstPage ? storedCursor : null
-
-                if (cursorToSet) {
-                    query.cursor = cursorToSet
-                    browserHistory.push({...location, query})
-                } else if (query.cursor) {
-                    delete query.cursor
-                    browserHistory.push({...location, query})
-                }
-            } else if (!isLoading('fetchList') && (urlCursor || !isOnFirstPage)) {
-                // This happens when loading a page directly with a cursor in the URL.
-                // It can also happen when switching between two non-first pages, but in this case we don't want to
-                // trigger a fetch until the current fetch is over
-                return fetchViewItems(null, urlCursor)
-            }
+        // leaving "add new" mode
+        if (!this.props.isUpdate && nextProps.isUpdate) {
+            //$FlowFixMe
+            this.props.setViewActive(this.props.getView(nextSuggestedViewId))
+            return this.props.fetchPage(1)
         }
 
-        if (shouldFetchViewItems) {
-            return fetchViewItems()
+        // suggested view to display (mostly because url changed) has changed OR there is no active view
+        if (currentSuggestedViewId !== nextSuggestedViewId || !nextProps.hasActiveView) {
+            //$FlowFixMe
+            this.props.setViewActive(this.props.getView(nextSuggestedViewId))
+            return this.props.fetchPage(1)
         }
     }
 
-    _searchQuery = (props: Props = this.props) => {
+    _searchQuery = (props = this.props) => {
         return _get(props, 'location.query.q', '')
     }
 
-    _getItemUrl = (item: Map<*,*>): string => {
+    _pageChange = (page: number) => {
+        // update page query param of current location (add/update "page" param)
+        const location = Object.assign({}, browserHistory.getCurrentLocation())
+        Object.assign(location.query, {page})
+        browserHistory.push(location)
+    }
+
+    _getItemUrl = (item: Map<*,*>): string | void => {
         const {config} = this.props
         if (!config) {
-            return ''
+            return
         }
 
         return `/app/${config.get('routeItem')}/${item.get('id')}`
@@ -154,7 +140,7 @@ class ViewTable extends React.Component<Props> {
     _renderTable = () => {
         const {
             ActionsComponent, type, items, config, isSearch, activeView,
-            isLoading, selectedItemsIds, fetchViewItems, navigation
+            isLoading, pagination, selectedItemsIds
         } = this.props
 
         const displayedFields = config.get('fields', fromJS([]))
@@ -172,14 +158,14 @@ class ViewTable extends React.Component<Props> {
                 view={activeView}
                 config={config}
                 isLoading={isLoading}
-                navigation={navigation}
+                pagination={pagination}
                 selectedItemsIds={selectedItemsIds}
                 type={type}
                 items={items}
                 fields={displayedFields}
                 isSearch={isSearch}
                 ActionsComponent={ActionsComponent}
-                onPageChange={fetchViewItems}
+                onPageChange={this._pageChange}
                 getItemUrl={this._getItemUrl}
             />
         )
@@ -217,22 +203,22 @@ class ViewTable extends React.Component<Props> {
 
 export default withRouter(connect((state, ownProps) => {
     const config = viewsConfig.getConfigByName(ownProps.type)
+    const currentPage = parseInt(ownProps.location.query.page) || 1
 
     return {
         activeView: viewsSelectors.getActiveView(state),
         config,
-        location: ownProps.location,
+        currentPage,
         getView: viewsSelectors.makeGetView(state),
         getViewIdToDisplay: viewsSelectors.makeGetViewIdToDisplay(state),
         hasActiveView: viewsSelectors.hasActiveViewOfType(config.get('type'))(state),
 
         isLoading: viewsSelectors.makeIsLoading(state),
-        isOnFirstPage: viewsSelectors.isOnFirstPage(state),
-        navigation: viewsSelectors.getNavigation(state),
+        pagination: viewsSelectors.getPagination(state),
         selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
     }
 }, {
-    fetchViewItems: viewsActions.fetchViewItems,
+    fetchPage: viewsActions.fetchPage,
     setViewActive: viewsActions.setViewActive,
     updateView: viewsActions.updateView,
 })(ViewTable))

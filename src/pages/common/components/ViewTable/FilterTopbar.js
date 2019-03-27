@@ -42,7 +42,7 @@ class FilterTopbar extends React.Component {
         areFiltersValid: PropTypes.bool.isRequired,
         config: ImmutablePropTypes.map.isRequired,
         currentUser: PropTypes.object.isRequired,
-        fetchViewItems: PropTypes.func.isRequired,
+        fetchPage: PropTypes.func.isRequired,
         isUpdate: PropTypes.bool.isRequired,
         isSearch: PropTypes.bool.isRequired,
         pristineActiveView: ImmutablePropTypes.map.isRequired,
@@ -66,7 +66,7 @@ class FilterTopbar extends React.Component {
         const filtersHaveChanged = this.props.activeView.get('filters') !== nextProps.activeView.get('filters')
 
         if (isSameView && filtersHaveChanged && nextProps.areFiltersValid) {
-            this.props.fetchViewItems()
+            this.props.fetchPage(1)
         }
     }
 
@@ -128,11 +128,11 @@ class FilterTopbar extends React.Component {
     }
 
     _cancel = () => {
-        const {config, isUpdate, fetchViewItems, resetView} = this.props
+        const {config, isUpdate, fetchPage, resetView} = this.props
         if (isUpdate) {
             // if is updating an existing view, on cancel we reset current view
             resetView()
-            fetchViewItems()
+            fetchPage(1)
         } else {
             // if is updating an existing view, on cancel we leave edition
             browserHistory.push(`/app/${config.get('routeList')}/`)
@@ -364,7 +364,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = {
     addFieldFilter: viewsActions.addFieldFilter,
-    fetchViewItems: viewsActions.fetchViewItems,
+    fetchPage: viewsActions.fetchPage,
     toggleSelection: viewsActions.toggleSelection,
     updateView: viewsActions.updateView,
     removeFieldFilter: viewsActions.removeFieldFilter,

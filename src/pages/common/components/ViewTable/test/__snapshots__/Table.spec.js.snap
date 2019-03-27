@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ViewTable::Table should display a default view 1`] = `
+exports[`ViewTable::Table default view 1`] = `
 <div>
   <table
     className="table view-table"
@@ -697,28 +697,16 @@ exports[`ViewTable::Table should display a default view 1`] = `
       />
     </tbody>
   </table>
-  <Navigation
-    fetchNextItems={[Function]}
-    fetchPrevItems={[Function]}
-    hasNextItems={false}
-    hasPrevItems={false}
+  <Pagination
+    className="pagination pagination-transparent"
+    currentPage={1}
+    onChange={[Function]}
+    pageCount={1}
   />
 </div>
 `;
 
-exports[`ViewTable::Table should display a default view with no items 1`] = `
-<div>
-  <Connect(BlankStateContainer) />
-  <Navigation
-    fetchNextItems={[Function]}
-    fetchPrevItems={[Function]}
-    hasNextItems={false}
-    hasPrevItems={false}
-  />
-</div>
-`;
-
-exports[`ViewTable::Table should display a default view with option selectable set to false 1`] = `
+exports[`ViewTable::Table default view not selectable 1`] = `
 <div>
   <table
     className="table view-table"
@@ -1405,42 +1393,28 @@ exports[`ViewTable::Table should display a default view with option selectable s
       />
     </tbody>
   </table>
-  <Navigation
-    fetchNextItems={[Function]}
-    fetchPrevItems={[Function]}
-    hasNextItems={false}
-    hasPrevItems={false}
+  <Pagination
+    className="pagination pagination-transparent"
+    currentPage={1}
+    onChange={[Function]}
+    pageCount={1}
   />
 </div>
 `;
 
-exports[`ViewTable::Table should display a modified view with no items, should reset the view and fetch first items  1`] = `
+exports[`ViewTable::Table default view with no items 1`] = `
 <div>
-  <Connect(BlankStateContainer)
-    message={
-      <p>
-        No 
-        ticket
-         found.
-        <br />
-        <a
-          onClick={[Function]}
-        >
-          Reset view
-        </a>
-      </p>
-    }
-  />
-  <Navigation
-    fetchNextItems={[Function]}
-    fetchPrevItems={[Function]}
-    hasNextItems={false}
-    hasPrevItems={false}
+  <Connect(BlankStateContainer) />
+  <Pagination
+    className="pagination pagination-transparent"
+    currentPage={1}
+    onChange={[Function]}
+    pageCount={1}
   />
 </div>
 `;
 
-exports[`ViewTable::Table should display a view with no fields 1`] = `
+exports[`ViewTable::Table empty view 1`] = `
 <div>
   <table
     className="table view-table"
@@ -2003,11 +1977,37 @@ exports[`ViewTable::Table should display a view with no fields 1`] = `
       />
     </tbody>
   </table>
-  <Navigation
-    fetchNextItems={[Function]}
-    fetchPrevItems={[Function]}
-    hasNextItems={false}
-    hasPrevItems={false}
+  <Pagination
+    className="pagination pagination-transparent"
+    currentPage={1}
+    onChange={[Function]}
+    pageCount={1}
+  />
+</div>
+`;
+
+exports[`ViewTable::Table modified view with no items 1`] = `
+<div>
+  <Connect(BlankStateContainer)
+    message={
+      <p>
+        No 
+        ticket
+         found.
+        <br />
+        <a
+          onClick={[Function]}
+        >
+          Reset view
+        </a>
+      </p>
+    }
+  />
+  <Pagination
+    className="pagination pagination-transparent"
+    currentPage={1}
+    onChange={[Function]}
+    pageCount={1}
   />
 </div>
 `;

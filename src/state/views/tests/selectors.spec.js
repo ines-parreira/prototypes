@@ -1,11 +1,8 @@
 import moment from 'moment'
 import {fromJS} from 'immutable'
-import * as immutableMatchers from 'jest-immutable-matchers'
 
 import {initialState} from '../reducers'
 import * as selectors from '../selectors'
-
-jest.addMatchers(immutableMatchers)
 
 describe('selectors', () => {
     describe('isActiveViewTrashView()', () => {
@@ -103,20 +100,6 @@ describe('selectors', () => {
                 {id: ticketViewId, type: ticketViewType}
             ]))}
             expect(selectors.getViewIdToDisplay(ticketViewType, viewId.toString())(state)).toEqual(ticketViewId)
-        })
-    })
-
-    describe('getNavigation()', () => {
-        it('should return an empty Map because there is no navigation in the state', () => {
-            expect(selectors.getNavigation({views: fromJS({})})).toEqualImmutable(fromJS({}))
-            expect(selectors.getNavigation({views: fromJS({_internal: {navigation: {}}})}))
-                .toEqualImmutable(fromJS({}))
-        })
-
-        it('should return navigation from the state', () => {
-            const navigation = fromJS({'foo': 'bar'})
-            const state = {views: initialState.setIn(['_internal', 'navigation'], navigation)}
-            expect(selectors.getNavigation(state)).toEqualImmutable(navigation)
         })
     })
 })

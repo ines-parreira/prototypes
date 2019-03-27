@@ -147,9 +147,9 @@ Immutable.Map {
   "recent": Immutable.Map {},
   "loading": false,
   "_internal": Immutable.Map {
+    "currentViewId": null,
     "lastViewId": null,
     "selectedItemsIds": Immutable.List [],
-    "navigation": Immutable.Map {},
     "loading": Immutable.Map {
       "fetchList": false,
       "fetchListDiscreet": false,
@@ -166,9 +166,9 @@ Immutable.Map {
   "recent": Immutable.Map {},
   "loading": false,
   "_internal": Immutable.Map {
+    "currentViewId": null,
     "lastViewId": null,
     "selectedItemsIds": Immutable.List [],
-    "navigation": Immutable.Map {},
     "loading": Immutable.Map {
       "fetchList": false,
       "fetchListDiscreet": false,
@@ -324,9 +324,9 @@ Immutable.Map {
   "recent": Immutable.Map {},
   "loading": false,
   "_internal": Immutable.Map {
+    "currentViewId": null,
     "lastViewId": null,
     "selectedItemsIds": Immutable.List [],
-    "navigation": Immutable.Map {},
     "loading": Immutable.Map {
       "fetchList": false,
       "fetchListDiscreet": false,

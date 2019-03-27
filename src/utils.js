@@ -71,7 +71,7 @@ export const defined = (item: any): boolean => {
  * Serialize an object and return it's md5 hash.
  * @param obj the object of which we want the hash
  */
-export const getHashOfObj = (obj: Object | string): string => md5(JSON.stringify(obj))
+export const getHashOfObj = (obj: {}): string => md5(JSON.stringify(obj))
 
 /**
  * Guess if a passed string is a url
@@ -559,7 +559,7 @@ export const isCurrentlyOnView = (viewId: string = '', viewsState: viewsStateTyp
 
     // if no viewId is specified, check root routes to views (without ids)
     // or if current active view is the asked one
-    if (!viewId || viewsState.getIn(['active', 'id']) === viewId) {
+    if (!viewId || viewsState.getIn(['_internal', 'currentViewId']) === viewId) {
         urls = urls.concat(prefix)
     }
 

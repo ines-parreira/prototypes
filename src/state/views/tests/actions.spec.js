@@ -1,25 +1,20 @@
-
 import moment from 'moment'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import axios from 'axios'
-import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 
 import * as actions from '../actions'
 import {initialState} from '../../views/reducers'
-import {ACTIVE_VIEW_COUNT_TIMEOUT, baseView, RECENT_VIEWS_COUNTS_TIMEOUT} from '../../../config/views'
+import {ACTIVE_VIEW_COUNT_TIMEOUT, RECENT_VIEWS_COUNTS_TIMEOUT} from '../../../config/views'
 import socketManager from '../../../services/socketManager'
 import * as socketConstants from '../../../config/socketConstants'
-import {
-    NEXT_VIEW_NAV_DIRECTION,
-    PREV_VIEW_NAV_DIRECTION,
-    TICKET_LIST_VIEW_TYPE
-} from '../../../constants/view'
 
+const middlewares = [thunk]
+const mockStore = configureMockStore(middlewares)
 
-const mockStore = configureMockStore([thunk])
-
+const windowLocation = JSON.stringify(window.location)
+delete window.location
+window.location = JSON.parse(windowLocation)
 
 describe('actions', () => {
     let store
@@ -89,7 +84,6 @@ describe('actions', () => {
 
             store = mockStore({views: state})
             expect(store.dispatch(actions.fetchActiveViewTickets())).not.toEqual(undefined)
-            expect(store.getActions()).toMatchSnapshot()
         })
     })
 
@@ -164,7 +158,6 @@ describe('actions', () => {
             expect(sendSpy.mock.calls[0]).toEqual([socketConstants.VIEWS_COUNTS_EXPIRED, {viewIds: [2, 3]}])
         })
     })
-
     describe('fetchActiveViewCount', () => {
         const _send = socketManager.send
         let sendSpy = null
@@ -218,222 +211,15 @@ describe('actions', () => {
         })
     })
 
-    describe('updateRecentViews', () => {
-        it('should update updated datetime of recent views', () => {
-            const state = initialState.mergeDeep(fromJS({
-                active: {id: 1},
-                recent: {
-                    1: {},
-                }
-            }))
-            store = mockStore({views: state})
-            expect(store.dispatch(actions.updateRecentViews([1]))).toMatchSnapshot()
-            expect(store.getActions()).toMatchSnapshot()
-        })
-    })
-
-    describe('fetchViewItems', () => {
-        let mockServer
-        const viewId = 1
-        let baseReply = {
-            data: [{id: 1}, {id: 2}],
-            meta: {
-                current_cursor: 123,
-                prev_items: `/api/views/${viewId}/items?direction=${PREV_VIEW_NAV_DIRECTION}`,
-                next_items: `/api/views/${viewId}/items?direction=${NEXT_VIEW_NAV_DIRECTION}`
+    it('should update updated datetime of recent views', () => {
+        const state = initialState.mergeDeep(fromJS({
+            active: {id: 1},
+            recent: {
+                1: {},
             }
-        }
-
-        beforeEach(() => {
-            mockServer = new MockAdapter(axios)
-        })
-
-        it('should not fetch because there is no active view', () => {
-            const store = mockStore({views: fromJS()})
-
-            return store.dispatch(actions.fetchViewItems()).then(() => {
-                expect(store.getActions()).toEqual([])
-            })
-        })
-
-        it('should not fetch because the view is not dirty and this is a new view', () => {
-            const store = mockStore({views: fromJS({
-                active: baseView()
-            })})
-
-            return store.dispatch(actions.fetchViewItems()).then(() => {
-                expect(store.getActions()).toEqual([])
-            })
-        })
-
-        it('should fetch current page without cursor', () => {
-            const store = mockStore({views: fromJS({
-                active: {id: viewId, type: TICKET_LIST_VIEW_TYPE}
-            })})
-
-            mockServer
-                .onGet(`/api/views/${viewId}/items/`)
-                .reply(200, baseReply)
-
-            return store.dispatch(actions.fetchViewItems()).then(() => {
-                expect(mockServer.history.get.length).toBe(1)
-                expect(store.getActions()).toMatchSnapshot()
-            })
-        })
-
-        it('should fetch current page with cursor', () => {
-            const cursor = 1234
-            const store = mockStore({views: fromJS({
-                active: {id: viewId, type: TICKET_LIST_VIEW_TYPE}
-            })})
-
-            const url = `/api/views/${viewId}/items/?cursor=${cursor}`
-
-            mockServer
-                .onGet(url)
-                .reply(200, baseReply)
-
-            return store.dispatch(actions.fetchViewItems(null, cursor)).then(() => {
-                expect(mockServer.history.get.length).toBe(1)
-                expect(mockServer.history.get[0].url).toEqual(url)
-                expect(store.getActions()).toMatchSnapshot()
-            })
-        })
-
-        it('should fetch next page', () => {
-            const nextPageUrl = `/api/views/${viewId}/items?direction=${NEXT_VIEW_NAV_DIRECTION}&cursor=123&ignored_item=7`
-            const store = mockStore({views: fromJS({
-                active: {id: viewId, type: TICKET_LIST_VIEW_TYPE},
-                _internal: {
-                    navigation: {
-                        next_items: nextPageUrl
-                    }
-                }
-            })})
-
-            mockServer
-                .onGet(nextPageUrl)
-                .reply(200, baseReply)
-
-            return store.dispatch(actions.fetchViewItems(NEXT_VIEW_NAV_DIRECTION)).then(() => {
-                expect(mockServer.history.get.length).toBe(1)
-                expect(mockServer.history.get[0].url).toEqual(nextPageUrl)
-                expect(store.getActions()).toMatchSnapshot()
-            })
-        })
-
-        it('should fetch prev page', () => {
-            const prevPageUrl = `/api/views/${viewId}/items?direction=${PREV_VIEW_NAV_DIRECTION}cursor=123&ignored_item=7`
-            const store = mockStore({views: fromJS({
-                active: {id: viewId, type: TICKET_LIST_VIEW_TYPE},
-                _internal: {
-                    navigation: {
-                        prev_items: prevPageUrl
-                    }
-                }
-            })})
-
-            mockServer
-                .onGet(prevPageUrl)
-                .reply(200, baseReply)
-
-            return store.dispatch(actions.fetchViewItems(PREV_VIEW_NAV_DIRECTION)).then(() => {
-                expect(mockServer.history.get.length).toBe(1)
-                expect(mockServer.history.get[0].url).toEqual(prevPageUrl)
-                expect(store.getActions()).toMatchSnapshot()
-            })
-        })
-
-        it('should pass the view because it is dirty', () => {
-            const store = mockStore({views: fromJS({
-                active: {id: viewId, dirty: true, editMode: false, type: TICKET_LIST_VIEW_TYPE}
-            })})
-
-            mockServer
-                .onPut(`/api/views/${viewId}/items/`)
-                .reply(200, baseReply)
-
-            return store.dispatch(actions.fetchViewItems()).then(() => {
-                expect(mockServer.history.put.length).toBe(1)
-                expect(mockServer.history.put[0].data)
-                    .toEqual(JSON.stringify({view: {id: viewId, type: TICKET_LIST_VIEW_TYPE}}))
-                expect(store.getActions()).toMatchSnapshot()
-            })
-        })
-
-        it('should not dispatch FETCH_LIST_VIEW_SUCCESS because the view for which we fetched items is not the ' +
-            'current view', () => {
-            const preRequestState = {
-                views: fromJS({
-                    active: {id: viewId, type: TICKET_LIST_VIEW_TYPE}
-                })
-            }
-
-            const postRequestState = {views: preRequestState.views.setIn(['active', 'id'], 2)}
-            let hasRequestBeenCalled = false
-
-            const store = mockStore(() => hasRequestBeenCalled ? postRequestState : preRequestState)
-
-            mockServer
-                .onGet(`/api/views/${viewId}/items/`)
-                .reply(() => {
-                    hasRequestBeenCalled = true
-                    return [200, baseReply]
-                })
-
-            return store.dispatch(actions.fetchViewItems()).then(() => {
-                expect(mockServer.history.get.length).toBe(1)
-                expect(store.getActions()).toMatchSnapshot()
-            })
-        })
-
-        it('should not dispatch FETCH_LIST_VIEW_SUCCESS because this fetch was caused by the polling, and the user ' +
-            'is not currently on the first page', () => {
-            const store = mockStore({views: fromJS({
-                active: {id: viewId, type: TICKET_LIST_VIEW_TYPE},
-                _internal: {
-                    navigation: {prev_items: `/api/views/1/items?direction=${PREV_VIEW_NAV_DIRECTION}`}
-                }
-            })})
-
-            mockServer
-                .onGet(`/api/views/${viewId}/items/`)
-                .reply(200, baseReply)
-
-            return store.dispatch(actions.fetchViewItems(null, null, true)).then(() => {
-                expect(mockServer.history.get.length).toBe(1)
-                expect(store.getActions()).toMatchSnapshot()
-            })
-        })
-
-        it('should not dispatch FETCH_LIST_VIEW_SUCCESS because the filters of the view have changed since we ' +
-            'started the request', () => {
-            const preRequestState ={
-                views: fromJS({
-                    active: {
-                        id: viewId,
-                        filters: 'foo',
-                        type: TICKET_LIST_VIEW_TYPE
-                    }
-                })
-            }
-
-            const postRequestState = {views: preRequestState.views.setIn(['active', 'filters'], 'bar')}
-            let hasRequestBeenCalled = false
-
-            const store = mockStore(() => hasRequestBeenCalled ? postRequestState : preRequestState)
-
-            mockServer
-                .onGet(`/api/views/${viewId}/items/`)
-                .reply(() => {
-                    hasRequestBeenCalled = true
-                    return [200, baseReply]
-                })
-
-            return store.dispatch(actions.fetchViewItems()).then(() => {
-                expect(mockServer.history.get.length).toBe(1)
-                expect(store.getActions()).toMatchSnapshot()
-            })
-        })
+        }))
+        store = mockStore({views: state})
+        expect(store.dispatch(actions.updateRecentViews([1]))).toMatchSnapshot()
+        expect(store.getActions()).toMatchSnapshot()
     })
 })

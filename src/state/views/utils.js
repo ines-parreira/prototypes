@@ -8,11 +8,11 @@ import _isInteger from 'lodash/isInteger'
 import {UNARY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
 
 import type {agentsType} from '../agents/types'
-import {getAST, getFirstExpressionOfAST} from '../../utils'
+import {getAST, getFirstExpressionOfAST, isCurrentlyOnView} from '../../utils'
 import {datetimeOperators, timedeltaOperators, collectionOperators} from '../../config/rules'
 import {isTimedelta} from '../../utils/ast'
 
-import type {filterType} from './types'
+import type {filterType, viewsStateType} from './types'
 
 type viewType = Map<*, *>
 type astType = Map<*, *>
@@ -285,6 +285,16 @@ class RecentViewsStorage {
 
 export const recentViewsStorage = new RecentViewsStorage()
 
+/**
+ * Return true if view should be updated (refetched)
+ * @param viewId
+ * @param viewsState
+ * @returns {boolean}
+ */
+export const shouldUpdateView = (viewId: string, viewsState: viewsStateType): boolean => {
+    return !['search', 'new', '0', 0].includes(viewId) && isCurrentlyOnView(viewId, viewsState)
+}
+
 function getViewTypeUrl(viewType: string): ?{ detail: string, list: string } {
     const typeMap = {
         'ticket-list': {
@@ -304,15 +314,15 @@ function getViewTypeUrl(viewType: string): ?{ detail: string, list: string } {
  * Map view type to individual item route
  * @param view
  * @param currentLocation
- * @param navigation
+ * @param pagination
  * @returns {string}
  */
-export function activeViewUrl(view: viewType, currentLocation: currentLocationType, navigation: Map<*, *>): string {
+export function activeViewUrl(view: viewType, currentLocation: currentLocationType, pagination: Map<*, *>): string {
     const viewType = view.get('type', '')
     const viewId = view.get('id')
     const viewSearch = view.get('search')
     const typeUrl = getViewTypeUrl(viewType)
-    const cursor = navigation.get('current_cursor')
+    const page = pagination.get('page', 1)
     const query = []
     // default to index route
     let url = '/app'
@@ -329,8 +339,8 @@ export function activeViewUrl(view: viewType, currentLocation: currentLocationTy
                 url += `/${viewId}`
             }
 
-            if (cursor) {
-                query.push(`cursor=${cursor}`)
+            if (page > 1) {
+                query.push(`page=${page}`)
             }
 
             if (query.length) {

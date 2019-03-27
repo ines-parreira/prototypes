@@ -27,6 +27,7 @@ import css from './Header.less'
     }
 }, {
     deleteView: viewsActions.deleteView,
+    fetchPage: viewsActions.fetchPage,
     removeFieldFilter: viewsActions.removeFieldFilter,
     toggleSelection: viewsActions.toggleSelection,
     updateView: viewsActions.updateView,
@@ -36,6 +37,7 @@ export default class Header extends React.Component {
         activeView: ImmutablePropTypes.map.isRequired,
         config: ImmutablePropTypes.map.isRequired,
         deleteView: PropTypes.func.isRequired,
+        fetchPage: PropTypes.func.isRequired,
         isSearch: PropTypes.bool.isRequired,
         isUpdate: PropTypes.bool.isRequired,
         item: ImmutablePropTypes.map.isRequired,

@@ -802,8 +802,8 @@ exports[`ViewTable::ViewTable component default view 1`] = `
           },
         ]
       }
-      navigation={Immutable.Map {}}
       onPageChange={[Function]}
+      pagination={Immutable.Map {}}
       selectedItemsIds={Immutable.List []}
       type="ticket"
       view={

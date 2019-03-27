@@ -24,7 +24,7 @@ import * as viewsConfig from '../../../../../config/views'
         selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
     }
 }, {
-    fetchViewItems: viewsActions.fetchViewItems,
+    fetchPage: viewsActions.fetchPage,
     setOrderDirection: viewsActions.setOrderDirection,
 })
 export default class HeaderCell extends React.Component {
@@ -32,7 +32,7 @@ export default class HeaderCell extends React.Component {
         ActionsComponent: PropTypes.func,
         activeView: ImmutablePropTypes.map.isRequired,
         config: ImmutablePropTypes.map.isRequired,
-        fetchViewItems: PropTypes.func.isRequired,
+        fetchPage: PropTypes.func.isRequired,
         field: ImmutablePropTypes.map.isRequired,
         fields: ImmutablePropTypes.list.isRequired,
         isLast: PropTypes.bool.isRequired,
@@ -62,7 +62,7 @@ export default class HeaderCell extends React.Component {
         const {
             ActionsComponent,
             config,
-            fetchViewItems,
+            fetchPage,
             field,
             fields,
             isLast,
@@ -87,7 +87,7 @@ export default class HeaderCell extends React.Component {
                 onClick = () => {
                     const newOrderDirection = orderDirection === 'desc' ? 'asc' : 'desc'
                     setOrderDirection(fieldPath, newOrderDirection)
-                    fetchViewItems()
+                    fetchPage(1)
                 }
             }
         }

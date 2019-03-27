@@ -22,7 +22,7 @@ class PollingManager {
         }, this.activeViewInterval)
 
         this.intervals.activeViewCount = setInterval(() => {
-            this.store.dispatch(fetchActiveViewCount())
+            this.store.dispatch(fetchActiveViewCount)
         }, this.activeViewCountInterval)
 
         this.intervals.recentViewsCounts = setInterval(() => {

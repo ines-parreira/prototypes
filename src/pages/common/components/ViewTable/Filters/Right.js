@@ -6,6 +6,8 @@ import {connect} from 'react-redux'
 import {IntegrationsDetailLabel} from '../../../utils/labels'
 import {getLanguageDisplayName} from '../../../../../utils'
 
+import * as viewsActions from '../../../../../state/views/actions'
+
 import {getMessagingIntegrations} from '../../../../../state/integrations/selectors'
 import * as viewsSelectors from '../../../../../state/views/selectors'
 import {getTags} from '../../../../../state/tags/selectors'
@@ -25,6 +27,8 @@ import FilterMultiSelectField from '../FilterMultiSelectField'
         areFiltersValid: viewsSelectors.areFiltersValid(state),
         tags: getTags(state)
     }
+}, {
+    fetchPage: viewsActions.fetchPage,
 })
 
 export default class Right extends React.Component {
@@ -38,6 +42,7 @@ export default class Right extends React.Component {
         index: PropTypes.number.isRequired,
         agents: PropTypes.object.isRequired,
         integrations: PropTypes.object.isRequired,
+        fetchPage: PropTypes.func.isRequired,
         currentUser: PropTypes.object.isRequired,
         updateFieldFilter: PropTypes.func.isRequired,
         updateFieldFilterOperator: PropTypes.func.isRequired,
