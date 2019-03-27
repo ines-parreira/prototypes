@@ -103,12 +103,7 @@ describe('ViewTable::ViewTable', () => {
                     />
                 ).dive().dive()
 
-
-                // can't use `toBeCalledWith` here because there is no immutable matcher for it
-                expect(viewsActions.updateView).toBeCalled()
-                expect(viewsActions.updateView.mock.calls[0][0])
-                    .toEqualImmutable(ticketListConfig.get('searchView')(searchQuery))
-                expect(viewsActions.updateView.mock.calls[0][1]).toEqual(false)
+                expect(viewsActions.updateView).toBeCalledWith(ticketListConfig.get('searchView')(searchQuery), false)
                 expect(viewsActions.fetchViewItems).toBeCalledWith(null, cursor)
             })
 
@@ -123,11 +118,7 @@ describe('ViewTable::ViewTable', () => {
                     />
                 ).dive().dive()
 
-
-                // can't use `toBeCalledWith` here because there is no immutable matcher for it
-                expect(viewsActions.setViewActive).toBeCalled()
-                expect(viewsActions.setViewActive.mock.calls[0][0])
-                    .toEqualImmutable(minStore.views.get('items').first())
+                expect(viewsActions.setViewActive).toBeCalledWith(minStore.views.get('items').first())
                 expect(viewsActions.fetchViewItems).toBeCalledWith(null, undefined)
             })
 
@@ -144,11 +135,7 @@ describe('ViewTable::ViewTable', () => {
                     />
                 ).dive().dive()
 
-
-                // can't use `toBeCalledWith` here because there is no immutable matcher for it
-                expect(viewsActions.setViewActive).toBeCalled()
-                expect(viewsActions.setViewActive.mock.calls[0][0])
-                    .toEqualImmutable(minStore.views.getIn(['items', suggestedViewIndex]))
+                expect(viewsActions.setViewActive).toBeCalledWith(minStore.views.getIn(['items', suggestedViewIndex]))
                 expect(viewsActions.fetchViewItems).toBeCalledWith(null, undefined)
             })
 
@@ -164,11 +151,7 @@ describe('ViewTable::ViewTable', () => {
                     />
                 ).dive().dive()
 
-
-                // can't use `toBeCalledWith` here because there is no immutable matcher for it
-                expect(viewsActions.setViewActive).toBeCalled()
-                expect(viewsActions.setViewActive.mock.calls[0][0])
-                    .toEqualImmutable(minStore.views.getIn(['items', suggestedViewIndex]))
+                expect(viewsActions.setViewActive).toBeCalledWith(minStore.views.getIn(['items', suggestedViewIndex]))
                 expect(viewsActions.fetchViewItems).toBeCalledWith(null, undefined)
             })
 
