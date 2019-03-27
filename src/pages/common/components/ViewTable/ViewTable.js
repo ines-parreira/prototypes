@@ -58,12 +58,20 @@ class ViewTable extends React.Component<Props> {
     }
 
     componentDidMount() {
-        const {getViewIdToDisplay, config, urlViewId, setViewActive, getView, location, fetchViewItems} = this.props
+        const {
+            getViewIdToDisplay, config, urlViewId, setViewActive, getView, location, fetchViewItems, activeView,
+            updateView, isSearch
+        } = this.props
 
-        const suggestedViewId = getViewIdToDisplay(config.get('type'), urlViewId)
+        if (isSearch) {
+            updateView(config.get('searchView')(this._searchQuery(this.props)), false)
+        } else if (activeView.isEmpty() || urlViewId) {
+            const suggestedViewId = getViewIdToDisplay(config.get('type'), urlViewId)
 
-        //$FlowFixMe
-        setViewActive(getView(suggestedViewId))
+            //$FlowFixMe
+            setViewActive(getView(suggestedViewId))
+        }
+
         fetchViewItems(null, location.query.cursor)
     }
 
