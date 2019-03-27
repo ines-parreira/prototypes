@@ -26,20 +26,12 @@ class CustomerListContainer extends React.Component {
         isCustomerFormOpen: false,
     }
 
-    _setInitialState = (props) => {
+    componentWillReceiveProps(nextProps) {
         this.setState({
             // TODO(customers-migration): remove statements with `users` when we updated all links in our email templates.
-            isSearch: isSearchUrl(props.location.pathname, 'users') || isSearchUrl(props.location.pathname, 'customers'),
-            isUpdate: !isCreationUrl(props.location.pathname, 'users') && !isCreationUrl(props.location.pathname, 'customers')
+            isSearch: isSearchUrl(nextProps.location.pathname, 'users') || isSearchUrl(nextProps.location.pathname, 'customers'),
+            isUpdate: !isCreationUrl(nextProps.location.pathname, 'users') && !isCreationUrl(nextProps.location.pathname, 'customers')
         })
-    }
-
-    componentWillMount() {
-        this._setInitialState(this.props)
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this._setInitialState(nextProps)
     }
 
     _openModal = () => {

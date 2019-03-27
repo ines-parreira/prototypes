@@ -1,6 +1,5 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 import _merge from 'lodash/merge'
 import {browserHistory} from 'react-router'
@@ -8,15 +7,12 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {TICKET_LIST_VIEW_TYPE} from '../../../../../constants/view'
+import * as viewsFixtures from '../../../../../fixtures/views'
 import * as ticketFixtures from '../../../../../fixtures/ticket'
 import * as viewsActions from '../../../../../state/views/actions'
-import * as viewsConfig from '../../../../../config/views'
-import * as viewsFixtures from '../../../../../fixtures/views'
 import ViewTable from '../ViewTable'
 
 const mockStore = configureMockStore([thunk])
-
-jest.addMatchers(immutableMatchers)
 
 jest.mock('../../../../../state/views/actions', () => {
     const _identity = require('lodash/identity')
@@ -27,7 +23,6 @@ jest.mock('../../../../../state/views/actions', () => {
         updateView: jest.fn(() => _identity),
     }
 })
-
 
 describe('ViewTable::ViewTable', () => {
     const fixtureView = viewsFixtures.view
@@ -86,106 +81,6 @@ describe('ViewTable::ViewTable', () => {
         it('default view', () => {
             const component = shallow(<ViewTable {...minProps} />).dive().dive()
             expect(component).toMatchSnapshot()
-        })
-
-        describe('on mount', () => {
-            it('should update the active view with a search view and fetch the view\'s items with the URL cursor ' +
-                'because there is both a cursor and a search query in the URL', () => {
-                const cursor = '15234'
-                const searchQuery = 'foo'
-                const ticketListConfig = viewsConfig.getConfigByName('ticket')
-
-                shallow(
-                    <ViewTable
-                        {...minProps}
-                        isSearch={true}
-                        location={{query: {cursor, q: searchQuery}}}
-                    />
-                ).dive().dive()
-
-
-                // can't use `toBeCalledWith` here because there is no immutable matcher for it
-                expect(viewsActions.updateView).toBeCalled()
-                expect(viewsActions.updateView.mock.calls[0][0])
-                    .toEqualImmutable(ticketListConfig.get('searchView')(searchQuery))
-                expect(viewsActions.updateView.mock.calls[0][1]).toEqual(false)
-                expect(viewsActions.fetchViewItems).toBeCalledWith(null, cursor)
-            })
-
-            it('should set the active view to the first view of the list because there is no view ID in the URL and ' +
-                'there is no active view', () => {
-                shallow(
-                    <ViewTable
-                        {...minProps}
-                        store={mockStore({views: minStore.views.delete('active')})}
-                        isSearch={false}
-                        urlViewId={null}
-                    />
-                ).dive().dive()
-
-
-                // can't use `toBeCalledWith` here because there is no immutable matcher for it
-                expect(viewsActions.setViewActive).toBeCalled()
-                expect(viewsActions.setViewActive.mock.calls[0][0])
-                    .toEqualImmutable(minStore.views.get('items').first())
-                expect(viewsActions.fetchViewItems).toBeCalledWith(null, undefined)
-            })
-
-            it('should set the active view to the suggested view because there is a view ID in the URL and ' +
-                'there is no active view', () => {
-                const suggestedViewIndex = 1
-
-                shallow(
-                    <ViewTable
-                        {...minProps}
-                        store={mockStore({views: minStore.views.delete('active')})}
-                        isSearch={false}
-                        urlViewId={minStore.views.getIn(['items', suggestedViewIndex, 'id'])}
-                    />
-                ).dive().dive()
-
-
-                // can't use `toBeCalledWith` here because there is no immutable matcher for it
-                expect(viewsActions.setViewActive).toBeCalled()
-                expect(viewsActions.setViewActive.mock.calls[0][0])
-                    .toEqualImmutable(minStore.views.getIn(['items', suggestedViewIndex]))
-                expect(viewsActions.fetchViewItems).toBeCalledWith(null, undefined)
-            })
-
-            it('should set the active view to the suggested view even though there is an active view because there ' +
-                'is a view ID in the URL', () => {
-                const suggestedViewIndex = 1
-
-                shallow(
-                    <ViewTable
-                        {...minProps}
-                        isSearch={false}
-                        urlViewId={minStore.views.getIn(['items', suggestedViewIndex, 'id'])}
-                    />
-                ).dive().dive()
-
-
-                // can't use `toBeCalledWith` here because there is no immutable matcher for it
-                expect(viewsActions.setViewActive).toBeCalled()
-                expect(viewsActions.setViewActive.mock.calls[0][0])
-                    .toEqualImmutable(minStore.views.getIn(['items', suggestedViewIndex]))
-                expect(viewsActions.fetchViewItems).toBeCalledWith(null, undefined)
-            })
-
-            it('should not set the active view because there is already an active view and there is no view ID in ' +
-                'the URL', () => {
-                shallow(
-                    <ViewTable
-                        {...minProps}
-                        isSearch={false}
-                        urlViewId={null}
-                    />
-                ).dive().dive()
-
-                expect(viewsActions.updateView).not.toBeCalled()
-                expect(viewsActions.setViewActive).not.toBeCalled()
-                expect(viewsActions.fetchViewItems).toBeCalledWith(null, undefined)
-            })
         })
 
         it('should set stored cursor in the URL if loading of the page just finished, stored cursor is different ' +

@@ -2,11 +2,10 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 
+import {stripHTML, getLanguageDisplayName, getAST} from '../utils'
+import {TagLabel} from '../pages/common/utils/labels'
 import {EMAIL_INTEGRATION_TYPES} from '../constants/integration'
 import {BASE_VIEW_ID} from '../constants/view'
-import {TagLabel} from '../pages/common/utils/labels'
-import {stripHTML, getLanguageDisplayName, getAST} from '../utils'
-import {getMomentUtcISOString} from '../utils/date'
 
 import * as ticketConfig from './ticket'
 import TICKET_LANGUAGES from './ticketLanguages'
@@ -39,7 +38,7 @@ export const baseView = () => fromJS({
     slug: 'new-view',
     order_by: 'updated_datetime',
     display_order: 1,
-    created_datetime: getMomentUtcISOString(),
+    created_datetime: new Date(),
     order_dir: 'desc',
     filters: '',
     filters_ast: {

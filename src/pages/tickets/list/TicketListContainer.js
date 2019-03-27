@@ -54,16 +54,8 @@ class TicketListContainer extends React.Component<Props, State> {
         actionsComponent: null
     }
 
-    _setInitialState = (props) => {
-        this.setState({
-            isSearch: isSearchUrl(props.location.pathname, 'tickets'),
-            isUpdate: !isCreationUrl(props.location.pathname, 'tickets'),
-        })
-    }
-
     componentWillMount() {
         this.props.fetchTags()
-        this._setInitialState(this.props)
     }
 
     componentDidMount() {
@@ -73,7 +65,10 @@ class TicketListContainer extends React.Component<Props, State> {
     }
 
     componentWillReceiveProps(nextProps) {
-        this._setInitialState(nextProps)
+        this.setState({
+            isSearch: isSearchUrl(nextProps.location.pathname, 'tickets'),
+            isUpdate: !isCreationUrl(nextProps.location.pathname, 'tickets'),
+        })
     }
 
     _openMacroModal = () => this.setState({isMacroModalOpen: true})
