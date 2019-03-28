@@ -1,6 +1,6 @@
 // @flow
 import {EditorState} from 'draft-js'
-import axios, {CancelToken} from 'axios'
+import axios, {CancelToken, Cancel} from 'axios'
 import type {Map} from 'immutable'
 
 import type {PluginMethods} from '../types'
@@ -10,7 +10,6 @@ import decorators from './decorators'
 
 let predictionKey = null
 let cachedSelection = null
-let cancelTokenSource = null
 
 let predictionCache = []
 const clearCache = () => predictionCache = []
@@ -19,17 +18,37 @@ const addCache = (text: string) => predictionCache.push((text || '').trim())
 
 const endpoint = window.PHRASE_PREDICTION_URL
 
+let cancelTokenSource = null
+const cancelApiRequest = () => {
+    if (cancelTokenSource) {
+        cancelTokenSource.cancel()
+    }
+
+    cancelTokenSource = CancelToken.source()
+    return cancelTokenSource.token
+}
+
+const removeExistingPrediction = (editorState) => {
+    if (predictionKey) {
+        const newEditorState = removePrediction(predictionKey, editorState)
+        predictionKey = null
+        return newEditorState
+    }
+
+    return editorState
+}
+
 const apiRequest = (
     text: string = '',
     context: Map<*, *>,
     plugin: PluginMethods
 ) => {
-    cancelTokenSource = CancelToken.source()
     return axios.post(endpoint, {
         query: text,
         context: context.toJS()
     }, {
-        cancelToken: cancelTokenSource.token,
+        cancelToken: cancelApiRequest(),
+        timeout: 2000
     }).then((res) => {
         const predictionText = res.data.prediction
         if (!predictionText) {
@@ -40,14 +59,22 @@ const apiRequest = (
         const editorState = plugin.getEditorState()
         const selection = editorState.getSelection()
 
-        predictionKey = createPrediction(predictionText, editorState)
+        const newEditorState = removeExistingPrediction(editorState)
+        predictionKey = createPrediction(predictionText, newEditorState)
 
         plugin.setEditorState(
             EditorState.forceSelection(
-                insertPrediction(predictionKey, editorState),
+                insertPrediction(predictionKey, newEditorState),
                 selection
             )
         )
+    }).catch((err) => {
+        // ignore request cancel
+        if (err instanceof Cancel) {
+            return
+        }
+
+        throw err
     })
 }
 
@@ -74,7 +101,6 @@ const predictionPlugin = (config: { context: Map<*, *> }) => {
             if (cachedSelection === selection) {
                 return editorState
             }
-
             cachedSelection = selection
 
             // clear cache on empty content
@@ -82,33 +108,26 @@ const predictionPlugin = (config: { context: Map<*, *> }) => {
                 clearCache()
             }
 
-            if (cancelTokenSource) {
-                cancelTokenSource.cancel()
-            }
-
+            cancelApiRequest()
             // remove prediction on cursor move or text change
-            if (predictionKey) {
-                const newEditorState = removePrediction(predictionKey, editorState)
-                predictionKey = null
-                return newEditorState
-            }
+            let newEditorState = removeExistingPrediction(editorState)
 
             const currentBlockKey = selection.getStartKey()
 
             // only from current block
-            const currentBlock = contentState.getBlockForKey(currentBlockKey)
+            const currentBlock = newEditorState
+                .getCurrentContent()
+                .getBlockForKey(currentBlockKey)
             if (!currentBlock) {
-                return editorState
+                return newEditorState
             }
 
             const start = selection.getStartOffset()
-            const end = selection.getEndOffset()
-
             const blockText = currentBlock.getText() || ''
 
             if (
-                // only if we don't have a selection
-                start === end
+                // only for caret
+                selection.isCollapsed()
                 // and at the end of the block
                 && start === blockText.length
                 // and text is longer than 2 chars
@@ -117,10 +136,10 @@ const predictionPlugin = (config: { context: Map<*, *> }) => {
                 && !inCache(blockText)
             ) {
                 apiRequest(blockText, config.context, plugin)
-                return editorState
+                return newEditorState
             }
 
-            return editorState
+            return newEditorState
         },
         onTab: completePrediction,
         onRightArrow: completePrediction,

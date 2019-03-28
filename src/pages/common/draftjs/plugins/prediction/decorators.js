@@ -1,5 +1,7 @@
 import React from 'react'
 
+import css from './prediction.less'
+
 export const prediction = {
     strategy: (contentBlock, callback, contentState) => {
         contentBlock.findEntityRanges(
@@ -13,13 +15,9 @@ export const prediction = {
         const entity = contentState.getEntity(entityKey).getData()
         const {text} = entity
 
-        // TODO proper styles
         return (
             <span
-                style={{
-                    opacity: .5,
-                    cursor: 'default'
-                }}
+                className={css.component}
                 contentEditable={false}
             >
                 {text}
