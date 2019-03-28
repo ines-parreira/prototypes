@@ -198,8 +198,13 @@ describe('ast', () => {
                         schemas={schemas}
                     />
                 )
-                component.instance()._handleChange(['hello', 'you!'])
-                expect(modifyCodeASTSpy.mock).toMatchSnapshot()
+                const newValue = ['hello', 'you!']
+                component.instance()._handleChange(newValue)
+                expect(modifyCodeASTSpy).toBeCalledWith(parent, newValue.map(val => ({
+                    type: 'Literal',
+                    raw: `'${val}'`,
+                    value: val
+                })), 'UPDATE')
             })
 
             it('AST Literal value', () => {
@@ -221,8 +226,9 @@ describe('ast', () => {
                         schemas={schemas}
                     />
                 )
-                component.instance()._handleChange('hello you!')
-                expect(modifyCodeASTSpy.mock).toMatchSnapshot()
+                const newValue = 'hello you!'
+                component.instance()._handleChange(newValue)
+                expect(modifyCodeASTSpy).toBeCalledWith(parent, newValue, 'UPDATE')
             })
         })
     })
