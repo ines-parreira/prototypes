@@ -12,5 +12,5 @@ assignees: ''
 #### Steps to reproduce:
 -
 
-#### Related Sentry errors:
+#### Related Gorgias tickets/Sentry events:
 -
