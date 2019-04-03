@@ -1,12 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`reducers stats receive data 1`] = `
+exports[`reducers stats should set a statistic because the filters used to fetch the statistic match the current filters 1`] = `
 Immutable.Map {
-  "0": 1,
-  "1": 2,
-  "2": 3,
   "meta": Immutable.Map {
     "start_datetime": "now",
+  },
+  "data": Immutable.Map {
+    "delta": 4100,
+    "name": "total_new_tickets",
+    "type": "number",
+    "value": 42,
+  },
+  "legend": Immutable.Map {
+    "x": "",
+    "y": "Total new tickets",
   },
 }
 `;

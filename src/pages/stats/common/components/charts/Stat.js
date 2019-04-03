@@ -21,8 +21,8 @@ type Props = {
     data: Object,
     config: Object,
     filters: Object,
+    meta?: Object,
     label?: string,
-    meta: Object,
     tagColors?: Object,
     downloadable?: boolean,
     isLoading?: boolean,
@@ -45,10 +45,10 @@ export class Stat extends Component<Props, State> {
     }
 
     _downloadStatistic = () => {
-        const {name, meta, filters} = this.props
+        const {name, filters} = this.props
 
         this.setState({isDownloading: true})
-        this.props.downloadStatistic(name, meta.toJS(), filters.toJS())
+        this.props.downloadStatistic(name, filters.toJS())
             .then(() => this.setState({isDownloading: false}))
             .catch(() => this.setState({isDownloading: false}))
     }

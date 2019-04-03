@@ -33,4 +33,16 @@ describe('stats selectors', () => {
             expect(selectors.getStats({})).toEqualImmutable(fromJS({}))
         })
     })
+
+    describe('get filters', () => {
+        it('should return no filters', () => {
+            expect(selectors.getFilters(state)).toEqualImmutable(undefined)
+        })
+
+        it('should return existing filters', () => {
+            const filters = fromJS({tags: [1, 2]})
+            state.stats = state.stats.setIn(['_internal', 'filters'], filters)
+            expect(selectors.getFilters(state)).toEqualImmutable(filters)
+        })
+    })
 })

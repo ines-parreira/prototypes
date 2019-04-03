@@ -71,7 +71,7 @@ export const defined = (item: any): boolean => {
  * Serialize an object and return it's md5 hash.
  * @param obj the object of which we want the hash
  */
-export const getHashOfObj = (obj: Object | string): string => md5(JSON.stringify(obj))
+export const getHashOfObj = (obj: any): string => md5(JSON.stringify(obj))
 
 /**
  * Guess if a passed string is a url

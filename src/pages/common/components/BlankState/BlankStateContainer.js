@@ -15,7 +15,6 @@ import {getStat} from './../../../../state/stats/selectors'
 
 const TICKET_CLOSED_BY_CURRENT_AGENT_7_DAYS = 'ticket-closed-current-agent-7-days'
 
-
 type Props = {
     fetchStat: typeof fetchStat,
     totalClosedTickets: ?number,
@@ -32,13 +31,14 @@ class BlankStateContainer extends React.Component<Props> {
      * Get the number of ticket closed by the current agent for the last 7 days
      */
     _fetchStatistic = throttle((props) => {
-        const meta = {
-            start_datetime: moment().startOf('day').subtract(6, 'days').format(),
-            end_datetime: moment().endOf('day').format(),
+        const filters = {
+            agents: [props.currentUser.get('id')],
+            period: {
+                start_datetime: moment().startOf('day').subtract(6, 'days').format(),
+                end_datetime: moment().endOf('day').format(),
+            }
         }
-        const filters = {agents: [props.currentUser.get('id')]}
-
-        props.fetchStat(TICKETS_CLOSED_PER_AGENT, meta, filters, TICKET_CLOSED_BY_CURRENT_AGENT_7_DAYS)
+        props.fetchStat(TICKETS_CLOSED_PER_AGENT, filters, TICKET_CLOSED_BY_CURRENT_AGENT_7_DAYS)
     }, 15000)
 
     render() {

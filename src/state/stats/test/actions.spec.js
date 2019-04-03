@@ -26,6 +26,38 @@ describe('actions', () => {
 
         })
 
+        describe('fetch statistic', () => {
+            for (let statLabel of [null, 'my-custom-stat']) {
+                it(`should fetch and save a statistic (label: "${statLabel}")`, (done) => {
+                    const stat = {
+                        name: 'overview',
+                        data: [1, 2, 3],
+                        meta: {
+                            start_datetime: 'now'
+                        }
+                    }
+                    const filters = {tags: [1, 2]}
+                    mockServer.onPost(`/api/stats/${stat.name}/`).reply(201, stat)
+
+                    store.dispatch(actions.fetchStat(stat.name, filters, statLabel)).then(() => {
+                        expect(store.getActions()).toMatchSnapshot()
+                        done()
+                    })
+                })
+            }
+
+            it('should fetch a statistic and report an error because the stat does not exist', (done) => {
+                const statName = 'unknown-stat'
+                mockServer.onPost(`/api/stats/${statName}/`).reply(404)
+
+                store.dispatch(actions.fetchStat(statName, {})).then(() => {
+                    expect(store.getActions()).toMatchSnapshot()
+                    done()
+                })
+            })
+
+        })
+
         describe('download statistic', () => {
             afterAll(() => {
                 jest.clearAllMocks()
