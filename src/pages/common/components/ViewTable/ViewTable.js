@@ -189,6 +189,7 @@ class ViewTable extends React.Component<Props> {
                 ActionsComponent={ActionsComponent}
                 onPageChange={fetchViewItems}
                 getItemUrl={this._getItemUrl}
+                fetchViewItems={fetchViewItems}
             />
         )
     }

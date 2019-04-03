@@ -1,13 +1,15 @@
 // @flow
 import axios from 'axios'
+import {type Map} from 'immutable'
 
 import type {dispatchType, thunkActionType} from '../types'
 import {notify} from '../notifications/actions'
 import {createErrorNotification} from '../utils'
 import {defaultMergeTicketsView} from '../../config/views'
+import {BASE_VIEW_ID, NEXT_VIEW_NAV_DIRECTION, PREV_VIEW_NAV_DIRECTION} from '../../constants/view'
 
 
-export const PER_PAGE = 5
+export const LIMIT = 5
 
 
 /**
@@ -15,18 +17,29 @@ export const PER_PAGE = 5
  *
  * @param searchQuery: the search query to use to search tickets
  * @param sourceTicketId: the id of the source ticket; this search will ignore this ticket
- * @param page: the page of the results we want to fetch
  * @param customerId: the id of a customer: if specified, we get all this customer's tickets, instead of searching
- * using the `searchQuery`
+ * @param direction: next or prev; indicates which items should be fetched
+ * @param navigation: an object containing information about the list of items currently displayed
  */
 export function searchTickets(searchQuery: string,
     sourceTicketId: number,
-    page?: number = 1,
-    customerId: ?number = null): thunkActionType {
+    customerId: ?number = null,
+    direction: ?string = null,
+    navigation: Map<*,*>): thunkActionType {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         const view = defaultMergeTicketsView(sourceTicketId, searchQuery, customerId)
+        let url = `/api/views/${BASE_VIEW_ID}/items/`
 
-        return axios.put(`/api/tickets/search/?page=${page.toString(10)}&per_page=${PER_PAGE}`, {view})
+        if (!navigation.isEmpty()) {
+            if (direction === NEXT_VIEW_NAV_DIRECTION) {
+                url = navigation.get('next_items')
+            } else if (direction === PREV_VIEW_NAV_DIRECTION) {
+                url = navigation.get('prev_items')
+            }
+        }
+
+        // $FlowFixMe
+        return axios.put(url, {view}, {params: {limit: LIMIT}})
             .then((data) => {
                 return Promise.resolve(data.data)
             }, (error) => {

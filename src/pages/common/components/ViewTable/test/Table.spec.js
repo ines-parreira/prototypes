@@ -14,7 +14,6 @@ jest.mock('../../../../../state/views/actions', () => {
     const _identity = require('lodash/identity')
 
     return {
-        fetchViewItems: jest.fn(() => _identity),
         toggleSelection: jest.fn(() => _identity),
         resetView: jest.fn(() => _identity),
     }
@@ -40,6 +39,7 @@ describe('ViewTable::Table', () => {
         isLoading: () => false,
         navigation: fromJS({hasPrevItems: false, hasNextItems: false}),
         onPageChange: () => {},
+        fetchViewItems: jest.fn()
     }
 
     beforeEach(() => {
@@ -94,7 +94,7 @@ describe('ViewTable::Table', () => {
         const message = shallow(component.find(BlankState).props().message)
         message.find('a').simulate('click')
         expect(viewsActions.resetView).toBeCalled()
-        expect(viewsActions.fetchViewItems).toBeCalledWith()
+        expect(minProps.fetchViewItems).toBeCalledWith()
     })
 
     it('should select all items when there is a click on the "select all" checkbox', () => {

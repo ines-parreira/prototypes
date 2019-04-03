@@ -19,7 +19,7 @@ type Props = {
 
 type State = {
     query: string,
-    pagination: Map<*,*>,
+    navigation: Map<*,*>,
     tickets: List<Map<*,*>>,
     listIsLoading: boolean
 }
@@ -27,7 +27,7 @@ type State = {
 class SelectTargetTicket extends React.Component<Props, State> {
     state = {
         query: '',
-        pagination: fromJS({nb_pages: 1, page: 1}),
+        navigation: fromJS({}),
         tickets: fromJS([]),
         listIsLoading: false,
     }
@@ -36,22 +36,25 @@ class SelectTargetTicket extends React.Component<Props, State> {
         this.setState({listIsLoading: true}, () => this._search())
     }
 
-    _search = () => {
+    _search = (direction: ?string = null) => {
+        const {query, navigation} = this.state
+
         this.props.search(
-            this.state.query,
+            query,
             this.props.sourceTicket.get('id'),
-            this.state.pagination.get('page'),
-            this.state.query ? null : this.props.customerId
+            query ? null : this.props.customerId,
+            direction,
+            navigation
         ).then((data) => {
             this.setState({
                 tickets: fromJS(data.data),
-                pagination: fromJS(data.meta),
+                navigation: fromJS(data.meta),
                 listIsLoading: false
             })
         }).catch(() => {
             this.setState({
                 tickets: fromJS([]),
-                pagination: fromJS({nb_pages: 1, page: 1}),
+                navigation: fromJS({}),
                 listIsLoading: false
             })
         })
@@ -64,18 +67,15 @@ class SelectTargetTicket extends React.Component<Props, State> {
         }, () => this._search())
     }
 
-    _changePage = (page: number) => {
-        if (this.state.pagination.get('page') !== page) {
-            this.setState({
-                pagination: this.state.pagination.set('page', page),
-                listIsLoading: true
-            }, () => this._search())
-        }
+    _onPageChange = (direction: ?string = null) => {
+        this.setState({
+            listIsLoading: true
+        }, () => this._search(direction))
     }
 
     render() {
         const {sourceTicket, updateTargetTicket} = this.props
-        const {tickets} = this.state
+        const {tickets, navigation} = this.state
 
         const baseView = viewsConfig.defaultMergeTicketsView(sourceTicket.get('id'))
 
@@ -103,8 +103,8 @@ class SelectTargetTicket extends React.Component<Props, State> {
                         selectable={false}
                         isSearch
                         onItemClick={updateTargetTicket}
-                        onPageChange={this._changePage}
-                        pagination={this.state.pagination}
+                        fetchViewItems={this._onPageChange}
+                        navigation={navigation}
                     />
                 </div>
             </div>

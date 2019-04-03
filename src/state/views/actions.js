@@ -250,7 +250,7 @@ export const deleteViewSuccess = (viewId: number): thunkActionType => (dispatch:
 
 /** Fetch a page of items of a view (tickets or customers) based on the provided cursor and direction.
  *
- * @param direction: current, next or prev; indicates which items should be fetched compared to the provided cursor
+ * @param direction: next or prev; indicates which items should be fetched compared to the provided cursor
  * @param cursor: the point from which to fetch items
  * @param isPolling: whether or not this was triggered by the polling
  * @returns {Function}

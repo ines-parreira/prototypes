@@ -231,6 +231,7 @@ exports[`ViewTable::ViewTable component default view 1`] = `
           "routeItem": "ticket",
         }
       }
+      fetchViewItems={[Function]}
       fields={
         Immutable.List [
           Immutable.Map {

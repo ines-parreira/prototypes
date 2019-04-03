@@ -230,6 +230,7 @@ exports[`SelectTargetTicket component should render 1`] = `
           "routeItem": "ticket",
         }
       }
+      fetchViewItems={[Function]}
       fields={
         Immutable.List [
           Immutable.Map {
@@ -277,6 +278,7 @@ exports[`SelectTargetTicket component should render 1`] = `
       isLoading={[Function]}
       isSearch={true}
       items={Immutable.List []}
+      navigation={Immutable.Map {}}
       onItemClick={
         Immutable.Map {
           "subject": "foo",
@@ -288,13 +290,6 @@ exports[`SelectTargetTicket component should render 1`] = `
             "id": 22,
             "name": "Maria Curie",
           },
-        }
-      }
-      onPageChange={[Function]}
-      pagination={
-        Immutable.Map {
-          "nb_pages": 1,
-          "page": 1,
         }
       }
       selectable={false}
@@ -312,6 +307,7 @@ exports[`SelectTargetTicket component should render 1`] = `
             "created",
           ],
           "type": "ticket-list",
+          "id": 0,
           "filters": "neq(ticket.id, undefined)",
           "order_dir": "desc",
           "filters_ast": Immutable.Map {

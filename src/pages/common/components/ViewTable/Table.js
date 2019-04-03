@@ -42,7 +42,6 @@ type Props = {
     fetchViewItems: typeof viewsActions.fetchViewItems,
     resetView: typeof viewsActions.resetView,
     toggleSelection: typeof viewsActions.toggleSelection,
-    onPageChange: (number) => void,
 
     ActionsComponent?: () => void,
 }
@@ -276,7 +275,6 @@ class Table extends React.Component<Props, State> {
 }
 
 export default connect(null, {
-    fetchViewItems: viewsActions.fetchViewItems,
     toggleSelection: viewsActions.toggleSelection,
     resetView: viewsActions.resetView,
 })(Table)

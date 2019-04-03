@@ -65,6 +65,7 @@ export const defaultMergeTicketsView = (ticketId, searchQuery, customerId) => {
         : `neq(ticket.id, ${ticketId})`
 
     return fromJS({
+        id: BASE_VIEW_ID,
         search: customerId ? null : searchQuery,
         fields: ['details', 'customer', 'channel', 'created'],
         filters,
