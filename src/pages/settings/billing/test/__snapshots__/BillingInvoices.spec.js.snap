@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BillingInvoices component should display invoices 1`] = `
+exports[`BillingInvoices component should display invoices, without PDF download links if paid through Shopify 1`] = `
 <BillingInvoices
   fetchInvoices={[Function]}
   invoices={
@@ -12,7 +12,9 @@ exports[`BillingInvoices component should display invoices 1`] = `
         "date": 1496701077,
         "metadata": Immutable.Map {
           "tickets": 10,
+          "payment_service": "shopify",
         },
+        "invoice_pdf": "https://pay.stripe.com/invoice/example123/pdf",
       },
       Immutable.Map {
         "id": 125,
@@ -21,10 +23,13 @@ exports[`BillingInvoices component should display invoices 1`] = `
         "date": 1496701077,
         "metadata": Immutable.Map {
           "tickets": 100,
+          "payment_service": "stripe",
         },
+        "invoice_pdf": "https://pay.stripe.com/invoice/example125/pdf",
       },
     ]
   }
+  shopifyBillingStatus="inactive"
 >
   <div>
     <h4>
@@ -37,11 +42,6 @@ exports[`BillingInvoices component should display invoices 1`] = `
     </h4>
     <p>
       The account owner will receive an invoice by email at the start of each billing period.
-      <br />
-      <strong>
-        Note:
-      </strong>
-       PDF invoices will soon be added to this list and the ability to change the billing email address.
     </p>
     <Table
       responsiveTag="div"
@@ -64,6 +64,9 @@ exports[`BillingInvoices component should display invoices 1`] = `
             </th>
             <th>
               Description
+            </th>
+            <th>
+              Invoice
             </th>
           </tr>
         </thead>
@@ -95,6 +98,11 @@ exports[`BillingInvoices component should display invoices 1`] = `
               -
                
             </td>
+            <td>
+              <em>
+                Paid via Shopify
+              </em>
+            </td>
           </tr>
           <tr
             key="125"
@@ -122,6 +130,18 @@ exports[`BillingInvoices component should display invoices 1`] = `
             <td>
               -
                
+            </td>
+            <td>
+              <a
+                href="https://pay.stripe.com/invoice/example125/pdf"
+              >
+                <i
+                  className="material-icons"
+                >
+                  file_copy
+                </i>
+                Download PDF
+              </a>
             </td>
           </tr>
         </tbody>

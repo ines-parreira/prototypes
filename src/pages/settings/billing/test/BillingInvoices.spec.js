@@ -26,9 +26,10 @@ describe('BillingInvoices component', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should display invoices', () => {
+    it('should display invoices, without PDF download links if paid through Shopify', () => {
         const component = mount(
             <BillingInvoices
+                shopifyBillingStatus='inactive'
                 fetchInvoices={() => Promise.resolve()}
                 invoices={fromJS([
                     {
@@ -37,8 +38,10 @@ describe('BillingInvoices component', () => {
                         amount_due: 1000,
                         date: 1496701077,
                         metadata: {
-                            tickets: 10
-                        }
+                            tickets: 10,
+                            payment_service: 'shopify'
+                        },
+                        invoice_pdf: 'https://pay.stripe.com/invoice/example123/pdf'
                     },
                     {
                         id: 125,
@@ -46,8 +49,10 @@ describe('BillingInvoices component', () => {
                         amount_due: 10000,
                         date: 1496701077,
                         metadata: {
-                            tickets: 100
-                        }
+                            tickets: 100,
+                            payment_service: 'stripe'
+                        },
+                        invoice_pdf: 'https://pay.stripe.com/invoice/example125/pdf'
                     },
                 ])}
             />
