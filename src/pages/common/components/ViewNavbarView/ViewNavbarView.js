@@ -11,7 +11,6 @@ import Tooltip from '../Tooltip'
 import shortcutManager from '../../../../services/shortcutManager'
 import {moveIndex} from '../../../common/utils/keyboard'
 
-import * as viewsActions from '../../../../state/views/actions'
 import {getActiveView, getViewsByType, makeGetView, makeGetViewCount} from '../../../../state/views/selectors'
 import {getSettingsByType as getCurrentUserSettingsByType} from '../../../../state/currentUser/selectors'
 
@@ -31,7 +30,6 @@ class ViewNavbarView extends Component {
         settings: PropTypes.object,
         settingType: PropTypes.oneOf(['ticket-views', 'customer-views']).isRequired,
         isLoading: PropTypes.bool.isRequired,
-        fetchPage: PropTypes.func.isRequired,
         getViewCount: PropTypes.func.isRequired,
     }
 
@@ -222,8 +220,4 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-const mapDispatchToProps = {
-    fetchPage: viewsActions.fetchPage,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ViewNavbarView)
+export default connect(mapStateToProps)(ViewNavbarView)

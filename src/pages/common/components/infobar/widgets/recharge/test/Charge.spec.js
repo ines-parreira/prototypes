@@ -12,9 +12,6 @@ const Wrapper = index().Wrapper
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-const windowLocation = JSON.stringify(window.location)
-delete window.location
-window.location = JSON.parse(windowLocation)
 
 describe('Charge', () => {
     describe('SubscriptionAfterTitle', () => {

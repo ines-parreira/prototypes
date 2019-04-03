@@ -2,7 +2,7 @@ import moment from 'moment'
 import {fromJS} from 'immutable'
 
 import * as utils from '../utils'
-import {updateFilterOperator, activeViewUrl, rawify} from '../utils'
+
 
 describe('utils', () => {
     describe('RecentViewStorage', () => {
@@ -74,7 +74,7 @@ describe('utils', () => {
                 }]
             })
 
-            const res = updateFilterOperator(ast, 0, 'isEmpty')
+            const res = utils.updateFilterOperator(ast, 0, 'isEmpty')
 
             expect(res.toJS()).toMatchSnapshot()
         })
@@ -96,7 +96,7 @@ describe('utils', () => {
                 }]
             })
 
-            const res = updateFilterOperator(ast, 0, 'gte')
+            const res = utils.updateFilterOperator(ast, 0, 'gte')
 
             expect(res.toJS()).toMatchSnapshot()
         })
@@ -124,7 +124,7 @@ describe('utils', () => {
                 }]
             })
 
-            const res = updateFilterOperator(ast, 0, 'gteTimedelta')
+            const res = utils.updateFilterOperator(ast, 0, 'gteTimedelta')
 
             expect(res.toJS()).toMatchSnapshot()
         })
@@ -148,7 +148,7 @@ describe('utils', () => {
                 }]
             })
 
-            const res = updateFilterOperator(ast, 0, 'gte')
+            const res = utils.updateFilterOperator(ast, 0, 'gte')
 
             expect(res.toJS()).toMatchSnapshot()
         })
@@ -171,7 +171,7 @@ describe('utils', () => {
                 }]
             })
 
-            const res = updateFilterOperator(ast, 0, 'lte')
+            const res = utils.updateFilterOperator(ast, 0, 'lte')
 
             expect(res.toJS()).toMatchSnapshot()
         })
@@ -179,12 +179,12 @@ describe('utils', () => {
 
     describe('activeViewUrl', () => {
         it('should return index url with no active view', () => {
-            const url = activeViewUrl(fromJS({}), {pathname: '/app/ticket/1'}, fromJS({}))
+            const url = utils.activeViewUrl(fromJS({}), {pathname: '/app/ticket/1'}, fromJS({}))
             expect(url).toBe('/app')
         })
 
         it('should return the ticket list url', () => {
-            const url = activeViewUrl(fromJS({
+            const url = utils.activeViewUrl(fromJS({
                 type: 'ticket-list',
                 id: '1'
             }), {
@@ -195,7 +195,7 @@ describe('utils', () => {
         })
 
         it('should return the customer list url', () => {
-            const url = activeViewUrl(fromJS({
+            const url = utils.activeViewUrl(fromJS({
                 type: 'customer-list',
                 id: '2'
             }), {
@@ -206,7 +206,7 @@ describe('utils', () => {
         })
 
         it('should return the same url when on a different item type', () => {
-            const url = activeViewUrl(fromJS({
+            const url = utils.activeViewUrl(fromJS({
                 type: 'customer-list',
                 id: '2'
             }), {
@@ -217,7 +217,7 @@ describe('utils', () => {
         })
 
         it('should return the same url when on an unsupported url', () => {
-            const url = activeViewUrl(fromJS({
+            const url = utils.activeViewUrl(fromJS({
                 type: 'customer-list',
                 id: '2'
             }), {
@@ -228,7 +228,7 @@ describe('utils', () => {
         })
 
         it('should keep the url search query', () => {
-            const url = activeViewUrl(fromJS({
+            const url = utils.activeViewUrl(fromJS({
                 type: 'customer-list',
                 id: '2'
             }), {
@@ -238,52 +238,54 @@ describe('utils', () => {
             expect(url).toBe('/app/pizza-pepperoni?pizza=pepperoni')
         })
 
-        it('should return the tickets search url and page number', () => {
-            const url = activeViewUrl(fromJS({
+        it('should return the tickets search url and cursor', () => {
+            const cursor = 'asd8645'
+            const url = utils.activeViewUrl(fromJS({
                 type: 'ticket-list',
                 id: '1',
                 search: 'pizza'
             }), {
                 pathname: '/app/ticket/1',
                 search: ''
-            }, fromJS({page: 2}))
-            expect(url).toBe('/app/tickets/search?q=pizza&page=2')
+            }, fromJS({current_cursor: cursor}))
+            expect(url).toBe(`/app/tickets/search?q=pizza&cursor=${cursor}`)
         })
 
         it('should return the page number', () => {
-            const url = activeViewUrl(fromJS({
+            const cursor = 'asd8645'
+            const url = utils.activeViewUrl(fromJS({
                 type: 'ticket-list',
                 id: '1',
             }), {
                 pathname: '/app/ticket/1',
                 search: ''
-            }, fromJS({page: 2}))
-            expect(url).toBe('/app/tickets/1?page=2')
+            }, fromJS({current_cursor: cursor}))
+            expect(url).toBe(`/app/tickets/1?cursor=${cursor}`)
         })
     })
 
     describe('rawify', () => {
         it('should work with empty values', () => {
-            expect(rawify()).toEqual('\'\'')
-            expect(rawify('')).toEqual('\'\'')
-            expect(rawify(null)).toEqual('\'\'')
+            expect(utils.rawify()).toEqual('\'\'')
+            expect(utils.rawify('')).toEqual('\'\'')
+            expect(utils.rawify(null)).toEqual('\'\'')
         })
 
         it('should quote strings', () => {
-            expect(rawify('a')).toEqual('\'a\'')
-            expect(rawify('1')).toEqual('\'1\'')
-            expect(rawify('aaa')).toEqual('\'aaa\'')
-            expect(rawify('a\\a')).toEqual('\'a\\\\a\'')
-            expect(rawify('aaa\'bbb')).toEqual('\'aaa\\\'bbb\'')
-            expect(rawify('aaa\'b\'bb')).toEqual('\'aaa\\\'b\\\'bb\'')
-            expect(rawify('aaa\\\'bbb')).toEqual('\'aaa\\\\\\\'bbb\'')
-            expect(rawify('aaa\\\'b\\\'bb')).toEqual('\'aaa\\\\\\\'b\\\\\\\'bb\'')
-            expect(rawify('aaa\\\\\'bbb')).toEqual('\'aaa\\\\\\\\\\\'bbb\'')
+            expect(utils.rawify('a')).toEqual('\'a\'')
+            expect(utils.rawify('1')).toEqual('\'1\'')
+            expect(utils.rawify('aaa')).toEqual('\'aaa\'')
+            expect(utils.rawify('a\\a')).toEqual('\'a\\\\a\'')
+            expect(utils.rawify('aaa\'bbb')).toEqual('\'aaa\\\'bbb\'')
+            expect(utils.rawify('aaa\'b\'bb')).toEqual('\'aaa\\\'b\\\'bb\'')
+            expect(utils.rawify('aaa\\\'bbb')).toEqual('\'aaa\\\\\\\'bbb\'')
+            expect(utils.rawify('aaa\\\'b\\\'bb')).toEqual('\'aaa\\\\\\\'b\\\\\\\'bb\'')
+            expect(utils.rawify('aaa\\\\\'bbb')).toEqual('\'aaa\\\\\\\\\\\'bbb\'')
         })
 
         it('should stringify numbers', () => {
-            expect(rawify(111)).toEqual('111')
-            expect(rawify(100.1)).toEqual('100.1')
+            expect(utils.rawify(111)).toEqual('111')
+            expect(utils.rawify(100.1)).toEqual('100.1')
         })
     })
 })

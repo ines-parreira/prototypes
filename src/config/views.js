@@ -1,11 +1,12 @@
 import React from 'react'
 import {fromJS} from 'immutable'
-
 import _isUndefined from 'lodash/isUndefined'
 
-import {stripHTML, getLanguageDisplayName, getAST} from '../utils'
-import {TagLabel} from '../pages/common/utils/labels'
 import {EMAIL_INTEGRATION_TYPES} from '../constants/integration'
+import {BASE_VIEW_ID} from '../constants/view'
+import {TagLabel} from '../pages/common/utils/labels'
+import {stripHTML, getLanguageDisplayName, getAST} from '../utils'
+import {getMomentUtcISOString} from '../utils/date'
 
 import * as ticketConfig from './ticket'
 import TICKET_LANGUAGES from './ticketLanguages'
@@ -33,12 +34,12 @@ export const defaultCell = (fieldName, item) => {
 
 // Each of the following properties are required to create a new view
 export const baseView = () => fromJS({
-    id: 0,
+    id: BASE_VIEW_ID,
     name: 'New view',
     slug: 'new-view',
     order_by: 'updated_datetime',
     display_order: 1,
-    created_datetime: new Date(),
+    created_datetime: getMomentUtcISOString(),
     order_dir: 'desc',
     filters: '',
     filters_ast: {

@@ -7,8 +7,9 @@ import {browserHistory} from 'react-router'
 
 import Loader from '../Loader'
 import BlankState from '../BlankState'
-import Pagination from '../Pagination'
+import Navigation from '../Navigation'
 
+import {NEXT_VIEW_NAV_DIRECTION, PREV_VIEW_NAV_DIRECTION} from '../../../../constants/view'
 import shortcutManager from '../../../../services/shortcutManager'
 import {moveIndex} from '../../../common/utils/keyboard'
 
@@ -22,13 +23,13 @@ import HeaderCell from './Table/HeaderCell'
 import Row from './Table/Row'
 
 
-type directionType = 'next' | 'previous'
+type directionType = NEXT_VIEW_NAV_DIRECTION | PREV_VIEW_NAV_DIRECTION
 
 type Props = {
     view: viewType,
     config: Map<*,*>,
     isLoading: (T: string) => boolean,
-    pagination: Map<*,*>,
+    navigation: Map<*,*>,
     selectedItemsIds: ?List<*>,
     fields: List<*>,
     items: List<*>,
@@ -38,7 +39,7 @@ type Props = {
     onItemClick: ?(number) => void,
     getItemUrl: ?(Map<*,*>) => string,
 
-    fetchPage: typeof viewsActions.fetchPage,
+    fetchViewItems: typeof viewsActions.fetchViewItems,
     resetView: typeof viewsActions.resetView,
     toggleSelection: typeof viewsActions.toggleSelection,
     onPageChange: (number) => void,
@@ -83,7 +84,7 @@ class Table extends React.Component<Props, State> {
                 action: () => this._movePage()
             },
             GO_PREV_PAGE: {
-                action: () => this._movePage('previous')
+                action: () => this._movePage(PREV_VIEW_NAV_DIRECTION)
             },
             GO_NEXT_ROW: {
                 action: () => this._moveCursor()
@@ -115,7 +116,7 @@ class Table extends React.Component<Props, State> {
         })
     }
 
-    _moveCursor = (direction: directionType = 'next') => {
+    _moveCursor = (direction: directionType = NEXT_VIEW_NAV_DIRECTION) => {
         this.setState({
             rowCursor: moveIndex(this.state.rowCursor, this.props.items.size, {direction})
         })
@@ -126,31 +127,18 @@ class Table extends React.Component<Props, State> {
         this.props.toggleSelection(itemsIds, true)
     }
 
-    _movePage = (direction: directionType = 'next') => {
-        const {pagination, onPageChange} = this.props
-        const currentPage = parseInt(pagination.get('page')) || 1
-        const allPages = parseInt(pagination.get('nb_pages')) || 1
+    _movePage = (direction: directionType = NEXT_VIEW_NAV_DIRECTION) => {
+        const {navigation, fetchViewItems, isLoading} = this.props
 
-        if (allPages === 1) {
+        if (
+            (direction === PREV_VIEW_NAV_DIRECTION && !navigation.get('prev_items')) ||
+            (direction === NEXT_VIEW_NAV_DIRECTION && !navigation.get('next_items')) ||
+            isLoading('fetchList')
+        ) {
             return
         }
 
-        onPageChange(
-            moveIndex(currentPage - 1, allPages, {direction}) + 1
-        )
-    }
-
-    _renderPagination = () => {
-        const {pagination, onPageChange} = this.props
-
-        return (
-            <Pagination
-                pageCount={pagination.get('nb_pages') || 1}
-                currentPage={pagination.get('page') || 1}
-                onChange={onPageChange}
-                className={classnames(css.pagination, 'pagination-transparent')}
-            />
-        )
+        fetchViewItems(direction)
     }
 
     render() {
@@ -166,9 +154,10 @@ class Table extends React.Component<Props, State> {
             selectedItemsIds,
             type,
             resetView,
-            fetchPage,
             onItemClick,
-            getItemUrl
+            getItemUrl,
+            fetchViewItems,
+            navigation
         } = this.props
 
         if (isLoading('fetchList')) {
@@ -190,7 +179,7 @@ class Table extends React.Component<Props, State> {
                                 <a
                                     onClick={() => {
                                         resetView(config.get('name'))
-                                        fetchPage(1)
+                                        fetchViewItems()
                                     }}
                                 >
                                     Reset view
@@ -204,7 +193,12 @@ class Table extends React.Component<Props, State> {
             return (
                 <div>
                     <BlankState message={message} />
-                    {this._renderPagination()}
+                    <Navigation
+                        hasNextItems={!!navigation.get('next_items')}
+                        hasPrevItems={!!navigation.get('prev_items')}
+                        fetchNextItems={() => fetchViewItems(NEXT_VIEW_NAV_DIRECTION)}
+                        fetchPrevItems={() => fetchViewItems(PREV_VIEW_NAV_DIRECTION)}
+                    />
                 </div>
             )
         }
@@ -270,14 +264,19 @@ class Table extends React.Component<Props, State> {
                     </tbody>
                 </table>
 
-                {this._renderPagination()}
+                <Navigation
+                    hasNextItems={!!navigation.get('next_items')}
+                    hasPrevItems={!!navigation.get('prev_items')}
+                    fetchNextItems={() => fetchViewItems(NEXT_VIEW_NAV_DIRECTION)}
+                    fetchPrevItems={() => fetchViewItems(PREV_VIEW_NAV_DIRECTION)}
+                />
             </div>
         )
     }
 }
 
 export default connect(null, {
-    fetchPage: viewsActions.fetchPage,
+    fetchViewItems: viewsActions.fetchViewItems,
     toggleSelection: viewsActions.toggleSelection,
     resetView: viewsActions.resetView,
 })(Table)

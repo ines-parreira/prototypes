@@ -7,8 +7,7 @@ import {fromJS, List, Map} from 'immutable'
 
 import * as ticketSelectors from '../../../../state/ticket/selectors'
 import shortcutManager from '../../../../services/shortcutManager'
-import type {MoveIndexDirection} from '../../../common/utils/keyboard'
-import {moveIndex} from '../../../common/utils/keyboard'
+import {moveIndex, type MoveIndexDirection} from '../../../common/utils/keyboard'
 import type {stateType} from '../../../../state/types'
 import type {
     Channel,

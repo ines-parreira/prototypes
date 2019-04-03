@@ -1,8 +1,7 @@
 // @flow
-import {fromJS} from 'immutable'
+import {fromJS, type Map} from 'immutable'
 import moment from 'moment'
 import _isNumber from 'lodash/isNumber'
-import type {Map} from 'immutable'
 
 import {getCode} from '../../utils'
 import type {actionType} from '../types'
@@ -14,8 +13,7 @@ import {
     removeFilterAST,
     recentViewsStorage,
     updateFilterOperator,
-    updateFilterValue,
-    shouldUpdateView
+    updateFilterValue
 } from './utils'
 import * as selectors from './selectors'
 
@@ -27,9 +25,9 @@ export const initialState = fromJS({
     recent: {},
     loading: false,
     _internal: {
-        currentViewId: null,
         lastViewId: null,
         selectedItemsIds: [],
+        navigation: {},
         loading: {
             fetchList: false,
             fetchListDiscreet: false,
@@ -171,20 +169,6 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             return state.set('active', original)
         }
 
-        case constants.SUBMIT_UPDATE_VIEW_SUCCESS: {
-            const updatedView = fromJS(action.resp)
-            // we need to replace the old view with the new one
-            items = state.get('items')
-            const replaceIndex = items.findIndex((v) => v.get('id') === updatedView.get('id'))
-            let newState = state.setIn(['items', replaceIndex], updatedView)
-
-            if (shouldUpdateView(updatedView.get('id'), state)) {
-                newState = newState.set('active', updatedView.set('dirty', false))
-            }
-
-            return newState
-        }
-
         case constants.SUBMIT_NEW_VIEW_SUCCESS: {
             const newView = fromJS(action.resp)
             return state.merge({
@@ -242,7 +226,6 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
 
         case constants.FETCH_LIST_VIEW_START: {
             let newState = state
-                .setIn(['_internal', 'currentViewId'], action.viewId)
 
             // if fetched view is a real view (not new view created, not search, etc.) we save it's id
             if (_isNumber(action.viewId) && action.viewId > 0) {
@@ -265,7 +248,7 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             const payload = action.data
 
             return state
-                .setIn(['_internal', 'pagination'], fromJS(payload.meta))
+                .setIn(['_internal', 'navigation'], fromJS(payload.meta))
                 .setIn(['_internal', 'loading', 'fetchList'], false)
                 .setIn(['_internal', 'loading', 'fetchListDiscreet'], false)
         }
