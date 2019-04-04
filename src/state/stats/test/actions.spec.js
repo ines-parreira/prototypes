@@ -76,7 +76,7 @@ describe('actions', () => {
                     },
                     data: 'column1, column2, column3,\n1,2,3',
                 }
-
+                const filters = {tags: [1, 2, 3]}
                 mockServer.onPost('/api/stats/support-volume/download').reply(() => {
                     return [
                         201,
@@ -85,8 +85,9 @@ describe('actions', () => {
                     ]
                 })
 
-                store.dispatch(actions.downloadStatistic('support-volume'))
+                store.dispatch(actions.downloadStatistic('support-volume', filters))
                     .then(() => {
+                        expect(mockServer.history.post[0].data).toMatchSnapshot()
                         expect(saveFileAsDownloaded).toHaveBeenCalledWith(csv.data, `${statName}.csv`, 'text/csv')
                         done()
                     })

@@ -54,16 +54,14 @@ export function fetchStat(name: string, filters: Object = {}, label?: string) {
  * Download a statistic
  *
  * @param {String} name - the name of the statistic to download
- * @param {Object} meta - the period (datetimes)
  * @param {Object} filters - the filters to apply on the statistics
  * @returns {Promise}
  */
-export function downloadStatistic(name: string, meta: {} = {}, filters: {} = {}) {
+export function downloadStatistic(name: string, filters: Object = {}) {
     return (dispatch: dispatchType) => {
         const params = {
             responseType: 'blob',
-            ...meta,
-            filters: filters,
+            filters,
         }
         const config = {timeout: 60000 * 3}
         return axios.post(`/api/stats/${name}/download`, params, config)

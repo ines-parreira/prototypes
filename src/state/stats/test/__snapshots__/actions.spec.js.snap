@@ -10,6 +10,7 @@ Array [
 ]
 `;
 
+exports[`actions stats download statistic should download a statistic and save file downloaded 1`] = `"{\\"responseType\\":\\"blob\\",\\"filters\\":{\\"tags\\":[1,2,3]}}"`;
 
 exports[`actions stats fetch statistic should fetch a statistic and report an error because the stat does not exist 1`] = `
 Array [
