@@ -167,7 +167,7 @@ export default class RechargeIntegrationList extends React.Component<Props, Stat
                 integrationType="recharge"
                 integrations={rechargeIntegrations}
                 createIntegration={() => browserHistory.push('/app/settings/integrations/recharge/new')}
-                createIntegrationButtonText="Add Recharge"
+                createIntegrationButtonContent="Add Recharge"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
                 createIntegrationButtonHidden={this._shouldHideCreateButton()}

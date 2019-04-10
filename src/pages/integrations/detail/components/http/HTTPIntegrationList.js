@@ -83,7 +83,7 @@ export default class HTTPIntegrationList extends React.Component {
                 integrations={integrations.filter((v) => v.get('type') === 'http')}
                 longTypeDescription={longTypeDescription}
                 createIntegration={() => browserHistory.push('/app/settings/integrations/http/new')}
-                createIntegrationButtonText="Add HTTP integration"
+                createIntegrationButtonContent="Add HTTP integration"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />

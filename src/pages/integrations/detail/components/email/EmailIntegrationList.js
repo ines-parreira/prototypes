@@ -131,7 +131,7 @@ export default class EmailIntegrationList extends React.Component<Props> {
                 integrations={getIntegrationsByTypes(integrations, EMAIL_INTEGRATION_TYPES)}
                 longTypeDescription={longTypeDescription}
                 createIntegration={() => browserHistory.push('/app/settings/integrations/email/new')}
-                createIntegrationButtonText="Add email address"
+                createIntegrationButtonContent="Add email address"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />

@@ -154,7 +154,7 @@ export default class SmileIntegrationList extends React.Component<Props, State> 
                 integrationType="smile"
                 integrations={smileIntegrations}
                 createIntegration={() => browserHistory.push('/app/settings/integrations/smile/new')}
-                createIntegrationButtonText="Add Smile"
+                createIntegrationButtonContent="Add Smile"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
                 createIntegrationButtonHidden={this._shouldHideCreateButton()}

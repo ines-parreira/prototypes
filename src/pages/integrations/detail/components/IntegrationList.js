@@ -23,7 +23,8 @@ class IntegrationList extends React.Component {
         integrationType: PropTypes.string.isRequired, // The type of the integrations we're displaying
         integrations: PropTypes.object.isRequired, // The integrations for the relevant type only
         createIntegration: PropTypes.func.isRequired, // The callback to create a new integration for this type.
-        createIntegrationButtonText: PropTypes.string.isRequired, // The text for the button to create a new integration
+        createIntegrationButtonClassName: PropTypes.string, // custom class name for the create integration button
+        createIntegrationButtonContent: PropTypes.oneOf([PropTypes.string, PropTypes.object]).isRequired, // The content of the button to create a new integration
         createIntegrationButtonOnClick: PropTypes.func, // function executed when user click on button to create a new integration
         longTypeDescription: PropTypes.node,
         loading: PropTypes.object.isRequired,  // A map for different loading status(es)
@@ -64,7 +65,8 @@ class IntegrationList extends React.Component {
         const {
             integrations,
             integrationType,
-            createIntegrationButtonText,
+            createIntegrationButtonContent,
+            createIntegrationButtonClassName,
             longTypeDescription,
             integrationToItemDisplay,
             loading,
@@ -92,8 +94,9 @@ class IntegrationList extends React.Component {
                                 type="submit"
                                 color="success"
                                 onClick={this.onButtonClick}
+                                className={createIntegrationButtonClassName}
                             >
-                                {createIntegrationButtonText}
+                                {createIntegrationButtonContent}
                             </Button>
                         )
                     }

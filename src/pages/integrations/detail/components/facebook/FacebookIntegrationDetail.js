@@ -100,7 +100,7 @@ export default class FacebookIntegrationDetail extends React.Component {
                     </i>
                     Instagram is disabled because we miss the required permissions. Please go to the{' '}
                     <Link to="/app/settings/integrations/facebook">Facebook integrations list</Link> and click on{' '}
-                    Login to Facebook to update your permissions.
+                    Login with Facebook to update your permissions.
                 </Alert>
             )
         } else if (doesntHaveInstagramId) {
@@ -109,7 +109,7 @@ export default class FacebookIntegrationDetail extends React.Component {
                     You cannot activate Instagram on this page: it is not associated with any Instagram account.<br/>
                     If you just associated the page with an Instagram account, please go to the{' '}
                     <Link to="/app/settings/integrations/facebook">Facebook integrations list</Link> and click on{' '}
-                    Login to Facebook to update your integrations.
+                    Login with Facebook to update your integrations.
                 </Alert>
             )
         }

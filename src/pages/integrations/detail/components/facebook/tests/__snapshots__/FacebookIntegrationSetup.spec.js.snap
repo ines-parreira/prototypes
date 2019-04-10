@@ -46,12 +46,12 @@ exports[`FacebookIntegrationSetup should render a loader because integrations ar
     tag="div"
   >
     <h1>
-      Facebook pages setup
+      Facebook Pages setup
     </h1>
     <p>
       One last step: choose the pages you want to manage with Gorgias.
       <br />
-      If you just wanted to re-activate your facebook integration or update your permissions: it's done, you can leave this page.
+      If you just wanted to re-activate your Facebook integration or update your permissions: it's done, you can leave this page.
     </p>
     <Form
       onSubmit={[Function]}
@@ -91,7 +91,7 @@ exports[`FacebookIntegrationSetup should render a loader because integrations ar
           tag="button"
           type="submit"
         >
-          Save Changes
+          Save changes
         </Button>
       </div>
     </Form>
@@ -145,12 +145,12 @@ exports[`FacebookIntegrationSetup should render an empty list because there is n
     tag="div"
   >
     <h1>
-      Facebook pages setup
+      Facebook Pages setup
     </h1>
     <p>
       One last step: choose the pages you want to manage with Gorgias.
       <br />
-      If you just wanted to re-activate your facebook integration or update your permissions: it's done, you can leave this page.
+      If you just wanted to re-activate your Facebook integration or update your permissions: it's done, you can leave this page.
     </p>
     <Form
       onSubmit={[Function]}
@@ -164,7 +164,7 @@ exports[`FacebookIntegrationSetup should render an empty list because there is n
           tag="button"
           type="submit"
         >
-          Save Changes
+          Save changes
         </Button>
       </div>
     </Form>
@@ -218,12 +218,12 @@ exports[`FacebookIntegrationSetup should render integrations because there is av
     tag="div"
   >
     <h1>
-      Facebook pages setup
+      Facebook Pages setup
     </h1>
     <p>
       One last step: choose the pages you want to manage with Gorgias.
       <br />
-      If you just wanted to re-activate your facebook integration or update your permissions: it's done, you can leave this page.
+      If you just wanted to re-activate your Facebook integration or update your permissions: it's done, you can leave this page.
     </p>
     <Form
       onSubmit={[Function]}
@@ -383,7 +383,7 @@ exports[`FacebookIntegrationSetup should render integrations because there is av
           tag="button"
           type="submit"
         >
-          Save Changes
+          Save changes
         </Button>
       </div>
     </Form>
@@ -437,12 +437,12 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
     tag="div"
   >
     <h1>
-      Facebook pages setup
+      Facebook Pages setup
     </h1>
     <p>
       One last step: choose the pages you want to manage with Gorgias.
       <br />
-      If you just wanted to re-activate your facebook integration or update your permissions: it's done, you can leave this page.
+      If you just wanted to re-activate your Facebook integration or update your permissions: it's done, you can leave this page.
     </p>
     <Form
       onSubmit={[Function]}
@@ -602,7 +602,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
           tag="button"
           type="submit"
         >
-          Save Changes
+          Save changes
         </Button>
       </div>
     </Form>
@@ -656,12 +656,12 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
     tag="div"
   >
     <h1>
-      Facebook pages setup
+      Facebook Pages setup
     </h1>
     <p>
       One last step: choose the pages you want to manage with Gorgias.
       <br />
-      If you just wanted to re-activate your facebook integration or update your permissions: it's done, you can leave this page.
+      If you just wanted to re-activate your Facebook integration or update your permissions: it's done, you can leave this page.
     </p>
     <Form
       onSubmit={[Function]}
@@ -792,7 +792,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
           tag="button"
           type="submit"
         >
-          Save Changes
+          Save changes
         </Button>
       </div>
     </Form>

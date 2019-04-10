@@ -128,7 +128,7 @@ export default class ShopifyIntegrationList extends React.Component {
                 integrationType="shopify"
                 integrations={integrations.filter((v) => v.get('type') === 'shopify')}
                 createIntegration={() => browserHistory.push('/app/settings/integrations/shopify/new')}
-                createIntegrationButtonText="Add Shopify"
+                createIntegrationButtonContent="Add Shopify"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />

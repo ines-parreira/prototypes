@@ -67,7 +67,7 @@ export default class ChatIntegrationList extends React.Component {
                 longTypeDescription={longTypeDescription}
                 integrations={integrations.filter((v) => v.get('type') === 'smooch_inside')}
                 createIntegration={() => browserHistory.push('/app/settings/integrations/smooch_inside/new')}
-                createIntegrationButtonText="Add chat"
+                createIntegrationButtonContent="Add chat"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />

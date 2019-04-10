@@ -3,10 +3,13 @@ import PropTypes from 'prop-types'
 import ImmutablePropsTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 
+import {getIconFromUrl} from '../../../../../state/integrations/helpers'
 import IntegrationList from '../../components/IntegrationList'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 
 import FacebookPageRow from './FacebookPageRow'
+
+import css from './FacebookIntegrationList.less'
 
 
 @connect((state) => {
@@ -45,7 +48,17 @@ This integration creates tickets when customers post on your Facebook page or se
                 integrations={integrations}
                 longTypeDescription={longTypeDescription}
                 createIntegration={this._onLogin}
-                createIntegrationButtonText="Login to Facebook"
+                createIntegrationButtonContent={(
+                    <div>
+                        <img
+                            src={getIconFromUrl('integrations/facebook-white.png')}
+                            alt="facebook-logo"
+                            className={css.facebookLogo}
+                        />
+                        Login with Facebook
+                    </div>
+                )}
+                createIntegrationButtonClassName={css.createIntegrationButton}
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />

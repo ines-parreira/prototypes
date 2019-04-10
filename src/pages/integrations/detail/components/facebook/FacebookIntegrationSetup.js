@@ -279,11 +279,11 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
                     fluid
                     className="page-container"
                 >
-                    <h1>Facebook pages setup</h1>
+                    <h1>Facebook Pages setup</h1>
                     <p>
                         One last step: choose the pages you want to manage with Gorgias.
                         <br/>
-                        If you just wanted to re-activate your facebook integration or update your permissions:
+                        If you just wanted to re-activate your Facebook integration or update your permissions:
                         it's done, you can leave this page.
                     </p>
 
@@ -299,7 +299,7 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
                                     'btn-loading': loading.get('updateIntegration'),
                                 })}
                             >
-                                Save Changes
+                                Save changes
                             </Button>
                         </div>
                     </Form>

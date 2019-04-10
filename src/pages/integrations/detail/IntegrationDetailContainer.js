@@ -16,7 +16,6 @@ import OutlookIntegrationSetup from './components/email/outlook/OutlookIntegrati
 import FacebookIntegrationDetail from './components/facebook/FacebookIntegrationDetail'
 import FacebookIntegrationList from './components/facebook/FacebookIntegrationList'
 import FacebookIntegrationSetup from './components/facebook/FacebookIntegrationSetup'
-import FacebookIntegrationLogin from './components/facebook/FacebookIntegrationLogin'
 
 import HTTPIntegrationList from './components/http/HTTPIntegrationList'
 
@@ -176,40 +175,31 @@ class IntegrationDetailContainer extends React.Component {
                         )
                     }
 
-                    if (isUpdate) {
-                        if (params.extra === 'customer_chat') {
-                            return (
-                                <RealtimeMessagingIntegrationInstall
-                                    actions={actions}
-                                    loading={commonProps.loading}
-                                    integration={commonProps.integration}
-                                />
-                            )
-                        }
-
-                        if (params.extra === 'preferences') {
-                            return (
-                                <RealtimeMessagingIntegrationPreferences
-                                    actions={actions}
-                                    loading={commonProps.loading}
-                                    integration={commonProps.integration}
-                                />
-                            )
-                        }
-
+                    if (params.extra === 'customer_chat') {
                         return (
-                            <FacebookIntegrationDetail
+                            <RealtimeMessagingIntegrationInstall
                                 actions={actions}
-                                integration={commonProps.integration}
                                 loading={commonProps.loading}
+                                integration={commonProps.integration}
+                            />
+                        )
+                    }
+
+                    if (params.extra === 'preferences') {
+                        return (
+                            <RealtimeMessagingIntegrationPreferences
+                                actions={actions}
+                                loading={commonProps.loading}
+                                integration={commonProps.integration}
                             />
                         )
                     }
 
                     return (
-                        <FacebookIntegrationLogin
+                        <FacebookIntegrationDetail
+                            actions={actions}
+                            integration={commonProps.integration}
                             loading={commonProps.loading}
-                            redirectUri={redirectUri}
                         />
                     )
                 }
