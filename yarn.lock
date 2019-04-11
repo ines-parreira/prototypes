@@ -4626,9 +4626,10 @@ immutability-helper@^2.9.0:
   dependencies:
     invariant "^2.2.0"
 
-immutable-devtools@0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/immutable-devtools/-/immutable-devtools-0.0.7.tgz#da0fbdd860c3a8a598967fc544bb0329ec3ad26e"
+immutable-devtools@0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/immutable-devtools/-/immutable-devtools-0.1.4.tgz#2aaa0d5a4057c3df19389c1550a1d1bf0468a183"
+  integrity sha512-2Gz4j/9EhFVIrky0to3YGsVys7q+alWPErhB96+FOy1kHhk84FgNxcbX86emPUqK1xsVlpjGWIu2DMH3V10Msg==
 
 immutable@^3.8.1:
   version "3.8.2"
