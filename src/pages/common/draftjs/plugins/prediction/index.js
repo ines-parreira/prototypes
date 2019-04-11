@@ -1,15 +1,29 @@
 // @flow
-import {EditorState} from 'draft-js'
+import {EditorState, type SelectionState} from 'draft-js'
 import axios, {CancelToken, Cancel} from 'axios'
 import type {Map} from 'immutable'
 
 import type {PluginMethods} from '../types'
 
-import {createPrediction, insertPrediction, removePrediction, usePrediction} from './utils'
+import {
+    createPrediction,
+    insertPrediction, isTypingPrediction,
+    removeFirstCharOfPrediction,
+    removePrediction,
+    usePrediction
+} from './utils'
 import decorators from './decorators'
 
 let predictionKey = null
 let cachedSelection = null
+
+export const setPredictionKey = (value: string) => {
+    predictionKey = value
+}
+
+export const setCachedSelection = (value: SelectionState) => {
+    cachedSelection = value
+}
 
 let predictionCache = []
 const clearCache = () => predictionCache = []
@@ -106,6 +120,10 @@ const predictionPlugin = (config: { context: Map<*, *> }) => {
             // clear cache on empty content
             if (!contentState.hasText()) {
                 clearCache()
+            }
+
+            if (predictionKey && isTypingPrediction(predictionKey, editorState)) {
+                return removeFirstCharOfPrediction(predictionKey, editorState)
             }
 
             cancelApiRequest()
