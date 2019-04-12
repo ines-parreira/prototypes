@@ -667,7 +667,7 @@ export const ACTION_TEMPLATES = [
         arguments: {
             amount: {
                 label: 'Amount',
-                default: '{{ticket.customer.integrations.shopify.orders[0].total_price}}',
+                default: '',
                 editable: true,
                 required: true,
                 display_order: 1,
