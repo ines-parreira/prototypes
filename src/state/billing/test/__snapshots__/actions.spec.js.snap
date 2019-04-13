@@ -1,5 +1,38 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`billing actions fetch billing contact information failure 1`] = `
+Array [
+  Object {
+    "error": [Error: Request failed with status code 400],
+    "reason": "Unable to get billing contact information.",
+    "type": "FETCH_BILLING_CONTACT_ERROR",
+  },
+]
+`;
+
+exports[`billing actions fetch billing contact information success 1`] = `
+Array [
+  Object {
+    "billingContact": Object {
+      "email": "hello@acme.gorgias.io",
+      "shipping": Object {
+        "address": Object {
+          "city": "San Francisco",
+          "country": "United States",
+          "line1": "52 Washburn St",
+          "line2": "",
+          "postal_code": "94103",
+          "state": "CA",
+        },
+        "name": "Gorgias",
+        "phone": "4155555556",
+      },
+    },
+    "type": "FETCH_BILLING_CONTACT_SUCCESS",
+  },
+]
+`;
+
 exports[`billing actions fetch credit card 1`] = `
 Array [
   Object {
@@ -56,6 +89,40 @@ Array [
       "method": "stripe",
     },
     "type": "FETCH_PAYMENT_METHOD_SUCCESS",
+  },
+]
+`;
+
+exports[`billing actions update billing contact information failure 1`] = `
+Array [
+  Object {
+    "error": [Error: Request failed with status code 400],
+    "reason": "Unable to update billing contact information.",
+    "type": "UPDATE_BILLING_CONTACT_ERROR",
+    "verbose": true,
+  },
+]
+`;
+
+exports[`billing actions update billing contact information success 1`] = `
+Array [
+  Object {
+    "billingContact": Object {
+      "email": "hello@acme.gorgias.io",
+      "shipping": Object {
+        "address": Object {
+          "city": "San Francisco",
+          "country": "United States",
+          "line1": "52 Washburn St",
+          "line2": "",
+          "postal_code": "94103",
+          "state": "CA",
+        },
+        "name": "Gorgias",
+        "phone": "4155555556",
+      },
+    },
+    "type": "UPDATE_BILLING_CONTACT_SUCCESS",
   },
 ]
 `;

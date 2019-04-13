@@ -11,6 +11,22 @@ import {initialState} from '../reducers'
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
+const contactInformation = {
+    email: 'hello@acme.gorgias.io',
+    shipping: {
+        name: 'Gorgias',
+        phone: '4155555556',
+        address: {
+            line1: '52 Washburn St',
+            line2: '',
+            city: 'San Francisco',
+            state: 'CA',
+            country: 'United States',
+            postal_code: '94103'
+        }
+    }
+}
+
 jest.mock('../../notifications/actions', () => {
     return {
         notify: jest.fn(() => (args) => args),
@@ -83,6 +99,42 @@ describe('billing actions', () => {
 
         return store.dispatch(actions.fetchPaymentMethod())
             .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
+    describe('fetch billing contact information', () => {
+        it('success', () => {
+
+            mockServer.onGet('/api/billing/contact/').reply(200, contactInformation)
+
+            return store.dispatch(actions.fetchContact())
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+
+        it('failure', () => {
+
+            mockServer.onGet('/api/billing/contact/').reply(400)
+
+            return store.dispatch(actions.fetchContact())
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+    })
+
+    describe('update billing contact information', () => {
+        it('success', () => {
+
+            mockServer.onPut('/api/billing/contact/').reply(200, contactInformation)
+
+            return store.dispatch(actions.updateContact(fromJS(contactInformation)))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+
+        it('failure', () => {
+
+            mockServer.onPut('/api/billing/contact/').reply(400)
+
+            return store.dispatch(actions.updateContact(fromJS(contactInformation)))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
     })
 
     it('fetch credit card', () => {

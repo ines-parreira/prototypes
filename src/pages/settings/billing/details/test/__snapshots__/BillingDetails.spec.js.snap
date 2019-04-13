@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BillingDetails component should display billing contact information 1`] = `
+<div
+  className="mb-5"
+>
+  <h4>
+    <i
+      className="material-icons"
+    >
+      notes
+    </i>
+     Billing details
+  </h4>
+  <p>
+    This information will appear on your next invoice. Invoices are sent to the billing email address below.
+  </p>
+  <Card
+    tag="div"
+  >
+    <CardBody
+      tag="div"
+    >
+      <Row
+        tag="div"
+      >
+        <Col
+          sm={4}
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <address
+            className="address"
+          >
+            <dt>
+              Billing email:
+            </dt>
+            <dd>
+              hello@acme.gorgias.io
+            </dd>
+            <br />
+            <dt>
+              Company:
+            </dt>
+            <dd>
+              Gorgias
+            </dd>
+            <br />
+            <dt>
+              Address:
+            </dt>
+            <dd>
+              <div>
+                52 Washburn St
+              </div>
+              <div />
+              <div>
+                San Francisco CA 94103
+              </div>
+              <div>
+                United States
+              </div>
+            </dd>
+            <br />
+            <dt>
+              Phone:
+            </dt>
+            <dd>
+              4155555556
+            </dd>
+          </address>
+        </Col>
+        <Col
+          className="text-right"
+          sm={
+            Object {
+              "offset": 4,
+              "size": 4,
+            }
+          }
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <Button
+            color="secondary"
+            tag={[Function]}
+            to="/app/settings/billing/update-billing-details"
+          >
+            Update billing details
+          </Button>
+        </Col>
+      </Row>
+    </CardBody>
+  </Card>
+</div>
+`;
+
+exports[`BillingDetails component should display loader while fetching a contact 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="inner"
+    style={
+      Object {
+        "minHeight": "500px",
+      }
+    }
+  >
+    <i
+      className="icon-custom icon-circle-o-notch md-spin"
+    />
+  </div>
+</div>
+`;
+
+exports[`BillingDetails component should render nothing if contact prop is null after fetching it 1`] = `""`;

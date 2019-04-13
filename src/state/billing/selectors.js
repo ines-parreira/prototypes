@@ -47,6 +47,11 @@ export const invoices = createSelector(
         .filter((invoice) => invoice.get('attempted') && invoice.get('amount_due') > 0)
 )
 
+export const getContact = createSelector(
+    [getBillingState],
+    (billing) => billing.get('contact') || null
+)
+
 export const creditCard = createSelector(
     [getBillingState],
     (billing) => billing.get('creditCard') || fromJS({})

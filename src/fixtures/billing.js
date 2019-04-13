@@ -95,6 +95,21 @@ export const billingState = {
             integrations: 10
         }
     },
+    contact: {
+        email: 'hello@acme.gorgias.io',
+        shipping: {
+            name: 'Gorgias',
+            phone: '4155555556',
+            address: {
+                line1: '34 Harriet St',
+                line2: '',
+                city: 'San Francisco',
+                state: 'CA',
+                country: 'United States',
+                postal_code: '94103'
+            }
+        }
+    },
     currentUsage: {
         data: {
             cost: 0,

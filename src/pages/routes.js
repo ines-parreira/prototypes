@@ -30,6 +30,7 @@ import TicketListInfobarContainer from './tickets/list/TicketListInfobarContaine
 import UserRoleRequired from './common/components/UserRoleRequired'
 import BillingContainer from './settings/billing/BillingContainer'
 import CreditCardContainer from './settings/billing/credit-cards/CreditCard'
+import BillingDetailsFormContainer from './settings/billing/details/BillingDetailsForm'
 import BillingPlansContainer from './settings/billing/plans/BillingPlans'
 import ManageTagsContainer from './settings/tags/ManageTags'
 import ManageRequestsContainer from './settings/requests/ManageRequests'
@@ -316,6 +317,13 @@ export default (
                     path="update-credit-card"
                     components={{
                         content: UserRoleRequired(CreditCardContainer, ADMIN_ROLE),
+                        navbar: SettingsNavbarContainer
+                    }}
+                />
+                <Route
+                    path="update-billing-details"
+                    components={{
+                        content: UserRoleRequired(BillingDetailsFormContainer, ADMIN_ROLE),
                         navbar: SettingsNavbarContainer
                     }}
                 />

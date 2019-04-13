@@ -8,13 +8,8 @@ import * as segmentTracker from '../../store/middlewares/segmentTracker'
 import type {dispatchType, getStateType} from '../types'
 
 import * as constants from './constants'
+import type {billingContactType, creditCardType} from './types'
 
-type creditCardType = {
-    expDate: string,
-    name: string,
-    number: string,
-    cvc: string
-}
 
 export function fetchCurrentUsage() {
     return (dispatch: dispatchType): Promise<dispatchType> => {
@@ -156,11 +151,64 @@ export function updateCreditCard(creditCard: creditCardType) {
                 })
 
             })
-        } 
+        }
         return dispatch({
             type: constants.UPDATE_CREDIT_CARD_ERROR,
             reason: 'Unable to update credit card. Please reload this page.'
         })
-        
+
+    }
+}
+
+/**
+ * Fetch the billing contact information for the current account
+ * @returns {Promise} the async action promise
+ */
+export function fetchContact() {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
+        return axios.get('/api/billing/contact/')
+            .then((json = {}) => json.data)
+            .then((billingContact) => {
+                return dispatch({
+                    type: constants.FETCH_BILLING_CONTACT_SUCCESS,
+                    billingContact
+                })
+            }, (error) => {
+                return dispatch({
+                    type: constants.FETCH_BILLING_CONTACT_ERROR,
+                    error,
+                    reason: 'Unable to get billing contact information.'
+                })
+            })
+    }
+}
+
+/**
+ * Update the billing contact information for the current account
+ * @param {billingContactType} billingContact - The billing contact object
+ * @returns {Promise} the async action promise
+ */
+export function updateContact(billingContact: billingContactType) {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
+        return axios.put('/api/billing/contact/', billingContact.toJS())
+            .then((json = {}) => json.data)
+            .then((billingContact) => {
+                dispatch(notify({
+                    status: 'success',
+                    message: 'Billing contact information updated',
+                }))
+
+                return dispatch({
+                    type: constants.UPDATE_BILLING_CONTACT_SUCCESS,
+                    billingContact
+                })
+            }, (error) => {
+                return dispatch({
+                    type: constants.UPDATE_BILLING_CONTACT_ERROR,
+                    error,
+                    reason: 'Unable to update billing contact information.',
+                    verbose: true
+                })
+            })
     }
 }

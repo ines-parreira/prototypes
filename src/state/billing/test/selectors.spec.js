@@ -56,6 +56,11 @@ describe('billing selectors', () => {
         expect(selectors.invoices(state).size).toBe(1)
     })
 
+    it('contact', () => {
+        expect(selectors.getContact({})).toBe(null)
+        expect(selectors.getContact(state)).toEqualImmutable(state.billing.get('contact'))
+    })
+
     it('creditCard', () => {
         expect(selectors.creditCard({})).toEqualImmutable(fromJS({}))
         expect(selectors.creditCard(state)).toEqualImmutable(state.billing.get('creditCard'))

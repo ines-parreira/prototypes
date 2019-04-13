@@ -10,6 +10,7 @@ import * as currentAccountSelectors from '../../../state/currentAccount/selector
 
 import BillingUsage from './BillingUsage'
 import BillingPaymentMethod from './BillingPaymentMethod'
+import BillingDetails from './details/BillingDetails'
 import BillingInvoices from './BillingInvoices'
 
 @withRouter
@@ -57,6 +58,7 @@ export class BillingContainer extends Component {
                 >
                     <BillingUsage/>
                     <BillingPaymentMethod/>
+                    <BillingDetails/>
                     <BillingInvoices/>
                 </Container>
             </div>

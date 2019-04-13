@@ -39,6 +39,46 @@ Immutable.Map {
 }
 `;
 
+exports[`billing reducers should update the billing contact information on successful contact fetch action 1`] = `
+Immutable.Map {
+  "contact": Immutable.Map {
+    "email": "hello@acme.gorgias.io",
+    "shipping": Immutable.Map {
+      "name": "Gorgias",
+      "phone": "4155555556",
+      "address": Immutable.Map {
+        "line1": "52 Washburn St",
+        "line2": "",
+        "city": "San Francisco",
+        "state": "CA",
+        "country": "United States",
+        "postal_code": "94103",
+      },
+    },
+  },
+}
+`;
+
+exports[`billing reducers should update the billing contact information on successful contact update action 1`] = `
+Immutable.Map {
+  "contact": Immutable.Map {
+    "email": "hello@acme.gorgias.io",
+    "shipping": Immutable.Map {
+      "name": "Gorgias",
+      "phone": "4155555556",
+      "address": Immutable.Map {
+        "line1": "52 Washburn St",
+        "line2": "",
+        "city": "San Francisco",
+        "state": "CA",
+        "country": "United States",
+        "postal_code": "94103",
+      },
+    },
+  },
+}
+`;
+
 exports[`billing reducers update credit card 1`] = `
 Immutable.Map {
   "creditCard": Immutable.Map {

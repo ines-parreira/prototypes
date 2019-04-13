@@ -162,7 +162,7 @@ class CreditCard extends Component {
                             <Link
                                 className="section"
                                 to="/app/settings/billing/"
-                            >Billing</Link>
+                            >Billing & Usage</Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem>{action} credit card</BreadcrumbItem>
                     </Breadcrumb>
