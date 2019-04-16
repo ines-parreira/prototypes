@@ -1,16 +1,14 @@
 // @flow
-import {fromJS} from 'immutable'
-
-export const initialState = fromJS({
-    tickets: [],
-})
-
-import type {Map} from 'immutable'
+import {fromJS, type Map} from 'immutable'
 import moment from 'moment'
 
 import type {actionType} from '../types'
 
 import * as constants from './constants'
+
+export const initialState = fromJS({
+    tickets: [],
+})
 
 type defaultActionType = actionType & {
     ticketId: string,
@@ -30,7 +28,8 @@ export default function reducer(state: Map<*, *> = initialState, action: default
             const newTicket = fromJS(action.ticket)
             let newState = state
 
-            const index = newState.get('tickets', fromJS([])).findIndex((ticket) => ticket.get('id') === newTicket.get('id'))
+            const index = newState.get('tickets', fromJS([])).findIndex(
+                (ticket) => ticket.get('id') === newTicket.get('id'))
 
             if (~index) {
                 // update the existing chat
@@ -44,7 +43,8 @@ export default function reducer(state: Map<*, *> = initialState, action: default
         }
 
         case constants.REMOVE_CHAT: {
-            return state.update('tickets', (ticket) => ticket.filter((ticket) => ticket.get('id') !== action.ticketId))
+            return state.update('tickets',
+                (ticket) => ticket.filter((ticket) => ticket.get('id') !== action.ticketId))
         }
 
         case constants.MARK_CHAT_AS_READ: {

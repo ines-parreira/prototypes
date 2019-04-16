@@ -7,7 +7,7 @@ Object {
       "channel": "chat",
       "id": 1,
       "is_unread": true,
-      "last_message_datetime": "2013-05-10 12:10",
+      "last_received_message_datetime": "2013-05-10 12:10",
     },
   ],
 }
@@ -40,12 +40,12 @@ Object {
     Object {
       "channel": "facebook-messenger",
       "id": 2,
-      "last_message_datetime": "2013-05-10 12:11",
+      "last_received_message_datetime": "2013-05-10 12:11",
     },
     Object {
       "channel": "chat",
       "id": 1,
-      "last_message_datetime": "2013-05-10 12:10",
+      "last_received_message_datetime": "2013-05-10 12:10",
     },
   ],
 }

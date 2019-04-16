@@ -20,11 +20,11 @@ describe('reducers', () => {
                     tickets: [{
                         id: 1,
                         channel: 'chat',
-                        last_message_datetime: '2013-05-10 12:10'
+                        last_received_message_datetime: '2013-05-10 12:10'
                     }, {
                         id: 2,
                         channel: 'facebook-messenger',
-                        last_message_datetime: '2013-05-10 12:11'
+                        last_received_message_datetime: '2013-05-10 12:11'
                     }]
                 }
 
@@ -38,7 +38,7 @@ describe('reducers', () => {
                     ticket: {
                         id: 1,
                         channel: 'chat',
-                        last_message_datetime: '2013-05-10 12:10'
+                        last_received_message_datetime: '2013-05-10 12:10'
                     }
                 }
 

@@ -1,3 +1,4 @@
+import {CLOSED_STATUS} from '../constants/ticket'
 import * as ticketActions from '../state/ticket/actions'
 import * as infobarActions from '../state/infobar/actions'
 import * as agentsActions from '../state/agents/actions'
@@ -278,24 +279,29 @@ export const receivedEvents = [{
 }, {
     name: socketConstants.TICKET_CHAT_UPDATED,
     onReceive: function(json) {
-        const {currentUser, chats} = reduxStore.getState()
+        const {currentUser} = reduxStore.getState()
         const ticket = json.data
 
-        // we fetch new chats in case we didn't fetch them all at the initial load
-        if (chats.get('tickets').size < MAX_RECENT_CHATS) {
-            chatsActions.fetchChatsThrottled(reduxStore.dispatch)
+        const ticketIsNotRecentChatAnymore = ticket.status === CLOSED_STATUS
+            || ticket.spam
+            || ticket.deleted_datetime
+            || ticket.trashed_datetime
+
+        const ticketHasBeenReassigned = ticket.assignee_user_id && ticket.assignee_user_id !== currentUser.get('id')
+
+        if (ticketIsNotRecentChatAnymore || ticketHasBeenReassigned) {
+            reduxStore.dispatch(chatsActions.removeChat(ticket.id))
+
+            let {chats} = reduxStore.getState()
+
+            if (chats.get('tickets').size < MAX_RECENT_CHATS) {
+                chatsActions.fetchChatsThrottled(reduxStore.dispatch)
+            }
+
+            return
         }
 
-        if (ticket.spam || ticket.trashed_datetime || ticket.deleted_datetime || ticket.status === 'closed') {
-            return reduxStore.dispatch(chatsActions.removeChat(ticket.id))
-        }
-
-        // ticket has been assigned to someone else
-        if (ticket.assignee_user_id && ticket.assignee_user_id !== currentUser.get('id')) {
-            return reduxStore.dispatch(chatsActions.removeChat(ticket.id))
-        }
-
-        return reduxStore.dispatch(chatsActions.addChat(ticket, false))
+        reduxStore.dispatch(chatsActions.addChat(ticket, false))
     }
 }, {
     name: socketConstants.EMAIL_INTEGRATION_VERIFIED,
