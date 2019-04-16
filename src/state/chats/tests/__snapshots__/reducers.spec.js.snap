@@ -1,19 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`reducers chats chats should handle ADD_CHAT 1`] = `
+exports[`reducers chats should handle ADD_CHAT 1`] = `
 Object {
   "tickets": Array [
     Object {
       "channel": "chat",
       "id": 1,
       "is_unread": true,
-      "last_received_message_datetime": "2013-05-10 12:10",
+      "last_message_datetime": "2013-05-10 12:10",
     },
   ],
 }
 `;
 
-exports[`reducers chats chats should handle MARK_CHAT_AS_READ 1`] = `
+exports[`reducers chats should handle MARK_CHAT_AS_READ 1`] = `
 Object {
   "tickets": Array [
     Object {
@@ -24,7 +24,7 @@ Object {
 }
 `;
 
-exports[`reducers chats chats should handle REMOVE_CHAT 1`] = `
+exports[`reducers chats should handle REMOVE_CHAT 1`] = `
 Object {
   "tickets": Array [
     Object {
@@ -34,18 +34,18 @@ Object {
 }
 `;
 
-exports[`reducers chats chats should handle SET_CHATS 1`] = `
+exports[`reducers chats should handle SET_CHATS 1`] = `
 Object {
   "tickets": Array [
     Object {
       "channel": "facebook-messenger",
       "id": 2,
-      "last_received_message_datetime": "2013-05-10 12:11",
+      "last_message_datetime": "2013-05-10 12:11",
     },
     Object {
       "channel": "chat",
       "id": 1,
-      "last_received_message_datetime": "2013-05-10 12:10",
+      "last_message_datetime": "2013-05-10 12:10",
     },
   ],
 }
