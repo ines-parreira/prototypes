@@ -104,7 +104,7 @@
     "babel-jest": "24.7.1",
     "babel-loader": "8.0.5",
     "css-loader": "1.0.1",
-    "enzyme": "3.8.0",
+    "enzyme": "3.9.0",
     "enzyme-adapter-react-16": "1.9.1",
     "eslint": "5.16.0",
     "eslint-plugin-flowtype": "3.6.1",
