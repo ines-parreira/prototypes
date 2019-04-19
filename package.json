@@ -117,7 +117,7 @@
     "identity-obj-proxy": "3.0.0",
     "immutable-devtools": "0.1.4",
     "jest": "24.7.1",
-    "jest-enzyme": "7.0.1",
+    "jest-enzyme": "7.0.2",
     "jest-immutable-matchers": "2.0.1",
     "jsdom": "13.0.0",
     "less": "2.7.3",
