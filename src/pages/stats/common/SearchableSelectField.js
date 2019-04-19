@@ -33,7 +33,12 @@ class SearchableSelectField extends React.Component<Props, State> {
         plural: 'items',
         singular: 'item',
         isDisabled: false,
-        dropdownMenu: DropdownMenu
+        dropdownMenu: (props) => (
+            <DropdownMenu
+                {...props}
+                className={css.dropdown}
+            />
+        )
     }
 
     state = {
@@ -79,7 +84,7 @@ class SearchableSelectField extends React.Component<Props, State> {
     }
 
     render() {
-        const {items, input, plural, singular, isDisabled, dropdownMenu: DropdownMenu} = this.props
+        const {items, input, plural, singular, isDisabled, dropdownMenu: DropdownMenuComponent} = this.props
         const {search} = this.state
 
         const hasSelectedItems = !!input.value.length
@@ -113,10 +118,7 @@ class SearchableSelectField extends React.Component<Props, State> {
                         )
                     }
                 </DropdownToggle>
-                <DropdownMenu
-                    className={css.dropdown}
-                    right
-                >
+                <DropdownMenuComponent right>
                     <DropdownItem
                         header
                         className="dropdown-item-input"
@@ -184,7 +186,7 @@ class SearchableSelectField extends React.Component<Props, State> {
                             </DropdownItem>
                         ]
                     }
-                </DropdownMenu>
+                </DropdownMenuComponent>
             </UncontrolledDropdown>
         )
     }
