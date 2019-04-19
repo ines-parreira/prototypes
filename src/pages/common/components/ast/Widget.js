@@ -313,10 +313,6 @@ export class Widget extends React.Component<Props, State> {
             const calleeName = rule.getIn(parent.slice(0, -3).concat(['callee', 'name']).insert(0, 'code_ast'))
             widget.type = right ? right.getIn(['meta', 'rules', 'widget']) : 'input'
 
-            if (caseInsensitiveOperators.includes(calleeName)) {
-                caseInsensitive = true
-            }
-
             // display a multi select field in case current attribute is an array AND
             // it's has no specific input AND callee is a collection operator
             if (_isArray(widget.value) && (!widget.type || widget.type === 'input') &&
@@ -328,6 +324,10 @@ export class Widget extends React.Component<Props, State> {
             if (leftsiblings.join('.').includes('Ticket.properties.tags.name')) {
                 widget.type = 'tags-select'
                 widget.multiple = collectionOperators.includes(calleeName)
+            }
+
+            if (caseInsensitiveOperators.includes(calleeName) && widget.type !== 'tags-select') {
+                caseInsensitive = true
             }
 
             if (right) {

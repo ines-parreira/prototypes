@@ -130,11 +130,11 @@ describe('ast', () => {
         })
 
         describe('TagsSelect', () => {
-            it('should render TagsSelect field (tags properties)', () => {
+            it('should render case sensitive TagsSelect field (tags properties)', () => {
                 let leftsiblings = fromJS(['definitions', 'Ticket', 'properties', 'tags', 'name'])
                 const value = 'tag'
                 const rule = fromJS({
-                    code_ast: astCodeEq
+                    code_ast: astCodeContains
                 })
                 expect(
                     shallow(
