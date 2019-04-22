@@ -1,0 +1,377 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Chat Assignment should render the Save changes button loading and disabled because the setting are being saved 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title="Chat assignment"
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <Row
+        className="mb-2"
+        tag="div"
+      >
+        <Col
+          md="9"
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <div
+            className="mb-2"
+          >
+            <Label
+              className="control-label"
+              tag="label"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              Un-assign on reply
+            </Label>
+            <BooleanField
+              label="When there is a new reply in a Chat or Messenger ticket, if the user assigned to it is not available for chat, un-assign the ticket"
+              name="unassign_on_reply"
+              onChange={[Function]}
+              type="checkbox"
+              value={false}
+            />
+          </div>
+          <div
+            className="text-faded"
+          >
+            Users are considered as not available for chat when any of those conditions is true:
+            <ul>
+              <li>
+                the user turned off its "Available for chat" setting
+              </li>
+              <li>
+                the user has been inactive on Gorgias for more than
+                 
+                10
+                 minutes
+              </li>
+              <li>
+                the user is not on Gorgias on any device
+              </li>
+            </ul>
+          </div>
+        </Col>
+      </Row>
+      <Button
+        className="btn-loading"
+        color="success"
+        disabled={true}
+        tag="button"
+        type="submit"
+      >
+        Save changes
+      </Button>
+    </Form>
+  </Container>
+</div>
+`;
+
+exports[`Chat Assignment should render the Unassign replies checkbox checked because the setting Unassign replies is enabled 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title="Chat assignment"
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <Row
+        className="mb-2"
+        tag="div"
+      >
+        <Col
+          md="9"
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <div
+            className="mb-2"
+          >
+            <Label
+              className="control-label"
+              tag="label"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              Un-assign on reply
+            </Label>
+            <BooleanField
+              label="When there is a new reply in a Chat or Messenger ticket, if the user assigned to it is not available for chat, un-assign the ticket"
+              name="unassign_on_reply"
+              onChange={[Function]}
+              type="checkbox"
+              value={true}
+            />
+          </div>
+          <div
+            className="text-faded"
+          >
+            Users are considered as not available for chat when any of those conditions is true:
+            <ul>
+              <li>
+                the user turned off its "Available for chat" setting
+              </li>
+              <li>
+                the user has been inactive on Gorgias for more than
+                 
+                10
+                 minutes
+              </li>
+              <li>
+                the user is not on Gorgias on any device
+              </li>
+            </ul>
+          </div>
+        </Col>
+      </Row>
+      <Button
+        className=""
+        color="success"
+        disabled={false}
+        tag="button"
+        type="submit"
+      >
+        Save changes
+      </Button>
+    </Form>
+  </Container>
+</div>
+`;
+
+exports[`Chat Assignment should render the Unassign replies checkbox checked by default because there is no account setting for chat assignment 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title="Chat assignment"
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <Row
+        className="mb-2"
+        tag="div"
+      >
+        <Col
+          md="9"
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <div
+            className="mb-2"
+          >
+            <Label
+              className="control-label"
+              tag="label"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              Un-assign on reply
+            </Label>
+            <BooleanField
+              label="When there is a new reply in a Chat or Messenger ticket, if the user assigned to it is not available for chat, un-assign the ticket"
+              name="unassign_on_reply"
+              onChange={[Function]}
+              type="checkbox"
+              value={true}
+            />
+          </div>
+          <div
+            className="text-faded"
+          >
+            Users are considered as not available for chat when any of those conditions is true:
+            <ul>
+              <li>
+                the user turned off its "Available for chat" setting
+              </li>
+              <li>
+                the user has been inactive on Gorgias for more than
+                 
+                10
+                 minutes
+              </li>
+              <li>
+                the user is not on Gorgias on any device
+              </li>
+            </ul>
+          </div>
+        </Col>
+      </Row>
+      <Button
+        className=""
+        color="success"
+        disabled={false}
+        tag="button"
+        type="submit"
+      >
+        Save changes
+      </Button>
+    </Form>
+  </Container>
+</div>
+`;
+
+exports[`Chat Assignment should render the Unassign replies checkbox unchecked because the setting Unassign replies is disabled 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title="Chat assignment"
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <Row
+        className="mb-2"
+        tag="div"
+      >
+        <Col
+          md="9"
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <div
+            className="mb-2"
+          >
+            <Label
+              className="control-label"
+              tag="label"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              Un-assign on reply
+            </Label>
+            <BooleanField
+              label="When there is a new reply in a Chat or Messenger ticket, if the user assigned to it is not available for chat, un-assign the ticket"
+              name="unassign_on_reply"
+              onChange={[Function]}
+              type="checkbox"
+              value={false}
+            />
+          </div>
+          <div
+            className="text-faded"
+          >
+            Users are considered as not available for chat when any of those conditions is true:
+            <ul>
+              <li>
+                the user turned off its "Available for chat" setting
+              </li>
+              <li>
+                the user has been inactive on Gorgias for more than
+                 
+                10
+                 minutes
+              </li>
+              <li>
+                the user is not on Gorgias on any device
+              </li>
+            </ul>
+          </div>
+        </Col>
+      </Row>
+      <Button
+        className=""
+        color="success"
+        disabled={false}
+        tag="button"
+        type="submit"
+      >
+        Save changes
+      </Button>
+    </Form>
+  </Container>
+</div>
+`;

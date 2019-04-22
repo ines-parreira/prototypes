@@ -70,10 +70,19 @@ export default class SettingsNavbar extends React.Component<Props> {
                 to: 'import-data',
                 text: 'Import data',
                 className: 'd-none d-md-block'
-            }, {
+            }]
+        }, {
+            name: 'Availability',
+            icon: 'alarm',
+            links: [{
                 requiredRole: ADMIN_ROLE,
                 to: 'business-hours',
                 text: 'Business hours',
+                className: 'd-none d-md-block'
+            }, {
+                requiredRole: ADMIN_ROLE,
+                to: 'chat-assignment',
+                text: 'Chat assignment',
                 className: 'd-none d-md-block'
             }]
         }]

@@ -1,4 +1,6 @@
-import React from 'react'
+// @flow
+import React, {type Node} from 'react'
+import {type Map} from 'immutable'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
@@ -20,31 +22,34 @@ import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 
 import Avatar from './Avatar/Avatar'
 
-// A <Link /> with some default styles
-const NavLink = (props) => {
-    let url = props.to || ''
 
-    // if the url ends with an "s", then we also count the urls without an "s"
-    // ex: we highlight "Tickets" when we are on /app/tickets/something or /app/ticket/something
-    if (url.endsWith('s')) {
-        url = url.slice(0, -1)
-    }
-
-    const className = classnames(props.className, 'dropdown-item', {
-        current: window.location.pathname.includes(url),
-    })
-
-    return (
-        <Link
-            {...props}
-            className={className}
-        />
-    )
+type NavLinkProps = {
+    to: string,
+    className: ?string,
 }
 
-NavLink.propTypes = {
-    to: PropTypes.string.isRequired,
-    className: PropTypes.string,
+// A <Link /> with some default styles
+class NavLink extends React.Component<NavLinkProps> {
+    render() {
+        const {className, to} = this.props
+
+        let url = to || ''
+
+        // if the url ends with an "s", then we also count the urls without an "s"
+        // ex: we highlight "Tickets" when we are on /app/tickets/something or /app/ticket/something
+        if (url.endsWith('s')) {
+            url = url.slice(0, -1)
+        }
+
+        return (
+            <Link
+                {...this.props}
+                className={classnames(className, 'dropdown-item', {
+                    current: window.location.pathname.includes(url),
+                })}
+            />
+        )
+    }
 }
 
 const mainMenu = [{
@@ -66,6 +71,22 @@ const mainMenu = [{
     icon: 'settings',
 }]
 
+type NavbarProps = {
+    currentUser: Map<*,*>,
+    currentUserPreferences: Map<*,*>,
+    availableForChat: boolean,
+    activeContent: ?string,
+    children: ?Array<Node> | ?Node,
+    submitSetting: (Object) => Promise<*>,
+    isOpenedPanel: boolean,
+    closePanels: typeof layoutActions.closePanels
+}
+
+type NavbarState = {
+    bottomDropdownOpen: boolean,
+    title: ?string
+}
+
 @connect((state) => ({
     currentUser: currentUserSelectors.getCurrentUser(state),
     currentUserPreferences: currentUserSelectors.getPreferences(state),
@@ -75,27 +96,14 @@ const mainMenu = [{
     submitSetting: currentUserActions.submitSetting,
     closePanels: layoutActions.closePanels,
 })
-export default class Navbar extends React.Component {
-    static propTypes = {
-        currentUser: PropTypes.object.isRequired,
-        currentUserPreferences: PropTypes.object.isRequired,
-        availableForChat: PropTypes.bool.isRequired,
-        activeContent: PropTypes.string,
-        children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-        submitSetting: PropTypes.func.isRequired,
-        isOpenedPanel: PropTypes.bool.isRequired,
-        closePanels: PropTypes.func.isRequired,
-    }
-
+export default class Navbar extends React.Component<NavbarProps, NavbarState> {
     static childContextTypes = {
         closePanel: PropTypes.func.isRequired,
     }
 
-    constructor() {
-        super()
-        this.state = {
-            bottomDropdownOpen: false
-        }
+    state = {
+        bottomDropdownOpen: false,
+        title: null
     }
 
     getChildContext() {
@@ -106,7 +114,7 @@ export default class Navbar extends React.Component {
 
     componentWillMount() {
         this.setState({
-            title: _capitalize(this.props.activeContent)
+            title: this.props.activeContent ? _capitalize(this.props.activeContent) : null
         })
     }
 
@@ -120,9 +128,10 @@ export default class Navbar extends React.Component {
         }))
     }
 
-    _updateShowChatPreferences = () => {
+    _updateAvailableForChatPreference = () => {
         const {currentUserPreferences, submitSetting} = this.props
-        const newPreferences = currentUserPreferences.updateIn(['data', 'available_for_chat'], (status) => !status)
+        const newPreferences = currentUserPreferences
+            .updateIn(['data', 'available_for_chat'], (status) => !status)
         return submitSetting(newPreferences.toJS())
     }
 
@@ -140,7 +149,7 @@ export default class Navbar extends React.Component {
                 >
                     <DropdownToggle color="transparent">
                         <div>
-                            {this.state.title}
+                            {this.state.title || ''}
                             <i className="material-icons md-2">
                                 more_vert
                             </i>
@@ -151,7 +160,6 @@ export default class Navbar extends React.Component {
                             mainMenu.map((item) => {
                                 return (
                                     <DropdownItem
-                                        className={item.className}
                                         key={item.label}
                                         tag={NavLink}
                                         to={item.url}
@@ -212,7 +220,7 @@ export default class Navbar extends React.Component {
                                 <div>
                                     <ToggleButton
                                         value={availableForChat}
-                                        onChange={this._updateShowChatPreferences}
+                                        onChange={this._updateAvailableForChatPreference}
                                     />
                                 </div>
                             </div>

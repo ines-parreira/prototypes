@@ -71,8 +71,7 @@ export function updateCurrentUser(data: {}) {
 export function submitSetting(data: {id?: string, type: string, data: Object}, notification: boolean) {
     return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType | {}> => {
         const isUpdate = !!data.id
-        const userPrefs = currentUserSelectors.getPreferences(getState())
-        const prevIsAvailableForChat = userPrefs.getIn(['data', 'available_for_chat'], true)
+        const prevIsAvailableForChat = currentUserSelectors.isAvailableForChat(getState())
         let promise
 
         dispatch({

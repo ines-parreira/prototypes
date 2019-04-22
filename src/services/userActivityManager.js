@@ -8,7 +8,7 @@ import socketManager from './socketManager'
 
 
 class UserActivityManager {
-    unavailabilityTimeout = 600000 // 1 hour
+    unavailabilityTimeout = 600000 // 10 minutes
     inactivityTimeout = 60000 // 1 min
     watchThrottling = 15000 // 15 secs
     userActivityFn = null

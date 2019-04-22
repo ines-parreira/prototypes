@@ -42,7 +42,8 @@ import SatisfactionSurveyView from './settings/satisfactionSurveys/SatisfactionS
 import * as Team from './settings/team'
 
 import UserAuditList from './settings/team/UsersAudit/UserAuditList'
-import BusinessHours from './settings/businessHours/BusinessHours'
+import BusinessHours from './settings/businessHours'
+import ChatAssignment from './settings/chatAssignment'
 
 
 export default (
@@ -390,6 +391,13 @@ export default (
                 path="business-hours"
                 components={{
                     content: UserRoleRequired(BusinessHours, ADMIN_ROLE),
+                    navbar: SettingsNavbarContainer
+                }}
+            />
+            <Route
+                path="chat-assignment"
+                components={{
+                    content: UserRoleRequired(ChatAssignment, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer
                 }}
             />

@@ -57,7 +57,7 @@ export const getPreferences = createSelector(
             type: 'preferences',
             data: DEFAULT_PREFERENCES
         })
-            .mergeDeep(state.find((s) => s.get('type') === 'preferences') || fromJS({}))
+            .mergeDeep(state.find((setting) => setting.get('type') === 'preferences') || fromJS({}))
     }
 )
 
