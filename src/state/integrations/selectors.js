@@ -53,6 +53,9 @@ export const getIntegrationsByTypes = (types: typesType) => createSelector(
     }
 )
 
+export const makeGetIntegrationsByTypes = (state: stateType) => (types: typesType) =>
+    getIntegrationsByTypes(types)(state)
+
 export const getEligibleShopifyIntegrationsFor = (state: stateType) => (type: string) => {
     const shopifyIntegrations = getIntegrationsByTypes('shopify')(state)
     const currentIntegrationOfType = getIntegrationsByTypes(type)(state)

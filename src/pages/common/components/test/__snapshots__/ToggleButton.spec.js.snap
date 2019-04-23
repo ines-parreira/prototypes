@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ToggleButton should render the button disabled 1`] = `
+<label
+  className="switch disabled"
+  onClick={[Function]}
+>
+  <input
+    checked={true}
+    disabled={true}
+    readOnly={true}
+    type="checkbox"
+  />
+  <div
+    className="slider"
+  />
+</label>
+`;
+
+exports[`ToggleButton should render the button loading 1`] = `
+<label
+  className="switch loading"
+  onClick={[Function]}
+>
+  <input
+    checked={true}
+    readOnly={true}
+    type="checkbox"
+  />
+  <div
+    className="slider"
+  />
+</label>
+`;
+
+exports[`ToggleButton should render the button loading and disabled 1`] = `
+<label
+  className="switch loading disabled"
+  onClick={[Function]}
+>
+  <input
+    checked={true}
+    disabled={true}
+    readOnly={true}
+    type="checkbox"
+  />
+  <div
+    className="slider"
+  />
+</label>
+`;
+
+exports[`ToggleButton should render the checkbox checked 1`] = `
+<label
+  className="switch"
+  onClick={[Function]}
+>
+  <input
+    checked={true}
+    readOnly={true}
+    type="checkbox"
+  />
+  <div
+    className="slider"
+  />
+</label>
+`;
+
+exports[`ToggleButton should render the checkbox unchecked 1`] = `
+<label
+  className="switch"
+  onClick={[Function]}
+>
+  <input
+    checked={false}
+    readOnly={true}
+    type="checkbox"
+  />
+  <div
+    className="slider"
+  />
+</label>
+`;

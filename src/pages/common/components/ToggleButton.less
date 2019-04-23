@@ -52,23 +52,61 @@
       }
     }
 
-    input:checked + .slider {
-      background-color: @green;
+    :global {
+      @keyframes blink {
+        0% {
+          opacity: .6;
+        }
+
+        100% {
+          opacity: 1;
+        }
+      }
     }
 
-    input:checked:hover + .slider {
-      background-color: @green;
+    &.loading {
+      :global {
+        animation: blink .5s infinite alternate;
+      }
+
+      input:not(:checked) + .slider::before {
+        transform: translateX(34px);
+        left: -7px;
+      }
+
+      input:not(:checked) + .slider::after {
+        content: '';
+        right: 20px;
+        left: initial;
+      }
+
+      input:checked + .slider::after {
+        content: '';
+      }
     }
 
-    input:checked + .slider::before {
-      transform: translateX(34px);
-      left: -7px;
+    &:not(.loading) {
+      input:checked + .slider,
+      input:checked:hover + .slider {
+        background-color: @green;
+      }
+
+      input:checked + .slider::before {
+        transform: translateX(34px);
+        left: -7px;
+      }
+
+      input:checked + .slider::after {
+        content: 'on';
+        right: 20px;
+        left: initial;
+      }
     }
 
-    input:checked + .slider::after {
-      content: 'on';
-      right: 20px;
-      left: initial;
+    &.disabled {
+      .slider, .slider::before, .slider::after {
+        opacity: .7;
+      }
     }
   }
 }

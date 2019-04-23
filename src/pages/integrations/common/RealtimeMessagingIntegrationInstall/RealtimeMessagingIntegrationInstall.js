@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
 import Clipboard from 'clipboard'
 import {capitalize} from 'lodash'
-import {Link, browserHistory} from 'react-router'
+import {Link} from 'react-router'
 import classnames from 'classnames'
 import {
     Alert,
@@ -12,38 +12,46 @@ import {
     Breadcrumb,
     BreadcrumbItem,
     Card,
+    CardBody,
     Col,
     Container,
-    Form,
-    Row
+    Row,
 } from 'reactstrap'
+
+import {
+    FACEBOOK_INTEGRATION_TYPE,
+    SHOPIFY_INTEGRATION_TYPE,
+    SMOOCH_INSIDE_INTEGRATION_TYPE
+} from '../../../../constants/integration'
 
 import {notify} from '../../../../state/notifications/actions'
 import PageHeader from '../../../common/components/PageHeader'
 import RealtimeMessagingIntegrationNavigation from '../RealtimeMessagingIntegrationNavigation'
 
+import * as integrationSelectors from '../../../../state/integrations/selectors'
+
+import IntegrationCard from './IntegrationCard'
+import {renderChatCodeSnippet, renderFacebookCodeSnippet} from './utils'
 import css from './RealtimeMessagingIntegrationInstall.less'
 
-import * as integrationSelectors from './../../../../state/integrations/selectors'
-import * as integrationHelpers from './../../../../state/integrations/helpers'
 
-import {renderChatCodeSnippet, renderFacebookCodeSnippet} from './utils'
+const targetIntegrationTypes = fromJS([
+    SHOPIFY_INTEGRATION_TYPE
+])
 
 
 type Props = {
     domain: string,
     actions: any,
     notify: ({}) => void,
-    shopifyIntegrations: List<Map<*, *>>,
-    shopifyIntegrationsWithoutChat: List<Map<*, *>>,
-    shopifyIntegrationsWithoutFacebook: List<Map<*, *>>,
+    getIntegrationsByTypes: (string) => List<Map<*,*>>,
     integration: Map<*, *>,
 }
 
 type State = {
     name: string,
     email: string,
-    integrationLoading: boolean | null,
+    integrationLoading: ?boolean,
     isCopied: boolean,
 }
 
@@ -56,64 +64,38 @@ class RealtimeMessagingIntegrationInstall extends React.Component<Props, State> 
         isCopied: false
     }
 
+    clearIsCopiedTimeout: ?number = null
+
+    clipboard: Clipboard = null
+
     componentDidMount() {
-        const clipboard = new Clipboard('#copy-code-snippet')
-        clipboard.on('success', () => {
+        this.clipboard = new Clipboard('#copy-code-snippet')
+        this.clipboard.on('success', () => {
             this.setState({isCopied: true})
-            setTimeout(() => {
+
+            if (this.clearIsCopiedTimeout) {
+                clearTimeout(this.clearIsCopiedTimeout)
+            }
+
+            this.clearIsCopiedTimeout = setTimeout(() => {
                 this.setState({isCopied: false})
+                this.clearIsCopiedTimeout = null
             }, 1500)
         })
     }
 
-    _installOnShopifyStore = (shopifyIntegration) => {
-        this.setState({integrationLoading: shopifyIntegration.get('id')})
+    componentWillUnmount() {
+        clearTimeout(this.clearIsCopiedTimeout)
 
-        if (shopifyIntegration.getIn(['meta', 'need_scope_update'])) {
-            return browserHistory.push(
-                `/app/settings/integrations/shopify/${shopifyIntegration.get('id')}/?error=need_scope_update`
-            )
+        if (this.clipboard) {
+            this.clipboard.destroy()
         }
-
-        const shopifyId = shopifyIntegration.get('id')
-        let shopifyIntegrationIdsList = this.props.integration.getIn(['meta', 'shopify_integration_ids'], fromJS([]))
-
-        if (!shopifyIntegrationIdsList.contains(shopifyId)) {
-            shopifyIntegrationIdsList = shopifyIntegrationIdsList.push(shopifyId)
-        }
-
-        const integration = this.props.integration.setIn(['meta', 'shopify_integration_ids'], shopifyIntegrationIdsList)
-
-        const form = {
-            id: integration.get('id'),
-            type: integration.get('type'),
-            meta: integration.get('meta')
-        }
-
-        return this.props.actions.updateOrCreateIntegration(fromJS(form)).then(() => {
-            this.setState({integrationLoading: null})
-        })
     }
 
-    _removeFromShopifyStore = (integrationId) => {
-        const {integration} = this.props
-
-        const indexToDelete = integration.getIn(['meta', 'shopify_integration_ids'], fromJS([]))
-            .findIndex((value) => value === integrationId)
-
-        const form = {
-            id: integration.get('id'),
-            type: integration.get('type'),
-            meta: integration.get('meta').deleteIn(['shopify_integration_ids', indexToDelete])
-        }
-
-        return this.props.actions.updateOrCreateIntegration(fromJS(form))
-    }
-
-    _getDisplayableType = (integrationType) => {
-        if (integrationType === 'smooch_inside') {
+    _getDisplayableType = (integrationType: string): string => {
+        if (integrationType === SMOOCH_INSIDE_INTEGRATION_TYPE) {
             return 'Chat'
-        } else if (integrationType === 'facebook') {
+        } else if (integrationType === FACEBOOK_INTEGRATION_TYPE) {
             return 'Facebook, Messenger & Instagram'
         }
 
@@ -121,42 +103,18 @@ class RealtimeMessagingIntegrationInstall extends React.Component<Props, State> 
     }
 
     render() {
-        const {
-            integration,
-            shopifyIntegrations,
-            shopifyIntegrationsWithoutChat,
-            shopifyIntegrationsWithoutFacebook
-        } = this.props
+        const {integration, getIntegrationsByTypes, actions} = this.props
 
-        const isChat = this.props.integration.get('type') === 'smooch_inside'
-        const isFacebook = this.props.integration.get('type') === 'facebook'
+        const isChat = integration.get('type') === SMOOCH_INSIDE_INTEGRATION_TYPE
+        const isFacebook = integration.get('type') === FACEBOOK_INTEGRATION_TYPE
 
         if (!integration.isEmpty() && !isChat && !isFacebook) {
             // Something is wrong
             return null
         }
 
-        const shopifyIntegrationsWithoutWidget = isChat
-            ? shopifyIntegrationsWithoutChat
-            : shopifyIntegrationsWithoutFacebook
-
         const integrationName = isChat ? integration.get('name') : integration.getIn(['facebook', 'name'])
-        const integrationAlias = isChat ? 'chat' : 'customer chat'
         const pageTitle = isChat ? 'Installation' : 'Customer chat'
-        const pageDescription = isChat
-            ? 'Let\'s install your chat on your website.'
-            : (
-                <span>
-                    Customer chat allows customers to contact you through Messenger directly on your website.{' '}
-                    <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href="https://docs.gorgias.io/facebok/customer-chat"
-                    >
-                        Learn more.
-                    </a>
-                </span>
-            )
 
         return (
             <div className="full-width">
@@ -187,151 +145,87 @@ class RealtimeMessagingIntegrationInstall extends React.Component<Props, State> 
                 >
                     <Row>
                         <Col md={isChat ? '8' : '6'}>
-                            <p>{pageDescription}</p>
-                            <div>
-                                {
-                                    integration.getIn(['meta', 'shopify_integration_ids'], fromJS([]))
-                                        .map((integrationId) => {
-                                            const shopifyIntegration = shopifyIntegrations.find((integration) => {
-                                                return integration.get('id') === integrationId
-                                            })
+                            {
+                                targetIntegrationTypes.map((targetIntegrationType) => {
+                                    return (
+                                        <IntegrationCard
+                                            key={targetIntegrationType}
+                                            integrationType={targetIntegrationType}
+                                            targetIntegrations={getIntegrationsByTypes(targetIntegrationType)}
+                                            integration={integration}
+                                            updateOrCreateIntegration={actions.updateOrCreateIntegration}
+                                        />
+                                    )
+                                })
+                            }
 
-                                            if (!shopifyIntegration) {
-                                                return null
+                            <Card className={css['integration-card']}>
+                                <CardBody>
+                                    <div className={css['card-body']}>
+                                        <div className={css['logo-wrapper']}>
+                                            <img
+                                                alt="javascript-logo"
+                                                src={`${window.GORGIAS_ASSETS_URL || ''}/static/private/img/integrations/javascript.png`}
+                                            />
+                                        </div>
+                                        <div>
+                                            <h3>Javascript</h3>
+                                            {
+                                                !isChat ? (
+                                                    <p>
+                                                        To install the Messenger widget on your website
+                                                        manually, you first need to whitelist your website's
+                                                        domain for your Facebook page on Facebook.
+                                                        You can do so{' '}
+                                                        <a
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            href={`https://business.facebook.com/${integration.getIn(['facebook', 'page_id'], '')}/settings/?tab=messenger_platform`}
+                                                        >
+                                                            here
+                                                        </a>
+                                                        . In the <b>Whitelisted Domains</b> section,
+                                                        just add the address of you website.<br/><br/>
+                                                        Then, copy the code below and paste it on your website
+                                                        above the <b>{'</body>'}</b> tag:
+                                                    </p>
+                                                ) : (
+                                                    <p>
+                                                        Copy the code below and paste it on your website
+                                                        above the <b>{'</body>'}</b> tag:
+                                                    </p>
+                                                )
                                             }
-
-                                            return (
-                                                <p key={integrationId}>
-                                                    {capitalize(integrationAlias)} installed on{' '}
-                                                    {`${shopifyIntegration.get('name')}`}.{' '}
-                                                    <a
-                                                        href
-                                                        onClick={(e) => {
-                                                            e.preventDefault()
-                                                            this._removeFromShopifyStore(integrationId)
-                                                        }}
-                                                    >
-                                                        Remove
-                                                    </a>
-                                                </p>
-                                            )
-                                        })
-                                }
-                            </div>
-
-                            <div className={classnames(css.form, 'shopifyIntegrationsList')}>
-                                {
-                                    shopifyIntegrationsWithoutWidget.map((integration, idx) => {
-                                        return (
-                                            <Button
-                                                key={idx}
-                                                block
-                                                onClick={() => {
-                                                    this._installOnShopifyStore(integration)
-                                                }}
-                                                className={classnames('mb-2', {
-                                                    'btn-loading': this.state.integrationLoading === integration.get('id')
-                                                })}
-                                                color="secondary"
-                                            >
-                                                <img
-                                                    className="shopifyLogo"
-                                                    src={integrationHelpers.getIconFromType('shopify')}
-                                                />
-                                                Add {integrationAlias} on {integration.get('name')}
-                                            </Button>
-                                        )
-                                    })
-                                }
-                                {
-                                    !shopifyIntegrationsWithoutWidget.isEmpty()
-                                        ? (
-                                            <p>
-                                                Can't see your store here?{' '}
-                                                <Link to="/app/settings/integrations/shopify/new/">Connect it to
-                                                    Gorgias</Link>
-                                            </p>
-                                        ) : (
-                                            <p>
-                                                You're using Shopify?{' '}
-                                                <Link to="/app/settings/integrations/shopify/new/">Connect your store to
-                                                    Gorgias</Link>
-                                                {' '}and add your {integrationAlias} in one click.
-                                            </p>
-                                        )
-                                }
-
-
-                                <div className="divider">OR</div>
-
-                                <Form
-                                    onSubmit={() => browserHistory.push(`/app/settings/integrations/${integration.get('type')}/${integration.get('id')}/`)}>
-
-                                    {
-                                        !isChat ? (
-                                            <p>
-                                                To install the Messenger widget on your website manually, you first need
-                                                to whitelist your website's domain for your Facebook page on Facebook.
-                                                You can do so{' '}
-                                                <a
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    href={`https://business.facebook.com/${integration.getIn(['facebook', 'page_id'], '')}/settings/?tab=messenger_platform`}
-                                                >
-                                                    here
-                                                </a>
-                                                . In the <kbd>Whitelisted Domains</kbd> section, just add the address
-                                                of you website.<br/><br/>
-                                                Then, copy the code below and paste it on your website
-                                                above the {' '}<kbd>{'</body>'}</kbd>{' '}tag:
-                                            </p>
-                                        ) : (
-                                            <p>
-                                                Copy the code below and paste it on your website above the
-                                                {' '}<kbd>{'</body>'}</kbd>{' '}tag:
-                                            </p>
-                                        )
-                                    }
-
-                                    <div className={css.snippet}>
-                                        <Card className="p-0 mb-2">
-                                            <Alert
-                                                color="info"
-                                                className="m-0"
-                                            >
-                                                <pre
-                                                    style={{
-                                                        display: 'flex',
-                                                        height: '160px',
-                                                        color: 'inherit'
-                                                    }}
-                                                    id="code-snippet"
-                                                >
-                                                    {
-                                                        isChat
-                                                            ? renderChatCodeSnippet(integration)
-                                                            : renderFacebookCodeSnippet(integration)
-                                                    }
-                                                </pre>
-                                            </Alert>
-                                        </Card>
-
-                                        <Button
-                                            id="copy-code-snippet"
-                                            type="button"
-                                            color="info"
-                                            className={css.copy}
-                                            data-clipboard-target="#code-snippet"
-                                        >
-                                            <i className="material-icons mr-2">
-                                                file_copy
-                                            </i>
-                                            {this.state.isCopied ? 'Copied!' : 'Copy'}
-                                        </Button>
+                                        </div>
                                     </div>
-                                </Form>
-                            </div>
+                                    <Alert className={css['code-wrapper']}>
+                                        <pre
+                                            id="code-snippet"
+                                            className={css.code}
+                                        >
+                                            {
+                                                isChat
+                                                    ? renderChatCodeSnippet(integration)
+                                                    : renderFacebookCodeSnippet(integration)
+                                            }
+                                        </pre>
+                                    </Alert>
+                                </CardBody>
+                                <Button
+                                    id="copy-code-snippet"
+                                    type="button"
+                                    color="info"
+                                    className={classnames(css.copy, {'mr-4': !isChat})}
+                                    data-clipboard-target="#code-snippet"
+                                >
+                                    <i className="material-icons-outlined mr-2">
+                                        file_copy
+                                    </i>
+                                    {this.state.isCopied ? 'Copied!' : 'Copy'}
+                                </Button>
+                            </Card>
                         </Col>
+
                         {
                             !isChat ? (
                                 <Col md="6">
@@ -355,9 +249,7 @@ class RealtimeMessagingIntegrationInstall extends React.Component<Props, State> 
 const mapStateToProps = (state) => {
     return {
         domain: state.currentAccount.get('domain'),
-        shopifyIntegrationsWithoutChat: integrationSelectors.getShopifyIntegrationsWithoutChat(state),
-        shopifyIntegrationsWithoutFacebook: integrationSelectors.getShopifyIntegrationsWithoutFacebook(state),
-        shopifyIntegrations: integrationSelectors.getIntegrationsByTypes('shopify')(state)
+        getIntegrationsByTypes: integrationSelectors.makeGetIntegrationsByTypes(state)
     }
 }
 
