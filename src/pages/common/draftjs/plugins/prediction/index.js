@@ -6,7 +6,7 @@ import type {Map} from 'immutable'
 import type {PluginMethods} from '../types'
 
 import {
-    createPrediction,
+    createPrediction, hasTypedPrediction,
     insertPrediction, isTypingPrediction,
     removeFirstCharOfPrediction,
     removePrediction,
@@ -30,8 +30,6 @@ const clearCache = () => predictionCache = []
 const inCache = (text: string) => predictionCache.includes((text || '').trim())
 const addCache = (text: string) => predictionCache.push((text || '').trim())
 
-const endpoint = window.PHRASE_PREDICTION_URL
-
 let cancelTokenSource = null
 const cancelApiRequest = () => {
     if (cancelTokenSource) {
@@ -40,6 +38,21 @@ const cancelApiRequest = () => {
 
     cancelTokenSource = CancelToken.source()
     return cancelTokenSource.token
+}
+
+const currentPrediction: {
+    inputText: string,
+    predictionText: string,
+    numberAcceptedCharacters: number
+} = {
+    inputText: '',
+    predictionText: '',
+    numberAcceptedCharacters: 0
+}
+const resetCurrentPrediction = (inputText?: string = '', predictionText?: string = '') => {
+    currentPrediction.inputText = inputText
+    currentPrediction.predictionText = predictionText
+    currentPrediction.numberAcceptedCharacters = 0
 }
 
 const removeExistingPrediction = (editorState) => {
@@ -52,12 +65,12 @@ const removeExistingPrediction = (editorState) => {
     return editorState
 }
 
-const apiRequest = (
+const requestPrediction = (
     text: string = '',
     context: Map<*, *>,
     plugin: PluginMethods
 ) => {
-    return axios.post(endpoint, {
+    return axios.post(window.PHRASE_PREDICTION_URL, {
         query: text,
         context: context.toJS()
     }, {
@@ -82,6 +95,8 @@ const apiRequest = (
                 selection
             )
         )
+
+        resetCurrentPrediction(text, predictionText)
     }).catch((err) => {
         // ignore request cancel
         if (err instanceof Cancel) {
@@ -92,13 +107,42 @@ const apiRequest = (
     })
 }
 
-const completePrediction = (e: KeyboardEvent, plugin: PluginMethods) => {
+const sendFeedback = (
+    context: Map<*, *>,
+    editorState: EditorState,
+    forcePredictionAccepted: ?boolean = false,
+) => {
     if (!predictionKey) {
         return
     }
-    e.preventDefault()
 
-    const newEditorState = usePrediction(predictionKey, plugin.getEditorState())
+    const manuallyTypedPrediction = hasTypedPrediction(predictionKey, editorState)
+    if (manuallyTypedPrediction) {
+        currentPrediction.numberAcceptedCharacters += 1
+    }
+
+    axios.post(window.PHRASE_FEEDBACK_URL, {
+        query_text: currentPrediction.inputText,
+        query_context: context.toJS(),
+        result_prediction_text: currentPrediction.predictionText,
+        result_prediction_accepted: forcePredictionAccepted || manuallyTypedPrediction,
+        result_number_accepted_characters: forcePredictionAccepted
+            ? currentPrediction.predictionText.length
+            : currentPrediction.numberAcceptedCharacters,
+        diverged_phrase: null
+    }).then(() => resetCurrentPrediction())
+}
+
+const completePrediction = (event: KeyboardEvent, plugin: PluginMethods, config: Object) => {
+    if (!predictionKey) {
+        return
+    }
+    event.preventDefault()
+
+    const editorState = plugin.getEditorState()
+    sendFeedback(config.context, editorState, true)
+
+    const newEditorState = usePrediction(predictionKey, editorState)
     predictionKey = null
     plugin.setEditorState(newEditorState)
 }
@@ -122,8 +166,13 @@ const predictionPlugin = (config: { context: Map<*, *> }) => {
                 clearCache()
             }
 
-            if (predictionKey && isTypingPrediction(predictionKey, editorState)) {
-                return removeFirstCharOfPrediction(predictionKey, editorState)
+            if (predictionKey) {
+                if (isTypingPrediction(predictionKey, editorState)) {
+                    currentPrediction.numberAcceptedCharacters += 1
+                    return removeFirstCharOfPrediction(predictionKey, editorState)
+                }
+
+                sendFeedback(config.context, editorState)
             }
 
             cancelApiRequest()
@@ -153,14 +202,14 @@ const predictionPlugin = (config: { context: Map<*, *> }) => {
                 // and not in cache
                 && !inCache(blockText)
             ) {
-                apiRequest(blockText, config.context, plugin)
+                requestPrediction(blockText, config.context, plugin)
                 return newEditorState
             }
 
             return newEditorState
         },
-        onTab: completePrediction,
-        onRightArrow: completePrediction,
+        onTab: (event: KeyboardEvent, plugin: PluginMethods) => completePrediction(event, plugin, config),
+        onRightArrow: (event: KeyboardEvent, plugin: PluginMethods) => completePrediction(event, plugin, config),
     }
 }
 

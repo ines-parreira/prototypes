@@ -94,3 +94,12 @@ export const isTypingPrediction = (entityKey: string, editorState: EditorState) 
 
     return _some(predictionSubstrings, (substring) => currentText.endsWith(substring))
 }
+
+export const hasTypedPrediction = (entityKey: string, editorState: EditorState) => {
+    let currentText = editorState.getCurrentContent().getPlainText()
+    // a trailing whitespace is added by the prediction plugin, so we need to remove it before comparing
+    currentText = currentText.substring(0, currentText.length - 1)
+    const currentPrediction = getPredictionText(entityKey, editorState)
+
+    return currentText.endsWith(currentPrediction)
+}

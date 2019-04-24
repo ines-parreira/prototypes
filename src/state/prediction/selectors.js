@@ -2,12 +2,19 @@
 import {createSelector} from 'reselect'
 import {fromJS} from 'immutable'
 
+import {getCurrentAccountState} from '../currentAccount/selectors'
 import {getCurrentUser} from '../currentUser/selectors'
-import {getTicket} from '../ticket/selectors'
+import {getTicket, getCustomerMessages} from '../ticket/selectors'
 
 export const getContext = createSelector(
-    [getCurrentUser, getTicket],
-    (user, ticket) => {
+    [getCurrentUser, getTicket, getCurrentAccountState, getCustomerMessages],
+    (user, ticket, account, customerMessages) => {
+        let lastMessageIdFromCustomer = null
+        if (customerMessages && !customerMessages.isEmpty()) {
+            lastMessageIdFromCustomer = customerMessages.sortBy(
+                (message) => message.get('created_datetime')).last().get('id')
+        }
+
         let context = fromJS({
             current_user: {
                 firstname: user.get('firstname') || '',
@@ -19,21 +26,39 @@ export const getContext = createSelector(
                 lastname: ticket.getIn(['customer', 'lastname']) || '',
                 name: ticket.getIn(['customer', 'name']) || '',
                 email: ticket.getIn(['customer', 'email']) || '',
-
+            },
+            account: {
+                domain: account.get('domain')
             }
         })
+
+        if (ticket && ticket.get('id')) {
+            context = context.mergeDeep({
+                ticket: {
+                    id: ticket.get('id'),
+                    last_message_id_from_customer: lastMessageIdFromCustomer
+                },
+            })
+        }
+
 
         // if the customer has a shopify integration get it's last order name
         const integrations = ticket.getIn(['customer', 'integrations'])
         if (integrations) {
             integrations.forEach((integration) => {
                 if (integration && integration.get('__integration_type__') === 'shopify') {
-                    const lastOrderName = integration.getIn(['customer', 'last_order_name']) || ''
-                    if (lastOrderName) {
+                    const lastOrder = integration.getIn(['orders', 0]) || fromJS({})
+                    if (!lastOrder.isEmpty()) {
                         context = context.mergeDeep({
                             customer: {
                                 shopify: {
-                                    last_order_name: lastOrderName
+                                    last_order: {
+                                        name: lastOrder.get('name') || null,
+                                        tracking_number: lastOrder.getIn(['fulfillments', 0, 'tracking_number']) || null,
+                                        product_names: lastOrder.get('line_items')
+                                            .map((item) => item.get('name'))
+                                            .toJS()
+                                    }
                                 }
                             }
                         })

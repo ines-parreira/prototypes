@@ -759,7 +759,7 @@ export const errorToChildren = (incomingError: { response: { data: { error: { da
             ${
     //$FlowFixMe
     _map(data, (fieldErrors, fieldName) => {
-        // $FlowFixMe
+    // $FlowFixMe
         return _valuesDeep(fieldErrors).map((fieldError) => {
             return `<li>${fieldName}: ${fieldError}</li>`
         }).join('')
@@ -909,6 +909,6 @@ export const transformSystemMessagesToNotifications = (systemMessages: Array<sys
  */
 export const shouldDisplayExperiment = (): boolean => {
     return window.DEVELOPMENT ||
-        window.location.hostname === 'gorgias.gorgias.io' ||
+        ['gorgias.gorgias.io', 'timbuk2.gorgias.io',].includes(window.location.hostname) ||
         document.cookie.includes('is_gorgias_staff')
 }
