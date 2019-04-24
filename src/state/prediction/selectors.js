@@ -17,9 +17,10 @@ export const getContext = createSelector(
 
         let context = fromJS({
             current_user: {
+                id: user.get('id') || '',
+                email: user.get('email') || '',
                 firstname: user.get('firstname') || '',
                 lastname: user.get('lastname') || '',
-                email: user.get('email') || '',
             },
             customer: {
                 firstname: ticket.getIn(['customer', 'firstname']) || '',
