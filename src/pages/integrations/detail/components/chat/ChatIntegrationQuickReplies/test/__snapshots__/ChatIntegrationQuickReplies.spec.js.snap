@@ -165,7 +165,7 @@ exports[`ChatIntegrationQuickReplies component should render defaults because th
           </Breadcrumb>
         </div>
       </PageHeader>
-      <RealtimeMessagingIntegrationNavigation
+      <ChatIntegrationNavigation
         integration={
           Immutable.Map {
             "name": "my chat integration",
@@ -177,7 +177,100 @@ exports[`ChatIntegrationQuickReplies component should render defaults because th
             },
           }
         }
-      />
+      >
+        <SecondaryNavbar>
+          <Navbar
+            className="navbar"
+            expand={false}
+            tag="nav"
+          >
+            <nav
+              className="navbar navbar"
+            >
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".0"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/smooch_inside/undefined/appearance"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Appearance
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".1"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/smooch_inside/undefined/installation"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Installation
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".2"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/smooch_inside/undefined/preferences"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Preferences
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".3"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/smooch_inside/undefined/campaigns"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Campaigns
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".4"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/smooch_inside/undefined/quick-replies"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Quick replies
+                </a>
+              </Link>
+            </nav>
+          </Navbar>
+        </SecondaryNavbar>
+      </ChatIntegrationNavigation>
       <Container
         className="page-container"
         fluid={true}
@@ -951,7 +1044,7 @@ exports[`ChatIntegrationQuickReplies component should render quick replies from 
           </Breadcrumb>
         </div>
       </PageHeader>
-      <RealtimeMessagingIntegrationNavigation
+      <ChatIntegrationNavigation
         integration={
           Immutable.Map {
             "name": "my chat integration",
@@ -971,7 +1064,100 @@ exports[`ChatIntegrationQuickReplies component should render quick replies from 
             },
           }
         }
-      />
+      >
+        <SecondaryNavbar>
+          <Navbar
+            className="navbar"
+            expand={false}
+            tag="nav"
+          >
+            <nav
+              className="navbar navbar"
+            >
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".0"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/smooch_inside/undefined/appearance"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Appearance
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".1"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/smooch_inside/undefined/installation"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Installation
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".2"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/smooch_inside/undefined/preferences"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Preferences
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".3"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/smooch_inside/undefined/campaigns"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Campaigns
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".4"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/smooch_inside/undefined/quick-replies"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Quick replies
+                </a>
+              </Link>
+            </nav>
+          </Navbar>
+        </SecondaryNavbar>
+      </ChatIntegrationNavigation>
       <Container
         className="page-container"
         fluid={true}

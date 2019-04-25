@@ -236,7 +236,7 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
       </Breadcrumb>
     }
   />
-  <RealtimeMessagingIntegrationNavigation
+  <ChatIntegrationNavigation
     integration={
       Immutable.Map {
         "id": 2,
@@ -462,7 +462,7 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
       </Breadcrumb>
     }
   />
-  <RealtimeMessagingIntegrationNavigation
+  <ChatIntegrationNavigation
     integration={
       Immutable.Map {
         "id": 2,

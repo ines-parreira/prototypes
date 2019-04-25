@@ -186,7 +186,7 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
           </div>
         </div>
       </PageHeader>
-      <RealtimeMessagingIntegrationNavigation
+      <ChatIntegrationNavigation
         integration={
           Immutable.Map {
             "id": 118,
@@ -290,7 +290,7 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
             </nav>
           </Navbar>
         </SecondaryNavbar>
-      </RealtimeMessagingIntegrationNavigation>
+      </ChatIntegrationNavigation>
       <Container
         className="page-container"
         fluid={true}
@@ -520,7 +520,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
           </div>
         </div>
       </PageHeader>
-      <RealtimeMessagingIntegrationNavigation
+      <ChatIntegrationNavigation
         integration={
           Immutable.Map {
             "id": 118,
@@ -635,7 +635,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
             </nav>
           </Navbar>
         </SecondaryNavbar>
-      </RealtimeMessagingIntegrationNavigation>
+      </ChatIntegrationNavigation>
       <Container
         className="page-container"
         fluid={true}

@@ -1,0 +1,35 @@
+@import '~css/new/colors';
+
+:local {
+  .preview {
+    overflow: hidden;
+    background: #f8f9fa;
+    border-radius: 5px;
+    width: 30em;
+
+    pointer-events: none;
+
+    > .titlebar {
+      display: block;
+      height: 2em;
+      padding-left: .4em;
+      background-color: #edeeef;
+
+    }
+
+    > .titlebar:before {
+      display: block;
+      width: 4.2em;
+      height: 100%;
+      content: '';
+      background-image: radial-gradient(ellipse at center, #f8f9fa 0%, #f8f9fa 45%, transparent 45%);
+      background-repeat: repeat-x;
+      background-size: 1.4em 1.4em;
+      background-position: 0 center;
+    }
+
+    > .image {
+      padding: 18px 0 10px 18px;
+    }
+  }
+}

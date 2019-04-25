@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`chat install utils renderChatCodeSnippet should render correctly with new format 1`] = `
+"<!-- Gorgias Chat Widget Start -->
+<div id=\\"gorgias-chat\\">
+<script>window.gorgiasChatParameters = {}</script>
+<script src=\\"config.gorgias.io/foo/chat/bar.js\\" defer></script>
+</div>
+<!-- Gorgias Chat Widget End -->"
+`;

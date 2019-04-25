@@ -56,7 +56,7 @@ exports[`CampaignDetail component should display default value when it's a new c
       </Breadcrumb>
     }
   />
-  <RealtimeMessagingIntegrationNavigation
+  <ChatIntegrationNavigation
     integration={
       Immutable.Map {
         "id": 1,
@@ -330,7 +330,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
       </Breadcrumb>
     }
   />
-  <RealtimeMessagingIntegrationNavigation
+  <ChatIntegrationNavigation
     integration={
       Immutable.Map {
         "id": 1,
@@ -644,7 +644,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
       </Breadcrumb>
     }
   />
-  <RealtimeMessagingIntegrationNavigation
+  <ChatIntegrationNavigation
     integration={
       Immutable.Map {
         "id": 1,

@@ -20,9 +20,10 @@ import Loader from '../../../../common/components/Loader'
 import BooleanField from '../../../../common/forms/BooleanField'
 import PageHeader from '../../../../common/components/PageHeader'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
-import RealtimeMessagingIntegrationNavigation from '../../../common/RealtimeMessagingIntegrationNavigation'
 
 import pageIconDefault from '../../../../../../img/integrations/facebook-page.png'
+
+import FacebookIntegrationNavigation from './FacebookIntegrationNavigation'
 
 export default class FacebookIntegrationDetail extends React.Component {
     state = {
@@ -137,7 +138,7 @@ export default class FacebookIntegrationDetail extends React.Component {
                     </Breadcrumb>
                 )}/>
 
-                <RealtimeMessagingIntegrationNavigation integration={integration}/>
+                <FacebookIntegrationNavigation integration={integration}/>
 
                 <Container
                     fluid

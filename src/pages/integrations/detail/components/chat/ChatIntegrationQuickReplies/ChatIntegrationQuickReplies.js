@@ -6,10 +6,10 @@ import {fromJS, Map, List} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Button, Col, Container, Form, Row} from 'reactstrap'
 import classnames from 'classnames'
 
-import RealtimeMessagingIntegrationNavigation from '../../../../common/RealtimeMessagingIntegrationNavigation'
 import PageHeader from '../../../../../common/components/PageHeader'
 import BooleanField from '../../../../../common/forms/BooleanField'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
+import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
 import ChatIntegrationPreview from '../ChatIntegrationPreview/ChatIntegrationPreview'
 import ListField from '../../../../../common/forms/ListField'
 import {
@@ -114,7 +114,7 @@ class ChatIntegrationQuickReplies extends React.Component<Props, State> {
                     </Breadcrumb>
                 )}/>
 
-                <RealtimeMessagingIntegrationNavigation integration={integration}/>
+                <ChatIntegrationNavigation integration={integration}/>
 
                 <Container
                     fluid

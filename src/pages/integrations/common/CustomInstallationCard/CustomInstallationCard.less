@@ -1,0 +1,47 @@
+@import '~css/new/colors';
+
+:local {
+  .integration-card {
+    margin-bottom: 15px;
+    transition: all .12s ease-out;
+    position: relative;
+
+    &:hover {
+      top: -1px;
+      box-shadow: #ddd 1px 1px 3px 1px;
+    }
+
+    .javascript-card-header {
+      display: flex;
+
+      .logo-wrapper {
+        min-width: 50px;
+        max-width: 50px;
+        margin-right: 20px;
+
+        img {
+          max-width: 100%;
+        }
+      }
+    }
+
+    .code-wrapper {
+      border: 0;
+      margin: 0;
+      background: @quartz;
+
+      .code {
+        display: flex;
+        height: 160px;
+        color: @darkIndigo;
+      }
+    }
+
+    .copy {
+      position: absolute !important;
+      right: 28px;
+      bottom: 155px;
+      z-index: 1;
+    }
+  }
+}

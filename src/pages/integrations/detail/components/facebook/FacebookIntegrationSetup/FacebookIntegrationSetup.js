@@ -1,0 +1,311 @@
+// @flow
+import React from 'react'
+import {connect} from 'react-redux'
+import {Link, browserHistory} from 'react-router'
+import classnames from 'classnames'
+import {fromJS, type List, type Map} from 'immutable'
+import _truncate from 'lodash/truncate'
+
+import {
+    Form,
+    FormGroup,
+    Breadcrumb,
+    BreadcrumbItem,
+    Button,
+    Container,
+    Alert,
+} from 'reactstrap'
+
+import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration'
+
+import Loader from '../../../../../common/components/Loader'
+import ToggleButton from '../../../../../common/components/ToggleButton'
+import PageHeader from '../../../../../common/components/PageHeader'
+import Pagination from '../../../../../common/components/Pagination'
+import BooleanField from '../../../../../common/forms/BooleanField'
+
+import * as integrationsSelectors from '../../../../../../state/integrations/selectors'
+
+import pageIconDefault from '../../../../../../../img/integrations/facebook-page.png'
+
+import css from './FacebookIntegrationSetup.less'
+
+
+
+type Props = {
+    integrations: List<Map<*,*>>,
+    pagination: Object,
+    actions: Object,
+    loading: Object,
+}
+
+type State = {
+    selectedIntegrations: List<Map<*,*>>,
+    isLoading: boolean
+}
+
+
+@connect((state) => {
+    // Here we only want the DELETED integrations of the current_user
+    return {
+        integrations: integrationsSelectors.getOnboardingIntegrations(FACEBOOK_INTEGRATION_TYPE)(state),
+        pagination: integrationsSelectors.getOnboardingMeta(FACEBOOK_INTEGRATION_TYPE)(state)
+    }
+})
+export default class FacebookIntegrationSetup extends React.Component<Props, State> {
+    state = {
+        selectedIntegrations: fromJS({}),
+        isLoading: false
+    }
+
+    fetchInterval = null
+
+    componentWillMount() {
+        this._fetchPage(this.props.pagination.get('page') || 1)
+
+        this.fetchInterval = setInterval(
+            () => this._fetchPage(this.props.pagination.get('page') || 1),
+            3000
+        )
+    }
+
+    componentWillUnmount() {
+        if (this.fetchInterval) {
+            clearInterval(this.fetchInterval)
+        }
+    }
+
+    _activateSelectedIntegrations = (evt: Event) => {
+        evt.preventDefault()
+        const {actions} = this.props
+        const {selectedIntegrations} = this.state
+
+        const data = selectedIntegrations
+            .map((integration) => fromJS(integration).set('deleted_datetime', null))
+            .toList().toJS()
+
+        actions.activateOnboardingIntegrations(data, FACEBOOK_INTEGRATION_TYPE).then(() => actions.fetchIntegrations())
+        browserHistory.push('/app/settings/integrations/facebook')
+    }
+
+    _toggleIntegration = (integration: Map<*,*>, enable: boolean) => {
+        let {selectedIntegrations} = this.state
+        const id = integration.get('id')
+
+        if (enable) {
+            selectedIntegrations = selectedIntegrations.set(id, integration.setIn(['facebook', 'settings'], fromJS({
+                messenger_enabled: true,
+                posts_enabled: true,
+                instagram_comments_enabled: !!integration.getIn(['meta', 'instagram', 'id']),
+            })))
+        } else {
+            selectedIntegrations = selectedIntegrations.delete(id)
+        }
+
+        this.setState({selectedIntegrations})
+    }
+
+    _getSettingValue = (id: number, key: string): boolean => {
+        return this.state.selectedIntegrations.getIn([id, 'facebook', 'settings', key]) || false
+    }
+
+    _setSettingValue = (id: number, key: string, value: boolean) => {
+        this.setState({
+            selectedIntegrations: this.state.selectedIntegrations.setIn([id, 'facebook', 'settings', key], value)
+        })
+    }
+
+    _fetchPage = (page: number, silent: boolean = true) => {
+        if (!silent) {
+            this.setState({isLoading: true})
+        }
+
+        this.props.actions.fetchFacebookOnboardingIntegrations(page, !silent).then(() => {
+            if (!silent) {
+                this.setState({isLoading: false})
+            }
+        })
+    }
+
+    _renderIntegrations = () => {
+        const {integrations, pagination} = this.props
+        const {selectedIntegrations, isLoading} = this.state
+
+        if (integrations.isEmpty()) {
+            return null
+        }
+
+        return (
+            <div className="mb-4">
+                <p className="font-weight-medium">
+                    We found {pagination.get('item_count')} pages associated with your account.{' '}
+                    Please activate the pages you want to use with Gorgias:
+                </p>
+                <div className="mb-2">
+                    {
+                        isLoading ? <Loader></Loader> : integrations.map((integration) => {
+                            const id = integration.get('id')
+                            const page = integration.get('facebook')
+
+                            const instagramIsDisabled = !integration.getIn(['meta', 'instagram', 'id'])
+                            const pageEnabled = selectedIntegrations.has(id)
+
+                            return (
+                                <div
+                                    key={id}
+                                    className={classnames(css.page, {
+                                        [css.enabled]: !!pageEnabled
+                                    })}
+                                >
+                                    <div className="d-flex flex-wrap flex-md-nowrap">
+                                        <div className="mr-auto">
+                                            <div>
+                                                <img
+                                                    className={classnames('image rounded mr-3 mb-2 mb-md-0', css.icon)}
+                                                    src={page.getIn(['picture', 'data', 'url'], pageIconDefault)}
+                                                />
+                                                <div className={classnames(css.details, 'mr-3 text-faded')}>
+                                                    <h3 className={classnames(css.name, 'mr-3')}>
+                                                        {page.get('name')}
+                                                    </h3>
+                                                    <span>{_truncate(page.get('about'), {length: 100})}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <ToggleButton
+                                            value={pageEnabled}
+                                            onChange={(value) => this._toggleIntegration(integration, value)}
+                                        />
+                                    </div>
+
+                                    <div className={css.settings}>
+                                        <p className="font-weight-medium">
+                                        Choose the Facebook channels you want to use to communicate with your customers:
+                                        </p>
+
+                                        <div className="d-md-flex">
+                                            <FormGroup className="mr-5">
+                                                <BooleanField
+                                                    name={`${id}.messenger_enabled`}
+                                                    type="checkbox"
+                                                    label="Enable Messenger"
+                                                    value={this._getSettingValue(id, 'messenger_enabled')}
+                                                    onChange={(value) => this._setSettingValue(id, 'messenger_enabled', value)}
+                                                />
+                                                <BooleanField
+                                                    name={`${id}.posts_enabled`}
+                                                    type="checkbox"
+                                                    label="Enable Facebook posts & comments"
+                                                    value={this._getSettingValue(id, 'posts_enabled')}
+                                                    onChange={(value) => this._setSettingValue(id, 'posts_enabled', value)}
+                                                />
+                                                {!instagramIsDisabled && (
+                                                    <BooleanField
+                                                        name={`${id}.instagram_comments_enabled`}
+                                                        type="checkbox"
+                                                        label="Enable Instagram comments"
+                                                        value={this._getSettingValue(id, 'instagram_comments_enabled')}
+                                                        onChange={(value) => this._setSettingValue(id, 'instagram_comments_enabled', value)}
+                                                    />
+                                                )}
+                                            </FormGroup>
+                                            {instagramIsDisabled && (
+                                                <div>
+                                                    <Alert
+                                                        color="warning"
+                                                        className="d-flex align-items-center"
+                                                    >
+                                                        <i className="material-icons md-3 mr-3">
+                                                        warning
+                                                        </i>
+                                                    Create an Instagram account for this page and you will be able to
+                                                    enable Instagram comments.
+                                                    </Alert>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <p className="font-weight-medium">
+                                        Import your Facebook data:
+                                        </p>
+                                        <div className="d-md-flex">
+                                            <FormGroup className="mr-5">
+                                                <BooleanField
+                                                    name={`${id}.import_history_enabled`}
+                                                    type="checkbox"
+                                                    label="Import 30 days of history (posts and comments) as closed tickets"
+                                                    value={this._getSettingValue(id, 'import_history_enabled')}
+                                                    onChange={(value) => this._setSettingValue(id, 'import_history_enabled', value)}
+                                                />
+                                            </FormGroup>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+                <Pagination
+                    onChange={(page) => this._fetchPage(page, false)}
+                    pageCount={pagination.get('nb_pages')}
+                    currentPage={pagination.get('page')}
+                />
+            </div>
+        )
+    }
+
+
+    render() {
+        const {loading} = this.props
+        const {selectedIntegrations} = this.state
+
+        return (
+            <div className="full-width">
+                <PageHeader title={(
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations">Integrations</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations/facebook">Facebook</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>
+                            Facebook Pages setup
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                )}/>
+
+                <Container
+                    fluid
+                    className="page-container"
+                >
+                    <h1>Facebook Pages setup</h1>
+                    <p>
+                        One last step: choose the pages you want to manage with Gorgias.
+                        <br/>
+                        If you just wanted to re-activate your Facebook integration or update your permissions:
+                        it's done, you can leave this page.
+                    </p>
+
+                    <Form onSubmit={this._activateSelectedIntegrations}>
+                        {this._renderIntegrations()}
+
+                        <div>
+                            <Button
+                                type="submit"
+                                color="success"
+                                disabled={selectedIntegrations.isEmpty()}
+                                className={classnames({
+                                    'btn-loading': loading.get('updateIntegration'),
+                                })}
+                            >
+                                Save changes
+                            </Button>
+                        </div>
+                    </Form>
+                </Container>
+            </div>
+        )
+    }
+}
+

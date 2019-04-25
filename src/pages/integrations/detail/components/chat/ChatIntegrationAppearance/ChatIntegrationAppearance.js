@@ -21,6 +21,7 @@ import {
 
 
 import Loader from '../../../../../common/components/Loader'
+import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
 import ChatIntegrationPreview from '../ChatIntegrationPreview/ChatIntegrationPreview'
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
 
@@ -28,7 +29,6 @@ import InputField from '../../../../../common/forms/InputField'
 import ColorField from '../../../../../common/forms/ColorField'
 
 import PageHeader from '../../../../../common/components/PageHeader'
-import RealtimeMessagingIntegrationNavigation from '../../../../common/RealtimeMessagingIntegrationNavigation'
 import BooleanField from '../../../../../common/forms/BooleanField'
 
 import css from './ChatIntegrationAppearance.less'
@@ -164,7 +164,7 @@ class ChatIntegrationAppearance extends React.Component {
                 )}/>
 
                 {isUpdate && (
-                    <RealtimeMessagingIntegrationNavigation integration={integration}/>
+                    <ChatIntegrationNavigation integration={integration}/>
                 )}
 
                 <Container

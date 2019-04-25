@@ -4,6 +4,16 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {fromJS} from 'immutable'
 
+import {
+    AIRCALL_INTEGRATION_TYPE,
+    EMAIL_INTEGRATION_TYPE,
+    FACEBOOK_INTEGRATION_TYPE,
+    HTTP_INTEGRATION_TYPE, RECHARGE_INTEGRATION_TYPE,
+    SHOPIFY_INTEGRATION_TYPE, SMILE_INTEGRATION_TYPE,
+    SMOOCH_INSIDE_INTEGRATION_TYPE,
+    SMOOCH_INTEGRATION_TYPE
+} from '../../../constants/integration'
+
 import {compare} from '../../../utils'
 
 import * as IntegrationsActions from '../../../state/integrations/actions'
@@ -11,21 +21,20 @@ import * as IntegrationsSelectors from '../../../state/integrations/selectors'
 
 import AircallIntegrationList from './components/aircall/AircallIntegrationList'
 import AircallIntegrationCreate from './components/aircall/AircallIntegrationCreate'
+
 import OutlookIntegrationSetup from './components/email/outlook/OutlookIntegrationSetup'
 
 import FacebookIntegrationDetail from './components/facebook/FacebookIntegrationDetail'
 import FacebookIntegrationList from './components/facebook/FacebookIntegrationList'
+import FacebookIntegrationPreferences from './components/facebook/FacebookIntegrationPreferences'
 import FacebookIntegrationSetup from './components/facebook/FacebookIntegrationSetup'
+import FacebookIntegrationCustomerChat from './components/facebook/FacebookIntegrationCustomerChat'
 
 import HTTPIntegrationList from './components/http/HTTPIntegrationList'
 
-import ChatIntegrationList from './components/chat/ChatIntegrationList'
-import ChatIntegrationAppearance from './components/chat/ChatIntegrationAppearance'
-import RealtimeMessagingIntegrationInstall from './../common/RealtimeMessagingIntegrationInstall'
-import RealtimeMessagingIntegrationPreferences from './../common/RealtimeMessagingIntegrationPreferences'
-
 import SmoochIntegrationDetail from './components/smooch/SmoochIntegrationDetail'
 import SmoochIntegrationList from './components/smooch/SmoochIntegrationList'
+import SmoochIntegrationPreferences from './components/smooch/SmoochIntegrationPreferences'
 
 import ShopifyIntegrationList from './components/shopify/ShopifyIntegrationList'
 import ShopifyIntegrationDetail from './components/shopify/ShopifyIntegrationDetail'
@@ -41,9 +50,15 @@ import EmailIntegrationUpdate from './components/email/EmailIntegrationUpdate/in
 import EmailIntegrationCreate from './components/email/EmailIntegrationCreate/index'
 import EmailIntegrationCreateForwarding from './components/email/EmailIntegrationCreateForwarding/index'
 import EmailIntegrationCreateVerification from './components/email/EmailIntegrationCreateVerification'
+
+import ChatIntegrationList from './components/chat/ChatIntegrationList'
+import ChatIntegrationAppearance from './components/chat/ChatIntegrationAppearance'
 import ChatIntegrationCampaigns from './components/chat/ChatIntegrationCampaigns/ChatIntegrationCampaigns'
 import ChatIntegrationQuickReplies from './components/chat/ChatIntegrationQuickReplies'
-import CampaignDetail from './components/chat/ChatIntegrationCampaigns/CampaignDetail/CampaignDetail'
+import ChatIntegrationPreferences from './components/chat/ChatIntegrationPreferences'
+import ChatIntegrationInstall from './components/chat/ChatIntegrationInstall'
+import CampaignDetail from './components/chat/ChatIntegrationCampaigns/CampaignDetail'
+
 import HTTPIntegrationOverview from './components/http/HTTPIntegrationOverview/HTTPIntegrationOverview'
 import HTTPIntegrationEvents from './components/http/HTTPIntegrationEvents'
 import HTTPIntegrationEvent from './components/http/HTTPIntegrationEvent'
@@ -96,7 +111,7 @@ class IntegrationDetailContainer extends React.Component {
         const redirectUri = this.props.getRedirectUri(params.integrationType)
 
         switch (params.integrationType) {
-            case 'aircall':
+            case AIRCALL_INTEGRATION_TYPE:
                 if (isDetail) {
                     return (
                         <AircallIntegrationCreate/>
@@ -109,7 +124,7 @@ class IntegrationDetailContainer extends React.Component {
                     />
                 )
 
-            case 'email':
+            case EMAIL_INTEGRATION_TYPE:
                 if (isDetail) {
                     if (isSetup) {
                         return (
@@ -164,7 +179,7 @@ class IntegrationDetailContainer extends React.Component {
                     />
                 )
 
-            case 'facebook':
+            case FACEBOOK_INTEGRATION_TYPE:
                 if (isDetail) {
                     if (isSetup) {
                         return (
@@ -177,7 +192,7 @@ class IntegrationDetailContainer extends React.Component {
 
                     if (params.extra === 'customer_chat') {
                         return (
-                            <RealtimeMessagingIntegrationInstall
+                            <FacebookIntegrationCustomerChat
                                 actions={actions}
                                 loading={commonProps.loading}
                                 integration={commonProps.integration}
@@ -187,7 +202,7 @@ class IntegrationDetailContainer extends React.Component {
 
                     if (params.extra === 'preferences') {
                         return (
-                            <RealtimeMessagingIntegrationPreferences
+                            <FacebookIntegrationPreferences
                                 actions={actions}
                                 loading={commonProps.loading}
                                 integration={commonProps.integration}
@@ -212,7 +227,7 @@ class IntegrationDetailContainer extends React.Component {
                     />
                 )
 
-            case 'http':
+            case HTTP_INTEGRATION_TYPE:
                 if (isDetail) {
                     if (params.extra === 'events') {
                         if (params.subId) {
@@ -266,11 +281,11 @@ class IntegrationDetailContainer extends React.Component {
                     />
                 )
 
-            case 'smooch_inside':
+            case SMOOCH_INSIDE_INTEGRATION_TYPE:
                 if (isDetail) {
                     if (params.extra === 'installation') {
                         return (
-                            <RealtimeMessagingIntegrationInstall
+                            <ChatIntegrationInstall
                                 actions={actions}
                                 loading={commonProps.loading}
                                 integration={commonProps.integration}
@@ -280,7 +295,7 @@ class IntegrationDetailContainer extends React.Component {
 
                     if (params.extra === 'preferences') {
                         return (
-                            <RealtimeMessagingIntegrationPreferences
+                            <ChatIntegrationPreferences
                                 actions={actions}
                                 loading={commonProps.loading}
                                 integration={commonProps.integration}
@@ -324,11 +339,11 @@ class IntegrationDetailContainer extends React.Component {
                     />
                 )
 
-            case 'smooch':
+            case SMOOCH_INTEGRATION_TYPE:
                 if (isDetail) {
                     if (params.extra === 'preferences') {
                         return (
-                            <RealtimeMessagingIntegrationPreferences
+                            <SmoochIntegrationPreferences
                                 actions={actions}
                                 loading={commonProps.loading}
                                 integration={commonProps.integration}
@@ -356,7 +371,7 @@ class IntegrationDetailContainer extends React.Component {
                     />
                 )
 
-            case 'shopify':
+            case SHOPIFY_INTEGRATION_TYPE:
                 if (isDetail) {
                     return (
                         <ShopifyIntegrationDetail
@@ -377,13 +392,13 @@ class IntegrationDetailContainer extends React.Component {
                     />
                 )
 
-            case 'recharge':
+            case RECHARGE_INTEGRATION_TYPE:
                 if (isDetail) {
                     return (
                         <RechargeIntegrationDetail
                             actions={actions}
                             integration={commonProps.integration}
-                            shopifyIntegrations={getEligibleShopifyIntegrationsFor('recharge')}
+                            shopifyIntegrations={getEligibleShopifyIntegrationsFor(RECHARGE_INTEGRATION_TYPE)}
                             isUpdate={isUpdate}
                             loading={commonProps.loading}
                             redirectUri={redirectUri}
@@ -395,18 +410,18 @@ class IntegrationDetailContainer extends React.Component {
                     <RechargeIntegrationList
                         actions={actions}
                         integrations={commonProps.integrations}
-                        shopifyIntegrations={getEligibleShopifyIntegrationsFor('recharge')}
+                        shopifyIntegrations={getEligibleShopifyIntegrationsFor(RECHARGE_INTEGRATION_TYPE)}
                         loading={commonProps.loading}
                     />
                 )
 
-            case 'smile':
+            case SMILE_INTEGRATION_TYPE:
                 if (isDetail) {
                     return (
                         <SmileIntegrationDetail
                             actions={actions}
                             integration={commonProps.integration}
-                            shopifyIntegrations={getEligibleShopifyIntegrationsFor('smile')}
+                            shopifyIntegrations={getEligibleShopifyIntegrationsFor(SMILE_INTEGRATION_TYPE)}
                             isUpdate={isUpdate}
                             loading={commonProps.loading}
                             redirectUri={redirectUri}
@@ -418,7 +433,7 @@ class IntegrationDetailContainer extends React.Component {
                     <SmileIntegrationList
                         actions={actions}
                         integrations={commonProps.integrations}
-                        shopifyIntegrations={getEligibleShopifyIntegrationsFor('smile')}
+                        shopifyIntegrations={getEligibleShopifyIntegrationsFor(SMILE_INTEGRATION_TYPE)}
                         loading={commonProps.loading}
                     />
                 )

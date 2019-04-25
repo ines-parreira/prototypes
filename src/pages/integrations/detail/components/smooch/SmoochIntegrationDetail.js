@@ -20,7 +20,8 @@ import InputField from '../../../../common/forms/InputField'
 
 import Loader from '../../../../common/components/Loader'
 import PageHeader from '../../../../common/components/PageHeader'
-import RealtimeMessagingIntegrationNavigation from '../../../common/RealtimeMessagingIntegrationNavigation'
+
+import SmoochIntegrationNavigation from './SmoochIntegrationNavigation'
 
 class SmoochIntegrationDetail extends React.Component {
     constructor(props) {
@@ -133,7 +134,7 @@ class SmoochIntegrationDetail extends React.Component {
                     </Breadcrumb>
                 )}/>
 
-                <RealtimeMessagingIntegrationNavigation integration={integration}/>
+                <SmoochIntegrationNavigation integration={integration}/>
 
                 <Container
                     fluid

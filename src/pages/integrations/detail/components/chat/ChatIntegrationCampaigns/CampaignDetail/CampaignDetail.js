@@ -25,7 +25,7 @@ import {convertToHTML} from '../../../../../../../utils/editor'
 
 import {CAMPAIGNS_TRIGGER_KEYS, GRAVATAR_URL_TEMPLATE} from '../../../../../../../config/integrations/chat'
 import PageHeader from '../../../../../../common/components/PageHeader'
-import RealtimeMessagingIntegrationNavigation from '../../../../../common/RealtimeMessagingIntegrationNavigation'
+import ChatIntegrationNavigation from '../../ChatIntegrationNavigation'
 
 import CampaignPreview from './../CampaignPreview/CampaignPreview'
 import css from './CampaignDetail.less'
@@ -352,7 +352,7 @@ export class CampaignDetail extends React.Component {
                     </Breadcrumb>
                 )}/>
 
-                <RealtimeMessagingIntegrationNavigation integration={integration}/>
+                <ChatIntegrationNavigation integration={integration}/>
 
                 <Container
                     fluid

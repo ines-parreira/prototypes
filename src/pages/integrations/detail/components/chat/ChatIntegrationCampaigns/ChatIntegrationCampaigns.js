@@ -12,7 +12,7 @@ import ToggleButton from '../../../../../common/components/ToggleButton'
 import * as campaignActions from '../../../../../../state/campaigns/actions'
 import PageHeader from '../../../../../common/components/PageHeader'
 import ForwardIcon from '../../ForwardIcon'
-import RealtimeMessagingIntegrationNavigation from '../../../../common/RealtimeMessagingIntegrationNavigation'
+import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
 
 @connect(null, {
     updateCampaign: campaignActions.updateCampaign
@@ -70,7 +70,7 @@ export default class ChatIntegrationCampaigns extends React.Component {
                     </Button>
                 </PageHeader>
 
-                <RealtimeMessagingIntegrationNavigation integration={integration}/>
+                <ChatIntegrationNavigation integration={integration}/>
 
                 <Container
                     fluid
