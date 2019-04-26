@@ -11,8 +11,3 @@ export const getStat = (statName: string) => createSelector(
     [getStats],
     (state: Map<*, *>) => state.get(statName, fromJS({}))
 )
-
-export const getFilters = createSelector(
-    [getStats],
-    (state: Map<*, *>) => state.getIn(['_internal', 'filters'])
-)

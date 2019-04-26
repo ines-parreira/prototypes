@@ -3,10 +3,15 @@ import axios from 'axios'
 
 import type {dispatchType, actionType} from '../types'
 import {saveFileAsDownloaded} from '../../utils/file'
-import {getHashOfObj} from '../../utils'
 
 import * as constants from './constants'
 
+export function setMeta(meta: {} = {}): actionType {
+    return {
+        type: constants.SET_STATS_META,
+        meta
+    }
+}
 
 export function setFilters(filters: Object): actionType {
     return {
@@ -15,30 +20,30 @@ export function setFilters(filters: Object): actionType {
     }
 }
 
-export function resetFilters(): actionType {
-    return {type: constants.RESET_STATS_FILTERS}
-}
-
-
 /**
  * Fetch a statistic
  *
  * @param {String} name - the name of the statistic to fetch
+ * @param {Object} meta - the period (datetimes)
  * @param {Object} filters - the filters to apply on the statistics
  * @param {String} label - the key under which the statistic will be saved in the reducer
  * @returns {Promise}
  */
-export function fetchStat(name: string, filters: Object = {}, label?: string) {
+export function fetchStat(name: string, meta: {} = {}, filters: {} = {}, label?: string) {
     return (dispatch: dispatchType) => {
+        const params = {
+            ...meta,
+            filters: filters,
+        }
         const config = {timeout: 60000 * 3}
-        return axios.post(`/api/stats/${name}/`, {filters}, config)
-            .then((resp) =>resp.data)
-            .then((stat) => {
+
+        return axios.post(`/api/stats/${name}/`, params, config)
+            .then((json = {}) => json.data)
+            .then((resp) => {
                 dispatch({
                     type: constants.FETCH_STATS_SUCCESS,
                     name: label || name,
-                    filtersHash: getHashOfObj(filters),
-                    stat
+                    resp
                 })
             }, (error) => {
                 return dispatch({
