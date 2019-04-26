@@ -15,9 +15,7 @@ import {
     Form,
 } from 'reactstrap'
 
-import {TIMES_BEFORE_SPLIT} from '../../../../../../config'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
-import {hoursToSeconds} from '../../../../../../utils'
 import PageHeader from '../../../../../common/components/PageHeader'
 import BooleanField from '../../../../../common/forms/BooleanField'
 import InputField from '../../../../../common/forms/InputField'
@@ -32,7 +30,6 @@ type Props = {
 type State = {
     autoResponderEnabled: boolean,
     autoResponderText: string,
-    timeBeforeSplit: number,
     isUpdating: boolean
 }
 
@@ -43,7 +40,6 @@ export default class FacebookIntegrationPreferences extends React.Component<Prop
     state = {
         autoResponderEnabled: false,
         autoResponderText: 'We\'re away at the moment. Leave us your email and we\'ll follow up shortly.',
-        timeBeforeSplit: hoursToSeconds(24),
         isUpdating: false
     }
 
@@ -53,7 +49,6 @@ export default class FacebookIntegrationPreferences extends React.Component<Prop
         this.setState(_omitBy({
             autoResponderEnabled: integration.getIn(['meta', 'preferences', 'auto_responder', 'enabled']),
             autoResponderText: integration.getIn(['meta', 'preferences', 'auto_responder', 'text']),
-            timeBeforeSplit: integration.getIn(['meta', 'preferences', 'time_before_split'])
         }, _isUndefined))
 
         this.isInitialized = true
@@ -86,8 +81,7 @@ export default class FacebookIntegrationPreferences extends React.Component<Prop
                     auto_responder: {
                         enabled: this.state.autoResponderEnabled,
                         text: this.state.autoResponderText
-                    },
-                    time_before_split: parseInt(this.state.timeBeforeSplit)
+                    }
                 }
             })
         })
@@ -98,7 +92,7 @@ export default class FacebookIntegrationPreferences extends React.Component<Prop
     }
 
     render() {
-        const {autoResponderEnabled, autoResponderText, isUpdating, timeBeforeSplit} = this.state
+        const {autoResponderEnabled, autoResponderText, isUpdating} = this.state
         const {integration} = this.props
 
         return (
@@ -158,32 +152,6 @@ export default class FacebookIntegrationPreferences extends React.Component<Prop
                                 rows="3"
                                 required
                             />
-                        </div>
-
-                        <div className="mb-4">
-                            <h4>
-                                Inactivity settings
-                            </h4>
-                            <InputField
-                                type="select"
-                                name="timeBeforeSplit"
-                                label="Inactivity period between chat tickets"
-                                help="After a certain period without any new message on a chat ticket, Gorgias will
-                                create a new ticket the next time the customer contacts you over chat."
-                                value={timeBeforeSplit}
-                                onChange={(timeBeforeSplit) => this.setState({timeBeforeSplit})}
-                            >
-                                {
-                                    TIMES_BEFORE_SPLIT.map((interval, idx) => (
-                                        <option
-                                            key={idx}
-                                            value={interval.value}
-                                        >
-                                            {interval.label}
-                                        </option>
-                                    ))
-                                }
-                            </InputField>
                         </div>
 
                         <div>

@@ -65,24 +65,6 @@ describe('ChatIntegrationPreferences component', () => {
         expect(component.find('textarea#id-autoResponderText').props().value).toBe(autoResponderText)
     })
 
-    it('should set timeBeforeSplit value', () => {
-        const timeBeforeSplit = 1
-        const component = mount(
-            <ChatIntegrationPreferences
-                store={mockStore({})}
-                integration={fromJS({
-                    id: 2,
-                    meta: {
-                        preferences: {
-                            time_before_split: timeBeforeSplit
-                        }
-                    }
-                })}
-            />
-        )
-        expect(component.find('select#id-timeBeforeSplit').props().value).toBe(timeBeforeSplit)
-    })
-
     it('should submit the form with defaults', () => {
         const store = mockStore({})
 
@@ -94,7 +76,6 @@ describe('ChatIntegrationPreferences component', () => {
                         enabled: false,
                         text: 'We\'re away at the moment. Leave us your email and we\'ll follow up shortly.',
                     },
-                    time_before_split: 6 * 60 * 60,
                     email_capture: {
                         enabled: false,
                         online: {
@@ -140,7 +121,6 @@ describe('ChatIntegrationPreferences component', () => {
                         enabled: true,
                         text: 'Pizza Pepperoni',
                     },
-                    time_before_split: 1,
                     email_capture: {
                         enabled: false,
                         online: {
