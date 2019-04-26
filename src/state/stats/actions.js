@@ -59,13 +59,15 @@ export function fetchStat(name: string, meta: {} = {}, filters: {} = {}, label?:
  * Download a statistic
  *
  * @param {String} name - the name of the statistic to download
+ * @param {Object} meta - the period (datetimes)
  * @param {Object} filters - the filters to apply on the statistics
  * @returns {Promise}
  */
-export function downloadStatistic(name: string, filters: Object = {}) {
+export function downloadStatistic(name: string, meta: Object = {}, filters: {} = {}) {
     return (dispatch: dispatchType) => {
         const params = {
             responseType: 'blob',
+            ...meta,
             filters,
         }
         const config = {timeout: 60000 * 3}
@@ -94,4 +96,3 @@ export function downloadStatistic(name: string, filters: Object = {}) {
             })
     }
 }
-

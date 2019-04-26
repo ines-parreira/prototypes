@@ -10,4 +10,4 @@ Array [
 ]
 `;
 
-exports[`actions stats download statistic should download a statistic and save file downloaded 1`] = `"{\\"responseType\\":\\"blob\\",\\"filters\\":{\\"tags\\":[1,2,3]}}"`;
+exports[`actions stats download statistic should download a statistic and save file downloaded 1`] = `"{\\"responseType\\":\\"blob\\",\\"tags\\":[1,2,3],\\"filters\\":{}}"`;
