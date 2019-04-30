@@ -171,4 +171,16 @@ describe('Content', () => {
         )
         expect(component.render().text()).toBe('"text" <3')
     })
+
+    it('should ignore whitespace only body', () => {
+        const component = mount(
+            <Content
+                text="text"
+                html="
+
+                "
+            />,
+        )
+        expect(component.render().text()).toBe('text')
+    })
 })

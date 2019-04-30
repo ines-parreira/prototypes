@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
 import classNames from 'classnames'
+import _trim from 'lodash/trim'
 
 import {proxifyImages} from '../../../../../utils'
 import {linkifyHtml, linkifyString, sanitizeHtmlDefault} from '../../../../../utils/html'
@@ -47,7 +48,14 @@ export default class Content extends React.Component<Props, State> {
     }
 
     render() {
-        const {html, text, strippedHtml, strippedText} = this.props
+        let {html, text, strippedHtml, strippedText} = this.props
+
+        // trim values so we avoid displaying space only values
+        html = _trim(html)
+        text = _trim(text)
+        strippedHtml = _trim(strippedHtml)
+        strippedText = _trim(strippedText)
+
         const content = html || text || ''
         const isHtml = !!html
         const strippedContent = html && strippedHtml ? strippedHtml : strippedText
