@@ -33,7 +33,6 @@ export default class PeriodPicker extends React.Component {
         return !this.props.startDatetime.isSame(nextProps.startDatetime)
             || !this.props.endDatetime.isSame(nextProps.endDatetime)
             || this.props.isDisabled !== nextProps.isDisabled
-            || this.props.onChange !== nextProps.onChange
     }
 
     componentWillReceiveProps(nextProps) {

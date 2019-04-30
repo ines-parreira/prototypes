@@ -1,10 +1,10 @@
 import React from 'react'
-import {mount} from 'enzyme'
+import {mount, shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import StatsView from '../StatsView'
+import StatsView, {StatsView as StatsViewComponent} from '../StatsView'
 
 const mockStore = configureMockStore([thunk])
 
@@ -47,6 +47,65 @@ describe('StatsView', () => {
             )
 
             expect(component).toMatchSnapshot()
+        })
+
+        it('should not mark the statistic as not loading because the filters used to ' +
+            'fetch the statistic do not match the current filters', () => {
+            const component = shallow(
+                <StatsViewComponent
+                    config={fromJS({
+                        name: 'Satisfaction',
+                        link: 'satisfaction',
+                        stats: [],
+                    })}
+                    agents={fromJS([])}
+                    channels={fromJS([])}
+                    tags={fromJS([])}
+                    stats={fromJS([])}
+                    meta={fromJS([])}
+                    filters={fromJS({})}
+                    currentAccount={store.getState().currentAccount}
+                    fetchStat={jest.fn(() => Promise.resolve())}
+                    setMeta={jest.fn()}
+                    setFilters={jest.fn()}
+                    fieldEnumSearch={jest.fn()}
+
+                />
+            ).instance()
+            component._fetchStats(['tickets-closed'], {tags: [1, 2]})
+                .then(() => {
+                    expect(component.state).toMatchSnapshot()
+                })
+        })
+
+        it('should mark the statistic as not loading because the filters used to ' +
+            'fetch the statistic match the current filters', () => {
+            const filters = {tags: [1, 2]}
+            const component = shallow(
+                <StatsViewComponent
+                    config={fromJS({
+                        name: 'Satisfaction',
+                        link: 'satisfaction',
+                        stats: [],
+                    })}
+                    agents={fromJS([])}
+                    channels={fromJS([])}
+                    tags={fromJS([])}
+                    stats={fromJS([])}
+                    meta={fromJS([])}
+                    filters={fromJS(filters)}
+                    currentAccount={store.getState().currentAccount}
+                    fetchStat={jest.fn(() => Promise.resolve())}
+                    setMeta={jest.fn()}
+                    setFilters={jest.fn()}
+                    fieldEnumSearch={jest.fn()}
+
+                />
+            ).instance()
+            component._fetchStats(['tickets-closed'], filters)
+                .then(() => {
+                    expect(component.state).toMatchSnapshot()
+                })
         })
 
         it('should render the upgrade to pro component', () => {

@@ -512,6 +512,30 @@ exports[`StatsView render revenue stats should render the upgrade to pro compone
 </Connect(StatsView)>
 `;
 
+exports[`StatsView render satisfaction surveys should mark the statistic as not loading because the filters used to fetch the statistic match the current filters 1`] = `
+Object {
+  "currentImage": 0,
+  "descriptionPopoverOpen": false,
+  "isLightboxOpen": false,
+  "loadings": Object {
+    "tickets-closed": false,
+  },
+  "tags": Immutable.List [],
+}
+`;
+
+exports[`StatsView render satisfaction surveys should not mark the statistic as not loading because the filters used to fetch the statistic do not match the current filters 1`] = `
+Object {
+  "currentImage": 0,
+  "descriptionPopoverOpen": false,
+  "isLightboxOpen": false,
+  "loadings": Object {
+    "tickets-closed": true,
+  },
+  "tags": Immutable.List [],
+}
+`;
+
 exports[`StatsView render satisfaction surveys should render current survey stats 1`] = `
 <Connect(StatsView)
   agents={Immutable.List []}

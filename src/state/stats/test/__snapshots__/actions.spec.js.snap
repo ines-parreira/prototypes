@@ -10,4 +10,58 @@ Array [
 ]
 `;
 
-exports[`actions stats download statistic should download a statistic and save file downloaded 1`] = `"{\\"responseType\\":\\"blob\\",\\"tags\\":[1,2,3],\\"filters\\":{}}"`;
+exports[`actions stats download statistic should download a statistic and save file downloaded 1`] = `"{\\"responseType\\":\\"blob\\",\\"filters\\":{\\"tags\\":[1,2,3]}}"`;
+
+exports[`actions stats fetch statistic should fetch a statistic and report an error because the stat does not exist 1`] = `
+Array [
+  Object {
+    "error": [Error: Request failed with status code 404],
+    "reason": "Failed to retrieve statistics",
+    "type": "FETCH_STATS_ERROR",
+  },
+]
+`;
+
+exports[`actions stats fetch statistic should fetch and save a statistic (label: "my-custom-stat") 1`] = `
+Array [
+  Object {
+    "filtersHash": null,
+    "name": "my-custom-stat",
+    "shouldMatchCurrentFilters": false,
+    "stat": Object {
+      "data": Array [
+        1,
+        2,
+        3,
+      ],
+      "meta": Object {
+        "start_datetime": "now",
+      },
+      "name": "overview",
+    },
+    "type": "FETCH_STATS_SUCCESS",
+  },
+]
+`;
+
+exports[`actions stats fetch statistic should fetch and save a statistic (label: "null") 1`] = `
+Array [
+  Object {
+    "filtersHash": "d7a34fabb4dd4ddc3a5b44e38b4c2339",
+    "name": "overview",
+    "shouldMatchCurrentFilters": true,
+    "stat": Object {
+      "data": Array [
+        1,
+        2,
+        3,
+      ],
+      "meta": Object {
+        "start_datetime": "now",
+      },
+      "name": "overview",
+    },
+    "type": "FETCH_STATS_SUCCESS",
+  },
+]
+`;

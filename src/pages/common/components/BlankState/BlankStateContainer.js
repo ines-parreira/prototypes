@@ -4,17 +4,13 @@ import {connect} from 'react-redux'
 import moment from 'moment'
 import throttle from 'lodash/throttle'
 
-import {fromJS} from 'immutable'
-
 import {fetchStat} from '../../../../state/stats/actions'
 import {TICKETS_CLOSED_PER_AGENT} from '../../../../config/stats'
 
 import BlankState from './components/BlankState'
-
 import {getStat} from './../../../../state/stats/selectors'
 
-const TICKET_CLOSED_BY_CURRENT_AGENT_7_DAYS = 'ticket-closed-current-agent-7-days'
-
+export const TICKET_CLOSED_BY_CURRENT_AGENT_7_DAYS = 'ticket-closed-current-agent-7-days'
 
 type Props = {
     fetchStat: typeof fetchStat,
@@ -32,13 +28,14 @@ class BlankStateContainer extends React.Component<Props> {
      * Get the number of ticket closed by the current agent for the last 7 days
      */
     _fetchStatistic = throttle((props) => {
-        const meta = {
-            start_datetime: moment().startOf('day').subtract(6, 'days').format(),
-            end_datetime: moment().endOf('day').format(),
+        const filters = {
+            agents: [props.currentUser.get('id')],
+            period: {
+                start_datetime: moment().startOf('day').subtract(6, 'days').format(),
+                end_datetime: moment().endOf('day').format(),
+            }
         }
-        const filters = {agents: [props.currentUser.get('id')]}
-
-        props.fetchStat(TICKETS_CLOSED_PER_AGENT, meta, filters, TICKET_CLOSED_BY_CURRENT_AGENT_7_DAYS)
+        props.fetchStat(TICKETS_CLOSED_PER_AGENT, filters, TICKET_CLOSED_BY_CURRENT_AGENT_7_DAYS)
     }, 15000)
 
     render() {
@@ -58,10 +55,7 @@ export default connect((state) => {
 
     if (state.stats && !state.stats.isEmpty()) {
         const stat = getStat(TICKET_CLOSED_BY_CURRENT_AGENT_7_DAYS)(state)
-        totalClosedTickets = (stat
-            .getIn(['data', 'lines'], fromJS([]))
-            .find((line) => line.get(0) === state.currentUser.get('name')) || fromJS([]))
-            .get(1) || totalClosedTickets
+        totalClosedTickets = stat.getIn(['data', 'lines', 0, 1, 'value'])
     }
 
     return {

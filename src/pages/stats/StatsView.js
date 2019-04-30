@@ -14,6 +14,8 @@ import {fieldEnumSearch} from '../../state/views/actions'
 import PageHeader from '../common/components/PageHeader'
 import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMenu'
 
+import {getHashOfObj} from '../../utils'
+
 import Stat from './common/components/charts/Stat'
 import PeriodPicker from './common/PeriodPicker'
 import RestrictedSatisfactionSurvey from './common/RestrictedSatisfactionSurvey'
@@ -26,13 +28,13 @@ type Props = {
     agents: any[],
     tags: any[],
     stats: Object,
-    meta: Object,
     filters: Object,
     currentAccount: Object,
     fetchStat: (any, any, any) => Promise<*>,
-    setMeta: typeof statsActions.setMeta,
+    fieldEnumSearch: typeof fieldEnumSearch,
+    resetFilters: typeof statsActions.resetFilters,
     setFilters: typeof statsActions.setFilters,
-    fieldEnumSearch: typeof fieldEnumSearch
+    statsActions: typeof statsActions.setFilters,
 }
 
 type State = {
@@ -43,8 +45,8 @@ type State = {
     currentImage: number
 }
 
-class StatsView extends React.Component<Props, State> {
-    constructor(props) {
+export class StatsView extends React.Component<Props, State> {
+    constructor(props: Props) {
         super(props)
 
         this.state = {
@@ -57,25 +59,24 @@ class StatsView extends React.Component<Props, State> {
     }
 
     componentWillMount() {
-        const {config, meta, filters} = this.props
-        this._fetchStats(config.get('stats'), meta.toJS(), filters.toJS())
+        const {config, filters} = this.props
+        this._fetchStats(config.get('stats'), filters.toJS())
     }
 
     /**
-     * Reset filters and meta when users leave statistics
+     * Reset filters when users leave statistics
      */
     componentWillUnmount() {
-        this.props.setFilters(fromJS({}))
-        this.props.setMeta(fromJS({}))
+        this.props.resetFilters()
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         if (this.props.config.get('name') !== nextProps.config.get('name')) {
-            this._fetchStats(nextProps.config.get('stats'), nextProps.meta.toJS(), nextProps.filters.toJS())
+            this._fetchStats(nextProps.config.get('stats'), nextProps.filters.toJS())
         }
     }
 
-    _updateLoadingStatsState = (stats, loading) => {
+    _updateLoadingStatsState = (stats: Array<string>, loading: boolean) => {
         let newState = this.state
 
         stats.forEach((stat) => {
@@ -88,26 +89,25 @@ class StatsView extends React.Component<Props, State> {
         this.setState(newState)
     }
 
-    _fetchStats = (stats, meta, filters) => {
+    _fetchStats = (stats: Array<string>, filters: Map<*, *>) => {
         this._updateLoadingStatsState(stats, true)
 
-        stats.forEach((stat) => {
-            this.props.fetchStat(stat, meta, filters).then(() => {
-                this._updateLoadingStatsState([stat], false)
+        return Promise.all([stats.map((stat) => {
+            return this.props.fetchStat(stat, filters).then(() => {
+                // we remove the loading state if the filters used to fetch this statistic match the current filters.
+                // If they do not match, it means that another request is fetching them.
+                if (getHashOfObj(filters) === getHashOfObj(this.props.filters.toJS())) {
+                    this._updateLoadingStatsState([stat], false)
+                }
             })
-        })
+        })])
     }
 
-    _handleDateChange = (meta) => {
-        this.props.setMeta(meta)
-        this._fetchStats(this.props.config.get('stats'), meta, this.props.filters.toJS())
-    }
-
-    _handleFilterChange = (filterName) => {
-        return (values) => {
+    _handleFilterChange = (filterName: string) => {
+        return (values: any) => {
             const filters = this.props.filters.set(filterName, fromJS(values))
             this.props.setFilters(filters)
-            this._fetchStats(this.props.config.get('stats'), this.props.meta.toJS(), filters.toJS())
+            this._fetchStats(this.props.config.get('stats'), filters.toJS())
         }
     }
 
@@ -125,7 +125,7 @@ class StatsView extends React.Component<Props, State> {
     }, 300)
 
     // returns a redux-form like input to use the field outside of redux-form context
-    _makeInputControl = (name) => {
+    _makeInputControl = (name: string) => {
         const {filters} = this.props
 
         return {
@@ -134,17 +134,17 @@ class StatsView extends React.Component<Props, State> {
         }
     }
 
-    renderRestrictedFeatures(currentAccount, config) {
-        const missingSatisfactionSurvey = config.get('link') === 'satisfaction' &&
-            !currentAccount.get('extra_features').includes('satisfaction-surveys')
-
+    renderRestrictedFeatures(currentAccount: Map<*, *>, config: Map<*, *>) {
+        // $FlowFixMe
+        const hasNoSatisfactionSurveyFeature = !currentAccount.get('extra_features').includes('satisfaction-surveys')
+        const missingSatisfactionSurvey = config.get('link') === 'satisfaction' && hasNoSatisfactionSurveyFeature
         if (missingSatisfactionSurvey) {
             return <RestrictedSatisfactionSurvey/>
         }
 
-        const missingRevenue = config.get('link') === 'revenue' &&
-            !currentAccount.get('extra_features').includes('revenue')
-
+        // $FlowFixMe
+        const hasNoRevenueStatFeature = !currentAccount.get('extra_features').includes('revenue')
+        const missingRevenue = config.get('link') === 'revenue' && hasNoRevenueStatFeature
         if (missingRevenue) {
             return <RevenueUpgrade/>
         }
@@ -157,9 +157,9 @@ class StatsView extends React.Component<Props, State> {
     }
 
     render() {
-        const {config, filters, meta, stats, currentAccount} = this.props
-        const startDatetime = moment(meta.get('start_datetime'))
-        const endDatetime = moment(meta.get('end_datetime'))
+        const {config, filters, stats, currentAccount} = this.props
+        const startDatetime = moment(filters.getIn(['period', 'start_datetime']))
+        const endDatetime = moment(filters.getIn(['period', 'end_datetime']))
 
         const configFilters = config.get('filters', fromJS([])).toJS()
         const availableFilters = [
@@ -235,7 +235,7 @@ class StatsView extends React.Component<Props, State> {
                     key="date-filter"
                     startDatetime={startDatetime}
                     endDatetime={endDatetime}
-                    onChange={this._handleDateChange}
+                    onChange={this._handleFilterChange('period')}
                 />
             },
         ]
@@ -311,7 +311,6 @@ class StatsView extends React.Component<Props, State> {
                                     name={statName}
                                     config={statConfig}
                                     filters={filters}
-                                    meta={{}}
                                     {...statProps}
                                 />
                             </div>
