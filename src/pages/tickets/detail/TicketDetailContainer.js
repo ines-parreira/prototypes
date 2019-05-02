@@ -333,9 +333,7 @@ export default class TicketDetailContainer extends React.Component {
             const receiver = newMessage.getIn(['newMessage', 'receiver'])
             const sender = {id: this.props.currentUser.get('id')}
             ticket = ticket.mergeDeep({
-                sender,
                 customer: receiver,
-                receiver,
                 newMessage: {
                     sender
                 }

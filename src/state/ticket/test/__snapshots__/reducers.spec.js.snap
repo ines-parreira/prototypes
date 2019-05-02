@@ -17,13 +17,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -62,13 +60,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -107,13 +103,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -149,13 +143,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": Object {
@@ -189,13 +181,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": Object {
@@ -229,13 +219,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -267,13 +255,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -305,13 +291,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": Object {
@@ -356,13 +340,11 @@ Object {
     },
   ],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -403,13 +385,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -441,13 +421,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -479,13 +457,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -517,13 +493,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -568,13 +542,11 @@ Object {
     },
   ],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -606,13 +578,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -644,13 +614,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -682,13 +650,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -720,13 +686,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -761,13 +725,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -799,13 +761,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -840,13 +800,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -899,13 +857,11 @@ Object {
     },
   ],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -958,13 +914,11 @@ Object {
     },
   ],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -1001,13 +955,11 @@ Object {
     },
   ],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -1039,13 +991,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -1081,13 +1031,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -1125,13 +1073,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -1163,13 +1109,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -1206,13 +1150,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -1249,13 +1191,11 @@ Object {
     },
   ],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -1287,13 +1227,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": true,
   "state": Object {
     "appliedMacro": null,
@@ -1325,13 +1263,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -1363,13 +1299,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -1401,13 +1335,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -1477,13 +1409,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -1554,13 +1484,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -1630,13 +1558,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -1669,13 +1595,11 @@ Object {
   "id": 12,
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -1707,13 +1631,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -1745,13 +1667,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -1783,13 +1703,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
@@ -1821,13 +1739,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": Object {
@@ -1868,13 +1784,11 @@ Object {
   "events": Array [],
   "messages": Array [],
   "priority": "normal",
-  "receiver": null,
   "reply_options": Object {
     "email": Object {
       "answerable": true,
     },
   },
-  "sender": null,
   "spam": false,
   "state": Object {
     "appliedMacro": null,
