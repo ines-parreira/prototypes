@@ -28,18 +28,20 @@ type Props = {
     singular: string,
     style: {},
     rightAddon?: string,
-    value: Value,
+    value?: Value,
     onChange: Value => void,
     onSearchChange: string => void,
     className?: string,
-    fixedWidth: boolean
+    fixedWidth: boolean,
+    focusedPlaceholder?: string
 }
 
 type State = {
     input: string,
     optionsOpen: boolean,
     selectedOptionIndex: number,
-    filteredOptions: Option[]
+    filteredOptions: Option[],
+    isFocused: boolean
 }
 
 export default class SelectField extends Component<Props, State> {
@@ -63,7 +65,8 @@ export default class SelectField extends Component<Props, State> {
             input: '',
             optionsOpen: false,
             selectedOptionIndex: props.allowCustomValue ? -1 : 0,
-            filteredOptions: this._filterOptions(props.options, props.value, '')
+            filteredOptions: this._filterOptions(props.options, props.value, ''),
+            isFocused: false
         }
     }
 
@@ -78,7 +81,7 @@ export default class SelectField extends Component<Props, State> {
         }
     }
 
-    _filterOptions = (options: Option[], value: Value, input: string): Option[] => {
+    _filterOptions = (options: Option[], value?: Value, input: string): Option[] => {
         return options.filter((option) => {
             const searchableText = option.text ? option.text : option.label
 
@@ -178,9 +181,20 @@ export default class SelectField extends Component<Props, State> {
         }
     }
 
+    _onFocus = () => {
+        this.setState({isFocused: true})
+    }
+
+    _onBlur = () => {
+        this.setState({isFocused: false})
+    }
+
     render() {
-        const {allowCustomValue, value, singular, style, placeholder, className, options, rightAddon, fixedWidth} = this.props
-        const {filteredOptions, input, optionsOpen, selectedOptionIndex} = this.state
+        const {
+            allowCustomValue, value, singular, style, placeholder, className, options, rightAddon, fixedWidth,
+            focusedPlaceholder
+        } = this.props
+        const {filteredOptions, input, optionsOpen, selectedOptionIndex, isFocused} = this.state
         const selectedOption = options.find((option) => _isEqual(option.value, value))
         const hasNoFilteredOptions = filteredOptions.length === 0
         let label = selectedOption ? selectedOption.label : null
@@ -232,7 +246,7 @@ export default class SelectField extends Component<Props, State> {
                                     [css.placeholder]: !label
                                 })}
                             >
-                                {label || placeholder}
+                                {label || (isFocused && focusedPlaceholder ? focusedPlaceholder : placeholder)}
                             </span>
                             <input
                                 style={{
@@ -243,6 +257,8 @@ export default class SelectField extends Component<Props, State> {
                                 value={input}
                                 onChange={this._onSearchChange}
                                 onKeyDown={this._onSearchKeyDown}
+                                onFocus={this._onFocus}
+                                onBlur={this._onBlur}
                                 type="text"
                             />
                         </div>

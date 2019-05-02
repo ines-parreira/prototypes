@@ -23,6 +23,7 @@ import customersReducer from './customers/reducers'
 import usersAuditReducer from './usersAudit/reducers'
 import viewsReducer from './views/reducers'
 import widgetsReducer from './widgets/reducers'
+import macrosReducer from './macro/reducer'
 
 const rootReducer = combineReducers({
     auths: authsReducer,
@@ -48,6 +49,7 @@ const rootReducer = combineReducers({
     usersAudit: usersAuditReducer,
     views: viewsReducer,
     widgets: widgetsReducer,
+    macros: macrosReducer
 })
 
 export default rootReducer
