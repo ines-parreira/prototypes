@@ -910,11 +910,12 @@ export const transformSystemMessagesToNotifications = (systemMessages: Array<sys
 export const shouldDisplayExperiment = (): boolean => {
     return window.DEVELOPMENT ||
         [
-            'begummytimbuk2.gorgias.io',
+            'begummy.gorgias.io',
             'darngoodyarn.gorgias.io',
             'esther-co.gorgias.io',
             'gorgias.gorgias.io',
             'love-your-melon.gorgias.io',
+            'rothys.gorgias.io',
             'timbuk2.gorgias.io',
         ].includes(window.location.hostname) ||
         document.cookie.includes('is_gorgias_staff')
