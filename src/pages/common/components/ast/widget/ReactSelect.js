@@ -14,8 +14,6 @@ type Props = {
     options: any,
     value: any,
     onSearchChange: (any) => void,
-    placeholder?: string,
-    focusedPlaceholder?: string
 }
 
 export default class Select extends React.Component<Props> {
@@ -61,7 +59,7 @@ export default class Select extends React.Component<Props> {
     }
 
     render() {
-        const {className, value, onSearchChange, placeholder, focusedPlaceholder} = this.props
+        const {className, value, onSearchChange} = this.props
         let newValue = value
 
         if (value === true) {
@@ -83,8 +81,6 @@ export default class Select extends React.Component<Props> {
                     onChange={this._onChange}
                     onSearchChange={onSearchChange}
                     options={this._getOptions()}
-                    placeholder={placeholder}
-                    focusedPlaceholder={focusedPlaceholder}
                 />
             </div>
         )

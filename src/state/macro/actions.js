@@ -1,5 +1,5 @@
 // @flow
-import axios, {type CancelToken} from 'axios'
+import axios from 'axios'
 import {fromJS, Map} from 'immutable'
 import _pick from 'lodash/pick'
 import _get from 'lodash/get'
@@ -17,39 +17,22 @@ type fetchMacrosParamsTypes = {
     currentPage?: number,
 }
 
-type MacrosSearchResult = {
-    macros: Map<*,*>,
-    page: number,
-    totalPages: number
-}
-
-export const fetchMacros = (
-    filters: fetchMacrosParamsTypes = {},
-    orderBy: string = '',
-    orderDir: string = 'asc',
-    cancelToken?: CancelToken
-): thunkActionType =>
-    (dispatch: dispatchType): Promise<?MacrosSearchResult> => {
+export const fetchMacros = (filters: fetchMacrosParamsTypes = {},
+    orderBy: string = '', orderDir: string = 'asc'): thunkActionType =>
+    (dispatch: dispatchType): Promise<dispatchType> => {
         const params = _pick(filters, ['search', 'page'])
         if (orderBy) {
             params.order_by = orderBy
             params.order_dir = orderDir
         }
 
-        return axios.get('/api/macros/', {
-            params,
-            ...(cancelToken ? {cancelToken} : {})
-        })
+
+        return axios.get('/api/macros/', {params})
             .then((json = {}) => json.data)
             .then((resp) => {
                 const page = _get(resp, ['meta', 'page'])
                 const totalPages = _get(resp, ['meta', 'nb_pages'])
                 let macros = fromJS(resp.data || [])
-
-                dispatch({
-                    type: constants.UPSERT_MACROS,
-                    payload: macros
-                })
 
                 // merge macros if we loaded the next page
                 if (filters.currentMacros && filters.currentPage + 1 === page) {
@@ -61,34 +44,12 @@ export const fetchMacros = (
                     page,
                     totalPages,
                 }
-            }, (error) => {
-                if(!axios.isCancel(error)) {
-                    return dispatch(notify({
-                        status: 'error',
-                        message: 'Failed to fetch macros',
-                    }))
-                }
-            })
-    }
-
-export const getMacro = (id: string, cancelToken?: CancelToken): thunkActionType =>
-    async (dispatch: dispatchType): Promise<?Map<*, *>> => {
-        try {
-            const {data} = await axios.get(`/api/macros/${id}`, cancelToken && {cancelToken})
-            const macro = fromJS(data)
-            dispatch({
-                type: constants.UPSERT_MACRO,
-                payload: macro
-            })
-            return macro
-        } catch (error) {
-            if(!axios.isCancel(error)) {
-                dispatch(notify({
+            }, () => {
+                return dispatch(notify({
                     status: 'error',
-                    message: 'Failed to fetch macro',
+                    message: 'Failed to fetch macros',
                 }))
-            }
-        }
+            })
     }
 
 export const createMacro = (macro: Map<*, *>): thunkActionType =>
@@ -100,11 +61,6 @@ export const createMacro = (macro: Map<*, *>): thunkActionType =>
                     status: 'success',
                     message: 'Macro created'
                 }))
-
-                dispatch({
-                    type: constants.UPSERT_MACRO,
-                    payload: fromJS(resp)
-                })
 
                 return Promise.resolve(resp)
             }, () => {
@@ -124,12 +80,6 @@ export const updateMacro = (macro: Map<*, *>): thunkActionType =>
                     status: 'success',
                     message: 'Macro updated'
                 }))
-
-                dispatch({
-                    type: constants.UPSERT_MACRO,
-                    payload: fromJS(resp)
-                })
-
                 return Promise.resolve(resp)
             }, () => {
                 return dispatch(notify({
@@ -148,11 +98,6 @@ export const deleteMacro = (macroId: string): thunkActionType =>
                     status: 'success',
                     message: 'Macro deleted'
                 }))
-
-                dispatch({
-                    type: constants.DELETE_MACRO,
-                    payload: macroId
-                })
 
                 return Promise.resolve(resp)
             }, (error) => {

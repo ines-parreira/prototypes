@@ -234,6 +234,7 @@ export function fetchIntegration(integrationId: string, integrationType: string,
     }
 }
 
+
 export function deleteIntegration(integration: Map<*,*>) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({

@@ -409,9 +409,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   </span>
                                                   <input
                                                     className="input"
-                                                    onBlur={[Function]}
                                                     onChange={[Function]}
-                                                    onFocus={[Function]}
                                                     onKeyDown={[Function]}
                                                     style={
                                                       Object {
@@ -814,9 +812,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   </span>
                                                   <input
                                                     className="input"
-                                                    onBlur={[Function]}
                                                     onChange={[Function]}
-                                                    onFocus={[Function]}
                                                     onKeyDown={[Function]}
                                                     style={
                                                       Object {

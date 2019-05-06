@@ -1,80 +1,99 @@
 // @flow
-//$FlowFixMe
-import React, {useMemo, useState, useEffect} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 import {fromJS, List} from 'immutable'
-import {type CancelTokenSource} from 'axios'
 
-import {getActionTemplate} from '../../../../../utils'
-import {fetchMacros, getMacro} from '../../../../../state/macro/actions'
-import {useCancelToken} from '../../../../../hooks'
-import {type State as MacrosState, Macro} from '../../../../../state/macro/types'
+import type {Map} from 'immutable'
+
+import {getActionTemplate} from './../../../../../utils'
 
 import Select from './ReactSelect'
-import {useOptions} from './hooks'
+
+import * as macroActions from './../../../../../state/macro/actions'
+
 
 type Props = {
-    macros: MacrosState,
     actions: Object,
-    fetchMacros: typeof fetchMacros,
-    getMacro: typeof getMacro,
     onChange: (any) => void,
     value: string,
     className?: string
 }
 
-const MacroSelect = (props: Props) => {
-    const {className, value, onChange, fetchMacros, getMacro, macros} = props
-    const [isLoading, setIsLoading] = useState(false)
-    const [searchResults, setSearchResults] = useState(fromJS([]))
-    const [search, setSearch] = useState('')
-    const selectedMacro: ?Macro = value ? macros.get(parseInt(value)) : null
-    const macroOptions = useOptions(selectedMacro, searchResults, (macro) => macro.get('id'))
-
-    useEffect( () => {
-        if (selectedMacro) {
-            return
-        }
-        getMacro(value)
-    }, [selectedMacro])
-
-    useCancelToken(async (source: CancelTokenSource) => {
-        setIsLoading(true)
-        const res = await fetchMacros({search}, '', 'asc', source.token)
-        if (res) {
-            setIsLoading(false)
-            setSearchResults(res.macros)
-        }
-    }, [search])
-
-    const options = useMemo((): List<*> => {
-        if (isLoading) {
-            return fromJS([])
-        }
-        // Filter out macros with external actions
-        return macroOptions.filter((macro) => macro.get('actions')
-            .filter((action) => getActionTemplate(action.get('name')).execution === 'back')
-            .isEmpty()).map((macro) => fromJS({value: macro.get('id').toString(), label: macro.get('name')}))
-            .toList()
-            .sortBy((macro) => (macro.get('label') || '').toLowerCase())
-    }, [macroOptions, isLoading])
-
-    return (
-        <Select
-            className={className}
-            value={value}
-            onChange={onChange}
-            onSearchChange={setSearch}
-            options={options.toJS()}
-            focusedPlaceholder="Search macros by name..."
-        />
-    )
+type State = {
+    loading: boolean,
+    macros: Map<*,*>,
 }
 
+class MacroSelect extends React.Component<Props, State> {
+    state = {
+        loading: false,
+        macros: fromJS([]),
+    }
+
+    _selectFirstOption = (value: string, props: Props) => {
+        if (!value && !this.state.macros.isEmpty()) {
+            const firstOption = this._getOptions(this.state.macros).first()
+            props.onChange(firstOption.get('value').toString())
+        }
+    }
+
+    componentDidMount() {
+        this._loadMacros()
+    }
+
+    // Update the rule with the first macro when macros are fetched
+    componentWillReceiveProps(nextProps) {
+        this._selectFirstOption(this.props.value, nextProps)
+    }
+
+    _getOptions = (macros = fromJS({})): List<*> => {
+        if (this.state.loading) {
+            return fromJS([])
+        }
+
+        // Filter out macros with external actions
+        return macros
+            .filter((macro) => macro.get('actions')
+                .filter((action) => getActionTemplate(action.get('name')).execution === 'back')
+                .isEmpty())
+            .map((macro) => fromJS({value: macro.get('id').toString(), label: macro.get('name')}))
+            .toList()
+            .sortBy((macro) => (macro.get('label') || '').toLowerCase())
+    }
+
+    _loadMacros = (search) => {
+        this.setState({loading: true})
+        this.props.actions.fetchMacros({search}).then((res) => {
+            this.setState({
+                loading: false,
+                macros: res.macros,
+            })
+        })
+    }
+
+    render() {
+        const {value, onChange, className} = this.props
+        const options = this._getOptions(this.state.macros)
+
+        return (
+            <Select
+                className={className}
+                value={value}
+                onChange={onChange}
+                onSearchChange={this._loadMacros}
+                options={options.toJS()}
+            />
+        )
+    }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+    actions: bindActionCreators(macroActions, dispatch)
+})
+
 //$FlowFixMe
-export default connect((state) => ({
-    macros: state.macros
-}), {
-    fetchMacros,
-    getMacro
-})(MacroSelect)
+export default connect(
+    null,
+    mapDispatchToProps
+)(MacroSelect)
