@@ -5,6 +5,10 @@ import Adapter from 'enzyme-adapter-react-16'
 
 Enzyme.configure({ adapter: new Adapter() })
 
+// Set default moment timezone
+const moment = jest.requireActual('moment-timezone')
+moment.tz.setDefault('America/Creston')
+
 // jsdom does not support matchMedia
 Object.defineProperty(window, 'matchMedia', {
     value: jest.fn(() => {
