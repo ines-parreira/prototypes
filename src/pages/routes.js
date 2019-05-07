@@ -33,8 +33,6 @@ import CreditCardContainer from './settings/billing/credit-cards/CreditCard'
 import BillingDetailsFormContainer from './settings/billing/details/BillingDetailsForm'
 import BillingPlansContainer from './settings/billing/plans/BillingPlans'
 import ManageTagsContainer from './settings/tags/ManageTags'
-import ManageRequestsContainer from './settings/requests/ManageRequests'
-import ManageRequestItemContainer from './settings/requests/ManageRequestItem'
 import ImportDataContainer from './settings/importData/ImportDataContainer'
 import ImportZendeskDetail from './settings/importData/zendesk/ImportZendeskDetail'
 import SatisfactionSurveyView from './settings/satisfactionSurveys/SatisfactionSurveyView'
@@ -343,28 +341,6 @@ export default (
                     navbar: SettingsNavbarContainer
                 }}
             />
-            <Route path="requests">
-                <IndexRoute
-                    components={{
-                        content: UserRoleRequired(ManageRequestsContainer, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer
-                    }}
-                />
-                <Route
-                    path="add"
-                    components={{
-                        content: UserRoleRequired(ManageRequestItemContainer, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer
-                    }}
-                />
-                <Route
-                    path="update/:id"
-                    components={{
-                        content: UserRoleRequired(ManageRequestItemContainer, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer
-                    }}
-                />
-            </Route>
             <Route path="import-data">
                 <IndexRoute
                     components={{

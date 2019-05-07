@@ -22,7 +22,6 @@ import MergeTicketsContainer from '../../../common/components/MergeTickets/Merge
 import * as ticketActions from '../../../../state/ticket/actions'
 
 import TicketTags from './TicketDetails/TicketTags'
-import TicketRequest from './TicketDetails/TicketRequest'
 import TicketStatus from './TicketDetails/TicketStatus'
 import TicketAssignee from './TicketDetails/TicketAssignee'
 import TicketSpam from './TicketDetails/TicketSpam'
@@ -314,8 +313,6 @@ export default class TicketHeader extends React.Component<Props, State> {
                                 />
                             )
                         }
-
-                        <TicketRequest/>
 
                         <TicketTags
                             ticketTags={ticket.get('tags')}

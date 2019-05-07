@@ -6,7 +6,6 @@ import * as viewsActions from '../state/views/actions'
 import * as chatsActions from '../state/chats/actions'
 
 import * as viewsConstants from '../state/views/constants'
-import * as requestsConstants from '../state/requests/constants'
 import * as currentAccountConstants from '../state/currentAccount/constants'
 
 import {isCurrentlyOnTicket} from '../utils'
@@ -223,30 +222,6 @@ export const receivedEvents = [{
     name: 'views-count-updated',
     onReceive: function (json) {
         return this.dispatch(viewsActions.handleViewsCount(json.counts))
-    },
-}, {
-    name: 'request-created',
-    onReceive: function (json) {
-        return this.dispatch({
-            type: requestsConstants.CREATE_REQUEST_SUCCESS,
-            resp: json.request,
-        })
-    },
-}, {
-    name: 'request-updated',
-    onReceive: function (json) {
-        return this.dispatch({
-            type: requestsConstants.UPDATE_REQUEST_SUCCESS,
-            resp: json.request,
-        })
-    },
-}, {
-    name: 'request-deleted',
-    onReceive: function (json) {
-        return this.dispatch({
-            type: requestsConstants.DELETE_REQUEST_SUCCESS,
-            resp: json.request,
-        })
     },
 }, {
     name: 'account-updated',

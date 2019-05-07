@@ -26,7 +26,6 @@ import {makeHasIntegrationOfTypes} from '../../../../state/integrations/selector
 import TagsSelect from './widget/TagsSelect'
 import IntegrationSelect from './widget/IntegrationSelect'
 import AssigneeSelect from './widget/AssigneeSelect'
-import RequestSelect from './widget/RequestSelect'
 import MacroSelect from './widget/MacroSelect'
 import StatusSelect from './widget/StatusSelect'
 import Select from './widget/ReactSelect'
@@ -388,14 +387,6 @@ export class Widget extends React.Component<Props, State> {
             case 'macro-select':
                 return (
                     <MacroSelect
-                        {...widget}
-                        className={className}
-                        onChange={this._handleChange}
-                    />
-                )
-            case 'request-select':
-                return (
-                    <RequestSelect
                         {...widget}
                         className={className}
                         onChange={this._handleChange}

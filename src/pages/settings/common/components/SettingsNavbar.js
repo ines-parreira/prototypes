@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {Link} from 'react-router'
 
-import {hasRole, shouldDisplayExperiment} from '../../../../utils'
+import {hasRole} from '../../../../utils'
 import {ADMIN_ROLE, AGENT_ROLE} from '../../../../config/user'
 
 type Props = {
@@ -86,15 +86,6 @@ export default class SettingsNavbar extends React.Component<Props> {
                 className: 'd-none d-md-block'
             }]
         }]
-
-        if (shouldDisplayExperiment()) {
-            categories[1].links.push({
-                requiredRole: ADMIN_ROLE,
-                to: 'requests',
-                text: 'Requests',
-                className: 'd-none d-md-block hidden-sm-down',
-            })
-        }
 
         categories[1].links.splice(2, 0, {
             requiredRole: ADMIN_ROLE,

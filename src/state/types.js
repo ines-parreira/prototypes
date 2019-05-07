@@ -10,7 +10,6 @@ export type stateType = {
     integrations: Map<*,*>,
     layout: Map<*,*>,
     macros: Map<*,*>,
-    requests: Map<*,*>,
     newMessage: Map<*,*>,
     notifications: Map<*,*>,
     rules: Map<*,*>,
