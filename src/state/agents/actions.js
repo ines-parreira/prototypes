@@ -1,5 +1,5 @@
 // @flow
-import axios from 'axios'
+import axios, {CancelToken} from 'axios'
 
 import type {Map} from 'immutable'
 
@@ -90,17 +90,19 @@ export const deleteAgent = (id: string) => (dispatch: dispatchType): Promise<dis
         })
 }
 
-export const fetchAgent = (id: string) => (dispatch: dispatchType): Promise<dispatchType | Map<*,*>> => {
-    return axios.get(`/api/users/${id}/`)
+export const fetchAgent = (id: string, cancelToken?: CancelToken) => (dispatch: dispatchType): Promise<?Map<*,*>> => {
+    return axios.get(`/api/users/${id}/`, cancelToken && {cancelToken})
         .then((json = {}) => json.data)
         .then((resp) => {
             return Promise.resolve(toImmutable(resp))
         }, (error) => {
-            return dispatch({
-                type: constants.FETCH_AGENT_ERROR,
-                error,
-                reason: `Failed to fetch team member #${id}`,
-            })
+            if (!axios.isCancel(error)) {
+                dispatch({
+                    type: constants.FETCH_AGENT_ERROR,
+                    error,
+                    reason: `Failed to fetch team member #${id}`,
+                })
+            }
         })
 }
 

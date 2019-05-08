@@ -49,15 +49,24 @@ describe('agents actions', () => {
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('fetch agent', () => {
-        const user = {data: {id: 2}}
-        mockServer.onGet('/api/users/2/').reply(200, user)
+    describe('fetchAgent', () => {
+        it('should return the agent on success', () => {
+            const user = {data: {id: 2}}
+            mockServer.onGet('/api/users/2/').reply(200, user)
 
-        return store.dispatch(actions.fetchAgent(2))
-            .then((resp) => {
-                expect(resp).toEqualImmutable(fromJS(user))
-            })
+            return store.dispatch(actions.fetchAgent(2))
+                .then((resp) => {
+                    expect(resp).toEqualImmutable(fromJS(user))
+                })
+        })
+
+        it('should return undefined on failure', async () => {
+            mockServer.onGet('/api/users/2/').reply(404)
+            const res = await store.dispatch(actions.fetchAgent(2))
+            expect(res).toBeUndefined()
+        })
     })
+
 
     it('fetch agents', () => {
         mockServer.onGet('/api/users/').reply(200, {data: [{id: 1}]})

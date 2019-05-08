@@ -2,7 +2,7 @@ const webpack = require('webpack')
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const ManifestPlugin = require('webpack-manifest-plugin')
 
 const pkg = require('./package.json')
@@ -33,7 +33,7 @@ const devServer = {
 }
 const optimization = {
     minimizer: [
-        new UglifyJsPlugin({
+        new TerserPlugin({
             cache: true,
             parallel: true,
             sourceMap: true
@@ -108,6 +108,9 @@ module.exports = (env = {}) => {
         optimization,
         devServer,
         devtool,
+        node: {
+            fs: 'empty'
+        },
         entry: {
             build: `${srcDir}/js/main.js`,
         },
