@@ -16,7 +16,6 @@ describe('ChatIntegrationPreview', () => {
                 inputPlaceholder="input"
                 mainColor="#123456"
                 conversationColor="#456789"
-                offlineStatusEnabled={true}
                 isOnline={true}
             />
         )
@@ -24,7 +23,7 @@ describe('ChatIntegrationPreview', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should display the offline status because chat is offline and offline status is enabled', () => {
+    it('should display the offline status because chat is offline', () => {
         const component = shallow(
             <ChatIntegrationPreview
                 name="My little chat integration"
@@ -35,33 +34,12 @@ describe('ChatIntegrationPreview', () => {
                 inputPlaceholder="input"
                 mainColor="#123456"
                 conversationColor="#456789"
-                offlineStatusEnabled={true}
                 isOnline={false}
             />
         )
 
         expect(component).toMatchSnapshot()
     })
-
-    it('should display the offline status with online colors because chat is offline and offline status is disabled',
-        () => {
-            const component = shallow(
-                <ChatIntegrationPreview
-                    name="My little chat integration"
-                    currentUser={fromJS({
-                        name: 'Charles'
-                    })}
-                    introductionText="intro"
-                    inputPlaceholder="input"
-                    mainColor="#123456"
-                    conversationColor="#456789"
-                    offlineStatusEnabled={false}
-                    isOnline={false}
-                />
-            )
-
-            expect(component).toMatchSnapshot()
-        })
 
     it('should display quickReplies', () => {
         const component = shallow(

@@ -9,7 +9,6 @@ type Props = {
     currentUser?: Object,
     introductionText?: string,
     offlineIntroductionText?: string,
-    offlineStatusEnabled?: boolean,
     headerText?: string,
     inputPlaceholder?: string,
     mainColor?: string,
@@ -90,7 +89,6 @@ export default class ChatIntegrationPreview extends React.Component<Props> {
             name,
             introductionText,
             offlineIntroductionText,
-            offlineStatusEnabled,
             inputPlaceholder,
             mainColor,
             isOnline,
@@ -104,8 +102,8 @@ export default class ChatIntegrationPreview extends React.Component<Props> {
             return str || '\u00a0'
         }
 
-        const offlineColor = '#9DA8B8'
-        const shouldHeaderDisplayOnline = isOnline || !offlineStatusEnabled
+        const offlineColor = '#A1A9B6'
+        const shouldHeaderDisplayOnline = isOnline
 
         const statusMarker = (
             <div className={classnames({
@@ -159,6 +157,13 @@ export default class ChatIntegrationPreview extends React.Component<Props> {
                             <div className={css.introductionText}>
                                 {nonbreak(isOnline ? introductionText : offlineIntroductionText)}
                             </div>
+                            {
+                                !isOnline && (
+                                    <div className={css['business-hours-back-badge']}>
+                                        Back tomorrow
+                                    </div>
+                                )
+                            }
                         </div>
                     </div>
 

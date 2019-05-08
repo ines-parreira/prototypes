@@ -2,6 +2,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
+import {Link} from 'react-router'
 import {Button, Row, Col, Container, Form, Label} from 'reactstrap'
 import classnames from 'classnames'
 
@@ -13,10 +14,10 @@ import * as currentAccountActions from '../../../state/currentAccount/actions'
 import * as currentAccountConstants from '../../../state/currentAccount/constants'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
 
-import BusinessHoursForm from './BusinessHoursForm'
-
 import {DEFAULT_BUSINESS_HOUR, MAX_BUSINESS_HOURS} from './constants'
+import BusinessHoursForm from './BusinessHoursForm'
 import css from './BusinessHours.less'
+
 
 type Props = {
     submitSetting: (Object) => Promise<*>,
@@ -47,23 +48,29 @@ class BusinessHours extends React.Component<Props, State> {
         }
     }
 
-    _onSubmit = (evt: Event) => {
+    _onSubmit = async (evt: Event) => {
         evt.preventDefault()
         this.setState({loading: true})
 
         const {businessHoursSettings} = this.props
         const {timezone, items} = this.state
 
-        this.props.submitSetting({
+        const setting = {
             id: businessHoursSettings.get('id'),
             type: currentAccountConstants.SETTING_TYPE_BUSINESS_HOURS,
             data: {
                 timezone: timezone,
                 business_hours: items.toJS()
             }
-        })
-            .then(() => this.setState({loading: false}))
-            .catch(() => this.setState({loading: false}))
+        }
+
+        try {
+            await this.props.submitSetting(setting)
+        } catch (error) {
+            // pass
+        }
+
+        return this.setState({loading: false})
     }
 
     _addBusinessHours = () => {
@@ -90,6 +97,11 @@ class BusinessHours extends React.Component<Props, State> {
                     <p>
                         Let customers know when your team is online.<br/>
                         This way, you can set different auto-responders in the rules based on when your team is working.
+                    </p>
+                    <p>
+                        The appearance of your{' '}
+                        <Link to="/app/settings/integrations/smooch_inside">Chat integrations</Link>{' '}
+                        will change when outside business hours.
                     </p>
 
                     <Form onSubmit={this._onSubmit}>

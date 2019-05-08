@@ -29,7 +29,6 @@ import InputField from '../../../../../common/forms/InputField'
 import ColorField from '../../../../../common/forms/ColorField'
 
 import PageHeader from '../../../../../common/components/PageHeader'
-import BooleanField from '../../../../../common/forms/BooleanField'
 
 import css from './ChatIntegrationAppearance.less'
 import * as integrationSelectors from './../../../../../../state/integrations/selectors'
@@ -39,7 +38,6 @@ export const defaultContent = {
     name: '',
     introductionText: 'What can we do for you?',
     offlineIntroductionText: 'We\'re away!',
-    offlineStatusEnabled: true,
     inputPlaceholder: 'Type a message...',
     mainColor: '#0d87dd',
     conversationColor: '#0d87dd',
@@ -90,7 +88,6 @@ class ChatIntegrationAppearance extends React.Component {
             name: integration.get('name'),
             introductionText: integration.getIn(['decoration', 'introduction_text']),
             offlineIntroductionText: integration.getIn(['decoration', 'offline_introduction_text']),
-            offlineStatusEnabled: integration.getIn(['meta', 'offline_status', 'enabled']),
             inputPlaceholder: integration.getIn(['decoration', 'input_placeholder']),
             mainColor: integration.getIn(['decoration', 'main_color']),
             conversationColor: integration.getIn(['decoration', 'conversation_color']),
@@ -112,9 +109,6 @@ class ChatIntegrationAppearance extends React.Component {
             introduction_text: this.state.introductionText,
             offline_introduction_text: this.state.offlineIntroductionText,
         }
-
-        const existingMeta = this.props.integration.get('meta') || fromJS({})
-        form.meta = existingMeta.setIn(['offline_status', 'enabled'], this.state.offlineStatusEnabled).toJS()
 
         // if update, set ids for server
         if (this.props.isUpdate) {
@@ -192,7 +186,7 @@ class ChatIntegrationAppearance extends React.Component {
                                             value={this.state.introductionText}
                                             onFocus={() => this.setState({isOnline: true})}
                                             onChange={(value) => this.setState({introductionText: value})}
-                                            label="Introduction text"
+                                            label="Introduction text during business hours"
                                         />
 
                                         <InputField
@@ -204,19 +198,7 @@ class ChatIntegrationAppearance extends React.Component {
                                             onChange={(value) => {
                                                 this.setState({offlineIntroductionText: value})
                                             }}
-                                            label="Away introduction text"
-                                        />
-
-                                        <BooleanField
-                                            className="mb-3"
-                                            name="offlineStatusEnabled"
-                                            type="checkbox"
-                                            label="Chat should turn grey when agents are away"
-                                            value={this.state.offlineStatusEnabled}
-                                            onChange={(value) => this.setState({
-                                                isOnline: false,
-                                                offlineStatusEnabled: value
-                                            })}
+                                            label="Introduction text outside business hours"
                                         />
 
                                         <InputField
@@ -280,14 +262,14 @@ class ChatIntegrationAppearance extends React.Component {
                                         color={this.state.isOnline ? 'info' : 'secondary'}
                                         onClick={() => this.setState({isOnline: true})}
                                     >
-                                        Preview Online
+                                        During business hours
                                     </Button>
                                     <Button
                                         type="button"
                                         color={!this.state.isOnline ? 'info' : 'secondary'}
                                         onClick={() => this.setState({isOnline: false})}
                                     >
-                                        Preview Away
+                                        Outside business hours
                                     </Button>
                                 </ButtonGroup>
                             </div>
@@ -296,7 +278,6 @@ class ChatIntegrationAppearance extends React.Component {
                                 name={this.state.name}
                                 introductionText={this.state.introductionText}
                                 offlineIntroductionText={this.state.offlineIntroductionText}
-                                offlineStatusEnabled={this.state.offlineStatusEnabled}
                                 inputPlaceholder={this.state.inputPlaceholder}
                                 mainColor={this.state.mainColor}
                                 conversationColor={this.state.conversationColor}

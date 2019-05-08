@@ -78,26 +78,18 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
                 value=""
               />
               <InputField
-                label="Introduction text"
+                label="Introduction text during business hours"
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
                 value="What can we do for you?"
               />
               <InputField
-                label="Away introduction text"
+                label="Introduction text outside business hours"
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
                 value="We're away!"
-              />
-              <BooleanField
-                className="mb-3"
-                label="Chat should turn grey when agents are away"
-                name="offlineStatusEnabled"
-                onChange={[Function]}
-                type="checkbox"
-                value={true}
               />
               <InputField
                 label="Input placeholder"
@@ -162,7 +154,7 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
               tag="button"
               type="button"
             >
-              Preview Online
+              During business hours
             </Button>
             <Button
               color="secondary"
@@ -170,7 +162,7 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
               tag="button"
               type="button"
             >
-              Preview Away
+              Outside business hours
             </Button>
           </ButtonGroup>
         </div>
@@ -183,7 +175,6 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
           mainColor="#0d87dd"
           name=""
           offlineIntroductionText="We're away!"
-          offlineStatusEnabled={true}
         />
       </Col>
     </Row>
@@ -284,26 +275,18 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
                 value="hellosmoochintegration"
               />
               <InputField
-                label="Introduction text"
+                label="Introduction text during business hours"
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
                 value="What can we do for you?"
               />
               <InputField
-                label="Away introduction text"
+                label="Introduction text outside business hours"
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
                 value="We're away!"
-              />
-              <BooleanField
-                className="mb-3"
-                label="Chat should turn grey when agents are away"
-                name="offlineStatusEnabled"
-                onChange={[Function]}
-                type="checkbox"
-                value={true}
               />
               <InputField
                 label="Input placeholder"
@@ -388,7 +371,7 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
               tag="button"
               type="button"
             >
-              Preview Online
+              During business hours
             </Button>
             <Button
               color="secondary"
@@ -396,7 +379,7 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
               tag="button"
               type="button"
             >
-              Preview Away
+              Outside business hours
             </Button>
           </ButtonGroup>
         </div>
@@ -409,7 +392,6 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
           mainColor="#0d87dd"
           name="hellosmoochintegration"
           offlineIntroductionText="We're away!"
-          offlineStatusEnabled={true}
         />
       </Col>
     </Row>
@@ -510,26 +492,18 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
                 value="hellosmoochintegration"
               />
               <InputField
-                label="Introduction text"
+                label="Introduction text during business hours"
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
                 value="What can we do for you?"
               />
               <InputField
-                label="Away introduction text"
+                label="Introduction text outside business hours"
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
                 value="We're away!"
-              />
-              <BooleanField
-                className="mb-3"
-                label="Chat should turn grey when agents are away"
-                name="offlineStatusEnabled"
-                onChange={[Function]}
-                type="checkbox"
-                value={true}
               />
               <InputField
                 label="Input placeholder"
@@ -614,7 +588,7 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
               tag="button"
               type="button"
             >
-              Preview Online
+              During business hours
             </Button>
             <Button
               color="secondary"
@@ -622,7 +596,7 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
               tag="button"
               type="button"
             >
-              Preview Away
+              Outside business hours
             </Button>
           </ButtonGroup>
         </div>
@@ -635,7 +609,6 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
           mainColor="#0d87dd"
           name="hellosmoochintegration"
           offlineIntroductionText="We're away!"
-          offlineStatusEnabled={true}
         />
       </Col>
     </Row>

@@ -17,6 +17,19 @@ exports[`BusinessHours component should render default values 1`] = `
       <br />
       This way, you can set different auto-responders in the rules based on when your team is working.
     </p>
+    <p>
+      The appearance of your
+       
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/settings/integrations/smooch_inside"
+      >
+        Chat integrations
+      </Link>
+       
+      will change when outside business hours.
+    </p>
     <Form
       onSubmit={[Function]}
       tag="form"
@@ -212,6 +225,24 @@ exports[`BusinessHours component should render values from state 1`] = `
             Let customers know when your team is online.
             <br />
             This way, you can set different auto-responders in the rules based on when your team is working.
+          </p>
+          <p>
+            The appearance of your
+             
+            <Link
+              onlyActiveOnIndex={false}
+              style={Object {}}
+              to="/app/settings/integrations/smooch_inside"
+            >
+              <a
+                onClick={[Function]}
+                style={Object {}}
+              >
+                Chat integrations
+              </a>
+            </Link>
+             
+            will change when outside business hours.
           </p>
           <Form
             onSubmit={[Function]}
