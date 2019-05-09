@@ -633,7 +633,7 @@ export const views = fromJS({
         name: 'Overview',
         description: `Get an overview of the most important statistics about your customer service.
 Metrics such as volume of tickets, first response time and resolution time are key when it comes to 
-providing excelent customer support.
+providing excellent customer support.
 <a href="https://docs.gorgias.io/admin-guide-to-gorgias/statistics#overview">Learn more</a>.`,
         filters: [{type: 'channels'}, {type: 'agents'}, {type: 'tags'}, {type: 'date'}],
         // default view available at `app/stats/`
