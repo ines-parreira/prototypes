@@ -19,6 +19,7 @@ import {
     Col,
 } from 'reactstrap'
 
+import {SMOOCH_INSIDE_DEFAULT_WIDGET_LANGUAGE} from '../../../../../../config/integrations/chat'
 
 import Loader from '../../../../../common/components/Loader'
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
@@ -110,9 +111,23 @@ class ChatIntegrationAppearance extends React.Component {
             offline_introduction_text: this.state.offlineIntroductionText,
         }
 
+        form.meta = {
+            language: SMOOCH_INSIDE_DEFAULT_WIDGET_LANGUAGE
+        }
+
         // if update, set ids for server
         if (this.props.isUpdate) {
             form.id = this.props.integration.get('id')
+
+            if (!this.props.integration.getIn(['meta', 'language'])) {
+                form.meta = {
+                    ...this.props.integration.get('meta').toJS(),
+                    language: SMOOCH_INSIDE_DEFAULT_WIDGET_LANGUAGE
+                }
+            } else {
+                delete form.meta
+            }
+
         }
 
         return this.props.actions.updateOrCreateIntegration(fromJS(form))

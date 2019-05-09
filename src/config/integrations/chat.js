@@ -1,6 +1,8 @@
 import {fromJS} from 'immutable'
 
 
+export const SMOOCH_INSIDE_DEFAULT_WIDGET_LANGUAGE = 'en-US'
+
 // Campaigns
 export const GRAVATAR_URL_TEMPLATE = 'https://www.gravatar.com/avatar/{emailMd5}?d=mm&s=50'
 
