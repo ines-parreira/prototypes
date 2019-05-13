@@ -24,7 +24,8 @@ const devServer = {
         buildDir,
         path.join(__dirname, 'g')
     ],
-    host: '0.0.0.0',
+    host: 'localhost',
+    port: 8080,
     // disable host check for dev env (if using proxy)
     disableHostCheck: !__PRODUCTION__,
     headers: {
