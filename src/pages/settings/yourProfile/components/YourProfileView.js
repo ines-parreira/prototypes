@@ -91,14 +91,7 @@ export default class YourProfileView extends React.Component<Props, State> {
 
     _handleSubmit = (event: SyntheticEvent<*>) => {
         event.preventDefault()
-        const normalizedValues = _merge(
-            _pick(this.state, Object.keys(defaultContent)),
-            {
-                meta: {
-                    profile_picture_url: this.state.profilePictureUrl
-                }
-            }
-        )
+        const normalizedValues = _pick(this.state, Object.keys(defaultContent))
 
         return this.props.updateCurrentUser(normalizedValues)
             .then((user) => {
@@ -115,6 +108,14 @@ export default class YourProfileView extends React.Component<Props, State> {
         this.setState({
             email,
             hasChangedEmail: (this.props.currentUser.get('email') !== email)
+        })
+    }
+
+    _saveProfilePicture = () => {
+        return this.props.updateCurrentUser({
+            meta: {
+                profile_picture_url: this.state.profilePictureUrl
+            }
         })
     }
 
@@ -257,7 +258,9 @@ export default class YourProfileView extends React.Component<Props, State> {
                                     <FileField
                                         returnFiles={false}
                                         noPreview={true}
-                                        onChange={(data) => this.setState({profilePictureUrl: data})}
+                                        onChange={(picture_url) => this.setState(
+                                            {profilePictureUrl: picture_url},
+                                            this._saveProfilePicture)}
                                         uploadType="profile_picture"
                                     />
 

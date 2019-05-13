@@ -1,6 +1,7 @@
 // @flow
 import axios from 'axios'
 import _isUndefined from 'lodash/isUndefined'
+import _get from 'lodash/get'
 
 import {notify} from '../notifications/actions'
 
@@ -37,7 +38,7 @@ export const changePassword = (oldPassword: string, newPassword: string) => ((di
         })
 })
 
-export function updateCurrentUser(data: {}) {
+export function updateCurrentUser(data: Object) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
             type: constants.SUBMIT_CURRENT_USER_START
@@ -51,9 +52,15 @@ export function updateCurrentUser(data: {}) {
                     resp
                 })
 
+                let message
+                if (_get(data, ['meta', 'profile_picture_url'])) {
+                    message = 'User picture successfully updated'
+                } else {
+                    message = 'User successfully updated'
+                }
                 dispatch(notify({
                     status: 'success',
-                    message: 'User successfully updated'
+                    message
                 }))
 
                 return resp

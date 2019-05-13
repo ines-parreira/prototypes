@@ -65,6 +65,24 @@ describe('YourProfileView', () => {
         })
     })
 
+    describe('_saveProfilePicture', () => {
+        it('should save profile picture', () => {
+            const updateCurrentUserSpy = jest.fn(() => Promise.resolve(currentUser))
+            const component = shallow(
+                <YourProfileView
+                    updateCurrentUser={updateCurrentUserSpy}
+                    currentUser={fromJS(currentUser)}
+                    submitSetting={jest.fn()}
+                    preferences={fromJS({data: {}})}
+                />
+            ).instance()
+
+            component.setState({profilePictureUrl: 'https://config.gorgias.io/production/blabla'})
+            component._saveProfilePicture()
+            expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
+        })
+    })
+
     describe('_savePreferences', () => {
         it('should save preferences', (done) => {
             const submitSetting = jest.fn().mockReturnValueOnce(Promise.resolve())
