@@ -15,7 +15,7 @@ import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {notify} from '../../../../../state/notifications/actions'
 
 import type {attachmentType} from '../../../../../types'
-import {humanizeString, shouldDisplayExperiment} from '../../../../../utils'
+import {humanizeString} from '../../../../../utils'
 import {ATTACHMENT_SIZE_ERROR, getMaxAttachmentSize} from '../../../../../utils/file'
 import RichField from '../../../../common/forms/RichField'
 import {getContext} from '../../../../../state/prediction/selectors'
@@ -321,9 +321,8 @@ export class TicketReplyEditor extends React.Component<Props, State> {
 
         const canInsertInlineImages = (newMessageType === 'email')
 
-        let predictionProps = {}
-        if (shouldDisplayExperiment()) {
-            predictionProps.predictionContext = this.props.predictionContext
+        let predictionProps = {
+            predictionContext: this.props.predictionContext
         }
 
         return (

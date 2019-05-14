@@ -40,6 +40,25 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
     notify={[Function]}
     onChange={[Function]}
     placeholder="Click here to reply, or press r."
+    predictionContext={
+      Immutable.Map {
+        "current_user": Immutable.Map {
+          "id": "",
+          "email": "",
+          "firstname": "",
+          "lastname": "",
+        },
+        "customer": Immutable.Map {
+          "firstname": "",
+          "lastname": "",
+          "name": "",
+          "email": "",
+        },
+        "account": Immutable.Map {
+          "domain": undefined,
+        },
+      }
+    }
     readOnly={false}
     signature={true}
     spellCheck={true}
