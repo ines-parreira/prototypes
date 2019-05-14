@@ -5,6 +5,7 @@ import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT} from '../../../../../../../config/integrations/chat'
 import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../../../constants/integration'
 import ChatIntegrationPreferences from '../ChatIntegrationPreferences'
 
@@ -19,7 +20,10 @@ describe('ChatIntegrationPreferences component', () => {
                 store={mockStore({})}
                 integration={fromJS({
                     id: 2,
-                    type: SMOOCH_INSIDE_INTEGRATION_TYPE
+                    type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+                    meta: {
+                        language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+                    }
                 })}
             />
         )
@@ -37,7 +41,8 @@ describe('ChatIntegrationPreferences component', () => {
                             auto_responder: {
                                 enabled: true
                             }
-                        }
+                        },
+                        language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
                     }
                 })}
             />
@@ -57,7 +62,8 @@ describe('ChatIntegrationPreferences component', () => {
                             auto_responder: {
                                 text: autoResponderText
                             }
-                        }
+                        },
+                        language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
                     }
                 })}
             />
@@ -71,6 +77,7 @@ describe('ChatIntegrationPreferences component', () => {
         const integration = {
             id: undefined,
             meta: {
+                language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
                 preferences: {
                     auto_responder: {
                         enabled: false,
@@ -94,7 +101,12 @@ describe('ChatIntegrationPreferences component', () => {
         const component = mount(
             <ChatIntegrationPreferences
                 store={store}
-                integration={fromJS({type: SMOOCH_INSIDE_INTEGRATION_TYPE})}
+                integration={fromJS({
+                    type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+                    meta: {
+                        language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+                    }
+                })}
             />
         )
 
@@ -132,6 +144,7 @@ describe('ChatIntegrationPreferences component', () => {
                             thanks_text: 'boo',
                         }
                     },
+                    language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
                 }
             }
         }

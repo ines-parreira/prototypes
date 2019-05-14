@@ -13,9 +13,10 @@ import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
 import ChatIntegrationPreview from '../ChatIntegrationPreview/ChatIntegrationPreview'
 import ListField from '../../../../../common/forms/ListField'
 import {
+    SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
     QUICK_REPLIES_DEFAULTS,
     QUICK_REPLIES_MAX_ITEM_LENGTH,
-    QUICK_REPLIES_MAX_ITEMS
+    QUICK_REPLIES_MAX_ITEMS, SMOOCH_INSIDE_WIDGET_TEXTS
 } from '../../../../../../config/integrations/chat'
 
 type Props = {
@@ -170,9 +171,9 @@ class ChatIntegrationQuickReplies extends React.Component<Props, State> {
                             <ChatIntegrationPreview
                                 name={integration.get('name')}
                                 introductionText={integration.getIn(['decoration', 'introduction_text'])}
-                                inputPlaceholder={integration.getIn(['decoration', 'input_placeholder'])}
                                 mainColor={integration.getIn(['decoration', 'main_color'])}
                                 quickReplies={this.state.quickReplies.toJS()}
+                                translatedTexts={SMOOCH_INSIDE_WIDGET_TEXTS[integration.getIn(['meta', 'language']) || SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT]}
                                 isOnline
                             />
                         </Col>

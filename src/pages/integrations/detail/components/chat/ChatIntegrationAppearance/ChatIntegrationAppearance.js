@@ -1,9 +1,9 @@
+// @flow
 import React from 'react'
-import PropTypes from 'prop-types'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
-import {fromJS} from 'immutable'
+import {fromJS, type Map, type List} from 'immutable'
 import _pick from 'lodash/pick'
 import _merge from 'lodash/merge'
 import _defaults from 'lodash/defaults'
@@ -13,14 +13,20 @@ import {
     ButtonGroup,
     Breadcrumb,
     BreadcrumbItem,
+    Col,
     Container,
     Form,
     Row,
-    Col,
 } from 'reactstrap'
 
-import {SMOOCH_INSIDE_DEFAULT_WIDGET_LANGUAGE} from '../../../../../../config/integrations/chat'
-
+import {
+    SMOOCH_INSIDE_WIDGET_TEXTS,
+    SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS,
+    SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
+    SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS,
+    SMOOCH_INSIDE_DEFAULT_COLOR
+} from '../../../../../../config/integrations/chat'
+import {SHOPIFY_INTEGRATION_TYPE, SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../../constants/integration'
 import Loader from '../../../../../common/components/Loader'
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
 import ChatIntegrationPreview from '../ChatIntegrationPreview/ChatIntegrationPreview'
@@ -34,27 +40,43 @@ import PageHeader from '../../../../../common/components/PageHeader'
 import css from './ChatIntegrationAppearance.less'
 import * as integrationSelectors from './../../../../../../state/integrations/selectors'
 
+
 export const defaultContent = {
-    type: 'smooch_inside',
+    type: SMOOCH_INSIDE_INTEGRATION_TYPE,
     name: '',
-    introductionText: 'What can we do for you?',
-    offlineIntroductionText: 'We\'re away!',
-    inputPlaceholder: 'Type a message...',
-    mainColor: '#0d87dd',
-    conversationColor: '#0d87dd',
-    isOnline: true
+    introductionText: SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS.introductionText,
+    offlineIntroductionText: SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS.offlineIntroductionText,
+    mainColor: SMOOCH_INSIDE_DEFAULT_COLOR,
+    conversationColor: SMOOCH_INSIDE_DEFAULT_COLOR,
+    isOnline: true,
+    language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
 }
 
-class ChatIntegrationAppearance extends React.Component {
-    static propTypes = {
-        integration: PropTypes.object.isRequired,
-        isUpdate: PropTypes.bool.isRequired,
-        actions: PropTypes.object.isRequired,
-        loading: PropTypes.object.isRequired,
-        currentUser: PropTypes.object.isRequired,
+type Props = {
+    integration: Map<*,*>,
+    isUpdate: boolean,
+    actions: Object,
+    loading: Map<*,*>,
+    currentUser: Map<*,*>,
+    shopifyIntegrations: List<Map<*,*>>
+}
 
-        shopifyIntegrations: PropTypes.object.isRequired
-    }
+type State = {
+    type: string,
+    name: string,
+    introductionText: string,
+    offlineIntroductionText: string,
+    mainColor: string,
+    conversationColor: string,
+    isOnline: boolean,
+    language: string,
+
+    isCopied: boolean,
+    isShopifyInstructions: boolean
+}
+
+class ChatIntegrationAppearance extends React.Component<Props, State> {
+    isInitialized: boolean = false
 
     constructor(props) {
         super(props)
@@ -74,7 +96,7 @@ class ChatIntegrationAppearance extends React.Component {
         }
     }
 
-    componentWillUpdate(nextProps) {
+    componentWillUpdate(nextProps: Props) {
         const {integration, isUpdate, loading} = nextProps
 
         // populating the form when updating an integration
@@ -84,14 +106,14 @@ class ChatIntegrationAppearance extends React.Component {
         }
     }
 
-    _getIntegration = (integration) => {
+    _getIntegration = (integration: Map<*,*>) => {
         return _defaults({
             name: integration.get('name'),
             introductionText: integration.getIn(['decoration', 'introduction_text']),
             offlineIntroductionText: integration.getIn(['decoration', 'offline_introduction_text']),
-            inputPlaceholder: integration.getIn(['decoration', 'input_placeholder']),
             mainColor: integration.getIn(['decoration', 'main_color']),
             conversationColor: integration.getIn(['decoration', 'conversation_color']),
+            language: integration.getIn(['meta', 'language'])
         }, defaultContent)
     }
 
@@ -100,11 +122,10 @@ class ChatIntegrationAppearance extends React.Component {
         return loading.get('updateIntegration') === integration.get('id', true)
     }
 
-    _handleSubmit = (e) => {
-        e.preventDefault()
+    _handleSubmit = (event: SyntheticEvent<*>) => {
+        event.preventDefault()
         const form = _pick(this.state, ['name', 'type'])
         form.decoration = {
-            input_placeholder: this.state.inputPlaceholder,
             conversation_color: this.state.conversationColor,
             main_color: this.state.mainColor,
             introduction_text: this.state.introductionText,
@@ -112,22 +133,15 @@ class ChatIntegrationAppearance extends React.Component {
         }
 
         form.meta = {
-            language: SMOOCH_INSIDE_DEFAULT_WIDGET_LANGUAGE
+            language: this.state.language
         }
 
-        // if update, set ids for server
         if (this.props.isUpdate) {
             form.id = this.props.integration.get('id')
-
-            if (!this.props.integration.getIn(['meta', 'language'])) {
-                form.meta = {
-                    ...this.props.integration.get('meta').toJS(),
-                    language: SMOOCH_INSIDE_DEFAULT_WIDGET_LANGUAGE
-                }
-            } else {
-                delete form.meta
+            form.meta = {
+                ...this.props.integration.get('meta').toJS(),
+                ...form.meta
             }
-
         }
 
         return this.props.actions.updateOrCreateIntegration(fromJS(form))
@@ -139,6 +153,21 @@ class ChatIntegrationAppearance extends React.Component {
                 // reload the integration
                 this.isInitialized = false
             })
+    }
+
+    // $FlowFixMe
+    _setLanguage = (language: string) => {
+        let newState = {language}
+
+        const textFieldsToUpdate = ['introductionText', 'offlineIntroductionText']
+        textFieldsToUpdate.forEach((textName) => {
+            if (this.state[textName] === SMOOCH_INSIDE_WIDGET_TEXTS[this.state.language][textName]) {
+                // $FlowFixMe
+                newState[textName] = SMOOCH_INSIDE_WIDGET_TEXTS[language][textName]
+            }
+        })
+
+        this.setState(newState)
     }
 
     render() {
@@ -216,13 +245,6 @@ class ChatIntegrationAppearance extends React.Component {
                                             label="Introduction text outside business hours"
                                         />
 
-                                        <InputField
-                                            type="text"
-                                            value={this.state.inputPlaceholder}
-                                            onChange={(value) => this.setState({inputPlaceholder: value})}
-                                            label="Input placeholder"
-                                        />
-
                                         <ColorField
                                             value={this.state.mainColor}
                                             onChange={(value) => this.setState({mainColor: value})}
@@ -234,6 +256,25 @@ class ChatIntegrationAppearance extends React.Component {
                                             onChange={(value) => this.setState({conversationColor: value})}
                                             label="Conversation color"
                                         />
+
+                                        <InputField
+                                            type="select"
+                                            value={this.state.language}
+                                            options={SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS.toJS()}
+                                            onChange={this._setLanguage}
+                                            label="Language"
+                                        >
+                                            {
+                                                SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS.map((option) => (
+                                                    <option
+                                                        key={option.get('value')}
+                                                        value={option.get('value')}
+                                                    >
+                                                        {option.get('label')}
+                                                    </option>
+                                                ))
+                                            }
+                                        </InputField>
 
                                     </div>
                                 </div>
@@ -293,10 +334,10 @@ class ChatIntegrationAppearance extends React.Component {
                                 name={this.state.name}
                                 introductionText={this.state.introductionText}
                                 offlineIntroductionText={this.state.offlineIntroductionText}
-                                inputPlaceholder={this.state.inputPlaceholder}
                                 mainColor={this.state.mainColor}
                                 conversationColor={this.state.conversationColor}
                                 isOnline={this.state.isOnline}
+                                translatedTexts={SMOOCH_INSIDE_WIDGET_TEXTS[this.state.language || SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT]}
                             />
                         </Col>
                     </Row>
@@ -308,7 +349,7 @@ class ChatIntegrationAppearance extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        shopifyIntegrations: integrationSelectors.getIntegrationsByTypes('shopify')(state)
+        shopifyIntegrations: integrationSelectors.getIntegrationsByTypes(SHOPIFY_INTEGRATION_TYPE)(state)
     }
 }
 

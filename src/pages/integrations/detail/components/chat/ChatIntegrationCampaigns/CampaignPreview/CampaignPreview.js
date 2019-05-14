@@ -1,24 +1,24 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import css from './CampaignPreview.less'
 
 
-export default class CampaignPreview extends React.Component {
-    static propTypes = {
-        html: PropTypes.string,
-        authorName: PropTypes.string,
-        authorAvatarUrl: PropTypes.string,
+type Props = {
+    html: ?string,
+    authorName: ?string,
+    authorAvatarUrl: ?string,
+    mainColor: ?string,
+    translatedTexts: Object
+}
 
-        mainColor: PropTypes.string
-    }
-
+export default class CampaignPreview extends React.Component<Props> {
     render() {
         const {
             html,
             authorName,
             authorAvatarUrl,
             mainColor,
+            translatedTexts
         } = this.props
 
         const _bgColor = (color) => ({backgroundColor: color})
@@ -42,7 +42,7 @@ export default class CampaignPreview extends React.Component {
                         </div>
                     </div>
                     <div className={css.footer}>
-                        Click to reply
+                        {translatedTexts.campaignClickToReply}
                     </div>
                 </div>
 

@@ -267,6 +267,47 @@ exports[`CampaignDetail component should display default value when it's a new c
       >
         <CampaignPreview
           mainColor="#fefefe"
+          translatedTexts={
+            Object {
+              "actionPostbackError": "An error occurred while processing your action. Please try again.",
+              "autoResponderText": "We're away at the moment. Leave us your email and we'll follow up shortly.",
+              "backLabelBackInAMinute": "Back in 1 minute",
+              "backLabelBackInAnHour": "Back in 1 hour",
+              "backLabelBackInDays": "Back in {value} days",
+              "backLabelBackInHours": "Back in {value} hours",
+              "backLabelBackInMinutes": "Back in {value} minutes",
+              "backLabelBackTomorrow": "Back tomorrow",
+              "campaignClickToReply": "Click to reply",
+              "clickToRetry": "Message not delivered. Click to retry.",
+              "conversationTimestampHeaderFormat": "MMMM D",
+              "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+              "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+              "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+              "emailCaptureOnlineTriggerText": "Leave us your email in case we reply later.",
+              "emailCapturePlaceholder": "your@email.com",
+              "fetchHistory": "Load more",
+              "fetchingHistory": "Retrieving history...",
+              "headerText": "Gorgias Team",
+              "inputPlaceholder": "Type a message...",
+              "introductionText": "How can we help?",
+              "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+              "messageDelivered": "Delivered",
+              "messageError": "An error occurred while sending your message. Please try again.",
+              "messageIndicatorTitlePlural": "({count}) New messages",
+              "messageIndicatorTitleSingular": "({count}) New message",
+              "messageRelativeTimeDay": "{value}d ago",
+              "messageRelativeTimeHour": "{value}h ago",
+              "messageRelativeTimeJustNow": "Just now",
+              "messageRelativeTimeMinute": "{value}m ago",
+              "messageSending": "Sending...",
+              "messageTimestampFormat": "h:mm A",
+              "offlineIntroductionText": "We'll be back tomorrow",
+              "poweredByGorgias": "Powered by Gorgias",
+              "tapToRetry": "Message not delivered. Tap to retry.",
+              "unsupportedActionType": "Unsupported action type.",
+              "unsupportedMessageType": "Unsupported message type.",
+            }
+          }
         />
       </Col>
     </Row>
@@ -581,6 +622,47 @@ exports[`CampaignDetail component should display the campaign correctly when upd
           authorName="John"
           html="<div><img src=\\"#\\" />My little message</div>"
           mainColor="#fefefe"
+          translatedTexts={
+            Object {
+              "actionPostbackError": "An error occurred while processing your action. Please try again.",
+              "autoResponderText": "We're away at the moment. Leave us your email and we'll follow up shortly.",
+              "backLabelBackInAMinute": "Back in 1 minute",
+              "backLabelBackInAnHour": "Back in 1 hour",
+              "backLabelBackInDays": "Back in {value} days",
+              "backLabelBackInHours": "Back in {value} hours",
+              "backLabelBackInMinutes": "Back in {value} minutes",
+              "backLabelBackTomorrow": "Back tomorrow",
+              "campaignClickToReply": "Click to reply",
+              "clickToRetry": "Message not delivered. Click to retry.",
+              "conversationTimestampHeaderFormat": "MMMM D",
+              "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+              "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+              "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+              "emailCaptureOnlineTriggerText": "Leave us your email in case we reply later.",
+              "emailCapturePlaceholder": "your@email.com",
+              "fetchHistory": "Load more",
+              "fetchingHistory": "Retrieving history...",
+              "headerText": "Gorgias Team",
+              "inputPlaceholder": "Type a message...",
+              "introductionText": "How can we help?",
+              "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+              "messageDelivered": "Delivered",
+              "messageError": "An error occurred while sending your message. Please try again.",
+              "messageIndicatorTitlePlural": "({count}) New messages",
+              "messageIndicatorTitleSingular": "({count}) New message",
+              "messageRelativeTimeDay": "{value}d ago",
+              "messageRelativeTimeHour": "{value}h ago",
+              "messageRelativeTimeJustNow": "Just now",
+              "messageRelativeTimeMinute": "{value}m ago",
+              "messageSending": "Sending...",
+              "messageTimestampFormat": "h:mm A",
+              "offlineIntroductionText": "We'll be back tomorrow",
+              "poweredByGorgias": "Powered by Gorgias",
+              "tapToRetry": "Message not delivered. Tap to retry.",
+              "unsupportedActionType": "Unsupported action type.",
+              "unsupportedMessageType": "Unsupported message type.",
+            }
+          }
         />
       </Col>
     </Row>
@@ -895,6 +977,47 @@ exports[`CampaignDetail component should display the campaign correctly when upd
           authorName="John"
           html="<div><img src=\\"#\\" />My little message</div>"
           mainColor="#fefefe"
+          translatedTexts={
+            Object {
+              "actionPostbackError": "An error occurred while processing your action. Please try again.",
+              "autoResponderText": "We're away at the moment. Leave us your email and we'll follow up shortly.",
+              "backLabelBackInAMinute": "Back in 1 minute",
+              "backLabelBackInAnHour": "Back in 1 hour",
+              "backLabelBackInDays": "Back in {value} days",
+              "backLabelBackInHours": "Back in {value} hours",
+              "backLabelBackInMinutes": "Back in {value} minutes",
+              "backLabelBackTomorrow": "Back tomorrow",
+              "campaignClickToReply": "Click to reply",
+              "clickToRetry": "Message not delivered. Click to retry.",
+              "conversationTimestampHeaderFormat": "MMMM D",
+              "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+              "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+              "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+              "emailCaptureOnlineTriggerText": "Leave us your email in case we reply later.",
+              "emailCapturePlaceholder": "your@email.com",
+              "fetchHistory": "Load more",
+              "fetchingHistory": "Retrieving history...",
+              "headerText": "Gorgias Team",
+              "inputPlaceholder": "Type a message...",
+              "introductionText": "How can we help?",
+              "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+              "messageDelivered": "Delivered",
+              "messageError": "An error occurred while sending your message. Please try again.",
+              "messageIndicatorTitlePlural": "({count}) New messages",
+              "messageIndicatorTitleSingular": "({count}) New message",
+              "messageRelativeTimeDay": "{value}d ago",
+              "messageRelativeTimeHour": "{value}h ago",
+              "messageRelativeTimeJustNow": "Just now",
+              "messageRelativeTimeMinute": "{value}m ago",
+              "messageSending": "Sending...",
+              "messageTimestampFormat": "h:mm A",
+              "offlineIntroductionText": "We'll be back tomorrow",
+              "poweredByGorgias": "Powered by Gorgias",
+              "tapToRetry": "Message not delivered. Tap to retry.",
+              "unsupportedActionType": "Unsupported action type.",
+              "unsupportedMessageType": "Unsupported message type.",
+            }
+          }
         />
       </Col>
     </Row>

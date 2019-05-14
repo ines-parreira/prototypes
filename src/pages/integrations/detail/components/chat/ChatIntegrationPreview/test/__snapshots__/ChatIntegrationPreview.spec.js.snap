@@ -131,7 +131,7 @@ exports[`ChatIntegrationPreview should display quickReplies 1`] = `
       <div
         className="placeholder"
       >
-        input
+        Type a message...
       </div>
       <i
         className="icon camera"
@@ -298,7 +298,7 @@ exports[`ChatIntegrationPreview should display the offline status because chat i
       <div
         className="placeholder"
       >
-        input
+        Type a message...
       </div>
       <i
         className="icon camera"
@@ -460,7 +460,7 @@ exports[`ChatIntegrationPreview should display the online status because chat is
       <div
         className="placeholder"
       >
-        input
+        Type a message...
       </div>
       <i
         className="icon camera"

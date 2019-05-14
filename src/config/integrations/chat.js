@@ -1,7 +1,32 @@
 import {fromJS} from 'immutable'
 
+import {
+    DANISH_LANGUAGE,
+    DUTCH_LANGUAGE,
+    ENGLISH_US_LANGUAGE,
+    FRENCH_LANGUAGE,
+    ITALIAN_LANGUAGE,
+    SPANISH_LANGUAGE,
+    SWEDISH_LANGUAGE,
+    GERMAN_LANGUAGE
+} from '../../constants/languages'
 
-export const SMOOCH_INSIDE_DEFAULT_WIDGET_LANGUAGE = 'en-US'
+
+export const SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT = ENGLISH_US_LANGUAGE
+export const SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS = fromJS([
+    {value: ENGLISH_US_LANGUAGE, label: 'English US'},
+    {value: FRENCH_LANGUAGE, label: 'French'},
+    {value: SPANISH_LANGUAGE, label: 'Spanish'},
+    {value: DANISH_LANGUAGE, label: 'Danish'},
+    {value: SWEDISH_LANGUAGE, label: 'Swedish'},
+    {value: ITALIAN_LANGUAGE, label: 'Italian'},
+    {value: DUTCH_LANGUAGE, label: 'Dutch'},
+    {value: GERMAN_LANGUAGE, label: 'German'},
+])
+
+export const SMOOCH_INSIDE_WIDGET_TEXTS = require('../../../../../integrations/smooch_inside/widget_texts.json')
+export const SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS = SMOOCH_INSIDE_WIDGET_TEXTS[SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT]
+export const SMOOCH_INSIDE_DEFAULT_COLOR = '#0d87dd'
 
 // Campaigns
 export const GRAVATAR_URL_TEMPLATE = 'https://www.gravatar.com/avatar/{emailMd5}?d=mm&s=50'

@@ -2,6 +2,9 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
+import {SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT} from '../../../../../../../config/integrations/chat'
+import {SHOPIFY_INTEGRATION_TYPE, SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../../../constants/integration'
+
 import ChatIntegrationAppearance from './../ChatIntegrationAppearance'
 import configureStore from './../../../../../../../store/configureStore'
 
@@ -11,7 +14,7 @@ describe('ChatIntegrationAppearance component', () => {
             integrations: [{
                 id: 1,
                 name: 'mylittleintegration',
-                type: 'shopify'
+                type: SHOPIFY_INTEGRATION_TYPE
             }]
         })
     }
@@ -47,7 +50,10 @@ describe('ChatIntegrationAppearance component', () => {
                 integration={fromJS({
                     id: 2,
                     name: 'hellosmoochintegration',
-                    type: 'smooch_inside'
+                    type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+                    meta: {
+                        language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+                    }
                 })}
                 currentUser={fromJS({})}
                 isUpdate={true}
@@ -65,7 +71,10 @@ describe('ChatIntegrationAppearance component', () => {
                 integration={fromJS({
                     id: 2,
                     name: 'hellosmoochintegration',
-                    type: 'smooch_inside'
+                    type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+                    meta: {
+                        language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+                    }
                 })}
                 currentUser={fromJS({})}
                 isUpdate={true}

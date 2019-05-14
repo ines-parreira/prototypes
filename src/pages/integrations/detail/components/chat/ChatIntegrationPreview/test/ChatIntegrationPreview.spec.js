@@ -2,7 +2,10 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
+import {SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS} from '../../../../../../../config/integrations/chat'
+
 import ChatIntegrationPreview from './../ChatIntegrationPreview'
+
 
 describe('ChatIntegrationPreview', () => {
     it('should display the online status because chat is online', () => {
@@ -13,10 +16,10 @@ describe('ChatIntegrationPreview', () => {
                     name: 'Charles'
                 })}
                 introductionText="intro"
-                inputPlaceholder="input"
                 mainColor="#123456"
                 conversationColor="#456789"
                 isOnline={true}
+                translatedTexts={SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS}
             />
         )
 
@@ -31,10 +34,10 @@ describe('ChatIntegrationPreview', () => {
                     name: 'Charles'
                 })}
                 introductionText="intro"
-                inputPlaceholder="input"
                 mainColor="#123456"
                 conversationColor="#456789"
                 isOnline={false}
+                translatedTexts={SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS}
             />
         )
 
@@ -46,11 +49,11 @@ describe('ChatIntegrationPreview', () => {
             <ChatIntegrationPreview
                 name="My little chat integration"
                 introductionText="intro"
-                inputPlaceholder="input"
                 mainColor="#123456"
                 conversationColor="#456789"
                 quickReplies={fromJS(['foo', 'bar'])}
                 isOnline
+                translatedTexts={SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS}
             />
         )
 

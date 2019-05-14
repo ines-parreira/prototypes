@@ -6,6 +6,9 @@ exports[`ChatIntegrationPreferences component should render the chat settings co
     Immutable.Map {
       "id": 2,
       "type": "smooch_inside",
+      "meta": Immutable.Map {
+        "language": "en-US",
+      },
     }
   }
   store={
@@ -24,6 +27,9 @@ exports[`ChatIntegrationPreferences component should render the chat settings co
       Immutable.Map {
         "id": 2,
         "type": "smooch_inside",
+        "meta": Immutable.Map {
+          "language": "en-US",
+        },
       }
     }
     store={
@@ -155,6 +161,9 @@ exports[`ChatIntegrationPreferences component should render the chat settings co
           Immutable.Map {
             "id": 2,
             "type": "smooch_inside",
+            "meta": Immutable.Map {
+              "language": "en-US",
+            },
           }
         }
       >

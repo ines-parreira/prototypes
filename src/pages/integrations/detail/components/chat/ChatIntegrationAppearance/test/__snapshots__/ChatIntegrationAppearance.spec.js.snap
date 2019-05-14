@@ -82,20 +82,14 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
-                value="What can we do for you?"
+                value="How can we help?"
               />
               <InputField
                 label="Introduction text outside business hours"
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
-                value="We're away!"
-              />
-              <InputField
-                label="Input placeholder"
-                onChange={[Function]}
-                type="text"
-                value="Type a message..."
+                value="We'll be back tomorrow"
               />
               <ColorField
                 label="Main color"
@@ -109,6 +103,97 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
                 type="text"
                 value="#0d87dd"
               />
+              <InputField
+                label="Language"
+                onChange={[Function]}
+                options={
+                  Array [
+                    Object {
+                      "label": "English US",
+                      "value": "en-US",
+                    },
+                    Object {
+                      "label": "French",
+                      "value": "fr",
+                    },
+                    Object {
+                      "label": "Spanish",
+                      "value": "es",
+                    },
+                    Object {
+                      "label": "Danish",
+                      "value": "da",
+                    },
+                    Object {
+                      "label": "Swedish",
+                      "value": "sv",
+                    },
+                    Object {
+                      "label": "Italian",
+                      "value": "it",
+                    },
+                    Object {
+                      "label": "Dutch",
+                      "value": "nl",
+                    },
+                    Object {
+                      "label": "German",
+                      "value": "de",
+                    },
+                  ]
+                }
+                type="select"
+                value="en-US"
+              >
+                <option
+                  key="en-US"
+                  value="en-US"
+                >
+                  English US
+                </option>
+                <option
+                  key="fr"
+                  value="fr"
+                >
+                  French
+                </option>
+                <option
+                  key="es"
+                  value="es"
+                >
+                  Spanish
+                </option>
+                <option
+                  key="da"
+                  value="da"
+                >
+                  Danish
+                </option>
+                <option
+                  key="sv"
+                  value="sv"
+                >
+                  Swedish
+                </option>
+                <option
+                  key="it"
+                  value="it"
+                >
+                  Italian
+                </option>
+                <option
+                  key="nl"
+                  value="nl"
+                >
+                  Dutch
+                </option>
+                <option
+                  key="de"
+                  value="de"
+                >
+                  German
+                </option>
+              </InputField>
             </div>
           </div>
           <Button
@@ -169,12 +254,52 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
         <ChatIntegrationPreview
           conversationColor="#0d87dd"
           currentUser={Immutable.Map {}}
-          inputPlaceholder="Type a message..."
-          introductionText="What can we do for you?"
+          introductionText="How can we help?"
           isOnline={true}
           mainColor="#0d87dd"
           name=""
-          offlineIntroductionText="We're away!"
+          offlineIntroductionText="We'll be back tomorrow"
+          translatedTexts={
+            Object {
+              "actionPostbackError": "An error occurred while processing your action. Please try again.",
+              "autoResponderText": "We're away at the moment. Leave us your email and we'll follow up shortly.",
+              "backLabelBackInAMinute": "Back in 1 minute",
+              "backLabelBackInAnHour": "Back in 1 hour",
+              "backLabelBackInDays": "Back in {value} days",
+              "backLabelBackInHours": "Back in {value} hours",
+              "backLabelBackInMinutes": "Back in {value} minutes",
+              "backLabelBackTomorrow": "Back tomorrow",
+              "campaignClickToReply": "Click to reply",
+              "clickToRetry": "Message not delivered. Click to retry.",
+              "conversationTimestampHeaderFormat": "MMMM D",
+              "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+              "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+              "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+              "emailCaptureOnlineTriggerText": "Leave us your email in case we reply later.",
+              "emailCapturePlaceholder": "your@email.com",
+              "fetchHistory": "Load more",
+              "fetchingHistory": "Retrieving history...",
+              "headerText": "Gorgias Team",
+              "inputPlaceholder": "Type a message...",
+              "introductionText": "How can we help?",
+              "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+              "messageDelivered": "Delivered",
+              "messageError": "An error occurred while sending your message. Please try again.",
+              "messageIndicatorTitlePlural": "({count}) New messages",
+              "messageIndicatorTitleSingular": "({count}) New message",
+              "messageRelativeTimeDay": "{value}d ago",
+              "messageRelativeTimeHour": "{value}h ago",
+              "messageRelativeTimeJustNow": "Just now",
+              "messageRelativeTimeMinute": "{value}m ago",
+              "messageSending": "Sending...",
+              "messageTimestampFormat": "h:mm A",
+              "offlineIntroductionText": "We'll be back tomorrow",
+              "poweredByGorgias": "Powered by Gorgias",
+              "tapToRetry": "Message not delivered. Tap to retry.",
+              "unsupportedActionType": "Unsupported action type.",
+              "unsupportedMessageType": "Unsupported message type.",
+            }
+          }
         />
       </Col>
     </Row>
@@ -233,6 +358,9 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
         "id": 2,
         "name": "hellosmoochintegration",
         "type": "smooch_inside",
+        "meta": Immutable.Map {
+          "language": "en-US",
+        },
       }
     }
   />
@@ -279,20 +407,14 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
-                value="What can we do for you?"
+                value="How can we help?"
               />
               <InputField
                 label="Introduction text outside business hours"
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
-                value="We're away!"
-              />
-              <InputField
-                label="Input placeholder"
-                onChange={[Function]}
-                type="text"
-                value="Type a message..."
+                value="We'll be back tomorrow"
               />
               <ColorField
                 label="Main color"
@@ -306,6 +428,97 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
                 type="text"
                 value="#0d87dd"
               />
+              <InputField
+                label="Language"
+                onChange={[Function]}
+                options={
+                  Array [
+                    Object {
+                      "label": "English US",
+                      "value": "en-US",
+                    },
+                    Object {
+                      "label": "French",
+                      "value": "fr",
+                    },
+                    Object {
+                      "label": "Spanish",
+                      "value": "es",
+                    },
+                    Object {
+                      "label": "Danish",
+                      "value": "da",
+                    },
+                    Object {
+                      "label": "Swedish",
+                      "value": "sv",
+                    },
+                    Object {
+                      "label": "Italian",
+                      "value": "it",
+                    },
+                    Object {
+                      "label": "Dutch",
+                      "value": "nl",
+                    },
+                    Object {
+                      "label": "German",
+                      "value": "de",
+                    },
+                  ]
+                }
+                type="select"
+                value="en-US"
+              >
+                <option
+                  key="en-US"
+                  value="en-US"
+                >
+                  English US
+                </option>
+                <option
+                  key="fr"
+                  value="fr"
+                >
+                  French
+                </option>
+                <option
+                  key="es"
+                  value="es"
+                >
+                  Spanish
+                </option>
+                <option
+                  key="da"
+                  value="da"
+                >
+                  Danish
+                </option>
+                <option
+                  key="sv"
+                  value="sv"
+                >
+                  Swedish
+                </option>
+                <option
+                  key="it"
+                  value="it"
+                >
+                  Italian
+                </option>
+                <option
+                  key="nl"
+                  value="nl"
+                >
+                  Dutch
+                </option>
+                <option
+                  key="de"
+                  value="de"
+                >
+                  German
+                </option>
+              </InputField>
             </div>
           </div>
           <Button
@@ -386,12 +599,52 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
         <ChatIntegrationPreview
           conversationColor="#0d87dd"
           currentUser={Immutable.Map {}}
-          inputPlaceholder="Type a message..."
-          introductionText="What can we do for you?"
+          introductionText="How can we help?"
           isOnline={true}
           mainColor="#0d87dd"
           name="hellosmoochintegration"
-          offlineIntroductionText="We're away!"
+          offlineIntroductionText="We'll be back tomorrow"
+          translatedTexts={
+            Object {
+              "actionPostbackError": "An error occurred while processing your action. Please try again.",
+              "autoResponderText": "We're away at the moment. Leave us your email and we'll follow up shortly.",
+              "backLabelBackInAMinute": "Back in 1 minute",
+              "backLabelBackInAnHour": "Back in 1 hour",
+              "backLabelBackInDays": "Back in {value} days",
+              "backLabelBackInHours": "Back in {value} hours",
+              "backLabelBackInMinutes": "Back in {value} minutes",
+              "backLabelBackTomorrow": "Back tomorrow",
+              "campaignClickToReply": "Click to reply",
+              "clickToRetry": "Message not delivered. Click to retry.",
+              "conversationTimestampHeaderFormat": "MMMM D",
+              "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+              "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+              "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+              "emailCaptureOnlineTriggerText": "Leave us your email in case we reply later.",
+              "emailCapturePlaceholder": "your@email.com",
+              "fetchHistory": "Load more",
+              "fetchingHistory": "Retrieving history...",
+              "headerText": "Gorgias Team",
+              "inputPlaceholder": "Type a message...",
+              "introductionText": "How can we help?",
+              "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+              "messageDelivered": "Delivered",
+              "messageError": "An error occurred while sending your message. Please try again.",
+              "messageIndicatorTitlePlural": "({count}) New messages",
+              "messageIndicatorTitleSingular": "({count}) New message",
+              "messageRelativeTimeDay": "{value}d ago",
+              "messageRelativeTimeHour": "{value}h ago",
+              "messageRelativeTimeJustNow": "Just now",
+              "messageRelativeTimeMinute": "{value}m ago",
+              "messageSending": "Sending...",
+              "messageTimestampFormat": "h:mm A",
+              "offlineIntroductionText": "We'll be back tomorrow",
+              "poweredByGorgias": "Powered by Gorgias",
+              "tapToRetry": "Message not delivered. Tap to retry.",
+              "unsupportedActionType": "Unsupported action type.",
+              "unsupportedMessageType": "Unsupported message type.",
+            }
+          }
         />
       </Col>
     </Row>
@@ -450,6 +703,9 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
         "id": 2,
         "name": "hellosmoochintegration",
         "type": "smooch_inside",
+        "meta": Immutable.Map {
+          "language": "en-US",
+        },
       }
     }
   />
@@ -496,20 +752,14 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
-                value="What can we do for you?"
+                value="How can we help?"
               />
               <InputField
                 label="Introduction text outside business hours"
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
-                value="We're away!"
-              />
-              <InputField
-                label="Input placeholder"
-                onChange={[Function]}
-                type="text"
-                value="Type a message..."
+                value="We'll be back tomorrow"
               />
               <ColorField
                 label="Main color"
@@ -523,6 +773,97 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
                 type="text"
                 value="#0d87dd"
               />
+              <InputField
+                label="Language"
+                onChange={[Function]}
+                options={
+                  Array [
+                    Object {
+                      "label": "English US",
+                      "value": "en-US",
+                    },
+                    Object {
+                      "label": "French",
+                      "value": "fr",
+                    },
+                    Object {
+                      "label": "Spanish",
+                      "value": "es",
+                    },
+                    Object {
+                      "label": "Danish",
+                      "value": "da",
+                    },
+                    Object {
+                      "label": "Swedish",
+                      "value": "sv",
+                    },
+                    Object {
+                      "label": "Italian",
+                      "value": "it",
+                    },
+                    Object {
+                      "label": "Dutch",
+                      "value": "nl",
+                    },
+                    Object {
+                      "label": "German",
+                      "value": "de",
+                    },
+                  ]
+                }
+                type="select"
+                value="en-US"
+              >
+                <option
+                  key="en-US"
+                  value="en-US"
+                >
+                  English US
+                </option>
+                <option
+                  key="fr"
+                  value="fr"
+                >
+                  French
+                </option>
+                <option
+                  key="es"
+                  value="es"
+                >
+                  Spanish
+                </option>
+                <option
+                  key="da"
+                  value="da"
+                >
+                  Danish
+                </option>
+                <option
+                  key="sv"
+                  value="sv"
+                >
+                  Swedish
+                </option>
+                <option
+                  key="it"
+                  value="it"
+                >
+                  Italian
+                </option>
+                <option
+                  key="nl"
+                  value="nl"
+                >
+                  Dutch
+                </option>
+                <option
+                  key="de"
+                  value="de"
+                >
+                  German
+                </option>
+              </InputField>
             </div>
           </div>
           <Button
@@ -603,12 +944,52 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
         <ChatIntegrationPreview
           conversationColor="#0d87dd"
           currentUser={Immutable.Map {}}
-          inputPlaceholder="Type a message..."
-          introductionText="What can we do for you?"
+          introductionText="How can we help?"
           isOnline={true}
           mainColor="#0d87dd"
           name="hellosmoochintegration"
-          offlineIntroductionText="We're away!"
+          offlineIntroductionText="We'll be back tomorrow"
+          translatedTexts={
+            Object {
+              "actionPostbackError": "An error occurred while processing your action. Please try again.",
+              "autoResponderText": "We're away at the moment. Leave us your email and we'll follow up shortly.",
+              "backLabelBackInAMinute": "Back in 1 minute",
+              "backLabelBackInAnHour": "Back in 1 hour",
+              "backLabelBackInDays": "Back in {value} days",
+              "backLabelBackInHours": "Back in {value} hours",
+              "backLabelBackInMinutes": "Back in {value} minutes",
+              "backLabelBackTomorrow": "Back tomorrow",
+              "campaignClickToReply": "Click to reply",
+              "clickToRetry": "Message not delivered. Click to retry.",
+              "conversationTimestampHeaderFormat": "MMMM D",
+              "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+              "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+              "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+              "emailCaptureOnlineTriggerText": "Leave us your email in case we reply later.",
+              "emailCapturePlaceholder": "your@email.com",
+              "fetchHistory": "Load more",
+              "fetchingHistory": "Retrieving history...",
+              "headerText": "Gorgias Team",
+              "inputPlaceholder": "Type a message...",
+              "introductionText": "How can we help?",
+              "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+              "messageDelivered": "Delivered",
+              "messageError": "An error occurred while sending your message. Please try again.",
+              "messageIndicatorTitlePlural": "({count}) New messages",
+              "messageIndicatorTitleSingular": "({count}) New message",
+              "messageRelativeTimeDay": "{value}d ago",
+              "messageRelativeTimeHour": "{value}h ago",
+              "messageRelativeTimeJustNow": "Just now",
+              "messageRelativeTimeMinute": "{value}m ago",
+              "messageSending": "Sending...",
+              "messageTimestampFormat": "h:mm A",
+              "offlineIntroductionText": "We'll be back tomorrow",
+              "poweredByGorgias": "Powered by Gorgias",
+              "tapToRetry": "Message not delivered. Tap to retry.",
+              "unsupportedActionType": "Unsupported action type.",
+              "unsupportedMessageType": "Unsupported message type.",
+            }
+          }
         />
       </Col>
     </Row>

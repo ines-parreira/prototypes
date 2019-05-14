@@ -10,12 +10,13 @@ type Props = {
     introductionText?: string,
     offlineIntroductionText?: string,
     headerText?: string,
-    inputPlaceholder?: string,
     mainColor?: string,
     conversationColor?: string,
 
     isOnline?: boolean,
-    quickReplies?: Array<string>
+    quickReplies?: Array<string>,
+
+    translatedTexts: Object
 }
 
 export default class ChatIntegrationPreview extends React.Component<Props> {
@@ -89,10 +90,10 @@ export default class ChatIntegrationPreview extends React.Component<Props> {
             name,
             introductionText,
             offlineIntroductionText,
-            inputPlaceholder,
             mainColor,
             isOnline,
-            quickReplies
+            quickReplies,
+            translatedTexts
         } = this.props
 
         const _bgColor = (color) => ({backgroundColor: color})
@@ -160,7 +161,7 @@ export default class ChatIntegrationPreview extends React.Component<Props> {
                             {
                                 !isOnline && (
                                     <div className={css['business-hours-back-badge']}>
-                                        Back tomorrow
+                                        {translatedTexts.backLabelBackTomorrow}
                                     </div>
                                 )
                             }
@@ -170,12 +171,12 @@ export default class ChatIntegrationPreview extends React.Component<Props> {
                     { quickReplies ? this._renderQuickReplies() : this._renderMessageContent() }
 
                     <div className={css.poweredby}>
-                        Powered by Gorgias
+                        {translatedTexts.poweredByGorgias}
                     </div>
 
                     <div className={css.footer}>
                         <div className={css.placeholder}>
-                            {nonbreak(inputPlaceholder)}
+                            {nonbreak(translatedTexts.inputPlaceholder)}
                         </div>
 
                         <i className={classnames(css.icon, css.camera)}/>

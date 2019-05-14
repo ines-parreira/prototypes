@@ -13,6 +13,7 @@ import {
     Form,
 } from 'reactstrap'
 
+import {SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS, SMOOCH_INSIDE_WIDGET_TEXTS} from '../../../../../../config/integrations/chat'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import PageHeader from '../../../../../common/components/PageHeader'
 import BooleanField from '../../../../../common/forms/BooleanField'
@@ -45,13 +46,13 @@ type State = {
 export default class ChatIntegrationPreferences extends React.Component<Props, State> {
     state = {
         autoResponderEnabled: false,
-        autoResponderText: 'We\'re away at the moment. Leave us your email and we\'ll follow up shortly.',
+        autoResponderText: SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS.autoResponderText,
 
         emailCaptureEnabled: false,
-        emailCaptureOnlineTriggerText: 'Leave us your email in case we reply later.',
-        emailCaptureOnlineThanksText: 'Thanks! We\'ll email you at {email} if you leave.',
-        emailCaptureOfflineTriggerText: 'We\'re away, leave us your email and we\'ll respond shortly.',
-        emailCaptureOfflineThanksText: 'Thanks {email}! We\'ll get back to you shortly.',
+        emailCaptureOnlineTriggerText: SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS.emailCaptureOnlineTriggerText,
+        emailCaptureOnlineThanksText: SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS.emailCaptureOnlineThanksText,
+        emailCaptureOfflineTriggerText: SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS.emailCaptureOfflineTriggerText,
+        emailCaptureOfflineThanksText: SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS.emailCaptureOfflineThanksText,
 
         isUpdating: false,
         isModifyingOnlineData: true
@@ -61,10 +62,12 @@ export default class ChatIntegrationPreferences extends React.Component<Props, S
 
     _initState = (integration: Map<*,*>) => {
         const emailCapturePreferences = integration.getIn(['meta', 'preferences', 'email_capture']) || fromJS({})
+        const language = integration.getIn(['meta', 'language'])
 
         this.setState(_omitBy({
             autoResponderEnabled: integration.getIn(['meta', 'preferences', 'auto_responder', 'enabled']),
-            autoResponderText: integration.getIn(['meta', 'preferences', 'auto_responder', 'text']),
+            autoResponderText: integration.getIn(['meta', 'preferences', 'auto_responder', 'text']) ||
+                SMOOCH_INSIDE_WIDGET_TEXTS[language].autoResponderText,
             emailCaptureEnabled: emailCapturePreferences.get('enabled'),
             emailCaptureOnlineTriggerText: emailCapturePreferences.getIn(['online', 'trigger_text']),
             emailCaptureOnlineThanksText: emailCapturePreferences.getIn(['online', 'thanks_text']),

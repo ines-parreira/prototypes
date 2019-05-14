@@ -191,8 +191,8 @@ export default class SelectField extends Component<Props, State> {
 
     render() {
         const {
-            allowCustomValue, value, singular, style, placeholder, className, options, rightAddon, fixedWidth,
-            focusedPlaceholder
+            allowCustomValue, value, singular, style, placeholder, className, options,
+            rightAddon, fixedWidth, focusedPlaceholder
         } = this.props
         const {filteredOptions, input, optionsOpen, selectedOptionIndex, isFocused} = this.state
         const selectedOption = options.find((option) => _isEqual(option.value, value))

@@ -23,7 +23,12 @@ import {AgentLabel} from '../../../../../../common/utils/labels'
 import {sanitizeHtmlDefault} from '../../../../../../../utils/html'
 import {convertToHTML} from '../../../../../../../utils/editor'
 
-import {CAMPAIGNS_TRIGGER_KEYS, GRAVATAR_URL_TEMPLATE} from '../../../../../../../config/integrations/chat'
+import {
+    CAMPAIGNS_TRIGGER_KEYS,
+    SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
+    GRAVATAR_URL_TEMPLATE,
+    SMOOCH_INSIDE_WIDGET_TEXTS
+} from '../../../../../../../config/integrations/chat'
 import PageHeader from '../../../../../../common/components/PageHeader'
 import ChatIntegrationNavigation from '../../ChatIntegrationNavigation'
 
@@ -503,6 +508,7 @@ export class CampaignDetail extends React.Component {
                                 mainColor={integration.getIn(['decoration', 'main_color'])}
                                 authorName={message.getIn(['author', 'name'])}
                                 authorAvatarUrl={message.getIn(['author', 'avatar_url'])}
+                                translatedTexts={SMOOCH_INSIDE_WIDGET_TEXTS[integration.getIn(['meta', 'language']) || SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT]}
                             />
                         </Col>
                     </Row>
