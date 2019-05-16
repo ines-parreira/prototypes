@@ -3754,7 +3754,6 @@ exports[`YourProfileView render should render current user profile form 1`] = `
             <div>
               <Avatar
                 email="alex@gorgias.io"
-                google={false}
                 name="Alex Plugaru"
                 size="100"
                 style={Object {}}

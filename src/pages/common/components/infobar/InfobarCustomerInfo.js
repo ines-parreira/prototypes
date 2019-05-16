@@ -356,7 +356,6 @@ class InfobarCustomerInfo extends React.Component {
                                 name={customer.get('name', '')}
                                 email={customer.get('email', '')}
                                 url={customer.getIn(['meta', 'profile_picture_url'])}
-                                google
                             />
                             <Link
                                 to={`/app/customer/${customer.get('id')}`}

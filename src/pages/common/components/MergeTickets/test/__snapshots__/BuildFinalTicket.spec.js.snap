@@ -66,7 +66,6 @@ exports[`BuildFinalTicket component should display all fields because everything
             <Avatar
               className="d-inline-block mr-2"
               email=""
-              google={false}
               name="John Smith"
               size={26}
               style={Object {}}
@@ -81,7 +80,6 @@ exports[`BuildFinalTicket component should display all fields because everything
             <Avatar
               className="d-inline-block mr-2"
               email=""
-              google={false}
               name="Jack Ryan"
               size={26}
               style={Object {}}
@@ -114,7 +112,6 @@ exports[`BuildFinalTicket component should display the assignee field because th
             <Avatar
               className="d-inline-block mr-2"
               email=""
-              google={false}
               name="John Smith"
               size={26}
               style={Object {}}
@@ -129,7 +126,6 @@ exports[`BuildFinalTicket component should display the assignee field because th
             <Avatar
               className="d-inline-block mr-2"
               email=""
-              google={false}
               name="Jack Ryan"
               size={26}
               style={Object {}}

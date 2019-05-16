@@ -1,39 +1,21 @@
 // @flow
 import md5 from 'md5'
-import jsonp from 'jsonp'
-import _get from 'lodash/get'
 
 type avatarParamsType = {
     email: string,
-    size: number,
-    google: boolean
+    size: number
 }
 
-function getGravatarUrl(email: string = '', size: number = 50) {
+function getGravatarUrl(email: string = '') {
     return new Promise((resolve, reject) => {
-        const gravatarUrl = `https://www.gravatar.com/avatar/${md5(email)}?d=404&s=${size}`
+        const gravatarUrl = `https://www.gravatar.com/avatar/${md5(email)}?d=404`
         const img = new Image()
         img.onload = () => {
-            // s=width=height=50px
             // d=404; return 404 if no gravatar
             return resolve(gravatarUrl)
         }
         img.onerror = reject
         img.src = gravatarUrl
-    })
-}
-
-function getGoogleUrl(email: string) {
-    return new Promise((resolve, reject) => {
-        const googleUrl = `https://picasaweb.google.com/data/entry/api/user/${encodeURIComponent(email)}?alt=json-in-script`
-
-        jsonp(googleUrl, {timeout: 2000}, function (err, data) {
-            if (err) {
-                return reject(err)
-            }
-
-            return resolve(_get(data, ['entry', 'gphoto$thumbnail', '$t']) || '')
-        })
     })
 }
 
@@ -43,41 +25,24 @@ function cleanEmail (email): string {
     return (email || '').toLowerCase().trim()
 }
 
-export function getAvatarFromCache(email: string): {isCached: boolean, url?: string} {
-    return avatarCache[cleanEmail(email)] || {isCached: false}
+export function getAvatarFromCache(email: string, size: number): ?string {
+    const url = avatarCache[cleanEmail(email)]
+    return url ? `${url}&s=${size}` : url
 }
 
-export function getAvatar({email = '', size = 50, google = false}: avatarParamsType = {}): Promise<{
-    url: string,
-    isCached: boolean,
-}> {
+export function getAvatar({email = '', size = 50}: avatarParamsType = {}): Promise<?string> {
     const mail = cleanEmail(email)
     if (!mail) {
-        return Promise.resolve({
-            url: '',
-            isCached: false
-        })
+        return Promise.resolve(null)
     }
 
-    return getGravatarUrl(mail, size)
-        .catch(() => {
-            if (google) {
-                return getGoogleUrl(mail)
-            }
-
-            return Promise.reject()
-        })
+    return getGravatarUrl(mail)
         .then((url) => {
-            // add to cache
-            avatarCache[mail] = {
-                isCached: true,
-                url,
-            }
-
-            return avatarCache[mail]
+            avatarCache[mail] = url
+            return `${url}&s=${size}`
         })
         .catch(() => {
-            avatarCache[mail] = {isCached: true}
-            return avatarCache[mail]
+            avatarCache[mail] = null
+            return null
         })
 }

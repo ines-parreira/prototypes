@@ -1,5 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Avatar component should not render image in invisible container 1`] = `
+<Avatar
+  email="pepperoni@gorgias.io"
+  name=""
+  size={50}
+  style={Object {}}
+  url=""
+>
+  <div
+    className="component"
+    style={
+      Object {
+        "height": "50px",
+        "width": "50px",
+      }
+    }
+  >
+    <div
+      className="initials"
+      style={
+        Object {
+          "fontSize": "20.833333333333336px",
+        }
+      }
+    >
+      <span />
+    </div>
+  </div>
+</Avatar>
+`;
+
 exports[`Avatar component should render avatar from cache 1`] = `
 <div
   className="component hasImage"
@@ -48,6 +79,41 @@ exports[`Avatar component should render default with no props 1`] = `
     <span />
   </div>
 </div>
+`;
+
+exports[`Avatar component should render image in visible container 1`] = `
+<Avatar
+  email="alex@gorgias.io"
+  name=""
+  size={50}
+  style={Object {}}
+  url=""
+>
+  <div
+    className="component hasImage"
+    style={
+      Object {
+        "height": "50px",
+        "width": "50px",
+      }
+    }
+  >
+    <div
+      className="initials"
+      style={
+        Object {
+          "fontSize": "20.833333333333336px",
+        }
+      }
+    >
+      <span />
+    </div>
+    <img
+      className="gravatar"
+      src="https://www.gravatar.com/avatar/b0603c6a6734698e0b93b1350c6c8286?d=404&s=50"
+    />
+  </div>
+</Avatar>
 `;
 
 exports[`Avatar component should render only the initials 1`] = `

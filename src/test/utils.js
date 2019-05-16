@@ -1,16 +1,20 @@
+import axios from 'axios'
+
 export const mockImageOnload = () => {
     let srcSet
 
-    beforeEach(function () {
+    beforeEach(function() {
         srcSet = Object.getOwnPropertyDescriptor(global.Image.prototype, 'src')
         Object.defineProperty(global.Image.prototype, 'src', {
-            set() {
-                setTimeout(() => this.onload())
-            },
+            set(value) {
+                axios.get(value)
+                    .then(() => this.onload())
+                    .catch(() => this.onerror())
+            }
         })
     })
 
-    afterEach(function () {
+    afterEach(function() {
         Object.defineProperty(global.Image.prototype, 'src', srcSet)
     })
 }

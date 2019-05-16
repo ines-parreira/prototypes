@@ -15,15 +15,13 @@ type Props = {
     name: string,
     size: number,
     url: string,
-    google: boolean,
     className?: string,
     style?: Object,
     badgeColor?: string,
 }
 
 type State = {
-    imageUrl: ?string,
-    isCached: boolean,
+    imageUrl: ?string
 }
 
 export default class Avatar extends React.Component<Props, State> {
@@ -34,7 +32,6 @@ export default class Avatar extends React.Component<Props, State> {
         email: '',
         name: '',
         size: 50,
-        google: false,
         style: {},
     }
 
@@ -59,19 +56,9 @@ export default class Avatar extends React.Component<Props, State> {
     }
 
     _getDefaultState = (props: Props) => {
-        const cached = getAvatarFromCache(props.email)
-        let imageUrl = cached.url
-        let isCached = cached.isCached
+        const imageUrl = props.url || getAvatarFromCache(props.email, props.size)
 
-        if (props.url) {
-            imageUrl = props.url
-            isCached = !!props.url
-        }
-
-        return {
-            imageUrl,
-            isCached
-        }
+        return {imageUrl}
     }
 
     _setImageUrl = () => {
@@ -80,19 +67,15 @@ export default class Avatar extends React.Component<Props, State> {
             return
         }
 
-        if (this.state.isCached) {
-            return this.setState(this._getDefaultState(this.props))
+        if (typeof this.state.imageUrl !== 'undefined') {
+            this.setState(this._getDefaultState(this.props))
+            return
         }
 
-        return getAvatar({
+        getAvatar({
             email: this.props.email,
-            size: this.props.size,
-            google: this.props.google
-        })
-            .then((image) => this.setState({
-                imageUrl: image.url,
-                isCached: image.isCached
-            }))
+            size: this.props.size
+        }).then((imageUrl) => this.setState({imageUrl}))
     }
 
     _getInitials = (name: string) => {

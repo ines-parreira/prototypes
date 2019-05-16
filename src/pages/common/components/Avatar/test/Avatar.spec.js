@@ -46,18 +46,20 @@ describe('Avatar component', () => {
             })
     })
 
-    it('should render image in visible container', (done) => {
-        const component = mount(
-            <Avatar email="pizza@gorgias.io"/>
-        )
-        // wait for image url to return
-        global.jestSetTimeout(() => {
-            component.update()
-            expect(component.find('img').length).toBe(1)
-        }, 10, done)
+    it('should render image in visible container', async (done) => {
+        // preload the image so the component can fetch it from the cache
+        await getAvatar({email: 'alex@gorgias.io'})
+        const component = mount(<Avatar email="alex@gorgias.io"/>)
+        // wait for the DOM to be up-to-date
+        setTimeout(() => {
+            expect(component).toMatchSnapshot()
+            done()
+        })
     })
 
-    it('should not render image in invisible container', (done) => {
+    it('should not render image in invisible container', async (done) => {
+        // preload the image so the component can fetch it from the cache
+        await getAvatar({email: 'alex@gorgias.io'})
         const container = document.createElement('div')
         document.body.appendChild(container)
         container.style.display = 'none'
@@ -65,8 +67,9 @@ describe('Avatar component', () => {
             <Avatar email="pepperoni@gorgias.io"/>,
             {attachTo: container}
         )
-        global.jestSetTimeout(() => {
-            expect(component.find('img').length).toBe(0)
-        }, 10, done)
+        setTimeout(() => {
+            expect(component).toMatchSnapshot()
+            done()
+        })
     })
 })
