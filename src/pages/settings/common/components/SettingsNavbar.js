@@ -47,7 +47,7 @@ export default class SettingsNavbar extends React.Component<Props> {
                 text: 'Integrations',
                 className: 'd-none d-md-block',
             }, {
-                requiredRole: ADMIN_ROLE,
+                requiredRole: AGENT_ROLE,
                 to: 'rules',
                 text: 'Rules',
                 className: 'd-none d-md-block',

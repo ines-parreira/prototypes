@@ -244,7 +244,7 @@ export default (
             <Route
                 path="rules"
                 components={{
-                    content: RuleContainer,
+                    content: UserRoleRequired(RuleContainer, AGENT_ROLE),
                     navbar: SettingsNavbarContainer
                 }}
             />
