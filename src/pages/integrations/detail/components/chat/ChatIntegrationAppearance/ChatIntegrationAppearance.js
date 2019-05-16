@@ -26,6 +26,7 @@ import {
     SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS,
     SMOOCH_INSIDE_DEFAULT_COLOR
 } from '../../../../../../config/integrations/chat'
+
 import {SHOPIFY_INTEGRATION_TYPE, SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../../constants/integration'
 import Loader from '../../../../../common/components/Loader'
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
