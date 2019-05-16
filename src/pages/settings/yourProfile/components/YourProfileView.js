@@ -262,6 +262,7 @@ export default class YourProfileView extends React.Component<Props, State> {
                                             {profilePictureUrl: picture_url},
                                             this._saveProfilePicture)}
                                         uploadType="profile_picture"
+                                        maxSize={500 * 1000}
                                     />
 
                                     <FormText color="muted">

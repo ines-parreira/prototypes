@@ -3762,6 +3762,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
             </div>
             <br />
             <Connect(FileField)
+              maxSize={500000}
               noPreview={true}
               onChange={[Function]}
               returnFiles={false}

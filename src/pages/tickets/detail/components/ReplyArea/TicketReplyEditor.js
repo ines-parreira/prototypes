@@ -16,7 +16,7 @@ import {notify} from '../../../../../state/notifications/actions'
 
 import type {attachmentType} from '../../../../../types'
 import {humanizeString} from '../../../../../utils'
-import {ATTACHMENT_SIZE_ERROR, getMaxAttachmentSize} from '../../../../../utils/file'
+import {getFileTooLargeError, getMaxAttachmentSize} from '../../../../../utils/file'
 import RichField from '../../../../common/forms/RichField'
 import {getContext} from '../../../../../state/prediction/selectors'
 
@@ -180,7 +180,10 @@ export class TicketReplyEditor extends React.Component<Props, State> {
         const currentSize = this._getFilesSize(files)
         const maxSize = getMaxAttachmentSize(this._getEditorState(), attachments.toJS())
         if (currentSize >= maxSize) {
-            this.props.notify(ATTACHMENT_SIZE_ERROR)
+            this.props.notify({
+                status: 'error',
+                message: getFileTooLargeError(maxSize)
+            })
             return false
         }
 

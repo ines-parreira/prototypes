@@ -7,7 +7,7 @@ import _isArray from 'lodash/isArray'
 
 
 import {uploadFiles} from '../../../utils'
-import {ATTACHMENT_SIZE_ERROR} from '../../../utils/file'
+import {getFileTooLargeError} from '../../../utils/file'
 
 import {notify} from './../../../state/notifications/actions'
 
@@ -50,7 +50,10 @@ export class FileField extends InputField<Props, State> {
         const files = event.target.files
         const filesArray = Array.from(files)
         if (this.props.maxSize && this._getFilesSize(filesArray) > this.props.maxSize) {
-            return this.props.notify(ATTACHMENT_SIZE_ERROR)
+            return this.props.notify({
+                status: 'error',
+                message: getFileTooLargeError(this.props.maxSize)
+            })
         }
 
         this.setState({isUploading: true})
@@ -102,7 +105,10 @@ export class FileField extends InputField<Props, State> {
             let errorMessage = fromJS(error.response).getIn(['data', 'error', 'msg'], DEFAULT_ERROR)
 
             if (error.response.status === 413) {
-                return this.props.notify(ATTACHMENT_SIZE_ERROR)
+                return this.props.notify({
+                    status: 'error',
+                    message: getFileTooLargeError(this.props.maxSize)
+                })
             }
 
             this.props.notify({

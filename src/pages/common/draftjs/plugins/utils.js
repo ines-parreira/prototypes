@@ -5,7 +5,7 @@ import _noop from 'lodash/noop'
 import _get from 'lodash/get'
 
 import {uploadFiles} from '../../../../utils'
-import {ATTACHMENT_SIZE_ERROR, getMaxAttachmentSize} from '../../../../utils/file'
+import {getFileTooLargeError, getMaxAttachmentSize} from '../../../../utils/file'
 import {DEFAULT_IMAGE_WIDTH} from '../../../../config/editor'
 import {getEntitySelectionState} from '../../../../utils/editor'
 
@@ -77,7 +77,10 @@ export const insertInlineImages = (
     const currentSize = files.reduce((sum, file) => sum + (file.size || 0), 0)
 
     if (currentSize >= maxSize) {
-        notify(ATTACHMENT_SIZE_ERROR)
+        notify({
+            status: 'error',
+            message: getFileTooLargeError(maxSize)
+        })
         return Promise.resolve()
     }
 

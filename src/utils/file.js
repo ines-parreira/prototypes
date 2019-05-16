@@ -37,12 +37,31 @@ export const saveFileAsDownloaded = (data: string, filename: string, contentType
 }
 
 /**
- * Notify when attachments take up too much space.
+ * Take the size in bytes and return it formatted appropriately (kB/MB)
+ *
+ * @param {Number} size - Size in bytes
+ *
+ * @return {String} - Formatted text representing the size.
  */
-const humanSize = parseInt(MAX_ATTACHMENTS_SIZE / 1000000)
-export const ATTACHMENT_SIZE_ERROR = {
-    status: 'error',
-    message: `Failed to upload files. Attached files must be smaller than ${humanSize}MB.`
+const getFormattedSize = (size: number) => {
+    let formattedSize = ''
+    if (size < (1000 * 1000)) {
+        formattedSize = `${parseInt(size / 1000)}kB.`
+    } else {
+        formattedSize = `${parseInt(size / (1000 * 1000))}MB.`
+    }
+    return formattedSize
+}
+
+/**
+ * Get error text message for attachment that takes up too much space.
+ *
+ * @param {number} size - The maximum allowed size in bytes for the error msg
+ *
+ * @return {String} - Text message representing the error message for too large files
+ */
+export const getFileTooLargeError = (size: number) => {
+    return `Failed to upload files. Attached files must be smaller than ${getFormattedSize(size)}`
 }
 
 /*
