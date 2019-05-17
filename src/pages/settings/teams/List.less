@@ -1,0 +1,55 @@
+@import '~css/new/colors';
+
+:local .component {
+  .list {
+    margin-left: -30px;
+    margin-right: -30px;
+    margin-bottom: 1em;
+  }
+
+  .pagination :global .page-item:first-child .page-link,
+  .pagination :global .page-item:last-child  .page-link {
+    padding-left: .7em;
+    padding-right: .7em;
+  }
+}
+
+:local .card {
+  position: relative;
+
+  color: @indigo;
+  font-size: 13px;
+  transition: all .12s ease-out;
+
+  .title {
+    margin-bottom: 4px;
+    font-size: 17px;
+  }
+
+  &:hover {
+    top: -1px;
+    box-shadow: 0 2px 3px rgba(21, 32, 101, 0.2);
+
+    color: @indigo;
+  }
+
+  i {
+    font-size: 32px;
+  }
+
+  .action {
+    margin-right: 20px;
+    padding: 2px 5px;
+    border-radius: 20px;
+    border: 1px solid @darkQuartz;
+
+    color: @lightPurple2;
+
+    i {
+      line-height: 1.2;
+    }
+  }
+}
+
+
+

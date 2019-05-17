@@ -9,7 +9,7 @@ import type {Map} from 'immutable'
 import {RoleLabel} from '../../common/utils/labels'
 import Avatar from '../../common/components/Avatar'
 
-import DeleteAgent from './DeleteAgent'
+import DeleteUser from './DeleteUser'
 
 import css from './Row.less'
 
@@ -43,7 +43,7 @@ export default class Row extends React.Component<Props> {
 
     render() {
         const {agent, isAccountOwner} = this.props
-        const editLink = `/app/settings/team/update/${agent.get('id')}`
+        const editLink = `/app/settings/users/${agent.get('id')}`
 
         return (
             <Link
@@ -82,14 +82,14 @@ export default class Row extends React.Component<Props> {
                         }
                     </span>
                     <span className={css.delete}>
-                        <DeleteAgent
+                        <DeleteUser
                             action={this._deleteAgent}
                             buttonClassName="btn-transparent"
                         >
                             <i className="material-icons md-2">
                                 delete
                             </i>
-                        </DeleteAgent>
+                        </DeleteUser>
                     </span>
                 </span>
             </Link>

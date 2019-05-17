@@ -27,7 +27,7 @@ import {updateAccountOwner} from '../../../state/currentAccount/actions'
 import * as helpers from '../../../state/agents/helpers'
 import PageHeader from '../../common/components/PageHeader'
 
-import DeleteAgent from './DeleteAgent'
+import DeleteUser from './DeleteUser'
 
 
 type Props = {
@@ -117,7 +117,7 @@ export default class Form extends Component<Props, State> {
         return this.props.deleteAgent(this.props.agentId)
             .then(({error}) => {
                 if (!error) {
-                    browserHistory.push('/app/settings/team')
+                    browserHistory.push('/app/settings/users')
                 }
             })
     }
@@ -138,7 +138,7 @@ export default class Form extends Component<Props, State> {
                 } else {
                     this.setState({errors: {}})
                     if (!this._isUpdate()) {
-                        browserHistory.push('/app/settings/team')
+                        browserHistory.push('/app/settings/users')
                     }
                 }
             })
@@ -160,10 +160,10 @@ export default class Form extends Component<Props, State> {
                 <PageHeader title={(
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <Link to="/app/settings/team">Team members</Link>
+                            <Link to="/app/settings/users">Users</Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem active>
-                            {isUpdate ? `Edit ${agent.get('name')}` : 'Add team member'}
+                            {isUpdate ? `Edit ${agent.get('name')}` : 'Add user'}
                             {
                                 isAgentAccountOwner && (
                                     <Badge
@@ -242,7 +242,7 @@ export default class Form extends Component<Props, State> {
                                 })}
                                 disabled={this.state.isSubmitting}
                             >
-                                {isUpdate ? 'Update team member' : 'Add team member'}
+                                Save user
                             </Button>
                             {
                                 isUpdate && (
@@ -270,14 +270,14 @@ export default class Form extends Component<Props, State> {
                                                 </ConfirmButton>
                                             )
                                         }
-                                        <DeleteAgent
+                                        <DeleteUser
                                             action={this._delete}
                                             className="float-right"
                                             color="danger"
                                             outline
                                         >
-                                            <i className="material-icons">delete</i> Delete team member
-                                        </DeleteAgent>
+                                            <i className="material-icons">delete</i> Delete user
+                                        </DeleteUser>
                                     </span>
                                 )
                             }

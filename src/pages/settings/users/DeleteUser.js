@@ -11,7 +11,7 @@ type Props = {
     children?: Node,
 }
 
-const DeleteAgent = ({
+const DeleteUser = ({
     action,
     children,
     ...buttonProps,
@@ -20,9 +20,9 @@ const DeleteAgent = ({
         <ConfirmButton
             content={(
                 <span>
-                    You are about to <b>delete</b> this team member.
+                    You are about to <b>delete</b> this user.
                     This action is <b>irreversible</b>.
-                    This will unassign this team member from all its tickets, open or closed, and delete its statistics.
+                    This will unassign this user from all their tickets, open or closed, and delete their statistics.
                 </span>
             )}
             confirm={action}
@@ -34,4 +34,4 @@ const DeleteAgent = ({
     )
 }
 
-export default DeleteAgent
+export default DeleteUser

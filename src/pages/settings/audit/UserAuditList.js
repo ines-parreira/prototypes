@@ -4,25 +4,23 @@ import {connect} from 'react-redux'
 import {Alert, Button, Container, Table} from 'reactstrap'
 import _pick from 'lodash/pick'
 import moment from 'moment/moment'
-import {Link} from 'react-router'
 
 
-import Loader from '../../../common/components/Loader/Loader'
-import PageHeader from '../../../common/components/PageHeader'
-import DatePicker from '../../../common/forms/DatePicker'
-import SearchableSelectField from '../../../stats/common/SearchableSelectField'
-import Pagination from '../../../common/components/Pagination'
-import SecondaryNavbar from '../../../common/components/SecondaryNavbar/SecondaryNavbar'
-import {fetchUsersAudit} from '../../../../state/usersAudit/actions'
+import Loader from '../../common/components/Loader/Loader'
+import PageHeader from '../../common/components/PageHeader'
+import DatePicker from '../../common/forms/DatePicker'
+import SearchableSelectField from '../../stats/common/SearchableSelectField'
+import Pagination from '../../common/components/Pagination'
+import {fetchUsersAudit} from '../../../state/usersAudit/actions'
 import {
     getUserAuditEvents,
     getUserAuditEventTypeOptions,
     getUserAuditObjectTypeOptions,
     getUserAuditPagination,
     getUserAuditUserIdOptions,
-} from '../../../../state/usersAudit/selectors'
-import {formatDatetime} from '../../../../utils'
-import {getMoment} from '../../../../utils/date'
+} from '../../../state/usersAudit/selectors'
+import {formatDatetime} from '../../../utils'
+import {getMoment} from '../../../utils/date'
 
 import UserAuditRow from './UserAuditRow'
 import {DATETIME_LABEL_FORMAT} from './constants'
@@ -165,10 +163,6 @@ export class UserAuditList extends React.Component<Props, State> {
                         </DatePicker>
                     </div>
                 </PageHeader>
-                <SecondaryNavbar>
-                    <Link to="/app/settings/team">Team</Link>
-                    <Link to="/app/settings/audit/">Audit logs</Link>
-                </SecondaryNavbar>
 
                 <Container
                     fluid
@@ -176,7 +170,7 @@ export class UserAuditList extends React.Component<Props, State> {
                 >
                     <div className="manage-requests-description">
                         <p>
-                            User audit logs display recent actions performed by team members in
+                            User audit logs display recent actions performed by users in
                             Gorgias.
                         </p>
                         <Alert color="info">

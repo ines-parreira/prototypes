@@ -37,9 +37,11 @@ import ImportDataContainer from './settings/importData/ImportDataContainer'
 import ImportZendeskDetail from './settings/importData/zendesk/ImportZendeskDetail'
 import SatisfactionSurveyView from './settings/satisfactionSurveys/SatisfactionSurveyView'
 
-import * as Team from './settings/team'
+import * as Team from './settings/users'
+import * as Teams from './settings/teams'
+import List from './settings/teams/members/List'
 
-import UserAuditList from './settings/team/UsersAudit/UserAuditList'
+import UserAuditList from './settings/audit/UserAuditList'
 import BusinessHours from './settings/businessHours'
 import ChatAssignment from './settings/chatAssignment'
 
@@ -276,7 +278,36 @@ export default (
                     navbar: SettingsNavbarContainer
                 }}
             />
-            <Route path="team">
+            <Route path="teams">
+                <IndexRoute
+                    components={{
+                        content: UserRoleRequired(Teams.List, ADMIN_ROLE),
+                        navbar: SettingsNavbarContainer
+                    }}
+                />
+                <Route
+                    path="create"
+                    components={{
+                        content: UserRoleRequired(Teams.Form, ADMIN_ROLE),
+                        navbar: SettingsNavbarContainer
+                    }}
+                />
+                <Route
+                    path=":id"
+                    components={{
+                        content: UserRoleRequired(Teams.Form, ADMIN_ROLE),
+                        navbar: SettingsNavbarContainer
+                    }}
+                />
+                <Route
+                    path=":id/members"
+                    components={{
+                        content: UserRoleRequired(List, ADMIN_ROLE),
+                        navbar: SettingsNavbarContainer
+                    }}
+                />
+            </Route>
+            <Route path="users">
                 <IndexRoute
                     components={{
                         content: UserRoleRequired(Team.List, ADMIN_ROLE),
@@ -291,7 +322,7 @@ export default (
                     }}
                 />
                 <Route
-                    path="update/:id"
+                    path=":id"
                     components={{
                         content: UserRoleRequired(Team.Form, ADMIN_ROLE),
                         navbar: SettingsNavbarContainer

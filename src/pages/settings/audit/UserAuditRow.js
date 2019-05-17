@@ -4,9 +4,9 @@ import {type Map} from 'immutable'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
 
-import Avatar from '../../../common/components/Avatar/Avatar'
-import {DatetimeLabel} from '../../../common/utils/labels'
-import {getAgents} from '../../../../state/agents/selectors'
+import Avatar from '../../common/components/Avatar/Avatar'
+import {DatetimeLabel} from '../../common/utils/labels'
+import {getAgents} from '../../../state/agents/selectors'
 
 import {DATETIME_LABEL_FORMAT} from './constants'
 

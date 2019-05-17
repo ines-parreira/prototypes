@@ -31,7 +31,8 @@ export default class Pagination extends React.Component {
         properties.pageCount = parseInt(properties.pageCount)
 
         // ReactPaginate works with indexes instead of page number, so page 1 for us is page 0 for the lib
-        properties.initialPage = parseInt(properties.currentPage) - 1
+        const forcePage = parseInt(properties.currentPage) - 1
+        delete properties.currentPage
 
         if (properties.pageCount <= 1) {
             return null
@@ -41,7 +42,6 @@ export default class Pagination extends React.Component {
             <ReactPaginate
                 previousLabel={<i className="material-icons md-2">keyboard_arrow_left</i>}
                 nextLabel={<i className="material-icons md-2">keyboard_arrow_right</i>}
-                pageCount={10}
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={2}
                 onPageChange={this._handlePageClick}
@@ -55,6 +55,8 @@ export default class Pagination extends React.Component {
                 nextClassName={'page-item'}
                 nextLinkClassName={'page-link'}
                 activeClassName={'active'}
+                disableInitialCallback={true}
+                forcePage={forcePage}
                 {...properties}
             />
         )

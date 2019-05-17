@@ -17,7 +17,6 @@ import Pagination from '../../common/components/Pagination'
 import * as actions from '../../../state/agents/actions'
 import * as selectors from '../../../state/agents/selectors'
 import PageHeader from '../../common/components/PageHeader'
-import SecondaryNavbar from '../../common/components/SecondaryNavbar/SecondaryNavbar'
 
 import Row from './Row'
 
@@ -46,7 +45,7 @@ type State = {
     fetchAgents: actions.fetchPagination,
     deleteAgent: actions.deleteAgent,
 })
-export default class TeamList extends React.Component<Props, State> {
+export default class UserList extends React.Component<Props, State> {
     state = {
         isFetching: false,
     }
@@ -74,30 +73,25 @@ export default class TeamList extends React.Component<Props, State> {
 
         return (
             <div className={classnames('full-width', css.component)}>
-                <PageHeader title="Team members">
+                <PageHeader title="Users">
                     <Button
                         tag={Link}
                         color="success"
-                        to="/app/settings/team/add/"
+                        to="/app/settings/users/add/"
                     >
-                        Add team member
+                        Add user
                     </Button>
                 </PageHeader>
-
-                <SecondaryNavbar>
-                    <Link to="/app/settings/team">Team</Link>
-                    <Link to="/app/settings/audit/">Audit logs</Link>
-                </SecondaryNavbar>
 
                 <Container
                     fluid
                     className="page-container"
                 >
                     <p>
-                        Manage team members for your Gorgias account. Team members can view tickets and respond to them.
+                        Manage users for your Gorgias account. Users (Ex: Agents, Admins, etc..) can view tickets and respond to them.
                     </p>
                     <p>
-                        You can <strong>add as many team members as you want</strong>, at no additional cost.
+                        You can <strong>add as many users as you want</strong>, at no additional cost.
                     </p>
                     <div className={css.list}>
                         {

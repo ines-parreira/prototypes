@@ -53,10 +53,6 @@ export default class SettingsNavbar extends React.Component<Props> {
                 className: 'd-none d-md-block',
             }, {
                 requiredRole: ADMIN_ROLE,
-                to: 'team',
-                text: 'Team members'
-            }, {
-                requiredRole: ADMIN_ROLE,
                 to: 'billing',
                 text: 'Billing & Usage',
                 className: 'd-none d-md-block',
@@ -69,6 +65,25 @@ export default class SettingsNavbar extends React.Component<Props> {
                 requiredRole: ADMIN_ROLE,
                 to: 'import-data',
                 text: 'Import data',
+                className: 'd-none d-md-block'
+            }]
+        }, {
+            name: 'Users & Teams',
+            icon: 'group',
+            links: [{
+                requiredRole: ADMIN_ROLE,
+                to: 'users',
+                text: 'Users',
+                className: 'd-none d-md-block'
+            }, {
+                requiredRole: ADMIN_ROLE,
+                to: 'teams',
+                text: 'Teams',
+                className: 'd-none d-md-block'
+            }, {
+                requiredRole: ADMIN_ROLE,
+                to: 'audit',
+                text: 'Audit logs',
                 className: 'd-none d-md-block'
             }]
         }, {

@@ -1,15 +1,15 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {shallow} from 'enzyme/build'
 import {fromJS} from 'immutable'
 
 import {UserAuditList} from '../UserAuditList'
-import Loader from '../../../../common/components/Loader/index'
-import Pagination from '../../../../common/components/Pagination'
+import Loader from '../../../common/components/Loader'
+import Pagination from '../../../common/components/Pagination'
 import {
     getUserAuditEventTypeOptions,
     getUserAuditObjectTypeOptions,
     getUserAuditUserIdOptions
-} from '../../../../../state/usersAudit/selectors'
+} from '../../../../state/usersAudit/selectors'
 import UserAuditRow from '../UserAuditRow'
 
 
