@@ -1,10 +1,17 @@
 :local .page {
-  text-align: center;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
+
+  .content {
+    flex: 1;
+    padding-top: 30px;
+    text-align: center;
+    display: flex;
+    flex-basis: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
 
   h1 {
     margin-bottom: 26px;
@@ -49,11 +56,12 @@
   }
 
   .bottom {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 30px;
-    color: #b1b1b1;
-    text-decoration: underline;
+    width: 100%;
+    padding: 30px;
+    text-align: center;
+
+    a {
+      cursor: pointer;
+    }
   }
 }

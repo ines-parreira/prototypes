@@ -85,95 +85,96 @@ class TicketListInfobarContainer extends React.Component<Props> {
                 <div
                     className={classnames(css.page, 'infobar-content')}
                 >
-                    <h1>
-                        Welcome<br/>
-                        {currentUser.get('firstname')}!
-                    </h1>
+                    <div className={css.content}>
+                        <h1>
+                            Welcome<br/>
+                            {currentUser.get('firstname')}!
+                        </h1>
 
-                    <p>
-                        Follow these steps to get started:
-                    </p>
+                        <p>
+                            Follow these steps to get started:
+                        </p>
 
-                    <div className={css.buttons}>
-                        <Link
-                            to="/app/settings/integrations/shopify"
-                            className={css.button}
-                            onClick={() => {
-                                segmentTracker.logEvent(segmentTracker.EVENTS.ONBOARDING_WIDGET_CLICKED, {
-                                    name: 'Connect a Shopify store',
-                                })
-                            }}
-                        >
-                            {/* $FlowFixMe */}
-                            <CheckIcon condition={hasShopifyIntegration}/>
-                            <div>Connect Shopify</div>
-                        </Link>
-                        <Link
-                            to="/app/settings/integrations/email"
-                            className={css.button}
-                            onClick={() => {
-                                segmentTracker.logEvent(segmentTracker.EVENTS.ONBOARDING_WIDGET_CLICKED, {
-                                    name: 'Connect an email address',
-                                })
-                            }}
-                        >
-                            <CheckIcon condition={hasVerifiedEmailIntegration}/>
-                            <div>Connect email</div>
-                        </Link>
-                        <Link
-                            to="/app/settings/integrations/smooch_inside"
-                            className={css.button}
-                            onClick={() => {
-                                segmentTracker.logEvent(segmentTracker.EVENTS.ONBOARDING_WIDGET_CLICKED, {
-                                    name: 'Connect chat',
-                                })
-                            }}
-                        >
-                            {/* $FlowFixMe */}
-                            <CheckIcon condition={hasConnectedChat}/>
-                            <div>Connect live chat</div>
-                        </Link>
-                        <Link
-                            to="/app/settings/integrations/facebook"
-                            className={css.button}
-                            onClick={() => {
-                                segmentTracker.logEvent(segmentTracker.EVENTS.ONBOARDING_WIDGET_CLICKED, {
-                                    name: 'Connect Facebook',
-                                })
-                            }}
-                        >
-                            {/* $FlowFixMe */}
-                            <CheckIcon condition={hasConnectedFacebook}/>
-                            <div>Connect Facebook &amp; Instagram</div>
-                        </Link>
-                        <Link
-                            to="/app/settings/team"
-                            className={css.button}
-                            onClick={() => {
-                                segmentTracker.logEvent(segmentTracker.EVENTS.ONBOARDING_WIDGET_CLICKED, {
-                                    name: 'Add team members',
-                                })
-                            }}
-                        >
-                            <CheckIcon condition={hasInvitedTeamMembers}/>
-                            <div>Add team members</div>
-                        </Link>
+                        <div className={css.buttons}>
+                            <Link
+                                to="/app/settings/integrations/shopify"
+                                className={css.button}
+                                onClick={() => {
+                                    segmentTracker.logEvent(segmentTracker.EVENTS.ONBOARDING_WIDGET_CLICKED, {
+                                        name: 'Connect a Shopify store',
+                                    })
+                                }}
+                            >
+                                {/* $FlowFixMe */}
+                                <CheckIcon condition={hasShopifyIntegration}/>
+                                <div>Connect Shopify</div>
+                            </Link>
+                            <Link
+                                to="/app/settings/integrations/email"
+                                className={css.button}
+                                onClick={() => {
+                                    segmentTracker.logEvent(segmentTracker.EVENTS.ONBOARDING_WIDGET_CLICKED, {
+                                        name: 'Connect an email address',
+                                    })
+                                }}
+                            >
+                                <CheckIcon condition={hasVerifiedEmailIntegration}/>
+                                <div>Connect email</div>
+                            </Link>
+                            <Link
+                                to="/app/settings/integrations/smooch_inside"
+                                className={css.button}
+                                onClick={() => {
+                                    segmentTracker.logEvent(segmentTracker.EVENTS.ONBOARDING_WIDGET_CLICKED, {
+                                        name: 'Connect chat',
+                                    })
+                                }}
+                            >
+                                {/* $FlowFixMe */}
+                                <CheckIcon condition={hasConnectedChat}/>
+                                <div>Connect live chat</div>
+                            </Link>
+                            <Link
+                                to="/app/settings/integrations/facebook"
+                                className={css.button}
+                                onClick={() => {
+                                    segmentTracker.logEvent(segmentTracker.EVENTS.ONBOARDING_WIDGET_CLICKED, {
+                                        name: 'Connect Facebook',
+                                    })
+                                }}
+                            >
+                                {/* $FlowFixMe */}
+                                <CheckIcon condition={hasConnectedFacebook}/>
+                                <div>Connect Facebook &amp; Instagram</div>
+                            </Link>
+                            <Link
+                                to="/app/settings/team"
+                                className={css.button}
+                                onClick={() => {
+                                    segmentTracker.logEvent(segmentTracker.EVENTS.ONBOARDING_WIDGET_CLICKED, {
+                                        name: 'Add team members',
+                                    })
+                                }}
+                            >
+                                <CheckIcon condition={hasInvitedTeamMembers}/>
+                                <div>Add team members</div>
+                            </Link>
+                        </div>
+
+                        <div className="mt-5 text-info text-center">
+                            <h5>Learn how to use Gorgias:</h5>
+                            <Video
+                                videoId="dNWQPHfCtmE"
+                                legend="How to use Gorgias"
+                            />
+                        </div>
                     </div>
 
-                    <div className="mt-5 text-info">
-                        <h5>Learn how to use Gorgias:</h5>
-                        <Video
-                            videoId="dNWQPHfCtmE"
-                            legend="How to use Gorgias"
-                        />
+                    <div className={css.bottom}>
+                        <a onClick={this._hideBoarding}>
+                            Hide
+                        </a>
                     </div>
-
-                    <a
-                        className={css.bottom}
-                        onClick={this._hideBoarding}
-                    >
-                        Hide
-                    </a>
                 </div>
             </InfobarLayout>
         )
