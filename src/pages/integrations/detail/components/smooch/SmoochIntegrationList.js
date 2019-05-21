@@ -106,7 +106,7 @@ export default class SmoochIntegrationList extends React.Component {
                 longTypeDescription={longTypeDescription}
                 integrations={integrations.filter((v) => v.get('type') === 'smooch')}
                 createIntegration={this._onLogin}
-                createIntegrationButtonContent="Add my Smooch"
+                createIntegrationButtonContent="Add a Smooch account"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />
