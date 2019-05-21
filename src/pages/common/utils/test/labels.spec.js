@@ -1,11 +1,18 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 import {fromJS} from 'immutable'
-import {mount} from 'enzyme/build/index'
+import {EMAIL_CHANNEL} from '../../../../config/ticket'
+import {
+    AIRCALL_INTEGRATION_TYPE,
+    EMAIL_INTEGRATION_TYPE,
+    FACEBOOK_INTEGRATION_TYPE,
+    GMAIL_INTEGRATION_TYPE
+} from '../../../../constants/integration'
+import {OPEN_STATUS} from '../../../../constants/ticket'
+import {AgentLabel} from '../labels'
 
 import * as labels from '../labels'
-import Avatar from '../../components/Avatar/Avatar'
-import {IntegrationsDetailLabel} from '../labels'
+import Avatar from '../../components/Avatar'
 
 /* DatetimeLabel uses Math.random.
  * Mock it to always return the same data.
@@ -32,8 +39,8 @@ describe('components utils : labels', () => {
                 },
                 {
                     type: 'status',
-                    value: 'open',
-                    expected: <labels.StatusLabel status="open"/>
+                    value: OPEN_STATUS,
+                    expected: <labels.StatusLabel status={OPEN_STATUS}/>
                 },
                 {
                     type: 'assignee',
@@ -64,8 +71,8 @@ describe('components utils : labels', () => {
                 },
                 {
                     type: 'channel',
-                    value: 'email',
-                    expected: <labels.ChannelLabel channel="email"/>
+                    value: EMAIL_CHANNEL,
+                    expected: <labels.ChannelLabel channel={EMAIL_CHANNEL}/>
                 },
                 {
                     type: 'thisshouldreturnnull',
@@ -114,38 +121,113 @@ describe('components utils : labels', () => {
         describe('ValueRendered', () => {
             it('should display the address to prevent confusion', () => {
                 const componentRuleIntegrationListTypeEmail = mount(
-                    <IntegrationsDetailLabel integration={fromJS({ type: 'email', name: 'common', meta: { address: 'specific' } })} />
+                    <labels.IntegrationsDetailLabel
+                        integration={fromJS({
+                            type: EMAIL_INTEGRATION_TYPE,
+                            name: 'common',
+                            meta: {address: 'specific'}
+                        })}
+                    />
                 )
                 expect(componentRuleIntegrationListTypeEmail).toMatchSnapshot()
             })
 
             it('should display the name because the address is empty', () => {
                 const componentRuleIntegrationListTypeEmailNoAddress = mount(
-                    <IntegrationsDetailLabel integration={fromJS({ type: 'email', name: 'common', meta: { address: '' } })} />
+                    <labels.IntegrationsDetailLabel
+                        integration={fromJS({
+                            type: EMAIL_INTEGRATION_TYPE,
+                            name: 'common',
+                            meta: {address: ''}
+                        })}
+                    />
                 )
                 expect(componentRuleIntegrationListTypeEmailNoAddress).toMatchSnapshot()
             })
 
             it('should display the name because the type is facebook', () => {
                 const componentRuleIntegrationListTypeFacebook = mount(
-                    <IntegrationsDetailLabel integration={fromJS({ type: 'facebook', name: 'common', meta: { address: 'specific' } })} />
+                    <labels.IntegrationsDetailLabel
+                        integration={fromJS({
+                            type: FACEBOOK_INTEGRATION_TYPE,
+                            name: 'common',
+                            meta: {address: 'specific'}
+                        })}
+                    />
                 )
                 expect(componentRuleIntegrationListTypeFacebook).toMatchSnapshot()
             })
 
             it('should display name and address formatted in-lined', () => {
                 const componentRuleIntegrationListTypeMailInline = mount(
-                    <IntegrationsDetailLabel integration={fromJS({ type: 'gmail', name: 'common', address: 'inlined email' })} />
+                    <labels.IntegrationsDetailLabel
+                        integration={fromJS({
+                            type: GMAIL_INTEGRATION_TYPE,
+                            name: 'common',
+                            address: 'inlined email'
+                        })}
+                    />
                 )
                 expect(componentRuleIntegrationListTypeMailInline).toMatchSnapshot()
             })
 
             it('should display name and address formatted as aircall eg: with address into parenthesis', () => {
                 const componentRuleIntegrationListTypeAircall = mount(
-                    <IntegrationsDetailLabel integration={fromJS({ type: 'aircall', name: 'common', address: 'aircall style' })} />
+                    <labels.IntegrationsDetailLabel
+                        integration={fromJS({
+                            type: AIRCALL_INTEGRATION_TYPE,
+                            name: 'common',
+                            address: 'aircall style'
+                        })}
+                    />
                 )
                 expect(componentRuleIntegrationListTypeAircall).toMatchSnapshot()
             })
+        })
+    })
+
+    describe('AgentLabel', () => {
+        it('should render the avatar because a profile picture url is passed', () => {
+            const component = shallow(
+                <AgentLabel
+                    name="Marie Curie"
+                    profilePictureUrl="https://gorgias.io/profilepicture.png"
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should render the avatar because the `avatar` option is passed but no profile picture url ' +
+            'is passed', () => {
+            const component = shallow(
+                <AgentLabel
+                    name="Marie Curie"
+                    avatar
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should render the agent icon because no profile picture url nor the `avatar` option are passed', () => {
+            const component = shallow(
+                <AgentLabel
+                    name="Marie Curie"
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should not render the name of the agent because no name is passed', () => {
+            const component = shallow(
+                <AgentLabel
+                    profilePictureUrl="https://gorgias.io/profilepicture.png"
+                />
+            )
+
+            expect(component).toMatchSnapshot()
         })
     })
 })

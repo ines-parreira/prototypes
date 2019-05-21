@@ -4,6 +4,7 @@
  */
 
 import React from 'react'
+import {type Map} from 'immutable'
 
 import {AgentLabel} from '../../../../../utils/labels'
 
@@ -28,7 +29,8 @@ const defaultEntryComponent = (props: Props) => {
             <AgentLabel
                 className={theme.mentionSuggestionsEntryText}
                 name={mention.get('name')}
-                email={mention.get('email')}
+                profilePictureUrl={mention.getIn(['meta', 'profile_picture_url'])}
+                avatar
             />
         </div>
     )

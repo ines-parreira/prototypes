@@ -190,8 +190,9 @@ export default class TicketView extends React.Component {
                                 <AgentLabel
                                     key={index}
                                     name={agent.get('name')}
-                                    email={agent.get('email')}
+                                    profilePictureUrl={agent.getIn(['meta', 'profile_picture_url'])}
                                     className={css.collisionAgent}
+                                    avatar
                                 />
                             ))}
                         </div>
@@ -211,8 +212,9 @@ export default class TicketView extends React.Component {
                                 <AgentLabel
                                     key={index}
                                     name={agent.get('name')}
-                                    email={agent.get('email')}
+                                    profilePictureUrl={agent.getIn(['meta', 'profile_picture_url'])}
                                     className={css.collisionAgent}
+                                    avatar
                                 />
                             ))}
                         </div>

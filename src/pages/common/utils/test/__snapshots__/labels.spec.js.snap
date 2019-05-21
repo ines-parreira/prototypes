@@ -1,5 +1,80 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`components utils : labels AgentLabel should not render the name of the agent because no name is passed 1`] = `
+<div
+  className="AgentLabel d-inline-flex align-items-center"
+>
+  <Avatar
+    className="avatar"
+    email=""
+    name=""
+    size="26"
+    style={Object {}}
+    url="https://gorgias.io/profilepicture.png"
+  />
+</div>
+`;
+
+exports[`components utils : labels AgentLabel should render the agent icon because no profile picture url nor the \`avatar\` option are passed 1`] = `
+<div
+  className="AgentLabel d-inline-flex align-items-center"
+>
+  <span
+    className="material-icons md-2"
+  >
+    account_circle
+  </span>
+  <span
+    className="name font-weight-medium"
+    style={Object {}}
+  >
+    Marie Curie
+  </span>
+</div>
+`;
+
+exports[`components utils : labels AgentLabel should render the avatar because a profile picture url is passed 1`] = `
+<div
+  className="AgentLabel d-inline-flex align-items-center"
+>
+  <Avatar
+    className="avatar"
+    email=""
+    name="Marie Curie"
+    size="26"
+    style={Object {}}
+    url="https://gorgias.io/profilepicture.png"
+  />
+  <span
+    className="name font-weight-medium"
+    style={Object {}}
+  >
+    Marie Curie
+  </span>
+</div>
+`;
+
+exports[`components utils : labels AgentLabel should render the avatar because the \`avatar\` option is passed but no profile picture url is passed 1`] = `
+<div
+  className="AgentLabel d-inline-flex align-items-center"
+>
+  <Avatar
+    className="avatar"
+    email=""
+    name="Marie Curie"
+    size="26"
+    style={Object {}}
+    url=""
+  />
+  <span
+    className="name font-weight-medium"
+    style={Object {}}
+  >
+    Marie Curie
+  </span>
+</div>
+`;
+
 exports[`components utils : labels RenderLabel ValueRendered should display name and address formatted as aircall eg: with address into parenthesis 1`] = `
 <IntegrationsDetailLabel
   integration={

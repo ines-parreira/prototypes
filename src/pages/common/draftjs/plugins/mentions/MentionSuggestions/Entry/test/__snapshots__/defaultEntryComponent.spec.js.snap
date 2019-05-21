@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`defaultEntryComponent should render 1`] = `
+<div>
+  <AgentLabel
+    avatar={true}
+    className="my-class-name"
+    email=""
+    name="Marie Curie"
+    profilePictureUrl="https://gorgias.io/profilepicture.png"
+  />
+</div>
+`;
