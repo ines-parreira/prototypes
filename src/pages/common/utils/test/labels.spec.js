@@ -1,6 +1,7 @@
 import React from 'react'
 import {shallow, mount} from 'enzyme'
 import {fromJS} from 'immutable'
+
 import {EMAIL_CHANNEL} from '../../../../config/ticket'
 import {
     AIRCALL_INTEGRATION_TYPE,
@@ -9,7 +10,6 @@ import {
     GMAIL_INTEGRATION_TYPE
 } from '../../../../constants/integration'
 import {OPEN_STATUS} from '../../../../constants/ticket'
-import {AgentLabel} from '../labels'
 
 import * as labels from '../labels'
 import Avatar from '../../components/Avatar'
@@ -189,7 +189,7 @@ describe('components utils : labels', () => {
     describe('AgentLabel', () => {
         it('should render the avatar because a profile picture url is passed', () => {
             const component = shallow(
-                <AgentLabel
+                <labels.AgentLabel
                     name="Marie Curie"
                     profilePictureUrl="https://gorgias.io/profilepicture.png"
                 />
@@ -201,7 +201,7 @@ describe('components utils : labels', () => {
         it('should render the avatar because the `avatar` option is passed but no profile picture url ' +
             'is passed', () => {
             const component = shallow(
-                <AgentLabel
+                <labels.AgentLabel
                     name="Marie Curie"
                     avatar
                 />
@@ -212,7 +212,7 @@ describe('components utils : labels', () => {
 
         it('should render the agent icon because no profile picture url nor the `avatar` option are passed', () => {
             const component = shallow(
-                <AgentLabel
+                <labels.AgentLabel
                     name="Marie Curie"
                 />
             )
@@ -222,7 +222,7 @@ describe('components utils : labels', () => {
 
         it('should not render the name of the agent because no name is passed', () => {
             const component = shallow(
-                <AgentLabel
+                <labels.AgentLabel
                     profilePictureUrl="https://gorgias.io/profilepicture.png"
                 />
             )

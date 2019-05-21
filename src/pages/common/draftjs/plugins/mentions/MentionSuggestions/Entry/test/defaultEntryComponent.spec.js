@@ -1,5 +1,6 @@
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
+
 import defaultEntryComponent from '../defaultEntryComponent'
 
 
