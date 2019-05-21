@@ -182,7 +182,7 @@ class ViewNavbarView extends Component {
 
                                         if (viewCount !== null) {
                                             count = `(${viewCount})`
-                                            compactCount = `(${compactInteger(viewCount)})`
+                                            compactCount = `(${compactInteger(viewCount, 1)})`
                                         }
 
                                         return (

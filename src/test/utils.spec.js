@@ -546,4 +546,30 @@ describe('global utils', () => {
                 .toMatch('<li>hello: world</li><li>receiver: Missing data</li><li>receiver: Invalid value</li>')
         })
     })
+
+    describe('compactInteger', () => {
+        it('should round to k', () => {
+            expect(utils.compactInteger(1100)).toEqual('1k')
+        })
+
+        it('should round to k with 1 digit', () => {
+            expect(utils.compactInteger(1100, 1)).toEqual('1.1k')
+        })
+
+        it('should round to k with 2 digits', () => {
+            expect(utils.compactInteger(1150, 2)).toEqual('1.15k')
+        })
+
+        it('should round to T', () => {
+            expect(utils.compactInteger(1100000000000)).toEqual('1T')
+        })
+
+        it('should round to T with 1 digit', () => {
+            expect(utils.compactInteger(1100000000000, 1)).toEqual('1.1T')
+        })
+
+        it('should round to T with 2 digits', () => {
+            expect(utils.compactInteger(1150000000000, 2)).toEqual('1.15T')
+        })
+    })
 })
