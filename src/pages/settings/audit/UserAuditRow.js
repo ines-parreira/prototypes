@@ -33,7 +33,7 @@ export class UserAuditRow extends React.Component<Props> {
                 <Link to={`/app/settings/team/update/${user.get('id')}`}>
                     <Avatar
                         name={user.get('name')}
-                        email={user.get('email')}
+                        url={user.getIn(['meta', 'profile_picture_url'])}
                         size={26}
                         className="d-inline-block"
                     /> {user.get('name')}

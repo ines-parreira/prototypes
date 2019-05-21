@@ -29,8 +29,6 @@ export const SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS = SMOOCH_INSIDE_WIDGET_TEXTS[SM
 export const SMOOCH_INSIDE_DEFAULT_COLOR = '#0d87dd'
 
 // Campaigns
-export const GRAVATAR_URL_TEMPLATE = 'https://www.gravatar.com/avatar/{emailMd5}?d=mm&s=50'
-
 export const CAMPAIGNS_TRIGGER_KEYS = fromJS([
     {
         label: 'Current URL',

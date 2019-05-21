@@ -195,7 +195,6 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
                                 {currentUser.get('name')}
                                 <Avatar
                                     name={currentUser.get('name')}
-                                    email={currentUser.get('email')}
                                     url={currentUser.getIn(['meta', 'profile_picture_url'])}
                                     size={36}
                                     style={{

@@ -1,29 +1,29 @@
+// @flow
 import React from 'react'
-import PropTypes from 'prop-types'
 import {Link} from 'react-router'
-import {fromJS} from 'immutable'
+import {type Map, fromJS} from 'immutable'
 import {connect} from 'react-redux'
+import moment from 'moment'
 import {Breadcrumb, BreadcrumbItem, Button, Container, Table} from 'reactstrap'
 
-import moment from 'moment'
+import * as campaignActions from '../../../../../../state/campaigns/actions'
 
 import ToggleButton from '../../../../../common/components/ToggleButton'
-
-import * as campaignActions from '../../../../../../state/campaigns/actions'
 import PageHeader from '../../../../../common/components/PageHeader'
 import ForwardIcon from '../../ForwardIcon'
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
 
+
+type Props = {
+    integration: Map<*,*>,
+    updateCampaign: (Map<*,*>, Map<*,*>) => Promise<*>
+}
+
 @connect(null, {
     updateCampaign: campaignActions.updateCampaign
 })
-export default class ChatIntegrationCampaigns extends React.Component {
-    static propTypes = {
-        integration: PropTypes.object.isRequired,
-        updateCampaign: PropTypes.func.isRequired,
-    }
-
-    toggleCampaign = (campaign) => {
+export default class ChatIntegrationCampaigns extends React.Component<Props> {
+    toggleCampaign = (campaign: Map<*,*>) => {
         const {updateCampaign, integration} = this.props
         let form = campaign
 

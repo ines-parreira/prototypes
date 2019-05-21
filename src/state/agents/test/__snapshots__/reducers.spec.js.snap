@@ -135,9 +135,27 @@ Object {
 }
 `;
 
-exports[`agents reducers update agent 1`] = `
+exports[`agents reducers should update the matching row in the list of agents when the current user is updated 1`] = `
 Object {
-  "agents": Array [
+  "all": Array [
+    Object {
+      "id": 1,
+      "name": "Alex",
+    },
+    Object {
+      "id": 2,
+      "name": "John",
+    },
+  ],
+  "locations": Object {},
+  "pagination": Object {},
+  "typingStatuses": Object {},
+}
+`;
+
+exports[`agents reducers should update the matching row in the list of agents when the current user is updated 2`] = `
+Object {
+  "all": Array [
     Object {
       "id": 1,
       "name": "Romain",
@@ -147,7 +165,24 @@ Object {
       "name": "John",
     },
   ],
-  "all": Array [],
+  "locations": Object {},
+  "pagination": Object {},
+  "typingStatuses": Object {},
+}
+`;
+
+exports[`agents reducers update agent 1`] = `
+Object {
+  "all": Array [
+    Object {
+      "id": 1,
+      "name": "Alex",
+    },
+    Object {
+      "id": 2,
+      "name": "John",
+    },
+  ],
   "locations": Object {},
   "pagination": Object {},
   "typingStatuses": Object {},
@@ -156,7 +191,7 @@ Object {
 
 exports[`agents reducers update agent 2`] = `
 Object {
-  "agents": Array [
+  "all": Array [
     Object {
       "id": 1,
       "name": "Romain",
@@ -166,7 +201,6 @@ Object {
       "name": "John",
     },
   ],
-  "all": Array [],
   "locations": Object {},
   "pagination": Object {},
   "typingStatuses": Object {},

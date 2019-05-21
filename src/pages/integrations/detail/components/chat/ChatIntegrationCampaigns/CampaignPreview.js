@@ -1,13 +1,16 @@
+// @flow
 import React from 'react'
+
+import Avatar from '../../../../../common/components/Avatar'
 
 import css from './CampaignPreview.less'
 
 
 type Props = {
-    html: ?string,
-    authorName: ?string,
-    authorAvatarUrl: ?string,
-    mainColor: ?string,
+    html?: ?string,
+    authorName?: ?string,
+    authorAvatarUrl?: ?string,
+    mainColor?: ?string,
     translatedTexts: Object
 }
 
@@ -29,7 +32,12 @@ export default class CampaignPreview extends React.Component<Props> {
                 <div className={css.campaign}>
                     <div className={css.header}>
                         <div className={css.author}>
-                            <img src={authorAvatarUrl || 'https://www.gravatar.com/avatar/0?d=mm'}/>
+                            <Avatar
+                                key={authorAvatarUrl}
+                                className={css.authorAvatar}
+                                name={authorName || 'Random agent'}
+                                url={authorAvatarUrl}
+                            />
                         </div>
                         <div className={css.message}>
                             <div className={css.authorName}>

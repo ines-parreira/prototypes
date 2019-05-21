@@ -3,7 +3,8 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
 import reducer, {initialState} from '../reducers'
-import * as types from '../constants'
+import * as constants from '../constants'
+import * as currentUserConstants from '../../currentUser/constants'
 import {AGENT_ROLE, USER_ROLES} from '../../../config/user'
 
 jest.addMatchers(immutableMatchers)
@@ -22,7 +23,7 @@ describe('agents reducers', () => {
         expect(
             reducer(
                 initialState, {
-                    type: types.FETCH_USER_LIST_SUCCESS,
+                    type: constants.FETCH_USER_LIST_SUCCESS,
                     roles: [],
                     resp,
                 }
@@ -33,7 +34,7 @@ describe('agents reducers', () => {
         expect(
             reducer(
                 initialState, {
-                    type: types.FETCH_USER_LIST_SUCCESS,
+                    type: constants.FETCH_USER_LIST_SUCCESS,
                     roles: [AGENT_ROLE],
                     resp,
                 }
@@ -43,7 +44,7 @@ describe('agents reducers', () => {
         expect(
             reducer(
                 initialState, {
-                    type: types.FETCH_USER_LIST_SUCCESS,
+                    type: constants.FETCH_USER_LIST_SUCCESS,
                     roles: USER_ROLES,
                     resp,
                 }
@@ -68,7 +69,7 @@ describe('agents reducers', () => {
         expect(
             reducer(
                 initialState, {
-                    type: types.FETCH_AGENTS_PAGINATION_SUCCESS,
+                    type: constants.FETCH_AGENTS_PAGINATION_SUCCESS,
                     resp,
                 }
             )
@@ -80,7 +81,7 @@ describe('agents reducers', () => {
             reducer(
                 initialState,
                 {
-                    type: types.SET_AGENTS_LOCATIONS,
+                    type: constants.SET_AGENTS_LOCATIONS,
                     data: [
                         {customers: ['1', '2'], ticket: '1'},
                         {customers: ['1'], ticket: '2'},
@@ -95,7 +96,7 @@ describe('agents reducers', () => {
             reducer(
                 initialState,
                 {
-                    type: types.SET_AGENTS_TYPING_STATUSES,
+                    type: constants.SET_AGENTS_TYPING_STATUSES,
                     data: [
                         {users: ['1', '2'], ticket: '1'},
                         {users: ['1'], ticket: '2'},
@@ -111,7 +112,7 @@ describe('agents reducers', () => {
             reducer(
                 initialState,
                 {
-                    type: types.CREATE_AGENT_SUCCESS,
+                    type: constants.CREATE_AGENT_SUCCESS,
                     resp: fromJS({id: 1, name: 'Romain'}),
                 }
             ).toJS()
@@ -124,10 +125,10 @@ describe('agents reducers', () => {
             reducer(
                 initialState
                     .mergeDeep({
-                        agents: [{id: 1, name: 'Romain'}, {id: 2, name: 'John'}],
+                        all: [{id: 1, name: 'Romain'}, {id: 2, name: 'John'}],
                     }),
                 {
-                    type: types.UPDATE_AGENT_SUCCESS,
+                    type: constants.UPDATE_AGENT_SUCCESS,
                     resp: fromJS({id: 1, name: 'Alex'}),
                 }
             ).toJS()
@@ -138,10 +139,10 @@ describe('agents reducers', () => {
             reducer(
                 initialState
                     .mergeDeep({
-                        agents: [{id: 1, name: 'Romain'}, {id: 2, name: 'John'}],
+                        all: [{id: 1, name: 'Romain'}, {id: 2, name: 'John'}],
                     }),
                 {
-                    type: types.UPDATE_AGENT_SUCCESS,
+                    type: constants.UPDATE_AGENT_SUCCESS,
                     resp: fromJS({id: 10, name: 'Julien'}),
                 }
             ).toJS()
@@ -157,11 +158,41 @@ describe('agents reducers', () => {
                         agents: [{id: 1, name: 'Romain'}, {id: 2, name: 'John'}],
                     }),
                 {
-                    type: types.DELETE_AGENT_SUCCESS,
+                    type: constants.DELETE_AGENT_SUCCESS,
                     id: 2,
                 }
             ).toJS()
         ).toMatchSnapshot()
     })
 
+
+    it('should update the matching row in the list of agents when the current user is updated', () => {
+        // success
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        all: [{id: 1, name: 'Romain'}, {id: 2, name: 'John'}],
+                    }),
+                {
+                    type: currentUserConstants.SUBMIT_CURRENT_USER_SUCCESS,
+                    resp: {id: 1, name: 'Alex'},
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+
+        // success but no effect because non existent agent in list
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        all: [{id: 1, name: 'Romain'}, {id: 2, name: 'John'}],
+                    }),
+                {
+                    type: currentUserConstants.SUBMIT_CURRENT_USER_SUCCESS,
+                    resp: {id: 10, name: 'Julien'},
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
 })

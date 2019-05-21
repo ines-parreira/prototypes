@@ -108,7 +108,6 @@ export default class BuildFinalTicket extends React.Component<Props> {
                                     label: (
                                         <span>
                                             <Avatar
-                                                email={sourceAssignee.get('email')}
                                                 name={sourceAssignee.get('name')}
                                                 url={sourceAssignee.getIn(['meta', 'profile_picture_url'])}
                                                 size={26}
@@ -123,7 +122,6 @@ export default class BuildFinalTicket extends React.Component<Props> {
                                     label: (
                                         <span>
                                             <Avatar
-                                                email={targetAssignee.get('email')}
                                                 name={targetAssignee.get('name')}
                                                 url={targetAssignee.getIn(['meta', 'profile_picture_url'])}
                                                 size={26}

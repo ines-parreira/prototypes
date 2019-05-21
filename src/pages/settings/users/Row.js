@@ -53,7 +53,6 @@ export default class Row extends React.Component<Props> {
                 <span className="d-flex align-items-center">
                     <Avatar
                         name={agent.get('name')}
-                        email={agent.get('email')}
                         url={agent.getIn(['meta', 'profile_picture_url'])}
                         size={36}
                         className={classnames(css.avatar, 'd-none d-md-block')}

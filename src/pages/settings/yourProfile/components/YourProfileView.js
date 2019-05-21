@@ -246,7 +246,6 @@ export default class YourProfileView extends React.Component<Props, State> {
 
                                     <div>
                                         <Avatar
-                                            email={this.state.email}
                                             name={this.state.name}
                                             size="100"
                                             url={this.state.profilePictureUrl}
@@ -266,18 +265,7 @@ export default class YourProfileView extends React.Component<Props, State> {
                                     />
 
                                     <FormText color="muted">
-                                        The image must be square and weight less than 500kB.<br/>
-                                        If you don't want to upload your picture here, but have a
-                                        {' '}
-                                        <a
-                                            href="https://en.gravatar.com/"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            Gravatar
-                                        </a>
-                                        {' '}
-                                        account, we'll use it.
+                                        The image must be square and weight less than 500kB.
                                     </FormText>
                                 </FormGroup>
                             </Col>

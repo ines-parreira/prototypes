@@ -1,13 +1,11 @@
 // @flow
-import {fromJS} from 'immutable'
+import {fromJS, type Map} from 'immutable'
 import _isEqual from 'lodash/isEqual'
-import type {Map} from 'immutable'
 
 import {actionType} from '../types'
-
 import {USER_ROLES} from '../../config/user'
+import * as currentUserConstants from '../currentUser/constants'
 
-import * as constants from './constants.js'
 import * as agentsConstants from './constants'
 
 export const initialState = fromJS({
@@ -20,7 +18,7 @@ export const initialState = fromJS({
 
 export default function reducer (state: Map<*,*> = initialState, action: actionType): Map<*,*> {
     switch (action.type) {
-        case constants.FETCH_AGENTS_PAGINATION_SUCCESS: {
+        case agentsConstants.FETCH_AGENTS_PAGINATION_SUCCESS: {
             return state.set('pagination', fromJS(action.resp))
         }
 
@@ -38,6 +36,7 @@ export default function reducer (state: Map<*,*> = initialState, action: actionT
 
             return newState
         }
+
         case agentsConstants.UPDATE_AGENT_SUCCESS: {
             const agent = action.resp
 
@@ -51,7 +50,8 @@ export default function reducer (state: Map<*,*> = initialState, action: actionT
         }
 
         case agentsConstants.DELETE_AGENT_SUCCESS: {
-            return state.update('all', (agents) => agents.filter((user) => String(user.get('id')) !== String(action.id)))
+            return state.update('all',
+                (agents) => agents.filter((user) => String(user.get('id')) !== String(action.id)))
         }
 
         case agentsConstants.SET_AGENTS_LOCATIONS: {
@@ -60,6 +60,18 @@ export default function reducer (state: Map<*,*> = initialState, action: actionT
 
         case agentsConstants.SET_AGENTS_TYPING_STATUSES: {
             return state.set('typingStatuses', fromJS(action.data))
+        }
+
+        case currentUserConstants.SUBMIT_CURRENT_USER_SUCCESS: {
+            const agent = fromJS(action.resp)
+
+            const existingAgentIndex = state.get('all').findIndex((user) => user.get('id') === agent.get('id'))
+
+            if (!~existingAgentIndex) {
+                return state
+            }
+
+            return state.setIn(['all', existingAgentIndex], agent)
         }
 
         default:

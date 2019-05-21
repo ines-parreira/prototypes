@@ -1,12 +1,9 @@
 // @flow
-import React from 'react'
+import React, {type Node} from 'react'
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 
-import type {Node} from 'react'
-
 import {getAvatar, getAvatarFromCache} from './utils'
-
 import css from './Avatar.less'
 
 

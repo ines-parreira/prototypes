@@ -50,12 +50,11 @@ export class AgentLabel extends React.Component<AgentLabelProps> {
         const {
             name,
             maxWidth,
-            email,
             className,
             profilePictureUrl,
             avatar,
         } = this.props
-        const showAvatar = avatar || profilePictureUrl || email
+        const showAvatar = avatar || profilePictureUrl
         const style = {}
         if (maxWidth) {
             style.maxWidth = `${maxWidth}px`
@@ -66,7 +65,6 @@ export class AgentLabel extends React.Component<AgentLabelProps> {
                 {
                     showAvatar ? (
                         <Avatar
-                            email={email}
                             name={name}
                             url={profilePictureUrl}
                             size="26"
@@ -356,7 +354,6 @@ export class RenderLabel extends React.Component<RenderLabelProps> {
                 return value.isEmpty() ? null : (
                     <div>
                         <Avatar
-                            email={value.get('email')}
                             name={value.get('name')}
                             url={value.getIn(['meta', 'profile_picture_url'])}
                             size={26}

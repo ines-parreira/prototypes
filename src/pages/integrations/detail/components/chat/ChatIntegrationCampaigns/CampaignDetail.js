@@ -3,41 +3,38 @@ import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
 import {Link, browserHistory} from 'react-router'
 import {connect} from 'react-redux'
-import md5 from 'md5'
-
 import classnames from 'classnames'
-
 import {
     Breadcrumb, BreadcrumbItem, Button, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Form, Row,
     UncontrolledDropdown
 } from 'reactstrap'
 
-import InputField from '../../../../../../common/forms/InputField'
-import SelectField from '../../../../../../common/forms/SelectField'
+import InputField from '../../../../../common/forms/InputField'
+import SelectField from '../../../../../common/forms/SelectField'
+import RichField from '../../../../../common/forms/RichField'
+import ConfirmButton from '../../../../../common/components/ConfirmButton'
+import PageHeader from '../../../../../common/components/PageHeader'
+import {AgentLabel} from '../../../../../common/utils/labels'
 
+import {sanitizeHtmlDefault} from '../../../../../../utils/html'
+import {convertToHTML} from '../../../../../../utils/editor'
 
-import RichField from '../../../../../../common/forms/RichField'
-import ConfirmButton from '../../../../../../common/components/ConfirmButton'
-import {AgentLabel} from '../../../../../../common/utils/labels'
+import {notify} from '../../../../../../state/notifications/actions'
+import * as campaignActions from '../../../../../../state/campaigns/actions'
+import * as integrationsSelectors from '../../../../../../state/integrations/selectors'
+import * as agentSelectors from '../../../../../../state/agents/selectors'
 
-import {sanitizeHtmlDefault} from '../../../../../../../utils/html'
-import {convertToHTML} from '../../../../../../../utils/editor'
+import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
 
 import {
     CAMPAIGNS_TRIGGER_KEYS,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
-    GRAVATAR_URL_TEMPLATE,
     SMOOCH_INSIDE_WIDGET_TEXTS
-} from '../../../../../../../config/integrations/chat'
-import PageHeader from '../../../../../../common/components/PageHeader'
-import ChatIntegrationNavigation from '../../ChatIntegrationNavigation'
+} from '../../../../../../config/integrations/chat'
 
-import CampaignPreview from './../CampaignPreview/CampaignPreview'
+import CampaignPreview from './CampaignPreview'
 import css from './CampaignDetail.less'
-import {notify} from './../../../../../../../state/notifications/actions'
-import * as campaignActions from './../../../../../../../state/campaigns/actions'
-import * as integrationsSelectors from './../../../../../../../state/integrations/selectors'
-import * as agentSelectors from './../../../../../../../state/agents/selectors'
+
 
 /**
  * Generate and return a default empty trigger associated with a trigger configuration.
@@ -290,7 +287,7 @@ export class CampaignDetail extends React.Component {
             ? this.state.message.set('author', fromJS({
                 name: author.get('name'),
                 email: author.get('email'),
-                avatar_url: author.getIn(['meta', 'profile_picture_url'], GRAVATAR_URL_TEMPLATE.replace('{emailMd5}', md5(author.get('email'))))
+                avatar_url: author.getIn(['meta', 'profile_picture_url'])
             }))
             : this.state.message.delete('author')
 
@@ -478,6 +475,7 @@ export class CampaignDetail extends React.Component {
                                 <Button
                                     color="success"
                                     className={classnames({'btn-loading': this.state.loading})}
+                                    disabled={this.state.loading}
                                 >
                                     {isUpdate ? 'Save' : 'Create & activate campaign'}
                                 </Button>

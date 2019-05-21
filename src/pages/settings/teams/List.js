@@ -91,6 +91,7 @@ export default class TeamList extends React.Component<Props, State> {
                             const teamId = team.get('id')
                             const emoji = team.getIn(['decoration', 'emoji']) || null
                             const memberCount = team.get('members').size
+
                             return (
                                 <Link
                                     className={classnames(css.card, 'p-3 card d-flex flex-row mb-3')}
@@ -121,20 +122,23 @@ export default class TeamList extends React.Component<Props, State> {
                                                 memberCount > 0 &&
                                                     <ul className='list-unstyled d-flex flex-row mb-0 mr-2'>
                                                         {
-                                                            team.get('members').slice(0, maxMembersPreview).map((member) => {
-                                                                return (
-                                                                    <li
-                                                                        key={member.get('id')}
-                                                                        className='mr-1'
-                                                                    >
-                                                                        <Avatar
-                                                                            email={member.get('email')}
-                                                                            name={member.get('name')}
-                                                                            size={30}
-                                                                        />
-                                                                    </li>
-                                                                )
-                                                            })
+                                                            team.get('members').slice(0, maxMembersPreview)
+                                                                .map((member) => {
+                                                                    const memberProfilePictureUrl = member
+                                                                        .getIn(['meta', 'profile_picture_url'])
+                                                                    return (
+                                                                        <li
+                                                                            key={member.get('id')}
+                                                                            className='mr-1'
+                                                                        >
+                                                                            <Avatar
+                                                                                name={member.get('name')}
+                                                                                url={memberProfilePictureUrl}
+                                                                                size={30}
+                                                                            />
+                                                                        </li>
+                                                                    )
+                                                                })
                                                         }
                                                     </ul>
                                             }

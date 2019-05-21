@@ -40,11 +40,15 @@ describe('components utils : labels', () => {
                     value: {
                         name: 'Mario',
                         email: 'mario@gorgias.io',
+                        meta: {
+                            profile_picture_url: 'https://gorgias.io/avatar.png'
+                        }
                     },
                     expected: (<div>
                         <Avatar
                             name="Mario"
                             email="mario@gorgias.io"
+                            url="https://gorgias.io/avatar.png"
                             size={26}
                             className="d-inline-block mr-2"
                         />
@@ -106,6 +110,7 @@ describe('components utils : labels', () => {
                 })
             })
         })
+
         describe('ValueRendered', () => {
             it('should display the address to prevent confusion', () => {
                 const componentRuleIntegrationListTypeEmail = mount(

@@ -53,7 +53,7 @@ export default class Container extends React.Component<Props> {
             })}>
                 <div className={css.avatar}>
                     <Avatar
-                        email={sender.get('email')}
+                        email={message.from_agent ? null : sender.get('email')}
                         name={sender.get('name')}
                         url={sender.getIn(['meta', 'profile_picture_url'])}
                         size="36"

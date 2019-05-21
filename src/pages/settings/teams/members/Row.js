@@ -49,7 +49,6 @@ export default class Row extends Component<Props, State> {
                     />
                     <Avatar
                         name={member.get('name')}
-                        email={member.get('email')}
                         url={member.getIn(['meta', 'profile_picture_url'])}
                         size={36}
                         className={classnames(css.avatar, 'd-none d-md-block')}
