@@ -133,7 +133,7 @@ export class BillingDetailsForm extends Component<Props, State> {
                                                 type="text"
                                                 name="phone"
                                                 label="Phone number"
-                                                placeholder="4155555555"
+                                                placeholder="415 859 3010"
                                                 {...this._getInputProps(contact, ['shipping', 'phone'])}
                                             />
                                             <InputField
@@ -174,7 +174,7 @@ export class BillingDetailsForm extends Component<Props, State> {
                                                         type="text"
                                                         name="postalCode"
                                                         label="Postal code"
-                                                        placeholder="94000"
+                                                        placeholder="94103"
                                                         {...this._getInputProps(
                                                             contact, [...addressPath, 'postal_code'])
                                                         }
