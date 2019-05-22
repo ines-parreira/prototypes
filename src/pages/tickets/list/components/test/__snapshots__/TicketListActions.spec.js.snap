@@ -111,9 +111,8 @@ exports[`TicketListActions component should display options for agents assignati
             type="button"
           >
             <AgentLabel
-              avatar={false}
+              avatar={true}
               className=""
-              email=""
               name="foo"
               profilePictureUrl=""
             />
@@ -126,9 +125,8 @@ exports[`TicketListActions component should display options for agents assignati
             type="button"
           >
             <AgentLabel
-              avatar={false}
+              avatar={true}
               className=""
-              email=""
               name="bar"
               profilePictureUrl=""
             />
@@ -141,9 +139,8 @@ exports[`TicketListActions component should display options for agents assignati
             type="button"
           >
             <AgentLabel
-              avatar={false}
+              avatar={true}
               className=""
-              email=""
               name="baz"
               profilePictureUrl=""
             />

@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import {connect} from 'react-redux'
-import {fromJS} from 'immutable'
+import {fromJS, type List, type Map} from 'immutable'
 import moment from 'moment'
 import {bindActionCreators} from 'redux'
 import {browserHistory} from 'react-router'
@@ -19,8 +19,6 @@ import {
 } from 'reactstrap'
 import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
-
-import type {List, Map} from 'immutable'
 
 import shortcutManager from '../../../../../services/shortcutManager/index'
 
@@ -412,8 +410,8 @@ class TicketListActions extends React.Component<Props, State> {
                                             >
                                                 <AgentLabel
                                                     name={agent.get('name')}
-                                                    email={agent.get('email')}
                                                     profilePictureUrl={agent.getIn(['meta', 'profile_picture_url'])}
+                                                    avatar
                                                 />
                                             </DropdownItem>
                                         )

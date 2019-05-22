@@ -189,7 +189,6 @@ exports[`CampaignDetail component should display default value when it's a new c
                       "label": <AgentLabel
                         avatar={false}
                         className=""
-                        email=""
                         maxWidth="100"
                         name="John"
                         profilePictureUrl=""
@@ -201,7 +200,6 @@ exports[`CampaignDetail component should display default value when it's a new c
                       "label": <AgentLabel
                         avatar={false}
                         className=""
-                        email=""
                         maxWidth="100"
                         name="Doe"
                         profilePictureUrl=""
@@ -524,7 +522,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       "label": <AgentLabel
                         avatar={false}
                         className=""
-                        email=""
                         maxWidth="100"
                         name="John"
                         profilePictureUrl=""
@@ -536,7 +533,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       "label": <AgentLabel
                         avatar={false}
                         className=""
-                        email=""
                         maxWidth="100"
                         name="Doe"
                         profilePictureUrl=""
@@ -883,7 +879,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       "label": <AgentLabel
                         avatar={false}
                         className=""
-                        email=""
                         maxWidth="100"
                         name="John"
                         profilePictureUrl=""
@@ -895,7 +890,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       "label": <AgentLabel
                         avatar={false}
                         className=""
-                        email=""
                         maxWidth="100"
                         name="Doe"
                         profilePictureUrl=""

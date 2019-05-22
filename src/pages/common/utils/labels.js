@@ -31,7 +31,6 @@ import css from './labels.less'
 type AgentLabelProps = {
     name?: string,
     maxWidth?: string,
-    email?: string,
     className?: string,
     profilePictureUrl?: string,
     avatar?: boolean,
@@ -40,7 +39,6 @@ type AgentLabelProps = {
 export class AgentLabel extends React.Component<AgentLabelProps> {
     static defaultProps = {
         name: '',
-        email: '',
         className: '',
         profilePictureUrl: '',
         avatar: false,

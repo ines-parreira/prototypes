@@ -188,7 +188,6 @@ export default class TicketAssignee extends React.Component<Props, State> {
                             >
                                 <AgentLabel
                                     name={agent.get('name')}
-                                    email={agent.get('email')}
                                     profilePictureUrl={agent.getIn(['meta', 'profile_picture_url'])}
                                     avatar
                                 />
@@ -226,7 +225,7 @@ export default class TicketAssignee extends React.Component<Props, State> {
     }
 
     render() {
-        const {currentAssignee, direction, email, profilePictureUrl, className, transparent} = this.props
+        const {currentAssignee, direction, profilePictureUrl, className, transparent} = this.props
 
         return (
             <Dropdown
@@ -246,7 +245,6 @@ export default class TicketAssignee extends React.Component<Props, State> {
                         currentAssignee ? (
                             <AgentLabel
                                 name={currentAssignee}
-                                email={email}
                                 profilePictureUrl={profilePictureUrl}
                                 className={css.label}
                                 maxWidth="100"

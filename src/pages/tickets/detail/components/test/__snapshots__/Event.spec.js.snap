@@ -55,7 +55,6 @@ exports[`Event component should display correctly a failed event for a Recharge 
       <AgentLabel
         avatar={false}
         className=""
-        email=""
         name="Acme Support"
         profilePictureUrl=""
       />
@@ -185,7 +184,6 @@ exports[`Event component should display correctly a failed event for a Recharge 
       <AgentLabel
         avatar={false}
         className=""
-        email=""
         name="Acme Support"
         profilePictureUrl=""
       />
@@ -306,7 +304,6 @@ exports[`Event component should display correctly a failed event for a Shopify I
       <AgentLabel
         avatar={false}
         className=""
-        email=""
         name="Acme Support"
         profilePictureUrl=""
       />
@@ -445,7 +442,6 @@ exports[`Event component should display correctly a failed event for a Shopify O
       <AgentLabel
         avatar={false}
         className=""
-        email=""
         name="Acme Support"
         profilePictureUrl=""
       />
@@ -566,7 +562,6 @@ exports[`Event component should display correctly a successful event for a Recha
       <AgentLabel
         avatar={false}
         className=""
-        email=""
         name="Acme Support"
         profilePictureUrl=""
       />
@@ -685,7 +680,6 @@ exports[`Event component should display correctly a successful event for a Recha
       <AgentLabel
         avatar={false}
         className=""
-        email=""
         name="Acme Support"
         profilePictureUrl=""
       />
@@ -795,7 +789,6 @@ exports[`Event component should display correctly a successful event for a Shopi
       <AgentLabel
         avatar={false}
         className=""
-        email=""
         name="Acme Support"
         profilePictureUrl=""
       />
@@ -923,7 +916,6 @@ exports[`Event component should display correctly a successful event for a Shopi
       <AgentLabel
         avatar={false}
         className=""
-        email=""
         name="Acme Support"
         profilePictureUrl=""
       />

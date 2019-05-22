@@ -5,7 +5,6 @@ exports[`defaultEntryComponent should render 1`] = `
   <AgentLabel
     avatar={true}
     className="my-class-name"
-    email=""
     name="Marie Curie"
     profilePictureUrl="https://gorgias.io/profilepicture.png"
   />
