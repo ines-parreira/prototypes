@@ -9,17 +9,49 @@ import {omitBy as _omitBy, isUndefined as _isUndefined} from 'lodash'
 import {
     Breadcrumb,
     BreadcrumbItem,
-    Button, ButtonGroup, Container,
+    Button,
+    Col,
+    Container,
     Form,
+    Row,
 } from 'reactstrap'
 
-import {SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS, SMOOCH_INSIDE_WIDGET_TEXTS} from '../../../../../../config/integrations/chat'
+import {
+    SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS,
+    SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
+    SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_OPTIONAL,
+    SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS,
+    SMOOCH_INSIDE_WIDGET_TEXTS, SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
+} from '../../../../../../config/integrations/chat'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import PageHeader from '../../../../../common/components/PageHeader'
 import BooleanField from '../../../../../common/forms/BooleanField'
 import InputField from '../../../../../common/forms/InputField'
-import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
+import RadioField from '../../../../../common/forms/RadioField'
 
+import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
+import ChatIntegrationPreview from '../ChatIntegrationPreview'
+import OptionalEmailCapturePreview from '../ChatIntegrationPreview/OptionalEmailCapture'
+import RequiredEmailCapturePreview from '../ChatIntegrationPreview/RequiredEmailCapture'
+
+
+const emailCaptureOptions = [
+    {
+        value: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_OPTIONAL,
+        label: 'Optional',
+        description: 'Leaving your email is optional, everyone can start a conversation. Maximise conversation volume'
+    },
+    {
+        value: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS,
+        label: 'Required only outside business hours',
+        description: 'Reduces conversation volume by around 5%'
+    },
+    {
+        value: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
+        label: 'Always required',
+        description: 'Reduces conversation volume by around 30%'
+    },
+]
 
 type Props = {
     updateOrCreateIntegration: (Map<*,*>) => Promise<*>,
@@ -30,14 +62,9 @@ type State = {
     autoResponderEnabled: boolean,
     autoResponderText: string,
 
-    emailCaptureEnabled: boolean,
-    emailCaptureOnlineTriggerText: string,
-    emailCaptureOnlineThanksText: string,
-    emailCaptureOfflineTriggerText: string,
-    emailCaptureOfflineThanksText: string,
+    emailCaptureEnforcement: string,
 
-    isUpdating: boolean,
-    isModifyingOnlineData: boolean
+    isUpdating: boolean
 }
 
 @connect(null, {
@@ -48,31 +75,21 @@ export default class ChatIntegrationPreferences extends React.Component<Props, S
         autoResponderEnabled: false,
         autoResponderText: SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS.autoResponderText,
 
-        emailCaptureEnabled: false,
-        emailCaptureOnlineTriggerText: SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS.emailCaptureOnlineTriggerText,
-        emailCaptureOnlineThanksText: SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS.emailCaptureOnlineThanksText,
-        emailCaptureOfflineTriggerText: SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS.emailCaptureOfflineTriggerText,
-        emailCaptureOfflineThanksText: SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS.emailCaptureOfflineThanksText,
+        emailCaptureEnforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
 
-        isUpdating: false,
-        isModifyingOnlineData: true
+        isUpdating: false
     }
 
     isInitialized: boolean = false
 
     _initState = (integration: Map<*,*>) => {
-        const emailCapturePreferences = integration.getIn(['meta', 'preferences', 'email_capture']) || fromJS({})
         const language = integration.getIn(['meta', 'language'])
 
         this.setState(_omitBy({
             autoResponderEnabled: integration.getIn(['meta', 'preferences', 'auto_responder', 'enabled']),
             autoResponderText: integration.getIn(['meta', 'preferences', 'auto_responder', 'text']) ||
                 SMOOCH_INSIDE_WIDGET_TEXTS[language].autoResponderText,
-            emailCaptureEnabled: emailCapturePreferences.get('enabled'),
-            emailCaptureOnlineTriggerText: emailCapturePreferences.getIn(['online', 'trigger_text']),
-            emailCaptureOnlineThanksText: emailCapturePreferences.getIn(['online', 'thanks_text']),
-            emailCaptureOfflineTriggerText: emailCapturePreferences.getIn(['offline', 'trigger_text']),
-            emailCaptureOfflineThanksText: emailCapturePreferences.getIn(['offline', 'thanks_text'])
+            emailCaptureEnforcement: integration.getIn(['meta', 'preferences', 'email_capture_enforcement']),
         }, _isUndefined))
 
         this.isInitialized = true
@@ -106,17 +123,7 @@ export default class ChatIntegrationPreferences extends React.Component<Props, S
                         enabled: this.state.autoResponderEnabled,
                         text: this.state.autoResponderText
                     },
-                    email_capture: {
-                        enabled: this.state.emailCaptureEnabled,
-                        online: {
-                            trigger_text: this.state.emailCaptureOnlineTriggerText,
-                            thanks_text: this.state.emailCaptureOnlineThanksText,
-                        },
-                        offline: {
-                            trigger_text: this.state.emailCaptureOfflineTriggerText,
-                            thanks_text: this.state.emailCaptureOfflineThanksText,
-                        }
-                    }
+                    email_capture_enforcement: this.state.emailCaptureEnforcement
                 }
             })
         })
@@ -127,14 +134,7 @@ export default class ChatIntegrationPreferences extends React.Component<Props, S
     }
 
     render() {
-        const {
-            autoResponderEnabled, autoResponderText,
-            emailCaptureEnabled, emailCaptureOnlineTriggerText, emailCaptureOnlineThanksText,
-            emailCaptureOfflineTriggerText, emailCaptureOfflineThanksText,
-            isUpdating,
-            isModifyingOnlineData
-        } = this.state
-
+        const {autoResponderEnabled, autoResponderText, emailCaptureEnforcement, isUpdating} = this.state
         const {integration} = this.props
 
         return (
@@ -162,132 +162,92 @@ export default class ChatIntegrationPreferences extends React.Component<Props, S
                     fluid
                     className="page-container"
                 >
-                    <Form onSubmit={this._submitPreferences}>
+                    <Row>
+                        <Col>
+                            <Form onSubmit={this._submitPreferences}>
 
-                        <div className="mb-4">
-                            <h4>
-                                Email capture
-                            </h4>
-                            <p>
-                                If a visitor is anonymous, we'll automatically ask for their email address.
-                            </p>
+                                <div className="mb-4">
+                                    <h4>Email capture</h4>
+                                    <p>Ask your customers to leave their email before starting a chat</p>
+                                    <RadioField
+                                        options={emailCaptureOptions}
+                                        value={emailCaptureEnforcement}
+                                        onChange={(value) => this.setState({emailCaptureEnforcement: value})}
+                                    />
+                                </div>
 
-                            <div className="mb-3">
-                                <BooleanField
-                                    name="emailCaptureEnabled"
-                                    type="checkbox"
-                                    label="Enable email capture"
-                                    value={emailCaptureEnabled}
-                                    onChange={(value) => this.setState({emailCaptureEnabled: value})}
-                                />
-                            </div>
+                                <div className="mb-4">
+                                    <h4>
+                                        Away auto-responder
+                                    </h4>
 
-                            <ButtonGroup className="mb-3">
-                                <Button
-                                    type="button"
-                                    color={isModifyingOnlineData ? 'info' : 'secondary'}
-                                    onClick={() => this.setState({isModifyingOnlineData: true})}
-                                >
-                                    Online
-                                </Button>
-                                <Button
-                                    type="button"
-                                    color={!isModifyingOnlineData ? 'info' : 'secondary'}
-                                    onClick={() => this.setState({isModifyingOnlineData: false})}
-                                >
-                                    Away
-                                </Button>
-                            </ButtonGroup>
+                                    <p>
+                                        When your team is not available to chat, you can configure an auto-response for your{' '}
+                                        customers.
+                                    </p>
 
-                            {
-                                isModifyingOnlineData ? (
-                                    <div>
-                                        <InputField
-                                            type="textarea"
-                                            name="emailCaptureOnlineTriggerText"
-                                            label="Email capture text"
-                                            value={emailCaptureOnlineTriggerText}
-                                            onChange={(value) => this.setState({emailCaptureOnlineTriggerText: value})}
-                                            rows="3"
-                                        />
-
-                                        <InputField
-                                            type="textarea"
-                                            name="emailCaptureOnlineThanksText"
-                                            label="Thanks for your email message"
-                                            value={emailCaptureOnlineThanksText}
-                                            onChange={(value) => this.setState({emailCaptureOnlineThanksText: value})}
-                                            rows="3"
+                                    <div className="mb-3">
+                                        <BooleanField
+                                            name="autoResponderEnabled"
+                                            type="checkbox"
+                                            label="Enable auto-responder when no agent is available for chat"
+                                            value={autoResponderEnabled}
+                                            onChange={(value) => this.setState({autoResponderEnabled: value})}
                                         />
                                     </div>
-                                ) : (
-                                    <div>
-                                        <InputField
-                                            type="textarea"
-                                            name="emailCaptureOfflineTriggerText"
-                                            label="Email capture text"
-                                            value={emailCaptureOfflineTriggerText}
-                                            onChange={(value) => this.setState({emailCaptureOfflineTriggerText: value})}
-                                            rows="3"
-                                        />
 
-                                        <InputField
-                                            type="textarea"
-                                            name="emailCaptureOfflineThanksText"
-                                            label="Thanks for your email message"
-                                            value={emailCaptureOfflineThanksText}
-                                            onChange={(value) => this.setState({emailCaptureOfflineThanksText: value})}
-                                            rows="3"
-                                        />
-                                    </div>
-                                )
-                            }
-                        </div>
+                                    <InputField
+                                        type="textarea"
+                                        name="autoResponderText"
+                                        label="Auto-responder text"
+                                        value={autoResponderText}
+                                        onChange={(value) => this.setState({autoResponderText: value})}
+                                        rows="3"
+                                        required
+                                    />
+                                </div>
 
-                        <div className="mb-4">
-                            <h4>
-                                Away auto-responder
-                            </h4>
-
-                            <p>
-                                When your team is not available to chat, you can configure an auto-response for your{' '}
-                                customers.
-                            </p>
-
-                            <div className="mb-3">
-                                <BooleanField
-                                    name="autoResponderEnabled"
-                                    type="checkbox"
-                                    label="Enable auto-responder when no agent is available for chat"
-                                    value={autoResponderEnabled}
-                                    onChange={(value) => this.setState({autoResponderEnabled: value})}
-                                />
-                            </div>
-
-                            <InputField
-                                type="textarea"
-                                name="autoResponderText"
-                                label="Auto-responder text"
-                                value={autoResponderText}
-                                onChange={(value) => this.setState({autoResponderText: value})}
-                                rows="3"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <Button
-                                type="submit"
-                                color="success"
-                                className={classnames({
-                                    'btn-loading': isUpdating
-                                })}
-                                disabled={isUpdating}
+                                <div>
+                                    <Button
+                                        type="submit"
+                                        color="success"
+                                        className={classnames({
+                                            'btn-loading': isUpdating
+                                        })}
+                                        disabled={isUpdating}
+                                    >
+                                        Save changes
+                                    </Button>
+                                </div>
+                            </Form>
+                        </Col>
+                        <Col>
+                            <ChatIntegrationPreview
+                                name={integration.get('name')}
+                                introductionText={integration.getIn(['decoration', 'introduction_text'])}
+                                offlineIntroductionText={integration.getIn(['decoration', 'offline_introduction_text'])}
+                                mainColor={integration.getIn(['decoration', 'main_color'])}
+                                isOnline={emailCaptureEnforcement !== SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS}
+                                language={integration.getIn(['meta', 'language'])}
+                                renderFooter={emailCaptureEnforcement === SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_OPTIONAL}
                             >
-                                Save changes
-                            </Button>
-                        </div>
-                    </Form>
+                                {
+                                    emailCaptureEnforcement === SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_OPTIONAL ? (
+                                        <OptionalEmailCapturePreview
+                                            conversationColor={integration.getIn(['decoration', 'conversation_color'])}
+                                            name={integration.get('name')}
+                                            language={integration.getIn(['meta', 'language'])}
+                                        />
+                                    ) : (
+                                        <RequiredEmailCapturePreview
+                                            conversationColor={integration.getIn(['decoration', 'conversation_color'])}
+                                            language={integration.getIn(['meta', 'language'])}
+                                        />
+                                    )
+                                }
+                            </ChatIntegrationPreview>
+                        </Col>
+                    </Row>
                 </Container>
             </div>
         )

@@ -9,6 +9,10 @@ exports[`ChatIntegrationPreferences component should render the chat settings co
       "meta": Immutable.Map {
         "language": "en-US",
       },
+      "decoration": Immutable.Map {
+        "main_color": "#789c5d",
+        "conversation_color": "#08d123",
+      },
     }
   }
   store={
@@ -29,6 +33,10 @@ exports[`ChatIntegrationPreferences component should render the chat settings co
         "type": "smooch_inside",
         "meta": Immutable.Map {
           "language": "en-US",
+        },
+        "decoration": Immutable.Map {
+          "main_color": "#789c5d",
+          "conversation_color": "#08d123",
         },
       }
     }
@@ -164,6 +172,10 @@ exports[`ChatIntegrationPreferences component should render the chat settings co
             "meta": Immutable.Map {
               "language": "en-US",
             },
+            "decoration": Immutable.Map {
+              "main_color": "#789c5d",
+              "conversation_color": "#08d123",
+            },
           }
         }
       >
@@ -268,424 +280,633 @@ exports[`ChatIntegrationPreferences component should render the chat settings co
         <div
           className="page-container container-fluid"
         >
-          <Form
-            onSubmit={[Function]}
-            tag="form"
+          <Row
+            tag="div"
           >
-            <form
-              className=""
-              onSubmit={[Function]}
+            <div
+              className="row"
             >
-              <div
-                className="mb-4"
+              <Col
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
               >
-                <h4>
-                  Email capture
-                </h4>
-                <p>
-                  If a visitor is anonymous, we'll automatically ask for their email address.
-                </p>
                 <div
-                  className="mb-3"
+                  className="col"
                 >
-                  <BooleanField
-                    label="Enable email capture"
-                    name="emailCaptureEnabled"
-                    onChange={[Function]}
-                    type="checkbox"
-                    value={false}
+                  <Form
+                    onSubmit={[Function]}
+                    tag="form"
                   >
-                    <FormGroup
-                      check={true}
+                    <form
                       className=""
-                      color=""
-                      tag="div"
+                      onSubmit={[Function]}
                     >
                       <div
-                        className="form-check"
-                        color=""
+                        className="mb-4"
                       >
-                        <Label
-                          check={true}
-                          className="control-label"
-                          htmlFor="id-emailCaptureEnabled"
-                          tag="label"
-                          widths={
+                        <h4>
+                          Email capture
+                        </h4>
+                        <p>
+                          Ask your customers to leave their email before starting a chat
+                        </p>
+                        <RadioField
+                          onChange={[Function]}
+                          options={
                             Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
+                              Object {
+                                "description": "Leaving your email is optional, everyone can start a conversation. Maximise conversation volume",
+                                "label": "Optional",
+                                "value": "optional",
+                              },
+                              Object {
+                                "description": "Reduces conversation volume by around 5%",
+                                "label": "Required only outside business hours",
+                                "value": "required-outside-business-hours",
+                              },
+                              Object {
+                                "description": "Reduces conversation volume by around 30%",
+                                "label": "Always required",
+                                "value": "always-required",
+                              },
                             ]
                           }
+                          value="optional"
                         >
-                          <label
-                            className="control-label form-check-label "
-                            htmlFor="id-emailCaptureEnabled"
+                          <FormGroup
+                            tag="fieldset"
                           >
-                            <Input
-                              checked={false}
-                              className="form-check-input"
-                              id="id-emailCaptureEnabled"
-                              onChange={[Function]}
-                              type="checkbox"
+                            <fieldset
+                              className="form-group"
                             >
-                              <input
-                                checked={false}
-                                className="form-check-input form-check-input"
-                                id="id-emailCaptureEnabled"
-                                onChange={[Function]}
-                                type="checkbox"
-                              />
-                            </Input>
-                            <span
-                              style={
-                                Object {
-                                  "verticalAlign": "middle",
-                                }
-                              }
-                            >
-                              Enable email capture
-                            </span>
-                          </label>
-                        </Label>
+                              <FormGroup
+                                check={true}
+                                className="mb-2"
+                                key="optional"
+                                tag="div"
+                              >
+                                <div
+                                  className="mb-2 form-check"
+                                >
+                                  <Input
+                                    checked={true}
+                                    onChange={[Function]}
+                                    type="radio"
+                                  >
+                                    <input
+                                      checked={true}
+                                      className="form-check-input"
+                                      onChange={[Function]}
+                                      type="radio"
+                                    />
+                                  </Input>
+                                  <Label
+                                    check={true}
+                                    className="control-label ml-2"
+                                    onClick={[Function]}
+                                    tag="label"
+                                    widths={
+                                      Array [
+                                        "xs",
+                                        "sm",
+                                        "md",
+                                        "lg",
+                                        "xl",
+                                      ]
+                                    }
+                                  >
+                                    <label
+                                      className="control-label ml-2 form-check-label "
+                                      onClick={[Function]}
+                                    >
+                                      Optional
+                                      <FormText
+                                        color="muted"
+                                        tag="small"
+                                      >
+                                        <small
+                                          className="form-text text-muted"
+                                        >
+                                          Leaving your email is optional, everyone can start a conversation. Maximise conversation volume
+                                        </small>
+                                      </FormText>
+                                    </label>
+                                  </Label>
+                                </div>
+                              </FormGroup>
+                              <FormGroup
+                                check={true}
+                                className="mb-2"
+                                key="required-outside-business-hours"
+                                tag="div"
+                              >
+                                <div
+                                  className="mb-2 form-check"
+                                >
+                                  <Input
+                                    checked={false}
+                                    onChange={[Function]}
+                                    type="radio"
+                                  >
+                                    <input
+                                      checked={false}
+                                      className="form-check-input"
+                                      onChange={[Function]}
+                                      type="radio"
+                                    />
+                                  </Input>
+                                  <Label
+                                    check={true}
+                                    className="control-label ml-2"
+                                    onClick={[Function]}
+                                    tag="label"
+                                    widths={
+                                      Array [
+                                        "xs",
+                                        "sm",
+                                        "md",
+                                        "lg",
+                                        "xl",
+                                      ]
+                                    }
+                                  >
+                                    <label
+                                      className="control-label ml-2 form-check-label "
+                                      onClick={[Function]}
+                                    >
+                                      Required only outside business hours
+                                      <FormText
+                                        color="muted"
+                                        tag="small"
+                                      >
+                                        <small
+                                          className="form-text text-muted"
+                                        >
+                                          Reduces conversation volume by around 5%
+                                        </small>
+                                      </FormText>
+                                    </label>
+                                  </Label>
+                                </div>
+                              </FormGroup>
+                              <FormGroup
+                                check={true}
+                                className="mb-2"
+                                key="always-required"
+                                tag="div"
+                              >
+                                <div
+                                  className="mb-2 form-check"
+                                >
+                                  <Input
+                                    checked={false}
+                                    onChange={[Function]}
+                                    type="radio"
+                                  >
+                                    <input
+                                      checked={false}
+                                      className="form-check-input"
+                                      onChange={[Function]}
+                                      type="radio"
+                                    />
+                                  </Input>
+                                  <Label
+                                    check={true}
+                                    className="control-label ml-2"
+                                    onClick={[Function]}
+                                    tag="label"
+                                    widths={
+                                      Array [
+                                        "xs",
+                                        "sm",
+                                        "md",
+                                        "lg",
+                                        "xl",
+                                      ]
+                                    }
+                                  >
+                                    <label
+                                      className="control-label ml-2 form-check-label "
+                                      onClick={[Function]}
+                                    >
+                                      Always required
+                                      <FormText
+                                        color="muted"
+                                        tag="small"
+                                      >
+                                        <small
+                                          className="form-text text-muted"
+                                        >
+                                          Reduces conversation volume by around 30%
+                                        </small>
+                                      </FormText>
+                                    </label>
+                                  </Label>
+                                </div>
+                              </FormGroup>
+                            </fieldset>
+                          </FormGroup>
+                        </RadioField>
                       </div>
-                    </FormGroup>
-                  </BooleanField>
-                </div>
-                <ButtonGroup
-                  className="mb-3"
-                  role="group"
-                  tag="div"
-                >
-                  <div
-                    className="mb-3 btn-group"
-                    role="group"
-                  >
-                    <Button
-                      color="info"
-                      onClick={[Function]}
-                      tag="button"
-                      type="button"
-                    >
-                      <button
-                        className="btn btn-info"
-                        onClick={[Function]}
-                        type="button"
-                      >
-                        Online
-                      </button>
-                    </Button>
-                    <Button
-                      color="secondary"
-                      onClick={[Function]}
-                      tag="button"
-                      type="button"
-                    >
-                      <button
-                        className="btn btn-secondary"
-                        onClick={[Function]}
-                        type="button"
-                      >
-                        Away
-                      </button>
-                    </Button>
-                  </div>
-                </ButtonGroup>
-                <div>
-                  <InputField
-                    label="Email capture text"
-                    name="emailCaptureOnlineTriggerText"
-                    onChange={[Function]}
-                    rows="3"
-                    type="textarea"
-                    value="Leave us your email in case we reply later."
-                  >
-                    <FormGroup
-                      className="InputField"
-                      color=""
-                      tag="div"
-                    >
                       <div
-                        className="InputField form-group"
-                        color=""
+                        className="mb-4"
                       >
-                        <Label
-                          className="control-label"
-                          htmlFor="id-emailCaptureOnlineTriggerText"
-                          tag="label"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <label
-                            className="control-label "
-                            htmlFor="id-emailCaptureOnlineTriggerText"
-                          >
-                            Email capture text
-                          </label>
-                        </Label>
+                        <h4>
+                          Away auto-responder
+                        </h4>
+                        <p>
+                          When your team is not available to chat, you can configure an auto-response for your
+                           
+                          customers.
+                        </p>
                         <div
-                          className=""
+                          className="mb-3"
                         >
-                          <Input
-                            className=""
-                            id="id-emailCaptureOnlineTriggerText"
+                          <BooleanField
+                            label="Enable auto-responder when no agent is available for chat"
+                            name="autoResponderEnabled"
                             onChange={[Function]}
-                            rows="3"
-                            type="textarea"
-                            value="Leave us your email in case we reply later."
+                            type="checkbox"
+                            value={false}
                           >
-                            <textarea
-                              className="form-control"
-                              id="id-emailCaptureOnlineTriggerText"
-                              onChange={[Function]}
-                              rows="3"
-                              type="textarea"
-                              value="Leave us your email in case we reply later."
-                            />
-                          </Input>
-                        </div>
-                      </div>
-                    </FormGroup>
-                  </InputField>
-                  <InputField
-                    label="Thanks for your email message"
-                    name="emailCaptureOnlineThanksText"
-                    onChange={[Function]}
-                    rows="3"
-                    type="textarea"
-                    value="Thanks! We'll email you at {email} if you leave."
-                  >
-                    <FormGroup
-                      className="InputField"
-                      color=""
-                      tag="div"
-                    >
-                      <div
-                        className="InputField form-group"
-                        color=""
-                      >
-                        <Label
-                          className="control-label"
-                          htmlFor="id-emailCaptureOnlineThanksText"
-                          tag="label"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <label
-                            className="control-label "
-                            htmlFor="id-emailCaptureOnlineThanksText"
-                          >
-                            Thanks for your email message
-                          </label>
-                        </Label>
-                        <div
-                          className=""
-                        >
-                          <Input
-                            className=""
-                            id="id-emailCaptureOnlineThanksText"
-                            onChange={[Function]}
-                            rows="3"
-                            type="textarea"
-                            value="Thanks! We'll email you at {email} if you leave."
-                          >
-                            <textarea
-                              className="form-control"
-                              id="id-emailCaptureOnlineThanksText"
-                              onChange={[Function]}
-                              rows="3"
-                              type="textarea"
-                              value="Thanks! We'll email you at {email} if you leave."
-                            />
-                          </Input>
-                        </div>
-                      </div>
-                    </FormGroup>
-                  </InputField>
-                </div>
-              </div>
-              <div
-                className="mb-4"
-              >
-                <h4>
-                  Away auto-responder
-                </h4>
-                <p>
-                  When your team is not available to chat, you can configure an auto-response for your
-                   
-                  customers.
-                </p>
-                <div
-                  className="mb-3"
-                >
-                  <BooleanField
-                    label="Enable auto-responder when no agent is available for chat"
-                    name="autoResponderEnabled"
-                    onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  >
-                    <FormGroup
-                      check={true}
-                      className=""
-                      color=""
-                      tag="div"
-                    >
-                      <div
-                        className="form-check"
-                        color=""
-                      >
-                        <Label
-                          check={true}
-                          className="control-label"
-                          htmlFor="id-autoResponderEnabled"
-                          tag="label"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <label
-                            className="control-label form-check-label "
-                            htmlFor="id-autoResponderEnabled"
-                          >
-                            <Input
-                              checked={false}
-                              className="form-check-input"
-                              id="id-autoResponderEnabled"
-                              onChange={[Function]}
-                              type="checkbox"
+                            <FormGroup
+                              check={true}
+                              className=""
+                              color=""
+                              tag="div"
                             >
-                              <input
-                                checked={false}
-                                className="form-check-input form-check-input"
-                                id="id-autoResponderEnabled"
-                                onChange={[Function]}
-                                type="checkbox"
-                              />
-                            </Input>
-                            <span
-                              style={
-                                Object {
-                                  "verticalAlign": "middle",
-                                }
-                              }
-                            >
-                              Enable auto-responder when no agent is available for chat
-                            </span>
-                          </label>
-                        </Label>
-                      </div>
-                    </FormGroup>
-                  </BooleanField>
-                </div>
-                <InputField
-                  label="Auto-responder text"
-                  name="autoResponderText"
-                  onChange={[Function]}
-                  required={true}
-                  rows="3"
-                  type="textarea"
-                  value="We're away at the moment. Leave us your email and we'll follow up shortly."
-                >
-                  <FormGroup
-                    className="InputField required"
-                    color=""
-                    tag="div"
-                  >
-                    <div
-                      className="InputField required form-group"
-                      color=""
-                    >
-                      <Label
-                        className="control-label"
-                        htmlFor="id-autoResponderText"
-                        tag="label"
-                        widths={
-                          Array [
-                            "xs",
-                            "sm",
-                            "md",
-                            "lg",
-                            "xl",
-                          ]
-                        }
-                      >
-                        <label
-                          className="control-label "
-                          htmlFor="id-autoResponderText"
-                        >
-                          Auto-responder text
-                        </label>
-                      </Label>
-                      <div
-                        className=""
-                      >
-                        <Input
-                          className=""
-                          id="id-autoResponderText"
+                              <div
+                                className="form-check"
+                                color=""
+                              >
+                                <Label
+                                  check={true}
+                                  className="control-label"
+                                  htmlFor="id-autoResponderEnabled"
+                                  tag="label"
+                                  widths={
+                                    Array [
+                                      "xs",
+                                      "sm",
+                                      "md",
+                                      "lg",
+                                      "xl",
+                                    ]
+                                  }
+                                >
+                                  <label
+                                    className="control-label form-check-label "
+                                    htmlFor="id-autoResponderEnabled"
+                                  >
+                                    <Input
+                                      checked={false}
+                                      className="form-check-input"
+                                      id="id-autoResponderEnabled"
+                                      onChange={[Function]}
+                                      type="checkbox"
+                                    >
+                                      <input
+                                        checked={false}
+                                        className="form-check-input form-check-input"
+                                        id="id-autoResponderEnabled"
+                                        onChange={[Function]}
+                                        type="checkbox"
+                                      />
+                                    </Input>
+                                    <span
+                                      style={
+                                        Object {
+                                          "verticalAlign": "middle",
+                                        }
+                                      }
+                                    >
+                                      Enable auto-responder when no agent is available for chat
+                                    </span>
+                                  </label>
+                                </Label>
+                              </div>
+                            </FormGroup>
+                          </BooleanField>
+                        </div>
+                        <InputField
+                          label="Auto-responder text"
+                          name="autoResponderText"
                           onChange={[Function]}
                           required={true}
                           rows="3"
                           type="textarea"
                           value="We're away at the moment. Leave us your email and we'll follow up shortly."
                         >
-                          <textarea
-                            className="form-control"
-                            id="id-autoResponderText"
-                            onChange={[Function]}
-                            required={true}
-                            rows="3"
-                            type="textarea"
-                            value="We're away at the moment. Leave us your email and we'll follow up shortly."
+                          <FormGroup
+                            className="InputField required"
+                            color=""
+                            tag="div"
+                          >
+                            <div
+                              className="InputField required form-group"
+                              color=""
+                            >
+                              <Label
+                                className="control-label"
+                                htmlFor="id-autoResponderText"
+                                tag="label"
+                                widths={
+                                  Array [
+                                    "xs",
+                                    "sm",
+                                    "md",
+                                    "lg",
+                                    "xl",
+                                  ]
+                                }
+                              >
+                                <label
+                                  className="control-label "
+                                  htmlFor="id-autoResponderText"
+                                >
+                                  Auto-responder text
+                                </label>
+                              </Label>
+                              <div
+                                className=""
+                              >
+                                <Input
+                                  className=""
+                                  id="id-autoResponderText"
+                                  onChange={[Function]}
+                                  required={true}
+                                  rows="3"
+                                  type="textarea"
+                                  value="We're away at the moment. Leave us your email and we'll follow up shortly."
+                                >
+                                  <textarea
+                                    className="form-control"
+                                    id="id-autoResponderText"
+                                    onChange={[Function]}
+                                    required={true}
+                                    rows="3"
+                                    type="textarea"
+                                    value="We're away at the moment. Leave us your email and we'll follow up shortly."
+                                  />
+                                </Input>
+                              </div>
+                            </div>
+                          </FormGroup>
+                        </InputField>
+                      </div>
+                      <div>
+                        <Button
+                          className=""
+                          color="success"
+                          disabled={false}
+                          tag="button"
+                          type="submit"
+                        >
+                          <button
+                            className="btn btn-success"
+                            disabled={false}
+                            onClick={[Function]}
+                            type="submit"
+                          >
+                            Save changes
+                          </button>
+                        </Button>
+                      </div>
+                    </form>
+                  </Form>
+                </div>
+              </Col>
+              <Col
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <div
+                  className="col"
+                >
+                  <ChatIntegrationPreview
+                    isOnline={true}
+                    language="en-US"
+                    mainColor="#789c5d"
+                    renderFooter={true}
+                  >
+                    <div
+                      className="preview"
+                    >
+                      <div
+                        className="titlebar"
+                      />
+                      <div
+                        className="dialog"
+                      >
+                        <div
+                          className="header"
+                          style={
+                            Object {
+                              "backgroundColor": "#789c5d",
+                            }
+                          }
+                        >
+                          <div
+                            className="agents"
+                          >
+                            <div
+                              className="agent first"
+                              style={
+                                Object {
+                                  "borderColor": "#789c5d",
+                                }
+                              }
+                            >
+                              <i
+                                className="material-icons"
+                              >
+                                person
+                              </i>
+                              <div
+                                className="onlineMarker"
+                              />
+                            </div>
+                            <div
+                              className="agent middle"
+                              style={
+                                Object {
+                                  "borderColor": "#789c5d",
+                                }
+                              }
+                            >
+                              <i
+                                className="material-icons"
+                              >
+                                person
+                              </i>
+                              <div
+                                className="onlineMarker"
+                              />
+                            </div>
+                            <div
+                              className="agent last"
+                              style={
+                                Object {
+                                  "borderColor": "#789c5d",
+                                }
+                              }
+                            >
+                              <i
+                                className="material-icons"
+                              >
+                                person
+                              </i>
+                              <div
+                                className="onlineMarker"
+                              />
+                            </div>
+                          </div>
+                          <div
+                            className="details"
+                          >
+                            <div
+                              className="appName"
+                            >
+                               
+                            </div>
+                            <div
+                              className="introductionText"
+                            >
+                               
+                            </div>
+                          </div>
+                        </div>
+                        <OptionalEmailCapture
+                          conversationColor="#08d123"
+                          language="en-US"
+                        >
+                          <div
+                            className="content"
+                          >
+                            <div
+                              className="bubble primary firstMessageOfAppUser lastMessage"
+                              style={
+                                Object {
+                                  "backgroundColor": "#08d123",
+                                }
+                              }
+                            >
+                              hi
+                            </div>
+                            <div
+                              className="appMakerMessageWrapper"
+                            >
+                              <div
+                                className="avatar gorgiasLogo"
+                              >
+                                <img
+                                  src="/static/private/img/icons/gorgias-icon-logo-white.png"
+                                />
+                              </div>
+                              <div>
+                                <div
+                                  className="user"
+                                />
+                                <div
+                                  className="bubble firstMessageOfAppMaker mb-2"
+                                >
+                                  We're away, leave us your email and we'll respond shortly.
+                                </div>
+                                <div
+                                  className="optionalEmailCapture"
+                                >
+                                  <div
+                                    className="inputLabel"
+                                  >
+                                    Get notified by email
+                                  </div>
+                                  <div
+                                    className="inputWrapper"
+                                  >
+                                    <input
+                                      className="input"
+                                      placeholder="your@email.com"
+                                      readOnly={true}
+                                      type="email"
+                                    />
+                                    <button
+                                      style={
+                                        Object {
+                                          "backgroundColor": "#08d123",
+                                        }
+                                      }
+                                    >
+                                      <i
+                                        className="material-icons"
+                                      >
+                                        chevron_right
+                                      </i>
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </OptionalEmailCapture>
+                        <div
+                          className="poweredby"
+                        >
+                          Powered by Gorgias
+                        </div>
+                        <div
+                          className="footer"
+                        >
+                          <div
+                            className="placeholder"
+                          >
+                            Type a message...
+                          </div>
+                          <i
+                            className="icon camera"
                           />
-                        </Input>
+                        </div>
+                      </div>
+                      <div
+                        className="button"
+                        style={
+                          Object {
+                            "backgroundColor": "#789c5d",
+                          }
+                        }
+                      >
+                        <div
+                          className="iconWrapper"
+                        >
+                          <i
+                            className="icon"
+                          />
+                          <div
+                            className="shadow"
+                          />
+                        </div>
                       </div>
                     </div>
-                  </FormGroup>
-                </InputField>
-              </div>
-              <div>
-                <Button
-                  className=""
-                  color="success"
-                  disabled={false}
-                  tag="button"
-                  type="submit"
-                >
-                  <button
-                    className="btn btn-success"
-                    disabled={false}
-                    onClick={[Function]}
-                    type="submit"
-                  >
-                    Save changes
-                  </button>
-                </Button>
-              </div>
-            </form>
-          </Form>
+                  </ChatIntegrationPreview>
+                </div>
+              </Col>
+            </div>
+          </Row>
         </div>
       </Container>
     </div>

@@ -1,16 +1,21 @@
 @import "../../../../../../../css/new/colors";
 
 :local {
-  @primary: #0097ff;
+  @primary: #479af5;
+  @lighterGray: #f8f9fa;
+  @lightGray: #ededed;
   @gray: #c8cbd0;
   @active-bluegreen: #06D79C;
+  @offlineColor: #a1a9b6;
+  @textColor: #545454;
 
   .preview {
     overflow: hidden;
     padding: 32px 32px 20px 32px;
-    background: #f8f9fa;
+    background: @lighterGray;
     border-radius: 5px;
     width: 30em;
+    color: @textColor;
 
     pointer-events: none;
 
@@ -28,7 +33,7 @@
       width: 4.2em;
       height: 100%;
       content: '';
-      background-image: radial-gradient(ellipse at center, #f8f9fa 0%, #f8f9fa 45%, transparent 45%);
+      background-image: radial-gradient(ellipse at center, @lighterGray 0%, @lighterGray 45%, transparent 45%);
       background-repeat: repeat-x;
       background-size: 1.4em 1.4em;
       background-position: 0 center;
@@ -39,18 +44,21 @@
     overflow: hidden;
     width: 100%;
     min-height: 520px;
-    background: #fff;
+    background: white;
     border: 0;
     margin-bottom: 1em;
     border-radius: 14px;
     box-shadow: 0 4px 1em rgba(0, 0, 0, .12);
+
+    display: flex;
+    flex-direction: column;
 
     .titlebar {
       position: relative;
       padding: .6em 1.6em;
       background: @primary;
 
-      color: #fff;
+      color: white;
       text-align: center;
 
       .icon.times {
@@ -66,7 +74,8 @@
       display: flex;
       flex-direction: row;
       padding: 1.2em .8em;
-      background: #f8f9fa;
+      background: @lighterGray;
+      z-index: 1;  // necessary so that the box-shadow is above the content
     }
 
     .details {
@@ -209,7 +218,6 @@
   .bubble {
     float: left;
     clear: both;
-    max-width: 80%;
     padding: 16px;
     margin-bottom: 4px;
     background: #f4f4f4;
@@ -217,7 +225,7 @@
     font-size: 15px;
     overflow: hidden;
     position: relative;
-    border-left-color: #00aeff;
+    border-left-color: @primary;
     -webkit-transition: opacity 150ms;
     -o-transition: opacity 150ms;
     -moz-transition: opacity 150ms;
@@ -230,7 +238,7 @@
       float: right;
       background: @primary;
 
-      color: #fff;
+      color: white;
     }
 
     &.firstMessageOfAppUser {
@@ -246,12 +254,175 @@
     }
   }
 
-  .user {
-    float: left;
+  .appMakerMessageWrapper {
+    display: flex;
     clear: both;
-    padding: 0 .4em;
+    padding-top: 10px;
+  }
 
-    color: @gray;
+  .user {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .avatar {
+    min-width: 35px;
+    width: 35px;
+    height: 35px;
+    margin-right: 15px;
+
+    border-radius: 50px !important;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,.09);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.gorgiasLogo {
+      background: @offlineColor;
+    }
+
+    img {
+      width: 60%;
+    }
+  }
+
+  .optionalEmailCapture {
+    clear: both;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+
+    background: @lighterGray;
+    border: 1px solid @lightGray;
+    border-radius: 3px;
+
+    .inputLabel {
+      font-weight: bold;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .inputWrapper {
+      display: flex;
+
+      input {
+        background: white !important;  // `important` to override default grey background for readonly inputs
+        font-size: 14px;
+        padding: 10px;
+        outline: none;
+        box-shadow: none;
+
+        height: 100%;
+        flex-grow: 1;
+
+        border-radius: 3px 0 0 3px;
+        border-top: 1px solid @gray;
+        border-left: 1px solid @gray;
+        border-bottom: 1px solid @gray;
+        border-right: 0;
+
+        &:focus {
+          box-shadow: none;
+          outline: none;
+        }
+
+        &::placeholder {
+          color: @grey;
+        }
+      }
+
+      button {
+        width: 40px;
+        background: @primary;
+        font-size: 30px;
+        color: white;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 0 3px 3px 0;
+      }
+    }
+  }
+
+  .requiredEmailCapture {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background: white;
+    padding-top: 10px;
+
+    .emailInputWrapper {
+      width: 100%;
+      padding: 10px 0 0 0;
+      border-bottom: 1px solid @lightGray;
+      flex-grow: 0;
+
+      input {
+        font-size: 15px;
+        background: white !important;   // `important` to override default grey background for readonly inputs
+        padding: 10px 15px 10px 15px;
+        border-radius: 5px;
+        border: none;
+        outline: none;
+        box-shadow: none;
+        height: 100%;
+        width: 100%;
+
+        &::placeholder {
+          color: @lightGrey !important;
+        }
+      }
+    }
+
+    .messageInputWrapper {
+      width: 100%;
+      padding: 0;
+      flex-grow: 1;
+
+      textarea {
+        resize: none;
+        font-size: 15px;
+        background: none;
+        padding: 10px 15px 10px 15px;
+        border-radius: 5px;
+        border: none;
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+
+        &::placeholder {
+          color: @lightGrey !important;
+        }
+      }
+    }
+
+    .buttonWrapper {
+      width: 100%;
+      padding: 20px;
+
+      button {
+        border: none;
+        border-radius: 3px;
+
+        color: white;
+        background: @primary;
+        text-align: center;
+        font-size: 15px;
+        width: 100%;
+        height: 50px;
+
+        &:focus {
+          box-shadow: none;
+          outline: none;
+        }
+      }
+    }
   }
 
   .poweredby {
@@ -260,10 +431,10 @@
     color: @gray;
     font-size: 12px;
     text-align: center;
+    margin-bottom: 15px;
   }
 
   .footer {
-    margin-top: 10px;
     display: flex;
     width: 100%;
     align-items: center;

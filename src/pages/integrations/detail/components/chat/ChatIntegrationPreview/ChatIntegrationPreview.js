@@ -1,88 +1,36 @@
 // @flow
-import React from 'react'
+import React, {type Node} from 'react'
+import {type Map} from 'immutable'
 import classnames from 'classnames'
+
+import {
+    SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
+    SMOOCH_INSIDE_WIDGET_TEXTS
+} from '../../../../../../config/integrations/chat'
+
 
 import css from './ChatIntegrationPreview.less'
 
+
 type Props = {
     name?: string,
-    currentUser?: Object,
+    currentUser?: Map<*,*>,
     introductionText?: string,
     offlineIntroductionText?: string,
     headerText?: string,
     mainColor?: string,
-    conversationColor?: string,
 
     isOnline?: boolean,
-    quickReplies?: Array<string>,
+    language: string,
 
-    translatedTexts: Object
+    children: Node,
+    renderFooter: boolean
 }
 
 export default class ChatIntegrationPreview extends React.Component<Props> {
-
-    _renderMessageContent = () => {
-        const {conversationColor, currentUser} = this.props
-        const _bgColor = (color) => ({backgroundColor: color})
-
-        if (!currentUser) {
-            return null
-        }
-
-        return (
-            <div className={css.content}>
-                <div
-                    className={classnames(css.bubble, css.primary, css.firstMessageOfAppUser)}
-                    style={_bgColor(conversationColor)}
-                >
-                    Hey there
-                </div>
-                <div
-                    className={classnames(css.bubble, css.primary, css.lastMessage)}
-                    style={_bgColor(conversationColor)}
-                >
-                    I'm wondering about the status of my order, I've been waiting for a while now and it has
-                    not arrived yet.
-                </div>
-
-                <div className={css.user}>
-                    {currentUser.get('name')}
-                </div>
-
-                <div className={classnames(css.bubble, css.firstMessageOfAppMaker)}>
-                    Sure, what's your email / order number?
-                </div>
-            </div>
-        )
-    }
-
-    _renderQuickReplies = () => {
-        const {quickReplies, mainColor} = this.props
-
-        if (!quickReplies) {
-            return null
-        }
-
-        return (
-            <div className={classnames(css.content, css['quick-replies-content'])}>
-                <div className={css['quick-replies-wrapper']}>
-                    {
-                        quickReplies.map((quickReply, index) => (
-                            <button
-                                key={`${quickReply}-${index}`}
-                                className={classnames('btn btn-reply-action', css.reply)}
-                                style={{
-                                    color: mainColor,
-                                    borderColor: mainColor,
-                                }}
-                            >
-                                {quickReply}
-                            </button>
-                        ))
-                    }
-                </div>
-            </div>
-        )
+    static defaultProps = {
+        language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
+        renderFooter: true
     }
 
     render() {
@@ -92,11 +40,10 @@ export default class ChatIntegrationPreview extends React.Component<Props> {
             offlineIntroductionText,
             mainColor,
             isOnline,
-            quickReplies,
-            translatedTexts
+            language,
+            children,
+            renderFooter
         } = this.props
-
-        const _bgColor = (color) => ({backgroundColor: color})
 
         // Preserve the space which should be occupied by a string when the string is empty
         const nonbreak = (str) => {
@@ -104,7 +51,6 @@ export default class ChatIntegrationPreview extends React.Component<Props> {
         }
 
         const offlineColor = '#A1A9B6'
-        const shouldHeaderDisplayOnline = isOnline
 
         const statusMarker = (
             <div className={classnames({
@@ -113,18 +59,20 @@ export default class ChatIntegrationPreview extends React.Component<Props> {
             })}/>
         )
 
+        const translatedTexts = SMOOCH_INSIDE_WIDGET_TEXTS[language]
+
         return (
             <div className={css.preview}>
                 <div className={css.titlebar}/>
                 <div className={css.dialog}>
                     <div
                         className={css.header}
-                        style={_bgColor(shouldHeaderDisplayOnline ? mainColor : offlineColor)}
+                        style={{backgroundColor: isOnline ? mainColor : offlineColor}}
                     >
                         <div className={css.agents}>
                             <div
                                 className={classnames(css.agent, css.first)}
-                                style={{borderColor: shouldHeaderDisplayOnline ? mainColor : offlineColor}}
+                                style={{borderColor: isOnline ? mainColor : offlineColor}}
                             >
                                 <i className="material-icons">
                                 person
@@ -133,7 +81,7 @@ export default class ChatIntegrationPreview extends React.Component<Props> {
                             </div>
                             <div
                                 className={classnames(css.agent, css.middle)}
-                                style={{borderColor: shouldHeaderDisplayOnline ? mainColor : offlineColor}}
+                                style={{borderColor: isOnline ? mainColor : offlineColor}}
                             >
                                 <i className="material-icons">
                                 person
@@ -142,7 +90,7 @@ export default class ChatIntegrationPreview extends React.Component<Props> {
                             </div>
                             <div
                                 className={classnames(css.agent, css.last)}
-                                style={{borderColor: shouldHeaderDisplayOnline ? mainColor : offlineColor}}
+                                style={{borderColor: isOnline ? mainColor : offlineColor}}
                             >
                                 <i className="material-icons">
                                 person
@@ -168,24 +116,28 @@ export default class ChatIntegrationPreview extends React.Component<Props> {
                         </div>
                     </div>
 
-                    { quickReplies ? this._renderQuickReplies() : this._renderMessageContent() }
+                    { children }
 
                     <div className={css.poweredby}>
                         {translatedTexts.poweredByGorgias}
                     </div>
 
-                    <div className={css.footer}>
-                        <div className={css.placeholder}>
-                            {nonbreak(translatedTexts.inputPlaceholder)}
-                        </div>
+                    {
+                        renderFooter && (
+                            <div className={css.footer}>
+                                <div className={css.placeholder}>
+                                    {nonbreak(translatedTexts.inputPlaceholder)}
+                                </div>
 
-                        <i className={classnames(css.icon, css.camera)}/>
-                    </div>
+                                <i className={classnames(css.icon, css.camera)}/>
+                            </div>
+                        )
+                    }
                 </div>
 
                 <div
                     className={css.button}
-                    style={_bgColor(mainColor)}
+                    style={{backgroundColor: mainColor}}
                 >
                     <div className={css.iconWrapper}>
                         <i className={css.icon}/>

@@ -8,16 +8,17 @@ import classnames from 'classnames'
 
 import PageHeader from '../../../../../common/components/PageHeader'
 import BooleanField from '../../../../../common/forms/BooleanField'
-import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
-import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
-import ChatIntegrationPreview from '../ChatIntegrationPreview/ChatIntegrationPreview'
 import ListField from '../../../../../common/forms/ListField'
+import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import {
-    SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
     QUICK_REPLIES_DEFAULTS,
     QUICK_REPLIES_MAX_ITEM_LENGTH,
-    QUICK_REPLIES_MAX_ITEMS, SMOOCH_INSIDE_WIDGET_TEXTS
+    QUICK_REPLIES_MAX_ITEMS
 } from '../../../../../../config/integrations/chat'
+
+import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
+import ChatIntegrationPreview from '../ChatIntegrationPreview'
+import QuickRepliesPreview from '../ChatIntegrationPreview/QuickReplies'
 
 type Props = {
     integration: Map<*,*>,
@@ -173,9 +174,14 @@ class ChatIntegrationQuickReplies extends React.Component<Props, State> {
                                 introductionText={integration.getIn(['decoration', 'introduction_text'])}
                                 mainColor={integration.getIn(['decoration', 'main_color'])}
                                 quickReplies={this.state.quickReplies.toJS()}
-                                translatedTexts={SMOOCH_INSIDE_WIDGET_TEXTS[integration.getIn(['meta', 'language']) || SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT]}
+                                language={integration.getIn(['meta', 'language'])}
                                 isOnline
-                            />
+                            >
+                                <QuickRepliesPreview
+                                    quickReplies={this.state.quickReplies.toJS()}
+                                    mainColor={integration.getIn(['decoration', 'main_color'])}
+                                />
+                            </ChatIntegrationPreview>
                         </Col>
                     </Row>
                 </Container>

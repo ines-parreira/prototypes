@@ -1,17 +1,198 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ChatIntegrationPreview should display quickReplies 1`] = `
-<div
-  className="preview"
+exports[`ChatIntegrationPreview should display optional email capture 1`] = `
+<ChatIntegrationPreview
+  conversationColor="#456789"
+  introductionText="intro"
+  isOnline={true}
+  language="en-US"
+  mainColor="#123456"
+  name="My little chat integration"
+  optionalEmailCapture={true}
+  renderFooter={true}
 >
   <div
-    className="titlebar"
-  />
-  <div
-    className="dialog"
+    className="preview"
   >
     <div
-      className="header"
+      className="titlebar"
+    />
+    <div
+      className="dialog"
+    >
+      <div
+        className="header"
+        style={
+          Object {
+            "backgroundColor": "#123456",
+          }
+        }
+      >
+        <div
+          className="agents"
+        >
+          <div
+            className="agent first"
+            style={
+              Object {
+                "borderColor": "#123456",
+              }
+            }
+          >
+            <i
+              className="material-icons"
+            >
+              person
+            </i>
+            <div
+              className="onlineMarker"
+            />
+          </div>
+          <div
+            className="agent middle"
+            style={
+              Object {
+                "borderColor": "#123456",
+              }
+            }
+          >
+            <i
+              className="material-icons"
+            >
+              person
+            </i>
+            <div
+              className="onlineMarker"
+            />
+          </div>
+          <div
+            className="agent last"
+            style={
+              Object {
+                "borderColor": "#123456",
+              }
+            }
+          >
+            <i
+              className="material-icons"
+            >
+              person
+            </i>
+            <div
+              className="onlineMarker"
+            />
+          </div>
+        </div>
+        <div
+          className="details"
+        >
+          <div
+            className="appName"
+          >
+            My little chat integration
+          </div>
+          <div
+            className="introductionText"
+          >
+            intro
+          </div>
+        </div>
+      </div>
+      <OptionalEmailCapture
+        conversationColor="#456789"
+        language="en-US"
+        name="My little chat integration"
+      >
+        <div
+          className="content"
+        >
+          <div
+            className="bubble primary firstMessageOfAppUser lastMessage"
+            style={
+              Object {
+                "backgroundColor": "#456789",
+              }
+            }
+          >
+            hi
+          </div>
+          <div
+            className="appMakerMessageWrapper"
+          >
+            <div
+              className="avatar gorgiasLogo"
+            >
+              <img
+                src="/static/private/img/icons/gorgias-icon-logo-white.png"
+              />
+            </div>
+            <div>
+              <div
+                className="user"
+              >
+                My little chat integration
+              </div>
+              <div
+                className="bubble firstMessageOfAppMaker mb-2"
+              >
+                We're away, leave us your email and we'll respond shortly.
+              </div>
+              <div
+                className="optionalEmailCapture"
+              >
+                <div
+                  className="inputLabel"
+                >
+                  Get notified by email
+                </div>
+                <div
+                  className="inputWrapper"
+                >
+                  <input
+                    className="input"
+                    placeholder="your@email.com"
+                    readOnly={true}
+                    type="email"
+                  />
+                  <button
+                    style={
+                      Object {
+                        "backgroundColor": "#456789",
+                      }
+                    }
+                  >
+                    <i
+                      className="material-icons"
+                    >
+                      chevron_right
+                    </i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </OptionalEmailCapture>
+      <div
+        className="poweredby"
+      >
+        Powered by Gorgias
+      </div>
+      <div
+        className="footer"
+      >
+        <div
+          className="placeholder"
+        >
+          Type a message...
+        </div>
+        <i
+          className="icon camera"
+        />
+      </div>
+    </div>
+    <div
+      className="button"
       style={
         Object {
           "backgroundColor": "#123456",
@@ -19,326 +200,571 @@ exports[`ChatIntegrationPreview should display quickReplies 1`] = `
       }
     >
       <div
-        className="agents"
+        className="iconWrapper"
       >
+        <i
+          className="icon"
+        />
         <div
-          className="agent first"
-          style={
-            Object {
-              "borderColor": "#123456",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="onlineMarker"
-          />
-        </div>
-        <div
-          className="agent middle"
-          style={
-            Object {
-              "borderColor": "#123456",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="onlineMarker"
-          />
-        </div>
-        <div
-          className="agent last"
-          style={
-            Object {
-              "borderColor": "#123456",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="onlineMarker"
-          />
-        </div>
+          className="shadow"
+        />
       </div>
-      <div
-        className="details"
-      >
-        <div
-          className="appName"
-        >
-          My little chat integration
-        </div>
-        <div
-          className="introductionText"
-        >
-          intro
-        </div>
-      </div>
-    </div>
-    <div
-      className="content quick-replies-content"
-    >
-      <div
-        className="quick-replies-wrapper"
-      >
-        <button
-          className="btn btn-reply-action reply"
-          key="foo-0"
-          style={
-            Object {
-              "borderColor": "#123456",
-              "color": "#123456",
-            }
-          }
-        >
-          foo
-        </button>
-        <button
-          className="btn btn-reply-action reply"
-          key="bar-1"
-          style={
-            Object {
-              "borderColor": "#123456",
-              "color": "#123456",
-            }
-          }
-        >
-          bar
-        </button>
-      </div>
-    </div>
-    <div
-      className="poweredby"
-    >
-      Powered by Gorgias
-    </div>
-    <div
-      className="footer"
-    >
-      <div
-        className="placeholder"
-      >
-        Type a message...
-      </div>
-      <i
-        className="icon camera"
-      />
     </div>
   </div>
+</ChatIntegrationPreview>
+`;
+
+exports[`ChatIntegrationPreview should display quickReplies 1`] = `
+<ChatIntegrationPreview
+  introductionText="intro"
+  isOnline={true}
+  language="en-US"
+  mainColor="#123456"
+  name="My little chat integration"
+  renderFooter={true}
+>
   <div
-    className="button"
-    style={
-      Object {
-        "backgroundColor": "#123456",
-      }
-    }
+    className="preview"
   >
     <div
-      className="iconWrapper"
+      className="titlebar"
+    />
+    <div
+      className="dialog"
     >
-      <i
-        className="icon"
-      />
       <div
-        className="shadow"
-      />
+        className="header"
+        style={
+          Object {
+            "backgroundColor": "#123456",
+          }
+        }
+      >
+        <div
+          className="agents"
+        >
+          <div
+            className="agent first"
+            style={
+              Object {
+                "borderColor": "#123456",
+              }
+            }
+          >
+            <i
+              className="material-icons"
+            >
+              person
+            </i>
+            <div
+              className="onlineMarker"
+            />
+          </div>
+          <div
+            className="agent middle"
+            style={
+              Object {
+                "borderColor": "#123456",
+              }
+            }
+          >
+            <i
+              className="material-icons"
+            >
+              person
+            </i>
+            <div
+              className="onlineMarker"
+            />
+          </div>
+          <div
+            className="agent last"
+            style={
+              Object {
+                "borderColor": "#123456",
+              }
+            }
+          >
+            <i
+              className="material-icons"
+            >
+              person
+            </i>
+            <div
+              className="onlineMarker"
+            />
+          </div>
+        </div>
+        <div
+          className="details"
+        >
+          <div
+            className="appName"
+          >
+            My little chat integration
+          </div>
+          <div
+            className="introductionText"
+          >
+            intro
+          </div>
+        </div>
+      </div>
+      <QuickReplies
+        mainColor="#123456"
+        quickReplies={
+          Immutable.List [
+            "foo",
+            "bar",
+          ]
+        }
+      >
+        <div
+          className="content quick-replies-content"
+        >
+          <div
+            className="quick-replies-wrapper"
+          >
+            <button
+              className="btn btn-reply-action reply"
+              key="foo-0"
+              style={
+                Object {
+                  "borderColor": "#123456",
+                  "color": "#123456",
+                }
+              }
+            >
+              foo
+            </button>
+            <button
+              className="btn btn-reply-action reply"
+              key="bar-1"
+              style={
+                Object {
+                  "borderColor": "#123456",
+                  "color": "#123456",
+                }
+              }
+            >
+              bar
+            </button>
+          </div>
+        </div>
+      </QuickReplies>
+      <div
+        className="poweredby"
+      >
+        Powered by Gorgias
+      </div>
+      <div
+        className="footer"
+      >
+        <div
+          className="placeholder"
+        >
+          Type a message...
+        </div>
+        <i
+          className="icon camera"
+        />
+      </div>
+    </div>
+    <div
+      className="button"
+      style={
+        Object {
+          "backgroundColor": "#123456",
+        }
+      }
+    >
+      <div
+        className="iconWrapper"
+      >
+        <i
+          className="icon"
+        />
+        <div
+          className="shadow"
+        />
+      </div>
     </div>
   </div>
-</div>
+</ChatIntegrationPreview>
+`;
+
+exports[`ChatIntegrationPreview should display required email capture 1`] = `
+<ChatIntegrationPreview
+  conversationColor="#456789"
+  introductionText="intro"
+  isOnline={true}
+  language="en-US"
+  mainColor="#123456"
+  name="My little chat integration"
+  renderFooter={false}
+  requiredEmailCapture={true}
+>
+  <div
+    className="preview"
+  >
+    <div
+      className="titlebar"
+    />
+    <div
+      className="dialog"
+    >
+      <div
+        className="header"
+        style={
+          Object {
+            "backgroundColor": "#123456",
+          }
+        }
+      >
+        <div
+          className="agents"
+        >
+          <div
+            className="agent first"
+            style={
+              Object {
+                "borderColor": "#123456",
+              }
+            }
+          >
+            <i
+              className="material-icons"
+            >
+              person
+            </i>
+            <div
+              className="onlineMarker"
+            />
+          </div>
+          <div
+            className="agent middle"
+            style={
+              Object {
+                "borderColor": "#123456",
+              }
+            }
+          >
+            <i
+              className="material-icons"
+            >
+              person
+            </i>
+            <div
+              className="onlineMarker"
+            />
+          </div>
+          <div
+            className="agent last"
+            style={
+              Object {
+                "borderColor": "#123456",
+              }
+            }
+          >
+            <i
+              className="material-icons"
+            >
+              person
+            </i>
+            <div
+              className="onlineMarker"
+            />
+          </div>
+        </div>
+        <div
+          className="details"
+        >
+          <div
+            className="appName"
+          >
+            My little chat integration
+          </div>
+          <div
+            className="introductionText"
+          >
+            intro
+          </div>
+        </div>
+      </div>
+      <RequiredEmailCapture
+        conversationColor="#456789"
+        language="en-US"
+      >
+        <div
+          className="requiredEmailCapture"
+        >
+          <div
+            className="emailInputWrapper"
+          >
+            <input
+              placeholder="Leave your email"
+              readOnly={true}
+              type="email"
+            />
+          </div>
+          <div
+            className="messageInputWrapper"
+          >
+            <textarea
+              placeholder="Write your message"
+              readOnly={true}
+            />
+          </div>
+          <div
+            className="buttonWrapper"
+          >
+            <button
+              style={
+                Object {
+                  "backgroundColor": "#456789",
+                }
+              }
+            >
+              Send
+            </button>
+          </div>
+        </div>
+      </RequiredEmailCapture>
+      <div
+        className="poweredby"
+      >
+        Powered by Gorgias
+      </div>
+    </div>
+    <div
+      className="button"
+      style={
+        Object {
+          "backgroundColor": "#123456",
+        }
+      }
+    >
+      <div
+        className="iconWrapper"
+      >
+        <i
+          className="icon"
+        />
+        <div
+          className="shadow"
+        />
+      </div>
+    </div>
+  </div>
+</ChatIntegrationPreview>
 `;
 
 exports[`ChatIntegrationPreview should display the offline status because chat is offline 1`] = `
-<div
-  className="preview"
->
-  <div
-    className="titlebar"
-  />
-  <div
-    className="dialog"
-  >
-    <div
-      className="header"
-      style={
-        Object {
-          "backgroundColor": "#A1A9B6",
-        }
-      }
-    >
-      <div
-        className="agents"
-      >
-        <div
-          className="agent first"
-          style={
-            Object {
-              "borderColor": "#A1A9B6",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="offlineMarker"
-          />
-        </div>
-        <div
-          className="agent middle"
-          style={
-            Object {
-              "borderColor": "#A1A9B6",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="offlineMarker"
-          />
-        </div>
-        <div
-          className="agent last"
-          style={
-            Object {
-              "borderColor": "#A1A9B6",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="offlineMarker"
-          />
-        </div>
-      </div>
-      <div
-        className="details"
-      >
-        <div
-          className="appName"
-        >
-          My little chat integration
-        </div>
-        <div
-          className="introductionText"
-        >
-           
-        </div>
-        <div
-          className="business-hours-back-badge"
-        >
-          Back tomorrow
-        </div>
-      </div>
-    </div>
-    <div
-      className="content"
-    >
-      <div
-        className="bubble primary firstMessageOfAppUser"
-        style={
-          Object {
-            "backgroundColor": "#456789",
-          }
-        }
-      >
-        Hey there
-      </div>
-      <div
-        className="bubble primary lastMessage"
-        style={
-          Object {
-            "backgroundColor": "#456789",
-          }
-        }
-      >
-        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
-      </div>
-      <div
-        className="user"
-      >
-        Charles
-      </div>
-      <div
-        className="bubble firstMessageOfAppMaker"
-      >
-        Sure, what's your email / order number?
-      </div>
-    </div>
-    <div
-      className="poweredby"
-    >
-      Powered by Gorgias
-    </div>
-    <div
-      className="footer"
-    >
-      <div
-        className="placeholder"
-      >
-        Type a message...
-      </div>
-      <i
-        className="icon camera"
-      />
-    </div>
-  </div>
-  <div
-    className="button"
-    style={
-      Object {
-        "backgroundColor": "#123456",
-      }
+<ChatIntegrationPreview
+  currentUser={
+    Immutable.Map {
+      "name": "Charles",
     }
-  >
-    <div
-      className="iconWrapper"
-    >
-      <i
-        className="icon"
-      />
-      <div
-        className="shadow"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`ChatIntegrationPreview should display the online status because chat is online 1`] = `
-<div
-  className="preview"
+  }
+  introductionText="intro"
+  isOnline={false}
+  language="en-US"
+  mainColor="#123456"
+  name="My little chat integration"
+  renderFooter={true}
 >
   <div
-    className="titlebar"
-  />
-  <div
-    className="dialog"
+    className="preview"
   >
     <div
-      className="header"
+      className="titlebar"
+    />
+    <div
+      className="dialog"
+    >
+      <div
+        className="header"
+        style={
+          Object {
+            "backgroundColor": "#A1A9B6",
+          }
+        }
+      >
+        <div
+          className="agents"
+        >
+          <div
+            className="agent first"
+            style={
+              Object {
+                "borderColor": "#A1A9B6",
+              }
+            }
+          >
+            <i
+              className="material-icons"
+            >
+              person
+            </i>
+            <div
+              className="offlineMarker"
+            />
+          </div>
+          <div
+            className="agent middle"
+            style={
+              Object {
+                "borderColor": "#A1A9B6",
+              }
+            }
+          >
+            <i
+              className="material-icons"
+            >
+              person
+            </i>
+            <div
+              className="offlineMarker"
+            />
+          </div>
+          <div
+            className="agent last"
+            style={
+              Object {
+                "borderColor": "#A1A9B6",
+              }
+            }
+          >
+            <i
+              className="material-icons"
+            >
+              person
+            </i>
+            <div
+              className="offlineMarker"
+            />
+          </div>
+        </div>
+        <div
+          className="details"
+        >
+          <div
+            className="appName"
+          >
+            My little chat integration
+          </div>
+          <div
+            className="introductionText"
+          >
+             
+          </div>
+          <div
+            className="business-hours-back-badge"
+          >
+            Back tomorrow
+          </div>
+        </div>
+      </div>
+      <MessageContent
+        conversationColor="#456789"
+        currentUser={
+          Immutable.Map {
+            "name": "Charles",
+          }
+        }
+      >
+        <div
+          className="content"
+        >
+          <div
+            className="bubble primary firstMessageOfAppUser"
+            style={
+              Object {
+                "backgroundColor": "#456789",
+              }
+            }
+          >
+            Hey there
+          </div>
+          <div
+            className="bubble primary lastMessage"
+            style={
+              Object {
+                "backgroundColor": "#456789",
+              }
+            }
+          >
+            I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+          </div>
+          <div
+            className="appMakerMessageWrapper"
+          >
+            <Avatar
+              className="avatar"
+              email=""
+              name="Charles"
+              size="35"
+              style={Object {}}
+              url=""
+            >
+              <div
+                className="component avatar"
+                style={
+                  Object {
+                    "height": "35px",
+                    "width": "35px",
+                  }
+                }
+              >
+                <div
+                  className="initials"
+                  style={
+                    Object {
+                      "fontSize": "14.583333333333334px",
+                    }
+                  }
+                >
+                  <span>
+                    C
+                  </span>
+                </div>
+              </div>
+            </Avatar>
+            <div>
+              <div
+                className="user"
+              >
+                Charles
+              </div>
+              <div
+                className="bubble firstMessageOfAppMaker"
+              >
+                Sure, what's your email / order number?
+              </div>
+            </div>
+          </div>
+        </div>
+      </MessageContent>
+      <div
+        className="poweredby"
+      >
+        Powered by Gorgias
+      </div>
+      <div
+        className="footer"
+      >
+        <div
+          className="placeholder"
+        >
+          Type a message...
+        </div>
+        <i
+          className="icon camera"
+        />
+      </div>
+    </div>
+    <div
+      className="button"
       style={
         Object {
           "backgroundColor": "#123456",
@@ -346,145 +772,238 @@ exports[`ChatIntegrationPreview should display the online status because chat is
       }
     >
       <div
-        className="agents"
+        className="iconWrapper"
       >
+        <i
+          className="icon"
+        />
         <div
-          className="agent first"
-          style={
-            Object {
-              "borderColor": "#123456",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="onlineMarker"
-          />
-        </div>
-        <div
-          className="agent middle"
-          style={
-            Object {
-              "borderColor": "#123456",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="onlineMarker"
-          />
-        </div>
-        <div
-          className="agent last"
-          style={
-            Object {
-              "borderColor": "#123456",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="onlineMarker"
-          />
-        </div>
+          className="shadow"
+        />
       </div>
-      <div
-        className="details"
-      >
-        <div
-          className="appName"
-        >
-          My little chat integration
-        </div>
-        <div
-          className="introductionText"
-        >
-          intro
-        </div>
-      </div>
-    </div>
-    <div
-      className="content"
-    >
-      <div
-        className="bubble primary firstMessageOfAppUser"
-        style={
-          Object {
-            "backgroundColor": "#456789",
-          }
-        }
-      >
-        Hey there
-      </div>
-      <div
-        className="bubble primary lastMessage"
-        style={
-          Object {
-            "backgroundColor": "#456789",
-          }
-        }
-      >
-        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
-      </div>
-      <div
-        className="user"
-      >
-        Charles
-      </div>
-      <div
-        className="bubble firstMessageOfAppMaker"
-      >
-        Sure, what's your email / order number?
-      </div>
-    </div>
-    <div
-      className="poweredby"
-    >
-      Powered by Gorgias
-    </div>
-    <div
-      className="footer"
-    >
-      <div
-        className="placeholder"
-      >
-        Type a message...
-      </div>
-      <i
-        className="icon camera"
-      />
     </div>
   </div>
-  <div
-    className="button"
-    style={
-      Object {
-        "backgroundColor": "#123456",
-      }
+</ChatIntegrationPreview>
+`;
+
+exports[`ChatIntegrationPreview should display the online status because chat is online 1`] = `
+<ChatIntegrationPreview
+  currentUser={
+    Immutable.Map {
+      "name": "Charles",
     }
+  }
+  introductionText="intro"
+  isOnline={true}
+  language="en-US"
+  mainColor="#123456"
+  name="My little chat integration"
+  renderFooter={true}
+>
+  <div
+    className="preview"
   >
     <div
-      className="iconWrapper"
+      className="titlebar"
+    />
+    <div
+      className="dialog"
     >
-      <i
-        className="icon"
-      />
       <div
-        className="shadow"
-      />
+        className="header"
+        style={
+          Object {
+            "backgroundColor": "#123456",
+          }
+        }
+      >
+        <div
+          className="agents"
+        >
+          <div
+            className="agent first"
+            style={
+              Object {
+                "borderColor": "#123456",
+              }
+            }
+          >
+            <i
+              className="material-icons"
+            >
+              person
+            </i>
+            <div
+              className="onlineMarker"
+            />
+          </div>
+          <div
+            className="agent middle"
+            style={
+              Object {
+                "borderColor": "#123456",
+              }
+            }
+          >
+            <i
+              className="material-icons"
+            >
+              person
+            </i>
+            <div
+              className="onlineMarker"
+            />
+          </div>
+          <div
+            className="agent last"
+            style={
+              Object {
+                "borderColor": "#123456",
+              }
+            }
+          >
+            <i
+              className="material-icons"
+            >
+              person
+            </i>
+            <div
+              className="onlineMarker"
+            />
+          </div>
+        </div>
+        <div
+          className="details"
+        >
+          <div
+            className="appName"
+          >
+            My little chat integration
+          </div>
+          <div
+            className="introductionText"
+          >
+            intro
+          </div>
+        </div>
+      </div>
+      <MessageContent
+        conversationColor="#456789"
+        currentUser={
+          Immutable.Map {
+            "name": "Charles",
+          }
+        }
+      >
+        <div
+          className="content"
+        >
+          <div
+            className="bubble primary firstMessageOfAppUser"
+            style={
+              Object {
+                "backgroundColor": "#456789",
+              }
+            }
+          >
+            Hey there
+          </div>
+          <div
+            className="bubble primary lastMessage"
+            style={
+              Object {
+                "backgroundColor": "#456789",
+              }
+            }
+          >
+            I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+          </div>
+          <div
+            className="appMakerMessageWrapper"
+          >
+            <Avatar
+              className="avatar"
+              email=""
+              name="Charles"
+              size="35"
+              style={Object {}}
+              url=""
+            >
+              <div
+                className="component avatar"
+                style={
+                  Object {
+                    "height": "35px",
+                    "width": "35px",
+                  }
+                }
+              >
+                <div
+                  className="initials"
+                  style={
+                    Object {
+                      "fontSize": "14.583333333333334px",
+                    }
+                  }
+                >
+                  <span>
+                    C
+                  </span>
+                </div>
+              </div>
+            </Avatar>
+            <div>
+              <div
+                className="user"
+              >
+                Charles
+              </div>
+              <div
+                className="bubble firstMessageOfAppMaker"
+              >
+                Sure, what's your email / order number?
+              </div>
+            </div>
+          </div>
+        </div>
+      </MessageContent>
+      <div
+        className="poweredby"
+      >
+        Powered by Gorgias
+      </div>
+      <div
+        className="footer"
+      >
+        <div
+          className="placeholder"
+        >
+          Type a message...
+        </div>
+        <i
+          className="icon camera"
+        />
+      </div>
+    </div>
+    <div
+      className="button"
+      style={
+        Object {
+          "backgroundColor": "#123456",
+        }
+      }
+    >
+      <div
+        className="iconWrapper"
+      >
+        <i
+          className="icon"
+        />
+        <div
+          className="shadow"
+        />
+      </div>
     </div>
   </div>
-</div>
+</ChatIntegrationPreview>
 `;

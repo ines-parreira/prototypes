@@ -5,7 +5,10 @@ import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT} from '../../../../../../../config/integrations/chat'
+import {
+    SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
+    SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+} from '../../../../../../../config/integrations/chat'
 import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../../../constants/integration'
 import ChatIntegrationPreferences from '../ChatIntegrationPreferences'
 
@@ -23,6 +26,10 @@ describe('ChatIntegrationPreferences component', () => {
                     type: SMOOCH_INSIDE_INTEGRATION_TYPE,
                     meta: {
                         language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+                    },
+                    decoration: {
+                        main_color: '#789c5d',
+                        conversation_color: '#08d123'
                     }
                 })}
             />
@@ -83,17 +90,7 @@ describe('ChatIntegrationPreferences component', () => {
                         enabled: false,
                         text: 'We\'re away at the moment. Leave us your email and we\'ll follow up shortly.',
                     },
-                    email_capture: {
-                        enabled: false,
-                        online: {
-                            trigger_text: 'Leave us your email in case we reply later.',
-                            thanks_text: 'Thanks! We\'ll email you at {email} if you leave.',
-                        },
-                        offline: {
-                            trigger_text: 'We\'re away, leave us your email and we\'ll respond shortly.',
-                            thanks_text: 'Thanks {email}! We\'ll get back to you shortly.',
-                        }
-                    },
+                    email_capture_enforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT
                 }
             }
         }
@@ -133,19 +130,9 @@ describe('ChatIntegrationPreferences component', () => {
                         enabled: true,
                         text: 'Pizza Pepperoni',
                     },
-                    email_capture: {
-                        enabled: false,
-                        online: {
-                            trigger_text: 'foo',
-                            thanks_text: 'bar',
-                        },
-                        offline: {
-                            trigger_text: 'baz',
-                            thanks_text: 'boo',
-                        }
-                    },
-                    language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
-                }
+                    email_capture_enforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT
+                },
+                language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
             }
         }
 

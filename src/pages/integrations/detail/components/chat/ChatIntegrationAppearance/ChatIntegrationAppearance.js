@@ -4,9 +4,7 @@ import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 import {fromJS, type Map, type List} from 'immutable'
-import _pick from 'lodash/pick'
-import _merge from 'lodash/merge'
-import _defaults from 'lodash/defaults'
+import {pick as _pick, merge as _merge, defaults as _defaults} from 'lodash'
 
 import {
     Button,
@@ -24,22 +22,22 @@ import {
     SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS,
-    SMOOCH_INSIDE_DEFAULT_COLOR
+    SMOOCH_INSIDE_DEFAULT_COLOR, SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT
 } from '../../../../../../config/integrations/chat'
-
 import {SHOPIFY_INTEGRATION_TYPE, SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../../constants/integration'
-import Loader from '../../../../../common/components/Loader'
-import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
-import ChatIntegrationPreview from '../ChatIntegrationPreview/ChatIntegrationPreview'
+import * as integrationSelectors from '../../../../../../state/integrations/selectors'
+
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
-
-import InputField from '../../../../../common/forms/InputField'
 import ColorField from '../../../../../common/forms/ColorField'
-
+import InputField from '../../../../../common/forms/InputField'
+import Loader from '../../../../../common/components/Loader'
 import PageHeader from '../../../../../common/components/PageHeader'
 
+import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
+import ChatIntegrationPreview from '../ChatIntegrationPreview'
+import MessageContentPreview from '../ChatIntegrationPreview/MessageContent'
+
 import css from './ChatIntegrationAppearance.less'
-import * as integrationSelectors from './../../../../../../state/integrations/selectors'
 
 
 export const defaultContent = {
@@ -134,7 +132,10 @@ class ChatIntegrationAppearance extends React.Component<Props, State> {
         }
 
         form.meta = {
-            language: this.state.language
+            language: this.state.language,
+            preferences: {
+                email_capture_enforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT
+            }
         }
 
         if (this.props.isUpdate) {
@@ -336,10 +337,14 @@ class ChatIntegrationAppearance extends React.Component<Props, State> {
                                 introductionText={this.state.introductionText}
                                 offlineIntroductionText={this.state.offlineIntroductionText}
                                 mainColor={this.state.mainColor}
-                                conversationColor={this.state.conversationColor}
                                 isOnline={this.state.isOnline}
-                                translatedTexts={SMOOCH_INSIDE_WIDGET_TEXTS[this.state.language || SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT]}
-                            />
+                                language={this.state.language}
+                            >
+                                <MessageContentPreview
+                                    conversationColor={this.state.conversationColor}
+                                    currentUser={currentUser}
+                                />
+                            </ChatIntegrationPreview>
                         </Col>
                     </Row>
                 </Container>
