@@ -1,14 +1,15 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import Tooltip from '../../../../common/components/Tooltip'
 
-export default class TicketTrash extends React.Component {
-    static propTypes = {
-        trashed: PropTypes.bool,
-    }
+type Props = {
+    className: ?string,
+    trashed: ?boolean
+}
 
+export default class TicketTrash extends React.Component<Props> {
     static defaultProps = {
+        className: null,
         trashed: false
     }
 
@@ -18,13 +19,13 @@ export default class TicketTrash extends React.Component {
         }
 
         return (
-            <div className="d-inline-block mr-3">
+            <div className={this.props.className}>
                 <i id="ticket-header-trash-icon"
-                    className="icon material-icons md-2 text-danger">
+                    className="icon material-icons text-danger">
                     delete
                 </i>
                 <Tooltip
-                    placement="top"
+                    placement="bottom"
                     target="ticket-header-trash-icon"
                 >
                     Deleted

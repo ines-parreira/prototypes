@@ -5,6 +5,7 @@ import Tooltip from '../../../../common/components/Tooltip'
 import {formatDatetime} from '../../../../../utils'
 
 type Props = {
+    className: ?string,
     datetime: ?string
 }
 
@@ -17,13 +18,13 @@ export default class TicketSnooze extends Component<Props> {
         }
 
         return (
-            <div className="d-inline-block mr-3">
+            <div className={this.props.className}>
                 <i id="ticket-header-snooze-icon"
-                    className="icon material-icons md-2">
+                    className="icon material-icons">
                     snooze
                 </i>
                 <Tooltip
-                    placement="top"
+                    placement="bottom"
                     target="ticket-header-snooze-icon"
                 >
                     Snooze {formatDatetime(datetime)}

@@ -156,7 +156,7 @@ export class TicketTags extends React.Component {
     render() {
         const {ticketTags, removeTag, transparent} = this.props
         return (
-            <div className="d-none d-md-inline-flex align-items-center flex-wrap ml-2">
+            <div className="d-none d-md-inline-flex align-items-center flex-wrap ml-2 mr-2 mb-1">
                 {
                     ticketTags
                         .sort((a, b) => a.get('name').toLowerCase() > b.get('name').toLowerCase())
@@ -164,6 +164,7 @@ export class TicketTags extends React.Component {
                             <TagLabel
                                 key={i}
                                 decoration={tag.get('decoration')}
+                                className={css.tagLabel}
                             >
                                 <span>
                                     {tag.get('name')}

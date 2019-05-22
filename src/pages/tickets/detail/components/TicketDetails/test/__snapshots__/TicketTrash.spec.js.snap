@@ -1,11 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TicketTrash html should display trash icon 1`] = `"<div class=\\"d-inline-block mr-3\\"><i id=\\"ticket-header-trash-icon\\" class=\\"icon material-icons md-2 text-danger\\">delete</i></div>"`;
+exports[`TicketTrash html should display trash icon 1`] = `"<div><i id=\\"ticket-header-trash-icon\\" class=\\"icon material-icons text-danger\\">delete</i></div>"`;
 
 exports[`TicketTrash html should not display a trash icon 1`] = `null`;
 
 exports[`TicketTrash props should use default props 1`] = `
 Object {
+  "className": null,
   "trashed": false,
 }
 `;

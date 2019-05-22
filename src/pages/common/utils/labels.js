@@ -119,18 +119,19 @@ CustomerLabel.displayName = 'CustomerLabel'
  * TAG
  */
 type TagLabelParamType = {
+    className?: ?string,
     style: {
         color?: string
     },
     decoration?: Map<*, *>,
     children?: Node,
 }
-export const TagLabel = ({decoration, children}: TagLabelParamType) => {
+export const TagLabel = ({className, decoration, children}: TagLabelParamType) => {
     const color = (decoration || fromJS({})).get('color') || DEFAULT_TAG_COLOR
 
     return (
         <Badge
-            className="badge-tag"
+            className={classnames('badge-tag', className)}
             style={{color}}
         >
             {children}
@@ -138,6 +139,7 @@ export const TagLabel = ({decoration, children}: TagLabelParamType) => {
     )
 }
 TagLabel.defaultProps = {
+    className: null,
     style: {},
 }
 TagLabel.displayName = 'TagLabel'

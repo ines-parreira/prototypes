@@ -169,16 +169,32 @@ export default class TicketHeader extends React.Component<Props, State> {
             <div className={classnames(css.component, className)}>
                 <div className="d-flex justify-content-between mb-2">
                     <EditableTitle
-                        className={css.editableTitle}
+                        className={classnames('mr-2', css.editableTitle)}
                         title={ticket.get('subject')}
                         placeholder="Subject"
                         update={actions.ticket.setSubject}
                         focus={!ticket.get('id')}
                     />
 
+                    <TicketSnooze
+                        className={css.headerIcon}
+                        datetime={ticket.get('snooze_datetime')}
+                    />
+
+                    <TicketTrash
+                        className={css.headerIcon}
+                        trashed={isTrashed}
+                    />
+
+                    <TicketSpam
+                        className={css.headerIcon}
+                        spam={ticket.get('spam')}
+                    />
+
+
                     {
                         isUpdate && (
-                            <UncontrolledDropdown className="ml-2">
+                            <UncontrolledDropdown>
                                 <DropdownToggle
                                     color="secondary"
                                     type="button"
@@ -321,10 +337,7 @@ export default class TicketHeader extends React.Component<Props, State> {
                             transparent
                         />
                     </div>
-                    <div className="d-inline-flex align-items-center">
-                        <TicketSnooze datetime={ticket.get('snooze_datetime')}/>
-                        <TicketTrash trashed={isTrashed}/>
-                        <TicketSpam spam={ticket.get('spam')}/>
+                    <div className="d-inline-flex align-items-top">
                         <TicketAssignee
                             direction="right"
                             currentAssignee={ticket.getIn(['assignee_user', 'name'])}

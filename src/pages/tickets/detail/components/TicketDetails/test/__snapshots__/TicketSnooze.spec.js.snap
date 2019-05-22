@@ -1,18 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TicketSnooze should render an icon with a tooltip 1`] = `
-<div
-  className="d-inline-block mr-3"
->
+<div>
   <i
-    className="icon material-icons md-2"
+    className="icon material-icons"
     id="ticket-header-snooze-icon"
   >
     snooze
   </i>
   <Tooltip
     delay={0}
-    placement="top"
+    placement="bottom"
     target="ticket-header-snooze-icon"
   >
     Snooze 

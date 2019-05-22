@@ -1,11 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TicketSpam html should display spam flag 1`] = `"<div class=\\"d-inline-block mr-3\\"><i id=\\"ticket-header-spam-icon\\" class=\\"icon material-icons md-2 text-danger\\">flag</i></div>"`;
+exports[`TicketSpam html should display spam flag 1`] = `"<div><i id=\\"ticket-header-spam-icon\\" class=\\"icon material-icons text-danger\\">flag</i></div>"`;
 
 exports[`TicketSpam html should not display a spam flag 1`] = `null`;
 
 exports[`TicketSpam props should use default props 1`] = `
 Object {
+  "className": null,
   "spam": false,
 }
 `;

@@ -8,7 +8,7 @@ exports[`TicketHeader component should render existing ticket 1`] = `
     className="d-flex justify-content-between mb-2"
   >
     <EditableTitle
-      className="editableTitle"
+      className="mr-2 editableTitle"
       focus={false}
       placeholder="Subject"
       size="xl"
@@ -16,9 +16,18 @@ exports[`TicketHeader component should render existing ticket 1`] = `
       title="foo"
       update={[Function]}
     />
-    <UncontrolledDropdown
-      className="ml-2"
-    >
+    <TicketSnooze
+      className="headerIcon"
+    />
+    <TicketTrash
+      className="headerIcon"
+      trashed={false}
+    />
+    <TicketSpam
+      className="headerIcon"
+      spam={false}
+    />
+    <UncontrolledDropdown>
       <DropdownToggle
         aria-haspopup={true}
         className="btn-transparent"
@@ -172,15 +181,8 @@ exports[`TicketHeader component should render existing ticket 1`] = `
       />
     </div>
     <div
-      className="d-inline-flex align-items-center"
+      className="d-inline-flex align-items-top"
     >
-      <TicketSnooze />
-      <TicketTrash
-        trashed={false}
-      />
-      <TicketSpam
-        spam={false}
-      />
       <Connect(TicketAssignee)
         className="assignee"
         direction="right"
@@ -210,13 +212,24 @@ exports[`TicketHeader component should render new ticket 1`] = `
     className="d-flex justify-content-between mb-2"
   >
     <EditableTitle
-      className="editableTitle"
+      className="mr-2 editableTitle"
       focus={true}
       placeholder="Subject"
       size="xl"
       style={Object {}}
       title="foo"
       update={[Function]}
+    />
+    <TicketSnooze
+      className="headerIcon"
+    />
+    <TicketTrash
+      className="headerIcon"
+      trashed={false}
+    />
+    <TicketSpam
+      className="headerIcon"
+      spam={false}
     />
   </div>
   <div
@@ -230,15 +243,8 @@ exports[`TicketHeader component should render new ticket 1`] = `
       />
     </div>
     <div
-      className="d-inline-flex align-items-center"
+      className="d-inline-flex align-items-top"
     >
-      <TicketSnooze />
-      <TicketTrash
-        trashed={false}
-      />
-      <TicketSpam
-        spam={false}
-      />
       <Connect(TicketAssignee)
         className="assignee"
         direction="right"
@@ -267,7 +273,7 @@ exports[`TicketHeader component should render spam ticket 1`] = `
     className="d-flex justify-content-between mb-2"
   >
     <EditableTitle
-      className="editableTitle"
+      className="mr-2 editableTitle"
       focus={false}
       placeholder="Subject"
       size="xl"
@@ -275,9 +281,18 @@ exports[`TicketHeader component should render spam ticket 1`] = `
       title="foo"
       update={[Function]}
     />
-    <UncontrolledDropdown
-      className="ml-2"
-    >
+    <TicketSnooze
+      className="headerIcon"
+    />
+    <TicketTrash
+      className="headerIcon"
+      trashed={false}
+    />
+    <TicketSpam
+      className="headerIcon"
+      spam={true}
+    />
+    <UncontrolledDropdown>
       <DropdownToggle
         aria-haspopup={true}
         className="btn-transparent"
@@ -431,15 +446,8 @@ exports[`TicketHeader component should render spam ticket 1`] = `
       />
     </div>
     <div
-      className="d-inline-flex align-items-center"
+      className="d-inline-flex align-items-top"
     >
-      <TicketSnooze />
-      <TicketTrash
-        trashed={false}
-      />
-      <TicketSpam
-        spam={true}
-      />
       <Connect(TicketAssignee)
         className="assignee"
         direction="right"
@@ -470,7 +478,7 @@ exports[`TicketHeader component should render trashed ticket 1`] = `
     className="d-flex justify-content-between mb-2"
   >
     <EditableTitle
-      className="editableTitle"
+      className="mr-2 editableTitle"
       focus={false}
       placeholder="Subject"
       size="xl"
@@ -478,9 +486,18 @@ exports[`TicketHeader component should render trashed ticket 1`] = `
       title="foo"
       update={[Function]}
     />
-    <UncontrolledDropdown
-      className="ml-2"
-    >
+    <TicketSnooze
+      className="headerIcon"
+    />
+    <TicketTrash
+      className="headerIcon"
+      trashed={true}
+    />
+    <TicketSpam
+      className="headerIcon"
+      spam={false}
+    />
+    <UncontrolledDropdown>
       <DropdownToggle
         aria-haspopup={true}
         className="btn-transparent"
@@ -590,15 +607,8 @@ exports[`TicketHeader component should render trashed ticket 1`] = `
       />
     </div>
     <div
-      className="d-inline-flex align-items-center"
+      className="d-inline-flex align-items-top"
     >
-      <TicketSnooze />
-      <TicketTrash
-        trashed={true}
-      />
-      <TicketSpam
-        spam={false}
-      />
       <Connect(TicketAssignee)
         className="assignee"
         direction="right"

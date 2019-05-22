@@ -273,7 +273,7 @@ export default class TicketView extends React.Component {
                     <div className="d-flex">
                         {
                             !hideHistoryButton && (
-                                <div className={classnames(css.historyButtonContainer, 'd-none d-md-flex align-items-center')}>
+                                <div className={classnames(css.historyButtonContainer, 'd-none d-md-flex align-items-top mt-4')}>
                                     <HistoryButton
                                         isHistoryDisplayed={isHistoryDisplayed}
                                         customerHistory={customerHistory}

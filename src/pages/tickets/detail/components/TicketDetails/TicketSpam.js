@@ -1,14 +1,15 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import Tooltip from '../../../../common/components/Tooltip'
 
-export default class TicketSpam extends React.Component {
-    static propTypes = {
-        spam: PropTypes.bool,
-    }
+type Props = {
+    className: ?string,
+    spam: ?boolean
+}
 
+export default class TicketSpam extends React.Component<Props> {
     static defaultProps = {
+        className: null,
         spam: false
     }
 
@@ -18,13 +19,13 @@ export default class TicketSpam extends React.Component {
         }
 
         return (
-            <div className="d-inline-block mr-3">
+            <div className={this.props.className}>
                 <i id="ticket-header-spam-icon"
-                    className="icon material-icons md-2 text-danger">
+                    className="icon material-icons text-danger">
                     flag
                 </i>
                 <Tooltip
-                    placement="top"
+                    placement="bottom"
                     target="ticket-header-spam-icon"
                 >
                     Marked as spam
