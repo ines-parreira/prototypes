@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {Form, Button} from 'reactstrap'
 import _pick from 'lodash/pick'
 
-import InputField from '../../../forms/InputField'
+import InputField from '../../../../../../../forms/InputField'
 
 class TooltipWidgetEditField extends React.Component {
     state = {

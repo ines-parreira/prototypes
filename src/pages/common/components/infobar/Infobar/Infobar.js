@@ -15,12 +15,10 @@ import * as ticketActions from '../../../../../state/ticket/actions'
 
 import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
 
-import Loader from '../../Loader/index'
+import Loader from '../../Loader'
 import Tooltip from '../../Tooltip'
 import InfobarLayout from '../InfobarLayout'
-import InfobarCustomerInfo from '../InfobarCustomerInfo'
 import MergeCustomersContainer from '../../MergeCustomers/MergeCustomersContainer'
-import InfobarSearchResultsList from '../InfobarSearchResultsList'
 import Search from '../../Search'
 
 import css from '../Infobar.less'
@@ -28,6 +26,8 @@ import css from '../Infobar.less'
 import type {reactRouterLocation} from '../../../../../types'
 import {startEditionMode, stopEditionMode, submitWidgets} from '../../../../../state/widgets/actions'
 
+import InfobarSearchResultsList from './InfobarSearchResultsList'
+import InfobarCustomerInfo from './InfobarCustomerInfo'
 import InfobarWidgetsEditionTools from './InfobarWidgetsEditionTools'
 import InfobarCustomerActions from './InfobarCustomerActions'
 

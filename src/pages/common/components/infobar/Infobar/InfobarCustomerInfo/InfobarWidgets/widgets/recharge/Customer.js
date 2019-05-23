@@ -3,7 +3,7 @@ import React, {type Node} from 'react'
 import type {Map} from 'immutable'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
-import {renderTemplate} from '../../../../utils/template'
+import {renderTemplate} from '../../../../../../../utils/template'
 
 
 export default function Customer() {

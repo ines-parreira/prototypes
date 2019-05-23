@@ -8,19 +8,20 @@ import {connect} from 'react-redux'
 import {Button, Card, CardBody} from 'reactstrap'
 import Clipboard from 'clipboard'
 
-import Tooltip from '../Tooltip'
-import SourceIcon from '../SourceIcon'
-import {itemsWithContext} from '../../../../state/widgets/utils'
-import {getDisplayName} from '../../../../state/customers/helpers'
-import * as integrationsSelectors from '../../../../state/integrations/selectors'
+import Tooltip from '../../../Tooltip'
+import SourceIcon from '../../../SourceIcon'
+import {itemsWithContext} from '../../../../../../state/widgets/utils'
+import {getDisplayName} from '../../../../../../state/customers/helpers'
+import * as integrationsSelectors from '../../../../../../state/integrations/selectors'
+
+import Avatar from '../../../Avatar'
+import {canDrop, areSourcesReady, jsonToWidgets} from '../../utils'
+
+import css from '../../Infobar.less'
 
 import InfobarWidgets from './InfobarWidgets'
-import InfobarAddIntegrationSuggestion from './InfobarAddIntegrationSuggestion'
-import Avatar from './../Avatar'
-import {canDrop, areSourcesReady, jsonToWidgets} from './utils'
+import InfobarAddIntegrationSuggestion from './AddIntegrationSuggestion'
 
-
-import css from './Infobar.less'
 
 class InfobarCustomerInfo extends React.Component {
     static childContextTypes = {

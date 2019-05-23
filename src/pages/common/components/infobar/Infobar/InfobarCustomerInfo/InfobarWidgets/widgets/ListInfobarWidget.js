@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import {List} from 'immutable'
 import {Button} from 'reactstrap'
 
-import {compare} from '../../../../../utils'
+import {compare} from '../../../../../../../../utils'
 import InfobarWidget from '../InfobarWidget'
 
 class ListInfobarWidget extends React.Component {

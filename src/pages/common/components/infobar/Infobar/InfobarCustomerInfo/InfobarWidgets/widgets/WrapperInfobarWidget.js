@@ -7,10 +7,10 @@ import _last from 'lodash/last'
 import classnames from 'classnames'
 import {Card, CardBody} from 'reactstrap'
 
-import DragWrapper from '../../dragging/WidgetsDragWrapper'
+import DragWrapper from '../../../../../dragging/WidgetsDragWrapper'
 import InfobarWidget from '../InfobarWidget'
 
-import * as integrationsSelectors from '../../../../../state/integrations/selectors'
+import * as integrationsSelectors from '../../../../../../../../state/integrations/selectors'
 
 import css from './CardInfobarWidget.less'
 

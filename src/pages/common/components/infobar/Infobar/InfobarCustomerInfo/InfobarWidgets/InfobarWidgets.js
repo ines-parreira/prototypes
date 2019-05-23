@@ -5,14 +5,14 @@ import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import _isEqual from 'lodash/isEqual'
 
-import InfobarWidget from '../InfobarWidget'
-import DragWrapper from '../../dragging/WidgetsDragWrapper'
-import {compare} from '../../../../../utils'
-import {canDisplayWidget} from '../utils'
-import {getSourcePathFromContext} from '../../../../../state/widgets/utils'
-import * as integrationsSelectors from '../../../../../state/integrations/selectors'
+import DragWrapper from '../../../../dragging/WidgetsDragWrapper'
+import {compare} from '../../../../../../../utils'
+import {canDisplayWidget} from '../../../utils'
+import {getSourcePathFromContext} from '../../../../../../../state/widgets/utils'
+import * as integrationsSelectors from '../../../../../../../state/integrations/selectors'
 
-import PlaceholderWidget from '../widgets/PlaceholderWidget'
+import InfobarWidget from './InfobarWidget'
+import PlaceholderWidget from './widgets/PlaceholderWidget'
 
 import css from './InfobarWidgets.less'
 

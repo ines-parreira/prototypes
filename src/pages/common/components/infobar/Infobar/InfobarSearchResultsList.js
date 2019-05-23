@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {Card, CardBody, CardTitle, Badge} from 'reactstrap'
 
-import {getDisplayName} from '../../../../state/customers/helpers'
+import {getDisplayName} from '../../../../../state/customers/helpers'
 
-import css from './Infobar.less'
+import css from '../Infobar.less'
 
 export default class InfobarSearchResultsList extends React.Component {
     render() {

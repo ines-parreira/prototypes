@@ -8,14 +8,14 @@ import {
     Badge
 } from 'reactstrap'
 
-import {devLog, humanizeString, isCurrentlyOnTicket} from '../../../../../../utils'
-import {renderTemplate} from '../../../../utils/template'
+import {devLog, humanizeString, isCurrentlyOnTicket} from '../../../../../../../../../utils'
+import {renderTemplate} from '../../../../../../../utils/template'
 
-import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../state/customers/selectors'
+import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors'
 
 import ActionButtonsGroup from '../ActionButtonsGroup'
 
-import * as ticketSelectors from './../../../../../../state/ticket/selectors'
+import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors'
 
 export default function Subscription() {
     return {

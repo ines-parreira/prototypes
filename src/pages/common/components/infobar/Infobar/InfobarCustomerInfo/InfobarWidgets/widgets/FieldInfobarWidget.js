@@ -4,9 +4,10 @@ import classnames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
 import {Popover, PopoverBody} from 'reactstrap'
 
-import TooltipWidgetEditField from '../forms/TooltipWidgetEditField'
+import {displayLabel} from '../../../../utils'
 
-import {displayLabel} from '../utils'
+import TooltipWidgetEditField from './forms/TooltipWidgetEditField'
+
 
 class FieldInfobarWidget extends React.Component {
     state = {

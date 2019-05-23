@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import index, {SubscriptionAfterTitle, AfterContent, AfterTitle, TitleWrapper} from './../Charge'
+import index, {SubscriptionAfterTitle, AfterContent, AfterTitle, TitleWrapper} from '../Charge'
 
 const BeforeContent = index().BeforeContent
 const Wrapper = index().Wrapper

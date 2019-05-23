@@ -19,18 +19,18 @@ import {
 
 import _uniqueId from 'lodash/uniqueId'
 
-import SelectField from '../../../forms/SelectField'
+import SelectField from '../../../../../../forms/SelectField'
+import BooleanField from '../../../../../../forms/BooleanField'
+import InputField from '../../../../../../forms/InputField'
 
-import BooleanField from '../../../forms/BooleanField'
+import {getActionByName} from '../../../../../../../../config/actions'
+import * as segmentTracker from '../../../../../../../../store/middlewares/segmentTracker'
 
-import {getActionByName} from '../../../../../config/actions'
-import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
+import * as infobarActions from '../../../../../../../../state/infobar/actions'
+import * as infobarSelectors from '../../../../../../../../state/infobar/selectors'
+import * as infobarUtils from '../../../../../../../../state/infobar/utils'
 
-import * as infobarActions from '../../../../../state/infobar/actions'
-import * as infobarSelectors from '../../../../../state/infobar/selectors'
-import * as infobarUtils from '../../../../../state/infobar/utils'
 
-import InputField from './../../../forms/InputField'
 import type {OptionType, ParameterType} from './types'
 
 import css from './ActionButton.less'

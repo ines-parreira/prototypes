@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {TitleWrapper} from './../Customer'
+import {TitleWrapper} from '../Customer'
 
 describe('Customer', () => {
     describe('TitleWrapper', () => {

@@ -8,11 +8,11 @@ import {
     Badge,
 } from 'reactstrap'
 
-import {humanizeString} from '../../../../../../utils'
+import {humanizeString} from '../../../../../../../../../utils'
 
 import ActionButtonsGroup from '../ActionButtonsGroup'
 
-import type {ActionType} from './../types'
+import type {ActionType} from '../types'
 
 export default function Order() {
     return {

@@ -5,12 +5,11 @@ import classnames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
 import {Card, CardBody, Popover, PopoverBody} from 'reactstrap'
 
-import {renderTemplate} from '../../../utils/template'
-import DragWrapper from '../../dragging/WidgetsDragWrapper'
-import TooltipWidgetEditCard from '../forms/TooltipWidgetEditCard'
-
+import {renderTemplate} from '../../../../../../utils/template'
+import DragWrapper from '../../../../../dragging/WidgetsDragWrapper'
 import InfobarWidget from '../InfobarWidget'
 
+import TooltipWidgetEditCard from './forms/TooltipWidgetEditCard'
 import css from './CardInfobarWidget.less'
 
 class CardInfobarWidget extends React.Component {

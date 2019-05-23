@@ -12,11 +12,11 @@ import {
 import _lowerCase from 'lodash/lowerCase'
 import _groupBy from 'lodash/groupBy'
 
-import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../state/customers/selectors'
-import * as ticketSelectors from '../../../../../../state/ticket/selectors'
+import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors'
+import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors'
 
-import {devLog, humanizeString, isCurrentlyOnTicket, toJS} from '../../../../../../utils'
-import {renderTemplate} from '../../../../utils/template'
+import {devLog, humanizeString, isCurrentlyOnTicket, toJS} from '../../../../../../../../../utils'
+import {renderTemplate} from '../../../../../../../utils/template'
 
 import ActionButtonsGroup from '../ActionButtonsGroup'
 

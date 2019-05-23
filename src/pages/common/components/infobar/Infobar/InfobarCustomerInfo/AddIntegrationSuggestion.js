@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {Link} from 'react-router'
 import {Card, CardBody, Button} from 'reactstrap'
 
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
+import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker'
 
 const InfobarAddIntegrationSuggestion = ({customer}) => (
     <div className="widgets-list">
