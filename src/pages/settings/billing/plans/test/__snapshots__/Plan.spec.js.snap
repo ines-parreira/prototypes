@@ -1,0 +1,106 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Plan component should render 1`] = `
+<div
+  className="plan plan-Free Plan card"
+>
+  <CardHeader
+    className="plan-header"
+    tag="div"
+  >
+    <div
+      className="header-text"
+    >
+      <strong>
+        Free Plan
+      </strong>
+      0
+    </div>
+  </CardHeader>
+  <CardBody
+    tag="div"
+  >
+    <ul>
+      <li>
+        <i
+          className="material-icons feature-icon"
+        >
+          all_inclusive
+        </i>
+         
+        <strong>
+          Unlimited
+        </strong>
+         agents
+      </li>
+      <li>
+        <i
+          className="material-icons feature-icon"
+        >
+          playlist_add_check
+        </i>
+         
+        <strong>
+          9999999999
+        </strong>
+         tickets included
+      </li>
+      <li>
+        <i
+          className="material-icons feature-icon"
+        >
+          playlist_add
+        </i>
+         
+        <strong>
+          + 
+          0.00
+        </strong>
+         per 
+        100
+         tickets
+         
+        <a
+          id="additional-tickets-tooltip-FreePlan"
+        >
+          <i
+            className="material-icons text-muted"
+          >
+            info_outline
+          </i>
+        </a>
+        <Tooltip
+          delay={0}
+          target="additional-tickets-tooltip-FreePlan"
+        >
+          If you reply to more tickets than included in your plan this is the additional cost per 100 tickets.
+        </Tooltip>
+      </li>
+      <li>
+        <i
+          className="material-icons feature-icon"
+        >
+          extension
+        </i>
+         
+        <strong>
+          15
+        </strong>
+         integrations
+      </li>
+    </ul>
+  </CardBody>
+  <CardFooter
+    tag="div"
+  >
+    <Button
+      className=""
+      color="link"
+      disabled={false}
+      tag="button"
+    >
+      Switch to Free Plan plan
+    </Button>
+  </CardFooter>
+</div>
+`;

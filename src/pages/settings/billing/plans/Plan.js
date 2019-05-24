@@ -32,7 +32,7 @@ export class Plan extends React.Component<Props> {
         const {plan, isUpdating, isCurrentPlan, isTrialing, isFeatured, features, showFooter, callToAction} = this.props
         const planSentencePrefix = isTrialing ? 'Choose' : 'Switch to'
         const costMultiplier = 100
-        const costPerTicket = plan.get('cost_per_ticket') * costMultiplier
+        const costPerTicket = (plan.get('cost_per_ticket') * costMultiplier).toFixed(2)
         const planName = plan.get('name')
         const planInterval = plan.get('interval') === 'month' ? 'mo' : 'yr'
         const tooltipId = `additional-tickets-tooltip-${planName.replace(/\s/g, '')}`
