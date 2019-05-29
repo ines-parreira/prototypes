@@ -74,7 +74,7 @@ export class CustomerNote extends React.Component<Props, State> {
         const noteRowsCount = countLines(note)
 
         return (
-            <div style={{display: 'none'}}>
+            <div>
                 <p className={css.customerNote}>
                     <i className={classnames('material-icons', css.noteIcon)}>
                         note
