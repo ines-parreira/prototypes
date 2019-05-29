@@ -75,22 +75,36 @@ exports[`ShopifyIntegrationDetail should render the page for a deactivated integ
           onSubmit={[Function]}
           tag="form"
         >
-          <InputField
-            disabled={true}
-            error={null}
-            label="Store name"
-            name="name"
-            onChange={[Function]}
-            placeholder="ex: \\"acme\\" for acme.myshopify.com"
-            required={true}
-            rightAddon=".myshopify.com"
-            type="text"
-            value="foo"
-          />
+          <div
+            className="mb-4"
+          >
+            <InputField
+              disabled={true}
+              error={null}
+              label="Store name"
+              name="name"
+              onChange={[Function]}
+              placeholder="ex: \\"acme\\" for acme.myshopify.com"
+              required={true}
+              rightAddon=".myshopify.com"
+              type="text"
+              value="foo"
+            />
+          </div>
           <div>
+            <Button
+              className="mr-2"
+              color="success"
+              disabled={false}
+              tag="button"
+              type="submit"
+            >
+              Update integration
+            </Button>
             <Button
               className=""
               color="success"
+              disabled={false}
               onClick={[Function]}
               tag="button"
               type="button"
@@ -193,18 +207,22 @@ exports[`ShopifyIntegrationDetail should render the page for an integration bein
           onSubmit={[Function]}
           tag="form"
         >
-          <InputField
-            disabled={false}
-            error="There is already another integration for this Shopify store"
-            label="Store name"
-            name="name"
-            onChange={[Function]}
-            placeholder="ex: \\"acme\\" for acme.myshopify.com"
-            required={true}
-            rightAddon=".myshopify.com"
-            type="text"
-            value="foo"
-          />
+          <div
+            className="mb-4"
+          >
+            <InputField
+              disabled={false}
+              error="There is already an integration for this Shopify store"
+              label="Store name"
+              name="name"
+              onChange={[Function]}
+              placeholder="ex: \\"acme\\" for acme.myshopify.com"
+              required={true}
+              rightAddon=".myshopify.com"
+              type="text"
+              value="foo"
+            />
+          </div>
           <div>
             <Button
               className="mr-2"
@@ -298,19 +316,32 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
           onSubmit={[Function]}
           tag="form"
         >
-          <InputField
-            disabled={true}
-            error={null}
-            label="Store name"
-            name="name"
-            onChange={[Function]}
-            placeholder="ex: \\"acme\\" for acme.myshopify.com"
-            required={true}
-            rightAddon=".myshopify.com"
-            type="text"
-            value="foo"
-          />
+          <div
+            className="mb-4"
+          >
+            <InputField
+              disabled={true}
+              error={null}
+              label="Store name"
+              name="name"
+              onChange={[Function]}
+              placeholder="ex: \\"acme\\" for acme.myshopify.com"
+              required={true}
+              rightAddon=".myshopify.com"
+              type="text"
+              value="foo"
+            />
+          </div>
           <div>
+            <Button
+              className="mr-2 btn-loading"
+              color="success"
+              disabled={false}
+              tag="button"
+              type="submit"
+            >
+              Update integration
+            </Button>
             <ConfirmButton
               className="float-right"
               color="secondary"
@@ -454,22 +485,36 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
           onSubmit={[Function]}
           tag="form"
         >
-          <InputField
-            disabled={true}
-            error={null}
-            label="Store name"
-            name="name"
-            onChange={[Function]}
-            placeholder="ex: \\"acme\\" for acme.myshopify.com"
-            required={true}
-            rightAddon=".myshopify.com"
-            type="text"
-            value="foo"
-          />
+          <div
+            className="mb-4"
+          >
+            <InputField
+              disabled={true}
+              error={null}
+              label="Store name"
+              name="name"
+              onChange={[Function]}
+              placeholder="ex: \\"acme\\" for acme.myshopify.com"
+              required={true}
+              rightAddon=".myshopify.com"
+              type="text"
+              value="foo"
+            />
+          </div>
           <div>
+            <Button
+              className="mr-2"
+              color="success"
+              disabled={false}
+              tag="button"
+              type="submit"
+            >
+              Update integration
+            </Button>
             <Button
               className=""
               color="warning"
+              disabled={false}
               onClick={[Function]}
               outline={true}
               tag="button"
@@ -580,22 +625,36 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
           onSubmit={[Function]}
           tag="form"
         >
-          <InputField
-            disabled={true}
-            error={null}
-            label="Store name"
-            name="name"
-            onChange={[Function]}
-            placeholder="ex: \\"acme\\" for acme.myshopify.com"
-            required={true}
-            rightAddon=".myshopify.com"
-            type="text"
-            value="foo"
-          />
+          <div
+            className="mb-4"
+          >
+            <InputField
+              disabled={true}
+              error={null}
+              label="Store name"
+              name="name"
+              onChange={[Function]}
+              placeholder="ex: \\"acme\\" for acme.myshopify.com"
+              required={true}
+              rightAddon=".myshopify.com"
+              type="text"
+              value="foo"
+            />
+          </div>
           <div>
+            <Button
+              className="mr-2 btn-loading"
+              color="success"
+              disabled={true}
+              tag="button"
+              type="submit"
+            >
+              Update integration
+            </Button>
             <Button
               className="btn-loading"
               color="warning"
+              disabled={true}
               onClick={[Function]}
               outline={true}
               tag="button"
@@ -706,22 +765,27 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
           onSubmit={[Function]}
           tag="form"
         >
-          <InputField
-            disabled={true}
-            error={null}
-            label="Store name"
-            name="name"
-            onChange={[Function]}
-            placeholder="ex: \\"acme\\" for acme.myshopify.com"
-            required={true}
-            rightAddon=".myshopify.com"
-            type="text"
-            value="foo"
-          />
+          <div
+            className="mb-4"
+          >
+            <InputField
+              disabled={true}
+              error={null}
+              label="Store name"
+              name="name"
+              onChange={[Function]}
+              placeholder="ex: \\"acme\\" for acme.myshopify.com"
+              required={true}
+              rightAddon=".myshopify.com"
+              type="text"
+              value="foo"
+            />
+          </div>
           <div>
             <Button
               className="mr-2"
               color="info"
+              disabled={false}
               onClick={[Function]}
               tag="button"
               type="button"
@@ -729,8 +793,18 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
               Update app permissions
             </Button>
             <Button
+              className="mr-2"
+              color="success"
+              disabled={false}
+              tag="button"
+              type="submit"
+            >
+              Update integration
+            </Button>
+            <Button
               className=""
               color="warning"
+              disabled={false}
               onClick={[Function]}
               outline={true}
               tag="button"
@@ -834,18 +908,22 @@ exports[`ShopifyIntegrationDetail should render the page to create a new integra
           onSubmit={[Function]}
           tag="form"
         >
-          <InputField
-            disabled={false}
-            error={null}
-            label="Store name"
-            name="name"
-            onChange={[Function]}
-            placeholder="ex: \\"acme\\" for acme.myshopify.com"
-            required={true}
-            rightAddon=".myshopify.com"
-            type="text"
-            value=""
-          />
+          <div
+            className="mb-4"
+          >
+            <InputField
+              disabled={false}
+              error={null}
+              label="Store name"
+              name="name"
+              onChange={[Function]}
+              placeholder="ex: \\"acme\\" for acme.myshopify.com"
+              required={true}
+              rightAddon=".myshopify.com"
+              type="text"
+              value=""
+            />
+          </div>
           <div>
             <Button
               className="mr-2"
@@ -939,22 +1017,36 @@ exports[`ShopifyIntegrationDetail should render the page to update an existing i
           onSubmit={[Function]}
           tag="form"
         >
-          <InputField
-            disabled={true}
-            error={null}
-            label="Store name"
-            name="name"
-            onChange={[Function]}
-            placeholder="ex: \\"acme\\" for acme.myshopify.com"
-            required={true}
-            rightAddon=".myshopify.com"
-            type="text"
-            value="foo"
-          />
+          <div
+            className="mb-4"
+          >
+            <InputField
+              disabled={true}
+              error={null}
+              label="Store name"
+              name="name"
+              onChange={[Function]}
+              placeholder="ex: \\"acme\\" for acme.myshopify.com"
+              required={true}
+              rightAddon=".myshopify.com"
+              type="text"
+              value="foo"
+            />
+          </div>
           <div>
+            <Button
+              className="mr-2"
+              color="success"
+              disabled={false}
+              tag="button"
+              type="submit"
+            >
+              Update integration
+            </Button>
             <Button
               className=""
               color="warning"
+              disabled={false}
               onClick={[Function]}
               outline={true}
               tag="button"

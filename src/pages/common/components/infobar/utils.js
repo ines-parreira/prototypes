@@ -142,7 +142,7 @@ export function isBoolean(string) {
  * @param everySources
  * @returns {*|boolean}
  */
-export function areSourcesReady(sources, context, everySources = false) {
+export function areSourcesReady(sources: Map<*,*>, context: string, everySources: boolean = false): boolean {
     // for every source
     const currentSource = sources.get(context)
 
@@ -341,7 +341,7 @@ export function jsonToWidget(value, key = '', isChildOfList = false) {
  * @param context
  * @returns {*}
  */
-export function jsonToWidgets(json, context = 'ticket') {
+export function jsonToWidgets(json: Object, context: string = 'ticket'): Array {
     const defaultResponse = []
 
     try {

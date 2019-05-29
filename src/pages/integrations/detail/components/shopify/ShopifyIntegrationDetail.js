@@ -3,7 +3,7 @@ import React from 'react'
 import {browserHistory, Link, withRouter} from 'react-router'
 import {connect} from 'react-redux'
 import classNames from 'classnames'
-import {fromJS, Map} from 'immutable'
+import {type Map} from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
 import {
     Alert,
@@ -13,33 +13,36 @@ import {
     BreadcrumbItem,
     Container,
     Row,
-    Col,
+    Col, Label,
 } from 'reactstrap'
 
 import Loader from '../../../../common/components/Loader'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
+import BooleanField from '../../../../common/forms/BooleanField'
 import InputField from '../../../../common/forms/InputField'
 import PageHeader from '../../../../common/components/PageHeader'
 
 import * as utils from '../../../../../utils'
 
-import {notify} from './../../../../../state/notifications/actions'
-import * as integrationSelectors from './../../../../../state/integrations/selectors'
+import {notify} from '../../../../../state/notifications/actions'
+import * as integrationSelectors from '../../../../../state/integrations/selectors'
+import {PENDING_AUTHENTICATION_STATUS, SHOPIFY_INTEGRATION_TYPE} from '../../../../../constants/integration'
+
 
 export const defaultContent = {
-    type: 'shopify',
+    type: SHOPIFY_INTEGRATION_TYPE,
     meta: {}
 }
 
 type Props = {
-    integration: Map<*,*>,
+    integration: Map<*, *>,
     isUpdate: boolean,
     actions: Object,
     loading: Object,
 
     redirectUri: string,
 
-    getExistingShopifyIntegration: (string) => Map<*,*>,
+    getExistingShopifyIntegration: (string) => Map<*, *>,
 
     // Router
     location: Object,
@@ -50,12 +53,14 @@ type Props = {
 
 type State = {
     name: string,
+    syncCustomerNotes: boolean,
     isInitialized: boolean
 }
 
 class ShopifyIntegrationDetail extends React.Component<Props, State> {
     state = {
         name: '',
+        syncCustomerNotes: true,
         isInitialized: false
     }
 
@@ -93,7 +98,7 @@ class ShopifyIntegrationDetail extends React.Component<Props, State> {
 
     componentWillReceiveProps(nextProps) {
         if (_isEmpty(this.props.integration.toJS()) && !_isEmpty(nextProps.integration.toJS())) {
-            const authenticationRequired = nextProps.integration.getIn(['meta', 'oauth', 'status']) === 'pending'
+            const authenticationRequired = nextProps.integration.getIn(['meta', 'oauth', 'status']) === PENDING_AUTHENTICATION_STATUS
             const isAuthenticating = nextProps.location.query.action === 'authentication'
 
             if (isAuthenticating) {
@@ -118,29 +123,26 @@ class ShopifyIntegrationDetail extends React.Component<Props, State> {
         if (!nextState.isInitialized && isUpdate && !loading.get('integration')) {
             this.setState({
                 name: integration.get('name'),
+                syncCustomerNotes: integration.getIn(['meta', 'sync_customer_notes']),
                 isInitialized: true
             })
         }
     }
 
-    _handleSubmit = (evt: Event): void => {
+    _handleCreate = (evt: Event): void => {
         evt.preventDefault()
-        const {isUpdate, integration, actions} = this.props
+        window.location.href = this.props.redirectUri.replace('{shop_name}', utils.subdomain(this.state.name))
+    }
 
-        let doc = fromJS(defaultContent).mergeDeep({
-            name: utils.subdomain(this.state.name)
-        })
-        let name = doc.get('name')
+    _handleUpdate = (evt: Event): void => {
+        evt.preventDefault()
+        const {integration, actions} = this.props
 
-        doc = doc.setIn(['meta', 'shop_name'], name)
-
-        // if update, set ids for server
-        if (isUpdate) {
-            doc = doc.set('id', integration.get('id'))
-            actions.updateOrCreateIntegration(doc)
-        }
-
-        window.location.href = this.props.redirectUri.replace('{shop_name}', name)
+        actions.updateOrCreateIntegration(integration.mergeDeep({
+            meta: {
+                sync_customer_notes: this.state.syncCustomerNotes
+            }
+        }))
     }
 
     _updateAppPermissions = (): void => {
@@ -150,24 +152,27 @@ class ShopifyIntegrationDetail extends React.Component<Props, State> {
 
     render() {
         const {actions, integration, isUpdate, loading, getExistingShopifyIntegration} = this.props
-        const {name: shopName} = this.state
+        const {name: shopName, syncCustomerNotes} = this.state
 
-        const isSubmitting = loading.get('updateIntegration')
+        const isSubmitting = !!loading.get('updateIntegration')
 
         const isActive = !integration.get('deactivated_datetime')
         const needScopeUpdate = integration.getIn(['meta', 'need_scope_update'])
-        const authenticationRequired = integration.getIn(['meta', 'oauth', 'status']) === 'pending'
+        const authenticationRequired = integration.getIn(['meta', 'oauth', 'status']) === PENDING_AUTHENTICATION_STATUS
         const isSyncOver = integration.getIn(['meta', 'sync_state', 'is_initialized'])
 
         const ctaIsLoading = isSubmitting || authenticationRequired
 
         if (loading.get('integration')) {
-            return <Loader />
+            return <Loader/>
         }
 
         const error = !isUpdate && !getExistingShopifyIntegration(shopName).isEmpty()
-            ? 'There is already another integration for this Shopify store'
+            ? 'There is already an integration for this Shopify store'
             : null
+
+        const settingsHaveChanged = integration.getIn(['meta', 'sync_customer_notes']) !== syncCustomerNotes
+        const submitIsDisabled = isSubmitting || !!error || (isUpdate && !settingsHaveChanged)
 
         return (
             <div className="full-width">
@@ -231,19 +236,62 @@ class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                 ) : null
                             }
 
-                            <Form onSubmit={this._handleSubmit}>
-                                <InputField
-                                    type="text"
-                                    name="name"
-                                    label="Store name"
-                                    placeholder={'ex: "acme" for acme.myshopify.com'}
-                                    required
-                                    disabled={isUpdate}
-                                    value={shopName}
-                                    error={error}
-                                    onChange={(name) => this.setState({name})}
-                                    rightAddon=".myshopify.com"
-                                />
+                            <Form onSubmit={isUpdate ? this._handleUpdate : this._handleCreate}>
+                                <div className="mb-4">
+                                    <InputField
+                                        type="text"
+                                        name="name"
+                                        label="Store name"
+                                        placeholder={'ex: "acme" for acme.myshopify.com'}
+                                        required
+                                        disabled={isUpdate}
+                                        value={shopName}
+                                        error={error}
+                                        onChange={(name) => this.setState({name})}
+                                        rightAddon=".myshopify.com"
+                                    />
+                                </div>
+
+                                {
+                                    false && isUpdate && [
+                                        <div
+                                            key="input"
+                                            className="mb-2"
+                                        >
+                                            <Label className="control-label">Synchronization settings</Label>
+                                            <BooleanField
+                                                name="sync_customer_notes"
+                                                type="checkbox"
+                                                value={syncCustomerNotes}
+                                                onChange={(value) => this.setState({syncCustomerNotes: value})}
+                                                label="Synchronize customer notes"
+                                                help=""
+                                            />
+                                        </div>,
+                                        <div
+                                            key="help"
+                                            className="text-faded mb-4"
+                                        >
+                                            If this option is enabled, updating a customer's note in Shopify will
+                                            also update it in Gorgias, and updating it in Gorgias will also update it
+                                            in Shopify:
+                                            <ul>
+                                                <li>
+                                                    if two people are editing a single customer's note at the same time
+                                                    in Shopify and Gorgias, <b>the first one to save the data will
+                                                    overwrite the other one's modifications</b>
+                                                </li>
+                                                <li>
+                                                    if a single Gorgias customer is associated with two or more Shopify
+                                                    customers on two or more Shopify stores, <b>its note will not be
+                                                    synchronized from Shopify</b>, and <b>updating the Gorgias customer
+                                                    note won't update any Shopify customer note</b>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    ]
+                                }
+
 
                                 <div>
                                     {
@@ -262,20 +310,16 @@ class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                         ) : null
                                     }
 
-                                    {
-                                        !isUpdate ? (
-                                            <Button
-                                                type="submit"
-                                                color="success"
-                                                className={classNames('mr-2', {
-                                                    'btn-loading': ctaIsLoading,
-                                                })}
-                                                disabled={isSubmitting || !!error}
-                                            >
-                                                Add integration
-                                            </Button>
-                                        ) : null
-                                    }
+                                    <Button
+                                        type="submit"
+                                        color="success"
+                                        className={classNames('mr-2', {
+                                            'btn-loading': ctaIsLoading,
+                                        })}
+                                        disabled={submitIsDisabled}
+                                    >
+                                        {isUpdate ? 'Update integration' : 'Add integration'}
+                                    </Button>
 
                                     {
                                         !authenticationRequired && isUpdate && isActive ? (
@@ -286,6 +330,7 @@ class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                                 className={classNames({
                                                     'btn-loading': isSubmitting,
                                                 })}
+                                                disabled={isSubmitting}
                                                 onClick={() => actions.deactivateIntegration(integration.get('id'))}
                                             >
                                                 Deactivate integration
@@ -300,6 +345,7 @@ class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                                 className={classNames({
                                                     'btn-loading': isSubmitting,
                                                 })}
+                                                disabled={isSubmitting}
                                                 onClick={() => actions.activateIntegration(integration.get('id'))}
                                             >
                                                 Re-activate integration

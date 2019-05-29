@@ -9,7 +9,26 @@ import {displayLabel} from '../../../../utils'
 import TooltipWidgetEditField from './forms/TooltipWidgetEditField'
 
 
-class FieldInfobarWidget extends React.Component {
+export default class FieldInfobarWidget extends React.Component {
+    static propTypes = {
+        editing: PropTypes.object,
+        value: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.bool,
+            PropTypes.object,
+        ]).isRequired,
+        widget: PropTypes.object.isRequired,
+        template: PropTypes.object.isRequired,
+        isEditing: PropTypes.bool.isRequired,
+        isParentList: PropTypes.bool.isRequired
+    }
+
+    static defaultProps = {
+        isEditing: false,
+        isParentList: false
+    }
+
     state = {
         displayPopup: false,
     }
@@ -132,24 +151,3 @@ class FieldInfobarWidget extends React.Component {
         )
     }
 }
-
-FieldInfobarWidget.propTypes = {
-    editing: PropTypes.object,
-    value: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-        PropTypes.bool,
-        PropTypes.object,
-    ]).isRequired,
-    widget: PropTypes.object.isRequired,
-    template: PropTypes.object.isRequired,
-    isEditing: PropTypes.bool.isRequired,
-    isParentList: PropTypes.bool.isRequired
-}
-
-FieldInfobarWidget.defaultProps = {
-    isEditing: false,
-    isParentList: false
-}
-
-export default FieldInfobarWidget

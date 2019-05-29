@@ -1,5 +1,6 @@
+// @flow
 import React from 'react'
-import PropTypes from 'prop-types'
+import {type List, type Map} from 'immutable'
 import classnames from 'classnames'
 import {Card, CardBody, CardTitle, Badge} from 'reactstrap'
 
@@ -7,9 +8,16 @@ import {getDisplayName} from '../../../../../state/customers/helpers'
 
 import css from '../Infobar.less'
 
-export default class InfobarSearchResultsList extends React.Component {
+
+type Props = {
+    searchResults: List<*>,
+    defaultCustomerId: ?number,
+    onCustomerClick: (Map<*,*>) => Promise<*>
+}
+
+export default class InfobarSearchResultsList extends React.Component<Props> {
     render() {
-        const {searchResults, defaultCustomerId} = this.props
+        const {searchResults, defaultCustomerId, onCustomerClick} = this.props
 
         if (!searchResults.size) {
             return <p className="empty-items">No customer found.</p>
@@ -32,7 +40,7 @@ export default class InfobarSearchResultsList extends React.Component {
                                 <Card
                                     className={className}
                                     key={idx}
-                                    onClick={() => this.props.onCustomerClick(customer)}
+                                    onClick={() => onCustomerClick(customer)}
                                 >
                                     <CardBody>
                                         {
@@ -66,10 +74,4 @@ export default class InfobarSearchResultsList extends React.Component {
             </div>
         )
     }
-}
-
-InfobarSearchResultsList.propTypes = {
-    searchResults: PropTypes.object.isRequired,
-    defaultCustomerId: PropTypes.number,
-    onCustomerClick: PropTypes.func.isRequired
 }

@@ -64,7 +64,6 @@ exports[`Infobar component should render current customer with suggested custome
               "id": 2,
             }
           }
-          infobar={Object {}}
           isEditing={false}
           sources={
             Immutable.Map {
@@ -136,7 +135,6 @@ exports[`Infobar component should render current customer with suggested custome
                   "id": 10,
                 }
               }
-              infobar={Object {}}
               isEditing={false}
               sources={
                 Immutable.Map {
@@ -246,7 +244,6 @@ exports[`Infobar component should render customer context 1`] = `
               "id": 2,
             }
           }
-          infobar={Object {}}
           isEditing={false}
           sources={
             Immutable.Map {
@@ -587,7 +584,6 @@ exports[`Infobar component should render selected customer 1`] = `
               "id": 7,
             }
           }
-          infobar={Object {}}
           isEditing={false}
           sources={
             Immutable.Map {
@@ -695,7 +691,6 @@ exports[`Infobar component should render ticket context 1`] = `
               "id": 2,
             }
           }
-          infobar={Object {}}
           isEditing={false}
           sources={
             Immutable.Map {
@@ -787,7 +782,6 @@ exports[`Infobar component should render widgets edition mode 1`] = `
               "id": 2,
             }
           }
-          infobar={Object {}}
           isEditing={true}
           sources={
             Immutable.Map {

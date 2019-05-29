@@ -5,9 +5,12 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 import type {Map} from 'immutable'
-import _omit from 'lodash/omit'
-import _debounce from 'lodash/debounce'
-import _isUndefined from 'lodash/isUndefined'
+import {
+    omit as _omit,
+    debounce as _debounce,
+    isUndefined as _isUndefined,
+    uniqueId as _uniqueId
+} from 'lodash'
 
 import {
     Button,
@@ -16,8 +19,6 @@ import {
     PopoverHeader,
     PopoverBody, Label,
 } from 'reactstrap'
-
-import _uniqueId from 'lodash/uniqueId'
 
 import SelectField from '../../../../../../forms/SelectField'
 import BooleanField from '../../../../../../forms/BooleanField'
@@ -30,10 +31,8 @@ import * as infobarActions from '../../../../../../../../state/infobar/actions'
 import * as infobarSelectors from '../../../../../../../../state/infobar/selectors'
 import * as infobarUtils from '../../../../../../../../state/infobar/utils'
 
-
-import type {OptionType, ParameterType} from './types'
-
 import css from './ActionButton.less'
+import type {OptionType, ParameterType} from './types'
 
 
 type Props = {

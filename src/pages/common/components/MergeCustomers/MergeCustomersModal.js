@@ -1,32 +1,50 @@
+// @flow
 import React from 'react'
-import PropTypes from 'prop-types'
-import {fromJS} from 'immutable'
-import _clone from 'lodash/clone'
-import _pick from 'lodash/pick'
-import _omit from 'lodash/omit'
+import {fromJS, type Map, type List} from 'immutable'
+import {clone as _clone, pick as _pick, omit as _omit} from 'lodash'
 import {Button, Form} from 'reactstrap'
 
-import Modal from '../Modal'
-
-
-import BinaryChoiceField from '../BinaryChoiceField'
-import MultiSelectBinaryChoiceField from '../MultiSelectBinaryChoiceField'
-import SourceIcon from '../SourceIcon'
 import {isCustomerDataPresent, isCustomerDataValid} from '../infobar/utils'
-import ConfirmButton from '../ConfirmButton'
-import Tooltip from '../Tooltip'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
-import {JSONTree} from './../JSONTree'
+import SourceIcon from '../SourceIcon'
+import Modal from '../Modal'
+import ConfirmButton from '../ConfirmButton'
+import Tooltip from '../Tooltip'
+import {JSONTree} from '../JSONTree'
+import BinaryChoiceField from '../BinaryChoiceField'
+import MultiSelectBinaryChoiceField from '../MultiSelectBinaryChoiceField'
+
 
 const defaultContent = {
     name: '',
     email: '',
+    note: '',
     data: {},
     channels: []
 }
 
-class MergeCustomersModal extends React.Component {
+type Props = {
+    destinationCustomer: Map<*,*>,
+    sourceCustomer: Map<*,*>,
+    mergeCustomers: (number, number, Object) => Promise<*>,
+    toggleModal: (boolean) => void,
+    onSuccess: ?() => void,
+    isOpen: boolean,
+    isLoading: boolean,
+    primaryEmail: ?string,
+    requiredAddresses: List<Map<*,*>>
+}
+
+type State = {
+    name: string,
+    email: string,
+    note: string,
+    data: Object,
+    channels: Array<Object>
+}
+
+export default class MergeCustomersModal extends React.Component<Props, State> {
     state = _clone(defaultContent)
 
     componentDidMount = () => {
@@ -44,7 +62,7 @@ class MergeCustomersModal extends React.Component {
         this.setState(_pick(initData, Object.keys(defaultContent)))
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         if (!this.props.isOpen && nextProps.isOpen) {
             // TODO(customers-migration): ask confirmation to update this event
             segmentTracker.logEvent(segmentTracker.EVENTS.MODAL_TOGGLED, {
@@ -54,26 +72,27 @@ class MergeCustomersModal extends React.Component {
         }
     }
 
-    _handleSubmit = (e) => {
-        e.preventDefault()
+    _handleSubmit = async (event: SyntheticEvent<HTMLInputElement>) => {
+        event.preventDefault()
+
         const data = {
             customer: _pick(this.state, Object.keys(defaultContent))
         }
 
-        return this.props.mergeCustomers(
+        const {error} = await this.props.mergeCustomers(
             this.props.destinationCustomer.get('id'),
             this.props.sourceCustomer.get('id'),
             data.customer
-        ).then(({error}) => {
-            this._toggle()
+        )
 
-            if (!error && this.props.onSuccess) {
-                this.props.onSuccess()
-            }
-        })
+        this._toggle()
+
+        if (!error && this.props.onSuccess) {
+            this.props.onSuccess()
+        }
     }
 
-    _generateChannelOptions = (customer) => {
+    _generateChannelOptions = (customer: Map<*,*>): Node => {
         return (
             customer.get('channels', fromJS([]))
                 .filter((channel) => !!channel) // removing falsey values
@@ -168,6 +187,36 @@ class MergeCustomersModal extends React.Component {
                             ]}
                             value={this.state.name}
                             onChange={(name) => this.setState({name})}
+                        />
+                        <BinaryChoiceField
+                            label="Note"
+                            name="customer.note"
+                            options={[
+                                {
+                                    label: (
+                                        <span>
+                                            <i className="material-icons mr-2">
+                                                note
+                                            </i>
+                                            {destinationCustomer.get('note')}
+                                        </span>
+                                    ),
+                                    value: destinationCustomer.get('note') || ''
+                                },
+                                {
+                                    label: (
+                                        <span>
+                                            <i className="material-icons mr-2">
+                                                note
+                                            </i>
+                                            {sourceCustomer.get('note')}
+                                        </span>
+                                    ),
+                                    value: sourceCustomer.get('note') || ''
+                                }
+                            ]}
+                            value={this.state.note}
+                            onChange={(note) => this.setState({note})}
                         />
                         <BinaryChoiceField
                             label="Primary email"
@@ -287,18 +336,4 @@ class MergeCustomersModal extends React.Component {
         )
     }
 }
-
-MergeCustomersModal.propTypes = {
-    destinationCustomer: PropTypes.object.isRequired,
-    sourceCustomer: PropTypes.object.isRequired,
-    mergeCustomers: PropTypes.func.isRequired,
-    toggleModal: PropTypes.func.isRequired,
-    onSuccess: PropTypes.func,
-    isOpen: PropTypes.bool.isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    primaryEmail: PropTypes.string,
-    requiredAddresses: PropTypes.object
-}
-
-export default MergeCustomersModal
 

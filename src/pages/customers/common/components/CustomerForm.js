@@ -19,6 +19,7 @@ import CustomerChannelFieldArray from './CustomerChannelFieldArray'
 
 const defaultContent = {
     name: '',
+    note: '',
     email: [{address: ''}],
     twitter: [{address: ''}],
     phone: [{address: ''}],
@@ -186,6 +187,15 @@ class CustomerForm extends React.Component {
                         required
                         value={this.state.name}
                         onChange={(name) => this._updateField({name})}
+                    />
+                    <InputField
+                        type="textarea"
+                        name="note"
+                        label="Note"
+                        placeholder="This customer is nice."
+                        rows="3"
+                        value={this.state.note}
+                        onChange={(note) => this._updateField({note})}
                     />
                     <p>
                         <b>Please set below at least one contact information for this customer :</b>

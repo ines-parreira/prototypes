@@ -9,9 +9,9 @@ import {FormGroup} from 'reactstrap'
 type Props = {
     label: ?string,
     options: Array<Object>,
-    tooltip: ?Object,
+    tooltip?: Object,
     value: ?string | ?Object | ?number,
-    onChange: (string | Object | number) => void,
+    onChange: (any) => void,
 }
 
 /**

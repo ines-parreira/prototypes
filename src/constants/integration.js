@@ -33,3 +33,13 @@ export const INTEGRATION_TYPES = Object.freeze([
 
 export const EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS = Object.freeze(['@', ',', ';', '<', '>'])
 
+
+export const PENDING_AUTHENTICATION_STATUS = 'pending'
+export const SUCCESS_AUTHENTICATION_STATUS = 'success'
+export const ERROR_AUTHENTICATION_STATUS = 'error'
+export const AUTHENTICATION_STATUS = [
+    PENDING_AUTHENTICATION_STATUS,
+    SUCCESS_AUTHENTICATION_STATUS,
+    ERROR_AUTHENTICATION_STATUS
+]
+

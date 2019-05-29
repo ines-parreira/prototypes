@@ -12,7 +12,36 @@ import InfobarWidget from '../InfobarWidget'
 import TooltipWidgetEditCard from './forms/TooltipWidgetEditCard'
 import css from './CardInfobarWidget.less'
 
-class CardInfobarWidget extends React.Component {
+
+export default class CardInfobarWidget extends React.Component {
+    static propTypes = {
+        AfterTitle: PropTypes.func,
+        BeforeContent: PropTypes.func,
+        AfterContent: PropTypes.func,
+        TitleWrapper: PropTypes.func,
+        Wrapper: PropTypes.func,
+
+        editing: PropTypes.object,
+        source: PropTypes.object.isRequired,
+        widget: PropTypes.object.isRequired,
+        template: PropTypes.object.isRequired,
+        isEditing: PropTypes.bool.isRequired,
+        isParentList: PropTypes.bool.isRequired,
+        parent: PropTypes.object,
+        open: PropTypes.bool
+    }
+
+    static defaultProps = {
+        AfterTitle: null,
+        BeforeContent: null,
+        TitleWrapper: null,
+        Wrapper: null,
+
+        isEditing: false,
+        isParentList: false,
+        open: false
+    }
+
     constructor(props) {
         super(props)
 
@@ -313,33 +342,3 @@ class CardInfobarWidget extends React.Component {
         return content
     }
 }
-
-CardInfobarWidget.propTypes = {
-    AfterTitle: PropTypes.func,
-    BeforeContent: PropTypes.func,
-    AfterContent: PropTypes.func,
-    TitleWrapper: PropTypes.func,
-    Wrapper: PropTypes.func,
-
-    editing: PropTypes.object,
-    source: PropTypes.object.isRequired,
-    widget: PropTypes.object.isRequired,
-    template: PropTypes.object.isRequired,
-    isEditing: PropTypes.bool.isRequired,
-    isParentList: PropTypes.bool.isRequired,
-    parent: PropTypes.object,
-    open: PropTypes.bool
-}
-
-CardInfobarWidget.defaultProps = {
-    AfterTitle: null,
-    BeforeContent: null,
-    TitleWrapper: null,
-    Wrapper: null,
-
-    isEditing: false,
-    isParentList: false,
-    open: false
-}
-
-export default CardInfobarWidget

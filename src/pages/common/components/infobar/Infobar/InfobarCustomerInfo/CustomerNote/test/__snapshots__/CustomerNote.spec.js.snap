@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CustomerNote component should display error message because the note failed to be saved 1`] = `
+<div
+  style={
+    Object {
+      "display": "none",
+    }
+  }
+>
+  <p
+    className="customerNote"
+  >
+    <i
+      className="material-icons noteIcon"
+    >
+      note
+    </i>
+    <div
+      className="noteInputContainer"
+    >
+      <textarea
+        className="noteInput error"
+        disabled={false}
+        onBlur={[Function]}
+        onChange={[Function]}
+        placeholder="This customer has no note."
+        rows={2}
+        value="this customer is nice"
+      />
+      <p
+        className="errorMessage text-danger"
+      >
+        An error occurred while posting this note. Please try again in a few seconds.
+      </p>
+    </div>
+  </p>
+</div>
+`;
+
+exports[`CustomerNote component should display loading state because the note is being saved 1`] = `
+<div
+  style={
+    Object {
+      "display": "none",
+    }
+  }
+>
+  <p
+    className="customerNote"
+  >
+    <i
+      className="material-icons noteIcon"
+    >
+      note
+    </i>
+    <div
+      className="noteInputContainer"
+    >
+      <textarea
+        className="noteInput loading"
+        disabled={true}
+        onBlur={[Function]}
+        onChange={[Function]}
+        placeholder="This customer has no note."
+        rows={2}
+        value="this customer is nice"
+      />
+      <i
+        className="icon-custom icon-circle-o-notch md-spin loaderIcon"
+      />
+    </div>
+  </p>
+</div>
+`;
+
+exports[`CustomerNote component should display passed note 1`] = `
+<div
+  style={
+    Object {
+      "display": "none",
+    }
+  }
+>
+  <p
+    className="customerNote"
+  >
+    <i
+      className="material-icons noteIcon"
+    >
+      note
+    </i>
+    <div
+      className="noteInputContainer"
+    >
+      <textarea
+        className="noteInput"
+        disabled={false}
+        onBlur={[Function]}
+        onChange={[Function]}
+        placeholder="This customer has no note."
+        rows={2}
+        value="this customer is nice"
+      />
+    </div>
+  </p>
+</div>
+`;

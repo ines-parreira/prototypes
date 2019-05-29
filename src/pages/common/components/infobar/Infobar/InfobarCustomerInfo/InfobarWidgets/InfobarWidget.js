@@ -14,6 +14,7 @@ import FieldInfobarWidget from './widgets/FieldInfobarWidget'
 import shopify from './widgets/shopify'
 import recharge from './widgets/recharge'
 
+
 export default class InfobarWidget extends React.Component {
     static propTypes = {
         editing: PropTypes.object,

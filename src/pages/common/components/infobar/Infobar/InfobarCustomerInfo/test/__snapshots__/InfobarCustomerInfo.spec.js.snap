@@ -1,0 +1,468 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InfobarCustomerInfo component should render basic customer info and a "generate widgets" button because customer data are loaded, the user is currently editing widgets, it is not currently dragging anything and widgets are currently empty 1`] = `
+<div
+  className="widgetsList d-flex flex-column"
+>
+  <Card
+    className="infobarCard"
+    tag="div"
+  >
+    <CardBody
+      tag="div"
+    >
+      <div
+        className="customerProfile"
+      >
+        <Avatar
+          className="mr-3 rounded"
+          email=""
+          name="foo"
+          size={50}
+          style={Object {}}
+          url=""
+        />
+        <Link
+          className="displayName"
+          onlyActiveOnIndex={false}
+          style={Object {}}
+          to="/app/customer/1"
+        >
+          foo
+        </Link>
+      </div>
+      <div
+        className="detail"
+      >
+        <CustomerChannels
+          channels={Immutable.List []}
+        />
+        <Connect(CustomerNote)
+          customer={
+            Immutable.Map {
+              "id": 1,
+              "name": "foo",
+            }
+          }
+        />
+      </div>
+    </CardBody>
+  </Card>
+  <GenerateButton
+    setEditedWidgets={[MockFunction]}
+    setEditionAsDirty={[MockFunction]}
+    sources={
+      Immutable.Map {
+        "ticket": Immutable.Map {
+          "customer": Immutable.Map {
+            "integrations": Immutable.Map {
+              "118": Immutable.Map {
+                "foo": "bar",
+              },
+            },
+          },
+        },
+      }
+    }
+    widgets={
+      Immutable.Map {
+        "currentContext": "ticket",
+        "_internal": Immutable.Map {
+          "drag": Immutable.Map {
+            "isDragging": false,
+          },
+          "editedItems": Immutable.List [
+            Immutable.Map {
+              "template": Immutable.Map {},
+            },
+          ],
+          "hasFetchedWidgets": true,
+        },
+        "items": Immutable.List [],
+      }
+    }
+  />
+</div>
+`;
+
+exports[`InfobarCustomerInfo component should render basic customer info and empty widgets because customer data are loaded, the user is currently editing widgets and it is dragging a widget -- even though widgets are currently empty 1`] = `
+<div
+  className="widgetsList d-flex flex-column"
+>
+  <Card
+    className="infobarCard"
+    tag="div"
+  >
+    <CardBody
+      tag="div"
+    >
+      <div
+        className="customerProfile"
+      >
+        <Avatar
+          className="mr-3 rounded"
+          email=""
+          name="foo"
+          size={50}
+          style={Object {}}
+          url=""
+        />
+        <Link
+          className="displayName"
+          onlyActiveOnIndex={false}
+          style={Object {}}
+          to="/app/customer/1"
+        >
+          foo
+        </Link>
+      </div>
+      <div
+        className="detail"
+      >
+        <CustomerChannels
+          channels={Immutable.List []}
+        />
+        <Connect(CustomerNote)
+          customer={
+            Immutable.Map {
+              "id": 1,
+              "name": "foo",
+            }
+          }
+        />
+      </div>
+    </CardBody>
+  </Card>
+  <Connect(InfobarWidgets)
+    context="ticket"
+    editing={
+      Object {
+        "actions": Object {
+          "generateAndSetWidgets": [MockFunction] {
+            "calls": Array [
+              Array [
+                Immutable.Map {
+                  "ticket": Immutable.Map {
+                    "customer": Immutable.Map {
+                      "integrations": Immutable.Map {
+                        "118": Immutable.Map {
+                          "foo": "bar",
+                        },
+                      },
+                    },
+                  },
+                },
+                "ticket",
+              ],
+              Array [
+                Immutable.Map {
+                  "ticket": Immutable.Map {
+                    "customer": Immutable.Map {
+                      "integrations": Immutable.Map {
+                        "118": Immutable.Map {
+                          "foo": "bar",
+                        },
+                      },
+                    },
+                  },
+                },
+                "ticket",
+              ],
+            ],
+            "results": Array [
+              Object {
+                "type": "return",
+                "value": undefined,
+              },
+              Object {
+                "type": "return",
+                "value": undefined,
+              },
+            ],
+          },
+          "resetWidgets": [MockFunction],
+          "setEditedWidgets": [MockFunction],
+          "setEditionAsDirty": [MockFunction],
+        },
+        "canDrop": [Function],
+        "isDragging": true,
+        "isEditing": true,
+        "state": Immutable.Map {
+          "currentContext": "ticket",
+          "_internal": Immutable.Map {
+            "drag": Immutable.Map {
+              "isDragging": true,
+            },
+            "editedItems": Immutable.List [
+              Immutable.Map {
+                "template": Immutable.Map {},
+              },
+            ],
+            "hasFetchedWidgets": true,
+          },
+          "items": Immutable.List [],
+        },
+      }
+    }
+    source={
+      Immutable.Map {
+        "ticket": Immutable.Map {
+          "customer": Immutable.Map {
+            "integrations": Immutable.Map {
+              "118": Immutable.Map {
+                "foo": "bar",
+              },
+            },
+          },
+        },
+      }
+    }
+    widgets={
+      Immutable.List [
+        Immutable.Map {
+          "template": Immutable.Map {},
+        },
+      ]
+    }
+  />
+</div>
+`;
+
+exports[`InfobarCustomerInfo component should render basic customer info and the suggestion to add integrations because there is no customer data and there is no data integrations configured for the account 1`] = `
+<div
+  className="widgetsList d-flex flex-column"
+>
+  <Card
+    className="infobarCard"
+    tag="div"
+  >
+    <CardBody
+      tag="div"
+    >
+      <div
+        className="customerProfile"
+      >
+        <Avatar
+          className="mr-3 rounded"
+          email=""
+          name="foo"
+          size={50}
+          style={Object {}}
+          url=""
+        />
+        <Link
+          className="displayName"
+          onlyActiveOnIndex={false}
+          style={Object {}}
+          to="/app/customer/1"
+        >
+          foo
+        </Link>
+      </div>
+      <div
+        className="detail"
+      >
+        <CustomerChannels
+          channels={Immutable.List []}
+        />
+        <Connect(CustomerNote)
+          customer={
+            Immutable.Map {
+              "id": 1,
+              "name": "foo",
+            }
+          }
+        />
+      </div>
+    </CardBody>
+  </Card>
+  <AddIntegrationSuggestion
+    customer={
+      Immutable.Map {
+        "id": 1,
+        "name": "foo",
+      }
+    }
+  />
+</div>
+`;
+
+exports[`InfobarCustomerInfo component should render only basic customer info because customer data are loaded, the user is not editing widgets and current widgets are empty 1`] = `
+<div
+  className="widgetsList d-flex flex-column"
+>
+  <Card
+    className="infobarCard"
+    tag="div"
+  >
+    <CardBody
+      tag="div"
+    >
+      <div
+        className="customerProfile"
+      >
+        <Avatar
+          className="mr-3 rounded"
+          email=""
+          name="foo"
+          size={50}
+          style={Object {}}
+          url=""
+        />
+        <Link
+          className="displayName"
+          onlyActiveOnIndex={false}
+          style={Object {}}
+          to="/app/customer/1"
+        >
+          foo
+        </Link>
+      </div>
+      <div
+        className="detail"
+      >
+        <CustomerChannels
+          channels={Immutable.List []}
+        />
+        <Connect(CustomerNote)
+          customer={
+            Immutable.Map {
+              "id": 1,
+              "name": "foo",
+            }
+          }
+        />
+      </div>
+    </CardBody>
+  </Card>
+</div>
+`;
+
+exports[`InfobarCustomerInfo component should render only basic customer info because there is no customer data and there is some data integrations configured for the account 1`] = `
+<div
+  className="widgetsList d-flex flex-column"
+>
+  <Card
+    className="infobarCard"
+    tag="div"
+  >
+    <CardBody
+      tag="div"
+    >
+      <div
+        className="customerProfile"
+      >
+        <Avatar
+          className="mr-3 rounded"
+          email=""
+          name="foo"
+          size={50}
+          style={Object {}}
+          url=""
+        />
+        <Link
+          className="displayName"
+          onlyActiveOnIndex={false}
+          style={Object {}}
+          to="/app/customer/1"
+        >
+          foo
+        </Link>
+      </div>
+      <div
+        className="detail"
+      >
+        <CustomerChannels
+          channels={Immutable.List []}
+        />
+        <Connect(CustomerNote)
+          customer={
+            Immutable.Map {
+              "id": 1,
+              "name": "foo",
+            }
+          }
+        />
+      </div>
+    </CardBody>
+  </Card>
+</div>
+`;
+
+exports[`InfobarCustomerInfo component sources render basic customer info and widgets because there is customer data, the user is not editing widgets and current widgets are not empty 1`] = `
+<div
+  className="widgetsList d-flex flex-column"
+>
+  <Card
+    className="infobarCard"
+    tag="div"
+  >
+    <CardBody
+      tag="div"
+    >
+      <div
+        className="customerProfile"
+      >
+        <Avatar
+          className="mr-3 rounded"
+          email=""
+          name="foo"
+          size={50}
+          style={Object {}}
+          url=""
+        />
+        <Link
+          className="displayName"
+          onlyActiveOnIndex={false}
+          style={Object {}}
+          to="/app/customer/1"
+        >
+          foo
+        </Link>
+      </div>
+      <div
+        className="detail"
+      >
+        <CustomerChannels
+          channels={Immutable.List []}
+        />
+        <Connect(CustomerNote)
+          customer={
+            Immutable.Map {
+              "id": 1,
+              "name": "foo",
+            }
+          }
+        />
+      </div>
+    </CardBody>
+  </Card>
+  <Connect(InfobarWidgets)
+    context="ticket"
+    source={
+      Immutable.Map {
+        "ticket": Immutable.Map {
+          "customer": Immutable.Map {
+            "integrations": Immutable.Map {
+              "118": Immutable.Map {
+                "foo": "bar",
+              },
+            },
+          },
+        },
+      }
+    }
+    widgets={
+      Immutable.List [
+        Immutable.Map {
+          "id": 1,
+          "context": "ticket",
+          "template": Immutable.Map {
+            "foo": "bar",
+          },
+        },
+      ]
+    }
+  />
+</div>
+`;

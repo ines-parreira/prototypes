@@ -17,12 +17,8 @@ import {getCustomerHistory, getActiveCustomer, makeIsLoading} from '../../../sta
 import * as customersHelpers from '../../../state/customers/helpers'
 
 class CustomerDetailContainer extends React.Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            isCustomerFormOpen: false
-        }
+    state = {
+        isCustomerFormOpen: false
     }
 
     componentWillMount() {

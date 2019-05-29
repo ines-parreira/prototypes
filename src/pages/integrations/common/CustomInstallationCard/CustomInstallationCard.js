@@ -26,7 +26,7 @@ export default class CustomInstallationCard extends React.Component<Props, State
 
     clearIsCopiedTimeout: ?number = null
 
-    clipboard: Clipboard = null
+    clipboard: ?Clipboard = null
 
     componentDidMount() {
         this.clipboard = new Clipboard('#copy-code-snippet')

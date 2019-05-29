@@ -7,12 +7,12 @@ import {fromJS, Map, List} from 'immutable'
 import {Button} from 'reactstrap'
 import _noop from 'lodash/noop'
 
-import {areSourcesReady} from '../utils'
-
 import * as infobarActions from '../../../../../state/infobar/actions'
 import * as customersActions from '../../../../../state/customers/actions'
 import * as ticketActions from '../../../../../state/ticket/actions'
+import {startEditionMode, stopEditionMode, submitWidgets} from '../../../../../state/widgets/actions'
 
+import type {reactRouterLocation} from '../../../../../types'
 import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
 
 import Loader from '../../Loader'
@@ -21,15 +21,14 @@ import InfobarLayout from '../InfobarLayout'
 import MergeCustomersContainer from '../../MergeCustomers/MergeCustomersContainer'
 import Search from '../../Search'
 
+import {areSourcesReady} from '../utils'
 import css from '../Infobar.less'
-
-import type {reactRouterLocation} from '../../../../../types'
-import {startEditionMode, stopEditionMode, submitWidgets} from '../../../../../state/widgets/actions'
 
 import InfobarSearchResultsList from './InfobarSearchResultsList'
 import InfobarCustomerInfo from './InfobarCustomerInfo'
 import InfobarWidgetsEditionTools from './InfobarWidgetsEditionTools'
 import InfobarCustomerActions from './InfobarCustomerActions'
+
 
 type Props = {
     actions: {
@@ -252,7 +251,6 @@ export class Infobar extends React.Component<Props, State> {
         return (
             <InfobarCustomerInfo
                 actions={this.props.actions.widgets}
-                infobar={this.props.infobar}
                 isEditing={isEditing}
                 sources={sources}
                 customer={customer}

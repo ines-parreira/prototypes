@@ -16,6 +16,7 @@ import PlaceholderWidget from './widgets/PlaceholderWidget'
 
 import css from './InfobarWidgets.less'
 
+
 class InfobarWidgets extends React.Component {
     shouldComponentUpdate(nextProps) {
         return !this.props.source.equals(nextProps.source)
