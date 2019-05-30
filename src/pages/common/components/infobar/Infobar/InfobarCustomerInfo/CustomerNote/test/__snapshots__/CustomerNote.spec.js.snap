@@ -1,7 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CustomerNote component should display error message because the note failed to be saved 1`] = `
-<div>
+<div
+  style={
+    Object {
+      "display": "none",
+    }
+  }
+>
   <p
     className="customerNote"
   >
@@ -33,7 +39,13 @@ exports[`CustomerNote component should display error message because the note fa
 `;
 
 exports[`CustomerNote component should display loading state because the note is being saved 1`] = `
-<div>
+<div
+  style={
+    Object {
+      "display": "none",
+    }
+  }
+>
   <p
     className="customerNote"
   >
@@ -63,7 +75,13 @@ exports[`CustomerNote component should display loading state because the note is
 `;
 
 exports[`CustomerNote component should display passed note 1`] = `
-<div>
+<div
+  style={
+    Object {
+      "display": "none",
+    }
+  }
+>
   <p
     className="customerNote"
   >

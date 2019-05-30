@@ -253,7 +253,7 @@ class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                 </div>
 
                                 {
-                                    isUpdate && [
+                                    false && isUpdate && [
                                         <div
                                             key="input"
                                             className="mb-2"

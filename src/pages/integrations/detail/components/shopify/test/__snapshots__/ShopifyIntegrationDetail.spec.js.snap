@@ -91,58 +91,6 @@ exports[`ShopifyIntegrationDetail should render the page for a deactivated integ
               value="foo"
             />
           </div>
-          <div
-            className="mb-2"
-            key="input"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Synchronization settings
-            </Label>
-            <BooleanField
-              help=""
-              label="Synchronize customer notes"
-              name="sync_customer_notes"
-              onChange={[Function]}
-              type="checkbox"
-              value={true}
-            />
-          </div>
-          <div
-            className="text-faded mb-4"
-            key="help"
-          >
-            If this option is enabled, updating a customer's note in Shopify will also update it in Gorgias, and updating it in Gorgias will also update it in Shopify:
-            <ul>
-              <li>
-                if two people are editing a single customer's note at the same time in Shopify and Gorgias, 
-                <b>
-                  the first one to save the data will overwrite the other one's modifications
-                </b>
-              </li>
-              <li>
-                if a single Gorgias customer is associated with two or more Shopify customers on two or more Shopify stores, 
-                <b>
-                  its note will not be synchronized from Shopify
-                </b>
-                , and 
-                <b>
-                  updating the Gorgias customer note won't update any Shopify customer note
-                </b>
-              </li>
-            </ul>
-          </div>
           <div>
             <Button
               className="mr-2"
@@ -384,58 +332,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
               value="foo"
             />
           </div>
-          <div
-            className="mb-2"
-            key="input"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Synchronization settings
-            </Label>
-            <BooleanField
-              help=""
-              label="Synchronize customer notes"
-              name="sync_customer_notes"
-              onChange={[Function]}
-              type="checkbox"
-              value={true}
-            />
-          </div>
-          <div
-            className="text-faded mb-4"
-            key="help"
-          >
-            If this option is enabled, updating a customer's note in Shopify will also update it in Gorgias, and updating it in Gorgias will also update it in Shopify:
-            <ul>
-              <li>
-                if two people are editing a single customer's note at the same time in Shopify and Gorgias, 
-                <b>
-                  the first one to save the data will overwrite the other one's modifications
-                </b>
-              </li>
-              <li>
-                if a single Gorgias customer is associated with two or more Shopify customers on two or more Shopify stores, 
-                <b>
-                  its note will not be synchronized from Shopify
-                </b>
-                , and 
-                <b>
-                  updating the Gorgias customer note won't update any Shopify customer note
-                </b>
-              </li>
-            </ul>
-          </div>
           <div>
             <Button
               className="mr-2 btn-loading"
@@ -605,58 +501,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
               value="foo"
             />
           </div>
-          <div
-            className="mb-2"
-            key="input"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Synchronization settings
-            </Label>
-            <BooleanField
-              help=""
-              label="Synchronize customer notes"
-              name="sync_customer_notes"
-              onChange={[Function]}
-              type="checkbox"
-              value={true}
-            />
-          </div>
-          <div
-            className="text-faded mb-4"
-            key="help"
-          >
-            If this option is enabled, updating a customer's note in Shopify will also update it in Gorgias, and updating it in Gorgias will also update it in Shopify:
-            <ul>
-              <li>
-                if two people are editing a single customer's note at the same time in Shopify and Gorgias, 
-                <b>
-                  the first one to save the data will overwrite the other one's modifications
-                </b>
-              </li>
-              <li>
-                if a single Gorgias customer is associated with two or more Shopify customers on two or more Shopify stores, 
-                <b>
-                  its note will not be synchronized from Shopify
-                </b>
-                , and 
-                <b>
-                  updating the Gorgias customer note won't update any Shopify customer note
-                </b>
-              </li>
-            </ul>
-          </div>
           <div>
             <Button
               className="mr-2"
@@ -797,58 +641,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
               value="foo"
             />
           </div>
-          <div
-            className="mb-2"
-            key="input"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Synchronization settings
-            </Label>
-            <BooleanField
-              help=""
-              label="Synchronize customer notes"
-              name="sync_customer_notes"
-              onChange={[Function]}
-              type="checkbox"
-              value={true}
-            />
-          </div>
-          <div
-            className="text-faded mb-4"
-            key="help"
-          >
-            If this option is enabled, updating a customer's note in Shopify will also update it in Gorgias, and updating it in Gorgias will also update it in Shopify:
-            <ul>
-              <li>
-                if two people are editing a single customer's note at the same time in Shopify and Gorgias, 
-                <b>
-                  the first one to save the data will overwrite the other one's modifications
-                </b>
-              </li>
-              <li>
-                if a single Gorgias customer is associated with two or more Shopify customers on two or more Shopify stores, 
-                <b>
-                  its note will not be synchronized from Shopify
-                </b>
-                , and 
-                <b>
-                  updating the Gorgias customer note won't update any Shopify customer note
-                </b>
-              </li>
-            </ul>
-          </div>
           <div>
             <Button
               className="mr-2 btn-loading"
@@ -988,58 +780,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
               type="text"
               value="foo"
             />
-          </div>
-          <div
-            className="mb-2"
-            key="input"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Synchronization settings
-            </Label>
-            <BooleanField
-              help=""
-              label="Synchronize customer notes"
-              name="sync_customer_notes"
-              onChange={[Function]}
-              type="checkbox"
-              value={true}
-            />
-          </div>
-          <div
-            className="text-faded mb-4"
-            key="help"
-          >
-            If this option is enabled, updating a customer's note in Shopify will also update it in Gorgias, and updating it in Gorgias will also update it in Shopify:
-            <ul>
-              <li>
-                if two people are editing a single customer's note at the same time in Shopify and Gorgias, 
-                <b>
-                  the first one to save the data will overwrite the other one's modifications
-                </b>
-              </li>
-              <li>
-                if a single Gorgias customer is associated with two or more Shopify customers on two or more Shopify stores, 
-                <b>
-                  its note will not be synchronized from Shopify
-                </b>
-                , and 
-                <b>
-                  updating the Gorgias customer note won't update any Shopify customer note
-                </b>
-              </li>
-            </ul>
           </div>
           <div>
             <Button
@@ -1292,58 +1032,6 @@ exports[`ShopifyIntegrationDetail should render the page to update an existing i
               type="text"
               value="foo"
             />
-          </div>
-          <div
-            className="mb-2"
-            key="input"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Synchronization settings
-            </Label>
-            <BooleanField
-              help=""
-              label="Synchronize customer notes"
-              name="sync_customer_notes"
-              onChange={[Function]}
-              type="checkbox"
-              value={true}
-            />
-          </div>
-          <div
-            className="text-faded mb-4"
-            key="help"
-          >
-            If this option is enabled, updating a customer's note in Shopify will also update it in Gorgias, and updating it in Gorgias will also update it in Shopify:
-            <ul>
-              <li>
-                if two people are editing a single customer's note at the same time in Shopify and Gorgias, 
-                <b>
-                  the first one to save the data will overwrite the other one's modifications
-                </b>
-              </li>
-              <li>
-                if a single Gorgias customer is associated with two or more Shopify customers on two or more Shopify stores, 
-                <b>
-                  its note will not be synchronized from Shopify
-                </b>
-                , and 
-                <b>
-                  updating the Gorgias customer note won't update any Shopify customer note
-                </b>
-              </li>
-            </ul>
           </div>
           <div>
             <Button
