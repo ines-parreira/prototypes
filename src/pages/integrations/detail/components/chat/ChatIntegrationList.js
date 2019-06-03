@@ -1,25 +1,29 @@
+// @flow
 import React from 'react'
-import PropTypes from 'prop-types'
 import {Link, browserHistory} from 'react-router'
 import {connect} from 'react-redux'
+import {type List, type Map} from 'immutable'
+
+import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../constants/integration'
+import * as integrationsActions from '../../../../../state/integrations/actions'
 
 import ToggleButton from '../../../../common/components/ToggleButton'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
-import * as integrationsActions from '../../../../../state/integrations/actions'
+
+
+type Props = {
+    integrations: List<Map<*,*>>,
+    loading: Map<*,*>,
+    activate: (number) => void,
+    deactivate: (number) => void
+}
 
 @connect(null, {
     activate: integrationsActions.activateIntegration,
     deactivate: integrationsActions.deactivateIntegration,
 })
-export default class ChatIntegrationList extends React.Component {
-    static propTypes = {
-        integrations: PropTypes.object.isRequired,
-        loading: PropTypes.object.isRequired,
-        activate: PropTypes.func.isRequired,
-        deactivate: PropTypes.func.isRequired,
-    }
-
+export default class ChatIntegrationList extends React.Component<Props> {
     render() {
         const {integrations, loading} = this.props
 
@@ -30,21 +34,23 @@ export default class ChatIntegrationList extends React.Component {
             </span>
         )
 
-        const integrationToItemDisplay = (int) => {
-            const toggleIntegration = (value) => {
-                const integrationId = int.get('id')
+        const integrationToItemDisplay = (integration: Map<*,*>) => {
+            const toggleIntegration = (value: boolean) => {
+                const integrationId = integration.get('id')
                 return value ? this.props.activate(integrationId) : this.props.deactivate(integrationId)
             }
 
-            const editLink = `/app/settings/integrations/smooch_inside/${int.get('id')}/appearance`
-            const isDisabled = int.get('deactivated_datetime')
+            const editLink = `/app/settings/integrations/smooch_inside/${integration.get('id')}/appearance`
+            const isDisabled = integration.get('deactivated_datetime')
+
+            const isLoading = loading.get('updateIntegration') === integration.get('id')
 
             return (
-                <tr key={int.get('id')}>
+                <tr key={integration.get('id')}>
                     <td className="link-full-td">
                         <Link to={editLink}>
                             <div>
-                                <b>{int.get('name')}</b>
+                                <b>{integration.get('name')}</b>
                             </div>
                         </Link>
                     </td>
@@ -52,6 +58,8 @@ export default class ChatIntegrationList extends React.Component {
                         <ToggleButton
                             value={!isDisabled}
                             onChange={toggleIntegration}
+                            loading={isLoading}
+                            disabled={!!loading.get('updateIntegration')}
                         />
                     </td>
                     <td className="smallest align-middle">
@@ -63,9 +71,11 @@ export default class ChatIntegrationList extends React.Component {
 
         return (
             <IntegrationList
-                integrationType="smooch_inside"
+                integrationType={SMOOCH_INSIDE_INTEGRATION_TYPE}
                 longTypeDescription={longTypeDescription}
-                integrations={integrations.filter((v) => v.get('type') === 'smooch_inside')}
+                integrations={integrations.filter(
+                    (integration) => integration.get('type') === SMOOCH_INSIDE_INTEGRATION_TYPE)
+                }
                 createIntegration={() => browserHistory.push('/app/settings/integrations/smooch_inside/new')}
                 createIntegrationButtonContent="Add chat"
                 integrationToItemDisplay={integrationToItemDisplay}

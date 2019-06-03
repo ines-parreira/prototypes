@@ -90,9 +90,29 @@ export default function reducer(state: Map<*,*> = initialState, action: defaultA
             return state.setIn(['state', 'loading', 'updateIntegration'], false)
 
         case constants.CREATE_INTEGRATION_SUCCESS:
-        case constants.UPDATE_INTEGRATION_SUCCESS:
-            return state.setIn(['state', 'loading', 'updateIntegration'], false)
-                .set('integration', fromJS(action.resp))
+        case constants.UPDATE_INTEGRATION_SUCCESS: {
+            const newIntegration = fromJS(action.resp)
+
+            const integrationIndex = state
+                .get('integrations')
+                .findIndex((integration) => newIntegration.get('id') === integration.get('id'))
+
+            let newState = state
+                .setIn(['state', 'loading', 'updateIntegration'], false)
+                .set('integration', newIntegration)
+
+            let integrations = newState.get('integrations')
+
+            integrations = ~integrationIndex
+                ? integrations.set(integrationIndex, newIntegration)
+                : integrations.push(newIntegration)
+
+            integrations = integrations
+                .sortBy((integration) => integration.get('name'))
+                .sortBy((integration) => moment(integration.get('deactivated_datetime')))
+
+            return newState.set('integrations', integrations)
+        }
 
         case constants.DELETE_INTEGRATION_START:
             return state.setIn(['state', 'loading', 'delete'], action.id)

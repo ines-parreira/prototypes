@@ -1,10 +1,14 @@
 import {fromJS} from 'immutable'
 
-import {FACEBOOK_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE} from '../../../constants/integration'
+import {
+    FACEBOOK_INTEGRATION_TYPE,
+    OUTLOOK_INTEGRATION_TYPE,
+    SMOOCH_INSIDE_INTEGRATION_TYPE
+} from '../../../constants/integration'
 
 import {integrationsState} from '../../../fixtures/integrations'
 import {getIntegrationsState, getEmailIntegrations} from '../selectors'
-import reducers from '../reducers'
+import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
 
 const state = {
@@ -17,7 +21,7 @@ describe('integrations reducers', () => {
             type: types.DELETE_INTEGRATION_SUCCESS,
             id: getEmailIntegrations(state).getIn([0, 'id'])
         }
-        const newState = reducers(state.integrations, action)
+        const newState = reducer(state.integrations, action)
         const expected = getIntegrationsState(state).update('integrations', (integrations) => (
             integrations.valueSeq().filter((int) => int.get('id') !== action.id).toList()
         )).setIn(['state', 'loading', 'delete'], false)
@@ -26,13 +30,13 @@ describe('integrations reducers', () => {
     })
 
     it('should handle DELETE_INTEGRATION_ERROR', () => {
-        const newState = reducers(state.integrations, {type: types.DELETE_INTEGRATION_ERROR})
+        const newState = reducer(state.integrations, {type: types.DELETE_INTEGRATION_ERROR})
         const expected = getIntegrationsState(state).setIn(['state', 'loading', 'delete'], false)
         expect(newState).toEqual(expected)
     })
 
     it('should set integration.meta.verified to true on EMAIL_INTEGRATION_VERIFIED', () => {
-        const newState = reducers(state.integrations, {
+        const newState = reducer(state.integrations, {
             type: types.EMAIL_INTEGRATION_VERIFIED,
             integrationId: getIntegrationsState(state).getIn(['integrations', 0, 'id'])
         })
@@ -42,7 +46,7 @@ describe('integrations reducers', () => {
         expect(newState).toEqual(expected)
     })
 
-    describe('FETCH_ONBOARDING_INTEGRATIONS_SUCCESS case', () => {
+    describe('FETCH_ONBOARDING_INTEGRATIONS_SUCCESS', () => {
         const integrationTypes = [FACEBOOK_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE]
 
         integrationTypes.forEach((integrationType) => {
@@ -56,7 +60,7 @@ describe('integrations reducers', () => {
                     }
                 }
 
-                expect(reducers(state.integrations, {
+                expect(reducer(state.integrations, {
                     type: types.FETCH_ONBOARDING_INTEGRATIONS_SUCCESS,
                     resp: onboardingIntegrations,
                     integrationType
@@ -76,7 +80,7 @@ describe('integrations reducers', () => {
                     }
                 }
 
-                expect(reducers(integrationsState, {
+                expect(reducer(integrationsState, {
                     type: types.FETCH_ONBOARDING_INTEGRATIONS_SUCCESS,
                     resp: onboardingIntegrations,
                     forceOverride: true,
@@ -98,7 +102,7 @@ describe('integrations reducers', () => {
                     }
                 }
 
-                expect(reducers(integrationsState, {
+                expect(reducer(integrationsState, {
                     type: types.FETCH_ONBOARDING_INTEGRATIONS_SUCCESS,
                     resp: onboardingIntegrations,
                     integrationType
@@ -120,7 +124,7 @@ describe('integrations reducers', () => {
                     }
                 }
 
-                expect(reducers(integrationsState, {
+                expect(reducer(integrationsState, {
                     type: types.FETCH_ONBOARDING_INTEGRATIONS_SUCCESS,
                     resp: onboardingIntegrations,
                     integrationType
@@ -130,6 +134,48 @@ describe('integrations reducers', () => {
                 )
             })
         })
+    })
 
+    describe('CREATE_INTEGRATION_SUCCESS', () => {
+        it('should store the new integration in the `integration` field, push it in the list of `integrations` and ' +
+            'set the loading flag for integration update to `false`', () => {
+            const newIntegration = {id: 118712, type: SMOOCH_INSIDE_INTEGRATION_TYPE}
+
+            const integrationsState = initialState.mergeDeep(fromJS({
+                integrations: [
+                    {id: 241, type: SMOOCH_INSIDE_INTEGRATION_TYPE, meta: {foo: 'bar'}}
+                ]
+            }))
+
+            const action = {
+                type: types.CREATE_INTEGRATION_SUCCESS,
+                resp: newIntegration
+            }
+
+            expect(reducer(integrationsState, action)).toMatchSnapshot()
+        })
+    })
+
+    describe('UPDATE_INTEGRATION_SUCCESS', () => {
+        it('should store the new integration in the `integration` field, update it in the list of `integrations` and ' +
+            'set the loading flag for integration update to `false`', () => {
+            const integration = {id: 118712, type: SMOOCH_INSIDE_INTEGRATION_TYPE}
+            const updatedIntegration = Object.assign({}, ...integration, {meta: {foo: 'bar'}})
+
+            const integrationsState = initialState.mergeDeep(fromJS({
+                integrations: [
+                    {id: 241, type: SMOOCH_INSIDE_INTEGRATION_TYPE, meta: {foo: 'bar'}},
+                    integration
+                ],
+                state: {loading: {updateIntegration: 118712}}
+            }))
+
+            const action = {
+                type: types.UPDATE_INTEGRATION_SUCCESS,
+                resp: updatedIntegration
+            }
+
+            expect(reducer(integrationsState, action)).toMatchSnapshot()
+        })
     })
 })

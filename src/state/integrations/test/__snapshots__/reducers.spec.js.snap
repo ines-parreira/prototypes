@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`integrations reducers CREATE_INTEGRATION_SUCCESS should store the new integration in the \`integration\` field, push it in the list of \`integrations\` and set the loading flag for integration update to \`false\` 1`] = `
+Immutable.Map {
+  "integrations": Immutable.List [
+    Immutable.Map {
+      "id": 241,
+      "type": "smooch_inside",
+      "meta": Immutable.Map {
+        "foo": "bar",
+      },
+    },
+    Immutable.Map {
+      "id": 118712,
+      "type": "smooch_inside",
+    },
+  ],
+  "integration": Immutable.Map {
+    "id": 118712,
+    "type": "smooch_inside",
+  },
+  "authentication": Immutable.Map {},
+  "state": Immutable.Map {
+    "loading": Immutable.Map {
+      "integration": false,
+      "integrations": false,
+      "updateIntegration": false,
+      "testing": false,
+      "delete": false,
+    },
+  },
+  "extra": Immutable.Map {
+    "facebook": Immutable.Map {
+      "onboardingIntegrations": Immutable.Map {
+        "data": Immutable.List [],
+        "meta": Immutable.Map {},
+      },
+    },
+    "outlook": Immutable.Map {
+      "onboardingIntegrations": Immutable.Map {
+        "data": Immutable.List [],
+        "meta": Immutable.Map {},
+      },
+    },
+  },
+}
+`;
+
+exports[`integrations reducers UPDATE_INTEGRATION_SUCCESS should store the new integration in the \`integration\` field, update it in the list of \`integrations\` and set the loading flag for integration update to \`false\` 1`] = `
+Immutable.Map {
+  "integrations": Immutable.List [
+    Immutable.Map {
+      "id": 241,
+      "type": "smooch_inside",
+      "meta": Immutable.Map {
+        "foo": "bar",
+      },
+    },
+    Immutable.Map {
+      "id": 118712,
+      "type": "smooch_inside",
+      "meta": Immutable.Map {
+        "foo": "bar",
+      },
+    },
+  ],
+  "integration": Immutable.Map {
+    "id": 118712,
+    "type": "smooch_inside",
+    "meta": Immutable.Map {
+      "foo": "bar",
+    },
+  },
+  "authentication": Immutable.Map {},
+  "state": Immutable.Map {
+    "loading": Immutable.Map {
+      "integration": false,
+      "integrations": false,
+      "updateIntegration": false,
+      "testing": false,
+      "delete": false,
+    },
+  },
+  "extra": Immutable.Map {
+    "facebook": Immutable.Map {
+      "onboardingIntegrations": Immutable.Map {
+        "data": Immutable.List [],
+        "meta": Immutable.Map {},
+      },
+    },
+    "outlook": Immutable.Map {
+      "onboardingIntegrations": Immutable.Map {
+        "data": Immutable.List [],
+        "meta": Immutable.Map {},
+      },
+    },
+  },
+}
+`;
