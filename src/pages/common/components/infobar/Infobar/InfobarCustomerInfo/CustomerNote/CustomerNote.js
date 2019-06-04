@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import classnames from 'classnames'
 
 import * as customerActions from '../../../../../../../state/customers/actions'
+import * as segmentTracker from '../../../../../../../store/middlewares/segmentTracker'
 import {countLines} from '../../../../../../../utils/string'
 
 import css from './CustomerNote.less'
@@ -53,6 +54,8 @@ export class CustomerNote extends React.Component<Props, State> {
         if (!isDirty) {
             return
         }
+
+        segmentTracker.logEvent(segmentTracker.EVENTS.CUSTOMER_NOTE_EDITED)
 
         this.setState({isLoading: true})
 

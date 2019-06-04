@@ -66,4 +66,5 @@ export const EVENTS = {
     TICKET_MESSAGE_CREATED: 'ticket-message-created',
     SUBSCRIBED_TO_DEV_NEWSLETTER: 'subscribed-to-dev-newsletter',
     HELP_CENTER_CLICKED: 'help-center-clicked',
+    CUSTOMER_NOTE_EDITED: 'customer-note-edited',
 }
