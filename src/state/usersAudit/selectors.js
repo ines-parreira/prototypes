@@ -27,7 +27,8 @@ export const getUserAuditUserIdOptions = createSelector(
 )
 
 //$FlowFixMe
-export const getUserAuditObjectsEvents = createSelector([], () => fromJS(window.GORGIAS_USER_AUDIT_CONSTANTS))
+export const getUserAuditObjectsEvents = createSelector([], () => fromJS(
+    window.GORGIAS_CONSTANTS.USER_AUDIT_OBJECTS_EVENTS))
 
 export const getUserAuditObjectTypeOptions = createSelector(
     [getUserAuditObjectsEvents],

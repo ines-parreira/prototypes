@@ -11,9 +11,11 @@ describe('users audit selectors', () => {
     let state
 
     beforeEach(() => {
-        window.GORGIAS_USER_AUDIT_CONSTANTS = {
-            'Integration': {'events': ['integration-created', 'integration-updated']},
-            'Macro': {'events': ['macro-created']},
+        window.GORGIAS_CONSTANTS = {
+            'USER_AUDIT_OBJECTS_EVENTS': {
+                'Integration': {'events': ['integration-created', 'integration-updated']},
+                'Macro': {'events': ['macro-created']},
+            }
         }
         state = {
             currentUser: currentUserInitialState.mergeDeep(fromJS(userFixtures.currentUser).set('id', 2)),
@@ -64,7 +66,8 @@ describe('users audit selectors', () => {
     })
 
     it('getUserAuditObjectsEvents', () => {
-        expect(selectors.getUserAuditObjectsEvents()).toEqualImmutable(fromJS(window.GORGIAS_USER_AUDIT_CONSTANTS))
+        expect(selectors.getUserAuditObjectsEvents()).toEqualImmutable(fromJS(
+            window.GORGIAS_CONSTANTS.USER_AUDIT_OBJECTS_EVENTS))
     })
 
     it('getUserAuditObjectTypeOptions', () => {

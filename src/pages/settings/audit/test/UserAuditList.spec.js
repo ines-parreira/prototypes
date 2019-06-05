@@ -18,9 +18,11 @@ describe('UserAuditList component', () => {
     let userAuditData
 
     beforeEach(() => {
-        window.GORGIAS_USER_AUDIT_CONSTANTS = {
-            'Ticket': {'events': ['ticket-created', 'ticket-updated', 'ticket-deleted']},
-            'Macro': {'events': ['macro-created']},
+        window.GORGIAS_CONSTANTS = {
+            'USER_AUDIT_OBJECTS_EVENTS': {
+                'Ticket': {'events': ['ticket-created', 'ticket-updated', 'ticket-deleted']},
+                'Macro': {'events': ['macro-created']},
+            }
         }
         const agents = fromJS([
             {id: 1, name: 'agent 1', 'email': 'agent1@gorgias.io'},

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
@@ -113,6 +113,51 @@ export class MacroEdit extends React.Component {
         )
     }
 
+    renderIntentMenu = () => {
+        let intents = fromJS(window.GORGIAS_CONSTANTS.MACRO_INTENTS)
+        intents = intents.reduce((newIntents, intentDesc, intentName) => {
+            return newIntents.setIn(intentName.split('/'), intentDesc)
+        }, fromJS({}))
+
+        return (
+            <DropdownMenu className={css.dropdown}>
+                <DropdownItem
+                    type="button"
+                    onClick={() => this.props.setIntent(null)}>
+                    { humanizeString('none') }
+                </DropdownItem>
+                {
+                    intents.entrySeq().sort().map(([category, subIntents]) => {
+                        return (
+                            <Fragment key={category}>
+                                <DropdownItem divider/>
+                                <DropdownItem header>{category.toUpperCase()}</DropdownItem>
+                                {
+                                    subIntents.entrySeq().sort().map(([intentName, intentDescription]) => {
+                                        const intentValue = `${category}/${intentName}`
+                                        return (
+                                            <DropdownItem
+                                                key={intentName}
+                                                type="button"
+                                                onClick={() => this.props.setIntent(intentValue)}
+                                            >
+                                                {humanizeString(intentName)}
+                                                <br/>
+                                                <span className={css.intentDescription}>
+                                                    {intentDescription}
+                                                </span>
+                                            </DropdownItem>
+                                        )
+                                    })
+                                }
+                            </Fragment>
+                        )
+                    })
+                }
+            </DropdownMenu>
+        )
+    }
+
     render() {
         const {currentMacro, hasIntegrationOfTypes} = this.props
 
@@ -143,6 +188,22 @@ export class MacroEdit extends React.Component {
                             value={this.props.name}
                             required
                         />
+                    </div>
+
+                    <div>
+                        <div className={classnames('mb-2', css.title)}>
+                            Intent
+                        </div>
+                        <div className={css.description}>
+                            Choose an intent to describe in which cases this macro will be used.
+                        </div>
+                        <UncontrolledButtonDropdown>
+                            <DropdownToggle caret>
+                                {(this.props.intent && humanizeString(this.props.intent.replace('/', ' - '))) ||
+                                'Choose intent'}
+                            </DropdownToggle>
+                            {this.renderIntentMenu()}
+                        </UncontrolledButtonDropdown>
                     </div>
 
                     {
@@ -349,6 +410,8 @@ MacroEdit.propTypes = {
     setActions: PropTypes.func.isRequired,
     setName: PropTypes.func.isRequired,
     hasIntegrationOfTypes: PropTypes.func.isRequired,
+    intent: PropTypes.string,
+    setIntent: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {

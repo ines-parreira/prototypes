@@ -59,6 +59,7 @@ type Props = {
 type State = {
     actions: Map<*, *>,
     name: string,
+    intent: ?string
 }
 
 export default class MacroModal extends React.Component<Props, State> {
@@ -74,6 +75,7 @@ export default class MacroModal extends React.Component<Props, State> {
         this.state = {
             actions: props.currentMacro.get('actions') || fromJS([]),
             name: props.currentMacro.get('name') || '',
+            intent: props.currentMacro.get('intent')
         }
     }
 
@@ -94,6 +96,7 @@ export default class MacroModal extends React.Component<Props, State> {
         // if it is the first time we receive a macro, set its actions
         if (this.props.currentMacro.isEmpty() && !nextProps.currentMacro.isEmpty()) {
             this._setName(nextProps.currentMacro.get('name'))
+            this._setIntent(nextProps.currentMacro.get('intent'))
             this._setActions(nextProps.currentMacro.get('actions'))
         }
 
@@ -101,6 +104,7 @@ export default class MacroModal extends React.Component<Props, State> {
         if (!this.props.currentMacro.isEmpty() && !nextProps.currentMacro.isEmpty()) {
             if (nextProps.currentMacro.get('id') !== this.props.currentMacro.get('id')) {
                 this._setName(nextProps.currentMacro.get('name'))
+                this._setIntent(nextProps.currentMacro.get('intent'))
                 this._setActions(nextProps.currentMacro.get('actions'))
             }
         }
@@ -122,6 +126,7 @@ export default class MacroModal extends React.Component<Props, State> {
         const {toggleCreateMacro} = this.props
         toggleCreateMacro && toggleCreateMacro(true).then(() => {
             this._setName(this.props.currentMacro.get('name'))
+            this._setIntent(this.props.currentMacro.get('intent'))
             this._setActions(this.props.currentMacro.get('actions'))
         })
     }
@@ -132,6 +137,7 @@ export default class MacroModal extends React.Component<Props, State> {
         const newMacro = this.props.currentMacro
             .set('actions', this.state.actions)
             .set('name', this.state.name)
+            .set('intent', this.state.intent)
         return this.props.actions.macro.createMacro(newMacro)
             .then((resp) => {
                 // $FlowFixMe
@@ -143,7 +149,10 @@ export default class MacroModal extends React.Component<Props, State> {
     _updateMacro = (e: Event) => {
         e.preventDefault()
         e.stopPropagation()
-        const updatedMacro = this.props.currentMacro.set('actions', this.state.actions).set('name', this.state.name)
+        const updatedMacro = this.props.currentMacro
+            .set('actions', this.state.actions)
+            .set('name', this.state.name)
+            .set('intent', this.state.intent)
         return this.props.actions.macro.updateMacro(updatedMacro)
             .then((res) => {
                 const macros = this.props.macros
@@ -203,6 +212,10 @@ export default class MacroModal extends React.Component<Props, State> {
 
     _setName = (name: string) => {
         this.setState({name})
+    }
+
+    _setIntent = (intent: ?string) => {
+        this.setState({'intent': intent ? intent : null})
     }
 
     render() {
@@ -383,8 +396,10 @@ export default class MacroModal extends React.Component<Props, State> {
                                         agents={this.props.agents}
                                         name={this.state.name}
                                         actions={this.state.actions}
+                                        intent={this.state.intent}
                                         setActions={this._setActions}
                                         setName={this._setName}
+                                        setIntent={this._setIntent}
                                     />
                                 )
                             }
