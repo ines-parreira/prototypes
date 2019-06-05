@@ -34,12 +34,12 @@ Object {
       "maxContentLength": -1,
       "method": "post",
       "timeout": 180000,
-      "transformRequest": Object {
-        "0": [Function],
-      },
-      "transformResponse": Object {
-        "0": [Function],
-      },
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
       "url": "/api/stats/overview/download",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
@@ -71,12 +71,12 @@ Object {
       "maxContentLength": -1,
       "method": "post",
       "timeout": 180000,
-      "transformRequest": Object {
-        "0": [Function],
-      },
-      "transformResponse": Object {
-        "0": [Function],
-      },
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
       "url": "/api/stats/overview/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
