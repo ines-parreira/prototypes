@@ -4,30 +4,42 @@ import {connect} from 'react-redux'
 import moment from 'moment'
 import throttle from 'lodash/throttle'
 
-import {fetchStat} from '../../../../state/stats/actions'
+import {fromJS} from 'immutable'
+
+import GorgiasApi from '../../../../services/gorgiasApi'
 import {TICKETS_CLOSED_PER_AGENT} from '../../../../config/stats'
 
 import BlankState from './components/BlankState'
-import {getStat} from './../../../../state/stats/selectors'
 
 export const TICKET_CLOSED_BY_CURRENT_AGENT_7_DAYS = 'ticket-closed-current-agent-7-days'
 
 type Props = {
-    fetchStat: typeof fetchStat,
-    totalClosedTickets: ?number,
     currentUser: ?Object,
     message: ?Object | ?string
 }
 
-class BlankStateContainer extends React.Component<Props> {
+type State = {
+    closedTicketsCount: number | null
+}
+
+class BlankStateContainer extends React.Component<Props, State> {
+    gorgiasApi = new GorgiasApi()
+    state = {
+        closedTicketsCount: null
+    }
+
     componentWillMount() {
         this._fetchStatistic(this.props)
+    }
+
+    componentWillUnmount() {
+        this.gorgiasApi.cancelPendingRequests()
     }
 
     /**
      * Get the number of ticket closed by the current agent for the last 7 days
      */
-    _fetchStatistic = throttle((props) => {
+    _fetchStatistic = throttle(async(props) => {
         const filters = {
             agents: [props.currentUser.get('id')],
             period: {
@@ -35,34 +47,31 @@ class BlankStateContainer extends React.Component<Props> {
                 end_datetime: moment().endOf('day').format(),
             }
         }
-        props.fetchStat(TICKETS_CLOSED_PER_AGENT, filters, TICKET_CLOSED_BY_CURRENT_AGENT_7_DAYS)
+        try {
+            const stat = await this.gorgiasApi.getStatistic(TICKETS_CLOSED_PER_AGENT, fromJS({filters}))
+            const closedTicketsCount = stat.getIn(['data', 'data', 'lines', 0, 1, 'value'])
+            this.setState({closedTicketsCount})
+        } catch (error) {
+            // Not important, we will try to fetch this stat next time.
+        }
     }, 15000)
 
     render() {
-        const {message, totalClosedTickets} = this.props
+        const {message} = this.props
+        const {closedTicketsCount} = this.state
 
         return (
             <BlankState
                 message={message}
-                totalClosedTickets={totalClosedTickets}
+                totalClosedTickets={closedTicketsCount}
             />
         )
     }
 }
 
 export default connect((state) => {
-    let totalClosedTickets = 0
-
-    if (state.stats && !state.stats.isEmpty()) {
-        const stat = getStat(TICKET_CLOSED_BY_CURRENT_AGENT_7_DAYS)(state)
-        totalClosedTickets = stat.getIn(['data', 'lines', 0, 1, 'value'])
-    }
-
     return {
-        totalClosedTickets: totalClosedTickets,
         currentUser: state.currentUser
     }
-}, {
-    fetchStat
-})(BlankStateContainer)
+}, {})(BlankStateContainer)
 

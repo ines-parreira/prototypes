@@ -1,18 +1,26 @@
 // @flow
-import {fromJS} from 'immutable'
 import type {Map} from 'immutable'
 import {createSelector} from 'reselect'
 
 import type {stateType} from '../types'
+import {views as statViewsConfig} from '../../config/stats'
 
-export const getStats = (state: stateType) => state.stats || fromJS({})
-
-export const getStat = (statName: string) => createSelector(
-    [getStats],
-    (state: Map<*, *>) => state.get(statName, fromJS({}))
-)
+export const getStatsState = (state: stateType) => state.stats
 
 export const getFilters = createSelector(
-    [getStats],
-    (state: Map<*, *>) => state.getIn(['_internal', 'filters'])
+    [getStatsState],
+    (state: Map<*, *>): Map<*, *> => state.get('filters')
+)
+
+export const getViewFilters = (viewName: string) => createSelector(
+    [getFilters],
+    (globalFilters: Map<*, *>): Map<*, *> | null => {
+        const viewConfig = statViewsConfig.get(viewName)
+        const viewFilterTypes = viewConfig.get('filters').map((filter) => filter.get('type'))
+        if (!globalFilters) {
+            return null
+        }
+
+        return globalFilters.filter((_, filterType) => viewFilterTypes.includes(filterType))
+    }
 )

@@ -1,37 +1,44 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`reducers stats should set a statistic because filters used to fetch the statistic do not need to match current filters 1`] = `
+exports[`reducers stat MERGE_STATS_FILTERS should merge stats filters 1`] = `
 Immutable.Map {
-  "meta": Immutable.Map {
-    "start_datetime": "now",
-  },
-  "data": Immutable.Map {
-    "delta": 4100,
-    "name": "total_new_tickets",
-    "type": "number",
-    "value": 42,
-  },
-  "legend": Immutable.Map {
-    "x": "",
-    "y": "Total new tickets",
+  "filters": Immutable.Map {
+    "score": 4,
+    "tags": Immutable.List [
+      1,
+      2,
+      4,
+    ],
+    "agents": Immutable.List [
+      1,
+    ],
   },
 }
 `;
 
-exports[`reducers stats should set a statistic because the filters used to fetch the statistic match the current filters 1`] = `
+exports[`reducers stat RESET_STATS_FILTERS shoud reset stats filters  1`] = `
 Immutable.Map {
-  "meta": Immutable.Map {
-    "start_datetime": "now",
+  "filters": null,
+}
+`;
+
+exports[`reducers stat SET_STATS_FILTERS should set stats filters 1`] = `
+Immutable.Map {
+  "filters": Immutable.Map {
+    "tags": Immutable.List [
+      1,
+      2,
+      4,
+    ],
+    "agents": Immutable.List [
+      1,
+    ],
   },
-  "data": Immutable.Map {
-    "delta": 4100,
-    "name": "total_new_tickets",
-    "type": "number",
-    "value": 42,
-  },
-  "legend": Immutable.Map {
-    "x": "",
-    "y": "Total new tickets",
-  },
+}
+`;
+
+exports[`reducers stat should return initial state 1`] = `
+Immutable.Map {
+  "filters": null,
 }
 `;

@@ -15,7 +15,7 @@ import type {dispatchType, getStateType} from '../types'
 // https://github.com/facebook/flow/issues/961
 export type notificationType = {
     status: 'success' | 'error' | 'warning' | 'info' | 'loading',
-    message: string,
+    message?: string,
     id?: ?string,
     title?: string,
     dismissAfter?: number,

@@ -14,7 +14,7 @@ exports[`StatsNavbarView should render 1`] = `
         key="Overview"
         onlyActiveOnIndex={false}
         style={Object {}}
-        to="/app/stats/"
+        to="/app/stats/overview"
       >
         Overview
       </Link>

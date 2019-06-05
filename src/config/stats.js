@@ -635,9 +635,9 @@ export const views = fromJS({
 Metrics such as volume of tickets, first response time and resolution time are key when it comes to 
 providing excellent customer support.
 <a href="https://docs.gorgias.io/admin-guide-to-gorgias/statistics#overview">Learn more</a>.`,
-        filters: [{type: 'channels'}, {type: 'agents'}, {type: 'tags'}, {type: 'date'}],
+        filters: [{type: 'channels'}, {type: 'agents'}, {type: 'tags'}, {type: 'period'}],
         // default view available at `app/stats/`
-        link: '',
+        link: 'overview',
         stats: [
             OVERVIEW,
             SUPPORT_VOLUME,
@@ -649,7 +649,7 @@ providing excellent customer support.
         name: 'Tags',
         description: `Tags statistics will show you how many tickets were created during this time period and have a 
 tag attached to them. <a href="https://docs.gorgias.io/admin-guide-to-gorgias/statistics#tags">Learn more</a>.`,
-        filters: [{type: 'channels'}, {type: 'date'}],
+        filters: [{type: 'channels'}, {type: 'period'}],
         link: 'tags',
         stats: [
             TICKETS_PER_TAG,
@@ -660,7 +660,7 @@ tag attached to them. <a href="https://docs.gorgias.io/admin-guide-to-gorgias/st
         description: `Channel statistics to get a clear view of your ticket volume based on the different communication 
 channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...
 <a href="https://docs.gorgias.io/admin-guide-to-gorgias/statistics#channels">Learn more</a>.`,
-        filters: [{type: 'channels'}, {type: 'date'}],
+        filters: [{type: 'channels'}, {type: 'period'}],
         link: 'channels',
         stats: [
             TICKETS_CREATED_PER_CHANNEL_PER_DAY,
@@ -671,7 +671,7 @@ channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...
         name: 'Agents',
         description: `Agents statistics will show you how many tickets were closed by each agent during this period.
 <a href="https://docs.gorgias.io/admin-guide-to-gorgias/statistics#agents">Learn more</a>.`,
-        filters: [{type: 'channels'}, {type: 'date'}],
+        filters: [{type: 'channels'}, {type: 'period'}],
         link: 'agents',
         stats: [
             TICKETS_CLOSED_PER_AGENT_PER_DAY,
@@ -684,7 +684,7 @@ channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...
 It also shows what macros are being used the most often so you can you can provide this information elsewhere in order 
 to help reduce your support inquiries. 
 <a href="https://docs.gorgias.io/admin-guide-to-gorgias/statistics#macros">Learn more</a>.`,
-        filters: [{type: 'channels'}, {type: 'date'}],
+        filters: [{type: 'channels'}, {type: 'period'}],
         link: 'macros',
         stats: [
             MESSAGES_SENT_PER_MACRO
@@ -706,7 +706,7 @@ How many surveys have been sent, response rate, average scores and more. <a href
                 variant: 'star',
                 reverse: true
             },
-            {type: 'agents'}, {type: 'tags'}, {type: 'date'},
+            {type: 'agents'}, {type: 'tags'}, {type: 'period'},
         ],
         link: 'satisfaction',
         stats: [
@@ -724,7 +724,7 @@ helping customers through the purchasing journey.<br/>
                 options: [EMAIL_CHANNEL, CHAT_CHANNEL, AIRCALL_CHANNEL, API_CHANNEL]
             },
             {
-                type: 'date'
+                type: 'period'
             }],
         link: 'revenue',
         stats: [

@@ -3,19 +3,22 @@ import React, {Component} from 'react'
 import {fromJS} from 'immutable'
 import {Button} from 'reactstrap'
 import {connect} from 'react-redux'
+import axios from 'axios'
 
-import {downloadStatistic} from '../../../../../state/stats/actions'
 import * as tagsSelectors from '../../../../../state/tags/selectors'
 import {TICKETS_PER_TAG} from '../../../../../config/stats'
 import css from '../../../style.less'
 import Tooltip from '../../../../common/components/Tooltip'
 import Loader from '../../../../common/components/Loader/Loader'
+import {notify} from '../../../../../state/notifications/actions'
+import GorgiasApi from '../../../../../services/gorgiasApi'
+
+import {saveFileAsDownloaded} from '../../../../../utils/file'
 
 import LineStat from './LineStat'
 import TableStat from './TableStat/TableStat'
 import KeyMetricStat from './KeyMetricStat/KeyMetricStat'
 import BarStat from './BarStat'
-
 
 type Props = {
     data: Object,
@@ -27,7 +30,7 @@ type Props = {
     downloadable?: boolean,
     isLoading?: boolean,
     name: string,
-    downloadStatistic: Function
+    notify: typeof notify
 }
 
 type State = {
@@ -40,17 +43,36 @@ export class Stat extends Component<Props, State> {
         isLoading: false
     }
 
+    gorgiasApi = new GorgiasApi()
     state = {
         isDownloading: false
     }
 
-    _downloadStatistic = () => {
-        const {name, filters} = this.props
+    componentWillUnmount() {
+        this.gorgiasApi.cancelPendingRequests()
+    }
+
+    _downloadStatistic = async() => {
+        const {name, filters, notify} = this.props
 
         this.setState({isDownloading: true})
-        this.props.downloadStatistic(name, filters.toJS())
-            .then(() => this.setState({isDownloading: false}))
-            .catch(() => this.setState({isDownloading: false}))
+        try {
+            const file = await this.gorgiasApi.downloadStatistic(name, fromJS({filters}))
+            saveFileAsDownloaded(file.get('name'), file.get('contentType'), file.get('data'))
+        } catch (error) {
+            if (axios.isCancel(error)) {
+                return
+            }
+
+            const defaultError = 'Failed to download statistics. Please retry in a few seconds.'
+            const serverError = error.response.data.error
+            notify({
+                status: 'error',
+                title: serverError ? serverError.msg : defaultError
+            })
+        } finally {
+            this.setState({isDownloading: false})
+        }
     }
 
     render() {
@@ -152,6 +174,4 @@ export default connect((state, props) => {
             return tagColors.set(tag.get('name'), tag.get('decoration'))
         }, fromJS({}))
     }
-}, {
-    downloadStatistic
-})(Stat)
+}, {notify})(Stat)

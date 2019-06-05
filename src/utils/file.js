@@ -10,11 +10,11 @@ import {MAX_ATTACHMENTS_SIZE} from '../config/editor'
  * We simulate a click on an `a` tag to let the browser
  * captures data attached to the link and saves it as a file.
  *
- * @param {String} data - Date to save
- * @param {String} filename - Name of the file to save
+ * @param {String} name - Name of the file to save
  * @param {String} contentType - content type of the file to save
+ * @param {String} data - Date to save
  */
-export const saveFileAsDownloaded = (data: string, filename: string, contentType: string) => {
+export const saveFileAsDownloaded = (name: string, contentType: string, data: string) => {
     const blob = new Blob([data], {type: contentType || 'application/octet-stream'})
     const blobURL = window.URL.createObjectURL(blob)
     const link = document.createElement('a')
@@ -22,7 +22,7 @@ export const saveFileAsDownloaded = (data: string, filename: string, contentType
 
     link.style.display = 'none'
     link.href = blobURL
-    link.setAttribute('download', filename)
+    link.setAttribute('download', name)
 
     if (typeof link.download === 'undefined') {
         link.setAttribute('target', '_blank')

@@ -13,7 +13,5 @@ exports[`BlankStateContainer should inject props from the redux state 1`] = `
       },
     }
   }
-  fetchStat={[Function]}
-  totalClosedTickets={45}
 />
 `;

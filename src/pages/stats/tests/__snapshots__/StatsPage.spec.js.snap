@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StatsPage should not render statistics because there is no filter 1`] = `""`;
+
+exports[`StatsPage should render "Overview" statistics 1`] = `
+<div
+  className="stats full-width"
+>
+  <withRouter(Connect(StatsFilters)) />
+  <withRouter(Connect(Stats))
+    key="overview-bda01ba4dfda3493e856796c40be4ec6"
+  />
+</div>
+`;
+
+exports[`StatsPage should render a component used to restrict access to revenue statistics 1`] = `<RevenueUpgrade />`;
+
+exports[`StatsPage should render a component used to restrict access to satisfaction survey statistics 1`] = `<RestrictedSatisfactionSurvey />`;

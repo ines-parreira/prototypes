@@ -1,5 +1,5 @@
 import React from 'react'
-import {IndexRoute, Route} from 'react-router'
+import {IndexRedirect, IndexRoute, Route} from 'react-router'
 
 import {ADMIN_ROLE, AGENT_ROLE} from '../config/user'
 
@@ -17,7 +17,7 @@ import CustomerNavbarContainer from './customers/common/CustomerNavbarContainer'
 import CustomerDetailContainer from './customers/detail/CustomerDetailContainer'
 import CustomerSourceContainer from './customers/detail/CustomerSourceContainer'
 import CustomerInfobarContainer from './customers/detail/CustomerInfobarContainer'
-import StatsViewContainer from './stats/StatsViewContainer'
+import StatsPage from './stats/StatsPage'
 
 import YourProfileContainer from './settings/yourProfile/YourProfileContainer'
 import ChangePasswordContainer from './settings/yourProfile/ChangePasswordContainer'
@@ -211,14 +211,16 @@ export default (
                 infobar: TicketListInfobarContainer,
             }}
         />
-
-        <Route
-            path="stats(/:view)"
-            components={{
-                content: StatsViewContainer,
-                navbar: StatsNavbarContainer
-            }}
-        />
+        <Route path="stats">
+            <IndexRedirect to="overview" />
+            <Route
+                path=":view"
+                components={{
+                    content: StatsPage,
+                    navbar: StatsNavbarContainer
+                }}
+            />
+        </Route>
         <Route path="settings">
             <IndexRoute
                 components={{
