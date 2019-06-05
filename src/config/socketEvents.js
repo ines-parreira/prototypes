@@ -7,11 +7,10 @@ import * as chatsActions from '../state/chats/actions'
 
 import * as viewsConstants from '../state/views/constants'
 import * as currentAccountConstants from '../state/currentAccount/constants'
-
+import {notify} from '../state/notifications/actions'
 import {isCurrentlyOnTicket} from '../utils'
-
 import {store as reduxStore} from '../init'
-import {onVerify} from '../state/integrations/actions'
+import {fetchIntegrations, onVerify} from '../state/integrations/actions'
 
 import {MAX_RECENT_CHATS} from './recentChats'
 import * as socketConstants from './socketConstants'
@@ -282,6 +281,18 @@ export const receivedEvents = [{
     name: socketConstants.EMAIL_INTEGRATION_VERIFIED,
     onReceive: function(json) {
         onVerify(reduxStore.dispatch, json.integration_id)
+    }
+}, {
+    name: socketConstants.FACEBOOK_INTEGRATIONS_RECONNECTED,
+    onReceive: function({ event }) {
+        reduxStore.dispatch(fetchIntegrations())
+
+        reduxStore.dispatch(notify({
+            status: 'success',
+            message: event.total === 1
+                ? 'One Facebook page has been reconnected.'
+                : `${event.total} Facebook pages have been reconnected.`
+        }))
     }
 }
 ]

@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FacebookLoginButton component should render a log in link 1`] = `
+<Connect(FacebookLoginButton)
+  link={true}
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <FacebookLoginButton
+    dispatch={[Function]}
+    link={true}
+    reconnect={false}
+    redirectUri="https://.../"
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+  >
+    <a
+      href="https://.../"
+    >
+      Login with Facebook
+    </a>
+  </FacebookLoginButton>
+</Connect(FacebookLoginButton)>
+`;
+
+exports[`FacebookLoginButton component should render a reconnect button 1`] = `
+<Connect(FacebookLoginButton)
+  reconnect={true}
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <FacebookLoginButton
+    dispatch={[Function]}
+    link={false}
+    reconnect={true}
+    redirectUri="https://.../?reconnect"
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+  >
+    <Button
+      color="success"
+      href="https://.../?reconnect"
+      tag="a"
+    >
+      <a
+        className="btn btn-success"
+        href="https://.../?reconnect"
+        onClick={[Function]}
+      >
+        Reconnect
+      </a>
+    </Button>
+  </FacebookLoginButton>
+</Connect(FacebookLoginButton)>
+`;

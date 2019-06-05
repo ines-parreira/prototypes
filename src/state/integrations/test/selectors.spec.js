@@ -3,18 +3,21 @@ import {fromJS} from 'immutable'
 import {FACEBOOK_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE} from '../../../constants/integration'
 
 import {
-    getIntegrationsState,
-    getIntegrations,
-    getEmailIntegrations,
+    getChannelByTypeAndAddress,
     getChannels,
+    getChannelSignature,
+    getChatIntegrationCampaignById,
+    getChatIntegrationCampaigns,
+    getCurrentIntegration,
+    getEmailIntegrations,
+    getFacebookRedirectUri,
+    getIntegrations,
+    getIntegrationsState,
+    getOnboardingIntegrations,
+    getOnboardingMeta,
+    getShopifyIntegrationByShopName,
     getShopifyIntegrationsWithoutChat,
     getShopifyIntegrationsWithoutFacebook,
-    getShopifyIntegrationByShopName,
-    getChatIntegrationCampaigns,
-    getChatIntegrationCampaignById,
-    getChannelByTypeAndAddress,
-    getChannelSignature,
-    getCurrentIntegration, getOnboardingIntegrations, getOnboardingMeta,
 } from '../selectors'
 import {integrationsState} from '../../../fixtures/integrations'
 
@@ -347,6 +350,35 @@ describe('integrations selectors', () => {
 
                 expect(getOnboardingMeta(integrationType)(state).toJS()).toEqual(meta)
             })
+        })
+    })
+
+    describe('getRedirectUri selector', () => {
+        const FAKE_URI = 'https://.../'
+        const FAKE_URI_RECONNECT = 'https://.../?reconnect'
+        let state
+
+        beforeEach(() => {
+            state = {
+                integrations: fromJS({
+                    authentication: {
+                        facebook: {
+                            redirect_uri_reconnect: FAKE_URI_RECONNECT,
+                            redirect_uri: FAKE_URI
+                        }
+                    }
+                })
+            }
+        })
+
+        it('should return the login URI', () => {
+            const uri = getFacebookRedirectUri()(state)
+            expect(uri).toEqual(FAKE_URI)
+        })
+
+        it('should return the reconnect URI', () => {
+            const uri = getFacebookRedirectUri(true)(state)
+            expect(uri).toEqual(FAKE_URI_RECONNECT)
         })
     })
 })

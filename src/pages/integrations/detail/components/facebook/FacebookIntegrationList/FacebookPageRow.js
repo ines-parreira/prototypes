@@ -1,28 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router'
-import {connect} from 'react-redux'
 
-import ForwardIcon from '../ForwardIcon'
-import ToggleButton from '../../../../common/components/ToggleButton'
-import * as integrationsActions from '../../../../../state/integrations/actions'
+import ForwardIcon from '../../ForwardIcon'
 
-@connect(null, {
-    activate: integrationsActions.activateIntegration,
-    deactivate: integrationsActions.deactivateIntegration,
-})
+import FacebookLoginButton from '../FacebookLoginButton'
+
 export default class FacebookPageRow extends React.Component {
     static propTypes = {
         integration: PropTypes.object.isRequired,
-        activate: PropTypes.func.isRequired,
-        deactivate: PropTypes.func.isRequired,
     }
-
-    _toggleIntegration = (value) => {
-        const integrationId = this.props.integration.get('id')
-        return value ? this.props.activate(integrationId) : this.props.deactivate(integrationId)
-    }
-
 
     render() {
         const {integration} = this.props
@@ -59,14 +46,13 @@ export default class FacebookPageRow extends React.Component {
                         </div>
                     </Link>
                 </td>
-                <td className="smallest align-middle">
-                    <ToggleButton
-                        value={!isDisabled}
-                        onChange={this._toggleIntegration}
-                    />
+                <td className="smallest align-middle p-0">
+                    <div>
+                        {isDisabled && <FacebookLoginButton reconnect />}
+                    </div>
                 </td>
                 <td className="smallest align-middle">
-                    <ForwardIcon href={editLink} />
+                    <ForwardIcon href={editLink}/>
                 </td>
             </tr>
         )

@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FacebookPageRow component should not render non-facebook integration 1`] = `null`;
+
+exports[`FacebookPageRow component should render facebook integration 1`] = `
+<tr
+  class="FacebookPageRow"
+>
+  <td
+    class="smallest"
+  >
+    <img
+      alt="My Page"
+      class="rounded"
+      src="https://fake.url/picture.jpg"
+      style="height:23px;max-width:23px;overflow:hidden"
+    />
+  </td>
+  <td
+    class="link-full-td"
+  >
+    <a>
+      <div>
+        <b
+          class="mr-2"
+        >
+          My Page
+        </b>
+        <span
+          class="text-faded"
+        >
+          Category
+        </span>
+      </div>
+    </a>
+  </td>
+  <td
+    class="smallest align-middle p-0"
+  >
+    <div />
+  </td>
+  <td
+    class="smallest align-middle"
+  >
+    <a>
+      <i
+        class="material-icons md-2 align-middle icon-go-forward"
+      >
+        keyboard_arrow_right
+      </i>
+    </a>
+  </td>
+</tr>
+`;

@@ -24,7 +24,7 @@ class IntegrationList extends React.Component {
         integrations: PropTypes.object.isRequired, // The integrations for the relevant type only
         createIntegration: PropTypes.func.isRequired, // The callback to create a new integration for this type.
         createIntegrationButtonClassName: PropTypes.string, // custom class name for the create integration button
-        createIntegrationButtonContent: PropTypes.oneOf([PropTypes.string, PropTypes.object]).isRequired, // The content of the button to create a new integration
+        createIntegrationButtonContent: PropTypes.node.isRequired, // The content of the button to create a new integration
         createIntegrationButtonOnClick: PropTypes.func, // function executed when user click on button to create a new integration
         longTypeDescription: PropTypes.node,
         loading: PropTypes.object.isRequired,  // A map for different loading status(es)

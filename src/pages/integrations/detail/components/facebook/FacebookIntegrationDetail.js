@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Link, browserHistory} from 'react-router'
+import {Link} from 'react-router'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import _truncate from 'lodash/truncate'
@@ -8,9 +8,6 @@ import {
     Alert,
     FormGroup,
     Button,
-    Popover,
-    PopoverHeader,
-    PopoverBody,
     Breadcrumb,
     BreadcrumbItem, Container,
 } from 'reactstrap'
@@ -24,6 +21,7 @@ import ConfirmButton from '../../../../common/components/ConfirmButton'
 import pageIconDefault from '../../../../../../img/integrations/facebook-page.png'
 
 import FacebookIntegrationNavigation from './FacebookIntegrationNavigation'
+import FacebookLoginButton from './FacebookLoginButton'
 
 export default class FacebookIntegrationDetail extends React.Component {
     state = {
@@ -32,7 +30,6 @@ export default class FacebookIntegrationDetail extends React.Component {
             messenger_enabled: true,
             import_history_enabled: true,
         },
-        askDisableConfirmation: false,
     }
 
     componentWillMount() {
@@ -70,21 +67,10 @@ export default class FacebookIntegrationDetail extends React.Component {
         actions.updateOrCreateIntegration(updated)
     }
 
-    _disable = () => {
-        this.setState({askDisableConfirmation: false})
-        this.props.actions.deactivateIntegration(this.props.integration.get('id'))
-        browserHistory.push('/app/settings/integrations/facebook')
-    }
-
-    _toggleDisableConfirmation = () => {
-        this.setState({askDisableConfirmation: !this.state.askDisableConfirmation})
-    }
-
     render() {
         const {integration, loading, actions} = this.props
 
         const page = integration.get('facebook') || fromJS({})
-        const isDisabled = integration.get('deactivated_datetime')
 
         const integrationScope = integration.getIn(['meta', 'oauth', 'scope']) || fromJS([])
         const doesntHaveInstagramPermissions = !integrationScope.includes('instagram_basic')
@@ -99,18 +85,26 @@ export default class FacebookIntegrationDetail extends React.Component {
                     <i className="material-icons md-2 mr-2">
                         warning
                     </i>
-                    Instagram is disabled because we miss the required permissions. Please go to the{' '}
-                    <Link to="/app/settings/integrations/facebook">Facebook integrations list</Link> and click on{' '}
-                    Login with Facebook to update your permissions.
+                    Instagram is disabled because we miss the required permissions. Please{' '}
+                    <FacebookLoginButton
+                        reconnect
+                        link
+                    >
+                        click here to update your permissions
+                    </FacebookLoginButton>.
                 </Alert>
             )
         } else if (doesntHaveInstagramId) {
             disabledInstagramComponent = (
                 <Alert color="warning">
                     You cannot activate Instagram on this page: it is not associated with any Instagram account.<br/>
-                    If you just associated the page with an Instagram account, please go to the{' '}
-                    <Link to="/app/settings/integrations/facebook">Facebook integrations list</Link> and click on{' '}
-                    Login with Facebook to update your integrations.
+                    If you just associated the page with an Instagram account, please{' '}
+                    <FacebookLoginButton
+                        reconnect
+                        link
+                    >
+                        click here to update your integrations
+                    </FacebookLoginButton>.
                 </Alert>
             )
         }
@@ -207,41 +201,7 @@ export default class FacebookIntegrationDetail extends React.Component {
                         >
                             Save changes
                         </Button>
-                        {
-                            !isDisabled && (
-                                <span>
-                                    <Button
-                                        type="submit"
-                                        color="warning"
-                                        outline
-                                        id="disable-integration-button"
-                                        onClick={this._toggleDisableConfirmation}
-                                    >
-                                    Disable this page
-                                    </Button>
-                                    <Popover
-                                        placement="bottom"
-                                        isOpen={this.state.askDisableConfirmation}
-                                        target="disable-integration-button"
-                                        toggle={this._toggleDisableConfirmation}
-                                    >
-                                        <PopoverHeader>Are you sure?</PopoverHeader>
-                                        <PopoverBody>
-                                            <p>
-                                            This page will not be synchronised with Gorgias anymore.
-                                            </p>
-                                            <Button
-                                                type="submit"
-                                                color="success"
-                                                onClick={this._disable}
-                                            >
-                                            Confirm
-                                            </Button>
-                                        </PopoverBody>
-                                    </Popover>
-                                </span>
-                            )
-                        }
+                        <FacebookLoginButton reconnect />
                         <ConfirmButton
                             color="secondary"
                             className="float-right"

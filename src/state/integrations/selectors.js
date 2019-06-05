@@ -6,12 +6,14 @@ import _isArray from 'lodash/isArray'
 import {
     EMAIL_INTEGRATION_TYPE,
     EMAIL_INTEGRATION_TYPES,
+    FACEBOOK_INTEGRATION_TYPE,
     MESSAGING_INTEGRATION_TYPES
 } from '../../constants/integration'
 
 import {compare} from '../../utils'
 
 import type {stateType} from '../types'
+
 type typesType = Array<string> | string
 
 export const getIntegrationsState = (state: stateType) => state.integrations || fromJS({})
@@ -136,6 +138,11 @@ export const getAuthData = (type: string) => createSelector(
 export const getRedirectUri = (type: string) => createSelector(
     [getAuthData(type)],
     (state) => state.get('redirect_uri', '')
+)
+
+export const getFacebookRedirectUri = (reconnect: boolean = false) => createSelector(
+    [getAuthData(FACEBOOK_INTEGRATION_TYPE)],
+    (state) => state.get(reconnect ? 'redirect_uri_reconnect' : 'redirect_uri', '')
 )
 
 export const makeGetRedirectUri = (state: stateType) => (type: string) => getRedirectUri(type)(state)

@@ -3,9 +3,11 @@ import _isArray from 'lodash/isArray'
 import _isObject from 'lodash/isObject'
 
 import {CLOSED_STATUS, OPEN_STATUS} from '../../constants/ticket'
-import {TICKET_CHAT_UPDATED} from '../socketConstants'
+import {FACEBOOK_INTEGRATIONS_RECONNECTED, TICKET_CHAT_UPDATED} from '../socketConstants'
 import * as socketEvents from '../socketEvents'
 import * as chatActions from '../../state/chats/actions'
+import * as integrationActions from '../../state/integrations/actions'
+import * as notificationActions from '../../state/notifications/actions'
 
 
 jest.mock('../../state/chats/actions', () => {
@@ -219,6 +221,32 @@ describe('Config: socketEvents', () => {
 
                 ticketChatUpdatedHandler.onReceive({data: ticket})
                 expect(chatActions.fetchChatsThrottled).toHaveBeenCalled()
+            })
+        })
+
+        describe('FACEBOOK_INTEGRATIONS_RECONNECTED handler', () => {
+            const handler = _find(receivedEvents, {name: FACEBOOK_INTEGRATIONS_RECONNECTED})
+
+            it('should fetch integrations', () => {
+                const spy = jest.spyOn(integrationActions, 'fetchIntegrations')
+                handler.onReceive({ event: { total: 1 }})
+                expect(spy).toHaveBeenCalled()
+            })
+
+            it('should notify', () => {
+                const spy = jest.spyOn(notificationActions, 'notify')
+
+                handler.onReceive({ event: { total: 1 }})
+                expect(spy).toHaveBeenCalledWith({
+                    status: 'success',
+                    message: 'One Facebook page has been reconnected.'
+                })
+
+                handler.onReceive({ event: { total: 2 }})
+                expect(spy).toHaveBeenCalledWith({
+                    status: 'success',
+                    message: '2 Facebook pages have been reconnected.'
+                })
             })
         })
     })

@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import ImmutablePropsTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 
-import {getIconFromUrl} from '../../../../../state/integrations/helpers'
-import IntegrationList from '../../components/IntegrationList'
-import * as integrationsSelectors from '../../../../../state/integrations/selectors'
+import {getIconFromUrl} from '../../../../../../state/integrations/helpers'
+import IntegrationList from '../../IntegrationList'
+import * as integrationsSelectors from '../../../../../../state/integrations/selectors'
 
 import FacebookPageRow from './FacebookPageRow'
 
