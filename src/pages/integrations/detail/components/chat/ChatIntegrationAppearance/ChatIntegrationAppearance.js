@@ -142,7 +142,7 @@ class ChatIntegrationAppearance extends React.Component<Props, State> {
             form.id = this.props.integration.get('id')
             form.meta = {
                 ...this.props.integration.get('meta').toJS(),
-                ...form.meta
+                language: this.state.language
             }
         }
 
