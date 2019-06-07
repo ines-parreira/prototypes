@@ -158,7 +158,12 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                           tabIndex="0"
                           type="button"
                         >
-                          None
+                          <i
+                            className="icon material-icons"
+                          >
+                            clear
+                          </i>
+                          Clear intent
                         </button>
                       </DropdownItem>
                       <DropdownItem

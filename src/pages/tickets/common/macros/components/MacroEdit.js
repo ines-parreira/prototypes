@@ -124,7 +124,10 @@ export class MacroEdit extends React.Component {
                 <DropdownItem
                     type="button"
                     onClick={() => this.props.setIntent(null)}>
-                    { humanizeString('none') }
+                    <i className="icon material-icons">
+                        clear
+                    </i>
+                    { humanizeString('clear intent') }
                 </DropdownItem>
                 {
                     intents.entrySeq().sort().map(([category, subIntents]) => {
