@@ -1,0 +1,705 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SmoochIntegrationDetail/> render() should render an active integration 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/smooch"
+          >
+            Smooch
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          My smooch app
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Overview
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <SmoochIntegrationNavigation
+    integration={
+      Immutable.Map {
+        "id": 1,
+        "name": "My smooch app",
+        "type": "smooch",
+        "meta": Immutable.Map {
+          "language": "da",
+          "oauth": Immutable.Map {
+            "status": "success",
+          },
+        },
+        "deactivated_datetime": null,
+      }
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        md="8"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <InputField
+            label="Smooch app name"
+            name="name"
+            onChange={[Function]}
+            placeholder="The name of your Smooch app"
+            required={true}
+            type="text"
+            value="My smooch app"
+          />
+          <InputField
+            label="Language"
+            onChange={[Function]}
+            options={
+              Array [
+                Object {
+                  "label": "English US",
+                  "value": "en-US",
+                },
+                Object {
+                  "label": "French",
+                  "value": "fr",
+                },
+                Object {
+                  "label": "Spanish",
+                  "value": "es",
+                },
+                Object {
+                  "label": "Danish",
+                  "value": "da",
+                },
+                Object {
+                  "label": "Swedish",
+                  "value": "sv",
+                },
+                Object {
+                  "label": "Italian",
+                  "value": "it",
+                },
+                Object {
+                  "label": "Dutch",
+                  "value": "nl",
+                },
+                Object {
+                  "label": "German",
+                  "value": "de",
+                },
+              ]
+            }
+            type="select"
+            value="da"
+          >
+            <option
+              key="en-US"
+              value="en-US"
+            >
+              English US
+            </option>
+            <option
+              key="fr"
+              value="fr"
+            >
+              French
+            </option>
+            <option
+              key="es"
+              value="es"
+            >
+              Spanish
+            </option>
+            <option
+              key="da"
+              value="da"
+            >
+              Danish
+            </option>
+            <option
+              key="sv"
+              value="sv"
+            >
+              Swedish
+            </option>
+            <option
+              key="it"
+              value="it"
+            >
+              Italian
+            </option>
+            <option
+              key="nl"
+              value="nl"
+            >
+              Dutch
+            </option>
+            <option
+              key="de"
+              value="de"
+            >
+              German
+            </option>
+          </InputField>
+          <div>
+            <Button
+              className=""
+              color="success"
+              disabled={false}
+              tag="button"
+              type="submit"
+            >
+              Save changes
+            </Button>
+            <Button
+              className="ml-2"
+              color="warning"
+              disabled={false}
+              onClick={[Function]}
+              outline={true}
+              tag="button"
+              type="button"
+            >
+              Deactivate
+            </Button>
+            <ConfirmButton
+              className="float-right"
+              color="secondary"
+              confirm={[Function]}
+              confirmColor="success"
+              content="Are you sure you want to delete this integration?"
+              disabled={false}
+              loading={false}
+              placement="bottom"
+              skip={false}
+              title="Are you sure?"
+              type="button"
+            >
+              <i
+                className="material-icons mr-1 text-danger"
+              >
+                delete
+              </i>
+              Delete integration
+            </ConfirmButton>
+          </div>
+        </Form>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
+
+exports[`<SmoochIntegrationDetail/> render() should render an inactive integration 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/smooch"
+          >
+            Smooch
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          My smooch app
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Overview
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <SmoochIntegrationNavigation
+    integration={
+      Immutable.Map {
+        "id": 1,
+        "name": "My smooch app",
+        "type": "smooch",
+        "meta": Immutable.Map {
+          "language": "da",
+          "oauth": Immutable.Map {
+            "status": "success",
+          },
+        },
+        "deactivated_datetime": "2019-01-01 00:00:00",
+      }
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        md="8"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <InputField
+            label="Smooch app name"
+            name="name"
+            onChange={[Function]}
+            placeholder="The name of your Smooch app"
+            required={true}
+            type="text"
+            value="My smooch app"
+          />
+          <InputField
+            label="Language"
+            onChange={[Function]}
+            options={
+              Array [
+                Object {
+                  "label": "English US",
+                  "value": "en-US",
+                },
+                Object {
+                  "label": "French",
+                  "value": "fr",
+                },
+                Object {
+                  "label": "Spanish",
+                  "value": "es",
+                },
+                Object {
+                  "label": "Danish",
+                  "value": "da",
+                },
+                Object {
+                  "label": "Swedish",
+                  "value": "sv",
+                },
+                Object {
+                  "label": "Italian",
+                  "value": "it",
+                },
+                Object {
+                  "label": "Dutch",
+                  "value": "nl",
+                },
+                Object {
+                  "label": "German",
+                  "value": "de",
+                },
+              ]
+            }
+            type="select"
+            value="da"
+          >
+            <option
+              key="en-US"
+              value="en-US"
+            >
+              English US
+            </option>
+            <option
+              key="fr"
+              value="fr"
+            >
+              French
+            </option>
+            <option
+              key="es"
+              value="es"
+            >
+              Spanish
+            </option>
+            <option
+              key="da"
+              value="da"
+            >
+              Danish
+            </option>
+            <option
+              key="sv"
+              value="sv"
+            >
+              Swedish
+            </option>
+            <option
+              key="it"
+              value="it"
+            >
+              Italian
+            </option>
+            <option
+              key="nl"
+              value="nl"
+            >
+              Dutch
+            </option>
+            <option
+              key="de"
+              value="de"
+            >
+              German
+            </option>
+          </InputField>
+          <div>
+            <Button
+              className=""
+              color="success"
+              disabled={false}
+              tag="button"
+              type="submit"
+            >
+              Save changes
+            </Button>
+            <Button
+              className="ml-2"
+              color="success"
+              disabled={false}
+              onClick={[Function]}
+              tag="button"
+              type="button"
+            >
+              Re-activate
+            </Button>
+            <ConfirmButton
+              className="float-right"
+              color="secondary"
+              confirm={[Function]}
+              confirmColor="success"
+              content="Are you sure you want to delete this integration?"
+              disabled={false}
+              loading={false}
+              placement="bottom"
+              skip={false}
+              title="Are you sure?"
+              type="button"
+            >
+              <i
+                className="material-icons mr-1 text-danger"
+              >
+                delete
+              </i>
+              Delete integration
+            </ConfirmButton>
+          </div>
+        </Form>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
+
+exports[`<SmoochIntegrationDetail/> render() should render an integration which is currently being submitted 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/smooch"
+          >
+            Smooch
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          My smooch app
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Overview
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <SmoochIntegrationNavigation
+    integration={
+      Immutable.Map {
+        "id": 1,
+        "name": "My smooch app",
+        "type": "smooch",
+        "meta": Immutable.Map {
+          "language": "da",
+          "oauth": Immutable.Map {
+            "status": "success",
+          },
+        },
+        "deactivated_datetime": null,
+      }
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        md="8"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <InputField
+            label="Smooch app name"
+            name="name"
+            onChange={[Function]}
+            placeholder="The name of your Smooch app"
+            required={true}
+            type="text"
+            value="My smooch app"
+          />
+          <InputField
+            label="Language"
+            onChange={[Function]}
+            options={
+              Array [
+                Object {
+                  "label": "English US",
+                  "value": "en-US",
+                },
+                Object {
+                  "label": "French",
+                  "value": "fr",
+                },
+                Object {
+                  "label": "Spanish",
+                  "value": "es",
+                },
+                Object {
+                  "label": "Danish",
+                  "value": "da",
+                },
+                Object {
+                  "label": "Swedish",
+                  "value": "sv",
+                },
+                Object {
+                  "label": "Italian",
+                  "value": "it",
+                },
+                Object {
+                  "label": "Dutch",
+                  "value": "nl",
+                },
+                Object {
+                  "label": "German",
+                  "value": "de",
+                },
+              ]
+            }
+            type="select"
+            value="da"
+          >
+            <option
+              key="en-US"
+              value="en-US"
+            >
+              English US
+            </option>
+            <option
+              key="fr"
+              value="fr"
+            >
+              French
+            </option>
+            <option
+              key="es"
+              value="es"
+            >
+              Spanish
+            </option>
+            <option
+              key="da"
+              value="da"
+            >
+              Danish
+            </option>
+            <option
+              key="sv"
+              value="sv"
+            >
+              Swedish
+            </option>
+            <option
+              key="it"
+              value="it"
+            >
+              Italian
+            </option>
+            <option
+              key="nl"
+              value="nl"
+            >
+              Dutch
+            </option>
+            <option
+              key="de"
+              value="de"
+            >
+              German
+            </option>
+          </InputField>
+          <div>
+            <Button
+              className="btn-loading"
+              color="success"
+              disabled={true}
+              tag="button"
+              type="submit"
+            >
+              Save changes
+            </Button>
+            <Button
+              className="ml-2 btn-loading"
+              color="warning"
+              disabled={true}
+              onClick={[Function]}
+              outline={true}
+              tag="button"
+              type="button"
+            >
+              Deactivate
+            </Button>
+            <ConfirmButton
+              className="float-right"
+              color="secondary"
+              confirm={[Function]}
+              confirmColor="success"
+              content="Are you sure you want to delete this integration?"
+              disabled={false}
+              loading={false}
+              placement="bottom"
+              skip={false}
+              title="Are you sure?"
+              type="button"
+            >
+              <i
+                className="material-icons mr-1 text-danger"
+              >
+                delete
+              </i>
+              Delete integration
+            </ConfirmButton>
+          </div>
+        </Form>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;

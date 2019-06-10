@@ -354,10 +354,8 @@ class IntegrationDetailContainer extends React.Component {
                     return (
                         <SmoochIntegrationDetail
                             integration={commonProps.integration}
-                            isUpdate={isUpdate}
                             actions={actions}
                             loading={commonProps.loading}
-                            redirectUri={redirectUri}
                         />
                     )
                 }

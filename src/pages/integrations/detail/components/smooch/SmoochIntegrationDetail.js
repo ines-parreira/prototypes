@@ -1,10 +1,8 @@
+// @flow
 import React from 'react'
-import PropTypes from 'prop-types'
 import {Link, withRouter} from 'react-router'
-import {fromJS} from 'immutable'
+import {fromJS, type Map} from 'immutable'
 import classNames from 'classnames'
-import _isEmpty from 'lodash/isEmpty'
-import _pick from 'lodash/pick'
 import {
     Button,
     Breadcrumb,
@@ -15,97 +13,94 @@ import {
     Col,
 } from 'reactstrap'
 
+import {SMOOCH_LANGUAGE_DEFAULT, SMOOCH_LANGUAGE_OPTIONS} from '../../../../../config/integrations/smooch'
+
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import InputField from '../../../../common/forms/InputField'
-
 import Loader from '../../../../common/components/Loader'
 import PageHeader from '../../../../common/components/PageHeader'
 
 import SmoochIntegrationNavigation from './SmoochIntegrationNavigation'
 
-class SmoochIntegrationDetail extends React.Component {
-    constructor(props) {
-        super(props)
 
-        // used to know if form has been asynchronously initialized when updating
-        this.isInitialized = !props.isUpdate
-    }
+type Props = {
+    integration: Map<*,*>,
+    actions: Object,
+    loading: Map<*,*>,
+
+    location: Object
+}
+
+type State = {
+    name: string,
+    language: string
+}
+
+export class SmoochIntegrationDetail extends React.Component<Props, State> {
+    isInitialized: boolean = false
 
     state = {
-        name: ''
+        name: '',
+        language: SMOOCH_LANGUAGE_DEFAULT
     }
 
     componentDidMount() {
-        if (!this.state.integration && !this.props.integration.isEmpty()) {
-            this.setState({name: this.props.integration.get('name')})
+        if (!this.props.integration.isEmpty()) {
+            this.setState({
+                name: this.props.integration.get('name'),
+                language: this.props.integration.getIn(['meta', 'language']) || SMOOCH_LANGUAGE_DEFAULT
+            })
             this.isInitialized = true
         }
     }
 
-    componentWillUpdate(nextProps) {
-        const {integration, isUpdate, loading} = nextProps
+    componentWillUpdate(nextProps: Props) {
+        const {integration} = nextProps
 
-        // populating the form when updating an integration
-        if (!this.isInitialized && isUpdate && !loading.get('integration')) {
-            this.setState({name: integration.get('name')})
+        if (!this.isInitialized && !integration.isEmpty()) {
+            this.setState({
+                name: integration.get('name'),
+                language: integration.getIn(['meta', 'language']) || SMOOCH_LANGUAGE_DEFAULT
+            })
             this.isInitialized = true
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (_isEmpty(this.props.integration.toJS()) && !_isEmpty(nextProps.integration.toJS())) {
-            const authenticationRequired = nextProps.integration.getIn(['meta', 'oauth', 'status']) === 'pending'
-            const isAuthenticating = nextProps.location.query.action === 'authentication'
+    componentWillReceiveProps(nextProps: Props) {
+        const isAuthenticating = nextProps.location.query.action === 'authentication'
 
-            if (isAuthenticating) {
-                if (authenticationRequired) {
-                    setTimeout(
-                        nextProps.actions.fetchIntegration(
-                            nextProps.integration.get('id'),
-                            nextProps.integration.get('type'),
-                            true)
-                        , 3000)
-                } else {
-                    nextProps.actions.triggerCreateSuccess(nextProps.integration.toJS())
-                }
-            }
+        if (this.props.integration.isEmpty() && !nextProps.integration.isEmpty() && isAuthenticating) {
+            nextProps.actions.triggerCreateSuccess(nextProps.integration.toJS())
         }
     }
 
-    _addNewSmooch = () => {
-        window.location.href = this.props.redirectUri
+    _setName = (name: string) => {
+        this.setState({name})
     }
 
-    _handleSubmit = (e) => {
-        e.preventDefault()
-        if (!this.props.isUpdate) {
-            return this._addNewSmooch()
-        }
+    _setLanguage = (language: string) => {
+        this.setState({language})
+    }
 
-        let doc = fromJS({
-            name: this.state.name
+    _handleSubmit = (event: SyntheticEvent<*>) => {
+        event.preventDefault()
+
+        const integrationData = fromJS({
+            id: this.props.integration.get('id'),
+            name: this.state.name,
+            meta: this.props.integration.get('meta').set('language', this.state.language)
         })
 
-        // only update
-        const integration = this.props.integration
-        doc = fromJS(_pick(doc.set('id', integration.get('id')).toJS(), ['id', 'name']))
-        return this.props.actions.updateOrCreateIntegration(doc)
-    }
-
-    _isSubmitting = () => {
-        const {loading, integration} = this.props
-        return loading.get('updateIntegration') === integration.get('id', true)
+        return this.props.actions.updateOrCreateIntegration(integrationData)
     }
 
     render() {
-        const {actions, integration, isUpdate, loading} = this.props
+        const {actions, integration, loading} = this.props
 
-        const isSubmitting = this._isSubmitting()
+        const isSubmitting = loading.get('updateIntegration') === integration.get('id')
         const isActive = !integration.get('deactivated_datetime')
 
-        const authenticationRequired = this.props.integration.getIn(['meta', 'oauth', 'status']) === 'pending'
-
-        const ctaIsLoading = isSubmitting || authenticationRequired
+        const ctaIsLoading = isSubmitting
 
         if (loading.get('integration')) {
             return <Loader/>
@@ -121,16 +116,12 @@ class SmoochIntegrationDetail extends React.Component {
                         <BreadcrumbItem>
                             <Link to="/app/settings/integrations/smooch">Smooch</Link>
                         </BreadcrumbItem>
-                        <BreadcrumbItem active={!isUpdate}>
-                            {isUpdate ? integration.get('name') : 'Add'}
+                        <BreadcrumbItem>
+                            {integration.get('name')}
                         </BreadcrumbItem>
-                        {
-                            isUpdate && (
-                                <BreadcrumbItem active>
-                                    Overview
-                                </BreadcrumbItem>
-                            )
-                        }
+                        <BreadcrumbItem active>
+                            Overview
+                        </BreadcrumbItem>
                     </Breadcrumb>
                 )}/>
 
@@ -143,19 +134,34 @@ class SmoochIntegrationDetail extends React.Component {
                     <Row>
                         <Col md="8">
                             <Form onSubmit={this._handleSubmit}>
-                                {
-                                    isUpdate && (
-                                        <InputField
-                                            type="text"
-                                            name="name"
-                                            label="Smooch app name"
-                                            placeholder="The name of your Smooch app"
-                                            value={this.state.name}
-                                            onChange={(name) => this.setState({name})}
-                                            required
-                                        />
-                                    )
-                                }
+                                <InputField
+                                    type="text"
+                                    name="name"
+                                    label="Smooch app name"
+                                    placeholder="The name of your Smooch app"
+                                    value={this.state.name}
+                                    onChange={this._setName}
+                                    required
+                                />
+
+                                <InputField
+                                    type="select"
+                                    value={this.state.language}
+                                    options={SMOOCH_LANGUAGE_OPTIONS.toJS()}
+                                    onChange={this._setLanguage}
+                                    label="Language"
+                                >
+                                    {
+                                        SMOOCH_LANGUAGE_OPTIONS.map((option) => (
+                                            <option
+                                                key={option.get('value')}
+                                                value={option.get('value')}
+                                            >
+                                                {option.get('label')}
+                                            </option>
+                                        ))
+                                    }
+                                </InputField>
 
                                 <div>
                                     <Button
@@ -166,11 +172,11 @@ class SmoochIntegrationDetail extends React.Component {
                                         })}
                                         disabled={ctaIsLoading}
                                     >
-                                        {isUpdate ? 'Save changes' : 'Connect my Smooch'}
+                                        Save changes
                                     </Button>
 
                                     {
-                                        !authenticationRequired && isUpdate && isActive && (
+                                        isActive ? (
                                             <Button
                                                 type="button"
                                                 color="warning"
@@ -183,11 +189,7 @@ class SmoochIntegrationDetail extends React.Component {
                                             >
                                                 Deactivate
                                             </Button>
-                                        )
-                                    }
-
-                                    {
-                                        !authenticationRequired && isUpdate && !isActive && (
+                                        ) : (
                                             <Button
                                                 type="button"
                                                 color="success"
@@ -202,21 +204,17 @@ class SmoochIntegrationDetail extends React.Component {
                                         )
                                     }
 
-                                    {
-                                        isUpdate && (
-                                            <ConfirmButton
-                                                className="float-right"
-                                                color="secondary"
-                                                confirm={() => actions.deleteIntegration(integration)}
-                                                content="Are you sure you want to delete this integration?"
-                                            >
-                                                <i className="material-icons mr-1 text-danger">
-                                                    delete
-                                                </i>
-                                                Delete integration
-                                            </ConfirmButton>
-                                        )
-                                    }
+                                    <ConfirmButton
+                                        className="float-right"
+                                        color="secondary"
+                                        confirm={() => actions.deleteIntegration(integration)}
+                                        content="Are you sure you want to delete this integration?"
+                                    >
+                                        <i className="material-icons mr-1 text-danger">
+                                            delete
+                                        </i>
+                                        Delete integration
+                                    </ConfirmButton>
                                 </div>
                             </Form>
                         </Col>
@@ -225,19 +223,6 @@ class SmoochIntegrationDetail extends React.Component {
             </div>
         )
     }
-}
-
-SmoochIntegrationDetail.propTypes = {
-    integration: PropTypes.object.isRequired,
-    isUpdate: PropTypes.bool.isRequired,
-    actions: PropTypes.object.isRequired,
-    loading: PropTypes.object.isRequired,
-
-    redirectUri: PropTypes.string.isRequired,
-
-    // Router
-    location: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired
 }
 
 export default withRouter(SmoochIntegrationDetail)
