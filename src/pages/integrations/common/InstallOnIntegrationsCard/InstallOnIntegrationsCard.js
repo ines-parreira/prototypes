@@ -44,8 +44,8 @@ export default class InstallOnIntegrationsCard extends React.Component<Props, St
         // todo(@martin): see if this is required too for Magento when implementing
         if (targetIntegration.getIn(['meta', 'need_scope_update'])) {
             browserHistory.push(
-                `/app/settings/integrations/${targetIntegration.get('type')}/
-                ${targetIntegration.get('id')}/?error=need_scope_update`
+                `/app/settings/integrations/${targetIntegration.get('type')}/` +
+                `${targetIntegration.get('id')}/?error=need_scope_update`
             )
             return
         }

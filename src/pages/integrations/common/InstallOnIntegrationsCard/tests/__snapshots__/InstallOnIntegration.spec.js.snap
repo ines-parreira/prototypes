@@ -1,0 +1,197 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<InstallOnIntegrationsCard/> render() should render all integrations because the Show more button was clicked 1`] = `
+<Card
+  className="integration-card"
+  tag="div"
+>
+  <CardBody
+    className="card-body"
+    tag="div"
+  >
+    <div
+      className="logo-wrapper"
+    >
+      <img
+        alt="shopify-logo"
+        src="test-file-stub"
+      />
+    </div>
+    <div
+      className="content-wrapper"
+    >
+      <h3>
+        Shopify
+      </h3>
+      <p>
+        Install the 
+        chat
+         widget on your 
+        Shopify
+         store in one click
+      </p>
+      <div>
+        <div
+          className="integration-item"
+          key="4"
+        >
+          <div>
+            <b>
+              my store 4
+            </b>
+          </div>
+          <ToggleButton
+            disabled={false}
+            loading={false}
+            onChange={[Function]}
+            value={false}
+          />
+        </div>
+        <div
+          className="integration-item"
+          key="3"
+        >
+          <div>
+            <b>
+              my store 3
+            </b>
+          </div>
+          <ToggleButton
+            disabled={false}
+            loading={false}
+            onChange={[Function]}
+            value={false}
+          />
+        </div>
+        <div
+          className="integration-item"
+          key="2"
+        >
+          <div>
+            <b>
+              my store 2
+            </b>
+          </div>
+          <ToggleButton
+            disabled={false}
+            loading={false}
+            onChange={[Function]}
+            value={false}
+          />
+        </div>
+        <div
+          className="integration-item"
+          key="1"
+        >
+          <div>
+            <b>
+              my store 1
+            </b>
+          </div>
+          <ToggleButton
+            disabled={false}
+            loading={false}
+            onChange={[Function]}
+            value={false}
+          />
+        </div>
+      </div>
+    </div>
+  </CardBody>
+</Card>
+`;
+
+exports[`<InstallOnIntegrationsCard/> render() should render first three passed integrations 1`] = `
+<Card
+  className="integration-card"
+  tag="div"
+>
+  <CardBody
+    className="card-body"
+    tag="div"
+  >
+    <div
+      className="logo-wrapper"
+    >
+      <img
+        alt="shopify-logo"
+        src="test-file-stub"
+      />
+    </div>
+    <div
+      className="content-wrapper"
+    >
+      <h3>
+        Shopify
+      </h3>
+      <p>
+        Install the 
+        chat
+         widget on your 
+        Shopify
+         store in one click
+      </p>
+      <div>
+        <div
+          className="integration-item"
+          key="4"
+        >
+          <div>
+            <b>
+              my store 4
+            </b>
+          </div>
+          <ToggleButton
+            disabled={false}
+            loading={false}
+            onChange={[Function]}
+            value={false}
+          />
+        </div>
+        <div
+          className="integration-item"
+          key="3"
+        >
+          <div>
+            <b>
+              my store 3
+            </b>
+          </div>
+          <ToggleButton
+            disabled={false}
+            loading={false}
+            onChange={[Function]}
+            value={false}
+          />
+        </div>
+        <div
+          className="integration-item"
+          key="2"
+        >
+          <div>
+            <b>
+              my store 2
+            </b>
+          </div>
+          <ToggleButton
+            disabled={false}
+            loading={false}
+            onChange={[Function]}
+            value={false}
+          />
+        </div>
+        <div
+          className="mt-3"
+        >
+          <a
+            className="show-more"
+            onClick={[Function]}
+          >
+            Show more
+          </a>
+        </div>
+      </div>
+    </div>
+  </CardBody>
+</Card>
+`;
