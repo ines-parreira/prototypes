@@ -1,8 +1,8 @@
+// @flow
 import React from 'react'
-import PropTypes from 'prop-types'
 import {Link} from 'react-router'
 import classNames from 'classnames'
-import {fromJS} from 'immutable'
+import {fromJS, type Map} from 'immutable'
 import _truncate from 'lodash/truncate'
 import {
     Alert,
@@ -12,9 +12,11 @@ import {
     BreadcrumbItem, Container,
 } from 'reactstrap'
 
-import Loader from '../../../../common/components/Loader'
+import {FACEBOOK_LANGUAGE_OPTIONS, FACEBOOK_LANGUAGE_DEFAULT} from '../../../../../config/integrations/facebook'
 
+import InputField from '../../../../common/forms/InputField'
 import BooleanField from '../../../../common/forms/BooleanField'
+import Loader from '../../../../common/components/Loader'
 import PageHeader from '../../../../common/components/PageHeader'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 
@@ -23,46 +25,85 @@ import pageIconDefault from '../../../../../../img/integrations/facebook-page.pn
 import FacebookIntegrationNavigation from './FacebookIntegrationNavigation'
 import FacebookLoginButton from './FacebookLoginButton'
 
-export default class FacebookIntegrationDetail extends React.Component {
+
+type Props = {
+    integration: Map<*,*>,
+    actions: Object,
+    loading: Map<*,*>
+}
+
+type State = {
+    settings: {
+        posts_enabled: boolean,
+        messenger_enabled: boolean,
+        import_history_enabled: boolean,
+        instagram_comments_enabled: boolean
+    },
+    language: string,
+    askDisableConfirmation: boolean
+}
+
+export default class FacebookIntegrationDetail extends React.Component<Props, State> {
     state = {
         settings: {
             posts_enabled: true,
             messenger_enabled: true,
             import_history_enabled: true,
+            instagram_comments_enabled: false
         },
+        language: FACEBOOK_LANGUAGE_DEFAULT,
+        askDisableConfirmation: false,
+    }
+
+    _updateState = (integration: Map<*,*>) => {
+        const settings = integration.getIn(['facebook', 'settings'], fromJS({}))
+        const language = integration.getIn(['meta', 'language'])
+
+        const newState = {}
+
+        if (!settings.isEmpty()) {
+            newState.settings = {
+                posts_enabled: settings.get('posts_enabled'),
+                messenger_enabled: settings.get('messenger_enabled'),
+                import_history_enabled: settings.get('import_history_enabled'),
+                instagram_comments_enabled: settings.get('instagram_comments_enabled'),
+            }
+        }
+
+        if (language) {
+            newState.language = language
+        }
+
+        this.setState(newState)
     }
 
     componentWillMount() {
-        const settings = this.props.integration.getIn(['facebook', 'settings'], fromJS({}))
+        this._updateState(this.props.integration)
+    }
 
-        if (!settings.isEmpty()) {
-            this.setState({settings: settings.toJS()})
+    componentWillReceiveProps(nextProps: Props) {
+        // $FlowFixMe
+        if (!nextProps.integration.isEmpty() && !nextProps.integration.equals(this.props.integration)) {
+            this._updateState(nextProps.integration)
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        // set default state
-        if (nextProps.integration && !nextProps.integration.isEmpty()
-            && !nextProps.integration.equals(this.props.integration)) {
-            this.setState({
-                settings: nextProps.integration.getIn(['facebook', 'settings']).toJS()
-            })
-        }
-    }
-
-    _onChange = (value, name) => {
-        this.state.settings[name] = value
-        this.setState(this.state)
-    }
-
-    _handleSubmit = (e) => {
-        e.preventDefault()
-        const {actions, integration} = this.props
-        const settings = this.state.settings
-        const updated = integration.mergeDeep({
-            facebook: {
-                settings
+    _onSettingChange = (value: boolean, name: string) => {
+        this.setState({
+            settings: {
+                ...this.state.settings,
+                [name]: value
             }
+        })
+    }
+
+    _handleSubmit = (event: SyntheticEvent<*>) => {
+        event.preventDefault()
+        const {actions, integration} = this.props
+        const {settings, language} = this.state
+        const updated = integration.mergeDeep({
+            facebook: {settings},
+            meta: {language}
         })
         actions.updateOrCreateIntegration(updated)
     }
@@ -70,7 +111,7 @@ export default class FacebookIntegrationDetail extends React.Component {
     render() {
         const {integration, loading, actions} = this.props
 
-        const page = integration.get('facebook') || fromJS({})
+        const integrationFacebook = integration.get('facebook') || fromJS({})
 
         const integrationScope = integration.getIn(['meta', 'oauth', 'scope']) || fromJS([])
         const doesntHaveInstagramPermissions = !integrationScope.includes('instagram_basic')
@@ -78,6 +119,8 @@ export default class FacebookIntegrationDetail extends React.Component {
         const doesntHaveInstagramId = !integration.getIn(['meta', 'instagram', 'id'])
 
         let disabledInstagramComponent = null
+
+        const isSubmitting = !!loading.get('updateIntegration')
 
         if (doesntHaveInstagramPermissions) {
             disabledInstagramComponent = (
@@ -109,7 +152,7 @@ export default class FacebookIntegrationDetail extends React.Component {
             )
         }
 
-        if (loading.get('integration') || page.isEmpty()) {
+        if (loading.get('integration') || integration.isEmpty()) {
             return <Loader />
         }
 
@@ -124,7 +167,7 @@ export default class FacebookIntegrationDetail extends React.Component {
                             <Link to="/app/settings/integrations/facebook">Facebook, Messenger & Instagram</Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem>
-                            {page.get('name')}
+                            {integration.get('name')}
                         </BreadcrumbItem>
                         <BreadcrumbItem active>
                             Overview
@@ -142,14 +185,14 @@ export default class FacebookIntegrationDetail extends React.Component {
                         <img
                             className="image rounded mr-3"
                             width="30"
-                            src={page.getIn(['picture', 'data', 'url'], pageIconDefault)}
+                            src={integrationFacebook.getIn(['picture', 'data', 'url'], pageIconDefault)}
                         />
                         <div className="text-truncate text-faded">
                             <h2 className="d-inline mr-3 text-info">
-                                {page.get('name')}
+                                {integration.get('name')}
                             </h2>
                             <span>
-                                {_truncate(page.get('about'), {length: 100})}
+                                {_truncate(integrationFacebook.get('about'), {length: 100})}
                             </span>
                         </div>
                     </div>
@@ -160,21 +203,21 @@ export default class FacebookIntegrationDetail extends React.Component {
                                 type="checkbox"
                                 label="Enable Messenger"
                                 value={this.state.settings.messenger_enabled}
-                                onChange={(value) => this._onChange(value, 'messenger_enabled')}
+                                onChange={(value) => this._onSettingChange(value, 'messenger_enabled')}
                             />
                             <BooleanField
                                 name="posts_enabled"
                                 type="checkbox"
                                 label="Enable Facebook posts & comments"
                                 value={this.state.settings.posts_enabled}
-                                onChange={(value) => this._onChange(value, 'posts_enabled')}
+                                onChange={(value) => this._onSettingChange(value, 'posts_enabled')}
                             />
                             <BooleanField
                                 name="instagram_comments_enabled"
                                 type="checkbox"
                                 label="Enable Instagram comments"
                                 value={this.state.settings.instagram_comments_enabled}
-                                onChange={(value) => this._onChange(value, 'instagram_comments_enabled')}
+                                onChange={(value) => this._onSettingChange(value, 'instagram_comments_enabled')}
                                 disabled={doesntHaveInstagramPermissions || doesntHaveInstagramId}
                             />
                             <BooleanField
@@ -182,7 +225,7 @@ export default class FacebookIntegrationDetail extends React.Component {
                                 type="checkbox"
                                 label="Import 30 days of history (posts and comments) as closed tickets"
                                 value={this.state.settings.import_history_enabled}
-                                onChange={(value) => this._onChange(value, 'import_history_enabled')}
+                                onChange={(value) => this._onSettingChange(value, 'import_history_enabled')}
                             />
                         </FormGroup>
                         <div>
@@ -190,13 +233,33 @@ export default class FacebookIntegrationDetail extends React.Component {
                         </div>
                     </div>
 
+                    <InputField
+                        type="select"
+                        value={this.state.language}
+                        options={FACEBOOK_LANGUAGE_OPTIONS.toJS()}
+                        onChange={(language) => this.setState({language})}
+                        label="Language"
+                    >
+                        {
+                            FACEBOOK_LANGUAGE_OPTIONS.map((option) => (
+                                <option
+                                    key={option.get('value')}
+                                    value={option.get('value')}
+                                >
+                                    {option.get('label')}
+                                </option>
+                            ))
+                        }
+                    </InputField>
+
                     <div>
                         <Button
                             type="submit"
                             color="success"
                             className={classNames('mr-2', {
-                                'btn-loading': loading.get('updateIntegration'),
+                                'btn-loading': isSubmitting,
                             })}
+                            disabled={isSubmitting}
                             onClick={this._handleSubmit}
                         >
                             Save changes
@@ -207,6 +270,7 @@ export default class FacebookIntegrationDetail extends React.Component {
                             className="float-right"
                             content="Are you sure you want to delete this integration?"
                             confirm={() => actions.deleteIntegration(integration)}
+                            disabled={isSubmitting}
                         >
                             <i className="material-icons mr-1 text-danger">delete</i>
                             Delete this page
@@ -216,10 +280,4 @@ export default class FacebookIntegrationDetail extends React.Component {
             </div>
         )
     }
-}
-
-FacebookIntegrationDetail.propTypes = {
-    integration: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
-    loading: PropTypes.object.isRequired
 }

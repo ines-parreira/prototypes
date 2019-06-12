@@ -1,0 +1,1128 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FacebookIntegrationDetail/> render() should render a loading state because the integration is loading 1`] = `
+<Loader
+  inline={false}
+  minHeight="500px"
+/>
+`;
+
+exports[`<FacebookIntegrationDetail/> render() should render a loading state because the passed integration is empty 1`] = `
+<Loader
+  inline={false}
+  minHeight="500px"
+/>
+`;
+
+exports[`<FacebookIntegrationDetail/> render() should render an integration with instagram disabled because the page has no associated instagramaccount 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/facebook"
+          >
+            Facebook, Messenger & Instagram
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          My facebook page
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Overview
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <FacebookIntegrationNavigation
+    integration={
+      Immutable.Map {
+        "id": 1,
+        "type": "facebook",
+        "name": "My facebook page",
+        "facebook": Immutable.Map {
+          "name": "My facebook page",
+        },
+        "meta": Immutable.Map {
+          "oauth": Immutable.Map {
+            "scope": "business_management,manage_pages,instagram_basic,instagram_manage_comments",
+          },
+          "instagram": Immutable.Map {
+            "id": null,
+          },
+        },
+      }
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <div
+      className="d-flex align-items-center mb-3"
+    >
+      <img
+        className="image rounded mr-3"
+        src="test-file-stub"
+        width="30"
+      />
+      <div
+        className="text-truncate text-faded"
+      >
+        <h2
+          className="d-inline mr-3 text-info"
+        >
+          My facebook page
+        </h2>
+        <span />
+      </div>
+    </div>
+    <div
+      className="d-md-flex"
+    >
+      <FormGroup
+        className="mr-3"
+        tag="div"
+      >
+        <BooleanField
+          label="Enable Messenger"
+          name="messenger_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+        <BooleanField
+          label="Enable Facebook posts & comments"
+          name="posts_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+        <BooleanField
+          disabled={true}
+          label="Enable Instagram comments"
+          name="instagram_comments_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={false}
+        />
+        <BooleanField
+          label="Import 30 days of history (posts and comments) as closed tickets"
+          name="import_history_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+      </FormGroup>
+      <div>
+        <Alert
+          closeAriaLabel="Close"
+          color="warning"
+          isOpen={true}
+          tag="div"
+          transition={
+            Object {
+              "appear": true,
+              "baseClass": "fade",
+              "baseClassActive": "show",
+              "enter": true,
+              "exit": true,
+              "in": true,
+              "mountOnEnter": false,
+              "onEnter": [Function],
+              "onEntered": [Function],
+              "onEntering": [Function],
+              "onExit": [Function],
+              "onExited": [Function],
+              "onExiting": [Function],
+              "tag": "div",
+              "timeout": 150,
+              "unmountOnExit": true,
+            }
+          }
+        >
+          You cannot activate Instagram on this page: it is not associated with any Instagram account.
+          <br />
+          If you just associated the page with an Instagram account, please
+           
+          <Connect(FacebookLoginButton)
+            link={true}
+            reconnect={true}
+          >
+            click here to update your integrations
+          </Connect(FacebookLoginButton)>
+          .
+        </Alert>
+      </div>
+    </div>
+    <InputField
+      label="Language"
+      onChange={[Function]}
+      options={
+        Array [
+          Object {
+            "label": "English US",
+            "value": "en-US",
+          },
+          Object {
+            "label": "French",
+            "value": "fr",
+          },
+          Object {
+            "label": "Spanish",
+            "value": "es",
+          },
+          Object {
+            "label": "Danish",
+            "value": "da",
+          },
+          Object {
+            "label": "Swedish",
+            "value": "sv",
+          },
+          Object {
+            "label": "Italian",
+            "value": "it",
+          },
+          Object {
+            "label": "Dutch",
+            "value": "nl",
+          },
+          Object {
+            "label": "German",
+            "value": "de",
+          },
+        ]
+      }
+      type="select"
+      value="en-US"
+    >
+      <option
+        key="en-US"
+        value="en-US"
+      >
+        English US
+      </option>
+      <option
+        key="fr"
+        value="fr"
+      >
+        French
+      </option>
+      <option
+        key="es"
+        value="es"
+      >
+        Spanish
+      </option>
+      <option
+        key="da"
+        value="da"
+      >
+        Danish
+      </option>
+      <option
+        key="sv"
+        value="sv"
+      >
+        Swedish
+      </option>
+      <option
+        key="it"
+        value="it"
+      >
+        Italian
+      </option>
+      <option
+        key="nl"
+        value="nl"
+      >
+        Dutch
+      </option>
+      <option
+        key="de"
+        value="de"
+      >
+        German
+      </option>
+    </InputField>
+    <div>
+      <Button
+        className="mr-2"
+        color="success"
+        disabled={false}
+        onClick={[Function]}
+        tag="button"
+        type="submit"
+      >
+        Save changes
+      </Button>
+      <Connect(FacebookLoginButton)
+        reconnect={true}
+      />
+      <ConfirmButton
+        className="float-right"
+        color="secondary"
+        confirm={[Function]}
+        confirmColor="success"
+        content="Are you sure you want to delete this integration?"
+        disabled={false}
+        loading={false}
+        placement="bottom"
+        skip={false}
+        title="Are you sure?"
+        type="button"
+      >
+        <i
+          className="material-icons mr-1 text-danger"
+        >
+          delete
+        </i>
+        Delete this page
+      </ConfirmButton>
+    </div>
+  </Container>
+</div>
+`;
+
+exports[`<FacebookIntegrationDetail/> render() should render an integration with instagram disabled because the scope of the integration does not include instagram permissions 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/facebook"
+          >
+            Facebook, Messenger & Instagram
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          My facebook page
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Overview
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <FacebookIntegrationNavigation
+    integration={
+      Immutable.Map {
+        "id": 1,
+        "type": "facebook",
+        "name": "My facebook page",
+        "facebook": Immutable.Map {
+          "name": "My facebook page",
+        },
+        "meta": Immutable.Map {
+          "oauth": Immutable.Map {
+            "scope": "business_management,manage_pages",
+          },
+          "instagram": Immutable.Map {
+            "id": "178941234975",
+          },
+        },
+      }
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <div
+      className="d-flex align-items-center mb-3"
+    >
+      <img
+        className="image rounded mr-3"
+        src="test-file-stub"
+        width="30"
+      />
+      <div
+        className="text-truncate text-faded"
+      >
+        <h2
+          className="d-inline mr-3 text-info"
+        >
+          My facebook page
+        </h2>
+        <span />
+      </div>
+    </div>
+    <div
+      className="d-md-flex"
+    >
+      <FormGroup
+        className="mr-3"
+        tag="div"
+      >
+        <BooleanField
+          label="Enable Messenger"
+          name="messenger_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+        <BooleanField
+          label="Enable Facebook posts & comments"
+          name="posts_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+        <BooleanField
+          disabled={true}
+          label="Enable Instagram comments"
+          name="instagram_comments_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={false}
+        />
+        <BooleanField
+          label="Import 30 days of history (posts and comments) as closed tickets"
+          name="import_history_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+      </FormGroup>
+      <div>
+        <Alert
+          closeAriaLabel="Close"
+          color="warning"
+          isOpen={true}
+          tag="div"
+          transition={
+            Object {
+              "appear": true,
+              "baseClass": "fade",
+              "baseClassActive": "show",
+              "enter": true,
+              "exit": true,
+              "in": true,
+              "mountOnEnter": false,
+              "onEnter": [Function],
+              "onEntered": [Function],
+              "onEntering": [Function],
+              "onExit": [Function],
+              "onExited": [Function],
+              "onExiting": [Function],
+              "tag": "div",
+              "timeout": 150,
+              "unmountOnExit": true,
+            }
+          }
+        >
+          <i
+            className="material-icons md-2 mr-2"
+          >
+            warning
+          </i>
+          Instagram is disabled because we miss the required permissions. Please
+           
+          <Connect(FacebookLoginButton)
+            link={true}
+            reconnect={true}
+          >
+            click here to update your permissions
+          </Connect(FacebookLoginButton)>
+          .
+        </Alert>
+      </div>
+    </div>
+    <InputField
+      label="Language"
+      onChange={[Function]}
+      options={
+        Array [
+          Object {
+            "label": "English US",
+            "value": "en-US",
+          },
+          Object {
+            "label": "French",
+            "value": "fr",
+          },
+          Object {
+            "label": "Spanish",
+            "value": "es",
+          },
+          Object {
+            "label": "Danish",
+            "value": "da",
+          },
+          Object {
+            "label": "Swedish",
+            "value": "sv",
+          },
+          Object {
+            "label": "Italian",
+            "value": "it",
+          },
+          Object {
+            "label": "Dutch",
+            "value": "nl",
+          },
+          Object {
+            "label": "German",
+            "value": "de",
+          },
+        ]
+      }
+      type="select"
+      value="en-US"
+    >
+      <option
+        key="en-US"
+        value="en-US"
+      >
+        English US
+      </option>
+      <option
+        key="fr"
+        value="fr"
+      >
+        French
+      </option>
+      <option
+        key="es"
+        value="es"
+      >
+        Spanish
+      </option>
+      <option
+        key="da"
+        value="da"
+      >
+        Danish
+      </option>
+      <option
+        key="sv"
+        value="sv"
+      >
+        Swedish
+      </option>
+      <option
+        key="it"
+        value="it"
+      >
+        Italian
+      </option>
+      <option
+        key="nl"
+        value="nl"
+      >
+        Dutch
+      </option>
+      <option
+        key="de"
+        value="de"
+      >
+        German
+      </option>
+    </InputField>
+    <div>
+      <Button
+        className="mr-2"
+        color="success"
+        disabled={false}
+        onClick={[Function]}
+        tag="button"
+        type="submit"
+      >
+        Save changes
+      </Button>
+      <Connect(FacebookLoginButton)
+        reconnect={true}
+      />
+      <ConfirmButton
+        className="float-right"
+        color="secondary"
+        confirm={[Function]}
+        confirmColor="success"
+        content="Are you sure you want to delete this integration?"
+        disabled={false}
+        loading={false}
+        placement="bottom"
+        skip={false}
+        title="Are you sure?"
+        type="button"
+      >
+        <i
+          className="material-icons mr-1 text-danger"
+        >
+          delete
+        </i>
+        Delete this page
+      </ConfirmButton>
+    </div>
+  </Container>
+</div>
+`;
+
+exports[`<FacebookIntegrationDetail/> render() should render an integration with instagram enabled 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/facebook"
+          >
+            Facebook, Messenger & Instagram
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          My facebook page
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Overview
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <FacebookIntegrationNavigation
+    integration={
+      Immutable.Map {
+        "id": 1,
+        "type": "facebook",
+        "name": "My facebook page",
+        "facebook": Immutable.Map {
+          "name": "My facebook page",
+        },
+        "meta": Immutable.Map {
+          "oauth": Immutable.Map {
+            "scope": "business_management,manage_pages,instagram_basic,instagram_manage_comments",
+          },
+          "instagram": Immutable.Map {
+            "id": "178941234975",
+          },
+        },
+      }
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <div
+      className="d-flex align-items-center mb-3"
+    >
+      <img
+        className="image rounded mr-3"
+        src="test-file-stub"
+        width="30"
+      />
+      <div
+        className="text-truncate text-faded"
+      >
+        <h2
+          className="d-inline mr-3 text-info"
+        >
+          My facebook page
+        </h2>
+        <span />
+      </div>
+    </div>
+    <div
+      className="d-md-flex"
+    >
+      <FormGroup
+        className="mr-3"
+        tag="div"
+      >
+        <BooleanField
+          label="Enable Messenger"
+          name="messenger_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+        <BooleanField
+          label="Enable Facebook posts & comments"
+          name="posts_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+        <BooleanField
+          disabled={false}
+          label="Enable Instagram comments"
+          name="instagram_comments_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={false}
+        />
+        <BooleanField
+          label="Import 30 days of history (posts and comments) as closed tickets"
+          name="import_history_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+      </FormGroup>
+      <div />
+    </div>
+    <InputField
+      label="Language"
+      onChange={[Function]}
+      options={
+        Array [
+          Object {
+            "label": "English US",
+            "value": "en-US",
+          },
+          Object {
+            "label": "French",
+            "value": "fr",
+          },
+          Object {
+            "label": "Spanish",
+            "value": "es",
+          },
+          Object {
+            "label": "Danish",
+            "value": "da",
+          },
+          Object {
+            "label": "Swedish",
+            "value": "sv",
+          },
+          Object {
+            "label": "Italian",
+            "value": "it",
+          },
+          Object {
+            "label": "Dutch",
+            "value": "nl",
+          },
+          Object {
+            "label": "German",
+            "value": "de",
+          },
+        ]
+      }
+      type="select"
+      value="en-US"
+    >
+      <option
+        key="en-US"
+        value="en-US"
+      >
+        English US
+      </option>
+      <option
+        key="fr"
+        value="fr"
+      >
+        French
+      </option>
+      <option
+        key="es"
+        value="es"
+      >
+        Spanish
+      </option>
+      <option
+        key="da"
+        value="da"
+      >
+        Danish
+      </option>
+      <option
+        key="sv"
+        value="sv"
+      >
+        Swedish
+      </option>
+      <option
+        key="it"
+        value="it"
+      >
+        Italian
+      </option>
+      <option
+        key="nl"
+        value="nl"
+      >
+        Dutch
+      </option>
+      <option
+        key="de"
+        value="de"
+      >
+        German
+      </option>
+    </InputField>
+    <div>
+      <Button
+        className="mr-2"
+        color="success"
+        disabled={false}
+        onClick={[Function]}
+        tag="button"
+        type="submit"
+      >
+        Save changes
+      </Button>
+      <Connect(FacebookLoginButton)
+        reconnect={true}
+      />
+      <ConfirmButton
+        className="float-right"
+        color="secondary"
+        confirm={[Function]}
+        confirmColor="success"
+        content="Are you sure you want to delete this integration?"
+        disabled={false}
+        loading={false}
+        placement="bottom"
+        skip={false}
+        title="Are you sure?"
+        type="button"
+      >
+        <i
+          className="material-icons mr-1 text-danger"
+        >
+          delete
+        </i>
+        Delete this page
+      </ConfirmButton>
+    </div>
+  </Container>
+</div>
+`;
+
+exports[`<FacebookIntegrationDetail/> render() should render an integration with instagram enabled and loading buttons because the integration is being submitted 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/facebook"
+          >
+            Facebook, Messenger & Instagram
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          My facebook page
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Overview
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <FacebookIntegrationNavigation
+    integration={
+      Immutable.Map {
+        "id": 1,
+        "type": "facebook",
+        "name": "My facebook page",
+        "facebook": Immutable.Map {
+          "name": "My facebook page",
+        },
+        "meta": Immutable.Map {
+          "oauth": Immutable.Map {
+            "scope": "business_management,manage_pages,instagram_basic,instagram_manage_comments",
+          },
+          "instagram": Immutable.Map {
+            "id": "178941234975",
+          },
+        },
+      }
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <div
+      className="d-flex align-items-center mb-3"
+    >
+      <img
+        className="image rounded mr-3"
+        src="test-file-stub"
+        width="30"
+      />
+      <div
+        className="text-truncate text-faded"
+      >
+        <h2
+          className="d-inline mr-3 text-info"
+        >
+          My facebook page
+        </h2>
+        <span />
+      </div>
+    </div>
+    <div
+      className="d-md-flex"
+    >
+      <FormGroup
+        className="mr-3"
+        tag="div"
+      >
+        <BooleanField
+          label="Enable Messenger"
+          name="messenger_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+        <BooleanField
+          label="Enable Facebook posts & comments"
+          name="posts_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+        <BooleanField
+          disabled={false}
+          label="Enable Instagram comments"
+          name="instagram_comments_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={false}
+        />
+        <BooleanField
+          label="Import 30 days of history (posts and comments) as closed tickets"
+          name="import_history_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+      </FormGroup>
+      <div />
+    </div>
+    <InputField
+      label="Language"
+      onChange={[Function]}
+      options={
+        Array [
+          Object {
+            "label": "English US",
+            "value": "en-US",
+          },
+          Object {
+            "label": "French",
+            "value": "fr",
+          },
+          Object {
+            "label": "Spanish",
+            "value": "es",
+          },
+          Object {
+            "label": "Danish",
+            "value": "da",
+          },
+          Object {
+            "label": "Swedish",
+            "value": "sv",
+          },
+          Object {
+            "label": "Italian",
+            "value": "it",
+          },
+          Object {
+            "label": "Dutch",
+            "value": "nl",
+          },
+          Object {
+            "label": "German",
+            "value": "de",
+          },
+        ]
+      }
+      type="select"
+      value="en-US"
+    >
+      <option
+        key="en-US"
+        value="en-US"
+      >
+        English US
+      </option>
+      <option
+        key="fr"
+        value="fr"
+      >
+        French
+      </option>
+      <option
+        key="es"
+        value="es"
+      >
+        Spanish
+      </option>
+      <option
+        key="da"
+        value="da"
+      >
+        Danish
+      </option>
+      <option
+        key="sv"
+        value="sv"
+      >
+        Swedish
+      </option>
+      <option
+        key="it"
+        value="it"
+      >
+        Italian
+      </option>
+      <option
+        key="nl"
+        value="nl"
+      >
+        Dutch
+      </option>
+      <option
+        key="de"
+        value="de"
+      >
+        German
+      </option>
+    </InputField>
+    <div>
+      <Button
+        className="mr-2 btn-loading"
+        color="success"
+        disabled={true}
+        onClick={[Function]}
+        tag="button"
+        type="submit"
+      >
+        Save changes
+      </Button>
+      <Connect(FacebookLoginButton)
+        reconnect={true}
+      />
+      <ConfirmButton
+        className="float-right"
+        color="secondary"
+        confirm={[Function]}
+        confirmColor="success"
+        content="Are you sure you want to delete this integration?"
+        disabled={true}
+        loading={false}
+        placement="bottom"
+        skip={false}
+        title="Are you sure?"
+        type="button"
+      >
+        <i
+          className="material-icons mr-1 text-danger"
+        >
+          delete
+        </i>
+        Delete this page
+      </ConfirmButton>
+    </div>
+  </Container>
+</div>
+`;
