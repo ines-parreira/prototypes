@@ -23,7 +23,7 @@ import {
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS,
     SMOOCH_INSIDE_DEFAULT_COLOR, SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT
-} from '../../../../../../config/integrations/chat'
+} from '../../../../../../config/integrations/smooch_inside'
 import {SHOPIFY_INTEGRATION_TYPE, SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../../constants/integration'
 import * as integrationSelectors from '../../../../../../state/integrations/selectors'
 

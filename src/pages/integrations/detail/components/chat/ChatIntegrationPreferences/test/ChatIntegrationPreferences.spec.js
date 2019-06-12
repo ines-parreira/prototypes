@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 import {
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
-} from '../../../../../../../config/integrations/chat'
+} from '../../../../../../../config/integrations/smooch_inside'
 import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../../../constants/integration'
 import ChatIntegrationPreferences from '../ChatIntegrationPreferences'
 

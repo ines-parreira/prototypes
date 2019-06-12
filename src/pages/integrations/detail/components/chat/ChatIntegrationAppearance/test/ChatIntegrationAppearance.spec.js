@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT} from '../../../../../../../config/integrations/chat'
+import {SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT} from '../../../../../../../config/integrations/smooch_inside'
 import {SHOPIFY_INTEGRATION_TYPE, SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../../../constants/integration'
 
 import ChatIntegrationAppearance from './../ChatIntegrationAppearance'

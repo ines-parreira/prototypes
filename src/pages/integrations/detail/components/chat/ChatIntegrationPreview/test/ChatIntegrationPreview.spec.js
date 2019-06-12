@@ -2,7 +2,7 @@ import React from 'react'
 import {mount} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT} from '../../../../../../../config/integrations/chat'
+import {SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT} from '../../../../../../../config/integrations/smooch_inside'
 
 import ChatIntegrationPreview from '../ChatIntegrationPreview'
 import MessageContent from '../MessageContent'

@@ -3,7 +3,7 @@ import React from 'react'
 import {
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_TEXTS
-} from '../../../../../../config/integrations/chat'
+} from '../../../../../../config/integrations/smooch_inside'
 
 import css from './ChatIntegrationPreview.less'
 

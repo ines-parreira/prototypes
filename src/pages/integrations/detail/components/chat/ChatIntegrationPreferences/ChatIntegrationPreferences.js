@@ -22,7 +22,7 @@ import {
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_OPTIONAL,
     SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS,
     SMOOCH_INSIDE_WIDGET_TEXTS, SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
-} from '../../../../../../config/integrations/chat'
+} from '../../../../../../config/integrations/smooch_inside'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import PageHeader from '../../../../../common/components/PageHeader'
 import BooleanField from '../../../../../common/forms/BooleanField'
