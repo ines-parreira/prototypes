@@ -410,6 +410,7 @@ describe('global utils', () => {
 
         it('should return default operator', () => {
             expect(utils.getDefaultOperator('ticket.created_datetime', schemas)).toBe('gteTimedelta')
+            expect(utils.getDefaultOperator('ticket.tags', schemas)).toBe('containsAll')
         })
     })
 

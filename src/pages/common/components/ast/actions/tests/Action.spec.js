@@ -10,11 +10,10 @@ describe('Action', () => {
             const valid = [
                 'email@example.com',
                 'email@example.com,',
-                '{{ticket.sender.email}}',
-                '{{ticket.receiver.email}},',
+                '{{ticket.customer.email}}',
                 'email@example.com, email2@example.com,',
-                'email@example.com, {{ticket.receiver.email}}, email@example.com',
-                '{{ticket.assignee_user.email}}, {{ticket.receiver.email}}, email2@example.com,'
+                'email@example.com, {{ticket.customer.email}}, email@example.com',
+                '{{ticket.assignee_user.email}}, {{ticket.customer.email}}, email2@example.com,'
             ]
             valid.forEach((input) => {
                 expect(validateEmailList(input, schemas)).toBeFalsy()

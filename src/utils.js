@@ -283,8 +283,8 @@ export function getDefaultOperator(field: string, schemas: schemasType): ?string
         case 'array':
         case 'string':
             if (prop.meta && prop.meta.operators) {
-                if (_has(prop.meta.operators, 'contains')) {
-                    return 'contains'
+                if (_has(prop.meta.operators, 'containsAll')) {
+                    return 'containsAll'
                 }
             }
             return 'eq'

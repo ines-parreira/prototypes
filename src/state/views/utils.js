@@ -8,7 +8,7 @@ import _isInteger from 'lodash/isInteger'
 import {UNARY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
 
 import type {agentsType} from '../agents/types'
-import {getAST, getFirstExpressionOfAST} from '../../utils'
+import {getAST, getFirstExpressionOfAST, toJS} from '../../utils'
 import {datetimeOperators, timedeltaOperators, collectionOperators} from '../../config/rules'
 import {isTimedelta} from '../../utils/ast'
 
@@ -41,14 +41,15 @@ export const rawify = (data: string | number | null): string => {
 /**
  * Resolve the right argument of a filter being added or updated.
  * @param callee: the operator of the filter
- * @param currentRawValue: the current raw value of the filter, if any
+ * @param rightValue: the current value of the filter, if any
  * @returns {*}: the `right` value to set in the filter. If null, it means the filter should not have a `right` value
  */
-function resolveSecondArg(callee: string, currentRawValue: string): string | null {
+function resolveSecondArg(callee: string, rightValue: ?Object): string | null {
     const isTimedeltaCallee = timedeltaOperators.includes(callee)
     const isDatetimeCallee = datetimeOperators.includes(callee)
     const isUnaryCallee = Object.keys(UNARY_OPERATORS).includes(callee)
     const isCollectionOperator = collectionOperators.includes(callee)
+    let currentRawValue = rightValue && rightValue.raw ? rightValue.raw : null
 
     if (isTimedeltaCallee && !isTimedelta(currentRawValue, true)) {
         return `\'${TIMEDELTA_OPERATOR_DEFAULT_VALUE}\'`
@@ -57,9 +58,11 @@ function resolveSecondArg(callee: string, currentRawValue: string): string | nul
     } else if (isUnaryCallee) {
         return null
     } else if (isCollectionOperator) {
+        if (rightValue && rightValue.type === 'ArrayExpression') {
+            return '[' + rightValue.elements.map((elem) => elem.raw).join(', ') + ']'
+        }
         return '[]'
     }
-
     return currentRawValue || '\'\''
 }
 
@@ -74,7 +77,7 @@ function buildRawCallExpression(filter: filterType) {
 // traverse filters_ast, find all the call expressions and return a new tree
 export function addFilterAST(view: viewType, filter: filterType): Map<*, *> {
     // generate a new call expression for the new filter as a string
-    filter.right = resolveSecondArg(filter.operator, filter.right)
+    filter.right = resolveSecondArg(filter.operator, null)
     const newCallExprCode = buildRawCallExpression(filter)
     // since we only ever have AND operators just concatenate existing expressions
     const oldCode = view.get('filters') ? `${view.get('filters')} && ` : ''
@@ -159,7 +162,8 @@ function getIn(ast: astType, index: number, path: pathType): any {
 // once replaced, we return the new AST
 export function updateFilterOperator(ast: astType, index: number, operator: string): nodeType {
     let filter = getIn(ast, index, [])
-    const rightRaw = resolveSecondArg(operator, filter.getIn(['arguments', 1, 'raw']))
+    let rightArgs = filter.getIn(['arguments', 1])
+    const rightRaw = resolveSecondArg(operator, toJS(rightArgs))
 
     filter = filter
         .setIn(['callee', 'name'], operator)

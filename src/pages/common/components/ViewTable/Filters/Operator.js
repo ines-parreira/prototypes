@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Input} from 'reactstrap'
 
+
 export default class Operator extends React.Component {
     static propTypes = {
         index: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
@@ -18,6 +19,17 @@ export default class Operator extends React.Component {
                 value: operator,
                 name: operators[operator].label
             }))
+
+        if (!Object.keys(operators).includes(selected)) {
+            let operatorLabel = selected
+            if (selected === 'notContains') {
+                operatorLabel = 'does not contain'
+            }
+            options.push({
+                value: selected,
+                name: operatorLabel
+            })
+        }
 
         return (
             <Input
