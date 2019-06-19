@@ -6,7 +6,6 @@ import {Link} from 'react-router'
 import {fromJS, type Map} from 'immutable'
 import {omitBy as _omitBy, isUndefined as _isUndefined} from 'lodash'
 
-
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -14,6 +13,8 @@ import {
     Container,
     Form,
 } from 'reactstrap'
+
+import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integrations'
 
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import PageHeader from '../../../../../common/components/PageHeader'
@@ -80,7 +81,8 @@ export default class FacebookIntegrationPreferences extends React.Component<Prop
                 preferences: {
                     auto_responder: {
                         enabled: this.state.autoResponderEnabled,
-                        text: this.state.autoResponderText
+                        text: this.state.autoResponderText,
+                        reply: CHAT_AUTO_RESPONDER_REPLY_DEFAULT
                     }
                 }
             })

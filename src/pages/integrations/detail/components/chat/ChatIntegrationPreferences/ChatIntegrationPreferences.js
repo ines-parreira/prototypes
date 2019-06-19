@@ -16,6 +16,8 @@ import {
     Row,
 } from 'reactstrap'
 
+import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integrations'
+
 import {
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS,
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
@@ -121,7 +123,8 @@ export default class ChatIntegrationPreferences extends React.Component<Props, S
                 preferences: {
                     auto_responder: {
                         enabled: this.state.autoResponderEnabled,
-                        text: this.state.autoResponderText
+                        text: this.state.autoResponderText,
+                        reply: CHAT_AUTO_RESPONDER_REPLY_DEFAULT
                     },
                     email_capture_enforcement: this.state.emailCaptureEnforcement
                 }

@@ -5,6 +5,7 @@ import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {CHAT_AUTO_RESPONDER_REPLY_SHORTLY} from '../../../../../../../config/integrations'
 import {SMOOCH_INTEGRATION_TYPE} from '../../../../../../../constants/integration'
 import SmoochIntegrationPreferences from '../SmoochIntegrationPreferences'
 
@@ -74,6 +75,7 @@ describe('SmoochIntegrationPreferences component', () => {
                     auto_responder: {
                         enabled: false,
                         text: 'We\'re away at the moment. Leave us your email and we\'ll follow up shortly.',
+                        reply: CHAT_AUTO_RESPONDER_REPLY_SHORTLY
                     }
                 }
             }
@@ -108,6 +110,7 @@ describe('SmoochIntegrationPreferences component', () => {
                         customProperty: 'Pizza Pepperoni',
                         enabled: true,
                         text: 'Pizza Pepperoni',
+                        reply: CHAT_AUTO_RESPONDER_REPLY_SHORTLY
                     }
                 }
             }

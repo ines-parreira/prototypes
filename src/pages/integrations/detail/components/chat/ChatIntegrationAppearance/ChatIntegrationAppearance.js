@@ -17,6 +17,8 @@ import {
     Row,
 } from 'reactstrap'
 
+import {CHAT_AUTO_RESPONDER_ENABLED_DEFAULT, CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integrations'
+
 import {
     SMOOCH_INSIDE_WIDGET_TEXTS,
     SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS,
@@ -134,7 +136,11 @@ class ChatIntegrationAppearance extends React.Component<Props, State> {
         form.meta = {
             language: this.state.language,
             preferences: {
-                email_capture_enforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT
+                email_capture_enforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
+                auto_responder: {
+                    enabled: CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
+                    reply: CHAT_AUTO_RESPONDER_REPLY_DEFAULT
+                }
             }
         }
 

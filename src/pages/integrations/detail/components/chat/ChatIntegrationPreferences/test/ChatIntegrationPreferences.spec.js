@@ -5,6 +5,7 @@ import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {CHAT_AUTO_RESPONDER_REPLY_SHORTLY} from '../../../../../../../config/integrations'
 import {
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
@@ -89,6 +90,7 @@ describe('ChatIntegrationPreferences component', () => {
                     auto_responder: {
                         enabled: false,
                         text: 'We\'re away at the moment. Leave us your email and we\'ll follow up shortly.',
+                        reply: CHAT_AUTO_RESPONDER_REPLY_SHORTLY
                     },
                     email_capture_enforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT
                 }
@@ -129,6 +131,7 @@ describe('ChatIntegrationPreferences component', () => {
                         customProperty: 'Pizza Pepperoni',
                         enabled: true,
                         text: 'Pizza Pepperoni',
+                        reply: CHAT_AUTO_RESPONDER_REPLY_SHORTLY
                     },
                     email_capture_enforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT
                 },
