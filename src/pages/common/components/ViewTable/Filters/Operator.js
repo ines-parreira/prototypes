@@ -21,13 +21,9 @@ export default class Operator extends React.Component {
             }))
 
         if (!Object.keys(operators).includes(selected)) {
-            let operatorLabel = selected
-            if (selected === 'notContains') {
-                operatorLabel = 'does not contain'
-            }
             options.push({
                 value: selected,
-                name: operatorLabel
+                name: selected
             })
         }
 
