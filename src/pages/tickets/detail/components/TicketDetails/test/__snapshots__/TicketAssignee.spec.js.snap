@@ -1,0 +1,280 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TicketAssignee/> render() should display the email of the agent assigned as its name because it has no name 1`] = `
+<Dropdown
+  active={false}
+  addonType={false}
+  className="classname"
+  direction="down"
+  inNavbar={false}
+  isOpen={false}
+  nav={false}
+  toggle={[Function]}
+>
+  <DropdownToggle
+    aria-haspopup={true}
+    caret={true}
+    className="toggle btn-transparent"
+    color="secondary"
+    type="button"
+  >
+    <AgentLabel
+      avatar={true}
+      className="label"
+      maxWidth="100"
+      name="steve@acme.gorgias.io"
+      profilePictureUrl=""
+    />
+  </DropdownToggle>
+  <DropdownMenu
+    flip={true}
+    right={true}
+    style={
+      Object {
+        "width": "190px",
+      }
+    }
+    tag="div"
+  >
+    <DropdownItem
+      header={true}
+      tag="button"
+      toggle={true}
+    >
+      ASSIGN TO:
+    </DropdownItem>
+    <DropdownItem
+      className="dropdown-item-input"
+      header={true}
+      tag="button"
+      toggle={true}
+    />
+    <DropdownItem
+      divider={true}
+      tag="button"
+      toggle={true}
+    />
+    <DropdownItem
+      key="yourself"
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Assign yourself
+    </DropdownItem>
+    <DropdownItem
+      divider={true}
+      key="dividerYourself"
+      tag="button"
+      toggle={true}
+    />
+    <DropdownItem
+      header={true}
+      key="noAgents"
+      tag="button"
+      toggle={true}
+    >
+      Could not find any agent
+    </DropdownItem>
+    <DropdownItem
+      divider={true}
+      key="dividerClear"
+      tag="button"
+      toggle={true}
+    />
+    <DropdownItem
+      key="clear"
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      <i
+        className="icon material-icons"
+      >
+        clear
+      </i>
+      Clear assignee
+    </DropdownItem>
+  </DropdownMenu>
+</Dropdown>
+`;
+
+exports[`<TicketAssignee/> render() should display the info of the agent assigned 1`] = `
+<Dropdown
+  active={false}
+  addonType={false}
+  className="classname"
+  direction="down"
+  inNavbar={false}
+  isOpen={false}
+  nav={false}
+  toggle={[Function]}
+>
+  <DropdownToggle
+    aria-haspopup={true}
+    caret={true}
+    className="toggle btn-transparent"
+    color="secondary"
+    type="button"
+  >
+    <AgentLabel
+      avatar={true}
+      className="label"
+      maxWidth="100"
+      name="Steve Frizeli"
+      profilePictureUrl="profilePictureUrl"
+    />
+  </DropdownToggle>
+  <DropdownMenu
+    flip={true}
+    right={true}
+    style={
+      Object {
+        "width": "190px",
+      }
+    }
+    tag="div"
+  >
+    <DropdownItem
+      header={true}
+      tag="button"
+      toggle={true}
+    >
+      ASSIGN TO:
+    </DropdownItem>
+    <DropdownItem
+      className="dropdown-item-input"
+      header={true}
+      tag="button"
+      toggle={true}
+    />
+    <DropdownItem
+      divider={true}
+      tag="button"
+      toggle={true}
+    />
+    <DropdownItem
+      key="yourself"
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Assign yourself
+    </DropdownItem>
+    <DropdownItem
+      divider={true}
+      key="dividerYourself"
+      tag="button"
+      toggle={true}
+    />
+    <DropdownItem
+      header={true}
+      key="noAgents"
+      tag="button"
+      toggle={true}
+    >
+      Could not find any agent
+    </DropdownItem>
+    <DropdownItem
+      divider={true}
+      key="dividerClear"
+      tag="button"
+      toggle={true}
+    />
+    <DropdownItem
+      key="clear"
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      <i
+        className="icon material-icons"
+      >
+        clear
+      </i>
+      Clear assignee
+    </DropdownItem>
+  </DropdownMenu>
+</Dropdown>
+`;
+
+exports[`<TicketAssignee/> render() should not display any agent info because there is no assignee 1`] = `
+<Dropdown
+  active={false}
+  addonType={false}
+  className="classname"
+  direction="down"
+  inNavbar={false}
+  isOpen={false}
+  nav={false}
+  toggle={[Function]}
+>
+  <DropdownToggle
+    aria-haspopup={true}
+    caret={true}
+    className="toggle btn-transparent"
+    color="secondary"
+    type="button"
+  >
+    <span>
+      Unassigned
+    </span>
+  </DropdownToggle>
+  <DropdownMenu
+    flip={true}
+    right={true}
+    style={
+      Object {
+        "width": "190px",
+      }
+    }
+    tag="div"
+  >
+    <DropdownItem
+      header={true}
+      tag="button"
+      toggle={true}
+    >
+      ASSIGN TO:
+    </DropdownItem>
+    <DropdownItem
+      className="dropdown-item-input"
+      header={true}
+      tag="button"
+      toggle={true}
+    />
+    <DropdownItem
+      divider={true}
+      tag="button"
+      toggle={true}
+    />
+    <DropdownItem
+      key="yourself"
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Assign yourself
+    </DropdownItem>
+    <DropdownItem
+      divider={true}
+      key="dividerYourself"
+      tag="button"
+      toggle={true}
+    />
+    <DropdownItem
+      header={true}
+      key="noAgents"
+      tag="button"
+      toggle={true}
+    >
+      Could not find any agent
+    </DropdownItem>
+  </DropdownMenu>
+</Dropdown>
+`;

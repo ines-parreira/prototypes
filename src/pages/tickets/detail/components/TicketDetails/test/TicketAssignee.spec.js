@@ -1,5 +1,5 @@
 import React from 'react'
-import {mount} from 'enzyme'
+import {shallow} from 'enzyme'
 
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -11,41 +11,51 @@ import TicketAssignee from '../TicketAssignee/TicketAssignee'
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-const commonProps = {
+const defaultProps = {
     store: mockStore({
         infobar: fromJS({}),
         ticket: fromJS({}),
         widgets: fromJS({}),
     }),
     direction: 'right',
-    currentAssignee: 'test test',
-    email: 'test@test.fr',
-    profilePictureUrl: 'mySpecialUrl',
     setAgent: _noop,
     className: 'classname',
     transparent: true
 }
 
-describe('components', () => {
-    describe('Ticket Assignee', () => {
-        it('should display the profile picture and not the gravatar', () => {
-            const component = mount(
-                <TicketAssignee {...commonProps}/>
-            )
-
-            expect(component.find('Avatar').html()).toContain('mySpecialUrl')
-        })
-
-        it('should display the gravatar', () => {
-            const component = mount(
+describe('<TicketAssignee/>', () => {
+    describe('render()', () => {
+        it('should not display any agent info because there is no assignee', () => {
+            const component = shallow(
                 <TicketAssignee
-                    {...commonProps}
-                    profilePictureUrl=''
+                    {...defaultProps}
+                    currentAssignee={null}
+                />
+            )
+            expect(component.dive()).toMatchSnapshot()
+        })
+        it('should display the info of the agent assigned', () => {
+            const component = shallow(
+                <TicketAssignee
+                    {...defaultProps}
+                    currentAssignee={fromJS({id: 1, name: 'Steve Frizeli'})}
+                    profilePictureUrl='profilePictureUrl'
                 />
             )
 
-            expect(component.find('Avatar').text()).toBe('tt')
+            expect(component.dive()).toMatchSnapshot()
         })
 
+        it('should display the email of the agent assigned as its name because it has no name', () => {
+            const component = shallow(
+                <TicketAssignee
+                    {...defaultProps}
+                    currentAssignee={fromJS({id: 1, email: 'steve@acme.gorgias.io'})}
+                />
+            )
+
+            expect(component.dive()).toMatchSnapshot()
+        })
     })
+
 })

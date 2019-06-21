@@ -13,7 +13,7 @@ export default class SetAssigneeAction extends React.Component {
         const {action, agents} = this.props
         return (
             <TicketAssignee
-                currentAssignee={action.getIn(['arguments', 'assignee_user', 'name'])}
+                currentAssignee={action.getIn(['arguments', 'assignee_user'])}
                 agents={agents}
                 setAgent={(assignee) => this.setAssignee(assignee)}
                 suffix="macro-modal"

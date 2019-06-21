@@ -1,7 +1,5 @@
 // @flow
 import React from 'react'
-import PropTypes from 'prop-types'
-import ImmutablePropTypes from 'react-immutable-proptypes'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
@@ -20,11 +18,10 @@ import css from './TicketAssignee.less'
 
 type Props = {
     agents: Object,
-    currentAssignee?: string,
+    currentAssignee: ?Map<*, *>,
     currentUser: Map<*,*>,
     direction: string,
     setAgent: typeof setAgent,
-    email?: string,
     profilePictureUrl?: string,
     className?: string,
     transparent?: boolean,
@@ -36,6 +33,7 @@ type State = {
     search: string
 }
 
+// TODO(agent-null-names): remove fallbacks in this component when https://github.com/gorgias/gorgias/issues/4413 is fixed
 @connect((state) => {
     return {
         agents: agentSelectors.getAgents(state),
@@ -43,21 +41,8 @@ type State = {
     }
 })
 export default class TicketAssignee extends React.Component<Props, State> {
-    static propTypes = {
-        agents: PropTypes.object.isRequired,
-        currentAssignee: PropTypes.string,
-        currentUser: ImmutablePropTypes.map.isRequired,
-        direction: PropTypes.string.isRequired,
-        setAgent: PropTypes.func.isRequired,
-        email: PropTypes.string,
-        profilePictureUrl: PropTypes.string,
-        className: PropTypes.string,
-        transparent: PropTypes.bool,
-    }
-
     static defaultProps = {
         direction: 'left',
-        email: '',
         transparent: false,
     }
 
@@ -131,7 +116,8 @@ export default class TicketAssignee extends React.Component<Props, State> {
     _filterResults = (search: string) => {
         this.setState({
             enum: this.props.agents.filter((agent) => {
-                return agent.get('name').toLowerCase().includes(search.toLowerCase())
+                const agentLabel = agent.get('name') || agent.get('email')
+                return agentLabel.toLowerCase().includes(search.toLowerCase())
             }),
         })
     }
@@ -139,14 +125,13 @@ export default class TicketAssignee extends React.Component<Props, State> {
     _displayMenu = () => {
         const {currentAssignee, currentUser} = this.props
         let availableAgents = this.state.enum
-
-        if (currentAssignee) {
-            availableAgents = availableAgents.filter((agent) => agent.get('name') !== currentAssignee)
-        }
-
+        const isCurrentUserAssigned = currentAssignee && currentUser && currentUser.get('id') === currentAssignee.get('id')
         let options = fromJS([])
 
-        const isCurrentUserAssigned = !!currentAssignee && currentUser.get('name') === currentAssignee
+        if (currentAssignee) {
+            availableAgents = availableAgents.filter((agent) => agent.get('id') !== currentAssignee.get('id'))
+        }
+
 
         if (!isCurrentUserAssigned) {
             options = options.push(
@@ -187,7 +172,7 @@ export default class TicketAssignee extends React.Component<Props, State> {
                                 onClick={() => this._selectAgent(agent)}
                             >
                                 <AgentLabel
-                                    name={agent.get('name')}
+                                    name={agent.get('name') || agent.get('email')}
                                     profilePictureUrl={agent.getIn(['meta', 'profile_picture_url'])}
                                     avatar
                                 />
@@ -244,7 +229,7 @@ export default class TicketAssignee extends React.Component<Props, State> {
                     {
                         currentAssignee ? (
                             <AgentLabel
-                                name={currentAssignee}
+                                name={currentAssignee.get('name') || currentAssignee.get('email')}
                                 profilePictureUrl={profilePictureUrl}
                                 className={css.label}
                                 maxWidth="100"

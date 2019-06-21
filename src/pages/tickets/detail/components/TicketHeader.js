@@ -340,8 +340,7 @@ export default class TicketHeader extends React.Component<Props, State> {
                     <div className="d-inline-flex align-items-top">
                         <TicketAssignee
                             direction="right"
-                            currentAssignee={ticket.getIn(['assignee_user', 'name'])}
-                            email={ticket.getIn(['assignee_user', 'email'])}
+                            currentAssignee={ticket.get('assignee_user')}
                             profilePictureUrl={ticket.getIn(['assignee_user', 'meta', 'profile_picture_url'])}
                             setAgent={actions.ticket.setAgent}
                             className={css.assignee}

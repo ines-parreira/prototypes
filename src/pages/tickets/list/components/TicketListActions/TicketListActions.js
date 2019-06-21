@@ -57,7 +57,7 @@ type State = {
     askTrashConfirmation: boolean,
     askDeleteConfirmation: boolean
 }
-
+// TODO(agent-null-names): remove fallbacks in this component when https://github.com/gorgias/gorgias/issues/4413 is fixed
 class TicketListActions extends React.Component<Props, State> {
     state = {
         popoverOpen: '',
@@ -304,7 +304,8 @@ class TicketListActions extends React.Component<Props, State> {
         const areItemsSelected = !selectedItemsIds.isEmpty()
 
         const filteredAgents = agents.filter((agent) => {
-            return agent.get('name').toLowerCase().includes(agentsSearch.toLowerCase())
+            const agentLabel = agent.get('name') || agent.get('email')
+            return agentLabel.toLowerCase().includes(agentsSearch.toLowerCase())
         })
 
         return (
@@ -409,7 +410,7 @@ class TicketListActions extends React.Component<Props, State> {
                                                 }}
                                             >
                                                 <AgentLabel
-                                                    name={agent.get('name')}
+                                                    name={agent.get('name') || agent.get('email')}
                                                     profilePictureUrl={agent.getIn(['meta', 'profile_picture_url'])}
                                                     avatar
                                                 />
