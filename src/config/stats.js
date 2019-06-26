@@ -649,7 +649,7 @@ providing excellent customer support.
         name: 'Tags',
         description: `Tags statistics will show you how many tickets were created during this time period and have a 
 tag attached to them. <a href="https://docs.gorgias.io/admin-guide-to-gorgias/statistics#tags">Learn more</a>.`,
-        filters: [{type: 'channels'}, {type: 'period'}],
+        filters: [{type: 'channels'}, {type: 'tags'}, {type: 'period'}],
         link: 'tags',
         stats: [
             TICKETS_PER_TAG,
