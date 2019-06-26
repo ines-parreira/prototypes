@@ -9,12 +9,21 @@ type Props = {
         description?: string
     }>,
     value: ?any,
-    onChange: (any) => void
+    onChange: (any) => void,
+    disabled: boolean
 }
 
 export default class RadioField extends React.Component<Props> {
+    static defaultProps = {
+        disabled: false
+    }
+
+    _onChange = (value: any) => {
+        this.props.onChange(value)
+    }
+
     render() {
-        const {options, value: selectedValue, onChange} = this.props
+        const {options, value: selectedValue, disabled} = this.props
 
         return (
             <FormGroup tag="fieldset">
@@ -28,11 +37,12 @@ export default class RadioField extends React.Component<Props> {
                             <Input
                                 type="radio"
                                 checked={selectedValue === option.value}
-                                onChange={() => onChange(option.value)}
+                                onChange={disabled ? null : () => this._onChange(option.value)}
+                                disabled={disabled}
                             />
                             <Label
                                 className="control-label ml-2"
-                                onClick={() => onChange(option.value)}
+                                onClick={disabled ? null : () => this._onChange(option.value)}
                                 check
                             >
                                 {option.label}

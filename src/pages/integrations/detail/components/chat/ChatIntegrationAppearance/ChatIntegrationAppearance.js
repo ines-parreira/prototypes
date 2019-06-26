@@ -17,16 +17,18 @@ import {
     Row,
 } from 'reactstrap'
 
-import {CHAT_AUTO_RESPONDER_ENABLED_DEFAULT, CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integrations'
-
 import {
     SMOOCH_INSIDE_WIDGET_TEXTS,
     SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS,
-    SMOOCH_INSIDE_DEFAULT_COLOR, SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT
+    SMOOCH_INSIDE_DEFAULT_COLOR,
+    SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
+    SMOOCH_INSIDE_AUTO_RESPONDER_ENABLED_DEFAULT
 } from '../../../../../../config/integrations/smooch_inside'
+import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integrations'
 import {SHOPIFY_INTEGRATION_TYPE, SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../../constants/integration'
+
 import * as integrationSelectors from '../../../../../../state/integrations/selectors'
 
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
@@ -138,7 +140,7 @@ class ChatIntegrationAppearance extends React.Component<Props, State> {
             preferences: {
                 email_capture_enforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
                 auto_responder: {
-                    enabled: CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
+                    enabled: SMOOCH_INSIDE_AUTO_RESPONDER_ENABLED_DEFAULT,
                     reply: CHAT_AUTO_RESPONDER_REPLY_DEFAULT
                 }
             }
@@ -146,10 +148,7 @@ class ChatIntegrationAppearance extends React.Component<Props, State> {
 
         if (this.props.isUpdate) {
             form.id = this.props.integration.get('id')
-            form.meta = {
-                ...this.props.integration.get('meta').toJS(),
-                language: this.state.language
-            }
+            form.meta = this.props.integration.get('meta').set('language', this.state.language).toJS()
         }
 
         return this.props.actions.updateOrCreateIntegration(fromJS(form))

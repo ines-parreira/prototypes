@@ -1,0 +1,349 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SmoochIntegrationPreferences/> componentDidUpdate() should initialize the state because the passed integration is not empty 1`] = `
+Object {
+  "autoResponderEnabled": true,
+  "autoResponderReply": "reply-in-hours",
+  "isInitialized": true,
+  "isUpdating": false,
+}
+`;
+
+exports[`<SmoochIntegrationPreferences/> componentWillMount() should initialize the state because the passed integration is not empty 1`] = `
+Object {
+  "autoResponderEnabled": true,
+  "autoResponderReply": "reply-in-hours",
+  "isInitialized": true,
+  "isUpdating": false,
+}
+`;
+
+exports[`<SmoochIntegrationPreferences/> render() should render loading buttons because the integration is being updated 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/smooch"
+          >
+            Smooch
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        />
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Preferences
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <SmoochIntegrationNavigation
+    integration={
+      Immutable.Map {
+        "id": 2,
+        "type": "smooch",
+        "meta": Immutable.Map {
+          "language": "en-US",
+        },
+      }
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <div
+        className="mb-4"
+      >
+        <h4>
+          Auto-responder
+        </h4>
+        <div
+          className="mb-3 d-flex align-items-center"
+        >
+          <ToggleButton
+            onChange={[Function]}
+            value={false}
+          />
+          <div
+            className="ml-2"
+          >
+            <b>
+              Enable auto-responder
+            </b>
+          </div>
+        </div>
+        <div
+          className="mb-3"
+        >
+          <p
+            className="text-faded"
+          >
+            <b>
+              During 
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/business-hours"
+              >
+                Business hours
+              </Link>
+            </b>
+            , tell customers how fast they can expect a response with an auto-responder:
+          </p>
+          <RadioField
+            disabled={true}
+            onChange={[Function]}
+            options={
+              Array [
+                Object {
+                  "label": "\\"Thanks for reaching out! Our team will get back to you shortly\\"",
+                  "value": "reply-shortly",
+                },
+                Object {
+                  "label": "\\"Thanks for reaching out! We typically reply in a few minutes\\"",
+                  "value": "reply-in-minutes",
+                },
+                Object {
+                  "label": "\\"Thanks for reaching out! We typically reply in a few hours\\"",
+                  "value": "reply-in-hours",
+                },
+                Object {
+                  "label": "\\"Thanks for reaching out! We typically reply in a day\\"",
+                  "value": "reply-in-day",
+                },
+              ]
+            }
+            value="reply-shortly"
+          />
+          <p
+            className="text-faded"
+          >
+            This message will be sent in new chat tickets after 30 seconds without replies from an agent.
+          </p>
+          <p
+            className="text-faded"
+          >
+            <b>
+              Outside 
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/business-hours"
+              >
+                Business hours
+              </Link>
+            </b>
+            , Gorgias will automatically tell customers when they can expect a response.
+          </p>
+        </div>
+      </div>
+      <div>
+        <Button
+          className="btn-loading"
+          color="success"
+          disabled={true}
+          tag="button"
+          type="submit"
+        >
+          Save changes
+        </Button>
+      </div>
+    </Form>
+  </Container>
+</div>
+`;
+
+exports[`<SmoochIntegrationPreferences/> render() should render the Smooch preferences 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/smooch"
+          >
+            Smooch
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        />
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Preferences
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <SmoochIntegrationNavigation
+    integration={
+      Immutable.Map {
+        "id": 2,
+        "type": "smooch",
+        "meta": Immutable.Map {
+          "language": "en-US",
+        },
+      }
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <div
+        className="mb-4"
+      >
+        <h4>
+          Auto-responder
+        </h4>
+        <div
+          className="mb-3 d-flex align-items-center"
+        >
+          <ToggleButton
+            onChange={[Function]}
+            value={false}
+          />
+          <div
+            className="ml-2"
+          >
+            <b>
+              Enable auto-responder
+            </b>
+          </div>
+        </div>
+        <div
+          className="mb-3"
+        >
+          <p
+            className="text-faded"
+          >
+            <b>
+              During 
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/business-hours"
+              >
+                Business hours
+              </Link>
+            </b>
+            , tell customers how fast they can expect a response with an auto-responder:
+          </p>
+          <RadioField
+            disabled={true}
+            onChange={[Function]}
+            options={
+              Array [
+                Object {
+                  "label": "\\"Thanks for reaching out! Our team will get back to you shortly\\"",
+                  "value": "reply-shortly",
+                },
+                Object {
+                  "label": "\\"Thanks for reaching out! We typically reply in a few minutes\\"",
+                  "value": "reply-in-minutes",
+                },
+                Object {
+                  "label": "\\"Thanks for reaching out! We typically reply in a few hours\\"",
+                  "value": "reply-in-hours",
+                },
+                Object {
+                  "label": "\\"Thanks for reaching out! We typically reply in a day\\"",
+                  "value": "reply-in-day",
+                },
+              ]
+            }
+            value="reply-shortly"
+          />
+          <p
+            className="text-faded"
+          >
+            This message will be sent in new chat tickets after 30 seconds without replies from an agent.
+          </p>
+          <p
+            className="text-faded"
+          >
+            <b>
+              Outside 
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/business-hours"
+              >
+                Business hours
+              </Link>
+            </b>
+            , Gorgias will automatically tell customers when they can expect a response.
+          </p>
+        </div>
+      </div>
+      <div>
+        <Button
+          className=""
+          color="success"
+          disabled={false}
+          tag="button"
+          type="submit"
+        >
+          Save changes
+        </Button>
+      </div>
+    </Form>
+  </Container>
+</div>
+`;

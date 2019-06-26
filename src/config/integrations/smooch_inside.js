@@ -24,7 +24,7 @@ export const SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS = fromJS([
     {value: GERMAN_LANGUAGE, label: 'German'},
 ])
 
-export const SMOOCH_INSIDE_WIDGET_TEXTS = require('../../../../../integrations/smooch_inside/widget_texts.json')
+export const SMOOCH_INSIDE_WIDGET_TEXTS = require('../../../../../integrations/smooch_inside/texts/widget_texts.json')
 export const SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS = SMOOCH_INSIDE_WIDGET_TEXTS[SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT]
 export const SMOOCH_INSIDE_DEFAULT_COLOR = '#0d87dd'
 
@@ -84,3 +84,7 @@ export const CAMPAIGNS_TRIGGER_KEYS = fromJS([
 export const QUICK_REPLIES_DEFAULTS = fromJS(['Get order status', 'Apply promo code'])
 export const QUICK_REPLIES_MAX_ITEMS = 3
 export const QUICK_REPLIES_MAX_ITEM_LENGTH = 20
+
+
+// Auto responder
+export const SMOOCH_INSIDE_AUTO_RESPONDER_ENABLED_DEFAULT = true

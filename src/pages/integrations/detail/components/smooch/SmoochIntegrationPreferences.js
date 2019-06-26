@@ -14,13 +14,18 @@ import {
     Form,
 } from 'reactstrap'
 
-import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integrations'
+import {
+    CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
+    CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
+    getAutoResponderReplyOptions
+} from '../../../../../config/integrations'
 
-import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
-import PageHeader from '../../../../../common/components/PageHeader'
-import BooleanField from '../../../../../common/forms/BooleanField'
-import InputField from '../../../../../common/forms/InputField'
-import SmoochIntegrationNavigation from '../SmoochIntegrationNavigation'
+import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
+import PageHeader from '../../../../common/components/PageHeader'
+import ToggleButton from '../../../../common/components/ToggleButton'
+import RadioField from '../../../../common/forms/RadioField'
+
+import SmoochIntegrationNavigation from './SmoochIntegrationNavigation'
 
 
 type Props = {
@@ -30,29 +35,25 @@ type Props = {
 
 type State = {
     autoResponderEnabled: boolean,
-    autoResponderText: string,
-    isUpdating: boolean
+    autoResponderReply: string,
+    isUpdating: boolean,
+    isInitialized: boolean
 }
 
-@connect(null, {
-    updateOrCreateIntegration
-})
-export default class SmoochIntegrationPreferences extends React.Component<Props, State> {
+export class SmoochIntegrationPreferences extends React.Component<Props, State> {
     state = {
-        autoResponderEnabled: false,
-        autoResponderText: 'We\'re away at the moment. Leave us your email and we\'ll follow up shortly.',
-        isUpdating: false
+        autoResponderEnabled: CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
+        autoResponderReply: CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
+        isUpdating: false,
+        isInitialized: false
     }
-
-    isInitialized: boolean = false
 
     _initState = (integration: Map<*,*>) => {
         this.setState(_omitBy({
             autoResponderEnabled: integration.getIn(['meta', 'preferences', 'auto_responder', 'enabled']),
-            autoResponderText: integration.getIn(['meta', 'preferences', 'auto_responder', 'text']),
+            autoResponderReply: integration.getIn(['meta', 'preferences', 'auto_responder', 'reply']),
+            isInitialized: true
         }, _isUndefined))
-
-        this.isInitialized = true
     }
 
     componentDidMount() {
@@ -62,9 +63,17 @@ export default class SmoochIntegrationPreferences extends React.Component<Props,
     }
 
     componentDidUpdate() {
-        if (!this.isInitialized && !this.props.integration.isEmpty()) {
+        if (!this.state.isInitialized && !this.props.integration.isEmpty()) {
             this._initState(this.props.integration)
         }
+    }
+
+    _setAutoResponderEnabled = (value: boolean) => {
+        this.setState({autoResponderEnabled: value})
+    }
+
+    _setAutoResponderReply = (value: string) => {
+        this.setState({autoResponderReply: value})
     }
 
     _submitPreferences = async (event: SyntheticEvent<*>) => {
@@ -81,8 +90,7 @@ export default class SmoochIntegrationPreferences extends React.Component<Props,
                 preferences: {
                     auto_responder: {
                         enabled: this.state.autoResponderEnabled,
-                        text: this.state.autoResponderText,
-                        reply: CHAT_AUTO_RESPONDER_REPLY_DEFAULT
+                        reply: this.state.autoResponderReply
                     }
                 }
             })
@@ -94,7 +102,7 @@ export default class SmoochIntegrationPreferences extends React.Component<Props,
     }
 
     render() {
-        const {autoResponderEnabled, autoResponderText, isUpdating} = this.state
+        const {autoResponderEnabled, autoResponderReply, isUpdating} = this.state
         const {integration} = this.props
 
         return (
@@ -127,33 +135,41 @@ export default class SmoochIntegrationPreferences extends React.Component<Props,
                     <Form onSubmit={this._submitPreferences}>
                         <div className="mb-4">
                             <h4>
-                                Away auto-responder
+                                Auto-responder
                             </h4>
 
-                            <p>
-                                When your team is not available to chat, you can configure an auto-response for{' '}
-                                your customers.
-                            </p>
 
-                            <div className="mb-3">
-                                <BooleanField
-                                    name="autoResponderEnabled"
-                                    type="checkbox"
-                                    label="Enable auto-responder when no agent is available for chat"
+                            <div className="mb-3 d-flex align-items-center">
+                                <ToggleButton
+                                    onChange={this._setAutoResponderEnabled}
                                     value={autoResponderEnabled}
-                                    onChange={(value) => this.setState({autoResponderEnabled: value})}
                                 />
+                                <div className="ml-2">
+                                    <b>Enable auto-responder</b>
+                                </div>
                             </div>
 
-                            <InputField
-                                type="textarea"
-                                name="autoResponderText"
-                                label="Auto-responder text"
-                                value={autoResponderText}
-                                onChange={(value) => this.setState({autoResponderText: value})}
-                                rows="3"
-                                required
-                            />
+                            <div className="mb-3">
+                                <p className={classnames({'text-faded': !autoResponderEnabled})}>
+                                    <b>During <Link to="/app/settings/business-hours">Business hours</Link></b>,
+                                    tell customers how fast they can expect a response with an auto-responder:
+                                </p>
+                                <RadioField
+                                    options={getAutoResponderReplyOptions(integration.getIn(['meta', 'language']))}
+                                    value={autoResponderReply}
+                                    onChange={this._setAutoResponderReply}
+                                    disabled={!autoResponderEnabled}
+                                />
+                                <p className={classnames({'text-faded': !autoResponderEnabled})}>
+                                    This message will be sent in new chat tickets after 30 seconds without
+                                    replies from an agent.
+                                </p>
+                                <p className={classnames({'text-faded': !autoResponderEnabled})}>
+                                    <b>Outside <Link to="/app/settings/business-hours">Business hours</Link>
+                                    </b>, Gorgias will automatically tell customers when they can expect a
+                                    response.
+                                </p>
+                            </div>
                         </div>
 
                         <div>
@@ -174,3 +190,7 @@ export default class SmoochIntegrationPreferences extends React.Component<Props,
         )
     }
 }
+
+export default connect(null, {
+    updateOrCreateIntegration
+})(SmoochIntegrationPreferences)

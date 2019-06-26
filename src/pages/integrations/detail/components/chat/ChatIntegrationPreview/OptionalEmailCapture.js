@@ -40,7 +40,7 @@ export default class OptionalEmailCapture extends React.Component<Props> {
                         </div>
 
                         <div className={classnames(css.bubble, css.firstMessageOfAppMaker, 'mb-2')}>
-                            {translatedTexts.emailCaptureOfflineTriggerText}
+                            {translatedTexts.emailCaptureOnlineTriggerText}
                         </div>
 
                         <div className={css.optionalEmailCapture}>

@@ -1,160 +1,442 @@
 import React from 'react'
-import {mount} from 'enzyme'
+import {mount, shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import {
+    CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
+    CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
+    CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
+    CHAT_AUTO_RESPONDER_REPLY_SHORTLY
+} from '../../../../../../../config/integrations'
 
-import {CHAT_AUTO_RESPONDER_REPLY_SHORTLY} from '../../../../../../../config/integrations'
 import {
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
+    SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
 } from '../../../../../../../config/integrations/smooch_inside'
+
 import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../../../constants/integration'
-import ChatIntegrationPreferences from '../ChatIntegrationPreferences'
+import {SPANISH_LANGUAGE} from '../../../../../../../constants/languages'
+import {ChatIntegrationPreferences, PREVIEW_AUTO_RESPONDER, PREVIEW_EMAIL_CAPTURE} from '../ChatIntegrationPreferences'
 
 
-const mockStore = configureMockStore([thunk])
+describe('<ChatIntegrationPreferences/>', () => {
+    describe('componentDidMount()', () => {
+        it('should not initialize the state because the passed integration is empty', () => {
+            const component = shallow(
+                <ChatIntegrationPreferences
+                    updateOrCreateIntegration={jest.fn()}
+                    integration={fromJS({})}
+                />,
+                {disableLifecycleMethods: true}
+            )
 
+            const prevState = component.state()
+            component.instance().componentDidMount()
+            expect(component.state()).toEqual(prevState)
+        })
 
-describe('ChatIntegrationPreferences component', () => {
-    it('should render the chat settings container', () => {
-        const component = mount(
-            <ChatIntegrationPreferences
-                store={mockStore({})}
-                integration={fromJS({
-                    id: 2,
-                    type: SMOOCH_INSIDE_INTEGRATION_TYPE,
-                    meta: {
-                        language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
-                    },
-                    decoration: {
-                        main_color: '#789c5d',
-                        conversation_color: '#08d123'
-                    }
-                })}
-            />
-        )
-        expect(component).toMatchSnapshot()
-    })
-
-    it('should set autoResponderEnabled value', () => {
-        const component = mount(
-            <ChatIntegrationPreferences
-                store={mockStore({})}
-                integration={fromJS({
-                    id: 2,
-                    meta: {
-                        preferences: {
-                            auto_responder: {
-                                enabled: true
-                            }
+        it('should initialize the state using the integration passed', () => {
+            const integration = fromJS({
+                id: 1,
+                type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+                meta: {
+                    preferences: {
+                        auto_responder: {
+                            enabled: true,
+                            reply: CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
                         },
-                        language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
-                    }
-                })}
-            />
-        )
-        expect(component.find('input#id-autoResponderEnabled').props().checked).toBe(true)
-    })
-
-    it('should set autoResponderText value', () => {
-        const autoResponderText = 'Pizza Pepperoni'
-        const component = mount(
-            <ChatIntegrationPreferences
-                store={mockStore({})}
-                integration={fromJS({
-                    id: 2,
-                    meta: {
-                        preferences: {
-                            auto_responder: {
-                                text: autoResponderText
-                            }
-                        },
-                        language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
-                    }
-                })}
-            />
-        )
-        expect(component.find('textarea#id-autoResponderText').props().value).toBe(autoResponderText)
-    })
-
-    it('should submit the form with defaults', () => {
-        const store = mockStore({})
-
-        const integration = {
-            id: undefined,
-            meta: {
-                language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
-                preferences: {
-                    auto_responder: {
-                        enabled: false,
-                        text: 'We\'re away at the moment. Leave us your email and we\'ll follow up shortly.',
-                        reply: CHAT_AUTO_RESPONDER_REPLY_SHORTLY
+                        email_capture_enforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED
                     },
-                    email_capture_enforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT
+                    language: SPANISH_LANGUAGE
                 }
-            }
-        }
+            })
 
-        const component = mount(
-            <ChatIntegrationPreferences
-                store={store}
-                integration={fromJS({
-                    type: SMOOCH_INSIDE_INTEGRATION_TYPE,
-                    meta: {
-                        language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
-                    }
-                })}
-            />
-        )
+            const component = shallow(
+                <ChatIntegrationPreferences
+                    updateOrCreateIntegration={jest.fn()}
+                    integration={integration}
+                />
+            )
 
-        component.find('form').simulate('submit')
-
-        const actions = store.getActions()
-        expect(actions.length).toBe(1)
-
-        const action = actions[0]
-
-        expect(action.integration.toJS()).toEqual(integration)
+            expect(component.state()).toMatchSnapshot()
+        })
     })
 
-    it('should submit the form with loaded values', () => {
-        const store = mockStore({})
-
-        const integration = {
-            id: 1,
-            type: SMOOCH_INSIDE_INTEGRATION_TYPE,
-            meta: {
-                preferences: {
-                    auto_responder: {
-                        customProperty: 'Pizza Pepperoni',
-                        enabled: true,
-                        text: 'Pizza Pepperoni',
-                        reply: CHAT_AUTO_RESPONDER_REPLY_SHORTLY
+    describe('componentDidUpdate()', () => {
+        it('should initialize the state using the integration passed because the state was not initialized yet and ' +
+            'the integration passed is not empty', () => {
+            const integration = fromJS({
+                id: 1,
+                type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+                meta: {
+                    preferences: {
+                        auto_responder: {
+                            enabled: true,
+                            reply: CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
+                        },
+                        email_capture_enforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED
                     },
-                    email_capture_enforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT
-                },
-                language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+                    language: SPANISH_LANGUAGE
+                }
+            })
+
+            const component = shallow(
+                <ChatIntegrationPreferences
+                    updateOrCreateIntegration={jest.fn()}
+                    integration={fromJS({})}
+                />
+            )
+
+            component.setProps({integration})
+
+            expect(component.state()).toMatchSnapshot()
+        })
+
+        it('should not initialize the state because it was already initialized', () => {
+            const integration = fromJS({
+                id: 1,
+                type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+                meta: {
+                    preferences: {
+                        auto_responder: {
+                            enabled: true,
+                            reply: CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
+                        },
+                        email_capture_enforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED
+                    },
+                    language: SPANISH_LANGUAGE
+                }
+            })
+
+            const component = shallow(
+                <ChatIntegrationPreferences
+                    updateOrCreateIntegration={jest.fn()}
+                    integration={fromJS({})}
+                />
+            )
+
+            component.setState({isInitialized: true})
+            const prevState = component.state()
+
+            component.setProps({integration})
+
+            expect(component.state()).toEqual(prevState)
+        })
+
+        it('should not initialize the state because the passed integration is empty', () => {
+            const component = shallow(
+                <ChatIntegrationPreferences
+                    updateOrCreateIntegration={jest.fn()}
+                    integration={fromJS({})}
+                />
+            )
+
+            const prevState = component.state()
+
+            component.setProps({integration: fromJS({})})
+
+            expect(component.state()).toEqual(prevState)
+        })
+    })
+
+    describe('_setEmailCaptureEnforcement()', () => {
+        it('should set passed value in the state and set the preview to "email capture"', () => {
+            const integration = fromJS({
+                id: 1,
+                type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+                meta: {
+                    preferences: {
+                        auto_responder: {
+                            enabled: true,
+                            reply: CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
+                        },
+                        email_capture_enforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT
+                    },
+                    language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+                }
+            })
+
+            const component = shallow(
+                <ChatIntegrationPreferences
+                    updateOrCreateIntegration={jest.fn()}
+                    integration={integration}
+                />
+            )
+
+            component.setState({preview: PREVIEW_AUTO_RESPONDER})
+
+            const prevState = component.state()
+            expect(prevState.emailCaptureEnforcement).toEqual(SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT)
+            expect(prevState.preview).toEqual(PREVIEW_AUTO_RESPONDER)
+
+            const expectedState = fromJS(prevState)
+                .set('emailCaptureEnforcement', SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED)
+                .set('preview', PREVIEW_EMAIL_CAPTURE)
+                .toJS()
+
+            component.instance()._setEmailCaptureEnforcement(SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED)
+
+            expect(component.state()).toEqual(expectedState)
+        })
+    })
+
+    describe('_setAutoResponderEnabled()', () => {
+        it('should set passed value in the state and set the preview to "auto responder" because the auto responder' +
+            'was enabled', () => {
+            const autoResponderEnabled = false
+            const integration = fromJS({
+                id: 1,
+                type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+                meta: {
+                    preferences: {
+                        auto_responder: {
+                            enabled: autoResponderEnabled,
+                            reply: CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
+                        },
+                        email_capture_enforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT
+                    },
+                    language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+                }
+            })
+
+            const component = shallow(
+                <ChatIntegrationPreferences
+                    updateOrCreateIntegration={jest.fn()}
+                    integration={integration}
+                />
+            )
+
+            const prevState = component.state()
+            expect(prevState.autoResponderEnabled).toEqual(autoResponderEnabled)
+            expect(prevState.preview).toEqual(PREVIEW_EMAIL_CAPTURE)
+
+            const expectedState = fromJS(prevState)
+                .set('autoResponderEnabled', !autoResponderEnabled)
+                .set('preview', PREVIEW_AUTO_RESPONDER)
+                .toJS()
+
+            component.instance()._setAutoResponderEnabled(!autoResponderEnabled)
+
+            expect(component.state()).toEqual(expectedState)
+        })
+
+        it('should set passed value in the state and set the preview to "email capture" because the auto responder' +
+            'was disabled', () => {
+            const autoResponderEnabled = true
+            const integration = fromJS({
+                id: 1,
+                type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+                meta: {
+                    preferences: {
+                        auto_responder: {
+                            enabled: autoResponderEnabled,
+                            reply: CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
+                        },
+                        email_capture_enforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT
+                    },
+                    language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+                }
+            })
+
+            const component = shallow(
+                <ChatIntegrationPreferences
+                    updateOrCreateIntegration={jest.fn()}
+                    integration={integration}
+                />
+            )
+
+            component.setState({preview: PREVIEW_AUTO_RESPONDER})
+
+            const prevState = component.state()
+            expect(prevState.autoResponderEnabled).toEqual(autoResponderEnabled)
+            expect(prevState.preview).toEqual(PREVIEW_AUTO_RESPONDER)
+
+            const expectedState = fromJS(prevState)
+                .set('autoResponderEnabled', !autoResponderEnabled)
+                .set('preview', PREVIEW_EMAIL_CAPTURE)
+                .toJS()
+
+            component.instance()._setAutoResponderEnabled(!autoResponderEnabled)
+
+            expect(component.state()).toEqual(expectedState)
+        })
+    })
+
+    describe('_setAutoResponderReply()', () => {
+        it('should set passed value in the state and set the preview to "auto responder"', () => {
+            const integration = fromJS({
+                id: 1,
+                type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+                meta: {
+                    preferences: {
+                        auto_responder: {
+                            enabled: true,
+                            reply: CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
+                        },
+                        email_capture_enforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT
+                    },
+                    language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+                }
+            })
+
+            const component = shallow(
+                <ChatIntegrationPreferences
+                    updateOrCreateIntegration={jest.fn()}
+                    integration={integration}
+                />
+            )
+
+            const prevState = component.state()
+            expect(prevState.autoResponderReply).toEqual(CHAT_AUTO_RESPONDER_REPLY_SHORTLY)
+            expect(prevState.preview).toEqual(PREVIEW_EMAIL_CAPTURE)
+
+            const expectedState = fromJS(prevState)
+                .set('autoResponderReply', CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES)
+                .set('preview', PREVIEW_AUTO_RESPONDER)
+                .toJS()
+
+            component.instance()._setAutoResponderReply(CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES)
+
+            expect(component.state()).toEqual(expectedState)
+        })
+    })
+
+    describe('_submitPreferences()', () => {
+        it('should be called when the form is submitted', () => {
+            const component = mount(
+                <ChatIntegrationPreferences
+                    updateOrCreateIntegration={() => {}}
+                    integration={fromJS({})}
+                />
+            )
+
+            const submitPreferencesSpy = jest.spyOn(component.instance(), '_submitPreferences')
+            component.instance().forceUpdate()
+            component.find('form').simulate('submit')
+
+            expect(submitPreferencesSpy).toHaveBeenCalledTimes(1)
+        })
+
+        it('should submit the form with defaults', async () => {
+            const updateOrCreateIntegration = jest.fn()
+
+            const component = shallow(
+                <ChatIntegrationPreferences
+                    updateOrCreateIntegration={updateOrCreateIntegration}
+                    integration={fromJS({
+                        type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+                        meta: {
+                            language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+                        }
+                    })}
+                />
+            )
+
+            await component.instance()._submitPreferences({preventDefault: jest.fn()})
+
+            expect(updateOrCreateIntegration).toHaveBeenCalledWith(fromJS({
+                id: undefined,
+                meta: {
+                    language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
+                    preferences: {
+                        auto_responder: {
+                            enabled: CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
+                            reply: CHAT_AUTO_RESPONDER_REPLY_DEFAULT
+                        },
+                        email_capture_enforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT
+                    }
+                }
+            }))
+        })
+
+        it('should submit the form with loaded values', async () => {
+            const updateOrCreateIntegration = jest.fn()
+
+            const integration = fromJS({
+                id: 1,
+                type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+                meta: {
+                    preferences: {
+                        auto_responder: {
+                            enabled: true,
+                            reply: CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
+                        },
+                        email_capture_enforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT
+                    },
+                    language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+                }
+            })
+
+            const component = shallow(
+                <ChatIntegrationPreferences
+                    updateOrCreateIntegration={updateOrCreateIntegration}
+                    integration={integration}
+                />
+            )
+
+            const newAutoResponder = {
+                enabled: false,
+                reply: CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES
             }
-        }
 
-        const component = mount(
-            <ChatIntegrationPreferences
-                store={store}
-                integration={fromJS(integration)}
-            />
-        )
+            component.setState({
+                autoResponderEnabled: newAutoResponder.enabled,
+                autoResponderReply: newAutoResponder.reply
+            })
 
-        component.find('form').simulate('submit')
+            await component.instance()._submitPreferences({preventDefault: jest.fn()})
 
-        const actions = store.getActions()
-        expect(actions.length).toBe(1)
+            expect(updateOrCreateIntegration).toHaveBeenCalledWith(
+                integration
+                    .delete('type')
+                    .setIn(['meta', 'preferences', 'auto_responder'], fromJS(newAutoResponder))
+            )
+        })
+    })
 
-        const action = actions[0]
+    describe('render()', () => {
+        it('should render the Chat preferences', () => {
+            const component = shallow(
+                <ChatIntegrationPreferences
+                    updateOrCreateIntegration={jest.fn()}
+                    integration={fromJS({
+                        id: 2,
+                        type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+                        meta: {
+                            language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+                        },
+                        decoration: {
+                            main_color: '#789c5d',
+                            conversation_color: '#08d123'
+                        }
+                    })}
+                />
+            )
+            expect(component).toMatchSnapshot()
+        })
 
-        delete integration.type
+        it('should render buttons in loading state because preferences are being submitted', () => {
+            const component = shallow(
+                <ChatIntegrationPreferences
+                    updateOrCreateIntegration={jest.fn()}
+                    integration={fromJS({
+                        id: 2,
+                        type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+                        meta: {
+                            language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+                        },
+                        decoration: {
+                            main_color: '#789c5d',
+                            conversation_color: '#08d123'
+                        }
+                    })}
+                />
+            )
 
-        expect(action.integration.toJS()).toEqual(integration)
+            component.setState({isUpdating: true})
+
+            expect(component).toMatchSnapshot()
+        })
     })
 })

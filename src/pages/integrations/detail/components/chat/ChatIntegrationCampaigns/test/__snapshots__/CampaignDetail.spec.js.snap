@@ -268,7 +268,6 @@ exports[`CampaignDetail component should display default value when it's a new c
           translatedTexts={
             Object {
               "actionPostbackError": "An error occurred while processing your action. Please try again.",
-              "autoResponderText": "We're away at the moment. Leave us your email and we'll follow up shortly.",
               "backLabelBackInAMinute": "Back in 1 minute",
               "backLabelBackInAnHour": "Back in 1 hour",
               "backLabelBackInDays": "Back in {value} days",
@@ -625,7 +624,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
           translatedTexts={
             Object {
               "actionPostbackError": "An error occurred while processing your action. Please try again.",
-              "autoResponderText": "We're away at the moment. Leave us your email and we'll follow up shortly.",
               "backLabelBackInAMinute": "Back in 1 minute",
               "backLabelBackInAnHour": "Back in 1 hour",
               "backLabelBackInDays": "Back in {value} days",
@@ -982,7 +980,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
           translatedTexts={
             Object {
               "actionPostbackError": "An error occurred while processing your action. Please try again.",
-              "autoResponderText": "We're away at the moment. Leave us your email and we'll follow up shortly.",
               "backLabelBackInAMinute": "Back in 1 minute",
               "backLabelBackInAnHour": "Back in 1 hour",
               "backLabelBackInDays": "Back in {value} days",

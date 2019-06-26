@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RadioField component should render passed options, with the passed value selected, and with description when the option has one, else without it 1`] = `
+exports[`<RadioField/> render() should render an enabled Radio field 1`] = `
 <FormGroup
   tag="fieldset"
 >
@@ -12,6 +12,7 @@ exports[`RadioField component should render passed options, with the passed valu
   >
     <Input
       checked={false}
+      disabled={false}
       onChange={[Function]}
       type="radio"
     />
@@ -47,6 +48,7 @@ exports[`RadioField component should render passed options, with the passed valu
   >
     <Input
       checked={true}
+      disabled={false}
       onChange={[Function]}
       type="radio"
     />
@@ -82,6 +84,7 @@ exports[`RadioField component should render passed options, with the passed valu
   >
     <Input
       checked={false}
+      disabled={false}
       onChange={[Function]}
       type="radio"
     />
@@ -89,6 +92,115 @@ exports[`RadioField component should render passed options, with the passed valu
       check={true}
       className="control-label ml-2"
       onClick={[Function]}
+      tag="label"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+    >
+      baz
+    </Label>
+  </FormGroup>
+</FormGroup>
+`;
+
+exports[`<RadioField/> should render a disabled Radio field 1`] = `
+<FormGroup
+  tag="fieldset"
+>
+  <FormGroup
+    check={true}
+    className="mb-2"
+    key="1"
+    tag="div"
+  >
+    <Input
+      checked={false}
+      disabled={true}
+      onChange={null}
+      type="radio"
+    />
+    <Label
+      check={true}
+      className="control-label ml-2"
+      onClick={null}
+      tag="label"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+    >
+      foo
+      <FormText
+        color="muted"
+        tag="small"
+      >
+        one of the options
+      </FormText>
+    </Label>
+  </FormGroup>
+  <FormGroup
+    check={true}
+    className="mb-2"
+    key="2"
+    tag="div"
+  >
+    <Input
+      checked={true}
+      disabled={true}
+      onChange={null}
+      type="radio"
+    />
+    <Label
+      check={true}
+      className="control-label ml-2"
+      onClick={null}
+      tag="label"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+    >
+      bar
+      <FormText
+        color="muted"
+        tag="small"
+      >
+        another option
+      </FormText>
+    </Label>
+  </FormGroup>
+  <FormGroup
+    check={true}
+    className="mb-2"
+    key="3"
+    tag="div"
+  >
+    <Input
+      checked={false}
+      disabled={true}
+      onChange={null}
+      type="radio"
+    />
+    <Label
+      check={true}
+      className="control-label ml-2"
+      onClick={null}
       tag="label"
       widths={
         Array [
