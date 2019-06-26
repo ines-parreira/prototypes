@@ -221,7 +221,7 @@ class EmailIntegrationUpdate extends React.Component {
         const importActivated = integration.getIn(['meta', 'import_state', 'enabled'], false)
         const status = integration.getIn(['meta', 'import_state', 'is_over'], false)
         const mailsImported = integration.getIn(['meta', 'import_state', 'count'], 0)
-        const importDescription = <span>the last <b>month</b> of emails</span>
+        const importDescription = <span>the last <b>year</b> of emails</span>
         return this._renderImport(importActivated, status, mailsImported, importDescription, this._outlookImportEmails)
     }
 
