@@ -206,16 +206,6 @@ describe('Config: ticket', () => {
         })
     })
 
-    describe('acceptsOnlyImages', () => {
-        it('is boolean', () => {
-            const values = ['chat', 'email', 'unknown-value', 1, undefined, null, []]
-
-            values.forEach((value) => {
-                expect(_isBoolean(ticketConfig.acceptsOnlyImages(value))).toBe(true)
-            })
-        })
-    })
-
     describe('getVariablesList', () => {
         const list = ticketConfig.getVariablesList()
 

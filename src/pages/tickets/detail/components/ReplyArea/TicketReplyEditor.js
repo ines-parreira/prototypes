@@ -6,7 +6,13 @@ import _noop from 'lodash/noop'
 import React, {type Node} from 'react'
 import {connect} from 'react-redux'
 
-import {acceptsOnlyImages, canLeaveInternalNote, isRichType} from '../../../../../config/ticket'
+import {
+    canLeaveInternalNote,
+    CHAT_SOURCE,
+    FACEBOOK_COMMENT_SOURCE,
+    FACEBOOK_MESSENGER_SOURCE,
+    isRichType
+} from '../../../../../config/ticket'
 
 import {getOtherAgents} from '../../../../../state/agents/selectors'
 import type {agentsType} from '../../../../../state/agents/types'
@@ -24,9 +30,9 @@ import css from './TicketReplyEditor.less'
 
 
 // Those are the source types which cannot send more than one attachment at a time
-export const ONLY_ONE_ATTACHMENT_SOURCE_TYPES = ['facebook-messenger', 'facebook-comment']
+export const ONLY_ONE_ATTACHMENT_SOURCE_TYPES = [FACEBOOK_MESSENGER_SOURCE, FACEBOOK_COMMENT_SOURCE, CHAT_SOURCE]
 // Those are the source types which can send either text or attachment, but not both at the same time
-export const TEXT_OR_ATTACHMENT_SOURCE_TYPES = ['facebook-messenger']
+export const TEXT_OR_ATTACHMENT_SOURCE_TYPES = [FACEBOOK_MESSENGER_SOURCE]
 
 // debounce the updating of the redux because it's slow otherwise when we type
 export const updateMessageText = _debounce((props, editorState) => {
@@ -190,7 +196,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
         return true
     }
 
-    _handleFiles = (files: filesType, validationRegex: validationRegexType) => {
+    _handleFiles = (files: filesType, validationRegex:? validationRegexType = null) => {
         const {newMessageType} = this.props
         if (!this._canAddAttachments(files)) {
             return
@@ -257,29 +263,12 @@ export class TicketReplyEditor extends React.Component<Props, State> {
         return files.reduce((sum, file) => sum + (file.size || 0), 0)
     }
 
-    render() {
-        const {newMessage, newMessageType, agents, richAreaRef, notify, attachments} = this.props
-
-        const isNewMessageRichType = isRichType(newMessageType)
-        const newMessageAcceptsOnlyImages = acceptsOnlyImages(newMessageType)
-        const canAddMention = canLeaveInternalNote(newMessageType)
-
-        const attachmentInputProps = {}
-
-        // if not rich type (like chat or Facebook message), only accept images
-        if (newMessageAcceptsOnlyImages) {
-            attachmentInputProps.accept = 'image/*'
-        }
-
-        const mentionProps = {
-            canAddMention,
-            mentionSuggestions: agents
-        }
+    _getButtons = (): Node[] => {
+        const {newMessage} = this.props
 
         const attachmentLoading = newMessage.getIn(['_internal', 'loading', 'addAttachment'])
 
-        let displayedActions
-        let buttons: Node[] = [
+        return [
             <div
                 className="attachment"
                 key="attachments"
@@ -297,7 +286,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
                                 </i>
                             ) : (
                                 <i className="material-icons">
-                                    {newMessageAcceptsOnlyImages ? 'insert_photo' : 'attach_file'}
+                                    attach_file
                                 </i>
                             )
                     }
@@ -307,16 +296,29 @@ export class TicketReplyEditor extends React.Component<Props, State> {
                     type="file"
                     multiple
                     onChange={(event) => {
-                        return this._handleFiles(event.target.files, attachmentInputProps.accept)
+                        return this._handleFiles(event.target.files)
                     }}
                     onClick={(event) => {
                         // empty input on click
                         return event.target.value = null
                     }}
-                    {...attachmentInputProps}
                 />
             </div>
         ]
+    }
+
+    render() {
+        const {newMessage, newMessageType, agents, richAreaRef, notify, attachments} = this.props
+
+        const isNewMessageRichType = isRichType(newMessageType)
+        const canAddMention = canLeaveInternalNote(newMessageType)
+
+        const mentionProps = {
+            canAddMention,
+            mentionSuggestions: agents
+        }
+
+        let displayedActions
 
         if (!isNewMessageRichType) {
             displayedActions = ['EMOJI']
@@ -343,9 +345,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
                         html: newMessage.getIn(['newMessage', 'body_html']),
                     }}
                     onChange={this._onEditorChange}
-                    attachFiles={(files) => {
-                        return this._handleFiles(files, attachmentInputProps.accept)
-                    }}
+                    attachFiles={(files) => this._handleFiles(files)}
                     tabIndex="4"
                     readOnly={newMessage.getIn(['_internal', 'loading', 'submitMessage'])}
                     {...mentionProps}
@@ -353,7 +353,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
                     notify={notify}
                     canInsertInlineImages={canInsertInlineImages}
                     attachments={attachments}
-                    buttons={buttons}
+                    buttons={this._getButtons()}
                     displayedActions={displayedActions}
                     canDropFiles
                     signature
