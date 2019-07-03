@@ -85,6 +85,8 @@ export const QUICK_REPLIES_DEFAULTS = fromJS(['Get order status', 'Apply promo c
 export const QUICK_REPLIES_MAX_ITEMS = 3
 export const QUICK_REPLIES_MAX_ITEM_LENGTH = 20
 
-
 // Auto responder
 export const SMOOCH_INSIDE_AUTO_RESPONDER_ENABLED_DEFAULT = true
+
+// Company picture types
+export const SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_MEMBERS = 'team-members'

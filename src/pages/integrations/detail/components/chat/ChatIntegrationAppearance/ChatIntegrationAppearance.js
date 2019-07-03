@@ -24,7 +24,8 @@ import {
     SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS,
     SMOOCH_INSIDE_DEFAULT_COLOR,
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
-    SMOOCH_INSIDE_AUTO_RESPONDER_ENABLED_DEFAULT
+    SMOOCH_INSIDE_AUTO_RESPONDER_ENABLED_DEFAULT,
+    SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
 } from '../../../../../../config/integrations/smooch_inside'
 import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integrations'
 import {SHOPIFY_INTEGRATION_TYPE, SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../../constants/integration'
@@ -133,6 +134,7 @@ class ChatIntegrationAppearance extends React.Component<Props, State> {
             main_color: this.state.mainColor,
             introduction_text: this.state.introductionText,
             offline_introduction_text: this.state.offlineIntroductionText,
+            avatar_type: SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_MEMBERS
         }
 
         form.meta = {
