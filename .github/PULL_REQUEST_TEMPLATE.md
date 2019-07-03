@@ -1,7 +1,9 @@
 #### Ready to merge and deploy: :warning: <!-- OR --> :white_check_mark: 
 #### Ready to review: :warning: <!-- OR --> :white_check_mark:
-#### Related GitHub issue(s): <!-- List GitHub issue(s) related to this PR if applicable. E.g: #1289 -->
-#### Related Sentry issue(s): <!-- List Sentry issue(s) related to this PR if applicable. E.g: [1095231948](https://sentry.io/organizations/gorgias/issues/1095231948/) -->
+#### Related GitHub issue(s): 
+<!-- List GitHub issue(s) related to this PR if applicable. E.g: #1289 --> 
+#### Related Sentry issue(s): 
+<!-- List Sentry issue(s) related to this PR if applicable. --> 
 
 #### Changes:
 <!-- Describe the changes you've made in this PR. -->
