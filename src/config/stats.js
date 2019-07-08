@@ -8,7 +8,7 @@ import {defaults} from 'react-chartjs-2'
 import {formatDuration} from '../pages/stats/common/utils'
 import {TagLabel} from '../pages/common/utils/labels'
 
-import {EMAIL_CHANNEL, CHAT_CHANNEL, AIRCALL_CHANNEL, API_CHANNEL} from './ticket'
+import {EMAIL_CHANNEL, CHAT_CHANNEL, AIRCALL_CHANNEL, API_CHANNEL, SMS_CHANNEL} from './ticket'
 
 // Available Stats. These names should match names in `g/stats/config`
 export const OVERVIEW = 'overview'
@@ -721,7 +721,7 @@ helping customers through the purchasing journey.<br/>
         filters: [
             {
                 type: 'channels',
-                options: [EMAIL_CHANNEL, CHAT_CHANNEL, AIRCALL_CHANNEL, API_CHANNEL]
+                options: [EMAIL_CHANNEL, CHAT_CHANNEL, SMS_CHANNEL, AIRCALL_CHANNEL, API_CHANNEL]
             },
             {
                 type: 'period'
