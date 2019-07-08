@@ -108,6 +108,7 @@ export function guessReceiversFromTicket(ticket, newMessageSourceType, channels 
         } else {
             toReceivers = toReceivers.push(lastMessage.getIn(['source', 'from']))
 
+            # Related issue: https://github.com/gorgias/gorgias/issues/4620
             if (supportAddresses.size) {
                 toReceivers = toReceivers.concat(lastMessage.getIn(['source', 'to']))
             }
