@@ -146,7 +146,7 @@ export default class RulesView extends React.Component<Props, State> {
                         <p>
                             Learn more about how to setup rules{' '}
                             <a
-                                href="https://docs.gorgias.io/rules/rules"
+                                href="https://docs.gorgias.io/rules-auto/rules"
                                 rel="noopener noreferrer"
                                 target="_blank"
                             >
