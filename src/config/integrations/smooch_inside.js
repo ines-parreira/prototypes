@@ -12,6 +12,8 @@ import {
 } from '../../constants/languages'
 
 
+export const SMOOCH_INSIDE_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH = 50
+
 export const SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT = ENGLISH_US_LANGUAGE
 export const SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS = fromJS([
     {value: ENGLISH_US_LANGUAGE, label: 'English US'},

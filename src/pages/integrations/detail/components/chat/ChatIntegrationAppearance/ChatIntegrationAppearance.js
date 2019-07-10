@@ -3,29 +3,21 @@ import React from 'react'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
-import {fromJS, type Map, type List} from 'immutable'
-import {pick as _pick, merge as _merge, defaults as _defaults} from 'lodash'
+import {fromJS, type List, type Map} from 'immutable'
+import {defaults as _defaults, merge as _merge, pick as _pick} from 'lodash'
+import {Breadcrumb, BreadcrumbItem, Button, ButtonGroup, Col, Container, Form, Row,} from 'reactstrap'
+
 
 import {
-    Button,
-    ButtonGroup,
-    Breadcrumb,
-    BreadcrumbItem,
-    Col,
-    Container,
-    Form,
-    Row,
-} from 'reactstrap'
-
-import {
-    SMOOCH_INSIDE_WIDGET_TEXTS,
-    SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS,
+    SMOOCH_INSIDE_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
+    SMOOCH_INSIDE_AUTO_RESPONDER_ENABLED_DEFAULT,
+    SMOOCH_INSIDE_DEFAULT_COLOR,
+    SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
+    SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS,
-    SMOOCH_INSIDE_DEFAULT_COLOR,
-    SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
-    SMOOCH_INSIDE_AUTO_RESPONDER_ENABLED_DEFAULT,
-    SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
+    SMOOCH_INSIDE_WIDGET_TEXTS,
+    SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS,
 } from '../../../../../../config/integrations/smooch_inside'
 import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integrations'
 import {SHOPIFY_INTEGRATION_TYPE, SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../../constants/integration'
@@ -240,6 +232,7 @@ class ChatIntegrationAppearance extends React.Component<Props, State> {
                                             onFocus={() => this.setState({isOnline: true})}
                                             onChange={(value) => this.setState({introductionText: value})}
                                             label="Introduction text during business hours"
+                                            maxLength={SMOOCH_INSIDE_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH}
                                         />
 
                                         <InputField
@@ -252,6 +245,7 @@ class ChatIntegrationAppearance extends React.Component<Props, State> {
                                                 this.setState({offlineIntroductionText: value})
                                             }}
                                             label="Introduction text outside business hours"
+                                            maxLength={SMOOCH_INSIDE_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH}
                                         />
 
                                         <ColorField

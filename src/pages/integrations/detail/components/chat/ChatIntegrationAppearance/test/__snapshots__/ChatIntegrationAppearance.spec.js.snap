@@ -79,6 +79,7 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
               />
               <InputField
                 label="Introduction text during business hours"
+                maxLength={50}
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
@@ -86,6 +87,7 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
               />
               <InputField
                 label="Introduction text outside business hours"
+                maxLength={50}
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
@@ -369,6 +371,7 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
               />
               <InputField
                 label="Introduction text during business hours"
+                maxLength={50}
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
@@ -376,6 +379,7 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
               />
               <InputField
                 label="Introduction text outside business hours"
+                maxLength={50}
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
@@ -679,6 +683,7 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
               />
               <InputField
                 label="Introduction text during business hours"
+                maxLength={50}
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
@@ -686,6 +691,7 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
               />
               <InputField
                 label="Introduction text outside business hours"
+                maxLength={50}
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
