@@ -18,6 +18,8 @@ import {
     SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS,
     SMOOCH_INSIDE_WIDGET_TEXTS,
     SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS,
+    SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
+    SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_DEFAULT
 } from '../../../../../../config/integrations/smooch_inside'
 import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integrations'
 import {SHOPIFY_INTEGRATION_TYPE, SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../../constants/integration'
@@ -26,9 +28,11 @@ import * as integrationSelectors from '../../../../../../state/integrations/sele
 
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
 import ColorField from '../../../../../common/forms/ColorField'
+import FileField from '../../../../../common/forms/FileField'
 import InputField from '../../../../../common/forms/InputField'
 import Loader from '../../../../../common/components/Loader'
 import PageHeader from '../../../../../common/components/PageHeader'
+import RadioField from '../../../../../common/forms/RadioField'
 
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
 import ChatIntegrationPreview from '../ChatIntegrationPreview'
@@ -45,8 +49,23 @@ export const defaultContent = {
     mainColor: SMOOCH_INSIDE_DEFAULT_COLOR,
     conversationColor: SMOOCH_INSIDE_DEFAULT_COLOR,
     isOnline: true,
-    language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+    language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
+    avatarType: SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_DEFAULT,
+    avatarTeamPictureUrl: null
 }
+
+const avatarTypeOptions = [
+    {
+        value: SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
+        label: 'Use team members\' avatars'
+    },
+    {
+        value: SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
+        label: 'Use a single image for the whole team',
+        description: 'For example, use your company\'s logo. The image ' +
+            'needs to be a square of 500kb maximum.'
+    }
+]
 
 type Props = {
     integration: Map<*,*>,
@@ -66,51 +85,50 @@ type State = {
     conversationColor: string,
     isOnline: boolean,
     language: string,
+    avatarType: string,
+    avatarTeamPictureUrl: ?string,
 
     isCopied: boolean,
-    isShopifyInstructions: boolean
+    isShopifyInstructions: boolean,
+    isInitialized: boolean
 }
 
-class ChatIntegrationAppearance extends React.Component<Props, State> {
-    isInitialized: boolean = false
-
-    constructor(props) {
-        super(props)
-
-        // used to know if form has been asynchronously initialized when updating
-        this.isInitialized = !props.isUpdate
-    }
-
+export class ChatIntegrationAppearance extends React.Component<Props, State> {
     state = _merge({
         isCopied: false,
         isShopifyInstructions: true,
+        isInitialized: false
     }, defaultContent)
 
     componentDidMount() {
-        if (!this.state.integration && !this.props.integration.isEmpty()) {
-            this.setState(this._getIntegration(this.props.integration))
+        if (this.props.isUpdate && !this.state.isInitialized && !this.props.integration.isEmpty()) {
+            this._initState(this.props.integration)
         }
     }
 
-    componentWillUpdate(nextProps: Props) {
+    componentWillUpdate(nextProps: Props, nextState: State) {
         const {integration, isUpdate, loading} = nextProps
+        const {isInitialized} = nextState
 
         // populating the form when updating an integration
-        if (!this.isInitialized && isUpdate && !loading.get('integration')) {
-            this.setState(this._getIntegration(integration))
-            this.isInitialized = true
+        if (isUpdate && !isInitialized && !loading.get('integration')) {
+            this._initState(integration)
         }
     }
 
-    _getIntegration = (integration: Map<*,*>) => {
-        return _defaults({
+    _initState = (integration: Map<*,*>) => {
+        this.setState(_defaults({
             name: integration.get('name'),
             introductionText: integration.getIn(['decoration', 'introduction_text']),
             offlineIntroductionText: integration.getIn(['decoration', 'offline_introduction_text']),
             mainColor: integration.getIn(['decoration', 'main_color']),
             conversationColor: integration.getIn(['decoration', 'conversation_color']),
-            language: integration.getIn(['meta', 'language'])
-        }, defaultContent)
+            language: integration.getIn(['meta', 'language']),
+            avatarType: integration.getIn(['decoration', 'avatar_type'])
+                || SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_DEFAULT,
+            avatarTeamPictureUrl: integration.getIn(['decoration', 'avatar_team_picture_url']),
+            isInitialized: true
+        }, defaultContent))
     }
 
     _isSubmitting = () => {
@@ -126,7 +144,8 @@ class ChatIntegrationAppearance extends React.Component<Props, State> {
             main_color: this.state.mainColor,
             introduction_text: this.state.introductionText,
             offline_introduction_text: this.state.offlineIntroductionText,
-            avatar_type: SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_MEMBERS
+            avatar_type: this.state.avatarType,
+            avatar_team_picture_url: this.state.avatarTeamPictureUrl
         }
 
         form.meta = {
@@ -152,7 +171,7 @@ class ChatIntegrationAppearance extends React.Component<Props, State> {
                 }
 
                 // reload the integration
-                this.isInitialized = false
+                this.setState({isInitialized: false})
             })
     }
 
@@ -173,6 +192,18 @@ class ChatIntegrationAppearance extends React.Component<Props, State> {
 
     render() {
         const {actions, integration, isUpdate, loading, currentUser} = this.props
+        const {
+            name,
+            introductionText,
+            offlineIntroductionText,
+            avatarType,
+            avatarTeamPictureUrl,
+            mainColor,
+            conversationColor,
+            language,
+            isOnline
+        } = this.state
+
         const isSubmitting = this._isSubmitting()
 
         if (loading.get('integration')) {
@@ -220,7 +251,7 @@ class ChatIntegrationAppearance extends React.Component<Props, State> {
                                         <InputField
                                             type="text"
                                             label="Chat title"
-                                            value={this.state.name}
+                                            value={name}
                                             onChange={(value) => this.setState({name: value})}
                                             placeholder="Ex: Company Support"
                                             required
@@ -228,7 +259,7 @@ class ChatIntegrationAppearance extends React.Component<Props, State> {
 
                                         <InputField
                                             type="text"
-                                            value={this.state.introductionText}
+                                            value={introductionText}
                                             onFocus={() => this.setState({isOnline: true})}
                                             onChange={(value) => this.setState({introductionText: value})}
                                             label="Introduction text during business hours"
@@ -237,7 +268,7 @@ class ChatIntegrationAppearance extends React.Component<Props, State> {
 
                                         <InputField
                                             type="text"
-                                            value={this.state.offlineIntroductionText}
+                                            value={offlineIntroductionText}
                                             onFocus={() => {
                                                 this.setState({isOnline: false})
                                             }}
@@ -248,21 +279,60 @@ class ChatIntegrationAppearance extends React.Component<Props, State> {
                                             maxLength={SMOOCH_INSIDE_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH}
                                         />
 
+                                        {
+                                            isUpdate && [
+                                                <RadioField
+                                                    key="type-field"
+                                                    options={avatarTypeOptions}
+                                                    value={avatarType}
+                                                    onChange={(value) => this.setState({avatarType: value})}
+                                                    label="Avatar"
+                                                />,
+                                                <div
+                                                    key="file-field"
+                                                    className="d-flex flex-direction-row mb-2"
+                                                >
+                                                    {
+                                                        !!avatarTeamPictureUrl && (
+                                                            <img
+                                                                className="mr-3"
+                                                                style={{maxWidth: '100px'}}
+                                                                src={avatarTeamPictureUrl}
+                                                                alt="Team avatar"
+                                                            />
+                                                        )
+                                                    }
+                                                    <FileField
+                                                        returnFiles={false}
+                                                        noPreview={true}
+                                                        onChange={(avatarTeamPictureUrl) => this.setState({avatarTeamPictureUrl})}
+                                                        uploadType="avatar_team_picture"
+                                                        params={{['integration_id']: integration.get('id')}}
+                                                        maxSize={500 * 1000}
+                                                        required={
+                                                            avatarType === SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE
+                                                            && !avatarTeamPictureUrl
+                                                        }
+                                                    />
+                                                </div>
+                                            ]
+                                        }
+
                                         <ColorField
-                                            value={this.state.mainColor}
+                                            value={mainColor}
                                             onChange={(value) => this.setState({mainColor: value})}
                                             label="Main color"
                                         />
 
                                         <ColorField
-                                            value={this.state.conversationColor}
+                                            value={conversationColor}
                                             onChange={(value) => this.setState({conversationColor: value})}
                                             label="Conversation color"
                                         />
 
                                         <InputField
                                             type="select"
-                                            value={this.state.language}
+                                            value={language}
                                             options={SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS.toJS()}
                                             onChange={this._setLanguage}
                                             label="Language"
@@ -318,14 +388,14 @@ class ChatIntegrationAppearance extends React.Component<Props, State> {
                                 <ButtonGroup className="mb-3">
                                     <Button
                                         type="button"
-                                        color={this.state.isOnline ? 'info' : 'secondary'}
+                                        color={isOnline ? 'info' : 'secondary'}
                                         onClick={() => this.setState({isOnline: true})}
                                     >
                                         During business hours
                                     </Button>
                                     <Button
                                         type="button"
-                                        color={!this.state.isOnline ? 'info' : 'secondary'}
+                                        color={!isOnline ? 'info' : 'secondary'}
                                         onClick={() => this.setState({isOnline: false})}
                                     >
                                         Outside business hours
@@ -334,15 +404,17 @@ class ChatIntegrationAppearance extends React.Component<Props, State> {
                             </div>
                             <ChatIntegrationPreview
                                 currentUser={currentUser}
-                                name={this.state.name}
-                                introductionText={this.state.introductionText}
-                                offlineIntroductionText={this.state.offlineIntroductionText}
-                                mainColor={this.state.mainColor}
-                                isOnline={this.state.isOnline}
-                                language={this.state.language}
+                                name={name}
+                                avatarType={avatarType}
+                                avatarTeamPictureUrl={avatarTeamPictureUrl}
+                                introductionText={introductionText}
+                                offlineIntroductionText={offlineIntroductionText}
+                                mainColor={mainColor}
+                                isOnline={isOnline}
+                                language={language}
                             >
                                 <MessageContentPreview
-                                    conversationColor={this.state.conversationColor}
+                                    conversationColor={conversationColor}
                                     currentUser={currentUser}
                                 />
                             </ChatIntegrationPreview>
@@ -359,5 +431,7 @@ const mapStateToProps = (state) => {
         shopifyIntegrations: integrationSelectors.getIntegrationsByTypes(SHOPIFY_INTEGRATION_TYPE)(state)
     }
 }
+
+
 
 export default connect(mapStateToProps)(ChatIntegrationAppearance)

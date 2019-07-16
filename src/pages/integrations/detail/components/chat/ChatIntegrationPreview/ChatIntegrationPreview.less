@@ -135,10 +135,27 @@
     }
   }
 
-  .agents {
+  .agents, .team-picture-wrapper {
     margin-left: 5px;
     display: flex;
     align-items: center;
+
+    .team-picture {
+      position: relative;
+
+      height: 50px;
+      width: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: -10px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 100px;
+      }
+    }
 
     .agent {
       position: relative;
@@ -157,27 +174,6 @@
       border-style: solid;
       border-width: 3px;
       margin-right: -10px;
-
-      .onlineMarker,
-      .offlineMarker {
-        position: absolute;
-        width: 12px;
-        height: 12px;
-        bottom: -3.5%;
-        right: 6%;
-        border-radius: 50px;
-        border-style: solid;
-        border-width: 3px;
-        border-color: inherit;
-      }
-
-      .onlineMarker {
-        background: @active-bluegreen;
-      }
-
-      .offlineMarker {
-        background: @orange;
-      }
 
       &.first, &.last {
         width: 32px;
@@ -198,6 +194,29 @@
 
       &.last {
         margin-right: 0;
+      }
+    }
+
+    .agent, .team-picture {
+      .onlineMarker,
+      .offlineMarker {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        bottom: -3.5%;
+        right: 6%;
+        border-radius: 50px;
+        border-style: solid;
+        border-width: 3px;
+        border-color: inherit;
+      }
+
+      .onlineMarker {
+        background: @active-bluegreen;
+      }
+
+      .offlineMarker {
+        background: @orange;
       }
     }
   }

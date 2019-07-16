@@ -3,6 +3,7 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
 import {Button, Input} from 'reactstrap'
+import classnames from 'classnames'
 import _isArray from 'lodash/isArray'
 
 
@@ -22,6 +23,7 @@ type Props = {
     returnFiles: boolean,
     uploadType?: string,
     maxSize?: number,
+    params?: Object
 }
 
 type State = {
@@ -76,7 +78,7 @@ export class FileField extends InputField<Props, State> {
             return
         }
 
-        uploadFiles(files, this.props.uploadType).then((files) => {
+        uploadFiles(files, {type: this.props.uploadType, ...this.props.params}).then((files) => {
             this.setState({isUploading: false})
 
             // if we want to return files, return them otherwise return urls only
@@ -129,6 +131,7 @@ export class FileField extends InputField<Props, State> {
             noPreview,
             onChange, // eslint-disable-line
             placeholder,
+            className,
             returnFiles, // eslint-disable-line
             notify, // eslint-disable-line
             uploadType, // eslint-disable-line
@@ -161,23 +164,23 @@ export class FileField extends InputField<Props, State> {
                 >
                     {
                         isUploading ? (
-                            <div>
+                            <span>
                                 <i className="material-icons md-spin mr-2">
                                         refresh
                                 </i>
                                     Uploading...
-                            </div>
+                            </span>
                         ) : (
-                            <div>
+                            <span>
                                 {placeholder}
-                            </div>
+                            </span>
                         )
                     }
                     <Input
                         id={this.id}
                         onChange={this._onChange}
-                        hidden
                         disabled={disabled}
+                        className={classnames(css.input, className)}
                         {...rest}
                     />
                 </Button>

@@ -10,7 +10,8 @@ type Props = {
     }>,
     value: ?any,
     onChange: (any) => void,
-    disabled: boolean
+    disabled: boolean,
+    label?: string,
 }
 
 export default class RadioField extends React.Component<Props> {
@@ -23,10 +24,17 @@ export default class RadioField extends React.Component<Props> {
     }
 
     render() {
-        const {options, value: selectedValue, disabled} = this.props
+        const {options, value: selectedValue, disabled, label} = this.props
 
         return (
             <FormGroup tag="fieldset">
+                {
+                    !!label && (
+                        <Label className="control-label">
+                            {label}
+                        </Label>
+                    )
+                }
                 {
                     options.map((option) => (
                         <FormGroup

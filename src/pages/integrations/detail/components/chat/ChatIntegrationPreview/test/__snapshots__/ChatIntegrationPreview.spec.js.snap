@@ -512,6 +512,106 @@ exports[`<ChatIntegrationPreview/> render() should display required email captur
 </div>
 `;
 
+exports[`<ChatIntegrationPreview/> render() should display the avatar team picture in the header because the URL is set and the option is enabled 1`] = `
+<div
+  className="preview"
+>
+  <div
+    className="titlebar"
+  />
+  <div
+    className="dialog"
+  >
+    <div
+      className="header"
+      style={
+        Object {
+          "backgroundColor": "#123456",
+        }
+      }
+    >
+      <div
+        className="team-picture-wrapper"
+      >
+        <div
+          className="team-picture"
+          style={
+            Object {
+              "borderColor": "#123456",
+            }
+          }
+        >
+          <img
+            src="https://gorgias.io/avatar.png"
+          />
+          <div
+            className="onlineMarker"
+          />
+        </div>
+      </div>
+      <div
+        className="details"
+      >
+        <div
+          className="appName"
+        >
+          My little chat integration
+        </div>
+        <div
+          className="introductionText"
+        >
+          intro
+        </div>
+      </div>
+    </div>
+    <MessageContent
+      conversationColor="#456789"
+      currentUser={
+        Immutable.Map {
+          "name": "Charles",
+        }
+      }
+    />
+    <div
+      className="poweredby"
+    >
+      Powered by Gorgias
+    </div>
+    <div
+      className="footer"
+    >
+      <div
+        className="placeholder"
+      >
+        Type a message...
+      </div>
+      <i
+        className="icon camera"
+      />
+    </div>
+  </div>
+  <div
+    className="button"
+    style={
+      Object {
+        "backgroundColor": "#123456",
+      }
+    }
+  >
+    <div
+      className="iconWrapper"
+    >
+      <i
+        className="icon"
+      />
+      <div
+        className="shadow"
+      />
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<ChatIntegrationPreview/> render() should display the offline status because chat is offline 1`] = `
 <div
   className="preview"

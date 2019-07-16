@@ -4,6 +4,7 @@ import {type Map} from 'immutable'
 import classnames from 'classnames'
 
 import {
+    SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_TEXTS
 } from '../../../../../../config/integrations/smooch_inside'
@@ -19,6 +20,8 @@ type Props = {
     offlineIntroductionText?: string,
     headerText?: string,
     mainColor?: string,
+    avatarType?: string,
+    avatarTeamPictureUrl?: string,
 
     isOnline?: boolean,
     language: string,
@@ -38,6 +41,8 @@ export default class ChatIntegrationPreview extends React.Component<Props> {
             name,
             introductionText,
             offlineIntroductionText,
+            avatarType,
+            avatarTeamPictureUrl,
             mainColor,
             isOnline,
             language,
@@ -69,35 +74,49 @@ export default class ChatIntegrationPreview extends React.Component<Props> {
                         className={css.header}
                         style={{backgroundColor: isOnline ? mainColor : offlineColor}}
                     >
-                        <div className={css.agents}>
-                            <div
-                                className={classnames(css.agent, css.first)}
-                                style={{borderColor: isOnline ? mainColor : offlineColor}}
-                            >
-                                <i className="material-icons">
-                                person
-                                </i>
-                                {statusMarker}
-                            </div>
-                            <div
-                                className={classnames(css.agent, css.middle)}
-                                style={{borderColor: isOnline ? mainColor : offlineColor}}
-                            >
-                                <i className="material-icons">
-                                person
-                                </i>
-                                {statusMarker}
-                            </div>
-                            <div
-                                className={classnames(css.agent, css.last)}
-                                style={{borderColor: isOnline ? mainColor : offlineColor}}
-                            >
-                                <i className="material-icons">
-                                person
-                                </i>
-                                {statusMarker}
-                            </div>
-                        </div>
+                        {
+                            avatarType === SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE && !!avatarTeamPictureUrl ? (
+                                <div className={css['team-picture-wrapper']}>
+                                    <div
+                                        className={classnames(css['team-picture'])}
+                                        style={{borderColor: isOnline ? mainColor : offlineColor}}
+                                    >
+                                        <img src={avatarTeamPictureUrl}/>
+                                        {statusMarker}
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className={css.agents}>
+                                    <div
+                                        className={classnames(css.agent, css.first)}
+                                        style={{borderColor: isOnline ? mainColor : offlineColor}}
+                                    >
+                                        <i className="material-icons">
+                                            person
+                                        </i>
+                                        {statusMarker}
+                                    </div>
+                                    <div
+                                        className={classnames(css.agent, css.middle)}
+                                        style={{borderColor: isOnline ? mainColor : offlineColor}}
+                                    >
+                                        <i className="material-icons">
+                                            person
+                                        </i>
+                                        {statusMarker}
+                                    </div>
+                                    <div
+                                        className={classnames(css.agent, css.last)}
+                                        style={{borderColor: isOnline ? mainColor : offlineColor}}
+                                    >
+                                        <i className="material-icons">
+                                            person
+                                        </i>
+                                        {statusMarker}
+                                    </div>
+                                </div>
+                            )
+                        }
 
                         <div className={css.details}>
                             <div className={css.appName}>

@@ -3,7 +3,10 @@ import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../../config/integrations'
-import {SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT} from '../../../../../../../config/integrations/smooch_inside'
+import {
+    SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
+    SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+} from '../../../../../../../config/integrations/smooch_inside'
 
 import AutoResponder from '../AutoResponder'
 import ChatIntegrationPreview from '../ChatIntegrationPreview'
@@ -20,6 +23,29 @@ const currentUser = fromJS({name: 'Charles'})
 
 describe('<ChatIntegrationPreview/>', () => {
     describe('render()', () => {
+        it('should display the avatar team picture in the header because the URL is set and the option is enabled',
+            () => {
+                const component = shallow(
+                    <ChatIntegrationPreview
+                        name="My little chat integration"
+                        currentUser={currentUser}
+                        introductionText="intro"
+                        mainColor={mainColor}
+                        isOnline={true}
+                        language={SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT}
+                        avatarType={SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE}
+                        avatarTeamPictureUrl="https://gorgias.io/avatar.png"
+                    >
+                        <MessageContent
+                            conversationColor={conversationColor}
+                            currentUser={currentUser}
+                        />
+                    </ChatIntegrationPreview>
+                )
+
+                expect(component).toMatchSnapshot()
+            })
+
         it('should display the online status because chat is online', () => {
             const component = shallow(
                 <ChatIntegrationPreview

@@ -1,7 +1,10 @@
 import moment from 'moment'
 import {fromJS} from 'immutable'
+import axios from 'axios'
+import MockAdapter from 'axios-mock-adapter'
 
 import plan from '../fixtures/plan'
+import {uploadFiles} from '../utils'
 import * as utils from '../utils'
 import TICKET_LANGUAGES from '../config/ticketLanguages'
 import schemasJSON from '../fixtures/openapi'
@@ -571,6 +574,42 @@ describe('global utils', () => {
 
         it('should round to T with 2 digits', () => {
             expect(utils.compactInteger(1150000000000, 2)).toEqual('1.15T')
+        })
+    })
+
+    describe('uploadFiles()', () => {
+        let mockServer
+
+        beforeEach(() => {
+            mockServer = new MockAdapter(axios)
+        })
+
+        it('should post files to the upload API', () => {
+            const name = 'foo.jpg'
+            const uploadedFileData = {data: [{name, foo: 'bar'}]}
+
+            mockServer.onPost('/api/upload/').reply(200, uploadedFileData)
+
+            const file = new File([''], name)
+            return uploadFiles(file).then((data) => {
+                expect(data).toEqual(uploadedFileData)
+            })
+        })
+
+        it('should post files to the upload API and pass the passed params', () => {
+            const name = 'foo.jpg'
+            const uploadedFileData = {data: [{name, foo: 'bar'}]}
+            const passedParams = {type: 'profile_picture', foo: 'bar'}
+
+            mockServer.onPost('/api/upload/').reply(({params}) => {
+                expect(params).toEqual(passedParams)
+                return [200, uploadedFileData]
+            })
+
+            const file = new File([''], name)
+            return uploadFiles(file, passedParams).then((data) => {
+                expect(data).toEqual(uploadedFileData)
+            })
         })
     })
 })
