@@ -114,7 +114,7 @@ export class MacroEdit extends React.Component {
     }
 
     renderIntentMenu = () => {
-        let intents = fromJS(window.GORGIAS_CONSTANTS.MACRO_INTENTS)
+        let intents = fromJS(window.GORGIAS_CONSTANTS.INTENTS)
         intents = intents.reduce((newIntents, intentDesc, intentName) => {
             return newIntents.setIn(intentName.split('/'), intentDesc)
         }, fromJS({}))

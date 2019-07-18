@@ -14,7 +14,7 @@ describe('MacroEdit component', () => {
     const actions = fromJS([])
 
     beforeEach(() => {
-        window.GORGIAS_CONSTANTS = {'MACRO_INTENTS': {
+        window.GORGIAS_CONSTANTS = {'INTENTS': {
             'catOne/intentOne': 'description one',
             'catOne/intentTwo': 'description two',
             'catTwo/intentTWo': 'description three'
