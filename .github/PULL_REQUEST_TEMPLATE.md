@@ -1,4 +1,3 @@
-#### Ready to merge and deploy: :warning: <!-- OR --> :white_check_mark: 
 #### Ready to review: :warning: <!-- OR --> :white_check_mark:
 #### Related GitHub issue(s): 
 <!-- List GitHub issue(s) related to this PR if applicable. E.g: #1289 --> 
