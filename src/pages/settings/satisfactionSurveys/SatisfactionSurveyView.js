@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import {Form, FormGroup, Button, Container} from 'reactstrap'
 import {connect} from 'react-redux'
 
-import {convertToHTML} from '../../../utils/editor'
+import {convertToHTML, getPlainText} from '../../../utils/editor'
 
 import BooleanField from '../../common/forms/BooleanField'
 import InputField from '../../common/forms/InputField'
@@ -40,7 +40,7 @@ class SatisfactionSurveyView extends React.Component<Props> {
 
         this.setState((prevState) => ({
             settings: prevState.settings.mergeDeep({
-                survey_email_text: contentState.getPlainText(),
+                survey_email_text: getPlainText(contentState),
                 survey_email_html: convertToHTML(contentState),
             })
         }))
@@ -162,7 +162,7 @@ class SatisfactionSurveyView extends React.Component<Props> {
                     {
                         currentAccount.get('extra_features').includes('satisfaction-surveys')
                             ? this._renderSettings()
-                            : <RestrictedSatisfactionSurvey />
+                            : <RestrictedSatisfactionSurvey/>
                     }
                 </Container>
             </div>

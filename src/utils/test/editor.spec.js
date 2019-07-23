@@ -319,4 +319,45 @@ describe('editor utils', () => {
             expect(isValidSelectionKey(newEditorState, editorState1.getSelection())).toBe(false)
         })
     })
+
+    describe('getPlainText()', () => {
+        it('should return link url in plaintext', () => {
+            const html = '<a href="http://gorgias.io">link</a>'
+            const contentState = utils.convertFromHTML(html)
+            expect(utils.getPlainText(contentState)).toBe('link: http://gorgias.io/')
+        })
+
+        it('should return link url in mixed plaintext', () => {
+            const html = 'One <a href="http://gorgias.io">gorgias</a> link'
+            const contentState = utils.convertFromHTML(html)
+            expect(utils.getPlainText(contentState)).toBe('One gorgias: http://gorgias.io/ link')
+        })
+
+        it('should return link urls for multiple same-line entities', () => {
+            const html = ''
+                + 'One <a href="http://gorgias.io">gorgias</a>'
+                + ' link <a href="https://gorgias.io/features">home</a> and back'
+            const contentState = utils.convertFromHTML(html)
+            expect(utils.getPlainText(contentState)).toBe('One gorgias: http://gorgias.io/ link home: https://gorgias.io/features and back')
+        })
+
+        it('should return link url in multiline plaintext', () => {
+            const html = ''
+                + 'First line<br>'
+                + 'One <a href="http://gorgias.io">gorgias</a> link<br>'
+                + 'Last line'
+            const contentState = utils.convertFromHTML(html)
+            expect(utils.getPlainText(contentState)).toBe('First line\nOne gorgias: http://gorgias.io/ link\nLast line')
+        })
+        it('should omit the link content if it is the same as the link url ', () => {
+            const html = 'One <a href="http://gorgias.io">gorgias</a> and <a href="http://google.com/">http://google.com/</a> end.'
+            const contentState = utils.convertFromHTML(html)
+            expect(utils.getPlainText(contentState)).toBe('One gorgias: http://gorgias.io/ and http://google.com/ end.')
+        })
+        it('should ignore the url link ending slash', () => {
+            const html = 'a <a href="http://gorgias.io/">http://gorgias.io</a> b.'
+            const contentState = utils.convertFromHTML(html)
+            expect(utils.getPlainText(contentState)).toBe('a http://gorgias.io b.')
+        })
+    })
 })

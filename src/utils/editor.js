@@ -2,7 +2,7 @@
 import linkifyhtml from 'linkifyjs/html'
 import {convertToHTML as _convertToHTML, convertFromHTML as _convertFromHTML} from 'draft-convert'
 import linkifyIt from 'linkify-it'
-import {ContentBlock, ContentState, EditorState, SelectionState} from 'draft-js'
+import {ContentBlock, ContentState, EditorState, SelectionState, convertToRaw} from 'draft-js'
 
 import {DEFAULT_IMAGE_WIDTH} from '../config/editor'
 import {availableVariables} from '../config/rules'
@@ -249,7 +249,7 @@ export function getSelectedEntityKey(contentState: ContentState, selection: Sele
     return entityKey
 }
 
-export function removeMentions (editorState: EditorState): EditorState {
+export function removeMentions(editorState: EditorState): EditorState {
     const contentState = editorState.getCurrentContent()
     // use convertFromHTML to create a new content state w/o mention
     // because mentions are not present in the html of the body
@@ -257,7 +257,7 @@ export function removeMentions (editorState: EditorState): EditorState {
     return EditorState.push(editorState, newEditorState, 'change-block-data')
 }
 
-export function refreshEditor (editorState: EditorState): EditorState {
+export function refreshEditor(editorState: EditorState): EditorState {
     const contentState = editorState.getCurrentContent()
     const newEditorState = EditorState.createWithContent(contentState, editorState.getDecorator())
     return EditorState.set(newEditorState, {
@@ -268,7 +268,7 @@ export function refreshEditor (editorState: EditorState): EditorState {
     })
 }
 
-export function isValidSelectionKey (editorState: EditorState, selectionState: SelectionState): boolean {
+export function isValidSelectionKey(editorState: EditorState, selectionState: SelectionState): boolean {
     const contentState = editorState.getCurrentContent()
     const anchorKey = selectionState.getAnchorKey()
     if (!contentState.getBlockForKey(anchorKey)) {
@@ -281,4 +281,43 @@ export function isValidSelectionKey (editorState: EditorState, selectionState: S
     }
 
     return true
+}
+
+// Replacement for DraftJS getPlainText:
+// https://github.com/facebook/draft-js/blob/e2c5357734de2a66025825c2872cc236a154d60c/src/model/immutable/ContentState.js#L115
+// Used to correctly transform rich entities into plaintext (links, images, etc..)
+export function getPlainText(ContentState: ContentState, delimiter?: string): string {
+    return convertToRaw(ContentState).blocks.map((rawBlock) => {
+        let blockText = rawBlock.text || ''
+        let totalOffset = 0
+
+        rawBlock.entityRanges.forEach((rawEntity) => {
+            const block = ContentState.getBlockForKey(rawBlock.key)
+            const entityKey = block.getEntityAt(rawEntity.offset)
+            const entity = ContentState.getEntity(entityKey)
+
+            // Links like <a href="http://x.io">x</a> will output as x: http://x.io plain text.
+            if (entity.get('type') === 'link') {
+                const entityOffset = rawEntity.offset + totalOffset
+                const linkContent = blockText.slice(entityOffset, entityOffset + rawEntity.length)
+                const linkURL = entity.getData().url
+
+                // only append the URL if it's different from the content of the link.
+                // Ex: <a href="https://gorgias.io/">https://gorgias.io</a> -> https://gorgias.io
+                if (linkContent.toLowerCase() === linkURL.toLowerCase() ||
+                    // if the URL does not have a ending slash it will be automatically added so we check for it here
+                    linkContent.toLowerCase() + '/' === linkURL.toLowerCase()) {
+                    return
+                }
+
+                const position = rawEntity.offset + rawEntity.length + totalOffset
+                const newText = `: ${linkURL}`
+                totalOffset = totalOffset + newText.length
+
+                blockText = blockText.slice(0, position) + newText + blockText.slice(position)
+            }
+        })
+
+        return blockText
+    }).join(delimiter || '\n')
 }

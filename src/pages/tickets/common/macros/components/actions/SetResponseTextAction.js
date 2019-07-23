@@ -16,7 +16,7 @@ import * as integrationsSelectors from '../../../../../../state/integrations/sel
 import RichField from '../../../../../common/forms/RichField'
 
 import {insertText} from '../../../../../../utils'
-import {convertToHTML} from '../../../../../../utils/editor'
+import {convertToHTML, getPlainText} from '../../../../../../utils/editor'
 
 import {getVariables} from '../../../../../../config/ticket'
 
@@ -53,7 +53,7 @@ export default class SetResponseTextAction extends React.Component {
         this.props.updateActionArgs(
             this.props.index,
             args.merge({
-                body_text: contentState.getPlainText(),
+                body_text: getPlainText(contentState),
                 body_html: convertToHTML(contentState),
             })
         )

@@ -13,7 +13,7 @@ import DatetimePicker from '../../../common/forms/DatetimePicker'
 import InputField from '../../forms/InputField'
 
 import {humanizeString} from '../../../../utils'
-import {convertToHTML} from '../../../../utils/editor'
+import {convertToHTML, getPlainText} from '../../../../utils/editor'
 import MultiSelectField from '../../forms/MultiSelectField'
 import {
     collectionOperators, caseInsensitiveOperators, deprecatedOperators, timedeltaOperators
@@ -147,7 +147,7 @@ export class Widget extends React.Component<Props, State> {
 
         // fill the text field with the text version
         if (textFieldParent) {
-            actions.modifyCodeAST(textFieldParent, contentState.getPlainText(), 'UPDATE')
+            actions.modifyCodeAST(textFieldParent, getPlainText(contentState), 'UPDATE')
         }
 
         return actions.modifyCodeAST(parent, convertToHTML(contentState), 'UPDATE')
