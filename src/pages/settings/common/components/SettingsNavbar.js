@@ -26,94 +26,128 @@ export default class SettingsNavbar extends React.Component<Props> {
         const categories = [{
             name: 'You',
             icon: 'person',
-            links: [{
-                to: 'profile',
-                text: 'Your profile'
-            }, {
-                to: 'change-password',
-                text: 'Change password'
-            }, {
-                requiredRole: ADMIN_ROLE,
-                to: 'api',
-                text: 'REST API',
-                className: 'd-none d-md-block',
-            }]
+            links: [
+                {
+                    to: 'profile',
+                    text: 'Your profile'
+                }, {
+                    to: 'change-password',
+                    text: 'Change password'
+                }, {
+                    requiredRole: ADMIN_ROLE,
+                    to: 'api',
+                    text: 'REST API',
+                    className: 'd-none d-md-block',
+                }
+            ]
         }, {
             name: 'General',
             icon: 'settings',
-            links: [{
-                requiredRole: ADMIN_ROLE,
-                to: 'integrations',
-                text: 'Integrations',
-                className: 'd-none d-md-block',
-            }, {
-                requiredRole: AGENT_ROLE,
-                to: 'rules',
-                text: 'Rules',
-                className: 'd-none d-md-block',
-            }, {
-                requiredRole: ADMIN_ROLE,
-                to: 'billing',
-                text: 'Billing & Usage',
-                className: 'd-none d-md-block',
-            }, {
-                requiredRole: AGENT_ROLE,
-                to: 'manage-tags',
-                text: 'Tags',
-                className: 'd-none d-md-block',
-            }, {
-                requiredRole: ADMIN_ROLE,
-                to: 'import-data',
-                text: 'Import data',
-                className: 'd-none d-md-block'
-            }]
+            links: [
+                {
+                    requiredRole: ADMIN_ROLE,
+                    to: 'integrations',
+                    text: 'Integrations',
+                    className: 'd-none d-md-block',
+                }, {
+                    requiredRole: AGENT_ROLE,
+                    to: 'rules',
+                    text: 'Rules',
+                    className: 'd-none d-md-block',
+                }, {
+                    requiredRole: AGENT_ROLE,
+                    to: 'manage-tags',
+                    text: 'Tags',
+                    className: 'd-none d-md-block',
+                }, {
+                    requiredRole: ADMIN_ROLE,
+                    to: 'satisfaction-surveys',
+                    text: 'Satisfaction',
+                    className: 'd-none d-md-block'
+                },
+                {
+                    requiredRole: ADMIN_ROLE,
+                    to: 'billing',
+                    text: 'Billing & Usage',
+                    className: 'd-none d-md-block',
+                },
+                {
+                    requiredRole: ADMIN_ROLE,
+                    to: 'import-data',
+                    text: 'Import data',
+                    className: 'd-none d-md-block'
+                }
+            ]
         }, {
             name: 'Users & Teams',
             icon: 'group',
-            links: [{
-                requiredRole: ADMIN_ROLE,
-                to: 'users',
-                text: 'Users',
-                className: 'd-none d-md-block'
-            }, {
-                requiredRole: ADMIN_ROLE,
-                to: 'teams',
-                text: 'Teams',
-                className: 'd-none d-md-block'
-            }, {
-                requiredRole: ADMIN_ROLE,
-                to: 'audit',
-                text: 'Audit logs',
-                className: 'd-none d-md-block'
-            }]
+            links: [
+                {
+                    requiredRole: ADMIN_ROLE,
+                    to: 'users',
+                    text: 'Users',
+                    className: 'd-none d-md-block'
+                }, {
+                    requiredRole: ADMIN_ROLE,
+                    to: 'teams',
+                    text: 'Teams',
+                    className: 'd-none d-md-block'
+                }, {
+                    requiredRole: ADMIN_ROLE,
+                    to: 'audit',
+                    text: 'Audit logs',
+                    className: 'd-none d-md-block'
+                }
+            ]
         }, {
             name: 'Availability',
             icon: 'alarm',
-            links: [{
-                requiredRole: ADMIN_ROLE,
-                to: 'business-hours',
-                text: 'Business hours',
-                className: 'd-none d-md-block'
-            }, {
-                requiredRole: ADMIN_ROLE,
-                to: 'chat-assignment',
-                text: 'Chat assignment',
-                className: 'd-none d-md-block'
-            }]
+            links: [
+                {
+                    requiredRole: ADMIN_ROLE,
+                    to: 'business-hours',
+                    text: 'Business hours',
+                    className: 'd-none d-md-block'
+                }, {
+                    requiredRole: ADMIN_ROLE,
+                    to: 'chat-assignment',
+                    text: 'Chat assignment',
+                    className: 'd-none d-md-block'
+                }
+            ]
         }]
-
-        categories[1].links.splice(2, 0, {
-            requiredRole: ADMIN_ROLE,
-            to: 'satisfaction-surveys',
-            text: 'Satisfaction',
-            className: 'd-none d-md-block'
-        })
 
         return (
             <div>
                 {
                     categories.map(({name, icon, links}, index) => {
-                        if (!links.length) {
+                        const displayedLinks = links.map(({to, text, requiredRole, className}) => {
+                            // hide link if user hasn't the required role
+                            if (requiredRole && !hasRole(currentUser, requiredRole)) {
+                                return null
+                            }
+
+                            const isActive = pathname.split('/').includes(to)
+                                || (/settings\/?$/.test(pathname) && to === 'profile')
+
+                            return (
+                                <Link
+                                    key={to}
+                                    to={`/app/settings/${to}`}
+                                    className={classnames(className, 'item', {
+                                        active: isActive,
+                                    })}
+                                    onClick={() => {
+                                        this.context.closePanel()
+                                    }}
+                                >
+                                    {text}
+                                </Link>
+                            )
+                        }).filter((link) => link)
+
+                        // Hide the category if there's nothing to display
+                        if (!displayedLinks.length) {
                             return null
                         }
 
@@ -125,37 +159,11 @@ export default class SettingsNavbar extends React.Component<Props> {
                                 <h4><i className="material-icons">{icon}</i> {name}</h4>
 
                                 <div className="menu">
-                                    {
-                                        links.map(({to, text, requiredRole, className}) => {
-                                            // hide link if user hasn't the required role
-                                            if (requiredRole && !hasRole(currentUser, requiredRole)) {
-                                                return
-                                            }
-
-                                            const isActive = pathname.split('/').includes(to)
-                                                || (/settings\/?$/.test(pathname) && to === 'profile')
-
-                                            return (
-                                                <Link
-                                                    key={to}
-                                                    to={`/app/settings/${to}`}
-                                                    className={classnames(className, 'item', {
-                                                        active: isActive,
-                                                    })}
-                                                    onClick={() => {
-                                                        this.context.closePanel()
-                                                    }}
-                                                >
-                                                    {text}
-                                                </Link>
-                                            )
-                                        })
-                                    }
+                                    {displayedLinks}
                                 </div>
                             </div>
                         )
                     })
-
                 }
             </div>
         )
