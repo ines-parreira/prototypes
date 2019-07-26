@@ -3,7 +3,12 @@ import axios from 'axios'
 import _find from 'lodash/find'
 import _get from 'lodash/get'
 
-import {EMAIL_INTEGRATION_TYPE, EMAIL_INTEGRATION_TYPES} from './constants/integration'
+import {
+    EMAIL_INTEGRATION_TYPE,
+    EMAIL_INTEGRATION_TYPES,
+    RECHARGE_INTEGRATION_TYPE,
+    SHOPIFY_INTEGRATION_TYPE
+} from './constants/integration'
 
 import {daysToHours, hoursToSeconds} from './utils'
 
@@ -381,7 +386,7 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: 'back',
-        integrationType: 'shopify',
+        integrationType: SHOPIFY_INTEGRATION_TYPE,
         name: 'shopifyCancelLastOrder',
         title: 'Cancel last order',
         arguments: {
@@ -409,13 +414,14 @@ export const ACTION_TEMPLATES = [
         validators: [
             {
                 validate: (customer: Object) => {
-                    return _find(customer.integrations, {'__integration_type__': 'shopify'})
+                    return _find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
                 },
                 error: 'This customer has no Shopify data.'
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
+                    const shopifyIntegration = _find(customer.integrations,
+                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
 
                     return _get(shopifyIntegration, ['orders'])
                 },
@@ -423,7 +429,8 @@ export const ACTION_TEMPLATES = [
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
+                    const shopifyIntegration = _find(customer.integrations,
+                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
 
                     return _get(shopifyIntegration, ['orders', '0', 'financial_status']) !== 'fulfilled'
                 },
@@ -433,7 +440,7 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: 'back',
-        integrationType: 'shopify',
+        integrationType: SHOPIFY_INTEGRATION_TYPE,
         name: 'shopifyCancelOrder',
         title: 'Cancel order',
         arguments: {
@@ -468,20 +475,21 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: 'back',
-        integrationType: 'shopify',
+        integrationType: SHOPIFY_INTEGRATION_TYPE,
         name: 'shopifyDuplicateLastOrder',
         title: 'Duplicate last order',
         arguments: {},
         validators: [
             {
                 validate: (customer: Object) => {
-                    return _find(customer.integrations, {'__integration_type__': 'shopify'})
+                    return _find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
                 },
                 error: 'This customer has no Shopify data.'
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
+                    const shopifyIntegration = _find(customer.integrations,
+                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
 
                     return _get(shopifyIntegration, ['orders'])
                 },
@@ -491,7 +499,7 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: 'back',
-        integrationType: 'shopify',
+        integrationType: SHOPIFY_INTEGRATION_TYPE,
         name: 'shopifyEditShippingAddressOfLastOrder',
         title: 'Edit last order\'s shipping address',
         notes: [
@@ -558,13 +566,14 @@ export const ACTION_TEMPLATES = [
         validators: [
             {
                 validate: (customer: Object) => {
-                    return _find(customer.integrations, {'__integration_type__': 'shopify'})
+                    return _find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
                 },
                 error: 'This customer has no Shopify data.'
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
+                    const shopifyIntegration = _find(customer.integrations,
+                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
 
                     return _get(shopifyIntegration, ['orders'])
                 },
@@ -572,7 +581,8 @@ export const ACTION_TEMPLATES = [
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
+                    const shopifyIntegration = _find(customer.integrations,
+                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
 
                     return _get(shopifyIntegration, ['orders', '0', 'financial_status']) !== 'fulfilled'
                 },
@@ -582,7 +592,7 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: 'back',
-        integrationType: 'shopify',
+        integrationType: SHOPIFY_INTEGRATION_TYPE,
         name: 'shopifyRefundShippingCostOfLastOrder',
         title: 'Refund last order\'s shipping cost',
         arguments: {},
@@ -598,7 +608,8 @@ export const ACTION_TEMPLATES = [
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
+                    const shopifyIntegration = _find(customer.integrations,
+                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
 
                     return _get(shopifyIntegration, ['orders'])
                 },
@@ -606,9 +617,11 @@ export const ACTION_TEMPLATES = [
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
+                    const shopifyIntegration = _find(customer.integrations,
+                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
 
-                    return !['refunded', 'accepted'].includes(_get(shopifyIntegration, ['orders', '0', 'financial_status']))
+                    return !['refunded', 'accepted']
+                        .includes(_get(shopifyIntegration, ['orders', '0', 'financial_status']))
                 },
                 error: 'The last order has already been refunded or hasn\'t been paid for yet.'
             }
@@ -616,7 +629,7 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: 'back',
-        integrationType: 'shopify',
+        integrationType: SHOPIFY_INTEGRATION_TYPE,
         name: 'shopifyFullRefundLastOrder',
         title: 'Refund last order',
         arguments: {
@@ -637,13 +650,14 @@ export const ACTION_TEMPLATES = [
         validators: [
             {
                 validate: (customer: Object) => {
-                    return _find(customer.integrations, {'__integration_type__': 'shopify'})
+                    return _find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
                 },
                 error: 'This customer has no Shopify data.'
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
+                    const shopifyIntegration = _find(customer.integrations,
+                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
 
                     return _get(shopifyIntegration, ['orders'])
                 },
@@ -651,7 +665,8 @@ export const ACTION_TEMPLATES = [
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
+                    const shopifyIntegration = _find(customer.integrations,
+                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
 
                     return !['refunded', 'accepted'].includes(_get(shopifyIntegration, ['orders', '0', 'financial_status']))
                 },
@@ -661,7 +676,7 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: 'back',
-        integrationType: 'shopify',
+        integrationType: SHOPIFY_INTEGRATION_TYPE,
         name: 'shopifyPartialRefundLastOrder',
         title: 'Partially refund last order',
         arguments: {
@@ -683,13 +698,14 @@ export const ACTION_TEMPLATES = [
         validators: [
             {
                 validate: (customer: Object) => {
-                    return _find(customer.integrations, {'__integration_type__': 'shopify'})
+                    return _find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
                 },
                 error: 'This customer has no Shopify data.'
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
+                    const shopifyIntegration = _find(customer.integrations,
+                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
 
                     return _get(shopifyIntegration, ['orders'])
                 },
@@ -697,7 +713,8 @@ export const ACTION_TEMPLATES = [
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
+                    const shopifyIntegration = _find(customer.integrations,
+                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
 
                     return !['refunded', 'accepted'].includes(_get(shopifyIntegration, ['orders', '0', 'financial_status']))
                 },
@@ -707,7 +724,7 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: 'back',
-        integrationType: 'shopify',
+        integrationType: SHOPIFY_INTEGRATION_TYPE,
         name: 'shopifyEditNoteOfLastOrder',
         title: 'Edit last order\'s note',
         arguments: {
@@ -723,13 +740,14 @@ export const ACTION_TEMPLATES = [
         validators: [
             {
                 validate: (customer: Object) => {
-                    return _find(customer.integrations, {'__integration_type__': 'shopify'})
+                    return _find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
                 },
                 error: 'This customer has no Shopify data.'
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations, {'__integration_type__': 'shopify'})
+                    const shopifyIntegration = _find(customer.integrations,
+                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
 
                     return _get(shopifyIntegration, ['orders'])
                 },
@@ -739,20 +757,21 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: 'back',
-        integrationType: 'recharge',
+        integrationType: RECHARGE_INTEGRATION_TYPE,
         name: 'rechargeCancelLastSubscription',
         title: 'Cancel last subscription',
         arguments: {},
         validators: [
             {
                 validate: (customer: Object) => {
-                    return _find(customer.integrations, {'__integration_type__': 'recharge'})
+                    return _find(customer.integrations, {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
                 },
                 error: 'This customer has no Recharge data.'
             },
             {
                 validate: (customer: Object) => {
-                    const rechargeIntegration = _find(customer.integrations, {'__integration_type__': 'recharge'})
+                    const rechargeIntegration = _find(customer.integrations,
+                        {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
 
                     return _get(rechargeIntegration, ['subscriptions'])
                 },
@@ -760,7 +779,8 @@ export const ACTION_TEMPLATES = [
             },
             {
                 validate: (customer: Object) => {
-                    const rechargeIntegration = _find(customer.integrations, {'__integration_type__': 'recharge'})
+                    const rechargeIntegration = _find(customer.integrations,
+                        {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
 
                     return _get(rechargeIntegration, ['subscriptions', '0', 'cancelled_at']) === null
                 },
@@ -770,20 +790,21 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: 'back',
-        integrationType: 'recharge',
+        integrationType: RECHARGE_INTEGRATION_TYPE,
         name: 'rechargeActivateLastSubscription',
         title: 'Activate last subscription',
         arguments: {},
         validators: [
             {
                 validate: (customer: Object) => {
-                    return _find(customer.integrations, {'__integration_type__': 'recharge'})
+                    return _find(customer.integrations, {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
                 },
                 error: 'This customer has no Recharge data.'
             },
             {
                 validate: (customer: Object) => {
-                    const rechargeIntegration = _find(customer.integrations, {'__integration_type__': 'recharge'})
+                    const rechargeIntegration = _find(customer.integrations,
+                        {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
 
                     return _get(rechargeIntegration, ['subscriptions'])
                 },
@@ -791,7 +812,8 @@ export const ACTION_TEMPLATES = [
             },
             {
                 validate: (customer: Object) => {
-                    const rechargeIntegration = _find(customer.integrations, {'__integration_type__': 'recharge'})
+                    const rechargeIntegration = _find(customer.integrations,
+                        {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
 
                     return _get(rechargeIntegration, ['subscriptions', '0', 'cancelled_at']) !== null
                 },
@@ -801,7 +823,7 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: 'back',
-        integrationType: 'recharge',
+        integrationType: RECHARGE_INTEGRATION_TYPE,
         name: 'rechargeRefundLastCharge',
         title: 'Refund last charge',
         arguments: {
@@ -820,13 +842,14 @@ export const ACTION_TEMPLATES = [
         validators: [
             {
                 validate: (customer: Object) => {
-                    return _find(customer.integrations, {'__integration_type__': 'recharge'})
+                    return _find(customer.integrations, {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
                 },
                 error: 'This customer has no Recharge data.'
             },
             {
                 validate: (customer: Object) => {
-                    const rechargeIntegration = _find(customer.integrations, {'__integration_type__': 'recharge'})
+                    const rechargeIntegration = _find(customer.integrations,
+                        {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
 
                     return _get(rechargeIntegration, ['charges'])
                 },
@@ -834,7 +857,8 @@ export const ACTION_TEMPLATES = [
             },
             {
                 validate: (customer: Object) => {
-                    const rechargeIntegration = _find(customer.integrations, {'__integration_type__': 'recharge'})
+                    const rechargeIntegration = _find(customer.integrations,
+                        {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
 
                     const statusisvalid = ['SUCCESS', 'PARTIALLY_REFUNDED']
                         .includes(_get(rechargeIntegration, ['charges', '0', 'status']))
