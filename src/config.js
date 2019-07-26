@@ -860,11 +860,56 @@ export const ACTION_TEMPLATES = [
                     const rechargeIntegration = _find(customer.integrations,
                         {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
 
-                    const statusisvalid = ['SUCCESS', 'PARTIALLY_REFUNDED']
+                    return ['SUCCESS', 'PARTIALLY_REFUNDED']
                         .includes(_get(rechargeIntegration, ['charges', '0', 'status']))
-                    return statusisvalid
                 },
                 error: 'The last charge is not refundable.'
+            }
+        ]
+    },
+    {
+        execution: 'back',
+        integrationType: RECHARGE_INTEGRATION_TYPE,
+        name: 'rechargeRefundLastOrder',
+        title: 'Refund last order',
+        arguments: {
+            amount: {
+                label: 'Amount',
+                default: '{{ticket.customer.integrations.recharge.orders[0].total_price}}',
+                editable: true,
+                required: true,
+                display_order: 1,
+                input: {
+                    type: 'number',
+                    step: 0.01
+                }
+            }
+        },
+        validators: [
+            {
+                validate: (customer: Object) => {
+                    return _find(customer.integrations, {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
+                },
+                error: 'This customer has no Recharge data.'
+            },
+            {
+                validate: (customer: Object) => {
+                    const rechargeIntegration = _find(customer.integrations,
+                        {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
+
+                    return _get(rechargeIntegration, ['orders'])
+                },
+                error: 'This customer has no orders to refund.'
+            },
+            {
+                validate: (customer: Object) => {
+                    const rechargeIntegration = _find(customer.integrations,
+                        {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
+
+                    return ['SUCCESS', 'PARTIALLY_REFUNDED']
+                        .includes(_get(rechargeIntegration, ['orders', '0', 'charge_status']))
+                },
+                error: 'The last order is not refundable.'
             }
         ]
     }

@@ -493,81 +493,85 @@ export function prepareWidgetToDisplay(template = fromJS({}), source = fromJS({}
 export function guessFieldValueFromRawData(data, type) {
     let fieldValue = ''
 
-    if (!_.isUndefined(data) && !_.isNull(data)) {
-        if (_.isString(data)) {
+    if (_.isUndefined(data) || _.isNull(data)) {
+        return fieldValue
+    }
+
+    if (_.isString(data)) {
+        fieldValue = data
+    }
+
+    switch (type) {
+        case 'text': {
             fieldValue = data
+            break
         }
-
-        switch (type) {
-            case 'text': {
-                fieldValue = data
-                break
-            }
-            case 'date': {
-                fieldValue = <DatetimeLabel dateTime={data} />
-                break
-            }
-            case 'age': {
-                try {
-                    fieldValue = moment().diff(data, 'years')
-                    fieldValue += ` (${moment(data).format('YYYY-MM-DD')})`
-                } catch (e) {
-                    fieldValue = data
-                }
-                break
-            }
-            case 'url': {
-                if (utils.isUrl(data)) {
-                    fieldValue = (
-                        <a
-                            href={data}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            {data.length > 60 ? `${data.slice(0, 57)}...` : data}
-                        </a>
-                    )
-                }
-                break
-            }
-            case 'email': {
-                if (utils.isEmail(data)) {
-                    fieldValue = (
-                        <a
-                            href={`mailto:${data}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            {data}
-                        </a>
-                    )
-                }
-                break
-            }
-            case 'boolean': {
-                let isTrue = true
-
-                if (_.isBoolean(data)) {
-                    isTrue = data
-                }
-
-                if (_.isString(data)) {
-                    isTrue = data === 'true' || data.toString() === '1'
-                }
-
-                fieldValue = isTrue
-                    ? <Badge color="success">True</Badge>
-                    : <Badge color="danger">False</Badge>
-                break
-            }
-            case 'array': {
-                if (_.isArray(data)) {
-                    fieldValue = data.join(', ')
-                }
-                break
-            }
-            default:
+        case 'date': {
+            fieldValue = <DatetimeLabel dateTime={data} />
+            break
         }
+        case 'age': {
+            if (moment(data).isValid()) {
+                fieldValue = moment().diff(data, 'years')
+                fieldValue += ` (${moment(data).format('YYYY-MM-DD')})`
+            }
+            break
+        }
+        case 'url': {
+            if (utils.isUrl(data)) {
+                fieldValue = (
+                    <a
+                        href={data}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {data.length > 60 ? `${data.slice(0, 57)}...` : data}
+                    </a>
+                )
+            }
+            break
+        }
+        case 'email': {
+            if (utils.isEmail(data)) {
+                fieldValue = (
+                    <a
+                        href={`mailto:${data}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {data}
+                    </a>
+                )
+            }
+            break
+        }
+        case 'boolean': {
+            let isTrue = true
+
+            if (_.isBoolean(data)) {
+                isTrue = data
+            }
+
+            if (_.isString(data)) {
+                isTrue = data === 'true' || data.toString() === '1'
+            }
+
+            if (_.isInteger(data)) {
+                isTrue = data !== 0
+            }
+
+            fieldValue = isTrue
+                ? <Badge color="success">True</Badge>
+                : <Badge color="danger">False</Badge>
+            break
+        }
+        case 'array': {
+            if (_.isArray(data)) {
+                fieldValue = data.join(', ')
+            }
+            break
+        }
+        default:
     }
 
     return fieldValue

@@ -1,0 +1,119 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`widgets infobar utils guessFieldValueFromRawData() should render a danger badge because passed type is \`boolean\` and passed data is a \`false\` value 1`] = `
+<Badge
+  color="danger"
+  pill={false}
+  tag="span"
+>
+  False
+</Badge>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() should render a danger badge because passed type is \`boolean\` and passed data is a \`false\` value 2`] = `
+<Badge
+  color="danger"
+  pill={false}
+  tag="span"
+>
+  False
+</Badge>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() should render a danger badge because passed type is \`boolean\` and passed data is a \`false\` value 3`] = `
+<Badge
+  color="danger"
+  pill={false}
+  tag="span"
+>
+  False
+</Badge>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() should render a danger badge because passed type is \`boolean\` and passed data is a \`false\` value 4`] = `
+<Badge
+  color="danger"
+  pill={false}
+  tag="span"
+>
+  False
+</Badge>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() should render a success badge because passed type is \`boolean\` and passed data is a \`true\` value 1`] = `
+<Badge
+  color="success"
+  pill={false}
+  tag="span"
+>
+  True
+</Badge>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() should render a success badge because passed type is \`boolean\` and passed data is a \`true\` value 2`] = `
+<Badge
+  color="success"
+  pill={false}
+  tag="span"
+>
+  True
+</Badge>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() should render a success badge because passed type is \`boolean\` and passed data is a \`true\` value 3`] = `
+<Badge
+  color="success"
+  pill={false}
+  tag="span"
+>
+  True
+</Badge>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() should render a success badge because passed type is \`boolean\` and passed data is a \`true\` value 4`] = `
+<Badge
+  color="success"
+  pill={false}
+  tag="span"
+>
+  True
+</Badge>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() should render a success badge because passed type is \`boolean\` and passed data is a \`true\` value 5`] = `
+<Badge
+  color="success"
+  pill={false}
+  tag="span"
+>
+  True
+</Badge>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() should return a datetime label because passed type is \`date\` 1`] = `
+<DatetimeLabel
+  dateTime="foo"
+/>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() should return a link because passed type is \`email\` and passed data is an email address 1`] = `
+<a
+  href="mailto:developers@gorgias.io"
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  developers@gorgias.io
+</a>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() should return a link because passed type is \`url\` and passed data is an url 1`] = `
+<a
+  href="https://gorgias.io"
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  https://gorgias.io
+</a>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() should return an age string because passed type is \`age\` and passed data is a valid datetime 1`] = `"1 (2018-01-01)"`;

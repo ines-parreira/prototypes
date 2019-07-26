@@ -36,25 +36,15 @@ class AfterTitle extends React.Component<AfterTitleProps> { // eslint-disable-li
         isOrderRefunded: PropTypes.bool.isRequired,
     }
 
-    render() {
+    _getActions = () => {
         const {source}: AfterTitleProps = this.props
         const {
-            integrationId,
             isOrderCancelled,
             isOrderRefunded
         }: {
-            integrationId: number,
             isOrderCancelled: boolean,
             isOrderRefunded: boolean
         } = this.context
-
-        if (this.props.isEditing) {
-            return null
-        }
-
-        if (!integrationId) {
-            return null
-        }
 
         const orderTotalPrice: number = parseFloat(source.get('total_price') || '0')
 
@@ -178,7 +168,20 @@ class AfterTitle extends React.Component<AfterTitleProps> { // eslint-disable-li
         }
 
         // remove removed actions from list of available actions
-        actions = actions.filter((action: ActionType) => !removed.includes(action.key))
+        return actions.filter((action: ActionType) => !removed.includes(action.key))
+    }
+
+    render() {
+        const {source}: AfterTitleProps = this.props
+        const {integrationId}: {integrationId: number} = this.context
+
+        if (this.props.isEditing) {
+            return null
+        }
+
+        if (!integrationId) {
+            return null
+        }
 
         const payload: Object = {
             order_id: source.get('id') || ''
@@ -186,7 +189,7 @@ class AfterTitle extends React.Component<AfterTitleProps> { // eslint-disable-li
 
         return (
             <ActionButtonsGroup
-                actions={actions}
+                actions={this._getActions()}
                 payload={payload}
             />
         )

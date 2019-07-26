@@ -1,0 +1,250 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Order <AfterTitle/> should display the refund action 1`] = `
+<ActionButtonsGroup
+  actions={
+    Array [
+      Object {
+        "child": <div>
+          <i
+            className="material-icons mr-2"
+          >
+            refresh
+          </i>
+          Refund
+        </div>,
+        "key": "refund",
+        "options": Array [
+          Object {
+            "parameters": Array [
+              Object {
+                "defaultValue": 10,
+                "label": "Amount",
+                "max": 10,
+                "min": 0.01,
+                "name": "amount",
+                "placeholder": "Amount",
+                "required": true,
+                "step": 0.01,
+                "type": "number",
+              },
+            ],
+            "value": "rechargeRefundOrder",
+          },
+        ],
+        "title": <div>
+          <i
+            className="material-icons mr-2"
+          >
+            refresh
+          </i>
+          Refund order
+        </div>,
+        "tooltip": "This will refund the order in Recharge.",
+      },
+    ]
+  }
+  payload={
+    Object {
+      "order_id": 1,
+    }
+  }
+/>
+`;
+
+exports[`Order <AfterTitle/> should display the refund action with its max equal to the total price of the order minus what has already been refunded on the associated charge 1`] = `
+<ActionButtonsGroup
+  actions={
+    Array [
+      Object {
+        "child": <div>
+          <i
+            className="material-icons mr-2"
+          >
+            refresh
+          </i>
+          Refund
+        </div>,
+        "key": "refund",
+        "options": Array [
+          Object {
+            "parameters": Array [
+              Object {
+                "defaultValue": 6,
+                "label": "Amount",
+                "max": 6,
+                "min": 0.01,
+                "name": "amount",
+                "placeholder": "Amount",
+                "required": true,
+                "step": 0.01,
+                "type": "number",
+              },
+            ],
+            "value": "rechargeRefundOrder",
+          },
+        ],
+        "title": <div>
+          <i
+            className="material-icons mr-2"
+          >
+            refresh
+          </i>
+          Refund order
+        </div>,
+        "tooltip": "This will refund the order in Recharge.",
+      },
+    ]
+  }
+  payload={
+    Object {
+      "order_id": 1,
+    }
+  }
+/>
+`;
+
+exports[`Order <AfterTitle/> should not display the refund action because the charge is not refundable 1`] = `
+<ActionButtonsGroup
+  actions={Array []}
+  payload={
+    Object {
+      "order_id": 1,
+    }
+  }
+/>
+`;
+
+exports[`Order <AfterTitle/> should not display the refund action because the order was cancelled 1`] = `
+<ActionButtonsGroup
+  actions={Array []}
+  payload={
+    Object {
+      "order_id": 1,
+    }
+  }
+/>
+`;
+
+exports[`Order <AfterTitle/> should not display the refund action because the order was refunded 1`] = `
+<ActionButtonsGroup
+  actions={Array []}
+  payload={
+    Object {
+      "order_id": 1,
+    }
+  }
+/>
+`;
+
+exports[`Order <AfterTitle/> should not render because no integration id was provided 1`] = `""`;
+
+exports[`Order <AfterTitle/> should not render because widgets are being edited 1`] = `""`;
+
+exports[`Order <BeforeContent/> should render the total_refunds field to 0.00 because the value on the associated charge is null 1`] = `
+Array [
+  <div
+    className="simple-field"
+    key="charge-status"
+  >
+    <span
+      className="field-label"
+    >
+      Charge status:
+    </span>
+    <span
+      className="field-value"
+    >
+      <Badge
+        color="success"
+        pill={false}
+        tag="span"
+      >
+        Success
+      </Badge>
+    </span>
+  </div>,
+  <div
+    className="simple-field"
+    key="charge-total-refunds"
+  >
+    <span
+      className="field-label"
+    >
+      Total refunds on charge:
+    </span>
+    <span
+      className="field-value"
+    >
+      $
+      0.00
+    </span>
+  </div>,
+]
+`;
+
+exports[`Order <BeforeContent/> should render with the total_refunds field from the associated charge 1`] = `
+Array [
+  <div
+    className="simple-field"
+    key="charge-status"
+  >
+    <span
+      className="field-label"
+    >
+      Charge status:
+    </span>
+    <span
+      className="field-value"
+    >
+      <Badge
+        color="success"
+        pill={false}
+        tag="span"
+      >
+        Success
+      </Badge>
+    </span>
+  </div>,
+  <div
+    className="simple-field"
+    key="charge-total-refunds"
+  >
+    <span
+      className="field-label"
+    >
+      Total refunds on charge:
+    </span>
+    <span
+      className="field-value"
+    >
+      $
+      5.00
+    </span>
+  </div>,
+]
+`;
+
+exports[`Order <TitleWrapper/> should not render any link because no customer hash was passed 1`] = `
+<a
+  href={null}
+  rel="noopener noreferrer"
+  target="_blank"
+/>
+`;
+
+exports[`Order <TitleWrapper/> should render the base link because a customer hash was passed and no custom link is set 1`] = `
+<a
+  href="https://storegorgias3.myshopify.com/tools/recurring/customers/s8d4f6sdf4/orders/undefined"
+  rel="noopener noreferrer"
+  target="_blank"
+/>
+`;
+
+exports[`Order <TitleWrapper/> should render the custom link because a customer hash was passed and a custom link is set 1`] = `
+<a
+  href="https://google.com/s8d4f6sdf4"
+  rel="noopener noreferrer"
+  target="_blank"
+/>
+`;

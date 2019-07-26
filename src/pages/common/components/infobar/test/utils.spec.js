@@ -200,4 +200,65 @@ describe('widgets infobar utils', () => {
             expect(utils.jsonToWidget(source)).toEqual(result)
         })
     })
+
+    describe('guessFieldValueFromRawData()', () => {
+        it('should return an empty string because passed data is undefined', () => {
+            expect(utils.guessFieldValueFromRawData(undefined)).toEqual('')
+        })
+
+        it('should return an empty string because passed data is null', () => {
+            expect(utils.guessFieldValueFromRawData(null)).toEqual('')
+        })
+
+        it('should return passed data because passed type is `text`', () => {
+            const passedData = 'foo'
+            expect(utils.guessFieldValueFromRawData(passedData, 'text')).toEqual(passedData)
+        })
+
+        it('should return a datetime label because passed type is `date`', () => {
+            expect(utils.guessFieldValueFromRawData('foo', 'date')).toMatchSnapshot()
+        })
+
+        it('should return an age string because passed type is `age` and passed data is a valid datetime', () => {
+            expect(utils.guessFieldValueFromRawData('2018-01-01 00:05:00', 'age')).toMatchSnapshot()
+        })
+
+        it('should return passed data because passed type is `age` and passed data is not a valid datetime', () => {
+            const passedData = '20180101-05 00:'
+            expect(utils.guessFieldValueFromRawData(passedData, 'age')).toEqual(passedData)
+        })
+
+        it('should return a link because passed type is `url` and passed data is an url', () => {
+            expect(utils.guessFieldValueFromRawData('https://gorgias.io', 'url')).toMatchSnapshot()
+        })
+
+        it('should return passed data because passed type is `url` and passed data is not an url', () => {
+            const passedData = 'httpsgorgiasio'
+            expect(utils.guessFieldValueFromRawData(passedData, 'url')).toEqual(passedData)
+        })
+
+        it('should return a link because passed type is `email` and passed data is an email address', () => {
+            expect(utils.guessFieldValueFromRawData('developers@gorgias.io', 'email')).toMatchSnapshot()
+        })
+
+        it('should return passed data because passed type is `email` and passed data is not an email address', () => {
+            const passedData = 'developersgorgias.io'
+            expect(utils.guessFieldValueFromRawData(passedData, 'email')).toEqual(passedData)
+        })
+
+        it('should render a success badge because passed type is `boolean` and passed data is a `true` value', () => {
+            expect(utils.guessFieldValueFromRawData(true, 'boolean')).toMatchSnapshot()
+            expect(utils.guessFieldValueFromRawData('true', 'boolean')).toMatchSnapshot()
+            expect(utils.guessFieldValueFromRawData('1', 'boolean')).toMatchSnapshot()
+            expect(utils.guessFieldValueFromRawData(1, 'boolean')).toMatchSnapshot()
+            expect(utils.guessFieldValueFromRawData(42, 'boolean')).toMatchSnapshot()
+        })
+
+        it('should render a danger badge because passed type is `boolean` and passed data is a `false` value', () => {
+            expect(utils.guessFieldValueFromRawData(false, 'boolean')).toMatchSnapshot()
+            expect(utils.guessFieldValueFromRawData('false', 'boolean')).toMatchSnapshot()
+            expect(utils.guessFieldValueFromRawData('0', 'boolean')).toMatchSnapshot()
+            expect(utils.guessFieldValueFromRawData(0, 'boolean')).toMatchSnapshot()
+        })
+    })
 })
