@@ -90,13 +90,6 @@ export class Plan extends React.Component<Props> {
                                     this is the additional cost per 100 tickets.
                                 </Tooltip>
                             </li>
-                            <li>
-                                <i className="material-icons feature-icon">
-                                    extension
-                                </i>
-                                {' '}
-                                <strong>{plan.get('integrations')}</strong> integrations
-                            </li>
                         </ul>
                     )}
                 </CardBody>
