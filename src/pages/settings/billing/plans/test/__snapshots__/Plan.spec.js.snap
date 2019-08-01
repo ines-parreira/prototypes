@@ -31,7 +31,7 @@ exports[`Plan component should render 1`] = `
         <strong>
           Unlimited
         </strong>
-         agents
+         users
       </li>
       <li>
         <i

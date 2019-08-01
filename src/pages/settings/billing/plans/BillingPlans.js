@@ -119,7 +119,7 @@ export class BillingPlans extends React.Component<Props, State> {
                         <dl>
                             <dt>I don’t know how many tickets I get per month. Can you help?</dt>
                             <dd>
-                                Sure. You probably receive about 1,000 tickets for each agent in your team.
+                                Sure. You probably receive about 1,000 tickets for each user in your team.
                                 So if you’re paying for 5 seats with your current helpdesk, you’d pay for 5,000 tickets
                                 with Gorgias.
                             </dd>
@@ -213,7 +213,7 @@ export class BillingPlans extends React.Component<Props, State> {
                                             all_inclusive
                                         </i>
                                         {' '}
-                                        <strong>Unlimited</strong> agents
+                                        <strong>Unlimited</strong> users
                                     </li>
                                     <li>
                                         <i className="material-icons feature-icon">

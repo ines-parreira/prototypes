@@ -163,7 +163,7 @@ exports[`BillingPlans component should display a custom plan 1`] = `
               I don’t know how many tickets I get per month. Can you help?
             </dt>
             <dd>
-              Sure. You probably receive about 1,000 tickets for each agent in your team. So if you’re paying for 5 seats with your current helpdesk, you’d pay for 5,000 tickets with Gorgias.
+              Sure. You probably receive about 1,000 tickets for each user in your team. So if you’re paying for 5 seats with your current helpdesk, you’d pay for 5,000 tickets with Gorgias.
             </dd>
             <dt>
               Can I switch between plans?
@@ -276,7 +276,7 @@ exports[`BillingPlans component should display matching current plan 1`] = `
               <strong>
                 Unlimited
               </strong>
-               agents
+               users
             </li>
             <li>
               <i
@@ -397,7 +397,7 @@ exports[`BillingPlans component should display matching current plan 1`] = `
               I don’t know how many tickets I get per month. Can you help?
             </dt>
             <dd>
-              Sure. You probably receive about 1,000 tickets for each agent in your team. So if you’re paying for 5 seats with your current helpdesk, you’d pay for 5,000 tickets with Gorgias.
+              Sure. You probably receive about 1,000 tickets for each user in your team. So if you’re paying for 5 seats with your current helpdesk, you’d pay for 5,000 tickets with Gorgias.
             </dd>
             <dt>
               Can I switch between plans?
@@ -510,7 +510,7 @@ exports[`BillingPlans component should display multiple plans 1`] = `
               <strong>
                 Unlimited
               </strong>
-               agents
+               users
             </li>
             <li>
               <i
@@ -631,7 +631,7 @@ exports[`BillingPlans component should display multiple plans 1`] = `
               I don’t know how many tickets I get per month. Can you help?
             </dt>
             <dd>
-              Sure. You probably receive about 1,000 tickets for each agent in your team. So if you’re paying for 5 seats with your current helpdesk, you’d pay for 5,000 tickets with Gorgias.
+              Sure. You probably receive about 1,000 tickets for each user in your team. So if you’re paying for 5 seats with your current helpdesk, you’d pay for 5,000 tickets with Gorgias.
             </dd>
             <dt>
               Can I switch between plans?
@@ -823,7 +823,7 @@ exports[`BillingPlans component should load with empty props 1`] = `
                     <strong>
                       Unlimited
                     </strong>
-                     agents
+                     users
                   </li>
                   <li>
                     <i
@@ -902,7 +902,7 @@ exports[`BillingPlans component should load with empty props 1`] = `
                           <strong>
                             Unlimited
                           </strong>
-                           agents
+                           users
                         </li>
                         <li>
                           <i
@@ -1052,7 +1052,7 @@ exports[`BillingPlans component should load with empty props 1`] = `
                       I don’t know how many tickets I get per month. Can you help?
                     </dt>
                     <dd>
-                      Sure. You probably receive about 1,000 tickets for each agent in your team. So if you’re paying for 5 seats with your current helpdesk, you’d pay for 5,000 tickets with Gorgias.
+                      Sure. You probably receive about 1,000 tickets for each user in your team. So if you’re paying for 5 seats with your current helpdesk, you’d pay for 5,000 tickets with Gorgias.
                     </dd>
                     <dt>
                       Can I switch between plans?

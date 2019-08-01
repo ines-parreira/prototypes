@@ -64,7 +64,7 @@ export class Plan extends React.Component<Props> {
                                     all_inclusive
                                 </i>
                                 {' '}
-                                <strong>Unlimited</strong> agents
+                                <strong>Unlimited</strong> users
                             </li>
                             <li>
                                 <i className="material-icons feature-icon">
