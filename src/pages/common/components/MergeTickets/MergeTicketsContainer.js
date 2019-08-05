@@ -68,7 +68,7 @@ class MergeTicketsContainer extends React.Component<Props, State> {
             }
         })
 
-        finalTicket = finalTicket.set('customer', finalTicket.get('customer').delete('email'))
+        finalTicket = finalTicket.update('customer', (customer) => fromJS({id: customer.get('id')}))
 
         this.setState({targetTicket, finalTicket})
     }
