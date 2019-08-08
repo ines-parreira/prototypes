@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InfobarWidget card widget should display the widget if isEditing=true 1`] = `"<CardInfobarWidget isEditing={true} isParentList={false} source={{...}} widget={{...}} template={{...}} editing={[undefined]} parent={[undefined]} open={true} AfterTitle={{...}} BeforeContent={{...}} TitleWrapper={{...}} Wrapper={{...}} />"`;
+
+exports[`InfobarWidget card widget should not display the widget if isEditing=false and data if falsy 1`] = `""`;
+
+exports[`InfobarWidget card widget should not display the widget if isEditing=true and data if falsy 1`] = `""`;

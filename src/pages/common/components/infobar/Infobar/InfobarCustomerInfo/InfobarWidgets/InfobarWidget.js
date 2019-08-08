@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import _isObject from 'lodash/isObject'
 import _isFunction from 'lodash/isFunction'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {prepareWidgetToDisplay, guessFieldValueFromRawData} from '../../../utils'
 
@@ -117,7 +117,7 @@ export default class InfobarWidget extends React.Component {
                 data = fromJS(data || {})
 
                 // do not display card if there is no data to display in it
-                if (!isEditing && data.isEmpty()) {
+                if (!isEditing && (!Map.isMap(data) || data.isEmpty())) {
                     return null
                 }
 
