@@ -349,15 +349,23 @@ describe('editor utils', () => {
             const contentState = utils.convertFromHTML(html)
             expect(utils.getPlainText(contentState)).toBe('First line\nOne gorgias: http://gorgias.io/ link\nLast line')
         })
+
         it('should omit the link content if it is the same as the link url ', () => {
             const html = 'One <a href="http://gorgias.io">gorgias</a> and <a href="http://google.com/">http://google.com/</a> end.'
             const contentState = utils.convertFromHTML(html)
             expect(utils.getPlainText(contentState)).toBe('One gorgias: http://gorgias.io/ and http://google.com/ end.')
         })
+
         it('should ignore the url link ending slash', () => {
             const html = 'a <a href="http://gorgias.io/">http://gorgias.io</a> b.'
             const contentState = utils.convertFromHTML(html)
             expect(utils.getPlainText(contentState)).toBe('a http://gorgias.io b.')
+        })
+
+        it('should return regular getPlainText in strings with unicode chars', () => {
+            const html = '👀<a href="http://gorgias.io">link</a>'
+            const contentState = utils.convertFromHTML(html)
+            expect(utils.getPlainText(contentState)).toBe('👀link')
         })
     })
 })

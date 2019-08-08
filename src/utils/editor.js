@@ -294,6 +294,19 @@ export function getPlainText(ContentState: ContentState, delimiter?: string): st
         rawBlock.entityRanges.forEach((rawEntity) => {
             const block = ContentState.getBlockForKey(rawBlock.key)
             const entityKey = block.getEntityAt(rawEntity.offset)
+            if (entityKey === null) {
+                // bail if we can't find entity.
+                // strings with unicode chars (eg. emojis) will cause
+                // entity.offset and getEntity(offset) to mismatch.
+                // draft-js considers unicode 1 char in convertToRaw and multiple chars in getEntityAt.
+                // will be fixed with draft-js 11:
+                // https://github.com/robbertbrak/draft-js/commit/396d30412783bf93b64558661efb88da783e2467
+                // https://github.com/facebook/draft-js/issues/1351
+                // https://github.com/facebook/draft-js/issues/2061
+                // https://github.com/facebook/draft-js/issues/1861
+                // TODO upgrade to draft-js 11 when released.
+                return
+            }
             const entity = ContentState.getEntity(entityKey)
 
             // Links like <a href="http://x.io">x</a> will output as x: http://x.io plain text.
