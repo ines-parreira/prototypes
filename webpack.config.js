@@ -8,7 +8,7 @@ const ManifestPlugin = require('webpack-manifest-plugin')
 const pkg = require('./package.json')
 
 const __PRODUCTION__ = process.env.NODE_ENV === 'production'
-const HASH = process.env.GIT_COMMIT ? process.env.GIT_COMMIT : '[hash]'
+const HASH = process.env.RELEASE ? process.env.RELEASE : '[hash]'
 const GORGIAS_ASSETS_URL = __PRODUCTION__ ? 'https://gorgias-assets.gorgias.io' : ''
 
 const srcDir = path.join(__dirname, 'g/static/private')
