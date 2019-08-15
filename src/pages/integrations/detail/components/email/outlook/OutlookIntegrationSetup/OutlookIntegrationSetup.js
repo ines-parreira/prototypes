@@ -125,7 +125,7 @@ export default class OutlookIntegrationSetup extends React.Component<Props, Stat
 
                 <Container
                     fluid
-                    className="page-container"
+                    className="page-container with-space-bottom"
                 >
                     <h1>Outlook email addresses setup</h1>
                     <p>One last step: choose the email addresses you want to manage with Gorgias.</p>

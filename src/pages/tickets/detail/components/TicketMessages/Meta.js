@@ -16,9 +16,10 @@ type Props = {
     source?: Source
 }
 
-const From = (props: {children?: Node}) => (
-    <span className={classnames(css.from, 'd-none d-md-inline-block')}>
-        {props.children}
+const From = ({label, children}: { label: string, children?: Node }) => (
+    <span className={classnames(css.from)}>
+        <span className={css.fromLabel}>{label}</span>{' '}
+        <span className={css.fromValue}>{children}</span>
     </span>
 )
 
@@ -27,20 +28,18 @@ export default function Meta(props: Props) {
     const widgets = []
 
     if (meta && meta.current_page) {
-        let displayString = meta.current_page
-
-        if (displayString.length > 28) {
-            displayString = `...${displayString.substr(displayString.length - 25)}`
-        }
-
         widgets.push(
-            <From key="from-widget">
-                from <a
+            <From
+                label="from"
+                key="from-widget"
+            >
+                <a
                     target="_blank"
                     href={meta.current_page}
                     rel="noopener noreferrer"
+                    title={meta.current_page}
                 >
-                    {displayString}
+                    {meta.current_page}
                 </a>
             </From>,
         )
@@ -72,11 +71,14 @@ export default function Meta(props: Props) {
         }
 
         widgets.push(
-            <From key="ref-widget">
-                go to{' '}
+            <From
+                label="go to"
+                key="ref-widget"
+            >
                 <a
                     target="_blank"
                     href={link}
+                    title={link}
                     rel="noopener noreferrer"
                 >
                     {type}
@@ -98,12 +100,15 @@ export default function Meta(props: Props) {
 
     if (sentViaLabel && sentViaLink) {
         widgets.push(
-            <From key="via-widget">
-                sent via a{' '}
+            <From
+                key="via-widget"
+                label="sent via a"
+            >
                 <b>
                     <Link
                         tag="a"
                         to={sentViaLink}
+                        title={sentViaLabel}
                     >
                         <i className="material-icons mr-1">
                             settings

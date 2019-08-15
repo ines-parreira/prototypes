@@ -1,8 +1,11 @@
 import React from 'react'
-import {shallow, mount} from 'enzyme'
+import {mount, shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
 import {EMAIL_CHANNEL} from '../../../../config/ticket'
+
 import {
     AIRCALL_INTEGRATION_TYPE,
     EMAIL_INTEGRATION_TYPE,
@@ -10,18 +13,17 @@ import {
     GMAIL_INTEGRATION_TYPE
 } from '../../../../constants/integration'
 import {OPEN_STATUS} from '../../../../constants/ticket'
-
 import * as labels from '../labels'
-import Avatar from '../../components/Avatar'
 
 /* DatetimeLabel uses Math.random.
  * Mock it to always return the same data.
  */
 const mockMath = Object.create(global.Math)
-const integrationJsObject = { type: 'email', name: 'common', meta: { address: 'specific' } }
+const integrationJsObject = {type: 'email', name: 'common', meta: {address: 'specific'}}
 const integrationMap = fromJS(integrationJsObject)
 mockMath.random = () => 1
 global.Math = mockMath
+const mockStore = configureMockStore()
 
 describe('components utils : labels', () => {
     describe('RenderLabel', () => {
@@ -51,16 +53,22 @@ describe('components utils : labels', () => {
                             profile_picture_url: 'https://gorgias.io/avatar.png'
                         }
                     },
-                    expected: (<div>
-                        <Avatar
-                            name="Mario"
-                            email="mario@gorgias.io"
-                            url="https://gorgias.io/avatar.png"
-                            size={26}
-                            className="d-inline-block mr-2"
+                    expected: (
+                        <labels.AssigneeLabel
+                            assignee={fromJS({
+                                name: 'Mario',
+                                email: 'mario@gorgias.io',
+                                meta: {
+                                    profile_picture_url: 'https://gorgias.io/avatar.png'
+                                }
+                            })}
                         />
-                        <div className="d-inline-block">Mario</div>
-                    </div>)
+                    ),
+                    toHTML: (comp) => {
+                        return mount(
+                            <Provider store={mockStore()}>{comp}</Provider>
+                        ).html()
+                    }
                 },
                 {
                     type: 'customer',
@@ -85,35 +93,22 @@ describe('components utils : labels', () => {
                     expected: <labels.IntegrationsDetailLabel integration={integrationMap}/>
                 }
             ].forEach((element) => {
-                const renderedComponent = (
-                    <labels.RenderLabel
-                        field={fromJS({name: element.type})}
-                        value={fromJS(element.value)}
-                    />
-                )
-
-                // if renderedComponent is an element, shallow render it
-                let rendered
-
-                if (React.isValidElement(renderedComponent)) {
-                    rendered = shallow(renderedComponent).html()
-                } else {
-                    rendered = renderedComponent
+                const {type, value, expected, toHTML} = element
+                const render = (comp) => {
+                    if (!React.isValidElement(comp)) {
+                        return comp
+                    }
+                    return toHTML ? toHTML(comp) : shallow(comp).html()
                 }
 
-                let expected
-
-                it(`${element.type} label`, () => {
-                    // if the expected result is an element, shallow render it
-                    if (React.isValidElement(element.expected)) {
-                        expected = shallow(element.expected).html()
-
-                        expect(rendered).toEqual(expected)
-                    } else {
-                        expected = element.expected
-
-                        expect(rendered).toBe(expected)
-                    }
+                it(`${type} label`, () => {
+                    const rendered = render(
+                        <labels.RenderLabel
+                            field={fromJS({name: type})}
+                            value={fromJS(value)}
+                        />
+                    )
+                    expect(rendered).toEqual(render(expected))
                 })
             })
         })

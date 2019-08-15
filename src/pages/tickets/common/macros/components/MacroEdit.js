@@ -323,7 +323,7 @@ export class MacroEdit extends React.Component {
                             return (
                                 <div
                                     key={key}
-                                    className="mt-5"
+                                    className="mt-3"
                                 >
                                     <div className="d-flex justify-content-between align-items-center mb-2">
                                         <div className={css.title}>

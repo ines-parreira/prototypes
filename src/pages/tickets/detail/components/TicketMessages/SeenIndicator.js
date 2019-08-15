@@ -4,6 +4,8 @@ import React from 'react'
 import {formatDatetime} from '../../../../../utils'
 import Tooltip from '../../../../common/components/Tooltip'
 
+import css from './SeenIndicator.style.less'
+
 type Props = {
     openedDatetime?: string,
     timezone: string,
@@ -22,6 +24,7 @@ export default function SeenIndicator(props: Props) {
             <Tooltip
                 placement="top"
                 target="read-status"
+                className={css.tooltip}
             >
                 Seen by customer{' '}
                 {(() => {

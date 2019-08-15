@@ -1,0 +1,30 @@
+@import '~css/new/colors';
+
+:local .row {
+  .actions {
+    :global .btn {
+      box-shadow: none;
+
+      .material-icons,
+      .material-icons-outlined {
+        transition: .2s all;
+        opacity: .3;
+        color: @indigo;
+      }
+
+      &:hover .material-icons {
+        opacity: 1;
+      }
+
+      &.btn-loading .material-icons {
+        opacity: 0;
+      }
+    }
+
+    .deleteButton {
+      &:hover :global(.material-icons) {
+        color: @lightRed;
+      }
+    }
+  }
+}

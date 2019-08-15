@@ -106,7 +106,7 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
           <Button
             className="forwardingCard"
             color="secondary"
-            href="https://docs.gorgias.io/general/how-to-set-up-email-forwarding#g_suite_gmail"
+            href="https://docs.gorgias.io/email-integrations/how-to-set-up-email-forwarding#g_suite_groups"
             key="0"
             size="lg"
             tag="a"
@@ -122,7 +122,7 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
           <Button
             className="forwardingCard"
             color="secondary"
-            href="https://docs.gorgias.io/general/how-to-set-up-email-forwarding#outlook_com"
+            href="https://docs.gorgias.io/email-integrations/how-to-set-up-email-forwarding#outlook_com"
             key="1"
             size="lg"
             tag="a"
@@ -138,7 +138,7 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
           <Button
             className="forwardingCard"
             color="secondary"
-            href="https://docs.gorgias.io/general/how-to-set-up-email-forwarding#office_365"
+            href="https://docs.gorgias.io/email-integrations/how-to-set-up-email-forwarding#outlook_com"
             key="2"
             size="lg"
             tag="a"
@@ -154,7 +154,7 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
           <Button
             className="forwardingCard"
             color="secondary"
-            href="https://docs.gorgias.io/general/how-to-set-up-email-forwarding#microsoft_exchange"
+            href="https://docs.gorgias.io/email-integrations/how-to-set-up-email-forwarding#microsoft_exchange"
             key="3"
             size="lg"
             tag="a"
@@ -170,7 +170,7 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
           <Button
             className="forwardingCard"
             color="secondary"
-            href="https://docs.gorgias.io/general/how-to-set-up-email-forwarding#zoho_mail"
+            href="https://docs.gorgias.io/email-integrations/how-to-set-up-email-forwarding#zoho_mail"
             key="4"
             size="lg"
             tag="a"
@@ -316,7 +316,7 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
           <Button
             className="forwardingCard"
             color="secondary"
-            href="https://docs.gorgias.io/general/how-to-set-up-email-forwarding#g_suite_gmail"
+            href="https://docs.gorgias.io/email-integrations/how-to-set-up-email-forwarding#g_suite_groups"
             key="0"
             size="lg"
             tag="a"
@@ -332,7 +332,7 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
           <Button
             className="forwardingCard"
             color="secondary"
-            href="https://docs.gorgias.io/general/how-to-set-up-email-forwarding#outlook_com"
+            href="https://docs.gorgias.io/email-integrations/how-to-set-up-email-forwarding#outlook_com"
             key="1"
             size="lg"
             tag="a"
@@ -348,7 +348,7 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
           <Button
             className="forwardingCard"
             color="secondary"
-            href="https://docs.gorgias.io/general/how-to-set-up-email-forwarding#office_365"
+            href="https://docs.gorgias.io/email-integrations/how-to-set-up-email-forwarding#outlook_com"
             key="2"
             size="lg"
             tag="a"
@@ -364,7 +364,7 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
           <Button
             className="forwardingCard"
             color="secondary"
-            href="https://docs.gorgias.io/general/how-to-set-up-email-forwarding#microsoft_exchange"
+            href="https://docs.gorgias.io/email-integrations/how-to-set-up-email-forwarding#microsoft_exchange"
             key="3"
             size="lg"
             tag="a"
@@ -380,7 +380,7 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
           <Button
             className="forwardingCard"
             color="secondary"
-            href="https://docs.gorgias.io/general/how-to-set-up-email-forwarding#zoho_mail"
+            href="https://docs.gorgias.io/email-integrations/how-to-set-up-email-forwarding#zoho_mail"
             key="4"
             size="lg"
             tag="a"

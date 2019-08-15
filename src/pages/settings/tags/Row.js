@@ -3,16 +3,16 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 import {Button, Form, Popover, PopoverBody, PopoverHeader,} from 'reactstrap'
+import classNames from 'classnames'
 
 import InputField from '../../common/forms/InputField'
 import ColorPicker from '../../common/components/ColorPicker'
 import {TagLabel} from '../../common/utils/labels'
-
 import {toJS} from '../../../utils'
 import {DEFAULT_TAG_COLOR} from '../../../config'
-
 import * as tagsActions from '../../../state/tags/actions'
 
+import css from './Row.style.less'
 
 type Props = {
     row: Map<*, *>,
@@ -136,6 +136,7 @@ export class Row extends Component<Props, State> {
                         <input
                             type="checkbox"
                             checked={meta.get('selected', false)}
+                            readOnly={true}
                         />
                     </td>
 
@@ -144,7 +145,7 @@ export class Row extends Component<Props, State> {
                             className="cell-wrapper d-flex justify-content-between align-items-center"
                             onSubmit={this._onSave}
                         >
-                            <div className="d-flex align-items-center">
+                            <div className="d-flex mr-2 align-items-center">
                                 <div className="mr-2">
                                     <InputField
                                         value={this.state.name}
@@ -168,7 +169,7 @@ export class Row extends Component<Props, State> {
                                 />
                             </div>
 
-                            <div>
+                            <div className="d-flex">
                                 <Button
                                     type="button"
                                     color="secondary"
@@ -191,7 +192,7 @@ export class Row extends Component<Props, State> {
         }
 
         return (
-            <tr>
+            <tr className={css.row}>
                 <td
                     className="cell-wrapper cell-short clickable"
                     onClick={this._onSelect}
@@ -199,6 +200,7 @@ export class Row extends Component<Props, State> {
                     <input
                         type="checkbox"
                         checked={meta.get('selected', false)}
+                        readOnly={true}
                     />
                 </td>
 
@@ -221,30 +223,22 @@ export class Row extends Component<Props, State> {
                 </td>
 
                 <td className="smallest">
-                    <div className="cell-wrapper">
+                    <div className={classNames('cell-wrapper', css.actions)}>
                         <Button
                             type="button"
-                            color="link"
                             onClick={this._onEdit}
-                            className="p-0 mr-3"
+                            className={classNames('mr-1', 'btn-transparent')}
                         >
-                            <i className="material-icons mr-1">
-                                edit
-                            </i>
-                            Edit
+                            <i className="material-icons">edit</i>
                         </Button>
 
                         <Button
                             id={`remove-button-${row.get('id')}`}
                             type="button"
-                            color="link"
                             onClick={this._toggleRemoveConfirmation}
-                            className="p-0"
+                            className={classNames('btn-transparent', css.deleteButton)}
                         >
-                            <i className="material-icons mr-1">
-                                clear
-                            </i>
-                            Delete
+                            <i className="material-icons">delete</i>
                         </Button>
                         <Popover
                             placement="left"

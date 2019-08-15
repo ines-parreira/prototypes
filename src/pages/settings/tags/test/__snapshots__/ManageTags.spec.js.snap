@@ -23,115 +23,6 @@ exports[`ManageTags component mounts correctly 1`] = `
           searchDebounceTime={300}
           style={Object {}}
         />
-        <span>
-          <Button
-            className="mr-2"
-            color="secondary"
-            id="bulk-merge-button"
-            onClick={[Function]}
-            tag="button"
-            type="button"
-          >
-            Merge
-          </Button>
-          <Popover
-            delay={
-              Object {
-                "hide": 0,
-                "show": 0,
-              }
-            }
-            hideArrow={false}
-            isOpen={false}
-            placement="bottom"
-            placementPrefix="bs-popover"
-            target="bulk-merge-button"
-            toggle={[Function]}
-          >
-            <PopoverHeader
-              tag="h3"
-            >
-              Are you sure?
-            </PopoverHeader>
-            <PopoverBody
-              tag="div"
-            >
-              <p>
-                You are about to merge 
-                2
-                 tags into
-                 
-                <b />
-                .
-                <br />
-                <b>
-                  This action cannot be undone
-                </b>
-                .
-              </p>
-              <Button
-                color="success"
-                onClick={[Function]}
-                tag="button"
-                type="submit"
-              >
-                Confirm
-              </Button>
-            </PopoverBody>
-          </Popover>
-        </span>
-        <span>
-          <Button
-            className="mr-2"
-            color="secondary"
-            id="bulk-remove-button"
-            onClick={[Function]}
-            tag="button"
-            type="button"
-          >
-            Delete
-          </Button>
-          <Popover
-            delay={
-              Object {
-                "hide": 0,
-                "show": 0,
-              }
-            }
-            hideArrow={false}
-            isOpen={false}
-            placement="bottom"
-            placementPrefix="bs-popover"
-            target="bulk-remove-button"
-            toggle={[Function]}
-          >
-            <PopoverHeader
-              tag="h3"
-            >
-              Are you sure?
-            </PopoverHeader>
-            <PopoverBody
-              tag="div"
-            >
-              <p>
-                Are you sure you want to delete these tags?
-                 
-                <b>
-                  They will be removed from all tickets
-                </b>
-                .
-              </p>
-              <Button
-                color="success"
-                onClick={[Function]}
-                tag="button"
-                type="submit"
-              >
-                Confirm
-              </Button>
-            </PopoverBody>
-          </Popover>
-        </span>
         <Button
           color="success"
           id="create-tag-button"
@@ -233,6 +124,8 @@ exports[`ManageTags component mounts correctly 1`] = `
     </div>
   </Container>
   <Connect(Table)
+    onBulkDelete={[Function]}
+    onMerge={[Function]}
     onSelectAll={[Function]}
     onSort={[Function]}
     refresh={[Function]}

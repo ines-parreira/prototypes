@@ -9,8 +9,10 @@ import * as tagsSelectors from '../../../state/tags/selectors'
 import Row from './Row'
 
 import css from './Table.less'
+import TableActions from './TableActions'
 
 type Props = {
+    meta: Map<*, *>,
     getSelectedTagMeta: (number) => Map<*, *>,
     selectAll: boolean,
     tags: List<*>,
@@ -18,9 +20,10 @@ type Props = {
     onSort: (string, boolean) => void,
     onSelectAll: () => void,
     refresh: () => void,
-
     sort: string,
-    reverse: boolean
+    reverse: boolean,
+    onMerge: () => any,
+    onBulkDelete: () => any,
 }
 
 class Table extends Component<Props> {
@@ -70,8 +73,12 @@ class Table extends Component<Props> {
     }
 
     render() {
-        const {tags, getSelectedTagMeta, selectAll, columns, reverse, onSelectAll} = this.props
+        const {tags, getSelectedTagMeta, selectAll, columns, reverse, onSelectAll, meta, onMerge, onBulkDelete} = this.props
         const sort = this._getSort()
+
+        const selectedNum = meta
+            .filter((meta) => meta.get('selected'))
+            .size
 
         return (
             <table className={classnames('view-table', css.table)}>
@@ -84,40 +91,41 @@ class Table extends Component<Props> {
                             <input
                                 type="checkbox"
                                 checked={selectAll}
+                                readOnly={true}
                             />
                         </td>
-                        {
-                            columns.map((column, i) => (
-                                <td key={i}>
-                                    <div
-                                        className="cell-wrapper"
-                                        onClick={this._onSort(column.field)}
-                                    >
-                                        <div>
-                                            <span>
-                                                {column.title}
-                                            </span>
-                                            {this._sortIcon(sort, reverse, column.field)}
-                                        </div>
+                        {columns.map((column, i) => (
+                            <td key={i}>
+                                <div className={classnames(css.headerCell, 'cell-wrapper')}>
+                                    {i === 0 && (
+                                        <TableActions
+                                            selectedNum={selectedNum}
+                                            tags={tags}
+                                            meta={meta}
+                                            onMerge={onMerge}
+                                            onBulkDelete={onBulkDelete}
+                                        />
+                                    )}
+                                    <div onClick={this._onSort(column.field)}>
+                                        <span>{column.title}</span>
+                                        {this._sortIcon(sort, reverse, column.field)}
                                     </div>
-                                </td>
-                            ))
-                        }
+                                </div>
+                            </td>
+                        ))}
                         <td/>
                     </tr>
                 </thead>
 
                 <tbody>
-                    {
-                        tags.map((tag, i) => (
-                            <Row
-                                key={i}
-                                row={tag}
-                                refresh={this.props.refresh}
-                                meta={getSelectedTagMeta(tag.get('id'))}
-                            />
-                        ))
-                    }
+                    {tags.map((tag, i) => (
+                        <Row
+                            key={i}
+                            row={tag}
+                            refresh={this.props.refresh}
+                            meta={getSelectedTagMeta(tag.get('id'))}
+                        />
+                    ))}
                 </tbody>
             </table>
         )
@@ -129,6 +137,7 @@ export default connect((state) => {
     return {
         tags: tagsSelectors.getTags(state),
         selectAll: tagsSelectors.getSelectAll(state),
-        getSelectedTagMeta: tagsSelectors.makeGetSelectedTagMeta(state)
+        getSelectedTagMeta: tagsSelectors.makeGetSelectedTagMeta(state),
+        meta: tagsSelectors.getMeta(state),
     }
 })(Table)

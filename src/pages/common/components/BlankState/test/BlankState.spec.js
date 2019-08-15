@@ -9,7 +9,7 @@ describe('BlankState component', () => {
         const component = shallow(
             <BlankState />
         )
-        expect(component).toContainReact(<div className="blank-state"><div>This view is empty. Enjoy your day!</div></div>)
+        expect(component.find('.blank-state-message')).toIncludeText('Enjoy your day!')
     })
 
     it('custom message', () => {

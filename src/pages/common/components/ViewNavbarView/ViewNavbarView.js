@@ -182,7 +182,7 @@ class ViewNavbarView extends Component {
 
                                         if (viewCount !== null) {
                                             count = `(${viewCount})`
-                                            compactCount = `(${compactInteger(viewCount, 1)})`
+                                            compactCount = compactInteger(viewCount, 1)
                                         }
 
                                         return (
@@ -195,7 +195,8 @@ class ViewNavbarView extends Component {
                                                     this.context.closePanel()
                                                 }}
                                             >
-                                                {`${view.get('name')} ${compactCount}`}
+                                                <span className="item-name">{view.get('name')}</span>
+                                                <span className="item-count">{compactCount}</span>
                                             </Link>
                                         )
                                     })

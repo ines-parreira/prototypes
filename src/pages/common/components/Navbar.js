@@ -250,6 +250,14 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
                             Help center
                         </DropdownItem>
                         <DropdownItem
+                            tag="a"
+                            href="https://portal.productboard.com/gorgias/1-gorgias-product-roadmap/tabs/3-planned/"
+                            target="_blank"
+                        >
+                            <i className="material-icons mr-2">map</i>
+                            Roadmap
+                        </DropdownItem>
+                        <DropdownItem
                             tag="div"
                             toggle={false}
                         >

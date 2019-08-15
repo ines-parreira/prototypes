@@ -41,10 +41,7 @@ type State = {
     reverse: boolean,
     newTag: string,
     showCreationPopup: boolean,
-    askMergeConfirmation: boolean,
-    askRemoveConfirmation: boolean,
     isFetching: boolean,
-    mergeTagDestination: string
 }
 
 export class ManageTags extends Component<Props, State> {
@@ -54,10 +51,7 @@ export class ManageTags extends Component<Props, State> {
         search: '',
         newTag: '',
         showCreationPopup: false,
-        askMergeConfirmation: false,
-        askRemoveConfirmation: false,
         isFetching: false,
-        mergeTagDestination: '',
     }
 
     componentDidMount() {
@@ -116,7 +110,6 @@ export class ManageTags extends Component<Props, State> {
     }
 
     _bulkDelete = () => {
-        this.setState({askRemoveConfirmation: false})
         const {meta, bulkDelete} = this.props
 
         let tagIDs = []
@@ -131,7 +124,6 @@ export class ManageTags extends Component<Props, State> {
     }
 
     _merge = () => {
-        this.setState({askMergeConfirmation: false})
         const {meta, merge} = this.props
 
         const selectedTagMeta = meta.filter((meta) => meta.get('selected'))
@@ -140,10 +132,6 @@ export class ManageTags extends Component<Props, State> {
             selectedTagMeta.keySeq().toList()
         ).then(() => {
             this._fetchPage()
-        }).then(() => {
-            this.setState({
-                mergeTagDestination: ''
-            })
         })
     }
 
@@ -152,23 +140,9 @@ export class ManageTags extends Component<Props, State> {
         this.setState({showCreationPopup: !this.state.showCreationPopup})
     }
 
-    _toggleRemoveConfirmation = () => {
-        this.setState({askRemoveConfirmation: !this.state.askRemoveConfirmation})
-    }
-
-    _toggleMergeConfirmation = () => {
-        const {tags, meta} = this.props
-        const destID = meta.filter((meta) => meta.get('selected')).keySeq().toList().last()
-        const destName = tags.filter((meta) => meta.get('id').toString() === destID.toString()).first().get('name', '')
-        this.setState({
-            askMergeConfirmation: !this.state.askMergeConfirmation,
-            mergeTagDestination: destName
-        })
-    }
-
     render() {
         const {tags, currentPage, numberPages, selectAll, meta} = this.props
-        const {sort, reverse, isFetching, mergeTagDestination} = this.state
+        const {sort, reverse, isFetching} = this.state
 
         if (isFetching) {
             return <Loader/>
@@ -192,81 +166,6 @@ export class ManageTags extends Component<Props, State> {
                                 searchDebounceTime={300}
                                 className="mr-2"
                             />
-                            {
-                                selected > 1 && (
-                                    <span>
-                                        <Button
-                                            id="bulk-merge-button"
-                                            color="secondary"
-                                            type="button"
-                                            className="mr-2"
-                                            onClick={this._toggleMergeConfirmation}
-                                        >
-                                            Merge
-                                        </Button>
-                                        <Popover
-                                            placement="bottom"
-                                            isOpen={this.state.askMergeConfirmation}
-                                            target="bulk-merge-button"
-                                            toggle={this._toggleMergeConfirmation}
-                                        >
-                                            <PopoverHeader>Are you sure?</PopoverHeader>
-                                            <PopoverBody>
-                                                <p>
-                                                    You are about to merge {selected} tags into{' '}
-                                                    <b>{mergeTagDestination}</b>.<br/>
-                                                    <b>This action cannot be undone</b>.
-                                                </p>
-                                                <Button
-                                                    type="submit"
-                                                    color="success"
-                                                    onClick={this._merge}
-                                                >
-                                                    Confirm
-                                                </Button>
-                                            </PopoverBody>
-                                        </Popover>
-                                    </span>
-                                )
-                            }
-                            {
-                                selected > 0 && (
-                                    <span>
-                                        <Button
-                                            id="bulk-remove-button"
-                                            color="secondary"
-                                            type="button"
-                                            className="mr-2"
-                                            onClick={this._toggleRemoveConfirmation}
-                                        >
-                                            Delete
-                                        </Button>
-                                        <Popover
-                                            placement="bottom"
-                                            isOpen={this.state.askRemoveConfirmation}
-                                            target="bulk-remove-button"
-                                            toggle={this._toggleRemoveConfirmation}
-                                        >
-                                            <PopoverHeader>Are you sure?</PopoverHeader>
-                                            <PopoverBody>
-                                                <p>
-                                                    Are you sure you want to delete these tags?{' '}
-                                                    <b>They will be removed from all tickets</b>.
-                                                </p>
-                                                <Button
-                                                    type="submit"
-                                                    color="success"
-                                                    onClick={this._bulkDelete}
-                                                >
-                                                    Confirm
-                                                </Button>
-                                            </PopoverBody>
-                                        </Popover>
-                                    </span>
-                                )
-                            }
-
-
                             <Button
                                 id="create-tag-button"
                                 color="success"
@@ -341,6 +240,8 @@ export class ManageTags extends Component<Props, State> {
                     onSort={this._onSort}
                     onSelectAll={selectAll}
                     refresh={this._fetchPage}
+                    onMerge={this._merge}
+                    onBulkDelete={this._bulkDelete}
                 />
 
                 <Pagination

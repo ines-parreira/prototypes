@@ -2,7 +2,7 @@
 import React, {Component} from 'react'
 import {Badge, Button} from 'reactstrap'
 import classnames from 'classnames'
-
+import {Link} from 'react-router'
 import type {Map} from 'immutable'
 
 import {RoleLabel} from '../../../common/utils/labels'
@@ -12,7 +12,7 @@ import css from './Row.less'
 
 
 type Props = {
-    member: Map<*,*>,
+    member: Map<*, *>,
     isAccountOwner: boolean,
     deleteTeamMember: () => Promise<*>,
     select: (memberId: number) => void,
@@ -28,7 +28,8 @@ export default class Row extends Component<Props, State> {
         isDeleting: false
     }
 
-    _deleteTeamMember = () => {
+    _deleteTeamMember = (event: SyntheticEvent<*>) => {
+        event.preventDefault()
         this.setState({isDeleting: true})
         return this.props.deleteTeamMember().catch(() => {
             this.setState({isDeleting: false})
@@ -38,8 +39,12 @@ export default class Row extends Component<Props, State> {
     render() {
         const {member, isAccountOwner, select, isSelected} = this.props
         const isDeleting = this.state.isDeleting
+        const editLink = `/app/settings/users/${member.get('id')}`
         return (
-            <div className={css.component}>
+            <Link
+                to={editLink}
+                className={css.component}
+            >
                 <span className="d-flex align-items-center">
                     <input
                         type="checkbox"
@@ -88,7 +93,7 @@ export default class Row extends Component<Props, State> {
                         </Button>
                     </span>
                 </span>
-            </div>
+            </Link>
         )
     }
 }

@@ -88,26 +88,4 @@ describe('ManageTags component', () => {
             expect(component.instance().state.showCreationPopup).toEqual(true)
         })
     })
-
-    describe('Merge Tags feature', () => {
-        it('should set mergeDestinationTag name when merge is toggled', () => {
-            component.instance()._toggleMergeConfirmation()
-            expect(component.instance().state.mergeTagDestination).toEqual('billing')
-        })
-
-        it('should reset mergeTagDestination once merge is complete', () => {
-            component.instance()._toggleMergeConfirmation()
-            expect(component.instance().state.mergeTagDestination).toEqual('billing')
-            component.instance()._merge().then(() => {
-                expect(component.instance().state.mergeTagDestination).toEqual('')
-            })
-        })
-    })
-
-    describe('Delete Tags feature', () => {
-        it('should display Delete confirmation when deleting tags', () => {
-            component.instance()._toggleRemoveConfirmation()
-            expect(component.instance().state.askRemoveConfirmation).toEqual(true)
-        })
-    })
 })

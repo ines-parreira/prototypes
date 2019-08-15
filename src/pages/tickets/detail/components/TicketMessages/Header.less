@@ -14,8 +14,8 @@
   }
 
   .headerDetails {
-    float: left;
-    display: inline-flex;
+    display: flex;
+    min-width: 200px;
     align-items: center;
 
     & > * {
@@ -27,6 +27,7 @@
     margin-right: .8em;
     line-height: 1em;
     font-weight: bold;
+    flex-shrink: 0;
   }
 
   .isAgent {
@@ -39,7 +40,7 @@
   }
 
   .sourceDetails {
-    float: right;
+    flex-shrink: 0;
   }
 }
 

@@ -4,8 +4,7 @@ import _isUndefined from 'lodash/isUndefined'
 
 import {EMAIL_INTEGRATION_TYPES} from '../constants/integration'
 import {BASE_VIEW_ID} from '../constants/view'
-import {TagLabel} from '../pages/common/utils/labels'
-import {stripHTML, getLanguageDisplayName, getAST} from '../utils'
+import {getAST, getLanguageDisplayName, stripHTML} from '../utils'
 import {getMomentUtcISOString} from '../utils/date'
 
 import * as ticketConfig from './ticket'
@@ -284,14 +283,17 @@ export const views = fromJS([{
                         {
                             item.get('tags', fromJS([]))
                                 .sort((a, b) => a.get('name').toLowerCase() > b.get('name').toLowerCase())
-                                .map((tag) => (
-                                    <TagLabel
-                                        key={tag.get('id')}
-                                        decoration={tag.get('decoration')}
-                                    >
-                                        {tag.get('name')}
-                                    </TagLabel>
-                                ))
+                                .map((tag) => {
+                                    const {TagLabel} = require('../pages/common/utils/labels') // require cycle
+                                    return (
+                                        <TagLabel
+                                            key={tag.get('id')}
+                                            decoration={tag.get('decoration')}
+                                        >
+                                            {tag.get('name')}
+                                        </TagLabel>
+                                    )
+                                })
                         }
                     </div>
                 )

@@ -3,6 +3,19 @@
 :local .from {
   color: darken(@lightGrey, 8%);
   font-size: 1rem;
+  display: flex;
+  min-width: 0;
+
+  .fromLabel {
+    flex-shrink: 0;
+    margin-right: 4px;
+  }
+
+  .fromValue {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 
   a {
     font-weight: 600;

@@ -1,5 +1,5 @@
 import React from 'react'
-import {shallow, mount} from 'enzyme'
+import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import _omit from 'lodash/omit'
 
@@ -20,7 +20,7 @@ describe('ViewTable::Table::Cell', () => {
 
     it('should use default props', () => {
         const props = _omit(minProps, ['item'])
-        const component = mount(<Cell {...props} />)
+        const component = shallow(<Cell {...props} />)
         expect(component.find('Cell').props()).toMatchSnapshot()
     })
 
@@ -43,7 +43,8 @@ describe('ViewTable::Table::Cell', () => {
         const component = shallow(
             <Cell
                 {...minProps}
-                onClick={() => {}}
+                onClick={() => {
+                }}
             />
         ).dive()
         expect(component).toMatchSnapshot()

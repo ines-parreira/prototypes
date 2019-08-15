@@ -1,16 +1,9 @@
 //@flow
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Container,
-    Row,
-    Col,
-    Button
-} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Button, Col, Container, Row} from 'reactstrap'
 import {Link} from 'react-router'
-import {fromJS, Set, type Map, type List} from 'immutable'
+import {fromJS, type List, type Map, Set} from 'immutable'
 import classnames from 'classnames'
 
 import PageHeader from '../../../common/components/PageHeader'
@@ -103,7 +96,7 @@ export default class MembersList extends Component<Props, State> {
     _fetchPage = (page: number = 1) => {
         this.setState({isFetching: true})
         return this._fetchTeamMembers(page)
-            // $FlowFixMe
+        // $FlowFixMe
             .finally(() => {
                 this.setState({isFetching: false})
             })
@@ -223,7 +216,7 @@ export default class MembersList extends Component<Props, State> {
                             fluid
                             className="page-container"
                         >
-                            <Row>
+                            <Row className={css.listHeader}>
                                 <Col sm={4}>
                                     <div className="d-flex align-items-center mb-2">
                                         <input
@@ -243,9 +236,10 @@ export default class MembersList extends Component<Props, State> {
                                             className={classnames({'btn-loading': isDeleting})}
                                             disabled={!this.state.selection.size || isDeleting}
                                         >
-                                            <i className="material-icons md-2">
+                                            <i className="material-icons mr-2">
                                                 delete
                                             </i>
+                                            Delete
                                         </Button>
                                     </div>
                                 </Col>

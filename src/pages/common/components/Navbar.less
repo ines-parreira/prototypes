@@ -109,41 +109,61 @@
     }
 
     .menu {
+      @item-transition: all 0.1s;
+
       margin: .5em -1.14285714em 0;
       white-space: nowrap;
 
       .item {
-        display: block;
+        display: flex;
         position: relative;
         vertical-align: middle;
-        line-height: 1;
+        line-height: 17px;
         text-decoration: none;
         flex: 0 0 auto;
         user-select: none;
         background: 0 0;
         text-transform: none;
         font-weight: 400;
-        transition: .1s;
-        color: rgba(255, 255, 255, .5);
-        padding: .5em 1.33333333em;
+        transition: @item-transition;
+        color: rgba(255, 255, 255, .45);
+        padding: 4px 1.33333333em;
         font-size: 14px;
         overflow: hidden;
+        align-items: center;
       }
 
       & > .item {
-        text-overflow: ellipsis;
+        .item-name {
+          flex: 1;
+          margin-right: 8px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
 
-        &.active {
-          color: #fff !important;
+        .item-count {
+          color: @navbarItemFadedColor;
+          font-size: 12px;
+          line-height: 12px;
+          font-weight: 500;
+          text-transform: uppercase;
+          transition: @item-transition;
+        }
+
+        &.active,
+        &.focused,
+        &:hover {
+          font-weight: 600;
+          color: @quartz;
+
+          .item-count {
+            font-weight: 600;
+            color: @quartz;
+          }
         }
 
         &.focused {
-          background-color: #4E8BF6;
-          color: #fff !important;
-        }
-
-        &:hover {
-          color: #fff !important;
+          background-color: @blue;
         }
 
         & > i.icon {
@@ -152,9 +172,8 @@
           margin: inherit !important;
           margin-right: 6px !important;
           opacity: .6;
-
-          color: #fff;
-          transition: all .1s;
+          color: @quartz;
+          transition: @item-transition;
         }
 
         &:hover .icon {

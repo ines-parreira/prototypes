@@ -79,7 +79,7 @@ export class BillingUsage extends Component {
         return (
             <div>
                 <div className={css['usage-numbers']}>
-                    {usedTickets}/{includedTickets} tickets
+                    {usedTickets.toLocaleString()}/{includedTickets.toLocaleString()} tickets
                     {' '}
                     <a id="current-period"><i className="material-icons text-muted">info_outline</i></a>
                 </div>

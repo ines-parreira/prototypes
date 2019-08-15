@@ -1,7 +1,7 @@
 // @flow
 import React, {type Node} from 'react'
 import {connect} from 'react-redux'
-import {fromJS, type Map} from 'immutable'
+import {fromJS, type List, type Map} from 'immutable'
 import classnames from 'classnames'
 import _isObject from 'lodash/isObject'
 import _isArray from 'lodash/isArray'
@@ -10,20 +10,24 @@ import _capitalize from 'lodash/capitalize'
 import {Badge} from 'reactstrap'
 
 import {EMAIL_INTEGRATION_TYPES} from '../../../constants/integration'
-
-import {ADMIN_ROLE, AGENT_ROLE, BASIC_AGENT_ROLE, LITE_AGENT_ROLE, OBSERVER_AGENT_ROLE, STAFF_ROLE} from '../../../config/user'
+import {
+    ADMIN_ROLE,
+    AGENT_ROLE,
+    BASIC_AGENT_ROLE,
+    LITE_AGENT_ROLE,
+    OBSERVER_AGENT_ROLE,
+    STAFF_ROLE
+} from '../../../config/user'
 import Tooltip from '../components/Tooltip'
 import Avatar from '../components/Avatar'
-import {formatDatetime, toJS, isImmutable, humanizeString} from '../../../utils'
-
+import {formatDatetime, humanizeString, isImmutable, toJS} from '../../../utils'
 import * as customersHelpers from '../../../state/customers/helpers'
 import {DEFAULT_TAG_COLOR} from '../../../config'
 import SourceIcon from '../components/SourceIcon'
-
 import type {SourceType} from '../../../models/ticket/types'
+import {getAgents} from '../../../state/agents/selectors'
 
 import css from './labels.less'
-
 
 /**
  * AGENT
@@ -304,6 +308,7 @@ export class DatetimeLabel extends React.Component<DatetimeLabelProps> {
                     placement="top"
                     target={this.id}
                     delay={{show: 200, hide: 0}}
+                    className={classnames(css.datetimeTooltip)}
                 >
                     {tooltipDatetime}
                 </Tooltip>
@@ -316,6 +321,29 @@ const mapStateToProps = (state) => ({
     timezone: state.currentUser.get('timezone'),
 })
 connect(mapStateToProps)(DatetimeLabel)
+
+const AssigneeLabelComponent = ({assignee, agents}: { assignee: Map<*, *>, agents: List<*> }) => {
+    const agent = agents.find((agent) => agent.get('id') === assignee.get('id'))
+    const avatarUrl = assignee.getIn(['meta', 'profile_picture_url']) || (agent && agent.getIn(['meta', 'profile_picture_url']))
+    return assignee.isEmpty() ? null : (
+        <div>
+            <Avatar
+                name={assignee.get('name')}
+                url={avatarUrl}
+                size={26}
+                className="d-inline-block mr-2"
+            />
+            <div className="d-inline-block">{assignee.get('name')}</div>
+        </div>
+    )
+}
+
+export const AssigneeLabel = connect(
+    (state) => ({
+        agents: getAgents(state)
+    }),
+    {}
+)(AssigneeLabelComponent)
 
 type RenderLabelProps = {
     field: Map<*, *>,
@@ -351,18 +379,7 @@ export class RenderLabel extends React.Component<RenderLabelProps> {
             case 'status':
                 return <StatusLabel status={value}/>
             case 'assignee':
-                return value.isEmpty() ? null : (
-                    <div>
-                        <Avatar
-                            name={value.get('name')}
-                            url={value.getIn(['meta', 'profile_picture_url'])}
-                            size={26}
-                            className="d-inline-block mr-2"
-                        />
-                        <div className="d-inline-block">{value.get('name')}</div>
-                    </div>
-
-                )
+                return <AssigneeLabel assignee={value}/>
             case 'integrations':
                 return typeof value === 'string' ? <span>{value}</span> :
                     <IntegrationsDetailLabel integration={value}/>
