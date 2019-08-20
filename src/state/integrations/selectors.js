@@ -9,10 +9,10 @@ import {
     FACEBOOK_INTEGRATION_TYPE,
     MESSAGING_INTEGRATION_TYPES
 } from '../../constants/integration'
-
 import {compare} from '../../utils'
-
 import type {stateType} from '../types'
+import {getCurrentUserState} from '../currentUser/selectors'
+import {getTicketState} from '../ticket/selectors'
 
 type typesType = Array<string> | string
 
@@ -90,10 +90,9 @@ export const getEmailIntegrations = createSelector(
 
 // return email and gmail integrations formatted as channel
 export const getChannels = createSelector(
-    [(state) => state, getEmailIntegrations],
-    (state, integrations) => {
+    [getTicketState, getCurrentUserState, getEmailIntegrations],
+    (currentTicket, currentUser, integrations) => {
         const nestedReplace = require('../ticket/utils').nestedReplace
-
         return integrations.map((integration) => {
             let type = integration.get('type')
 
@@ -107,7 +106,7 @@ export const getChannels = createSelector(
                 name: integration.get('name'),
                 address: integration.getIn(['meta', 'address']),
                 preferred: integration.getIn(['meta', 'preferred']),
-                signature: nestedReplace(integration.getIn(['meta', 'signature']), state),
+                signature: nestedReplace(integration.getIn(['meta', 'signature']), currentTicket, currentUser),
                 verified: integration.get('type') !== EMAIL_INTEGRATION_TYPE
                     || integration.getIn(['meta', 'verified'], false)
             })

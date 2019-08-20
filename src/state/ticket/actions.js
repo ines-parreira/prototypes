@@ -376,7 +376,7 @@ export const applyMacro = (macro, ticketId) => (dispatch, getState) => {
 
     const renderedMacro = macro.update('actions', (actions) => {
         return actions.map((action) => {
-            return action.update('arguments', (args) => nestedReplace(args, state, (args) => {
+            return action.update('arguments', (args) => nestedReplace(args, state.ticket, state.currentUser, (args) => {
                 return dispatch(notify(args))
             }))
         })

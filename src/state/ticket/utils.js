@@ -445,10 +445,7 @@ export const replaceIntegrationVariables = (integrationType, ticketState, variab
     return newArgument.replace(variable, newVariable)
 }
 
-export const replaceVariables = (argument, state, notify) => {
-    let ticketState = state.ticket
-    let currentUserState = state.currentUser
-
+export const replaceVariables = (argument, ticket, currentUser, notify) => {
     // If there's a var of format `ticket.customer.integrations.XXX`, then it's a dynamic variable.
     // Else, it would be `ticket.customer.integrations[XXX]`.
     let newArgument = argument
@@ -460,26 +457,26 @@ export const replaceVariables = (argument, state, notify) => {
         variables.forEach((variable) => {
             ['shopify', 'recharge', 'smile'].forEach((integrationType) => {
                 if (variable.includes('integrations.' + integrationType)) {
-                    newArgument = replaceIntegrationVariables(integrationType, ticketState, variable, newArgument, notify)
+                    newArgument = replaceIntegrationVariables(integrationType, ticket, variable, newArgument, notify)
                 }
             })
         })
     }
 
     return renderObject(newArgument, {
-        ticket: ticketState ? ticketState.toJS() : ticketState,
-        current_user: currentUserState ? state.currentUser.toJS() : currentUserState,
+        ticket: ticket ? ticket.toJS() : ticket,
+        current_user: currentUser ? currentUser.toJS() : currentUser,
     })
 }
 
-export const nestedReplace = (obj, state, notify) => {
+export const nestedReplace = (obj, ticketState, currentUserState, notify) => {
     if (typeof obj === 'string') {
-        return replaceVariables(obj, state, notify)
+        return replaceVariables(obj, ticketState, currentUserState, notify)
     }
 
     // since typeof null === 'object', we also need to verify obj is not null
     if (typeof obj === 'object' && obj !== null) {
-        return obj.map((item) => nestedReplace(item, state, notify))
+        return obj.map((item) => nestedReplace(item, ticketState, currentUserState, notify))
     }
 
     return obj
