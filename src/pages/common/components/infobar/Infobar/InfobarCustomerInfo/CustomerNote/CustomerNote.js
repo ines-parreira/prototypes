@@ -78,7 +78,7 @@ export class CustomerNote extends React.Component<Props, State> {
 
         return (
             <div>
-                <p className={css.customerNote}>
+                <div className={css.customerNote}>
                     <i className={classnames('material-icons', css.noteIcon)}>
                         note
                     </i>
@@ -108,7 +108,7 @@ export class CustomerNote extends React.Component<Props, State> {
                             )
                         }
                     </div>
-                </p>
+                </div>
             </div>
         )
     }
