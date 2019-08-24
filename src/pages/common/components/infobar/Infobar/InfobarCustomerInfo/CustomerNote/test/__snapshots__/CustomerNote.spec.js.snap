@@ -2,7 +2,7 @@
 
 exports[`CustomerNote component should display error message because the note failed to be saved 1`] = `
 <div>
-  <p
+  <div
     className="customerNote"
   >
     <i
@@ -28,13 +28,13 @@ exports[`CustomerNote component should display error message because the note fa
         An error occurred while posting this note. Please try again in a few seconds.
       </p>
     </div>
-  </p>
+  </div>
 </div>
 `;
 
 exports[`CustomerNote component should display loading state because the note is being saved 1`] = `
 <div>
-  <p
+  <div
     className="customerNote"
   >
     <i
@@ -58,13 +58,13 @@ exports[`CustomerNote component should display loading state because the note is
         className="icon-custom icon-circle-o-notch md-spin loaderIcon"
       />
     </div>
-  </p>
+  </div>
 </div>
 `;
 
 exports[`CustomerNote component should display passed note 1`] = `
 <div>
-  <p
+  <div
     className="customerNote"
   >
     <i
@@ -85,6 +85,6 @@ exports[`CustomerNote component should display passed note 1`] = `
         value="this customer is nice"
       />
     </div>
-  </p>
+  </div>
 </div>
 `;
