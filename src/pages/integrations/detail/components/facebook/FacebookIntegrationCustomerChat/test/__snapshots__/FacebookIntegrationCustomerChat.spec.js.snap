@@ -241,6 +241,22 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                   Preferences
                 </a>
               </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".3"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/2/ads"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Ads
+                </a>
+              </Link>
             </nav>
           </Navbar>
         </SecondaryNavbar>

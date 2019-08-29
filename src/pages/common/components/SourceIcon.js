@@ -4,6 +4,7 @@ import React from 'react'
 import classnames from 'classnames'
 
 import {EMAIL_INTEGRATION_TYPE, GMAIL_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE} from '../../../constants/integration'
+
 import type {IntegrationType} from '../../../models/integration'
 import type {SourceType} from '../../../models/ticket/types'
 
@@ -65,7 +66,9 @@ const sourceTypeToIcon = (sourceType?: SourceType | IntegrationType ) => {
             icon.name = 'twitter'
             break
         case 'instagram-media':
+        case 'instagram-ad-media':
         case 'instagram-comment':
+        case 'instagram-ad-comment':
         case 'instagram':
             icon.custom = true
             icon.name = 'instagram'

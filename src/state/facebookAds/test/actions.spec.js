@@ -1,0 +1,77 @@
+import * as actions from '../actions'
+
+describe('facebookAds actions', () => {
+    describe('setFacebookAdsLoading', () => {
+        it('should return SET_FACEBOOK_ADS_LOADING action', () => {
+            const action = actions.setFacebookAdsLoading(true)
+            expect(action).toMatchSnapshot()
+        })
+    })
+
+    describe('setFacebookAdsInternals', () => {
+        it('should return SET_FACEBOOK_ADS_INTERNALS action', async () => {
+            const internals = {
+                '1': {
+                    ad_accounts: {
+                        adaccountid1: {
+                            name: 'ad account 1',
+                            is_active: true
+                        }
+                    },
+                    ads: {
+                        postid1: {
+                            comments_fetched_at: '2019-01-01 10:30:00',
+                            name: 'ad 1',
+                            is_active: true
+                        }
+                    }
+                }
+            }
+
+            const action = actions.setFacebookAdsInternals(internals)
+            expect(action).toMatchSnapshot()
+        })
+    })
+
+    describe('addFacebookAdsLoadingAccount', () => {
+        it('should return ADD_LOADING_FACEBOOK_AD_ACCOUNT action', () => {
+            const action = actions.addFacebookAdsLoadingAccount('adaccountid1')
+            expect(action).toMatchSnapshot()
+        })
+    })
+
+    describe('addFacebookAdsLoadingAd', () => {
+        it('should return ADD_LOADING_FACEBOOK_AD action', () => {
+            const action = actions.addFacebookAdsLoadingAd('postid1')
+            expect(action).toMatchSnapshot()
+        })
+    })
+
+    describe('removeFacebookAdsLoadingAccount', () => {
+        it('should return REMOVE_LOADING_FACEBOOK_AD_ACCOUNT action', () => {
+            const action = actions.removeFacebookAdsLoadingAccount('adaccountid1')
+            expect(action).toMatchSnapshot()
+        })
+    })
+
+    describe('removeFacebookAdsLoadingAd', () => {
+        it('should return REMOVE_LOADING_FACEBOOK_AD action', () => {
+            const action = actions.removeFacebookAdsLoadingAd('postid1')
+            expect(action).toMatchSnapshot()
+        })
+    })
+
+    describe('updateFacebookAdsActiveAccount', () => {
+        it('should return UPDATE_ACTIVE_FACEBOOK_AD_ACCOUNT action', () => {
+            const action = actions.updateFacebookAdsActiveAccount(1, 'adaccountid1', true)
+            expect(action).toMatchSnapshot()
+        })
+    })
+
+    describe('updateFacebookAdsActiveAd', () => {
+        it('should return UPDATE_ACTIVE_FACEBOOK_AD action', () => {
+            const action = actions.updateFacebookAdsActiveAd(1, 'postid1', true)
+            expect(action).toMatchSnapshot()
+        })
+    })
+})

@@ -11,11 +11,20 @@ import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {getMessages} from '../../../../../state/ticket/selectors'
 import {guessReceiversFromTicket} from '../../../../../state/ticket/utils'
 import KeyboardShortcuts from '../../../../common/components/KeyboardShortcuts'
-
 import SourceIcon from '../../../../common/components/SourceIcon'
 
-import MessageSourceFields from './MessageSourceFields/'
+import {
+    API_SOURCE,
+    CHAT_SOURCE,
+    FACEBOOK_MESSAGE_SOURCE,
+    FACEBOOK_MESSENGER_SOURCE,
+    FACEBOOK_POST_SOURCE,
+    INSTAGRAM_AD_MEDIA_SOURCE,
+    INSTAGRAM_COMMENT_SOURCE,
+    INSTAGRAM_MEDIA_SOURCE
+} from '../../../../../config/ticket'
 
+import MessageSourceFields from './MessageSourceFields/'
 import css from './ReplyMessageChannel.less'
 
 @connect((state) => {
@@ -143,11 +152,11 @@ export default class ReplyMessageChannel extends React.Component {
             ? 'new'
             : `${ticket.get('id', '')} - ${messages.last().get('id', '')} - ${md5(messages.last().get('source'))}`
 
-        const disabledChannels = ['facebook-post', 'facebook-message', 'chat', 'api', 'facebook-messenger',
-            'instagram-comment', 'instagram-media']
+        const disabledSources = [FACEBOOK_POST_SOURCE, FACEBOOK_MESSAGE_SOURCE, CHAT_SOURCE, API_SOURCE,
+            FACEBOOK_MESSENGER_SOURCE, INSTAGRAM_COMMENT_SOURCE, INSTAGRAM_MEDIA_SOURCE, INSTAGRAM_AD_MEDIA_SOURCE]
 
         const isInputEnabled =
-            !disabledChannels.includes(this.props.sourceType)
+            !disabledSources.includes(this.props.sourceType)
             || !this.props.isUpdate
 
         return (

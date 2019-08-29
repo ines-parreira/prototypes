@@ -27,6 +27,9 @@ export default class FacebookIntegrationNavigation extends React.Component<Props
                 <Link to={`${baseURL}/preferences`}>
                     Preferences
                 </Link>
+                <Link to={`${baseURL}/ads`}>
+                    Ads
+                </Link>
             </SecondaryNavbar>
         )
     }

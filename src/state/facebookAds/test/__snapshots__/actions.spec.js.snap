@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`facebookAds actions addFacebookAdsLoadingAccount should return ADD_LOADING_FACEBOOK_AD_ACCOUNT action 1`] = `
+Object {
+  "payload": "adaccountid1",
+  "type": "ADD_LOADING_FACEBOOK_AD_ACCOUNT",
+}
+`;
+
+exports[`facebookAds actions addFacebookAdsLoadingAd should return ADD_LOADING_FACEBOOK_AD action 1`] = `
+Object {
+  "payload": "postid1",
+  "type": "ADD_LOADING_FACEBOOK_AD",
+}
+`;
+
+exports[`facebookAds actions removeFacebookAdsLoadingAccount should return REMOVE_LOADING_FACEBOOK_AD_ACCOUNT action 1`] = `
+Object {
+  "payload": "adaccountid1",
+  "type": "REMOVE_LOADING_FACEBOOK_AD_ACCOUNT",
+}
+`;
+
+exports[`facebookAds actions removeFacebookAdsLoadingAd should return REMOVE_LOADING_FACEBOOK_AD action 1`] = `
+Object {
+  "payload": "postid1",
+  "type": "REMOVE_LOADING_FACEBOOK_AD",
+}
+`;
+
+exports[`facebookAds actions setFacebookAdsInternals should return SET_FACEBOOK_ADS_INTERNALS action 1`] = `
+Object {
+  "payload": Object {
+    "1": Object {
+      "ad_accounts": Object {
+        "adaccountid1": Object {
+          "is_active": true,
+          "name": "ad account 1",
+        },
+      },
+      "ads": Object {
+        "postid1": Object {
+          "comments_fetched_at": "2019-01-01 10:30:00",
+          "is_active": true,
+          "name": "ad 1",
+        },
+      },
+    },
+  },
+  "type": "SET_FACEBOOK_ADS_INTERNALS",
+}
+`;
+
+exports[`facebookAds actions setFacebookAdsLoading should return SET_FACEBOOK_ADS_LOADING action 1`] = `
+Object {
+  "payload": true,
+  "type": "SET_FACEBOOK_ADS_LOADING",
+}
+`;
+
+exports[`facebookAds actions updateFacebookAdsActiveAccount should return UPDATE_ACTIVE_FACEBOOK_AD_ACCOUNT action 1`] = `
+Object {
+  "payload": Object {
+    "id": "adaccountid1",
+    "integrationId": 1,
+    "isActive": true,
+  },
+  "type": "UPDATE_ACTIVE_FACEBOOK_AD_ACCOUNT",
+}
+`;
+
+exports[`facebookAds actions updateFacebookAdsActiveAd should return UPDATE_ACTIVE_FACEBOOK_AD action 1`] = `
+Object {
+  "payload": Object {
+    "id": "postid1",
+    "integrationId": 1,
+    "isActive": true,
+  },
+  "type": "UPDATE_ACTIVE_FACEBOOK_AD",
+}
+`;

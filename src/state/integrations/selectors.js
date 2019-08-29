@@ -83,6 +83,11 @@ export const getOnboardingMeta = (integrationType: string) => createSelector(
     (state) => state.getIn(['extra', integrationType, 'onboardingIntegrations', 'meta']) || fromJS({})
 )
 
+export const getFacebookMaxAccountAds = createSelector(
+    [getIntegrationsState],
+    (state) => state.getIn(['extra', FACEBOOK_INTEGRATION_TYPE, 'max_account_ads']) || 0
+)
+
 export const getEmailIntegrations = createSelector(
     [getIntegrations],
     (state) => state.filter((integration) => EMAIL_INTEGRATION_TYPES.includes(integration.get('type')))

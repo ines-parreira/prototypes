@@ -1,7 +1,7 @@
 import {fromJS} from 'immutable'
 import _find from 'lodash/find'
 
-import {getLastMessage, compare, toImmutable} from '../utils'
+import {compare, getLastMessage, toImmutable} from '../utils'
 import {isForwardedMessage} from '../state/ticket/utils'
 
 export const EMAIL_CHANNEL = 'email'
@@ -14,22 +14,25 @@ export const PHONE_CHANNEL = 'phone'
 export const SMS_CHANNEL = 'sms'
 export const TWITTER_CHANNEL = 'twitter'
 export const INSTAGRAM_COMMENT_CHANNEL = 'instagram-comment'
+export const INSTAGRAM_AD_COMMENT_CHANNEL = 'instagram-ad-comment'
 
 export const DEFAULT_CHANNEL = EMAIL_CHANNEL
 export const DEFAULT_SOURCE_TYPE = EMAIL_CHANNEL
 
 export const STATUSES = ['open', 'closed']
 export const CHANNELS = [
-    AIRCALL_CHANNEL, API_CHANNEL, CHAT_CHANNEL, EMAIL_CHANNEL, FACEBOOK_CHANNEL,
-    SMS_CHANNEL, FACEBOOK_MESSENGER_CHANNEL, PHONE_CHANNEL, TWITTER_CHANNEL, INSTAGRAM_COMMENT_CHANNEL
+    AIRCALL_CHANNEL, API_CHANNEL, CHAT_CHANNEL, EMAIL_CHANNEL, FACEBOOK_CHANNEL, SMS_CHANNEL,
+    FACEBOOK_MESSENGER_CHANNEL, PHONE_CHANNEL, TWITTER_CHANNEL, INSTAGRAM_COMMENT_CHANNEL, INSTAGRAM_AD_COMMENT_CHANNEL
 ]
 
+export const API_SOURCE = 'api'
 export const EMAIL_SOURCE = 'email'
 export const CHAT_SOURCE = 'chat'
 export const FACEBOOK_MESSENGER_SOURCE = 'facebook-messenger'
 export const FACEBOOK_MESSAGE_SOURCE = 'facebook-message'
 export const FACEBOOK_POST_SOURCE = 'facebook-post'
 export const INSTAGRAM_MEDIA_SOURCE = 'instagram-media'
+export const INSTAGRAM_AD_MEDIA_SOURCE = 'instagram-ad-media'
 export const FACEBOOK_COMMENT_SOURCE = 'facebook-comment'
 export const INSTAGRAM_COMMENT_SOURCE = 'instagram-comment'
 export const INTERNAL_NOTE_SOURCE = 'internal-note'
@@ -373,12 +376,12 @@ export const responseSourceType = (messages) => {
 
     const lastSourceType = lastMessage.getIn(['source', 'type'])
 
-    if (lastSourceType === 'facebook-post') {
-        return 'facebook-comment'
+    if (lastSourceType === FACEBOOK_POST_SOURCE) {
+        return FACEBOOK_COMMENT_SOURCE
     }
 
-    if (lastSourceType === 'instagram-media') {
-        return 'instagram-comment'
+    if (lastSourceType === INSTAGRAM_MEDIA_SOURCE || lastSourceType === INSTAGRAM_AD_MEDIA_SOURCE) {
+        return INSTAGRAM_COMMENT_SOURCE
     }
 
     if (!isAnswerableType(lastSourceType)) {

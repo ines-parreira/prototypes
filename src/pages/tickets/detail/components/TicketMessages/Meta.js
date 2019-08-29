@@ -5,6 +5,13 @@ import {Link} from 'react-router'
 
 import type {Meta as MetaType, Source} from '../../../../../models/ticket/types'
 
+import {
+    FACEBOOK_COMMENT_SOURCE,
+    FACEBOOK_POST_SOURCE,
+    INSTAGRAM_AD_MEDIA_SOURCE,
+    INSTAGRAM_MEDIA_SOURCE
+} from '../../../../../config/ticket'
+
 import css from './Meta.less'
 
 type Props = {
@@ -45,16 +52,18 @@ export default function Meta(props: Props) {
         )
     }
 
-    if (source && source.type && source.extra &&
-        ['facebook-post', 'facebook-comment', 'instagram-media'].includes(source.type)
-    ) {
+    const GO_TO_WIDGET_SOURCES = [FACEBOOK_POST_SOURCE, FACEBOOK_COMMENT_SOURCE, INSTAGRAM_MEDIA_SOURCE,
+        INSTAGRAM_AD_MEDIA_SOURCE]
+
+    if (source && source.type && source.extra && GO_TO_WIDGET_SOURCES.includes(source.type)) {
         const postId = source.extra.post_id
         const parentId = source.extra.parent_id
         const permalink = source.extra.permalink
 
-        const isFacebookPost = source.type === 'facebook-post'
+        const isFacebookPost = source.type === FACEBOOK_POST_SOURCE
         const isFacebookComment = parentId === postId
-        const isInstagramMedia = source.type === 'instagram-media'
+        const isInstagramMedia = source.type === INSTAGRAM_MEDIA_SOURCE
+        const isInstagramAdMedia = source.type === INSTAGRAM_AD_MEDIA_SOURCE
 
         let type = 'reply'
         let link = `https://facebook.com/${messageId || ''}`
@@ -62,7 +71,7 @@ export default function Meta(props: Props) {
         if (isFacebookPost) {
             type = 'post'
             link = `https://facebook.com/${postId}`
-        } else if (isInstagramMedia) {
+        } else if (isInstagramMedia || isInstagramAdMedia) {
             type = 'media'
             link = permalink
         } else if (isFacebookComment) {

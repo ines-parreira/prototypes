@@ -27,9 +27,9 @@ import FacebookLoginButton from './FacebookLoginButton'
 
 
 type Props = {
-    integration: Map<*,*>,
+    integration: Map<*, *>,
     actions: Object,
-    loading: Map<*,*>
+    loading: Map<*, *>
 }
 
 type State = {
@@ -37,7 +37,8 @@ type State = {
         posts_enabled: boolean,
         messenger_enabled: boolean,
         import_history_enabled: boolean,
-        instagram_comments_enabled: boolean
+        instagram_comments_enabled: boolean,
+        instagram_ads_enabled: boolean
     },
     language: string,
     askDisableConfirmation: boolean
@@ -49,13 +50,14 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
             posts_enabled: true,
             messenger_enabled: true,
             import_history_enabled: true,
-            instagram_comments_enabled: false
+            instagram_comments_enabled: false,
+            instagram_ads_enabled: false
         },
         language: FACEBOOK_LANGUAGE_DEFAULT,
         askDisableConfirmation: false,
     }
 
-    _updateState = (integration: Map<*,*>) => {
+    _updateState = (integration: Map<*, *>) => {
         const settings = integration.getIn(['facebook', 'settings'], fromJS({}))
         const language = integration.getIn(['meta', 'language'])
 
@@ -67,6 +69,7 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
                 messenger_enabled: settings.get('messenger_enabled'),
                 import_history_enabled: settings.get('import_history_enabled'),
                 instagram_comments_enabled: settings.get('instagram_comments_enabled'),
+                instagram_ads_enabled: settings.get('instagram_ads_enabled', false),
             }
         }
 
@@ -116,14 +119,16 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
         const integrationScope = integration.getIn(['meta', 'oauth', 'scope']) || fromJS([])
         const doesntHaveInstagramPermissions = !integrationScope.includes('instagram_basic')
             || !integrationScope.includes('instagram_manage_comments')
+        const doesntHaveInstagramAdsPermissions = !integrationScope.includes('ads_read')
+            || !integrationScope.includes('ads_management')
         const doesntHaveInstagramId = !integration.getIn(['meta', 'instagram', 'id'])
 
-        let disabledInstagramComponent = null
+        let alertComponent = null
 
         const isSubmitting = !!loading.get('updateIntegration')
 
         if (doesntHaveInstagramPermissions) {
-            disabledInstagramComponent = (
+            alertComponent = (
                 <Alert color="warning">
                     <i className="material-icons md-2 mr-2">
                         warning
@@ -138,7 +143,7 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
                 </Alert>
             )
         } else if (doesntHaveInstagramId) {
-            disabledInstagramComponent = (
+            alertComponent = (
                 <Alert color="warning">
                     You cannot activate Instagram on this page: it is not associated with any Instagram account.<br/>
                     If you just associated the page with an Instagram account, please{' '}
@@ -147,6 +152,21 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
                         link
                     >
                         click here to update your integrations
+                    </FacebookLoginButton>.
+                </Alert>
+            )
+        } else if (doesntHaveInstagramAdsPermissions) {
+            alertComponent = (
+                <Alert color="warning">
+                    <i className="material-icons md-2 mr-2">
+                        warning
+                    </i>
+                    Instagram Ads are disabled because we miss the required permissions. Please{' '}
+                    <FacebookLoginButton
+                        reconnect
+                        link
+                    >
+                        click here to update your permissions
                     </FacebookLoginButton>.
                 </Alert>
             )
@@ -221,6 +241,18 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
                                 disabled={doesntHaveInstagramPermissions || doesntHaveInstagramId}
                             />
                             <BooleanField
+                                name="instagram_ads_enabled"
+                                type="checkbox"
+                                label="Enable Instagram ads"
+                                value={this.state.settings.instagram_ads_enabled}
+                                onChange={(value) => this._onSettingChange(value, 'instagram_ads_enabled')}
+                                disabled={
+                                    doesntHaveInstagramPermissions ||
+                                    doesntHaveInstagramAdsPermissions ||
+                                    doesntHaveInstagramId
+                                }
+                            />
+                            <BooleanField
                                 name="import_history_enabled"
                                 type="checkbox"
                                 label="Import 30 days of history (posts and comments) as closed tickets"
@@ -229,7 +261,7 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
                             />
                         </FormGroup>
                         <div>
-                            {disabledInstagramComponent}
+                            {alertComponent}
                         </div>
                     </div>
 
@@ -264,7 +296,7 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
                         >
                             Save changes
                         </Button>
-                        <FacebookLoginButton reconnect />
+                        <FacebookLoginButton reconnect/>
                         <ConfirmButton
                             color="secondary"
                             className="float-right"

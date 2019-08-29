@@ -80,7 +80,8 @@ export type ActionStatus = 'error' | 'pending' | 'success'
 
 export type SourceType = 'email' | 'email-forward' | 'chat' | 'api' | 'aircall' | 'phone' | 'ottspott-call' |
     'facebook-post' | 'facebook-comment' | 'facebook-messenger' | 'facebook-message' |
-    'instagram-comment' | 'instagram-media' | 'twitter' | 'system-message' | 'internal-note'
+    'instagram-comment' | 'instagram-ad-comment' | 'instagram-media' | 'instagram-ad-media' | 'twitter' |
+    'system-message' | 'internal-note'
 export type Channel = $Values<CHANNELS>
 
 export type Source = {

@@ -97,6 +97,7 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
                 messenger_enabled: true,
                 posts_enabled: true,
                 instagram_comments_enabled: !!integration.getIn(['meta', 'instagram', 'id']),
+                instagram_ads_enabled: !!integration.getIn(['meta', 'instagram', 'id'])
             })))
         } else {
             selectedIntegrations = selectedIntegrations.delete(id)
@@ -206,6 +207,15 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
                                                         label="Enable Instagram comments"
                                                         value={this._getSettingValue(id, 'instagram_comments_enabled')}
                                                         onChange={(value) => this._setSettingValue(id, 'instagram_comments_enabled', value)}
+                                                    />
+                                                )}
+                                                {!instagramIsDisabled && (
+                                                    <BooleanField
+                                                        name={`${id}.instagram_ads_enabled`}
+                                                        type="checkbox"
+                                                        label="Enable Instagram ads"
+                                                        value={this._getSettingValue(id, 'instagram_ads_enabled')}
+                                                        onChange={(value) => this._setSettingValue(id, 'instagram_ads_enabled', value)}
                                                     />
                                                 )}
                                             </FormGroup>

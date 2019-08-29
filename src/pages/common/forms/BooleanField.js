@@ -59,7 +59,7 @@ export default class BooleanField extends InputField {
     }
 
     render() {
-        const {className, error, required, inline, label, help} = this.props
+        const {className, error, required, inline, label, help, disabled} = this.props
         const color = error ? 'danger' : ''
 
         return (
@@ -67,6 +67,7 @@ export default class BooleanField extends InputField {
                 className={classnames(className, {
                     [css.required]: required,
                     'd-inline-block': inline,
+                    'text-muted': disabled
                 })}
                 color={color}
                 check

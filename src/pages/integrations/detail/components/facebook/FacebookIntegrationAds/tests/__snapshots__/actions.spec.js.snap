@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FacebookIntegrationAds actions fetchAds() should fetch ads 1`] = `
+Array [
+  Object {
+    "payload": true,
+    "type": "SET_FACEBOOK_ADS_LOADING",
+  },
+  Object {
+    "payload": Object {
+      "1": Object {
+        "ad_accounts": Object {
+          "adaccountid1": Object {
+            "is_active": true,
+            "name": "ad account 1",
+          },
+        },
+        "ads": Object {
+          "postid1": Object {
+            "comments_fetched_at": "2019-01-01 10:30:00",
+            "is_active": true,
+            "name": "ad 1",
+          },
+        },
+      },
+    },
+    "type": "SET_FACEBOOK_ADS_INTERNALS",
+  },
+  Object {
+    "payload": false,
+    "type": "SET_FACEBOOK_ADS_LOADING",
+  },
+]
+`;
+
+exports[`FacebookIntegrationAds actions updateAd() should activate ad 1`] = `
+Array [
+  Object {
+    "payload": "postid1",
+    "type": "ADD_LOADING_FACEBOOK_AD",
+  },
+  Object {
+    "payload": Object {
+      "id": "postid1",
+      "integrationId": 1,
+      "isActive": true,
+    },
+    "type": "UPDATE_ACTIVE_FACEBOOK_AD",
+  },
+  Object {
+    "payload": "postid1",
+    "type": "REMOVE_LOADING_FACEBOOK_AD",
+  },
+]
+`;
+
+exports[`FacebookIntegrationAds actions updateAd() should deactivate ad 1`] = `
+Array [
+  Object {
+    "payload": "postid1",
+    "type": "ADD_LOADING_FACEBOOK_AD",
+  },
+  Object {
+    "payload": Object {
+      "id": "postid1",
+      "integrationId": 1,
+      "isActive": false,
+    },
+    "type": "UPDATE_ACTIVE_FACEBOOK_AD",
+  },
+  Object {
+    "payload": "postid1",
+    "type": "REMOVE_LOADING_FACEBOOK_AD",
+  },
+]
+`;
+
+exports[`FacebookIntegrationAds actions updateAdAccount() should activate ad account 1`] = `
+Array [
+  Object {
+    "payload": "adaccountid1",
+    "type": "ADD_LOADING_FACEBOOK_AD_ACCOUNT",
+  },
+  Object {
+    "payload": Object {
+      "id": "adaccountid1",
+      "integrationId": 1,
+      "isActive": true,
+    },
+    "type": "UPDATE_ACTIVE_FACEBOOK_AD_ACCOUNT",
+  },
+  Object {
+    "payload": "adaccountid1",
+    "type": "REMOVE_LOADING_FACEBOOK_AD_ACCOUNT",
+  },
+]
+`;
+
+exports[`FacebookIntegrationAds actions updateAdAccount() should deactivate ad account 1`] = `
+Array [
+  Object {
+    "payload": "adaccountid1",
+    "type": "ADD_LOADING_FACEBOOK_AD_ACCOUNT",
+  },
+  Object {
+    "payload": Object {
+      "id": "adaccountid1",
+      "integrationId": 1,
+      "isActive": false,
+    },
+    "type": "UPDATE_ACTIVE_FACEBOOK_AD_ACCOUNT",
+  },
+  Object {
+    "payload": "adaccountid1",
+    "type": "REMOVE_LOADING_FACEBOOK_AD_ACCOUNT",
+  },
+]
+`;

@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`facebookAds reducer should add loading ad 1`] = `
+Immutable.Map {
+  "loading": true,
+  "internals": Immutable.Map {},
+  "loadingAds": Immutable.List [
+    "postid1",
+  ],
+  "loadingAdAccounts": Immutable.List [],
+}
+`;
+
+exports[`facebookAds reducer should add loading ad account 1`] = `
+Immutable.Map {
+  "loading": true,
+  "internals": Immutable.Map {},
+  "loadingAds": Immutable.List [],
+  "loadingAdAccounts": Immutable.List [
+    "adaccountid1",
+  ],
+}
+`;
+
+exports[`facebookAds reducer should remove loading ad 1`] = `
+Immutable.Map {
+  "loading": true,
+  "internals": Immutable.Map {},
+  "loadingAds": Immutable.List [],
+  "loadingAdAccounts": Immutable.List [],
+}
+`;
+
+exports[`facebookAds reducer should remove loading ad account 1`] = `
+Immutable.Map {
+  "loading": true,
+  "internals": Immutable.Map {},
+  "loadingAds": Immutable.List [],
+  "loadingAdAccounts": Immutable.List [],
+}
+`;
+
+exports[`facebookAds reducer should set internals 1`] = `
+Immutable.Map {
+  "loading": true,
+  "internals": Immutable.Map {
+    "1": Immutable.Map {
+      "ad_accounts": Immutable.Map {
+        "adaccountid1": Immutable.Map {
+          "name": "ad account 1",
+          "is_active": true,
+        },
+      },
+      "ads": Immutable.Map {
+        "postid1": Immutable.Map {
+          "comments_fetched_at": "2019-01-01 10:30:00",
+          "name": "ad 1",
+          "is_active": true,
+        },
+      },
+    },
+  },
+  "loadingAds": Immutable.List [],
+  "loadingAdAccounts": Immutable.List [],
+}
+`;
+
+exports[`facebookAds reducer should set loading state 1`] = `
+Immutable.Map {
+  "loading": false,
+  "internals": Immutable.Map {},
+  "loadingAds": Immutable.List [],
+  "loadingAdAccounts": Immutable.List [],
+}
+`;
+
+exports[`facebookAds reducer should update active ad 1`] = `
+Immutable.Map {
+  "loading": true,
+  "internals": Immutable.Map {
+    "1": Immutable.Map {
+      "ad_accounts": Immutable.Map {},
+      "ads": Immutable.Map {
+        "postid1": Immutable.Map {
+          "comments_fetched_at": "2019-01-01 10:30:00",
+          "name": "ad 1",
+          "is_active": true,
+        },
+      },
+    },
+  },
+  "loadingAds": Immutable.List [],
+  "loadingAdAccounts": Immutable.List [],
+}
+`;
+
+exports[`facebookAds reducer should update active ad 2`] = `
+Immutable.Map {
+  "loading": true,
+  "internals": Immutable.Map {
+    "1": Immutable.Map {
+      "ad_accounts": Immutable.Map {
+        "adaccountid1": Immutable.Map {
+          "name": "ad account 1",
+          "is_active": true,
+        },
+      },
+    },
+  },
+  "loadingAds": Immutable.List [],
+  "loadingAdAccounts": Immutable.List [],
+}
+`;

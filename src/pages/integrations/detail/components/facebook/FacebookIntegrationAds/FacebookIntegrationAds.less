@@ -1,0 +1,41 @@
+@import '~css/new/colors';
+
+:local {
+  .card {
+    margin-bottom: 2rem;
+    max-width: 850px;
+  }
+
+  .legendContainer {
+    margin-top: 1rem;
+  }
+
+  .legend {
+    float: left;
+    margin-right: 2rem;
+    padding: 0.5rem;
+  }
+
+  .legendColor {
+    display: inline-block;
+    position: relative;
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+    top: 0.2rem;
+  }
+
+  .list {
+    display: flex;
+    background: @quartz;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+  }
+
+  .name {
+    max-width: calc(~'100% - 50px');
+  }
+}

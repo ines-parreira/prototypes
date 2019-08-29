@@ -1,0 +1,4104 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FacebookIntegrationAds component should render a spinner 1`] = `
+<Connect(FacebookIntegrationAds)
+  fetchAds={[Function]}
+  integration={
+    Immutable.Map {
+      "id": 1,
+      "name": "integration 1",
+      "type": "facebook",
+      "created_datetime": "2019-01-01 00:00:00",
+    }
+  }
+  integrations={
+    Immutable.List [
+      Immutable.Map {
+        "id": 1,
+        "name": "integration 1",
+        "type": "facebook",
+        "created_datetime": "2019-01-01 00:00:00",
+      },
+    ]
+  }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+  updateAd={[Function]}
+  updateAdAccount={[Function]}
+>
+  <FacebookIntegrationAds
+    fetchAds={[Function]}
+    integration={
+      Immutable.Map {
+        "id": 1,
+        "name": "integration 1",
+        "type": "facebook",
+        "created_datetime": "2019-01-01 00:00:00",
+      }
+    }
+    integrations={
+      Immutable.List [
+        Immutable.Map {
+          "id": 1,
+          "name": "integration 1",
+          "type": "facebook",
+          "created_datetime": "2019-01-01 00:00:00",
+        },
+      ]
+    }
+    internals={
+      Immutable.Map {
+        "1": Immutable.Map {
+          "ad_accounts": Immutable.Map {},
+          "ads": Immutable.Map {},
+        },
+      }
+    }
+    loading={true}
+    loadingAdAccounts={Immutable.List []}
+    loadingAds={Immutable.List []}
+    maxAccountAds={100}
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+    updateAd={[Function]}
+    updateAdAccount={[Function]}
+  >
+    <div
+      className="full-width"
+    >
+      <PageHeader
+        title={
+          <Breadcrumb
+            tag="ol"
+          >
+            <BreadcrumbItem
+              tag="li"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations"
+              >
+                Integrations
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              tag="li"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook"
+              >
+                Facebook, Messenger & Instagram
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              tag="li"
+            >
+              integration 1
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              active={true}
+              tag="li"
+            >
+              Ads
+            </BreadcrumbItem>
+          </Breadcrumb>
+        }
+      >
+        <div
+          className="d-flex align-items-center justify-content-between flex-wrap page-header "
+        >
+          <Breadcrumb
+            tag="ol"
+          >
+            <ol
+              className="breadcrumb"
+            >
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  <Link
+                    onlyActiveOnIndex={false}
+                    style={Object {}}
+                    to="/app/settings/integrations"
+                  >
+                    <a
+                      onClick={[Function]}
+                      style={Object {}}
+                    >
+                      Integrations
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  <Link
+                    onlyActiveOnIndex={false}
+                    style={Object {}}
+                    to="/app/settings/integrations/facebook"
+                  >
+                    <a
+                      onClick={[Function]}
+                      style={Object {}}
+                    >
+                      Facebook, Messenger & Instagram
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  integration 1
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                active={true}
+                tag="li"
+              >
+                <li
+                  className="active breadcrumb-item"
+                >
+                  Ads
+                </li>
+              </BreadcrumbItem>
+            </ol>
+          </Breadcrumb>
+        </div>
+      </PageHeader>
+      <FacebookIntegrationNavigation
+        integration={
+          Immutable.Map {
+            "id": 1,
+            "name": "integration 1",
+            "type": "facebook",
+            "created_datetime": "2019-01-01 00:00:00",
+          }
+        }
+      >
+        <SecondaryNavbar>
+          <Navbar
+            className="navbar"
+            expand={false}
+            tag="nav"
+          >
+            <nav
+              className="navbar navbar"
+            >
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".0"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/overview"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Overview
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".1"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/customer_chat"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Customer chat
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".2"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/preferences"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Preferences
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".3"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/ads"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Ads
+                </a>
+              </Link>
+            </nav>
+          </Navbar>
+        </SecondaryNavbar>
+      </FacebookIntegrationNavigation>
+      <Container
+        className="page-container"
+        fluid={true}
+        tag="div"
+      >
+        <div
+          className="page-container container-fluid"
+        >
+          <Col
+            lg={10}
+            tag="div"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+            xl={8}
+          >
+            <div
+              className="col-lg-10 col-xl-8"
+            >
+              <Loader
+                inline={false}
+                minHeight="500px"
+              >
+                <div
+                  className="container"
+                >
+                  <div
+                    className="inner"
+                    style={
+                      Object {
+                        "minHeight": "500px",
+                      }
+                    }
+                  >
+                    <i
+                      className="icon-custom icon-circle-o-notch md-spin"
+                    />
+                  </div>
+                </div>
+              </Loader>
+            </div>
+          </Col>
+        </div>
+      </Container>
+    </div>
+  </FacebookIntegrationAds>
+</Connect(FacebookIntegrationAds)>
+`;
+
+exports[`FacebookIntegrationAds component should render with ads limit reached 1`] = `
+<Connect(FacebookIntegrationAds)
+  fetchAds={[Function]}
+  integration={
+    Immutable.Map {
+      "id": 1,
+      "name": "integration 1",
+      "type": "facebook",
+      "created_datetime": "2019-01-01 00:00:00",
+    }
+  }
+  integrations={
+    Immutable.List [
+      Immutable.Map {
+        "id": 1,
+        "name": "integration 1",
+        "type": "facebook",
+        "created_datetime": "2019-01-01 00:00:00",
+      },
+    ]
+  }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+  updateAd={[Function]}
+  updateAdAccount={[Function]}
+>
+  <FacebookIntegrationAds
+    fetchAds={[Function]}
+    integration={
+      Immutable.Map {
+        "id": 1,
+        "name": "integration 1",
+        "type": "facebook",
+        "created_datetime": "2019-01-01 00:00:00",
+      }
+    }
+    integrations={
+      Immutable.List [
+        Immutable.Map {
+          "id": 1,
+          "name": "integration 1",
+          "type": "facebook",
+          "created_datetime": "2019-01-01 00:00:00",
+        },
+      ]
+    }
+    internals={
+      Immutable.Map {
+        "1": Immutable.Map {
+          "ad_accounts": Immutable.Map {
+            "adaccountid1": Immutable.Map {
+              "name": "ad account 1",
+              "is_active": true,
+            },
+          },
+          "ads": Immutable.Map {
+            "postid1": Immutable.Map {
+              "comments_fetched_at": "2019-01-01 10:30:00",
+              "name": "ad 1",
+              "is_active": true,
+            },
+            "postid2": Immutable.Map {
+              "comments_fetched_at": "2019-01-01 10:30:00",
+              "name": "ad 2",
+              "is_active": true,
+            },
+            "postid3": Immutable.Map {
+              "comments_fetched_at": "2019-01-01 10:30:00",
+              "name": "ad 3",
+              "is_active": false,
+            },
+          },
+        },
+      }
+    }
+    loading={false}
+    loadingAdAccounts={Immutable.List []}
+    loadingAds={Immutable.List []}
+    maxAccountAds={2}
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+    updateAd={[Function]}
+    updateAdAccount={[Function]}
+  >
+    <div
+      className="full-width"
+    >
+      <PageHeader
+        title={
+          <Breadcrumb
+            tag="ol"
+          >
+            <BreadcrumbItem
+              tag="li"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations"
+              >
+                Integrations
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              tag="li"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook"
+              >
+                Facebook, Messenger & Instagram
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              tag="li"
+            >
+              integration 1
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              active={true}
+              tag="li"
+            >
+              Ads
+            </BreadcrumbItem>
+          </Breadcrumb>
+        }
+      >
+        <div
+          className="d-flex align-items-center justify-content-between flex-wrap page-header "
+        >
+          <Breadcrumb
+            tag="ol"
+          >
+            <ol
+              className="breadcrumb"
+            >
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  <Link
+                    onlyActiveOnIndex={false}
+                    style={Object {}}
+                    to="/app/settings/integrations"
+                  >
+                    <a
+                      onClick={[Function]}
+                      style={Object {}}
+                    >
+                      Integrations
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  <Link
+                    onlyActiveOnIndex={false}
+                    style={Object {}}
+                    to="/app/settings/integrations/facebook"
+                  >
+                    <a
+                      onClick={[Function]}
+                      style={Object {}}
+                    >
+                      Facebook, Messenger & Instagram
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  integration 1
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                active={true}
+                tag="li"
+              >
+                <li
+                  className="active breadcrumb-item"
+                >
+                  Ads
+                </li>
+              </BreadcrumbItem>
+            </ol>
+          </Breadcrumb>
+        </div>
+      </PageHeader>
+      <FacebookIntegrationNavigation
+        integration={
+          Immutable.Map {
+            "id": 1,
+            "name": "integration 1",
+            "type": "facebook",
+            "created_datetime": "2019-01-01 00:00:00",
+          }
+        }
+      >
+        <SecondaryNavbar>
+          <Navbar
+            className="navbar"
+            expand={false}
+            tag="nav"
+          >
+            <nav
+              className="navbar navbar"
+            >
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".0"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/overview"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Overview
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".1"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/customer_chat"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Customer chat
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".2"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/preferences"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Preferences
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".3"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/ads"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Ads
+                </a>
+              </Link>
+            </nav>
+          </Navbar>
+        </SecondaryNavbar>
+      </FacebookIntegrationNavigation>
+      <Container
+        className="page-container"
+        fluid={true}
+        tag="div"
+      >
+        <div
+          className="page-container container-fluid"
+        >
+          <Col
+            lg={10}
+            tag="div"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+            xl={8}
+          >
+            <div
+              className="col-lg-10 col-xl-8"
+            >
+              <div>
+                <UpgradePlanAlert>
+                  <Alert
+                    className="card"
+                    closeAriaLabel="Close"
+                    color="success"
+                    isOpen={true}
+                    tag="div"
+                    transition={
+                      Object {
+                        "appear": true,
+                        "baseClass": "fade",
+                        "baseClassActive": "show",
+                        "enter": true,
+                        "exit": true,
+                        "in": true,
+                        "mountOnEnter": false,
+                        "onEnter": [Function],
+                        "onEntered": [Function],
+                        "onEntering": [Function],
+                        "onExit": [Function],
+                        "onExited": [Function],
+                        "onExiting": [Function],
+                        "tag": "div",
+                        "timeout": 150,
+                        "unmountOnExit": true,
+                      }
+                    }
+                  >
+                    <Fade
+                      appear={true}
+                      baseClass="fade"
+                      baseClassActive="show"
+                      className="card alert alert-success"
+                      enter={true}
+                      exit={true}
+                      in={true}
+                      mountOnEnter={false}
+                      onEnter={[Function]}
+                      onEntered={[Function]}
+                      onEntering={[Function]}
+                      onExit={[Function]}
+                      onExited={[Function]}
+                      onExiting={[Function]}
+                      role="alert"
+                      tag="div"
+                      timeout={150}
+                      unmountOnExit={true}
+                    >
+                      <Transition
+                        appear={true}
+                        enter={true}
+                        exit={true}
+                        in={true}
+                        mountOnEnter={false}
+                        onEnter={[Function]}
+                        onEntered={[Function]}
+                        onEntering={[Function]}
+                        onExit={[Function]}
+                        onExited={[Function]}
+                        onExiting={[Function]}
+                        timeout={150}
+                        unmountOnExit={true}
+                      >
+                        <div
+                          className="card alert alert-success fade"
+                          role="alert"
+                        >
+                          <strong>
+                            Need to synchronize more ads?
+                          </strong>
+                           
+                          <Link
+                            className="alert-link"
+                            onlyActiveOnIndex={false}
+                            style={Object {}}
+                            to="/app/settings/billing"
+                          >
+                            <a
+                              className="alert-link"
+                              onClick={[Function]}
+                              style={Object {}}
+                            >
+                              Upgrade your plan!
+                            </a>
+                          </Link>
+                        </div>
+                      </Transition>
+                    </Fade>
+                  </Alert>
+                </UpgradePlanAlert>
+                <AdsOverviewCard
+                  accountTotalAds={2}
+                  integrations={
+                    Immutable.List [
+                      Immutable.Map {
+                        "id": 1,
+                        "name": "integration 1",
+                        "type": "facebook",
+                        "created_datetime": "2019-01-01 00:00:00",
+                      },
+                    ]
+                  }
+                  internals={
+                    Immutable.Map {
+                      "1": Immutable.Map {
+                        "ad_accounts": Immutable.Map {
+                          "adaccountid1": Immutable.Map {
+                            "name": "ad account 1",
+                            "is_active": true,
+                          },
+                        },
+                        "ads": Immutable.Map {
+                          "postid1": Immutable.Map {
+                            "comments_fetched_at": "2019-01-01 10:30:00",
+                            "name": "ad 1",
+                            "is_active": true,
+                          },
+                          "postid2": Immutable.Map {
+                            "comments_fetched_at": "2019-01-01 10:30:00",
+                            "name": "ad 2",
+                            "is_active": true,
+                          },
+                          "postid3": Immutable.Map {
+                            "comments_fetched_at": "2019-01-01 10:30:00",
+                            "name": "ad 3",
+                            "is_active": false,
+                          },
+                        },
+                      },
+                    }
+                  }
+                  maxAccountAds={2}
+                >
+                  <Card
+                    className="card"
+                    tag="div"
+                  >
+                    <div
+                      className="card card"
+                    >
+                      <CardBody
+                        tag="div"
+                      >
+                        <div
+                          className="card-body"
+                        >
+                          <h3>
+                            Active ads per integration
+                          </h3>
+                          <div
+                            className="text-center"
+                          >
+                            2/2 ads 
+                            <a
+                              id="active-ads-tooltip"
+                            >
+                              <i
+                                className="material-icons text-muted"
+                              >
+                                info_outline
+                              </i>
+                            </a>
+                            <UncontrolledTooltip
+                              target="active-ads-tooltip"
+                            >
+                              <Tooltip
+                                autohide={true}
+                                delay={
+                                  Object {
+                                    "hide": 250,
+                                    "show": 0,
+                                  }
+                                }
+                                hideArrow={false}
+                                isOpen={false}
+                                placement="top"
+                                placementPrefix="bs-tooltip"
+                                target="active-ads-tooltip"
+                                toggle={[Function]}
+                              />
+                            </UncontrolledTooltip>
+                          </div>
+                          <Progress
+                            max={2}
+                            multi={true}
+                            tag="div"
+                            value={0}
+                          >
+                            <div
+                              className="progress"
+                            >
+                              <Progress
+                                bar={true}
+                                className="color-NaN"
+                                id="progress-1"
+                                key="progress-1"
+                                max={100}
+                                striped={true}
+                                tag="div"
+                                value={2}
+                              >
+                                <div
+                                  aria-valuemax={100}
+                                  aria-valuemin="0"
+                                  aria-valuenow={2}
+                                  className="progress-bar color-NaN progress-bar-striped"
+                                  role="progressbar"
+                                  style={
+                                    Object {
+                                      "width": "2%",
+                                    }
+                                  }
+                                />
+                              </Progress>
+                            </div>
+                          </Progress>
+                          <div
+                            className="legendContainer"
+                          >
+                            <div
+                              className="legend"
+                              key="legend-1"
+                            >
+                              <div
+                                className="color-NaN progress-bar-striped legendColor"
+                              />
+                              integration 1
+                               
+                              (
+                              2
+                               active ads)
+                            </div>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </div>
+                  </Card>
+                </AdsOverviewCard>
+                <AdAccountsCard
+                  accounts={
+                    Immutable.Seq [
+                      Array [
+                        "adaccountid1",
+                        Immutable.Map {
+                          "name": "ad account 1",
+                          "is_active": true,
+                        },
+                      ],
+                    ]
+                  }
+                  loadingAdAccounts={Immutable.List []}
+                  updateAdAccount={[Function]}
+                >
+                  <Card
+                    className="card"
+                    tag="div"
+                  >
+                    <div
+                      className="card card"
+                    >
+                      <CardBody
+                        tag="div"
+                      >
+                        <div
+                          className="card-body"
+                        >
+                          <h3>
+                            Ad accounts
+                          </h3>
+                          <div
+                            className="list"
+                            key="adaccountid1"
+                          >
+                            <div
+                              className="name"
+                            >
+                              <b>
+                                ad account 1
+                              </b>
+                            </div>
+                            <ToggleButton
+                              disabled={false}
+                              loading={false}
+                              onChange={[Function]}
+                              value={true}
+                            >
+                              <label
+                                className="switch"
+                                onClick={[Function]}
+                              >
+                                <input
+                                  checked={true}
+                                  disabled={false}
+                                  readOnly={true}
+                                  type="checkbox"
+                                />
+                                <div
+                                  className="slider"
+                                />
+                              </label>
+                            </ToggleButton>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </div>
+                  </Card>
+                </AdAccountsCard>
+                <AdsCard
+                  accountTotalAds={2}
+                  ads={
+                    Immutable.Seq [
+                      Array [
+                        "postid1",
+                        Immutable.Map {
+                          "comments_fetched_at": "2019-01-01 10:30:00",
+                          "name": "ad 1",
+                          "is_active": true,
+                        },
+                      ],
+                      Array [
+                        "postid2",
+                        Immutable.Map {
+                          "comments_fetched_at": "2019-01-01 10:30:00",
+                          "name": "ad 2",
+                          "is_active": true,
+                        },
+                      ],
+                      Array [
+                        "postid3",
+                        Immutable.Map {
+                          "comments_fetched_at": "2019-01-01 10:30:00",
+                          "name": "ad 3",
+                          "is_active": false,
+                        },
+                      ],
+                    ]
+                  }
+                  loadingAds={Immutable.List []}
+                  maxAccountAds={2}
+                  updateAd={[Function]}
+                >
+                  <Card
+                    className="card"
+                    tag="div"
+                  >
+                    <div
+                      className="card card"
+                    >
+                      <CardBody
+                        tag="div"
+                      >
+                        <div
+                          className="card-body"
+                        >
+                          <h3>
+                            Ads
+                          </h3>
+                          <div
+                            className="list"
+                            key="postid1"
+                          >
+                            <div
+                              className="name"
+                            >
+                              <b>
+                                ad 1
+                                 
+                                <span
+                                  className="text-muted"
+                                >
+                                  (comments fetched at
+                                   
+                                  01/01/2019 10:30 AM
+                                  )
+                                </span>
+                              </b>
+                            </div>
+                            <ToggleButton
+                              disabled={false}
+                              loading={false}
+                              onChange={[Function]}
+                              value={true}
+                            >
+                              <label
+                                className="switch"
+                                onClick={[Function]}
+                              >
+                                <input
+                                  checked={true}
+                                  disabled={false}
+                                  readOnly={true}
+                                  type="checkbox"
+                                />
+                                <div
+                                  className="slider"
+                                />
+                              </label>
+                            </ToggleButton>
+                          </div>
+                          <div
+                            className="list"
+                            key="postid2"
+                          >
+                            <div
+                              className="name"
+                            >
+                              <b>
+                                ad 2
+                                 
+                                <span
+                                  className="text-muted"
+                                >
+                                  (comments fetched at
+                                   
+                                  01/01/2019 10:30 AM
+                                  )
+                                </span>
+                              </b>
+                            </div>
+                            <ToggleButton
+                              disabled={false}
+                              loading={false}
+                              onChange={[Function]}
+                              value={true}
+                            >
+                              <label
+                                className="switch"
+                                onClick={[Function]}
+                              >
+                                <input
+                                  checked={true}
+                                  disabled={false}
+                                  readOnly={true}
+                                  type="checkbox"
+                                />
+                                <div
+                                  className="slider"
+                                />
+                              </label>
+                            </ToggleButton>
+                          </div>
+                          <div
+                            className="list"
+                            key="postid3"
+                          >
+                            <div
+                              className="name"
+                            >
+                              <b>
+                                ad 3
+                                 
+                                <span
+                                  className="text-muted"
+                                >
+                                  (comments fetched at
+                                   
+                                  01/01/2019 10:30 AM
+                                  )
+                                </span>
+                              </b>
+                            </div>
+                            <ToggleButton
+                              disabled={true}
+                              loading={false}
+                              onChange={[Function]}
+                              value={false}
+                            >
+                              <label
+                                className="switch disabled"
+                                onClick={[Function]}
+                              >
+                                <input
+                                  checked={false}
+                                  disabled={true}
+                                  readOnly={true}
+                                  type="checkbox"
+                                />
+                                <div
+                                  className="slider"
+                                />
+                              </label>
+                            </ToggleButton>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </div>
+                  </Card>
+                </AdsCard>
+              </div>
+            </div>
+          </Col>
+        </div>
+      </Container>
+    </div>
+  </FacebookIntegrationAds>
+</Connect(FacebookIntegrationAds)>
+`;
+
+exports[`FacebookIntegrationAds component should render with one active ad, when the comments have not been fetched yet 1`] = `
+<Connect(FacebookIntegrationAds)
+  fetchAds={[Function]}
+  integration={
+    Immutable.Map {
+      "id": 1,
+      "name": "integration 1",
+      "type": "facebook",
+      "created_datetime": "2019-01-01 00:00:00",
+    }
+  }
+  integrations={
+    Immutable.List [
+      Immutable.Map {
+        "id": 1,
+        "name": "integration 1",
+        "type": "facebook",
+        "created_datetime": "2019-01-01 00:00:00",
+      },
+    ]
+  }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+  updateAd={[Function]}
+  updateAdAccount={[Function]}
+>
+  <FacebookIntegrationAds
+    fetchAds={[Function]}
+    integration={
+      Immutable.Map {
+        "id": 1,
+        "name": "integration 1",
+        "type": "facebook",
+        "created_datetime": "2019-01-01 00:00:00",
+      }
+    }
+    integrations={
+      Immutable.List [
+        Immutable.Map {
+          "id": 1,
+          "name": "integration 1",
+          "type": "facebook",
+          "created_datetime": "2019-01-01 00:00:00",
+        },
+      ]
+    }
+    internals={
+      Immutable.Map {
+        "1": Immutable.Map {
+          "ad_accounts": Immutable.Map {
+            "adaccountid1": Immutable.Map {
+              "name": "ad account 1",
+              "is_active": true,
+            },
+          },
+          "ads": Immutable.Map {
+            "postid1": Immutable.Map {
+              "comments_fetched_at": null,
+              "name": "ad 1",
+              "is_active": true,
+            },
+          },
+        },
+      }
+    }
+    loading={false}
+    loadingAdAccounts={Immutable.List []}
+    loadingAds={Immutable.List []}
+    maxAccountAds={100}
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+    updateAd={[Function]}
+    updateAdAccount={[Function]}
+  >
+    <div
+      className="full-width"
+    >
+      <PageHeader
+        title={
+          <Breadcrumb
+            tag="ol"
+          >
+            <BreadcrumbItem
+              tag="li"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations"
+              >
+                Integrations
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              tag="li"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook"
+              >
+                Facebook, Messenger & Instagram
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              tag="li"
+            >
+              integration 1
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              active={true}
+              tag="li"
+            >
+              Ads
+            </BreadcrumbItem>
+          </Breadcrumb>
+        }
+      >
+        <div
+          className="d-flex align-items-center justify-content-between flex-wrap page-header "
+        >
+          <Breadcrumb
+            tag="ol"
+          >
+            <ol
+              className="breadcrumb"
+            >
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  <Link
+                    onlyActiveOnIndex={false}
+                    style={Object {}}
+                    to="/app/settings/integrations"
+                  >
+                    <a
+                      onClick={[Function]}
+                      style={Object {}}
+                    >
+                      Integrations
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  <Link
+                    onlyActiveOnIndex={false}
+                    style={Object {}}
+                    to="/app/settings/integrations/facebook"
+                  >
+                    <a
+                      onClick={[Function]}
+                      style={Object {}}
+                    >
+                      Facebook, Messenger & Instagram
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  integration 1
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                active={true}
+                tag="li"
+              >
+                <li
+                  className="active breadcrumb-item"
+                >
+                  Ads
+                </li>
+              </BreadcrumbItem>
+            </ol>
+          </Breadcrumb>
+        </div>
+      </PageHeader>
+      <FacebookIntegrationNavigation
+        integration={
+          Immutable.Map {
+            "id": 1,
+            "name": "integration 1",
+            "type": "facebook",
+            "created_datetime": "2019-01-01 00:00:00",
+          }
+        }
+      >
+        <SecondaryNavbar>
+          <Navbar
+            className="navbar"
+            expand={false}
+            tag="nav"
+          >
+            <nav
+              className="navbar navbar"
+            >
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".0"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/overview"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Overview
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".1"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/customer_chat"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Customer chat
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".2"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/preferences"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Preferences
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".3"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/ads"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Ads
+                </a>
+              </Link>
+            </nav>
+          </Navbar>
+        </SecondaryNavbar>
+      </FacebookIntegrationNavigation>
+      <Container
+        className="page-container"
+        fluid={true}
+        tag="div"
+      >
+        <div
+          className="page-container container-fluid"
+        >
+          <Col
+            lg={10}
+            tag="div"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+            xl={8}
+          >
+            <div
+              className="col-lg-10 col-xl-8"
+            >
+              <div>
+                <AdsOverviewCard
+                  accountTotalAds={1}
+                  integrations={
+                    Immutable.List [
+                      Immutable.Map {
+                        "id": 1,
+                        "name": "integration 1",
+                        "type": "facebook",
+                        "created_datetime": "2019-01-01 00:00:00",
+                      },
+                    ]
+                  }
+                  internals={
+                    Immutable.Map {
+                      "1": Immutable.Map {
+                        "ad_accounts": Immutable.Map {
+                          "adaccountid1": Immutable.Map {
+                            "name": "ad account 1",
+                            "is_active": true,
+                          },
+                        },
+                        "ads": Immutable.Map {
+                          "postid1": Immutable.Map {
+                            "comments_fetched_at": null,
+                            "name": "ad 1",
+                            "is_active": true,
+                          },
+                        },
+                      },
+                    }
+                  }
+                  maxAccountAds={100}
+                >
+                  <Card
+                    className="card"
+                    tag="div"
+                  >
+                    <div
+                      className="card card"
+                    >
+                      <CardBody
+                        tag="div"
+                      >
+                        <div
+                          className="card-body"
+                        >
+                          <h3>
+                            Active ads per integration
+                          </h3>
+                          <div
+                            className="text-center"
+                          >
+                            1/100 ads 
+                            <a
+                              id="active-ads-tooltip"
+                            >
+                              <i
+                                className="material-icons text-muted"
+                              >
+                                info_outline
+                              </i>
+                            </a>
+                            <UncontrolledTooltip
+                              target="active-ads-tooltip"
+                            >
+                              <Tooltip
+                                autohide={true}
+                                delay={
+                                  Object {
+                                    "hide": 250,
+                                    "show": 0,
+                                  }
+                                }
+                                hideArrow={false}
+                                isOpen={false}
+                                placement="top"
+                                placementPrefix="bs-tooltip"
+                                target="active-ads-tooltip"
+                                toggle={[Function]}
+                              />
+                            </UncontrolledTooltip>
+                          </div>
+                          <Progress
+                            max={100}
+                            multi={true}
+                            tag="div"
+                            value={0}
+                          >
+                            <div
+                              className="progress"
+                            >
+                              <Progress
+                                bar={true}
+                                className="color-NaN"
+                                id="progress-1"
+                                key="progress-1"
+                                max={100}
+                                striped={true}
+                                tag="div"
+                                value={1}
+                              >
+                                <div
+                                  aria-valuemax={100}
+                                  aria-valuemin="0"
+                                  aria-valuenow={1}
+                                  className="progress-bar color-NaN progress-bar-striped"
+                                  role="progressbar"
+                                  style={
+                                    Object {
+                                      "width": "1%",
+                                    }
+                                  }
+                                />
+                              </Progress>
+                            </div>
+                          </Progress>
+                          <div
+                            className="legendContainer"
+                          >
+                            <div
+                              className="legend"
+                              key="legend-1"
+                            >
+                              <div
+                                className="color-NaN progress-bar-striped legendColor"
+                              />
+                              integration 1
+                               
+                              (
+                              1
+                               active ads)
+                            </div>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </div>
+                  </Card>
+                </AdsOverviewCard>
+                <AdAccountsCard
+                  accounts={
+                    Immutable.Seq [
+                      Array [
+                        "adaccountid1",
+                        Immutable.Map {
+                          "name": "ad account 1",
+                          "is_active": true,
+                        },
+                      ],
+                    ]
+                  }
+                  loadingAdAccounts={Immutable.List []}
+                  updateAdAccount={[Function]}
+                >
+                  <Card
+                    className="card"
+                    tag="div"
+                  >
+                    <div
+                      className="card card"
+                    >
+                      <CardBody
+                        tag="div"
+                      >
+                        <div
+                          className="card-body"
+                        >
+                          <h3>
+                            Ad accounts
+                          </h3>
+                          <div
+                            className="list"
+                            key="adaccountid1"
+                          >
+                            <div
+                              className="name"
+                            >
+                              <b>
+                                ad account 1
+                              </b>
+                            </div>
+                            <ToggleButton
+                              disabled={false}
+                              loading={false}
+                              onChange={[Function]}
+                              value={true}
+                            >
+                              <label
+                                className="switch"
+                                onClick={[Function]}
+                              >
+                                <input
+                                  checked={true}
+                                  disabled={false}
+                                  readOnly={true}
+                                  type="checkbox"
+                                />
+                                <div
+                                  className="slider"
+                                />
+                              </label>
+                            </ToggleButton>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </div>
+                  </Card>
+                </AdAccountsCard>
+                <AdsCard
+                  accountTotalAds={1}
+                  ads={
+                    Immutable.Seq [
+                      Array [
+                        "postid1",
+                        Immutable.Map {
+                          "comments_fetched_at": null,
+                          "name": "ad 1",
+                          "is_active": true,
+                        },
+                      ],
+                    ]
+                  }
+                  loadingAds={Immutable.List []}
+                  maxAccountAds={100}
+                  updateAd={[Function]}
+                >
+                  <Card
+                    className="card"
+                    tag="div"
+                  >
+                    <div
+                      className="card card"
+                    >
+                      <CardBody
+                        tag="div"
+                      >
+                        <div
+                          className="card-body"
+                        >
+                          <h3>
+                            Ads
+                          </h3>
+                          <div
+                            className="list"
+                            key="postid1"
+                          >
+                            <div
+                              className="name"
+                            >
+                              <b>
+                                ad 1
+                                 
+                              </b>
+                            </div>
+                            <ToggleButton
+                              disabled={false}
+                              loading={false}
+                              onChange={[Function]}
+                              value={true}
+                            >
+                              <label
+                                className="switch"
+                                onClick={[Function]}
+                              >
+                                <input
+                                  checked={true}
+                                  disabled={false}
+                                  readOnly={true}
+                                  type="checkbox"
+                                />
+                                <div
+                                  className="slider"
+                                />
+                              </label>
+                            </ToggleButton>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </div>
+                  </Card>
+                </AdsCard>
+              </div>
+            </div>
+          </Col>
+        </div>
+      </Container>
+    </div>
+  </FacebookIntegrationAds>
+</Connect(FacebookIntegrationAds)>
+`;
+
+exports[`FacebookIntegrationAds component should render with one ad account and one ad 1`] = `
+<Connect(FacebookIntegrationAds)
+  fetchAds={[Function]}
+  integration={
+    Immutable.Map {
+      "id": 1,
+      "name": "integration 1",
+      "type": "facebook",
+      "created_datetime": "2019-01-01 00:00:00",
+    }
+  }
+  integrations={
+    Immutable.List [
+      Immutable.Map {
+        "id": 1,
+        "name": "integration 1",
+        "type": "facebook",
+        "created_datetime": "2019-01-01 00:00:00",
+      },
+    ]
+  }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+  updateAd={[Function]}
+  updateAdAccount={[Function]}
+>
+  <FacebookIntegrationAds
+    fetchAds={[Function]}
+    integration={
+      Immutable.Map {
+        "id": 1,
+        "name": "integration 1",
+        "type": "facebook",
+        "created_datetime": "2019-01-01 00:00:00",
+      }
+    }
+    integrations={
+      Immutable.List [
+        Immutable.Map {
+          "id": 1,
+          "name": "integration 1",
+          "type": "facebook",
+          "created_datetime": "2019-01-01 00:00:00",
+        },
+      ]
+    }
+    internals={
+      Immutable.Map {
+        "1": Immutable.Map {
+          "ad_accounts": Immutable.Map {
+            "adaccountid1": Immutable.Map {
+              "name": "ad account 1",
+              "is_active": true,
+            },
+          },
+          "ads": Immutable.Map {
+            "postid1": Immutable.Map {
+              "comments_fetched_at": "2019-01-01 10:30:00",
+              "name": "ad 1",
+              "is_active": true,
+            },
+          },
+        },
+      }
+    }
+    loading={false}
+    loadingAdAccounts={Immutable.List []}
+    loadingAds={Immutable.List []}
+    maxAccountAds={100}
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+    updateAd={[Function]}
+    updateAdAccount={[Function]}
+  >
+    <div
+      className="full-width"
+    >
+      <PageHeader
+        title={
+          <Breadcrumb
+            tag="ol"
+          >
+            <BreadcrumbItem
+              tag="li"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations"
+              >
+                Integrations
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              tag="li"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook"
+              >
+                Facebook, Messenger & Instagram
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              tag="li"
+            >
+              integration 1
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              active={true}
+              tag="li"
+            >
+              Ads
+            </BreadcrumbItem>
+          </Breadcrumb>
+        }
+      >
+        <div
+          className="d-flex align-items-center justify-content-between flex-wrap page-header "
+        >
+          <Breadcrumb
+            tag="ol"
+          >
+            <ol
+              className="breadcrumb"
+            >
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  <Link
+                    onlyActiveOnIndex={false}
+                    style={Object {}}
+                    to="/app/settings/integrations"
+                  >
+                    <a
+                      onClick={[Function]}
+                      style={Object {}}
+                    >
+                      Integrations
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  <Link
+                    onlyActiveOnIndex={false}
+                    style={Object {}}
+                    to="/app/settings/integrations/facebook"
+                  >
+                    <a
+                      onClick={[Function]}
+                      style={Object {}}
+                    >
+                      Facebook, Messenger & Instagram
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  integration 1
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                active={true}
+                tag="li"
+              >
+                <li
+                  className="active breadcrumb-item"
+                >
+                  Ads
+                </li>
+              </BreadcrumbItem>
+            </ol>
+          </Breadcrumb>
+        </div>
+      </PageHeader>
+      <FacebookIntegrationNavigation
+        integration={
+          Immutable.Map {
+            "id": 1,
+            "name": "integration 1",
+            "type": "facebook",
+            "created_datetime": "2019-01-01 00:00:00",
+          }
+        }
+      >
+        <SecondaryNavbar>
+          <Navbar
+            className="navbar"
+            expand={false}
+            tag="nav"
+          >
+            <nav
+              className="navbar navbar"
+            >
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".0"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/overview"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Overview
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".1"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/customer_chat"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Customer chat
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".2"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/preferences"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Preferences
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".3"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/ads"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Ads
+                </a>
+              </Link>
+            </nav>
+          </Navbar>
+        </SecondaryNavbar>
+      </FacebookIntegrationNavigation>
+      <Container
+        className="page-container"
+        fluid={true}
+        tag="div"
+      >
+        <div
+          className="page-container container-fluid"
+        >
+          <Col
+            lg={10}
+            tag="div"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+            xl={8}
+          >
+            <div
+              className="col-lg-10 col-xl-8"
+            >
+              <div>
+                <AdsOverviewCard
+                  accountTotalAds={1}
+                  integrations={
+                    Immutable.List [
+                      Immutable.Map {
+                        "id": 1,
+                        "name": "integration 1",
+                        "type": "facebook",
+                        "created_datetime": "2019-01-01 00:00:00",
+                      },
+                    ]
+                  }
+                  internals={
+                    Immutable.Map {
+                      "1": Immutable.Map {
+                        "ad_accounts": Immutable.Map {
+                          "adaccountid1": Immutable.Map {
+                            "name": "ad account 1",
+                            "is_active": true,
+                          },
+                        },
+                        "ads": Immutable.Map {
+                          "postid1": Immutable.Map {
+                            "comments_fetched_at": "2019-01-01 10:30:00",
+                            "name": "ad 1",
+                            "is_active": true,
+                          },
+                        },
+                      },
+                    }
+                  }
+                  maxAccountAds={100}
+                >
+                  <Card
+                    className="card"
+                    tag="div"
+                  >
+                    <div
+                      className="card card"
+                    >
+                      <CardBody
+                        tag="div"
+                      >
+                        <div
+                          className="card-body"
+                        >
+                          <h3>
+                            Active ads per integration
+                          </h3>
+                          <div
+                            className="text-center"
+                          >
+                            1/100 ads 
+                            <a
+                              id="active-ads-tooltip"
+                            >
+                              <i
+                                className="material-icons text-muted"
+                              >
+                                info_outline
+                              </i>
+                            </a>
+                            <UncontrolledTooltip
+                              target="active-ads-tooltip"
+                            >
+                              <Tooltip
+                                autohide={true}
+                                delay={
+                                  Object {
+                                    "hide": 250,
+                                    "show": 0,
+                                  }
+                                }
+                                hideArrow={false}
+                                isOpen={false}
+                                placement="top"
+                                placementPrefix="bs-tooltip"
+                                target="active-ads-tooltip"
+                                toggle={[Function]}
+                              />
+                            </UncontrolledTooltip>
+                          </div>
+                          <Progress
+                            max={100}
+                            multi={true}
+                            tag="div"
+                            value={0}
+                          >
+                            <div
+                              className="progress"
+                            >
+                              <Progress
+                                bar={true}
+                                className="color-NaN"
+                                id="progress-1"
+                                key="progress-1"
+                                max={100}
+                                striped={true}
+                                tag="div"
+                                value={1}
+                              >
+                                <div
+                                  aria-valuemax={100}
+                                  aria-valuemin="0"
+                                  aria-valuenow={1}
+                                  className="progress-bar color-NaN progress-bar-striped"
+                                  role="progressbar"
+                                  style={
+                                    Object {
+                                      "width": "1%",
+                                    }
+                                  }
+                                />
+                              </Progress>
+                            </div>
+                          </Progress>
+                          <div
+                            className="legendContainer"
+                          >
+                            <div
+                              className="legend"
+                              key="legend-1"
+                            >
+                              <div
+                                className="color-NaN progress-bar-striped legendColor"
+                              />
+                              integration 1
+                               
+                              (
+                              1
+                               active ads)
+                            </div>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </div>
+                  </Card>
+                </AdsOverviewCard>
+                <AdAccountsCard
+                  accounts={
+                    Immutable.Seq [
+                      Array [
+                        "adaccountid1",
+                        Immutable.Map {
+                          "name": "ad account 1",
+                          "is_active": true,
+                        },
+                      ],
+                    ]
+                  }
+                  loadingAdAccounts={Immutable.List []}
+                  updateAdAccount={[Function]}
+                >
+                  <Card
+                    className="card"
+                    tag="div"
+                  >
+                    <div
+                      className="card card"
+                    >
+                      <CardBody
+                        tag="div"
+                      >
+                        <div
+                          className="card-body"
+                        >
+                          <h3>
+                            Ad accounts
+                          </h3>
+                          <div
+                            className="list"
+                            key="adaccountid1"
+                          >
+                            <div
+                              className="name"
+                            >
+                              <b>
+                                ad account 1
+                              </b>
+                            </div>
+                            <ToggleButton
+                              disabled={false}
+                              loading={false}
+                              onChange={[Function]}
+                              value={true}
+                            >
+                              <label
+                                className="switch"
+                                onClick={[Function]}
+                              >
+                                <input
+                                  checked={true}
+                                  disabled={false}
+                                  readOnly={true}
+                                  type="checkbox"
+                                />
+                                <div
+                                  className="slider"
+                                />
+                              </label>
+                            </ToggleButton>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </div>
+                  </Card>
+                </AdAccountsCard>
+                <AdsCard
+                  accountTotalAds={1}
+                  ads={
+                    Immutable.Seq [
+                      Array [
+                        "postid1",
+                        Immutable.Map {
+                          "comments_fetched_at": "2019-01-01 10:30:00",
+                          "name": "ad 1",
+                          "is_active": true,
+                        },
+                      ],
+                    ]
+                  }
+                  loadingAds={Immutable.List []}
+                  maxAccountAds={100}
+                  updateAd={[Function]}
+                >
+                  <Card
+                    className="card"
+                    tag="div"
+                  >
+                    <div
+                      className="card card"
+                    >
+                      <CardBody
+                        tag="div"
+                      >
+                        <div
+                          className="card-body"
+                        >
+                          <h3>
+                            Ads
+                          </h3>
+                          <div
+                            className="list"
+                            key="postid1"
+                          >
+                            <div
+                              className="name"
+                            >
+                              <b>
+                                ad 1
+                                 
+                                <span
+                                  className="text-muted"
+                                >
+                                  (comments fetched at
+                                   
+                                  01/01/2019 10:30 AM
+                                  )
+                                </span>
+                              </b>
+                            </div>
+                            <ToggleButton
+                              disabled={false}
+                              loading={false}
+                              onChange={[Function]}
+                              value={true}
+                            >
+                              <label
+                                className="switch"
+                                onClick={[Function]}
+                              >
+                                <input
+                                  checked={true}
+                                  disabled={false}
+                                  readOnly={true}
+                                  type="checkbox"
+                                />
+                                <div
+                                  className="slider"
+                                />
+                              </label>
+                            </ToggleButton>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </div>
+                  </Card>
+                </AdsCard>
+              </div>
+            </div>
+          </Col>
+        </div>
+      </Container>
+    </div>
+  </FacebookIntegrationAds>
+</Connect(FacebookIntegrationAds)>
+`;
+
+exports[`FacebookIntegrationAds component should render with one ad account and without ad 1`] = `
+<Connect(FacebookIntegrationAds)
+  fetchAds={[Function]}
+  integration={
+    Immutable.Map {
+      "id": 1,
+      "name": "integration 1",
+      "type": "facebook",
+      "created_datetime": "2019-01-01 00:00:00",
+    }
+  }
+  integrations={
+    Immutable.List [
+      Immutable.Map {
+        "id": 1,
+        "name": "integration 1",
+        "type": "facebook",
+        "created_datetime": "2019-01-01 00:00:00",
+      },
+    ]
+  }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+  updateAd={[Function]}
+  updateAdAccount={[Function]}
+>
+  <FacebookIntegrationAds
+    fetchAds={[Function]}
+    integration={
+      Immutable.Map {
+        "id": 1,
+        "name": "integration 1",
+        "type": "facebook",
+        "created_datetime": "2019-01-01 00:00:00",
+      }
+    }
+    integrations={
+      Immutable.List [
+        Immutable.Map {
+          "id": 1,
+          "name": "integration 1",
+          "type": "facebook",
+          "created_datetime": "2019-01-01 00:00:00",
+        },
+      ]
+    }
+    internals={
+      Immutable.Map {
+        "1": Immutable.Map {
+          "ad_accounts": Immutable.Map {
+            "adaccountid1": Immutable.Map {
+              "name": "ad account 1",
+              "is_active": true,
+            },
+          },
+          "ads": Immutable.Map {},
+        },
+      }
+    }
+    loading={false}
+    loadingAdAccounts={Immutable.List []}
+    loadingAds={Immutable.List []}
+    maxAccountAds={100}
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+    updateAd={[Function]}
+    updateAdAccount={[Function]}
+  >
+    <div
+      className="full-width"
+    >
+      <PageHeader
+        title={
+          <Breadcrumb
+            tag="ol"
+          >
+            <BreadcrumbItem
+              tag="li"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations"
+              >
+                Integrations
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              tag="li"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook"
+              >
+                Facebook, Messenger & Instagram
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              tag="li"
+            >
+              integration 1
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              active={true}
+              tag="li"
+            >
+              Ads
+            </BreadcrumbItem>
+          </Breadcrumb>
+        }
+      >
+        <div
+          className="d-flex align-items-center justify-content-between flex-wrap page-header "
+        >
+          <Breadcrumb
+            tag="ol"
+          >
+            <ol
+              className="breadcrumb"
+            >
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  <Link
+                    onlyActiveOnIndex={false}
+                    style={Object {}}
+                    to="/app/settings/integrations"
+                  >
+                    <a
+                      onClick={[Function]}
+                      style={Object {}}
+                    >
+                      Integrations
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  <Link
+                    onlyActiveOnIndex={false}
+                    style={Object {}}
+                    to="/app/settings/integrations/facebook"
+                  >
+                    <a
+                      onClick={[Function]}
+                      style={Object {}}
+                    >
+                      Facebook, Messenger & Instagram
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  integration 1
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                active={true}
+                tag="li"
+              >
+                <li
+                  className="active breadcrumb-item"
+                >
+                  Ads
+                </li>
+              </BreadcrumbItem>
+            </ol>
+          </Breadcrumb>
+        </div>
+      </PageHeader>
+      <FacebookIntegrationNavigation
+        integration={
+          Immutable.Map {
+            "id": 1,
+            "name": "integration 1",
+            "type": "facebook",
+            "created_datetime": "2019-01-01 00:00:00",
+          }
+        }
+      >
+        <SecondaryNavbar>
+          <Navbar
+            className="navbar"
+            expand={false}
+            tag="nav"
+          >
+            <nav
+              className="navbar navbar"
+            >
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".0"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/overview"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Overview
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".1"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/customer_chat"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Customer chat
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".2"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/preferences"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Preferences
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".3"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/ads"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Ads
+                </a>
+              </Link>
+            </nav>
+          </Navbar>
+        </SecondaryNavbar>
+      </FacebookIntegrationNavigation>
+      <Container
+        className="page-container"
+        fluid={true}
+        tag="div"
+      >
+        <div
+          className="page-container container-fluid"
+        >
+          <Col
+            lg={10}
+            tag="div"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+            xl={8}
+          >
+            <div
+              className="col-lg-10 col-xl-8"
+            >
+              <div>
+                <AdsOverviewCard
+                  accountTotalAds={0}
+                  integrations={
+                    Immutable.List [
+                      Immutable.Map {
+                        "id": 1,
+                        "name": "integration 1",
+                        "type": "facebook",
+                        "created_datetime": "2019-01-01 00:00:00",
+                      },
+                    ]
+                  }
+                  internals={
+                    Immutable.Map {
+                      "1": Immutable.Map {
+                        "ad_accounts": Immutable.Map {
+                          "adaccountid1": Immutable.Map {
+                            "name": "ad account 1",
+                            "is_active": true,
+                          },
+                        },
+                        "ads": Immutable.Map {},
+                      },
+                    }
+                  }
+                  maxAccountAds={100}
+                >
+                  <Card
+                    className="card"
+                    tag="div"
+                  >
+                    <div
+                      className="card card"
+                    >
+                      <CardBody
+                        tag="div"
+                      >
+                        <div
+                          className="card-body"
+                        >
+                          <h3>
+                            Active ads per integration
+                          </h3>
+                          <div
+                            className="text-center"
+                          >
+                            0/100 ads 
+                            <a
+                              id="active-ads-tooltip"
+                            >
+                              <i
+                                className="material-icons text-muted"
+                              >
+                                info_outline
+                              </i>
+                            </a>
+                            <UncontrolledTooltip
+                              target="active-ads-tooltip"
+                            >
+                              <Tooltip
+                                autohide={true}
+                                delay={
+                                  Object {
+                                    "hide": 250,
+                                    "show": 0,
+                                  }
+                                }
+                                hideArrow={false}
+                                isOpen={false}
+                                placement="top"
+                                placementPrefix="bs-tooltip"
+                                target="active-ads-tooltip"
+                                toggle={[Function]}
+                              />
+                            </UncontrolledTooltip>
+                          </div>
+                          <Progress
+                            max={100}
+                            multi={true}
+                            tag="div"
+                            value={0}
+                          >
+                            <div
+                              className="progress"
+                            >
+                              <Progress
+                                bar={true}
+                                className="color-NaN"
+                                id="progress-1"
+                                key="progress-1"
+                                max={100}
+                                striped={true}
+                                tag="div"
+                                value={0}
+                              >
+                                <div
+                                  aria-valuemax={100}
+                                  aria-valuemin="0"
+                                  aria-valuenow={0}
+                                  className="progress-bar color-NaN progress-bar-striped"
+                                  role="progressbar"
+                                  style={
+                                    Object {
+                                      "width": "0%",
+                                    }
+                                  }
+                                />
+                              </Progress>
+                            </div>
+                          </Progress>
+                          <div
+                            className="legendContainer"
+                          >
+                            <div
+                              className="legend"
+                              key="legend-1"
+                            >
+                              <div
+                                className="color-NaN progress-bar-striped legendColor"
+                              />
+                              integration 1
+                               
+                              (
+                              0
+                               active ads)
+                            </div>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </div>
+                  </Card>
+                </AdsOverviewCard>
+                <AdAccountsCard
+                  accounts={
+                    Immutable.Seq [
+                      Array [
+                        "adaccountid1",
+                        Immutable.Map {
+                          "name": "ad account 1",
+                          "is_active": true,
+                        },
+                      ],
+                    ]
+                  }
+                  loadingAdAccounts={Immutable.List []}
+                  updateAdAccount={[Function]}
+                >
+                  <Card
+                    className="card"
+                    tag="div"
+                  >
+                    <div
+                      className="card card"
+                    >
+                      <CardBody
+                        tag="div"
+                      >
+                        <div
+                          className="card-body"
+                        >
+                          <h3>
+                            Ad accounts
+                          </h3>
+                          <div
+                            className="list"
+                            key="adaccountid1"
+                          >
+                            <div
+                              className="name"
+                            >
+                              <b>
+                                ad account 1
+                              </b>
+                            </div>
+                            <ToggleButton
+                              disabled={false}
+                              loading={false}
+                              onChange={[Function]}
+                              value={true}
+                            >
+                              <label
+                                className="switch"
+                                onClick={[Function]}
+                              >
+                                <input
+                                  checked={true}
+                                  disabled={false}
+                                  readOnly={true}
+                                  type="checkbox"
+                                />
+                                <div
+                                  className="slider"
+                                />
+                              </label>
+                            </ToggleButton>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </div>
+                  </Card>
+                </AdAccountsCard>
+                <AdsCard
+                  accountTotalAds={0}
+                  ads={Immutable.Seq []}
+                  loadingAds={Immutable.List []}
+                  maxAccountAds={100}
+                  updateAd={[Function]}
+                />
+              </div>
+            </div>
+          </Col>
+        </div>
+      </Container>
+    </div>
+  </FacebookIntegrationAds>
+</Connect(FacebookIntegrationAds)>
+`;
+
+exports[`FacebookIntegrationAds component should render with two ad accounts (one not active) and two ads (one not active) 1`] = `
+<Connect(FacebookIntegrationAds)
+  fetchAds={[Function]}
+  integration={
+    Immutable.Map {
+      "id": 1,
+      "name": "integration 1",
+      "type": "facebook",
+      "created_datetime": "2019-01-01 00:00:00",
+    }
+  }
+  integrations={
+    Immutable.List [
+      Immutable.Map {
+        "id": 1,
+        "name": "integration 1",
+        "type": "facebook",
+        "created_datetime": "2019-01-01 00:00:00",
+      },
+    ]
+  }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+  updateAd={[Function]}
+  updateAdAccount={[Function]}
+>
+  <FacebookIntegrationAds
+    fetchAds={[Function]}
+    integration={
+      Immutable.Map {
+        "id": 1,
+        "name": "integration 1",
+        "type": "facebook",
+        "created_datetime": "2019-01-01 00:00:00",
+      }
+    }
+    integrations={
+      Immutable.List [
+        Immutable.Map {
+          "id": 1,
+          "name": "integration 1",
+          "type": "facebook",
+          "created_datetime": "2019-01-01 00:00:00",
+        },
+      ]
+    }
+    internals={
+      Immutable.Map {
+        "1": Immutable.Map {
+          "ad_accounts": Immutable.Map {
+            "adaccountid1": Immutable.Map {
+              "name": "ad account 1",
+              "is_active": true,
+            },
+            "adaccountid2": Immutable.Map {
+              "name": "ad account 2",
+              "is_active": false,
+            },
+          },
+          "ads": Immutable.Map {
+            "postid1": Immutable.Map {
+              "comments_fetched_at": "2019-01-01 10:30:00",
+              "name": "ad 1",
+              "is_active": true,
+            },
+            "postid2": Immutable.Map {
+              "comments_fetched_at": "2019-01-01 10:30:00",
+              "name": "ad 2",
+              "is_active": false,
+            },
+          },
+        },
+      }
+    }
+    loading={false}
+    loadingAdAccounts={Immutable.List []}
+    loadingAds={Immutable.List []}
+    maxAccountAds={100}
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+    updateAd={[Function]}
+    updateAdAccount={[Function]}
+  >
+    <div
+      className="full-width"
+    >
+      <PageHeader
+        title={
+          <Breadcrumb
+            tag="ol"
+          >
+            <BreadcrumbItem
+              tag="li"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations"
+              >
+                Integrations
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              tag="li"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook"
+              >
+                Facebook, Messenger & Instagram
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              tag="li"
+            >
+              integration 1
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              active={true}
+              tag="li"
+            >
+              Ads
+            </BreadcrumbItem>
+          </Breadcrumb>
+        }
+      >
+        <div
+          className="d-flex align-items-center justify-content-between flex-wrap page-header "
+        >
+          <Breadcrumb
+            tag="ol"
+          >
+            <ol
+              className="breadcrumb"
+            >
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  <Link
+                    onlyActiveOnIndex={false}
+                    style={Object {}}
+                    to="/app/settings/integrations"
+                  >
+                    <a
+                      onClick={[Function]}
+                      style={Object {}}
+                    >
+                      Integrations
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  <Link
+                    onlyActiveOnIndex={false}
+                    style={Object {}}
+                    to="/app/settings/integrations/facebook"
+                  >
+                    <a
+                      onClick={[Function]}
+                      style={Object {}}
+                    >
+                      Facebook, Messenger & Instagram
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  integration 1
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                active={true}
+                tag="li"
+              >
+                <li
+                  className="active breadcrumb-item"
+                >
+                  Ads
+                </li>
+              </BreadcrumbItem>
+            </ol>
+          </Breadcrumb>
+        </div>
+      </PageHeader>
+      <FacebookIntegrationNavigation
+        integration={
+          Immutable.Map {
+            "id": 1,
+            "name": "integration 1",
+            "type": "facebook",
+            "created_datetime": "2019-01-01 00:00:00",
+          }
+        }
+      >
+        <SecondaryNavbar>
+          <Navbar
+            className="navbar"
+            expand={false}
+            tag="nav"
+          >
+            <nav
+              className="navbar navbar"
+            >
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".0"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/overview"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Overview
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".1"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/customer_chat"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Customer chat
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".2"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/preferences"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Preferences
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".3"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/ads"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Ads
+                </a>
+              </Link>
+            </nav>
+          </Navbar>
+        </SecondaryNavbar>
+      </FacebookIntegrationNavigation>
+      <Container
+        className="page-container"
+        fluid={true}
+        tag="div"
+      >
+        <div
+          className="page-container container-fluid"
+        >
+          <Col
+            lg={10}
+            tag="div"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+            xl={8}
+          >
+            <div
+              className="col-lg-10 col-xl-8"
+            >
+              <div>
+                <AdsOverviewCard
+                  accountTotalAds={1}
+                  integrations={
+                    Immutable.List [
+                      Immutable.Map {
+                        "id": 1,
+                        "name": "integration 1",
+                        "type": "facebook",
+                        "created_datetime": "2019-01-01 00:00:00",
+                      },
+                    ]
+                  }
+                  internals={
+                    Immutable.Map {
+                      "1": Immutable.Map {
+                        "ad_accounts": Immutable.Map {
+                          "adaccountid1": Immutable.Map {
+                            "name": "ad account 1",
+                            "is_active": true,
+                          },
+                          "adaccountid2": Immutable.Map {
+                            "name": "ad account 2",
+                            "is_active": false,
+                          },
+                        },
+                        "ads": Immutable.Map {
+                          "postid1": Immutable.Map {
+                            "comments_fetched_at": "2019-01-01 10:30:00",
+                            "name": "ad 1",
+                            "is_active": true,
+                          },
+                          "postid2": Immutable.Map {
+                            "comments_fetched_at": "2019-01-01 10:30:00",
+                            "name": "ad 2",
+                            "is_active": false,
+                          },
+                        },
+                      },
+                    }
+                  }
+                  maxAccountAds={100}
+                >
+                  <Card
+                    className="card"
+                    tag="div"
+                  >
+                    <div
+                      className="card card"
+                    >
+                      <CardBody
+                        tag="div"
+                      >
+                        <div
+                          className="card-body"
+                        >
+                          <h3>
+                            Active ads per integration
+                          </h3>
+                          <div
+                            className="text-center"
+                          >
+                            1/100 ads 
+                            <a
+                              id="active-ads-tooltip"
+                            >
+                              <i
+                                className="material-icons text-muted"
+                              >
+                                info_outline
+                              </i>
+                            </a>
+                            <UncontrolledTooltip
+                              target="active-ads-tooltip"
+                            >
+                              <Tooltip
+                                autohide={true}
+                                delay={
+                                  Object {
+                                    "hide": 250,
+                                    "show": 0,
+                                  }
+                                }
+                                hideArrow={false}
+                                isOpen={false}
+                                placement="top"
+                                placementPrefix="bs-tooltip"
+                                target="active-ads-tooltip"
+                                toggle={[Function]}
+                              />
+                            </UncontrolledTooltip>
+                          </div>
+                          <Progress
+                            max={100}
+                            multi={true}
+                            tag="div"
+                            value={0}
+                          >
+                            <div
+                              className="progress"
+                            >
+                              <Progress
+                                bar={true}
+                                className="color-NaN"
+                                id="progress-1"
+                                key="progress-1"
+                                max={100}
+                                striped={true}
+                                tag="div"
+                                value={1}
+                              >
+                                <div
+                                  aria-valuemax={100}
+                                  aria-valuemin="0"
+                                  aria-valuenow={1}
+                                  className="progress-bar color-NaN progress-bar-striped"
+                                  role="progressbar"
+                                  style={
+                                    Object {
+                                      "width": "1%",
+                                    }
+                                  }
+                                />
+                              </Progress>
+                            </div>
+                          </Progress>
+                          <div
+                            className="legendContainer"
+                          >
+                            <div
+                              className="legend"
+                              key="legend-1"
+                            >
+                              <div
+                                className="color-NaN progress-bar-striped legendColor"
+                              />
+                              integration 1
+                               
+                              (
+                              1
+                               active ads)
+                            </div>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </div>
+                  </Card>
+                </AdsOverviewCard>
+                <AdAccountsCard
+                  accounts={
+                    Immutable.Seq [
+                      Array [
+                        "adaccountid1",
+                        Immutable.Map {
+                          "name": "ad account 1",
+                          "is_active": true,
+                        },
+                      ],
+                      Array [
+                        "adaccountid2",
+                        Immutable.Map {
+                          "name": "ad account 2",
+                          "is_active": false,
+                        },
+                      ],
+                    ]
+                  }
+                  loadingAdAccounts={Immutable.List []}
+                  updateAdAccount={[Function]}
+                >
+                  <Card
+                    className="card"
+                    tag="div"
+                  >
+                    <div
+                      className="card card"
+                    >
+                      <CardBody
+                        tag="div"
+                      >
+                        <div
+                          className="card-body"
+                        >
+                          <h3>
+                            Ad accounts
+                          </h3>
+                          <div
+                            className="list"
+                            key="adaccountid1"
+                          >
+                            <div
+                              className="name"
+                            >
+                              <b>
+                                ad account 1
+                              </b>
+                            </div>
+                            <ToggleButton
+                              disabled={false}
+                              loading={false}
+                              onChange={[Function]}
+                              value={true}
+                            >
+                              <label
+                                className="switch"
+                                onClick={[Function]}
+                              >
+                                <input
+                                  checked={true}
+                                  disabled={false}
+                                  readOnly={true}
+                                  type="checkbox"
+                                />
+                                <div
+                                  className="slider"
+                                />
+                              </label>
+                            </ToggleButton>
+                          </div>
+                          <div
+                            className="list"
+                            key="adaccountid2"
+                          >
+                            <div
+                              className="name"
+                            >
+                              <b>
+                                ad account 2
+                              </b>
+                            </div>
+                            <ToggleButton
+                              disabled={false}
+                              loading={false}
+                              onChange={[Function]}
+                              value={false}
+                            >
+                              <label
+                                className="switch"
+                                onClick={[Function]}
+                              >
+                                <input
+                                  checked={false}
+                                  disabled={false}
+                                  readOnly={true}
+                                  type="checkbox"
+                                />
+                                <div
+                                  className="slider"
+                                />
+                              </label>
+                            </ToggleButton>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </div>
+                  </Card>
+                </AdAccountsCard>
+                <AdsCard
+                  accountTotalAds={1}
+                  ads={
+                    Immutable.Seq [
+                      Array [
+                        "postid1",
+                        Immutable.Map {
+                          "comments_fetched_at": "2019-01-01 10:30:00",
+                          "name": "ad 1",
+                          "is_active": true,
+                        },
+                      ],
+                      Array [
+                        "postid2",
+                        Immutable.Map {
+                          "comments_fetched_at": "2019-01-01 10:30:00",
+                          "name": "ad 2",
+                          "is_active": false,
+                        },
+                      ],
+                    ]
+                  }
+                  loadingAds={Immutable.List []}
+                  maxAccountAds={100}
+                  updateAd={[Function]}
+                >
+                  <Card
+                    className="card"
+                    tag="div"
+                  >
+                    <div
+                      className="card card"
+                    >
+                      <CardBody
+                        tag="div"
+                      >
+                        <div
+                          className="card-body"
+                        >
+                          <h3>
+                            Ads
+                          </h3>
+                          <div
+                            className="list"
+                            key="postid1"
+                          >
+                            <div
+                              className="name"
+                            >
+                              <b>
+                                ad 1
+                                 
+                                <span
+                                  className="text-muted"
+                                >
+                                  (comments fetched at
+                                   
+                                  01/01/2019 10:30 AM
+                                  )
+                                </span>
+                              </b>
+                            </div>
+                            <ToggleButton
+                              disabled={false}
+                              loading={false}
+                              onChange={[Function]}
+                              value={true}
+                            >
+                              <label
+                                className="switch"
+                                onClick={[Function]}
+                              >
+                                <input
+                                  checked={true}
+                                  disabled={false}
+                                  readOnly={true}
+                                  type="checkbox"
+                                />
+                                <div
+                                  className="slider"
+                                />
+                              </label>
+                            </ToggleButton>
+                          </div>
+                          <div
+                            className="list"
+                            key="postid2"
+                          >
+                            <div
+                              className="name"
+                            >
+                              <b>
+                                ad 2
+                                 
+                                <span
+                                  className="text-muted"
+                                >
+                                  (comments fetched at
+                                   
+                                  01/01/2019 10:30 AM
+                                  )
+                                </span>
+                              </b>
+                            </div>
+                            <ToggleButton
+                              disabled={false}
+                              loading={false}
+                              onChange={[Function]}
+                              value={false}
+                            >
+                              <label
+                                className="switch"
+                                onClick={[Function]}
+                              >
+                                <input
+                                  checked={false}
+                                  disabled={false}
+                                  readOnly={true}
+                                  type="checkbox"
+                                />
+                                <div
+                                  className="slider"
+                                />
+                              </label>
+                            </ToggleButton>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </div>
+                  </Card>
+                </AdsCard>
+              </div>
+            </div>
+          </Col>
+        </div>
+      </Container>
+    </div>
+  </FacebookIntegrationAds>
+</Connect(FacebookIntegrationAds)>
+`;
+
+exports[`FacebookIntegrationAds component should render without ad account and without ad 1`] = `
+<Connect(FacebookIntegrationAds)
+  fetchAds={[Function]}
+  integration={
+    Immutable.Map {
+      "id": 1,
+      "name": "integration 1",
+      "type": "facebook",
+      "created_datetime": "2019-01-01 00:00:00",
+    }
+  }
+  integrations={
+    Immutable.List [
+      Immutable.Map {
+        "id": 1,
+        "name": "integration 1",
+        "type": "facebook",
+        "created_datetime": "2019-01-01 00:00:00",
+      },
+    ]
+  }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+  updateAd={[Function]}
+  updateAdAccount={[Function]}
+>
+  <FacebookIntegrationAds
+    fetchAds={[Function]}
+    integration={
+      Immutable.Map {
+        "id": 1,
+        "name": "integration 1",
+        "type": "facebook",
+        "created_datetime": "2019-01-01 00:00:00",
+      }
+    }
+    integrations={
+      Immutable.List [
+        Immutable.Map {
+          "id": 1,
+          "name": "integration 1",
+          "type": "facebook",
+          "created_datetime": "2019-01-01 00:00:00",
+        },
+      ]
+    }
+    internals={
+      Immutable.Map {
+        "1": Immutable.Map {
+          "ad_accounts": Immutable.Map {},
+          "ads": Immutable.Map {},
+        },
+      }
+    }
+    loading={false}
+    loadingAdAccounts={Immutable.List []}
+    loadingAds={Immutable.List []}
+    maxAccountAds={100}
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+    updateAd={[Function]}
+    updateAdAccount={[Function]}
+  >
+    <div
+      className="full-width"
+    >
+      <PageHeader
+        title={
+          <Breadcrumb
+            tag="ol"
+          >
+            <BreadcrumbItem
+              tag="li"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations"
+              >
+                Integrations
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              tag="li"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook"
+              >
+                Facebook, Messenger & Instagram
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              tag="li"
+            >
+              integration 1
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              active={true}
+              tag="li"
+            >
+              Ads
+            </BreadcrumbItem>
+          </Breadcrumb>
+        }
+      >
+        <div
+          className="d-flex align-items-center justify-content-between flex-wrap page-header "
+        >
+          <Breadcrumb
+            tag="ol"
+          >
+            <ol
+              className="breadcrumb"
+            >
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  <Link
+                    onlyActiveOnIndex={false}
+                    style={Object {}}
+                    to="/app/settings/integrations"
+                  >
+                    <a
+                      onClick={[Function]}
+                      style={Object {}}
+                    >
+                      Integrations
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  <Link
+                    onlyActiveOnIndex={false}
+                    style={Object {}}
+                    to="/app/settings/integrations/facebook"
+                  >
+                    <a
+                      onClick={[Function]}
+                      style={Object {}}
+                    >
+                      Facebook, Messenger & Instagram
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  integration 1
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                active={true}
+                tag="li"
+              >
+                <li
+                  className="active breadcrumb-item"
+                >
+                  Ads
+                </li>
+              </BreadcrumbItem>
+            </ol>
+          </Breadcrumb>
+        </div>
+      </PageHeader>
+      <FacebookIntegrationNavigation
+        integration={
+          Immutable.Map {
+            "id": 1,
+            "name": "integration 1",
+            "type": "facebook",
+            "created_datetime": "2019-01-01 00:00:00",
+          }
+        }
+      >
+        <SecondaryNavbar>
+          <Navbar
+            className="navbar"
+            expand={false}
+            tag="nav"
+          >
+            <nav
+              className="navbar navbar"
+            >
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".0"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/overview"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Overview
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".1"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/customer_chat"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Customer chat
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".2"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/preferences"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Preferences
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".3"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/ads"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Ads
+                </a>
+              </Link>
+            </nav>
+          </Navbar>
+        </SecondaryNavbar>
+      </FacebookIntegrationNavigation>
+      <Container
+        className="page-container"
+        fluid={true}
+        tag="div"
+      >
+        <div
+          className="page-container container-fluid"
+        >
+          <Col
+            lg={10}
+            tag="div"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+            xl={8}
+          >
+            <div
+              className="col-lg-10 col-xl-8"
+            >
+              <div>
+                <AdsOverviewCard
+                  accountTotalAds={0}
+                  integrations={
+                    Immutable.List [
+                      Immutable.Map {
+                        "id": 1,
+                        "name": "integration 1",
+                        "type": "facebook",
+                        "created_datetime": "2019-01-01 00:00:00",
+                      },
+                    ]
+                  }
+                  internals={
+                    Immutable.Map {
+                      "1": Immutable.Map {
+                        "ad_accounts": Immutable.Map {},
+                        "ads": Immutable.Map {},
+                      },
+                    }
+                  }
+                  maxAccountAds={100}
+                >
+                  <Card
+                    className="card"
+                    tag="div"
+                  >
+                    <div
+                      className="card card"
+                    >
+                      <CardBody
+                        tag="div"
+                      >
+                        <div
+                          className="card-body"
+                        >
+                          <h3>
+                            Active ads per integration
+                          </h3>
+                          <div
+                            className="text-center"
+                          >
+                            0/100 ads 
+                            <a
+                              id="active-ads-tooltip"
+                            >
+                              <i
+                                className="material-icons text-muted"
+                              >
+                                info_outline
+                              </i>
+                            </a>
+                            <UncontrolledTooltip
+                              target="active-ads-tooltip"
+                            >
+                              <Tooltip
+                                autohide={true}
+                                delay={
+                                  Object {
+                                    "hide": 250,
+                                    "show": 0,
+                                  }
+                                }
+                                hideArrow={false}
+                                isOpen={false}
+                                placement="top"
+                                placementPrefix="bs-tooltip"
+                                target="active-ads-tooltip"
+                                toggle={[Function]}
+                              />
+                            </UncontrolledTooltip>
+                          </div>
+                          <Progress
+                            max={100}
+                            multi={true}
+                            tag="div"
+                            value={0}
+                          >
+                            <div
+                              className="progress"
+                            >
+                              <Progress
+                                bar={true}
+                                className="color-NaN"
+                                id="progress-1"
+                                key="progress-1"
+                                max={100}
+                                striped={true}
+                                tag="div"
+                                value={0}
+                              >
+                                <div
+                                  aria-valuemax={100}
+                                  aria-valuemin="0"
+                                  aria-valuenow={0}
+                                  className="progress-bar color-NaN progress-bar-striped"
+                                  role="progressbar"
+                                  style={
+                                    Object {
+                                      "width": "0%",
+                                    }
+                                  }
+                                />
+                              </Progress>
+                            </div>
+                          </Progress>
+                          <div
+                            className="legendContainer"
+                          >
+                            <div
+                              className="legend"
+                              key="legend-1"
+                            >
+                              <div
+                                className="color-NaN progress-bar-striped legendColor"
+                              />
+                              integration 1
+                               
+                              (
+                              0
+                               active ads)
+                            </div>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </div>
+                  </Card>
+                </AdsOverviewCard>
+                <AdAccountsCard
+                  accounts={Immutable.Seq []}
+                  loadingAdAccounts={Immutable.List []}
+                  updateAdAccount={[Function]}
+                />
+                <AdsCard
+                  accountTotalAds={0}
+                  ads={Immutable.Seq []}
+                  loadingAds={Immutable.List []}
+                  maxAccountAds={100}
+                  updateAd={[Function]}
+                />
+              </div>
+            </div>
+          </Col>
+        </div>
+      </Container>
+    </div>
+  </FacebookIntegrationAds>
+</Connect(FacebookIntegrationAds)>
+`;

@@ -23,7 +23,8 @@ const defaultFacebookIntegrationSettings = {
     posts_enabled: true,
     messenger_enabled: true,
     import_history_enabled: true,
-    instagram_comments_enabled: false
+    instagram_comments_enabled: false,
+    instagram_ads_enabled: false
 }
 
 describe('<FacebookIntegrationDetail/>', () => {
@@ -49,7 +50,8 @@ describe('<FacebookIntegrationDetail/>', () => {
                 posts_enabled: false,
                 messenger_enabled: true,
                 import_history_enabled: false,
-                instagram_comments_enabled: true
+                instagram_comments_enabled: true,
+                instagram_ads_enabled: false
             }
 
             const component = shallow(
@@ -88,7 +90,8 @@ describe('<FacebookIntegrationDetail/>', () => {
                 posts_enabled: false,
                 messenger_enabled: true,
                 import_history_enabled: false,
-                instagram_comments_enabled: true
+                instagram_comments_enabled: true,
+                instagram_ads_enabled: false
             }
 
             const component = shallow(
@@ -161,7 +164,8 @@ describe('<FacebookIntegrationDetail/>', () => {
                         posts_enabled: true,
                         messenger_enabled: true,
                         import_history_enabled: true,
-                        instagram_comments_enabled: false
+                        instagram_comments_enabled: false,
+                        instagram_ads_enabled: false,
                     }
                 },
                 meta: {
@@ -180,7 +184,8 @@ describe('<FacebookIntegrationDetail/>', () => {
                     posts_enabled: false,
                     messenger_enabled: true,
                     import_history_enabled: false,
-                    instagram_comments_enabled: true
+                    instagram_comments_enabled: true,
+                    instagram_ads_enabled: true
                 }))
                 .setIn(['meta', 'language'], DANISH_LANGUAGE)
 
@@ -220,7 +225,8 @@ describe('<FacebookIntegrationDetail/>', () => {
                         posts_enabled: postsEnabled,
                         messenger_enabled: true,
                         import_history_enabled: true,
-                        instagram_comments_enabled: false
+                        instagram_comments_enabled: false,
+                        instagram_ads_enabled: false
                     }
                 },
                 meta: {
@@ -408,6 +414,38 @@ describe('<FacebookIntegrationDetail/>', () => {
                 meta: {
                     oauth: {
                         scope: 'business_management,manage_pages,instagram_basic,instagram_manage_comments',
+                    },
+                    instagram: {
+                        id: '178941234975'
+                    }
+                }
+            })
+
+            const component = shallow(
+                <FacebookIntegrationDetail
+                    {...defaultProps}
+                    integration={integration}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should render an integration with instagram ads enabled', () => {
+            const integration = fromJS({
+                id: 1,
+                type: FACEBOOK_INTEGRATION_TYPE,
+                name: 'My facebook page',
+                facebook: {
+                    name: 'My facebook page',
+                    settings: {
+                        instagram_ads_enabled: true,
+                    },
+                },
+                meta: {
+                    oauth: {
+                        scope: 'business_management,manage_pages,instagram_basic,instagram_manage_comments,ads_read,'
+                            + 'ads_management',
                     },
                     instagram: {
                         id: '178941234975'
