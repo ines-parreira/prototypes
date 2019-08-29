@@ -17,7 +17,11 @@ const USER_PASSWORD_VALIDATION_PATTERN = `.{${USER_PASSWORD_MIN_LENGTH},${USER_P
 class ChangePasswordView extends React.Component {
     state = {
         dirty: true,
-        errors: {},
+        errors: {
+            old_password: '',
+            new_password: '',
+            confirm_new_password: '',
+        },
         old_password: '',
         new_password: '',
         confirm_new_password: '',
@@ -75,7 +79,8 @@ class ChangePasswordView extends React.Component {
 
     render() {
         const {isLoading} = this.props
-        const invalid = Object.keys(this.state.errors).length > 0
+        const errors = !!this.state.errors ? this.state.errors : {}
+        const invalid = Object.keys(errors).length > 0
 
         return (
             <div className="full-width">
@@ -98,7 +103,7 @@ class ChangePasswordView extends React.Component {
                             required
                             value={this.state.old_password}
                             onChange={(old_password) => this._updateField({old_password})}
-                            error={this.state.errors.old_password}
+                            error={errors.old_password}
                         />
                         <InputField
                             type="password"
@@ -110,7 +115,7 @@ class ChangePasswordView extends React.Component {
                             required
                             value={this.state.new_password}
                             onChange={(new_password) => this._updateField({new_password})}
-                            error={this.state.errors.new_password}
+                            error={errors.new_password}
                         />
                         <InputField
                             type="password"
@@ -122,7 +127,7 @@ class ChangePasswordView extends React.Component {
                             required
                             value={this.state.confirm_new_password}
                             onChange={(confirm_new_password) => this._updateField({confirm_new_password})}
-                            error={this.state.errors.confirm_new_password}
+                            error={errors.confirm_new_password}
                         />
 
                         <div>
