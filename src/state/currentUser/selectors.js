@@ -75,3 +75,8 @@ export const isActive = createSelector(
     [getCurrentUserState],
     (state) => state.get('is_active') !== false
 )
+
+export const getTimezone = createSelector(
+    [getCurrentUserState],
+    (state) => state.get('timezone') || null
+)

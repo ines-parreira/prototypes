@@ -317,11 +317,6 @@ export class DatetimeLabel extends React.Component<DatetimeLabelProps> {
     }
 }
 
-const mapStateToProps = (state) => ({
-    timezone: state.currentUser.get('timezone'),
-})
-connect(mapStateToProps)(DatetimeLabel)
-
 const AssigneeLabelComponent = ({assignee, agents}: { assignee: Map<*, *>, agents: List<*> }) => {
     const agent = agents.find((agent) => agent.get('id') === assignee.get('id'))
     const avatarUrl = assignee.getIn(['meta', 'profile_picture_url']) || (agent && agent.getIn(['meta', 'profile_picture_url']))

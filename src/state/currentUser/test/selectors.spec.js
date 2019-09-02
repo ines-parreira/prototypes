@@ -86,4 +86,9 @@ describe('current user selectors', () => {
         state = {currentUser: fromJS({is_active: false})}
         expect(selectors.isActive(state)).toBe(false)
     })
+
+    it('getTimezone', () => {
+        expect(selectors.getTimezone(state)).toEqualImmutable(state.currentUser.get('timezone'))
+        expect(selectors.getTimezone({})).toEqualImmutable(null)
+    })
 })

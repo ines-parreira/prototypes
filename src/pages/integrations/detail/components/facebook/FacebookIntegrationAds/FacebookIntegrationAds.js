@@ -16,7 +16,6 @@ import {Link} from 'react-router'
 import type {Map} from 'immutable'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
-import moment from 'moment'
 
 import {getFacebookMaxAccountAds} from '../../../../../../state/integrations/selectors'
 import FacebookIntegrationNavigation from '../FacebookIntegrationNavigation'
@@ -32,6 +31,10 @@ import type {dispatchType} from '../../../../../../state/types'
 
 import Loader from '../../../../../common/components/Loader/Loader'
 
+import {DatetimeLabel} from '../../../../../common/utils/labels'
+
+import {getTimezone} from '../../../../../../state/currentUser/selectors'
+
 import {fetchAds, updateAd, updateAdAccount} from './actions'
 import css from './FacebookIntegrationAds.less'
 import colors from './colors.less'
@@ -45,6 +48,7 @@ type Props = {
     internals: Map<*, *>,
     loadingAds: Map<*, *>,
     loadingAdAccounts: Map<*, *>,
+    timezone: string,
     fetchAds: () => void,
     updateAdAccount: (adAccountId: string, isActive: boolean) => void,
     updateAd: (adId: string, isActive: boolean) => void
@@ -58,7 +62,7 @@ class FacebookIntegrationAds extends React.Component<Props> {
 
     render() {
         const {
-            loading, integration, integrations, internals, maxAccountAds, loadingAdAccounts, loadingAds,
+            loading, integration, integrations, internals, maxAccountAds, loadingAdAccounts, loadingAds, timezone,
             updateAdAccount, updateAd
         } = this.props
 
@@ -116,6 +120,7 @@ class FacebookIntegrationAds extends React.Component<Props> {
                                         maxAccountAds={maxAccountAds}
                                         accountTotalAds={accountTotalAds}
                                         updateAd={updateAd}
+                                        timezone={timezone}
                                     />
                                 </div>
                             )
@@ -159,12 +164,13 @@ class FacebookIntegrationAds extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = (state: Map<*, *>) => ({
+const mapStateToProps = (state: Object) => ({
     maxAccountAds: getFacebookMaxAccountAds(state),
     loading: getFacebookIntegrationLoading(state),
     internals: getFacebookIntegrationInternals(state),
     loadingAds: getFacebookIntegrationLoadingAds(state),
     loadingAdAccounts: getFacebookIntegrationLoadingAdAccounts(state),
+    timezone: getTimezone(state)
 })
 
 const mapDispatchToProps = (dispatch: dispatchType, props: Props) => ({
@@ -225,10 +231,7 @@ class AdsOverviewCard extends React.Component<AdsOverviewCardProps> {
                             Number of active ads VS total number of ads available for your current plan.
                         </UncontrolledTooltip>
                     </div>
-                    <Progress
-                        multi
-                        max={maxAccountAds}
-                    >
+                    <Progress multi>
                         {internals.entrySeq().map(([integrationId, internal], index) =>
                             <Progress
                                 key={`progress-${integrationId}`}
@@ -236,6 +239,7 @@ class AdsOverviewCard extends React.Component<AdsOverviewCardProps> {
                                 bar
                                 striped
                                 value={FacebookIntegrationAds.getIntegrationTotalAds(internal)}
+                                max={maxAccountAds}
                                 className={colors[`color-${index % Object.keys(colors).length}`]}
                             />
                         )}
@@ -333,12 +337,13 @@ type AdsCardProps = {
     loadingAds: Map<*, *>,
     maxAccountAds: number,
     accountTotalAds: number,
-    updateAd: (adId: string, isActive: boolean) => void
+    timezone: string,
+    updateAd: (adId: string, isActive: boolean) => void,
 }
 
 class AdsCard extends React.Component<AdsCardProps> {
     render() {
-        const {ads, loadingAds, accountTotalAds, maxAccountAds} = this.props
+        const {ads, loadingAds, accountTotalAds, maxAccountAds, timezone} = this.props
 
         if (!ads || !ads.size) {
             return null
@@ -363,7 +368,11 @@ class AdsCard extends React.Component<AdsCardProps> {
                                         ? (
                                             <span className="text-muted">
                                                 (comments fetched at{' '}
-                                                {moment(ad.get('comments_fetched_at')).format('L LT')})
+                                                <DatetimeLabel
+                                                    dateTime={ad.get('comments_fetched_at')}
+                                                    labelFormat="L LT"
+                                                    timezone={timezone}
+                                                />
                                             </span>
                                         )
                                         : null

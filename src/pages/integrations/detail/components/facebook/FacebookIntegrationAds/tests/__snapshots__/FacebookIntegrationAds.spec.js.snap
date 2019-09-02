@@ -76,6 +76,7 @@ exports[`FacebookIntegrationAds component should render a spinner 1`] = `
         "subscribe": [Function],
       }
     }
+    timezone="America/Los_Angeles"
     updateAd={[Function]}
     updateAdAccount={[Function]}
   >
@@ -217,7 +218,7 @@ exports[`FacebookIntegrationAds component should render a spinner 1`] = `
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".0"
+                key=".$/app/settings/integrations/facebook/1/overview"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/1/overview"
@@ -233,7 +234,7 @@ exports[`FacebookIntegrationAds component should render a spinner 1`] = `
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".1"
+                key=".$/app/settings/integrations/facebook/1/customer_chat"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/1/customer_chat"
@@ -249,7 +250,7 @@ exports[`FacebookIntegrationAds component should render a spinner 1`] = `
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".2"
+                key=".$/app/settings/integrations/facebook/1/preferences"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/1/preferences"
@@ -260,22 +261,6 @@ exports[`FacebookIntegrationAds component should render a spinner 1`] = `
                   style={Object {}}
                 >
                   Preferences
-                </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
-                key=".3"
-                onlyActiveOnIndex={false}
-                style={Object {}}
-                to="/app/settings/integrations/facebook/1/ads"
-              >
-                <a
-                  className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
-                >
-                  Ads
                 </a>
               </Link>
             </nav>
@@ -434,6 +419,7 @@ exports[`FacebookIntegrationAds component should render with ads limit reached 1
         "subscribe": [Function],
       }
     }
+    timezone="America/Los_Angeles"
     updateAd={[Function]}
     updateAdAccount={[Function]}
   >
@@ -575,7 +561,7 @@ exports[`FacebookIntegrationAds component should render with ads limit reached 1
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".0"
+                key=".$/app/settings/integrations/facebook/1/overview"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/1/overview"
@@ -591,7 +577,7 @@ exports[`FacebookIntegrationAds component should render with ads limit reached 1
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".1"
+                key=".$/app/settings/integrations/facebook/1/customer_chat"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/1/customer_chat"
@@ -607,7 +593,7 @@ exports[`FacebookIntegrationAds component should render with ads limit reached 1
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".2"
+                key=".$/app/settings/integrations/facebook/1/preferences"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/1/preferences"
@@ -618,22 +604,6 @@ exports[`FacebookIntegrationAds component should render with ads limit reached 1
                   style={Object {}}
                 >
                   Preferences
-                </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
-                key=".3"
-                onlyActiveOnIndex={false}
-                style={Object {}}
-                to="/app/settings/integrations/facebook/1/ads"
-              >
-                <a
-                  className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
-                >
-                  Ads
                 </a>
               </Link>
             </nav>
@@ -849,7 +819,7 @@ exports[`FacebookIntegrationAds component should render with ads limit reached 1
                             </UncontrolledTooltip>
                           </div>
                           <Progress
-                            max={2}
+                            max={100}
                             multi={true}
                             tag="div"
                             value={0}
@@ -862,20 +832,20 @@ exports[`FacebookIntegrationAds component should render with ads limit reached 1
                                 className="color-NaN"
                                 id="progress-1"
                                 key="progress-1"
-                                max={100}
+                                max={2}
                                 striped={true}
                                 tag="div"
                                 value={2}
                               >
                                 <div
-                                  aria-valuemax={100}
+                                  aria-valuemax={2}
                                   aria-valuemin="0"
                                   aria-valuenow={2}
                                   className="progress-bar color-NaN progress-bar-striped"
                                   role="progressbar"
                                   style={
                                     Object {
-                                      "width": "2%",
+                                      "width": "100%",
                                     }
                                   }
                                 />
@@ -1005,6 +975,7 @@ exports[`FacebookIntegrationAds component should render with ads limit reached 1
                   }
                   loadingAds={Immutable.List []}
                   maxAccountAds={2}
+                  timezone="America/Los_Angeles"
                   updateAd={[Function]}
                 >
                   <Card
@@ -1038,8 +1009,59 @@ exports[`FacebookIntegrationAds component should render with ads limit reached 1
                                 >
                                   (comments fetched at
                                    
-                                  01/01/2019 10:30 AM
-                                  )
+                                  <DatetimeLabel
+                                    dateTime="2019-01-01 10:30:00"
+                                    labelFormat="L LT"
+                                    timezone="America/Los_Angeles"
+                                  >
+                                    <span>
+                                      <span
+                                        id="datetime-tooltip-pjpsszd2icb"
+                                      >
+                                        01/01/2019 9:30 AM
+                                      </span>
+                                      <Tooltip
+                                        className="datetimeTooltip"
+                                        delay={
+                                          Object {
+                                            "hide": 0,
+                                            "show": 200,
+                                          }
+                                        }
+                                        placement="top"
+                                        target="datetime-tooltip-pjpsszd2icb"
+                                      >
+                                        <UncontrolledTooltip
+                                          className="datetimeTooltip"
+                                          delay={
+                                            Object {
+                                              "hide": 0,
+                                              "show": 200,
+                                            }
+                                          }
+                                          placement="top"
+                                          target="datetime-tooltip-pjpsszd2icb"
+                                        >
+                                          <Tooltip
+                                            autohide={true}
+                                            className="datetimeTooltip"
+                                            delay={
+                                              Object {
+                                                "hide": 0,
+                                                "show": 200,
+                                              }
+                                            }
+                                            hideArrow={false}
+                                            isOpen={false}
+                                            placement="top"
+                                            placementPrefix="bs-tooltip"
+                                            target="datetime-tooltip-pjpsszd2icb"
+                                            toggle={[Function]}
+                                          />
+                                        </UncontrolledTooltip>
+                                      </Tooltip>
+                                    </span>
+                                  </DatetimeLabel>
                                 </span>
                               </b>
                             </div>
@@ -1080,8 +1102,59 @@ exports[`FacebookIntegrationAds component should render with ads limit reached 1
                                 >
                                   (comments fetched at
                                    
-                                  01/01/2019 10:30 AM
-                                  )
+                                  <DatetimeLabel
+                                    dateTime="2019-01-01 10:30:00"
+                                    labelFormat="L LT"
+                                    timezone="America/Los_Angeles"
+                                  >
+                                    <span>
+                                      <span
+                                        id="datetime-tooltip-pjpsszd2icb"
+                                      >
+                                        01/01/2019 9:30 AM
+                                      </span>
+                                      <Tooltip
+                                        className="datetimeTooltip"
+                                        delay={
+                                          Object {
+                                            "hide": 0,
+                                            "show": 200,
+                                          }
+                                        }
+                                        placement="top"
+                                        target="datetime-tooltip-pjpsszd2icb"
+                                      >
+                                        <UncontrolledTooltip
+                                          className="datetimeTooltip"
+                                          delay={
+                                            Object {
+                                              "hide": 0,
+                                              "show": 200,
+                                            }
+                                          }
+                                          placement="top"
+                                          target="datetime-tooltip-pjpsszd2icb"
+                                        >
+                                          <Tooltip
+                                            autohide={true}
+                                            className="datetimeTooltip"
+                                            delay={
+                                              Object {
+                                                "hide": 0,
+                                                "show": 200,
+                                              }
+                                            }
+                                            hideArrow={false}
+                                            isOpen={false}
+                                            placement="top"
+                                            placementPrefix="bs-tooltip"
+                                            target="datetime-tooltip-pjpsszd2icb"
+                                            toggle={[Function]}
+                                          />
+                                        </UncontrolledTooltip>
+                                      </Tooltip>
+                                    </span>
+                                  </DatetimeLabel>
                                 </span>
                               </b>
                             </div>
@@ -1122,8 +1195,59 @@ exports[`FacebookIntegrationAds component should render with ads limit reached 1
                                 >
                                   (comments fetched at
                                    
-                                  01/01/2019 10:30 AM
-                                  )
+                                  <DatetimeLabel
+                                    dateTime="2019-01-01 10:30:00"
+                                    labelFormat="L LT"
+                                    timezone="America/Los_Angeles"
+                                  >
+                                    <span>
+                                      <span
+                                        id="datetime-tooltip-pjpsszd2icb"
+                                      >
+                                        01/01/2019 9:30 AM
+                                      </span>
+                                      <Tooltip
+                                        className="datetimeTooltip"
+                                        delay={
+                                          Object {
+                                            "hide": 0,
+                                            "show": 200,
+                                          }
+                                        }
+                                        placement="top"
+                                        target="datetime-tooltip-pjpsszd2icb"
+                                      >
+                                        <UncontrolledTooltip
+                                          className="datetimeTooltip"
+                                          delay={
+                                            Object {
+                                              "hide": 0,
+                                              "show": 200,
+                                            }
+                                          }
+                                          placement="top"
+                                          target="datetime-tooltip-pjpsszd2icb"
+                                        >
+                                          <Tooltip
+                                            autohide={true}
+                                            className="datetimeTooltip"
+                                            delay={
+                                              Object {
+                                                "hide": 0,
+                                                "show": 200,
+                                              }
+                                            }
+                                            hideArrow={false}
+                                            isOpen={false}
+                                            placement="top"
+                                            placementPrefix="bs-tooltip"
+                                            target="datetime-tooltip-pjpsszd2icb"
+                                            toggle={[Function]}
+                                          />
+                                        </UncontrolledTooltip>
+                                      </Tooltip>
+                                    </span>
+                                  </DatetimeLabel>
                                 </span>
                               </b>
                             </div>
@@ -1251,6 +1375,7 @@ exports[`FacebookIntegrationAds component should render with one active ad, when
         "subscribe": [Function],
       }
     }
+    timezone="America/Los_Angeles"
     updateAd={[Function]}
     updateAdAccount={[Function]}
   >
@@ -1392,7 +1517,7 @@ exports[`FacebookIntegrationAds component should render with one active ad, when
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".0"
+                key=".$/app/settings/integrations/facebook/1/overview"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/1/overview"
@@ -1408,7 +1533,7 @@ exports[`FacebookIntegrationAds component should render with one active ad, when
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".1"
+                key=".$/app/settings/integrations/facebook/1/customer_chat"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/1/customer_chat"
@@ -1424,7 +1549,7 @@ exports[`FacebookIntegrationAds component should render with one active ad, when
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".2"
+                key=".$/app/settings/integrations/facebook/1/preferences"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/1/preferences"
@@ -1435,22 +1560,6 @@ exports[`FacebookIntegrationAds component should render with one active ad, when
                   style={Object {}}
                 >
                   Preferences
-                </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
-                key=".3"
-                onlyActiveOnIndex={false}
-                style={Object {}}
-                to="/app/settings/integrations/facebook/1/ads"
-              >
-                <a
-                  className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
-                >
-                  Ads
                 </a>
               </Link>
             </nav>
@@ -1706,6 +1815,7 @@ exports[`FacebookIntegrationAds component should render with one active ad, when
                   }
                   loadingAds={Immutable.List []}
                   maxAccountAds={100}
+                  timezone="America/Los_Angeles"
                   updateAd={[Function]}
                 >
                   <Card
@@ -1860,6 +1970,7 @@ exports[`FacebookIntegrationAds component should render with one ad account and 
         "subscribe": [Function],
       }
     }
+    timezone="America/Los_Angeles"
     updateAd={[Function]}
     updateAdAccount={[Function]}
   >
@@ -2001,7 +2112,7 @@ exports[`FacebookIntegrationAds component should render with one ad account and 
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".0"
+                key=".$/app/settings/integrations/facebook/1/overview"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/1/overview"
@@ -2017,7 +2128,7 @@ exports[`FacebookIntegrationAds component should render with one ad account and 
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".1"
+                key=".$/app/settings/integrations/facebook/1/customer_chat"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/1/customer_chat"
@@ -2033,7 +2144,7 @@ exports[`FacebookIntegrationAds component should render with one ad account and 
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".2"
+                key=".$/app/settings/integrations/facebook/1/preferences"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/1/preferences"
@@ -2044,22 +2155,6 @@ exports[`FacebookIntegrationAds component should render with one ad account and 
                   style={Object {}}
                 >
                   Preferences
-                </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
-                key=".3"
-                onlyActiveOnIndex={false}
-                style={Object {}}
-                to="/app/settings/integrations/facebook/1/ads"
-              >
-                <a
-                  className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
-                >
-                  Ads
                 </a>
               </Link>
             </nav>
@@ -2315,6 +2410,7 @@ exports[`FacebookIntegrationAds component should render with one ad account and 
                   }
                   loadingAds={Immutable.List []}
                   maxAccountAds={100}
+                  timezone="America/Los_Angeles"
                   updateAd={[Function]}
                 >
                   <Card
@@ -2348,8 +2444,59 @@ exports[`FacebookIntegrationAds component should render with one ad account and 
                                 >
                                   (comments fetched at
                                    
-                                  01/01/2019 10:30 AM
-                                  )
+                                  <DatetimeLabel
+                                    dateTime="2019-01-01 10:30:00"
+                                    labelFormat="L LT"
+                                    timezone="America/Los_Angeles"
+                                  >
+                                    <span>
+                                      <span
+                                        id="datetime-tooltip-pjpsszd2icb"
+                                      >
+                                        01/01/2019 9:30 AM
+                                      </span>
+                                      <Tooltip
+                                        className="datetimeTooltip"
+                                        delay={
+                                          Object {
+                                            "hide": 0,
+                                            "show": 200,
+                                          }
+                                        }
+                                        placement="top"
+                                        target="datetime-tooltip-pjpsszd2icb"
+                                      >
+                                        <UncontrolledTooltip
+                                          className="datetimeTooltip"
+                                          delay={
+                                            Object {
+                                              "hide": 0,
+                                              "show": 200,
+                                            }
+                                          }
+                                          placement="top"
+                                          target="datetime-tooltip-pjpsszd2icb"
+                                        >
+                                          <Tooltip
+                                            autohide={true}
+                                            className="datetimeTooltip"
+                                            delay={
+                                              Object {
+                                                "hide": 0,
+                                                "show": 200,
+                                              }
+                                            }
+                                            hideArrow={false}
+                                            isOpen={false}
+                                            placement="top"
+                                            placementPrefix="bs-tooltip"
+                                            target="datetime-tooltip-pjpsszd2icb"
+                                            toggle={[Function]}
+                                          />
+                                        </UncontrolledTooltip>
+                                      </Tooltip>
+                                    </span>
+                                  </DatetimeLabel>
                                 </span>
                               </b>
                             </div>
@@ -2471,6 +2618,7 @@ exports[`FacebookIntegrationAds component should render with one ad account and 
         "subscribe": [Function],
       }
     }
+    timezone="America/Los_Angeles"
     updateAd={[Function]}
     updateAdAccount={[Function]}
   >
@@ -2612,7 +2760,7 @@ exports[`FacebookIntegrationAds component should render with one ad account and 
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".0"
+                key=".$/app/settings/integrations/facebook/1/overview"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/1/overview"
@@ -2628,7 +2776,7 @@ exports[`FacebookIntegrationAds component should render with one ad account and 
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".1"
+                key=".$/app/settings/integrations/facebook/1/customer_chat"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/1/customer_chat"
@@ -2644,7 +2792,7 @@ exports[`FacebookIntegrationAds component should render with one ad account and 
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".2"
+                key=".$/app/settings/integrations/facebook/1/preferences"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/1/preferences"
@@ -2655,22 +2803,6 @@ exports[`FacebookIntegrationAds component should render with one ad account and 
                   style={Object {}}
                 >
                   Preferences
-                </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
-                key=".3"
-                onlyActiveOnIndex={false}
-                style={Object {}}
-                to="/app/settings/integrations/facebook/1/ads"
-              >
-                <a
-                  className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
-                >
-                  Ads
                 </a>
               </Link>
             </nav>
@@ -2909,6 +3041,7 @@ exports[`FacebookIntegrationAds component should render with one ad account and 
                   ads={Immutable.Seq []}
                   loadingAds={Immutable.List []}
                   maxAccountAds={100}
+                  timezone="America/Los_Angeles"
                   updateAd={[Function]}
                 />
               </div>
@@ -3017,6 +3150,7 @@ exports[`FacebookIntegrationAds component should render with two ad accounts (on
         "subscribe": [Function],
       }
     }
+    timezone="America/Los_Angeles"
     updateAd={[Function]}
     updateAdAccount={[Function]}
   >
@@ -3158,7 +3292,7 @@ exports[`FacebookIntegrationAds component should render with two ad accounts (on
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".0"
+                key=".$/app/settings/integrations/facebook/1/overview"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/1/overview"
@@ -3174,7 +3308,7 @@ exports[`FacebookIntegrationAds component should render with two ad accounts (on
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".1"
+                key=".$/app/settings/integrations/facebook/1/customer_chat"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/1/customer_chat"
@@ -3190,7 +3324,7 @@ exports[`FacebookIntegrationAds component should render with two ad accounts (on
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".2"
+                key=".$/app/settings/integrations/facebook/1/preferences"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/1/preferences"
@@ -3201,22 +3335,6 @@ exports[`FacebookIntegrationAds component should render with two ad accounts (on
                   style={Object {}}
                 >
                   Preferences
-                </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
-                key=".3"
-                onlyActiveOnIndex={false}
-                style={Object {}}
-                to="/app/settings/integrations/facebook/1/ads"
-              >
-                <a
-                  className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
-                >
-                  Ads
                 </a>
               </Link>
             </nav>
@@ -3529,6 +3647,7 @@ exports[`FacebookIntegrationAds component should render with two ad accounts (on
                   }
                   loadingAds={Immutable.List []}
                   maxAccountAds={100}
+                  timezone="America/Los_Angeles"
                   updateAd={[Function]}
                 >
                   <Card
@@ -3562,8 +3681,59 @@ exports[`FacebookIntegrationAds component should render with two ad accounts (on
                                 >
                                   (comments fetched at
                                    
-                                  01/01/2019 10:30 AM
-                                  )
+                                  <DatetimeLabel
+                                    dateTime="2019-01-01 10:30:00"
+                                    labelFormat="L LT"
+                                    timezone="America/Los_Angeles"
+                                  >
+                                    <span>
+                                      <span
+                                        id="datetime-tooltip-pjpsszd2icb"
+                                      >
+                                        01/01/2019 9:30 AM
+                                      </span>
+                                      <Tooltip
+                                        className="datetimeTooltip"
+                                        delay={
+                                          Object {
+                                            "hide": 0,
+                                            "show": 200,
+                                          }
+                                        }
+                                        placement="top"
+                                        target="datetime-tooltip-pjpsszd2icb"
+                                      >
+                                        <UncontrolledTooltip
+                                          className="datetimeTooltip"
+                                          delay={
+                                            Object {
+                                              "hide": 0,
+                                              "show": 200,
+                                            }
+                                          }
+                                          placement="top"
+                                          target="datetime-tooltip-pjpsszd2icb"
+                                        >
+                                          <Tooltip
+                                            autohide={true}
+                                            className="datetimeTooltip"
+                                            delay={
+                                              Object {
+                                                "hide": 0,
+                                                "show": 200,
+                                              }
+                                            }
+                                            hideArrow={false}
+                                            isOpen={false}
+                                            placement="top"
+                                            placementPrefix="bs-tooltip"
+                                            target="datetime-tooltip-pjpsszd2icb"
+                                            toggle={[Function]}
+                                          />
+                                        </UncontrolledTooltip>
+                                      </Tooltip>
+                                    </span>
+                                  </DatetimeLabel>
                                 </span>
                               </b>
                             </div>
@@ -3604,8 +3774,59 @@ exports[`FacebookIntegrationAds component should render with two ad accounts (on
                                 >
                                   (comments fetched at
                                    
-                                  01/01/2019 10:30 AM
-                                  )
+                                  <DatetimeLabel
+                                    dateTime="2019-01-01 10:30:00"
+                                    labelFormat="L LT"
+                                    timezone="America/Los_Angeles"
+                                  >
+                                    <span>
+                                      <span
+                                        id="datetime-tooltip-pjpsszd2icb"
+                                      >
+                                        01/01/2019 9:30 AM
+                                      </span>
+                                      <Tooltip
+                                        className="datetimeTooltip"
+                                        delay={
+                                          Object {
+                                            "hide": 0,
+                                            "show": 200,
+                                          }
+                                        }
+                                        placement="top"
+                                        target="datetime-tooltip-pjpsszd2icb"
+                                      >
+                                        <UncontrolledTooltip
+                                          className="datetimeTooltip"
+                                          delay={
+                                            Object {
+                                              "hide": 0,
+                                              "show": 200,
+                                            }
+                                          }
+                                          placement="top"
+                                          target="datetime-tooltip-pjpsszd2icb"
+                                        >
+                                          <Tooltip
+                                            autohide={true}
+                                            className="datetimeTooltip"
+                                            delay={
+                                              Object {
+                                                "hide": 0,
+                                                "show": 200,
+                                              }
+                                            }
+                                            hideArrow={false}
+                                            isOpen={false}
+                                            placement="top"
+                                            placementPrefix="bs-tooltip"
+                                            target="datetime-tooltip-pjpsszd2icb"
+                                            toggle={[Function]}
+                                          />
+                                        </UncontrolledTooltip>
+                                      </Tooltip>
+                                    </span>
+                                  </DatetimeLabel>
                                 </span>
                               </b>
                             </div>
@@ -3722,6 +3943,7 @@ exports[`FacebookIntegrationAds component should render without ad account and w
         "subscribe": [Function],
       }
     }
+    timezone="America/Los_Angeles"
     updateAd={[Function]}
     updateAdAccount={[Function]}
   >
@@ -3863,7 +4085,7 @@ exports[`FacebookIntegrationAds component should render without ad account and w
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".0"
+                key=".$/app/settings/integrations/facebook/1/overview"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/1/overview"
@@ -3879,7 +4101,7 @@ exports[`FacebookIntegrationAds component should render without ad account and w
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".1"
+                key=".$/app/settings/integrations/facebook/1/customer_chat"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/1/customer_chat"
@@ -3895,7 +4117,7 @@ exports[`FacebookIntegrationAds component should render without ad account and w
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".2"
+                key=".$/app/settings/integrations/facebook/1/preferences"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/facebook/1/preferences"
@@ -3906,22 +4128,6 @@ exports[`FacebookIntegrationAds component should render without ad account and w
                   style={Object {}}
                 >
                   Preferences
-                </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
-                key=".3"
-                onlyActiveOnIndex={false}
-                style={Object {}}
-                to="/app/settings/integrations/facebook/1/ads"
-              >
-                <a
-                  className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
-                >
-                  Ads
                 </a>
               </Link>
             </nav>
@@ -4091,6 +4297,7 @@ exports[`FacebookIntegrationAds component should render without ad account and w
                   ads={Immutable.Seq []}
                   loadingAds={Immutable.List []}
                   maxAccountAds={100}
+                  timezone="America/Los_Angeles"
                   updateAd={[Function]}
                 />
               </div>

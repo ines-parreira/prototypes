@@ -28,6 +28,9 @@ describe('FacebookIntegrationAds component', () => {
         const mockStore = configureMockStore(middlewares)
 
         return mockStore({
+            currentUser: fromJS({
+                timezone: 'America/Los_Angeles'
+            }),
             integrations: fromJS({
                 integrations,
                 extra: {
@@ -48,14 +51,25 @@ describe('FacebookIntegrationAds component', () => {
     }
 
     // Tooltips
+    const tooltipIds = ['active-ads-tooltip', 'datetime-tooltip-pjpsszd2icb']
+    const random = Math.random
+
     beforeAll(() => {
-        const div = document.createElement('div')
-        div.setAttribute('id', 'active-ads-tooltip')
-        document.body.appendChild(div)
+        tooltipIds.forEach((tooltipId) => {
+            const tooltipDiv = document.createElement('div')
+            tooltipDiv.setAttribute('id', tooltipId)
+            document.body.appendChild(tooltipDiv)
+        })
+
+        global.Math.random = () => 0.709657924825722 // ID will be `pjpsszd2icb`
     })
 
     afterAll(() => {
-        document.getElementById('active-ads-tooltip').remove()
+        tooltipIds.forEach((tooltipId) => {
+            document.getElementById(tooltipId).remove()
+        })
+
+        global.Math.random = random
     })
 
     it('should render a spinner', () => {
