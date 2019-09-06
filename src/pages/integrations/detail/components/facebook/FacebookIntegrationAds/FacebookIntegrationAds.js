@@ -1,17 +1,7 @@
 // @flow
 
 import React from 'react'
-import {
-    Alert,
-    Breadcrumb,
-    BreadcrumbItem,
-    Card,
-    CardBody,
-    Col,
-    Container,
-    Progress,
-    UncontrolledTooltip
-} from 'reactstrap'
+import {Alert, Breadcrumb, BreadcrumbItem, Card, Container, Progress, Table, UncontrolledTooltip} from 'reactstrap'
 import {Link} from 'react-router'
 import type {Map} from 'immutable'
 import {connect} from 'react-redux'
@@ -24,7 +14,6 @@ import ToggleButton from '../../../../../common/components/ToggleButton'
 import {
     getFacebookIntegrationInternals,
     getFacebookIntegrationLoading,
-    getFacebookIntegrationLoadingAdAccounts,
     getFacebookIntegrationLoadingAds
 } from '../../../../../../state/facebookAds/selectors'
 import type {dispatchType} from '../../../../../../state/types'
@@ -35,7 +24,7 @@ import {DatetimeLabel} from '../../../../../common/utils/labels'
 
 import {getTimezone} from '../../../../../../state/currentUser/selectors'
 
-import {fetchAds, updateAd, updateAdAccount} from './actions'
+import {fetchAds, updateAd} from './actions'
 import css from './FacebookIntegrationAds.less'
 import colors from './colors.less'
 
@@ -47,10 +36,8 @@ type Props = {
     maxAccountAds: number,
     internals: Map<*, *>,
     loadingAds: Map<*, *>,
-    loadingAdAccounts: Map<*, *>,
     timezone: string,
     fetchAds: () => void,
-    updateAdAccount: (adAccountId: string, isActive: boolean) => void,
     updateAd: (adId: string, isActive: boolean) => void
 }
 
@@ -62,8 +49,7 @@ class FacebookIntegrationAds extends React.Component<Props> {
 
     render() {
         const {
-            loading, integration, integrations, internals, maxAccountAds, loadingAdAccounts, loadingAds, timezone,
-            updateAdAccount, updateAd
+            loading, integration, integrations, internals, maxAccountAds, loadingAds, timezone, updateAd
         } = this.props
 
         const accountTotalAds = this._getAccountTotalAds()
@@ -94,39 +80,47 @@ class FacebookIntegrationAds extends React.Component<Props> {
                     fluid
                     className="page-container"
                 >
-                    <Col
-                        lg={10}
-                        xl={8}
-                    >
-                        {loading
-                            ? <Loader/>
-                            : (
-                                <div>
-                                    {showUpgradePlan && <UpgradePlanAlert/>}
-                                    <AdsOverviewCard
-                                        integrations={integrations}
-                                        internals={internals}
-                                        maxAccountAds={maxAccountAds}
-                                        accountTotalAds={accountTotalAds}
-                                    />
-                                    <AdAccountsCard
-                                        accounts={this._getInternal('ad_accounts')}
-                                        loadingAdAccounts={loadingAdAccounts}
-                                        updateAdAccount={updateAdAccount}
-                                    />
-                                    <AdsCard
-                                        ads={this._getInternal('ads')}
-                                        loadingAds={loadingAds}
-                                        maxAccountAds={maxAccountAds}
-                                        accountTotalAds={accountTotalAds}
-                                        updateAd={updateAd}
-                                        timezone={timezone}
-                                    />
-                                </div>
-                            )
-                        }
-                    </Col>
+                    <div className="mb-3">
+                        <p>
+                            Ads are fetched every 15 minutes. Comments sent while an ad was not active on Gorgias{' '}
+                            will not be fetched. Learn more about Instagram ads comments support{' '}
+                            <a
+                                href="https://docs.gorgias.io/social-media-integrations/instagram-ads-comments"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                            >
+                                in our docs
+                            </a>.
+                        </p>
+
+                        {showUpgradePlan && (
+                            <AdsOverviewCard
+                                integrations={integrations}
+                                internals={internals}
+                                maxAccountAds={maxAccountAds}
+                                accountTotalAds={accountTotalAds}
+                            />
+                        )}
+                    </div>
                 </Container>
+
+                {loading
+                    ? (
+                        <Container fluid>
+                            <Loader/>
+                        </Container>
+                    )
+                    : (
+                        <AdsTable
+                            ads={this._getInternal('ads')}
+                            loadingAds={loadingAds}
+                            maxAccountAds={maxAccountAds}
+                            accountTotalAds={accountTotalAds}
+                            updateAd={updateAd}
+                            timezone={timezone}
+                        />
+                    )
+                }
             </div>
         )
     }
@@ -169,14 +163,11 @@ const mapStateToProps = (state: Object) => ({
     loading: getFacebookIntegrationLoading(state),
     internals: getFacebookIntegrationInternals(state),
     loadingAds: getFacebookIntegrationLoadingAds(state),
-    loadingAdAccounts: getFacebookIntegrationLoadingAdAccounts(state),
     timezone: getTimezone(state)
 })
 
 const mapDispatchToProps = (dispatch: dispatchType, props: Props) => ({
     fetchAds: () => dispatch(fetchAds()),
-    updateAdAccount: (id: string, isActive: boolean) =>
-        dispatch(updateAdAccount(props.integration.get('id'), id, isActive)),
     updateAd: (id: string, isActive: boolean) =>
         dispatch(updateAd(props.integration.get('id'), id, isActive)),
 })
@@ -189,10 +180,7 @@ export default connect(
 // Alerts
 function UpgradePlanAlert() {
     return (
-        <Alert
-            color="success"
-            className={css.card}
-        >
+        <Alert color="success">
             <strong>Need to synchronize more ads?</strong>{' '}
             <Link
                 to="/app/settings/billing"
@@ -217,122 +205,68 @@ class AdsOverviewCard extends React.Component<AdsOverviewCardProps> {
         const {integrations, maxAccountAds, internals, accountTotalAds} = this.props
 
         return (
-            <Card className={css.card}>
-                <CardBody>
-                    <h3>Active ads per integration</h3>
-                    <div className="text-center">
-                        {`${accountTotalAds}/${maxAccountAds} ads `}
-                        <a id="active-ads-tooltip">
-                            <i className="material-icons text-muted">
-                                info_outline
-                            </i>
-                        </a>
-                        <UncontrolledTooltip target="active-ads-tooltip">
-                            Number of active ads VS total number of ads available for your current plan.
-                        </UncontrolledTooltip>
-                    </div>
-                    <Progress multi>
-                        {internals.entrySeq().map(([integrationId, internal], index) =>
-                            <Progress
-                                key={`progress-${integrationId}`}
-                                id={`progress-${integrationId}`}
-                                bar
-                                striped
-                                value={FacebookIntegrationAds.getIntegrationTotalAds(internal)}
-                                max={maxAccountAds}
-                                className={colors[`color-${index % Object.keys(colors).length}`]}
-                            />
-                        )}
-                    </Progress>
-                    <div className={css.legendContainer}>
-                        {internals.entrySeq().map(([integrationId, internal], index) => {
-                            const integration = integrations
-                                .find((integration) => integration.get('id') === parseInt(integrationId))
+            <Card body>
+                <h3>Active ads per integration</h3>
+                <UpgradePlanAlert />
+                <div className="text-center">
+                    {`${accountTotalAds}/${maxAccountAds} ads `}
+                    <a id="active-ads-tooltip">
+                        <i className="material-icons text-muted">
+                            info_outline
+                        </i>
+                    </a>
+                    <UncontrolledTooltip target="active-ads-tooltip">
+                        Number of active ads VS total number of ads available for your current plan.
+                    </UncontrolledTooltip>
+                </div>
+                <Progress multi>
+                    {internals.entrySeq().map(([integrationId, internal], index) =>
+                        <Progress
+                            key={`progress-${integrationId}`}
+                            id={`progress-${integrationId}`}
+                            bar
+                            striped
+                            value={FacebookIntegrationAds.getIntegrationTotalAds(internal)}
+                            max={maxAccountAds}
+                            className={colors[`color-${index % Object.keys(colors).length}`]}
+                        />
+                    )}
+                </Progress>
+                <div className={css.legendContainer}>
+                    {internals.entrySeq().map(([integrationId, internal], index) => {
+                        const integration = integrations
+                            .find((integration) => integration.get('id') === parseInt(integrationId))
 
-                            if (!integration) {
-                                return null
-                            }
+                        if (!integration) {
+                            return null
+                        }
 
-                            return (
+                        return (
+                            <div
+                                key={`legend-${integrationId}`}
+                                className={css.legend}
+                            >
                                 <div
-                                    key={`legend-${integrationId}`}
-                                    className={css.legend}
-                                >
-                                    <div
-                                        className={classnames(
-                                            colors[`color-${index % Object.keys(colors).length}`],
-                                            'progress-bar-striped',
-                                            css.legendColor
-                                        )}
-                                    />
-                                    {integration.get('name')}
-                                    {' '}
-                                    ({FacebookIntegrationAds.getIntegrationTotalAds(internal)} active ads)
-                                </div>
-                            )
-                        })}
-                    </div>
-                </CardBody>
+                                    className={classnames(
+                                        colors[`color-${index % Object.keys(colors).length}`],
+                                        'progress-bar-striped',
+                                        css.legendColor
+                                    )}
+                                />
+                                {integration.get('name')}
+                                {' '}
+                                ({FacebookIntegrationAds.getIntegrationTotalAds(internal)} active ads)
+                            </div>
+                        )
+                    })}
+                </div>
             </Card>
         )
     }
 }
 
-// AdAccountsCard
-type AdAccountsCardProps = {
-    accounts: ? Map<*, *>,
-    loadingAdAccounts: Map<*, *>,
-    updateAdAccount: (adAccountId: string, isActive: boolean) => void,
-}
-
-class AdAccountsCard extends React.Component<AdAccountsCardProps> {
-    render() {
-        const {accounts, loadingAdAccounts} = this.props
-
-        if (!accounts || !accounts.size) {
-            return null
-        }
-
-        return (
-            <Card className={css.card}>
-                <CardBody>
-                    <h3>Ad accounts</h3>
-                    {accounts.map(([accountId, account]) => (
-                        <div
-                            key={accountId}
-                            className={css.list}
-                        >
-                            <div className={css.name}><b>{account.get('name')}</b></div>
-                            <ToggleButton
-                                value={account.get('is_active')}
-                                onChange={account.get('is_active')
-                                    ? () => this._deactivateAdAccount(accountId)
-                                    : () => this._activateAdAccount(accountId)
-                                }
-                                loading={loadingAdAccounts.includes(accountId)}
-                                disabled={loadingAdAccounts.includes(accountId)}
-                            />
-                        </div>
-                    ))}
-                </CardBody>
-            </Card>
-        )
-    }
-
-    _deactivateAdAccount(accountId: string) {
-        const {updateAdAccount} = this.props
-        updateAdAccount(accountId, false)
-    }
-
-    _activateAdAccount(accountId: string) {
-        const {updateAdAccount} = this.props
-        updateAdAccount(accountId, true)
-    }
-}
-
-
-// AdAccountsCard
-type AdsCardProps = {
+// AdsTable
+type AdsTableProps = {
     ads: ? Map<*, *>,
     loadingAds: Map<*, *>,
     maxAccountAds: number,
@@ -341,7 +275,7 @@ type AdsCardProps = {
     updateAd: (adId: string, isActive: boolean) => void,
 }
 
-class AdsCard extends React.Component<AdsCardProps> {
+class AdsTable extends React.Component<AdsTableProps> {
     render() {
         const {ads, loadingAds, accountTotalAds, maxAccountAds, timezone} = this.props
 
@@ -352,46 +286,46 @@ class AdsCard extends React.Component<AdsCardProps> {
         const limitReached = accountTotalAds >= maxAccountAds
 
         return (
-            <Card className={css.card}>
-                <CardBody>
-                    <h3>Ads</h3>
+            <Table hover>
+                <tbody>
                     {ads.map(([adId, ad]) =>
-                        <div
+                        <tr
                             key={adId}
-                            className={css.list}
+                            className={css.row}
                         >
-                            <div className={css.name}>
-                                <b>
-                                    {ad.get('name')}
-                                    {' '}
-                                    {ad.get('comments_fetched_at')
-                                        ? (
-                                            <span className="text-muted">
-                                                (comments fetched at{' '}
-                                                <DatetimeLabel
-                                                    dateTime={ad.get('comments_fetched_at')}
-                                                    labelFormat="L LT"
-                                                    timezone={timezone}
-                                                />
-                                            </span>
-                                        )
-                                        : null
-                                    }
-                                </b>
-                            </div>
-                            <ToggleButton
-                                value={ad.get('is_active')}
-                                onChange={ad.get('is_active')
-                                    ? () => this._deactivateAd(adId)
-                                    : () => this._activateAd(adId)
+                            <td>
+                                <span className="mr-2">
+                                    <b>{ad.get('name')}</b>
+                                </span>
+                                {ad.get('comments_fetched_at')
+                                    ? (
+                                        <span className="text-faded">
+                                            Comments fetched at{' '}
+                                            <DatetimeLabel
+                                                dateTime={ad.get('comments_fetched_at')}
+                                                labelFormat="L LT"
+                                                timezone={timezone}
+                                            />
+                                        </span>
+                                    )
+                                    : null
                                 }
-                                loading={loadingAds.includes(adId)}
-                                disabled={!ad.get('is_active') && limitReached || loadingAds.includes(adId)}
-                            />
-                        </div>
+                            </td>
+                            <td className="smallest align-middle">
+                                <ToggleButton
+                                    value={ad.get('is_active')}
+                                    onChange={ad.get('is_active')
+                                        ? () => this._deactivateAd(adId)
+                                        : () => this._activateAd(adId)
+                                    }
+                                    loading={loadingAds.includes(adId)}
+                                    disabled={!ad.get('is_active') && limitReached || loadingAds.includes(adId)}
+                                />
+                            </td>
+                        </tr>
                     )}
-                </CardBody>
-            </Card>
+                </tbody>
+            </Table>
         )
     }
 

@@ -16,12 +16,6 @@ describe('facebookAds selectors', () => {
                     loading: true,
                     internals: {
                         '1': {
-                            ad_accounts: {
-                                adaccountid1: {
-                                    name: 'ad account 1',
-                                    is_active: true
-                                }
-                            },
                             ads: {
                                 postid1: {
                                     comments_fetched_at: '2019-01-01 10:30:00',
@@ -32,25 +26,8 @@ describe('facebookAds selectors', () => {
                         }
                     },
                     loadingAds: ['postid1'],
-                    loadingAdAccounts: ['adaccountid1'],
                 })
         }
-    })
-
-    describe('getFacebookIntegrationLoadingAdAccounts', () => {
-        it('should return loading state when its value is set', () => {
-            const result = selectors.getFacebookIntegrationLoading(state)
-            expect(result).toBe(true)
-        })
-
-        it('should return default internals when its value is null', () => {
-            state = {
-                facebookAds: initialState.mergeDeep({loading: null})
-            }
-
-            const result = selectors.getFacebookIntegrationLoading(state)
-            expect(result).toBe(false)
-        })
     })
 
     describe('getFacebookIntegrationInternals', () => {
@@ -109,37 +86,6 @@ describe('facebookAds selectors', () => {
             }
 
             const result = selectors.getFacebookIntegrationLoadingAds(state)
-            const expected = fromJS([])
-
-            expect(result).toEqualImmutable(expected)
-        })
-    })
-
-    describe('getFacebookIntegrationLoadingAdAccounts', () => {
-        it('should return loading ad accounts when the value is set', () => {
-            const result = selectors.getFacebookIntegrationLoadingAdAccounts(state)
-            const expected = state.facebookAds.get('loadingAdAccounts')
-
-            expect(result).toEqualImmutable(expected)
-        })
-
-        it('should return loading ad accounts when the value is null', () => {
-            state = {
-                facebookAds: initialState.mergeDeep({loadingAdAccounts: null})
-            }
-
-            const result = selectors.getFacebookIntegrationLoadingAdAccounts(state)
-            const expected = fromJS([])
-
-            expect(result).toEqualImmutable(expected)
-        })
-
-        it('should return loading ad accounts when the value is `[]`', () => {
-            state = {
-                facebookAds: initialState.mergeDeep({loadingAdAccounts: []})
-            }
-
-            const result = selectors.getFacebookIntegrationLoadingAdAccounts(state)
             const expected = fromJS([])
 
             expect(result).toEqualImmutable(expected)

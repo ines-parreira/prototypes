@@ -2,13 +2,10 @@ import axios from 'axios'
 
 import {notify} from '../../../../../../state/notifications/actions'
 import {
-    addFacebookAdsLoadingAccount,
     addFacebookAdsLoadingAd,
-    removeFacebookAdsLoadingAccount,
     removeFacebookAdsLoadingAd,
     setFacebookAdsInternals,
     setFacebookAdsLoading,
-    updateFacebookAdsActiveAccount,
     updateFacebookAdsActiveAd
 } from '../../../../../../state/facebookAds/actions'
 
@@ -24,27 +21,6 @@ export const fetchAds = () => async (dispatch) => {
         }))
     } finally {
         dispatch(setFacebookAdsLoading(false))
-    }
-}
-
-export const updateAdAccount = (integrationId: number, adAccountId: string, isActive: boolean) => async (dispatch) => {
-    try {
-        dispatch(addFacebookAdsLoadingAccount(adAccountId))
-
-        await axios.put('/integrations/facebook/fads/fad-account/activate/', {
-            integration_id: integrationId,
-            ad_account_id: adAccountId,
-            is_active: isActive
-        })
-
-        dispatch(updateFacebookAdsActiveAccount(integrationId, adAccountId, isActive))
-    } catch (e) {
-        dispatch(notify({
-            status: 'error',
-            title: e.message
-        }))
-    } finally {
-        dispatch(removeFacebookAdsLoadingAccount(adAccountId))
     }
 }
 

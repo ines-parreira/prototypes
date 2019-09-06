@@ -5,16 +5,10 @@ type Ad = {
     name: string,
 }
 
-type AdAccount = {
-    is_active: boolean,
-    name: string,
-}
-
 type Internal = {
     ads: {
         [key: string]: Ad
     },
-    ad_accounts: AdAccount,
 }
 
 export type Internals = {

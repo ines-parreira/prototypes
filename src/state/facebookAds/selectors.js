@@ -19,8 +19,3 @@ export const getFacebookIntegrationLoadingAds = createImmutableSelector(
     [getState],
     (state) => state.get('loadingAds') || fromJS([])
 )
-
-export const getFacebookIntegrationLoadingAdAccounts = createImmutableSelector(
-    [getState],
-    (state) => state.get('loadingAdAccounts') || fromJS([])
-)

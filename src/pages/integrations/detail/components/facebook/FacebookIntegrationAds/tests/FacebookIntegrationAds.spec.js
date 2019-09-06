@@ -19,7 +19,6 @@ describe('FacebookIntegrationAds component', () => {
         integrations: fromJS(integrations),
         integration: fromJS(integrations[0]),
         fetchAds: () => null,
-        updateAdAccount: () => null,
         updateAd: () => null,
     }
 
@@ -45,7 +44,6 @@ describe('FacebookIntegrationAds component', () => {
                     1: internal,
                 },
                 loadingAds: [],
-                loadingAdAccounts: [],
             })
         })
     }
@@ -79,7 +77,6 @@ describe('FacebookIntegrationAds component', () => {
                     loading: true,
                     maxAccountAds: 100,
                     internal: {
-                        ad_accounts: {},
                         ads: {}
                     }
                 })}
@@ -90,13 +87,12 @@ describe('FacebookIntegrationAds component', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should render without ad account and without ad', () => {
+    it('should render without ad', () => {
         const component = mount(
             <FacebookIntegrationAds
                 store={getStore({
                     maxAccountAds: 100,
                     internal: {
-                        ad_accounts: {},
                         ads: {}
                     }
                 })}
@@ -107,40 +103,12 @@ describe('FacebookIntegrationAds component', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should render with one ad account and without ad', () => {
+    it('should render with one ad', () => {
         const component = mount(
             <FacebookIntegrationAds
                 store={getStore({
                     maxAccountAds: 100,
                     internal: {
-                        ad_accounts: {
-                            adaccountid1: {
-                                name: 'ad account 1',
-                                is_active: true
-                            }
-                        },
-                        ads: {}
-                    }
-                })}
-                {...props}
-            />
-        )
-
-        expect(component).toMatchSnapshot()
-    })
-
-    it('should render with one ad account and one ad', () => {
-        const component = mount(
-            <FacebookIntegrationAds
-                store={getStore({
-                    maxAccountAds: 100,
-                    internal: {
-                        ad_accounts: {
-                            adaccountid1: {
-                                name: 'ad account 1',
-                                is_active: true
-                            }
-                        },
                         ads: {
                             postid1: {
                                 comments_fetched_at: '2019-01-01 10:30:00',
@@ -157,22 +125,12 @@ describe('FacebookIntegrationAds component', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should render with two ad accounts (one not active) and two ads (one not active)', () => {
+    it('should render with two ads (one not active)', () => {
         const component = mount(
             <FacebookIntegrationAds
                 store={getStore({
                     maxAccountAds: 100,
                     internal: {
-                        ad_accounts: {
-                            adaccountid1: {
-                                name: 'ad account 1',
-                                is_active: true
-                            },
-                            adaccountid2: {
-                                name: 'ad account 2',
-                                is_active: false
-                            }
-                        },
                         ads: {
                             postid1: {
                                 comments_fetched_at: '2019-01-01 10:30:00',
@@ -200,12 +158,6 @@ describe('FacebookIntegrationAds component', () => {
                 store={getStore({
                     maxAccountAds: 2,
                     internal: {
-                        ad_accounts: {
-                            adaccountid1: {
-                                name: 'ad account 1',
-                                is_active: true
-                            }
-                        },
                         ads: {
                             postid1: {
                                 comments_fetched_at: '2019-01-01 10:30:00',
@@ -238,12 +190,6 @@ describe('FacebookIntegrationAds component', () => {
                 store={getStore({
                     maxAccountAds: 100,
                     internal: {
-                        ad_accounts: {
-                            adaccountid1: {
-                                name: 'ad account 1',
-                                is_active: true
-                            }
-                        },
                         ads: {
                             postid1: {
                                 comments_fetched_at: null,

@@ -21,12 +21,6 @@ describe('FacebookIntegrationAds actions', () => {
         it('should fetch ads', async () => {
             const data = {
                 '1': {
-                    ad_accounts: {
-                        adaccountid1: {
-                            name: 'ad account 1',
-                            is_active: true
-                        }
-                    },
                     ads: {
                         postid1: {
                             comments_fetched_at: '2019-01-01 10:30:00',
@@ -42,38 +36,6 @@ describe('FacebookIntegrationAds actions', () => {
                 .reply(200, data)
 
             await store.dispatch(actions.fetchAds())
-            expect(store.getActions()).toMatchSnapshot()
-        })
-    })
-
-    describe('updateAdAccount()', () => {
-        it('should activate ad account', async () => {
-            const body = {
-                integration_id: 1,
-                ad_account_id: 'adaccountid1',
-                is_active: true
-            }
-
-            mockServer
-                .onPut('/integrations/facebook/fads/fad-account/activate/', body)
-                .reply(200)
-
-            await store.dispatch(actions.updateAdAccount(1, 'adaccountid1', true))
-            expect(store.getActions()).toMatchSnapshot()
-        })
-
-        it('should deactivate ad account', async () => {
-            const body = {
-                integration_id: 1,
-                ad_account_id: 'adaccountid1',
-                is_active: false
-            }
-
-            mockServer
-                .onPut('/integrations/facebook/fads/fad-account/activate/', body)
-                .reply(200)
-
-            await store.dispatch(actions.updateAdAccount(1, 'adaccountid1', false))
             expect(store.getActions()).toMatchSnapshot()
         })
     })
