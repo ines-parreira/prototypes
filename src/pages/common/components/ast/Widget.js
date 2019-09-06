@@ -30,7 +30,6 @@ import MacroSelect from './widget/MacroSelect'
 import StatusSelect from './widget/StatusSelect'
 import Select from './widget/ReactSelect'
 
-
 type Props = {
     rule: Object,
     value: any,
@@ -344,6 +343,22 @@ export class Widget extends React.Component<Props, State> {
         }
 
         switch (widget.type) {
+            case 'intents-select':
+                return <MultiSelectField
+                    className={className}
+                    style={{
+                        display: 'inline-block',
+                        paddingBottom: '2px'
+                    }}
+                    options={widget.options.map((option) => ({
+                        value: option.toString(),
+                        label: option.toString(),
+                    }))}
+                    singular="intent"
+                    plural="intents"
+                    values={widget.value}
+                    onChange={this._handleChange}
+                />
             case 'multi-select':
                 return <MultiSelectField
                     className={className}
