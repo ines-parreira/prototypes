@@ -6,7 +6,7 @@ import moment from 'moment/moment'
 
 import {createImmutableSelector} from '../../utils'
 import * as viewsConfig from '../../config/views'
-import {getSettingsByType as getCurrentUserSettingsByType} from '../currentUser/selectors'
+import {getSettingsByType as getCurrentUserSettingsByType, makeGetSettingsByType} from '../currentUser/selectors'
 
 import type {stateType} from '../types'
 
@@ -128,27 +128,38 @@ export const isLoading = (name: string) => createSelector(
 // ex: isLoading: makeIsLoading(state)   then : const isMerging = isLoading('merge')
 export const makeIsLoading = (state: stateType) => (name: string) => isLoading(name)(state)
 
+const _getViewsByType = (views, currentUserSettings, type) => {
+    return views
+        // keep only views of asked type
+        .filter((view) => view.get('type') === type)
+        // update views according to current user settings
+        .map((view) => {
+            const viewId = view.get('id')
+            const viewSetting = currentUserSettings.getIn(['data', viewId.toString()], fromJS({}))
+
+            const hide = viewSetting.get('hide', false)
+            const displayOrder = viewSetting.get('display_order', view.get('display_order', 0))
+
+            return view
+                .set('hide', hide)
+                .set('display_order', displayOrder)
+        })
+        // sort views by display order
+        .sort(sortViews)
+}
+
+export const makeGetViewsByType = () => {
+    const getSettingsByType = makeGetSettingsByType()
+    return createImmutableSelector([
+        getViews,
+        (state: stateType, type?: string) => getSettingsByType(state, (type || '').replace('list', 'views')),
+        (state: stateType, type?: string) => type
+    ], _getViewsByType)
+}
+
 export const getViewsByType = (type: string) => createImmutableSelector(
     [getViews, getCurrentUserSettingsByType(type.replace('list', 'views'))],
-    (views, currentUserSettings) => {
-        return views
-        // keep only views of asked type
-            .filter((view) => view.get('type') === type)
-            // update views according to current user settings
-            .map((view) => {
-                const viewId = view.get('id')
-                const viewSetting = currentUserSettings.getIn(['data', viewId.toString()], fromJS({}))
-
-                const hide = viewSetting.get('hide', false)
-                const displayOrder = viewSetting.get('display_order', view.get('display_order', 0))
-
-                return view
-                    .set('hide', hide)
-                    .set('display_order', displayOrder)
-            })
-            // sort views by display order
-            .sort(sortViews)
-    }
+    (views, currentUserSettings) => _getViewsByType(views, currentUserSettings, type)
 )
 
 export const getViewIdToDisplay = (type: string, urlViewId: ?string) => createSelector(
@@ -170,7 +181,8 @@ export const getViewIdToDisplay = (type: string, urlViewId: ?string) => createSe
     }
 )
 
-export const makeGetViewIdToDisplay = (state: stateType) => (type: string, urlViewId: ?string) => getViewIdToDisplay(type, urlViewId)(state)
+export const makeGetViewIdToDisplay = (state: stateType) => (type: string, urlViewId: ?string) =>
+    getViewIdToDisplay(type, urlViewId)(state)
 
 /**
  * Return view of asked id, if id is 'new' it generates a new view according to config

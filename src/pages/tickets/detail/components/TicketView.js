@@ -245,28 +245,26 @@ export default class TicketView extends React.Component {
                     'transition out fade right': isTicketHidden,
                 })}
             >
-
-                <div className={classnames(css.timeline, {
-                    'd-none': !isHistoryDisplayed
-                })}>
-                    <Button
-                        color="secondary"
-                        className="btn-transparent mb-2 font-weight-medium"
-                        onClick={this._toggleHistory}
-                    >
-                        <i className="material-icons md-2 mr-2">
-                            close
-                        </i>
-                        Close ticket history
-                    </Button>
-                    <Timeline
-                        actions={actions.ticket}
-                        currentTicketId={ticket.get('id')}
-                        customerHistory={customerHistory}
-                        className="pb-4"
-                    />
-                </div>
-
+                {isHistoryDisplayed && (
+                    <div className={classnames(css.timeline)}>
+                        <Button
+                            color="secondary"
+                            className="btn-transparent mb-2 font-weight-medium"
+                            onClick={this._toggleHistory}
+                        >
+                            <i className="material-icons md-2 mr-2">
+                                close
+                            </i>
+                            Close ticket history
+                        </Button>
+                        <Timeline
+                            actions={actions.ticket}
+                            currentTicketId={ticket.get('id')}
+                            customerHistory={customerHistory}
+                            className="pb-4"
+                        />
+                    </div>
+                )}
                 <div
                     className={css.headerContainer}
                 >

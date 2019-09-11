@@ -6,7 +6,6 @@ import {bindActionCreators} from 'redux'
 import * as ViewsActions from '../../../state/views/actions'
 import RecentChats from '../../common/components/RecentChats'
 import Navbar from '../../common/components/Navbar'
-import {getSettingsByType} from '../../../state/currentUser/selectors'
 
 import TicketsNavbarView from './components/TicketsNavbarView'
 
@@ -23,7 +22,6 @@ class TicketNavbarContainer extends React.Component {
                 <RecentChats />
                 <TicketsNavbarView
                     settingType="ticket-views"
-                    setting={this.props.setting}
                     isLoading={this.props.isLoading}
                 />
             </Navbar>
@@ -43,7 +41,6 @@ TicketNavbarContainer.propTypes = {
 
 const mapStateToProps = (state) => {
     return {
-        setting: getSettingsByType('ticket-views')(state),
         isLoading: state.currentUser.getIn(['_internal', 'loading', 'settings', 'ticket-views'], false)
     }
 }

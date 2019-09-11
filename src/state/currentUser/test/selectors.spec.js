@@ -91,4 +91,12 @@ describe('current user selectors', () => {
         expect(selectors.getTimezone(state)).toEqualImmutable(state.currentUser.get('timezone'))
         expect(selectors.getTimezone({})).toEqualImmutable(null)
     })
+
+    describe('makeGetSettingsByType', () => {
+        it('should return setting by type', () => {
+            const selector = selectors.makeGetSettingsByType()
+            const settings = selector(state, 'ticket-views')
+            expect(settings).toEqualImmutable(state.currentUser.get('settings').first())
+        })
+    })
 })

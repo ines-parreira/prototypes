@@ -4,32 +4,40 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 
 import {initialState} from '../reducers'
 import * as selectors from '../selectors'
+import {currentUser} from '../../../fixtures/users'
+import {initialState as currentUserInitialState} from '../../currentUser/reducers'
 
 jest.addMatchers(immutableMatchers)
 
 describe('selectors', () => {
     describe('isActiveViewTrashView()', () => {
         it('should be the trash view', () => {
-            const state = {views: initialState.set('active', fromJS({
-                category: 'system',
-                name: 'Trash'
-            }))}
+            const state = {
+                views: initialState.set('active', fromJS({
+                    category: 'system',
+                    name: 'Trash'
+                }))
+            }
             expect(selectors.isActiveViewTrashView(state)).toBe(true)
         })
 
         it('should not be the trash view (wrong category)', () => {
-            const state = {views: initialState.set('active', fromJS({
-                category: '',
-                name: 'Trash'
-            }))}
+            const state = {
+                views: initialState.set('active', fromJS({
+                    category: '',
+                    name: 'Trash'
+                }))
+            }
             expect(selectors.isActiveViewTrashView(state)).toBe(false)
         })
 
         it('should not be the trash view (wrong name)', () => {
-            const state = {views: initialState.set('active', fromJS({
-                category: 'system',
-                name: 'Spam'
-            }))}
+            const state = {
+                views: initialState.set('active', fromJS({
+                    category: 'system',
+                    name: 'Spam'
+                }))
+            }
             expect(selectors.isActiveViewTrashView(state)).toBe(false)
         })
 
@@ -98,10 +106,12 @@ describe('selectors', () => {
             const viewType = 'customer-list'
             const ticketViewId = 9
             const ticketViewType = 'ticket-list'
-            const state = {views: initialState.set('items', fromJS([
-                {id: viewId, type: viewType},
-                {id: ticketViewId, type: ticketViewType}
-            ]))}
+            const state = {
+                views: initialState.set('items', fromJS([
+                    {id: viewId, type: viewType},
+                    {id: ticketViewId, type: ticketViewType}
+                ]))
+            }
             expect(selectors.getViewIdToDisplay(ticketViewType, viewId.toString())(state)).toEqual(ticketViewId)
         })
     })
@@ -117,6 +127,68 @@ describe('selectors', () => {
             const navigation = fromJS({'foo': 'bar'})
             const state = {views: initialState.setIn(['_internal', 'navigation'], navigation)}
             expect(selectors.getNavigation(state)).toEqualImmutable(navigation)
+        })
+    })
+
+    describe('makeGetViewsByType', () => {
+        it('should filter views by type and not return hidden', () => {
+            const view1 = {
+                id: 1,
+                type: 'ticket-list'
+            }
+            const view2 = {
+                id: 2,
+                type: 'ticket-list'
+            }
+            const view3 = {
+                id: 3,
+                type: 'customer-list'
+            }
+            const viewSetting1 = {
+                hide: false,
+                display_order: 1,
+            }
+            const viewSetting2 = {
+                hide: true,
+                display_order: 2,
+            }
+            const viewSetting3 = {
+                hide: false,
+                display_order: 3
+            }
+            const state = {
+                views: initialState.mergeDeep({
+                    items: [view1, view2, view3]
+                }),
+                currentUser: currentUserInitialState
+                    .mergeDeep(currentUser)
+                    .set('settings', fromJS([{
+                        id: 1,
+                        type: 'ticket-views',
+                        data: {
+                            [view1.id]: viewSetting1,
+                            [view2.id]: viewSetting2
+                        }
+                    }, {
+                        id: 2,
+                        type: 'customer-views',
+                        data: {
+                            [view3.id]: viewSetting3
+                        }
+                    }]))
+            }
+            const selector = selectors.makeGetViewsByType()
+            expect(selector(state, 'ticket-list')).toEqualImmutable(fromJS([{
+                ...view1,
+                ...viewSetting1
+            }, {
+                ...view2,
+                ...viewSetting2
+            }]))
+            expect(selector(state, 'customer-list')).toEqualImmutable(fromJS([{
+                ...view3,
+                ...viewSetting3
+            }]))
         })
     })
 })

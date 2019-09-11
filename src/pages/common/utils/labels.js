@@ -281,7 +281,7 @@ type DatetimeLabelProps = {
     timezone?: string,
 }
 
-export class DatetimeLabel extends React.Component<DatetimeLabelProps> {
+export class DatetimeLabel extends React.PureComponent<DatetimeLabelProps> {
     id: string
 
     constructor(props: DatetimeLabelProps) {

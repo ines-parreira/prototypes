@@ -11,8 +11,8 @@ import Tooltip from '../Tooltip'
 import shortcutManager from '../../../../services/shortcutManager'
 import {moveIndex} from '../../../common/utils/keyboard'
 
-import {getActiveView, getViewsByType, makeGetView, makeGetViewCount} from '../../../../state/views/selectors'
-import {getSettingsByType as getCurrentUserSettingsByType} from '../../../../state/currentUser/selectors'
+import {getActiveView, makeGetView, makeGetViewCount, makeGetViewsByType} from '../../../../state/views/selectors'
+import {makeGetSettingsByType} from '../../../../state/currentUser/selectors'
 
 import ViewNavbarViewEditor from './ViewNavbarViewEditor'
 
@@ -209,16 +209,18 @@ class ViewNavbarView extends Component {
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
-    const settings = getCurrentUserSettingsByType(ownProps.settingType)(state)
-
-    return {
-        getView: makeGetView(state),
-        getViewCount: makeGetViewCount(state),
-        activeView: getActiveView(state),
-        views: getViewsByType(ownProps.viewType)(state),
-        settings,
+const createMapStateToProps = () => {
+    const getSettingsByType = makeGetSettingsByType()
+    const getViewsByType = makeGetViewsByType()
+    return (state, ownProps) => {
+        return {
+            getView: makeGetView(state),
+            getViewCount: makeGetViewCount(state),
+            activeView: getActiveView(state),
+            views: getViewsByType(state, ownProps.viewType),
+            settings: getSettingsByType(state, ownProps.settingType),
+        }
     }
 }
 
-export default connect(mapStateToProps)(ViewNavbarView)
+export default connect(createMapStateToProps())(ViewNavbarView)

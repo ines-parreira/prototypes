@@ -25,10 +25,6 @@ const HistoryButton = (props: Props) => {
     const ticketHistory = customerHistory.get('tickets') || fromJS([])
     const ticketHistoryCount = ticketHistory.filter((t) => t.get('id') !== ticket.get('id')).size
 
-    // $FlowFixMe
-    // const eventHistoryCount = customerHistory.get('events', fromJS([])).size
-    // const itemsCountInHistory = ticketHistoryCount + eventHistoryCount
-
     const historyTickets = customerHistory.get('tickets') || fromJS([])
     const historyOpenedTickets = historyTickets
     // remove current ticket from history for the count

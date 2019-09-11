@@ -3,10 +3,9 @@ import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
 
 import {getViews} from '../views/selectors'
-
 import type {stateType} from '../types'
-
-import {DEFAULT_PREFERENCES} from './../../config'
+import {DEFAULT_PREFERENCES} from '../../config'
+import {createImmutableSelector} from '../../utils'
 
 // types
 
@@ -14,7 +13,7 @@ export const getCurrentUserState = (state: stateType) => state.currentUser || fr
 
 export const getCurrentUser = createSelector(
     [getCurrentUserState],
-    (state)=> state
+    (state) => state
 )
 
 export const getSettings = createSelector(
@@ -22,27 +21,34 @@ export const getSettings = createSelector(
     (state) => state.get('settings') || fromJS([])
 )
 
+const _getSettingsByType = (views, settings, type) => {
+    (settings) = settings.find((setting) => setting.get('type') === type) || fromJS({type, data: {}})
+
+    // add vies and update settings according to views configuration
+    views.forEach((view) => {
+        const viewId = view.get('id')
+        const viewSetting = settings.getIn(['data', viewId.toString()], fromJS({}))
+
+        const hide = viewSetting.get('hide') || false
+        const displayOrder = viewSetting.get('display_order', view.get('display_order', 0))
+
+        settings = settings
+            .setIn(['data', viewId.toString(), 'hide'], hide)
+            .setIn(['data', viewId.toString(), 'display_order'], displayOrder)
+    })
+
+    return settings
+}
+
+export const makeGetSettingsByType = () => createImmutableSelector(
+    [getViews, getSettings, (state, type) => type],
+    _getSettingsByType
+)
+
 // used to get ticket-views and customer-views user preferences
-export const getSettingsByType = (type: string) => createSelector(
+export const getSettingsByType = (type: string) => createImmutableSelector(
     [getViews, getSettings],
-    (views, settings) => {
-        (settings) = settings.find((setting) => setting.get('type') === type) || fromJS({type, data: {}})
-
-        // add vies and update settings according to views configuration
-        views.forEach((view) => {
-            const viewId = view.get('id')
-            const viewSetting = settings.getIn(['data', viewId.toString()], fromJS({}))
-
-            const hide = viewSetting.get('hide') || false
-            const displayOrder = viewSetting.get('display_order', view.get('display_order', 0))
-
-            settings = settings
-                .setIn(['data', viewId.toString(), 'hide'], hide)
-                .setIn(['data', viewId.toString(), 'display_order'], displayOrder)
-        })
-
-        return settings
-    }
+    (views, settings) => _getSettingsByType(views, settings, type)
 )
 
 export const getApiKey = createSelector(
