@@ -15,7 +15,7 @@ export const initialState = fromJS({
     }
 })
 
-export default function reducer(state: Map<*,*> = initialState, action: actionType): Map<*,*> {
+export default function reducer(state: Map<*, *> = initialState, action: actionType): Map<*, *> {
     switch (action.type) {
         case constants.UPDATE_ACCOUNT_START:
             return state.setIn(['_internal', 'loading', 'updateAccount'], true)
@@ -40,6 +40,9 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
                 }
                 return fromJS(action.subscription)
             })
+
+        case constants.SET_CURRENT_SUBSCRIPTION:
+            return state.set('current_subscription', action.subscription)
 
         case constants.UPDATE_ACCOUNT_SETTING: {
             const new_setting = action.setting

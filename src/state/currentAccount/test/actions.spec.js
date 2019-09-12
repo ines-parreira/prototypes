@@ -1,9 +1,11 @@
+import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import * as actions from '../actions'
+import {setCurrentSubscription} from '../actions'
 import {initialState} from '../reducers'
 
 const middlewares = [thunk]
@@ -78,4 +80,14 @@ describe('current account actions', () => {
         })
     })
 
+
+    describe('setCurrentSubscription()', () => {
+        it('should return a Redux action to set the current subscription.', () => {
+            const subscription = {
+                plan: 'basic-usd-1',
+                status: 'active',
+            }
+            expect(setCurrentSubscription(fromJS(subscription))).toMatchSnapshot()
+        })
+    })
 })

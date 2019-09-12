@@ -1,3 +1,4 @@
+import {fromJS} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 
 import * as types from '../constants'
@@ -134,5 +135,61 @@ describe('billing reducers', () => {
                 }
             )
         ).toMatchSnapshot()
+    })
+
+    describe('SET_CREDIT_CARD', () => {
+        const creditCard = fromJS({
+            last4: '1235',
+            brand: 'visa',
+            exp_month: '4',
+            exp_year: '23',
+            name: 'Steve'
+        })
+        it('should set the credit card (initial state).', () => {
+            const action = {
+                type: types.SET_CREDIT_CARD,
+                creditCard
+            }
+            expect(reducer(initialState, action)).toMatchSnapshot()
+        })
+
+        it('should set the credit card and override the previous one.', () => {
+            const action = {
+                type: types.SET_CREDIT_CARD,
+                creditCard
+            }
+            const state = reducer(initialState, action)
+            const newCreditCard = creditCard.merge({last4: '9583', name: 'Mark'})
+
+            const newAction = {
+                type: types.SET_CREDIT_CARD,
+                creditCard: newCreditCard
+            }
+            expect(reducer(state, newAction)).toMatchSnapshot()
+
+        })
+    })
+
+    describe('SET_FUTURE_SUBSCRIPTION_PLAN', () => {
+        it('should set the future subscription plan (initial state).', () => {
+            const action = {
+                type: types.SET_FUTURE_SUBSCRIPTION_PLAN,
+                planId: 'plan-1'
+            }
+            expect(reducer(initialState, action)).toMatchSnapshot()
+        })
+
+        it('should set the future subscription plan and override the previous one.', () => {
+            const action = {
+                type: types.SET_FUTURE_SUBSCRIPTION_PLAN,
+                planId: 'plan-1'
+            }
+            const state = reducer(initialState, action)
+            const newAction = {
+                type: types.SET_FUTURE_SUBSCRIPTION_PLAN,
+                planId: 'plan-2'
+            }
+            expect(reducer(state, newAction)).toMatchSnapshot()
+        })
     })
 })

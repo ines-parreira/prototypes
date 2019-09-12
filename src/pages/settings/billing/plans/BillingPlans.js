@@ -2,9 +2,9 @@
 
 import React from 'react'
 import {connect} from 'react-redux'
-import {Link, browserHistory} from 'react-router'
+import {browserHistory, Link} from 'react-router'
 import {fromJS} from 'immutable'
-import {Breadcrumb, BreadcrumbItem, Button, CardDeck, Container, Col, Row, ButtonGroup} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Button, ButtonGroup, CardDeck, Col, Container, Row} from 'reactstrap'
 
 import classnames from 'classnames'
 
@@ -14,6 +14,7 @@ import * as billingSelectors from '../../../../state/billing/selectors'
 import * as currentAccountSelectors from '../../../../state/currentAccount/selectors'
 import {openChat} from '../../../../utils'
 import PageHeader from '../../../common/components/PageHeader'
+import {setFutureSubscriptionPlan} from '../../../../state/billing/actions'
 
 import {Plan} from './Plan'
 
@@ -28,6 +29,7 @@ type Props = {
     notify: Function,
     isAllowedToChangePlan: Function,
     updateSubscription: Function,
+    setFutureSubscriptionPlan: (string) => void
 }
 
 type State = {
@@ -47,6 +49,9 @@ export class BillingPlans extends React.Component<Props, State> {
     }
 
     _updateSubscription = (planId: string) => {
+        const {subscription, updateSubscription, setFutureSubscriptionPlan} = this.props
+        const hasNoSubscription = !subscription.get('status')
+
         if (!this.props.isAllowedToChangePlan(planId)) {
             this.props.notify({
                 status: 'error',
@@ -58,12 +63,13 @@ export class BillingPlans extends React.Component<Props, State> {
 
         this.setState({isUpdating: true})
 
-        this.props.updateSubscription({
+        setFutureSubscriptionPlan(planId)
+        updateSubscription({
             plan: planId
         }).then(() => {
             this.setState({isUpdating: false})
 
-            if (this.props.isTrialing) {
+            if (hasNoSubscription || this.props.isTrialing) {
                 if (this.props.shouldPayWithShopify) {
                     browserHistory.push('/app/settings/billing')
                 } else {
@@ -193,6 +199,7 @@ export class BillingPlans extends React.Component<Props, State> {
                         ++i
                         return (
                             <Plan
+                                className="mt-4"
                                 key={i}
                                 plan={plan}
                                 isCurrentPlan={planId === subscription.get('plan')}
@@ -205,6 +212,7 @@ export class BillingPlans extends React.Component<Props, State> {
                     }).toList()}
                     {isCustomPlan || (
                         <Plan
+                            className="mt-4"
                             plan={enterprisePlan}
                             features={(
                                 <ul>
@@ -276,4 +284,4 @@ export default connect((state) => {
         shouldPayWithShopify: currentAccountSelectors.shouldPayWithShopify(state),
         subscription: currentAccountSelectors.getCurrentSubscription(state),
     }
-}, {notify, updateSubscription})(BillingPlans)
+}, {notify, updateSubscription, setFutureSubscriptionPlan})(BillingPlans)

@@ -209,14 +209,10 @@ export class BillingPaymentMethod extends Component {
     }
 
     render() {
-        const {paymentMethod, isTrialing, shouldPayWithShopify} = this.props
+        const {paymentMethod} = this.props
 
         if (this.state.isLoading) {
             return <Loader/>
-        }
-
-        if (isTrialing && !shouldPayWithShopify) {
-            return null
         }
 
         return (

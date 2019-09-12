@@ -86,3 +86,77 @@ Object {
   "put": Array [],
 }
 `;
+
+exports[`services GorgiasApi startSubscription() should start the subscription of the current account. 1`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [],
+  "put": Array [
+    Object {
+      "cancelToken": CancelToken {
+        "promise": Promise {},
+      },
+      "data": "{}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      "maxContentLength": -1,
+      "method": "put",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/billing/subscription/start/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+}
+`;
+
+exports[`services GorgiasApi updateCreditCard() should update the credit card of the current account. 1`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [],
+  "put": Array [
+    Object {
+      "cancelToken": CancelToken {
+        "promise": Promise {},
+      },
+      "data": "{\\"token\\":\\"tok_2xe129dnm21d2miwmdfsa\\"}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      "maxContentLength": -1,
+      "method": "put",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/billing/credit-card/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+}
+`;

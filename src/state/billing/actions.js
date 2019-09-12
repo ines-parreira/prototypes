@@ -1,15 +1,25 @@
 // @flow
 import axios from 'axios'
-import {browserHistory} from 'react-router'
-import {fromJS} from 'immutable'
 
 import {notify} from '../notifications/actions'
-import * as segmentTracker from '../../store/middlewares/segmentTracker'
-import type {dispatchType, getStateType} from '../types'
+import type {dispatchType} from '../types'
 
 import * as constants from './constants'
-import type {billingContactType, creditCardType} from './types'
+import type {billingContactType} from './types'
 
+
+/***
+ * Set the future subscription plan.
+ *
+ * @param planId - The ID of the plan to use to create a future subscription
+ * @returns - A Redux action
+ */
+export const setFutureSubscriptionPlan = (planId: string): dispatchType => {
+    return {
+        type: constants.SET_FUTURE_SUBSCRIPTION_PLAN,
+        planId
+    }
+}
 
 export function fetchCurrentUsage() {
     return (dispatch: dispatchType): Promise<dispatchType> => {
@@ -87,78 +97,19 @@ export function fetchCreditCard() {
     }
 }
 
-export function updateCreditCard(creditCard: creditCardType) {
-    return (dispatch: dispatchType, getState: getStateType): Promise<{}> | dispatchType => {
-        const state = getState()
-        const hasCreditCard = !state.billing.get('creditCard', fromJS({})).isEmpty()
-        const currentUser = state.currentUser
-        const currentAccount = state.currentAccount
-
-        // $FlowFixMe
-        if (Stripe) {
-            return new Promise((resolve) => {
-                const expiry = creditCard.expDate.split('/')
-                // call directly Stripe API from client browser to create a token for the card
-
-                Stripe.card.createToken({
-                    name: creditCard.name,
-                    number: creditCard.number,
-                    cvc: creditCard.cvc,
-                    exp_month: expiry[0].trim(),
-                    exp_year: expiry[1].trim()
-                }, (status, response) => {
-                    if (response.error) {
-                        resolve(response)
-                        return dispatch({
-                            type: constants.UPDATE_CREDIT_CARD_ERROR,
-                            error: response.error,
-                            reason: 'Unable to update credit card.'
-                        })
-                    }
-                    // send the token of the card to our API
-                    return axios.put('/api/billing/credit-card/', {
-                        token: response.id
-                    })
-                        .then((json = {}) => json.data)
-                        .then((resp) => {
-                            dispatch(notify({
-                                status: 'success',
-                                message: 'Your payment info was updated',
-                            }))
-                            browserHistory.push('/app/settings/billing/')
-                            dispatch({
-                                type: constants.UPDATE_CREDIT_CARD_SUCCESS,
-                                resp
-                            })
-
-                            if (!hasCreditCard) {
-                                segmentTracker.logEvent(segmentTracker.EVENTS.PAYMENT_METHOD_ADDED, {
-                                    payment_method: 'stripe',
-                                    user_id: currentUser.get('id'),
-                                    account_domain: currentAccount.get('domain')
-                                })
-                            }
-
-                            return resolve(resp)
-                        }, (error) => {
-                            dispatch({
-                                type: constants.UPDATE_CREDIT_CARD_ERROR,
-                                error,
-                                reason: 'Unable to update credit card.'
-                            })
-                            return resolve(error)
-                        })
-                })
-
-            })
-        }
-        return dispatch({
-            type: constants.UPDATE_CREDIT_CARD_ERROR,
-            reason: 'Unable to update credit card. Please reload this page.'
-        })
-
+/**
+ * Set the credit card of the current account.
+ *
+ * @param creditCard - The data of the card.
+ * @returns - A Redux action.
+ */
+export const setCreditCard = (creditCard: Map<*, *>): Object => {
+    return {
+        type: constants.SET_CREDIT_CARD,
+        creditCard
     }
 }
+
 
 /**
  * Fetch the billing contact information for the current account

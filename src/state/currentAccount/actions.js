@@ -101,6 +101,19 @@ export function updateSubscription(subscription: {}) {
 }
 
 /**
+ * Set the subscription of the current account.
+ *
+ * @param subscription - A Gorgias internal subscription
+ * @returns - A Redux action
+ */
+export const setCurrentSubscription = (subscription: Map<*, *>) => {
+    return {
+        type: constants.SET_CURRENT_SUBSCRIPTION,
+        subscription
+    }
+}
+
+/**
  * Transfer the current account ownership to a user
  * @param {number} userId - The user ID
  * @returns {Function} the async action thunk

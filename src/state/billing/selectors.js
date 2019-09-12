@@ -13,8 +13,10 @@ export const DEFAULT_PLAN = 'standard-usd-1'
 export const getBillingState = (state: stateType) => state.billing || fromJS({})
 
 export const currentPlanId = createSelector(
-    [getCurrentAccountState],
-    (state) => state.getIn(['current_subscription', 'plan'])
+    [getCurrentAccountState, getBillingState],
+    (currentAccountState, billingState) => {
+        return currentAccountState.getIn(['current_subscription', 'plan']) || billingState.get('futureSubscriptionPlan')
+    }
 )
 
 export const plans = createSelector(

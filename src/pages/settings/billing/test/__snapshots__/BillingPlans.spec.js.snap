@@ -62,6 +62,7 @@ exports[`BillingPlans component should display a custom plan 1`] = `
       tag="div"
     >
       <Plan
+        className="mt-4"
         isCurrentPlan={true}
         isFeatured={false}
         isTrialing={false}
@@ -264,6 +265,7 @@ exports[`BillingPlans component should display matching current plan 1`] = `
             Contact us
           </Button>
         }
+        className="mt-4"
         features={
           <ul>
             <li>
@@ -498,6 +500,7 @@ exports[`BillingPlans component should display multiple plans 1`] = `
             Contact us
           </Button>
         }
+        className="mt-4"
         features={
           <ul>
             <li>
@@ -811,6 +814,7 @@ exports[`BillingPlans component should load with empty props 1`] = `
                   Contact us
                 </Button>
               }
+              className="mt-4"
               features={
                 <ul>
                   <li>
@@ -862,12 +866,12 @@ exports[`BillingPlans component should load with empty props 1`] = `
               showFooter={true}
             >
               <Card
-                className="plan plan-Enterprise"
+                className="plan plan-Enterprise mt-4"
                 outline={true}
                 tag="div"
               >
                 <div
-                  className="plan plan-Enterprise card"
+                  className="plan plan-Enterprise mt-4 card"
                 >
                   <CardHeader
                     className="plan-header"

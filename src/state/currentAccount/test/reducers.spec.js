@@ -85,7 +85,6 @@ describe('current account reducers', () => {
         done()
     })
 
-
     describe('update subscription', () => {
         it('without any existing subscription', () => {
             const state = initialState.set('current_subscription', null)
@@ -105,6 +104,39 @@ describe('current account reducers', () => {
                     subscription: {plan: 'basic-usd-1'},
                 }).toJS()
             ).toMatchSnapshot()
+        })
+    })
+
+    describe('SET_CURRENT_SUBSCRIPTION', () => {
+        const subscription = fromJS({
+            plan: 'basic-usd-1',
+            status: 'active'
+        })
+        it('should set the credit card (initial state).', () => {
+            const action = {
+                type: types.SET_CURRENT_SUBSCRIPTION,
+                subscription
+            }
+            expect(reducer(initialState, action)).toMatchSnapshot()
+        })
+
+        it('should set the credit card and override the previous one.', () => {
+            const action = {
+                type: types.SET_CURRENT_SUBSCRIPTION,
+                subscription
+            }
+            const state = reducer(initialState, action)
+            const newSubscription =  {
+                plan: 'advanced-usd-2',
+                staus: 'past_due'
+            }
+
+            const newAction = {
+                type: types.SET_CURRENT_SUBSCRIPTION,
+                subscription: newSubscription
+            }
+            expect(reducer(state, newAction)).toMatchSnapshot()
+
         })
     })
 

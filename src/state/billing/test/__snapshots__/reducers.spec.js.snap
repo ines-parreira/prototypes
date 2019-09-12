@@ -1,5 +1,41 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`billing reducers SET_CREDIT_CARD should set the credit card (initial state). 1`] = `
+Immutable.Map {
+  "creditCard": Immutable.Map {
+    "last4": "1235",
+    "brand": "visa",
+    "exp_month": "4",
+    "exp_year": "23",
+    "name": "Steve",
+  },
+}
+`;
+
+exports[`billing reducers SET_CREDIT_CARD should set the credit card and override the previous one. 1`] = `
+Immutable.Map {
+  "creditCard": Immutable.Map {
+    "last4": "9583",
+    "brand": "visa",
+    "exp_month": "4",
+    "exp_year": "23",
+    "name": "Mark",
+  },
+}
+`;
+
+exports[`billing reducers SET_FUTURE_SUBSCRIPTION_PLAN should set the future subscription plan (initial state). 1`] = `
+Immutable.Map {
+  "futureSubscriptionPlan": "plan-1",
+}
+`;
+
+exports[`billing reducers SET_FUTURE_SUBSCRIPTION_PLAN should set the future subscription plan and override the previous one. 1`] = `
+Immutable.Map {
+  "futureSubscriptionPlan": "plan-2",
+}
+`;
+
 exports[`billing reducers fetch credit card 1`] = `
 Immutable.Map {
   "creditCard": Immutable.Map {

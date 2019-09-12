@@ -88,5 +88,37 @@ describe('services', () => {
                 expect(apiMock.history).toMatchSnapshot()
             })
         })
+
+        describe('startSubscription()', () => {
+            it('should start the subscription of the current account.', async() => {
+                const expectedSubscription = {
+                    plan: 'basic-usd-1',
+                    status: 'active'
+                }
+                apiMock.onAny().reply(201, expectedSubscription)
+
+                const subscription = await new GorgiasApi().startSubscription()
+                expect(subscription.toJS()).toEqual(expectedSubscription)
+                expect(apiMock.history).toMatchSnapshot()
+            })
+        })
+
+        describe('updateCreditCard()', () => {
+            it('should update the credit card of the current account.', async() => {
+                const expectedCard = {
+                    last4: '2131',
+                    name: 'Steve Frizeli',
+                    brand: 'visa',
+                    exp_month: '12',
+                    exp_year: '23'
+                }
+                apiMock.onAny().reply(202, expectedCard)
+                const stripeCardToken = 'tok_2xe129dnm21d2miwmdfsa'
+                const card = await new GorgiasApi().updateCreditCard(fromJS({token: stripeCardToken}))
+                expect(card.toJS()).toEqual(expectedCard)
+                expect(apiMock.history).toMatchSnapshot()
+            })
+        })
+
     })
 })

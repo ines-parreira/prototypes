@@ -14,3 +14,5 @@ export const UPDATE_ACCOUNT_OWNER_SUCCESS = 'UPDATE_ACCOUNT_OWNER_SUCCESS'
 export const SETTING_TYPE_SATISFACTION_SURVEYS = 'satisfaction-surveys'
 export const SETTING_TYPE_BUSINESS_HOURS = 'business-hours'
 export const SETTING_TYPE_CHAT_ASSIGNMENT = 'chat-assignment'
+
+export const SET_CURRENT_SUBSCRIPTION = 'SET_CURRENT_SUBSCRIPTION'

@@ -17,6 +17,7 @@ type Props = {
     isUpdating?: boolean,
     showFooter?: boolean,
     onClick?: Function,
+    className?: ?string
 }
 
 export class Plan extends React.Component<Props> {
@@ -26,10 +27,13 @@ export class Plan extends React.Component<Props> {
         isTrialing: false,
         isUpdating: false,
         showFooter: true,
+        className: null
     }
 
     render() {
-        const {plan, isUpdating, isCurrentPlan, isTrialing, isFeatured, features, showFooter, callToAction} = this.props
+        const {
+            className, plan, isUpdating, isCurrentPlan, isTrialing, isFeatured, features, showFooter, callToAction
+        } = this.props
         const planSentencePrefix = isTrialing ? 'Choose' : 'Switch to'
         const costMultiplier = 100
         const costPerTicket = (plan.get('cost_per_ticket') * costMultiplier).toFixed(2)
@@ -39,7 +43,7 @@ export class Plan extends React.Component<Props> {
 
         return (
             <Card
-                className={classnames('plan', `plan-${planName}`, {featured: isFeatured})}
+                className={classnames('plan', `plan-${planName}`, className, {featured: isFeatured})}
                 outline
             >
                 <CardHeader className={classnames('plan-header', {'featured-header': isFeatured})}>

@@ -63,4 +63,25 @@ export default class GorgiasApi {
             data: resp.data
         })
     }
+
+    /**
+     * Create a new subscription with no trial period or end the trial period of an existing subscription.
+     *
+     * @return - A Gorgias Subscription.
+     */
+    async startSubscription(): Map<*, *> {
+        const resp = await this._api.put('/api/billing/subscription/start/', {})
+        return fromJS(resp.data)
+    }
+
+    /**
+     * Update the credit card of the current account.
+     *
+     * @param {Map} data - The data to sent.
+     * @return - A Stripe credit card.
+     */
+    async updateCreditCard(data: Map<*, *>): Map<*, *> {
+        const resp = await this._api.put('/api/billing/credit-card/', data.toJS())
+        return fromJS(resp.data)
+    }
 }

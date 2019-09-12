@@ -6,7 +6,9 @@ import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 
 import * as actions from '../actions'
+import {setCreditCard} from '../actions'
 import {initialState} from '../reducers'
+import {setFutureSubscriptionPlan} from '../actions'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -151,76 +153,22 @@ describe('billing actions', () => {
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    describe('update credit card', () => {
-
-        it('success', () => {
-
+    describe('setCreditCard()', () => {
+        it('should return a Redux action to set the credit card of the current account.', () => {
             const card = {
-                name: 'Alex',
-                number: '545454545454',
-                expDate: '10/23',
-                cvc: '123',
+                last4: '6412',
+                brand: 'mastercard',
+                name: 'Steve Frizeli',
+                exp_month: '12',
+                exp_year: '24'
             }
-
-            window.Stripe = {
-                card: {
-                    createToken: jest.fn((data, callback) => {
-                        expect(data).toHaveProperty('name', 'Alex')
-                        expect(data).toHaveProperty('number', '545454545454')
-                        expect(data).toHaveProperty('cvc', '123')
-                        expect(data).toHaveProperty('exp_month', '10')
-                        expect(data).toHaveProperty('exp_year', '23')
-
-                        // trigger success
-                        callback('success', {
-                            id: 1234,
-                        })
-                    }),
-                },
-            }
-
-            mockServer.onPut('/api/billing/credit-card/').reply(200, card)
-
-            return store.dispatch(actions.updateCreditCard(card))
-                .then(() => expect(store.getActions()).toMatchSnapshot())
+            expect(setCreditCard(fromJS(card))).toMatchSnapshot()
         })
+    })
 
-        it('Stripe error', () => {
-            const card = {
-                name: 'Alex',
-                number: '545454545454',
-                expDate: '10/23',
-                cvc: '123',
-            }
-
-            window.Stripe = {
-                card: {
-                    createToken: jest.fn((data, callback) => {
-                        expect(data).toHaveProperty('name', 'Alex')
-                        expect(data).toHaveProperty('number', '545454545454')
-                        expect(data).toHaveProperty('cvc', '123')
-                        expect(data).toHaveProperty('exp_month', '10')
-                        expect(data).toHaveProperty('exp_year', '23')
-
-                        // trigger error
-                        callback('error', {
-                            error: 'Sorry you can only buy ice cream with this credit card',
-                        })
-                    }),
-                },
-            }
-
-            mockServer.onPut('/api/billing/credit-card/').reply(200, card)
-
-            return store.dispatch(actions.updateCreditCard(card))
-                .then(() => expect(store.getActions()).toMatchSnapshot())
-        })
-
-        it('fails because no Stripe', () => {
-            window.Stripe = undefined
-
-            store.dispatch(actions.updateCreditCard({}))
-            expect(store.getActions()).toMatchSnapshot()
+    describe('setFutureSubscriptionPlan()', () => {
+        it('should return a Redux action to set the future subscription plan.', () => {
+            expect(setFutureSubscriptionPlan('advanced-usd-1')).toMatchSnapshot()
         })
     })
 })

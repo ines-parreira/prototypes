@@ -9,8 +9,12 @@ import * as constants from './constants'
 
 export default function reducer(state: Map<*,*> = initialState, action: actionType): Map<*,*> {
     switch (action.type) {
+        case constants.SET_FUTURE_SUBSCRIPTION_PLAN:
+            return state.set('futureSubscriptionPlan', action.planId)
         case constants.FETCH_INVOICES_SUCCESS:
             return state.set('invoices', fromJS(action.resp))
+        case constants.SET_CREDIT_CARD:
+            return state.set('creditCard', action.creditCard)
         case constants.FETCH_CREDIT_CARD_SUCCESS:
         case constants.UPDATE_CREDIT_CARD_SUCCESS:
             return state.set('creditCard', fromJS(action.resp))

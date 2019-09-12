@@ -1,5 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`current account actions setCurrentSubscription() should return a Redux action to set the current subscription. 1`] = `
+Object {
+  "subscription": Immutable.Map {
+    "plan": "basic-usd-1",
+    "status": "active",
+  },
+  "type": "SET_CURRENT_SUBSCRIPTION",
+}
+`;
+
 exports[`current account actions submit setting creation 1`] = `
 Array [
   Object {

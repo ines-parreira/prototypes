@@ -6,6 +6,7 @@ import {initialState} from '../reducers'
 import {initialState as initialCurrentAccountState} from '../../currentAccount/reducers'
 
 import * as billingFixtures from '../../../fixtures/billing'
+import {currentPlanId} from '../selectors'
 
 jest.addMatchers(immutableMatchers)
 
@@ -97,5 +98,28 @@ describe('billing selectors', () => {
         expect(selectors.isAllowedToChangePlan()({})).toBe(true)
         expect(selectors.isAllowedToChangePlan('standard-usd-1')(state)).toBe(false)
         expect(selectors.isAllowedToChangePlan('growth-usd-1')(state)).toBe(true)
+    })
+
+    describe('currentPlanId()', () => {
+        it('should return plan of the current subscription', () => {
+            const state = {}
+            expect(currentPlanId(state)).toEqual(undefined)
+        })
+
+        it('should return plan of the current subscription', () => {
+            const state = {
+                currentAccount: fromJS({current_subscription: {plan: 'subscription-plan-123'}}),
+                billing: fromJS({futureSubscriptionPlan: 'future-plan-123'})
+            }
+            expect(currentPlanId(state)).toEqual('subscription-plan-123')
+        })
+
+        it('should return the future subscription plan', () => {
+            const state = {
+                currentAccount: fromJS({current_subscription: null}),
+                billing: fromJS({futureSubscriptionPlan: 'future-plan-123'})
+            }
+            expect(currentPlanId(state)).toEqual('future-plan-123')
+        })
     })
 })

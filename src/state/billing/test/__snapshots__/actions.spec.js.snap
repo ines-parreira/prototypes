@@ -93,6 +93,26 @@ Array [
 ]
 `;
 
+exports[`billing actions setCreditCard() should return a Redux action to set the credit card of the current account. 1`] = `
+Object {
+  "creditCard": Immutable.Map {
+    "last4": "6412",
+    "brand": "mastercard",
+    "name": "Steve Frizeli",
+    "exp_month": "12",
+    "exp_year": "24",
+  },
+  "type": "SET_CREDIT_CARD",
+}
+`;
+
+exports[`billing actions setFutureSubscriptionPlan() should return a Redux action to set the future subscription plan. 1`] = `
+Object {
+  "planId": "advanced-usd-1",
+  "type": "SET_FUTURE_SUBSCRIPTION_PLAN",
+}
+`;
+
 exports[`billing actions update billing contact information failure 1`] = `
 Array [
   Object {
@@ -123,39 +143,6 @@ Array [
       },
     },
     "type": "UPDATE_BILLING_CONTACT_SUCCESS",
-  },
-]
-`;
-
-exports[`billing actions update credit card Stripe error 1`] = `
-Array [
-  Object {
-    "error": "Sorry you can only buy ice cream with this credit card",
-    "reason": "Unable to update credit card.",
-    "type": "UPDATE_CREDIT_CARD_ERROR",
-  },
-]
-`;
-
-exports[`billing actions update credit card fails because no Stripe 1`] = `
-Array [
-  Object {
-    "reason": "Unable to update credit card. Please reload this page.",
-    "type": "UPDATE_CREDIT_CARD_ERROR",
-  },
-]
-`;
-
-exports[`billing actions update credit card success 1`] = `
-Array [
-  Object {
-    "resp": Object {
-      "cvc": "123",
-      "expDate": "10/23",
-      "name": "Alex",
-      "number": "545454545454",
-    },
-    "type": "UPDATE_CREDIT_CARD_SUCCESS",
   },
 ]
 `;

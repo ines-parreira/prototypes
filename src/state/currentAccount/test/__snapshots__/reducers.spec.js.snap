@@ -1,5 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`current account reducers SET_CURRENT_SUBSCRIPTION should set the credit card (initial state). 1`] = `
+Immutable.Map {
+  "settings": Immutable.List [],
+  "_internal": Immutable.Map {
+    "loading": Immutable.Map {},
+  },
+  "current_subscription": Immutable.Map {
+    "plan": "basic-usd-1",
+    "status": "active",
+  },
+}
+`;
+
+exports[`current account reducers SET_CURRENT_SUBSCRIPTION should set the credit card and override the previous one. 1`] = `
+Immutable.Map {
+  "settings": Immutable.List [],
+  "_internal": Immutable.Map {
+    "loading": Immutable.Map {},
+  },
+  "current_subscription": Object {
+    "plan": "advanced-usd-2",
+    "staus": "past_due",
+  },
+}
+`;
+
 exports[`current account reducers update account 1`] = `
 Object {
   "_internal": Object {
