@@ -82,8 +82,9 @@ class FacebookIntegrationAds extends React.Component<Props> {
                 >
                     <div className="mb-3">
                         <p>
-                            Ads are fetched every 15 minutes. Comments sent while an ad was not active on Gorgias{' '}
-                            will not be fetched. Learn more about Instagram ads comments support{' '}
+                            It can take up to 1 hour to synchronize new ads on Gorgias. Instagram ads comments are{' '}
+                            fetched every 20 minutes. Comments sent while an ad was not active on Gorgias will not{' '}
+                            be fetched. Learn more about Instagram ads comments support{' '}
                             <a
                                 href="https://docs.gorgias.io/social-media-integrations/instagram-ads-comments"
                                 rel="noopener noreferrer"
