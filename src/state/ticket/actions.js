@@ -24,6 +24,8 @@ import * as ticketsSelectors from '../tickets/selectors'
 
 import {getSourceTypeCache} from '../newMessage/responseUtils'
 
+import {INSTAGRAM_AD_COMMENT_SOURCE, INSTAGRAM_COMMENT_SOURCE} from '../../config/ticket'
+
 import {getCustomerMessages} from './selectors'
 import {
     buildPartialUpdateFromAction,
@@ -486,7 +488,7 @@ export const fetchTicket = (ticketId, discreetly = false) => (dispatch) => {
 
             const sourceTypeOfResponse = getSourceTypeOfResponse(resp.messages)
 
-            if (sourceTypeOfResponse === 'instagram-comment') {
+            if ([INSTAGRAM_COMMENT_SOURCE, INSTAGRAM_AD_COMMENT_SOURCE].includes(sourceTypeOfResponse)) {
                 dispatch(newMessageActions.prepare(sourceTypeOfResponse))
             }
 
@@ -573,7 +575,7 @@ export const _goToNextOrPrevTicket = (ticketId: number, direction: string, promi
 
                     const sourceTypeOfResponse = getSourceTypeOfResponse(ticket.messages)
 
-                    if (sourceTypeOfResponse === 'instagram-comment') {
+                    if ([INSTAGRAM_COMMENT_SOURCE, INSTAGRAM_AD_COMMENT_SOURCE].includes(sourceTypeOfResponse)) {
                         dispatch(newMessageActions.prepare(sourceTypeOfResponse))
                     }
 

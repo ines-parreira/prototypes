@@ -19,6 +19,7 @@ import {
     FACEBOOK_MESSAGE_SOURCE,
     FACEBOOK_MESSENGER_SOURCE,
     FACEBOOK_POST_SOURCE,
+    INSTAGRAM_AD_COMMENT_SOURCE,
     INSTAGRAM_AD_MEDIA_SOURCE,
     INSTAGRAM_COMMENT_SOURCE,
     INSTAGRAM_MEDIA_SOURCE
@@ -153,7 +154,8 @@ export default class ReplyMessageChannel extends React.Component {
             : `${ticket.get('id', '')} - ${messages.last().get('id', '')} - ${md5(messages.last().get('source'))}`
 
         const disabledSources = [FACEBOOK_POST_SOURCE, FACEBOOK_MESSAGE_SOURCE, CHAT_SOURCE, API_SOURCE,
-            FACEBOOK_MESSENGER_SOURCE, INSTAGRAM_COMMENT_SOURCE, INSTAGRAM_MEDIA_SOURCE, INSTAGRAM_AD_MEDIA_SOURCE]
+            FACEBOOK_MESSENGER_SOURCE, INSTAGRAM_COMMENT_SOURCE, INSTAGRAM_AD_COMMENT_SOURCE, INSTAGRAM_MEDIA_SOURCE,
+            INSTAGRAM_AD_MEDIA_SOURCE]
 
         const isInputEnabled =
             !disabledSources.includes(this.props.sourceType)
@@ -185,6 +187,7 @@ export default class ReplyMessageChannel extends React.Component {
         const suggestFacebookComment = isUpdate && !!replyOptions.get('facebook-comment')
         const suggestFacebookMessenger = isUpdate && !!replyOptions.get('facebook-messenger')
         const suggestInstagram = isUpdate && !!replyOptions.get('instagram-comment')
+        const suggestInstagramAd = isUpdate && !!replyOptions.get('instagram-ad-comment')
         const suggestInternalNote = isUpdate && !!replyOptions.get('internal-note')
         const suggestForwardByEmail = isUpdate
         const iconLabel = isForward ? 'email-forward' : this.props.sourceType
@@ -285,6 +288,19 @@ export default class ReplyMessageChannel extends React.Component {
                                         }}
                                     >
                                         <SourceIcon type="instagram-comment" />
+                                        Reply via Instagram
+                                    </DropdownItem>
+                                )
+                            }
+                            {
+                                suggestInstagramAd && (
+                                    <DropdownItem
+                                        type="button"
+                                        onClick={() => {
+                                            prepareNewMessage('instagram-ad-comment')
+                                        }}
+                                    >
+                                        <SourceIcon type="instagram-ad-comment" />
                                         Reply via Instagram
                                     </DropdownItem>
                                 )

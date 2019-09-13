@@ -95,7 +95,9 @@ export const SOURCE_VALUE_PROP = {
     'facebook-messenger': 'address',
     'facebook-post': 'address',
     'instagram-media': 'address',
-    'instagram-comment': 'address'
+    'instagram-comment': 'address',
+    'instagram-ad-media': 'address',
+    'instagram-ad-comment': 'address',
 }
 
 export const TICKET_STATUSES = ['open', 'closed']

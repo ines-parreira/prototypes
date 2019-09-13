@@ -6,6 +6,8 @@ import {connect} from 'react-redux'
 import * as infobarActions from '../../../../../state/infobar/actions'
 import type {Meta, Source} from '../../../../../models/ticket/types'
 
+import {INSTAGRAM_AD_COMMENT_SOURCE, INSTAGRAM_COMMENT_SOURCE} from '../../../../../config/ticket'
+
 import css from './SourceActions.less'
 
 const classNames = classNamesBind.bind(css)
@@ -53,7 +55,7 @@ export class SourceActions extends React.Component<Props> {
             return widgets
         }
 
-        const isInstagramComment = source.type === 'instagram-comment'
+        const isInstagramComment = [INSTAGRAM_COMMENT_SOURCE, INSTAGRAM_AD_COMMENT_SOURCE].includes(source.type)
         const isFacebookComment = source.type === 'facebook-comment'
 
         // If the comment is a Facebook comment, posted by the page, then the API will never allow us to hide it.

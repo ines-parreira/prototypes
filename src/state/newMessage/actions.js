@@ -45,6 +45,8 @@ import type {dispatchType, getStateType, currentUserType} from '../types'
 import type {attachmentType} from '../../types'
 import {getMomentNow} from '../../utils/date'
 
+import {INSTAGRAM_AD_COMMENT_SOURCE, INSTAGRAM_COMMENT_SOURCE} from '../../config/ticket'
+
 import * as responseUtils from './responseUtils'
 import * as selectors from './selectors'
 import * as constants from './constants'
@@ -355,7 +357,8 @@ export const prepare = (sourceType: string) => (dispatch: dispatchType, getState
 
             break
         }
-        case 'instagram-comment': {
+        case 'instagram-comment':
+        case 'instagram-ad-comment': {
             // If we're preparing a new Instagram comment message, we want to insert a mention of format `@username `
             // with the user name of the customer
             dispatch(prepareDefault(sourceType))
@@ -678,7 +681,7 @@ export function submitTicketMessage(status: ?string, macroActions: ?macroActions
 
                     const sourceTypeOfResponse = getSourceTypeOfResponse(messages)
 
-                    if (sourceTypeOfResponse === 'instagram-comment') {
+                    if ([INSTAGRAM_COMMENT_SOURCE, INSTAGRAM_AD_COMMENT_SOURCE].includes(sourceTypeOfResponse)) {
                         dispatch(prepare(sourceTypeOfResponse))
                     }
                 }

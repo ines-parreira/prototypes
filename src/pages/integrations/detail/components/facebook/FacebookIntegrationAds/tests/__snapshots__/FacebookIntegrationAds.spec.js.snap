@@ -275,7 +275,7 @@ exports[`FacebookIntegrationAds component should render a spinner 1`] = `
             className="mb-3"
           >
             <p>
-              It can take up to 1 hour to synchronize new ads on Gorgias. Instagram ads comments are
+              It can take up to 2 hours to synchronize new ads on Gorgias. Instagram ads comments are
                
               fetched every 20 minutes. Comments sent while an ad was not active on Gorgias will not
                
@@ -619,7 +619,7 @@ exports[`FacebookIntegrationAds component should render with ads limit reached 1
             className="mb-3"
           >
             <p>
-              It can take up to 1 hour to synchronize new ads on Gorgias. Instagram ads comments are
+              It can take up to 2 hours to synchronize new ads on Gorgias. Instagram ads comments are
                
               fetched every 20 minutes. Comments sent while an ad was not active on Gorgias will not
                
@@ -1488,7 +1488,7 @@ exports[`FacebookIntegrationAds component should render with one active ad, when
             className="mb-3"
           >
             <p>
-              It can take up to 1 hour to synchronize new ads on Gorgias. Instagram ads comments are
+              It can take up to 2 hours to synchronize new ads on Gorgias. Instagram ads comments are
                
               fetched every 20 minutes. Comments sent while an ad was not active on Gorgias will not
                
@@ -1863,7 +1863,7 @@ exports[`FacebookIntegrationAds component should render with one ad 1`] = `
             className="mb-3"
           >
             <p>
-              It can take up to 1 hour to synchronize new ads on Gorgias. Instagram ads comments are
+              It can take up to 2 hours to synchronize new ads on Gorgias. Instagram ads comments are
                
               fetched every 20 minutes. Comments sent while an ad was not active on Gorgias will not
                
@@ -2302,7 +2302,7 @@ exports[`FacebookIntegrationAds component should render with two ads (one not ac
             className="mb-3"
           >
             <p>
-              It can take up to 1 hour to synchronize new ads on Gorgias. Instagram ads comments are
+              It can take up to 2 hours to synchronize new ads on Gorgias. Instagram ads comments are
                
               fetched every 20 minutes. Comments sent while an ad was not active on Gorgias will not
                
@@ -2836,7 +2836,7 @@ exports[`FacebookIntegrationAds component should render without ad 1`] = `
             className="mb-3"
           >
             <p>
-              It can take up to 1 hour to synchronize new ads on Gorgias. Instagram ads comments are
+              It can take up to 2 hours to synchronize new ads on Gorgias. Instagram ads comments are
                
               fetched every 20 minutes. Comments sent while an ad was not active on Gorgias will not
                

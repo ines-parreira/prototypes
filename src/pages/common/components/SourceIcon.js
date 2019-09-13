@@ -3,17 +3,43 @@ import React from 'react'
 
 import classnames from 'classnames'
 
-import {EMAIL_INTEGRATION_TYPE, GMAIL_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE} from '../../../constants/integration'
+import {
+    EMAIL_INTEGRATION_TYPE,
+    FACEBOOK_INTEGRATION_TYPE,
+    GMAIL_INTEGRATION_TYPE,
+    OUTLOOK_INTEGRATION_TYPE,
+    SMOOCH_INSIDE_INTEGRATION_TYPE,
+    SMOOCH_INTEGRATION_TYPE
+} from '../../../constants/integration'
 
 import type {IntegrationType} from '../../../models/integration'
 import type {SourceType} from '../../../models/ticket/types'
+import {
+    AIRCALL_SOURCE,
+    API_SOURCE,
+    CHAT_SOURCE,
+    EMAIL_FORWARD_SOURCE,
+    FACEBOOK_COMMENT_SOURCE,
+    FACEBOOK_MESSAGE_SOURCE,
+    FACEBOOK_MESSENGER_SOURCE,
+    FACEBOOK_POST_SOURCE,
+    INSTAGRAM_AD_COMMENT_SOURCE,
+    INSTAGRAM_AD_MEDIA_SOURCE,
+    INSTAGRAM_COMMENT_SOURCE,
+    INSTAGRAM_MEDIA_SOURCE,
+    INTERNAL_NOTE_SOURCE,
+    OTTSPOTT_CALL_SOURCE,
+    PHONE_SOURCE,
+    SYSTEM_MESSAGE_SOURCE,
+    TWITTER_SOURCE
+} from '../../../config/ticket'
 
 type Props = {
     type?: SourceType,
     className?: string,
 }
 
-const sourceTypeToIcon = (sourceType?: SourceType | IntegrationType ) => {
+const sourceTypeToIcon = (sourceType?: SourceType | IntegrationType) => {
     const icon = {
         name: 'live_help',
         custom: false,
@@ -21,7 +47,7 @@ const sourceTypeToIcon = (sourceType?: SourceType | IntegrationType ) => {
     }
 
     switch (sourceType) {
-        case 'internal-note':
+        case INTERNAL_NOTE_SOURCE:
             icon.name = 'note'
             icon.extra = 'text-warning'
             break
@@ -30,45 +56,45 @@ const sourceTypeToIcon = (sourceType?: SourceType | IntegrationType ) => {
         case OUTLOOK_INTEGRATION_TYPE:
             icon.name = 'email'
             break
-        case 'email-forward':
+        case EMAIL_FORWARD_SOURCE:
             icon.name = 'forward'
             break
-        case 'chat':
-        case 'smooch':
-        case 'smooch_inside':
+        case CHAT_SOURCE:
+        case SMOOCH_INTEGRATION_TYPE:
+        case SMOOCH_INSIDE_INTEGRATION_TYPE:
             icon.name = 'forum'
             icon.extra = 'text-purple'
             break
-        case 'api':
+        case API_SOURCE:
             icon.name = 'code'
             break
-        case 'aircall':
-        case 'phone':
-        case 'ottspott-call':
+        case AIRCALL_SOURCE:
+        case PHONE_SOURCE:
+        case OTTSPOTT_CALL_SOURCE:
             icon.name = 'phone'
             break
-        case 'facebook':
-        case 'facebook-post':
-        case 'facebook-comment':
+        case FACEBOOK_INTEGRATION_TYPE:
+        case FACEBOOK_POST_SOURCE:
+        case FACEBOOK_COMMENT_SOURCE:
             icon.custom = true
             icon.name = 'facebook'
             break
-        case 'facebook-messenger':
-        case 'facebook-message':
+        case FACEBOOK_MESSENGER_SOURCE:
+        case FACEBOOK_MESSAGE_SOURCE:
             icon.custom = true
             icon.name = 'facebook-messenger'
             break
-        case 'system-message':
+        case SYSTEM_MESSAGE_SOURCE:
             icon.name = 'settings'
             break
-        case 'twitter':
+        case TWITTER_SOURCE:
             icon.custom = true
             icon.name = 'twitter'
             break
-        case 'instagram-media':
-        case 'instagram-ad-media':
-        case 'instagram-comment':
-        case 'instagram-ad-comment':
+        case INSTAGRAM_MEDIA_SOURCE:
+        case INSTAGRAM_AD_MEDIA_SOURCE:
+        case INSTAGRAM_COMMENT_SOURCE:
+        case INSTAGRAM_AD_COMMENT_SOURCE:
         case 'instagram':
             icon.custom = true
             icon.name = 'instagram'

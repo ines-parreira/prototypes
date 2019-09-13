@@ -1,6 +1,6 @@
 //@flow
 
-import {CHANNELS} from '../../config/ticket'
+import {CHANNELS, SOURCE_TYPES} from '../../config/ticket'
 
 export type TicketElement = {
     id?: number,
@@ -78,10 +78,7 @@ export type Action = {
 
 export type ActionStatus = 'error' | 'pending' | 'success'
 
-export type SourceType = 'email' | 'email-forward' | 'chat' | 'api' | 'aircall' | 'phone' | 'ottspott-call' |
-    'facebook-post' | 'facebook-comment' | 'facebook-messenger' | 'facebook-message' |
-    'instagram-comment' | 'instagram-ad-comment' | 'instagram-media' | 'instagram-ad-media' | 'twitter' |
-    'system-message' | 'internal-note'
+export type SourceType = $Values<SOURCE_TYPES>
 export type Channel = $Values<CHANNELS>
 
 export type Source = {

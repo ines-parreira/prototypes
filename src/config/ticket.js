@@ -27,7 +27,11 @@ export const CHANNELS = [
 
 export const API_SOURCE = 'api'
 export const EMAIL_SOURCE = 'email'
+export const EMAIL_FORWARD_SOURCE = 'email-forward'
 export const CHAT_SOURCE = 'chat'
+export const AIRCALL_SOURCE = 'aircall'
+export const PHONE_SOURCE = 'phone'
+export const OTTSPOTT_CALL_SOURCE = 'ottspott-call'
 export const FACEBOOK_MESSENGER_SOURCE = 'facebook-messenger'
 export const FACEBOOK_MESSAGE_SOURCE = 'facebook-message'
 export const FACEBOOK_POST_SOURCE = 'facebook-post'
@@ -35,15 +39,24 @@ export const INSTAGRAM_MEDIA_SOURCE = 'instagram-media'
 export const INSTAGRAM_AD_MEDIA_SOURCE = 'instagram-ad-media'
 export const FACEBOOK_COMMENT_SOURCE = 'facebook-comment'
 export const INSTAGRAM_COMMENT_SOURCE = 'instagram-comment'
+export const INSTAGRAM_AD_COMMENT_SOURCE = 'instagram-ad-comment'
+export const TWITTER_SOURCE = 'twitter'
 export const INTERNAL_NOTE_SOURCE = 'internal-note'
 export const SYSTEM_MESSAGE_SOURCE = 'system-message'
+
+export const SOURCE_TYPES = [
+    EMAIL_SOURCE | EMAIL_FORWARD_SOURCE | CHAT_SOURCE | API_SOURCE | AIRCALL_SOURCE | PHONE_SOURCE |
+    OTTSPOTT_CALL_SOURCE | FACEBOOK_POST_SOURCE | FACEBOOK_COMMENT_SOURCE | FACEBOOK_MESSENGER_SOURCE |
+    FACEBOOK_MESSAGE_SOURCE | INSTAGRAM_COMMENT_SOURCE | INSTAGRAM_AD_COMMENT_SOURCE | INSTAGRAM_MEDIA_SOURCE |
+    INSTAGRAM_AD_MEDIA_SOURCE | TWITTER_SOURCE | SYSTEM_MESSAGE_SOURCE | INTERNAL_NOTE_SOURCE
+]
 
 export const SYSTEM_SOURCE_TYPES = [INTERNAL_NOTE_SOURCE, SYSTEM_MESSAGE_SOURCE]
 
 // source types that can be used to answer
 export const USABLE_SOURCE_TYPES = [
-    EMAIL_SOURCE, CHAT_SOURCE, FACEBOOK_MESSENGER_SOURCE, FACEBOOK_MESSAGE_SOURCE,
-    FACEBOOK_COMMENT_SOURCE, INTERNAL_NOTE_SOURCE, INSTAGRAM_COMMENT_SOURCE
+    EMAIL_SOURCE, CHAT_SOURCE, FACEBOOK_MESSENGER_SOURCE, FACEBOOK_MESSAGE_SOURCE, FACEBOOK_COMMENT_SOURCE,
+    INTERNAL_NOTE_SOURCE, INSTAGRAM_COMMENT_SOURCE, INSTAGRAM_AD_COMMENT_SOURCE
 ]
 
 // available variables in macros
@@ -342,15 +355,19 @@ export const sourceTypeToChannel = (sourceType, messages = []) => {
     }
 
     if (sourceType.startsWith('facebook') && sourceType !== 'facebook-messenger') {
-        return 'facebook'
+        return FACEBOOK_CHANNEL
+    }
+
+    if (sourceType.startsWith('instagram-ad')) {
+        return INSTAGRAM_AD_COMMENT_CHANNEL
     }
 
     if (sourceType.startsWith('instagram')) {
-        return 'instagram-comment'
+        return INSTAGRAM_COMMENT_CHANNEL
     }
 
     if (sourceType === 'ottspott-call') {
-        return 'phone'
+        return PHONE_CHANNEL
     }
 
     return sourceType
@@ -380,8 +397,12 @@ export const responseSourceType = (messages) => {
         return FACEBOOK_COMMENT_SOURCE
     }
 
-    if (lastSourceType === INSTAGRAM_MEDIA_SOURCE || lastSourceType === INSTAGRAM_AD_MEDIA_SOURCE) {
+    if (lastSourceType === INSTAGRAM_MEDIA_SOURCE) {
         return INSTAGRAM_COMMENT_SOURCE
+    }
+
+    if (lastSourceType === INSTAGRAM_AD_MEDIA_SOURCE) {
+        return INSTAGRAM_AD_COMMENT_SOURCE
     }
 
     if (!isAnswerableType(lastSourceType)) {
