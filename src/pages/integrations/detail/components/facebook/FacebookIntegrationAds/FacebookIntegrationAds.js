@@ -20,8 +20,6 @@ import type {dispatchType} from '../../../../../../state/types'
 
 import Loader from '../../../../../common/components/Loader/Loader'
 
-import {DatetimeLabel} from '../../../../../common/utils/labels'
-
 import {getTimezone} from '../../../../../../state/currentUser/selectors'
 
 import {fetchAds, updateAd} from './actions'
@@ -278,7 +276,7 @@ type AdsTableProps = {
 
 class AdsTable extends React.Component<AdsTableProps> {
     render() {
-        const {ads, loadingAds, accountTotalAds, maxAccountAds, timezone} = this.props
+        const {ads, loadingAds, accountTotalAds, maxAccountAds} = this.props
 
         if (!ads || !ads.size) {
             return null
@@ -298,19 +296,6 @@ class AdsTable extends React.Component<AdsTableProps> {
                                 <span className="mr-2">
                                     <b>{ad.get('name')}</b>
                                 </span>
-                                {ad.get('comments_fetched_at')
-                                    ? (
-                                        <span className="text-faded">
-                                            Comments fetched at{' '}
-                                            <DatetimeLabel
-                                                dateTime={ad.get('comments_fetched_at')}
-                                                labelFormat="L LT"
-                                                timezone={timezone}
-                                            />
-                                        </span>
-                                    )
-                                    : null
-                                }
                             </td>
                             <td className="smallest align-middle">
                                 <ToggleButton

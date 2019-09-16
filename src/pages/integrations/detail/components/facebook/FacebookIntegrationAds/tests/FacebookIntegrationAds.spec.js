@@ -49,8 +49,7 @@ describe('FacebookIntegrationAds component', () => {
     }
 
     // Tooltips
-    const tooltipIds = ['active-ads-tooltip', 'datetime-tooltip-pjpsszd2icb']
-    const random = Math.random
+    const tooltipIds = ['active-ads-tooltip']
 
     beforeAll(() => {
         tooltipIds.forEach((tooltipId) => {
@@ -58,16 +57,12 @@ describe('FacebookIntegrationAds component', () => {
             tooltipDiv.setAttribute('id', tooltipId)
             document.body.appendChild(tooltipDiv)
         })
-
-        global.Math.random = () => 0.709657924825722 // ID will be `pjpsszd2icb`
     })
 
     afterAll(() => {
         tooltipIds.forEach((tooltipId) => {
             document.getElementById(tooltipId).remove()
         })
-
-        global.Math.random = random
     })
 
     it('should render a spinner', () => {
@@ -173,28 +168,6 @@ describe('FacebookIntegrationAds component', () => {
                                 comments_fetched_at: '2019-01-01 10:30:00',
                                 name: 'ad 3',
                                 is_active: false
-                            }
-                        }
-                    }
-                })}
-                {...props}
-            />
-        )
-
-        expect(component).toMatchSnapshot()
-    })
-
-    it('should render with one active ad, when the comments have not been fetched yet', () => {
-        const component = mount(
-            <FacebookIntegrationAds
-                store={getStore({
-                    maxAccountAds: 100,
-                    internal: {
-                        ads: {
-                            postid1: {
-                                comments_fetched_at: null,
-                                name: 'ad 1',
-                                is_active: true
                             }
                         }
                     }
