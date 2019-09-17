@@ -148,7 +148,7 @@ class TicketListInfobarContainer extends React.Component<Props> {
                                 <div>Connect Facebook &amp; Instagram</div>
                             </Link>
                             <Link
-                                to="/app/settings/team"
+                                to="/app/settings/users/"
                                 className={css.button}
                                 onClick={() => {
                                     segmentTracker.logEvent(segmentTracker.EVENTS.ONBOARDING_WIDGET_CLICKED, {

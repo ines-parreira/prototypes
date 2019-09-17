@@ -30,7 +30,7 @@ export class UserAuditRow extends React.Component<Props> {
 
         return (
             <div>
-                <Link to={`/app/settings/team/update/${user.get('id')}`}>
+                <Link to={`/app/settings/users/${user.get('id')}`}>
                     <Avatar
                         name={user.get('name')}
                         url={user.getIn(['meta', 'profile_picture_url'])}
