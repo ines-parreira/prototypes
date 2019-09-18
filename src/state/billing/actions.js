@@ -7,7 +7,6 @@ import type {dispatchType} from '../types'
 import * as constants from './constants'
 import type {billingContactType} from './types'
 
-
 /***
  * Set the future subscription plan.
  *
@@ -20,6 +19,20 @@ export const setFutureSubscriptionPlan = (planId: string): dispatchType => {
         planId
     }
 }
+
+/**
+ * Update an invoice in the list of invoices.
+ *
+ * @param invoice - the new invoice to update in the list.
+ * @returns - A Redux action.
+ */
+export const updateInvoiceInList = (invoice: Map<*, *>): dispatchType => {
+    return {
+        type: constants.UPDATE_INVOICE_IN_LIST,
+        invoice
+    }
+}
+
 
 export function fetchCurrentUsage() {
     return (dispatch: dispatchType): Promise<dispatchType> => {
@@ -109,7 +122,6 @@ export const setCreditCard = (creditCard: Map<*, *>): Object => {
         creditCard
     }
 }
-
 
 /**
  * Fetch the billing contact information for the current account

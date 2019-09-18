@@ -22,7 +22,7 @@ describe('BillingInvoices component', () => {
                 invoices={fromJS({})}
             />
         )
-        component.setState({isLoading: false})
+        component.setState({isFetchingInvoices: false})
         expect(component).toMatchSnapshot()
     })
 
@@ -57,7 +57,7 @@ describe('BillingInvoices component', () => {
                 ])}
             />
         )
-        component.setState({isLoading: false})
+        component.setState({isFetchingInvoices: false})
         expect(component).toMatchSnapshot()
     })
 })

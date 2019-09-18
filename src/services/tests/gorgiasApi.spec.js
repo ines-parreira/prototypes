@@ -120,5 +120,32 @@ describe('services', () => {
             })
         })
 
+        describe('payInvoice()', () => {
+            it('should make an HTTP request to pay an invoice.', async() => {
+                const expectedInvoice = {
+                    id: 'in_1dj2801j2d',
+                    paid: true,
+                    amout_due: 35312
+                }
+                apiMock.onAny().reply(202, expectedInvoice)
+                const invoice = await new GorgiasApi().payInvoice(expectedInvoice['id'])
+                expect(invoice.toJS()).toEqual(expectedInvoice)
+                expect(apiMock.history).toMatchSnapshot()
+            })
+        })
+
+        describe('confirmInvoicePayment()', () => {
+            it('should make an HTTP request to confirm a payment for an invoice.', async() => {
+                const expectedInvoice = {
+                    id: 'in_mf9u2x3j20z',
+                    paid: true,
+                    amout_due: 43521
+                }
+                apiMock.onAny().reply(202, expectedInvoice)
+                const invoice = await new GorgiasApi().confirmInvoicePayment(expectedInvoice['id'])
+                expect(invoice.toJS()).toEqual(expectedInvoice)
+                expect(apiMock.history).toMatchSnapshot()
+            })
+        })
     })
 })

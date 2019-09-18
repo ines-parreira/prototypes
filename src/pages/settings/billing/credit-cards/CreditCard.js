@@ -102,8 +102,8 @@ class CreditCard extends Component<Props, State> {
      */
     _submit = (event: SyntheticEvent<*>): Promise<any> => {
         event.preventDefault()
-        const {currentAccount, currentUser, hasCreditCard, currentSubscription} = this.props
-        const hasNoSubscription = !currentSubscription.get('status')
+        const {currentAccount, currentUser, hasCreditCard, currentSubscription, notify} = this.props
+        const hasSubscription = !!currentSubscription.get('status')
         const cardToEncode = _pick(this.state, ['name', 'number', 'cvc'])
         const [expMonth, expYear] = this.state.expDate.split('/')
         cardToEncode.exp_month = expMonth.trim()
@@ -117,25 +117,12 @@ class CreditCard extends Component<Props, State> {
         })
 
         return new Promise(async(resolve) => {
+            let creditCard = null
+            let subscription = currentSubscription
+            let payment = null
             try {
                 const creditCardToken = await createStripeCardToken(cardToEncode)
-                const creditCard = await this.gorgiasApi.updateCreditCard(fromJS({token: creditCardToken.id}))
-                this.props.setCreditCard(creditCard)
-
-                if (hasNoSubscription || currentSubscription.get('status') === 'trialing') {
-                    const subscription = await this.gorgiasApi.startSubscription()
-                    this.props.setCurrentSubscription(subscription)
-                }
-
-                if (!hasCreditCard) {
-                    segmentTracker.logEvent(segmentTracker.EVENTS.PAYMENT_METHOD_ADDED, {
-                        payment_method: 'stripe',
-                        user_id: currentUser.get('id'),
-                        account_domain: currentAccount.get('domain')
-                    })
-                }
-
-                browserHistory.push('/app/settings/billing/')
+                creditCard = await this.gorgiasApi.updateCreditCard(fromJS({token: creditCardToken.id}))
             } catch (exception) {
                 let errorMsg = 'Failed to update credit card. Please try again in a few seconds.'
                 if (exception.response && exception.response.data.error) {
@@ -146,10 +133,66 @@ class CreditCard extends Component<Props, State> {
                     errorMsg = exception.error.message
                 }
                 this.props.notify({status: 'error', title: errorMsg})
-            } finally {
                 this.setState({isSubmitting: false})
-                resolve()
+                return resolve()
             }
+
+            this.props.setCreditCard(creditCard)
+
+            if (!hasCreditCard) {
+                segmentTracker.logEvent(segmentTracker.EVENTS.PAYMENT_METHOD_ADDED, {
+                    payment_method: 'stripe',
+                    user_id: currentUser.get('id'),
+                    account_domain: currentAccount.get('domain')
+                })
+            }
+
+            if (hasSubscription && subscription.get('status') !== 'trialing') {
+                // The subscription is already started.
+                browserHistory.push('/app/settings/billing/')
+                return resolve()
+            }
+
+            try {
+                const response = await this.gorgiasApi.startSubscription()
+                subscription = response.get('subscription')
+                payment = response.get('payment')
+            } catch (exception) {
+                const errorMsg = exception.response && exception.response.data.error
+                    ? exception.response.data.error.msg
+                    : 'Failed to update credit card. Please try again in a few seconds.'
+                this.props.notify({status: 'error', title: errorMsg})
+                return resolve()
+            }
+            this.props.setCurrentSubscription(subscription)
+
+            if (payment.get('confirmation_url')) {
+                notify({
+                    status: 'info',
+                    message: 'In order to activate your subscription, we need you to confirm this payment to your bank.' +
+                        'You will be redirected in a few seconds to a secure page.',
+                    dismissAfter: 5000,
+                    dismissible: false
+                })
+
+                setTimeout(() => {
+                    // $FlowFixMe
+                    window.location.href = payment.get('confirmation_url')
+                }, 4500)
+                return resolve()
+            }
+
+            if (payment.get('error')) {
+                notify({
+                    status: 'error',
+                    message: payment.get('error') + ' ' +
+                        'Please update your payment method and retry to pay your invoice.'
+                })
+            }
+
+            this.setState({isSubmitting: false})
+            browserHistory.push('/app/settings/billing/')
+            resolve()
         })
     }
 
@@ -202,7 +245,6 @@ class CreditCard extends Component<Props, State> {
             ` and pay ${currentPlan.get('currencySign')}${currentPlan.get('amount')}`
 
         const {isStripeLoaded} = this.state
-
         if (!isStripeLoaded) {
             return <Loader/>
         }

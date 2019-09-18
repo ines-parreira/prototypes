@@ -2,6 +2,43 @@
 
 exports[`services GorgiasApi cancelPendingRequests() should not be able to cancel pending requests because instance was not created with this ability 1`] = `"Cannot call \`.cancelPendingRequests()\` on this instance because it was not created with this ability."`;
 
+exports[`services GorgiasApi confirmInvoicePayment() should make an HTTP request to confirm a payment for an invoice. 1`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [],
+  "put": Array [
+    Object {
+      "cancelToken": CancelToken {
+        "promise": Promise {},
+      },
+      "data": "{}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      "maxContentLength": -1,
+      "method": "put",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/billing/invoices/in_mf9u2x3j20z/confirm-payment/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+}
+`;
+
 exports[`services GorgiasApi downloadStatistic() should fetch a statistic with the given name and filters (ready to be downloaded) 1`] = `
 Immutable.Map {
   "name": "support-volume-2019-05-23-2019-05-29.csv",
@@ -84,6 +121,43 @@ Object {
     },
   ],
   "put": Array [],
+}
+`;
+
+exports[`services GorgiasApi payInvoice() should make an HTTP request to pay an invoice. 1`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [],
+  "put": Array [
+    Object {
+      "cancelToken": CancelToken {
+        "promise": Promise {},
+      },
+      "data": "{}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      "maxContentLength": -1,
+      "method": "put",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/billing/invoices/in_1dj2801j2d/pay/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
 }
 `;
 

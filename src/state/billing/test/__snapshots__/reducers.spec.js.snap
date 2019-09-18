@@ -36,6 +36,21 @@ Immutable.Map {
 }
 `;
 
+exports[`billing reducers UPDATE_INVOICE_IN_LIST should update an invoice in the list of invoices. (existing invoice) 1`] = `
+Immutable.Map {
+  "invoices": Immutable.List [
+    Immutable.Map {
+      "id": "in_1",
+      "paid": false,
+    },
+    Immutable.Map {
+      "id": "in_2",
+      "paid": true,
+    },
+  ],
+}
+`;
+
 exports[`billing reducers fetch credit card 1`] = `
 Immutable.Map {
   "creditCard": Immutable.Map {

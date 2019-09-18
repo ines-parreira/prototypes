@@ -146,3 +146,13 @@ Array [
   },
 ]
 `;
+
+exports[`billing actions updateInvoiceInList() should return a Redux action to update an invoice in a list of invoices. 1`] = `
+Object {
+  "invoice": Immutable.Map {
+    "id": "in_dnu3xd0i2n3f0",
+    "paid": false,
+  },
+  "type": "UPDATE_INVOICE_IN_LIST",
+}
+`;

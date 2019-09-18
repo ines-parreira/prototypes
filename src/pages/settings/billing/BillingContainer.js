@@ -45,7 +45,6 @@ export class BillingContainer extends Component {
         if (currentSubscription.isEmpty()) {
             browserHistory.push('/app/settings/billing/plans')
         }
-
     }
 
     render() {

@@ -67,10 +67,32 @@ export default class GorgiasApi {
     /**
      * Create a new subscription with no trial period or end the trial period of an existing subscription.
      *
-     * @return - A Gorgias Subscription.
+     * @return - A Gorgias Subscription and its last payment.
      */
     async startSubscription(): Map<*, *> {
         const resp = await this._api.put('/api/billing/subscription/start/', {})
+        return fromJS(resp.data)
+    }
+
+    /**
+     * Pay an invoice.
+     *
+     * @param {string} invoiceId - The ID of the invoice to pay.
+     * @return - The invoice attempted to be paid.
+     */
+    async payInvoice(invoiceId: string): Map<*, *> {
+        const resp = await this._api.put(`/api/billing/invoices/${invoiceId}/pay/`, {})
+        return fromJS(resp.data)
+    }
+
+    /**
+     * Confirm the payment of an invoice.
+     *
+     * @param {string} invoiceId - the ID of the invoice to confirm the payment for.
+     * @return - The information related to the payment.
+     */
+    async confirmInvoicePayment(invoiceId: string): Map<*, *> {
+        const resp = await this._api.put(`/api/billing/invoices/${invoiceId}/confirm-payment/`, {})
         return fromJS(resp.data)
     }
 

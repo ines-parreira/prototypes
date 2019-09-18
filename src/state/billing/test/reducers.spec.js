@@ -192,4 +192,25 @@ describe('billing reducers', () => {
             expect(reducer(state, newAction)).toMatchSnapshot()
         })
     })
+
+    describe('UPDATE_INVOICE_IN_LIST', () => {
+        it('should update an invoice in the list of invoices. (existing invoice)', () => {
+            const invoices = [{
+                id: 'in_1',
+                paid: false,
+
+            }, {
+                id: 'in_2',
+                paid: false,
+
+            }]
+            const state = initialState.set('invoices', fromJS(invoices))
+            const action = {
+                type: types.UPDATE_INVOICE_IN_LIST,
+                invoice: fromJS({'id': 'in_2', paid: true})
+            }
+            expect(reducer(state, action)).toMatchSnapshot()
+        })
+    })
+
 })
