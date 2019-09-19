@@ -1,5 +1,6 @@
 // @flow
-import React from 'react'
+//$FlowFixMe
+import React, { Fragment } from 'react'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
@@ -204,6 +205,7 @@ export class ChatIntegrationAppearance extends React.Component<Props, State> {
             isOnline
         } = this.state
 
+        const isTeamPictureAvatarSelected = avatarType === SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE
         const isSubmitting = this._isSubmitting()
 
         if (loading.get('integration')) {
@@ -280,15 +282,15 @@ export class ChatIntegrationAppearance extends React.Component<Props, State> {
                                         />
 
                                         {
-                                            isUpdate && [
+                                            isUpdate && (<Fragment>
                                                 <RadioField
                                                     key="type-field"
                                                     options={avatarTypeOptions}
                                                     value={avatarType}
                                                     onChange={(value) => this.setState({avatarType: value})}
                                                     label="Avatar"
-                                                />,
-                                                <div
+                                                />
+                                                {isTeamPictureAvatarSelected && <div
                                                     key="file-field"
                                                     className="d-flex flex-direction-row mb-2"
                                                 >
@@ -309,13 +311,10 @@ export class ChatIntegrationAppearance extends React.Component<Props, State> {
                                                         uploadType="avatar_team_picture"
                                                         params={{['integration_id']: integration.get('id')}}
                                                         maxSize={500 * 1000}
-                                                        required={
-                                                            avatarType === SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE
-                                                            && !avatarTeamPictureUrl
-                                                        }
+                                                        required={isTeamPictureAvatarSelected && !avatarTeamPictureUrl}
                                                     />
-                                                </div>
-                                            ]
+                                                </div>}
+                                            </Fragment>)
                                         }
 
                                         <ColorField

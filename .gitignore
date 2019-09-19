@@ -72,6 +72,9 @@ target/
 # Kate editor
 .kateconfig
 
+# Vscode
+.vscode/
+
 # js build files
 g/static/*/_build/*
 
