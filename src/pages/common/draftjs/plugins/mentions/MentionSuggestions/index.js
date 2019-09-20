@@ -363,8 +363,9 @@ export default class MentionSuggestions extends Component<Props, State> {
                 }}
             >
                 {
-                    suggestions.map((mention, index) => (
-                        <Entry
+                    suggestions.map((mention, index) => {
+                        if (!mention.get('name')) { return null }
+                        return  (<Entry
                             key={mention.has('id') ? mention.get('id') : mention.get('name')}
                             onMentionSelect={this.onMentionSelect}
                             onMentionFocus={this.onMentionFocus}
@@ -375,8 +376,8 @@ export default class MentionSuggestions extends Component<Props, State> {
                             theme={theme}
                             searchValue={this.lastSearchValue}
                             entryComponent={entryComponent || defaultEntryComponent}
-                        />
-                    )).toJS()
+                        />)
+                    }).toJS()
                 }
             </div>
         )
