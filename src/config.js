@@ -94,6 +94,8 @@ export const SOURCE_VALUE_PROP = {
     'facebook-comment': 'address',
     'facebook-messenger': 'address',
     'facebook-post': 'address',
+    'facebook-ad-post': 'address',
+    'facebook-ad-comment': 'address',
     'instagram-media': 'address',
     'instagram-comment': 'address',
     'instagram-ad-media': 'address',

@@ -6,6 +6,7 @@ import {Link} from 'react-router'
 import type {Meta as MetaType, Source} from '../../../../../models/ticket/types'
 
 import {
+    FACEBOOK_AD_POST_SOURCE,
     FACEBOOK_COMMENT_SOURCE,
     FACEBOOK_POST_SOURCE,
     INSTAGRAM_AD_MEDIA_SOURCE,
@@ -52,8 +53,10 @@ export default function Meta(props: Props) {
         )
     }
 
-    const GO_TO_WIDGET_SOURCES = [FACEBOOK_POST_SOURCE, FACEBOOK_COMMENT_SOURCE, INSTAGRAM_MEDIA_SOURCE,
-        INSTAGRAM_AD_MEDIA_SOURCE]
+    const GO_TO_WIDGET_SOURCES = [
+        FACEBOOK_AD_POST_SOURCE, FACEBOOK_COMMENT_SOURCE, FACEBOOK_POST_SOURCE, INSTAGRAM_AD_MEDIA_SOURCE,
+        INSTAGRAM_MEDIA_SOURCE
+    ]
 
     if (source && source.type && source.extra && GO_TO_WIDGET_SOURCES.includes(source.type)) {
         const postId = source.extra.post_id
@@ -61,6 +64,7 @@ export default function Meta(props: Props) {
         const permalink = source.extra.permalink
 
         const isFacebookPost = source.type === FACEBOOK_POST_SOURCE
+        const isFacebookAdPost = source.type === FACEBOOK_AD_POST_SOURCE
         const isFacebookComment = parentId === postId
         const isInstagramMedia = source.type === INSTAGRAM_MEDIA_SOURCE
         const isInstagramAdMedia = source.type === INSTAGRAM_AD_MEDIA_SOURCE
@@ -71,6 +75,9 @@ export default function Meta(props: Props) {
         if (isFacebookPost) {
             type = 'post'
             link = `https://facebook.com/${postId}`
+        } else if (isFacebookAdPost) {
+            type = 'post'
+            link = permalink
         } else if (isInstagramMedia || isInstagramAdMedia) {
             type = 'media'
             link = permalink

@@ -38,6 +38,7 @@ type State = {
         messenger_enabled: boolean,
         import_history_enabled: boolean,
         instagram_comments_enabled: boolean,
+        facebook_ads_enabled: boolean,
         instagram_ads_enabled: boolean
     },
     language: string,
@@ -51,6 +52,7 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
             messenger_enabled: true,
             import_history_enabled: true,
             instagram_comments_enabled: false,
+            facebook_ads_enabled: false,
             instagram_ads_enabled: false
         },
         language: FACEBOOK_LANGUAGE_DEFAULT,
@@ -69,6 +71,7 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
                 messenger_enabled: settings.get('messenger_enabled'),
                 import_history_enabled: settings.get('import_history_enabled'),
                 instagram_comments_enabled: settings.get('instagram_comments_enabled'),
+                facebook_ads_enabled: settings.get('facebook_ads_enabled', false),
                 instagram_ads_enabled: settings.get('instagram_ads_enabled', false),
             }
         }
@@ -119,7 +122,7 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
         const integrationScope = integration.getIn(['meta', 'oauth', 'scope']) || fromJS([])
         const doesntHaveInstagramPermissions = !integrationScope.includes('instagram_basic')
             || !integrationScope.includes('instagram_manage_comments')
-        const doesntHaveInstagramAdsPermissions = !integrationScope.includes('ads_read')
+        const doesntHaveAdsPermissions = !integrationScope.includes('ads_read')
             || !integrationScope.includes('ads_management')
         const doesntHaveInstagramId = !integration.getIn(['meta', 'instagram', 'id'])
 
@@ -155,13 +158,13 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
                     </FacebookLoginButton>.
                 </Alert>
             )
-        } else if (doesntHaveInstagramAdsPermissions) {
+        } else if (doesntHaveAdsPermissions) {
             alertComponent = (
                 <Alert color="warning">
                     <i className="material-icons md-2 mr-2">
                         warning
                     </i>
-                    Instagram Ads are disabled because we miss the required permissions. Please{' '}
+                    Ads are disabled because we miss the required permissions. Please{' '}
                     <FacebookLoginButton
                         reconnect
                         link
@@ -241,6 +244,14 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
                                 disabled={doesntHaveInstagramPermissions || doesntHaveInstagramId}
                             />
                             <BooleanField
+                                name="facebook_ads_enabled"
+                                type="checkbox"
+                                label="Enable Facebook ads"
+                                value={this.state.settings.facebook_ads_enabled}
+                                onChange={(value) => this._onSettingChange(value, 'facebook_ads_enabled')}
+                                disabled={doesntHaveAdsPermissions}
+                            />
+                            <BooleanField
                                 name="instagram_ads_enabled"
                                 type="checkbox"
                                 label="Enable Instagram ads"
@@ -248,7 +259,7 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
                                 onChange={(value) => this._onSettingChange(value, 'instagram_ads_enabled')}
                                 disabled={
                                     doesntHaveInstagramPermissions ||
-                                    doesntHaveInstagramAdsPermissions ||
+                                    doesntHaveAdsPermissions ||
                                     doesntHaveInstagramId
                                 }
                             />

@@ -18,44 +18,42 @@ exports[`SourceIcon component should show SYSTEM_SOURCE_TYPES icons 2`] = `
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 1`] = `
 <i
-  className="icon d-inline-block material-icons"
->
-  email
-</i>
-`;
-
-exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 2`] = `
-<i
   className="icon d-inline-block text-purple material-icons"
 >
   forum
 </i>
 `;
 
+exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 2`] = `
+<i
+  className="icon d-inline-block material-icons"
+>
+  email
+</i>
+`;
+
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 3`] = `
-<i
-  className="icon d-inline-block icon-custom icon-facebook-messenger"
-/>
-`;
-
-exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 4`] = `
-<i
-  className="icon d-inline-block icon-custom icon-facebook-messenger"
-/>
-`;
-
-exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 5`] = `
 <i
   className="icon d-inline-block icon-custom icon-facebook"
 />
 `;
 
+exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 4`] = `
+<i
+  className="icon d-inline-block icon-custom icon-facebook"
+/>
+`;
+
+exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 5`] = `
+<i
+  className="icon d-inline-block icon-custom icon-facebook-messenger"
+/>
+`;
+
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 6`] = `
 <i
-  className="icon d-inline-block text-warning material-icons"
->
-  note
-</i>
+  className="icon d-inline-block icon-custom icon-facebook-messenger"
+/>
 `;
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 7`] = `
@@ -68,6 +66,14 @@ exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 8`] = `
 <i
   className="icon d-inline-block icon-custom icon-instagram"
 />
+`;
+
+exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 9`] = `
+<i
+  className="icon d-inline-block text-warning material-icons"
+>
+  note
+</i>
 `;
 
 exports[`SourceIcon component should show default icon 1`] = `

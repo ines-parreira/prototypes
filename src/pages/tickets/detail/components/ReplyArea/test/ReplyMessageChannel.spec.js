@@ -5,6 +5,8 @@ import {fromJS} from 'immutable'
 import {
     CHAT_SOURCE,
     EMAIL_SOURCE,
+    FACEBOOK_AD_COMMENT_SOURCE,
+    FACEBOOK_AD_POST_SOURCE,
     FACEBOOK_COMMENT_SOURCE,
     FACEBOOK_MESSENGER_SOURCE,
     FACEBOOK_POST_SOURCE,
@@ -48,12 +50,13 @@ describe('ReplyMessageChannel component', () => {
     })
 
     const types = [
-        EMAIL_SOURCE,
         CHAT_SOURCE,
+        EMAIL_SOURCE,
+        FACEBOOK_AD_POST_SOURCE, FACEBOOK_AD_COMMENT_SOURCE,
         FACEBOOK_MESSENGER_SOURCE,
-        INSTAGRAM_MEDIA_SOURCE, INSTAGRAM_COMMENT_SOURCE,
+        FACEBOOK_POST_SOURCE, FACEBOOK_COMMENT_SOURCE,
         INSTAGRAM_AD_MEDIA_SOURCE, INSTAGRAM_AD_COMMENT_SOURCE,
-        FACEBOOK_POST_SOURCE, FACEBOOK_COMMENT_SOURCE
+        INSTAGRAM_MEDIA_SOURCE, INSTAGRAM_COMMENT_SOURCE
     ]
 
     types.forEach((type) => {
@@ -66,6 +69,8 @@ describe('ReplyMessageChannel component', () => {
                 newMessageType = INSTAGRAM_COMMENT_SOURCE
             } else if (type === INSTAGRAM_AD_MEDIA_SOURCE) {
                 newMessageType = INSTAGRAM_AD_COMMENT_SOURCE
+            } else if (type === FACEBOOK_AD_POST_SOURCE) {
+                newMessageType = FACEBOOK_AD_COMMENT_SOURCE
             }
 
             const replyOptions = {

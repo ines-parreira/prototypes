@@ -19,6 +19,8 @@ import {
     API_SOURCE,
     CHAT_SOURCE,
     EMAIL_FORWARD_SOURCE,
+    FACEBOOK_AD_COMMENT_SOURCE,
+    FACEBOOK_AD_POST_SOURCE,
     FACEBOOK_COMMENT_SOURCE,
     FACEBOOK_MESSAGE_SOURCE,
     FACEBOOK_MESSENGER_SOURCE,
@@ -69,18 +71,20 @@ const sourceTypeToIcon = (sourceType?: SourceType | IntegrationType) => {
             icon.name = 'code'
             break
         case AIRCALL_SOURCE:
-        case PHONE_SOURCE:
         case OTTSPOTT_CALL_SOURCE:
+        case PHONE_SOURCE:
             icon.name = 'phone'
             break
+        case FACEBOOK_AD_COMMENT_SOURCE:
+        case FACEBOOK_AD_POST_SOURCE:
+        case FACEBOOK_COMMENT_SOURCE:
         case FACEBOOK_INTEGRATION_TYPE:
         case FACEBOOK_POST_SOURCE:
-        case FACEBOOK_COMMENT_SOURCE:
             icon.custom = true
             icon.name = 'facebook'
             break
-        case FACEBOOK_MESSENGER_SOURCE:
         case FACEBOOK_MESSAGE_SOURCE:
+        case FACEBOOK_MESSENGER_SOURCE:
             icon.custom = true
             icon.name = 'facebook-messenger'
             break
@@ -91,11 +95,11 @@ const sourceTypeToIcon = (sourceType?: SourceType | IntegrationType) => {
             icon.custom = true
             icon.name = 'twitter'
             break
-        case INSTAGRAM_MEDIA_SOURCE:
+        case 'instagram':
+        case INSTAGRAM_AD_COMMENT_SOURCE:
         case INSTAGRAM_AD_MEDIA_SOURCE:
         case INSTAGRAM_COMMENT_SOURCE:
-        case INSTAGRAM_AD_COMMENT_SOURCE:
-        case 'instagram':
+        case INSTAGRAM_MEDIA_SOURCE:
             icon.custom = true
             icon.name = 'instagram'
             break

@@ -1,6 +1,99 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<FacebookIntegrationNavigation/> should display the Ads tab when ads are enabled 1`] = `
+exports[`<FacebookIntegrationNavigation/> should display the Ads tab when Facebook ads are enabled 1`] = `
+<FacebookIntegrationNavigation
+  integration={
+    Immutable.Map {
+      "id": 1,
+      "type": "facebook",
+      "facebook": Immutable.Map {
+        "settings": Immutable.Map {
+          "facebook_ads_enabled": true,
+        },
+      },
+    }
+  }
+>
+  <SecondaryNavbar>
+    <Navbar
+      className="navbar"
+      expand={false}
+      tag="nav"
+    >
+      <nav
+        className="navbar navbar"
+      >
+        <Link
+          activeClassName="disabled"
+          className="nav-link"
+          key=".$/app/settings/integrations/facebook/1/overview"
+          onlyActiveOnIndex={false}
+          style={Object {}}
+          to="/app/settings/integrations/facebook/1/overview"
+        >
+          <a
+            className="nav-link"
+            onClick={[Function]}
+            style={Object {}}
+          >
+            Overview
+          </a>
+        </Link>
+        <Link
+          activeClassName="disabled"
+          className="nav-link"
+          key=".$/app/settings/integrations/facebook/1/customer_chat"
+          onlyActiveOnIndex={false}
+          style={Object {}}
+          to="/app/settings/integrations/facebook/1/customer_chat"
+        >
+          <a
+            className="nav-link"
+            onClick={[Function]}
+            style={Object {}}
+          >
+            Customer chat
+          </a>
+        </Link>
+        <Link
+          activeClassName="disabled"
+          className="nav-link"
+          key=".$/app/settings/integrations/facebook/1/preferences"
+          onlyActiveOnIndex={false}
+          style={Object {}}
+          to="/app/settings/integrations/facebook/1/preferences"
+        >
+          <a
+            className="nav-link"
+            onClick={[Function]}
+            style={Object {}}
+          >
+            Preferences
+          </a>
+        </Link>
+        <Link
+          activeClassName="disabled"
+          className="nav-link"
+          key=".$/app/settings/integrations/facebook/1/ads"
+          onlyActiveOnIndex={false}
+          style={Object {}}
+          to="/app/settings/integrations/facebook/1/ads"
+        >
+          <a
+            className="nav-link"
+            onClick={[Function]}
+            style={Object {}}
+          >
+            Ads
+          </a>
+        </Link>
+      </nav>
+    </Navbar>
+  </SecondaryNavbar>
+</FacebookIntegrationNavigation>
+`;
+
+exports[`<FacebookIntegrationNavigation/> should display the Ads tab when Instagram ads are enabled 1`] = `
 <FacebookIntegrationNavigation
   integration={
     Immutable.Map {

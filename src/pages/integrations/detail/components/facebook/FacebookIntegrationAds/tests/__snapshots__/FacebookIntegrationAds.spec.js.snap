@@ -275,20 +275,31 @@ exports[`FacebookIntegrationAds component should render a spinner 1`] = `
             className="mb-3"
           >
             <p>
-              It can take up to 2 hours to synchronize new ads on Gorgias. Instagram ads comments are
+              It can take up to 2 hours to synchronize new ads on Gorgias. Ads comments are fetched
                
-              fetched every 20 minutes. Comments sent while an ad was not active on Gorgias will not
+              every 20 minutes. Comments sent while an ad was not active on Gorgias will not
                
-              be fetched. Learn more about Instagram ads comments support
+              be fetched. Learn more about
+               
+              <a
+                href="https://docs.gorgias.io/social-media-integrations/facebook-ads-comments"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Facebook ads comments support
+              </a>
+               
+              and
                
               <a
                 href="https://docs.gorgias.io/social-media-integrations/instagram-ads-comments"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                in our docs
+                Instagram ads comments support
               </a>
-              .
+               
+              in our docs.
             </p>
           </div>
         </div>
@@ -386,19 +397,31 @@ exports[`FacebookIntegrationAds component should render with ads limit reached 1
         "1": Immutable.Map {
           "ads": Immutable.Map {
             "postid1": Immutable.Map {
+              "created_datetime": "2019-01-01 10:30:00",
               "comments_fetched_at": "2019-01-01 10:30:00",
               "name": "ad 1",
               "is_active": true,
+              "publisher_platform": "INSTAGRAM",
+              "permalink": "http://fake.link.to/ad1",
+              "ad_account_id": "act_123",
             },
             "postid2": Immutable.Map {
+              "created_datetime": "2019-01-01 10:30:00",
               "comments_fetched_at": "2019-01-01 10:30:00",
               "name": "ad 2",
               "is_active": true,
+              "publisher_platform": "INSTAGRAM",
+              "permalink": "http://fake.link.to/ad2",
+              "ad_account_id": "act_123",
             },
             "postid3": Immutable.Map {
+              "created_datetime": "2019-01-01 10:30:00",
               "comments_fetched_at": "2019-01-01 10:30:00",
               "name": "ad 3",
               "is_active": false,
+              "publisher_platform": "INSTAGRAM",
+              "permalink": "http://fake.link.to/ad3",
+              "ad_account_id": "act_123",
             },
           },
         },
@@ -619,20 +642,31 @@ exports[`FacebookIntegrationAds component should render with ads limit reached 1
             className="mb-3"
           >
             <p>
-              It can take up to 2 hours to synchronize new ads on Gorgias. Instagram ads comments are
+              It can take up to 2 hours to synchronize new ads on Gorgias. Ads comments are fetched
                
-              fetched every 20 minutes. Comments sent while an ad was not active on Gorgias will not
+              every 20 minutes. Comments sent while an ad was not active on Gorgias will not
                
-              be fetched. Learn more about Instagram ads comments support
+              be fetched. Learn more about
+               
+              <a
+                href="https://docs.gorgias.io/social-media-integrations/facebook-ads-comments"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Facebook ads comments support
+              </a>
+               
+              and
                
               <a
                 href="https://docs.gorgias.io/social-media-integrations/instagram-ads-comments"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                in our docs
+                Instagram ads comments support
               </a>
-              .
+               
+              in our docs.
             </p>
             <AdsOverviewCard
               accountTotalAds={2}
@@ -651,19 +685,31 @@ exports[`FacebookIntegrationAds component should render with ads limit reached 1
                   "1": Immutable.Map {
                     "ads": Immutable.Map {
                       "postid1": Immutable.Map {
+                        "created_datetime": "2019-01-01 10:30:00",
                         "comments_fetched_at": "2019-01-01 10:30:00",
                         "name": "ad 1",
                         "is_active": true,
+                        "publisher_platform": "INSTAGRAM",
+                        "permalink": "http://fake.link.to/ad1",
+                        "ad_account_id": "act_123",
                       },
                       "postid2": Immutable.Map {
+                        "created_datetime": "2019-01-01 10:30:00",
                         "comments_fetched_at": "2019-01-01 10:30:00",
                         "name": "ad 2",
                         "is_active": true,
+                        "publisher_platform": "INSTAGRAM",
+                        "permalink": "http://fake.link.to/ad2",
+                        "ad_account_id": "act_123",
                       },
                       "postid3": Immutable.Map {
+                        "created_datetime": "2019-01-01 10:30:00",
                         "comments_fetched_at": "2019-01-01 10:30:00",
                         "name": "ad 3",
                         "is_active": false,
+                        "publisher_platform": "INSTAGRAM",
+                        "permalink": "http://fake.link.to/ad3",
+                        "ad_account_id": "act_123",
                       },
                     },
                   },
@@ -867,25 +913,37 @@ exports[`FacebookIntegrationAds component should render with ads limit reached 1
             Array [
               "postid1",
               Immutable.Map {
+                "created_datetime": "2019-01-01 10:30:00",
                 "comments_fetched_at": "2019-01-01 10:30:00",
                 "name": "ad 1",
                 "is_active": true,
+                "publisher_platform": "INSTAGRAM",
+                "permalink": "http://fake.link.to/ad1",
+                "ad_account_id": "act_123",
               },
             ],
             Array [
               "postid2",
               Immutable.Map {
+                "created_datetime": "2019-01-01 10:30:00",
                 "comments_fetched_at": "2019-01-01 10:30:00",
                 "name": "ad 2",
                 "is_active": true,
+                "publisher_platform": "INSTAGRAM",
+                "permalink": "http://fake.link.to/ad2",
+                "ad_account_id": "act_123",
               },
             ],
             Array [
               "postid3",
               Immutable.Map {
+                "created_datetime": "2019-01-01 10:30:00",
                 "comments_fetched_at": "2019-01-01 10:30:00",
                 "name": "ad 3",
                 "is_active": false,
+                "publisher_platform": "INSTAGRAM",
+                "permalink": "http://fake.link.to/ad3",
+                "ad_account_id": "act_123",
               },
             ],
           ]
@@ -903,19 +961,94 @@ exports[`FacebookIntegrationAds component should render with ads limit reached 1
           <table
             className="table table-hover"
           >
+            <thead>
+              <tr
+                className="row"
+              >
+                <th>
+                  Name
+                </th>
+                <th>
+                  Publisher platform
+                </th>
+                <th>
+                  Creation date
+                </th>
+                <th />
+              </tr>
+            </thead>
             <tbody>
               <tr
                 className="row"
                 key="postid1"
               >
                 <td>
-                  <span
-                    className="mr-2"
+                  <a
+                    href="http://fake.link.to/ad1"
+                    rel="noopener noreferrer"
+                    target="_blank"
                   >
-                    <b>
-                      ad 1
-                    </b>
-                  </span>
+                    ad 1
+                  </a>
+                </td>
+                <td
+                  className="text-capitalize"
+                >
+                  instagram
+                </td>
+                <td>
+                  <DatetimeLabel
+                    dateTime="2019-01-01 10:30:00"
+                    timezone="America/Los_Angeles"
+                  >
+                    <span>
+                      <span
+                        id="datetime-tooltip-pjpsszd2icb"
+                      >
+                        01/01/2019
+                      </span>
+                      <Tooltip
+                        className="datetimeTooltip"
+                        delay={
+                          Object {
+                            "hide": 0,
+                            "show": 200,
+                          }
+                        }
+                        placement="top"
+                        target="datetime-tooltip-pjpsszd2icb"
+                      >
+                        <UncontrolledTooltip
+                          className="datetimeTooltip"
+                          delay={
+                            Object {
+                              "hide": 0,
+                              "show": 200,
+                            }
+                          }
+                          placement="top"
+                          target="datetime-tooltip-pjpsszd2icb"
+                        >
+                          <Tooltip
+                            autohide={true}
+                            className="datetimeTooltip"
+                            delay={
+                              Object {
+                                "hide": 0,
+                                "show": 200,
+                              }
+                            }
+                            hideArrow={false}
+                            isOpen={false}
+                            placement="top"
+                            placementPrefix="bs-tooltip"
+                            target="datetime-tooltip-pjpsszd2icb"
+                            toggle={[Function]}
+                          />
+                        </UncontrolledTooltip>
+                      </Tooltip>
+                    </span>
+                  </DatetimeLabel>
                 </td>
                 <td
                   className="smallest align-middle"
@@ -948,13 +1081,72 @@ exports[`FacebookIntegrationAds component should render with ads limit reached 1
                 key="postid2"
               >
                 <td>
-                  <span
-                    className="mr-2"
+                  <a
+                    href="http://fake.link.to/ad2"
+                    rel="noopener noreferrer"
+                    target="_blank"
                   >
-                    <b>
-                      ad 2
-                    </b>
-                  </span>
+                    ad 2
+                  </a>
+                </td>
+                <td
+                  className="text-capitalize"
+                >
+                  instagram
+                </td>
+                <td>
+                  <DatetimeLabel
+                    dateTime="2019-01-01 10:30:00"
+                    timezone="America/Los_Angeles"
+                  >
+                    <span>
+                      <span
+                        id="datetime-tooltip-pjpsszd2icb"
+                      >
+                        01/01/2019
+                      </span>
+                      <Tooltip
+                        className="datetimeTooltip"
+                        delay={
+                          Object {
+                            "hide": 0,
+                            "show": 200,
+                          }
+                        }
+                        placement="top"
+                        target="datetime-tooltip-pjpsszd2icb"
+                      >
+                        <UncontrolledTooltip
+                          className="datetimeTooltip"
+                          delay={
+                            Object {
+                              "hide": 0,
+                              "show": 200,
+                            }
+                          }
+                          placement="top"
+                          target="datetime-tooltip-pjpsszd2icb"
+                        >
+                          <Tooltip
+                            autohide={true}
+                            className="datetimeTooltip"
+                            delay={
+                              Object {
+                                "hide": 0,
+                                "show": 200,
+                              }
+                            }
+                            hideArrow={false}
+                            isOpen={false}
+                            placement="top"
+                            placementPrefix="bs-tooltip"
+                            target="datetime-tooltip-pjpsszd2icb"
+                            toggle={[Function]}
+                          />
+                        </UncontrolledTooltip>
+                      </Tooltip>
+                    </span>
+                  </DatetimeLabel>
                 </td>
                 <td
                   className="smallest align-middle"
@@ -987,13 +1179,72 @@ exports[`FacebookIntegrationAds component should render with ads limit reached 1
                 key="postid3"
               >
                 <td>
-                  <span
-                    className="mr-2"
+                  <a
+                    href="http://fake.link.to/ad3"
+                    rel="noopener noreferrer"
+                    target="_blank"
                   >
-                    <b>
-                      ad 3
-                    </b>
-                  </span>
+                    ad 3
+                  </a>
+                </td>
+                <td
+                  className="text-capitalize"
+                >
+                  instagram
+                </td>
+                <td>
+                  <DatetimeLabel
+                    dateTime="2019-01-01 10:30:00"
+                    timezone="America/Los_Angeles"
+                  >
+                    <span>
+                      <span
+                        id="datetime-tooltip-pjpsszd2icb"
+                      >
+                        01/01/2019
+                      </span>
+                      <Tooltip
+                        className="datetimeTooltip"
+                        delay={
+                          Object {
+                            "hide": 0,
+                            "show": 200,
+                          }
+                        }
+                        placement="top"
+                        target="datetime-tooltip-pjpsszd2icb"
+                      >
+                        <UncontrolledTooltip
+                          className="datetimeTooltip"
+                          delay={
+                            Object {
+                              "hide": 0,
+                              "show": 200,
+                            }
+                          }
+                          placement="top"
+                          target="datetime-tooltip-pjpsszd2icb"
+                        >
+                          <Tooltip
+                            autohide={true}
+                            className="datetimeTooltip"
+                            delay={
+                              Object {
+                                "hide": 0,
+                                "show": 200,
+                              }
+                            }
+                            hideArrow={false}
+                            isOpen={false}
+                            placement="top"
+                            placementPrefix="bs-tooltip"
+                            target="datetime-tooltip-pjpsszd2icb"
+                            toggle={[Function]}
+                          />
+                        </UncontrolledTooltip>
+                      </Tooltip>
+                    </span>
+                  </DatetimeLabel>
                 </td>
                 <td
                   className="smallest align-middle"
@@ -1030,7 +1281,7 @@ exports[`FacebookIntegrationAds component should render with ads limit reached 1
 </Connect(FacebookIntegrationAds)>
 `;
 
-exports[`FacebookIntegrationAds component should render with one ad 1`] = `
+exports[`FacebookIntegrationAds component should render with one Facebook ad 1`] = `
 <Connect(FacebookIntegrationAds)
   fetchAds={[Function]}
   integration={
@@ -1088,9 +1339,13 @@ exports[`FacebookIntegrationAds component should render with one ad 1`] = `
         "1": Immutable.Map {
           "ads": Immutable.Map {
             "postid1": Immutable.Map {
+              "created_datetime": "2019-01-01 10:30:00",
               "comments_fetched_at": "2019-01-01 10:30:00",
               "name": "ad 1",
               "is_active": true,
+              "publisher_platform": "FACEBOOK",
+              "permalink": "http://fake.link.to/ad1",
+              "ad_account_id": "act_123",
             },
           },
         },
@@ -1311,20 +1566,31 @@ exports[`FacebookIntegrationAds component should render with one ad 1`] = `
             className="mb-3"
           >
             <p>
-              It can take up to 2 hours to synchronize new ads on Gorgias. Instagram ads comments are
+              It can take up to 2 hours to synchronize new ads on Gorgias. Ads comments are fetched
                
-              fetched every 20 minutes. Comments sent while an ad was not active on Gorgias will not
+              every 20 minutes. Comments sent while an ad was not active on Gorgias will not
                
-              be fetched. Learn more about Instagram ads comments support
+              be fetched. Learn more about
+               
+              <a
+                href="https://docs.gorgias.io/social-media-integrations/facebook-ads-comments"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Facebook ads comments support
+              </a>
+               
+              and
                
               <a
                 href="https://docs.gorgias.io/social-media-integrations/instagram-ads-comments"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                in our docs
+                Instagram ads comments support
               </a>
-              .
+               
+              in our docs.
             </p>
           </div>
         </div>
@@ -1336,9 +1602,13 @@ exports[`FacebookIntegrationAds component should render with one ad 1`] = `
             Array [
               "postid1",
               Immutable.Map {
+                "created_datetime": "2019-01-01 10:30:00",
                 "comments_fetched_at": "2019-01-01 10:30:00",
                 "name": "ad 1",
                 "is_active": true,
+                "publisher_platform": "FACEBOOK",
+                "permalink": "http://fake.link.to/ad1",
+                "ad_account_id": "act_123",
               },
             ],
           ]
@@ -1356,19 +1626,563 @@ exports[`FacebookIntegrationAds component should render with one ad 1`] = `
           <table
             className="table table-hover"
           >
+            <thead>
+              <tr
+                className="row"
+              >
+                <th>
+                  Name
+                </th>
+                <th>
+                  Publisher platform
+                </th>
+                <th>
+                  Creation date
+                </th>
+                <th />
+              </tr>
+            </thead>
             <tbody>
               <tr
                 className="row"
                 key="postid1"
               >
                 <td>
-                  <span
-                    className="mr-2"
+                  <a
+                    href="http://fake.link.to/ad1"
+                    rel="noopener noreferrer"
+                    target="_blank"
                   >
-                    <b>
-                      ad 1
-                    </b>
-                  </span>
+                    ad 1
+                  </a>
+                </td>
+                <td
+                  className="text-capitalize"
+                >
+                  facebook
+                </td>
+                <td>
+                  <DatetimeLabel
+                    dateTime="2019-01-01 10:30:00"
+                    timezone="America/Los_Angeles"
+                  >
+                    <span>
+                      <span
+                        id="datetime-tooltip-pjpsszd2icb"
+                      >
+                        01/01/2019
+                      </span>
+                      <Tooltip
+                        className="datetimeTooltip"
+                        delay={
+                          Object {
+                            "hide": 0,
+                            "show": 200,
+                          }
+                        }
+                        placement="top"
+                        target="datetime-tooltip-pjpsszd2icb"
+                      >
+                        <UncontrolledTooltip
+                          className="datetimeTooltip"
+                          delay={
+                            Object {
+                              "hide": 0,
+                              "show": 200,
+                            }
+                          }
+                          placement="top"
+                          target="datetime-tooltip-pjpsszd2icb"
+                        >
+                          <Tooltip
+                            autohide={true}
+                            className="datetimeTooltip"
+                            delay={
+                              Object {
+                                "hide": 0,
+                                "show": 200,
+                              }
+                            }
+                            hideArrow={false}
+                            isOpen={false}
+                            placement="top"
+                            placementPrefix="bs-tooltip"
+                            target="datetime-tooltip-pjpsszd2icb"
+                            toggle={[Function]}
+                          />
+                        </UncontrolledTooltip>
+                      </Tooltip>
+                    </span>
+                  </DatetimeLabel>
+                </td>
+                <td
+                  className="smallest align-middle"
+                >
+                  <ToggleButton
+                    disabled={false}
+                    loading={false}
+                    onChange={[Function]}
+                    value={true}
+                  >
+                    <label
+                      className="switch"
+                      onClick={[Function]}
+                    >
+                      <input
+                        checked={true}
+                        disabled={false}
+                        readOnly={true}
+                        type="checkbox"
+                      />
+                      <div
+                        className="slider"
+                      />
+                    </label>
+                  </ToggleButton>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </Table>
+      </AdsTable>
+    </div>
+  </FacebookIntegrationAds>
+</Connect(FacebookIntegrationAds)>
+`;
+
+exports[`FacebookIntegrationAds component should render with one Instagram ad 1`] = `
+<Connect(FacebookIntegrationAds)
+  fetchAds={[Function]}
+  integration={
+    Immutable.Map {
+      "id": 1,
+      "name": "integration 1",
+      "type": "facebook",
+      "created_datetime": "2019-01-01 00:00:00",
+    }
+  }
+  integrations={
+    Immutable.List [
+      Immutable.Map {
+        "id": 1,
+        "name": "integration 1",
+        "type": "facebook",
+        "created_datetime": "2019-01-01 00:00:00",
+      },
+    ]
+  }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+  updateAd={[Function]}
+>
+  <FacebookIntegrationAds
+    fetchAds={[Function]}
+    integration={
+      Immutable.Map {
+        "id": 1,
+        "name": "integration 1",
+        "type": "facebook",
+        "created_datetime": "2019-01-01 00:00:00",
+      }
+    }
+    integrations={
+      Immutable.List [
+        Immutable.Map {
+          "id": 1,
+          "name": "integration 1",
+          "type": "facebook",
+          "created_datetime": "2019-01-01 00:00:00",
+        },
+      ]
+    }
+    internals={
+      Immutable.Map {
+        "1": Immutable.Map {
+          "ads": Immutable.Map {
+            "postid1": Immutable.Map {
+              "created_datetime": "2019-01-01 10:30:00",
+              "comments_fetched_at": "2019-01-01 10:30:00",
+              "name": "ad 1",
+              "is_active": true,
+              "publisher_platform": "INSTAGRAM",
+              "permalink": "http://fake.link.to/ad1",
+              "ad_account_id": "act_123",
+            },
+          },
+        },
+      }
+    }
+    loading={false}
+    loadingAds={Immutable.List []}
+    maxAccountAds={100}
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+    timezone="America/Los_Angeles"
+    updateAd={[Function]}
+  >
+    <div
+      className="full-width"
+    >
+      <PageHeader
+        title={
+          <Breadcrumb
+            tag="ol"
+          >
+            <BreadcrumbItem
+              tag="li"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations"
+              >
+                Integrations
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              tag="li"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook"
+              >
+                Facebook, Messenger & Instagram
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              tag="li"
+            >
+              integration 1
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              active={true}
+              tag="li"
+            >
+              Ads
+            </BreadcrumbItem>
+          </Breadcrumb>
+        }
+      >
+        <div
+          className="d-flex align-items-center justify-content-between flex-wrap page-header "
+        >
+          <Breadcrumb
+            tag="ol"
+          >
+            <ol
+              className="breadcrumb"
+            >
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  <Link
+                    onlyActiveOnIndex={false}
+                    style={Object {}}
+                    to="/app/settings/integrations"
+                  >
+                    <a
+                      onClick={[Function]}
+                      style={Object {}}
+                    >
+                      Integrations
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  <Link
+                    onlyActiveOnIndex={false}
+                    style={Object {}}
+                    to="/app/settings/integrations/facebook"
+                  >
+                    <a
+                      onClick={[Function]}
+                      style={Object {}}
+                    >
+                      Facebook, Messenger & Instagram
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                >
+                  integration 1
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                active={true}
+                tag="li"
+              >
+                <li
+                  className="active breadcrumb-item"
+                >
+                  Ads
+                </li>
+              </BreadcrumbItem>
+            </ol>
+          </Breadcrumb>
+        </div>
+      </PageHeader>
+      <FacebookIntegrationNavigation
+        integration={
+          Immutable.Map {
+            "id": 1,
+            "name": "integration 1",
+            "type": "facebook",
+            "created_datetime": "2019-01-01 00:00:00",
+          }
+        }
+      >
+        <SecondaryNavbar>
+          <Navbar
+            className="navbar"
+            expand={false}
+            tag="nav"
+          >
+            <nav
+              className="navbar navbar"
+            >
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".$/app/settings/integrations/facebook/1/overview"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/overview"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Overview
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".$/app/settings/integrations/facebook/1/customer_chat"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/customer_chat"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Customer chat
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".$/app/settings/integrations/facebook/1/preferences"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/facebook/1/preferences"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Preferences
+                </a>
+              </Link>
+            </nav>
+          </Navbar>
+        </SecondaryNavbar>
+      </FacebookIntegrationNavigation>
+      <Container
+        className="page-container"
+        fluid={true}
+        tag="div"
+      >
+        <div
+          className="page-container container-fluid"
+        >
+          <div
+            className="mb-3"
+          >
+            <p>
+              It can take up to 2 hours to synchronize new ads on Gorgias. Ads comments are fetched
+               
+              every 20 minutes. Comments sent while an ad was not active on Gorgias will not
+               
+              be fetched. Learn more about
+               
+              <a
+                href="https://docs.gorgias.io/social-media-integrations/facebook-ads-comments"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Facebook ads comments support
+              </a>
+               
+              and
+               
+              <a
+                href="https://docs.gorgias.io/social-media-integrations/instagram-ads-comments"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Instagram ads comments support
+              </a>
+               
+              in our docs.
+            </p>
+          </div>
+        </div>
+      </Container>
+      <AdsTable
+        accountTotalAds={1}
+        ads={
+          Immutable.Seq [
+            Array [
+              "postid1",
+              Immutable.Map {
+                "created_datetime": "2019-01-01 10:30:00",
+                "comments_fetched_at": "2019-01-01 10:30:00",
+                "name": "ad 1",
+                "is_active": true,
+                "publisher_platform": "INSTAGRAM",
+                "permalink": "http://fake.link.to/ad1",
+                "ad_account_id": "act_123",
+              },
+            ],
+          ]
+        }
+        loadingAds={Immutable.List []}
+        maxAccountAds={100}
+        timezone="America/Los_Angeles"
+        updateAd={[Function]}
+      >
+        <Table
+          hover={true}
+          responsiveTag="div"
+          tag="table"
+        >
+          <table
+            className="table table-hover"
+          >
+            <thead>
+              <tr
+                className="row"
+              >
+                <th>
+                  Name
+                </th>
+                <th>
+                  Publisher platform
+                </th>
+                <th>
+                  Creation date
+                </th>
+                <th />
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                className="row"
+                key="postid1"
+              >
+                <td>
+                  <a
+                    href="http://fake.link.to/ad1"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    ad 1
+                  </a>
+                </td>
+                <td
+                  className="text-capitalize"
+                >
+                  instagram
+                </td>
+                <td>
+                  <DatetimeLabel
+                    dateTime="2019-01-01 10:30:00"
+                    timezone="America/Los_Angeles"
+                  >
+                    <span>
+                      <span
+                        id="datetime-tooltip-pjpsszd2icb"
+                      >
+                        01/01/2019
+                      </span>
+                      <Tooltip
+                        className="datetimeTooltip"
+                        delay={
+                          Object {
+                            "hide": 0,
+                            "show": 200,
+                          }
+                        }
+                        placement="top"
+                        target="datetime-tooltip-pjpsszd2icb"
+                      >
+                        <UncontrolledTooltip
+                          className="datetimeTooltip"
+                          delay={
+                            Object {
+                              "hide": 0,
+                              "show": 200,
+                            }
+                          }
+                          placement="top"
+                          target="datetime-tooltip-pjpsszd2icb"
+                        >
+                          <Tooltip
+                            autohide={true}
+                            className="datetimeTooltip"
+                            delay={
+                              Object {
+                                "hide": 0,
+                                "show": 200,
+                              }
+                            }
+                            hideArrow={false}
+                            isOpen={false}
+                            placement="top"
+                            placementPrefix="bs-tooltip"
+                            target="datetime-tooltip-pjpsszd2icb"
+                            toggle={[Function]}
+                          />
+                        </UncontrolledTooltip>
+                      </Tooltip>
+                    </span>
+                  </DatetimeLabel>
                 </td>
                 <td
                   className="smallest align-middle"
@@ -1463,14 +2277,22 @@ exports[`FacebookIntegrationAds component should render with two ads (one not ac
         "1": Immutable.Map {
           "ads": Immutable.Map {
             "postid1": Immutable.Map {
+              "created_datetime": "2019-01-01 10:30:00",
               "comments_fetched_at": "2019-01-01 10:30:00",
               "name": "ad 1",
               "is_active": true,
+              "publisher_platform": "INSTAGRAM",
+              "permalink": "http://fake.link.to/ad1",
+              "ad_account_id": "act_123",
             },
             "postid2": Immutable.Map {
+              "created_datetime": "2019-01-01 10:30:00",
               "comments_fetched_at": "2019-01-01 10:30:00",
               "name": "ad 2",
               "is_active": false,
+              "publisher_platform": "INSTAGRAM",
+              "permalink": "http://fake.link.to/ad2",
+              "ad_account_id": "act_123",
             },
           },
         },
@@ -1691,20 +2513,31 @@ exports[`FacebookIntegrationAds component should render with two ads (one not ac
             className="mb-3"
           >
             <p>
-              It can take up to 2 hours to synchronize new ads on Gorgias. Instagram ads comments are
+              It can take up to 2 hours to synchronize new ads on Gorgias. Ads comments are fetched
                
-              fetched every 20 minutes. Comments sent while an ad was not active on Gorgias will not
+              every 20 minutes. Comments sent while an ad was not active on Gorgias will not
                
-              be fetched. Learn more about Instagram ads comments support
+              be fetched. Learn more about
+               
+              <a
+                href="https://docs.gorgias.io/social-media-integrations/facebook-ads-comments"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Facebook ads comments support
+              </a>
+               
+              and
                
               <a
                 href="https://docs.gorgias.io/social-media-integrations/instagram-ads-comments"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                in our docs
+                Instagram ads comments support
               </a>
-              .
+               
+              in our docs.
             </p>
           </div>
         </div>
@@ -1716,17 +2549,25 @@ exports[`FacebookIntegrationAds component should render with two ads (one not ac
             Array [
               "postid1",
               Immutable.Map {
+                "created_datetime": "2019-01-01 10:30:00",
                 "comments_fetched_at": "2019-01-01 10:30:00",
                 "name": "ad 1",
                 "is_active": true,
+                "publisher_platform": "INSTAGRAM",
+                "permalink": "http://fake.link.to/ad1",
+                "ad_account_id": "act_123",
               },
             ],
             Array [
               "postid2",
               Immutable.Map {
+                "created_datetime": "2019-01-01 10:30:00",
                 "comments_fetched_at": "2019-01-01 10:30:00",
                 "name": "ad 2",
                 "is_active": false,
+                "publisher_platform": "INSTAGRAM",
+                "permalink": "http://fake.link.to/ad2",
+                "ad_account_id": "act_123",
               },
             ],
           ]
@@ -1744,19 +2585,94 @@ exports[`FacebookIntegrationAds component should render with two ads (one not ac
           <table
             className="table table-hover"
           >
+            <thead>
+              <tr
+                className="row"
+              >
+                <th>
+                  Name
+                </th>
+                <th>
+                  Publisher platform
+                </th>
+                <th>
+                  Creation date
+                </th>
+                <th />
+              </tr>
+            </thead>
             <tbody>
               <tr
                 className="row"
                 key="postid1"
               >
                 <td>
-                  <span
-                    className="mr-2"
+                  <a
+                    href="http://fake.link.to/ad1"
+                    rel="noopener noreferrer"
+                    target="_blank"
                   >
-                    <b>
-                      ad 1
-                    </b>
-                  </span>
+                    ad 1
+                  </a>
+                </td>
+                <td
+                  className="text-capitalize"
+                >
+                  instagram
+                </td>
+                <td>
+                  <DatetimeLabel
+                    dateTime="2019-01-01 10:30:00"
+                    timezone="America/Los_Angeles"
+                  >
+                    <span>
+                      <span
+                        id="datetime-tooltip-pjpsszd2icb"
+                      >
+                        01/01/2019
+                      </span>
+                      <Tooltip
+                        className="datetimeTooltip"
+                        delay={
+                          Object {
+                            "hide": 0,
+                            "show": 200,
+                          }
+                        }
+                        placement="top"
+                        target="datetime-tooltip-pjpsszd2icb"
+                      >
+                        <UncontrolledTooltip
+                          className="datetimeTooltip"
+                          delay={
+                            Object {
+                              "hide": 0,
+                              "show": 200,
+                            }
+                          }
+                          placement="top"
+                          target="datetime-tooltip-pjpsszd2icb"
+                        >
+                          <Tooltip
+                            autohide={true}
+                            className="datetimeTooltip"
+                            delay={
+                              Object {
+                                "hide": 0,
+                                "show": 200,
+                              }
+                            }
+                            hideArrow={false}
+                            isOpen={false}
+                            placement="top"
+                            placementPrefix="bs-tooltip"
+                            target="datetime-tooltip-pjpsszd2icb"
+                            toggle={[Function]}
+                          />
+                        </UncontrolledTooltip>
+                      </Tooltip>
+                    </span>
+                  </DatetimeLabel>
                 </td>
                 <td
                   className="smallest align-middle"
@@ -1789,13 +2705,72 @@ exports[`FacebookIntegrationAds component should render with two ads (one not ac
                 key="postid2"
               >
                 <td>
-                  <span
-                    className="mr-2"
+                  <a
+                    href="http://fake.link.to/ad2"
+                    rel="noopener noreferrer"
+                    target="_blank"
                   >
-                    <b>
-                      ad 2
-                    </b>
-                  </span>
+                    ad 2
+                  </a>
+                </td>
+                <td
+                  className="text-capitalize"
+                >
+                  instagram
+                </td>
+                <td>
+                  <DatetimeLabel
+                    dateTime="2019-01-01 10:30:00"
+                    timezone="America/Los_Angeles"
+                  >
+                    <span>
+                      <span
+                        id="datetime-tooltip-pjpsszd2icb"
+                      >
+                        01/01/2019
+                      </span>
+                      <Tooltip
+                        className="datetimeTooltip"
+                        delay={
+                          Object {
+                            "hide": 0,
+                            "show": 200,
+                          }
+                        }
+                        placement="top"
+                        target="datetime-tooltip-pjpsszd2icb"
+                      >
+                        <UncontrolledTooltip
+                          className="datetimeTooltip"
+                          delay={
+                            Object {
+                              "hide": 0,
+                              "show": 200,
+                            }
+                          }
+                          placement="top"
+                          target="datetime-tooltip-pjpsszd2icb"
+                        >
+                          <Tooltip
+                            autohide={true}
+                            className="datetimeTooltip"
+                            delay={
+                              Object {
+                                "hide": 0,
+                                "show": 200,
+                              }
+                            }
+                            hideArrow={false}
+                            isOpen={false}
+                            placement="top"
+                            placementPrefix="bs-tooltip"
+                            target="datetime-tooltip-pjpsszd2icb"
+                            toggle={[Function]}
+                          />
+                        </UncontrolledTooltip>
+                      </Tooltip>
+                    </span>
+                  </DatetimeLabel>
                 </td>
                 <td
                   className="smallest align-middle"
@@ -2107,20 +3082,31 @@ exports[`FacebookIntegrationAds component should render without ad 1`] = `
             className="mb-3"
           >
             <p>
-              It can take up to 2 hours to synchronize new ads on Gorgias. Instagram ads comments are
+              It can take up to 2 hours to synchronize new ads on Gorgias. Ads comments are fetched
                
-              fetched every 20 minutes. Comments sent while an ad was not active on Gorgias will not
+              every 20 minutes. Comments sent while an ad was not active on Gorgias will not
                
-              be fetched. Learn more about Instagram ads comments support
+              be fetched. Learn more about
+               
+              <a
+                href="https://docs.gorgias.io/social-media-integrations/facebook-ads-comments"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Facebook ads comments support
+              </a>
+               
+              and
                
               <a
                 href="https://docs.gorgias.io/social-media-integrations/instagram-ads-comments"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                in our docs
+                Instagram ads comments support
               </a>
-              .
+               
+              in our docs.
             </p>
           </div>
         </div>

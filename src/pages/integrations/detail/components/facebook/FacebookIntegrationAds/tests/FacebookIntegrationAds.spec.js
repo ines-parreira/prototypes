@@ -49,7 +49,8 @@ describe('FacebookIntegrationAds component', () => {
     }
 
     // Tooltips
-    const tooltipIds = ['active-ads-tooltip']
+    const tooltipIds = ['active-ads-tooltip', 'datetime-tooltip-pjpsszd2icb']
+    const random = Math.random
 
     beforeAll(() => {
         tooltipIds.forEach((tooltipId) => {
@@ -57,12 +58,16 @@ describe('FacebookIntegrationAds component', () => {
             tooltipDiv.setAttribute('id', tooltipId)
             document.body.appendChild(tooltipDiv)
         })
+
+        global.Math.random = () => 0.709657924825722 // ID will be `pjpsszd2icb`
     })
 
     afterAll(() => {
         tooltipIds.forEach((tooltipId) => {
             document.getElementById(tooltipId).remove()
         })
+
+        global.Math.random = random
     })
 
     it('should render a spinner', () => {
@@ -98,7 +103,7 @@ describe('FacebookIntegrationAds component', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should render with one ad', () => {
+    it('should render with one Instagram ad', () => {
         const component = mount(
             <FacebookIntegrationAds
                 store={getStore({
@@ -106,9 +111,39 @@ describe('FacebookIntegrationAds component', () => {
                     internal: {
                         ads: {
                             postid1: {
+                                created_datetime: '2019-01-01 10:30:00',
                                 comments_fetched_at: '2019-01-01 10:30:00',
                                 name: 'ad 1',
-                                is_active: true
+                                is_active: true,
+                                publisher_platform: 'INSTAGRAM',
+                                permalink: 'http://fake.link.to/ad1',
+                                ad_account_id: 'act_123'
+                            }
+                        }
+                    }
+                })}
+                {...props}
+            />
+        )
+
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should render with one Facebook ad', () => {
+        const component = mount(
+            <FacebookIntegrationAds
+                store={getStore({
+                    maxAccountAds: 100,
+                    internal: {
+                        ads: {
+                            postid1: {
+                                created_datetime: '2019-01-01 10:30:00',
+                                comments_fetched_at: '2019-01-01 10:30:00',
+                                name: 'ad 1',
+                                is_active: true,
+                                publisher_platform: 'FACEBOOK',
+                                permalink: 'http://fake.link.to/ad1',
+                                ad_account_id: 'act_123'
                             }
                         }
                     }
@@ -128,14 +163,22 @@ describe('FacebookIntegrationAds component', () => {
                     internal: {
                         ads: {
                             postid1: {
+                                created_datetime: '2019-01-01 10:30:00',
                                 comments_fetched_at: '2019-01-01 10:30:00',
                                 name: 'ad 1',
-                                is_active: true
+                                is_active: true,
+                                publisher_platform: 'INSTAGRAM',
+                                permalink: 'http://fake.link.to/ad1',
+                                ad_account_id: 'act_123'
                             },
                             postid2: {
+                                created_datetime: '2019-01-01 10:30:00',
                                 comments_fetched_at: '2019-01-01 10:30:00',
                                 name: 'ad 2',
-                                is_active: false
+                                is_active: false,
+                                publisher_platform: 'INSTAGRAM',
+                                permalink: 'http://fake.link.to/ad2',
+                                ad_account_id: 'act_123'
                             }
                         }
                     }
@@ -155,19 +198,31 @@ describe('FacebookIntegrationAds component', () => {
                     internal: {
                         ads: {
                             postid1: {
+                                created_datetime: '2019-01-01 10:30:00',
                                 comments_fetched_at: '2019-01-01 10:30:00',
                                 name: 'ad 1',
-                                is_active: true
+                                is_active: true,
+                                publisher_platform: 'INSTAGRAM',
+                                permalink: 'http://fake.link.to/ad1',
+                                ad_account_id: 'act_123'
                             },
                             postid2: {
+                                created_datetime: '2019-01-01 10:30:00',
                                 comments_fetched_at: '2019-01-01 10:30:00',
                                 name: 'ad 2',
-                                is_active: true
+                                is_active: true,
+                                publisher_platform: 'INSTAGRAM',
+                                permalink: 'http://fake.link.to/ad2',
+                                ad_account_id: 'act_123'
                             },
                             postid3: {
+                                created_datetime: '2019-01-01 10:30:00',
                                 comments_fetched_at: '2019-01-01 10:30:00',
                                 name: 'ad 3',
-                                is_active: false
+                                is_active: false,
+                                publisher_platform: 'INSTAGRAM',
+                                permalink: 'http://fake.link.to/ad3',
+                                ad_account_id: 'act_123'
                             }
                         }
                     }

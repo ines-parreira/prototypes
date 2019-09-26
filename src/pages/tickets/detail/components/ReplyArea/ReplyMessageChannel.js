@@ -16,13 +16,19 @@ import SourceIcon from '../../../../common/components/SourceIcon'
 import {
     API_SOURCE,
     CHAT_SOURCE,
+    EMAIL_FORWARD_SOURCE,
+    EMAIL_SOURCE,
+    FACEBOOK_AD_COMMENT_SOURCE,
+    FACEBOOK_AD_POST_SOURCE,
+    FACEBOOK_COMMENT_SOURCE,
     FACEBOOK_MESSAGE_SOURCE,
     FACEBOOK_MESSENGER_SOURCE,
     FACEBOOK_POST_SOURCE,
     INSTAGRAM_AD_COMMENT_SOURCE,
     INSTAGRAM_AD_MEDIA_SOURCE,
     INSTAGRAM_COMMENT_SOURCE,
-    INSTAGRAM_MEDIA_SOURCE
+    INSTAGRAM_MEDIA_SOURCE,
+    INTERNAL_NOTE_SOURCE
 } from '../../../../../config/ticket'
 
 import MessageSourceFields from './MessageSourceFields/'
@@ -153,9 +159,11 @@ export default class ReplyMessageChannel extends React.Component {
             ? 'new'
             : `${ticket.get('id', '')} - ${messages.last().get('id', '')} - ${md5(messages.last().get('source'))}`
 
-        const disabledSources = [FACEBOOK_POST_SOURCE, FACEBOOK_MESSAGE_SOURCE, CHAT_SOURCE, API_SOURCE,
-            FACEBOOK_MESSENGER_SOURCE, INSTAGRAM_COMMENT_SOURCE, INSTAGRAM_AD_COMMENT_SOURCE, INSTAGRAM_MEDIA_SOURCE,
-            INSTAGRAM_AD_MEDIA_SOURCE]
+        const disabledSources = [
+            API_SOURCE, CHAT_SOURCE, FACEBOOK_AD_COMMENT_SOURCE, FACEBOOK_AD_POST_SOURCE, FACEBOOK_MESSAGE_SOURCE,
+            FACEBOOK_MESSENGER_SOURCE, FACEBOOK_POST_SOURCE, INSTAGRAM_AD_COMMENT_SOURCE, INSTAGRAM_AD_MEDIA_SOURCE,
+            INSTAGRAM_COMMENT_SOURCE, INSTAGRAM_MEDIA_SOURCE,
+        ]
 
         const isInputEnabled =
             !disabledSources.includes(this.props.sourceType)
@@ -185,6 +193,7 @@ export default class ReplyMessageChannel extends React.Component {
         const suggestEmail = !isUpdate || !!replyOptions.get('email')
         const suggestChat = isUpdate && !!replyOptions.get('chat')
         const suggestFacebookComment = isUpdate && !!replyOptions.get('facebook-comment')
+        const suggestFacebookAd = isUpdate && !!replyOptions.get('facebook-ad-comment')
         const suggestFacebookMessenger = isUpdate && !!replyOptions.get('facebook-messenger')
         const suggestInstagram = isUpdate && !!replyOptions.get('instagram-comment')
         const suggestInstagramAd = isUpdate && !!replyOptions.get('instagram-ad-comment')
@@ -219,10 +228,10 @@ export default class ReplyMessageChannel extends React.Component {
                                     <DropdownItem
                                         type="button"
                                         onClick={() => {
-                                            prepareNewMessage('email')
+                                            prepareNewMessage(EMAIL_SOURCE)
                                         }}
                                     >
-                                        <SourceIcon type="email" />
+                                        <SourceIcon type={EMAIL_SOURCE} />
                                         Reply via email
                                     </DropdownItem>
                                 )
@@ -232,10 +241,10 @@ export default class ReplyMessageChannel extends React.Component {
                                     <DropdownItem
                                         type="button"
                                         onClick={() => {
-                                            prepareNewMessage('email-forward')
+                                            prepareNewMessage(EMAIL_FORWARD_SOURCE)
                                         }}
                                     >
-                                        <SourceIcon type="email-forward" />
+                                        <SourceIcon type={EMAIL_FORWARD_SOURCE} />
                                         Forward by email
                                     </DropdownItem>
                                 )
@@ -245,10 +254,10 @@ export default class ReplyMessageChannel extends React.Component {
                                     <DropdownItem
                                         type="button"
                                         onClick={() => {
-                                            prepareNewMessage('chat')
+                                            prepareNewMessage(CHAT_SOURCE)
                                         }}
                                     >
-                                        <SourceIcon type="chat" />
+                                        <SourceIcon type={CHAT_SOURCE} />
                                         Reply via chat
                                     </DropdownItem>
                                 )
@@ -258,10 +267,23 @@ export default class ReplyMessageChannel extends React.Component {
                                     <DropdownItem
                                         type="button"
                                         onClick={() => {
-                                            prepareNewMessage('facebook-comment')
+                                            prepareNewMessage(FACEBOOK_COMMENT_SOURCE)
                                         }}
                                     >
-                                        <SourceIcon type="facebook-comment" />
+                                        <SourceIcon type={FACEBOOK_COMMENT_SOURCE} />
+                                        Reply via Facebook comment
+                                    </DropdownItem>
+                                )
+                            }
+                            {
+                                suggestFacebookAd && (
+                                    <DropdownItem
+                                        type="button"
+                                        onClick={() => {
+                                            prepareNewMessage(FACEBOOK_AD_COMMENT_SOURCE)
+                                        }}
+                                    >
+                                        <SourceIcon type={FACEBOOK_AD_COMMENT_SOURCE} />
                                         Reply via Facebook comment
                                     </DropdownItem>
                                 )
@@ -271,10 +293,10 @@ export default class ReplyMessageChannel extends React.Component {
                                     <DropdownItem
                                         type="button"
                                         onClick={() => {
-                                            prepareNewMessage('facebook-messenger')
+                                            prepareNewMessage(FACEBOOK_MESSENGER_SOURCE)
                                         }}
                                     >
-                                        <SourceIcon type="facebook-messenger" />
+                                        <SourceIcon type={FACEBOOK_MESSENGER_SOURCE} />
                                         Reply via Messenger
                                     </DropdownItem>
                                 )
@@ -284,10 +306,10 @@ export default class ReplyMessageChannel extends React.Component {
                                     <DropdownItem
                                         type="button"
                                         onClick={() => {
-                                            prepareNewMessage('instagram-comment')
+                                            prepareNewMessage(INSTAGRAM_COMMENT_SOURCE)
                                         }}
                                     >
-                                        <SourceIcon type="instagram-comment" />
+                                        <SourceIcon type={INSTAGRAM_COMMENT_SOURCE} />
                                         Reply via Instagram
                                     </DropdownItem>
                                 )
@@ -297,10 +319,10 @@ export default class ReplyMessageChannel extends React.Component {
                                     <DropdownItem
                                         type="button"
                                         onClick={() => {
-                                            prepareNewMessage('instagram-ad-comment')
+                                            prepareNewMessage(INSTAGRAM_AD_COMMENT_SOURCE)
                                         }}
                                     >
-                                        <SourceIcon type="instagram-ad-comment" />
+                                        <SourceIcon type={INSTAGRAM_AD_COMMENT_SOURCE} />
                                         Reply via Instagram
                                     </DropdownItem>
                                 )
@@ -310,10 +332,10 @@ export default class ReplyMessageChannel extends React.Component {
                                     <DropdownItem
                                         type="button"
                                         onClick={() => {
-                                            prepareNewMessage('internal-note')
+                                            prepareNewMessage(INTERNAL_NOTE_SOURCE)
                                         }}
                                     >
-                                        <SourceIcon type="internal-note" />
+                                        <SourceIcon type={INTERNAL_NOTE_SOURCE} />
                                         Leave an internal note
                                     </DropdownItem>
                                 )

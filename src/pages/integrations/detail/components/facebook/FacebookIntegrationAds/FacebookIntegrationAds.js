@@ -20,6 +20,8 @@ import type {dispatchType} from '../../../../../../state/types'
 
 import Loader from '../../../../../common/components/Loader/Loader'
 
+import {DatetimeLabel} from '../../../../../common/utils/labels'
+
 import {getTimezone} from '../../../../../../state/currentUser/selectors'
 
 import {fetchAds, updateAd} from './actions'
@@ -80,16 +82,25 @@ class FacebookIntegrationAds extends React.Component<Props> {
                 >
                     <div className="mb-3">
                         <p>
-                            It can take up to 2 hours to synchronize new ads on Gorgias. Instagram ads comments are{' '}
-                            fetched every 20 minutes. Comments sent while an ad was not active on Gorgias will not{' '}
-                            be fetched. Learn more about Instagram ads comments support{' '}
+                            It can take up to 2 hours to synchronize new ads on Gorgias. Ads comments are fetched{' '}
+                            every 20 minutes. Comments sent while an ad was not active on Gorgias will not{' '}
+                            be fetched. Learn more about{' '}
+                            <a
+                                href="https://docs.gorgias.io/social-media-integrations/facebook-ads-comments"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                            >
+                                Facebook ads comments support
+                            </a>{' '}
+                            and{' '}
                             <a
                                 href="https://docs.gorgias.io/social-media-integrations/instagram-ads-comments"
                                 rel="noopener noreferrer"
                                 target="_blank"
                             >
-                                in our docs
-                            </a>.
+                                Instagram ads comments support
+                            </a>{' '}
+                            in our docs.
                         </p>
 
                         {showUpgradePlan && (
@@ -206,7 +217,7 @@ class AdsOverviewCard extends React.Component<AdsOverviewCardProps> {
         return (
             <Card body>
                 <h3>Active ads per integration</h3>
-                <UpgradePlanAlert />
+                <UpgradePlanAlert/>
                 <div className="text-center">
                     {`${accountTotalAds}/${maxAccountAds} ads `}
                     <a id="active-ads-tooltip">
@@ -276,7 +287,7 @@ type AdsTableProps = {
 
 class AdsTable extends React.Component<AdsTableProps> {
     render() {
-        const {ads, loadingAds, accountTotalAds, maxAccountAds} = this.props
+        const {ads, loadingAds, accountTotalAds, maxAccountAds, timezone} = this.props
 
         if (!ads || !ads.size) {
             return null
@@ -284,28 +295,71 @@ class AdsTable extends React.Component<AdsTableProps> {
 
         const limitReached = accountTotalAds >= maxAccountAds
 
+        // Sort ads by created datetime, and then by publisher platform
+        const sortedAds = ads
+            .map(([adId, ad]) => ad.set('id', adId))
+            .sort((a, b) => {
+                const aCreatedAt = new Date(a.get('created_datetime'))
+                const bCreatedAt = new Date(b.get('created_datetime'))
+
+                const aPlatform = a.get('publisher_platform')
+                const bPlatform = b.get('publisher_platform')
+
+                return aCreatedAt === bCreatedAt
+                    ? aPlatform.localeCompare(bPlatform)
+                    : bCreatedAt - aCreatedAt
+            })
+
         return (
             <Table hover>
+                <thead>
+                    <tr className={css.row}>
+                        <th>Name</th>
+                        <th>Publisher platform</th>
+                        <th>Creation date</th>
+                        <th />
+                    </tr>
+                </thead>
                 <tbody>
-                    {ads.map(([adId, ad]) =>
+                    {sortedAds.map((ad) =>
                         <tr
-                            key={adId}
+                            key={ad.get('id')}
                             className={css.row}
                         >
                             <td>
-                                <span className="mr-2">
-                                    <b>{ad.get('name')}</b>
-                                </span>
+                                <a
+                                    href={ad.get('permalink')}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {ad.get('name')}
+                                </a>
+                            </td>
+                            <td className="text-capitalize">
+                                {ad.get('publisher_platform')
+                                    ? ad.get('publisher_platform').toLowerCase()
+                                    : null
+                                }
+                            </td>
+                            <td>
+                                {
+                                    ad.get('created_datetime') && (
+                                        <DatetimeLabel
+                                            dateTime={ad.get('created_datetime')}
+                                            timezone={timezone}
+                                        />
+                                    )
+                                }
                             </td>
                             <td className="smallest align-middle">
                                 <ToggleButton
                                     value={ad.get('is_active')}
                                     onChange={ad.get('is_active')
-                                        ? () => this._deactivateAd(adId)
-                                        : () => this._activateAd(adId)
+                                        ? () => this._deactivateAd(ad.get('id'))
+                                        : () => this._activateAd(ad.get('id'))
                                     }
-                                    loading={loadingAds.includes(adId)}
-                                    disabled={!ad.get('is_active') && limitReached || loadingAds.includes(adId)}
+                                    loading={loadingAds.includes(ad.get('id'))}
+                                    disabled={!ad.get('is_active') && limitReached || loadingAds.includes(ad.get('id'))}
                                 />
                             </td>
                         </tr>
