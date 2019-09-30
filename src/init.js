@@ -8,6 +8,8 @@ import {recentViewsStorage} from './state/views/utils'
 import {transformSystemMessagesToNotifications} from './utils'
 import {notify} from './state/notifications/actions'
 import * as segmentTracker from './store/middlewares/segmentTracker'
+import {makeGetIntegrationsByTypes} from './state/integrations/selectors'
+import {AIRCALL_INTEGRATION_TYPE} from './constants/integration'
 
 // Polyfills
 Array.prototype.includes = Array.prototype.includes || includes // eslint-disable-line no-extend-native
@@ -57,6 +59,24 @@ if (eventsToTrack) {
 }
 
 export const store = configureStore(toImmutableProps(initialState))
+
+// TODO(@LouisBarranqueiro): remove this case when all Aircall migration will use the new webhook endpoint.
+const aircallIntegrations = makeGetIntegrationsByTypes(store.getState())(AIRCALL_INTEGRATION_TYPE)
+const hasAircallIntegrationsUsingPreviousEndpoint = aircallIntegrations.filterNot((integration) => {
+    return integration.get('deactivated_datetime') ||
+        integration.get('deactivated_datetime') ||
+        integration.getIn(['meta', 'use_new_webhook_endpoint'])
+})
+if (hasAircallIntegrationsUsingPreviousEndpoint.size) {
+    store.dispatch(notify({
+        'status': 'warning',
+        'style': 'banner',
+        'message': '[ACTION REQUIRED] Breaking changes affecting your Aircall integrations will be released on October 5th, 2019. Please click here to see the migration guide.',
+        'onClick': () => {
+            window.open('https://gorgias.helpdocs.io/article/inbkefgkib', '_blank')
+        }
+    }))
+}
 
 // Dispatch system messages as notifications
 transformSystemMessagesToNotifications(window.SYSTEM_MESSAGES || [])
