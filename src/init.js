@@ -71,7 +71,7 @@ if (hasAircallIntegrationsUsingPreviousEndpoint.size) {
     store.dispatch(notify({
         'status': 'warning',
         'style': 'banner',
-        'message': '[ACTION REQUIRED] Breaking changes affecting your Aircall integrations will be released on October 5th, 2019. Please click here to see the migration guide.',
+        'message': '[ACTION REQUIRED] Breaking changes affecting your Aircall integrations will be released on October 12th, 2019. Please click here to see the migration guide.',
         'onClick': () => {
             window.open('https://gorgias.helpdocs.io/article/inbkefgkib', '_blank')
         }
