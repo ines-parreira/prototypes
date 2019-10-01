@@ -55,6 +55,46 @@ exports[`Subscription AfterTitle should display only the cancel action because t
         "key": "cancel",
         "options": Array [
           Object {
+            "parameters": Array [
+              Object {
+                "allowCustomValue": true,
+                "defaultValue": "Cancelled with Gorgias",
+                "label": "Cancellation reason",
+                "name": "cancellation_reason",
+                "options": Array [
+                  Object {
+                    "label": "This is too expensive",
+                    "value": "This is too expensive",
+                  },
+                  Object {
+                    "label": "This was created by accident",
+                    "value": "This was created by accident",
+                  },
+                  Object {
+                    "label": "I already have more than I need",
+                    "value": "I already have more than I need",
+                  },
+                  Object {
+                    "label": "I need it sooner",
+                    "value": "I need it sooner",
+                  },
+                  Object {
+                    "label": "I no longer use this product",
+                    "value": "I no longer use this product",
+                  },
+                  Object {
+                    "label": "I want a different product or variety",
+                    "value": "I want a different product or variety",
+                  },
+                  Object {
+                    "label": "Cancelled with Gorgias",
+                    "value": "Cancelled with Gorgias",
+                  },
+                ],
+                "required": true,
+                "type": "select",
+              },
+            ],
             "value": "rechargeCancelSubscription",
           },
         ],

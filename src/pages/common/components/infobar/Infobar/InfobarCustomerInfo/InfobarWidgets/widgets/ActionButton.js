@@ -247,6 +247,8 @@ export default class ActionButton extends React.Component<Props, State> {
 
             if (parameter.type === 'checkbox') {
                 InputTag = BooleanField
+            } else if (parameter.type === 'select') {
+                InputTag = SelectField
             }
 
             // we don't need the defaultValue as it's set in the state as current value of the parameter

@@ -193,6 +193,47 @@ describe('ActionButton component', () => {
         expect(component).toMatchSnapshot()
     })
 
+    it('should display a single option with a select parameter', () => {
+        const action = {
+            options: [{
+                value: 'myLittleAction',
+                label: 'My little action',
+                parameters: [{
+                    name: 'param',
+                    type: 'select',
+                    defaultValue: true,
+                    label: 'Execute the action for real',
+                    options: [
+                        {label: 'Foo', value: 'foo'},
+                        {label: 'Bar', value: 'bar'},
+                    ]
+                }]
+            }],
+            ...commonAttributes
+        }
+
+        const payload = {
+            little_id: 12
+        }
+
+        const component = shallow(
+            <ActionButton
+                store={store}
+                key={action.key}
+                options={action.options}
+                payload={payload}
+                tooltip={action.tooltip}
+                title={action.title}
+            >
+                {action.child}
+            </ActionButton>
+            , {
+                context: defaultContext
+            }).dive()
+
+        expect(component).toMatchSnapshot()
+    })
+
     it('should display multiple options without parameters', () => {
         const action = {
             options: [{

@@ -3,6 +3,8 @@ import axios from 'axios'
 import _find from 'lodash/find'
 import _get from 'lodash/get'
 
+import {RECHARGE_CANCELLATION_REASONS, RECHARGE_DEFAULT_CANCELLATION_REASON} from './config/integrations/recharge'
+
 import {
     EMAIL_INTEGRATION_TYPE,
     EMAIL_INTEGRATION_TYPES,
@@ -764,7 +766,21 @@ export const ACTION_TEMPLATES = [
         integrationType: RECHARGE_INTEGRATION_TYPE,
         name: 'rechargeCancelLastSubscription',
         title: 'Cancel last subscription',
-        arguments: {},
+        arguments: {
+            cancellation_reason: {
+                label: 'Cancellation reason',
+                type: 'select',
+                default: RECHARGE_DEFAULT_CANCELLATION_REASON,
+                editable: true,
+                required: true,
+                display_order: 1,
+                input: {
+                    type: 'select',
+                    options: RECHARGE_CANCELLATION_REASONS.map((option) => ({value: option, label: option})),
+                    allowCustomValue: true,
+                }
+            }
+        },
         validators: [
             {
                 validate: (customer: Object) => {

@@ -11,11 +11,12 @@ import {
 import {devLog, humanizeString, isCurrentlyOnTicket} from '../../../../../../../../../utils'
 import {renderTemplate} from '../../../../../../../utils/template'
 
+import {RECHARGE_CANCELLATION_REASONS, RECHARGE_DEFAULT_CANCELLATION_REASON} from '../../../../../../../../../config/integrations/recharge'
 import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors'
+import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors'
 
 import ActionButtonsGroup from '../ActionButtonsGroup'
 
-import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors'
 
 export default function Subscription() {
     return {
@@ -49,7 +50,18 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
         let actions = [
             {
                 key: 'cancel',
-                options: [{value: 'rechargeCancelSubscription'}],
+                options: [{
+                    value: 'rechargeCancelSubscription',
+                    parameters: [{
+                        name: 'cancellation_reason',
+                        label: 'Cancellation reason',
+                        type: 'select',
+                        options: RECHARGE_CANCELLATION_REASONS.map((option) => ({value: option, label: option})),
+                        defaultValue: RECHARGE_DEFAULT_CANCELLATION_REASON,
+                        allowCustomValue: true,
+                        required: true
+                    }]
+                }],
                 tooltip: 'This will cancel the subscription in Recharge.',
                 title: (
                     <div>

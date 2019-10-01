@@ -5,6 +5,7 @@ import classnames from 'classnames'
 
 import InputField from '../../../../common/forms/InputField'
 import BooleanField from '../../../../common/forms/BooleanField'
+import SelectField from '../../../../common/forms/SelectField'
 
 import {getActionTemplate} from './../../../../../utils'
 
@@ -85,22 +86,12 @@ export default class TicketReplyAction extends React.Component {
                         const label = template.arguments[key].label
                         const inputConfig = template.arguments[key].input
 
+                        let Tag = InputField
+
                         if (inputConfig && inputConfig.type === 'checkbox') {
-                            return (
-                                <div
-                                    key={key}
-                                    className={css.argInput}
-                                >
-                                    <BooleanField
-                                        {...inputConfig}
-                                        value={value}
-                                        onChange={(value) => this.setValue(key, value, null)}
-                                        required={template.arguments[key].required || false}
-                                        label={label || key}
-                                        inline
-                                    />
-                                </div>
-                            )
+                            Tag = BooleanField
+                        } else if (inputConfig && inputConfig.type === 'select') {
+                            Tag = SelectField
                         }
 
                         return (
@@ -108,7 +99,7 @@ export default class TicketReplyAction extends React.Component {
                                 key={key}
                                 className={css.argInput}
                             >
-                                <InputField
+                                <Tag
                                     {...inputConfig}
                                     value={value}
                                     onChange={(value) => this.setValue(key, value, null)}

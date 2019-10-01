@@ -192,6 +192,118 @@ exports[`ActionButton component should display a single option with a number par
 </Button>
 `;
 
+exports[`ActionButton component should display a single option with a select parameter 1`] = `
+<Button
+  className="button action-button"
+  color="secondary"
+  disabled={false}
+  id="action-button-5"
+  onClick={[Function]}
+  size="sm"
+  tag="button"
+>
+  <div>
+    <i
+      className="material-icons mr-2"
+    >
+      refresh
+    </i>
+    Little action
+  </div>
+  <Popover
+    delay={
+      Object {
+        "hide": 0,
+        "show": 0,
+      }
+    }
+    hideArrow={false}
+    isOpen={false}
+    placement="bottom"
+    placementPrefix="bs-popover"
+    target="action-button-5"
+    tether={
+      Object {
+        "constraints": Array [
+          Object {
+            "attachment": "together none",
+            "pin": true,
+            "to": "scrollParent",
+          },
+          Object {
+            "attachment": "together none",
+            "pin": true,
+            "to": "window",
+          },
+        ],
+      }
+    }
+    toggle={[Function]}
+  >
+    <PopoverHeader
+      tag="h3"
+    >
+      <div>
+        <i
+          className="material-icons mr-2"
+        >
+          refresh
+        </i>
+        Execute my little action
+      </div>
+    </PopoverHeader>
+    <PopoverBody
+      tag="div"
+    >
+      <p
+        className="tooltip"
+      >
+        This action is little, but it is powerful.
+      </p>
+      <Form
+        onSubmit={[Function]}
+        tag="form"
+      >
+        <SelectField
+          allowCustomValue={false}
+          className="mb-2"
+          fixedWidth={false}
+          key="param"
+          label="Execute the action for real"
+          name="param"
+          onChange={[Function]}
+          onSearchChange={[Function]}
+          options={
+            Array [
+              Object {
+                "label": "Foo",
+                "value": "foo",
+              },
+              Object {
+                "label": "Bar",
+                "value": "bar",
+              },
+            ]
+          }
+          placeholder="Select an option"
+          singular="option"
+          style={Object {}}
+          type="select"
+          value={true}
+        />
+        <Button
+          block={true}
+          color="success"
+          tag="button"
+        >
+          Confirm
+        </Button>
+      </Form>
+    </PopoverBody>
+  </Popover>
+</Button>
+`;
+
 exports[`ActionButton component should display a single option with a text parameter 1`] = `
 <Button
   className="button action-button"
@@ -377,143 +489,6 @@ exports[`ActionButton component should display multiple options with a common pa
   className="button action-button"
   color="secondary"
   disabled={false}
-  id="action-button-6"
-  onClick={[Function]}
-  size="sm"
-  tag="button"
->
-  <div>
-    <i
-      className="material-icons mr-2"
-    >
-      refresh
-    </i>
-    Little action
-  </div>
-  <Popover
-    delay={
-      Object {
-        "hide": 0,
-        "show": 0,
-      }
-    }
-    hideArrow={false}
-    isOpen={false}
-    placement="bottom"
-    placementPrefix="bs-popover"
-    target="action-button-6"
-    tether={
-      Object {
-        "constraints": Array [
-          Object {
-            "attachment": "together none",
-            "pin": true,
-            "to": "scrollParent",
-          },
-          Object {
-            "attachment": "together none",
-            "pin": true,
-            "to": "window",
-          },
-        ],
-      }
-    }
-    toggle={[Function]}
-  >
-    <PopoverHeader
-      tag="h3"
-    >
-      <div>
-        <i
-          className="material-icons mr-2"
-        >
-          refresh
-        </i>
-        Execute my little action
-      </div>
-    </PopoverHeader>
-    <PopoverBody
-      tag="div"
-    >
-      <p
-        className="tooltip"
-      >
-        This action is little, but it is powerful.
-      </p>
-      <Form
-        onSubmit={[Function]}
-        tag="form"
-      >
-        <Label
-          key="label"
-          tag="label"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          Type
-        </Label>
-        <SelectField
-          allowCustomValue={false}
-          fixedWidth={false}
-          key="input"
-          onChange={[Function]}
-          onSearchChange={[Function]}
-          options={
-            Array [
-              Object {
-                "label": "My little action",
-                "value": "myLittleAction",
-              },
-              Object {
-                "label": "My big action",
-                "value": "myBigAction",
-              },
-            ]
-          }
-          placeholder="Select an option"
-          singular="option"
-          style={
-            Object {
-              "marginBottom": "1rem",
-            }
-          }
-          value="myLittleAction"
-        />
-        <InputField
-          className="mb-2"
-          key="param"
-          name="param"
-          onChange={[Function]}
-          placeholder="Just a param"
-          required={true}
-          type="text"
-          value="hello"
-        />
-        <Button
-          block={true}
-          color="success"
-          tag="button"
-        >
-          Confirm
-        </Button>
-      </Form>
-    </PopoverBody>
-  </Popover>
-</Button>
-`;
-
-exports[`ActionButton component should display multiple options with different parameter 1`] = `
-<Button
-  className="button action-button"
-  color="secondary"
-  disabled={false}
   id="action-button-7"
   onClick={[Function]}
   size="sm"
@@ -646,12 +621,12 @@ exports[`ActionButton component should display multiple options with different p
 </Button>
 `;
 
-exports[`ActionButton component should display multiple options without parameters 1`] = `
+exports[`ActionButton component should display multiple options with different parameter 1`] = `
 <Button
   className="button action-button"
   color="secondary"
   disabled={false}
-  id="action-button-5"
+  id="action-button-8"
   onClick={[Function]}
   size="sm"
   tag="button"
@@ -675,7 +650,144 @@ exports[`ActionButton component should display multiple options without paramete
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
-    target="action-button-5"
+    target="action-button-8"
+    tether={
+      Object {
+        "constraints": Array [
+          Object {
+            "attachment": "together none",
+            "pin": true,
+            "to": "scrollParent",
+          },
+          Object {
+            "attachment": "together none",
+            "pin": true,
+            "to": "window",
+          },
+        ],
+      }
+    }
+    toggle={[Function]}
+  >
+    <PopoverHeader
+      tag="h3"
+    >
+      <div>
+        <i
+          className="material-icons mr-2"
+        >
+          refresh
+        </i>
+        Execute my little action
+      </div>
+    </PopoverHeader>
+    <PopoverBody
+      tag="div"
+    >
+      <p
+        className="tooltip"
+      >
+        This action is little, but it is powerful.
+      </p>
+      <Form
+        onSubmit={[Function]}
+        tag="form"
+      >
+        <Label
+          key="label"
+          tag="label"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          Type
+        </Label>
+        <SelectField
+          allowCustomValue={false}
+          fixedWidth={false}
+          key="input"
+          onChange={[Function]}
+          onSearchChange={[Function]}
+          options={
+            Array [
+              Object {
+                "label": "My little action",
+                "value": "myLittleAction",
+              },
+              Object {
+                "label": "My big action",
+                "value": "myBigAction",
+              },
+            ]
+          }
+          placeholder="Select an option"
+          singular="option"
+          style={
+            Object {
+              "marginBottom": "1rem",
+            }
+          }
+          value="myLittleAction"
+        />
+        <InputField
+          className="mb-2"
+          key="param"
+          name="param"
+          onChange={[Function]}
+          placeholder="Just a param"
+          required={true}
+          type="text"
+          value="hello"
+        />
+        <Button
+          block={true}
+          color="success"
+          tag="button"
+        >
+          Confirm
+        </Button>
+      </Form>
+    </PopoverBody>
+  </Popover>
+</Button>
+`;
+
+exports[`ActionButton component should display multiple options without parameters 1`] = `
+<Button
+  className="button action-button"
+  color="secondary"
+  disabled={false}
+  id="action-button-6"
+  onClick={[Function]}
+  size="sm"
+  tag="button"
+>
+  <div>
+    <i
+      className="material-icons mr-2"
+    >
+      refresh
+    </i>
+    Little action
+  </div>
+  <Popover
+    delay={
+      Object {
+        "hide": 0,
+        "show": 0,
+      }
+    }
+    hideArrow={false}
+    isOpen={false}
+    placement="bottom"
+    placementPrefix="bs-popover"
+    target="action-button-6"
     tether={
       Object {
         "constraints": Array [
