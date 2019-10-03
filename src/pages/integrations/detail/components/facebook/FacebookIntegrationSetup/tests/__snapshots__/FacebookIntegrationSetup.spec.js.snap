@@ -301,15 +301,8 @@ exports[`FacebookIntegrationSetup should render integrations because there is av
                     value={false}
                   />
                   <BooleanField
-                    label="Enable Facebook posts & comments"
+                    label="Enable Facebook posts, comments and ads comments"
                     name="1.posts_enabled"
-                    onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    label="Enable Facebook ads"
-                    name="1.facebook_ads_enabled"
                     onChange={[Function]}
                     type="checkbox"
                     value={false}
@@ -527,18 +520,11 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
                     value={true}
                   />
                   <BooleanField
-                    label="Enable Facebook posts & comments"
+                    label="Enable Facebook posts, comments and ads comments"
                     name="1.posts_enabled"
                     onChange={[Function]}
                     type="checkbox"
                     value={true}
-                  />
-                  <BooleanField
-                    label="Enable Facebook ads"
-                    name="1.facebook_ads_enabled"
-                    onChange={[Function]}
-                    type="checkbox"
-                    value={false}
                   />
                 </FormGroup>
                 <div>
@@ -753,7 +739,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                     value={true}
                   />
                   <BooleanField
-                    label="Enable Facebook posts & comments"
+                    label="Enable Facebook posts, comments and ads comments"
                     name="1.posts_enabled"
                     onChange={[Function]}
                     type="checkbox"
@@ -765,13 +751,6 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                     onChange={[Function]}
                     type="checkbox"
                     value={true}
-                  />
-                  <BooleanField
-                    label="Enable Facebook ads"
-                    name="1.facebook_ads_enabled"
-                    onChange={[Function]}
-                    type="checkbox"
-                    value={false}
                   />
                   <BooleanField
                     label="Enable Instagram ads"

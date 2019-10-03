@@ -97,7 +97,6 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
                 messenger_enabled: true,
                 posts_enabled: true,
                 instagram_comments_enabled: !!integration.getIn(['meta', 'instagram', 'id']),
-                facebook_ads_enabled: true,
                 instagram_ads_enabled: !!integration.getIn(['meta', 'instagram', 'id'])
             })))
         } else {
@@ -197,7 +196,7 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
                                                 <BooleanField
                                                     name={`${id}.posts_enabled`}
                                                     type="checkbox"
-                                                    label="Enable Facebook posts & comments"
+                                                    label="Enable Facebook posts, comments and ads comments"
                                                     value={this._getSettingValue(id, 'posts_enabled')}
                                                     onChange={(value) => this._setSettingValue(id, 'posts_enabled', value)}
                                                 />
@@ -210,13 +209,6 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
                                                         onChange={(value) => this._setSettingValue(id, 'instagram_comments_enabled', value)}
                                                     />
                                                 )}
-                                                <BooleanField
-                                                    name={`${id}.facebook_ads_enabled`}
-                                                    type="checkbox"
-                                                    label="Enable Facebook ads"
-                                                    value={this._getSettingValue(id, 'facebook_ads_enabled')}
-                                                    onChange={(value) => this._setSettingValue(id, 'facebook_ads_enabled', value)}
-                                                />
                                                 {!instagramIsDisabled && (
                                                     <BooleanField
                                                         name={`${id}.instagram_ads_enabled`}

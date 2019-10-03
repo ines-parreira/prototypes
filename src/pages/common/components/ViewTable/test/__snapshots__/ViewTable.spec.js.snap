@@ -156,7 +156,6 @@ exports[`ViewTable::ViewTable component default view 1`] = `
                   "api",
                   "chat",
                   "email",
-                  "facebook-ad-comment",
                   "facebook",
                   "facebook-messenger",
                   "instagram-ad-comment",

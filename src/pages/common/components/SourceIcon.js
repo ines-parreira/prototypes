@@ -19,8 +19,6 @@ import {
     API_SOURCE,
     CHAT_SOURCE,
     EMAIL_FORWARD_SOURCE,
-    FACEBOOK_AD_COMMENT_SOURCE,
-    FACEBOOK_AD_POST_SOURCE,
     FACEBOOK_COMMENT_SOURCE,
     FACEBOOK_MESSAGE_SOURCE,
     FACEBOOK_MESSENGER_SOURCE,
@@ -75,8 +73,6 @@ const sourceTypeToIcon = (sourceType?: SourceType | IntegrationType) => {
         case PHONE_SOURCE:
             icon.name = 'phone'
             break
-        case FACEBOOK_AD_COMMENT_SOURCE:
-        case FACEBOOK_AD_POST_SOURCE:
         case FACEBOOK_COMMENT_SOURCE:
         case FACEBOOK_INTEGRATION_TYPE:
         case FACEBOOK_POST_SOURCE:

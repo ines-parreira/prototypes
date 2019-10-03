@@ -38,7 +38,6 @@ type State = {
         messenger_enabled: boolean,
         import_history_enabled: boolean,
         instagram_comments_enabled: boolean,
-        facebook_ads_enabled: boolean,
         instagram_ads_enabled: boolean
     },
     language: string,
@@ -52,7 +51,6 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
             messenger_enabled: true,
             import_history_enabled: true,
             instagram_comments_enabled: false,
-            facebook_ads_enabled: false,
             instagram_ads_enabled: false
         },
         language: FACEBOOK_LANGUAGE_DEFAULT,
@@ -71,7 +69,6 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
                 messenger_enabled: settings.get('messenger_enabled'),
                 import_history_enabled: settings.get('import_history_enabled'),
                 instagram_comments_enabled: settings.get('instagram_comments_enabled'),
-                facebook_ads_enabled: settings.get('facebook_ads_enabled', false),
                 instagram_ads_enabled: settings.get('instagram_ads_enabled', false),
             }
         }
@@ -231,7 +228,7 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
                             <BooleanField
                                 name="posts_enabled"
                                 type="checkbox"
-                                label="Enable Facebook posts & comments"
+                                label="Enable Facebook posts, comments and ads comments"
                                 value={this.state.settings.posts_enabled}
                                 onChange={(value) => this._onSettingChange(value, 'posts_enabled')}
                             />
@@ -242,14 +239,6 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
                                 value={this.state.settings.instagram_comments_enabled}
                                 onChange={(value) => this._onSettingChange(value, 'instagram_comments_enabled')}
                                 disabled={doesntHaveInstagramPermissions || doesntHaveInstagramId}
-                            />
-                            <BooleanField
-                                name="facebook_ads_enabled"
-                                type="checkbox"
-                                label="Enable Facebook ads"
-                                value={this.state.settings.facebook_ads_enabled}
-                                onChange={(value) => this._onSettingChange(value, 'facebook_ads_enabled')}
-                                disabled={doesntHaveAdsPermissions}
                             />
                             <BooleanField
                                 name="instagram_ads_enabled"

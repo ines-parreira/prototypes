@@ -18,8 +18,6 @@ import {
     CHAT_SOURCE,
     EMAIL_FORWARD_SOURCE,
     EMAIL_SOURCE,
-    FACEBOOK_AD_COMMENT_SOURCE,
-    FACEBOOK_AD_POST_SOURCE,
     FACEBOOK_COMMENT_SOURCE,
     FACEBOOK_MESSAGE_SOURCE,
     FACEBOOK_MESSENGER_SOURCE,
@@ -160,9 +158,8 @@ export default class ReplyMessageChannel extends React.Component {
             : `${ticket.get('id', '')} - ${messages.last().get('id', '')} - ${md5(messages.last().get('source'))}`
 
         const disabledSources = [
-            API_SOURCE, CHAT_SOURCE, FACEBOOK_AD_COMMENT_SOURCE, FACEBOOK_AD_POST_SOURCE, FACEBOOK_MESSAGE_SOURCE,
-            FACEBOOK_MESSENGER_SOURCE, FACEBOOK_POST_SOURCE, INSTAGRAM_AD_COMMENT_SOURCE, INSTAGRAM_AD_MEDIA_SOURCE,
-            INSTAGRAM_COMMENT_SOURCE, INSTAGRAM_MEDIA_SOURCE,
+            API_SOURCE, CHAT_SOURCE, FACEBOOK_MESSAGE_SOURCE, FACEBOOK_MESSENGER_SOURCE, FACEBOOK_POST_SOURCE,
+            INSTAGRAM_AD_COMMENT_SOURCE, INSTAGRAM_AD_MEDIA_SOURCE, INSTAGRAM_COMMENT_SOURCE, INSTAGRAM_MEDIA_SOURCE,
         ]
 
         const isInputEnabled =
@@ -193,7 +190,6 @@ export default class ReplyMessageChannel extends React.Component {
         const suggestEmail = !isUpdate || !!replyOptions.get('email')
         const suggestChat = isUpdate && !!replyOptions.get('chat')
         const suggestFacebookComment = isUpdate && !!replyOptions.get('facebook-comment')
-        const suggestFacebookAd = isUpdate && !!replyOptions.get('facebook-ad-comment')
         const suggestFacebookMessenger = isUpdate && !!replyOptions.get('facebook-messenger')
         const suggestInstagram = isUpdate && !!replyOptions.get('instagram-comment')
         const suggestInstagramAd = isUpdate && !!replyOptions.get('instagram-ad-comment')
@@ -271,19 +267,6 @@ export default class ReplyMessageChannel extends React.Component {
                                         }}
                                     >
                                         <SourceIcon type={FACEBOOK_COMMENT_SOURCE} />
-                                        Reply via Facebook comment
-                                    </DropdownItem>
-                                )
-                            }
-                            {
-                                suggestFacebookAd && (
-                                    <DropdownItem
-                                        type="button"
-                                        onClick={() => {
-                                            prepareNewMessage(FACEBOOK_AD_COMMENT_SOURCE)
-                                        }}
-                                    >
-                                        <SourceIcon type={FACEBOOK_AD_COMMENT_SOURCE} />
                                         Reply via Facebook comment
                                     </DropdownItem>
                                 )

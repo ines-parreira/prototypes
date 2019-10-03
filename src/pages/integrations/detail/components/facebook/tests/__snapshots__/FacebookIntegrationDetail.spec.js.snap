@@ -14,279 +14,6 @@ exports[`<FacebookIntegrationDetail/> render() should render a loading state bec
 />
 `;
 
-exports[`<FacebookIntegrationDetail/> render() should render an integration with facebook ads enabled 1`] = `
-<div
-  className="full-width"
->
-  <PageHeader
-    title={
-      <Breadcrumb
-        tag="ol"
-      >
-        <BreadcrumbItem
-          tag="li"
-        >
-          <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
-        >
-          <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
-            to="/app/settings/integrations/facebook"
-          >
-            Facebook, Messenger & Instagram
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
-        >
-          My facebook page
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
-        </BreadcrumbItem>
-      </Breadcrumb>
-    }
-  />
-  <FacebookIntegrationNavigation
-    integration={
-      Immutable.Map {
-        "id": 1,
-        "type": "facebook",
-        "name": "My facebook page",
-        "facebook": Immutable.Map {
-          "name": "My facebook page",
-          "settings": Immutable.Map {
-            "facebook_ads_enabled": true,
-          },
-        },
-        "meta": Immutable.Map {
-          "oauth": Immutable.Map {
-            "scope": "business_management,manage_pages,instagram_basic,instagram_manage_comments,ads_read,ads_management",
-          },
-          "instagram": Immutable.Map {
-            "id": "178941234975",
-          },
-        },
-      }
-    }
-  />
-  <Container
-    className="page-container"
-    fluid={true}
-    tag="div"
-  >
-    <div
-      className="d-flex align-items-center mb-3"
-    >
-      <img
-        className="image rounded mr-3"
-        src="test-file-stub"
-        width="30"
-      />
-      <div
-        className="text-truncate text-faded"
-      >
-        <h2
-          className="d-inline mr-3 text-info"
-        >
-          My facebook page
-        </h2>
-        <span />
-      </div>
-    </div>
-    <div
-      className="d-md-flex"
-    >
-      <FormGroup
-        className="mr-3"
-        tag="div"
-      >
-        <BooleanField
-          label="Enable Messenger"
-          name="messenger_enabled"
-          onChange={[Function]}
-          type="checkbox"
-        />
-        <BooleanField
-          label="Enable Facebook posts & comments"
-          name="posts_enabled"
-          onChange={[Function]}
-          type="checkbox"
-        />
-        <BooleanField
-          disabled={false}
-          label="Enable Instagram comments"
-          name="instagram_comments_enabled"
-          onChange={[Function]}
-          type="checkbox"
-        />
-        <BooleanField
-          disabled={false}
-          label="Enable Facebook ads"
-          name="facebook_ads_enabled"
-          onChange={[Function]}
-          type="checkbox"
-          value={true}
-        />
-        <BooleanField
-          disabled={false}
-          label="Enable Instagram ads"
-          name="instagram_ads_enabled"
-          onChange={[Function]}
-          type="checkbox"
-          value={false}
-        />
-        <BooleanField
-          label="Import 30 days of history (posts and comments) as closed tickets"
-          name="import_history_enabled"
-          onChange={[Function]}
-          type="checkbox"
-        />
-      </FormGroup>
-      <div />
-    </div>
-    <InputField
-      label="Language"
-      onChange={[Function]}
-      options={
-        Array [
-          Object {
-            "label": "English US",
-            "value": "en-US",
-          },
-          Object {
-            "label": "French",
-            "value": "fr",
-          },
-          Object {
-            "label": "Spanish",
-            "value": "es",
-          },
-          Object {
-            "label": "Danish",
-            "value": "da",
-          },
-          Object {
-            "label": "Swedish",
-            "value": "sv",
-          },
-          Object {
-            "label": "Italian",
-            "value": "it",
-          },
-          Object {
-            "label": "Dutch",
-            "value": "nl",
-          },
-          Object {
-            "label": "German",
-            "value": "de",
-          },
-        ]
-      }
-      type="select"
-      value="en-US"
-    >
-      <option
-        key="en-US"
-        value="en-US"
-      >
-        English US
-      </option>
-      <option
-        key="fr"
-        value="fr"
-      >
-        French
-      </option>
-      <option
-        key="es"
-        value="es"
-      >
-        Spanish
-      </option>
-      <option
-        key="da"
-        value="da"
-      >
-        Danish
-      </option>
-      <option
-        key="sv"
-        value="sv"
-      >
-        Swedish
-      </option>
-      <option
-        key="it"
-        value="it"
-      >
-        Italian
-      </option>
-      <option
-        key="nl"
-        value="nl"
-      >
-        Dutch
-      </option>
-      <option
-        key="de"
-        value="de"
-      >
-        German
-      </option>
-    </InputField>
-    <div>
-      <Button
-        className="mr-2"
-        color="success"
-        disabled={false}
-        onClick={[Function]}
-        tag="button"
-        type="submit"
-      >
-        Save changes
-      </Button>
-      <Connect(FacebookLoginButton)
-        reconnect={true}
-      />
-      <ConfirmButton
-        className="float-right"
-        color="secondary"
-        confirm={[Function]}
-        confirmColor="success"
-        content="Are you sure you want to delete this integration?"
-        disabled={false}
-        loading={false}
-        placement="bottom"
-        skip={false}
-        title="Are you sure?"
-        type="button"
-      >
-        <i
-          className="material-icons mr-1 text-danger"
-        >
-          delete
-        </i>
-        Delete this page
-      </ConfirmButton>
-    </div>
-  </Container>
-</div>
-`;
-
 exports[`<FacebookIntegrationDetail/> render() should render an integration with instagram ads enabled 1`] = `
 <div
   className="full-width"
@@ -393,7 +120,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           type="checkbox"
         />
         <BooleanField
-          label="Enable Facebook posts & comments"
+          label="Enable Facebook posts, comments and ads comments"
           name="posts_enabled"
           onChange={[Function]}
           type="checkbox"
@@ -404,14 +131,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           name="instagram_comments_enabled"
           onChange={[Function]}
           type="checkbox"
-        />
-        <BooleanField
-          disabled={false}
-          label="Enable Facebook ads"
-          name="facebook_ads_enabled"
-          onChange={[Function]}
-          type="checkbox"
-          value={false}
         />
         <BooleanField
           disabled={false}
@@ -664,7 +383,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           value={true}
         />
         <BooleanField
-          label="Enable Facebook posts & comments"
+          label="Enable Facebook posts, comments and ads comments"
           name="posts_enabled"
           onChange={[Function]}
           type="checkbox"
@@ -674,14 +393,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           disabled={true}
           label="Enable Instagram comments"
           name="instagram_comments_enabled"
-          onChange={[Function]}
-          type="checkbox"
-          value={false}
-        />
-        <BooleanField
-          disabled={true}
-          label="Enable Facebook ads"
-          name="facebook_ads_enabled"
           onChange={[Function]}
           type="checkbox"
           value={false}
@@ -977,7 +688,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           value={true}
         />
         <BooleanField
-          label="Enable Facebook posts & comments"
+          label="Enable Facebook posts, comments and ads comments"
           name="posts_enabled"
           onChange={[Function]}
           type="checkbox"
@@ -987,14 +698,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           disabled={true}
           label="Enable Instagram comments"
           name="instagram_comments_enabled"
-          onChange={[Function]}
-          type="checkbox"
-          value={false}
-        />
-        <BooleanField
-          disabled={true}
-          label="Enable Facebook ads"
-          name="facebook_ads_enabled"
           onChange={[Function]}
           type="checkbox"
           value={false}
@@ -1293,7 +996,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           value={true}
         />
         <BooleanField
-          label="Enable Facebook posts & comments"
+          label="Enable Facebook posts, comments and ads comments"
           name="posts_enabled"
           onChange={[Function]}
           type="checkbox"
@@ -1303,14 +1006,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           disabled={false}
           label="Enable Instagram comments"
           name="instagram_comments_enabled"
-          onChange={[Function]}
-          type="checkbox"
-          value={false}
-        />
-        <BooleanField
-          disabled={true}
-          label="Enable Facebook ads"
-          name="facebook_ads_enabled"
           onChange={[Function]}
           type="checkbox"
           value={false}
@@ -1609,7 +1304,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           value={true}
         />
         <BooleanField
-          label="Enable Facebook posts & comments"
+          label="Enable Facebook posts, comments and ads comments"
           name="posts_enabled"
           onChange={[Function]}
           type="checkbox"
@@ -1619,14 +1314,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           disabled={false}
           label="Enable Instagram comments"
           name="instagram_comments_enabled"
-          onChange={[Function]}
-          type="checkbox"
-          value={false}
-        />
-        <BooleanField
-          disabled={true}
-          label="Enable Facebook ads"
-          name="facebook_ads_enabled"
           onChange={[Function]}
           type="checkbox"
           value={false}

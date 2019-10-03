@@ -16,21 +16,6 @@ describe('<FacebookIntegrationNavigation/>', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should display the Ads tab when Facebook ads are enabled', () => {
-        const integration = fromJS({
-            id: 1,
-            type: FACEBOOK_INTEGRATION_TYPE,
-            facebook: {
-                settings: {
-                    facebook_ads_enabled: true,
-                },
-            },
-        })
-
-        const component = mount(<FacebookIntegrationNavigation integration={integration}/>)
-        expect(component).toMatchSnapshot()
-    })
-
     it('should display the Ads tab when Instagram ads are enabled', () => {
         const integration = fromJS({
             id: 1,

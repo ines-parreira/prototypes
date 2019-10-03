@@ -15,7 +15,6 @@ export default class FacebookIntegrationNavigation extends React.Component<Props
         const {integration} = this.props
         const integrationId = integration.get('id')
         const baseURL = `/app/settings/integrations/facebook/${integrationId}`
-        const facebookAdsEnabled = integration.getIn(['facebook', 'settings', 'facebook_ads_enabled'])
         const instagramAdsEnabled = integration.getIn(['facebook', 'settings', 'instagram_ads_enabled'])
 
         const links = [
@@ -24,8 +23,8 @@ export default class FacebookIntegrationNavigation extends React.Component<Props
             [`${baseURL}/preferences`, 'Preferences'],
         ]
 
-        if (facebookAdsEnabled || instagramAdsEnabled) {
-            links.push([`${baseURL}/ads`, 'Ads'])
+        if (instagramAdsEnabled) {
+            links.push([`${baseURL}/ads`, 'Instagram ads'])
         }
 
         return (
