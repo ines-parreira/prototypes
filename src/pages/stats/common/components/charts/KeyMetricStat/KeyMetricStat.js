@@ -6,20 +6,21 @@ import {fromJS} from 'immutable'
 import _isObject from 'lodash/isObject'
 
 import Tooltip from '../../../../../common/components/Tooltip'
-import {renderDifference, comparedPeriodString, formatDuration, formatPercent, formatCurrency} from '../../../utils'
+import {comparedPeriodString, formatCurrency, formatDuration, formatPercent, renderDifference} from '../../../utils'
+import Loader from '../../../../../common/components/Loader'
 
 import statsCss from '../../../../style.less'
-
-import DonutKeyMetricStat from './DonutKeyMetricStat'
-import DistributionKeyMetricStat from './DistributionKeyMetricStat'
+import {isImmutable} from '../../../../../../utils'
 
 import css from './KeyMetricStat.less'
-
+import DonutKeyMetricStat from './DonutKeyMetricStat'
+import DistributionKeyMetricStat from './DistributionKeyMetricStat'
 
 type Props = {
     data: Object,
     config: Object,
     meta: Object,
+    loading: boolean | Object
 }
 
 export default class KeyMetricStat extends Component<Props> {
@@ -51,12 +52,17 @@ export default class KeyMetricStat extends Component<Props> {
         )
     }
 
-    _renderValue = (config: Object, metric: Object, valueTooltipId: string, tooltipDelta: string) => {
+    _renderValue = (config: Object, metric: ?Object, valueTooltipId: string, tooltipDelta: ?string) => {
+        if (!metric) {
+            return '-'
+        }
+
         const value = metric.get('value')
 
         if (_isObject(value)) {
             const formattedValue = fromJS(value.reduce((acc, value, key) => ({
                 ...acc,
+                // $FlowFixMe
                 [key]: this._formatValue(value, metric)
             }), {}))
 
@@ -74,11 +80,14 @@ export default class KeyMetricStat extends Component<Props> {
             fill={config.get('fill')}
             formattedValue={formattedValue}
             label={`${metric.get('delta')}%`}
+            // $FlowFixMe
             differenceComponent={this._renderDifference(valueTooltipId, metric, tooltipDelta)}
-        /> : this._defaultWrapper(formattedValue, metric, valueTooltipId, tooltipDelta)
+        /> :
+            // $FlowFixMe
+            this._defaultWrapper(formattedValue, metric, valueTooltipId, tooltipDelta)
     }
 
-    _formatValue = (value: string, metric: Map<string, *>) => {
+    _formatValue = (value: string, metric: Object) => {
         switch (metric.get('type')) {
             case 'duration':
                 return formatDuration(value, 2)
@@ -92,23 +101,39 @@ export default class KeyMetricStat extends Component<Props> {
     }
 
     render() {
-        const {data, config, meta} = this.props
-        const previousStartDatetime = moment(meta.get('previous_start_datetime'))
-        const previousEndDatetime = moment(meta.get('previous_end_datetime'))
-        const tooltipDelta = comparedPeriodString(previousStartDatetime, previousEndDatetime)
+        const {data, config, loading} = this.props
 
         return (
             <div className={css.metrics}>
-                {data.map((metric, index) => {
-                    const metricName = metric.get('name')
-                    const metricConfig = config.getIn(['metrics', metricName])
+                {config.get('metrics').map((metricConfig) => {
+                    const metricName = metricConfig.get('api_resource_name') || metricConfig.get('name')
+                    const metricTooltipId = `title-${metricName}`
+                    const valueTooltipId = `value-${metricName}`
+                    let isFetchingMetric = false
+                    let previousStartDatetime = null
+                    let previousEndDatetime = null
+                    let tooltipDelta = null
+                    let metric = null
+                    let metricMeta = null
 
-                    if (!metricConfig) {
-                        return null
+                    if (metricConfig.get('api_resource_name')) {
+                        // This metric has been fetched alone.
+                        // $FlowFixMe
+                        isFetchingMetric = isImmutable(loading) ? loading.get(metricConfig.get('api_resource_name')) : false
+                        metric = data ? data.getIn([metricConfig.get('api_resource_name'), 'data']) : null
+                        metricMeta = data ? data.getIn([metricConfig.get('api_resource_name'), 'meta']) : null
+                    } else {
+                        // This metric has been fetched with some other metrics.
+                        isFetchingMetric = loading
+                        metric = data ? data.find((metric) => metric.get('name') === metricConfig.get('name')) : null
+                        metricMeta = this.props.meta
                     }
 
-                    const metricTooltipId = `title-${metricName}`
-                    const valueTooltipId = `value-${index}`
+                    if (metricMeta) {
+                        previousStartDatetime = moment(metricMeta.get('previous_start_datetime'))
+                        previousEndDatetime = moment(metricMeta.get('previous_end_datetime'))
+                        tooltipDelta = comparedPeriodString(previousStartDatetime, previousEndDatetime)
+                    }
 
                     return (
                         <div
@@ -133,7 +158,14 @@ export default class KeyMetricStat extends Component<Props> {
                                 </span>
                             </div>
                             <div className={classnames('mt-3', css.statsDisplay)}>
-                                {this._renderValue(metricConfig, metric, valueTooltipId, tooltipDelta)}
+                                {isFetchingMetric
+                                    ?
+                                    <Loader
+                                        minHeight="90px"
+                                        size="20px"
+                                    />
+                                    : this._renderValue(metricConfig, metric, valueTooltipId, tooltipDelta)
+                                }
                             </div>
                         </div>
                     )

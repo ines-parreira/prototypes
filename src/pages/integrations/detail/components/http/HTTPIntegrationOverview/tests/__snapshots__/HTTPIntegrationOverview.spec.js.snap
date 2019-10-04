@@ -733,5 +733,6 @@ exports[`HTTPIntegrationOverview should display loading state because the integr
 <Loader
   inline={false}
   minHeight="500px"
+  size="40px"
 />
 `;

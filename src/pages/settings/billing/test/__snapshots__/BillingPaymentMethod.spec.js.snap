@@ -613,6 +613,7 @@ exports[`BillingPaymentMethod Stripe should render a loader 1`] = `
   <Loader
     inline={false}
     minHeight="500px"
+    size="40px"
   >
     <div
       className="container"
@@ -621,6 +622,7 @@ exports[`BillingPaymentMethod Stripe should render a loader 1`] = `
         className="inner"
         style={
           Object {
+            "fontSize": "40px",
             "minHeight": "500px",
           }
         }

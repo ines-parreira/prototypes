@@ -4,6 +4,7 @@ exports[`<FacebookIntegrationDetail/> render() should render a loading state bec
 <Loader
   inline={false}
   minHeight="500px"
+  size="40px"
 />
 `;
 
@@ -11,6 +12,7 @@ exports[`<FacebookIntegrationDetail/> render() should render a loading state bec
 <Loader
   inline={false}
   minHeight="500px"
+  size="40px"
 />
 `;
 

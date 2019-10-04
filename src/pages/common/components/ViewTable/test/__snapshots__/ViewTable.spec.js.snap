@@ -957,5 +957,6 @@ exports[`ViewTable::ViewTable component empty view 1`] = `
 <Loader
   inline={false}
   minHeight="500px"
+  size="40px"
 />
 `;

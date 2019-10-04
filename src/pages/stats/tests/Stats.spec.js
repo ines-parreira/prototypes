@@ -11,7 +11,7 @@ import {views as statsViewsConfig} from '../../../config/stats'
 import {firstResponseTimeStat} from '../../../fixtures/stats'
 
 describe('<Stats/>', () => {
-    const overviewStatView = statsViewsConfig.getIn(['overview', 'link'])
+    const channelsStatView = statsViewsConfig.getIn(['channels', 'link'])
     const defaultProps = {
         notify: jest.fn(),
         filters: fromJS({
@@ -40,7 +40,7 @@ describe('<Stats/>', () => {
             const componentWrapper = shallow(
                 <Stats
                     {...defaultProps}
-                    params={{view: overviewStatView}}
+                    params={{view: channelsStatView}}
                 />
             )
             const component = componentWrapper.instance()
@@ -57,7 +57,7 @@ describe('<Stats/>', () => {
             const componentWrapper = shallow(
                 <Stats
                     {...defaultProps}
-                    params={{view: overviewStatView}}
+                    params={{view: channelsStatView}}
                 />
             )
             const component = componentWrapper.instance()
@@ -74,7 +74,7 @@ describe('<Stats/>', () => {
             const componentWrapper = shallow(
                 <Stats
                     {...defaultProps}
-                    params={{view: overviewStatView}}
+                    params={{view: channelsStatView}}
                 />
             )
             const component = componentWrapper.instance()
@@ -93,7 +93,7 @@ describe('<Stats/>', () => {
             const componentWrapper = shallow(
                 <Stats
                     {...defaultProps}
-                    params={{view: overviewStatView}}
+                    params={{view: channelsStatView}}
                 />
             )
             const component = componentWrapper.instance()
@@ -109,12 +109,12 @@ describe('<Stats/>', () => {
             const componentWrapper = shallow(
                 <Stats
                     {...defaultProps}
-                    params={{view: overviewStatView}}
+                    params={{view: channelsStatView}}
                 />
             )
             const component = componentWrapper.instance()
             component.setState({
-                loadings: fromJS({}),
+                fetchingStates: fromJS({}),
                 stats: fromJS({
                     'first-response-time': firstResponseTimeStat
                 })
@@ -126,13 +126,13 @@ describe('<Stats/>', () => {
             const componentWrapper = shallow(
                 <Stats
                     {...defaultProps}
-                    params={{view: overviewStatView}}
+                    params={{view: channelsStatView}}
                 />
             )
-            const statNames = statsViewsConfig.getIn(['overview', 'stats'])
+            const statNames = statsViewsConfig.getIn(['channels', 'stats'])
             const component = componentWrapper.instance()
             component.setState({
-                loadings: statNames.reduce((loaders, statName) => loaders.set(statName, true), fromJS({})),
+                fetchingStates: statNames.reduce((loaders, statName) => loaders.set(statName, true), fromJS({})),
                 stats: fromJS({})
             })
             expect(componentWrapper.dive()).toMatchSnapshot()
@@ -142,12 +142,12 @@ describe('<Stats/>', () => {
             const componentWrapper = shallow(
                 <Stats
                     {...defaultProps}
-                    params={{view: overviewStatView}}
+                    params={{view: channelsStatView}}
                 />
             )
             const component = componentWrapper.instance()
             component.setState({
-                loadings: fromJS({}),
+                fetchingStates: fromJS({}),
                 stats: fromJS({})
             })
             expect(componentWrapper.dive()).toMatchSnapshot()
