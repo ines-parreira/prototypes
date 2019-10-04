@@ -8,17 +8,19 @@ type Props = {
     inline: boolean,
     message?: Object | string,
     minHeight?: string,
+    size?: string,
     className?: string,
 }
 
 export default class Loader extends Component<Props> {
     static defaultProps = {
         inline: false,
-        minHeight: '500px'
+        minHeight: '500px',
+        size: '40px'
     }
 
     render() {
-        const {message, inline, minHeight, className} = this.props
+        const {message, inline, minHeight, className, size} = this.props
 
         return (
             <div className={classnames(css.container, className)}>
@@ -26,7 +28,10 @@ export default class Loader extends Component<Props> {
                     className={css.inner}
                     style={{minHeight}}
                 >
-                    <i className="icon-custom icon-circle-o-notch md-spin" />
+                    <i
+                        className="icon-custom icon-circle-o-notch md-spin"
+                        style={{fontSize: size}}
+                    />
                     {
                         !inline && message && (
                             <div className="mt-3">

@@ -125,6 +125,11 @@ exports[`BillingDetails component should display loader while fetching a contact
   >
     <i
       className="icon-custom icon-circle-o-notch md-spin"
+      style={
+        Object {
+          "fontSize": "40px",
+        }
+      }
     />
   </div>
 </div>

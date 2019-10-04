@@ -8,6 +8,7 @@ exports[`BillingUsage component should display loader 1`] = `
   <Loader
     inline={false}
     minHeight="500px"
+    size="40px"
   >
     <div
       className="container"
@@ -22,6 +23,11 @@ exports[`BillingUsage component should display loader 1`] = `
       >
         <i
           className="icon-custom icon-circle-o-notch md-spin"
+          style={
+            Object {
+              "fontSize": "40px",
+            }
+          }
         />
       </div>
     </div>

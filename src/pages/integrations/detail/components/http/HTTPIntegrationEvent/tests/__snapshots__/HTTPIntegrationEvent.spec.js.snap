@@ -4,6 +4,7 @@ exports[`HTTPIntegrationEvent component should render a loader because the compo
 <Loader
   inline={false}
   minHeight="500px"
+  size="40px"
 />
 `;
 
@@ -11,6 +12,7 @@ exports[`HTTPIntegrationEvent component should render a loader because the compo
 <Loader
   inline={false}
   minHeight="500px"
+  size="40px"
 />
 `;
 
@@ -18,6 +20,7 @@ exports[`HTTPIntegrationEvent component should render a loader while the compone
 <Loader
   inline={false}
   minHeight="500px"
+  size="40px"
 />
 `;
 
