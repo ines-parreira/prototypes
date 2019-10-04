@@ -1,383 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1`] = `
+exports[`KeyMetricStat should render a key metrics chart 1`] = `
 <div
   className="metrics"
 >
   <div
     className="metric"
-    key="pre_sale_tickets"
-  >
-    <div
-      className="label"
-    >
-      Pre-sale tickets
-      <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
-          id="title-pre_sale_tickets"
-        >
-          info_outline
-        </i>
-        <Tooltip
-          delay={0}
-          placement="top"
-          target="title-pre_sale_tickets"
-        >
-          All tickets excluding post-sale tickets. Post-sale tickets are tickets that had an order within 45 days before being created, and no order within 7 days after being created.
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      <div>
-        <div
-          className="value"
-        >
-          833
-        </div>
-        <span
-          className="diff"
-          id="value-pre_sale_tickets"
-        >
-          <span>
-            <i
-              className="stats-difference positive material-icons font-weight-bold mr-1"
-              style={
-                Object {
-                  "fontSize": "15px",
-                }
-              }
-            >
-              arrow_upward
-            </i>
-            52
-            %
-          </span>
-          <Tooltip
-            delay={0}
-            placement="top"
-            target="value-pre_sale_tickets"
-          >
-            Compared to : Apr 07, 2019 - Jul 06, 2019
-          </Tooltip>
-        </span>
-      </div>
-    </div>
-  </div>
-  <div
-    className="metric"
-    key="converted_tickets"
-  >
-    <div
-      className="label"
-    >
-      Converted tickets
-      <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
-          id="title-converted_tickets"
-        >
-          info_outline
-        </i>
-        <Tooltip
-          delay={0}
-          placement="top"
-          target="title-converted_tickets"
-        >
-          Pre-sale that were followed by a sale within 7 days.
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      <div>
-        <div
-          className="value"
-        >
-          153
-        </div>
-        <span
-          className="diff"
-          id="value-converted_tickets"
-        >
-          <span>
-            <i
-              className="stats-difference positive material-icons font-weight-bold mr-1"
-              style={
-                Object {
-                  "fontSize": "15px",
-                }
-              }
-            >
-              arrow_upward
-            </i>
-            43
-            %
-          </span>
-          <Tooltip
-            delay={0}
-            placement="top"
-            target="value-converted_tickets"
-          >
-            Compared to : Apr 07, 2019 - Jul 06, 2019
-          </Tooltip>
-        </span>
-      </div>
-    </div>
-  </div>
-  <div
-    className="metric"
-    key="conversion_rate"
-  >
-    <div
-      className="label"
-    >
-      Conversion rate
-      <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
-          id="title-conversion_rate"
-        >
-          info_outline
-        </i>
-        <Tooltip
-          delay={0}
-          placement="top"
-          target="title-conversion_rate"
-        >
-          Ratio between pre-sale tickets vs converted tickets.
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      -
-    </div>
-  </div>
-  <div
-    className="metric"
-    key="total_sales_from_support"
-  >
-    <div
-      className="label"
-    >
-      Total sales from support
-      <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
-          id="title-total_sales_from_support"
-        >
-          info_outline
-        </i>
-        <Tooltip
-          delay={0}
-          placement="top"
-          target="title-total_sales_from_support"
-        >
-          Sum of the order amount for each converted ticket.
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      -
-    </div>
-  </div>
-</div>
-`;
-
-exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 1`] = `
-<div
-  className="metrics"
->
-  <div
-    className="metric"
-    key="total-tickets-created"
-  >
-    <div
-      className="label"
-    >
-      Tickets created
-      <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
-          id="title-total-tickets-created"
-        >
-          info_outline
-        </i>
-        <Tooltip
-          delay={0}
-          placement="top"
-          target="title-total-tickets-created"
-        >
-          Number of tickets created.
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      -
-    </div>
-  </div>
-  <div
-    className="metric"
-    key="total-tickets-replied"
-  >
-    <div
-      className="label"
-    >
-      Tickets replied
-      <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
-          id="title-total-tickets-replied"
-        >
-          info_outline
-        </i>
-        <Tooltip
-          delay={0}
-          placement="top"
-          target="title-total-tickets-replied"
-        >
-          Number of tickets replied by agents.
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      -
-    </div>
-  </div>
-  <div
-    className="metric"
-    key="total-tickets-closed"
-  >
-    <div
-      className="label"
-    >
-      Tickets closed
-      <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
-          id="title-total-tickets-closed"
-        >
-          info_outline
-        </i>
-        <Tooltip
-          delay={0}
-          placement="top"
-          target="title-total-tickets-closed"
-        >
-          Number of tickets closed. If a ticket was closed multiple times, we only take into account the last time it was closed.
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      -
-    </div>
-  </div>
-  <div
-    className="metric"
-    key="total-messages-sent"
-  >
-    <div
-      className="label"
-    >
-      Messages sent
-      <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
-          id="title-total-messages-sent"
-        >
-          info_outline
-        </i>
-        <Tooltip
-          delay={0}
-          placement="top"
-          target="title-total-messages-sent"
-        >
-          Number of messages sent by agents and rules.
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      <div>
-        <div
-          className="value"
-        >
-          20
-        </div>
-        <span
-          className="diff"
-          id="value-total-messages-sent"
-        >
-          <span>
-            <i
-              className="stats-difference  material-icons font-weight-bold mr-1"
-              style={
-                Object {
-                  "fontSize": "15px",
-                }
-              }
-            >
-              arrow_forward
-            </i>
-            0
-            %
-          </span>
-          <Tooltip
-            delay={0}
-            placement="top"
-            target="value-total-messages-sent"
-          />
-        </span>
-      </div>
-    </div>
-  </div>
-  <div
-    className="metric"
-    key="total-messages-received"
-  >
-    <div
-      className="label"
-    >
-      Messages received
-      <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
-          id="title-total-messages-received"
-        >
-          info_outline
-        </i>
-        <Tooltip
-          delay={0}
-          placement="top"
-          target="title-total-messages-received"
-        >
-          Number of messages received from customers.
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      -
-    </div>
-  </div>
-  <div
-    className="metric"
-    key="median-first-response-time"
+    key="median_first_response_time"
   >
     <div
       className="label"
@@ -386,14 +15,14 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
       <span>
         <i
           className="info-icon help-icon material-icons ml-2"
-          id="title-median-first-response-time"
+          id="title-median_first_response_time"
         >
           info_outline
         </i>
         <Tooltip
           delay={0}
           placement="top"
-          target="title-median-first-response-time"
+          target="title-median_first_response_time"
         >
           The time between the first message from a customer and the first response from an agent.
                  Messages sent by rules are not taken into account. (median)
@@ -403,47 +32,15 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
     <div
       className="mt-3 statsDisplay"
     >
-      -
-    </div>
-  </div>
-  <div
-    className="metric"
-    key="median-resolution-time"
-  >
-    <div
-      className="label"
-    >
-      Resolution time
-      <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
-          id="title-median-resolution-time"
-        >
-          info_outline
-        </i>
-        <Tooltip
-          delay={0}
-          placement="top"
-          target="title-median-resolution-time"
-        >
-          The time between the first message from a customer and the moment the ticket
-                   has been closed by an agent or a rule. Only tickets with at least one response
-                   from an agent or a rule are taken into account. (median)
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
       <div>
         <div
           className="value"
         >
-          3d 23h 
+          37m 
         </div>
         <span
           className="diff"
-          id="value-median-resolution-time"
+          id="value-0"
         >
           <span>
             <i
@@ -462,9 +59,9 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           <Tooltip
             delay={0}
             placement="top"
-            target="value-median-resolution-time"
+            target="value-0"
           >
-            Compared to : Apr 07, 2019 - Jul 06, 2019
+            Compared to : Sep 05, 2017 - Sep 06, 2017
           </Tooltip>
         </span>
       </div>
@@ -472,7 +69,71 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
   </div>
   <div
     className="metric"
-    key="total-one-touch-tickets"
+    key="median_resolution_time"
+  >
+    <div
+      className="label"
+    >
+      Resolution time
+      <span>
+        <i
+          className="info-icon help-icon material-icons ml-2"
+          id="title-median_resolution_time"
+        >
+          info_outline
+        </i>
+        <Tooltip
+          delay={0}
+          placement="top"
+          target="title-median_resolution_time"
+        >
+          The time between the first message from a customer and the moment the ticket
+                   has been closed by an agent or a rule. Only tickets with at least one response
+                   from an agent or a rule are taken into account. (median)
+        </Tooltip>
+      </span>
+    </div>
+    <div
+      className="mt-3 statsDisplay"
+    >
+      <div>
+        <div
+          className="value"
+        >
+          3d 23h 
+        </div>
+        <span
+          className="diff"
+          id="value-1"
+        >
+          <span>
+            <i
+              className="stats-difference negative material-icons font-weight-bold mr-1"
+              style={
+                Object {
+                  "fontSize": "15px",
+                }
+              }
+            >
+              arrow_upward
+            </i>
+            100
+            %
+          </span>
+          <Tooltip
+            delay={0}
+            placement="top"
+            target="value-1"
+          >
+            Compared to : Sep 05, 2017 - Sep 06, 2017
+          </Tooltip>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    className="metric"
+    key="total_one_touch_tickets"
   >
     <div
       className="label"
@@ -481,14 +142,14 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
       <span>
         <i
           className="info-icon help-icon material-icons ml-2"
-          id="title-total-one-touch-tickets"
+          id="title-total_one_touch_tickets"
         >
           info_outline
         </i>
         <Tooltip
           delay={0}
           placement="top"
-          target="title-total-one-touch-tickets"
+          target="title-total_one_touch_tickets"
         >
           Percentage of tickets closed with only one response from an agent or a rule.
         </Tooltip>
@@ -497,7 +158,101 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
     <div
       className="mt-3 statsDisplay"
     >
-      -
+      <div>
+        <div
+          className="value"
+        >
+          20%
+        </div>
+        <span
+          className="diff"
+          id="value-2"
+        >
+          <span>
+            <i
+              className="stats-difference neutral material-icons font-weight-bold mr-1"
+              style={
+                Object {
+                  "fontSize": "15px",
+                }
+              }
+            >
+              arrow_forward
+            </i>
+            0
+            %
+          </span>
+          <Tooltip
+            delay={0}
+            placement="top"
+            target="value-2"
+          >
+            Compared to : Sep 05, 2017 - Sep 06, 2017
+          </Tooltip>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    className="metric"
+    key="total_messages_sent"
+  >
+    <div
+      className="label"
+    >
+      Messages sent
+      <span>
+        <i
+          className="info-icon help-icon material-icons ml-2"
+          id="title-total_messages_sent"
+        >
+          info_outline
+        </i>
+        <Tooltip
+          delay={0}
+          placement="top"
+          target="title-total_messages_sent"
+        >
+          Number of messages sent by agents and rules.
+        </Tooltip>
+      </span>
+    </div>
+    <div
+      className="mt-3 statsDisplay"
+    >
+      <div>
+        <div
+          className="value"
+        >
+          A$20
+        </div>
+        <span
+          className="diff"
+          id="value-3"
+        >
+          <span>
+            <i
+              className="stats-difference neutral material-icons font-weight-bold mr-1"
+              style={
+                Object {
+                  "fontSize": "15px",
+                }
+              }
+            >
+              arrow_forward
+            </i>
+            0
+            %
+          </span>
+          <Tooltip
+            delay={0}
+            placement="top"
+            target="value-3"
+          >
+            Compared to : Sep 05, 2017 - Sep 06, 2017
+          </Tooltip>
+        </span>
+      </div>
     </div>
   </div>
 </div>
@@ -507,66 +262,6 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
 <div
   className="metrics"
 >
-  <div
-    className="metric"
-    key="total_sent"
-  >
-    <div
-      className="label"
-    >
-      Survey sent
-      <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
-          id="title-total_sent"
-        >
-          info_outline
-        </i>
-        <Tooltip
-          delay={0}
-          placement="top"
-          target="title-total_sent"
-        >
-          Total number of customer satisfaction surveys sent.
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      -
-    </div>
-  </div>
-  <div
-    className="metric"
-    key="response_rate"
-  >
-    <div
-      className="label"
-    >
-      Response rate
-      <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
-          id="title-response_rate"
-        >
-          info_outline
-        </i>
-        <Tooltip
-          delay={0}
-          placement="top"
-          target="title-response_rate"
-        >
-          Total number of responses for surveys sent.
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      -
-    </div>
-  </div>
   <div
     className="metric"
     key="average_rating"
@@ -598,7 +293,7 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
         differenceComponent={
           <span
             className="diff"
-            id="value-average_rating"
+            id="value-0"
           >
             <span>
               <i
@@ -617,7 +312,7 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
             <Tooltip
               delay={0}
               placement="top"
-              target="value-average_rating"
+              target="value-0"
             >
               Compared to : Sep 05, 2017 - Sep 06, 2017
             </Tooltip>
@@ -667,7 +362,6 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
       <DistributionKeyMetricStat
         config={
           Immutable.Map {
-            "name": "response_distribution",
             "label": "Response Distribution",
             "tooltip": "Percentage of responses, grouped by the given score.",
             "type": "distribution",

@@ -8,7 +8,6 @@ exports[`Loader component simple message 1`] = `
     className="inner"
     style={
       Object {
-        "fontSize": "40px",
         "minHeight": "500px",
       }
     }

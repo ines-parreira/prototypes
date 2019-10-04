@@ -350,43 +350,45 @@ export const stats = fromJS({
     },
     [OVERVIEW]: {
         style: 'key-metrics',
-        metrics: [{
-            api_resource_name: 'total-tickets-created',
-            label: 'Tickets created',
-            tooltip: 'Number of tickets created.',
-        }, {
-            api_resource_name: 'total-tickets-replied',
-            label: 'Tickets replied',
-            tooltip: 'Number of tickets replied by agents.',
-        }, {
-            api_resource_name: 'total-tickets-closed',
-            label: 'Tickets closed',
-            tooltip: 'Number of tickets closed. If a ticket was closed multiple times, ' +
-                'we only take into account the last time it was closed.',
-        }, {
-            api_resource_name: 'total-messages-sent',
-            tooltip: 'Number of messages sent by agents and rules.',
-            label: 'Messages sent',
-        }, {
-            api_resource_name: 'total-messages-received',
-            tooltip: 'Number of messages received from customers.',
-            label: 'Messages received',
-        }, {
-            api_resource_name: 'median-first-response-time',
-            tooltip: `The time between the first message from a customer and the first response from an agent.
+        metrics: {
+            total_new_tickets: {
+                label: 'Tickets created',
+                tooltip: 'Number of tickets created.',
+            },
+            total_replied_tickets: {
+                label: 'Tickets replied',
+                tooltip: 'Number of tickets replied by agents.',
+            },
+            total_closed_tickets: {
+                label: 'Tickets closed',
+                tooltip: 'Number of tickets closed. If a ticket was closed multiple times, ' +
+                    'we only take into account the last time it was closed.',
+            },
+            total_messages_sent: {
+                tooltip: 'Number of messages sent by agents and rules.',
+                label: 'Messages sent',
+            },
+            total_messages_received: {
+                tooltip: 'Number of messages received from customers.',
+                label: 'Messages received',
+            },
+            median_first_response_time: {
+                tooltip: `The time between the first message from a customer and the first response from an agent.
                  Messages sent by rules are not taken into account. (median)`,
-            label: 'First response time',
-        }, {
-            api_resource_name: 'median-resolution-time',
-            tooltip: `The time between the first message from a customer and the moment the ticket
+                label: 'First response time',
+            },
+            median_resolution_time: {
+                tooltip: `The time between the first message from a customer and the moment the ticket
                    has been closed by an agent or a rule. Only tickets with at least one response
                    from an agent or a rule are taken into account. (median)`,
-            label: 'Resolution time',
-        }, {
-            api_resource_name: 'total-one-touch-tickets',
-            tooltip: 'Percentage of tickets closed with only one response from an agent or a rule.',
-            label: 'One-touch tickets',
-        }]
+                label: 'Resolution time',
+            },
+            total_one_touch_tickets: {
+                tooltip: 'Percentage of tickets closed with only one response from an agent or a rule.',
+                label: 'One-touch tickets',
+            },
+        }
+
     },
     [RESOLUTION_TIME]: {
         helpText: `The time between the first message from a customer and the moment the ticket
@@ -493,35 +495,34 @@ export const stats = fromJS({
     },
     [SATISFACTION_SURVEYS]: {
         style: 'key-metrics',
-        api_resource_name: 'satisfaction-surveys',
-        metrics: [{
-            name: 'total_sent',
-            label: 'Survey sent',
-            tooltip: 'Total number of customer satisfaction surveys sent.',
-        }, {
-            name: 'response_rate',
-            label: 'Response rate',
-            tooltip: 'Total number of responses for surveys sent.',
-            type: 'donut',
-            fill: 'success',
-            maxValue: 100
-        }, {
-            name: 'average_rating',
-            label: 'Average rating',
-            tooltip: 'Average score given by the customers.',
-            type: 'donut',
-            fill: 'warning',
-            maxValue: SATISFACTION_SURVEY_MAX_SCORE
-        }, {
-            name: 'response_distribution',
-            label: 'Response Distribution',
-            tooltip: 'Percentage of responses, grouped by the given score.',
-            type: 'distribution',
-            variant: 'star',
-            minValue: SATISFACTION_SURVEY_MIN_SCORE,
-            maxValue: SATISFACTION_SURVEY_MAX_SCORE
-        },
-        ]
+        metrics: {
+            total_sent: {
+                label: 'Survey sent',
+                tooltip: 'Total number of customer satisfaction surveys sent.',
+            },
+            response_rate: {
+                label: 'Response rate',
+                tooltip: 'Total number of responses for surveys sent.',
+                type: 'donut',
+                fill: 'success',
+                maxValue: 100
+            },
+            average_rating: {
+                label: 'Average rating',
+                tooltip: 'Average score given by the customers.',
+                type: 'donut',
+                fill: 'warning',
+                maxValue: SATISFACTION_SURVEY_MAX_SCORE
+            },
+            response_distribution: {
+                label: 'Response Distribution',
+                tooltip: 'Percentage of responses, grouped by the given score.',
+                type: 'distribution',
+                variant: 'star',
+                minValue: SATISFACTION_SURVEY_MIN_SCORE,
+                maxValue: SATISFACTION_SURVEY_MAX_SCORE
+            },
+        }
     },
     [LATEST_SATISFACTION_SURVEYS]: {
         helpText: 'Latest surveys for selected period',
@@ -530,25 +531,25 @@ export const stats = fromJS({
     },
     [REVENUE_OVERVIEW]: {
         style: 'key-metrics',
-        api_resource_name: 'revenue-overview',
-        metrics: [{
-            name: 'pre_sale_tickets',
-            label: 'Pre-sale tickets',
-            tooltip: 'All tickets excluding post-sale tickets. Post-sale tickets are tickets that had an order ' +
-                'within 45 days before being created, and no order within 7 days after being created.',
-        }, {
-            name: 'converted_tickets',
-            label: 'Converted tickets',
-            tooltip: 'Pre-sale that were followed by a sale within 7 days.'
-        }, {
-            name: 'conversion_rate',
-            label: 'Conversion rate',
-            tooltip: 'Ratio between pre-sale tickets vs converted tickets.'
-        }, {
-            name: 'total_sales_from_support',
-            label: 'Total sales from support',
-            tooltip: 'Sum of the order amount for each converted ticket.'
-        }]
+        metrics: {
+            pre_sale_tickets: {
+                label: 'Pre-sale tickets',
+                tooltip: 'All tickets excluding post-sale tickets. Post-sale tickets are tickets that had an order ' +
+                    'within 45 days before being created, and no order within 7 days after being created.',
+            },
+            converted_tickets: {
+                label: 'Converted tickets',
+                tooltip: 'Pre-sale that were followed by a sale within 7 days.'
+            },
+            conversion_rate: {
+                label: 'Conversion rate',
+                tooltip: 'Ratio between pre-sale tickets vs converted tickets.'
+            },
+            total_sales_from_support: {
+                label: 'Total sales from support',
+                tooltip: 'Sum of the order amount for each converted ticket.'
+            },
+        }
     },
     [SALES_PER_AGENT]: {
         helpText: 'Breakdown of sales metrics per agent.',
@@ -606,6 +607,7 @@ export const stats = fromJS({
 
 // Callbacks to format values of datasets or axes
 const formatDurationAxeCb = (val) => formatDuration(val, 1)
+
 
 const formatDateAxeCb = (val) => {
     return moment.unix(val).format('MMM Do')

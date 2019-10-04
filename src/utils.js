@@ -482,8 +482,9 @@ export function insertText(editorState: EditorState, text: string): EditorState 
 
 /**
  * Return true if passed object is immutable (from Immutable JS)
+ * @param object
  */
-export const isImmutable = (value: any): boolean => Immutable.Iterable.isIterable(value)
+export const isImmutable = (object: {} | Iterable<*, *>): boolean => Immutable.Iterable.isIterable(object)
 
 /**
  * Return a passed object as immutable

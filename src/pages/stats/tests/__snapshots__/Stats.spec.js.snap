@@ -14,14 +14,28 @@ Array [
       "title": "Invalid filters",
     },
   ],
+  Array [
+    Object {
+      "status": "error",
+      "title": "Invalid filters",
+    },
+  ],
+  Array [
+    Object {
+      "status": "error",
+      "title": "Invalid filters",
+    },
+  ],
 ]
 `;
 
 exports[`<Stats/> componentDidMount() should create a notification (server error) when fetching stats fails: stats should be marked as not loading 1`] = `
 Object {
-  "fetchingStates": Immutable.Map {
-    "tickets-created-per-channel-per-day": false,
-    "tickets-created-per-channel": false,
+  "loadings": Immutable.Map {
+    "overview": false,
+    "support-volume": false,
+    "resolution-time": false,
+    "first-response-time": false,
   },
   "stats": Immutable.Map {},
 }
@@ -41,14 +55,28 @@ Array [
       "title": "Failed to get statistics. Please retry in a few seconds.",
     },
   ],
+  Array [
+    Object {
+      "status": "error",
+      "title": "Failed to get statistics. Please retry in a few seconds.",
+    },
+  ],
+  Array [
+    Object {
+      "status": "error",
+      "title": "Failed to get statistics. Please retry in a few seconds.",
+    },
+  ],
 ]
 `;
 
 exports[`<Stats/> componentDidMount() should create a notification (unknown error) when fetching stats fails: stats should be marked as not loading 1`] = `
 Object {
-  "fetchingStates": Immutable.Map {
-    "tickets-created-per-channel-per-day": false,
-    "tickets-created-per-channel": false,
+  "loadings": Immutable.Map {
+    "overview": false,
+    "support-volume": false,
+    "resolution-time": false,
+    "first-response-time": false,
   },
   "stats": Immutable.Map {},
 }
@@ -56,12 +84,14 @@ Object {
 
 exports[`<Stats/> componentDidMount() should fetch stats and populate the state: should contain data of stats and be marked as not loading 1`] = `
 Object {
-  "fetchingStates": Immutable.Map {
-    "tickets-created-per-channel-per-day": false,
-    "tickets-created-per-channel": false,
+  "loadings": Immutable.Map {
+    "overview": false,
+    "support-volume": false,
+    "resolution-time": false,
+    "first-response-time": false,
   },
   "stats": Immutable.Map {
-    "tickets-created-per-channel-per-day": Immutable.Map {
+    "overview": Immutable.Map {
       "meta": Immutable.Map {
         "previous_end_datetime": "2019-05-25T00:00:00-05:00",
         "previous_start_datetime": "2019-05-18T00:00:01-05:00",
@@ -116,7 +146,117 @@ Object {
         ],
       },
     },
-    "tickets-created-per-channel": Immutable.Map {
+    "support-volume": Immutable.Map {
+      "meta": Immutable.Map {
+        "previous_end_datetime": "2019-05-25T00:00:00-05:00",
+        "previous_start_datetime": "2019-05-18T00:00:01-05:00",
+        "end_datetime": "2019-05-31T23:59:59-05:00",
+        "start_datetime": "2019-05-25T00:00:00-05:00",
+      },
+      "label": "First response time (percentiles)",
+      "legend": Immutable.Map {
+        "axes": Immutable.Map {
+          "x": "",
+          "y": "First response time",
+        },
+      },
+      "data": Immutable.Map {
+        "axes": Immutable.Map {
+          "x": Immutable.List [
+            1558760400,
+            1558846800,
+            1558933200,
+            1559019600,
+            1559106000,
+            1559192400,
+            1559278800,
+          ],
+          "y": Immutable.List [],
+        },
+        "lines": Immutable.List [
+          Immutable.Map {
+            "name": "50%",
+            "data": Immutable.List [
+              0,
+              0,
+              0,
+              0,
+              1563,
+              44772,
+              0,
+            ],
+          },
+          Immutable.Map {
+            "name": "90%",
+            "data": Immutable.List [
+              0,
+              0,
+              0,
+              0,
+              1563,
+              80567,
+              0,
+            ],
+          },
+        ],
+      },
+    },
+    "resolution-time": Immutable.Map {
+      "meta": Immutable.Map {
+        "previous_end_datetime": "2019-05-25T00:00:00-05:00",
+        "previous_start_datetime": "2019-05-18T00:00:01-05:00",
+        "end_datetime": "2019-05-31T23:59:59-05:00",
+        "start_datetime": "2019-05-25T00:00:00-05:00",
+      },
+      "label": "First response time (percentiles)",
+      "legend": Immutable.Map {
+        "axes": Immutable.Map {
+          "x": "",
+          "y": "First response time",
+        },
+      },
+      "data": Immutable.Map {
+        "axes": Immutable.Map {
+          "x": Immutable.List [
+            1558760400,
+            1558846800,
+            1558933200,
+            1559019600,
+            1559106000,
+            1559192400,
+            1559278800,
+          ],
+          "y": Immutable.List [],
+        },
+        "lines": Immutable.List [
+          Immutable.Map {
+            "name": "50%",
+            "data": Immutable.List [
+              0,
+              0,
+              0,
+              0,
+              1563,
+              44772,
+              0,
+            ],
+          },
+          Immutable.Map {
+            "name": "90%",
+            "data": Immutable.List [
+              0,
+              0,
+              0,
+              0,
+              1563,
+              80567,
+              0,
+            ],
+          },
+        ],
+      },
+    },
+    "first-response-time": Immutable.Map {
       "meta": Immutable.Map {
         "previous_end_datetime": "2019-05-25T00:00:00-05:00",
         "previous_start_datetime": "2019-05-18T00:00:01-05:00",
@@ -177,9 +317,11 @@ Object {
 
 exports[`<Stats/> componentDidMount() should fetch stats and populate the state: should contain loading stats 1`] = `
 Object {
-  "fetchingStates": Immutable.Map {
-    "tickets-created-per-channel-per-day": true,
-    "tickets-created-per-channel": true,
+  "loadings": Immutable.Map {
+    "overview": true,
+    "support-volume": true,
+    "resolution-time": true,
+    "first-response-time": true,
   },
   "stats": Immutable.Map {},
 }
@@ -204,7 +346,110 @@ exports[`<Stats/> render() should render stats 1`] = `
       "padding": 0,
     }
   }
-/>
+>
+  <div
+    key="3"
+    style={
+      Object {
+        "padding": "30px",
+      }
+    }
+  >
+    <Connect(Stat)
+      config={
+        Immutable.Map {
+          "helpText": "The time between the first message from a customer
+                   and the first response from an agent. Messages sent by rules are not taken into account.",
+          "style": "line",
+          "downloadable": true,
+          "lines": Immutable.Map {
+            "50%": Immutable.Map {
+              "label": "median",
+              "backgroundColor": "#8892f2",
+              "borderWidth": 0,
+              "borderColor": "#8892f2",
+            },
+            "90%": Immutable.Map {
+              "label": "95%",
+              "backgroundColor": "#ff6b80",
+              "borderWidth": 0,
+              "borderColor": "#ff6b80",
+            },
+          },
+          "options": [Function],
+        }
+      }
+      data={
+        Immutable.Map {
+          "label": "First response time (percentiles)",
+          "legend": Immutable.Map {
+            "axes": Immutable.Map {
+              "x": "",
+              "y": "First response time",
+            },
+          },
+          "data": Immutable.Map {
+            "axes": Immutable.Map {
+              "x": Immutable.List [
+                1558760400,
+                1558846800,
+                1558933200,
+                1559019600,
+                1559106000,
+                1559192400,
+                1559278800,
+              ],
+              "y": Immutable.List [],
+            },
+            "lines": Immutable.List [
+              Immutable.Map {
+                "name": "50%",
+                "data": Immutable.List [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  44772,
+                  0,
+                ],
+              },
+              Immutable.Map {
+                "name": "90%",
+                "data": Immutable.List [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  80567,
+                  0,
+                ],
+              },
+            ],
+          },
+        }
+      }
+      filters={
+        Immutable.Map {
+          "period": Immutable.Map {
+            "start_datetime": "2019-03-09",
+            "end_datetime": "2019-03-10",
+          },
+        }
+      }
+      meta={
+        Immutable.Map {
+          "previous_end_datetime": "2019-05-25T00:00:00-05:00",
+          "previous_start_datetime": "2019-05-18T00:00:01-05:00",
+          "end_datetime": "2019-05-31T23:59:59-05:00",
+          "start_datetime": "2019-05-25T00:00:00-05:00",
+        }
+      }
+      name="first-response-time"
+    />
+  </div>
+</div>
 `;
 
 exports[`<Stats/> render() should render stats as loading 1`] = `
@@ -220,55 +465,51 @@ exports[`<Stats/> render() should render stats as loading 1`] = `
     key="0"
     style={
       Object {
-        "padding": "30px",
+        "padding": "0 0 30px",
       }
     }
   >
     <Connect(Stat)
       config={
         Immutable.Map {
-          "helpText": "Number of tickets created per channel per day",
-          "style": "bar",
-          "downloadable": true,
-          "lines": Immutable.Map {
-            "facebook": Immutable.Map {
-              "label": "Facebook",
-              "color": "#4872db",
+          "style": "key-metrics",
+          "metrics": Immutable.Map {
+            "total_new_tickets": Immutable.Map {
+              "label": "Tickets created",
+              "tooltip": "Number of tickets created.",
             },
-            "aircall": Immutable.Map {
-              "label": "Aircall",
-              "color": "#34ba28",
+            "total_replied_tickets": Immutable.Map {
+              "label": "Tickets replied",
+              "tooltip": "Number of tickets replied by agents.",
             },
-            "facebook-messenger": Immutable.Map {
-              "label": "Facebook Messenger",
-              "color": "#1787fb",
+            "total_closed_tickets": Immutable.Map {
+              "label": "Tickets closed",
+              "tooltip": "Number of tickets closed. If a ticket was closed multiple times, we only take into account the last time it was closed.",
             },
-            "phone": Immutable.Map {
-              "label": "Phone",
-              "color": "#ffe03f",
+            "total_messages_sent": Immutable.Map {
+              "tooltip": "Number of messages sent by agents and rules.",
+              "label": "Messages sent",
             },
-            "twitter": Immutable.Map {
-              "label": "Twitter",
-              "color": "#00aced",
+            "total_messages_received": Immutable.Map {
+              "tooltip": "Number of messages received from customers.",
+              "label": "Messages received",
             },
-            "chat": Immutable.Map {
-              "label": "Chat",
-              "color": "#ffb584",
+            "median_first_response_time": Immutable.Map {
+              "tooltip": "The time between the first message from a customer and the first response from an agent.
+                 Messages sent by rules are not taken into account. (median)",
+              "label": "First response time",
             },
-            "sms": Immutable.Map {
-              "label": "Sms",
-              "color": "#69c473",
+            "median_resolution_time": Immutable.Map {
+              "tooltip": "The time between the first message from a customer and the moment the ticket
+                   has been closed by an agent or a rule. Only tickets with at least one response
+                   from an agent or a rule are taken into account. (median)",
+              "label": "Resolution time",
             },
-            "api": Immutable.Map {
-              "label": "Gorgias API",
-              "color": "#e88850",
-            },
-            "email": Immutable.Map {
-              "label": "Email",
-              "color": "#ff5eab",
+            "total_one_touch_tickets": Immutable.Map {
+              "tooltip": "Percentage of tickets closed with only one response from an agent or a rule.",
+              "label": "One-touch tickets",
             },
           },
-          "options": [Function],
         }
       }
       filters={
@@ -279,8 +520,8 @@ exports[`<Stats/> render() should render stats as loading 1`] = `
           },
         }
       }
-      loading={true}
-      name="tickets-created-per-channel-per-day"
+      isLoading={true}
+      name="overview"
     />
   </div>
   <div
@@ -294,9 +535,24 @@ exports[`<Stats/> render() should render stats as loading 1`] = `
     <Connect(Stat)
       config={
         Immutable.Map {
-          "helpText": "Number of tickets created per channel",
-          "style": "table",
+          "helpText": "Number of tickets created, replied by agents and closed.",
+          "style": "bar",
           "downloadable": true,
+          "lines": Immutable.Map {
+            "created": Immutable.Map {
+              "label": "Ticket created",
+              "color": "#ffb584",
+            },
+            "replied": Immutable.Map {
+              "label": "Ticket replied",
+              "color": "#8892f2",
+            },
+            "closed": Immutable.Map {
+              "label": "Ticket closed",
+              "color": "#a5e5ab",
+            },
+          },
+          "options": [Function],
         }
       }
       filters={
@@ -307,8 +563,97 @@ exports[`<Stats/> render() should render stats as loading 1`] = `
           },
         }
       }
-      loading={true}
-      name="tickets-created-per-channel"
+      isLoading={true}
+      name="support-volume"
+    />
+  </div>
+  <div
+    key="2"
+    style={
+      Object {
+        "padding": "30px",
+      }
+    }
+  >
+    <Connect(Stat)
+      config={
+        Immutable.Map {
+          "helpText": "The time between the first message from a customer and the moment the ticket
+                   has been closed by an agent or a rule. Only tickets with a least one response
+                   from an agent or a rule are taken into account.",
+          "style": "line",
+          "downloadable": true,
+          "lines": Immutable.Map {
+            "50%": Immutable.Map {
+              "label": "median",
+              "backgroundColor": "#ffb584",
+              "borderWidth": 0,
+              "borderColor": "#ffb584",
+            },
+            "90%": Immutable.Map {
+              "label": "95%",
+              "backgroundColor": "#ff6b80",
+              "borderWidth": 0,
+              "borderColor": "#ff6b80",
+            },
+          },
+          "options": [Function],
+        }
+      }
+      filters={
+        Immutable.Map {
+          "period": Immutable.Map {
+            "start_datetime": "2019-03-09",
+            "end_datetime": "2019-03-10",
+          },
+        }
+      }
+      isLoading={true}
+      name="resolution-time"
+    />
+  </div>
+  <div
+    key="3"
+    style={
+      Object {
+        "padding": "30px",
+      }
+    }
+  >
+    <Connect(Stat)
+      config={
+        Immutable.Map {
+          "helpText": "The time between the first message from a customer
+                   and the first response from an agent. Messages sent by rules are not taken into account.",
+          "style": "line",
+          "downloadable": true,
+          "lines": Immutable.Map {
+            "50%": Immutable.Map {
+              "label": "median",
+              "backgroundColor": "#8892f2",
+              "borderWidth": 0,
+              "borderColor": "#8892f2",
+            },
+            "90%": Immutable.Map {
+              "label": "95%",
+              "backgroundColor": "#ff6b80",
+              "borderWidth": 0,
+              "borderColor": "#ff6b80",
+            },
+          },
+          "options": [Function],
+        }
+      }
+      filters={
+        Immutable.Map {
+          "period": Immutable.Map {
+            "start_datetime": "2019-03-09",
+            "end_datetime": "2019-03-10",
+          },
+        }
+      }
+      isLoading={true}
+      name="first-response-time"
     />
   </div>
 </div>

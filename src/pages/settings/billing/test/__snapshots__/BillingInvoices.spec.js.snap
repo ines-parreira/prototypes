@@ -168,7 +168,6 @@ exports[`BillingInvoices component should display loader 1`] = `
   <Loader
     inline={false}
     minHeight="500px"
-    size="40px"
   >
     <div
       className="container"
@@ -177,7 +176,6 @@ exports[`BillingInvoices component should display loader 1`] = `
         className="inner"
         style={
           Object {
-            "fontSize": "40px",
             "minHeight": "500px",
           }
         }

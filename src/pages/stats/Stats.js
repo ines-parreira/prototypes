@@ -3,6 +3,7 @@ import {fromJS} from 'immutable'
 import React from 'react'
 import {connect} from 'react-redux'
 import {Container} from 'reactstrap'
+import type {List} from 'immutable'
 import {withRouter} from 'react-router'
 
 import axios from 'axios'
@@ -21,54 +22,44 @@ type Props = {
 }
 
 type State = {
-    fetchingStates: Map<*, *>,
+    loadings: Map<*, *>,
     stats: Map<*, *>
 }
 
 export class Stats extends React.Component<Props, State> {
     gorgiasApi = new GorgiasApi()
     state = {
-        fetchingStates: fromJS({}), // Store fetching state of each stat on the view.
+        loadings: fromJS({}), // store loading state of each stat on the view
         stats: fromJS({})
     }
 
     componentDidMount() {
         const {params, filters} = this.props
         const viewConfig = statViewsConfig.get(params.view)
-        viewConfig.get('stats').forEach((statName) => this._fetchStat(statName, filters))
+        this._fetchStats(viewConfig.get('stats'), filters)
     }
 
     componentWillUnmount() {
         this.gorgiasApi.cancelPendingRequests()
     }
 
-    _fetchStat = (statName: string, filters: Object) => {
+    _updateLoadingStatsState = (statNames: List<string>, loading: boolean) => {
+        const statLoaders = statNames.reduce((loaders, statName) => {
+            return loaders.set(statName, loading)
+        }, fromJS({}))
+        // $FlowFixMe
+        this.setState({loadings: this.state.loadings.merge(statLoaders)})
+    }
+
+    _fetchStats = (statNames: List<string>, filters: Map<*, *>) => {
         const {notify} = this.props
-        const statConfig = statsConfig.get(statName)
-        let resourceNames = fromJS([statName])
+        this._updateLoadingStatsState(statNames, true)
 
-        if (statConfig.get('style') === 'key-metrics') {
-            // key metrics can be fetched separately or all together.
-            const resourceName = statConfig.get('api_resource_name')
-            resourceNames = resourceName
-                ? fromJS([resourceName])
-                : statConfig.get('metrics').map((metric) => metric.get('api_resource_name'))
-        }
-
-        resourceNames.map(async(resourceName) => {
-            // We store the fetching state and data of a statistic differently if this one has several api resources to fetch.
-            const statStorageKey = resourceNames.size > 1 ? [statName, 'data', resourceName] : [statName]
-            const fetchingStateKey = resourceNames.size > 1 ? [statName, resourceName] : [statName]
-            this.setState((state) => {
-                // $FlowFixMe
-                return {fetchingStates: state.fetchingStates.setIn(fetchingStateKey, true)}
-            })
-
+        return Promise.all([statNames.map(async(statName) => {
             try {
-                const stat = await this.gorgiasApi.getStatistic(resourceName, fromJS({filters}))
+                const stat = await this.gorgiasApi.getStatistic(statName, fromJS({filters}))
                 this.setState({
-                    // $FlowFixMe
-                    stats: this.state.stats.setIn(statStorageKey, fromJS({
+                    stats: this.state.stats.set(statName, fromJS({
                         'meta': stat.get('meta'),
                         ...stat.get('data').toJS()
                     }))
@@ -87,12 +78,9 @@ export class Stats extends React.Component<Props, State> {
                     title: serverError || defaultError
                 })
             } finally {
-                this.setState((state) => {
-                    // $FlowFixMe
-                    return {fetchingStates: state.fetchingStates.setIn(fetchingStateKey, false)}
-                })
+                this._updateLoadingStatsState(fromJS([statName]), false)
             }
-        })
+        })])
     }
 
     render() {
@@ -106,12 +94,12 @@ export class Stats extends React.Component<Props, State> {
             >
                 {viewConfig.get('stats').map((statName, idx) => {
                     const statConfig = statsConfig.get(statName)
-                    const fetchingState = this.state.fetchingStates.get(statName)
+                    const isLoading = this.state.loadings.get(statName)
                     // $FlowFixMe
                     const stat = stats.get(statName) ? stats.get(statName).toObject() : null
 
                     // An error occured: invalid filters, request timed out, etc....
-                    if (!fetchingState && !stat) {
+                    if (!isLoading && !stat) {
                         return null
                     }
 
@@ -127,7 +115,7 @@ export class Stats extends React.Component<Props, State> {
                             key={idx}
                         >
                             <Stat
-                                loading={fetchingState}
+                                isLoading={isLoading}
                                 name={statName}
                                 config={statConfig}
                                 filters={filters}

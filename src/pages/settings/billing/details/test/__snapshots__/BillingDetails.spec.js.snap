@@ -119,7 +119,6 @@ exports[`BillingDetails component should display loader while fetching a contact
     className="inner"
     style={
       Object {
-        "fontSize": "40px",
         "minHeight": "500px",
       }
     }

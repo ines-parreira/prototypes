@@ -28,7 +28,7 @@ type Props = {
     label?: string,
     tagColors?: Object,
     downloadable?: boolean,
-    loading: boolean | Object,
+    isLoading?: boolean,
     name: string,
     notify: typeof notify
 }
@@ -77,7 +77,7 @@ export class Stat extends Component<Props, State> {
 
     render() {
         const {isDownloading} = this.state
-        const {name, label, tagColors, loading} = this.props
+        const {name, label, tagColors, isLoading} = this.props
         const context = {tagColors}
         const style = this.props.config.get('style')
         const helpText = this.props.config.get('helpText')
@@ -85,8 +85,6 @@ export class Stat extends Component<Props, State> {
         let loaderHeight = '400px'
         let downloadable = this.props.config.get('downloadable') || false
         let StatComponent = TableStat
-        // Loading states of key metrics statistics are displayed inside their components.
-        const isLoading = style !== 'key-metrics' && loading === true
 
         switch (style) {
             case 'table':
@@ -154,7 +152,6 @@ export class Stat extends Component<Props, State> {
                         :
                         <StatComponent
                             context={context}
-                            loading={loading}
                             {...this.props}
                         />
                     }

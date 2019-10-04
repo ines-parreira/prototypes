@@ -324,7 +324,6 @@ exports[`Infobar component should render loading state because the customer is b
       <Loader
         inline={false}
         minHeight="500px"
-        size="40px"
       />
     </div>
   </div>
@@ -384,7 +383,6 @@ exports[`Infobar component should render loading state because the search is in 
       <Loader
         inline={false}
         minHeight="500px"
-        size="40px"
       />
     </div>
   </div>

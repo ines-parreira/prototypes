@@ -12,7 +12,6 @@ exports[`InfiniteScroll component should display infinite scroll with children 1
     className="loader"
     inline={false}
     minHeight="0"
-    size="40px"
   />
 </div>
 `;
