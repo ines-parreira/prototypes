@@ -8,6 +8,7 @@ import {Button} from 'reactstrap'
 import _noop from 'lodash/noop'
 
 import * as infobarActions from '../../../../../state/infobar/actions'
+import * as infobarConstants from '../../../../../state/infobar/constants'
 import * as customersActions from '../../../../../state/customers/actions'
 import * as ticketActions from '../../../../../state/ticket/actions'
 import {startEditionMode, stopEditionMode, submitWidgets} from '../../../../../state/widgets/actions'
@@ -180,6 +181,20 @@ export class Infobar extends React.Component<Props, State> {
         }
     }
 
+    _onSearchResultClick = async (customer: Map<*,*>) => {
+        this.setState({isFetchingCustomer: true})
+        const result = await this.props.actions.infobar.fetchPreviewCustomer(customer.get('id'))
+        if (result.type === infobarConstants.FETCH_PREVIEW_CUSTOMER_SUCCESS) {
+            this.setState({
+                displaySelectedCustomer: true,
+                isFetchingCustomer: false,
+                selectedCustomer: fromJS(result.resp),
+            })
+        } else {
+            this.setState({isFetchingCustomer: false})
+        }
+    }
+
     _onSearch = (query: string) => {
         if (query) {
             this.setState({isSearching: true})
@@ -261,7 +276,6 @@ export class Infobar extends React.Component<Props, State> {
 
     _renderContent = () => {
         const {
-            actions,
             sources,
             customer
         } = this.props
@@ -330,16 +344,7 @@ export class Infobar extends React.Component<Props, State> {
                     <InfobarSearchResultsList
                         searchResults={this.state.searchResults}
                         defaultCustomerId={defaultCustomerId}
-                        onCustomerClick={(customer) => {
-                            this.setState({isFetchingCustomer: true})
-                            return actions.infobar.fetchPreviewCustomer(customer.get('id')).then(({resp}) => {
-                                this.setState({
-                                    displaySelectedCustomer: true,
-                                    isFetchingCustomer: false,
-                                    selectedCustomer: fromJS(resp),
-                                })
-                            })
-                        }}
+                        onCustomerClick={this._onSearchResultClick}
                     />
                 </div>
             )

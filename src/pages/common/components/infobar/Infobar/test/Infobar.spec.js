@@ -1,8 +1,9 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {Infobar} from '../Infobar'
+import { FETCH_PREVIEW_CUSTOMER_ERROR, FETCH_PREVIEW_CUSTOMER_SUCCESS } from '../../../../../../state/infobar/constants'
 
 
 const commonProps = {
@@ -47,7 +48,7 @@ const commonProps = {
     }
 }
 
-describe('Infobar component', () => {
+describe('<Infobar/>', () => {
     it('should render ticket context', () => {
         const component = shallow(
             <Infobar
@@ -141,5 +142,63 @@ describe('Infobar component', () => {
         )
 
         expect(component).toMatchSnapshot()
+    })
+
+    describe('_onSearchResultClick()', () => {
+        let customer: Map
+        let customerId = 5
+
+        beforeEach(() => {
+            customerId = 5
+            customer = new Map()
+            customer.set('id', customerId)
+        })
+
+        it('should reset spinner and select customer on fetch customer success', async () => {
+            const component = shallow(
+                <Infobar
+                    {...commonProps}
+                    actions={{
+                        ...commonProps.actions,
+                        infobar: {
+                            ...commonProps.infobar,
+                            fetchPreviewCustomer: jest.fn(() => Promise.resolve({
+                                type: FETCH_PREVIEW_CUSTOMER_SUCCESS,
+                                resp: {
+                                    id: customerId
+                                }
+                            }))
+                        }
+                    }}
+                />
+            )
+
+            await component.instance()._onSearchResultClick(customer)
+
+            expect(component.state().isFetchingCustomer).toEqual(false)
+            expect(component.state().selectedCustomer.get('id')).toEqual(customerId)
+        })
+
+        it('should reset spinner and keep customer empty on fetch customer failure', async () => {
+            const component = shallow(
+                <Infobar
+                    {...commonProps}
+                    actions={{
+                        ...commonProps.actions,
+                        infobar: {
+                            ...commonProps.infobar,
+                            fetchPreviewCustomer: jest.fn(() => Promise.resolve({
+                                type: FETCH_PREVIEW_CUSTOMER_ERROR,
+                            }))
+                        }
+                    }}
+                />
+            )
+
+            await component.instance()._onSearchResultClick(customer)
+
+            expect(component.state().isFetchingCustomer).toEqual(false)
+            expect(component.state().selectedCustomer.get('id')).toBeUndefined()
+        })
     })
 })

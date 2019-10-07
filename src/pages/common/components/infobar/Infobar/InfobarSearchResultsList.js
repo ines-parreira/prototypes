@@ -12,7 +12,7 @@ import css from '../Infobar.less'
 type Props = {
     searchResults: List<*>,
     defaultCustomerId: ?number,
-    onCustomerClick: (Map<*,*>) => Promise<*>
+    onCustomerClick: (Map<*,*>) => Promise<void>
 }
 
 export default class InfobarSearchResultsList extends React.Component<Props> {

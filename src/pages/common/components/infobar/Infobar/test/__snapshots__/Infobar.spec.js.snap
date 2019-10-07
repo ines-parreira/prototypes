@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Infobar component should render current customer with suggested customer 1`] = `
+exports[`<Infobar/> should render current customer with suggested customer 1`] = `
 <Connect(InfobarLayout)
   className=""
 >
@@ -180,7 +180,7 @@ exports[`Infobar component should render current customer with suggested custome
 </Connect(InfobarLayout)>
 `;
 
-exports[`Infobar component should render customer context 1`] = `
+exports[`<Infobar/> should render customer context 1`] = `
 <Connect(InfobarLayout)
   className=""
 >
@@ -271,7 +271,7 @@ exports[`Infobar component should render customer context 1`] = `
 </Connect(InfobarLayout)>
 `;
 
-exports[`Infobar component should render loading state because the customer is being fetched 1`] = `
+exports[`<Infobar/> should render loading state because the customer is being fetched 1`] = `
 <Connect(InfobarLayout)
   className=""
 >
@@ -331,7 +331,7 @@ exports[`Infobar component should render loading state because the customer is b
 </Connect(InfobarLayout)>
 `;
 
-exports[`Infobar component should render loading state because the search is in progress 1`] = `
+exports[`<Infobar/> should render loading state because the search is in progress 1`] = `
 <Connect(InfobarLayout)
   className=""
 >
@@ -391,7 +391,7 @@ exports[`Infobar component should render loading state because the search is in 
 </Connect(InfobarLayout)>
 `;
 
-exports[`Infobar component should render search results 1`] = `
+exports[`<Infobar/> should render search results 1`] = `
 <Connect(InfobarLayout)
   className=""
 >
@@ -479,7 +479,7 @@ exports[`Infobar component should render search results 1`] = `
 </Connect(InfobarLayout)>
 `;
 
-exports[`Infobar component should render selected customer 1`] = `
+exports[`<Infobar/> should render selected customer 1`] = `
 <Connect(InfobarLayout)
   className=""
 >
@@ -629,7 +629,7 @@ exports[`Infobar component should render selected customer 1`] = `
 </Connect(InfobarLayout)>
 `;
 
-exports[`Infobar component should render ticket context 1`] = `
+exports[`<Infobar/> should render ticket context 1`] = `
 <Connect(InfobarLayout)
   className=""
 >
@@ -720,7 +720,7 @@ exports[`Infobar component should render ticket context 1`] = `
 </Connect(InfobarLayout)>
 `;
 
-exports[`Infobar component should render widgets edition mode 1`] = `
+exports[`<Infobar/> should render widgets edition mode 1`] = `
 <Connect(InfobarLayout)
   className="editing"
 >
