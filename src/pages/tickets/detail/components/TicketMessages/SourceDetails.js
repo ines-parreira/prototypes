@@ -35,10 +35,7 @@ export default function SourceDetails(props: Props) {
                     timezone={timezone}
                 />
             )}
-            <DatetimeLabel
-                dateTime={message.created_datetime}
-                timezone={timezone}
-            />
+            <DatetimeLabel dateTime={message.created_datetime}/>
         </div>
     )
 }

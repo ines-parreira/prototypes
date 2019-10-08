@@ -105,7 +105,7 @@ exports[`HTTPIntegrationEvents component should render events 1`] = `
             to="/app/settings/integrations/http/undefined/events/undefined"
           >
             <div>
-              <DatetimeLabel
+              <Connect(DatetimeLabel)
                 dateTime="nowTimestamp"
               />
             </div>

@@ -18,6 +18,7 @@ import {
     OBSERVER_AGENT_ROLE,
     STAFF_ROLE
 } from '../../../config/user'
+import * as currentUserSelectors from '../../../state/currentUser/selectors'
 import Tooltip from '../components/Tooltip'
 import Avatar from '../components/Avatar'
 import {formatDatetime, humanizeString, isImmutable, toJS} from '../../../utils'
@@ -281,6 +282,11 @@ type DatetimeLabelProps = {
     timezone?: string,
 }
 
+@connect((state) => {
+    return {
+        timezone: currentUserSelectors.getTimezone(state)
+    }
+})
 export class DatetimeLabel extends React.PureComponent<DatetimeLabelProps> {
     id: string
 
@@ -366,11 +372,7 @@ export class RenderLabel extends React.Component<RenderLabelProps> {
             case 'last_received_message':
             case 'snooze':
             case 'closed':
-                return (
-                    <DatetimeLabel
-                        dateTime={value}
-                    />
-                )
+                return <DatetimeLabel dateTime={value}/>
             case 'status':
                 return <StatusLabel status={value}/>
             case 'assignee':

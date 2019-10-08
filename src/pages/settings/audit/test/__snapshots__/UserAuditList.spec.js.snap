@@ -126,9 +126,9 @@ exports[`UserAuditList component mounts correctly 1`] = `
             calendar_today
           </i>
           <span>
-            December 29, 2017 5:00 PM
+            December 30, 2017 12:00 AM
              - 
-            January 4, 2018 5:00 PM
+            January 5, 2018 12:00 AM
           </span>
           <i
             className="material-icons"

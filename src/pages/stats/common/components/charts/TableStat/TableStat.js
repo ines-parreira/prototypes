@@ -75,9 +75,7 @@ export default class TableStat extends React.Component {
                 return callback(line, `${metric.get('value')}%`, context)
             }
             case 'date': {
-                return <DatetimeLabel
-                    dateTime={metric.get('value')}
-                />
+                return <DatetimeLabel dateTime={metric.get('value')}/>
             }
             case 'currency': {
                 return formatCurrency(metric.get('value'), metric.get('currency'))

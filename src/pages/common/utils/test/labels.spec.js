@@ -25,6 +25,9 @@ mockMath.random = () => 1
 global.Math = mockMath
 const mockStore = configureMockStore()
 
+jest.mock('../../components/Tooltip', () => 'TooltipMock')
+
+
 describe('components utils : labels', () => {
     describe('RenderLabel', () => {
         describe('distribution', () => {
@@ -37,7 +40,20 @@ describe('components utils : labels', () => {
                 {
                     type: 'created',
                     value: '2016-01-15',
-                    expected: <labels.DatetimeLabel dateTime="2016-01-15"/>
+                    expected: (
+                        <labels.DatetimeLabel
+                            dateTime="2016-01-15"
+                        />
+                    ),
+                    toHTML: (comp) => {
+                        return mount(
+                            <Provider
+                                store={mockStore({currentUser: fromJS({timezone: 'utc'})})}
+                            >
+                                {comp}
+                            </Provider>
+                        ).html()
+                    }
                 },
                 {
                     type: 'status',

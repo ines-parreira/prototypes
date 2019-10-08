@@ -136,7 +136,7 @@ export function isGorgiasSupportAddress(address: string): boolean {
 
 export function formatDatetime(datetime: datetimeType, timezone: ?string, format: string = 'calendar'): datetimeType {
     try {
-        let momentDate = moment(datetime)
+        let momentDate = moment.utc(datetime)
 
         // if the input is a UNIX timestamp, force moment to interpret it as a timestamp (not automatic)
         const unix = moment.unix(datetime)

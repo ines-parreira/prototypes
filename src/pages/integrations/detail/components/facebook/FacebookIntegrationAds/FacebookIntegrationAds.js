@@ -22,8 +22,6 @@ import Loader from '../../../../../common/components/Loader/Loader'
 
 import {DatetimeLabel} from '../../../../../common/utils/labels'
 
-import {getTimezone} from '../../../../../../state/currentUser/selectors'
-
 import {fetchAds, updateAd} from './actions'
 import css from './FacebookIntegrationAds.less'
 import colors from './colors.less'
@@ -36,7 +34,6 @@ type Props = {
     maxAccountAds: number,
     internals: Map<*, *>,
     loadingAds: Map<*, *>,
-    timezone: string,
     fetchAds: () => void,
     updateAd: (adId: string, isActive: boolean) => void
 }
@@ -49,7 +46,7 @@ class FacebookIntegrationAds extends React.Component<Props> {
 
     render() {
         const {
-            loading, integration, integrations, internals, maxAccountAds, loadingAds, timezone, updateAd
+            loading, integration, integrations, internals, maxAccountAds, loadingAds, updateAd
         } = this.props
 
         const accountTotalAds = this._getAccountTotalAds()
@@ -119,7 +116,6 @@ class FacebookIntegrationAds extends React.Component<Props> {
                             maxAccountAds={maxAccountAds}
                             accountTotalAds={accountTotalAds}
                             updateAd={updateAd}
-                            timezone={timezone}
                         />
                     )
                 }
@@ -164,8 +160,7 @@ const mapStateToProps = (state: Object) => ({
     maxAccountAds: getFacebookMaxAccountAds(state),
     loading: getFacebookIntegrationLoading(state),
     internals: getFacebookIntegrationInternals(state),
-    loadingAds: getFacebookIntegrationLoadingAds(state),
-    timezone: getTimezone(state)
+    loadingAds: getFacebookIntegrationLoadingAds(state)
 })
 
 const mapDispatchToProps = (dispatch: dispatchType, props: Props) => ({
@@ -273,13 +268,12 @@ type AdsTableProps = {
     loadingAds: Map<*, *>,
     maxAccountAds: number,
     accountTotalAds: number,
-    timezone: string,
     updateAd: (adId: string, isActive: boolean) => void,
 }
 
 class AdsTable extends React.Component<AdsTableProps> {
     render() {
-        const {ads, loadingAds, accountTotalAds, maxAccountAds, timezone} = this.props
+        const {ads, loadingAds, accountTotalAds, maxAccountAds} = this.props
 
         if (!ads || !ads.size) {
             return null
@@ -338,7 +332,6 @@ class AdsTable extends React.Component<AdsTableProps> {
                                     ad.get('created_datetime') && (
                                         <DatetimeLabel
                                             dateTime={ad.get('created_datetime')}
-                                            timezone={timezone}
                                         />
                                     )
                                 }

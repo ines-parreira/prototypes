@@ -36,9 +36,8 @@ exports[`SatisfactionSurvey should display satisfaction survey 1`] = `
       <span
         className="date text-faded float-right"
       >
-        <DatetimeLabel
+        <Connect(DatetimeLabel)
           dateTime="now"
-          timezone="UTC"
         />
       </span>
     </div>

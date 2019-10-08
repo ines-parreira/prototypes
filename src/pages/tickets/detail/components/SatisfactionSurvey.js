@@ -11,40 +11,30 @@ import fullStar from './../../../../../img/satisfaction-survey/full-star.svg'
 type PropTypes = {
     satisfactionSurvey: Object,
     customer: Object,
-    isLast: boolean,
-    timezone: string,
+    isLast: boolean
 }
 
 export default class SatisfactionSurvey extends React.Component<PropTypes> {
     _renderDatetime() {
-        const {satisfactionSurvey, timezone} = this.props
+        const {satisfactionSurvey} = this.props
         const scoredDatetime = satisfactionSurvey.get('scored_datetime')
         const sentDatetime = satisfactionSurvey.get('sent_datetime')
         const shouldSendDatetime = satisfactionSurvey.get('should_send_datetime')
 
         if (scoredDatetime) {
-            return <DatetimeLabel
-                dateTime={scoredDatetime}
-                timezone={timezone}
-            />
+            return <DatetimeLabel dateTime={scoredDatetime}/>
         }
 
         if (sentDatetime) {
             return <div>
                 <span className='mr-1'>Was sent</span>
-                <DatetimeLabel
-                    dateTime={sentDatetime}
-                    timezone={timezone}
-                />
+                <DatetimeLabel dateTime={sentDatetime}/>
             </div>
         }
 
         return <div>
             <span className='mr-1'>To be sent</span>
-            <DatetimeLabel
-                dateTime={shouldSendDatetime}
-                timezone={timezone}
-            />
+            <DatetimeLabel dateTime={shouldSendDatetime}/>
         </div>
     }
 

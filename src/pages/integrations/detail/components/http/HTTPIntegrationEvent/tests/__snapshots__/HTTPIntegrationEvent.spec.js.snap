@@ -68,7 +68,7 @@ exports[`HTTPIntegrationEvent component should render the data of HTTP request (
         <HTTPIntegrationEventItem
           name="Sent"
         >
-          <DatetimeLabel
+          <Connect(DatetimeLabel)
             dateTime="nowTimestamp"
           />
         </HTTPIntegrationEventItem>
@@ -196,7 +196,7 @@ exports[`HTTPIntegrationEvent component should render the data of HTTP request (
         <HTTPIntegrationEventItem
           name="Sent"
         >
-          <DatetimeLabel
+          <Connect(DatetimeLabel)
             dateTime="nowTimestamp"
           />
         </HTTPIntegrationEventItem>
@@ -354,7 +354,7 @@ exports[`HTTPIntegrationEvent component should render the data of a HTTP request
         <HTTPIntegrationEventItem
           name="Sent"
         >
-          <DatetimeLabel
+          <Connect(DatetimeLabel)
             dateTime="nowTimestamp"
           />
         </HTTPIntegrationEventItem>

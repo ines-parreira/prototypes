@@ -11,7 +11,6 @@ import {getActionByName} from '../../../../config/actions'
 import {AgentLabel, DatetimeLabel} from '../../../common/utils/labels'
 import {stripErrorMessage, humanizeString} from '../../../../utils'
 
-import * as currentUserSelectors from '../../../../state/currentUser/selectors'
 import * as integrationsSelectors from '../../../../state/integrations/selectors'
 import * as ticketSelectors from '../../../../state/ticket/selectors'
 
@@ -27,14 +26,12 @@ import css from './Event.less'
         .getIntegrationDataByIntegrationId(integration.get('id', '').toString())(state)
 
     return {
-        currentUser: currentUserSelectors.getCurrentUser(state),
         integrationData,
         integration,
     }
 })
 export default class Event extends React.Component {
     static propTypes = {
-        currentUser: ImmutablePropTypes.map.isRequired,
         integrationData: ImmutablePropTypes.map.isRequired,
         event: ImmutablePropTypes.map.isRequired,
         isLast: PropTypes.bool.isRequired,
@@ -123,7 +120,7 @@ export default class Event extends React.Component {
     }
 
     render() {
-        const {currentUser, event, isLast, integration, integrationData} = this.props
+        const {event, isLast, integration, integrationData} = this.props
         const user = event.get('user') || fromJS({})
         const status = event.getIn(['data', 'status'])
         const actionName = event.getIn(['data', 'action_name'])
@@ -244,7 +241,6 @@ export default class Event extends React.Component {
                         settings={{
                             position: 'top left'
                         }}
-                        timezone={currentUser.get('timezone')}
                         className={classnames(css.date, 'text-faded')}
                     />
                 </div>

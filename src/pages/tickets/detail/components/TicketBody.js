@@ -171,7 +171,6 @@ export class TicketBody extends React.Component<Props, State> {
                                     <SatisfactionSurvey
                                         key={`survey-${index}`}
                                         satisfactionSurvey={elementMap}
-                                        timezone={this.props.currentUser.get('timezone')}
                                         customer={ticket.get('customer')}
                                         isLast={index === elements.size - 1}
                                     />
