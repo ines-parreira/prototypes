@@ -16,7 +16,7 @@ import {
     updateFilterValue
 } from './utils'
 import * as selectors from './selectors'
-
+import {addViewIfMissing} from './utils'
 
 export const initialState = fromJS({
     items: [],
@@ -170,10 +170,9 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
         }
 
         case constants.SUBMIT_NEW_VIEW_SUCCESS: {
-            const newView = fromJS(action.resp)
             return state.merge({
-                items: state.get('items').push(newView),
-                active: newView.set('dirty', false)
+                items: addViewIfMissing(state.get('items'), action.resp),
+                active: fromJS(action.resp).set('dirty', false)
             })
         }
 
@@ -201,15 +200,15 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
         }
 
         case constants.CREATE_VIEW_SUCCESS: {
-            return state.update('items', (items) => items.push(fromJS(action.resp)))
+            return state.update('items', (items) => addViewIfMissing(items, action.resp))
         }
 
         case constants.UPDATE_VIEW_SUCCESS: {
-            let newState = state.update('items', (items) => items.map((v) => {
-                if (v.get('id') === action.resp.id) {
+            let newState = state.update('items', (items) => items.map((view) => {
+                if (view.get('id') === action.resp.id) {
                     return fromJS(action.resp)
                 }
-                return v
+                return view
             }))
             // also update the active view if we're on it
             if (newState.getIn(['active', 'id']) === action.resp.id) {

@@ -1,6 +1,6 @@
 // @flow
 import esprima from 'esprima'
-import {fromJS, Map} from 'immutable'
+import {fromJS, type List, Map} from 'immutable'
 import moment from 'moment'
 import _isArray from 'lodash/isArray'
 import _isInteger from 'lodash/isInteger'
@@ -349,4 +349,9 @@ export function activeViewUrl(view: viewType, currentLocation: currentLocationTy
     }
 
     return url
+}
+
+export function addViewIfMissing(views: List<Map<*,*>>, newView: { id: number }): List<Map<*,*>> {
+    const existing = views.find((view) => view.get('id') === newView.id)
+    return existing ? views : views.push(fromJS(newView))
 }

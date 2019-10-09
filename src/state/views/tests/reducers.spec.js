@@ -115,8 +115,39 @@ describe('reducers', () => {
             })).toMatchSnapshot()
         })
 
+        it('should submit a view', () => {
+            expect(reducers(initialState, {
+                type: types.SUBMIT_NEW_VIEW_SUCCESS,
+                resp: fixtures.view
+            })).toMatchSnapshot()
+        })
+
+        it('should not add submitted view if already present', () => {
+            const state = reducers(initialState, {
+                type: types.SUBMIT_NEW_VIEW_SUCCESS,
+                resp: fixtures.view
+            })
+
+            expect(reducers(state, {
+                type: types.SUBMIT_NEW_VIEW_SUCCESS,
+                resp: fixtures.view
+            })).toMatchSnapshot()
+        })
+
         it('should create a view', () => {
             expect(reducers(initialState, {
+                type: types.CREATE_VIEW_SUCCESS,
+                resp: fixtures.view
+            })).toMatchSnapshot()
+        })
+
+        it('should not add created view if already present', () => {
+            const state = reducers(initialState, {
+                type: types.CREATE_VIEW_SUCCESS,
+                resp: fixtures.view
+            })
+
+            expect(reducers(state, {
                 type: types.CREATE_VIEW_SUCCESS,
                 resp: fixtures.view
             })).toMatchSnapshot()

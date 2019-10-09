@@ -68,6 +68,11 @@ class ViewTable extends React.Component<Props> {
         } else if (activeView.isEmpty() || urlViewId) {
             const suggestedViewId = getViewIdToDisplay(config.get('type'), urlViewId)
 
+            const viewMissing = !suggestedViewId || (suggestedViewId && suggestedViewId.toString() !== urlViewId)
+            if (viewMissing) {
+                browserHistory.push('/app')
+            }
+
             //$FlowFixMe
             setViewActive(getView(suggestedViewId))
         }
@@ -84,10 +89,6 @@ class ViewTable extends React.Component<Props> {
 
         const currentSuggestedViewId = getViewIdToDisplay(this.props.config.get('type'), this.props.urlViewId)
         const nextSuggestedViewId = getViewIdToDisplay(nextProps.config.get('type'), nextProps.urlViewId)
-
-        if (nextProps.urlViewId && nextSuggestedViewId && nextSuggestedViewId.toString() !== nextProps.urlViewId) {
-            return browserHistory.push('/app')
-        }
 
         const urlCursor = location.query.cursor || null
         const storedCursor = navigation.get('current_cursor') || null

@@ -182,6 +182,11 @@ export function submitView(view: viewType): thunkActionType {
             .then((resp) => {
                 // redirect to the view created
                 if (!isUpdate) {
+                    dispatch({
+                        type: types.SUBMIT_NEW_VIEW_SUCCESS,
+                        resp,
+                    })
+
                     browserHistory.push(`/app/${objectName}/${resp.id}/${resp.slug}`)
                 }
                 return Promise.resolve(resp)
