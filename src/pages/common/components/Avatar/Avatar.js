@@ -23,6 +23,7 @@ type State = {
 
 export default class Avatar extends React.Component<Props, State> {
     component: Node
+    isMounted: boolean
 
     static defaultProps = {
         url: '',
@@ -36,16 +37,23 @@ export default class Avatar extends React.Component<Props, State> {
         super()
 
         this.state = this._getDefaultState(props)
+
+        this.isMounted = false
     }
 
     componentDidMount() {
         this._setImageUrl()
+        this.isMounted = true
     }
 
     componentDidUpdate(prevProps: Props) {
         if (!_isEqual(prevProps, this.props)) {
             this._setImageUrl()
         }
+    }
+
+    componentWillUnmount() {
+        this.isMounted = false
     }
 
     _container = (ref: Node) => {
@@ -60,7 +68,7 @@ export default class Avatar extends React.Component<Props, State> {
 
     _setImageUrl = () => {
         // don't update image if hidden
-        if (!this.component || !this.component.offsetParent) {
+        if (!this.component || !this.component.offsetParent || !this.isMounted) {
             return
         }
 
@@ -72,7 +80,12 @@ export default class Avatar extends React.Component<Props, State> {
         getAvatar({
             email: this.props.email,
             size: this.props.size
-        }).then((imageUrl) => this.setState({imageUrl}))
+        }).then((imageUrl) => {
+            // Still need to do it here in case the component is unmounted while the promise is pending
+            if (this.isMounted) {
+                this.setState({imageUrl})
+            }
+        })
     }
 
     _getInitials = (name: string) => {
