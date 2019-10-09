@@ -7,6 +7,7 @@ import _isObject from 'lodash/isObject'
 import _isArray from 'lodash/isArray'
 import _isString from 'lodash/isString'
 import _capitalize from 'lodash/capitalize'
+import _omit from 'lodash/omit'
 import {Badge} from 'reactstrap'
 
 import {EMAIL_INTEGRATION_TYPES} from '../../../constants/integration'
@@ -296,7 +297,7 @@ export class DatetimeLabel extends React.PureComponent<DatetimeLabelProps> {
     }
 
     render() {
-        const {dateTime, labelFormat, timezone, ...rest} = this.props
+        const {dateTime, labelFormat, timezone, ...rest} = _omit(this.props, 'dispatch')
 
         if (!dateTime) {
             return null

@@ -973,9 +973,7 @@ exports[`<FacebookIntegrationAds/> render() should render with ads limit reached
                         dispatch={[Function]}
                         timezone="America/Los_Angeles"
                       >
-                        <span
-                          dispatch={[Function]}
-                        >
+                        <span>
                           <span
                             id="datetime-tooltip-pjpsszd2icb"
                           >
@@ -1078,9 +1076,7 @@ exports[`<FacebookIntegrationAds/> render() should render with ads limit reached
                         dispatch={[Function]}
                         timezone="America/Los_Angeles"
                       >
-                        <span
-                          dispatch={[Function]}
-                        >
+                        <span>
                           <span
                             id="datetime-tooltip-pjpsszd2icb"
                           >
@@ -1183,9 +1179,7 @@ exports[`<FacebookIntegrationAds/> render() should render with ads limit reached
                         dispatch={[Function]}
                         timezone="America/Los_Angeles"
                       >
-                        <span
-                          dispatch={[Function]}
-                        >
+                        <span>
                           <span
                             id="datetime-tooltip-pjpsszd2icb"
                           >
@@ -1640,9 +1634,7 @@ exports[`<FacebookIntegrationAds/> render() should render with one Facebook ad 1
                         dispatch={[Function]}
                         timezone="America/Los_Angeles"
                       >
-                        <span
-                          dispatch={[Function]}
-                        >
+                        <span>
                           <span
                             id="datetime-tooltip-pjpsszd2icb"
                           >
@@ -2097,9 +2089,7 @@ exports[`<FacebookIntegrationAds/> render() should render with one Instagram ad 
                         dispatch={[Function]}
                         timezone="America/Los_Angeles"
                       >
-                        <span
-                          dispatch={[Function]}
-                        >
+                        <span>
                           <span
                             id="datetime-tooltip-pjpsszd2icb"
                           >
@@ -2575,9 +2565,7 @@ exports[`<FacebookIntegrationAds/> render() should render with two ads (one not 
                         dispatch={[Function]}
                         timezone="America/Los_Angeles"
                       >
-                        <span
-                          dispatch={[Function]}
-                        >
+                        <span>
                           <span
                             id="datetime-tooltip-pjpsszd2icb"
                           >
@@ -2680,9 +2668,7 @@ exports[`<FacebookIntegrationAds/> render() should render with two ads (one not 
                         dispatch={[Function]}
                         timezone="America/Los_Angeles"
                       >
-                        <span
-                          dispatch={[Function]}
-                        >
+                        <span>
                           <span
                             id="datetime-tooltip-pjpsszd2icb"
                           >
