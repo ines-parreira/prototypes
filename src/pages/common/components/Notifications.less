@@ -36,11 +36,10 @@
     }
 
     .notification-icon {
-      display: table-cell;
-      padding-left: 20px;
-
-      font-size: 23px;
-      vertical-align: middle;
+        box-sizing: border-box;
+        margin: 10px 0 10px 20px;
+        font-size: 23px;
+        align-self: flex-start;
     }
 
     .notification--success {
@@ -60,7 +59,14 @@
     }
 
     .notification--loading {
-      .notification--status(@yellow, 50%, 'refresh');
+        .notification--status(@blue, 50%, 'refresh');
+
+        .notification-icon {
+            :global {
+                // `spin` is a Material Icons built-in animation.
+                animation: spin .8s infinite linear;
+            }
+        }
     }
 
 }
