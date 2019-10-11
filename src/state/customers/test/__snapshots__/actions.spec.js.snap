@@ -1,5 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`customers actions bulkDeleteCustomer() 1`] = `
+Object {
+  "delete": Array [
+    Object {
+      "data": "{\\"ids\\":[1,2,3,4,5]}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+        "X-CSRF-Token": undefined,
+      },
+      "maxContentLength": -1,
+      "method": "delete",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/customers/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [],
+  "put": Array [],
+}
+`;
+
+exports[`customers actions bulkDeleteCustomer() 2`] = `
+Array [
+  Object {
+    "type": "BULK_DELETE_START",
+  },
+  Object {
+    "ids": Immutable.List [
+      1,
+      2,
+      3,
+      4,
+      5,
+    ],
+    "type": "BULK_DELETE_SUCCESS",
+    "viewType": "customer-list",
+  },
+]
+`;
+
 exports[`customers actions create customer 1`] = `
 Array [
   Object {

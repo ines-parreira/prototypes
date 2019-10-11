@@ -1,12 +1,16 @@
 // @flow
 import axios from 'axios'
 import _isUndefined from 'lodash/isUndefined'
+import type {List} from 'immutable'
+import {updateNotification} from 'reapop'
+
+import * as viewsConfig from '../../config/views'
 
 import {notify} from '../notifications/actions'
-
-import type {dispatchType, stateType, getStateType} from '../types'
+import type {dispatchType, stateType, getStateType, thunkActionType} from '../types'
 
 import * as types from './constants'
+
 
 export function fetchCustomer(customerId: number) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
@@ -100,6 +104,42 @@ export function deleteCustomer(customerId: number) {
             })
     }
 }
+
+
+export function bulkDeleteCustomer(ids: List<*>): thunkActionType {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
+        dispatch({
+            type: types.BULK_DELETE_START
+        })
+
+        const activeViewType = 'customer-list'
+        const viewConfig = viewsConfig.getConfigByType(activeViewType)
+
+        const notification = dispatch(notify({
+            status: 'info',
+            dismissAfter: 0,
+            closeOnNext: true,
+            message: `Deleting ${viewConfig.get('plural')}...`
+        }))
+
+        return axios.delete(`/api/${viewConfig.get('api')}/`, {data: {ids}}).then(() => {
+            notification.status = 'success'
+            notification.message = `${ids.size} ${viewConfig.get('plural')} successfully deleted!`
+            dispatch({
+                type: types.BULK_DELETE_SUCCESS,
+                viewType: activeViewType,
+                ids
+            })
+            return dispatch(updateNotification(notification))
+        }, () => {
+            notification.status = 'error'
+            notification.message = `Couldn\'t delete selected ${viewConfig.get('plural')}`
+            dispatch({type: types.BULK_DELETE_ERROR})
+            return dispatch(updateNotification(notification))
+        })
+    }
+}
+
 
 export function fetchCustomerHistory(customerId: number, options: {successCondition?: (T: stateType) => boolean} = {}) {
     return (dispatch: dispatchType, getState: getStateType) => {

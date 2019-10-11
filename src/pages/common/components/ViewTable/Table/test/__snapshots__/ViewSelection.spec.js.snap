@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ViewSelection/> render() should render the component for an entire view selection 1`] = `
+<tr>
+  <td
+    className="view-selection"
+    colSpan={5}
+  >
+    <span>
+      All the 
+      <b />
+      tickets
+       of 
+      <b>
+        "New & Open Tickets"
+      </b>
+       view are selected.
+      <span
+        className="clickable"
+        onClick={[Function]}
+      >
+         Select all 
+        tickets
+         of the current page instead
+      </span>
+    </span>
+  </td>
+</tr>
+`;
+
+exports[`<ViewSelection/> render() should render the component when only elements on the active view are selected 1`] = `
+<tr>
+  <td
+    className="view-selection"
+    colSpan={5}
+  >
+    <span>
+      <b>
+        30
+      </b>
+       
+      tickets
+       on this page 
+      are
+       selected.
+      <span
+        className="clickable"
+        onClick={[Function]}
+      >
+         Select all 
+        <b />
+        tickets
+      </span>
+       
+      of the 
+      <b>
+        "New & Open Tickets"
+      </b>
+       view
+    </span>
+  </td>
+</tr>
+`;
