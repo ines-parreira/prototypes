@@ -1,0 +1,711 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Magento2IntegrationDetail/> render() should render the page for a deactivated integration 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/magento2"
+          >
+            Magento 2
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          magento.gorgi.us
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        md="8"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <p>
+          All your Magento 2 customers have been imported. You can now see their info in the sidebar. 
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/customers"
+          >
+            Review your customers.
+          </Link>
+        </p>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <div
+            className="mb-4"
+          >
+            <InputField
+              disabled={true}
+              error={null}
+              label="Store URL"
+              name="name"
+              onChange={[Function]}
+              placeholder="ex: acme.com"
+              required={true}
+              type="text"
+              value="magento.gorgi.us"
+            />
+            <InputField
+              error={null}
+              key="input"
+              label="Admin URL suffix"
+              leftAddon="https://magento.gorgi.us/"
+              name="adminUrlSuffix"
+              onChange={[Function]}
+              placeholder="ex: admin_45f1c"
+              type="text"
+              value="admin_12fg"
+            />
+            <div
+              className="text-faded"
+              key="help"
+            >
+              This is necessary to generate links to customers and orders in the information bar next to tickets.
+            </div>
+          </div>
+          <div>
+            <Button
+              className="mr-2"
+              color="success"
+              disabled={false}
+              tag="button"
+              type="submit"
+            >
+              Update integration
+            </Button>
+            <Button
+              className=""
+              color="success"
+              disabled={false}
+              onClick={[Function]}
+              tag="button"
+              type="button"
+            >
+              Re-activate integration
+            </Button>
+            <ConfirmButton
+              className="float-right"
+              color="secondary"
+              confirm={[Function]}
+              confirmColor="success"
+              content="Are you sure you want to delete this integration?"
+              disabled={false}
+              loading={false}
+              placement="bottom"
+              skip={false}
+              title="Are you sure?"
+              type="button"
+            >
+              <i
+                className="material-icons mr-1 text-danger"
+              >
+                delete
+              </i>
+              Delete integration
+            </ConfirmButton>
+          </div>
+        </Form>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
+
+exports[`<Magento2IntegrationDetail/> render() should render the page for an integration being created with the name of another existing integration 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/magento2"
+          >
+            Magento 2
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Add integration
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        md="8"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <p>
+          Let's connect your store to Gorgias. We'll import your Magento 2 customers in Gorgias, along with their order information. This way, when they contact you, you'll be able to see their Magento 2 information next to tickets.
+        </p>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <div
+            className="mb-4"
+          >
+            <InputField
+              disabled={false}
+              error="There is already an integration for this Magento 2 store"
+              label="Store URL"
+              name="name"
+              onChange={[Function]}
+              placeholder="ex: acme.com"
+              required={true}
+              type="text"
+              value="magento.gorgi.us"
+            />
+          </div>
+          <div>
+            <Button
+              className="mr-2"
+              color="success"
+              disabled={true}
+              tag="button"
+              type="submit"
+            >
+              Add integration
+            </Button>
+          </div>
+        </Form>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
+
+exports[`<Magento2IntegrationDetail/> render() should render the page for an integration for which the sync is not over 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/magento2"
+          >
+            Magento 2
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          magento.gorgi.us
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        md="8"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Alert
+          className="mb-4"
+          closeAriaLabel="Close"
+          color="info"
+          isOpen={true}
+          tag="div"
+          transition={
+            Object {
+              "appear": true,
+              "baseClass": "fade",
+              "baseClassActive": "show",
+              "enter": true,
+              "exit": true,
+              "in": true,
+              "mountOnEnter": false,
+              "onEnter": [Function],
+              "onEntered": [Function],
+              "onEntering": [Function],
+              "onExit": [Function],
+              "onExited": [Function],
+              "onExiting": [Function],
+              "tag": "div",
+              "timeout": 150,
+              "unmountOnExit": true,
+            }
+          }
+        >
+          <p>
+            <b
+              className="alert-heading"
+            >
+              <i
+                className="material-icons md-spin mr-2"
+              >
+                autorenew
+              </i>
+              Importing your Magento 2 customers
+            </b>
+          </p>
+          <p>
+            We're currently importing all your Magento 2 customers. This way, you'll see customer & orders info next to tickets. We'll notify you via email when the import is done. We typically sync 3,000 customers an hour.
+             
+            <Link
+              onlyActiveOnIndex={false}
+              style={Object {}}
+              to="/app/customers"
+            >
+              Review imported customers.
+            </Link>
+          </p>
+        </Alert>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <div
+            className="mb-4"
+          >
+            <InputField
+              disabled={true}
+              error={null}
+              label="Store URL"
+              name="name"
+              onChange={[Function]}
+              placeholder="ex: acme.com"
+              required={true}
+              type="text"
+              value="magento.gorgi.us"
+            />
+            <InputField
+              error={null}
+              key="input"
+              label="Admin URL suffix"
+              leftAddon="https://magento.gorgi.us/"
+              name="adminUrlSuffix"
+              onChange={[Function]}
+              placeholder="ex: admin_45f1c"
+              type="text"
+              value="admin_12fg"
+            />
+            <div
+              className="text-faded"
+              key="help"
+            >
+              This is necessary to generate links to customers and orders in the information bar next to tickets.
+            </div>
+          </div>
+          <div>
+            <Button
+              className="mr-2"
+              color="success"
+              disabled={false}
+              tag="button"
+              type="submit"
+            >
+              Update integration
+            </Button>
+            <Button
+              className=""
+              color="warning"
+              disabled={false}
+              onClick={[Function]}
+              outline={true}
+              tag="button"
+              type="button"
+            >
+              Deactivate integration
+            </Button>
+            <ConfirmButton
+              className="float-right"
+              color="secondary"
+              confirm={[Function]}
+              confirmColor="success"
+              content="Are you sure you want to delete this integration?"
+              disabled={false}
+              loading={false}
+              placement="bottom"
+              skip={false}
+              title="Are you sure?"
+              type="button"
+            >
+              <i
+                className="material-icons mr-1 text-danger"
+              >
+                delete
+              </i>
+              Delete integration
+            </ConfirmButton>
+          </div>
+        </Form>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
+
+exports[`<Magento2IntegrationDetail/> render() should render the page to create a new integration 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/magento2"
+          >
+            Magento 2
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Add integration
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        md="8"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <p>
+          Let's connect your store to Gorgias. We'll import your Magento 2 customers in Gorgias, along with their order information. This way, when they contact you, you'll be able to see their Magento 2 information next to tickets.
+        </p>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <div
+            className="mb-4"
+          >
+            <InputField
+              disabled={false}
+              error={null}
+              label="Store URL"
+              name="name"
+              onChange={[Function]}
+              placeholder="ex: acme.com"
+              required={true}
+              type="text"
+              value=""
+            />
+          </div>
+          <div>
+            <Button
+              className="mr-2"
+              color="success"
+              disabled={false}
+              tag="button"
+              type="submit"
+            >
+              Add integration
+            </Button>
+          </div>
+        </Form>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
+
+exports[`<Magento2IntegrationDetail/> render() should render the page to update an existing integration 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/magento2"
+          >
+            Magento 2
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          magento.gorgi.us
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        md="8"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <p>
+          All your Magento 2 customers have been imported. You can now see their info in the sidebar. 
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/customers"
+          >
+            Review your customers.
+          </Link>
+        </p>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <div
+            className="mb-4"
+          >
+            <InputField
+              disabled={true}
+              error={null}
+              label="Store URL"
+              name="name"
+              onChange={[Function]}
+              placeholder="ex: acme.com"
+              required={true}
+              type="text"
+              value="magento.gorgi.us"
+            />
+            <InputField
+              error={null}
+              key="input"
+              label="Admin URL suffix"
+              leftAddon="https://magento.gorgi.us/"
+              name="adminUrlSuffix"
+              onChange={[Function]}
+              placeholder="ex: admin_45f1c"
+              type="text"
+              value="admin_12fg"
+            />
+            <div
+              className="text-faded"
+              key="help"
+            >
+              This is necessary to generate links to customers and orders in the information bar next to tickets.
+            </div>
+          </div>
+          <div>
+            <Button
+              className="mr-2"
+              color="success"
+              disabled={false}
+              tag="button"
+              type="submit"
+            >
+              Update integration
+            </Button>
+            <Button
+              className=""
+              color="warning"
+              disabled={false}
+              onClick={[Function]}
+              outline={true}
+              tag="button"
+              type="button"
+            >
+              Deactivate integration
+            </Button>
+            <ConfirmButton
+              className="float-right"
+              color="secondary"
+              confirm={[Function]}
+              confirmColor="success"
+              content="Are you sure you want to delete this integration?"
+              disabled={false}
+              loading={false}
+              placement="bottom"
+              skip={false}
+              title="Are you sure?"
+              type="button"
+            >
+              <i
+                className="material-icons mr-1 text-danger"
+              >
+                delete
+              </i>
+              Delete integration
+            </ConfirmButton>
+          </div>
+        </Form>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;

@@ -7,6 +7,7 @@ import {
     EMAIL_INTEGRATION_TYPE,
     EMAIL_INTEGRATION_TYPES,
     FACEBOOK_INTEGRATION_TYPE,
+    MAGENTO2_INTEGRATION_TYPE,
     MESSAGING_INTEGRATION_TYPES
 } from '../../constants/integration'
 import {compare} from '../../utils'
@@ -204,6 +205,14 @@ export const getShopifyIntegrationByShopName = (shopName: string) => createSelec
 
 export const makeGetShopifyIntegrationByShopName = (state: stateType) => (shopName: string) =>
     getShopifyIntegrationByShopName(shopName)(state)
+
+export const getMagento2IntegrationByStoreUrl = (storeUrl: string) => createSelector(
+    [getIntegrationsByTypes([MAGENTO2_INTEGRATION_TYPE])],
+    (state) => state.find((integration) => integration.getIn(['meta', 'store_url']) === storeUrl) || fromJS({})
+)
+
+export const makeGetMagento2IntegrationByStoreUrl = (state: stateType) => (storeUrl: string) =>
+    getMagento2IntegrationByStoreUrl(storeUrl)(state)
 
 export const getChatIntegrationCampaigns = (id: number) => createSelector(
     [getIntegrationById(id)],

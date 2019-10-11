@@ -8,8 +8,11 @@ import {
     AIRCALL_INTEGRATION_TYPE,
     EMAIL_INTEGRATION_TYPE,
     FACEBOOK_INTEGRATION_TYPE,
-    HTTP_INTEGRATION_TYPE, RECHARGE_INTEGRATION_TYPE,
-    SHOPIFY_INTEGRATION_TYPE, SMILE_INTEGRATION_TYPE,
+    HTTP_INTEGRATION_TYPE,
+    MAGENTO2_INTEGRATION_TYPE,
+    RECHARGE_INTEGRATION_TYPE,
+    SHOPIFY_INTEGRATION_TYPE,
+    SMILE_INTEGRATION_TYPE,
     SMOOCH_INSIDE_INTEGRATION_TYPE,
     SMOOCH_INTEGRATION_TYPE
 } from '../../../constants/integration'
@@ -32,6 +35,9 @@ import FacebookIntegrationSetup from './components/facebook/FacebookIntegrationS
 import FacebookIntegrationCustomerChat from './components/facebook/FacebookIntegrationCustomerChat'
 
 import HTTPIntegrationList from './components/http/HTTPIntegrationList'
+
+import Magento2IntegrationDetail from './components/magento2/Magento2IntegrationDetail'
+import Magento2IntegrationList from './components/magento2/Magento2IntegrationList'
 
 import SmoochIntegrationDetail from './components/smooch/SmoochIntegrationDetail'
 import SmoochIntegrationList from './components/smooch/SmoochIntegrationList'
@@ -446,6 +452,26 @@ class IntegrationDetailContainer extends React.Component {
                     />
                 )
 
+            case MAGENTO2_INTEGRATION_TYPE:
+                if (isDetail) {
+                    return (
+                        <Magento2IntegrationDetail
+                            actions={actions}
+                            integration={commonProps.integration}
+                            isUpdate={isUpdate}
+                            loading={commonProps.loading}
+                            redirectUri={redirectUri}
+                        />
+                    )
+                }
+
+                return (
+                    <Magento2IntegrationList
+                        actions={actions}
+                        integrations={commonProps.integrations}
+                        loading={commonProps.loading}
+                    />
+                )
 
             default:
                 return null

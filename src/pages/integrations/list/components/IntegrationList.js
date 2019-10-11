@@ -69,6 +69,7 @@ export default class IntegrationList extends React.Component<Props> {
         const {integrations} = this.props
 
         const list = getIntegrationsList(integrations.get('integrations'))
+        const displayList = list.filter((integration) => !integration.get('hide'))
 
         return (
             <div className="full-width">
@@ -92,7 +93,7 @@ export default class IntegrationList extends React.Component<Props> {
                     <Row>
                         <Col>
                             {
-                                list.map((config, index) => {
+                                displayList.map((config, index) => {
                                     return (
                                         <IntegrationListRow
                                             key={index}

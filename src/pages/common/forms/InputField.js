@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import _uniqueId from 'lodash/uniqueId'
+import {uniqueId as _uniqueId, omit as _omit} from 'lodash'
 import {
     FormGroup,
     Label,
@@ -14,8 +14,8 @@ import {defined} from '../../../utils'
 import Errors from './Errors'
 import FormField from './FormField'
 
-
 import css from './InputField.less'
+
 
 export default class InputField extends FormField {
     static propTypes = Object.assign({
@@ -23,6 +23,7 @@ export default class InputField extends FormField {
         inline: PropTypes.bool,
         placeholder: PropTypes.node,
         type: PropTypes.string.isRequired,
+        leftAddon: PropTypes.string,
         rightAddon: PropTypes.string,
         caseInsensitive: PropTypes.bool
     }, FormField.propTypes)
@@ -61,16 +62,18 @@ export default class InputField extends FormField {
         const {
             children,
             error,
-            rightAddon, // eslint-disable-line
-            caseInsensitive,  // eslint-disable-line
-            help, // eslint-disable-line
-            inline, // eslint-disable-line
-            label, // eslint-disable-line
-            name, // eslint-disable-line
-            onChange, // eslint-disable-line
-            className, // eslint-disable-line
             ...rest
-        } = this.props
+        } = _omit(this.props, [
+            'leftAddon',
+            'rightAddon',
+            'caseInsensitive',
+            'help',
+            'inline',
+            'label',
+            'name',
+            'onChange',
+            'className'
+        ])
 
         return (
             <BootstrapInput
@@ -94,6 +97,7 @@ export default class InputField extends FormField {
             required,
             inline,
             label,
+            leftAddon,
             rightAddon,
             help,
             className,
@@ -103,6 +107,7 @@ export default class InputField extends FormField {
 
         if (type === 'hidden') {
             const {
+                leftAddon, // eslint-disable-line
                 rightAddon, // eslint-disable-line
                 ...rest
             } = this.props
@@ -128,7 +133,16 @@ export default class InputField extends FormField {
                         </Label>
                     )
                 }
-                <div className={classnames({'input-group': !!rightAddon})}>
+                <div className={classnames({'input-group': !!rightAddon || !!leftAddon})}>
+                    {
+                        leftAddon && (
+                            <span className="input-group-append">
+                                <span className="input-group-text">
+                                    {leftAddon}
+                                </span>
+                            </span>
+                        )
+                    }
                     {this._getField()}
                     {
                         rightAddon && (

@@ -2,6 +2,153 @@
 
 exports[`InfobarWidget card widget should display the widget if isEditing=true 1`] = `"<CardInfobarWidget isEditing={true} isParentList={false} source={{...}} widget={{...}} template={{...}} editing={[undefined]} parent={[undefined]} open={true} AfterTitle={{...}} BeforeContent={{...}} TitleWrapper={{...}} Wrapper={{...}} />"`;
 
+exports[`InfobarWidget card widget should display the widget with Magento2 extension because the widget type is Magento2 1`] = `
+<CardInfobarWidget
+  AfterTitle={null}
+  BeforeContent={null}
+  TitleWrapper={null}
+  Wrapper={null}
+  extensionUsed="magento2"
+  isEditing={true}
+  isParentList={false}
+  open={true}
+  source={
+    Immutable.Map {
+      "foo": "bar",
+    }
+  }
+  template={
+    Immutable.Map {
+      "type": "card",
+      "path": Array [
+        "ticket",
+        "customer",
+        "integrations",
+        "0",
+      ],
+      "title": "Duh",
+      "widgets": Immutable.List [
+        Immutable.Map {
+          "path": "",
+          "type": "card",
+          "title": "Foo container",
+          "widgets": Immutable.List [],
+        },
+      ],
+      "absolutePath": Array [
+        "ticket",
+        "customer",
+        "integrations",
+        "0",
+      ],
+    }
+  }
+  widget={
+    Immutable.Map {
+      "type": "magento2",
+    }
+  }
+/>
+`;
+
+exports[`InfobarWidget card widget should display the widget with Recharge extension because the widget type is Recharge 1`] = `
+<CardInfobarWidget
+  AfterTitle={null}
+  BeforeContent={null}
+  TitleWrapper={null}
+  Wrapper={null}
+  extensionUsed="recharge"
+  isEditing={true}
+  isParentList={false}
+  open={true}
+  source={
+    Immutable.Map {
+      "foo": "bar",
+    }
+  }
+  template={
+    Immutable.Map {
+      "type": "card",
+      "path": Array [
+        "ticket",
+        "customer",
+        "integrations",
+        "0",
+      ],
+      "title": "Duh",
+      "widgets": Immutable.List [
+        Immutable.Map {
+          "path": "",
+          "type": "card",
+          "title": "Foo container",
+          "widgets": Immutable.List [],
+        },
+      ],
+      "absolutePath": Array [
+        "ticket",
+        "customer",
+        "integrations",
+        "0",
+      ],
+    }
+  }
+  widget={
+    Immutable.Map {
+      "type": "recharge",
+    }
+  }
+/>
+`;
+
+exports[`InfobarWidget card widget should display the widget with Shopify extension because the widget type is Shopify 1`] = `
+<CardInfobarWidget
+  AfterTitle={null}
+  BeforeContent={null}
+  TitleWrapper={null}
+  Wrapper={null}
+  extensionUsed="shopify"
+  isEditing={true}
+  isParentList={false}
+  open={true}
+  source={
+    Immutable.Map {
+      "foo": "bar",
+    }
+  }
+  template={
+    Immutable.Map {
+      "type": "card",
+      "path": Array [
+        "ticket",
+        "customer",
+        "integrations",
+        "0",
+      ],
+      "title": "Duh",
+      "widgets": Immutable.List [
+        Immutable.Map {
+          "path": "",
+          "type": "card",
+          "title": "Foo container",
+          "widgets": Immutable.List [],
+        },
+      ],
+      "absolutePath": Array [
+        "ticket",
+        "customer",
+        "integrations",
+        "0",
+      ],
+    }
+  }
+  widget={
+    Immutable.Map {
+      "type": "shopify",
+    }
+  }
+/>
+`;
+
 exports[`InfobarWidget card widget should not display the widget if isEditing=false and data if falsy 1`] = `""`;
 
 exports[`InfobarWidget card widget should not display the widget if isEditing=true and data if falsy 1`] = `""`;

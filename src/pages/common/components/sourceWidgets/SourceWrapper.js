@@ -5,6 +5,15 @@ import {Link, browserHistory, withRouter} from 'react-router'
 import {fromJS, Set, Map} from 'immutable'
 import {Card, CardBody} from 'reactstrap'
 
+import {
+    HTTP_INTEGRATION_TYPE,
+    MAGENTO2_INTEGRATION_TYPE,
+    RECHARGE_INTEGRATION_TYPE,
+    SHOPIFY_INTEGRATION_TYPE,
+    SMILE_INTEGRATION_TYPE,
+    SMOOCH_INSIDE_INTEGRATION_TYPE
+} from '../../../../constants/integration'
+
 import {areSourcesReady, jsonToWidgets} from '../infobar/utils'
 
 import * as integrationsSelectors from './../../../../state/integrations/selectors'
@@ -13,7 +22,7 @@ import SourceWidgets from './SourceWidgets'
 
 export const WIDGET_DATA_TYPES = [
     {
-        type: 'shopify',
+        type: SHOPIFY_INTEGRATION_TYPE,
         title: 'Shopify data',
         description: (
             <div>
@@ -28,7 +37,7 @@ export const WIDGET_DATA_TYPES = [
         )
     },
     {
-        type: 'recharge',
+        type: RECHARGE_INTEGRATION_TYPE,
         title: 'Recharge data',
         description: (
             <div>
@@ -43,7 +52,7 @@ export const WIDGET_DATA_TYPES = [
         )
     },
     {
-        type: 'smile',
+        type: SMILE_INTEGRATION_TYPE,
         title: 'Smile data',
         description: (
             <div>
@@ -58,7 +67,22 @@ export const WIDGET_DATA_TYPES = [
         )
     },
     {
-        type: 'smooch_inside',
+        type: MAGENTO2_INTEGRATION_TYPE,
+        title: 'Magento2 data',
+        description: (
+            <div>
+                The following data comes from your{' '}
+                <Link
+                    to="/app/settings/integrations/magento2"
+                    target="_blank"
+                >
+                    <b>Magento2 stores</b>
+                </Link>.
+            </div>
+        )
+    },
+    {
+        type: SMOOCH_INSIDE_INTEGRATION_TYPE,
         title: 'Chat data',
         description: (
             <div>
@@ -73,7 +97,7 @@ export const WIDGET_DATA_TYPES = [
         )
     },
     {
-        type: 'http',
+        type: HTTP_INTEGRATION_TYPE,
         title: 'HTTP data',
         description: (
             <div>

@@ -4,6 +4,12 @@ import _isObject from 'lodash/isObject'
 import _isFunction from 'lodash/isFunction'
 import {fromJS, Map} from 'immutable'
 
+import {
+    MAGENTO2_INTEGRATION_TYPE,
+    RECHARGE_INTEGRATION_TYPE,
+    SHOPIFY_INTEGRATION_TYPE
+} from '../../../../../../../constants/integration'
+
 import {prepareWidgetToDisplay, guessFieldValueFromRawData} from '../../../utils'
 
 import ListInfobarWidget from './widgets/ListInfobarWidget'
@@ -13,6 +19,7 @@ import FieldInfobarWidget from './widgets/FieldInfobarWidget'
 
 import shopify from './widgets/shopify'
 import recharge from './widgets/recharge'
+import magento2 from './widgets/magento2'
 
 
 export default class InfobarWidget extends React.Component {
@@ -75,15 +82,20 @@ export default class InfobarWidget extends React.Component {
             source: data || fromJS({}),
         }
 
-        if (widget.get('type') === 'shopify') {
+        if (widget.get('type') === SHOPIFY_INTEGRATION_TYPE) {
             extension = {
                 ...extension,
                 ...shopify(passedData),
             }
-        } else if (widget.get('type') === 'recharge') {
+        } else if (widget.get('type') === RECHARGE_INTEGRATION_TYPE) {
             extension = {
                 ...extension,
                 ...recharge(passedData),
+            }
+        } else if (widget.get('type') === MAGENTO2_INTEGRATION_TYPE) {
+            extension = {
+                ...extension,
+                ...magento2(passedData),
             }
         }
 

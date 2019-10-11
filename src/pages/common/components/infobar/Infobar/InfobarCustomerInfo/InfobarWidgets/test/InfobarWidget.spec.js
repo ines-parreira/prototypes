@@ -2,6 +2,12 @@ import {shallow} from 'enzyme'
 import React from 'react'
 import {fromJS} from 'immutable'
 
+import {
+    MAGENTO2_INTEGRATION_TYPE,
+    RECHARGE_INTEGRATION_TYPE,
+    SHOPIFY_INTEGRATION_TYPE
+} from '../../../../../../../../constants/integration'
+
 import InfobarWidget from '../InfobarWidget'
 
 const defaultWidget = fromJS({})
@@ -35,6 +41,19 @@ const defaultProps = {
     source: defaultSource
 }
 
+jest.mock('../widgets/shopify', () => {
+    return () => {return {'extensionUsed': 'shopify'}}
+})
+
+jest.mock('../widgets/recharge', () => {
+    return () => {return {'extensionUsed': 'recharge'}}
+})
+
+jest.mock('../widgets/magento2', () => {
+    return () => {return {'extensionUsed': 'magento2'}}
+})
+
+
 describe('InfobarWidget', () => {
     describe('card widget', () => {
         it('should display the widget if isEditing=true', () => {
@@ -67,6 +86,42 @@ describe('InfobarWidget', () => {
                 />
             )
             expect(component.debug()).toMatchSnapshot()
+        })
+
+        it('should display the widget with Shopify extension because the widget type is Shopify', () => {
+            const component = shallow(
+                <InfobarWidget
+                    {...defaultProps}
+                    widget={fromJS({type: SHOPIFY_INTEGRATION_TYPE})}
+                    isEditing={true}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should display the widget with Recharge extension because the widget type is Recharge', () => {
+            const component = shallow(
+                <InfobarWidget
+                    {...defaultProps}
+                    widget={fromJS({type: RECHARGE_INTEGRATION_TYPE})}
+                    isEditing={true}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should display the widget with Magento2 extension because the widget type is Magento2', () => {
+            const component = shallow(
+                <InfobarWidget
+                    {...defaultProps}
+                    widget={fromJS({type: MAGENTO2_INTEGRATION_TYPE})}
+                    isEditing={true}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
         })
 
         describe('invalid card widget data', () => {

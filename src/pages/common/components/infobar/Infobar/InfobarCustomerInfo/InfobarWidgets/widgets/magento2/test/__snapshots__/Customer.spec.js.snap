@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TitleWrapper/> render() should not render link because there is no admin url suffix 1`] = `
+<div>
+  foo bar
+</div>
+`;
+
+exports[`<TitleWrapper/> render() should render link 1`] = `
+<a
+  href="https://magento.gorgi.us/admin_12fg/customer/index/edit/id/1/"
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  <div>
+    foo bar
+  </div>
+</a>
+`;

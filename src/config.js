@@ -8,6 +8,7 @@ import {RECHARGE_CANCELLATION_REASONS, RECHARGE_DEFAULT_CANCELLATION_REASON} fro
 import {
     EMAIL_INTEGRATION_TYPE,
     EMAIL_INTEGRATION_TYPES,
+    MAGENTO2_INTEGRATION_TYPE,
     RECHARGE_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE
 } from './constants/integration'
@@ -165,6 +166,14 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         title: 'Shopify',
         description: 'Display customer profiles & orders next to tickets. Edit orders with macros',
         image: 'integrations/shopify.png',
+    },
+    {
+        type: MAGENTO2_INTEGRATION_TYPE,
+        title: 'Magento 2',
+        description: 'Display customer profiles & orders next to tickets. Edit orders with macros',
+        image: 'integrations/magento.png',
+        hide: true
+
     },
     {
         type: 'recharge',

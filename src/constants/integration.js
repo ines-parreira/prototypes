@@ -7,8 +7,9 @@ export const GMAIL_INTEGRATION_TYPE = 'gmail'
 export const OUTLOOK_INTEGRATION_TYPE = 'outlook'
 
 export const HTTP_INTEGRATION_TYPE = 'http'
-export const SHOPIFY_INTEGRATION_TYPE = 'shopify'
+export const MAGENTO2_INTEGRATION_TYPE = 'magento2'
 export const RECHARGE_INTEGRATION_TYPE = 'recharge'
+export const SHOPIFY_INTEGRATION_TYPE = 'shopify'
 export const SMILE_INTEGRATION_TYPE = 'smile'
 
 export const ZENDESK_INTEGRATION_TYPE = 'zendesk'

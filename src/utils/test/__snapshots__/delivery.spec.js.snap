@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getTrackingUrl() should return a tracking url for carrier canada_post 1`] = `"https://www.canadapost.ca/trackweb/en#/search?searchFor=123asd"`;
+
+exports[`getTrackingUrl() should return a tracking url for carrier dhl 1`] = `"https://www.dhl.com/en/express/tracking.html?AWB=123asd&brand=DHL"`;
+
+exports[`getTrackingUrl() should return a tracking url for carrier fedex 1`] = `"https://www.fedex.com/apps/fedextrack/?tracknumbers=123asd"`;
+
+exports[`getTrackingUrl() should return a tracking url for carrier ups 1`] = `"https://www.ups.com/track?tracknum=123asd"`;
+
+exports[`getTrackingUrl() should return a tracking url for carrier usps 1`] = `"https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=123asd"`;

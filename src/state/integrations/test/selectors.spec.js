@@ -1,6 +1,11 @@
 import {fromJS} from 'immutable'
 
-import {FACEBOOK_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE} from '../../../constants/integration'
+import {
+    FACEBOOK_INTEGRATION_TYPE,
+    MAGENTO2_INTEGRATION_TYPE,
+    OUTLOOK_INTEGRATION_TYPE,
+    SHOPIFY_INTEGRATION_TYPE
+} from '../../../constants/integration'
 
 import {
     getChannelByTypeAndAddress,
@@ -13,6 +18,7 @@ import {
     getFacebookRedirectUri,
     getIntegrations,
     getIntegrationsState,
+    getMagento2IntegrationByStoreUrl,
     getOnboardingIntegrations,
     getOnboardingMeta,
     getShopifyIntegrationByShopName,
@@ -379,6 +385,41 @@ describe('integrations selectors', () => {
         it('should return the reconnect URI', () => {
             const uri = getFacebookRedirectUri(true)(state)
             expect(uri).toEqual(FAKE_URI_RECONNECT)
+        })
+    })
+
+    describe('getMagento2IntegrationsByStoreUrl', () => {
+        it('should return the matching integration', () => {
+            const state = {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: SHOPIFY_INTEGRATION_TYPE,
+                            meta: {
+                                store_url: 'magento.gorgi.us'
+                            }
+                        },
+                        {
+                            id: 2,
+                            type: MAGENTO2_INTEGRATION_TYPE,
+                            meta: {
+                                store_url: 'magento.gorgi.us'
+                            }
+                        },
+                        {
+                            id: 3,
+                            type: MAGENTO2_INTEGRATION_TYPE,
+                            meta: {
+                                store_url: 'bar'
+                            }
+                        }
+                    ]
+                })
+            }
+
+            const res = getMagento2IntegrationByStoreUrl('magento.gorgi.us')(state)
+            expect(res.get('id')).toEqual(2)
         })
     })
 })
