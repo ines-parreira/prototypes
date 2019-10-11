@@ -134,7 +134,7 @@ export function isGorgiasSupportAddress(address: string): boolean {
     return /^support@[a-zA-Z0-9-]+.gorgias.io$/.test(address)
 }
 
-export function formatDatetime(datetime: datetimeType, timezone: ?string, format: string = 'calendar'): datetimeType {
+export function formatDatetime(datetime: datetimeType, timezone: string, format: string = 'calendar'): datetimeType {
     try {
         let momentDate = moment.utc(datetime)
 

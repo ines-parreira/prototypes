@@ -69,11 +69,12 @@ describe('UserAuditList component', () => {
                 objectTypeOptions={getUserAuditObjectTypeOptions()}
                 eventTypeOptions={getUserAuditEventTypeOptions()}
                 fetchUsersAudit={() => Promise.resolve()}
+                timezone="US/Pacific"
             />
         )
         component.setState({
-            start_datetime: '2017-12-30T00:00:00.000Z',
-            end_datetime: '2018-01-05T00:00:00.000Z'
+            start_datetime: '2017-12-30T00:00:00.000-08:00',
+            end_datetime: '2018-01-05T00:00:00.000-08:00'
         })
     })
 

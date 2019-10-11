@@ -16,7 +16,7 @@ exports[`TicketHeader component should render existing ticket 1`] = `
       title="foo"
       update={[Function]}
     />
-    <TicketSnooze
+    <Connect(TicketSnooze)
       className="headerIcon"
     />
     <TicketTrash
@@ -220,7 +220,7 @@ exports[`TicketHeader component should render new ticket 1`] = `
       title="foo"
       update={[Function]}
     />
-    <TicketSnooze
+    <Connect(TicketSnooze)
       className="headerIcon"
     />
     <TicketTrash
@@ -281,7 +281,7 @@ exports[`TicketHeader component should render spam ticket 1`] = `
       title="foo"
       update={[Function]}
     />
-    <TicketSnooze
+    <Connect(TicketSnooze)
       className="headerIcon"
     />
     <TicketTrash
@@ -486,7 +486,7 @@ exports[`TicketHeader component should render trashed ticket 1`] = `
       title="foo"
       update={[Function]}
     />
-    <TicketSnooze
+    <Connect(TicketSnooze)
       className="headerIcon"
     />
     <TicketTrash

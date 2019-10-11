@@ -87,7 +87,7 @@ exports[`UserAuditList component mounts correctly 1`] = `
           ]
         }
         cancelClass="btn-secondary"
-        endDate={"2018-01-05T00:00:00.000Z"}
+        endDate={"2018-01-05T08:00:00.000Z"}
         isOpen={false}
         minDate={"2018-09-24T07:00:00.000Z"}
         onApply={[Function]}
@@ -111,7 +111,7 @@ exports[`UserAuditList component mounts correctly 1`] = `
         }
         showCustomRangeLabel={false}
         singleDatePicker={false}
-        startDate={"2017-12-30T00:00:00.000Z"}
+        startDate={"2017-12-30T08:00:00.000Z"}
         timePicker={true}
       >
         <Button

@@ -5,7 +5,6 @@ import {Alert, Button, Container, Table} from 'reactstrap'
 import _pick from 'lodash/pick'
 import moment from 'moment/moment'
 
-
 import Loader from '../../common/components/Loader/Loader'
 import PageHeader from '../../common/components/PageHeader'
 import DatePicker from '../../common/forms/DatePicker'
@@ -19,6 +18,7 @@ import {
     getUserAuditPagination,
     getUserAuditUserIdOptions,
 } from '../../../state/usersAudit/selectors'
+import * as currentUserSelectors from '../../../state/currentUser/selectors'
 import {formatDatetime} from '../../../utils'
 import {getMoment} from '../../../utils/date'
 
@@ -96,7 +96,7 @@ export class UserAuditList extends React.Component<Props, State> {
     }
 
     render() {
-        const {events, eventsListMeta, userIdOptions, eventTypeOptions, objectTypeOptions} = this.props
+        const {events, eventsListMeta, userIdOptions, eventTypeOptions, objectTypeOptions, timezone} = this.props
         const {isFetching, isDatePickerOpen, start_datetime, end_datetime} = this.state
 
         if (isFetching) {
@@ -152,9 +152,9 @@ export class UserAuditList extends React.Component<Props, State> {
                                     calendar_today
                                 </i>
                                 <span>
-                                    {formatDatetime(start_datetime, null, DATETIME_LABEL_FORMAT)}
+                                    {formatDatetime(start_datetime, timezone, DATETIME_LABEL_FORMAT)}
                                     {' - '}
-                                    {formatDatetime(end_datetime, null, DATETIME_LABEL_FORMAT)}
+                                    {formatDatetime(end_datetime, timezone, DATETIME_LABEL_FORMAT)}
                                 </span>
                                 <i className="material-icons">
                                     arrow_drop_down
@@ -220,6 +220,7 @@ export default connect((state) => ({
     userIdOptions: getUserAuditUserIdOptions(state),
     objectTypeOptions: getUserAuditObjectTypeOptions(state),
     eventTypeOptions: getUserAuditEventTypeOptions(state),
+    timezone: currentUserSelectors.getTimezone(state)
 }), ({
     fetchUsersAudit: fetchUsersAudit,
 }))(UserAuditList)

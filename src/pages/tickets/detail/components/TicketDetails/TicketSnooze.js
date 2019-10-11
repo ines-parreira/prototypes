@@ -1,17 +1,22 @@
 // @flow
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
 
 import Tooltip from '../../../../common/components/Tooltip'
 import {formatDatetime} from '../../../../../utils'
 
+import * as currentUserSelectors from '../../../../../state/currentUser/selectors'
+
+
 type Props = {
     className: ?string,
-    datetime: ?string
+    datetime: ?string,
+    timezone: string
 }
 
-export default class TicketSnooze extends Component<Props> {
+export class TicketSnooze extends Component<Props> {
     render() {
-        const {datetime} = this.props
+        const {datetime, timezone} = this.props
 
         if (!datetime) {
             return null
@@ -27,9 +32,15 @@ export default class TicketSnooze extends Component<Props> {
                     placement="bottom"
                     target="ticket-header-snooze-icon"
                 >
-                    Snooze {formatDatetime(datetime)}
+                    Snooze {formatDatetime(datetime, timezone)}
                 </Tooltip>
             </div>
         )
     }
 }
+
+export default connect((state) => {
+    return {
+        timezone: currentUserSelectors.getTimezone(state)
+    }
+})(TicketSnooze)
