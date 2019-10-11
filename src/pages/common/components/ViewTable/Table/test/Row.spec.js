@@ -13,7 +13,7 @@ jest.mock('../../../../../../state/views/actions', () => {
     const _identity = require('lodash/identity')
 
     return {
-        toggleSelection: jest.fn(() => _identity),
+        toggleIdInSelectedItemsIds: jest.fn(() => _identity),
     }
 })
 
@@ -44,7 +44,7 @@ describe('ViewTable::Table::Row', () => {
 
         it('toggle delete confirmation', () => {
             component.instance()._toggleSelection()
-            expect(viewsActions.toggleSelection).toBeCalled()
+            expect(viewsActions.toggleIdInSelectedItemsIds).toBeCalled()
         })
     })
 

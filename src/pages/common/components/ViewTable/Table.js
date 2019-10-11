@@ -14,6 +14,7 @@ import shortcutManager from '../../../../services/shortcutManager'
 import {moveIndex} from '../../../common/utils/keyboard'
 
 import * as viewsActions from '../../../../state/views/actions'
+import {areAllActiveViewItemsSelected} from '../../../../state/views/selectors'
 
 import type {viewType} from '../../../../state/views/types'
 
@@ -21,6 +22,7 @@ import css from './Table.less'
 
 import HeaderCell from './Table/HeaderCell'
 import Row from './Table/Row'
+import ViewSelection from './Table/ViewSelection'
 
 
 type directionType = NEXT_VIEW_NAV_DIRECTION | PREV_VIEW_NAV_DIRECTION
@@ -35,30 +37,33 @@ type Props = {
     items: List<*>,
     isSearch: boolean,
     type: string,
+    viewSelected: boolean,
     selectable: ?boolean,
     onItemClick: ?(number) => void,
     getItemUrl: ?(Map<*,*>) => string,
 
     fetchViewItems: typeof viewsActions.fetchViewItems,
     resetView: typeof viewsActions.resetView,
-    toggleSelection: typeof viewsActions.toggleSelection,
+    updatePageSelection: typeof viewsActions.updateSelectedItemsIds,
+    toggleIdInPageSelection: typeof viewsActions.toggleIdInSelectedItemsIds,
+    toggleViewSelection: typeof viewsActions.toggleViewSelection,
 
     ActionsComponent?: () => void,
 }
 
 type State = {
-    rowCursor: number
+    rowCursor: number,
 }
 
 class Table extends React.Component<Props, State> {
     static defaultProps = {
         items: fromJS([]),
         type: 'ticket',
-        selectable: true
+        selectable: true,
     }
 
     state = {
-        rowCursor: 0
+        rowCursor: 0,
     }
 
     componentDidMount() {
@@ -70,10 +75,21 @@ class Table extends React.Component<Props, State> {
     }
 
     componentWillReceiveProps(nextProps: Props) {
+        if (nextProps.selectedItemsIds && nextProps.viewSelected &&
+                nextProps.selectedItemsIds.size !== nextProps.items.size) {
+            nextProps.toggleViewSelection()
+        }
         // new items loaded
         // $FlowFixMe
         if(!nextProps.items.equals(this.props.items)) {
             this.setState({rowCursor: 0})
+            if (nextProps.viewSelected) {
+                nextProps.updatePageSelection(nextProps.items.map((item) => item.get('id')))
+            } else if (nextProps.selectedItemsIds) {
+                nextProps.updatePageSelection(nextProps.selectedItemsIds.filter((itemId) =>
+                    nextProps.items.some((item) => item.get('id') === itemId)
+                ))
+            }
         }
     }
 
@@ -95,7 +111,7 @@ class Table extends React.Component<Props, State> {
                 action: () => {
                     const cursorId = this.props.items.getIn([this.state.rowCursor, 'id'])
                     if (cursorId) {
-                        this.props.toggleSelection(cursorId)
+                        this.props.toggleIdInPageSelection(cursorId)
                     }
                 }
             },
@@ -121,9 +137,13 @@ class Table extends React.Component<Props, State> {
         })
     }
 
-    _toggleSelectAll = () => {
+    _toggleSelectAllPageItems = () => {
         const itemsIds = this.props.items.map((item) => item.get('id'))
-        this.props.toggleSelection(itemsIds, true)
+        if (this.props.selectedItemsIds && this.props.selectedItemsIds.size > 0) {
+            this.props.updatePageSelection(List())
+        } else {
+            this.props.updatePageSelection(itemsIds)
+        }
     }
 
     _movePage = (direction: directionType = NEXT_VIEW_NAV_DIRECTION) => {
@@ -203,6 +223,8 @@ class Table extends React.Component<Props, State> {
         }
 
         const areAllSelected = !!selectedItemsIds && items.size === selectedItemsIds.size
+        const indeterminateCheckbox = !!selectedItemsIds && selectedItemsIds.size > 0 &&
+            selectedItemsIds.size < items.size
 
         return (
             <div>
@@ -213,11 +235,12 @@ class Table extends React.Component<Props, State> {
                                 selectable ? (
                                     <td
                                         className="cell-wrapper cell-short clickable d-none d-md-table-cell"
-                                        onClick={this._toggleSelectAll}
+                                        onClick={this._toggleSelectAllPageItems}
                                     >
                                         <input
                                             type="checkbox"
                                             checked={areAllSelected}
+                                            ref={(el) => el && (el.indeterminate = indeterminateCheckbox)}
                                             readOnly
                                         />
                                     </td>
@@ -239,6 +262,18 @@ class Table extends React.Component<Props, State> {
                                 })
                             }
                         </tr>
+                        {
+                            (!!navigation.get('next_items') || !!navigation.get('prev_items')) &&
+                                areAllSelected && type === 'ticket' ? (
+                                    <ViewSelection
+                                        colSize={fields.size + 1}
+                                        selectedCount={items.size}
+                                        viewName={view.get('name')}
+                                        viewSelected={this.props.viewSelected}
+                                        onSelectViewClick={this.props.toggleViewSelection}
+                                    />
+                                ) : null
+                        }
                     </thead>
                     <tbody>
                         {
@@ -274,8 +309,14 @@ class Table extends React.Component<Props, State> {
     }
 }
 
-export default connect(null, {
-    toggleSelection: viewsActions.toggleSelection,
+export default connect((state) => {
+    return {
+        viewSelected: areAllActiveViewItemsSelected(state),
+    }
+}, {
+    toggleIdInPageSelection: viewsActions.toggleIdInSelectedItemsIds,
+    updatePageSelection: viewsActions.updateSelectedItemsIds,
+    toggleViewSelection: viewsActions.toggleViewSelection,
     resetView: viewsActions.resetView,
 })(Table)
 

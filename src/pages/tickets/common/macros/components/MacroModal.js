@@ -1,5 +1,7 @@
 // @flow
+import PropTypes from 'prop-types'
 import React from 'react'
+import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
 import classnames from 'classnames'
@@ -15,13 +17,16 @@ import type {Map, List} from 'immutable'
 import Loader from '../../../../common/components/Loader'
 import Modal from '../../../../common/components/Modal'
 import {DEFAULT_ACTIONS} from '../../../../../config'
+import {APPLY_MACRO_JOB_TYPE} from '../../../../../constants/job'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
 import shortcutManager from '../../../../../services/shortcutManager'
 
 
 import * as macroActions from '../../../../../state/macro/actions'
+import * as ticketsActions from '../../../../../state/tickets/actions'
 import * as viewsActions from '../../../../../state/views/actions'
+import * as viewsSelectors from '../../../../../state/views/selectors'
 
 import type {fetchMacrosType} from '../types'
 
@@ -36,6 +41,7 @@ type Props = {
     agents: {},
     actions: {
         macro: typeof macroActions,
+        tickets: typeof ticketsActions,
         views: typeof viewsActions,
     },
     handleClickItem: (T: number) => void,
@@ -54,6 +60,8 @@ type Props = {
     search: string,
     firstLoad: boolean,
     selectedItemsIds: List<*>,
+    allViewItemsSelected: ?boolean,
+    getViewCount: PropTypes.func.isRequired,
 }
 
 type State = {
@@ -62,9 +70,17 @@ type State = {
     intent: ?string
 }
 
+@connect((state) => {
+    return {
+        allViewItemsSelected: viewsSelectors.areAllActiveViewItemsSelected(state),
+        getViewCount: viewsSelectors.makeGetViewCount(state),
+    }
+})
 export default class MacroModal extends React.Component<Props, State> {
     static defaultProps = {
+        allViewItemsSelected: null,
         activeView: fromJS({}),
+        getViewCount: null,
     }
 
     multipleActionsNames = ['http'] // actions names that can be set multiple times in the same macro
@@ -114,12 +130,28 @@ export default class MacroModal extends React.Component<Props, State> {
         shortcutManager.unpause()
     }
 
+    _launchApplyMacroJob = (jobPartialParams: Object) => {
+        const actionsToUse = this.props.allViewItemsSelected ? this.props.actions.views : this.props.actions.tickets
+        const jobSelection = this.props.allViewItemsSelected ? this.props.activeView : this.props.selectedItemsIds
+        actionsToUse.bulkUpdate(jobSelection, APPLY_MACRO_JOB_TYPE, jobPartialParams)
+            .then(() => {
+                this.props.actions.views.updateSelectedItemsIds(fromJS([]))
+            })
+            .catch()
+    }
+
     _applyMacro = () => {
-        const {activeView, currentMacro, actions, selectedItemsIds, closeModal} = this.props
+        const {closeModal, currentMacro} = this.props
 
         closeModal()
-        const value = currentMacro ? currentMacro.toJS() : null
-        return actions.views.bulkUpdate(activeView, selectedItemsIds, 'macro', value)
+        this._launchApplyMacroJob({macro_id: currentMacro.get('id'), apply_and_close: false})
+    }
+
+    _applyMacroAndClose = () => {
+        const {closeModal, currentMacro} = this.props
+
+        closeModal()
+        this._launchApplyMacroJob({macro_id: currentMacro.get('id'), apply_and_close: true})
     }
 
     _addNewMacro = () => {
@@ -232,9 +264,14 @@ export default class MacroModal extends React.Component<Props, State> {
             isCreatingMacro,
             handleClickItem,
             firstLoad,
+            activeView,
+            getViewCount,
+            allViewItemsSelected,
         } = this.props
 
         const noResults = macros.isEmpty() && !isCreatingMacro
+
+        const selectedCount = allViewItemsSelected ? getViewCount(activeView.get('id')) : selectedItemsIds.size
 
         return (
             <Modal
@@ -283,9 +320,17 @@ export default class MacroModal extends React.Component<Props, State> {
                                                 <Button
                                                     type="submit"
                                                     color="primary"
+                                                    onClick={this._applyMacroAndClose}
+                                                >
+                                                    Apply macro and close {selectedCount} tickets
+                                                </Button>
+                                                <Button
+                                                    className="ml-3"
+                                                    type="submit"
+                                                    color="secondary"
                                                     onClick={this._applyMacro}
                                                 >
-                                                    Apply macro to {selectedItemsIds.size} tickets
+                                                    Apply macro to {selectedCount} tickets
                                                 </Button>
                                             </div>
                                         ) : (
@@ -296,7 +341,8 @@ export default class MacroModal extends React.Component<Props, State> {
                                                             <ConfirmButton
                                                                 color="secondary"
                                                                 confirm={this._deleteMacro}
-                                                                content={`Do you really want to delete the macro ${this.props.currentMacro.get('name', '')}?`}
+                                                                content={`Do you really want to delete the macro ${
+                                                                    this.props.currentMacro.get('name', '')}?`}
                                                             >
                                                                 <i className="material-icons md-2 text-danger mr-2">
                                                                     delete

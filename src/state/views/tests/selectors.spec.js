@@ -43,6 +43,31 @@ describe('selectors', () => {
 
     })
 
+    describe('getActiveViewAllItemsSelected()', () => {
+        it('Should return false because in the state the all items selection variable is false', () => {
+            const state = {
+                views: initialState.set('active', fromJS({
+                    allItemsSelected: false}
+                ))
+            }
+            expect(selectors.areAllActiveViewItemsSelected(state)).toBe(false)
+        })
+        it('Should return false because in the state the all items selection variable is not set', () => {
+            const state = {
+                views: initialState.set('active', fromJS({}))
+            }
+            expect(selectors.areAllActiveViewItemsSelected(state)).toBe(false)
+        })
+        it('Should return true because in the state the all items selection variable is true', () => {
+            const state = {
+                views: initialState.set('active', fromJS({
+                    allItemsSelected: true}
+                ))
+            }
+            expect(selectors.areAllActiveViewItemsSelected(state)).toBe(true)
+        })
+    })
+
     describe('getRecentViews()', () => {
         it('should return value', () => {
             const recent = 12
