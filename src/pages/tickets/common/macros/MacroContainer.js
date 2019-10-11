@@ -9,7 +9,6 @@ import type {Map, List} from 'immutable'
 
 import * as ViewsActions from '../../../../state/views/actions'
 import * as MacroActions from '../../../../state/macro/actions'
-import * as TicketsActions from '../../../../state/tickets/actions'
 import {getAgents} from '../../../../state/agents/selectors'
 
 import MacroModal from './components/MacroModal'
@@ -22,7 +21,6 @@ type Props = {
     agents: Map<*,*>,
     actions: {
         macro: typeof MacroActions,
-        tickets: typeof TicketsActions,
         views: typeof ViewsActions,
     },
     closeModal: () => void,
@@ -174,7 +172,6 @@ function mapDispatchToProps(dispatch) {
     return {
         actions: {
             views: bindActionCreators(ViewsActions, dispatch),
-            tickets: bindActionCreators(TicketsActions, dispatch),
             macro: bindActionCreators(MacroActions, dispatch),
         }
     }

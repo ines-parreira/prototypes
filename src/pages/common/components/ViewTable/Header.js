@@ -28,8 +28,8 @@ import css from './Header.less'
 }, {
     deleteView: viewsActions.deleteView,
     removeFieldFilter: viewsActions.removeFieldFilter,
+    toggleSelection: viewsActions.toggleSelection,
     updateView: viewsActions.updateView,
-    setViewEditMode: viewsActions.setViewEditMode,
 })
 export default class Header extends React.Component {
     static propTypes = {
@@ -42,7 +42,6 @@ export default class Header extends React.Component {
         lastViewId: PropTypes.number,
         type: PropTypes.string.isRequired,
         updateView: PropTypes.func.isRequired,
-        setViewEditMode: PropTypes.func.isRequired,
         viewButtons: PropTypes.node,
     }
 
@@ -146,7 +145,7 @@ export default class Header extends React.Component {
                                 id="settings-view-button"
                                 className={classnames(css.title, 'mr-2 h-100 cursor-pointer')}
                                 color="transparent"
-                                onClick={() => this.props.setViewEditMode(activeView)}
+                                onClick={() => this.props.updateView(activeView)}
                             >
                                 {activeView.get('name')}
                                 <i className="material-icons">

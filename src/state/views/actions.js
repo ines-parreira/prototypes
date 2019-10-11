@@ -3,7 +3,6 @@ import axios from 'axios'
 import {fromJS, type Map, type List} from 'immutable'
 import _max from 'lodash/max'
 import {browserHistory} from 'react-router'
-import {updateNotification} from 'reapop'
 
 import * as viewsConfig from '../../config/views'
 import * as socketConstants from '../../config/socketConstants'
@@ -11,8 +10,6 @@ import {BASE_VIEW_ID, NEXT_VIEW_NAV_DIRECTION, PREV_VIEW_NAV_DIRECTION, VIEW_NAV
 import {notify} from '../notifications/actions'
 import socketManager from '../../services/socketManager'
 import {getPluralObjectName, getHashOfObj, isCurrentlyOnTicket, isCurrentlyOnView} from '../../utils'
-import {buildChangesMessage} from '../../utils/notificationUtils'
-import {getMoment} from '../../utils/date'
 import type {dispatchType, getStateType, thunkActionType} from '../types'
 
 import {activeViewUrl} from './utils'
@@ -37,15 +34,6 @@ export const updateView = (view: ?viewType, edit: boolean = true) => ({
     type: types.UPDATE_VIEW,
     view,
     edit
-})
-
-export const setViewEditMode = (view: ?viewType) => ({
-    type: types.ACTIVATE_VIEW_EDIT_MODE,
-    view
-})
-
-export const toggleViewSelection = () => ({
-    type: types.TOGGLE_VIEW_SELECTION,
 })
 
 export const setOrderDirection = (fieldPath: string, direction: 'asc' | 'desc' = 'asc') => (dispatch: dispatchType) => {
@@ -174,8 +162,7 @@ export function submitView(view: viewType): thunkActionType {
         let promise
 
         if (isUpdate) {
-            promise = axios.put(`/api/views/${view.get('id')}/`, view.delete('dirty').delete('editMode')
-                .delete('allItemsSelected').toJS())
+            promise = axios.put(`/api/views/${view.get('id')}/`, view.delete('dirty').delete('editMode').toJS())
         } else {
             const orders = views.get('items', fromJS([]))
                 .filter((item) => item.get('type') === view.get('type'))
@@ -187,7 +174,6 @@ export function submitView(view: viewType): thunkActionType {
                 view.set('display_order', _max(orders) + 1)
                     .delete('dirty')
                     .delete('editMode')
-                    .delete('allItemsSelected')
                     .toJS())
         }
 
@@ -327,7 +313,6 @@ export function fetchViewItems(
                 view: activeView
                     .delete('dirty')
                     .delete('editMode')
-                    .delete('allItemsSelected')
                     .toJS()
             })
         } else {
@@ -367,90 +352,139 @@ export function fetchViewItems(
     }
 }
 
-export function updateSelectedItemsIds(ids: List<*>) {
+export function toggleSelection(idOrIds: number | List<*>, selectAll: boolean = false) {
     return {
-        type: types.UPDATE_PAGE_SELECTION,
-        ids
+        type: types.TOGGLE_SELECTION,
+        idOrIds,
+        selectAll,
     }
 }
 
-export function toggleIdInSelectedItemsIds(id: number) {
-    return {
-        type: types.TOGGLE_ID_IN_PAGE_SELECTION,
-        id
-    }
-}
-
-export function bulkUpdate(view: viewType, jobType: string, jobPartialParams: Object): thunkActionType {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
-        let requestPayload
-        if (view.get('dirty', false)) {
-            requestPayload = {
-                'type': jobType,
-                'scheduled_datetime': getMoment().add(15, 'second'),
-                'params': Object.assign({},
-                    {
-                        'view': view.remove('dirty').remove('editMode')
-                            .remove('allItemsSelected').remove('slug').remove('id').toJS()
-                    }, jobPartialParams)
-            }
-        } else {
-            requestPayload = {
-                'type': jobType,
-                'scheduled_datetime': getMoment().add(15, 'second'),
-                'params': Object.assign({}, {'view_id': view.get('id')}, jobPartialParams)
+export function bulkUpdate(activeView: viewType, ids: List<*>, key: string, value: any): thunkActionType {
+    return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
+        const data = {
+            ids: ids.toJS(),
+            updates: {
+                [key]: value
             }
         }
 
+        const activeViewType = activeView.get('type', 'ticket-list')
+        const viewConfig = viewsConfig.getConfigByType(activeViewType)
+        const navigation = viewsSelectors.getNavigation(getState())
+
+        let successMessage = `${ids.size} ${viewConfig.get('plural')}: ${key} successfully set to ${value}!`
+
+        if (activeViewType === 'ticket-list') {
+            switch (key) {
+                case 'tag':
+                    successMessage = `${ids.size} tickets have been tagged "${value.name}".`
+                    break
+                case 'status':
+                    successMessage = `${ids.size} tickets have been marked as ${value}.`
+                    break
+                case 'assignee_user':
+                    successMessage = value
+                        ? `${ids.size} tickets have been assigned to ${value.name}.`
+                        : `${ids.size} tickets have been unassigned.`
+                    break
+                case 'priority':
+                    successMessage = `${ids.size} tickets have been marked as ${value} priority.`
+                    break
+                case 'macro':
+                    successMessage = `Macro successfully applied to ${ids.size} tickets.`
+                    break
+                case 'trashed_datetime':
+                    if (value) {
+                        successMessage = `${ids.size} tickets have been moved to the trash`
+                    } else {
+                        successMessage = `${ids.size} tickets have been undeleted`
+                    }
+                    break
+                default:
+                    break
+            }
+        }
+
+        dispatch({
+            type: types.BULK_UPDATE_START
+        })
+
         const notification = dispatch(notify({
             status: 'loading',
-            dismissAfter: 10000,
+            dismissAfter: 0,
             closeOnNext: true,
-            message:  buildChangesMessage(true,
-                viewsConfig.getConfigByType(view.get('type')).get('plural'),
-                jobPartialParams),
-            buttons: []
+            message: `Updating ${viewConfig.get('api')}...`
         }))
 
-        return axios.post('/api/jobs/', requestPayload)
+        return axios.put(`/api/${viewConfig.get('api')}/`, data)
             .then((json = {}) => json.data)
-            .then((job) => {
+            .then(() => {
+                dispatch({
+                    type: types.BULK_UPDATE_SUCCESS
+                })
+
+                setTimeout(() => dispatch(fetchViewItems(null, navigation.get('current_cursor'))), 800)
                 notification.status = 'success'
-                notification.buttons = [{
-                    name: 'Cancel',
-                    primary: true,
-                    onClick: () => {
-                        return axios.delete('/api/jobs/' + job.id)
-                            .then((json = {}) => {
-                                notification.buttons = []
-                                return json.data
-                            })
-                            .then(() => {
-                                notification.status = 'success'
-                                notification.message = 'The job has been canceled.'
-                                return dispatch(notify(notification))
-                            }, (error) => {
-                                notification.status = 'error'
-                                notification.message = error.response.data.error.msg
-                                return dispatch(notify(notification))
-                            })
-                    }
-                }]
-                return dispatch(updateNotification(notification))
-            }, (error) => {
+                notification.message = successMessage
+                dispatch(notify(notification))
+            }, () => {
                 notification.status = 'error'
-                if (error.response.status === 403) {
-                    notification.message = error.response.data.error.msg
-                } else {
-                    notification.message = 'Failed to modify ' +
-                        viewsConfig.getConfigByType(view.get('type')).get('plural') + '. Please try again.'
-                }
-                dispatch(updateNotification(notification))
-                throw error
+                notification.message = `Failed to update list of ${viewConfig.get('plural')}`
+                dispatch(notify(notification))
+
+                return dispatch({
+                    type: types.BULK_UPDATE_ERROR,
+                })
             })
     }
 }
 
+export function bulkDelete(activeView: viewType, ids: List<*>): thunkActionType {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
+        dispatch({
+            type: types.BULK_DELETE_START
+        })
+
+        const activeViewType = activeView.get('type', 'ticket-list')
+        const viewConfig = viewsConfig.getConfigByType(activeViewType)
+
+        const notification = dispatch(notify({
+            status: 'info',
+            dismissAfter: 0,
+            closeOnNext: true,
+            message: `Deleting ${viewConfig.get('plural')}...`
+        }))
+
+        return axios.delete(`/api/${viewConfig.get('api')}/`, {
+            data: {ids}
+        })
+            .then((json = {}) => json.data)
+            .then(() => {
+                dispatch({
+                    type: types.BULK_DELETE_SUCCESS,
+                    viewType: activeViewType,
+                    ids
+                })
+
+                notification.status = 'success'
+                notification.message = `${ids.size} ${viewConfig.get('plural')} successfully deleted!`
+                dispatch(notify(notification))
+            }, () => {
+                notification.status = 'error'
+                notification.message = `Couldn\'t delete selected ${viewConfig.get('plural')}`
+                dispatch(notify(notification))
+                return dispatch({type: types.BULK_DELETE_ERROR})
+            })
+    }
+}
+
+export function bulkApplyMacro(macroId: string) {
+    return {
+        type: types.BULK_APPLY_MACRO,
+        macroId
+    }
+}
 
 /**
  * Handle views item count update

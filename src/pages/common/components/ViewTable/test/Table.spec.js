@@ -14,7 +14,7 @@ jest.mock('../../../../../state/views/actions', () => {
     const _identity = require('lodash/identity')
 
     return {
-        updateSelectedItemsIds: jest.fn(() => _identity),
+        toggleSelection: jest.fn(() => _identity),
         resetView: jest.fn(() => _identity),
     }
 })
@@ -38,6 +38,7 @@ describe('ViewTable::Table', () => {
         store: configureStore(minStore),
         isLoading: () => false,
         navigation: fromJS({hasPrevItems: false, hasNextItems: false}),
+        onPageChange: () => {},
         fetchViewItems: jest.fn()
     }
 
@@ -96,12 +97,11 @@ describe('ViewTable::Table', () => {
         expect(minProps.fetchViewItems).toBeCalledWith()
     })
 
-    it('should select all items on the current page of the active view when there is a click on the "select all"' +
-        ' checkbox', () => {
+    it('should select all items when there is a click on the "select all" checkbox', () => {
         const component = shallow(<Table {...minProps} />).dive()
         const selectAllButton = component.find('thead').find('td').first()
         selectAllButton.simulate('click')
-        expect(viewsActions.updateSelectedItemsIds).toBeCalledWith(fromJS([ticketFixtures.ticket.id]))
+        expect(viewsActions.toggleSelection).toBeCalledWith(fromJS([ticketFixtures.ticket.id]), true)
     })
 
     it('should display all checkboxes as checked when all items are selected', () => {

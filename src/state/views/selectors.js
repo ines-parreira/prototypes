@@ -79,11 +79,6 @@ export const getActiveViewConfig = createSelector(
     }
 )
 
-export const areAllActiveViewItemsSelected = createSelector(
-    [getActiveView],
-    (state) => state.get('allItemsSelected') || false
-)
-
 /**
  * Retrieve the "active" view from views list instead of the one register in "active" property of the state
  * This way we have the pristine view which is currently active, before it has been copied in the "active" property and

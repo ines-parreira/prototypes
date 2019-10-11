@@ -8024,7 +8024,7 @@ react-transition-group@1.2.1:
     prop-types "^15.5.6"
     warning "^3.0.0"
 
-react-transition-group@^1.1.3:
+react-transition-group@^1.1.2, react-transition-group@^1.1.3:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-1.2.0.tgz#b51fc921b0c3835a7ef7c571c79fc82c73e9204f"
   dependencies:
@@ -8167,13 +8167,13 @@ reapop-theme-wybo@0.4.1:
   resolved "https://registry.yarnpkg.com/reapop-theme-wybo/-/reapop-theme-wybo-0.4.1.tgz#70356acd67f016c5f5411e32d2ec53f6ea492e2d"
   integrity sha1-cDVqzWfwFsX1QR4y0uxT9upJLi0=
 
-reapop@2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/reapop/-/reapop-2.1.0.tgz#b445437355c69072d7934b4b6fa862a4beea8ec5"
-  integrity sha512-1+0dJ0I8O4NAfI6gA8b68EK/NKFyMJQsnpgtwC6qQRZKfyBJJPZ9IAeuDyBXuiGE0mqu49Vprm+XmMLIsD397g==
+reapop@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/reapop/-/reapop-1.1.1.tgz#befc83e0e67c97417f18fadbef5e926b19e784db"
+  integrity sha1-vvyD4OZ8l0F/GPrb716SaxnnhNs=
   dependencies:
-    prop-types "^15.6.0"
-    react-transition-group "^2.2.1"
+    prop-types "^15.5.8"
+    react-transition-group "^1.1.2"
 
 redux-logger@2.7.4:
   version "2.7.4"
