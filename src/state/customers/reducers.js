@@ -129,7 +129,7 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             return newState
         }
 
-        case constants.BULK_DELETE_SUCCESS: {
+        case viewsConstants.BULK_DELETE_SUCCESS: {
             if (action.viewType !== 'customer-list') {
                 return state
             }

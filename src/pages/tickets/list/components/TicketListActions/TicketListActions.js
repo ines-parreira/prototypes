@@ -1,8 +1,7 @@
 // @flow
-import PropTypes from 'prop-types'
 import React from 'react'
 import {connect} from 'react-redux'
-import {fromJS, type Map, List} from 'immutable'
+import {fromJS, type List, type Map} from 'immutable'
 import moment from 'moment'
 import {bindActionCreators} from 'redux'
 import {browserHistory} from 'react-router'
@@ -24,7 +23,6 @@ import _isUndefined from 'lodash/isUndefined'
 import shortcutManager from '../../../../../services/shortcutManager/index'
 
 import * as viewsActions from '../../../../../state/views/actions'
-import * as ticketsActions from '../../../../../state/tickets/actions'
 import * as viewsSelectors from '../../../../../state/views/selectors'
 
 import {getAgents} from '../../../../../state/agents/selectors'
@@ -32,7 +30,6 @@ import {getAgents} from '../../../../../state/agents/selectors'
 import type {currentUserType} from '../../../../../state/types'
 import type {agentsType} from '../../../../../state/agents/types'
 import type {viewType} from '../../../../../state/views/types'
-import {DELETE_TICKET_JOB_TYPE, UPDATE_TICKET_JOB_TYPE} from '../../../../../constants/job'
 import {AgentLabel} from '../../../../common/utils/labels'
 import TagDropdownMenu from '../../../../common/components/TagDropdownMenu/TagDropdownMenu'
 
@@ -42,18 +39,13 @@ type Props = {
     view: viewType,
     actions: {
         views: typeof viewsActions,
-        tickets: typeof ticketsActions,
     },
     selectedItemsIds: List<Map<*,*>>,
     fieldEnumSearch: typeof viewsActions.fieldEnumSearch,
     currentUser: currentUserType,
     agents: agentsType,
-    areFiltersValid: boolean,
     isActiveViewTrashView: boolean,
     openMacroModal: () => void,
-    activeView: viewType,
-    allViewItemsSelected: boolean,
-    getViewCount: PropTypes.func.isRequired,
 }
 
 type State = {
@@ -63,8 +55,7 @@ type State = {
     tags: List<Map<*,*>>,
     isLoadingTags: boolean,
     askTrashConfirmation: boolean,
-    askDeleteConfirmation: boolean,
-    isLaunchingJob: boolean,
+    askDeleteConfirmation: boolean
 }
 // TODO(agent-null-names): remove fallbacks in this component when https://github.com/gorgias/gorgias/issues/4413 is fixed
 class TicketListActions extends React.Component<Props, State> {
@@ -76,7 +67,6 @@ class TicketListActions extends React.Component<Props, State> {
         isLoadingTags: false,
         askTrashConfirmation: false,
         askDeleteConfirmation: false,
-        isLaunchingJob: false,
     }
 
     componentDidMount() {
@@ -209,38 +199,29 @@ class TicketListActions extends React.Component<Props, State> {
 
     _queryTagsOnSearch = _debounce(this._queryTags, 300)
 
-    _launchJob = (actionType: string, actionParams: Object) => {
-        this.setState({isLaunchingJob: true}, () => {
-            const actionsToUse = this.props.allViewItemsSelected ? this.props.actions.views : this.props.actions.tickets
-            const actionsArgs = this.props.allViewItemsSelected ? this.props.activeView : this.props.selectedItemsIds
-            actionsToUse.bulkUpdate(actionsArgs, actionType, actionParams)
-                .then(() => {
-                    this.props.actions.views.updateSelectedItemsIds(fromJS([]))
-                })
-                .catch()
-            this.setState({isLaunchingJob: false})
-        })
-    }
-
     _bulkUpdate = (key, value) => {
         if (!this._hasChecked()) {
             return
         }
-        this._launchJob(UPDATE_TICKET_JOB_TYPE, {updates: {[key]: value}})
+
+        return this.props.actions.views.bulkUpdate(this.props.view, this.props.selectedItemsIds, key, value)
     }
 
     _bulkTrash = () => {
+        const {actions, view, selectedItemsIds} = this.props
         this._toggleTrashConfirmation(false)
-        this._launchJob(UPDATE_TICKET_JOB_TYPE, {updates: {trashed_datetime: moment.utc()}})
+        return actions.views.bulkUpdate(view, selectedItemsIds, 'trashed_datetime', moment.utc())
     }
 
     _bulkUnTrash = () => {
-        this._launchJob(UPDATE_TICKET_JOB_TYPE, {updates: {trashed_datetime: null}})
+        const {actions, view, selectedItemsIds} = this.props
+        return actions.views.bulkUpdate(view, selectedItemsIds, 'trashed_datetime', null)
     }
 
     _bulkDelete = () => {
+        const {actions, view, selectedItemsIds} = this.props
         this.setState({askDeleteConfirmation: false})
-        this._launchJob(DELETE_TICKET_JOB_TYPE, {})
+        return actions.views.bulkDelete(view, selectedItemsIds)
     }
 
     _renderTagsMenu = () => {
@@ -312,17 +293,12 @@ class TicketListActions extends React.Component<Props, State> {
             selectedItemsIds,
             agents,
             openMacroModal,
-            allViewItemsSelected,
-            activeView,
-            getViewCount,
-            areFiltersValid
         } = this.props
 
         const {
             agentsSearch,
             tagsSearch,
-            askDeleteConfirmation,
-            isLaunchingJob,
+            askDeleteConfirmation
         } = this.state
 
         const areItemsSelected = !selectedItemsIds.isEmpty()
@@ -331,8 +307,6 @@ class TicketListActions extends React.Component<Props, State> {
             const agentLabel = agent.get('name') || agent.get('email')
             return agentLabel.toLowerCase().includes(agentsSearch.toLowerCase())
         })
-
-        const selectedCount = allViewItemsSelected ? getViewCount(activeView.get('id')) : selectedItemsIds.size
 
         return (
             <div className="d-inline-flex align-items-center">
@@ -344,7 +318,7 @@ class TicketListActions extends React.Component<Props, State> {
                         type="button"
                         color="secondary"
                         onClick={() => this._bulkUpdate('status', 'closed')}
-                        disabled={!areItemsSelected || isLaunchingJob || !areFiltersValid}
+                        disabled={!areItemsSelected}
                     >
                         Close
                     </Button>
@@ -352,7 +326,7 @@ class TicketListActions extends React.Component<Props, State> {
                         caret
                         type="button"
                         color="secondary"
-                        disabled={!areItemsSelected || isLaunchingJob || !areFiltersValid}
+                        disabled={!areItemsSelected}
                     />
                     <DropdownMenu right>
                         <DropdownItem header>
@@ -380,7 +354,7 @@ class TicketListActions extends React.Component<Props, State> {
                             id: currentUser.get('id'),
                             name: currentUser.get('name'),
                         })}
-                        disabled={!areItemsSelected || isLaunchingJob || !areFiltersValid}
+                        disabled={!areItemsSelected}
                     >
                         Assign to me
                     </Button>
@@ -388,7 +362,7 @@ class TicketListActions extends React.Component<Props, State> {
                         caret
                         type="button"
                         color="secondary"
-                        disabled={!areItemsSelected || isLaunchingJob || !areFiltersValid}
+                        disabled={!areItemsSelected}
                     />
                     <DropdownMenu
                         right
@@ -472,13 +446,13 @@ class TicketListActions extends React.Component<Props, State> {
                         caret
                         type="button"
                         color="secondary"
-                        disabled={!areItemsSelected || isLaunchingJob || !areFiltersValid}
+                        disabled={!areItemsSelected}
                     >
                         Add tag
                     </DropdownToggle>
                     <TagDropdownMenu
                         right
-                        disabled={!areItemsSelected || isLaunchingJob || !areFiltersValid}
+                        disabled={!areItemsSelected}
                     >
                         <DropdownItem
                             header
@@ -513,7 +487,7 @@ class TicketListActions extends React.Component<Props, State> {
                         color="secondary"
                         type="button"
                         caret
-                        disabled={!areItemsSelected || isLaunchingJob || !areFiltersValid}
+                        disabled={!areItemsSelected}
                     >
                         More
                     </DropdownToggle>
@@ -563,8 +537,8 @@ class TicketListActions extends React.Component<Props, State> {
                     <PopoverHeader>Are you sure?</PopoverHeader>
                     <PopoverBody>
                         <p>
-                            Are you sure you want to delete {selectedCount}{' '}
-                            ticket{selectedCount > 1 && 's'}?
+                            Are you sure you want to delete {selectedItemsIds.size}{' '}
+                            ticket{selectedItemsIds.size > 1 && 's'}?
                         </p>
                         <Button
                             type="submit"
@@ -585,8 +559,8 @@ class TicketListActions extends React.Component<Props, State> {
                     <PopoverHeader>Are you sure?</PopoverHeader>
                     <PopoverBody>
                         <p>
-                            Are you sure you want to delete {selectedCount}{' '}
-                            ticket{selectedCount > 1 && 's'} forever?
+                            Are you sure you want to delete {selectedItemsIds.size}{' '}
+                            ticket{selectedItemsIds.size > 1 && 's'} forever?
                         </p>
                         <Button
                             type="submit"
@@ -615,10 +589,6 @@ function mapStateToProps(state) {
         currentUser: state.currentUser,
         agents: getAgents(state),
         isActiveViewTrashView: viewsSelectors.isActiveViewTrashView(state),
-        allViewItemsSelected: viewsSelectors.areAllActiveViewItemsSelected(state),
-        areFiltersValid: viewsSelectors.areFiltersValid(state),
-        activeView: viewsSelectors.getActiveView(state),
-        getViewCount: viewsSelectors.makeGetViewCount(state),
     }
 }
 
@@ -626,7 +596,6 @@ function mapDispatchToProps(dispatch) {
     return {
         actions: {
             views: bindActionCreators(viewsActions, dispatch),
-            tickets: bindActionCreators(ticketsActions, dispatch),
         },
         fieldEnumSearch: bindActionCreators(viewsActions.fieldEnumSearch, dispatch),
     }

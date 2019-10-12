@@ -1,39 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`tickets actions bulkUpdate() should call the jobs api with the given parameters 1`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [
-    Object {
-      "data": "{\\"type\\":\\"jobTypeExample\\",\\"params\\":{\\"ticket_ids\\":[1,2,3,4],\\"exampleKey\\":\\"exampleValue\\"}}",
-      "headers": Object {
-        "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
-      },
-      "maxContentLength": -1,
-      "method": "post",
-      "timeout": 0,
-      "transformRequest": Array [
-        [Function],
-      ],
-      "transformResponse": Array [
-        [Function],
-      ],
-      "url": "/api/jobs/",
-      "validateStatus": [Function],
-      "xsrfCookieName": "XSRF-TOKEN",
-      "xsrfHeaderName": "X-XSRF-TOKEN",
-    },
-  ],
-  "put": Array [],
-}
-`;
-
 exports[`tickets actions updateCursor() should update cursor 1`] = `
 Array [
   Object {

@@ -16,8 +16,8 @@ import _isUndefined from 'lodash/isUndefined'
 
 import shortcutManager from '../../../../services/shortcutManager'
 
+import * as viewsActions from '../../../../state/views/actions'
 import * as customersActions from '../../../../state/customers/actions'
-import * as viewsSelectors from '../../../../state/views/selectors'
 
 class CustomerListActions extends React.Component {
     state = {
@@ -64,9 +64,9 @@ class CustomerListActions extends React.Component {
     }
 
     _bulkDelete = () => {
-        const {actions, selectedItemsIds} = this.props
+        const {actions, view, selectedItemsIds} = this.props
         this._toggleDeleteConfirmation(false)
-        return actions.customers.bulkDeleteCustomer(selectedItemsIds)
+        return actions.views.bulkDelete(view, selectedItemsIds)
     }
 
     _toggleDeleteConfirmation = (visible) => {
@@ -75,11 +75,7 @@ class CustomerListActions extends React.Component {
     }
 
     _renderBulkActions = () => {
-        const {allViewItemsSelected, getViewCount, view, selectedItemsIds} = this.props
-
         const areItemsSelected = this._hasChecked()
-
-        const selectedCount = allViewItemsSelected ? getViewCount(view.get('id')) : selectedItemsIds.size
 
         return (
             <div className="d-inline-flex align-items-center">
@@ -114,8 +110,8 @@ class CustomerListActions extends React.Component {
                     <PopoverHeader>Are you sure?</PopoverHeader>
                     <PopoverBody>
                         <p>
-                            Are you sure you want to delete {selectedCount}{' '}
-                            customer{selectedCount > 1 && 's'}?
+                            Are you sure you want to delete {this.props.selectedItemsIds.size}{' '}
+                            customer{this.props.selectedItemsIds.size > 1 && 's'}?
                         </p>
                         <Button
                             type="submit"
@@ -144,24 +140,15 @@ CustomerListActions.propTypes = {
     view: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired, // tickets actions
     selectedItemsIds: PropTypes.object.isRequired, // list of ids of selected tickets
-    allViewItemsSelected: PropTypes.bool.isRequired,
-    getViewCount: PropTypes.func.isRequired,
 }
-
-function mapStateToProps(state) {
-    return {
-        allViewItemsSelected: viewsSelectors.areAllActiveViewItemsSelected(state),
-        getViewCount: viewsSelectors.makeGetViewCount(state),
-    }
-}
-
 
 function mapDispatchToProps(dispatch) {
     return {
         actions: {
+            views: bindActionCreators(viewsActions, dispatch),
             customers: bindActionCreators(customersActions, dispatch),
         }
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomerListActions)
+export default connect(null, mapDispatchToProps)(CustomerListActions)

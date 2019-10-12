@@ -20,19 +20,6 @@ import {
 
 const mockStore = configureMockStore([thunk])
 
-jest.mock('../../notifications/actions', () => {
-    return {
-        notify: jest.fn(() => (args) => args),
-    }
-})
-jest.mock('reapop', () => {
-    const reapop = require.requireActual('reapop')
-
-    return {
-        ...reapop,
-        updateNotification: jest.fn(() => (args) => args),
-    }
-})
 
 describe('actions', () => {
     let store
@@ -446,48 +433,6 @@ describe('actions', () => {
             return store.dispatch(actions.fetchViewItems()).then(() => {
                 expect(mockServer.history.get.length).toBe(1)
                 expect(store.getActions()).toMatchSnapshot()
-            })
-        })
-    })
-    describe('bulkUpdate()', () => {
-        let mockServer
-        const viewId = 1
-
-        beforeEach(() => {
-            mockServer = new MockAdapter(axios)
-        })
-
-        it('should call the job API with the view id in it\'s params because the view is not dirty', () => {
-            const store = mockStore()
-            mockServer.onAny().reply(200)
-            const view = fromJS({
-                id: viewId,
-                dirty: false
-            })
-            const jobType = 'jobTypeValue'
-            const jobPartialParams = {exampleVar: 'exampleValue'}
-
-            return store.dispatch(actions.bulkUpdate(view, jobType, jobPartialParams)).then(() => {
-                expect(mockServer.history).toMatchSnapshot()
-            })
-        })
-
-        it('should call the job API with the view JSON in it\'s params because the view is dirty', () => {
-            const store = mockStore()
-            mockServer.onAny().reply(200)
-            const view = fromJS({
-                id: viewId,
-                dirty: true,
-                editMode: true,
-                allItemsSelected: true,
-                slug: 'random view slug',
-                filters: {}
-            })
-            const jobType = 'jobTypeValue'
-            const jobPartialParams = {exampleVar: 'exampleValue'}
-
-            return store.dispatch(actions.bulkUpdate(view, jobType, jobPartialParams)).then(() => {
-                expect(mockServer.history).toMatchSnapshot()
             })
         })
     })

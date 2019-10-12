@@ -28,7 +28,7 @@ type Props = {
     selectable: ?boolean,
     type: string,
 
-    toggleIdInSelectedItemsIds: typeof viewsActions.toggleIdInSelectedItemsIds,
+    toggleSelection: typeof viewsActions.toggleSelection,
     getAgentsViewing: typeof agentSelectors.makeGetOtherAgentsOnTicket,
 }
 
@@ -47,7 +47,7 @@ class Row extends React.Component<Props> {
     }
 
     _toggleSelection = () => {
-        this.props.toggleIdInSelectedItemsIds(this.props.item.get('id'))
+        this.props.toggleSelection(this.props.item.get('id'))
     }
 
     render() {
@@ -111,5 +111,5 @@ export default connect((state) => {
         getAgentsViewing: agentSelectors.makeGetOtherAgentsOnTicket(state),
     }
 }, {
-    toggleIdInSelectedItemsIds: viewsActions.toggleIdInSelectedItemsIds,
+    toggleSelection: viewsActions.toggleSelection,
 })(Row)

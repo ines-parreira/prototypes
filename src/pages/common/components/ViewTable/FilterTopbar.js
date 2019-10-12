@@ -43,7 +43,6 @@ class FilterTopbar extends React.Component {
         config: ImmutablePropTypes.map.isRequired,
         currentUser: PropTypes.object.isRequired,
         fetchViewItems: PropTypes.func.isRequired,
-        isDirty: PropTypes.bool.isRequired,
         isUpdate: PropTypes.bool.isRequired,
         isSearch: PropTypes.bool.isRequired,
         pristineActiveView: ImmutablePropTypes.map.isRequired,
@@ -174,7 +173,7 @@ class FilterTopbar extends React.Component {
     }
 
     render() {
-        const {config, activeView, areFiltersValid, isDirty, isUpdate, isSearch, agents, currentUser} = this.props
+        const {config, activeView, areFiltersValid, isUpdate, isSearch, agents, currentUser} = this.props
         const {isSubmitting} = this.state
         const isSystemView = activeView.get('category') === 'system'
 
@@ -255,7 +254,7 @@ class FilterTopbar extends React.Component {
                                                 className={classnames({
                                                     'btn-loading': this.state.isSubmitting,
                                                 })}
-                                                disabled={isSubmitting || !areFiltersValid || !isDirty}
+                                                disabled={isSubmitting || !areFiltersValid}
                                                 onClick={this._toggleUpdateConfirmation}
                                             >
                                                 Update view
@@ -357,7 +356,6 @@ const mapStateToProps = (state, ownProps) => {
         config: viewsConfig.getConfigByName(ownProps.type),
         currentUser: state.currentUser,
         isEditMode: viewsSelectors.isEditMode(state),
-        isDirty: viewsSelectors.isDirty(state),
         pristineActiveView: viewsSelectors.getPristineActiveView(state),
         schemas: schemasSelectors.getSchemas(state),
         selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
@@ -367,6 +365,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = {
     addFieldFilter: viewsActions.addFieldFilter,
     fetchViewItems: viewsActions.fetchViewItems,
+    toggleSelection: viewsActions.toggleSelection,
     updateView: viewsActions.updateView,
     removeFieldFilter: viewsActions.removeFieldFilter,
     resetView: viewsActions.resetView,

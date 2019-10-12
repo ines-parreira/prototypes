@@ -7,22 +7,8 @@ import * as types from '../constants'
 import * as utils from '../utils'
 import * as selectors from '../selectors'
 
-
 describe('reducers', () => {
     describe('views', () => {
-        it('should set the edit mode to true on the view', () => {
-            const state = fromJS({
-                active: {
-                    id: 1,
-                    editMode: false,
-                    filter: {}
-                }
-            })
-            expect(reducers(state, {
-                type: types.ACTIVATE_VIEW_EDIT_MODE
-            })).toMatchSnapshot()
-        })
-
         it('should update field value of active view', () => {
             const state = fromJS({
                 active: {
@@ -179,65 +165,6 @@ describe('reducers', () => {
                 type: types.UPDATE_VIEW_SUCCESS,
                 resp: fixtures.view
             })).toMatchSnapshot()
-        })
-
-        describe('UPDATE_PAGE_SELECTION', () => {
-            it('should update the selected ids of the view', () => {
-                expect(reducers(initialState, {
-                    type: types.UPDATE_PAGE_SELECTION,
-                    ids: [1, 2, 3, 4, 5]
-                })).toMatchSnapshot()
-            })
-        })
-
-        describe('TOGGLE_ID_IN_PAGE_SELECTION', () => {
-            it('should add an id in the list of selected ids', () => {
-                const state = fromJS({
-                    _internal: {
-                        selectedItemsIds: [1, 2, 3, 4, 5]
-                    }
-                })
-                expect(reducers(state, {
-                    type: types.TOGGLE_ID_IN_PAGE_SELECTION,
-                    id: 12
-                })).toMatchSnapshot()
-            })
-
-            it('should remove an id in the list of selected ids', () => {
-                const state = fromJS({
-                    _internal: {
-                        selectedItemsIds: [1, 3, 40]
-                    }
-                })
-                expect(reducers(state, {
-                    type: types.TOGGLE_ID_IN_PAGE_SELECTION,
-                    id: 40
-                })).toMatchSnapshot()
-            })
-        })
-
-        describe('TOGGLE_VIEW_SELECTION', () => {
-            it('should toggle the entire view selection from selected to not selected', () => {
-                const state = fromJS({
-                    active: {
-                        allItemsSelected: true
-                    }
-                })
-                expect(reducers(state, {
-                    type: types.TOGGLE_VIEW_SELECTION
-                })).toMatchSnapshot()
-            })
-
-            it('should toggle the entire view selection from not selected to selected', () => {
-                const state = fromJS({
-                    active: {
-                        allItemsSelected: false
-                    }
-                })
-                expect(reducers(state, {
-                    type: types.TOGGLE_VIEW_SELECTION
-                })).toMatchSnapshot()
-            })
         })
 
         it('should delete a view ', () => {
