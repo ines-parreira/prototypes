@@ -2,6 +2,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
+import {fromJS} from 'immutable'
 
 import * as actions from '../actions'
 import {initialState} from '../reducers'
@@ -12,6 +13,14 @@ const mockStore = configureMockStore(middlewares)
 jest.mock('../../notifications/actions', () => {
     return {
         notify: jest.fn(() => (args) => args),
+    }
+})
+jest.mock('reapop', () => {
+    const reapop = require.requireActual('reapop')
+
+    return {
+        ...reapop,
+        updateNotification: jest.fn(() => (args) => args),
     }
 })
 
@@ -61,6 +70,16 @@ describe('customers actions', () => {
 
         return store.dispatch(actions.deleteCustomer(2))
             .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
+    it('bulkDeleteCustomer()', () => {
+        const customersIds = fromJS([1, 2, 3, 4, 5])
+        mockServer.onAny().reply(200)
+
+        return store.dispatch(actions.bulkDeleteCustomer(customersIds)).then(() => {
+            expect(mockServer.history).toMatchSnapshot()
+            expect(store.getActions()).toMatchSnapshot()
+        })
     })
 
     it('fetch customer history', () => {

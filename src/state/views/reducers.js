@@ -95,6 +95,11 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             return state.set('active', view.set('dirty', true).set('editMode', action.edit))
         }
 
+        case constants.ACTIVATE_VIEW_EDIT_MODE: {
+            const view = action.view || activeView
+            return state.set('active', view.set('editMode', true))
+        }
+
         case constants.SET_FIELD_VISIBILITY: {
             const visibleFields = activeView.get('fields', fromJS([]))
 
@@ -162,7 +167,7 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
                 // if is updating an existing view, on reset we close edition panel
                 original = original.set('dirty', false).set('editMode', false)
             } else {
-                // if creating a new viw, on reset we keep the edition panel open
+                // if creating a new view, on reset we keep the edition panel open
                 original = original.set('dirty', true).set('editMode', true)
             }
 
@@ -256,19 +261,14 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             return state.setIn(['_internal', 'loading', 'fetchList'], false)
                 .setIn(['_internal', 'loading', 'fetchListDiscreet'], false)
 
-        case constants.TOGGLE_SELECTION: {
+        case constants.UPDATE_PAGE_SELECTION: {
+            return state.setIn(['_internal', 'selectedItemsIds'], action.ids)
+        }
+
+        case constants.TOGGLE_ID_IN_PAGE_SELECTION: {
             const currentlySelected = state.getIn(['_internal', 'selectedItemsIds'], fromJS([]))
 
-            // if it is a "select all" action where we select every items
-            if (action.selectAll) {
-                if (currentlySelected.size < action.idOrIds.size) {
-                    return state.setIn(['_internal', 'selectedItemsIds'], action.idOrIds)
-                }
-
-                return state.setIn(['_internal', 'selectedItemsIds'], fromJS([]))
-            }
-
-            const idx = currentlySelected.indexOf(action.idOrIds)
+            const idx = currentlySelected.indexOf(action.id)
 
             // if already selected, deselect it
             if (~idx) {
@@ -276,7 +276,11 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             }
 
             // otherwise select it
-            return state.setIn(['_internal', 'selectedItemsIds'], currentlySelected.push(action.idOrIds))
+            return state.setIn(['_internal', 'selectedItemsIds'], currentlySelected.push(action.id))
+        }
+
+        case constants.TOGGLE_VIEW_SELECTION: {
+            return state.updateIn(['active', 'allItemsSelected'], (allItemsSelected) => !allItemsSelected)
         }
 
         case constants.BULK_DELETE_SUCCESS: {
