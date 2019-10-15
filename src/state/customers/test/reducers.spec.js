@@ -1,6 +1,9 @@
+import { fromJS } from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 
+import {OPEN_STATUS, CLOSED_STATUS} from '../../../constants/ticket'
 import reducer, {initialState} from '../reducers'
+import * as newMessageTypes from '../../newMessage/constants'
 import * as viewTypes from '../../views/constants'
 import * as ticketTypes from '../../ticket/constants'
 import * as types from '../constants'
@@ -217,6 +220,50 @@ describe('customers reducers', () => {
                 initialState,
                 {
                     type: ticketTypes.CLEAR_TICKET,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('should update history on new message', () => {
+        const state = initialState.setIn(['customerHistory', 'tickets'], fromJS([
+            { id: 1, excerpt: 'OK', messages_count: 1, status: OPEN_STATUS },
+            { id: 2, excerpt: 'Alright', messages_count: 3, status: OPEN_STATUS },
+        ]))
+
+        expect(
+            reducer(
+                state,
+                {
+                    type: newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_SUCCESS,
+                    resp: {
+                        body_text: 'Glad to have helped you!',
+                        ticket_id: 2,
+                    },
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('should update history ticket on partial update', () => {
+        const state = initialState.setIn(['customerHistory', 'tickets'], fromJS([
+            { id: 1, excerpt: 'OK', status: OPEN_STATUS },
+            { id: 2, excerpt: 'Alright', status: OPEN_STATUS },
+        ]))
+
+        expect(
+            reducer(
+                state,
+                {
+                    type: ticketTypes.TICKET_PARTIAL_UPDATE_SUCCESS,
+                    resp: {
+                        id: 1,
+                        assignee_user: {
+                            name: 'New Assignee',
+                        },
+                        subject: 'New subject',
+                        status: CLOSED_STATUS
+                    }
                 }
             ).toJS()
         ).toMatchSnapshot()

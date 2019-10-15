@@ -59,11 +59,11 @@ class CustomerDetailContainer extends React.Component {
         }
 
         return (
-            <div className="mt-4 mb-4">
+            <div className="my-4">
                 <Timeline
                     customerHistory={customerHistory}
-                    revert
                     displayAll
+                    revert
                 />
             </div>
         )

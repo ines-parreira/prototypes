@@ -1,15 +1,35 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {fromJS} from 'immutable'
+// @flow
 import classnames from 'classnames'
-
-import TimelineTicket from './TimelineTicket'
+import { fromJS, type Map } from 'immutable'
+import React from 'react'
 
 import css from './Timeline.less'
+import TimelineTicket from './TimelineTicket'
 
-export default class Timeline extends React.Component {
+type Props = {
+    actions: {},
+    customerHistory: Map<*,*>,
+    currentTicketId: number,
+    displayAll: boolean,
+    revert: boolean,
+}
+
+export default class Timeline extends React.Component<Props> {
+    static defaultProps = {
+        actions: {},
+        currentTicketId: 0,
+        displayAll: false,
+        revert: false,
+    }
+
     render() {
-        const {customerHistory, revert, displayAll, className} = this.props
+        const {
+            actions,
+            currentTicketId,
+            customerHistory,
+            displayAll,
+            revert,
+        } = this.props
 
         if (!customerHistory.get('hasHistory') && !displayAll) {
             return null
@@ -22,42 +42,24 @@ export default class Timeline extends React.Component {
         }
 
         return (
-            <div className={classnames(css.component, className)}>
+            <div className={classnames(css.component)}>
                 {
                     history.map((obj) => {
-                        // if it is a ticket
-                        if (obj.get('channel')) {
+                        const isTicket = obj.get('channel')
+                        if (isTicket) {
                             return (
                                 <TimelineTicket
+                                    actions={actions}
+                                    isCurrent={currentTicketId === obj.get('id')}
                                     key={obj.get('id')}
                                     ticket={obj}
-                                    isCurrent={this.props.currentTicketId === obj.get('id')}
-                                    actions={this.props.actions}
                                 />
                             )
                         }
-
                         return null
                     }).toList()
                 }
             </div>
         )
     }
-}
-
-Timeline.propTypes = {
-    customerHistory: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
-    currentTicketId: PropTypes.number,
-    revert: PropTypes.bool.isRequired,
-    displayAll: PropTypes.bool.isRequired,
-    className: PropTypes.string,
-}
-
-Timeline.defaultProps = {
-    customerHistory: fromJS({}),
-    actions: {},
-    currentTicketId: 0,
-    revert: false,
-    displayAll: false,
 }

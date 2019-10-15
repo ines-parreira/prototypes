@@ -257,12 +257,14 @@ export default class TicketView extends React.Component {
                             </i>
                             Close ticket history
                         </Button>
-                        <Timeline
-                            actions={actions.ticket}
-                            currentTicketId={ticket.get('id')}
-                            customerHistory={customerHistory}
-                            className="pb-4"
-                        />
+
+                        <div className="pb-4">
+                            <Timeline
+                                actions={actions.ticket}
+                                currentTicketId={ticket.get('id')}
+                                customerHistory={customerHistory}
+                            />
+                        </div>
                     </div>
                 )}
                 <div

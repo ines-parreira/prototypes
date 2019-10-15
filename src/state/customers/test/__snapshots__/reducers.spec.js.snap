@@ -349,6 +349,74 @@ Object {
 }
 `;
 
+exports[`customers reducers should update history on new message 1`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "active": false,
+      "history": false,
+      "merge": false,
+    },
+  },
+  "active": Object {},
+  "customerHistory": Object {
+    "events": Array [],
+    "hasHistory": false,
+    "tickets": Array [
+      Object {
+        "excerpt": "OK",
+        "id": 1,
+        "messages_count": 1,
+        "status": "open",
+      },
+      Object {
+        "excerpt": "Glad to have helped you!",
+        "id": 2,
+        "messages_count": 4,
+        "status": "open",
+      },
+    ],
+    "triedLoading": false,
+  },
+  "items": Array [],
+}
+`;
+
+exports[`customers reducers should update history ticket on partial update 1`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "active": false,
+      "history": false,
+      "merge": false,
+    },
+  },
+  "active": Object {},
+  "customerHistory": Object {
+    "events": Array [],
+    "hasHistory": false,
+    "tickets": Array [
+      Object {
+        "assignee_user": Object {
+          "name": "New Assignee",
+        },
+        "excerpt": "OK",
+        "id": 1,
+        "status": "closed",
+        "subject": "New subject",
+      },
+      Object {
+        "excerpt": "Alright",
+        "id": 2,
+        "status": "open",
+      },
+    ],
+    "triedLoading": false,
+  },
+  "items": Array [],
+}
+`;
+
 exports[`customers reducers submit customer 1`] = `
 Object {
   "_internal": Object {

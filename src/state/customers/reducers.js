@@ -2,6 +2,8 @@
 import {fromJS, type Map} from 'immutable'
 import _sortBy from 'lodash/sortBy'
 
+import type {Ticket, TicketElement} from '../../models/ticket/types'
+import * as newMessageConstants from '../newMessage/constants'
 import * as ticketConstants from '../ticket/constants'
 import * as viewsConstants from '../views/constants'
 
@@ -114,6 +116,33 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             }
 
             return newState
+        }
+
+        case newMessageConstants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_SUCCESS: {
+            const updated: TicketElement = action.resp
+            const ticketIndex = state.getIn(['customerHistory', 'tickets'], fromJS([]))
+                .findIndex((ticket) => ticket.get('id') === updated.ticket_id)
+            if (~ticketIndex) {
+                return state.updateIn(['customerHistory', 'tickets', ticketIndex], (ticket) => ticket
+                    .set('messages_count', ticket.get('messages_count', 0) + 1)
+                    .set('excerpt', updated.body_text)
+                )
+            }
+            return state
+        }
+
+        case ticketConstants.TICKET_PARTIAL_UPDATE_SUCCESS: {
+            const updated: Ticket = action.resp
+            const ticketIndex = state.getIn(['customerHistory', 'tickets'], fromJS([]))
+                .findIndex((ticket) => ticket.get('id') === updated.id)
+            if (~ticketIndex) {
+                return state.updateIn(['customerHistory', 'tickets', ticketIndex], (ticket) => ticket
+                    .set('assignee_user', fromJS(updated.assignee_user))
+                    .set('status', updated.status)
+                    .set('subject', updated.subject)
+                )
+            }
+            return state
         }
 
         case constants.FETCH_CUSTOMER_HISTORY_ERROR: {

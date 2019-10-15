@@ -1,6 +1,24 @@
 //@flow
 
 import {CHANNELS, SOURCE_TYPES} from '../../config/ticket'
+import {CLOSED_STATUS, OPEN_STATUS} from '../../constants/ticket'
+
+export type Ticket = {
+    id: number,
+    assignee_user: TicketAssignee,
+    messages: TicketElement[],
+    messages_count: number,
+    status: OPEN_STATUS | CLOSED_STATUS,
+    subject: string,
+}
+
+export type TicketAssignee = {
+    id: number,
+    email: string,
+    firstname: string,
+    lastname: string,
+    name: string,
+}
 
 export type TicketElement = {
     id?: number,
