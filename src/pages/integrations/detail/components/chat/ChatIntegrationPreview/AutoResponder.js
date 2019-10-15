@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 import classnames from 'classnames'
 
@@ -5,10 +6,10 @@ import {CHAT_AUTO_RESPONDER_TEXTS} from '../../../../../../config/integrations'
 import {SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/smooch_inside'
 
 import css from './ChatIntegrationPreview.less'
-
+import CustomerInitialMessages from './CustomerInitialMessages'
 
 type Props = {
-    conversationColor?: string,
+    conversationColor: string,
     name?: string,
     language?: string,
     autoResponderReply?: string
@@ -22,16 +23,14 @@ export default class OptionalEmailCapture extends React.Component<Props> {
 
         return (
             <div className={css.content}>
-                <div
-                    className={classnames(css.bubble, css.primary, css.firstMessageOfAppUser, css.lastMessage)}
-                    style={{backgroundColor: conversationColor}}
-                >
-                    hi
-                </div>
+                <CustomerInitialMessages
+                    conversationColor={conversationColor}
+                    messages={['hi']}
+                />
 
                 <div className={css.appMakerMessageWrapper}>
-                    <div className={classnames(css.avatar, css.gorgiasLogo)}>
-                        <img src={`${window.GORGIAS_ASSETS_URL || ''}/static/private/img/icons/gorgias-icon-logo-white.png`}/>
+                    <div className={classnames(css.avatar, css.robotLogo)}>
+                        <img src={`${window.GORGIAS_ASSETS_URL || ''}/static/private/img/icons/robot-icon.svg`} />
                     </div>
                     <div>
                         <div className={css.user}>

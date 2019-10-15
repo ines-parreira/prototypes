@@ -163,7 +163,7 @@ export class ChatIntegrationPreferences extends React.Component<Props, State> {
         const {autoResponderEnabled, autoResponderReply, emailCaptureEnforcement, isUpdating, preview} = this.state
         const {integration} = this.props
 
-        const conversationColor = integration.getIn(['decoration', 'conversation_color'])
+        const conversationColor = integration.getIn(['decoration', 'conversation_color'], '')
         const language = integration.getIn(['meta', 'language'])
 
         const isPreviewOnline = preview === PREVIEW_AUTO_RESPONDER

@@ -18,61 +18,11 @@ exports[`<ChatIntegrationPreview/> render() should display auto responder 1`] = 
         }
       }
     >
-      <div
-        className="agents"
-      >
-        <div
-          className="agent first"
-          style={
-            Object {
-              "borderColor": "#123456",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="onlineMarker"
-          />
-        </div>
-        <div
-          className="agent middle"
-          style={
-            Object {
-              "borderColor": "#123456",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="onlineMarker"
-          />
-        </div>
-        <div
-          className="agent last"
-          style={
-            Object {
-              "borderColor": "#123456",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="onlineMarker"
-          />
-        </div>
-      </div>
+      <ChatIntegrationAvatar
+        isOnline={true}
+        mainColor="#123456"
+        offlineColor="#A1A9B6"
+      />
       <div
         className="details"
       >
@@ -140,61 +90,11 @@ exports[`<ChatIntegrationPreview/> render() should display optional email captur
         }
       }
     >
-      <div
-        className="agents"
-      >
-        <div
-          className="agent first"
-          style={
-            Object {
-              "borderColor": "#123456",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="onlineMarker"
-          />
-        </div>
-        <div
-          className="agent middle"
-          style={
-            Object {
-              "borderColor": "#123456",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="onlineMarker"
-          />
-        </div>
-        <div
-          className="agent last"
-          style={
-            Object {
-              "borderColor": "#123456",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="onlineMarker"
-          />
-        </div>
-      </div>
+      <ChatIntegrationAvatar
+        isOnline={true}
+        mainColor="#123456"
+        offlineColor="#A1A9B6"
+      />
       <div
         className="details"
       >
@@ -273,61 +173,11 @@ exports[`<ChatIntegrationPreview/> render() should display quickReplies 1`] = `
         }
       }
     >
-      <div
-        className="agents"
-      >
-        <div
-          className="agent first"
-          style={
-            Object {
-              "borderColor": "#123456",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="onlineMarker"
-          />
-        </div>
-        <div
-          className="agent middle"
-          style={
-            Object {
-              "borderColor": "#123456",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="onlineMarker"
-          />
-        </div>
-        <div
-          className="agent last"
-          style={
-            Object {
-              "borderColor": "#123456",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="onlineMarker"
-          />
-        </div>
-      </div>
+      <ChatIntegrationAvatar
+        isOnline={true}
+        mainColor="#123456"
+        offlineColor="#A1A9B6"
+      />
       <div
         className="details"
       >
@@ -410,61 +260,11 @@ exports[`<ChatIntegrationPreview/> render() should display required email captur
         }
       }
     >
-      <div
-        className="agents"
-      >
-        <div
-          className="agent first"
-          style={
-            Object {
-              "borderColor": "#123456",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="onlineMarker"
-          />
-        </div>
-        <div
-          className="agent middle"
-          style={
-            Object {
-              "borderColor": "#123456",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="onlineMarker"
-          />
-        </div>
-        <div
-          className="agent last"
-          style={
-            Object {
-              "borderColor": "#123456",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="onlineMarker"
-          />
-        </div>
-      </div>
+      <ChatIntegrationAvatar
+        isOnline={true}
+        mainColor="#123456"
+        offlineColor="#A1A9B6"
+      />
       <div
         className="details"
       >
@@ -530,25 +330,13 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
         }
       }
     >
-      <div
-        className="team-picture-wrapper"
-      >
-        <div
-          className="team-picture"
-          style={
-            Object {
-              "borderColor": "#123456",
-            }
-          }
-        >
-          <img
-            src="https://gorgias.io/avatar.png"
-          />
-          <div
-            className="onlineMarker"
-          />
-        </div>
-      </div>
+      <ChatIntegrationAvatar
+        avatarTeamPictureUrl="https://gorgias.io/avatar.png"
+        avatarType="team-picture"
+        isOnline={true}
+        mainColor="#123456"
+        offlineColor="#A1A9B6"
+      />
       <div
         className="details"
       >
@@ -630,61 +418,11 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
         }
       }
     >
-      <div
-        className="agents"
-      >
-        <div
-          className="agent first"
-          style={
-            Object {
-              "borderColor": "#A1A9B6",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="offlineMarker"
-          />
-        </div>
-        <div
-          className="agent middle"
-          style={
-            Object {
-              "borderColor": "#A1A9B6",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="offlineMarker"
-          />
-        </div>
-        <div
-          className="agent last"
-          style={
-            Object {
-              "borderColor": "#A1A9B6",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="offlineMarker"
-          />
-        </div>
-      </div>
+      <ChatIntegrationAvatar
+        isOnline={false}
+        mainColor="#123456"
+        offlineColor="#A1A9B6"
+      />
       <div
         className="details"
       >
@@ -771,61 +509,11 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
         }
       }
     >
-      <div
-        className="agents"
-      >
-        <div
-          className="agent first"
-          style={
-            Object {
-              "borderColor": "#123456",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="onlineMarker"
-          />
-        </div>
-        <div
-          className="agent middle"
-          style={
-            Object {
-              "borderColor": "#123456",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="onlineMarker"
-          />
-        </div>
-        <div
-          className="agent last"
-          style={
-            Object {
-              "borderColor": "#123456",
-            }
-          }
-        >
-          <i
-            className="material-icons"
-          >
-            person
-          </i>
-          <div
-            className="onlineMarker"
-          />
-        </div>
-      </div>
+      <ChatIntegrationAvatar
+        isOnline={true}
+        mainColor="#123456"
+        offlineColor="#A1A9B6"
+      />
       <div
         className="details"
       >

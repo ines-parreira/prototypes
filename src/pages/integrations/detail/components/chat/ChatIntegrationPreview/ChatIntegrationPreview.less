@@ -2,9 +2,10 @@
 
 :local {
   @primary: #479af5;
-  @lighterGray: #f8f9fa;
-  @lightGray: #ededed;
-  @gray: #c8cbd0;
+  @lighterGrey: #f8f9fa;
+  @lightGrey: #ededed;
+  @grey: #c3c8d0;
+  @medium-grey: rgba(44,66,103,0.46);
   @active-bluegreen: #06D79C;
   @offlineColor: #a1a9b6;
   @textColor: #545454;
@@ -12,7 +13,7 @@
   .preview {
     overflow: hidden;
     padding: 32px 32px 20px 32px;
-    background: @lighterGray;
+    background: @lighterGrey;
     border-radius: 5px;
     width: 30em;
     color: @textColor;
@@ -33,7 +34,7 @@
       width: 4.2em;
       height: 100%;
       content: '';
-      background-image: radial-gradient(ellipse at center, @lighterGray 0%, @lighterGray 45%, transparent 45%);
+      background-image: radial-gradient(ellipse at center, @lighterGrey 0%, @lighterGrey 45%, transparent 45%);
       background-repeat: repeat-x;
       background-size: 1.4em 1.4em;
       background-position: 0 center;
@@ -47,7 +48,7 @@
     background: white;
     border: 0;
     margin-bottom: 1em;
-    border-radius: 14px;
+    border-radius: 5px;
     box-shadow: 0 4px 1em rgba(0, 0, 0, .12);
 
     display: flex;
@@ -73,8 +74,8 @@
       box-shadow: 0 4px 23px 0px rgba(57, 57, 57, 0.26);
       display: flex;
       flex-direction: row;
-      padding: 1.2em .8em;
-      background: @lighterGray;
+      padding: 22px 18px;
+      background: @lighterGrey;
       z-index: 1;  // necessary so that the box-shadow is above the content
       height: 94px;
       align-items: center;
@@ -84,9 +85,8 @@
       color: white;
       overflow: hidden;
       flex: 1;
-      padding-left: .8em;
+      padding: .8em;
       text-align: left;
-      margin-left: 4px;
 
       .appName {
         font-size: 13px;
@@ -94,7 +94,7 @@
       }
 
       .introductionText {
-        font-size: 17px;
+        font-size: 16px;
       }
 
       .business-hours-back-badge {
@@ -111,8 +111,29 @@
 
     .content {
       overflow: hidden;
-      padding: 15px;
+      padding: 15px 20px;
       min-height: 356px;
+
+      .conversationTimestamp {
+        color: @medium-grey;
+        font-size: 12px;
+        margin-bottom: 15px;
+        margin-top: 25px;
+        text-transform: uppercase;
+        text-align: center;
+      }
+
+      .messageTimestamp {
+        clear: both;
+        color: @grey;
+        font-size: 12px;
+        margin-top: 5px;
+        text-align: right;
+
+        .messageStatus {
+          font-weight: bold;
+        }
+      }
 
       &.quick-replies-content {
         position: relative;
@@ -136,7 +157,6 @@
   }
 
   .agents, .team-picture-wrapper {
-    margin-left: 5px;
     display: flex;
     align-items: center;
 
@@ -148,7 +168,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-right: -10px;
 
       img {
         width: 100%;
@@ -157,8 +176,15 @@
       }
     }
 
+    .agents {
+      .agent {
+        margin-right: -10px;
+      }
+    }
+  
     .agent {
       position: relative;
+      margin-right: -10px;
 
       height: 40px;
       width: 40px;
@@ -173,7 +199,6 @@
 
       border-style: solid;
       border-width: 3px;
-      margin-right: -10px;
 
       &.first, &.last {
         width: 32px;
@@ -207,7 +232,7 @@
         right: 6%;
         border-radius: 50px;
         border-style: solid;
-        border-width: 3px;
+        border-width: 2px;
         border-color: inherit;
       }
 
@@ -228,9 +253,9 @@
     background-size: cover;
 
     &.camera {
-      @freeGray: escape(@gray);
+      @freeGrey: escape(@grey);
 
-      background-image: url('data:image/svg+xml;utf8,<svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M896 672q119 0 203.5 84.5t84.5 203.5-84.5 203.5-203.5 84.5-203.5-84.5-84.5-203.5 84.5-203.5 203.5-84.5zm704-416q106 0 181 75t75 181v896q0 106-75 181t-181 75h-1408q-106 0-181-75t-75-181v-896q0-106 75-181t181-75h224l51-136q19-49 69.5-84.5t103.5-35.5h512q53 0 103.5 35.5t69.5 84.5l51 136h224zm-704 1152q185 0 316.5-131.5t131.5-316.5-131.5-316.5-316.5-131.5-316.5 131.5-131.5 316.5 131.5 316.5 316.5 131.5z" fill="@{freeGray}"/></svg>');
+      background-image: url('data:image/svg+xml;utf8,<svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M896 672q119 0 203.5 84.5t84.5 203.5-84.5 203.5-203.5 84.5-203.5-84.5-84.5-203.5 84.5-203.5 203.5-84.5zm704-416q106 0 181 75t75 181v896q0 106-75 181t-181 75h-1408q-106 0-181-75t-75-181v-896q0-106 75-181t181-75h224l51-136q19-49 69.5-84.5t103.5-35.5h512q53 0 103.5 35.5t69.5 84.5l51 136h224zm-704 1152q185 0 316.5-131.5t131.5-316.5-131.5-316.5-316.5-131.5-316.5 131.5-131.5 316.5 131.5 316.5 316.5 131.5z" fill="@{freeGrey}"/></svg>');
       width: 17px;
       height: 17px;
     }
@@ -239,11 +264,11 @@
   .bubble {
     float: left;
     clear: both;
-    padding: 16px;
+    padding: 13px;
     margin-bottom: 4px;
     background: #f4f4f4;
     border-radius: 14px;
-    font-size: 15px;
+    font-size: 14px;
     overflow: hidden;
     position: relative;
     border-left-color: @primary;
@@ -279,10 +304,15 @@
     display: flex;
     clear: both;
     padding-top: 10px;
+
+    .avatar {
+      margin-right: 15px;
+    }
   }
 
   .user {
     font-size: 13px;
+    font-weight: bold;
     margin-bottom: 8px;
   }
 
@@ -290,7 +320,6 @@
     min-width: 35px;
     width: 35px;
     height: 35px;
-    margin-right: 15px;
 
     border-radius: 50px !important;
     overflow: hidden;
@@ -300,7 +329,7 @@
     align-items: center;
     justify-content: center;
 
-    &.gorgiasLogo {
+    &.robotLogo {
       background: @offlineColor;
     }
 
@@ -314,8 +343,8 @@
     padding: 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
 
-    background: @lighterGray;
-    border: 1px solid @lightGray;
+    background: @lighterGrey;
+    border: 1px solid @lightGrey;
     border-radius: 3px;
 
     .inputLabel {
@@ -338,9 +367,9 @@
         flex-grow: 1;
 
         border-radius: 3px 0 0 3px;
-        border-top: 1px solid @gray;
-        border-left: 1px solid @gray;
-        border-bottom: 1px solid @gray;
+        border-top: 1px solid @grey;
+        border-left: 1px solid @grey;
+        border-bottom: 1px solid @grey;
         border-right: 0;
 
         &:focus {
@@ -381,11 +410,11 @@
     .emailInputWrapper {
       width: 100%;
       padding: 10px 0 0 0;
-      border-bottom: 1px solid @lightGray;
+      border-bottom: 1px solid @lightGrey;
       flex-grow: 0;
 
       input {
-        font-size: 15px;
+        font-size: 14px;
         background: white !important;   // `important` to override default grey background for readonly inputs
         padding: 10px 15px 10px 15px;
         border-radius: 5px;
@@ -396,7 +425,7 @@
         width: 100%;
 
         &::placeholder {
-          color: @lightGrey !important;
+          color: @grey !important;
         }
       }
     }
@@ -408,7 +437,7 @@
 
       textarea {
         resize: none;
-        font-size: 15px;
+        font-size: 14px;
         background: none;
         padding: 10px 15px 10px 15px;
         border-radius: 5px;
@@ -418,7 +447,7 @@
         box-sizing: border-box;
 
         &::placeholder {
-          color: @lightGrey !important;
+          color: @grey !important;
         }
       }
     }
@@ -449,7 +478,7 @@
   .poweredby {
     clear: both;
 
-    color: @gray;
+    color: @grey;
     font-size: 12px;
     text-align: center;
     margin-bottom: 15px;
@@ -462,7 +491,7 @@
     overflow: hidden;
     padding: 5px 15px 5px 20px;
     border-top: 1px solid #efefef;
-    color: @gray;
+    color: @grey;
     height: 56px;
 
     .icon,

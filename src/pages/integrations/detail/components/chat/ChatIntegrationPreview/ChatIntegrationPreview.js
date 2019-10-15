@@ -4,27 +4,27 @@ import {type Map} from 'immutable'
 import classnames from 'classnames'
 
 import {
-    SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_TEXTS
 } from '../../../../../../config/integrations/smooch_inside'
 
 
+import ChatIntegrationAvatar from './ChatIntegrationAvatar'
 import css from './ChatIntegrationPreview.less'
 
 
 type Props = {
-    name?: string,
+    name: string,
     currentUser?: Map<*,*>,
     introductionText?: string,
     offlineIntroductionText?: string,
     headerText?: string,
-    mainColor?: string,
+    mainColor: string,
     avatarType?: string,
     avatarTeamPictureUrl?: string,
 
-    isOnline?: boolean,
-    language: string,
+    isOnline: boolean,
+    language?: string,
 
     children: Node,
     renderFooter: boolean
@@ -57,13 +57,6 @@ export default class ChatIntegrationPreview extends React.Component<Props> {
 
         const offlineColor = '#A1A9B6'
 
-        const statusMarker = (
-            <div className={classnames({
-                [css.onlineMarker]: isOnline,
-                [css.offlineMarker]: !isOnline
-            })}/>
-        )
-
         const translatedTexts = SMOOCH_INSIDE_WIDGET_TEXTS[language]
 
         return (
@@ -74,49 +67,13 @@ export default class ChatIntegrationPreview extends React.Component<Props> {
                         className={css.header}
                         style={{backgroundColor: isOnline ? mainColor : offlineColor}}
                     >
-                        {
-                            avatarType === SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE && !!avatarTeamPictureUrl ? (
-                                <div className={css['team-picture-wrapper']}>
-                                    <div
-                                        className={classnames(css['team-picture'])}
-                                        style={{borderColor: isOnline ? mainColor : offlineColor}}
-                                    >
-                                        <img src={avatarTeamPictureUrl}/>
-                                        {statusMarker}
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className={css.agents}>
-                                    <div
-                                        className={classnames(css.agent, css.first)}
-                                        style={{borderColor: isOnline ? mainColor : offlineColor}}
-                                    >
-                                        <i className="material-icons">
-                                            person
-                                        </i>
-                                        {statusMarker}
-                                    </div>
-                                    <div
-                                        className={classnames(css.agent, css.middle)}
-                                        style={{borderColor: isOnline ? mainColor : offlineColor}}
-                                    >
-                                        <i className="material-icons">
-                                            person
-                                        </i>
-                                        {statusMarker}
-                                    </div>
-                                    <div
-                                        className={classnames(css.agent, css.last)}
-                                        style={{borderColor: isOnline ? mainColor : offlineColor}}
-                                    >
-                                        <i className="material-icons">
-                                            person
-                                        </i>
-                                        {statusMarker}
-                                    </div>
-                                </div>
-                            )
-                        }
+                        <ChatIntegrationAvatar
+                            avatarType={avatarType}
+                            avatarTeamPictureUrl={avatarTeamPictureUrl}
+                            isOnline={isOnline}
+                            mainColor={mainColor}
+                            offlineColor={offlineColor}
+                        />
 
                         <div className={css.details}>
                             <div className={css.appName}>

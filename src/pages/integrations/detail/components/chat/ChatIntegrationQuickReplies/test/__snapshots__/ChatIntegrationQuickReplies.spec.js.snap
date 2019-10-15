@@ -712,61 +712,70 @@ exports[`ChatIntegrationQuickReplies component should render defaults because th
                             }
                           }
                         >
-                          <div
-                            className="agents"
+                          <ChatIntegrationAvatar
+                            isOnline={true}
+                            mainColor="#123456"
+                            offlineColor="#A1A9B6"
                           >
                             <div
-                              className="agent first"
-                              style={
-                                Object {
-                                  "borderColor": "#123456",
-                                }
-                              }
+                              className="agents"
                             >
-                              <i
-                                className="material-icons"
-                              >
-                                person
-                              </i>
                               <div
-                                className="onlineMarker"
-                              />
-                            </div>
-                            <div
-                              className="agent middle"
-                              style={
-                                Object {
-                                  "borderColor": "#123456",
+                                className="agent first"
+                                key="first"
+                                style={
+                                  Object {
+                                    "borderColor": "#123456",
+                                  }
                                 }
-                              }
-                            >
-                              <i
-                                className="material-icons"
                               >
-                                person
-                              </i>
+                                <i
+                                  className="material-icons"
+                                >
+                                  person
+                                </i>
+                                <div
+                                  className="onlineMarker"
+                                />
+                              </div>
                               <div
-                                className="onlineMarker"
-                              />
-                            </div>
-                            <div
-                              className="agent last"
-                              style={
-                                Object {
-                                  "borderColor": "#123456",
+                                className="agent middle"
+                                key="middle"
+                                style={
+                                  Object {
+                                    "borderColor": "#123456",
+                                  }
                                 }
-                              }
-                            >
-                              <i
-                                className="material-icons"
                               >
-                                person
-                              </i>
+                                <i
+                                  className="material-icons"
+                                >
+                                  person
+                                </i>
+                                <div
+                                  className="onlineMarker"
+                                />
+                              </div>
                               <div
-                                className="onlineMarker"
-                              />
+                                className="agent last"
+                                key="last"
+                                style={
+                                  Object {
+                                    "borderColor": "#123456",
+                                  }
+                                }
+                              >
+                                <i
+                                  className="material-icons"
+                                >
+                                  person
+                                </i>
+                                <div
+                                  className="onlineMarker"
+                                />
+                              </div>
                             </div>
-                          </div>
+                          </ChatIntegrationAvatar>
                           <div
                             className="details"
                           >
@@ -1610,61 +1619,70 @@ exports[`ChatIntegrationQuickReplies component should render quick replies from 
                             }
                           }
                         >
-                          <div
-                            className="agents"
+                          <ChatIntegrationAvatar
+                            isOnline={true}
+                            mainColor="#123456"
+                            offlineColor="#A1A9B6"
                           >
                             <div
-                              className="agent first"
-                              style={
-                                Object {
-                                  "borderColor": "#123456",
-                                }
-                              }
+                              className="agents"
                             >
-                              <i
-                                className="material-icons"
-                              >
-                                person
-                              </i>
                               <div
-                                className="onlineMarker"
-                              />
-                            </div>
-                            <div
-                              className="agent middle"
-                              style={
-                                Object {
-                                  "borderColor": "#123456",
+                                className="agent first"
+                                key="first"
+                                style={
+                                  Object {
+                                    "borderColor": "#123456",
+                                  }
                                 }
-                              }
-                            >
-                              <i
-                                className="material-icons"
                               >
-                                person
-                              </i>
+                                <i
+                                  className="material-icons"
+                                >
+                                  person
+                                </i>
+                                <div
+                                  className="onlineMarker"
+                                />
+                              </div>
                               <div
-                                className="onlineMarker"
-                              />
-                            </div>
-                            <div
-                              className="agent last"
-                              style={
-                                Object {
-                                  "borderColor": "#123456",
+                                className="agent middle"
+                                key="middle"
+                                style={
+                                  Object {
+                                    "borderColor": "#123456",
+                                  }
                                 }
-                              }
-                            >
-                              <i
-                                className="material-icons"
                               >
-                                person
-                              </i>
+                                <i
+                                  className="material-icons"
+                                >
+                                  person
+                                </i>
+                                <div
+                                  className="onlineMarker"
+                                />
+                              </div>
                               <div
-                                className="onlineMarker"
-                              />
+                                className="agent last"
+                                key="last"
+                                style={
+                                  Object {
+                                    "borderColor": "#123456",
+                                  }
+                                }
+                              >
+                                <i
+                                  className="material-icons"
+                                >
+                                  person
+                                </i>
+                                <div
+                                  className="onlineMarker"
+                                />
+                              </div>
                             </div>
-                          </div>
+                          </ChatIntegrationAvatar>
                           <div
                             className="details"
                           >

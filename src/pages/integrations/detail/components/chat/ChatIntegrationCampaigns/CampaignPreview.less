@@ -1,7 +1,8 @@
 :local {
   @primary: #0097ff;
-  @gray: #c8cbd0;
   @active-bluegreen: #06D79C;
+  @grey: #c3c8d0;
+  @darker-grey: #424242;
 
   .preview {
     overflow: hidden;
@@ -37,7 +38,7 @@
     width: 100%;
     max-height: 500px;
     background: #fff;
-    border-radius: 14px;
+    border-radius: 5px;
     box-shadow: 0 10px 64px rgba(0,0,0,.09);
     margin-bottom: 10px;
 
@@ -48,6 +49,7 @@
       .message {
         padding: 10px;
         overflow: hidden;
+        color: @darker-grey;
 
         .authorName {
           font-size: 13px;
@@ -55,7 +57,8 @@
 
         .messageText {
           overflow-wrap: break-word;
-          font-size: 15px;
+          font-size: 13px;
+          margin-top: 15px;
         }
 
         img {
@@ -75,11 +78,20 @@
       }
     }
 
+    .poweredby {
+      clear: both;
+
+      color: @grey;
+      font-size: 12px;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
     .footer {
       cursor: pointer;
-      padding: 20px;
+      padding: 15px 20px;
       border-top: 1px solid #e8e8e8;
-      color: rgba(44,66,103,.46);
+      color: @grey;
     }
   }
 

@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CustomerInitialMessages/> should render timestamps and messages 1`] = `
+<CustomerInitialMessages
+  conversationColor="red"
+  messages={
+    Array [
+      "Hey hey",
+      "Hello",
+      "How are you doing?",
+    ]
+  }
+>
+  <div>
+    <ConversationTimestamp>
+      <div
+        className="conversationTimestamp"
+      >
+        January 26
+      </div>
+    </ConversationTimestamp>
+    <div
+      className="bubble primary firstMessageOfAppUser"
+      key="Hey hey-0"
+      style={
+        Object {
+          "backgroundColor": "red",
+        }
+      }
+    >
+      Hey hey
+    </div>
+    <div
+      className="bubble primary"
+      key="Hello-1"
+      style={
+        Object {
+          "backgroundColor": "red",
+        }
+      }
+    >
+      Hello
+    </div>
+    <div
+      className="bubble primary lastMessage"
+      key="How are you doing?-2"
+      style={
+        Object {
+          "backgroundColor": "red",
+        }
+      }
+    >
+      How are you doing?
+    </div>
+    <MessageTimestamp>
+      <div
+        className="messageTimestamp"
+      >
+        <span>
+          6 minutes ago
+          . 
+        </span>
+        <span
+          className="messageStatus"
+        >
+          Delivered
+        </span>
+      </div>
+    </MessageTimestamp>
+  </div>
+</CustomerInitialMessages>
+`;

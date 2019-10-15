@@ -49,6 +49,11 @@ export default class CampaignPreview extends React.Component<Props> {
                             />
                         </div>
                     </div>
+
+                    <div className={css.poweredby}>
+                        {translatedTexts.poweredByGorgias}
+                    </div>
+
                     <div className={css.footer}>
                         {translatedTexts.campaignClickToReply}
                     </div>
