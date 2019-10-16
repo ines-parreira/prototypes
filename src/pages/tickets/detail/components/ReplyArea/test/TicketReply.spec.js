@@ -5,8 +5,10 @@ import _noop from 'lodash/noop'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {
+    TEXT_OR_ATTACHMENT_SOURCE_TYPES,
+} from '../../../../../../config/ticket'
 import TicketReply from '../TicketReply'
-import {TEXT_OR_ATTACHMENT_SOURCE_TYPES} from '../TicketReplyEditor'
 
 const mockStore = configureMockStore([thunk])
 

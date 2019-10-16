@@ -1,22 +1,26 @@
-//@flow
+// @flow
 import classnames from 'classnames'
-import type {Map} from 'immutable'
-import {fromJS} from 'immutable'
+import {fromJS, type List, Map} from 'immutable'
 import _debounce from 'lodash/debounce'
 import React from 'react'
 import {connect} from 'react-redux'
 import {Input} from 'reactstrap'
 
+import {
+    ONLY_ONE_ATTACHMENT_SOURCE_TYPES,
+} from '../../../../../config/ticket'
 import shortcutManager from '../../../../../services/shortcutManager'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {applyMacro} from '../../../../../state/ticket/actions'
 import * as ticketSelectors from '../../../../../state/ticket/selectors'
 import type {fetchMacrosType} from '../../../common/macros/types'
 import {getCurrentMacro, getDefaultSelectedMacroId} from '../../../common/macros/utils'
+import { humanizeString } from '../../../../../utils'
+import {type Macro, type MacroAction} from '../../../../../state/macro/types'
+import {getPreferences} from '../../../../../state/currentUser/selectors'
+import {fetchMacros} from '../../../../../state/macro/actions'
+import {notify} from '../../../../../state/notifications/actions'
 
-import {getPreferences} from './../../../../../state/currentUser/selectors'
-import {fetchMacros} from './../../../../../state/macro/actions'
-import {notify} from './../../../../../state/notifications/actions'
 import TicketMacros from './TicketMacros'
 import TicketReply from './TicketReply'
 import css from './TicketReplyArea.less'
@@ -215,7 +219,6 @@ export class TicketReplyArea extends React.Component<Props, State> {
         if (e.key === 'Enter') {
             e.preventDefault()
             const macro = macros.find((macro) => macro.get('id') === this.state.selectedMacroId)
-            // $FlowFixMe
             this._applyMacro(macro)
         }
     }
@@ -240,16 +243,23 @@ export class TicketReplyArea extends React.Component<Props, State> {
         })
     }
 
-    _applyMacro = (macro: Map<*,*>) => {
+    _applyMacro = (macro: Macro) => {
         const {newMessageType} = this.props
 
-        const hasAttachments = !macro.get('actions').filter((action) => action.get('name') === 'addAttachments').isEmpty()
-        const hasText = !macro.get('actions').filter((action) => action.get('name') === 'setResponseText').isEmpty()
+        const actions: List<MacroAction> = macro.get('actions', fromJS([]))
+        const attachmentCount =  actions
+            .filter((action) => action.get('name') === 'addAttachments')
+            .reduce(
+                (total: number, action: MacroAction) => total + action.getIn(['arguments', 'attachments'], fromJS([])).size,
+                0
+            )
+        const hasText = !actions.filter((action) => action.get('name') === 'setResponseText').isEmpty()
         const isMessengerMessage = newMessageType === 'facebook-messenger'
+        const canAcceptOnlyOneAttachment = ONLY_ONE_ATTACHMENT_SOURCE_TYPES.includes(newMessageType)
 
         let appliedMacro = macro
 
-        if (isMessengerMessage && hasText && hasAttachments) {
+        if (isMessengerMessage && hasText && attachmentCount > 0) {
             this.props.notify({
                 status: 'warning',
                 message: 'We have removed the attachment from this message, because you cannot send text and attachments at the same time on Messenger.'
@@ -258,6 +268,14 @@ export class TicketReplyArea extends React.Component<Props, State> {
                 'actions',
                 (actions) => actions.filter((action) => action.get('name') !== 'addAttachments')
             )
+        }
+
+        if (canAcceptOnlyOneAttachment && attachmentCount > 1) {
+            this.props.notify({
+                status: 'warning',
+                message: `When using ${humanizeString(newMessageType)}, you can only send attachments one by one.`
+            })
+            return
         }
 
         this.props.applyMacro(appliedMacro, this.props.currentTicket.get('id'))

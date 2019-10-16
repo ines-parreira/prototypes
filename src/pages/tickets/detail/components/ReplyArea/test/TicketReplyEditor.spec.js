@@ -4,10 +4,12 @@ import {fromJS} from 'immutable'
 import {EditorState, ContentState} from 'draft-js'
 import _noop from 'lodash/noop'
 
+import {
+    ONLY_ONE_ATTACHMENT_SOURCE_TYPES,
+} from '../../../../../../config/ticket'
 import configureStore from '../../../../../../store/configureStore'
 import ConnectedTicketReplyEditor, {
-    TicketReplyEditor,
-    ONLY_ONE_ATTACHMENT_SOURCE_TYPES
+    TicketReplyEditor
 } from '../TicketReplyEditor'
 
 

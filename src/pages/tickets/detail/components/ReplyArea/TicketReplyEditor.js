@@ -8,9 +8,8 @@ import {connect} from 'react-redux'
 
 import {
     canLeaveInternalNote,
-    CHAT_SOURCE,
-    FACEBOOK_COMMENT_SOURCE,
-    FACEBOOK_MESSENGER_SOURCE,
+    ONLY_ONE_ATTACHMENT_SOURCE_TYPES,
+    TEXT_OR_ATTACHMENT_SOURCE_TYPES,
     isRichType
 } from '../../../../../config/ticket'
 
@@ -27,12 +26,6 @@ import RichField from '../../../../common/forms/RichField'
 import {getContext} from '../../../../../state/prediction/selectors'
 
 import css from './TicketReplyEditor.less'
-
-
-// Those are the source types which cannot send more than one attachment at a time
-export const ONLY_ONE_ATTACHMENT_SOURCE_TYPES = [FACEBOOK_MESSENGER_SOURCE, FACEBOOK_COMMENT_SOURCE, CHAT_SOURCE]
-// Those are the source types which can send either text or attachment, but not both at the same time
-export const TEXT_OR_ATTACHMENT_SOURCE_TYPES = [FACEBOOK_MESSENGER_SOURCE]
 
 // debounce the updating of the redux because it's slow otherwise when we type
 export const updateMessageText = _debounce((props, editorState) => {
