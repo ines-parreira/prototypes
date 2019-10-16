@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ticket reducers add tags 1`] = `
+exports[`ticket reducers should handle ADD_TICKET_TAGS 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -11,6 +11,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -43,7 +44,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers add tags 2`] = `
+exports[`ticket reducers should handle ADD_TICKET_TAGS 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -54,6 +55,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -86,7 +88,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers add tags 3`] = `
+exports[`ticket reducers should handle ADD_TICKET_TAGS 3`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -97,6 +99,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -126,7 +129,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers apply macro 1`] = `
+exports[`ticket reducers should handle APPLY_MACRO 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -137,6 +140,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -164,7 +168,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers apply macro 2`] = `
+exports[`ticket reducers should handle APPLY_MACRO 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -175,6 +179,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -202,7 +207,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers clear applied macro 1`] = `
+exports[`ticket reducers should handle CLEAR_APPLIED_MACRO 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -213,6 +218,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -238,7 +244,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers clear ticket 1`] = `
+exports[`ticket reducers should handle CLEAR_TICKET 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -249,6 +255,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -274,7 +281,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers delete macro action args on applied 1`] = `
+exports[`ticket reducers should handle DELETE_ACTION_ON_APPLIED 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -285,6 +292,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -319,7 +327,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers delete message 1`] = `
+exports[`ticket reducers should handle DELETE_TICKET_MESSAGE_SUCCESS 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -330,6 +338,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -359,7 +368,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers delete pending message 1`] = `
+exports[`ticket reducers should handle DELETE_TICKET_PENDING_MESSAGE 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -379,6 +388,7 @@ Object {
     ],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -404,7 +414,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers display history on next page 1`] = `
+exports[`ticket reducers should handle DISPLAY_HISTORY_ON_NEXT_PAGE 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -415,6 +425,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": true,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -440,7 +451,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers display history on next page 2`] = `
+exports[`ticket reducers should handle DISPLAY_HISTORY_ON_NEXT_PAGE 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -451,6 +462,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -476,7 +488,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers fetch ticket 1`] = `
+exports[`ticket reducers should handle FETCH_TICKET_START 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -487,6 +499,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -512,7 +525,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers fetch ticket 2`] = `
+exports[`ticket reducers should handle FETCH_TICKET_START 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -523,6 +536,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": Object {
@@ -561,7 +575,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers fetch ticket 3`] = `
+exports[`ticket reducers should handle FETCH_TICKET_START 3`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -572,6 +586,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -597,7 +612,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers mark dirty 1`] = `
+exports[`ticket reducers should handle MARK_TICKET_DIRTY 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -608,6 +623,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -633,7 +649,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers mark dirty 2`] = `
+exports[`ticket reducers should handle MARK_TICKET_DIRTY 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -644,6 +660,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -669,7 +686,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers merge customer 1`] = `
+exports[`ticket reducers should handle MERGE_CUSTOMER 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -680,6 +697,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -705,7 +723,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers merge customer 2`] = `
+exports[`ticket reducers should handle MERGE_CUSTOMER 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -716,6 +734,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": Object {
@@ -744,7 +763,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers merge customers 1`] = `
+exports[`ticket reducers should handle MERGE_CUSTOMERS_SUCCESS 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -755,6 +774,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -780,7 +800,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers merge customers 2`] = `
+exports[`ticket reducers should handle MERGE_CUSTOMERS_SUCCESS 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -791,6 +811,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": Object {
@@ -819,7 +840,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers merge ticket 1`] = `
+exports[`ticket reducers should handle MERGE_TICKET 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -830,6 +851,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": Object {
@@ -876,7 +898,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers merge ticket 2`] = `
+exports[`ticket reducers should handle MERGE_TICKET 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -887,6 +909,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": Object {
@@ -933,428 +956,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers remove request 1`] = `
-Object {
-  "_internal": Object {
-    "displayHistory": false,
-    "loading": Object {
-      "deleteMessage": false,
-      "fetchTicket": false,
-    },
-    "pendingMessages": Array [],
-    "shouldDisplayHistoryOnNextPage": false,
-  },
-  "assignee_user": null,
-  "channel": "email",
-  "customer": null,
-  "events": Array [],
-  "messages": Array [
-    Object {
-      "id": 1,
-      "request_id": null,
-    },
-  ],
-  "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
-      "answerable": true,
-    },
-  },
-  "spam": false,
-  "state": Object {
-    "appliedMacro": null,
-    "dirty": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "",
-  "tags": Array [],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
-exports[`ticket reducers remove tag 1`] = `
-Object {
-  "_internal": Object {
-    "displayHistory": false,
-    "loading": Object {
-      "deleteMessage": false,
-      "fetchTicket": false,
-    },
-    "pendingMessages": Array [],
-    "shouldDisplayHistoryOnNextPage": false,
-  },
-  "assignee_user": null,
-  "channel": "email",
-  "customer": null,
-  "events": Array [],
-  "messages": Array [],
-  "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
-      "answerable": true,
-    },
-  },
-  "spam": false,
-  "state": Object {
-    "appliedMacro": null,
-    "dirty": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "",
-  "tags": Array [
-    Object {
-      "name": "refund",
-    },
-  ],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
-exports[`ticket reducers remove tag 2`] = `
-Object {
-  "_internal": Object {
-    "displayHistory": false,
-    "loading": Object {
-      "deleteMessage": false,
-      "fetchTicket": false,
-    },
-    "pendingMessages": Array [],
-    "shouldDisplayHistoryOnNextPage": false,
-  },
-  "assignee_user": null,
-  "channel": "email",
-  "customer": null,
-  "events": Array [],
-  "messages": Array [],
-  "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
-      "answerable": true,
-    },
-  },
-  "spam": false,
-  "state": Object {
-    "appliedMacro": null,
-    "dirty": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "",
-  "tags": Array [
-    Object {
-      "name": "billing",
-    },
-  ],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
-exports[`ticket reducers set agent 1`] = `
-Object {
-  "_internal": Object {
-    "displayHistory": false,
-    "loading": Object {
-      "deleteMessage": false,
-      "fetchTicket": false,
-    },
-    "pendingMessages": Array [],
-    "shouldDisplayHistoryOnNextPage": false,
-  },
-  "assignee_user": Object {
-    "id": 1,
-  },
-  "channel": "email",
-  "customer": null,
-  "events": Array [],
-  "messages": Array [],
-  "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
-      "answerable": true,
-    },
-  },
-  "spam": false,
-  "state": Object {
-    "appliedMacro": null,
-    "dirty": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "",
-  "tags": Array [],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
-exports[`ticket reducers set agent 2`] = `
-Object {
-  "_internal": Object {
-    "displayHistory": false,
-    "loading": Object {
-      "deleteMessage": false,
-      "fetchTicket": false,
-    },
-    "pendingMessages": Array [],
-    "shouldDisplayHistoryOnNextPage": false,
-  },
-  "assignee_user": null,
-  "channel": "email",
-  "customer": null,
-  "events": Array [],
-  "messages": Array [],
-  "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
-      "answerable": true,
-    },
-  },
-  "spam": false,
-  "state": Object {
-    "appliedMacro": null,
-    "dirty": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "",
-  "tags": Array [],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
-exports[`ticket reducers set customer 1`] = `
-Object {
-  "_internal": Object {
-    "displayHistory": false,
-    "loading": Object {
-      "deleteMessage": false,
-      "fetchTicket": false,
-    },
-    "pendingMessages": Array [],
-    "shouldDisplayHistoryOnNextPage": false,
-  },
-  "assignee_user": null,
-  "channel": "email",
-  "customer": Object {
-    "data": Object {
-      "hello": "world!",
-    },
-    "id": 1,
-  },
-  "events": Array [],
-  "messages": Array [],
-  "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
-      "answerable": true,
-    },
-  },
-  "spam": false,
-  "state": Object {
-    "appliedMacro": null,
-    "dirty": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "",
-  "tags": Array [],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
-exports[`ticket reducers set request 1`] = `
-Object {
-  "_internal": Object {
-    "displayHistory": false,
-    "loading": Object {
-      "deleteMessage": false,
-      "fetchTicket": false,
-    },
-    "pendingMessages": Array [],
-    "shouldDisplayHistoryOnNextPage": false,
-  },
-  "assignee_user": null,
-  "channel": "email",
-  "customer": null,
-  "events": Array [],
-  "messages": Array [
-    Object {
-      "id": 1,
-      "request_id": 2,
-    },
-  ],
-  "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
-      "answerable": true,
-    },
-  },
-  "spam": false,
-  "state": Object {
-    "appliedMacro": null,
-    "dirty": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "",
-  "tags": Array [],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
-exports[`ticket reducers set spam 1`] = `
-Object {
-  "_internal": Object {
-    "displayHistory": false,
-    "loading": Object {
-      "deleteMessage": false,
-      "fetchTicket": false,
-    },
-    "pendingMessages": Array [],
-    "shouldDisplayHistoryOnNextPage": false,
-  },
-  "assignee_user": null,
-  "channel": "email",
-  "customer": null,
-  "events": Array [],
-  "messages": Array [],
-  "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
-      "answerable": true,
-    },
-  },
-  "spam": true,
-  "state": Object {
-    "appliedMacro": null,
-    "dirty": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "",
-  "tags": Array [],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
-exports[`ticket reducers set spam 2`] = `
-Object {
-  "_internal": Object {
-    "displayHistory": false,
-    "loading": Object {
-      "deleteMessage": false,
-      "fetchTicket": false,
-    },
-    "pendingMessages": Array [],
-    "shouldDisplayHistoryOnNextPage": false,
-  },
-  "assignee_user": null,
-  "channel": "email",
-  "customer": null,
-  "events": Array [],
-  "messages": Array [],
-  "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
-      "answerable": true,
-    },
-  },
-  "spam": false,
-  "state": Object {
-    "appliedMacro": null,
-    "dirty": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "",
-  "tags": Array [],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
-exports[`ticket reducers set status 1`] = `
-Object {
-  "_internal": Object {
-    "displayHistory": false,
-    "loading": Object {
-      "deleteMessage": false,
-      "fetchTicket": false,
-    },
-    "pendingMessages": Array [],
-    "shouldDisplayHistoryOnNextPage": false,
-  },
-  "assignee_user": null,
-  "channel": "email",
-  "customer": null,
-  "events": Array [],
-  "messages": Array [],
-  "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
-      "answerable": true,
-    },
-  },
-  "spam": false,
-  "state": Object {
-    "appliedMacro": null,
-    "dirty": false,
-    "latestEventDatetime": null,
-  },
-  "status": "closed",
-  "subject": "",
-  "tags": Array [],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
-exports[`ticket reducers set subject 1`] = `
-Object {
-  "_internal": Object {
-    "displayHistory": false,
-    "loading": Object {
-      "deleteMessage": false,
-      "fetchTicket": false,
-    },
-    "pendingMessages": Array [],
-    "shouldDisplayHistoryOnNextPage": false,
-  },
-  "assignee_user": null,
-  "channel": "email",
-  "customer": null,
-  "events": Array [],
-  "messages": Array [],
-  "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
-      "answerable": true,
-    },
-  },
-  "spam": false,
-  "state": Object {
-    "appliedMacro": null,
-    "dirty": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "another title",
-  "tags": Array [],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
-exports[`ticket reducers submit new message 1`] = `
+exports[`ticket reducers should handle NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START and NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -1403,6 +1005,7 @@ Object {
     ],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -1428,7 +1031,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers submit new message 2`] = `
+exports[`ticket reducers should handle NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START and NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -1478,6 +1081,7 @@ Object {
     ],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -1503,7 +1107,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers submit new message 3`] = `
+exports[`ticket reducers should handle NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START and NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR 3`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -1552,6 +1156,7 @@ Object {
     ],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -1577,7 +1182,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers submit ticket 1`] = `
+exports[`ticket reducers should handle NEW_MESSAGE_SUBMIT_TICKET_SUCCESS 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -1588,6 +1193,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -1614,43 +1220,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers toggle history 1`] = `
-Object {
-  "_internal": Object {
-    "displayHistory": true,
-    "loading": Object {
-      "deleteMessage": false,
-      "fetchTicket": false,
-    },
-    "pendingMessages": Array [],
-    "shouldDisplayHistoryOnNextPage": false,
-  },
-  "assignee_user": null,
-  "channel": "email",
-  "customer": null,
-  "events": Array [],
-  "messages": Array [],
-  "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
-      "answerable": true,
-    },
-  },
-  "spam": false,
-  "state": Object {
-    "appliedMacro": null,
-    "dirty": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "",
-  "tags": Array [],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
-exports[`ticket reducers toggle history 2`] = `
+exports[`ticket reducers should handle REMOVE_TICKET_MESSAGE_REQUEST 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -1661,11 +1231,17 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
   "events": Array [],
-  "messages": Array [],
+  "messages": Array [
+    Object {
+      "id": 1,
+      "request_id": null,
+    },
+  ],
   "priority": "normal",
   "reply_options": Object {
     "email": Object {
@@ -1686,43 +1262,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers toggle history 3`] = `
-Object {
-  "_internal": Object {
-    "displayHistory": true,
-    "loading": Object {
-      "deleteMessage": false,
-      "fetchTicket": false,
-    },
-    "pendingMessages": Array [],
-    "shouldDisplayHistoryOnNextPage": false,
-  },
-  "assignee_user": null,
-  "channel": "email",
-  "customer": null,
-  "events": Array [],
-  "messages": Array [],
-  "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
-      "answerable": true,
-    },
-  },
-  "spam": false,
-  "state": Object {
-    "appliedMacro": null,
-    "dirty": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "",
-  "tags": Array [],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
-exports[`ticket reducers update macro action args on applied 1`] = `
+exports[`ticket reducers should handle REMOVE_TICKET_TAG 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -1733,6 +1273,584 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [
+    Object {
+      "name": "refund",
+    },
+  ],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers should handle REMOVE_TICKET_TAG 2`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [
+    Object {
+      "name": "billing",
+    },
+  ],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers should handle SET_AGENT 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": Object {
+    "id": 1,
+  },
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers should handle SET_AGENT 2`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers should handle SET_CUSTOMER 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": Object {
+    "data": Object {
+      "hello": "world!",
+    },
+    "id": 1,
+  },
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers should handle SET_SPAM 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+  },
+  "spam": true,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers should handle SET_SPAM 2`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers should handle SET_STATUS 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "closed",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers should handle SET_SUBJECT 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "another title",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers should handle SET_TEAM 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": Object {
+    "id": 1,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers should handle SET_TEAM 2`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers should handle SET_TICKET_MESSAGE_REQUEST 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
+  "messages": Array [
+    Object {
+      "id": 1,
+      "request_id": 2,
+    },
+  ],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers should handle TOGGLE_HISTORY 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": true,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers should handle TOGGLE_HISTORY 2`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers should handle TOGGLE_HISTORY 3`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": true,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers should handle UPDATE_ACTION_ARGS_ON_APPLIED 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,
@@ -1767,7 +1885,7 @@ Object {
 }
 `;
 
-exports[`ticket reducers update message 1`] = `
+exports[`ticket reducers should handle UPDATE_TICKET_MESSAGE_START 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -1778,6 +1896,7 @@ Object {
     "pendingMessages": Array [],
     "shouldDisplayHistoryOnNextPage": false,
   },
+  "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
   "customer": null,

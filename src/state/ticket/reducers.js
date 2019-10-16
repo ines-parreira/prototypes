@@ -29,6 +29,7 @@ export const initialState = fromJS({
     via: 'helpdesk',
     channel: 'email',
     assignee_user: null,
+    assignee_team: null,
     status: 'open',
     spam: false,
     customer: null,
@@ -183,6 +184,11 @@ export default function reducer(state = initialState, action) {
         case types.SET_AGENT: {
             const assigneeUser = action.args.get('assignee_user') || null // we want null if undefined
             return state.set('assignee_user', fromJS(assigneeUser))
+        }
+
+        case types.SET_TEAM: {
+            const assigneeTeam = action.args.get('assignee_team') || null // we want null if undefined
+            return state.set('assignee_team', fromJS(assigneeTeam))
         }
 
         case types.SET_STATUS: {

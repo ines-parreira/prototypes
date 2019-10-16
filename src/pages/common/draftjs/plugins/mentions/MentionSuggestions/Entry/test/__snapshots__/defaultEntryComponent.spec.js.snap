@@ -3,10 +3,10 @@
 exports[`defaultEntryComponent should render 1`] = `
 <div>
   <AgentLabel
-    avatar={true}
     className="my-class-name"
     name="Marie Curie"
     profilePictureUrl="https://gorgias.io/profilepicture.png"
+    shouldDisplayAvatar={true}
   />
 </div>
 `;

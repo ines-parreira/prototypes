@@ -211,6 +211,7 @@ export const createTeam = (team: teamType) => (dispatch: dispatchType): Promise<
 /**
  * Delete a team
  * @param teamId
+ * @return {boolean} success
  */
 export const deleteTeam = (teamId: number) => (dispatch: dispatchType): Promise<dispatchType | Map<*, *>> => {
     return axios.delete(`/api/teams/${teamId}/`)
@@ -226,12 +227,15 @@ export const deleteTeam = (teamId: number) => (dispatch: dispatchType): Promise<
                 payload: teamId,
             })
 
-            return null
+            return true
         }, (error) => {
             dispatch({
                 type: constants.DELETE_TEAM_ERROR,
                 error,
                 reason: `Failed to delete team #${teamId}. Please try again.`,
+                verbose: true,
             })
+
+            return false
         })
 }

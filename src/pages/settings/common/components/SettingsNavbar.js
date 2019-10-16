@@ -110,8 +110,8 @@ export default class SettingsNavbar extends React.Component<Props> {
                     className: 'd-none d-md-block'
                 }, {
                     requiredRole: ADMIN_ROLE,
-                    to: 'chat-assignment',
-                    text: 'Chat assignment',
+                    to: 'ticket-assignment',
+                    text: 'Ticket assignment',
                     className: 'd-none d-md-block'
                 }
             ]

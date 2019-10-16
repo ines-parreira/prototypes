@@ -252,13 +252,28 @@ export class MacroEdit extends React.Component {
                                     break
                                 case ticketTypes.SET_AGENT:
                                     config = {
-                                        title: 'Set assignee',
+                                        title: 'Set user assignee',
                                         content: (
                                             <SetAssigneeAction
                                                 index={index}
                                                 action={action}
                                                 agents={this.props.agents}
                                                 updateActionArgs={this._updateActionArguments}
+                                                handleUsers={true}
+                                            />
+                                        ),
+                                    }
+                                    break
+                                case ticketTypes.SET_TEAM:
+                                    config = {
+                                        title: 'Set team assignee',
+                                        content: (
+                                            <SetAssigneeAction
+                                                index={index}
+                                                action={action}
+                                                agents={this.props.agents}
+                                                updateActionArgs={this._updateActionArguments}
+                                                handleTeams={true}
                                             />
                                         ),
                                     }

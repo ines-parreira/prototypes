@@ -102,8 +102,10 @@ export default class Form extends Component<Props, State> {
 
     _delete = () => {
         return this.props.deleteTeam(this.state.team.get('id'))
-            .then(() => {
-                browserHistory.push('app/settings/teams')
+            .then((success) => {
+                if (success) {
+                    browserHistory.push('app/settings/teams')
+                }
             })
     }
 
@@ -252,8 +254,9 @@ export default class Form extends Component<Props, State> {
                                             <ConfirmButton
                                                 content={(
                                                     <span>
-                                                        You are about to <b>delete</b> this team.
-                                                        This action is <b>irreversible</b>.
+                                                        You are about to <b>delete</b> this team. This action is{' '}
+                                                        <b>irreversible</b>. This will unassign this team from all{' '}
+                                                        their tickets, open or closed.
                                                     </span>
                                                 )}
                                                 confirm={this._delete}

@@ -74,7 +74,7 @@ const mainMenu = [{
 type NavbarProps = {
     currentUser: Map<*,*>,
     currentUserPreferences: Map<*,*>,
-    availableForChat: boolean,
+    available: boolean,
     activeContent: ?string,
     children: ?Array<Node> | ?Node,
     submitSetting: (Object) => Promise<*>,
@@ -90,7 +90,7 @@ type NavbarState = {
 @connect((state) => ({
     currentUser: currentUserSelectors.getCurrentUser(state),
     currentUserPreferences: currentUserSelectors.getPreferences(state),
-    availableForChat: currentUserSelectors.isAvailableForChat(state),
+    available: currentUserSelectors.isAvailableForChat(state),
     isOpenedPanel: layoutSelectors.isOpenedPanel('navbar')(state),
 }), {
     submitSetting: currentUserActions.submitSetting,
@@ -136,7 +136,7 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
     }
 
     render() {
-        const {currentUser, availableForChat} = this.props
+        const {currentUser, available} = this.props
 
         return (
             <div
@@ -202,7 +202,7 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
                                         bottom: '12px',
                                         right: '18px',
                                     }}
-                                    badgeColor={availableForChat ? '#24d69d' : '#FF9600'}
+                                    badgeColor={available ? '#24d69d' : '#FF9600'}
                                 />
                             </span>
                         </div>
@@ -214,11 +214,11 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
                         >
                             <div className="d-flex justify-content-between align-items-center">
                                 <div>
-                                    Available for chat
+                                    Available
                                 </div>
                                 <div>
                                     <ToggleButton
-                                        value={availableForChat}
+                                        value={available}
                                         onChange={this._updateAvailableForChatPreference}
                                     />
                                 </div>

@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components utils : labels AgentLabel should not render the name of the agent because no name is passed 1`] = `
+exports[`components utils : labels <AgentLabel/> render() should not render the name of the agent because no name is passed 1`] = `
 <div
-  className="AgentLabel d-inline-flex align-items-center"
+  className="AgentLabel"
 >
   <Avatar
     className="avatar"
@@ -15,9 +15,9 @@ exports[`components utils : labels AgentLabel should not render the name of the 
 </div>
 `;
 
-exports[`components utils : labels AgentLabel should render the agent icon because no profile picture url nor the \`avatar\` option are passed 1`] = `
+exports[`components utils : labels <AgentLabel/> render() should render the agent icon because no profile picture url nor the \`avatar\` option are passed 1`] = `
 <div
-  className="AgentLabel d-inline-flex align-items-center"
+  className="AgentLabel"
 >
   <span
     className="material-icons md-2"
@@ -25,7 +25,7 @@ exports[`components utils : labels AgentLabel should render the agent icon becau
     account_circle
   </span>
   <span
-    className="name font-weight-medium"
+    className="name"
     style={Object {}}
   >
     Marie Curie
@@ -33,9 +33,9 @@ exports[`components utils : labels AgentLabel should render the agent icon becau
 </div>
 `;
 
-exports[`components utils : labels AgentLabel should render the avatar because a profile picture url is passed 1`] = `
+exports[`components utils : labels <AgentLabel/> render() should render the avatar because a profile picture url is passed 1`] = `
 <div
-  className="AgentLabel d-inline-flex align-items-center"
+  className="AgentLabel"
 >
   <Avatar
     className="avatar"
@@ -46,7 +46,7 @@ exports[`components utils : labels AgentLabel should render the avatar because a
     url="https://gorgias.io/profilepicture.png"
   />
   <span
-    className="name font-weight-medium"
+    className="name"
     style={Object {}}
   >
     Marie Curie
@@ -54,9 +54,9 @@ exports[`components utils : labels AgentLabel should render the avatar because a
 </div>
 `;
 
-exports[`components utils : labels AgentLabel should render the avatar because the \`avatar\` option is passed but no profile picture url is passed 1`] = `
+exports[`components utils : labels <AgentLabel/> render() should render the avatar because the \`avatar\` option is passed but no profile picture url is passed 1`] = `
 <div
-  className="AgentLabel d-inline-flex align-items-center"
+  className="AgentLabel"
 >
   <Avatar
     className="avatar"
@@ -67,10 +67,119 @@ exports[`components utils : labels AgentLabel should render the avatar because t
     url=""
   />
   <span
-    className="name font-weight-medium"
+    className="name"
     style={Object {}}
   >
     Marie Curie
+  </span>
+</div>
+`;
+
+exports[`components utils : labels <TeamLabel/> render() should render with default avatar 1`] = `
+<div
+  className="TeamLabel"
+>
+  <Avatar
+    className="avatar"
+    email=""
+    name="Team 1"
+    size="26"
+    style={Object {}}
+    url=""
+  />
+  <span
+    className="name"
+    style={Object {}}
+  >
+    Team 1
+  </span>
+</div>
+`;
+
+exports[`components utils : labels <TeamLabel/> render() should render with default avatar and "team" icon 1`] = `
+<div
+  className="TeamLabel"
+>
+  <Avatar
+    className="avatar"
+    email=""
+    name="Team 1"
+    size="26"
+    style={Object {}}
+    url=""
+  />
+  <span
+    className="name"
+    style={Object {}}
+  >
+    Team 1
+    <span
+      className="nameIcon material-icons md-2"
+    >
+      people
+    </span>
+  </span>
+</div>
+`;
+
+exports[`components utils : labels <TeamLabel/> render() should render with emoji 1`] = `
+<div
+  className="TeamLabel"
+>
+  <span
+    className="avatar"
+  >
+    <Emoji
+      backgroundImageFn={[Function]}
+      className="avatar"
+      emoji={
+        Object {
+          "colons": ":wink:",
+          "emoticons": Array [
+            ";)",
+            ";-)",
+          ],
+          "id": "wink",
+          "name": "Winking Face",
+          "native": "😉",
+          "skin": null,
+          "unified": "1f609",
+        }
+      }
+      forceSize={true}
+      native={false}
+      onClick={[Function]}
+      onLeave={[Function]}
+      onOver={[Function]}
+      set="apple"
+      sheetSize={32}
+      size={26}
+      skin={1}
+    />
+  </span>
+  <span
+    className="name"
+    style={Object {}}
+  >
+    Team 1
+  </span>
+</div>
+`;
+
+exports[`components utils : labels <TeamLabel/> render() should render without avatar 1`] = `
+<div
+  className="TeamLabel"
+>
+  <span
+    className="material-icons md-2"
+  >
+    people
+  </span>
+  <span
+    className="name"
+    style={Object {}}
+  >
+    Team 1
   </span>
 </div>
 `;

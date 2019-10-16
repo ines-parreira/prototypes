@@ -197,48 +197,107 @@ describe('components utils : labels', () => {
         })
     })
 
-    describe('AgentLabel', () => {
-        it('should render the avatar because a profile picture url is passed', () => {
-            const component = shallow(
-                <labels.AgentLabel
-                    name="Marie Curie"
-                    profilePictureUrl="https://gorgias.io/profilepicture.png"
-                />
+    describe('<AgentLabel/>', () => {
+        describe('render()', () => {
+            it('should render the avatar because a profile picture url is passed', () => {
+                const component = shallow(
+                    <labels.AgentLabel
+                        name="Marie Curie"
+                        profilePictureUrl="https://gorgias.io/profilepicture.png"
+                    />
+                )
+
+                expect(component).toMatchSnapshot()
+            })
+
+            it(
+                'should render the avatar because the `avatar` option is passed but no profile picture url is passed',
+                () => {
+                    const component = shallow(
+                        <labels.AgentLabel
+                            name="Marie Curie"
+                            shouldDisplayAvatar
+                        />
+                    )
+
+                    expect(component).toMatchSnapshot()
+                }
             )
 
-            expect(component).toMatchSnapshot()
+            it('should render the agent icon because no profile picture url nor the `avatar` option are passed', () => {
+                const component = shallow(
+                    <labels.AgentLabel
+                        name="Marie Curie"
+                    />
+                )
+
+                expect(component).toMatchSnapshot()
+            })
+
+            it('should not render the name of the agent because no name is passed', () => {
+                const component = shallow(
+                    <labels.AgentLabel
+                        profilePictureUrl="https://gorgias.io/profilepicture.png"
+                    />
+                )
+
+                expect(component).toMatchSnapshot()
+            })
         })
+    })
 
-        it('should render the avatar because the `avatar` option is passed but no profile picture url ' +
-            'is passed', () => {
-            const component = shallow(
-                <labels.AgentLabel
-                    name="Marie Curie"
-                    avatar
-                />
-            )
+    describe('<TeamLabel/>', () => {
+        describe('render()', () => {
+            it('should render without avatar', () => {
+                const component = shallow(<labels.TeamLabel name="Team 1"/>)
+                expect(component).toMatchSnapshot()
+            })
 
-            expect(component).toMatchSnapshot()
-        })
+            it('should render with default avatar', () => {
+                const component = shallow(
+                    <labels.TeamLabel
+                        name="Team 1"
+                        shouldDisplayAvatar
+                    />
+                )
 
-        it('should render the agent icon because no profile picture url nor the `avatar` option are passed', () => {
-            const component = shallow(
-                <labels.AgentLabel
-                    name="Marie Curie"
-                />
-            )
+                expect(component).toMatchSnapshot()
+            })
 
-            expect(component).toMatchSnapshot()
-        })
+            it('should render with emoji', () => {
+                const component = shallow(
+                    <labels.TeamLabel
+                        name="Team 1"
+                        shouldDisplayAvatar
+                        emoji={fromJS({
+                            'colons': ':wink:',
+                            'emoticons': [
+                                ';)',
+                                ';-)'
+                            ],
+                            'id': 'wink',
+                            'name': 'Winking Face',
+                            'native': '😉',
+                            'skin': null,
+                            'unified': '1f609'
+                        })}
+                    />
+                )
 
-        it('should not render the name of the agent because no name is passed', () => {
-            const component = shallow(
-                <labels.AgentLabel
-                    profilePictureUrl="https://gorgias.io/profilepicture.png"
-                />
-            )
+                expect(component).toMatchSnapshot()
+            })
 
-            expect(component).toMatchSnapshot()
+            it('should render with default avatar and "team" icon', () => {
+                const component = shallow(
+                    <labels.TeamLabel
+                        name="Team 1"
+                        shouldDisplayAvatar
+                        shouldDisplayTeamIcon
+                    />
+                )
+
+                expect(component).toMatchSnapshot()
+            })
         })
     })
 })

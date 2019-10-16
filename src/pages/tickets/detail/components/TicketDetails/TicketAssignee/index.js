@@ -1,2 +1,1 @@
-import TicketAssignee from './TicketAssignee'
-export default TicketAssignee
+export default, {TicketAssignee, TicketAssigneeTeamSection, TicketAssigneeUserSection} from './TicketAssignee'

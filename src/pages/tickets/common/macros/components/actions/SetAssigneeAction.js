@@ -1,30 +1,53 @@
+// @flow
+
 import React from 'react'
-import PropTypes from 'prop-types'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import TicketAssignee from '../../../../detail/components/TicketDetails/TicketAssignee'
 
-export default class SetAssigneeAction extends React.Component {
-    setAssignee(assignee) {
-        this.props.updateActionArgs(this.props.index, fromJS({assignee_user: assignee}))
+import css from './SetAssigneeAction.less'
+
+type Props = {
+    action: Map<*, *>,
+    teams?: Map<*, *>,
+    agents?: Map<*, *>,
+    index: number,
+    handleTeams?: boolean,
+    handleUsers?: boolean,
+    updateActionArgs: (index: number, args: Map<*, *>) => void,
+}
+
+export default class SetAssigneeAction extends React.Component<Props> {
+    static defaultProps = {
+        teams: fromJS([]),
+        agents: fromJS([]),
+        handleTeams: false,
+        handleUsers: false,
+    }
+
+    setUserAssignee(user: Object) {
+        this.props.updateActionArgs(this.props.index, fromJS({assignee_user: user}))
+    }
+
+    setTeamAssignee(team: Object) {
+        this.props.updateActionArgs(this.props.index, fromJS({assignee_team: team}))
     }
 
     render() {
-        const {action, agents} = this.props
+        const {action, agents, teams, handleTeams, handleUsers} = this.props
         return (
             <TicketAssignee
-                currentAssignee={action.getIn(['arguments', 'assignee_user'])}
-                agents={agents}
-                setAgent={(assignee) => this.setAssignee(assignee)}
+                className={css.assignee}
+                currentAssigneeUser={action.getIn(['arguments', 'assignee_user'])}
+                currentAssigneeTeam={action.getIn(['arguments', 'assignee_team'])}
+                handleTeams={handleTeams}
+                handleUsers={handleUsers}
+                users={agents}
+                teams={teams}
+                setUser={(user) => this.setUserAssignee(user)}
+                setTeam={(team) => this.setTeamAssignee(team)}
                 suffix="macro-modal"
             />
         )
     }
-}
-
-SetAssigneeAction.propTypes = {
-    action: PropTypes.object.isRequired,
-    agents: PropTypes.object.isRequired,
-    index: PropTypes.number.isRequired,
-    updateActionArgs: PropTypes.func.isRequired,
 }

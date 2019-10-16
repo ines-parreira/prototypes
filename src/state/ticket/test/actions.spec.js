@@ -10,7 +10,6 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import * as actions from '../actions'
 import {initialState} from '../reducers'
 import {initialState as newMessageState} from '../../newMessage/reducers'
-import {findAndSetCustomer} from '../actions'
 
 jest.addMatchers(immutableMatchers)
 
@@ -70,7 +69,7 @@ describe('ticket actions', () => {
         },
     }
 
-    describe('mergeTicket', () => {
+    describe('mergeTicket()', () => {
         it('fails because not current ticket', () => {
             return store.dispatch(actions.mergeTicket(ticket))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
@@ -91,17 +90,17 @@ describe('ticket actions', () => {
         })
     })
 
-    it('mergeCustomer', () => {
+    it('mergeCustomer()', () => {
         store.dispatch(actions.mergeCustomer({id: 1}))
         return expect(store.getActions()).toMatchSnapshot()
     })
 
-    it('fetchTicketReplyMacro', () => {
+    it('fetchTicketReplyMacro()', () => {
         store.dispatch(actions.fetchTicketReplyMacro())
         return expect(store.getActions()).toMatchSnapshot()
     })
 
-    describe('ticketPartialUpdate', () => {
+    describe('ticketPartialUpdate()', () => {
         const update = {subject: 'new title'}
 
         it('fails because new ticket', () => {
@@ -121,19 +120,19 @@ describe('ticket actions', () => {
         })
     })
 
-    it('addTags', () => {
+    it('addTags()', () => {
         mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
         return store.dispatch(actions.addTags('refund, billing'))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('removeTag', () => {
+    it('removeTag()', () => {
         mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
         return store.dispatch(actions.removeTag('refund'))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('setRequest', () => {
+    it('setRequest()', () => {
         store = mockStore({
             ticket: initialState.set('messages', fromJS([
                 {
@@ -164,7 +163,7 @@ describe('ticket actions', () => {
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('removeRequest', () => {
+    it('removeRequest()', () => {
         store = mockStore({
             ticket: initialState.set('messages', fromJS([
                 {
@@ -181,7 +180,7 @@ describe('ticket actions', () => {
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    describe('setSpam', () => {
+    describe('setSpam()', () => {
         it('fails because same status', () => {
             store = mockStore({ticket: initialState.set('spam', true)})
             return store.dispatch(actions.setSpam(true))
@@ -226,7 +225,7 @@ describe('ticket actions', () => {
 
     })
 
-    describe('setSnooze', () => {
+    describe('setSnooze()', () => {
         it('should snooze ticket', () => {
             store = mockStore({ticket: initialState.set('snooze_datetime', null)})
 
@@ -246,47 +245,53 @@ describe('ticket actions', () => {
         })
     })
 
-    it('setAgent', () => {
+    it('setAgent()', () => {
         mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
         return store.dispatch(actions.setAgent({id: 1}))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('setCustomer', () => {
+    it('setTeam()', () => {
+        mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
+        return store.dispatch(actions.setTeam({id: 1}))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
+    it('setCustomer()', () => {
         mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
         return store.dispatch(actions.setCustomer(fromJS({id: 1, custom: true})))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('setStatus', () => {
+    it('setStatus()', () => {
         mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
         return store.dispatch(actions.setStatus('open'))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('setSubject', () => {
+    it('setSubject()', () => {
         mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
         return store.dispatch(actions.setSubject('new title'))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('deleteMessage', () => {
+    it('deleteMessage()', () => {
         mockServer.onDelete('/api/tickets/1/messages/10/').reply(200)
         return store.dispatch(actions.deleteMessage(1, 10))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('deleteActionOnApplied', () => {
+    it('deleteActionOnApplied()', () => {
         store.dispatch(actions.deleteActionOnApplied(0, 1))
         return expect(store.getActions()).toMatchSnapshot()
     })
 
-    it('updateActionArgsOnApplied', () => {
+    it('updateActionArgsOnApplied()', () => {
         store.dispatch(actions.updateActionArgsOnApplied(0, 'hello', 1))
         return expect(store.getActions()).toMatchSnapshot()
     })
 
-    it('applyMacroAction', () => {
+    it('applyMacroAction()', () => {
         const action = fromJS({
             type: 'user',
             name: 'setResponseText',
@@ -300,7 +305,7 @@ describe('ticket actions', () => {
         return expect(store.dispatch(actions.applyMacroAction(action))).toMatchSnapshot()
     })
 
-    it('applyMacro', () => {
+    it('applyMacro()', () => {
         const macro = fromJS({
             id: 1,
             actions: [{
@@ -327,12 +332,12 @@ describe('ticket actions', () => {
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('clearAppliedMacro', () => {
+    it('clearAppliedMacro()', () => {
         store.dispatch(actions.clearAppliedMacro(1))
         return expect(store.getActions()).toMatchSnapshot()
     })
 
-    describe('fetchTicket', () => {
+    describe('fetchTicket()', () => {
         it('new ticket', () => {
             return store.dispatch(actions.fetchTicket('new'))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
@@ -359,7 +364,7 @@ describe('ticket actions', () => {
         })
     })
 
-    describe('handleMessageError', () => {
+    describe('handleMessageError()', () => {
         it('should fetch the ticket because the user is currently on it', () => {
             mockServer.onGet('/api/tickets/1/').reply(200, {id: 1, messages: []})
 
@@ -376,7 +381,7 @@ describe('ticket actions', () => {
         })
     })
 
-    describe('handleMessageActionError', () => {
+    describe('handleMessageActionError()', () => {
         it('should fetch the ticket because the user is currently on it', () => {
             mockServer.onGet('/api/tickets/1/').reply(200, {id: 1, messages: []})
 
@@ -392,35 +397,35 @@ describe('ticket actions', () => {
         })
     })
 
-    it('updateTicketMessage', () => {
+    it('updateTicketMessage()', () => {
         mockServer.onPut('/api/tickets/1/messages/10/?action=retry').reply(200, {id: 10})
         return store.dispatch(actions.updateTicketMessage(1, 10, {id: 10}, 'retry'))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('clearTicket', () => {
+    it('clearTicket()', () => {
         store.dispatch(actions.clearTicket())
         return expect(store.getActions()).toMatchSnapshot()
     })
 
-    it('toggleHistory', () => {
+    it('toggleHistory()', () => {
         expect(actions.toggleHistory(true)).toMatchSnapshot()
         expect(actions.toggleHistory(false)).toMatchSnapshot()
     })
 
-    it('displayHistoryOnNextPage', () => {
+    it('displayHistoryOnNextPage()', () => {
         expect(actions.displayHistoryOnNextPage(true)).toMatchSnapshot()
         expect(actions.displayHistoryOnNextPage(false)).toMatchSnapshot()
         expect(actions.displayHistoryOnNextPage()).toMatchSnapshot()
     })
 
-    it('deleteTicket', () => {
+    it('deleteTicket()', () => {
         mockServer.onDelete('/api/tickets/13/').reply(200)
         return store.dispatch(actions.deleteTicket(13))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('deleteTicketPendingMessage', () => {
+    it('deleteTicketPendingMessage()', () => {
         store.dispatch(actions.deleteTicketPendingMessage({id: 1}))
         return expect(store.getActions()).toMatchSnapshot()
     })
@@ -593,14 +598,14 @@ describe('ticket actions', () => {
         })
     })
 
-    describe('findAndSetCustomer', () => {
+    describe('findAndSetCustomer()', () => {
         it('should not set the customer because we did not find any customer with this email address', () => {
             mockServer.onPost('/api/search/').reply(200, {data: []})
             store = mockStore({
                 ticket: initialState
             })
 
-            return store.dispatch(findAndSetCustomer('foo@gorgias.io')).then(() => {
+            return store.dispatch(actions.findAndSetCustomer('foo@gorgias.io')).then(() => {
                 expect(store.getActions()).toEqual([])
             })
         })
@@ -611,7 +616,7 @@ describe('ticket actions', () => {
                 ticket: initialState
             })
 
-            return store.dispatch(findAndSetCustomer('foo@gorgias.io')).then(() => {
+            return store.dispatch(actions.findAndSetCustomer('foo@gorgias.io')).then(() => {
                 expect(store.getActions()).toEqual([])
             })
         })
@@ -624,7 +629,7 @@ describe('ticket actions', () => {
                 ticket: initialState
             })
 
-            return store.dispatch(findAndSetCustomer('foo@gorgias.io')).then(() => {
+            return store.dispatch(actions.findAndSetCustomer('foo@gorgias.io')).then(() => {
                 expect(store.getActions()).toMatchSnapshot()
             })
         })

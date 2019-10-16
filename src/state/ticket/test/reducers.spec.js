@@ -31,7 +31,7 @@ describe('ticket reducers', () => {
         expect(reducer(undefined, {})).toEqualImmutable(initialState)
     })
 
-    it('update message', () => {
+    it('should handle UPDATE_TICKET_MESSAGE_START', () => {
         // start
         expect(
             reducer(
@@ -44,7 +44,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('submit new message', () => {
+    it('should handle NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START and NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR', () => {
         const newMessage = {
             source: {
                 type: 'email',
@@ -122,7 +122,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('submit ticket', () => {
+    it('should handle NEW_MESSAGE_SUBMIT_TICKET_SUCCESS', () => {
         // success
         expect(
             reducer(
@@ -138,7 +138,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('fetch ticket', () => {
+    it('should handle FETCH_TICKET_START', () => {
         // start
         expect(
             reducer(
@@ -186,7 +186,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('clear ticket', () => {
+    it('should handle CLEAR_TICKET', () => {
         expect(
             reducer(
                 initialState
@@ -198,7 +198,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('add tags', () => {
+    it('should handle ADD_TICKET_TAGS', () => {
         expect(
             reducer(
                 initialState,
@@ -244,7 +244,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('remove tag', () => {
+    it('should handle REMOVE_TICKET_TAG', () => {
         expect(
             reducer(
                 initialState
@@ -277,7 +277,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('set request', () => {
+    it('should handle SET_TICKET_MESSAGE_REQUEST', () => {
         expect(
             reducer(
                 initialState
@@ -296,7 +296,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('remove request', () => {
+    it('should handle REMOVE_TICKET_MESSAGE_REQUEST', () => {
         expect(
             reducer(
                 initialState
@@ -314,7 +314,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('set spam', () => {
+    it('should handle SET_SPAM', () => {
         // set true
         expect(
             reducer(
@@ -341,7 +341,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('set trash', () => {
+    it('should handle SET_TRASHED', () => {
         expect(
             reducer(initialState, {type: types.SET_TRASHED, trashed_datetime: 'trashed_datetime'})
         ).toEqualImmutable(
@@ -349,7 +349,7 @@ describe('ticket reducers', () => {
         )
     })
 
-    it('set snooze', () => {
+    it('should handle SET_SNOOZE', () => {
         const action = {
             type: types.SET_SNOOZE,
             snooze_datetime: '2017-01-21 18:20:02',
@@ -364,7 +364,7 @@ describe('ticket reducers', () => {
         )
     })
 
-    it('set agent', () => {
+    it('should handle SET_AGENT', () => {
         expect(
             reducer(
                 initialState,
@@ -389,7 +389,32 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('set status', () => {
+    it('should handle SET_TEAM', () => {
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.SET_TEAM,
+                    args: fromJS({
+                        assignee_team: {id: 1},
+                    })
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+
+        // unassigned
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.SET_TEAM,
+                    args: fromJS({}),
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('should handle SET_STATUS', () => {
         expect(
             reducer(
                 initialState,
@@ -403,7 +428,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('set subject', () => {
+    it('should handle SET_SUBJECT', () => {
         expect(
             reducer(
                 initialState,
@@ -417,7 +442,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('set customer', () => {
+    it('should handle SET_CUSTOMER', () => {
         expect(
             reducer(
                 initialState,
@@ -434,7 +459,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('apply macro', () => {
+    it('should handle APPLY_MACRO', () => {
         expect(
             reducer(
                 initialState,
@@ -462,7 +487,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('clear applied macro', () => {
+    it('should handle CLEAR_APPLIED_MACRO', () => {
         expect(
             reducer(
                 initialState
@@ -478,7 +503,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('update macro action args on applied', () => {
+    it('should handle UPDATE_ACTION_ARGS_ON_APPLIED', () => {
         expect(
             reducer(
                 initialState
@@ -499,7 +524,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('delete macro action args on applied', () => {
+    it('should handle DELETE_ACTION_ON_APPLIED', () => {
         expect(
             reducer(
                 initialState
@@ -531,7 +556,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('mark dirty', () => {
+    it('should handle MARK_TICKET_DIRTY', () => {
         expect(
             reducer(
                 initialState,
@@ -559,7 +584,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('delete message', () => {
+    it('should handle DELETE_TICKET_MESSAGE_SUCCESS', () => {
         // success
         expect(
             reducer(
@@ -579,7 +604,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('toggle history', () => {
+    it('should handle TOGGLE_HISTORY', () => {
         expect(
             reducer(
                 initialState,
@@ -622,7 +647,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('display history on next page', () => {
+    it('should handle DISPLAY_HISTORY_ON_NEXT_PAGE', () => {
         expect(
             reducer(
                 initialState,
@@ -650,7 +675,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('merge customers', () => {
+    it('should handle MERGE_CUSTOMERS_SUCCESS', () => {
         // success
         // should do nothing since there is no customer in state for now
         expect(
@@ -687,7 +712,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('merge ticket', () => {
+    it('should handle MERGE_TICKET', () => {
         const ticket = {
             id: 1,
             subject: 'title',
@@ -744,7 +769,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('merge customer', () => {
+    it('should handle MERGE_CUSTOMER', () => {
         // should do nothing since there is no customer in state for now
         expect(
             reducer(
@@ -780,7 +805,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('delete pending message', () => {
+    it('should handle DELETE_TICKET_PENDING_MESSAGE', () => {
         expect(
             reducer(
                 initialState

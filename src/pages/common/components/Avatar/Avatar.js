@@ -11,7 +11,7 @@ type Props = {
     email: string,
     name: string,
     size: number,
-    url: string,
+    url?: string,
     className?: string,
     style?: Object,
     badgeColor?: string,
@@ -128,6 +128,8 @@ export default class Avatar extends React.Component<Props, State> {
                 <div
                     className={css.initials}
                     style={{
+                        width: `${String(size)}px`,
+                        height: `${String(size)}px`,
                         fontSize: `${String(size / 2.4)}px`
                     }}
                 >

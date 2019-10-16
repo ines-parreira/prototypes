@@ -43,7 +43,7 @@ import List from './settings/teams/members/List'
 
 import UserAuditList from './settings/audit/UserAuditList'
 import BusinessHours from './settings/businessHours'
-import ChatAssignment from './settings/chatAssignment'
+import TicketAssignment from './settings/ticketAssignment'
 
 
 export default (
@@ -404,9 +404,9 @@ export default (
                 }}
             />
             <Route
-                path="chat-assignment"
+                path="ticket-assignment"
                 components={{
-                    content: UserRoleRequired(ChatAssignment, ADMIN_ROLE),
+                    content: UserRoleRequired(TicketAssignment, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer
                 }}
             />

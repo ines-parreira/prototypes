@@ -22,6 +22,8 @@ exports[`Avatar component should not render image in invisible container 1`] = `
       style={
         Object {
           "fontSize": "20.833333333333336px",
+          "height": "50px",
+          "width": "50px",
         }
       }
     >
@@ -46,6 +48,8 @@ exports[`Avatar component should render avatar from cache 1`] = `
     style={
       Object {
         "fontSize": "20.833333333333336px",
+        "height": "50px",
+        "width": "50px",
       }
     }
   >
@@ -73,6 +77,8 @@ exports[`Avatar component should render default with no props 1`] = `
     style={
       Object {
         "fontSize": "20.833333333333336px",
+        "height": "50px",
+        "width": "50px",
       }
     }
   >
@@ -103,6 +109,8 @@ exports[`Avatar component should render image in visible container 1`] = `
       style={
         Object {
           "fontSize": "20.833333333333336px",
+          "height": "50px",
+          "width": "50px",
         }
       }
     >
@@ -131,6 +139,8 @@ exports[`Avatar component should render only the initials 1`] = `
     style={
       Object {
         "fontSize": "20.833333333333336px",
+        "height": "50px",
+        "width": "50px",
       }
     }
   >
@@ -156,6 +166,8 @@ exports[`Avatar component should render with className 1`] = `
     style={
       Object {
         "fontSize": "20.833333333333336px",
+        "height": "50px",
+        "width": "50px",
       }
     }
   >

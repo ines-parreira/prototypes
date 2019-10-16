@@ -3,7 +3,7 @@
 exports[`teams reducers should add the created team when action type is CREATE_TEAM_SUCCESS 1`] = `
 Immutable.Map {
   "all": Immutable.Map {
-    1: Immutable.Map {
+    "1": Immutable.Map {
       "id": 1,
       "name": "Team 1",
     },
@@ -20,7 +20,7 @@ Immutable.Map {
 exports[`teams reducers should update the fetched team when action type is FETCH_TEAM_SUCCESS 1`] = `
 Immutable.Map {
   "all": Immutable.Map {
-    1: Immutable.Map {
+    "1": Immutable.Map {
       "id": 1,
       "name": "Team 1",
     },
@@ -31,7 +31,7 @@ Immutable.Map {
 exports[`teams reducers should update the updated team when action type is UPDATE_TEAM_SUCCESS 1`] = `
 Immutable.Map {
   "all": Immutable.Map {
-    1: Immutable.Map {
+    "1": Immutable.Map {
       "id": 1,
       "name": "Team 1",
     },

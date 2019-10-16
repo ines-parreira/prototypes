@@ -101,7 +101,7 @@ class AddMember extends Component<Props, State> {
                                         <AgentLabel
                                             name={user.get('name')}
                                             profilePictureUrl={user.getIn(['meta', 'profile_picture_url'])}
-                                            avatar
+                                            shouldDisplayAvatar
                                         />
                                     </DropdownItem>
                                 )

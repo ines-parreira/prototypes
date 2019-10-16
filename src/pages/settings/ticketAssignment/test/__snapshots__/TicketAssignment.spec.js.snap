@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Chat Assignment should render the Save changes button loading and disabled because the setting are being saved 1`] = `
+exports[`<TicketAssignment/> should render the Save changes button loading and disabled because the setting are being saved 1`] = `
 <div
   className="full-width"
 >
   <PageHeader
-    title="Chat assignment"
+    title="Ticket assignment"
   />
   <Container
     className="page-container"
@@ -94,12 +94,12 @@ exports[`Chat Assignment should render the Save changes button loading and disab
 </div>
 `;
 
-exports[`Chat Assignment should render the Unassign replies checkbox checked because the setting Unassign replies is enabled 1`] = `
+exports[`<TicketAssignment/> should render the Unassign replies checkbox checked because the setting Unassign replies is enabled 1`] = `
 <div
   className="full-width"
 >
   <PageHeader
-    title="Chat assignment"
+    title="Ticket assignment"
   />
   <Container
     className="page-container"
@@ -188,12 +188,12 @@ exports[`Chat Assignment should render the Unassign replies checkbox checked bec
 </div>
 `;
 
-exports[`Chat Assignment should render the Unassign replies checkbox checked by default because there is no account setting for chat assignment 1`] = `
+exports[`<TicketAssignment/> should render the Unassign replies checkbox checked by default because there is no account setting for chat assignment 1`] = `
 <div
   className="full-width"
 >
   <PageHeader
-    title="Chat assignment"
+    title="Ticket assignment"
   />
   <Container
     className="page-container"
@@ -282,12 +282,12 @@ exports[`Chat Assignment should render the Unassign replies checkbox checked by 
 </div>
 `;
 
-exports[`Chat Assignment should render the Unassign replies checkbox unchecked because the setting Unassign replies is disabled 1`] = `
+exports[`<TicketAssignment/> should render the Unassign replies checkbox unchecked because the setting Unassign replies is disabled 1`] = `
 <div
   className="full-width"
 >
   <PageHeader
-    title="Chat assignment"
+    title="Ticket assignment"
   />
   <Container
     className="page-container"

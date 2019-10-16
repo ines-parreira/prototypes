@@ -15,9 +15,9 @@ export default function reducer(state: Map<*, *> = initialState, action: actionT
         case constants.CREATE_TEAM_SUCCESS:
         case constants.UPDATE_TEAM_SUCCESS:
         case constants.FETCH_TEAM_SUCCESS:
-            return state.setIn(['all', action.payload.id], fromJS(action.payload))
+            return state.setIn(['all', action.payload.id.toString()], fromJS(action.payload))
         case constants.DELETE_TEAM_SUCCESS:
-            return state.deleteIn(['all', action.payload])
+            return state.deleteIn(['all', action.payload.toString()])
         default:
             return state
     }

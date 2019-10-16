@@ -1,11 +1,48 @@
 :local {
   .toggle {
-    padding: .2rem .75rem .2rem .2rem;
+    padding: .2rem .4rem .2rem .4rem;
   }
 
-  .agents {
+  .searchInput {
+    margin-bottom: 5px;
+  }
+
+  .users,
+  .teams {
     max-height: 320px;
     overflow-x: hidden;
     overflow-y: auto;
+  }
+
+  .item,
+  .assigneeItem {
+    height: 36px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .assigneeItem {
+    background-color: #F7F8FC;
+    color: #152065;
+    margin-bottom: 5px;
+    position: relative;
+
+    &[type=button]:not(:disabled) {
+      cursor: default;
+    }
+
+    i {
+      position: absolute;
+      right: 5px;
+      top: 10px;
+      cursor: pointer;
+      outline: none;
+    }
+  }
+
+  .assigneeLabel {
+    padding-right: 20px;
   }
 }

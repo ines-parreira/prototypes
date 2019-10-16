@@ -9,6 +9,7 @@ import _isString from 'lodash/isString'
 import _capitalize from 'lodash/capitalize'
 import _omit from 'lodash/omit'
 import {Badge} from 'reactstrap'
+import {Emoji} from 'emoji-mart'
 
 import {EMAIL_INTEGRATION_TYPES} from '../../../constants/integration'
 import {
@@ -39,7 +40,7 @@ type AgentLabelProps = {
     maxWidth?: string,
     className?: string,
     profilePictureUrl?: string,
-    avatar?: boolean,
+    shouldDisplayAvatar?: boolean,
 }
 
 export class AgentLabel extends React.Component<AgentLabelProps> {
@@ -47,7 +48,7 @@ export class AgentLabel extends React.Component<AgentLabelProps> {
         name: '',
         className: '',
         profilePictureUrl: '',
-        avatar: false,
+        shouldDisplayAvatar: false,
     }
 
     render() {
@@ -56,16 +57,16 @@ export class AgentLabel extends React.Component<AgentLabelProps> {
             maxWidth,
             className,
             profilePictureUrl,
-            avatar,
+            shouldDisplayAvatar,
         } = this.props
-        const showAvatar = avatar || profilePictureUrl
+        const showAvatar = shouldDisplayAvatar || profilePictureUrl
         const style = {}
         if (maxWidth) {
             style.maxWidth = `${maxWidth}px`
         }
 
         return (
-            <div className={classnames(css.AgentLabel, 'd-inline-flex align-items-center', className)}>
+            <div className={classnames(css.AgentLabel, className)}>
                 {
                     showAvatar ? (
                         <Avatar
@@ -85,10 +86,92 @@ export class AgentLabel extends React.Component<AgentLabelProps> {
                 {
                     name && (
                         <span
-                            className={classnames(css.name, 'font-weight-medium')}
+                            className={css.name}
                             style={style}
                         >
                             {name}
+                        </span>
+                    )
+                }
+            </div>
+        )
+    }
+}
+
+/**
+ * TEAM
+ */
+type TeamLabelProps = {
+    name: string,
+    maxWidth?: number,
+    className?: string,
+    emoji?: Map<*, *>,
+    shouldDisplayAvatar?: boolean,
+    shouldDisplayTeamIcon?: boolean,
+}
+
+export class TeamLabel extends React.Component<TeamLabelProps> {
+    static defaultProps = {
+        name: '',
+        className: '',
+        shouldDisplayAvatar: false,
+        shouldDisplayTeamIcon: false,
+    }
+
+    _renderAvatar() {
+        const {name, emoji, shouldDisplayAvatar} = this.props
+
+        if (shouldDisplayAvatar) {
+            return emoji
+                ? (
+                    <span className={css.avatar}>
+                        <Emoji
+                            emoji={emoji.toJS()}
+                            size={26}
+                            sheetSize={32}
+                            className={css.avatar}
+                            forceSize
+                        />
+                    </span>
+                )
+                : (
+                    <Avatar
+                        name={name}
+                        size="26"
+                        className={css.avatar}
+                    />
+                )
+        }
+
+        return (
+            <span className="material-icons md-2">
+                people
+            </span>
+        )
+    }
+
+    render() {
+        const {name, maxWidth, className, shouldDisplayTeamIcon} = this.props
+        const style = {}
+        if (maxWidth) {
+            style.maxWidth = `${maxWidth}px`
+        }
+
+        return (
+            <div className={classnames(css.TeamLabel, className)}>
+                {this._renderAvatar()}
+                {
+                    name && (
+                        <span
+                            className={css.name}
+                            style={style}
+                        >
+                            {name}
+                            {shouldDisplayTeamIcon && (
+                                <span className={classnames(css.nameIcon, 'material-icons md-2')}>
+                                    people
+                                </span>
+                            )}
                         </span>
                     )
                 }

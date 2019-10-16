@@ -2,7 +2,7 @@ import {fromJS} from 'immutable'
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import {ChatAssignment} from '../ChatAssignment'
+import {TicketAssignment} from '../TicketAssignment'
 
 import * as currentAccountConstants from '../../../../state/currentAccount/constants'
 
@@ -17,11 +17,11 @@ const unassignOnReplyEnabledSetting = fromJS({
 
 const unassignOnReplyDisabledSetting = unassignOnReplyEnabledSetting.setIn(['data', 'unassign_on_reply'], false)
 
-describe('Chat Assignment', () => {
+describe('<TicketAssignment/>', () => {
     it('should render the Unassign replies checkbox checked by default because there is no account setting for ' +
         'chat assignment', () => {
         const component = shallow(
-            <ChatAssignment
+            <TicketAssignment
                 chatAssignmentSettings={fromJS({})}
             />
         )
@@ -31,7 +31,7 @@ describe('Chat Assignment', () => {
 
     it('should render the Unassign replies checkbox checked because the setting Unassign replies is enabled', () => {
         const component = shallow(
-            <ChatAssignment
+            <TicketAssignment
                 chatAssignmentSettings={unassignOnReplyEnabledSetting}
             />
         )
@@ -41,7 +41,7 @@ describe('Chat Assignment', () => {
 
     it('should render the Unassign replies checkbox unchecked because the setting Unassign replies is disabled', () => {
         const component = shallow(
-            <ChatAssignment
+            <TicketAssignment
                 chatAssignmentSettings={unassignOnReplyDisabledSetting}
             />
         )
@@ -51,7 +51,7 @@ describe('Chat Assignment', () => {
 
     it('should render the Save changes button loading and disabled because the setting are being saved', (done) => {
         const component = shallow(
-            <ChatAssignment
+            <TicketAssignment
                 chatAssignmentSettings={unassignOnReplyDisabledSetting}
             />
         )
@@ -66,7 +66,7 @@ describe('Chat Assignment', () => {
         const unassignOnReplyNewValue = false
         const submitSetting = jest.fn(() => Promise.resolve())
         const component = shallow(
-            <ChatAssignment
+            <TicketAssignment
                 chatAssignmentSettings={unassignOnReplyEnabledSetting}
                 submitSetting={submitSetting}
             />

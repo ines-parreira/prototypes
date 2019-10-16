@@ -472,6 +472,22 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                         </button>
                       </DropdownItem>
                       <DropdownItem
+                        key="setTeamAssignee"
+                        onClick={[Function]}
+                        tag="button"
+                        toggle={true}
+                        type="button"
+                      >
+                        <button
+                          className="dropdown-item"
+                          onClick={[Function]}
+                          tabIndex="0"
+                          type="button"
+                        >
+                          Assign a team
+                        </button>
+                      </DropdownItem>
+                      <DropdownItem
                         key="setSubject"
                         onClick={[Function]}
                         tag="button"

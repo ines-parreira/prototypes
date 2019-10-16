@@ -2106,6 +2106,7 @@ Array [
       "spam": false,
       "subject": "",
       "messages": Immutable.List [],
+      "assignee_team": null,
       "via": "helpdesk",
       "state": Immutable.Map {
         "dirty": false,

@@ -1,0 +1,180 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SetAssigneeAction/> render() should render team dropdown 1`] = `
+<Connect(TicketAssignee)
+  className="assignee"
+  handleTeams={true}
+  handleUsers={false}
+  setTeam={[Function]}
+  setUser={[Function]}
+  suffix="macro-modal"
+  teams={
+    Immutable.List [
+      Immutable.Map {
+        "id": 1,
+        "name": "Team 1",
+        "decoration": Immutable.Map {},
+      },
+      Immutable.Map {
+        "id": 2,
+        "name": "Team 2",
+        "decoration": Immutable.Map {},
+      },
+    ]
+  }
+  users={
+    Immutable.List [
+      Immutable.Map {
+        "id": 1,
+        "name": "User 1",
+        "email": "email1@foo.com",
+        "meta": Immutable.Map {},
+      },
+      Immutable.Map {
+        "id": 2,
+        "name": "User 2",
+        "email": "email2@foo.com",
+        "meta": Immutable.Map {},
+      },
+    ]
+  }
+/>
+`;
+
+exports[`<SetAssigneeAction/> render() should render team dropdown with current assignee 1`] = `
+<Connect(TicketAssignee)
+  className="assignee"
+  currentAssigneeTeam={
+    Immutable.Map {
+      "id": 1,
+      "name": "Team 1",
+      "decoration": Immutable.Map {},
+    }
+  }
+  handleTeams={true}
+  handleUsers={false}
+  setTeam={[Function]}
+  setUser={[Function]}
+  suffix="macro-modal"
+  teams={
+    Immutable.List [
+      Immutable.Map {
+        "id": 1,
+        "name": "Team 1",
+        "decoration": Immutable.Map {},
+      },
+      Immutable.Map {
+        "id": 2,
+        "name": "Team 2",
+        "decoration": Immutable.Map {},
+      },
+    ]
+  }
+  users={
+    Immutable.List [
+      Immutable.Map {
+        "id": 1,
+        "name": "User 1",
+        "email": "email1@foo.com",
+        "meta": Immutable.Map {},
+      },
+      Immutable.Map {
+        "id": 2,
+        "name": "User 2",
+        "email": "email2@foo.com",
+        "meta": Immutable.Map {},
+      },
+    ]
+  }
+/>
+`;
+
+exports[`<SetAssigneeAction/> render() should render user dropdown 1`] = `
+<Connect(TicketAssignee)
+  className="assignee"
+  handleTeams={false}
+  handleUsers={true}
+  setTeam={[Function]}
+  setUser={[Function]}
+  suffix="macro-modal"
+  teams={
+    Immutable.List [
+      Immutable.Map {
+        "id": 1,
+        "name": "Team 1",
+        "decoration": Immutable.Map {},
+      },
+      Immutable.Map {
+        "id": 2,
+        "name": "Team 2",
+        "decoration": Immutable.Map {},
+      },
+    ]
+  }
+  users={
+    Immutable.List [
+      Immutable.Map {
+        "id": 1,
+        "name": "User 1",
+        "email": "email1@foo.com",
+        "meta": Immutable.Map {},
+      },
+      Immutable.Map {
+        "id": 2,
+        "name": "User 2",
+        "email": "email2@foo.com",
+        "meta": Immutable.Map {},
+      },
+    ]
+  }
+/>
+`;
+
+exports[`<SetAssigneeAction/> render() should render user dropdown with current assignee 1`] = `
+<Connect(TicketAssignee)
+  className="assignee"
+  currentAssigneeUser={
+    Immutable.Map {
+      "id": 1,
+      "name": "User 1",
+      "email": "email1@foo.com",
+      "meta": Immutable.Map {},
+    }
+  }
+  handleTeams={false}
+  handleUsers={true}
+  setTeam={[Function]}
+  setUser={[Function]}
+  suffix="macro-modal"
+  teams={
+    Immutable.List [
+      Immutable.Map {
+        "id": 1,
+        "name": "Team 1",
+        "decoration": Immutable.Map {},
+      },
+      Immutable.Map {
+        "id": 2,
+        "name": "Team 2",
+        "decoration": Immutable.Map {},
+      },
+    ]
+  }
+  users={
+    Immutable.List [
+      Immutable.Map {
+        "id": 1,
+        "name": "User 1",
+        "email": "email1@foo.com",
+        "meta": Immutable.Map {},
+      },
+      Immutable.Map {
+        "id": 2,
+        "name": "User 2",
+        "email": "email2@foo.com",
+        "meta": Immutable.Map {},
+      },
+    ]
+  }
+/>
+`;

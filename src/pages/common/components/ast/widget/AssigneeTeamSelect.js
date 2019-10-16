@@ -23,9 +23,10 @@ class AssigneeTeamSelect extends React.Component<Props> {
 
     render() {
         const {teams, value, onChange, className, allowUnassign} = this.props
-        let options: List<*> = fromJS(allowUnassign
-            ? [{value: null, label: 'Unassigned'}]
-            : []
+        let options: List<*> = fromJS(
+            allowUnassign
+                ? [{value: null, label: 'Unassigned'}]
+                : []
         )
 
         teams.forEach((team) => {

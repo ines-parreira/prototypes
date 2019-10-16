@@ -438,7 +438,7 @@ class TicketListActions extends React.Component<Props, State> {
                                                 <AgentLabel
                                                     name={agent.get('name') || agent.get('email')}
                                                     profilePictureUrl={agent.getIn(['meta', 'profile_picture_url'])}
-                                                    avatar
+                                                    shouldDisplayAvatar
                                                 />
                                             </DropdownItem>
                                         )

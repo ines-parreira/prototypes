@@ -187,22 +187,22 @@ exports[`CampaignDetail component should display default value when it's a new c
                   Array [
                     Object {
                       "label": <AgentLabel
-                        avatar={false}
                         className=""
                         maxWidth="100"
                         name="John"
                         profilePictureUrl=""
+                        shouldDisplayAvatar={false}
                       />,
                       "text": "John",
                       "value": "john@gorgias.io",
                     },
                     Object {
                       "label": <AgentLabel
-                        avatar={false}
                         className=""
                         maxWidth="100"
                         name="Doe"
                         profilePictureUrl=""
+                        shouldDisplayAvatar={false}
                       />,
                       "text": "Doe",
                       "value": "doe@gorgias.io",
@@ -519,22 +519,22 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                   Array [
                     Object {
                       "label": <AgentLabel
-                        avatar={false}
                         className=""
                         maxWidth="100"
                         name="John"
                         profilePictureUrl=""
+                        shouldDisplayAvatar={false}
                       />,
                       "text": "John",
                       "value": "john@gorgias.io",
                     },
                     Object {
                       "label": <AgentLabel
-                        avatar={false}
                         className=""
                         maxWidth="100"
                         name="Doe"
                         profilePictureUrl=""
+                        shouldDisplayAvatar={false}
                       />,
                       "text": "Doe",
                       "value": "doe@gorgias.io",
@@ -875,22 +875,22 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                   Array [
                     Object {
                       "label": <AgentLabel
-                        avatar={false}
                         className=""
                         maxWidth="100"
                         name="John"
                         profilePictureUrl=""
+                        shouldDisplayAvatar={false}
                       />,
                       "text": "John",
                       "value": "john@gorgias.io",
                     },
                     Object {
                       "label": <AgentLabel
-                        avatar={false}
                         className=""
                         maxWidth="100"
                         name="Doe"
                         profilePictureUrl=""
+                        shouldDisplayAvatar={false}
                       />,
                       "text": "Doe",
                       "value": "doe@gorgias.io",

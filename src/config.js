@@ -314,6 +314,19 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: 'front',
+        name: 'setTeamAssignee',
+        title: 'Assign a team',
+        partialUpdateKey: 'assignee_team',
+        partialUpdateValue: 'assignee_team',
+        arguments: {
+            assignee_team: {
+                type: 'dict',
+                default: null
+            }
+        }
+    },
+    {
+        execution: 'front',
         name: 'setSubject',
         title: 'Set subject',
         partialUpdateKey: 'subject',

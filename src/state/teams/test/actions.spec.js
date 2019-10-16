@@ -211,7 +211,7 @@ describe('team actions', () => {
             return store.dispatch(actions.deleteTeam(teamId))
                 .then((resp) => {
                     expect(store.getActions()).toMatchSnapshot()
-                    expect(resp).toEqual(null)
+                    expect(resp).toEqual(true)
                 })
         })
 
@@ -219,7 +219,10 @@ describe('team actions', () => {
             mockServer.onDelete(`/api/teams/${teamId}/`).reply(500)
 
             return store.dispatch(actions.deleteTeam(teamId))
-                .then(() => expect(store.getActions()).toMatchSnapshot())
+                .then((resp) => {
+                    expect(store.getActions()).toMatchSnapshot()
+                    expect(resp).toEqual(false)
+                })
         })
     })
 

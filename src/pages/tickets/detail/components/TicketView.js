@@ -192,7 +192,7 @@ export default class TicketView extends React.Component {
                                     name={agent.get('name')}
                                     profilePictureUrl={agent.getIn(['meta', 'profile_picture_url'])}
                                     className={css.collisionAgent}
-                                    avatar
+                                    shouldDisplayAvatar
                                 />
                             ))}
                         </div>
@@ -214,7 +214,7 @@ export default class TicketView extends React.Component {
                                     name={agent.get('name')}
                                     profilePictureUrl={agent.getIn(['meta', 'profile_picture_url'])}
                                     className={css.collisionAgent}
-                                    avatar
+                                    shouldDisplayAvatar
                                 />
                             ))}
                         </div>

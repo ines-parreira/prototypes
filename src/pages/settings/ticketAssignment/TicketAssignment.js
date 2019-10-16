@@ -24,7 +24,7 @@ type State = {
     unassignOnReply: boolean
 }
 
-export class ChatAssignment extends React.Component<Props, State> {
+export class TicketAssignment extends React.Component<Props, State> {
     state = {
         isLoading: false,
         unassignOnReply: true
@@ -63,7 +63,7 @@ export class ChatAssignment extends React.Component<Props, State> {
 
         return (
             <div className="full-width">
-                <PageHeader title="Chat assignment"/>
+                <PageHeader title="Ticket assignment"/>
 
                 <Container
                     fluid
@@ -118,4 +118,4 @@ export default connect((state) => {
     }
 }, {
     submitSetting: currentAccountActions.submitSetting
-})(ChatAssignment)
+})(TicketAssignment)

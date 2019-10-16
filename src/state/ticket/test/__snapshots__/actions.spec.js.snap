@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ticket actions addTags 1`] = `
+exports[`ticket actions addTags() 1`] = `
 Array [
   Object {
     "args": Immutable.Map {
@@ -11,7 +11,7 @@ Array [
 ]
 `;
 
-exports[`ticket actions applyMacro 1`] = `
+exports[`ticket actions applyMacro() 1`] = `
 Array [
   Object {
     "macro": Immutable.Map {
@@ -59,6 +59,7 @@ Array [
       "spam": false,
       "subject": "",
       "messages": Immutable.List [],
+      "assignee_team": null,
       "via": "helpdesk",
       "state": Immutable.Map {
         "dirty": false,
@@ -105,6 +106,7 @@ Array [
       "spam": false,
       "subject": "",
       "messages": Immutable.List [],
+      "assignee_team": null,
       "via": "helpdesk",
       "state": Immutable.Map {
         "dirty": false,
@@ -162,7 +164,7 @@ Array [
 ]
 `;
 
-exports[`ticket actions applyMacroAction 1`] = `
+exports[`ticket actions applyMacroAction() 1`] = `
 Object {
   "appliedMacro": null,
   "args": Immutable.Map {
@@ -183,6 +185,7 @@ Object {
     "spam": false,
     "subject": "",
     "messages": Immutable.List [],
+    "assignee_team": null,
     "via": "helpdesk",
     "state": Immutable.Map {
       "dirty": false,
@@ -210,7 +213,7 @@ Object {
 }
 `;
 
-exports[`ticket actions clearAppliedMacro 1`] = `
+exports[`ticket actions clearAppliedMacro() 1`] = `
 Array [
   Object {
     "ticketId": 1,
@@ -219,7 +222,7 @@ Array [
 ]
 `;
 
-exports[`ticket actions clearTicket 1`] = `
+exports[`ticket actions clearTicket() 1`] = `
 Array [
   Object {
     "shouldDisplayHistoryOnNextPage": false,
@@ -239,7 +242,7 @@ Array [
 ]
 `;
 
-exports[`ticket actions deleteActionOnApplied 1`] = `
+exports[`ticket actions deleteActionOnApplied() 1`] = `
 Array [
   Object {
     "actionIndex": 0,
@@ -249,7 +252,7 @@ Array [
 ]
 `;
 
-exports[`ticket actions deleteMessage 1`] = `
+exports[`ticket actions deleteMessage() 1`] = `
 Array [
   Object {
     "messageId": 10,
@@ -258,9 +261,9 @@ Array [
 ]
 `;
 
-exports[`ticket actions deleteTicket 1`] = `Array []`;
+exports[`ticket actions deleteTicket() 1`] = `Array []`;
 
-exports[`ticket actions deleteTicketPendingMessage 1`] = `
+exports[`ticket actions deleteTicketPendingMessage() 1`] = `
 Array [
   Object {
     "message": Object {
@@ -271,28 +274,28 @@ Array [
 ]
 `;
 
-exports[`ticket actions displayHistoryOnNextPage 1`] = `
+exports[`ticket actions displayHistoryOnNextPage() 1`] = `
 Object {
   "state": true,
   "type": "DISPLAY_HISTORY_ON_NEXT_PAGE",
 }
 `;
 
-exports[`ticket actions displayHistoryOnNextPage 2`] = `
+exports[`ticket actions displayHistoryOnNextPage() 2`] = `
 Object {
   "state": false,
   "type": "DISPLAY_HISTORY_ON_NEXT_PAGE",
 }
 `;
 
-exports[`ticket actions displayHistoryOnNextPage 3`] = `
+exports[`ticket actions displayHistoryOnNextPage() 3`] = `
 Object {
   "state": true,
   "type": "DISPLAY_HISTORY_ON_NEXT_PAGE",
 }
 `;
 
-exports[`ticket actions fetchTicket existing instagram ticket 1`] = `
+exports[`ticket actions fetchTicket() existing instagram ticket 1`] = `
 Array [
   Object {
     "type": "FETCH_TICKET_START",
@@ -350,6 +353,7 @@ Array [
       "spam": false,
       "subject": "",
       "messages": Immutable.List [],
+      "assignee_team": null,
       "via": "helpdesk",
       "state": Immutable.Map {
         "dirty": false,
@@ -416,7 +420,7 @@ Array [
 ]
 `;
 
-exports[`ticket actions fetchTicket existing ticket 1`] = `
+exports[`ticket actions fetchTicket() existing ticket 1`] = `
 Array [
   Object {
     "type": "FETCH_TICKET_START",
@@ -462,6 +466,7 @@ Array [
       "spam": false,
       "subject": "",
       "messages": Immutable.List [],
+      "assignee_team": null,
       "via": "helpdesk",
       "state": Immutable.Map {
         "dirty": false,
@@ -504,7 +509,7 @@ Array [
 ]
 `;
 
-exports[`ticket actions fetchTicket new ticket 1`] = `
+exports[`ticket actions fetchTicket() new ticket 1`] = `
 Array [
   Object {
     "appliedMacro": null,
@@ -526,6 +531,7 @@ Array [
       "spam": false,
       "subject": "",
       "messages": Immutable.List [],
+      "assignee_team": null,
       "via": "helpdesk",
       "state": Immutable.Map {
         "dirty": false,
@@ -556,7 +562,7 @@ Array [
 ]
 `;
 
-exports[`ticket actions fetchTicketReplyMacro 1`] = `
+exports[`ticket actions fetchTicketReplyMacro() 1`] = `
 Array [
   Object {
     "type": "FETCH_TICKET_REPLY_MACRO",
@@ -564,7 +570,7 @@ Array [
 ]
 `;
 
-exports[`ticket actions findAndSetCustomer should set the customer because there is exactly one customer matching this email address 1`] = `
+exports[`ticket actions findAndSetCustomer() should set the customer because there is exactly one customer matching this email address 1`] = `
 Array [
   Object {
     "args": Immutable.Map {
@@ -629,6 +635,7 @@ Array [
       "spam": false,
       "subject": "",
       "messages": Immutable.List [],
+      "assignee_team": null,
       "via": "helpdesk",
       "state": Immutable.Map {
         "dirty": false,
@@ -724,6 +731,7 @@ Array [
       "spam": false,
       "subject": "",
       "messages": Immutable.List [],
+      "assignee_team": null,
       "via": "helpdesk",
       "state": Immutable.Map {
         "dirty": false,
@@ -826,6 +834,7 @@ Array [
       "spam": false,
       "subject": "",
       "messages": Immutable.List [],
+      "assignee_team": null,
       "via": "helpdesk",
       "state": Immutable.Map {
         "dirty": false,
@@ -925,6 +934,7 @@ Array [
       "spam": false,
       "subject": "",
       "messages": Immutable.List [],
+      "assignee_team": null,
       "via": "helpdesk",
       "state": Immutable.Map {
         "dirty": false,
@@ -1020,6 +1030,7 @@ Array [
       "spam": false,
       "subject": "",
       "messages": Immutable.List [],
+      "assignee_team": null,
       "via": "helpdesk",
       "state": Immutable.Map {
         "dirty": false,
@@ -1122,6 +1133,7 @@ Array [
       "spam": false,
       "subject": "",
       "messages": Immutable.List [],
+      "assignee_team": null,
       "via": "helpdesk",
       "state": Immutable.Map {
         "dirty": false,
@@ -1171,7 +1183,7 @@ Array [
 ]
 `;
 
-exports[`ticket actions handleMessageActionError should fetch the ticket because the user is currently on it 1`] = `
+exports[`ticket actions handleMessageActionError() should fetch the ticket because the user is currently on it 1`] = `
 Array [
   Object {
     "ticketId": 1,
@@ -1212,6 +1224,7 @@ Array [
       "spam": false,
       "subject": "",
       "messages": Immutable.List [],
+      "assignee_team": null,
       "via": "helpdesk",
       "state": Immutable.Map {
         "dirty": false,
@@ -1253,9 +1266,9 @@ Array [
 ]
 `;
 
-exports[`ticket actions handleMessageActionError should not fetch the ticket because the user is not currently on it 1`] = `Array []`;
+exports[`ticket actions handleMessageActionError() should not fetch the ticket because the user is not currently on it 1`] = `Array []`;
 
-exports[`ticket actions handleMessageError should fetch the ticket because the user is currently on it 1`] = `
+exports[`ticket actions handleMessageError() should fetch the ticket because the user is currently on it 1`] = `
 Array [
   Object {
     "ticketId": 1,
@@ -1296,6 +1309,7 @@ Array [
       "spam": false,
       "subject": "",
       "messages": Immutable.List [],
+      "assignee_team": null,
       "via": "helpdesk",
       "state": Immutable.Map {
         "dirty": false,
@@ -1337,9 +1351,9 @@ Array [
 ]
 `;
 
-exports[`ticket actions handleMessageError should not fetch the ticket because the user is not currently on it 1`] = `Array []`;
+exports[`ticket actions handleMessageError() should not fetch the ticket because the user is not currently on it 1`] = `Array []`;
 
-exports[`ticket actions mergeCustomer 1`] = `
+exports[`ticket actions mergeCustomer() 1`] = `
 Array [
   Object {
     "customer": Object {
@@ -1350,9 +1364,9 @@ Array [
 ]
 `;
 
-exports[`ticket actions mergeTicket fails because not current ticket 1`] = `Array []`;
+exports[`ticket actions mergeTicket() fails because not current ticket 1`] = `Array []`;
 
-exports[`ticket actions mergeTicket success 1`] = `
+exports[`ticket actions mergeTicket() success 1`] = `
 Array [
   Object {
     "messagesDifference": 1,
@@ -1411,7 +1425,7 @@ Array [
 ]
 `;
 
-exports[`ticket actions removeRequest 1`] = `
+exports[`ticket actions removeRequest() 1`] = `
 Array [
   Object {
     "messageId": 1,
@@ -1420,7 +1434,7 @@ Array [
 ]
 `;
 
-exports[`ticket actions removeTag 1`] = `
+exports[`ticket actions removeTag() 1`] = `
 Array [
   Object {
     "args": Immutable.Map {
@@ -1431,7 +1445,7 @@ Array [
 ]
 `;
 
-exports[`ticket actions setAgent 1`] = `
+exports[`ticket actions setAgent() 1`] = `
 Array [
   Object {
     "args": Immutable.Map {
@@ -1444,7 +1458,7 @@ Array [
 ]
 `;
 
-exports[`ticket actions setCustomer 1`] = `
+exports[`ticket actions setCustomer() 1`] = `
 Array [
   Object {
     "args": Immutable.Map {
@@ -1458,7 +1472,7 @@ Array [
 ]
 `;
 
-exports[`ticket actions setRequest 1`] = `
+exports[`ticket actions setRequest() 1`] = `
 Array [
   Object {
     "messageId": 1,
@@ -1468,7 +1482,7 @@ Array [
 ]
 `;
 
-exports[`ticket actions setSnooze should snooze ticket 1`] = `
+exports[`ticket actions setSnooze() should snooze ticket 1`] = `
 Array [
   Object {
     "snooze_datetime": "2017-12-21",
@@ -1478,7 +1492,7 @@ Array [
 ]
 `;
 
-exports[`ticket actions setSnooze should snooze ticket and call the callback 1`] = `
+exports[`ticket actions setSnooze() should snooze ticket and call the callback 1`] = `
 Array [
   Object {
     "snooze_datetime": "2017-12-21",
@@ -1488,9 +1502,9 @@ Array [
 ]
 `;
 
-exports[`ticket actions setSpam fails because same status 1`] = `Array []`;
+exports[`ticket actions setSpam() fails because same status 1`] = `Array []`;
 
-exports[`ticket actions setSpam success 1`] = `
+exports[`ticket actions setSpam() success 1`] = `
 Array [
   Object {
     "spam": true,
@@ -1511,7 +1525,7 @@ Array [
 ]
 `;
 
-exports[`ticket actions setStatus 1`] = `
+exports[`ticket actions setStatus() 1`] = `
 Array [
   Object {
     "args": Immutable.Map {
@@ -1522,13 +1536,26 @@ Array [
 ]
 `;
 
-exports[`ticket actions setSubject 1`] = `
+exports[`ticket actions setSubject() 1`] = `
 Array [
   Object {
     "args": Immutable.Map {
       "subject": "new title",
     },
     "type": "setSubject",
+  },
+]
+`;
+
+exports[`ticket actions setTeam() 1`] = `
+Array [
+  Object {
+    "args": Immutable.Map {
+      "assignee_team": Immutable.Map {
+        "id": 1,
+      },
+    },
+    "type": "setTeamAssignee",
   },
 ]
 `;
@@ -1575,9 +1602,9 @@ Array [
 ]
 `;
 
-exports[`ticket actions ticketPartialUpdate fails because new ticket 1`] = `Array []`;
+exports[`ticket actions ticketPartialUpdate() fails because new ticket 1`] = `Array []`;
 
-exports[`ticket actions ticketPartialUpdate success 1`] = `
+exports[`ticket actions ticketPartialUpdate() success 1`] = `
 Array [
   Object {
     "args": Object {
@@ -1596,21 +1623,21 @@ Array [
 ]
 `;
 
-exports[`ticket actions toggleHistory 1`] = `
+exports[`ticket actions toggleHistory() 1`] = `
 Object {
   "state": true,
   "type": "TOGGLE_HISTORY",
 }
 `;
 
-exports[`ticket actions toggleHistory 2`] = `
+exports[`ticket actions toggleHistory() 2`] = `
 Object {
   "state": false,
   "type": "TOGGLE_HISTORY",
 }
 `;
 
-exports[`ticket actions updateActionArgsOnApplied 1`] = `
+exports[`ticket actions updateActionArgsOnApplied() 1`] = `
 Array [
   Object {
     "actionIndex": 0,
@@ -1621,7 +1648,7 @@ Array [
 ]
 `;
 
-exports[`ticket actions updateTicketMessage 1`] = `
+exports[`ticket actions updateTicketMessage() 1`] = `
 Array [
   Object {
     "messageId": 10,

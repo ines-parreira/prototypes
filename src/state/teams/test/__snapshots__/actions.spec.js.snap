@@ -38,6 +38,7 @@ Array [
     "error": [Error: Request failed with status code 500],
     "reason": "Failed to delete team #1. Please try again.",
     "type": "DELETE_TEAM_ERROR",
+    "verbose": true,
   },
 ]
 `;

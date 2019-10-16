@@ -82,9 +82,7 @@ export default class TeamList extends React.Component<Props, State> {
                 >
                     <p>
                         Create teams of users to define what views they see by default on your account.
-                        {
-                            teams.size == 0 && <div>Your account doesn't have any teams yet.</div>
-                        }
+                        {teams.size === 0 && <span className="d-block">Your account doesn't have any teams yet.</span>}
                     </p>
                     {
                         teams.map((team) => {
@@ -104,6 +102,7 @@ export default class TeamList extends React.Component<Props, State> {
                                                 <Emoji
                                                     emoji={emoji.toJS()}
                                                     size={32}
+                                                    sheetSize={32}
                                                 />
                                             ) : (
                                                 <i className="material-icons">people</i>

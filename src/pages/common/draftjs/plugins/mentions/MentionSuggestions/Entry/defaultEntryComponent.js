@@ -30,7 +30,7 @@ const defaultEntryComponent = (props: Props) => {
                 className={theme.mentionSuggestionsEntryText}
                 name={mention.get('name')}
                 profilePictureUrl={mention.getIn(['meta', 'profile_picture_url'])}
-                avatar
+                shouldDisplayAvatar
             />
         </div>
     )

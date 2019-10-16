@@ -250,6 +250,15 @@ export const setAgent = (assigneeUser) => (dispatch, getState) => {
     return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setAssignee', getState())))
 }
 
+export const setTeam = (assigneeTeam) => (dispatch, getState) => {
+    dispatch({
+        type: types.SET_TEAM,
+        args: fromJS({assignee_team: assigneeTeam}),
+    })
+
+    return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setTeamAssignee', getState())))
+}
+
 export const setCustomer = (customer) => (dispatch) => {
     dispatch({
         type: types.SET_CUSTOMER,
