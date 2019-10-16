@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TicketAssignment/> should render the Save changes button loading and disabled because the setting are being saved 1`] = `
+exports[`<TicketAssignment/> render() should render selected channels 1`] = `
 <div
   className="full-width"
 >
@@ -21,7 +21,7 @@ exports[`<TicketAssignment/> should render the Save changes button loading and d
         tag="div"
       >
         <Col
-          md="9"
+          md="5"
           tag="div"
           widths={
             Array [
@@ -52,20 +52,88 @@ exports[`<TicketAssignment/> should render the Save changes button loading and d
               Un-assign on reply
             </Label>
             <BooleanField
-              label="When there is a new reply in a Chat or Messenger ticket, if the user assigned to it is not available for chat, un-assign the ticket"
+              label="When there is a new reply in a ticket of the following channels, if the user assigned to it is not available, un-assign the ticket"
               name="unassign_on_reply"
               onChange={[Function]}
               type="checkbox"
-              value={false}
+              value={true}
+            />
+          </div>
+          <div
+            className="mb-2"
+          >
+            <MultiSelectOptionsField
+              allowCustomOptions={false}
+              matchInput={false}
+              onChange={[Function]}
+              options={
+                Array [
+                  Object {
+                    "label": "aircall",
+                    "value": "aircall",
+                  },
+                  Object {
+                    "label": "api",
+                    "value": "api",
+                  },
+                  Object {
+                    "label": "chat",
+                    "value": "chat",
+                  },
+                  Object {
+                    "label": "email",
+                    "value": "email",
+                  },
+                  Object {
+                    "label": "facebook",
+                    "value": "facebook",
+                  },
+                  Object {
+                    "label": "facebook-messenger",
+                    "value": "facebook-messenger",
+                  },
+                  Object {
+                    "label": "instagram-ad-comment",
+                    "value": "instagram-ad-comment",
+                  },
+                  Object {
+                    "label": "instagram-comment",
+                    "value": "instagram-comment",
+                  },
+                  Object {
+                    "label": "phone",
+                    "value": "phone",
+                  },
+                  Object {
+                    "label": "sms",
+                    "value": "sms",
+                  },
+                  Object {
+                    "label": "twitter",
+                    "value": "twitter",
+                  },
+                ]
+              }
+              plural="channels"
+              selectedOptions={
+                Array [
+                  Object {
+                    "label": "email",
+                    "value": "email",
+                  },
+                ]
+              }
+              singular="channel"
+              tagColor="#0275d8"
             />
           </div>
           <div
             className="text-faded"
           >
-            Users are considered as not available for chat when any of those conditions is true:
+            Users are considered as not available when any of those conditions is true:
             <ul>
               <li>
-                the user turned off its "Available for chat" setting
+                the user turned off its "Available" setting
               </li>
               <li>
                 the user has been inactive on Gorgias for more than
@@ -94,7 +162,7 @@ exports[`<TicketAssignment/> should render the Save changes button loading and d
 </div>
 `;
 
-exports[`<TicketAssignment/> should render the Unassign replies checkbox checked because the setting Unassign replies is enabled 1`] = `
+exports[`<TicketAssignment/> render() should render the Save changes button loading and disabled because the setting are being saved 1`] = `
 <div
   className="full-width"
 >
@@ -115,7 +183,7 @@ exports[`<TicketAssignment/> should render the Unassign replies checkbox checked
         tag="div"
       >
         <Col
-          md="9"
+          md="5"
           tag="div"
           widths={
             Array [
@@ -146,195 +214,7 @@ exports[`<TicketAssignment/> should render the Unassign replies checkbox checked
               Un-assign on reply
             </Label>
             <BooleanField
-              label="When there is a new reply in a Chat or Messenger ticket, if the user assigned to it is not available for chat, un-assign the ticket"
-              name="unassign_on_reply"
-              onChange={[Function]}
-              type="checkbox"
-              value={true}
-            />
-          </div>
-          <div
-            className="text-faded"
-          >
-            Users are considered as not available for chat when any of those conditions is true:
-            <ul>
-              <li>
-                the user turned off its "Available for chat" setting
-              </li>
-              <li>
-                the user has been inactive on Gorgias for more than
-                 
-                10
-                 minutes
-              </li>
-              <li>
-                the user is not on Gorgias on any device
-              </li>
-            </ul>
-          </div>
-        </Col>
-      </Row>
-      <Button
-        className=""
-        color="success"
-        disabled={false}
-        tag="button"
-        type="submit"
-      >
-        Save changes
-      </Button>
-    </Form>
-  </Container>
-</div>
-`;
-
-exports[`<TicketAssignment/> should render the Unassign replies checkbox checked by default because there is no account setting for chat assignment 1`] = `
-<div
-  className="full-width"
->
-  <PageHeader
-    title="Ticket assignment"
-  />
-  <Container
-    className="page-container"
-    fluid={true}
-    tag="div"
-  >
-    <Form
-      onSubmit={[Function]}
-      tag="form"
-    >
-      <Row
-        className="mb-2"
-        tag="div"
-      >
-        <Col
-          md="9"
-          tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          <div
-            className="mb-2"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Un-assign on reply
-            </Label>
-            <BooleanField
-              label="When there is a new reply in a Chat or Messenger ticket, if the user assigned to it is not available for chat, un-assign the ticket"
-              name="unassign_on_reply"
-              onChange={[Function]}
-              type="checkbox"
-              value={true}
-            />
-          </div>
-          <div
-            className="text-faded"
-          >
-            Users are considered as not available for chat when any of those conditions is true:
-            <ul>
-              <li>
-                the user turned off its "Available for chat" setting
-              </li>
-              <li>
-                the user has been inactive on Gorgias for more than
-                 
-                10
-                 minutes
-              </li>
-              <li>
-                the user is not on Gorgias on any device
-              </li>
-            </ul>
-          </div>
-        </Col>
-      </Row>
-      <Button
-        className=""
-        color="success"
-        disabled={false}
-        tag="button"
-        type="submit"
-      >
-        Save changes
-      </Button>
-    </Form>
-  </Container>
-</div>
-`;
-
-exports[`<TicketAssignment/> should render the Unassign replies checkbox unchecked because the setting Unassign replies is disabled 1`] = `
-<div
-  className="full-width"
->
-  <PageHeader
-    title="Ticket assignment"
-  />
-  <Container
-    className="page-container"
-    fluid={true}
-    tag="div"
-  >
-    <Form
-      onSubmit={[Function]}
-      tag="form"
-    >
-      <Row
-        className="mb-2"
-        tag="div"
-      >
-        <Col
-          md="9"
-          tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          <div
-            className="mb-2"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Un-assign on reply
-            </Label>
-            <BooleanField
-              label="When there is a new reply in a Chat or Messenger ticket, if the user assigned to it is not available for chat, un-assign the ticket"
+              label="When there is a new reply in a ticket of the following channels, if the user assigned to it is not available, un-assign the ticket"
               name="unassign_on_reply"
               onChange={[Function]}
               type="checkbox"
@@ -344,10 +224,436 @@ exports[`<TicketAssignment/> should render the Unassign replies checkbox uncheck
           <div
             className="text-faded"
           >
-            Users are considered as not available for chat when any of those conditions is true:
+            Users are considered as not available when any of those conditions is true:
             <ul>
               <li>
-                the user turned off its "Available for chat" setting
+                the user turned off its "Available" setting
+              </li>
+              <li>
+                the user has been inactive on Gorgias for more than
+                 
+                10
+                 minutes
+              </li>
+              <li>
+                the user is not on Gorgias on any device
+              </li>
+            </ul>
+          </div>
+        </Col>
+      </Row>
+      <Button
+        className="btn-loading"
+        color="success"
+        disabled={true}
+        tag="button"
+        type="submit"
+      >
+        Save changes
+      </Button>
+    </Form>
+  </Container>
+</div>
+`;
+
+exports[`<TicketAssignment/> render() should render the Unassign replies checkbox checked because the setting Unassign replies is enabled 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title="Ticket assignment"
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <Row
+        className="mb-2"
+        tag="div"
+      >
+        <Col
+          md="5"
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <div
+            className="mb-2"
+          >
+            <Label
+              className="control-label"
+              tag="label"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              Un-assign on reply
+            </Label>
+            <BooleanField
+              label="When there is a new reply in a ticket of the following channels, if the user assigned to it is not available, un-assign the ticket"
+              name="unassign_on_reply"
+              onChange={[Function]}
+              type="checkbox"
+              value={true}
+            />
+          </div>
+          <div
+            className="mb-2"
+          >
+            <MultiSelectOptionsField
+              allowCustomOptions={false}
+              matchInput={false}
+              onChange={[Function]}
+              options={
+                Array [
+                  Object {
+                    "label": "aircall",
+                    "value": "aircall",
+                  },
+                  Object {
+                    "label": "api",
+                    "value": "api",
+                  },
+                  Object {
+                    "label": "chat",
+                    "value": "chat",
+                  },
+                  Object {
+                    "label": "email",
+                    "value": "email",
+                  },
+                  Object {
+                    "label": "facebook",
+                    "value": "facebook",
+                  },
+                  Object {
+                    "label": "facebook-messenger",
+                    "value": "facebook-messenger",
+                  },
+                  Object {
+                    "label": "instagram-ad-comment",
+                    "value": "instagram-ad-comment",
+                  },
+                  Object {
+                    "label": "instagram-comment",
+                    "value": "instagram-comment",
+                  },
+                  Object {
+                    "label": "phone",
+                    "value": "phone",
+                  },
+                  Object {
+                    "label": "sms",
+                    "value": "sms",
+                  },
+                  Object {
+                    "label": "twitter",
+                    "value": "twitter",
+                  },
+                ]
+              }
+              plural="channels"
+              selectedOptions={
+                Array [
+                  Object {
+                    "label": "chat",
+                    "value": "chat",
+                  },
+                  Object {
+                    "label": "facebook-messenger",
+                    "value": "facebook-messenger",
+                  },
+                ]
+              }
+              singular="channel"
+              tagColor="#0275d8"
+            />
+          </div>
+          <div
+            className="text-faded"
+          >
+            Users are considered as not available when any of those conditions is true:
+            <ul>
+              <li>
+                the user turned off its "Available" setting
+              </li>
+              <li>
+                the user has been inactive on Gorgias for more than
+                 
+                10
+                 minutes
+              </li>
+              <li>
+                the user is not on Gorgias on any device
+              </li>
+            </ul>
+          </div>
+        </Col>
+      </Row>
+      <Button
+        className=""
+        color="success"
+        disabled={false}
+        tag="button"
+        type="submit"
+      >
+        Save changes
+      </Button>
+    </Form>
+  </Container>
+</div>
+`;
+
+exports[`<TicketAssignment/> render() should render the Unassign replies checkbox checked by default because there is no account setting for assignment 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title="Ticket assignment"
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <Row
+        className="mb-2"
+        tag="div"
+      >
+        <Col
+          md="5"
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <div
+            className="mb-2"
+          >
+            <Label
+              className="control-label"
+              tag="label"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              Un-assign on reply
+            </Label>
+            <BooleanField
+              label="When there is a new reply in a ticket of the following channels, if the user assigned to it is not available, un-assign the ticket"
+              name="unassign_on_reply"
+              onChange={[Function]}
+              type="checkbox"
+              value={true}
+            />
+          </div>
+          <div
+            className="mb-2"
+          >
+            <MultiSelectOptionsField
+              allowCustomOptions={false}
+              matchInput={false}
+              onChange={[Function]}
+              options={
+                Array [
+                  Object {
+                    "label": "aircall",
+                    "value": "aircall",
+                  },
+                  Object {
+                    "label": "api",
+                    "value": "api",
+                  },
+                  Object {
+                    "label": "chat",
+                    "value": "chat",
+                  },
+                  Object {
+                    "label": "email",
+                    "value": "email",
+                  },
+                  Object {
+                    "label": "facebook",
+                    "value": "facebook",
+                  },
+                  Object {
+                    "label": "facebook-messenger",
+                    "value": "facebook-messenger",
+                  },
+                  Object {
+                    "label": "instagram-ad-comment",
+                    "value": "instagram-ad-comment",
+                  },
+                  Object {
+                    "label": "instagram-comment",
+                    "value": "instagram-comment",
+                  },
+                  Object {
+                    "label": "phone",
+                    "value": "phone",
+                  },
+                  Object {
+                    "label": "sms",
+                    "value": "sms",
+                  },
+                  Object {
+                    "label": "twitter",
+                    "value": "twitter",
+                  },
+                ]
+              }
+              plural="channels"
+              selectedOptions={
+                Array [
+                  Object {
+                    "label": "chat",
+                    "value": "chat",
+                  },
+                  Object {
+                    "label": "facebook-messenger",
+                    "value": "facebook-messenger",
+                  },
+                ]
+              }
+              singular="channel"
+              tagColor="#0275d8"
+            />
+          </div>
+          <div
+            className="text-faded"
+          >
+            Users are considered as not available when any of those conditions is true:
+            <ul>
+              <li>
+                the user turned off its "Available" setting
+              </li>
+              <li>
+                the user has been inactive on Gorgias for more than
+                 
+                10
+                 minutes
+              </li>
+              <li>
+                the user is not on Gorgias on any device
+              </li>
+            </ul>
+          </div>
+        </Col>
+      </Row>
+      <Button
+        className=""
+        color="success"
+        disabled={false}
+        tag="button"
+        type="submit"
+      >
+        Save changes
+      </Button>
+    </Form>
+  </Container>
+</div>
+`;
+
+exports[`<TicketAssignment/> render() should render the Unassign replies checkbox unchecked because the setting Unassign replies is disabled 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title="Ticket assignment"
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <Row
+        className="mb-2"
+        tag="div"
+      >
+        <Col
+          md="5"
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <div
+            className="mb-2"
+          >
+            <Label
+              className="control-label"
+              tag="label"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              Un-assign on reply
+            </Label>
+            <BooleanField
+              label="When there is a new reply in a ticket of the following channels, if the user assigned to it is not available, un-assign the ticket"
+              name="unassign_on_reply"
+              onChange={[Function]}
+              type="checkbox"
+              value={false}
+            />
+          </div>
+          <div
+            className="text-faded"
+          >
+            Users are considered as not available when any of those conditions is true:
+            <ul>
+              <li>
+                the user turned off its "Available" setting
               </li>
               <li>
                 the user has been inactive on Gorgias for more than

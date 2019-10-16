@@ -83,4 +83,4 @@ export const getSettingsByType = (type: string) => {
 
 export const getSurveysSettings = getSettingsByType(constants.SETTING_TYPE_SATISFACTION_SURVEYS)
 export const getBusinessHoursSettings = getSettingsByType(constants.SETTING_TYPE_BUSINESS_HOURS)
-export const getChatAssignmentSettings = getSettingsByType(constants.SETTING_TYPE_CHAT_ASSIGNMENT)
+export const getTicketAssignmentSettings = getSettingsByType(constants.SETTING_TYPE_CHAT_ASSIGNMENT)
