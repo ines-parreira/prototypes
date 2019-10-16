@@ -214,7 +214,7 @@ export default class ActionButton extends React.Component<Props, State> {
             })
         }
 
-        this.setState({actionName, parameters})
+        this.setState({actionName: actionName.toString(), parameters})
     }
 
     _updateActionParameter = (name: string, value: string | number | boolean) => {

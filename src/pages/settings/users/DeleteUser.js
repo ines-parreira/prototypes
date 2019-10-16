@@ -11,11 +11,12 @@ type Props = {
     children?: Node,
 }
 
-const DeleteUser = ({
-    action,
-    children,
-    ...buttonProps,
-}: Props) => {
+const DeleteUser = (props: Props) => {
+    const {
+        action,
+        children,
+        ...buttonProps
+    } = props
     return (
         <ConfirmButton
             content={(

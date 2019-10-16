@@ -19,12 +19,11 @@ const _handlePastedFiles = (config) => (files: Array<File>, pluginArgs: PluginMe
     return 'handled'
 }
 
-//$FlowFixMe
 const pasteImagePlugin = (config: imagePluginConfigType = {
     notify: _noop,
     getAttachFiles: () => _noop,
-    getCanDropFiles: _noop,
-    getCanInsertInlineImages: _noop
+    getCanDropFiles: () => false,
+    getCanInsertInlineImages: () => false
 }) => {
     return {
         handlePastedFiles: _handlePastedFiles(config),

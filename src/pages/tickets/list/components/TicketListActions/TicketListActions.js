@@ -1,5 +1,4 @@
 // @flow
-import PropTypes from 'prop-types'
 import React from 'react'
 import {connect} from 'react-redux'
 import {fromJS, type Map, List} from 'immutable'
@@ -53,7 +52,7 @@ type Props = {
     openMacroModal: () => void,
     activeView: viewType,
     allViewItemsSelected: boolean,
-    getViewCount: PropTypes.func.isRequired,
+    getViewCount: (id: number) => number,
 }
 
 type State = {

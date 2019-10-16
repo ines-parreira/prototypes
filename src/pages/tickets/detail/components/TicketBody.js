@@ -43,7 +43,7 @@ export class TicketBody extends React.Component<Props, State> {
         messageGroupingDuration: 'PT5M',
     }
 
-    lastMessageDatetimeAfterMount: ?string
+    lastMessageDatetimeAfterMount: ?moment$Moment
 
     _messageCursor: number = 0
 

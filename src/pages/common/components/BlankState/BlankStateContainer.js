@@ -14,7 +14,7 @@ import BlankState from './components/BlankState'
 export const TICKET_CLOSED_BY_CURRENT_AGENT_7_DAYS = 'ticket-closed-current-agent-7-days'
 
 type Props = {
-    currentUser: ?Object,
+    currentUser: Map<*,*>,
     message: ?Object | ?string
 }
 
@@ -39,7 +39,7 @@ class BlankStateContainer extends React.Component<Props, State> {
     /**
      * Get the number of ticket closed by the current agent for the last 7 days
      */
-    _fetchStatistic = throttle(async(props) => {
+    _fetchStatistic = throttle(async (props: Props) => {
         const filters = {
             agents: [props.currentUser.get('id')],
             period: {

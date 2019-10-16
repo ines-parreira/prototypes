@@ -7,6 +7,7 @@
   "repository": "https://github.com/gorgias/gorgias",
   "scripts": {
     "types": "flow check g/static/private/js",
+    "types:update": "flow-typed install",
     "lint": "eslint --quiet g/static/private/js",
     "quality": "run-s lint types",
     "jest": "jest",
@@ -113,7 +114,8 @@
     "eslint-plugin-react-hooks": "1.6.0",
     "estraverse-fb": "1.3.2",
     "file-loader": "2.0.0",
-    "flow-bin": "0.54.1",
+    "flow-bin": "0.84.0",
+    "flow-typed": "2.6.1",
     "identity-obj-proxy": "3.0.0",
     "immutable-devtools": "0.1.4",
     "jest": "24.7.1",

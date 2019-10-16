@@ -6,7 +6,10 @@ import _isObject from 'lodash/isObject'
 import _noop from 'lodash/noop'
 
 import 'react-select/dist/react-select.css'
-import SelectField from '../../../forms/SelectField'
+import SelectField, {
+    type Option as SelectOption,
+    type Value as SelectValue
+} from '../../../forms/SelectField'
 
 type Props = {
     className?: string,
@@ -25,10 +28,11 @@ export default class Select extends React.Component<Props> {
 
     _getOptions = () => {
         let {options} = this.props
+        let formattedOptions: SelectOption[]
 
         if (options) {
             if (Array.isArray(options) || List.isList(options)) {
-                options = options.map((option) => {
+                formattedOptions = options.map((option) => {
                     if (_isObject(option)) {
                         return option
                     }
@@ -39,17 +43,17 @@ export default class Select extends React.Component<Props> {
                     }
                 })
             } else {
-                options = Object.keys(options).map((key) => ({
+                formattedOptions = Object.keys(options).map<SelectOption>((key) => ({
                     value: key.toString(),
                     label: options[key].label
                 }))
             }
         }
         // order alphabetically
-        return sortBy(options, (option) => typeof option.label === 'string' && option.label.toLowerCase())
+        return sortBy<SelectOption>(formattedOptions, (option: SelectOption) => typeof option.label === 'string' && option.label.toLowerCase())
     }
 
-    _onChange = (value: string | number) => {
+    _onChange = (value: SelectValue) => {
         let val = value
         // We can't have boolean values so we're transforming them just before sending
         if (val === 'true') {
@@ -79,6 +83,7 @@ export default class Select extends React.Component<Props> {
             >
                 <SelectField
                     className={className}
+                    // $FlowFixMe
                     value={newValue}
                     onChange={this._onChange}
                     onSearchChange={onSearchChange}

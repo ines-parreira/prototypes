@@ -98,9 +98,7 @@ export class StatsFilters extends React.Component<Props, State> {
 
         switch (filterType) {
             case 'score': {
-                // $FlowFixMe
                 const minValue = filterConfig.get('minValue')
-                // $FlowFixMe
                 const maxValue = filterConfig.get('maxValue')
                 const reverse = filterConfig.get('reverse')
                 const variant = filterConfig.get('variant')
@@ -110,9 +108,7 @@ export class StatsFilters extends React.Component<Props, State> {
                         plural='scores'
                         singular='score'
                         items={
-                            // $FlowFixMe
                             Array.from({length: maxValue - minValue + 1}, (value, index) => {
-                                // $FlowFixMe
                                 const scoreValue = reverse ? (maxValue - index) : (index + minValue)
                                 switch (variant) {
                                     case 'star':

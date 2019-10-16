@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
 import {shallow} from 'enzyme'
+import moment from 'moment'
 
 import Container from '../Container'
 import {message} from '../../../../../../models/ticket/tests/mocks'
@@ -15,7 +16,7 @@ describe('Container', () => {
                 message={message}
                 timezone="America/Los_Angeles"
                 isLastRead={false}
-                lastMessageDatetimeAfterMount="2017-01-01T12:12:34Z"
+                lastMessageDatetimeAfterMount={moment('2017-01-01T12:12:34Z')}
             />
         )
         expect(component).toMatchSnapshot()
@@ -33,7 +34,7 @@ describe('Container', () => {
                 message={message}
                 timezone="America/Los_Angeles"
                 isLastRead={false}
-                lastMessageDatetimeAfterMount="2017-01-01T12:12:34Z"
+                lastMessageDatetimeAfterMount={moment('2017-01-01T12:12:34Z')}
             />
         )
         expect(component).not.toHaveClassName(css.hasError)

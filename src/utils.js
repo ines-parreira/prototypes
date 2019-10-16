@@ -40,6 +40,7 @@ type messageType = {
 }
 type propertyType = {
     type: string,
+    format: 'email',
     meta: {},
     items: { $ref: {} }
 }

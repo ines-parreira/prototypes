@@ -18,7 +18,7 @@ type Props = {
     className?: string,
     message: TicketMessage,
     hasCursor: boolean,
-    lastMessageDatetimeAfterMount: string,
+    lastMessageDatetimeAfterMount: ?moment$Moment,
     children?: Node,
     timezone: string,
     isLastRead: boolean
@@ -39,9 +39,10 @@ export default class Container extends React.Component<Props> {
         const sender = fromJS(message.sender || {})
 
         // appear animation if message is created after the ticket body component is mounted
-        const appear = !!this.props.lastMessageDatetimeAfterMount
+        const { lastMessageDatetimeAfterMount } = this.props
+        const appear = !!lastMessageDatetimeAfterMount
             && !message.from_agent
-            && moment(message.created_datetime).diff(this.props.lastMessageDatetimeAfterMount) > 0
+            && moment(message.created_datetime).diff(lastMessageDatetimeAfterMount) > 0
 
         return (
             <div className={classNames('ticket-message', this.props.className, css.component, {

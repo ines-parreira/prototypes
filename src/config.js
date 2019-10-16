@@ -957,7 +957,7 @@ export const ACTION_TEMPLATES = [
     }
 ]
 
-export const DEFAULT_ACTIONS = ACTION_TEMPLATES.map((template) => template.name)
+export const DEFAULT_ACTIONS = ACTION_TEMPLATES.map<string>((template) => template.name)
 
 /*
  * Default currentUser preferences

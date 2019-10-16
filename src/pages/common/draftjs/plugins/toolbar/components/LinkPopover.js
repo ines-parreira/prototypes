@@ -35,15 +35,19 @@ export default class LinkPopover extends React.Component<Props, State> {
         isOpen: false
     }
 
-    timeout: ?number
+    timeout: ?TimeoutID
 
     componenWillUnmount() {
-        clearTimeout(this.timeout)
+        if (this.timeout) {
+            clearTimeout(this.timeout)
+        }
     }
 
     _onMouseEnter = (e: SyntheticMouseEvent<*>) => {
         e.preventDefault()
-        clearTimeout(this.timeout)
+        if (this.timeout) {
+            clearTimeout(this.timeout)
+        }
         this.setState({isOpen: true})
     }
 

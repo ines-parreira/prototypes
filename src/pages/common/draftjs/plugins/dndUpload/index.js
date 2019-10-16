@@ -35,12 +35,11 @@ const _handleDroppedFiles = (config) => (selection: SelectionState, files: Array
     return 'handled'
 }
 
-//$FlowFixMe
 const dndUploadPlugin = (config: imagePluginConfigType = {
     notify: _noop,
     getAttachFiles: () => _noop,
-    getCanDropFiles: _noop,
-    getCanInsertInlineImages: _noop,
+    getCanDropFiles: () => false,
+    getCanInsertInlineImages: () => false,
 }) => {
     return {
         handleDroppedFiles: _handleDroppedFiles(config),

@@ -13,9 +13,9 @@ const APPROXIMATE_CHAR_WIDTH = 8
 const ARROW_ICON_WIDTH = 10
 const MAXIMUM_MIN_WIDTH = 305
 
-type Value = number | string
+export type Value = number | string
 
-type Option = {
+export type Option = {
     value: Value,
     text?: string, // text used to filter with the search value
     label?: Node | string, // text displayed in the dropdown

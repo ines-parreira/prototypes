@@ -347,7 +347,7 @@ export class TitleWrapper extends React.Component<TitleWrapperProps> {
 
 
 type WrapperProps = {
-    children: ?Node,
+    children: Node,
     source: Map<*,*>
 }
 

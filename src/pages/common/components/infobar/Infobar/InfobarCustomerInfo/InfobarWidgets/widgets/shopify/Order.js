@@ -274,7 +274,7 @@ class TitleWrapper extends React.Component<TitleWrapperProps> { // eslint-disabl
 
 
 type WrapperProps = {
-    children?: Node,
+    children: Node,
     source: Map<*,*>
 }
 

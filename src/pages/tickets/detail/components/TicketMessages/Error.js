@@ -20,7 +20,7 @@ const RETRY = 'retry'
 
 type Props = {
     error?: string,
-    retryTooltipMessage?: string,
+    retryTooltipMessage: string,
     actions: Object,
 
     ticketId: number,
@@ -285,5 +285,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-//$FlowFixMe
 export default connect(null, mapDispatchToProps)(Error)

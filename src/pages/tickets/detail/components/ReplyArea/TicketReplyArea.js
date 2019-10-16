@@ -230,7 +230,7 @@ export class TicketReplyArea extends React.Component<Props, State> {
         this.setState({macroSearchQuery: search})
 
         if (!search.trim().length || search.trim().length > 1) {
-            this._debounceLoadMacros({search})
+            this._debounceLoadMacros({search, page: 1})
         }
     }
 

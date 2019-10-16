@@ -24,7 +24,7 @@ type Props = {
 }
 
 export default class KeyMetricStat extends Component<Props> {
-    _defaultWrapper = (formattedValue: string, metric: Object, valueTooltipId: string,
+    _defaultWrapper = (formattedValue: number, metric: Object, valueTooltipId: string,
         tooltipDelta: string) => {
         return <div>
             {

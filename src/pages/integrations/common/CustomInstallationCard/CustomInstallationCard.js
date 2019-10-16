@@ -24,7 +24,7 @@ export default class CustomInstallationCard extends React.Component<Props, State
         isCopied: false
     }
 
-    clearIsCopiedTimeout: ?number = null
+    clearIsCopiedTimeout: ?TimeoutID = null
 
     clipboard: ?Clipboard = null
 
@@ -45,7 +45,9 @@ export default class CustomInstallationCard extends React.Component<Props, State
     }
 
     componentWillUnmount() {
-        clearTimeout(this.clearIsCopiedTimeout)
+        if (this.clearIsCopiedTimeout) {
+            clearTimeout(this.clearIsCopiedTimeout)
+        }
 
         if (this.clipboard) {
             this.clipboard.destroy()

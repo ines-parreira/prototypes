@@ -319,7 +319,7 @@ class AfterContent extends React.Component<AfterContentProps> {
 
 
 type TitleWrapperProps = {
-    children: ?Node,
+    children: Node,
     source: Map<*,*>
 }
 

@@ -1,7 +1,5 @@
 // @flow
-import PropTypes from 'prop-types'
 import React from 'react'
-import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
 import classnames from 'classnames'
@@ -26,7 +24,6 @@ import shortcutManager from '../../../../../services/shortcutManager'
 import * as macroActions from '../../../../../state/macro/actions'
 import * as ticketsActions from '../../../../../state/tickets/actions'
 import * as viewsActions from '../../../../../state/views/actions'
-import * as viewsSelectors from '../../../../../state/views/selectors'
 
 import type {fetchMacrosType} from '../types'
 
@@ -60,8 +57,8 @@ type Props = {
     search: string,
     firstLoad: boolean,
     selectedItemsIds: List<*>,
-    allViewItemsSelected: ?boolean,
-    getViewCount: PropTypes.func.isRequired,
+    allViewItemsSelected: boolean,
+    getViewCount: (id: number) => number,
 }
 
 type State = {
@@ -70,17 +67,9 @@ type State = {
     intent: ?string
 }
 
-@connect((state) => {
-    return {
-        allViewItemsSelected: viewsSelectors.areAllActiveViewItemsSelected(state),
-        getViewCount: viewsSelectors.makeGetViewCount(state),
-    }
-})
 export default class MacroModal extends React.Component<Props, State> {
     static defaultProps = {
-        allViewItemsSelected: null,
         activeView: fromJS({}),
-        getViewCount: null,
     }
 
     multipleActionsNames = ['http'] // actions names that can be set multiple times in the same macro
@@ -172,7 +161,6 @@ export default class MacroModal extends React.Component<Props, State> {
             .set('intent', this.state.intent)
         return this.props.actions.macro.createMacro(newMacro)
             .then((resp) => {
-                // $FlowFixMe
                 this.props.onSearch(newMacro.get('name'), true)
                 this.props.handleClickItem(resp.id)
             })

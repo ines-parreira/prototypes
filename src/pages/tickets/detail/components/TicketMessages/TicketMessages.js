@@ -13,7 +13,7 @@ type Props = {
     timezone: string,
     isLastReadMessage: boolean,
     hasCursor: boolean,
-    lastMessageDatetimeAfterMount: any,
+    lastMessageDatetimeAfterMount: ?moment$Moment,
     setStatus: () => void,
     lastReadMessageId?: number
 }

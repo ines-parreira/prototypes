@@ -119,6 +119,7 @@ export default class HTTPIntegrationOverview extends React.Component<Props, Stat
 
         if (value !== JSON_CONTENT_TYPE) {
             this.setState({
+                // $FlowFixMe
                 form: form instanceof Object ? this._objectToParameters(form) : form,
                 requestContentType: value
             })

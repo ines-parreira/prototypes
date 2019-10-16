@@ -8,6 +8,7 @@ import _debounce from 'lodash/debounce'
 import type {Map, List} from 'immutable'
 
 import * as ViewsActions from '../../../../state/views/actions'
+import * as viewsSelectors from '../../../../state/views/selectors'
 import * as MacroActions from '../../../../state/macro/actions'
 import * as TicketsActions from '../../../../state/tickets/actions'
 import {getAgents} from '../../../../state/agents/selectors'
@@ -34,6 +35,8 @@ type Props = {
 
     disableExternalActions?: boolean,
     selectionMode?: boolean,
+    allViewItemsSelected: boolean,
+    getViewCount: (id: number) => number,
 }
 
 type State = {
@@ -118,7 +121,7 @@ class MacroContainer extends React.Component<Props, State> {
             || !search.trim().length
             || search.trim().length > 1
         ) {
-            this._debounceLoadMacros({search})
+            this._debounceLoadMacros({search, page: 1})
         }
     }
 
@@ -133,6 +136,8 @@ class MacroContainer extends React.Component<Props, State> {
             closeModal,
             isCreatingMacro,
             toggleCreateMacro,
+            allViewItemsSelected,
+            getViewCount,
         } = this.props
 
         const currentMacro = getCurrentMacro(this.state.macros, this.state.selectedMacroId, isCreatingMacro)
@@ -158,6 +163,8 @@ class MacroContainer extends React.Component<Props, State> {
                 search={this.state.search}
                 isCreatingMacro={isCreatingMacro}
                 toggleCreateMacro={toggleCreateMacro}
+                allViewItemsSelected={allViewItemsSelected}
+                getViewCount={getViewCount}
             />
         )
     }
@@ -167,6 +174,8 @@ class MacroContainer extends React.Component<Props, State> {
 function mapStateToProps(state) {
     return {
         agents: getAgents(state),
+        allViewItemsSelected: viewsSelectors.areAllActiveViewItemsSelected(state),
+        getViewCount: viewsSelectors.makeGetViewCount(state)
     }
 }
 
@@ -180,5 +189,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-//$FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(MacroContainer)

@@ -1,5 +1,5 @@
 // @flow
-import React, {type Node} from 'react'
+import React from 'react'
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 
@@ -22,7 +22,7 @@ type State = {
 }
 
 export default class Avatar extends React.Component<Props, State> {
-    component: Node
+    component: ?HTMLDivElement
     isMounted: boolean
 
     static defaultProps = {
@@ -56,7 +56,7 @@ export default class Avatar extends React.Component<Props, State> {
         this.isMounted = false
     }
 
-    _container = (ref: Node) => {
+    _container = (ref: ?HTMLDivElement) => {
         this.component = ref
     }
 

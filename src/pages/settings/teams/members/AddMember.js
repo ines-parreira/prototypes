@@ -2,7 +2,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Input} from 'reactstrap'
-import {type Map} from 'immutable'
+import {type List, Map} from 'immutable'
 import classnames from 'classnames'
 
 import {AgentLabel} from '../../../common/utils/labels'
@@ -11,7 +11,7 @@ import * as agentSelectors from '../../../../state/agents/selectors'
 
 type Props = {
     team: teamType,
-    users: Array<Map<*, *>>,
+    users: List<Map<*, *>>,
     addTeamMember: () => Promise<*>
 }
 

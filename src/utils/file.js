@@ -18,7 +18,7 @@ export const saveFileAsDownloaded = (name: string, contentType: string, data: st
     const blob = new Blob([data], {type: contentType || 'application/octet-stream'})
     const blobURL = window.URL.createObjectURL(blob)
     const link = document.createElement('a')
-    const body = document.body || document.html || document
+    const { body } = document
 
     link.style.display = 'none'
     link.href = blobURL

@@ -33,7 +33,7 @@ class SearchableSelectField extends React.Component<Props, State> {
         plural: 'items',
         singular: 'item',
         isDisabled: false,
-        dropdownMenu: (props) => (
+        dropdownMenu: (props: any) => (
             <DropdownMenu
                 {...props}
                 className={css.dropdown}
