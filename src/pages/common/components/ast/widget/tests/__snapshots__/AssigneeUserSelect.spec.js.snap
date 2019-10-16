@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ast widgets <AssigneeUserSelect/> render() should render a dropdown with selected value 1`] = `
+<Select
+  onSearchChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "Unassigned",
+        "value": null,
+      },
+      Object {
+        "label": "Agent 1",
+        "value": "1",
+      },
+      Object {
+        "label": "Agent 2",
+        "value": "2",
+      },
+      Object {
+        "label": "Agent 3",
+        "value": "3",
+      },
+    ]
+  }
+  value={1}
+/>
+`;
+
+exports[`ast widgets <AssigneeUserSelect/> render() should render a dropdown without selected value 1`] = `
+<Select
+  onSearchChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "Unassigned",
+        "value": null,
+      },
+      Object {
+        "label": "Agent 1",
+        "value": "1",
+      },
+      Object {
+        "label": "Agent 2",
+        "value": "2",
+      },
+      Object {
+        "label": "Agent 3",
+        "value": "3",
+      },
+    ]
+  }
+/>
+`;
+
+exports[`ast widgets <AssigneeUserSelect/> render() should render a loading message because agents have not been fetched yet 1`] = `
+<span
+  className="text-muted ml-2"
+>
+  Loading agents...
+</span>
+`;

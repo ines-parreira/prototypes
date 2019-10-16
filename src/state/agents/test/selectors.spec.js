@@ -33,53 +33,53 @@ describe('agents selectors', () => {
         }
     })
 
-    it('getState', () => {
+    it('getState()', () => {
         expect(selectors.getState(state)).toEqualImmutable(state.agents)
         expect(selectors.getState({})).toEqualImmutable(fromJS({}))
     })
 
-    it('getPaginatedAgents', () => {
+    it('getPaginatedAgents()', () => {
         expect(selectors.getPaginatedAgents(state)).toEqualImmutable(state.agents.getIn(['pagination', 'data']))
         expect(selectors.getPaginatedAgents({})).toEqualImmutable(fromJS([]))
     })
 
-    it('getPagination', () => {
+    it('getPagination()', () => {
         expect(selectors.getPagination(state)).toEqualImmutable(state.agents.getIn(['pagination', 'meta']))
         expect(selectors.getPagination({})).toEqualImmutable(fromJS({}))
     })
 
-    it('getAgents', () => {
+    it('getAgents()', () => {
         expect(selectors.getAgents(state)).toEqualImmutable(state.agents.get('all'))
         expect(selectors.getAgents({})).toEqualImmutable(fromJS([]))
     })
 
-    it('getOtherAgents', () => {
+    it('getOtherAgents()', () => {
         const expected = fromJS([
             {id: 1}
         ])
         expect(selectors.getOtherAgents(state)).toEqualImmutable(expected)
     })
 
-    it('getAgent', () => {
+    it('getAgent()', () => {
         expect(selectors.getAgent(1)(state)).toEqualImmutable(state.agents.get('all').first())
         expect(selectors.getAgent('1')(state)).toEqualImmutable(state.agents.get('all').first())
         expect(selectors.getAgent(12345)(state)).toEqualImmutable(fromJS({}))
         expect(selectors.getAgent()({})).toEqualImmutable(fromJS({}))
     })
 
-    it('getAgentsIdsLocation', () => {
+    it('getAgentsIdsLocation()', () => {
         expect(selectors.getAgentsIdsLocation(state)).toEqualImmutable(state.agents.get('locations'))
         expect(selectors.getAgentsIdsLocation({})).toEqualImmutable(fromJS({}))
     })
 
-    it('getAgentsIdsOnTicket', () => {
+    it('getAgentsIdsOnTicket()', () => {
         expect(selectors.getAgentsIdsOnTicket(1)(state)).toEqualImmutable(fromJS(['1', '2']))
         expect(selectors.getAgentsIdsOnTicket(2)(state)).toEqualImmutable(fromJS(['1']))
         expect(selectors.getAgentsIdsOnTicket()(state)).toEqualImmutable(fromJS([]))
         expect(selectors.getAgentsIdsOnTicket()({})).toEqualImmutable(fromJS([]))
     })
 
-    it('getAgentsOnTicket', () => {
+    it('getAgentsOnTicket()', () => {
         const expected = fromJS([
             {
                 customers: [{id: 1}, {id: 2}],
@@ -96,7 +96,7 @@ describe('agents selectors', () => {
         expect(selectors.getAgentsOnTicket()({})).toEqualImmutable(fromJS([]))
     })
 
-    it('getOtherAgentsOnTicket', () => {
+    it('getOtherAgentsOnTicket()', () => {
         const expected = fromJS([
             {
                 customers: [{id: 1}],
@@ -113,12 +113,12 @@ describe('agents selectors', () => {
         expect(selectors.getOtherAgentsOnTicket()({})).toEqualImmutable(fromJS([]))
     })
 
-    it('getAgentsIdsTypingStatus', () => {
+    it('getAgentsIdsTypingStatus()', () => {
         expect(selectors.getAgentsIdsTypingStatus(state)).toEqualImmutable(state.agents.get('typingStatuses'))
         expect(selectors.getAgentsIdsTypingStatus({})).toEqualImmutable(fromJS({}))
     })
 
-    it('getAgentsIdsTypingStatusOnTicket', () => {
+    it('getAgentsIdsTypingStatusOnTicket()', () => {
         const expected = fromJS([
             {
                 customers: ['1', '2'],
@@ -135,7 +135,7 @@ describe('agents selectors', () => {
         expect(selectors.getAgentsIdsTypingStatusOnTicket()({})).toEqualImmutable(fromJS([]))
     })
 
-    it('getAgentsTypingOnTicket', () => {
+    it('getAgentsTypingOnTicket()', () => {
         const expected = fromJS([
             {
                 customers: [{id: 1}, {id: 2}],
@@ -152,7 +152,7 @@ describe('agents selectors', () => {
         expect(selectors.getAgentsTypingOnTicket()({})).toEqualImmutable(fromJS([]))
     })
 
-    it('getOtherAgentsTypingOnTicket', () => {
+    it('getOtherAgentsTypingOnTicket()', () => {
         const expected = fromJS([
             {
                 customers: [{id: 1}],
@@ -169,7 +169,7 @@ describe('agents selectors', () => {
         expect(selectors.getOtherAgentsTypingOnTicket()({})).toEqualImmutable(fromJS([]))
     })
 
-    it('isAgentTypingOnTicket', () => {
+    it('isAgentTypingOnTicket()', () => {
         expect(selectors.isAgentTypingOnTicket(1)(state)).toBe(true)
         expect(selectors.isAgentTypingOnTicket('1')(state)).toBe(true)
         expect(selectors.isAgentTypingOnTicket('2')(state)).toBe(false)

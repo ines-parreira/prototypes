@@ -12,6 +12,25 @@ exports[`ast Widget TagsSelect should render case sensitive TagsSelect field (ta
 />
 `;
 
+exports[`ast Widget TagsSelect should render component AssigneeTeamSelect 1`] = `
+<Connect(AssigneeTeamSelect)
+  allowUnassign={false}
+  description=""
+  onChange={[Function]}
+  options={Array []}
+  type="assignee_team-select"
+/>
+`;
+
+exports[`ast Widget TagsSelect should render component AssigneeUserSelect 1`] = `
+<Connect(AssigneeUserSelect)
+  description=""
+  onChange={[Function]}
+  options={Array []}
+  type="assignee_user-select"
+/>
+`;
+
 exports[`ast Widget TagsSelect should render multi TagsSelect field (addTags action) 1`] = `
 <Connect(TagsSelect)
   caseInsensitive={false}

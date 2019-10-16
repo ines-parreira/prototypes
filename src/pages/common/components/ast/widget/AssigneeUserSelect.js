@@ -3,7 +3,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {fromJS, List, Map} from 'immutable'
-import {Input} from 'reactstrap'
 
 import {USER_ROLES} from '../../../../../config/user'
 
@@ -21,7 +20,7 @@ type Props = {
     className?: string
 }
 
-class AssigneeSelect extends React.Component<Props> {
+class AssigneeUserSelect extends React.Component<Props> {
     componentDidMount() {
         const {actions, agents} = this.props
 
@@ -32,21 +31,20 @@ class AssigneeSelect extends React.Component<Props> {
 
     render() {
         const {value, onChange, agents, className} = this.props
+
+        if (agents.isEmpty()) {
+            return (
+                <span className="text-muted ml-2">
+                    Loading agents...
+                </span>
+            )
+        }
+
         let options: List<*> = fromJS([{value: null, label: 'Unassigned'}])
 
         agents.forEach((agent) => {
             options = options.push({value: agent.get('id').toString(), label: agent.get('name')})
         })
-
-        if (options.isEmpty()) {
-            return (
-                <Input
-                    type="text"
-                    placeholder="Loading agents..."
-                    readOnly
-                />
-            )
-        }
 
         return (
             <Select
@@ -71,4 +69,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(AssigneeSelect)
+)(AssigneeUserSelect)

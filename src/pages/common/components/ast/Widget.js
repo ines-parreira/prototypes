@@ -16,7 +16,10 @@ import {humanizeString} from '../../../../utils'
 import {convertToHTML, getPlainText} from '../../../../utils/editor'
 import MultiSelectField from '../../forms/MultiSelectField'
 import {
-    collectionOperators, caseInsensitiveOperators, deprecatedOperators, timedeltaOperators
+    caseInsensitiveOperators,
+    collectionOperators,
+    deprecatedOperators,
+    timedeltaOperators
 } from '../../../../config/rules'
 import {removeSuffix} from '../../../../utils/string'
 import TimedeltaPicker from '../../forms/TimedeltaPicker'
@@ -25,7 +28,8 @@ import {makeHasIntegrationOfTypes} from '../../../../state/integrations/selector
 
 import TagsSelect from './widget/TagsSelect'
 import IntegrationSelect from './widget/IntegrationSelect'
-import AssigneeSelect from './widget/AssigneeSelect'
+import AssigneeTeamSelect from './widget/AssigneeTeamSelect'
+import AssigneeUserSelect from './widget/AssigneeUserSelect'
 import MacroSelect from './widget/MacroSelect'
 import StatusSelect from './widget/StatusSelect'
 import Select from './widget/ReactSelect'
@@ -207,7 +211,7 @@ export class Widget extends React.Component<Props, State> {
         )
     }
 
-    _resolveLeft(left: List<*>, schemas: Map<*,*>) {
+    _resolveLeft(left: List<*>, schemas: Map<*, *>) {
         // we need to figure out if the path contains '$ref' objects, then resolve them and update the path
         const path = []
         for (const item of left.toJS()) {
@@ -409,10 +413,19 @@ export class Widget extends React.Component<Props, State> {
                 )
             case 'assignee_user-select':
                 return (
-                    <AssigneeSelect
+                    <AssigneeUserSelect
                         {...widget}
                         className={className}
                         onChange={this._handleChange}
+                    />
+                )
+            case 'assignee_team-select':
+                return (
+                    <AssigneeTeamSelect
+                        {...widget}
+                        className={className}
+                        onChange={this._handleChange}
+                        allowUnassign={!operatorName}
                     />
                 )
             case 'integration-select':

@@ -170,6 +170,41 @@ describe('ast', () => {
                 ).toMatchSnapshot()
             })
 
+            it('should render component AssigneeUserSelect', () => {
+                let leftsiblings = fromJS(['actions', 'assignee_user'])
+                const rule = fromJS({
+                    code_ast: astCodeEq
+                })
+                expect(
+                    shallow(
+                        <Widget
+                            actions={{}}
+                            leftsiblings={leftsiblings}
+                            parent={parent}
+                            rule={rule}
+                            schemas={schemas}
+                        />
+                    )
+                ).toMatchSnapshot()
+            })
+
+            it('should render component AssigneeTeamSelect', () => {
+                let leftsiblings = fromJS(['actions', 'assignee_team'])
+                const rule = fromJS({
+                    code_ast: astCodeEq
+                })
+                expect(
+                    shallow(
+                        <Widget
+                            actions={{}}
+                            leftsiblings={leftsiblings}
+                            parent={parent}
+                            rule={rule}
+                            schemas={schemas}
+                        />
+                    )
+                ).toMatchSnapshot()
+            })
         })
 
         describe('should handle change', () => {

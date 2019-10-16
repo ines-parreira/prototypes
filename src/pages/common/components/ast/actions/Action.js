@@ -168,6 +168,10 @@ export const actionsConfig = {
         compact: true,
         name: 'Assign agent'
     },
+    setTeamAssignee: {
+        compact: true,
+        name: 'Assign team'
+    },
     trashTicket: {
         compact: true,
         name: 'Delete ticket',

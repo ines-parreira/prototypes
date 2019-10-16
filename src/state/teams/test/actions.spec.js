@@ -27,7 +27,7 @@ describe('team actions', () => {
         mockServer = new MockAdapter(axios)
     })
 
-    describe('fetchTeams', () => {
+    describe('fetchTeamsPagination()', () => {
         it('works', () => {
             const data = {data: 'test'}
             mockServer.onGet('/api/teams/').reply(200, data)
@@ -46,7 +46,7 @@ describe('team actions', () => {
         })
     })
 
-    describe('fetchTeamMembersPagination', () => {
+    describe('fetchTeamMembersPagination()', () => {
         const teamId = 1
 
         it('works', () => {
@@ -67,7 +67,7 @@ describe('team actions', () => {
         })
     })
 
-    describe('addTeamMember', () => {
+    describe('addTeamMember()', () => {
         const teamId = 1
         const userId = 10
 
@@ -89,7 +89,7 @@ describe('team actions', () => {
         })
     })
 
-    describe('deleteTeamMember', () => {
+    describe('deleteTeamMember()', () => {
         const teamId = 1
         const userId = 10
 
@@ -110,7 +110,7 @@ describe('team actions', () => {
         })
     })
 
-    describe('deleteTeamMemberList', () => {
+    describe('deleteTeamMemberList()', () => {
         const teamId = 1
         const userIds = fromJS([10, 100, 1000])
 
@@ -131,7 +131,7 @@ describe('team actions', () => {
         })
     })
 
-    describe('fetchTeam', () => {
+    describe('fetchTeam()', () => {
         const teamId = 1
 
         it('works', () => {
@@ -140,6 +140,7 @@ describe('team actions', () => {
 
             return store.dispatch(actions.fetchTeam(teamId))
                 .then((resp) => {
+                    expect(store.getActions()).toMatchSnapshot()
                     expect(resp).toEqualImmutable(fromJS(data))
                 })
         })
@@ -152,7 +153,7 @@ describe('team actions', () => {
         })
     })
 
-    describe('updateTeam', () => {
+    describe('updateTeam()', () => {
         const teamId = 1
         const team = fromJS({
             id: teamId,
@@ -164,6 +165,7 @@ describe('team actions', () => {
 
             return store.dispatch(actions.updateTeam(team))
                 .then((resp) => {
+                    expect(store.getActions()).toMatchSnapshot()
                     expect(resp).toEqualImmutable(team)
                 })
         })
@@ -176,7 +178,7 @@ describe('team actions', () => {
         })
     })
 
-    describe('createTeam', () => {
+    describe('createTeam()', () => {
         const team = fromJS({
             name: 'My Team'
         })
@@ -187,6 +189,7 @@ describe('team actions', () => {
 
             return store.dispatch(actions.createTeam(team))
                 .then((resp) => {
+                    expect(store.getActions()).toMatchSnapshot()
                     expect(resp).toEqualImmutable(respTeam)
                 })
         })
@@ -199,7 +202,7 @@ describe('team actions', () => {
         })
     })
 
-    describe('deleteTeam', () => {
+    describe('deleteTeam()', () => {
         const teamId = 1
 
         it('works', () => {
@@ -207,6 +210,7 @@ describe('team actions', () => {
 
             return store.dispatch(actions.deleteTeam(teamId))
                 .then((resp) => {
+                    expect(store.getActions()).toMatchSnapshot()
                     expect(resp).toEqual(null)
                 })
         })

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`team actions addTeamMember fails 1`] = `
+exports[`team actions addTeamMember() fails 1`] = `
 Array [
   Object {
     "error": [Error: Request failed with status code 500],
@@ -10,7 +10,7 @@ Array [
 ]
 `;
 
-exports[`team actions createTeam fails 1`] = `
+exports[`team actions createTeam() fails 1`] = `
 Array [
   Object {
     "error": [Error: Request failed with status code 500],
@@ -20,7 +20,19 @@ Array [
 ]
 `;
 
-exports[`team actions deleteTeam fails 1`] = `
+exports[`team actions createTeam() works 1`] = `
+Array [
+  Object {
+    "payload": Object {
+      "id": 1,
+      "name": "My Team",
+    },
+    "type": "CREATE_TEAM_SUCCESS",
+  },
+]
+`;
+
+exports[`team actions deleteTeam() fails 1`] = `
 Array [
   Object {
     "error": [Error: Request failed with status code 500],
@@ -30,7 +42,16 @@ Array [
 ]
 `;
 
-exports[`team actions deleteTeamMember fails 1`] = `
+exports[`team actions deleteTeam() works 1`] = `
+Array [
+  Object {
+    "payload": 1,
+    "type": "DELETE_TEAM_SUCCESS",
+  },
+]
+`;
+
+exports[`team actions deleteTeamMember() fails 1`] = `
 Array [
   Object {
     "error": [Error: Request failed with status code 500],
@@ -40,7 +61,7 @@ Array [
 ]
 `;
 
-exports[`team actions deleteTeamMemberList fails 1`] = `
+exports[`team actions deleteTeamMemberList() fails 1`] = `
 Array [
   Object {
     "error": [Error: Request failed with status code 500],
@@ -50,7 +71,7 @@ Array [
 ]
 `;
 
-exports[`team actions fetchTeam fails 1`] = `
+exports[`team actions fetchTeam() fails 1`] = `
 Array [
   Object {
     "error": [Error: Request failed with status code 500],
@@ -60,7 +81,18 @@ Array [
 ]
 `;
 
-exports[`team actions fetchTeamMembersPagination fails 1`] = `
+exports[`team actions fetchTeam() works 1`] = `
+Array [
+  Object {
+    "payload": Object {
+      "data": "test",
+    },
+    "type": "FETCH_TEAM_SUCCESS",
+  },
+]
+`;
+
+exports[`team actions fetchTeamMembersPagination() fails 1`] = `
 Array [
   Object {
     "error": [Error: Request failed with status code 500],
@@ -70,7 +102,7 @@ Array [
 ]
 `;
 
-exports[`team actions fetchTeams fails 1`] = `
+exports[`team actions fetchTeamsPagination() fails 1`] = `
 Array [
   Object {
     "error": [Error: Request failed with status code 500],
@@ -80,12 +112,24 @@ Array [
 ]
 `;
 
-exports[`team actions updateTeam fails 1`] = `
+exports[`team actions updateTeam() fails 1`] = `
 Array [
   Object {
     "error": [Error: Request failed with status code 500],
     "reason": "Failed to update team #1. Please try again.",
     "type": "UPDATE_TEAM_ERROR",
+  },
+]
+`;
+
+exports[`team actions updateTeam() works 1`] = `
+Array [
+  Object {
+    "payload": Object {
+      "id": 1,
+      "name": "My Team",
+    },
+    "type": "UPDATE_TEAM_SUCCESS",
   },
 ]
 `;

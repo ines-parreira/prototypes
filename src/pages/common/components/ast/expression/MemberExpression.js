@@ -18,7 +18,7 @@ const MemberExpression = ({object, property, rule, actions, parent, leftsiblings
     let left
     if (leftsiblings) {
         left = leftsiblings.concat(getSyntaxTreeLeaves(object))
-        // We need to match the object definision ticket => definitions, Ticket
+        // We need to match the object definition ticket => definitions, Ticket
         // this is needed to match the swagger spec structure
         const definition = OBJECT_DEFINITIONS[left.get(1)]
         if (!definition) {

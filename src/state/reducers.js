@@ -19,6 +19,7 @@ import rulesReducer from './rules/reducers'
 import schemasReducer from './schemas/reducers'
 import statsReducer from './stats/reducers'
 import tagsReducer from './tags/reducers'
+import teamReducer from './teams/reducers'
 import ticketReducer from './ticket/reducers'
 import ticketsReducer from './tickets/reducers'
 import usersAuditReducer from './usersAudit/reducers'
@@ -45,6 +46,7 @@ const rootReducer = combineReducers({
     schemas: schemasReducer,
     stats: statsReducer,
     tags: tagsReducer,
+    teams: teamReducer,
     ticket: ticketReducer,
     tickets: ticketsReducer,
     usersAudit: usersAuditReducer,

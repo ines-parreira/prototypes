@@ -50,6 +50,7 @@ export default class Row extends Component<Props, State> {
                         type="checkbox"
                         className="mr-4"
                         checked={isSelected}
+                        onClick={(event) => event.stopPropagation()}
                         onChange={() => select(member.get('id'))}
                     />
                     <Avatar

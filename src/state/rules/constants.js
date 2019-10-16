@@ -70,6 +70,10 @@ const ASSIGN_USER_ACTION_DEFAULT = {
     assignee_user: '' // means unassigned
 }
 
+const ASSIGN_TEAM_ACTION_DEFAULT = {
+    assignee_team: '' // means unassigned
+}
+
 export const ACTION_DEFAULT_STATE = {
     applyMacro: APPLY_MACRO_ACTION_DEFAULT,
     sendEmail: SEND_EMAIL_ACTION_DEFAULT,
@@ -79,6 +83,7 @@ export const ACTION_DEFAULT_STATE = {
     setStatus: SET_STATUS_ACTION_DEFAULT,
     setSubject: SET_SUBJECT_ACTION_DEFAULT,
     setAssignee: ASSIGN_USER_ACTION_DEFAULT,
+    setTeamAssignee: ASSIGN_TEAM_ACTION_DEFAULT,
     replyToTicket: REPLY_TO_TICKET_ACTION_DEFAULT,
 }
 

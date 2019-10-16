@@ -16,8 +16,9 @@ import {type teamType} from './types'
 export const fetchTeamsPagination = (page: number = 1) => (dispatch: dispatchType): Promise<dispatchType> => {
     return axios.get('/api/teams/', {
         params: {
-            page:  page.toString()
-        }})
+            page: page.toString()
+        }
+    })
         .then((json = {}) => json.data)
         .then((resp) => {
             return toImmutable(resp)
@@ -39,9 +40,10 @@ export const fetchTeamsPagination = (page: number = 1) => (dispatch: dispatchTyp
 export const fetchTeamMembersPagination = (teamId: number, page: number = 1, search: string = '') => (dispatch: dispatchType): Promise<dispatchType> => {
     return axios.get(`/api/teams/${teamId}/members/`, {
         params: {
-            page:  page.toString(),
+            page: page.toString(),
             search
-        }})
+        }
+    })
         .then((json = {}) => json.data)
         .then((resp) => {
             return toImmutable(resp)
@@ -59,7 +61,7 @@ export const fetchTeamMembersPagination = (teamId: number, page: number = 1, sea
  * @param teamId
  * @param userId
  */
-export const addTeamMember = (teamId: number, userId: number) => (dispatch: dispatchType): Promise<dispatchType | Map<*,*>> => {
+export const addTeamMember = (teamId: number, userId: number) => (dispatch: dispatchType): Promise<dispatchType | Map<*, *>> => {
     return axios.post(`/api/teams/${teamId}/members/`, {id: userId})
         .then((json = {}) => json.data)
         .then((resp) => {
@@ -83,7 +85,7 @@ export const addTeamMember = (teamId: number, userId: number) => (dispatch: disp
  * @param teamId
  * @param userId
  */
-export const deleteTeamMember = (teamId: number, userId: number) => (dispatch: dispatchType): Promise<dispatchType | Map<*,*>> => {
+export const deleteTeamMember = (teamId: number, userId: number) => (dispatch: dispatchType): Promise<dispatchType | Map<*, *>> => {
     return axios.delete(`/api/teams/${teamId}/members/${userId}/`)
         .then((json = {}) => json.data)
         .then(() => {
@@ -107,7 +109,7 @@ export const deleteTeamMember = (teamId: number, userId: number) => (dispatch: d
  * @param teamId
  * @param userIds
  */
-export const deleteTeamMemberList = (teamId: number, userIds: Set<number>) => (dispatch: dispatchType): Promise<dispatchType | Map<*,*>> => {
+export const deleteTeamMemberList = (teamId: number, userIds: Set<number>) => (dispatch: dispatchType): Promise<dispatchType | Map<*, *>> => {
     return axios.delete(`/api/teams/${teamId}/members/`, {data: {ids: userIds.toJS()}})
         .then((json = {}) => json.data)
         .then(() => {
@@ -130,10 +132,15 @@ export const deleteTeamMemberList = (teamId: number, userIds: Set<number>) => (d
  * Get a team
  * @param teamId
  */
-export const fetchTeam = (teamId: number) => (dispatch: dispatchType): Promise<dispatchType | Map<*,*>> => {
+export const fetchTeam = (teamId: number) => (dispatch: dispatchType): Promise<dispatchType | Map<*, *>> => {
     return axios.get(`/api/teams/${teamId}/`)
         .then((json = {}) => json.data)
         .then((resp) => {
+            dispatch({
+                type: constants.FETCH_TEAM_SUCCESS,
+                payload: resp,
+            })
+
             return toImmutable(resp)
         }, (error) => {
             dispatch({
@@ -148,7 +155,7 @@ export const fetchTeam = (teamId: number) => (dispatch: dispatchType): Promise<d
  * Update a team
  * @param team
  */
-export const updateTeam = (team: teamType) => (dispatch: dispatchType): Promise<dispatchType | Map<*,*>> => {
+export const updateTeam = (team: teamType) => (dispatch: dispatchType): Promise<dispatchType | Map<*, *>> => {
     const teamId = team.get('id')
     return axios.put(`/api/teams/${teamId}/`, toJS(team))
         .then((json = {}) => json.data)
@@ -157,6 +164,11 @@ export const updateTeam = (team: teamType) => (dispatch: dispatchType): Promise<
                 status: 'success',
                 message: 'Team updated',
             }))
+
+            dispatch({
+                type: constants.UPDATE_TEAM_SUCCESS,
+                payload: resp,
+            })
 
             return toImmutable(resp)
         }, (error) => {
@@ -172,7 +184,7 @@ export const updateTeam = (team: teamType) => (dispatch: dispatchType): Promise<
  * Create a team
  * @param team
  */
-export const createTeam = (team: teamType) => (dispatch: dispatchType): Promise<dispatchType | Map<*,*>> => {
+export const createTeam = (team: teamType) => (dispatch: dispatchType): Promise<dispatchType | Map<*, *>> => {
     return axios.post('/api/teams/', toJS(team))
         .then((json = {}) => json.data)
         .then((resp) => {
@@ -180,6 +192,12 @@ export const createTeam = (team: teamType) => (dispatch: dispatchType): Promise<
                 status: 'success',
                 message: 'Team created',
             }))
+
+            dispatch({
+                type: constants.CREATE_TEAM_SUCCESS,
+                payload: resp,
+            })
+
             return toImmutable(resp)
         }, (error) => {
             dispatch({
@@ -194,7 +212,7 @@ export const createTeam = (team: teamType) => (dispatch: dispatchType): Promise<
  * Delete a team
  * @param teamId
  */
-export const deleteTeam = (teamId: number) => (dispatch: dispatchType): Promise<dispatchType | Map<*,*>> => {
+export const deleteTeam = (teamId: number) => (dispatch: dispatchType): Promise<dispatchType | Map<*, *>> => {
     return axios.delete(`/api/teams/${teamId}/`)
         .then((json = {}) => json.data)
         .then(() => {
@@ -202,6 +220,11 @@ export const deleteTeam = (teamId: number) => (dispatch: dispatchType): Promise<
                 status: 'success',
                 message: 'Team deleted',
             }))
+
+            dispatch({
+                type: constants.DELETE_TEAM_SUCCESS,
+                payload: teamId,
+            })
 
             return null
         }, (error) => {

@@ -105,6 +105,15 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
       toggle={true}
       type="button"
     >
+      Assign team
+    </DropdownItem>
+    <DropdownItem
+      key="10"
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
       Delete ticket
     </DropdownItem>
   </DropdownMenu>
@@ -202,6 +211,15 @@ exports[`ActionSelect component should render all non-system actions for non-sys
     </DropdownItem>
     <DropdownItem
       key="9"
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Assign team
+    </DropdownItem>
+    <DropdownItem
+      key="10"
       onClick={[Function]}
       tag="button"
       toggle={true}

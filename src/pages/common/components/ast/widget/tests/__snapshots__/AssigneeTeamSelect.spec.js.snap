@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ast widgets <AssigneeTeamSelect/> render() should render a dropdown with selected value 1`] = `
+<Select
+  onSearchChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "Unassigned",
+        "value": null,
+      },
+      Object {
+        "label": "Team 1",
+        "value": 1,
+      },
+      Object {
+        "label": "Team 2",
+        "value": 2,
+      },
+      Object {
+        "label": "Team 3",
+        "value": 3,
+      },
+    ]
+  }
+  value={1}
+/>
+`;
+
+exports[`ast widgets <AssigneeTeamSelect/> render() should render a dropdown without "Unassign" option 1`] = `
+<Select
+  onSearchChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "Team 1",
+        "value": 1,
+      },
+      Object {
+        "label": "Team 2",
+        "value": 2,
+      },
+      Object {
+        "label": "Team 3",
+        "value": 3,
+      },
+    ]
+  }
+  value={1}
+/>
+`;
+
+exports[`ast widgets <AssigneeTeamSelect/> render() should render a dropdown without selected value 1`] = `
+<Select
+  onSearchChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "Unassigned",
+        "value": null,
+      },
+      Object {
+        "label": "Team 1",
+        "value": 1,
+      },
+      Object {
+        "label": "Team 2",
+        "value": 2,
+      },
+      Object {
+        "label": "Team 3",
+        "value": 3,
+      },
+    ]
+  }
+/>
+`;
