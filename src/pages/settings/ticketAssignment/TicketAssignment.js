@@ -25,6 +25,7 @@ type Props = {
 type State = {
     isLoading: boolean,
     unassignOnReply: boolean,
+    autoAssignToTeams: boolean,
     unassignOnReplyChannels: string[]
 }
 
@@ -32,6 +33,7 @@ export class TicketAssignment extends React.Component<Props, State> {
     state = {
         isLoading: false,
         unassignOnReply: true,
+        autoAssignToTeams: false,
         // todo(@samy): remove when existing chat-assignment settings have been migrated
         unassignOnReplyChannels: [CHAT_CHANNEL, FACEBOOK_MESSENGER_CHANNEL],
     }
@@ -49,6 +51,7 @@ export class TicketAssignment extends React.Component<Props, State> {
         if (!ticketAssignmentSettings.isEmpty()) {
             this.setState({
                 unassignOnReply: ticketAssignmentSettings.getIn(['data', 'unassign_on_reply']),
+                autoAssignToTeams: ticketAssignmentSettings.getIn(['data', 'auto_assign_to_teams']),
                 unassignOnReplyChannels: ticketAssignmentSettings.getIn(['data', 'unassign_on_reply_channels'])
                     || [CHAT_CHANNEL, FACEBOOK_MESSENGER_CHANNEL],
             })
@@ -60,13 +63,14 @@ export class TicketAssignment extends React.Component<Props, State> {
         this.setState({isLoading: true})
 
         const {ticketAssignmentSettings, submitSetting} = this.props
-        const {unassignOnReply, unassignOnReplyChannels} = this.state
+        const {unassignOnReply, autoAssignToTeams, unassignOnReplyChannels} = this.state
 
         submitSetting({
             id: ticketAssignmentSettings.get('id'),
-            type: currentAccountConstants.SETTING_TYPE_CHAT_ASSIGNMENT,
+            type: currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,
             data: {
                 unassign_on_reply: unassignOnReply,
+                auto_assign_to_teams: autoAssignToTeams,
                 unassign_on_reply_channels: unassignOnReplyChannels,
             }
         })
@@ -81,7 +85,7 @@ export class TicketAssignment extends React.Component<Props, State> {
     }
 
     render() {
-        const {unassignOnReply, unassignOnReplyChannels, isLoading} = this.state
+        const {unassignOnReply, unassignOnReplyChannels, autoAssignToTeams, isLoading} = this.state
 
         return (
             <div className="full-width">
@@ -100,7 +104,7 @@ export class TicketAssignment extends React.Component<Props, State> {
                                         name="unassign_on_reply"
                                         type="checkbox"
                                         label="When there is a new reply in a ticket of the following channels, if the
-                                        user assigned to it is not available, un-assign the ticket"
+                                            user assigned to it is not available, un-assign the ticket"
                                         value={unassignOnReply}
                                         onChange={(value) => this.setState({unassignOnReply: value})}
                                     />
@@ -127,6 +131,17 @@ export class TicketAssignment extends React.Component<Props, State> {
                                         </li>
                                         <li>the user is not on Gorgias on any device</li>
                                     </ul>
+                                </div>
+                                <div className="mb-2">
+                                    <Label className="control-label">Auto-assign tickets</Label>
+                                    <BooleanField
+                                        name="auto_assign_to_teams"
+                                        type="checkbox"
+                                        label="Auto-assign tickets that are assigned to a team, to an available agent of
+                                            this team, as soon as an agent of the team is available"
+                                        value={autoAssignToTeams}
+                                        onChange={(value) => this.setState({autoAssignToTeams: value})}
+                                    />
                                 </div>
                             </Col>
                         </Row>
