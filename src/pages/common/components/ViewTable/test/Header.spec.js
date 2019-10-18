@@ -9,7 +9,6 @@ import configureStore from '../../../../../store/configureStore'
 import * as viewsFixtures from '../../../../../fixtures/views'
 import * as viewsActions from '../../../../../state/views/actions'
 import Header from '../Header'
-import EmojiSelect from '../EmojiSelect'
 
 jest.mock('../../../../../state/views/actions', () => {
     const _identity = require('lodash/identity')
@@ -37,13 +36,11 @@ jest.mock('react-router', () => {
 describe('ViewTable::Header', () => {
     const fixtureView = viewsFixtures.view
 
-    const storeWithActiveView = (activeView) => ({
+    const minStore = {
         views: fromJS({
-            active: activeView,
+            active: fixtureView,
         })
-    })
-
-    const minStore = storeWithActiveView(fixtureView)
+    }
 
     const minProps = {
         type: 'ticket',
@@ -145,131 +142,6 @@ describe('ViewTable::Header', () => {
             expect(component.state('askDeleteConfirmation')).toBe(false)
             component.instance()._toggleDeleteConfirmation()
             expect(component.state('askDeleteConfirmation')).toBe(true)
-        })
-    })
-
-    describe('emoji picker', () => {
-        const editModeActiveView = fromJS({
-            ...fixtureView,
-            editMode: true
-        })
-
-        const emoji = '1'
-
-        describe('.render()', () => {
-            it('should render emoji if decoration.emoji is a string', () => {
-                const activeView = editModeActiveView.merge({
-                    decoration: {emoji: 'foo'}
-                })
-                const component = shallow(
-                    <Header
-                        {...minProps}
-                        store={configureStore(storeWithActiveView(activeView))}
-                    />
-                ).dive().dive()
-                expect(component).toMatchSnapshot()
-            })
-
-            it('should not render emoji if decoration is not an object', () => {
-                const activeView = editModeActiveView.merge({
-                    decoration: 'foo'
-                })
-                const component = shallow(
-                    <Header
-                        {...minProps}
-                        store={configureStore(storeWithActiveView(activeView))}
-                    />
-                ).dive().dive()
-                expect(component).toMatchSnapshot()
-            })
-
-            it('should not render emoji if decoration.emoji is not a string', () => {
-                const activeView = editModeActiveView.merge({
-                    decoration: {
-                        emoji: {}
-                    }
-                })
-                const component = shallow(
-                    <Header
-                        {...minProps}
-                        store={configureStore(storeWithActiveView(activeView))}
-                    />
-                ).dive().dive()
-                expect(component).toMatchSnapshot()
-            })
-        })
-
-        describe('emoji select', () => {
-            it('should update decoration.emoji on emoji select', () => {
-                const activeView = editModeActiveView.merge({
-                    decoration: null
-                })
-                const component = shallow(
-                    <Header
-                        {...minProps}
-                        store={configureStore(storeWithActiveView(activeView))}
-                    />
-                ).dive().dive()
-                component.find(EmojiSelect).props().onEmojiSelect(emoji)
-                const expectedActiveView = activeView.merge({
-                    decoration: {emoji}
-                })
-                expect(viewsActions.updateView).toHaveBeenLastCalledWith(expectedActiveView)
-            })
-
-            it('should not override existing decoration object properties', () => {
-                const decoration = {foo: 'bar'}
-                const activeView = editModeActiveView.merge({decoration})
-                const component = shallow(
-                    <Header
-                        {...minProps}
-                        store={configureStore(storeWithActiveView(activeView))}
-                    />
-                ).dive().dive()
-                component.find(EmojiSelect).props().onEmojiSelect(emoji)
-                const expectedActiveView = activeView.merge({
-                    decoration: {
-                        ...decoration,
-                        emoji
-                    }
-                })
-                expect(viewsActions.updateView).toHaveBeenLastCalledWith(expectedActiveView)
-            })
-        })
-
-        describe('emoji clear', () => {
-            it('should unset decoration.emoji view on emoji clear', () => {
-                const activeView = editModeActiveView.merge({
-                    decoration: {emoji}
-                })
-                const component = shallow(
-                    <Header
-                        {...minProps}
-                        store={configureStore(storeWithActiveView(activeView))}
-                    />
-                ).dive().dive()
-
-                component.find(EmojiSelect).props().onEmojiClear()
-                const expectedActiveView = activeView.merge({
-                    decoration: {}
-                })
-                expect(viewsActions.updateView).toHaveBeenLastCalledWith(expectedActiveView)
-            })
-
-            it('should not change the active view on emoji clear if decoration is null', () => {
-                const activeView = editModeActiveView.merge({
-                    decoration: null
-                })
-                const component = shallow(
-                    <Header
-                        {...minProps}
-                        store={configureStore(storeWithActiveView(activeView))}
-                    />
-                ).dive().dive()
-
-                component.find(EmojiSelect).props().onEmojiClear()
-                expect(viewsActions.updateView).not.toHaveBeenCalled()
-            })
         })
     })
 })

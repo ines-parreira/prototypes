@@ -1,20 +1,20 @@
 //@flow
 import React, {Component} from 'react'
-import {Emoji} from 'emoji-mart'
+import {Emoji, Picker} from 'emoji-mart'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import {
+    Form as BootstrapForm,
     Breadcrumb,
     BreadcrumbItem,
-    Button,
     ButtonGroup,
     Col,
     Container,
-    Form as BootstrapForm,
+    Button,
     FormGroup,
+    Row,
     Popover,
-    PopoverBody,
-    Row
+    PopoverBody
 } from 'reactstrap'
 import {browserHistory, Link} from 'react-router'
 import classnames from 'classnames'
@@ -25,8 +25,8 @@ import PageHeader from '../../common/components/PageHeader'
 import InputField from '../../common/forms/InputField'
 import SecondaryNavbar from '../../common/components/SecondaryNavbar/SecondaryNavbar'
 import ConfirmButton from '../../common/components/ConfirmButton'
+
 import {type teamType} from '../../../state/teams/types'
-import EmojiPicker from '../../common/components/EmojiPicker'
 
 import css from './Form.less'
 
@@ -212,7 +212,12 @@ export default class Form extends Component<Props, State> {
                                             className={css.popover}
                                         >
                                             <PopoverBody className={'p-0'}>
-                                                <EmojiPicker
+                                                <Picker
+                                                    autoFocus
+                                                    native
+                                                    color="#0d87dd"
+                                                    perLine={8}
+                                                    sheetSize={16}
                                                     showPreview={false}
                                                     onClick={(emoji) => {
                                                         this.setState({
