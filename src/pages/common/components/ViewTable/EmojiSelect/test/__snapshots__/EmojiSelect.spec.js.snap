@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<EmojiSelect/> .render() should show smiley when no emoji selected 1`] = `
+<div
+  className="picker"
+>
+  <span
+    className="material-icons empty icon"
+    onClick={[Function]}
+  >
+    insert_emoticon
+  </span>
+</div>
+`;
+
+exports[`<EmojiSelect/> .render() show emoji picker on icon click 1`] = `
+<div
+  className="picker"
+>
+  <span
+    className="icon"
+    onClick={[Function]}
+  >
+    1
+  </span>
+</div>
+`;
