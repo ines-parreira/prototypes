@@ -115,8 +115,8 @@ describe('<TicketAssignment/>', () => {
 
         it('should render selected channels', (done) => {
             const settings = unassignOnReplyEnabledSetting.setIn(
-                ['data', 'unassign_on_reply_channels'],
-                [EMAIL_CHANNEL]
+                ['data', 'assignment_channels'],
+                fromJS([EMAIL_CHANNEL])
             )
 
             const component = shallow(
@@ -143,7 +143,7 @@ describe('<TicketAssignment/>', () => {
 
         const state = {
             unassignOnReply: false,
-            unassignOnReplyChannels: [EMAIL_CHANNEL],
+            assignmentChannels: [EMAIL_CHANNEL],
             autoAssignToTeams: true,
         }
 
@@ -157,7 +157,7 @@ describe('<TicketAssignment/>', () => {
                 type: currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,
                 data: {
                     unassign_on_reply: false,
-                    unassign_on_reply_channels: [EMAIL_CHANNEL],
+                    assignment_channels: [EMAIL_CHANNEL],
                     auto_assign_to_teams: true,
                 }
             })

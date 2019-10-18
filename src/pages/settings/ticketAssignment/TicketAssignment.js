@@ -26,7 +26,7 @@ type State = {
     isLoading: boolean,
     unassignOnReply: boolean,
     autoAssignToTeams: boolean,
-    unassignOnReplyChannels: string[]
+    assignmentChannels: string[]
 }
 
 export class TicketAssignment extends React.Component<Props, State> {
@@ -35,7 +35,7 @@ export class TicketAssignment extends React.Component<Props, State> {
         unassignOnReply: true,
         autoAssignToTeams: false,
         // todo(@samy): remove when existing chat-assignment settings have been migrated
-        unassignOnReplyChannels: [CHAT_CHANNEL, FACEBOOK_MESSENGER_CHANNEL],
+        assignmentChannels: [CHAT_CHANNEL, FACEBOOK_MESSENGER_CHANNEL],
     }
 
     static channelsToOptions(channels: string[]): Option[] {
@@ -47,13 +47,15 @@ export class TicketAssignment extends React.Component<Props, State> {
 
     componentDidMount() {
         const {ticketAssignmentSettings} = this.props
+        const assignmentChannels = ticketAssignmentSettings.getIn(['data', 'assignment_channels'])
 
         if (!ticketAssignmentSettings.isEmpty()) {
             this.setState({
                 unassignOnReply: ticketAssignmentSettings.getIn(['data', 'unassign_on_reply']),
                 autoAssignToTeams: ticketAssignmentSettings.getIn(['data', 'auto_assign_to_teams']),
-                unassignOnReplyChannels: ticketAssignmentSettings.getIn(['data', 'unassign_on_reply_channels'])
-                    || [CHAT_CHANNEL, FACEBOOK_MESSENGER_CHANNEL],
+                assignmentChannels: assignmentChannels
+                    ? assignmentChannels.toJS()
+                    : [CHAT_CHANNEL, FACEBOOK_MESSENGER_CHANNEL],
             })
         }
     }
@@ -63,7 +65,7 @@ export class TicketAssignment extends React.Component<Props, State> {
         this.setState({isLoading: true})
 
         const {ticketAssignmentSettings, submitSetting} = this.props
-        const {unassignOnReply, autoAssignToTeams, unassignOnReplyChannels} = this.state
+        const {unassignOnReply, autoAssignToTeams, assignmentChannels} = this.state
 
         submitSetting({
             id: ticketAssignmentSettings.get('id'),
@@ -71,7 +73,7 @@ export class TicketAssignment extends React.Component<Props, State> {
             data: {
                 unassign_on_reply: unassignOnReply,
                 auto_assign_to_teams: autoAssignToTeams,
-                unassign_on_reply_channels: unassignOnReplyChannels,
+                assignment_channels: assignmentChannels,
             }
         })
             // $FlowFixMe
@@ -80,12 +82,12 @@ export class TicketAssignment extends React.Component<Props, State> {
 
     _onChannelsChange = (options: Option[]) => {
         this.setState({
-            unassignOnReplyChannels: options.map((option) => option.value)
+            assignmentChannels: options.map((option) => option.value)
         })
     }
 
     render() {
-        const {unassignOnReply, unassignOnReplyChannels, autoAssignToTeams, isLoading} = this.state
+        const {unassignOnReply, assignmentChannels, autoAssignToTeams, isLoading} = this.state
 
         return (
             <div className="full-width">
@@ -99,6 +101,17 @@ export class TicketAssignment extends React.Component<Props, State> {
                         <Row className="mb-2">
                             <Col md="5">
                                 <div className="mb-2">
+                                    <Label className="control-label">Auto-assign tickets</Label>
+                                    <BooleanField
+                                        name="auto_assign_to_teams"
+                                        type="checkbox"
+                                        label="Auto-assign tickets that are assigned to a team, to an available agent of
+                                            this team, as soon as an agent of the team is available"
+                                        value={autoAssignToTeams}
+                                        onChange={(value) => this.setState({autoAssignToTeams: value})}
+                                    />
+                                </div>
+                                <div className="mb-2">
                                     <Label className="control-label">Un-assign on reply</Label>
                                     <BooleanField
                                         name="unassign_on_reply"
@@ -109,19 +122,6 @@ export class TicketAssignment extends React.Component<Props, State> {
                                         onChange={(value) => this.setState({unassignOnReply: value})}
                                     />
                                 </div>
-                                {unassignOnReply && (
-                                    <div className="mb-2">
-                                        <MultiSelectOptionsField
-                                            options={TicketAssignment.channelsToOptions(CHANNELS)}
-                                            selectedOptions={
-                                                TicketAssignment.channelsToOptions(unassignOnReplyChannels)
-                                            }
-                                            plural="channels"
-                                            singular="channel"
-                                            onChange={this._onChannelsChange}
-                                        />
-                                    </div>
-                                )}
                                 <div className="text-faded">
                                     Users are considered as not available when any of those conditions is true:
                                     <ul>
@@ -133,14 +133,16 @@ export class TicketAssignment extends React.Component<Props, State> {
                                     </ul>
                                 </div>
                                 <div className="mb-2">
-                                    <Label className="control-label">Auto-assign tickets</Label>
-                                    <BooleanField
-                                        name="auto_assign_to_teams"
-                                        type="checkbox"
-                                        label="Auto-assign tickets that are assigned to a team, to an available agent of
-                                            this team, as soon as an agent of the team is available"
-                                        value={autoAssignToTeams}
-                                        onChange={(value) => this.setState({autoAssignToTeams: value})}
+                                    <Label className="control-label">Channels</Label>
+                                    <p>Apply ticket assignment settings to the following channels:</p>
+                                    <MultiSelectOptionsField
+                                        options={TicketAssignment.channelsToOptions(CHANNELS)}
+                                        selectedOptions={TicketAssignment.channelsToOptions(assignmentChannels)}
+                                        plural="channels"
+                                        singular="channel"
+                                        onChange={this._onChannelsChange}
+                                        matchInput
+                                        caseInsensitive
                                     />
                                 </div>
                             </Col>

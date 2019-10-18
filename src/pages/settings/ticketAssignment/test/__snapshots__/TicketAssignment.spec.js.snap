@@ -49,6 +49,31 @@ exports[`<TicketAssignment/> render() should render selected channels 1`] = `
                 ]
               }
             >
+              Auto-assign tickets
+            </Label>
+            <BooleanField
+              label="Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available"
+              name="auto_assign_to_teams"
+              onChange={[Function]}
+              type="checkbox"
+            />
+          </div>
+          <div
+            className="mb-2"
+          >
+            <Label
+              className="control-label"
+              tag="label"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
               Un-assign on reply
             </Label>
             <BooleanField
@@ -60,11 +85,49 @@ exports[`<TicketAssignment/> render() should render selected channels 1`] = `
             />
           </div>
           <div
+            className="text-faded"
+          >
+            Users are considered as not available when any of those conditions is true:
+            <ul>
+              <li>
+                the user turned off its "Available" setting
+              </li>
+              <li>
+                the user has been inactive on Gorgias for more than
+                 
+                10
+                 minutes
+              </li>
+              <li>
+                the user is not on Gorgias on any device
+              </li>
+            </ul>
+          </div>
+          <div
             className="mb-2"
           >
+            <Label
+              className="control-label"
+              tag="label"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              Channels
+            </Label>
+            <p>
+              Apply ticket assignment settings to the following channels:
+            </p>
             <MultiSelectOptionsField
               allowCustomOptions={false}
-              matchInput={false}
+              caseInsensitive={true}
+              matchInput={true}
               onChange={[Function]}
               options={
                 Array [
@@ -125,50 +188,6 @@ exports[`<TicketAssignment/> render() should render selected channels 1`] = `
               }
               singular="channel"
               tagColor="#0275d8"
-            />
-          </div>
-          <div
-            className="text-faded"
-          >
-            Users are considered as not available when any of those conditions is true:
-            <ul>
-              <li>
-                the user turned off its "Available" setting
-              </li>
-              <li>
-                the user has been inactive on Gorgias for more than
-                 
-                10
-                 minutes
-              </li>
-              <li>
-                the user is not on Gorgias on any device
-              </li>
-            </ul>
-          </div>
-          <div
-            className="mb-2"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Auto-assign tickets
-            </Label>
-            <BooleanField
-              label="Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available"
-              name="auto_assign_to_teams"
-              onChange={[Function]}
-              type="checkbox"
             />
           </div>
         </Col>
@@ -236,6 +255,32 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox c
                 ]
               }
             >
+              Auto-assign tickets
+            </Label>
+            <BooleanField
+              label="Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available"
+              name="auto_assign_to_teams"
+              onChange={[Function]}
+              type="checkbox"
+              value={true}
+            />
+          </div>
+          <div
+            className="mb-2"
+          >
+            <Label
+              className="control-label"
+              tag="label"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
               Un-assign on reply
             </Label>
             <BooleanField
@@ -280,14 +325,79 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox c
                 ]
               }
             >
-              Auto-assign tickets
+              Channels
             </Label>
-            <BooleanField
-              label="Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available"
-              name="auto_assign_to_teams"
+            <p>
+              Apply ticket assignment settings to the following channels:
+            </p>
+            <MultiSelectOptionsField
+              allowCustomOptions={false}
+              caseInsensitive={true}
+              matchInput={true}
               onChange={[Function]}
-              type="checkbox"
-              value={true}
+              options={
+                Array [
+                  Object {
+                    "label": "aircall",
+                    "value": "aircall",
+                  },
+                  Object {
+                    "label": "api",
+                    "value": "api",
+                  },
+                  Object {
+                    "label": "chat",
+                    "value": "chat",
+                  },
+                  Object {
+                    "label": "email",
+                    "value": "email",
+                  },
+                  Object {
+                    "label": "facebook",
+                    "value": "facebook",
+                  },
+                  Object {
+                    "label": "facebook-messenger",
+                    "value": "facebook-messenger",
+                  },
+                  Object {
+                    "label": "instagram-ad-comment",
+                    "value": "instagram-ad-comment",
+                  },
+                  Object {
+                    "label": "instagram-comment",
+                    "value": "instagram-comment",
+                  },
+                  Object {
+                    "label": "phone",
+                    "value": "phone",
+                  },
+                  Object {
+                    "label": "sms",
+                    "value": "sms",
+                  },
+                  Object {
+                    "label": "twitter",
+                    "value": "twitter",
+                  },
+                ]
+              }
+              plural="channels"
+              selectedOptions={
+                Array [
+                  Object {
+                    "label": "chat",
+                    "value": "chat",
+                  },
+                  Object {
+                    "label": "facebook-messenger",
+                    "value": "facebook-messenger",
+                  },
+                ]
+              }
+              singular="channel"
+              tagColor="#0275d8"
             />
           </div>
         </Col>
@@ -355,6 +465,32 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox u
                 ]
               }
             >
+              Auto-assign tickets
+            </Label>
+            <BooleanField
+              label="Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available"
+              name="auto_assign_to_teams"
+              onChange={[Function]}
+              type="checkbox"
+              value={false}
+            />
+          </div>
+          <div
+            className="mb-2"
+          >
+            <Label
+              className="control-label"
+              tag="label"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
               Un-assign on reply
             </Label>
             <BooleanField
@@ -399,14 +535,79 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox u
                 ]
               }
             >
-              Auto-assign tickets
+              Channels
             </Label>
-            <BooleanField
-              label="Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available"
-              name="auto_assign_to_teams"
+            <p>
+              Apply ticket assignment settings to the following channels:
+            </p>
+            <MultiSelectOptionsField
+              allowCustomOptions={false}
+              caseInsensitive={true}
+              matchInput={true}
               onChange={[Function]}
-              type="checkbox"
-              value={false}
+              options={
+                Array [
+                  Object {
+                    "label": "aircall",
+                    "value": "aircall",
+                  },
+                  Object {
+                    "label": "api",
+                    "value": "api",
+                  },
+                  Object {
+                    "label": "chat",
+                    "value": "chat",
+                  },
+                  Object {
+                    "label": "email",
+                    "value": "email",
+                  },
+                  Object {
+                    "label": "facebook",
+                    "value": "facebook",
+                  },
+                  Object {
+                    "label": "facebook-messenger",
+                    "value": "facebook-messenger",
+                  },
+                  Object {
+                    "label": "instagram-ad-comment",
+                    "value": "instagram-ad-comment",
+                  },
+                  Object {
+                    "label": "instagram-comment",
+                    "value": "instagram-comment",
+                  },
+                  Object {
+                    "label": "phone",
+                    "value": "phone",
+                  },
+                  Object {
+                    "label": "sms",
+                    "value": "sms",
+                  },
+                  Object {
+                    "label": "twitter",
+                    "value": "twitter",
+                  },
+                ]
+              }
+              plural="channels"
+              selectedOptions={
+                Array [
+                  Object {
+                    "label": "chat",
+                    "value": "chat",
+                  },
+                  Object {
+                    "label": "facebook-messenger",
+                    "value": "facebook-messenger",
+                  },
+                ]
+              }
+              singular="channel"
+              tagColor="#0275d8"
             />
           </div>
         </Col>
@@ -474,6 +675,31 @@ exports[`<TicketAssignment/> render() should render the "Save changes" button lo
                 ]
               }
             >
+              Auto-assign tickets
+            </Label>
+            <BooleanField
+              label="Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available"
+              name="auto_assign_to_teams"
+              onChange={[Function]}
+              type="checkbox"
+            />
+          </div>
+          <div
+            className="mb-2"
+          >
+            <Label
+              className="control-label"
+              tag="label"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
               Un-assign on reply
             </Label>
             <BooleanField
@@ -519,13 +745,79 @@ exports[`<TicketAssignment/> render() should render the "Save changes" button lo
                 ]
               }
             >
-              Auto-assign tickets
+              Channels
             </Label>
-            <BooleanField
-              label="Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available"
-              name="auto_assign_to_teams"
+            <p>
+              Apply ticket assignment settings to the following channels:
+            </p>
+            <MultiSelectOptionsField
+              allowCustomOptions={false}
+              caseInsensitive={true}
+              matchInput={true}
               onChange={[Function]}
-              type="checkbox"
+              options={
+                Array [
+                  Object {
+                    "label": "aircall",
+                    "value": "aircall",
+                  },
+                  Object {
+                    "label": "api",
+                    "value": "api",
+                  },
+                  Object {
+                    "label": "chat",
+                    "value": "chat",
+                  },
+                  Object {
+                    "label": "email",
+                    "value": "email",
+                  },
+                  Object {
+                    "label": "facebook",
+                    "value": "facebook",
+                  },
+                  Object {
+                    "label": "facebook-messenger",
+                    "value": "facebook-messenger",
+                  },
+                  Object {
+                    "label": "instagram-ad-comment",
+                    "value": "instagram-ad-comment",
+                  },
+                  Object {
+                    "label": "instagram-comment",
+                    "value": "instagram-comment",
+                  },
+                  Object {
+                    "label": "phone",
+                    "value": "phone",
+                  },
+                  Object {
+                    "label": "sms",
+                    "value": "sms",
+                  },
+                  Object {
+                    "label": "twitter",
+                    "value": "twitter",
+                  },
+                ]
+              }
+              plural="channels"
+              selectedOptions={
+                Array [
+                  Object {
+                    "label": "chat",
+                    "value": "chat",
+                  },
+                  Object {
+                    "label": "facebook-messenger",
+                    "value": "facebook-messenger",
+                  },
+                ]
+              }
+              singular="channel"
+              tagColor="#0275d8"
             />
           </div>
         </Col>
@@ -593,6 +885,31 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
                 ]
               }
             >
+              Auto-assign tickets
+            </Label>
+            <BooleanField
+              label="Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available"
+              name="auto_assign_to_teams"
+              onChange={[Function]}
+              type="checkbox"
+            />
+          </div>
+          <div
+            className="mb-2"
+          >
+            <Label
+              className="control-label"
+              tag="label"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
               Un-assign on reply
             </Label>
             <BooleanField
@@ -604,11 +921,49 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
             />
           </div>
           <div
+            className="text-faded"
+          >
+            Users are considered as not available when any of those conditions is true:
+            <ul>
+              <li>
+                the user turned off its "Available" setting
+              </li>
+              <li>
+                the user has been inactive on Gorgias for more than
+                 
+                10
+                 minutes
+              </li>
+              <li>
+                the user is not on Gorgias on any device
+              </li>
+            </ul>
+          </div>
+          <div
             className="mb-2"
           >
+            <Label
+              className="control-label"
+              tag="label"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              Channels
+            </Label>
+            <p>
+              Apply ticket assignment settings to the following channels:
+            </p>
             <MultiSelectOptionsField
               allowCustomOptions={false}
-              matchInput={false}
+              caseInsensitive={true}
+              matchInput={true}
               onChange={[Function]}
               options={
                 Array [
@@ -673,50 +1028,6 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
               }
               singular="channel"
               tagColor="#0275d8"
-            />
-          </div>
-          <div
-            className="text-faded"
-          >
-            Users are considered as not available when any of those conditions is true:
-            <ul>
-              <li>
-                the user turned off its "Available" setting
-              </li>
-              <li>
-                the user has been inactive on Gorgias for more than
-                 
-                10
-                 minutes
-              </li>
-              <li>
-                the user is not on Gorgias on any device
-              </li>
-            </ul>
-          </div>
-          <div
-            className="mb-2"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Auto-assign tickets
-            </Label>
-            <BooleanField
-              label="Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available"
-              name="auto_assign_to_teams"
-              onChange={[Function]}
-              type="checkbox"
             />
           </div>
         </Col>
@@ -784,6 +1095,32 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
                 ]
               }
             >
+              Auto-assign tickets
+            </Label>
+            <BooleanField
+              label="Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available"
+              name="auto_assign_to_teams"
+              onChange={[Function]}
+              type="checkbox"
+              value={false}
+            />
+          </div>
+          <div
+            className="mb-2"
+          >
+            <Label
+              className="control-label"
+              tag="label"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
               Un-assign on reply
             </Label>
             <BooleanField
@@ -795,11 +1132,49 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
             />
           </div>
           <div
+            className="text-faded"
+          >
+            Users are considered as not available when any of those conditions is true:
+            <ul>
+              <li>
+                the user turned off its "Available" setting
+              </li>
+              <li>
+                the user has been inactive on Gorgias for more than
+                 
+                10
+                 minutes
+              </li>
+              <li>
+                the user is not on Gorgias on any device
+              </li>
+            </ul>
+          </div>
+          <div
             className="mb-2"
           >
+            <Label
+              className="control-label"
+              tag="label"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              Channels
+            </Label>
+            <p>
+              Apply ticket assignment settings to the following channels:
+            </p>
             <MultiSelectOptionsField
               allowCustomOptions={false}
-              matchInput={false}
+              caseInsensitive={true}
+              matchInput={true}
               onChange={[Function]}
               options={
                 Array [
@@ -864,51 +1239,6 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
               }
               singular="channel"
               tagColor="#0275d8"
-            />
-          </div>
-          <div
-            className="text-faded"
-          >
-            Users are considered as not available when any of those conditions is true:
-            <ul>
-              <li>
-                the user turned off its "Available" setting
-              </li>
-              <li>
-                the user has been inactive on Gorgias for more than
-                 
-                10
-                 minutes
-              </li>
-              <li>
-                the user is not on Gorgias on any device
-              </li>
-            </ul>
-          </div>
-          <div
-            className="mb-2"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Auto-assign tickets
-            </Label>
-            <BooleanField
-              label="Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available"
-              name="auto_assign_to_teams"
-              onChange={[Function]}
-              type="checkbox"
-              value={false}
             />
           </div>
         </Col>
@@ -976,6 +1306,31 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
                 ]
               }
             >
+              Auto-assign tickets
+            </Label>
+            <BooleanField
+              label="Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available"
+              name="auto_assign_to_teams"
+              onChange={[Function]}
+              type="checkbox"
+            />
+          </div>
+          <div
+            className="mb-2"
+          >
+            <Label
+              className="control-label"
+              tag="label"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
               Un-assign on reply
             </Label>
             <BooleanField
@@ -1021,13 +1376,79 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
                 ]
               }
             >
-              Auto-assign tickets
+              Channels
             </Label>
-            <BooleanField
-              label="Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available"
-              name="auto_assign_to_teams"
+            <p>
+              Apply ticket assignment settings to the following channels:
+            </p>
+            <MultiSelectOptionsField
+              allowCustomOptions={false}
+              caseInsensitive={true}
+              matchInput={true}
               onChange={[Function]}
-              type="checkbox"
+              options={
+                Array [
+                  Object {
+                    "label": "aircall",
+                    "value": "aircall",
+                  },
+                  Object {
+                    "label": "api",
+                    "value": "api",
+                  },
+                  Object {
+                    "label": "chat",
+                    "value": "chat",
+                  },
+                  Object {
+                    "label": "email",
+                    "value": "email",
+                  },
+                  Object {
+                    "label": "facebook",
+                    "value": "facebook",
+                  },
+                  Object {
+                    "label": "facebook-messenger",
+                    "value": "facebook-messenger",
+                  },
+                  Object {
+                    "label": "instagram-ad-comment",
+                    "value": "instagram-ad-comment",
+                  },
+                  Object {
+                    "label": "instagram-comment",
+                    "value": "instagram-comment",
+                  },
+                  Object {
+                    "label": "phone",
+                    "value": "phone",
+                  },
+                  Object {
+                    "label": "sms",
+                    "value": "sms",
+                  },
+                  Object {
+                    "label": "twitter",
+                    "value": "twitter",
+                  },
+                ]
+              }
+              plural="channels"
+              selectedOptions={
+                Array [
+                  Object {
+                    "label": "chat",
+                    "value": "chat",
+                  },
+                  Object {
+                    "label": "facebook-messenger",
+                    "value": "facebook-messenger",
+                  },
+                ]
+              }
+              singular="channel"
+              tagColor="#0275d8"
             />
           </div>
         </Col>
