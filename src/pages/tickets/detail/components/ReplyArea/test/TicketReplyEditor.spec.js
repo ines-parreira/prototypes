@@ -4,9 +4,6 @@ import {fromJS} from 'immutable'
 import {EditorState, ContentState} from 'draft-js'
 import _noop from 'lodash/noop'
 
-import {
-    ONLY_ONE_ATTACHMENT_SOURCE_TYPES,
-} from '../../../../../../config/ticket'
 import configureStore from '../../../../../../store/configureStore'
 import ConnectedTicketReplyEditor, {
     TicketReplyEditor
@@ -92,103 +89,5 @@ describe('TicketReplyEditor component', () => {
             expect(newMessageText).toBe('')
             done()
         }, 500)
-    })
-
-    describe('_cantAddAttachments method', () => {
-        const commonProps = {
-            agents: [],
-            actions: {},
-            notify: _noop,
-            ticket: fromJS({})
-        }
-
-        it('should not allow to add an attachment if there is already an attachment for source types in ' +
-            'ONLY_ONE_ATTACHMENT_SOURCE_TYPES', () => {
-            ONLY_ONE_ATTACHMENT_SOURCE_TYPES.forEach((sourceType) => {
-                const component = shallow(
-                    <TicketReplyEditor
-                        newMessage={fromJS({
-                            newMessage: {
-                                source: {
-                                    type: sourceType,
-                                }
-                            },
-                            state: {}
-                        })}
-                        newMessageType={sourceType}
-                        attachments={fromJS([{name: 'attachment already existing'}])}
-                        {...commonProps}
-                    />
-                ).instance()
-
-                expect(component._canAddAttachments([1])).toBe(false)
-            })
-        })
-
-        it('should not allow to add multiple attachments for source types in ONLY_ONE_ATTACHMENT_SOURCE_TYPES', () => {
-            ONLY_ONE_ATTACHMENT_SOURCE_TYPES.forEach((sourceType) => {
-                const component = shallow(
-                    <TicketReplyEditor
-                        newMessage={fromJS({
-                            newMessage: {
-                                source: {
-                                    type: sourceType,
-                                },
-                            },
-                            state: {}
-                        })}
-                        newMessageType={sourceType}
-                        {...commonProps}
-                    />
-                ).instance()
-
-                expect(component._canAddAttachments([1, 2])).toBe(false)
-            })
-        })
-
-        it('should allow to add an attachment for source types in ONLY_ONE_ATTACHMENT_SOURCE_TYPES because there is ' +
-            'no other attachments', () => {
-            ONLY_ONE_ATTACHMENT_SOURCE_TYPES.forEach((sourceType) => {
-                const component = shallow(
-                    <TicketReplyEditor
-                        newMessage={fromJS({
-                            newMessage: {
-                                source: {
-                                    type: sourceType,
-                                },
-                            },
-                            state: {}
-                        })}
-                        newMessageType={sourceType}
-                        {...commonProps}
-                    />
-                ).instance()
-
-                expect(component._canAddAttachments([1])).toBe(true)
-            })
-        })
-
-        it('should allow to have multiple attachments for source types not in ONLY_ONE_ATTACHMENT_SOURCE_TYPES', () => {
-            const sourceType = 'email'
-            expect(ONLY_ONE_ATTACHMENT_SOURCE_TYPES).not.toContain(sourceType)
-
-            const component = shallow(
-                <TicketReplyEditor
-                    newMessage={fromJS({
-                        newMessage: {
-                            source: {
-                                type: sourceType,
-                            },
-                        },
-                        state: {}
-                    })}
-                    attachments={fromJS([{name: 'attachment already existing'}])}
-                    newMessageType={sourceType}
-                    {...commonProps}
-                />
-            ).instance()
-
-            expect(component._canAddAttachments([1])).toBe(true)
-        })
     })
 })

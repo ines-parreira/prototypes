@@ -286,41 +286,6 @@ describe('global utils', () => {
         })
     })
 
-    describe('humanize string', () => {
-        const inputs = [
-            {
-                value: '',
-                expect: '',
-            },
-            {
-                value: 'ticket',
-                expect: 'Ticket',
-            },
-            {
-                value: 'customerOrders',
-                expect: 'Customer orders',
-            },
-            {
-                value: 'order_id',
-                expect: 'Order id',
-            },
-            {
-                value: 'helper hello',
-                expect: 'Helper hello',
-            },
-            {
-                value: 'ticket-created',
-                expect: 'Ticket created',
-            },
-        ]
-
-        it('transform OK', () => {
-            inputs.forEach((input) => {
-                expect(utils.humanizeString(input.value)).toBe(input.expect)
-            })
-        })
-    })
-
     describe('subdomain', () => {
         const inputs = [
             {

@@ -5,15 +5,15 @@ import _noop from 'lodash/noop'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {
-    TEXT_OR_ATTACHMENT_SOURCE_TYPES,
-} from '../../../../../../config/ticket'
+import {SourceTypes} from '../../../../../../business/ticket'
 import TicketReply from '../TicketReply'
+
+jest.unmock('../../../../../../business/ticket')
+const businessTicket = require('../../../../../../business/ticket')
 
 const mockStore = configureMockStore([thunk])
 
-
-describe('TicketReply component', () => {
+describe('<TicketReply/>', () => {
     const answerableSourceType = 'email'
     const nonAnswerableSourceType = 'chat'
 
@@ -33,7 +33,7 @@ describe('TicketReply component', () => {
             reply_options: {
                 [answerableSourceType]: {answerable: true},
                 [nonAnswerableSourceType]: {answerable: false, reason: 'You cannot respond.'},
-                [TEXT_OR_ATTACHMENT_SOURCE_TYPES[0]]: {answerable: true},
+                [SourceTypes.FACEBOOK_MESSENGER]: {answerable: true},
             }
         }),
     }
@@ -53,35 +53,17 @@ describe('TicketReply component', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should render an alert instead of the editor because there is an attachment and it is not allowed to send text ' +
-        'AND attachments for this source type', () => {
+    it('shoud render alert if cannot reply', () => {
+        businessTicket.canReply = () => ({
+            message: 'You cannot respond.'
+        })
+
         const component = shallow(
             <TicketReply
                 {...commonProps}
                 store={mockStore({
                     newMessage: fromJS({
-                        newMessage: {
-                            public: true,
-                            source: {
-                                type: TEXT_OR_ATTACHMENT_SOURCE_TYPES[0]
-                            },
-                            attachments: ['foo']
-                        }
-                    })
-                })}
-            />
-        ).dive()
-
-        expect(component).toMatchSnapshot()
-    })
-
-    it('should render an alert instead of the editor because the ticket is not repliable on this channel', () => {
-        const component = shallow(
-            <TicketReply
-                {...commonProps}
-                store={mockStore({
-                    newMessage: fromJS({
-                        newMessage: fromJS(baseNewMessage).setIn(['source', 'type'], nonAnswerableSourceType).toJS()
+                        newMessage: baseNewMessage
                     })
                 })}
             />

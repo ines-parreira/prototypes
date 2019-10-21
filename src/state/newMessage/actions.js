@@ -18,6 +18,7 @@ import {notify} from '../notifications/actions'
 import * as ticketActions from '../ticket/actions'
 import {renderTemplate} from '../../pages/common/utils/template'
 
+import { SourceTypes } from '../../business/ticket'
 import {
     getActionTemplate,
     uploadFiles,
@@ -88,7 +89,7 @@ export const addAttachments = (ticket: Map<*, *>, atts: Array<attachmentType>) =
 
     let attachments = atts
 
-    if (ticket.getIn(['newMessage', 'source', 'type']) === 'facebook-comment') {
+    if (ticket.getIn(['newMessage', 'source', 'type']) === SourceTypes.FACEBOOK_COMMENT) {
         // We have specific constraints on attachments.
 
         const attsFiltered = atts.filter(

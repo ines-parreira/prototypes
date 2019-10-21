@@ -4,9 +4,7 @@ import type {List, Map} from 'immutable'
 import React from 'react'
 import {connect} from 'react-redux'
 
-import {
-    TEXT_OR_ATTACHMENT_SOURCE_TYPES,
-} from '../../../../../config/ticket'
+import { canReply, type SourceType } from '../../../../../business/ticket'
 import * as newMessageActions from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {getActionTemplate} from '../../../../../utils'
@@ -21,7 +19,7 @@ type Props = {
     deleteAttachment?: number => void,
     className?: string,
     ticket: Map<*,*>,
-    newMessageType: string,
+    newMessageType: SourceType,
     newMessageAttachments: List<*>,
     appliedMacro: ?Map<*,*>,
     isNewMessagePublic: boolean,
@@ -93,36 +91,23 @@ export default class TicketReply extends React.Component<Props> {
             newMessageAttachments
         } = this.props
 
-        const isAnswerable = ticket.getIn(['reply_options', newMessageType, 'answerable'])
-        const notAnswerableReason = ticket.getIn(['reply_options', newMessageType, 'reason'])
-
-        const cantWriteTextBecauseOfAttachments =
-            TEXT_OR_ATTACHMENT_SOURCE_TYPES.includes(newMessageType)
-            && newMessageAttachments.size >= 1
-
-        let alertText = ''
-        let isAlert = cantWriteTextBecauseOfAttachments || !isAnswerable
-
-        if (cantWriteTextBecauseOfAttachments) {
-            alertText = 'When using Facebook, you can either send a text message, or an attachment, ' +
-                'but not both at the same time. If you want to write a message, remove the attachment first.'
-        }
-
-        if (!isAnswerable) {
-            alertText = notAnswerableReason
-        }
+        const canReplyResult = canReply(
+            newMessageType,
+            newMessageAttachments.size,
+            ticket.getIn(['reply_options', newMessageType, 'reason'])
+        )
 
         const className = classNames(css.component, passedClassName, {
             [css.internal]: !isNewMessagePublic,
-            'alert-warning': isAlert,
+            'alert-warning': !!canReplyResult,
         })
 
         return (
             <div className={className}>
                 {
-                    isAlert ? (
+                    !!canReplyResult ? (
                         <div className={css.alert}>
-                            {alertText}
+                            {canReplyResult.message}
                         </div>
                     ) : (
                         <TicketReplyEditor

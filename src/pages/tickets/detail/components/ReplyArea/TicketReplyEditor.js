@@ -6,21 +6,17 @@ import _noop from 'lodash/noop'
 import React, {type Node} from 'react'
 import {connect} from 'react-redux'
 
+import { canAddAttachments, type SourceType } from '../../../../../business/ticket'
 import {
     canLeaveInternalNote,
-    ONLY_ONE_ATTACHMENT_SOURCE_TYPES,
-    TEXT_OR_ATTACHMENT_SOURCE_TYPES,
     isRichType
 } from '../../../../../config/ticket'
-
 import {getOtherAgents} from '../../../../../state/agents/selectors'
 import type {agentsType} from '../../../../../state/agents/types'
 import * as newMessageActions from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {notify} from '../../../../../state/notifications/actions'
-
 import type {attachmentType} from '../../../../../types'
-import {humanizeString} from '../../../../../utils'
 import {getFileTooLargeError, getMaxAttachmentSize} from '../../../../../utils/file'
 import RichField from '../../../../common/forms/RichField'
 import {getContext} from '../../../../../state/prediction/selectors'
@@ -55,7 +51,7 @@ type Props = {
     actions: {},
     agents: agentsType,
     newMessage: Map<*, *>,
-    newMessageType: string,
+    newMessageType: SourceType,
     ticket: Map<*, *>,
     predictionContext: Map<*, *>,
     attachments: List<*>,
@@ -149,29 +145,22 @@ export class TicketReplyEditor extends React.Component<Props, State> {
     _canAddAttachments = (fileList: filesType = []) => {
         // FileList does not have map
         const files = Array.from(fileList)
-        const {newMessageType, newMessage, attachments} = this.props
-        const cantAddAttachmentBecauseOfText = TEXT_OR_ATTACHMENT_SOURCE_TYPES.includes(newMessageType)
-            && newMessage.getIn(['newMessage', 'body_text'])
+        const {
+            attachments,
+            newMessage,
+            newMessageType,
+        } = this.props
 
-        const tooManyAttachments = ONLY_ONE_ATTACHMENT_SOURCE_TYPES.includes(newMessageType)
-            && (attachments.size >= 1 || files.length > 1)
-
-        if (cantAddAttachmentBecauseOfText) {
+        const notification = canAddAttachments(
+            newMessageType,
+            newMessage.getIn(['newMessage', 'body_text']),
+            attachments.size + files.length
+        )
+        if (notification) {
             this.props.notify({
-                status: 'warning',
-                message: `When using ${humanizeString(newMessageType)}, you can either send a text message, or an ` +
-                    'attachment, but not both at the same time.'
+                status: notification.status,
+                message: notification.message
             })
-
-            return false
-        }
-
-        if (tooManyAttachments) {
-            this.props.notify({
-                status: 'warning',
-                message: `When using ${humanizeString(newMessageType)}, you can only send attachments one by one.`
-            })
-
             return false
         }
 

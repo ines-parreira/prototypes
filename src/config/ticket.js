@@ -1,6 +1,7 @@
 import {fromJS} from 'immutable'
 import _find from 'lodash/find'
 
+import { SourceTypes } from '../business/ticket'
 import {compare, getLastMessage, toImmutable} from '../utils'
 import {isForwardedMessage} from '../state/ticket/utils'
 
@@ -25,24 +26,25 @@ export const CHANNELS = [
     INSTAGRAM_AD_COMMENT_CHANNEL, INSTAGRAM_COMMENT_CHANNEL, PHONE_CHANNEL, SMS_CHANNEL, TWITTER_CHANNEL
 ]
 
-export const AIRCALL_SOURCE = 'aircall'
-export const API_SOURCE = 'api'
-export const CHAT_SOURCE = 'chat'
-export const EMAIL_FORWARD_SOURCE = 'email-forward'
-export const EMAIL_SOURCE = 'email'
-export const FACEBOOK_COMMENT_SOURCE = 'facebook-comment'
-export const FACEBOOK_MESSAGE_SOURCE = 'facebook-message'
-export const FACEBOOK_MESSENGER_SOURCE = 'facebook-messenger'
-export const FACEBOOK_POST_SOURCE = 'facebook-post'
-export const INSTAGRAM_AD_COMMENT_SOURCE = 'instagram-ad-comment'
-export const INSTAGRAM_AD_MEDIA_SOURCE = 'instagram-ad-media'
-export const INSTAGRAM_COMMENT_SOURCE = 'instagram-comment'
-export const INSTAGRAM_MEDIA_SOURCE = 'instagram-media'
-export const INTERNAL_NOTE_SOURCE = 'internal-note'
-export const OTTSPOTT_CALL_SOURCE = 'ottspott-call'
-export const PHONE_SOURCE = 'phone'
-export const SYSTEM_MESSAGE_SOURCE = 'system-message'
-export const TWITTER_SOURCE = 'twitter'
+// TODO(business-extract): Deprecated constants => Use directly the SourceTypes.XXX in your code
+export const AIRCALL_SOURCE = SourceTypes.AIRCALL
+export const API_SOURCE = SourceTypes.API
+export const CHAT_SOURCE = SourceTypes.CHAT
+export const EMAIL_FORWARD_SOURCE = SourceTypes.EMAIL_FORWARD
+export const EMAIL_SOURCE = SourceTypes.EMAIL
+export const FACEBOOK_COMMENT_SOURCE = SourceTypes.FACEBOOK_COMMENT
+export const FACEBOOK_MESSAGE_SOURCE = SourceTypes.FACEBOOK_MESSAGE
+export const FACEBOOK_MESSENGER_SOURCE = SourceTypes.FACEBOOK_MESSENGER
+export const FACEBOOK_POST_SOURCE = SourceTypes.FACEBOOK_POST
+export const INSTAGRAM_AD_COMMENT_SOURCE = SourceTypes.INSTAGRAM_AD_COMMENT
+export const INSTAGRAM_AD_MEDIA_SOURCE = SourceTypes.INSTAGRAM_AD_MEDIA
+export const INSTAGRAM_COMMENT_SOURCE = SourceTypes.INSTAGRAM_COMMENT
+export const INSTAGRAM_MEDIA_SOURCE = SourceTypes.INSTAGRAM_MEDIA
+export const INTERNAL_NOTE_SOURCE = SourceTypes.INTERNAL_NOTE
+export const OTTSPOTT_CALL_SOURCE = SourceTypes.OTTSPOTT_CALL
+export const PHONE_SOURCE = SourceTypes.PHONE
+export const SYSTEM_MESSAGE_SOURCE = SourceTypes.SYSTEM_MESSAGE
+export const TWITTER_SOURCE = SourceTypes.TWITTER
 
 export const SOURCE_TYPES = [
     AIRCALL_SOURCE | API_SOURCE | CHAT_SOURCE | EMAIL_FORWARD_SOURCE | EMAIL_SOURCE | FACEBOOK_COMMENT_SOURCE |
@@ -52,12 +54,6 @@ export const SOURCE_TYPES = [
 ]
 
 export const SYSTEM_SOURCE_TYPES = [INTERNAL_NOTE_SOURCE, SYSTEM_MESSAGE_SOURCE]
-
-// source types which cannot send more than one attachment at a time
-export const ONLY_ONE_ATTACHMENT_SOURCE_TYPES = [FACEBOOK_MESSENGER_SOURCE, FACEBOOK_COMMENT_SOURCE, CHAT_SOURCE]
-
-// source types which can send either text or attachment, but not both at the same time
-export const TEXT_OR_ATTACHMENT_SOURCE_TYPES = [FACEBOOK_MESSENGER_SOURCE]
 
 // source types that can be used to answer
 export const USABLE_SOURCE_TYPES = [

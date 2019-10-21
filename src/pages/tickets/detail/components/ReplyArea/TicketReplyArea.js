@@ -1,22 +1,19 @@
 // @flow
 import classnames from 'classnames'
-import {fromJS, type List, Map} from 'immutable'
+import {fromJS, type Map} from 'immutable'
 import _debounce from 'lodash/debounce'
 import React from 'react'
 import {connect} from 'react-redux'
 import {Input} from 'reactstrap'
 
-import {
-    ONLY_ONE_ATTACHMENT_SOURCE_TYPES,
-} from '../../../../../config/ticket'
+import { clearMacroBeforeApply, type Macro } from '../../../../../business/macro'
+import { type SourceType } from '../../../../../business/ticket'
 import shortcutManager from '../../../../../services/shortcutManager'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {applyMacro} from '../../../../../state/ticket/actions'
 import * as ticketSelectors from '../../../../../state/ticket/selectors'
 import type {fetchMacrosType} from '../../../common/macros/types'
 import {getCurrentMacro, getDefaultSelectedMacroId} from '../../../common/macros/utils'
-import { humanizeString } from '../../../../../utils'
-import {type Macro, type MacroAction} from '../../../../../state/macro/types'
 import {getPreferences} from '../../../../../state/currentUser/selectors'
 import {fetchMacros} from '../../../../../state/macro/actions'
 import {notify} from '../../../../../state/notifications/actions'
@@ -34,7 +31,7 @@ type Props = {
     customers: Object,
     preferences: Object,
     newMessage: Object,
-    newMessageType: string,
+    newMessageType: SourceType,
     notify: typeof notify,
     currentMacro: Map<*,*>,
     page: number,
@@ -235,6 +232,7 @@ export class TicketReplyArea extends React.Component<Props, State> {
     }
 
     _showMacros = () => this.setState({macrosVisible: true})
+
     _hideMacros = () => {
         this.setState({macrosVisible: false}, () => {
             if (this.richArea) {
@@ -244,41 +242,23 @@ export class TicketReplyArea extends React.Component<Props, State> {
     }
 
     _applyMacro = (macro: Macro) => {
-        const {newMessageType} = this.props
+        const {
+            applyMacro,
+            currentTicket,
+            newMessageType,
+            notify,
+        } = this.props
 
-        const actions: List<MacroAction> = macro.get('actions', fromJS([]))
-        const attachmentCount =  actions
-            .filter((action) => action.get('name') === 'addAttachments')
-            .reduce(
-                (total: number, action: MacroAction) => total + action.getIn(['arguments', 'attachments'], fromJS([])).size,
-                0
-            )
-        const hasText = !actions.filter((action) => action.get('name') === 'setResponseText').isEmpty()
-        const isMessengerMessage = newMessageType === 'facebook-messenger'
-        const canAcceptOnlyOneAttachment = ONLY_ONE_ATTACHMENT_SOURCE_TYPES.includes(newMessageType)
-
-        let appliedMacro = macro
-
-        if (isMessengerMessage && hasText && attachmentCount > 0) {
-            this.props.notify({
-                status: 'warning',
-                message: 'We have removed the attachment from this message, because you cannot send text and attachments at the same time on Messenger.'
+        const clearingResult = clearMacroBeforeApply(newMessageType, macro)
+        if (clearingResult.notification) {
+            notify({
+                message: clearingResult.notification.message,
+                status: clearingResult.notification.status,
             })
-            appliedMacro = appliedMacro.update(
-                'actions',
-                (actions) => actions.filter((action) => action.get('name') !== 'addAttachments')
-            )
         }
 
-        if (canAcceptOnlyOneAttachment && attachmentCount > 1) {
-            this.props.notify({
-                status: 'warning',
-                message: `When using ${humanizeString(newMessageType)}, you can only send attachments one by one.`
-            })
-            return
-        }
+        applyMacro(clearingResult.macro, currentTicket.get('id'))
 
-        this.props.applyMacro(appliedMacro, this.props.currentTicket.get('id'))
         this._hideMacros()
     }
 

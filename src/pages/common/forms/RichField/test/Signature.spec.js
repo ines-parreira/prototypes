@@ -8,6 +8,7 @@ import thunk from 'redux-thunk'
 
 const mockStore = configureMockStore([thunk])
 
+import {SourceTypes} from '../../../../../business/ticket'
 import Signature from '../Signature'
 
 // mock random key generation so they match from a snapshot to the other
@@ -63,7 +64,7 @@ describe('Signature', () => {
     })
 
     it('should not render for messageType other than email', () => {
-        initialState.newMessage = initialState.newMessage.setIn(['newMessage', 'source', 'type'], 'chat')
+        initialState.newMessage = initialState.newMessage.setIn(['newMessage', 'source', 'type'], SourceTypes.CHAT)
 
         const component = shallow(
             <Signature

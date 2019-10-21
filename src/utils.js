@@ -6,7 +6,6 @@ import {EditorState, Modifier} from 'draft-js'
 import escodegen from 'escodegen'
 import esprima from 'esprima'
 import htmlparser from 'htmlparser2'
-// $FlowFixMe: will be fixed with immutable 4.x
 import Immutable, {fromJS, type Iterable, type Map} from 'immutable'
 import _ from 'lodash'
 import _filter from 'lodash/filter'
@@ -25,6 +24,7 @@ import moment from 'moment-timezone'
 import {createSelectorCreator, defaultMemoize} from 'reselect'
 import URLSafeBase64 from 'urlsafe-base64'
 
+import { humanize } from './business/format'
 import {ACTION_TEMPLATES} from './config'
 import TICKET_LANGUAGES from './config/ticketLanguages'
 import {AUTHORIZED_NOTIFICATION_TYPES, type notificationType} from './state/notifications/actions'
@@ -667,13 +667,7 @@ export const stripErrorMessage = (text: string): string => {
  * @returns {*}
  */
 export function humanizeString(text: string): string {
-    return _.chain(text)
-        .trim('.-_')
-        .replace(/([A-Z])/g, ' $1')
-        .replace(/[-_.\s]+/g, ' ')
-        .toLower()
-        .upperFirst()
-        .value()
+    return humanize(text)
 }
 
 /**
