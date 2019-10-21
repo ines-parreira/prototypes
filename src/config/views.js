@@ -122,8 +122,16 @@ export const views = fromJS([{
             },
         },
         {
+            name: 'assignee_team',
+            title: 'Assignee team',
+            path: 'assignee_team.id',
+            filter: {
+                type: 'team',
+            }
+        },
+        {
             name: 'assignee',
-            title: 'Assignee',
+            title: 'Assignee user',
             path: 'assignee_user.id',
             filter: {
                 // TODO(customers-migration): replace with `user` when we updated our search REST API.
@@ -228,6 +236,8 @@ export const views = fromJS([{
                 return item.get('last_received_message_datetime') || ''
             case 'customer':
                 return item.get('customer') || fromJS({})
+            case 'assignee_team':
+                return item.get('assignee_team') || fromJS({})
             case 'assignee':
                 return item.get('assignee_user') || fromJS({})
             case 'language': {

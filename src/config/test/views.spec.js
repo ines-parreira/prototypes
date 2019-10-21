@@ -90,6 +90,7 @@ describe('Config: views', () => {
                         language: 'object',
                         customer: 'object', // customer (then passed to RenderLabel)
                         assignee: 'object', // user (then passed to RenderLabel)
+                        assignee_team: 'object', // team (then passed to RenderLabel)
                     },
                     customer: {
                         name: 'string',

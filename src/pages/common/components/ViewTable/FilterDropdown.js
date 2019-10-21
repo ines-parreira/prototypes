@@ -11,12 +11,13 @@ import {fieldPath, getLanguageDisplayName, isImmutable, resolveLiteral} from '..
 import {RenderLabel} from '../../utils/labels'
 import Search from '../Search'
 
+import css from './FilterDropdown.less'
+
 type Props = {
     viewConfig: Map<*, *>,
     field: Map<*, *>,
     schemas: Map<*, *>,
     updateFieldFilter: string => void,
-    updateFieldFilterOperator: string => void,
     fieldEnumSearch: typeof fieldEnumSearch,
     toggleDropdown: () => void,
     menu: ComponentType<*>
@@ -56,10 +57,6 @@ class FilterDropdown extends React.Component<Props, State> {
         // because `newValue` do not have an `integration_id` attribute
         const right = resolveLiteral(newValue, left) || newValue.id
         this.props.updateFieldFilter(right)
-    }
-
-    _onClickUnassigned = () => {
-        this.props.updateFieldFilterOperator('isEmpty')
     }
 
     _onClickMe = () => {
@@ -165,6 +162,7 @@ class FilterDropdown extends React.Component<Props, State> {
                     key={key}
                     type="button"
                     onClick={() => this.onClick(passedValue)}
+                    className={css.dropdownItem}
                 >
                     {renderValue}
                 </DropdownItem>
@@ -174,13 +172,6 @@ class FilterDropdown extends React.Component<Props, State> {
         // special option added for some columns in the dropdown
         if (field.get('name') === 'assignee') {
             options = options.unshift(
-                <DropdownItem
-                    key="unassigned"
-                    type="button"
-                    onClick={this._onClickUnassigned}
-                >
-                    Unassigned
-                </DropdownItem>,
                 <DropdownItem
                     key="me"
                     type="button"

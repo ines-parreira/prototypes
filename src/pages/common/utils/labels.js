@@ -29,6 +29,7 @@ import {DEFAULT_TAG_COLOR} from '../../../config'
 import SourceIcon from '../components/SourceIcon'
 import type {SourceType} from '../../../models/ticket/types'
 import {getAgents} from '../../../state/agents/selectors'
+import {getTeams} from '../../../state/teams/selectors'
 
 import css from './labels.less'
 
@@ -407,28 +408,64 @@ export class DatetimeLabel extends React.PureComponent<DatetimeLabelProps> {
     }
 }
 
-const AssigneeLabelComponent = ({assignee, agents}: { assignee: Map<*, *>, agents: List<*> }) => {
-    const agent = agents.find((agent) => agent.get('id') === assignee.get('id'))
-    const avatarUrl = assignee.getIn(['meta', 'profile_picture_url']) || (agent && agent.getIn(['meta', 'profile_picture_url']))
-    return assignee.isEmpty() ? null : (
-        <div>
+const UserAssigneeLabelComponent = ({assigneeUser, agents}: { assigneeUser: Map<*, *>, agents: List<*> }) => {
+    const agent = agents.find((agent) => agent.get('id') === assigneeUser.get('id'))
+    const avatarUrl = assigneeUser.getIn(['meta', 'profile_picture_url']) || (agent && agent.getIn(['meta', 'profile_picture_url']))
+    return assigneeUser.isEmpty() ? null : (
+        <div className={css.assigneeLabelContainer}>
             <Avatar
-                name={assignee.get('name')}
+                name={assigneeUser.get('name')}
                 url={avatarUrl}
                 size={26}
-                className="d-inline-block mr-2"
+                className={css.assigneeLabelAvatar}
             />
-            <div className="d-inline-block">{assignee.get('name')}</div>
+            <div className="d-inline-block">{assigneeUser.get('name')}</div>
         </div>
     )
 }
 
-export const AssigneeLabel = connect(
+export const UserAssigneeLabel = connect(
     (state) => ({
         agents: getAgents(state)
     }),
-    {}
-)(AssigneeLabelComponent)
+)(UserAssigneeLabelComponent)
+
+const TeamAssigneeLabelComponent = ({assigneeTeam, teams}: { assigneeTeam: Map<*, *>, teams: List<*> }) => {
+    const team = teams.find((team) => team.get('id') === assigneeTeam.get('id'))
+    const emoji = team && team.getIn(['decoration', 'emoji'])
+
+    return assigneeTeam.isEmpty() ? null : (
+        <div className={css.assigneeLabelContainer}>
+            {
+                emoji
+                    ? (
+                        <span className={css.assigneeLabelAvatar}>
+                            <Emoji
+                                emoji={emoji.toJS()}
+                                size={26}
+                                sheetSize={32}
+                                forceSize
+                            />
+                        </span>
+                    )
+                    : (
+                        <Avatar
+                            name={assigneeTeam.get('name')}
+                            size="26"
+                            className={css.assigneeLabelAvatar}
+                        />
+                    )
+            }
+            <div className="d-inline-block">{assigneeTeam.get('name')}</div>
+        </div>
+    )
+}
+
+export const TeamAssigneeLabel = connect(
+    (state) => ({
+        teams: getTeams(state)
+    }),
+)(TeamAssigneeLabelComponent)
 
 type RenderLabelProps = {
     field: Map<*, *>,
@@ -460,7 +497,9 @@ export class RenderLabel extends React.Component<RenderLabelProps> {
             case 'status':
                 return <StatusLabel status={value}/>
             case 'assignee':
-                return <AssigneeLabel assignee={value}/>
+                return <UserAssigneeLabel assigneeUser={value}/>
+            case 'assignee_team':
+                return <TeamAssigneeLabel assigneeTeam={value}/>
             case 'integrations':
                 return typeof value === 'string' ? <span>{value}</span> :
                     <IntegrationsDetailLabel integration={value}/>

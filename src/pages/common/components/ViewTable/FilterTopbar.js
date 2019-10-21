@@ -6,26 +6,27 @@ import {browserHistory} from 'react-router'
 import classnames from 'classnames'
 import {
     Button,
-    Popover,
-    PopoverHeader,
-    PopoverBody,
-    UncontrolledDropdown,
-    UncontrolledButtonDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
     Card,
-    CardFooter,
     CardBody,
+    CardFooter,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Popover,
+    PopoverBody,
+    PopoverHeader,
+    UncontrolledButtonDropdown,
+    UncontrolledDropdown,
 } from 'reactstrap'
 
 import ConfirmButton from '../ConfirmButton'
-import {getDefaultOperator, slugify, fieldPath} from '../../../../utils'
+import {fieldPath, getDefaultOperator, slugify} from '../../../../utils'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
 import * as viewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
 import * as agentSelectors from '../../../../state/agents/selectors'
+import * as teamSelectors from '../../../../state/teams/selectors'
 import * as schemasSelectors from '../../../../state/schemas/selectors'
 
 import * as viewsConfig from '../../../../config/views'
@@ -39,6 +40,7 @@ class FilterTopbar extends React.Component {
         activeView: ImmutablePropTypes.map.isRequired,
         addFieldFilter: PropTypes.func.isRequired,
         agents: PropTypes.object.isRequired,
+        teams: PropTypes.object.isRequired,
         areFiltersValid: PropTypes.bool.isRequired,
         config: ImmutablePropTypes.map.isRequired,
         currentUser: PropTypes.object.isRequired,
@@ -174,7 +176,9 @@ class FilterTopbar extends React.Component {
     }
 
     render() {
-        const {config, activeView, areFiltersValid, isDirty, isUpdate, isSearch, agents, currentUser} = this.props
+        const {
+            config, activeView, areFiltersValid, isDirty, isUpdate, isSearch, agents, teams, currentUser
+        } = this.props
         const {isSubmitting} = this.state
         const isSystemView = activeView.get('category') === 'system'
 
@@ -197,6 +201,7 @@ class FilterTopbar extends React.Component {
                         removeFieldFilter={this.props.removeFieldFilter}
                         updateFieldFilterOperator={this.props.updateFieldFilterOperator}
                         agents={agents}
+                        teams={teams}
                         currentUser={currentUser}
                         updateFieldFilter={this.props.updateFieldFilter}
                     />
@@ -323,7 +328,7 @@ class FilterTopbar extends React.Component {
                                 </Button>
                             )}
                         </div>
-                        {!isSearch && !isSystemView ? (
+                        {!isSearch && !isSystemView && (
                             <ConfirmButton
                                 content={(
                                     <span>
@@ -335,13 +340,11 @@ class FilterTopbar extends React.Component {
                                 }}
                             >
                                 <i className="material-icons md-2 mr-2 text-danger">
-                                        delete
+                                    delete
                                 </i>
-                                    Delete view
+                                Delete view
                             </ConfirmButton>
-                        )
-                            : null
-                        }
+                        )}
                     </div>
                 </CardFooter>
             </Card>
@@ -352,6 +355,7 @@ class FilterTopbar extends React.Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         agents: agentSelectors.getAgents(state),
+        teams: teamSelectors.getTeams(state),
         activeView: viewsSelectors.getActiveView(state),
         areFiltersValid: viewsSelectors.areFiltersValid(state),
         config: viewsConfig.getConfigByName(ownProps.type),

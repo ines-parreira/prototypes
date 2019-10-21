@@ -37,10 +37,10 @@ export default class Right extends React.Component {
         node: PropTypes.object,
         index: PropTypes.number.isRequired,
         agents: PropTypes.object.isRequired,
+        teams: PropTypes.object.isRequired,
         integrations: PropTypes.object.isRequired,
         currentUser: PropTypes.object.isRequired,
         updateFieldFilter: PropTypes.func.isRequired,
-        updateFieldFilterOperator: PropTypes.func.isRequired,
         objectPath: PropTypes.string.isRequired,
         empty: PropTypes.bool.isRequired,
         tags: PropTypes.object.isRequired
@@ -97,7 +97,7 @@ export default class Right extends React.Component {
     }
 
     render() {
-        const {operator, node, config, field, updateFieldFilter, updateFieldFilterOperator, index, empty} = this.props
+        const {operator, node, config, field, updateFieldFilter, index, empty} = this.props
 
         if (empty) {
             return <span />
@@ -146,7 +146,12 @@ export default class Right extends React.Component {
                 )
             }
 
-        } else if (field.get('name') === 'assignee') { // display assignee
+        } else if (field.get('name') === 'assignee_team') { // display assignee team
+            const assignee = this.props.teams.find((team) => team.get('id').toString() === displayedValue.toString())
+            if (assignee) {
+                displayedValue = (<span>{assignee.get('name')}</span>)
+            }
+        }  else if (field.get('name') === 'assignee') { // display assignee user
             const assignee = this.props.agents.find((agent) => agent.get('id').toString() === displayedValue.toString())
             if (assignee) {
                 displayedValue = (<span>{assignee.get('name')}</span>)
@@ -218,7 +223,7 @@ export default class Right extends React.Component {
                     {
                         node.value === '' ? (
                             <div className="btn btn-secondary btn-sm dropdown-toggle clickable">
-                                    Select a value
+                                Select a value
                             </div>
                         ) : (
                             <div className="btn btn-light btn-sm dropdown-toggle clickable">
@@ -233,7 +238,6 @@ export default class Right extends React.Component {
                             viewConfig={config}
                             field={field}
                             updateFieldFilter={(value) => updateFieldFilter(index, value)}
-                            updateFieldFilterOperator={(value) => updateFieldFilterOperator(index, value)}
                             toggleDropdown={this._toggleDropdown}
                             menu={field.get('name') === 'tags' ? TagDropdownMenu : undefined}
                         />

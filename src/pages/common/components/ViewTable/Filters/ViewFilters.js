@@ -17,7 +17,7 @@ export class ViewFilters extends React.Component {
     }
 
     render() {
-        const {view, schemas, agents, currentUser, updateFieldFilter, updateFieldFilterOperator} = this.props
+        const {view, schemas, agents, teams, currentUser, updateFieldFilter} = this.props
 
         if (!view || !schemas || schemas.isEmpty()) {
             return null
@@ -48,9 +48,9 @@ export class ViewFilters extends React.Component {
                                 removeCondition={this.removeCondition}
                                 updateOperator={this.updateOperator}
                                 agents={agents}
+                                teams={teams}
                                 currentUser={currentUser}
                                 updateFieldFilter={updateFieldFilter}
-                                updateFieldFilterOperator={updateFieldFilterOperator}
                             />
                         </div>
                     )
@@ -73,6 +73,7 @@ ViewFilters.propTypes = {
     schemas: PropTypes.object.isRequired,
     removeFieldFilter: PropTypes.func.isRequired,
     agents: PropTypes.object.isRequired,
+    teams: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
     updateFieldFilter: PropTypes.func.isRequired,
     updateFieldFilterOperator: PropTypes.func.isRequired,

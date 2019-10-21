@@ -7,7 +7,7 @@ import {connect} from 'react-redux'
 import _ from 'lodash'
 
 import {BASIC_OPERATORS, UNARY_OPERATORS} from '../../../../../config'
-import {findProperty, fieldPath} from '../../../../../utils'
+import {fieldPath, findProperty} from '../../../../../utils'
 import * as viewsSelectors from '../../../../../state/views/selectors'
 
 import Left from './Left'
@@ -44,10 +44,10 @@ export default class CallExpression extends React.Component {
         updateOperator: PropTypes.func.isRequired,
 
         agents: PropTypes.object.isRequired,
+        teams: PropTypes.object.isRequired,
         currentUser: PropTypes.object.isRequired,
 
         updateFieldFilter: PropTypes.func.isRequired,
-        updateFieldFilterOperator: PropTypes.func.isRequired,
 
         parentNode: PropTypes.object
     }
@@ -75,7 +75,9 @@ export default class CallExpression extends React.Component {
     }
 
     render() {
-        const {config, view, node, updateOperator, removeCondition, index, agents, currentUser, parentNode} = this.props
+        const {
+            config, view, node, updateOperator, removeCondition, index, agents, teams, currentUser, parentNode
+        } = this.props
 
         const left = node.arguments[0]
         const right = node.arguments[1]
@@ -105,9 +107,9 @@ export default class CallExpression extends React.Component {
                     node={right}
                     objectPath={objectPath}
                     agents={agents}
+                    teams={teams}
                     currentUser={currentUser}
                     updateFieldFilter={this.props.updateFieldFilter}
-                    updateFieldFilterOperator={this.props.updateFieldFilterOperator}
                     index={index}
                     config={config}
                     field={field}
@@ -120,7 +122,7 @@ export default class CallExpression extends React.Component {
                 )}
                 {
                     parentNode && (
-                        <OperatorLabel operator={parentNode.operator} />
+                        <OperatorLabel operator={parentNode.operator}/>
                     )
                 }
                 <RemoveCallExpression

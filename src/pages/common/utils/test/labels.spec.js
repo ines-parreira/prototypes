@@ -70,12 +70,36 @@ describe('components utils : labels', () => {
                         }
                     },
                     expected: (
-                        <labels.AssigneeLabel
-                            assignee={fromJS({
+                        <labels.UserAssigneeLabel
+                            assigneeUser={fromJS({
                                 name: 'Mario',
                                 email: 'mario@gorgias.io',
                                 meta: {
                                     profile_picture_url: 'https://gorgias.io/avatar.png'
+                                }
+                            })}
+                        />
+                    ),
+                    toHTML: (comp) => {
+                        return mount(
+                            <Provider store={mockStore()}>{comp}</Provider>
+                        ).html()
+                    }
+                },
+                {
+                    type: 'assignee_team',
+                    value: {
+                        name: 'Team 1',
+                        decoration: {
+                            emoji: {}
+                        }
+                    },
+                    expected: (
+                        <labels.TeamAssigneeLabel
+                            assigneeTeam={fromJS({
+                                name: 'Team 1',
+                                decoration: {
+                                    emoji: {}
                                 }
                             })}
                         />

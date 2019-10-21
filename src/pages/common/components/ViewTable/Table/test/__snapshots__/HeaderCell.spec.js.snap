@@ -74,8 +74,16 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
               },
             },
             Immutable.Map {
+              "name": "assignee_team",
+              "title": "Assignee team",
+              "path": "assignee_team.id",
+              "filter": Immutable.Map {
+                "type": "team",
+              },
+            },
+            Immutable.Map {
               "name": "assignee",
-              "title": "Assignee",
+              "title": "Assignee user",
               "path": "assignee_user.id",
               "filter": Immutable.Map {
                 "type": "agent",
@@ -275,8 +283,16 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
             },
           },
           Immutable.Map {
+            "name": "assignee_team",
+            "title": "Assignee team",
+            "path": "assignee_team.id",
+            "filter": Immutable.Map {
+              "type": "team",
+            },
+          },
+          Immutable.Map {
             "name": "assignee",
-            "title": "Assignee",
+            "title": "Assignee user",
             "path": "assignee_user.id",
             "filter": Immutable.Map {
               "type": "agent",
