@@ -388,85 +388,6 @@ class TicketListActions extends React.Component<Props, State> {
                 </UncontrolledButtonDropdown>
                 <ButtonDropdown
                     className="mr-2"
-                    isOpen={this._isPopoverOpen('teams')}
-                    toggle={this._toggleTeamsDropdown}
-                    size="sm"
-                >
-                    <DropdownToggle
-                        caret
-                        type="button"
-                        color="secondary"
-                        disabled={!areItemsSelected || isLaunchingJob || !areFiltersValid}
-                    >
-                        Assign to team
-                    </DropdownToggle>
-                    <DropdownMenu
-                        right
-                        className={css['assignee-dropdown-list']}
-                    >
-                        <DropdownItem
-                            header
-                            className="mb-2"
-                        >
-                            ASSIGN TO:
-                        </DropdownItem>
-                        <DropdownItem
-                            className="dropdown-item-input"
-                            toggle={false}
-                        >
-                            {
-                                this._isPopoverOpen('teams') && ( // rebuild input on each opening so "autoFocus" works
-                                    <Input
-                                        placeholder="Search teams..."
-                                        autoFocus
-                                        value={teamsSearch}
-                                        onChange={(event) => this.setState({teamsSearch: event.target.value})}
-                                    />
-                                )
-                            }
-                        </DropdownItem>
-                        <DropdownItem divider/>
-                        {
-                            filteredTeams.isEmpty() ? (
-                                <DropdownItem header>
-                                    Could not find any team
-                                </DropdownItem>
-                            ) : (
-                                <div className={css['teams-dropdown-list']}>
-                                    {filteredTeams.map((team) => (
-                                        <DropdownItem
-                                            key={team.get('id')}
-                                            type="button"
-                                            className={css['teams-dropdown-item']}
-                                            onClick={() => {
-                                                this._bulkUpdate('assignee_team_id', team.get('id'))
-                                            }}
-                                        >
-                                            <TeamLabel
-                                                name={team.get('name')}
-                                                emoji={team.getIn(['decoration', 'emoji'])}
-                                                shouldDisplayAvatar
-                                            />
-                                        </DropdownItem>
-                                    ))}
-                                </div>
-                            )
-
-                        }
-                        <DropdownItem divider/>
-                        <DropdownItem
-                            key="clear"
-                            type="button"
-                            onClick={() => this._bulkUpdate('assignee_team_id', null)}
-                        >
-                            <span className={classnames('text-warning', css['clear-assignee'])}>
-                                Clear assignee
-                            </span>
-                        </DropdownItem>
-                    </DropdownMenu>
-                </ButtonDropdown>
-                <ButtonDropdown
-                    className="mr-2"
                     size="sm"
                     isOpen={this._isPopoverOpen('agents')}
                     toggle={this._toggleAgentsDropdown}
@@ -548,6 +469,85 @@ class TicketListActions extends React.Component<Props, State> {
                             key="clear"
                             type="button"
                             onClick={() => this._bulkUpdate('assignee_user', null)}
+                        >
+                            <span className={classnames('text-warning', css['clear-assignee'])}>
+                                Clear assignee
+                            </span>
+                        </DropdownItem>
+                    </DropdownMenu>
+                </ButtonDropdown>
+                <ButtonDropdown
+                    className="mr-2"
+                    isOpen={this._isPopoverOpen('teams')}
+                    toggle={this._toggleTeamsDropdown}
+                    size="sm"
+                >
+                    <DropdownToggle
+                        caret
+                        type="button"
+                        color="secondary"
+                        disabled={!areItemsSelected || isLaunchingJob || !areFiltersValid}
+                    >
+                        Assign to team
+                    </DropdownToggle>
+                    <DropdownMenu
+                        right
+                        className={css['assignee-dropdown-list']}
+                    >
+                        <DropdownItem
+                            header
+                            className="mb-2"
+                        >
+                            ASSIGN TO:
+                        </DropdownItem>
+                        <DropdownItem
+                            className="dropdown-item-input"
+                            toggle={false}
+                        >
+                            {
+                                this._isPopoverOpen('teams') && ( // rebuild input on each opening so "autoFocus" works
+                                    <Input
+                                        placeholder="Search teams..."
+                                        autoFocus
+                                        value={teamsSearch}
+                                        onChange={(event) => this.setState({teamsSearch: event.target.value})}
+                                    />
+                                )
+                            }
+                        </DropdownItem>
+                        <DropdownItem divider/>
+                        {
+                            filteredTeams.isEmpty() ? (
+                                <DropdownItem header>
+                                    Could not find any team
+                                </DropdownItem>
+                            ) : (
+                                <div className={css['teams-dropdown-list']}>
+                                    {filteredTeams.map((team) => (
+                                        <DropdownItem
+                                            key={team.get('id')}
+                                            type="button"
+                                            className={css['teams-dropdown-item']}
+                                            onClick={() => {
+                                                this._bulkUpdate('assignee_team_id', team.get('id'))
+                                            }}
+                                        >
+                                            <TeamLabel
+                                                name={team.get('name')}
+                                                emoji={team.getIn(['decoration', 'emoji'])}
+                                                shouldDisplayAvatar
+                                            />
+                                        </DropdownItem>
+                                    ))}
+                                </div>
+                            )
+
+                        }
+                        <DropdownItem divider/>
+                        <DropdownItem
+                            key="clear"
+                            type="button"
+                            onClick={() => this._bulkUpdate('assignee_team_id', null)}
                         >
                             <span className={classnames('text-warning', css['clear-assignee'])}>
                                 Clear assignee
