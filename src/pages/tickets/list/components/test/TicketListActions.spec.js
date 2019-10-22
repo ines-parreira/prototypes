@@ -59,6 +59,29 @@ describe('TicketListActions component', () => {
         expect(component).toMatchSnapshot()
     })
 
+    it('should display options for teams assignations', () => {
+        store = mockStore({
+            currentUser: currentUserStore,
+            views: viewsStore,
+            teams: fromJS({
+                all: {
+                    4: {id: 4, name: 'foo'},
+                    5: {id: 5, name: 'bar'},
+                    6: {id: 6, name: 'baz'},
+                }
+            }),
+        })
+
+        const component = shallow(
+            <TicketListActions
+                store={store}
+                selectedItemsIds={fromJS([1, 2, 3, 4, 5])}
+            />
+        ).dive()
+
+        expect(component).toMatchSnapshot()
+    })
+
     it('should display options for agents assignations', () => {
         store = mockStore({
             currentUser: currentUserStore,

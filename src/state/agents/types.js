@@ -1,3 +1,4 @@
-import type {Map, List} from 'immutable'
+import type {List, Map} from 'immutable'
 
-export type agentsType = List<Map<*,*>>
+export type agentType = Map<*, *>
+export type agentsType = List<agentType>

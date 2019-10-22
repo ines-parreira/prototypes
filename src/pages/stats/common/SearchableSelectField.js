@@ -1,5 +1,5 @@
 // @flow
-import classNames from 'classnames/bind'
+import classnames from 'classnames'
 import React, {type ComponentType} from 'react'
 import {DropdownItem, DropdownMenu, DropdownToggle, Input, Label, UncontrolledDropdown} from 'reactstrap'
 
@@ -154,7 +154,7 @@ class SearchableSelectField extends React.Component<Props, State> {
                                             className={css.dropdownItem}
                                         >
                                             <input
-                                                className={classNames('mr-2', css.checkbox)}
+                                                className={classnames('mr-2', css.checkbox)}
                                                 type="checkbox"
                                                 checked={isChecked}
                                                 onChange={() => {

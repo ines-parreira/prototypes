@@ -56,6 +56,72 @@ exports[`TicketListActions component should display options for agents assignati
       size="sm"
       toggle={[Function]}
     >
+      <DropdownToggle
+        aria-haspopup={true}
+        caret={true}
+        color="secondary"
+        disabled={false}
+        type="button"
+      >
+        Assign to team
+      </DropdownToggle>
+      <DropdownMenu
+        className="assignee-dropdown-list"
+        flip={true}
+        right={true}
+        tag="div"
+      >
+        <DropdownItem
+          className="mb-2"
+          header={true}
+          tag="button"
+          toggle={true}
+        >
+          ASSIGN TO:
+        </DropdownItem>
+        <DropdownItem
+          className="dropdown-item-input"
+          tag="button"
+          toggle={false}
+        />
+        <DropdownItem
+          divider={true}
+          tag="button"
+          toggle={true}
+        />
+        <DropdownItem
+          header={true}
+          tag="button"
+          toggle={true}
+        >
+          Could not find any team
+        </DropdownItem>
+        <DropdownItem
+          divider={true}
+          tag="button"
+          toggle={true}
+        />
+        <DropdownItem
+          key="clear"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <span
+            className="text-warning clear-assignee"
+          >
+            Clear assignee
+          </span>
+        </DropdownItem>
+      </DropdownMenu>
+    </ButtonDropdown>
+    <ButtonDropdown
+      className="mr-2"
+      isOpen={false}
+      size="sm"
+      toggle={[Function]}
+    >
       <Button
         color="secondary"
         disabled={false}
@@ -73,13 +139,9 @@ exports[`TicketListActions component should display options for agents assignati
         type="button"
       />
       <DropdownMenu
+        className="assignee-dropdown-list"
         flip={true}
         right={true}
-        style={
-          Object {
-            "width": "230px",
-          }
-        }
         tag="div"
       >
         <DropdownItem
@@ -159,12 +221,403 @@ exports[`TicketListActions component should display options for agents assignati
           type="button"
         >
           <span
-            className="text-warning"
-            style={
-              Object {
-                "textTransform": "none",
-              }
-            }
+            className="text-warning clear-assignee"
+          >
+            Clear assignee
+          </span>
+        </DropdownItem>
+      </DropdownMenu>
+    </ButtonDropdown>
+    <ButtonDropdown
+      className="mr-2"
+      isOpen={false}
+      size="sm"
+      toggle={[Function]}
+    >
+      <DropdownToggle
+        aria-haspopup={true}
+        caret={true}
+        color="secondary"
+        disabled={false}
+        type="button"
+      >
+        Add tag
+      </DropdownToggle>
+      <TagDropdownMenu
+        disabled={false}
+        right={true}
+      >
+        <DropdownItem
+          className="mb-2"
+          header={true}
+          tag="button"
+          toggle={true}
+        >
+          ADD TAG:
+        </DropdownItem>
+        <DropdownItem
+          className="dropdown-item-input"
+          tag="button"
+          toggle={false}
+        />
+        <DropdownItem
+          divider={true}
+          tag="button"
+          toggle={true}
+        />
+      </TagDropdownMenu>
+    </ButtonDropdown>
+    <UncontrolledButtonDropdown
+      size="sm"
+    >
+      <DropdownToggle
+        aria-haspopup={true}
+        caret={true}
+        color="secondary"
+        disabled={false}
+        id="bulk-more-button"
+        type="button"
+      >
+        More
+      </DropdownToggle>
+      <DropdownMenu
+        flip={true}
+        right={true}
+        tag="div"
+      >
+        <DropdownItem
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Apply macro
+        </DropdownItem>
+        <DropdownItem
+          divider={true}
+          tag="button"
+          toggle={true}
+        />
+        <DropdownItem
+          className="text-danger"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Delete
+        </DropdownItem>
+      </DropdownMenu>
+    </UncontrolledButtonDropdown>
+    <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
+      hideArrow={false}
+      isOpen={false}
+      placement="bottom"
+      placementPrefix="bs-popover"
+      target="bulk-more-button"
+      toggle={[Function]}
+    >
+      <PopoverHeader
+        tag="h3"
+      >
+        Are you sure?
+      </PopoverHeader>
+      <PopoverBody
+        tag="div"
+      >
+        <p>
+          Are you sure you want to delete 
+          5
+           
+          ticket
+          s
+          ?
+        </p>
+        <Button
+          autoFocus={true}
+          color="success"
+          onClick={[Function]}
+          tag="button"
+          type="submit"
+        >
+          Confirm
+        </Button>
+      </PopoverBody>
+    </Popover>
+    <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
+      hideArrow={false}
+      isOpen={false}
+      placement="bottom"
+      placementPrefix="bs-popover"
+      target="bulk-more-button"
+      toggle={[Function]}
+    >
+      <PopoverHeader
+        tag="h3"
+      >
+        Are you sure?
+      </PopoverHeader>
+      <PopoverBody
+        tag="div"
+      >
+        <p>
+          Are you sure you want to delete 
+          5
+           
+          ticket
+          s
+           forever?
+        </p>
+        <Button
+          color="success"
+          onClick={[Function]}
+          tag="button"
+          type="submit"
+        >
+          Confirm
+        </Button>
+      </PopoverBody>
+    </Popover>
+  </div>
+</div>
+`;
+
+exports[`TicketListActions component should display options for teams assignations 1`] = `
+<div
+  className="d-none d-md-inline-flex align-items-center"
+>
+  <div
+    className="d-inline-flex align-items-center"
+  >
+    <UncontrolledButtonDropdown
+      className="mr-2"
+      size="sm"
+    >
+      <Button
+        color="secondary"
+        disabled={false}
+        onClick={[Function]}
+        tag="button"
+        type="button"
+      >
+        Close
+      </Button>
+      <DropdownToggle
+        aria-haspopup={true}
+        caret={true}
+        color="secondary"
+        disabled={false}
+        type="button"
+      />
+      <DropdownMenu
+        flip={true}
+        right={true}
+        tag="div"
+      >
+        <DropdownItem
+          header={true}
+          tag="button"
+          toggle={true}
+        >
+          SET STATUS
+        </DropdownItem>
+        <DropdownItem
+          key="open"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Open
+        </DropdownItem>
+      </DropdownMenu>
+    </UncontrolledButtonDropdown>
+    <ButtonDropdown
+      className="mr-2"
+      isOpen={false}
+      size="sm"
+      toggle={[Function]}
+    >
+      <DropdownToggle
+        aria-haspopup={true}
+        caret={true}
+        color="secondary"
+        disabled={false}
+        type="button"
+      >
+        Assign to team
+      </DropdownToggle>
+      <DropdownMenu
+        className="assignee-dropdown-list"
+        flip={true}
+        right={true}
+        tag="div"
+      >
+        <DropdownItem
+          className="mb-2"
+          header={true}
+          tag="button"
+          toggle={true}
+        >
+          ASSIGN TO:
+        </DropdownItem>
+        <DropdownItem
+          className="dropdown-item-input"
+          tag="button"
+          toggle={false}
+        />
+        <DropdownItem
+          divider={true}
+          tag="button"
+          toggle={true}
+        />
+        <div
+          className="teams-dropdown-list"
+        >
+          <DropdownItem
+            className="teams-dropdown-item"
+            key="4"
+            onClick={[Function]}
+            tag="button"
+            toggle={true}
+            type="button"
+          >
+            <TeamLabel
+              className=""
+              name="foo"
+              shouldDisplayAvatar={true}
+              shouldDisplayTeamIcon={false}
+            />
+          </DropdownItem>
+          <DropdownItem
+            className="teams-dropdown-item"
+            key="5"
+            onClick={[Function]}
+            tag="button"
+            toggle={true}
+            type="button"
+          >
+            <TeamLabel
+              className=""
+              name="bar"
+              shouldDisplayAvatar={true}
+              shouldDisplayTeamIcon={false}
+            />
+          </DropdownItem>
+          <DropdownItem
+            className="teams-dropdown-item"
+            key="6"
+            onClick={[Function]}
+            tag="button"
+            toggle={true}
+            type="button"
+          >
+            <TeamLabel
+              className=""
+              name="baz"
+              shouldDisplayAvatar={true}
+              shouldDisplayTeamIcon={false}
+            />
+          </DropdownItem>
+        </div>
+        <DropdownItem
+          divider={true}
+          tag="button"
+          toggle={true}
+        />
+        <DropdownItem
+          key="clear"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <span
+            className="text-warning clear-assignee"
+          >
+            Clear assignee
+          </span>
+        </DropdownItem>
+      </DropdownMenu>
+    </ButtonDropdown>
+    <ButtonDropdown
+      className="mr-2"
+      isOpen={false}
+      size="sm"
+      toggle={[Function]}
+    >
+      <Button
+        color="secondary"
+        disabled={false}
+        onClick={[Function]}
+        tag="button"
+        type="button"
+      >
+        Assign to me
+      </Button>
+      <DropdownToggle
+        aria-haspopup={true}
+        caret={true}
+        color="secondary"
+        disabled={false}
+        type="button"
+      />
+      <DropdownMenu
+        className="assignee-dropdown-list"
+        flip={true}
+        right={true}
+        tag="div"
+      >
+        <DropdownItem
+          className="mb-2"
+          header={true}
+          tag="button"
+          toggle={true}
+        >
+          ASSIGN TO:
+        </DropdownItem>
+        <DropdownItem
+          className="dropdown-item-input"
+          tag="button"
+          toggle={false}
+        />
+        <DropdownItem
+          divider={true}
+          tag="button"
+          toggle={true}
+        />
+        <DropdownItem
+          header={true}
+          tag="button"
+          toggle={true}
+        >
+          Could not find any agent
+        </DropdownItem>
+        <DropdownItem
+          divider={true}
+          tag="button"
+          toggle={true}
+        />
+        <DropdownItem
+          key="clear"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <span
+            className="text-warning clear-assignee"
           >
             Clear assignee
           </span>
@@ -392,6 +845,72 @@ exports[`TicketListActions component should display special actions for trash vi
       size="sm"
       toggle={[Function]}
     >
+      <DropdownToggle
+        aria-haspopup={true}
+        caret={true}
+        color="secondary"
+        disabled={true}
+        type="button"
+      >
+        Assign to team
+      </DropdownToggle>
+      <DropdownMenu
+        className="assignee-dropdown-list"
+        flip={true}
+        right={true}
+        tag="div"
+      >
+        <DropdownItem
+          className="mb-2"
+          header={true}
+          tag="button"
+          toggle={true}
+        >
+          ASSIGN TO:
+        </DropdownItem>
+        <DropdownItem
+          className="dropdown-item-input"
+          tag="button"
+          toggle={false}
+        />
+        <DropdownItem
+          divider={true}
+          tag="button"
+          toggle={true}
+        />
+        <DropdownItem
+          header={true}
+          tag="button"
+          toggle={true}
+        >
+          Could not find any team
+        </DropdownItem>
+        <DropdownItem
+          divider={true}
+          tag="button"
+          toggle={true}
+        />
+        <DropdownItem
+          key="clear"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <span
+            className="text-warning clear-assignee"
+          >
+            Clear assignee
+          </span>
+        </DropdownItem>
+      </DropdownMenu>
+    </ButtonDropdown>
+    <ButtonDropdown
+      className="mr-2"
+      isOpen={false}
+      size="sm"
+      toggle={[Function]}
+    >
       <Button
         color="secondary"
         disabled={true}
@@ -409,13 +928,9 @@ exports[`TicketListActions component should display special actions for trash vi
         type="button"
       />
       <DropdownMenu
+        className="assignee-dropdown-list"
         flip={true}
         right={true}
-        style={
-          Object {
-            "width": "230px",
-          }
-        }
         tag="div"
       >
         <DropdownItem
@@ -456,12 +971,7 @@ exports[`TicketListActions component should display special actions for trash vi
           type="button"
         >
           <span
-            className="text-warning"
-            style={
-              Object {
-                "textTransform": "none",
-              }
-            }
+            className="text-warning clear-assignee"
           >
             Clear assignee
           </span>
@@ -697,6 +1207,72 @@ exports[`TicketListActions component should display when nothing is selected 1`]
       size="sm"
       toggle={[Function]}
     >
+      <DropdownToggle
+        aria-haspopup={true}
+        caret={true}
+        color="secondary"
+        disabled={true}
+        type="button"
+      >
+        Assign to team
+      </DropdownToggle>
+      <DropdownMenu
+        className="assignee-dropdown-list"
+        flip={true}
+        right={true}
+        tag="div"
+      >
+        <DropdownItem
+          className="mb-2"
+          header={true}
+          tag="button"
+          toggle={true}
+        >
+          ASSIGN TO:
+        </DropdownItem>
+        <DropdownItem
+          className="dropdown-item-input"
+          tag="button"
+          toggle={false}
+        />
+        <DropdownItem
+          divider={true}
+          tag="button"
+          toggle={true}
+        />
+        <DropdownItem
+          header={true}
+          tag="button"
+          toggle={true}
+        >
+          Could not find any team
+        </DropdownItem>
+        <DropdownItem
+          divider={true}
+          tag="button"
+          toggle={true}
+        />
+        <DropdownItem
+          key="clear"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <span
+            className="text-warning clear-assignee"
+          >
+            Clear assignee
+          </span>
+        </DropdownItem>
+      </DropdownMenu>
+    </ButtonDropdown>
+    <ButtonDropdown
+      className="mr-2"
+      isOpen={false}
+      size="sm"
+      toggle={[Function]}
+    >
       <Button
         color="secondary"
         disabled={true}
@@ -714,13 +1290,9 @@ exports[`TicketListActions component should display when nothing is selected 1`]
         type="button"
       />
       <DropdownMenu
+        className="assignee-dropdown-list"
         flip={true}
         right={true}
-        style={
-          Object {
-            "width": "230px",
-          }
-        }
         tag="div"
       >
         <DropdownItem
@@ -761,12 +1333,7 @@ exports[`TicketListActions component should display when nothing is selected 1`]
           type="button"
         >
           <span
-            className="text-warning"
-            style={
-              Object {
-                "textTransform": "none",
-              }
-            }
+            className="text-warning clear-assignee"
           >
             Clear assignee
           </span>
@@ -992,6 +1559,72 @@ exports[`TicketListActions component should display when some tickets are select
       size="sm"
       toggle={[Function]}
     >
+      <DropdownToggle
+        aria-haspopup={true}
+        caret={true}
+        color="secondary"
+        disabled={false}
+        type="button"
+      >
+        Assign to team
+      </DropdownToggle>
+      <DropdownMenu
+        className="assignee-dropdown-list"
+        flip={true}
+        right={true}
+        tag="div"
+      >
+        <DropdownItem
+          className="mb-2"
+          header={true}
+          tag="button"
+          toggle={true}
+        >
+          ASSIGN TO:
+        </DropdownItem>
+        <DropdownItem
+          className="dropdown-item-input"
+          tag="button"
+          toggle={false}
+        />
+        <DropdownItem
+          divider={true}
+          tag="button"
+          toggle={true}
+        />
+        <DropdownItem
+          header={true}
+          tag="button"
+          toggle={true}
+        >
+          Could not find any team
+        </DropdownItem>
+        <DropdownItem
+          divider={true}
+          tag="button"
+          toggle={true}
+        />
+        <DropdownItem
+          key="clear"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <span
+            className="text-warning clear-assignee"
+          >
+            Clear assignee
+          </span>
+        </DropdownItem>
+      </DropdownMenu>
+    </ButtonDropdown>
+    <ButtonDropdown
+      className="mr-2"
+      isOpen={false}
+      size="sm"
+      toggle={[Function]}
+    >
       <Button
         color="secondary"
         disabled={false}
@@ -1009,13 +1642,9 @@ exports[`TicketListActions component should display when some tickets are select
         type="button"
       />
       <DropdownMenu
+        className="assignee-dropdown-list"
         flip={true}
         right={true}
-        style={
-          Object {
-            "width": "230px",
-          }
-        }
         tag="div"
       >
         <DropdownItem
@@ -1056,12 +1685,7 @@ exports[`TicketListActions component should display when some tickets are select
           type="button"
         >
           <span
-            className="text-warning"
-            style={
-              Object {
-                "textTransform": "none",
-              }
-            }
+            className="text-warning clear-assignee"
           >
             Clear assignee
           </span>
