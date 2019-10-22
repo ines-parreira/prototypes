@@ -1,14 +1,32 @@
 @import '~css/new/colors';
 
 :local .component {
+  .titleWrapper {
+    position: relative;
+  }
+
   .title {
     margin-left: -10px;
     padding: 0 8px;
-
     color: @indigo;
     font-size: 20px;
     font-weight: 500;
     vertical-align: top;
     height: 34px;
+
+    &.withEmojiPicker {
+      padding-left: 37px;
+    }
+  }
+
+  .emojiPicker {
+    position: absolute;
+    top: 50%;
+    left: -2px;
+    transform: translateY(-50%);
+  }
+
+  .titleWrapper {
+    flex-grow: 1;
   }
 }

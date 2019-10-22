@@ -1,11 +1,11 @@
 //@flow
 import React from 'react'
-import {Picker} from 'emoji-mart'
 import 'emoji-mart/css/emoji-mart.css'
-import { EditorState } from 'draft-js'
+import {EditorState} from 'draft-js'
 
-import type { ActionInjectedProps } from '../types'
+import type {ActionInjectedProps} from '../types'
 import {insertText} from '../../../../../../utils'
+import EmojiPicker from '../../../../components/EmojiPicker'
 
 import Popover from './ButtonPopover'
 
@@ -56,14 +56,7 @@ export default class AddEmoji extends React.Component<Props, State> {
                 onOpen={this._onPopoverOpen}
                 onClose={this._onPopoverClose}
             >
-                <Picker
-                    autoFocus
-                    native
-                    color="#0d87dd"
-                    perLine={8}
-                    sheetSize={16}
-                    onClick={this._addEmoji}
-                />
+                <EmojiPicker onClick={this._addEmoji}/>
             </Popover>
         )
     }

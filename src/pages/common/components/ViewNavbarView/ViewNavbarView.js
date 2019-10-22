@@ -7,15 +7,13 @@ import _debounce from 'lodash/debounce'
 
 import {compactInteger, getPluralObjectName} from '../../../../utils'
 import Tooltip from '../Tooltip'
-
 import shortcutManager from '../../../../services/shortcutManager'
 import {moveIndex} from '../../../common/utils/keyboard'
-
 import {getActiveView, makeGetView, makeGetViewCount, makeGetViewsByType} from '../../../../state/views/selectors'
 import {makeGetSettingsByType} from '../../../../state/currentUser/selectors'
+import ViewName from '../ViewName'
 
 import ViewNavbarViewEditor from './ViewNavbarViewEditor'
-
 import css from './ViewNavbarView.less'
 
 const popupEnterMessage = 'Create, re-order & hide views'
@@ -195,7 +193,9 @@ class ViewNavbarView extends Component {
                                                     this.context.closePanel()
                                                 }}
                                             >
-                                                <span className="item-name">{view.get('name')}</span>
+                                                <span className="item-name">
+                                                    <ViewName view={view}/>
+                                                </span>
                                                 <span className="item-count">{compactCount}</span>
                                             </Link>
                                         )
