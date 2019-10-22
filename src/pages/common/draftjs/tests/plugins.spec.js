@@ -1,23 +1,21 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-
-
 import {convertFromHTML} from '../../../../utils/editor'
-
 import createToolbarPlugin from '../plugins/toolbar'
 import {variable as variableDecorator} from '../plugins/variables/decorators'
 import {attachEntitiesToVariables} from '../plugins/variables/utils'
 
 import TestEditor from './TestEditor'
 import * as utils from './utils'
+import {createCompositeDecorator, createEditorStateFromHtml} from './draftTestUtils'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
 
 describe('DraftJS convertToHtml', () => {
     it('no decorator should not find any entity', () => {
-        const composite = utils.getCompositeDecorator()
+        const composite = createCompositeDecorator()
         const html = 'this is text only'
         const content = convertFromHTML(html).getBlockMap().first()
         const decorations = composite.getDecorations(content).toArray()
@@ -29,9 +27,9 @@ describe('DraftJS convertToHtml', () => {
 
 describe('DraftJS display entities', () => {
     it('variable entity in text', () => {
-        const composite = utils.getCompositeDecorator(variableDecorator)
+        const composite = createCompositeDecorator(variableDecorator)
         const text = 'variable {{current_user.name}} and {{ticket.customer.email}}'
-        let editorState = utils.editorStateFromHtml(text)
+        let editorState = createEditorStateFromHtml(text)
         editorState = attachEntitiesToVariables(editorState)
         const positions = [{start: 9, length: 21}, {start: 35, length: 25}]
 
@@ -79,7 +77,7 @@ describe('DraftJS Plugins', () => {
 
     it('render link found in text', () => {
         const html = 'this is a url <a href="http://google.com">link</a>'
-        let editorState = utils.editorStateFromHtml(html)
+        let editorState = createEditorStateFromHtml(html)
 
         const toolbarPlugin = createToolbarPlugin({
             getDisplayedActions: () => undefined

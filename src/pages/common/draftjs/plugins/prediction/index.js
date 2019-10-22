@@ -1,13 +1,15 @@
 // @flow
 import {EditorState, type SelectionState} from 'draft-js'
-import axios, {CancelToken, Cancel} from 'axios'
+import axios, {Cancel, CancelToken} from 'axios'
 import type {Map} from 'immutable'
 
 import type {PluginMethods} from '../types'
 
 import {
-    createPrediction, hasTypedPrediction,
-    insertPrediction, isTypingPrediction,
+    createPrediction,
+    hasTypedPrediction,
+    insertPrediction,
+    isTypingPrediction,
     removeFirstCharOfPrediction,
     removePrediction,
     usePrediction
@@ -26,7 +28,7 @@ export const setCachedSelection = (value: SelectionState) => {
 }
 
 let predictionCache = []
-const clearCache = () => predictionCache = []
+export const clearCache = () => predictionCache = []
 const inCache = (text: string) => predictionCache.includes((text || '').trim())
 const addCache = (text: string) => predictionCache.push((text || '').trim())
 
@@ -197,7 +199,7 @@ const predictionPlugin = (config: { context: Map<*, *> }) => {
                 selection.isCollapsed()
                 // and at the end of the block
                 && start === blockText.length
-                // and text is longer than 2 chars
+                // and text is longer than 1 char
                 && blockText.length > 1
                 // and not in cache
                 && !inCache(blockText)
