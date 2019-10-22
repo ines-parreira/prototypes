@@ -4,8 +4,10 @@ import _isArray from 'lodash/isArray'
 import _toLower from 'lodash/toLower'
 import _isEqual from 'lodash/isEqual'
 import _pickBy from 'lodash/pickBy'
+import _capitalize from 'lodash/capitalize'
 
 import {SOURCE_VALUE_PROP} from '../../config'
+import {INTEGRATION_TYPE_WITH_VARIABLES} from '../../config/integrations'
 import * as ticketConfig from '../../config/ticket'
 import {EMAIL_INTEGRATION_TYPES} from '../../constants/integration'
 import {getPersonLabelFromSource} from '../../pages/tickets/common/utils'
@@ -436,7 +438,7 @@ export const replaceIntegrationVariables = (integrationType, ticketState, variab
     if (!integrationId) {
         notify({
             type: 'warning',
-            title: `This customer does not have any ${integrationType} information`,
+            title: `This customer does not have any ${_capitalize(integrationType)} information`,
         })
         return newArgument.replace(variable, '')
     }
@@ -455,7 +457,7 @@ export const replaceVariables = (argument, ticket, currentUser, notify) => {
         // If a variable is a dynamic variable, we try to replace `integrations.{type}` with
         // `integrations[correct-integration-id]`.
         variables.forEach((variable) => {
-            ['shopify', 'recharge', 'smile'].forEach((integrationType) => {
+            INTEGRATION_TYPE_WITH_VARIABLES.forEach((integrationType) => {
                 if (variable.includes('integrations.' + integrationType)) {
                     newArgument = replaceIntegrationVariables(integrationType, ticket, variable, newArgument, notify)
                 }

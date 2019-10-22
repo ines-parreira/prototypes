@@ -5,6 +5,8 @@ import { SourceTypes } from '../business/ticket'
 import {compare, getLastMessage, toImmutable} from '../utils'
 import {isForwardedMessage} from '../state/ticket/utils'
 
+import {INTEGRATION_HIDDEN_VARIABLES, INTEGRATION_PREVIOUS_VARIABLES, INTEGRATION_VARIABLES} from './integrations'
+
 export const AIRCALL_CHANNEL = 'aircall'
 export const API_CHANNEL = 'api'
 export const CHAT_CHANNEL = 'chat'
@@ -63,8 +65,8 @@ export const USABLE_SOURCE_TYPES = [
 
 // available variables in macros
 export const VARIABLES = [{
-    name: 'Ticket customer',
     type: 'ticket.customer',
+    name: 'Ticket customer',
     children: [{
         name: 'First name',
         fullName: 'Customer first name',
@@ -83,8 +85,8 @@ export const VARIABLES = [{
         value: '{{ticket.customer.email}}',
     }],
 }, {
-    name: 'Current agent',
     type: 'current_user',
+    name: 'Current agent',
     children: [{
         name: 'First name',
         fullName: 'Current agent first name',
@@ -107,109 +109,18 @@ export const VARIABLES = [{
         value: '{{current_user.bio}}',
     }],
 }, {
-    type: 'shopify',
-    name: 'Shopify',
-    integration: true,
-    children: [{
-        name: 'Number of last order',
-        value: '{{ticket.customer.integrations.shopify.orders[0].name}}',
-    }, {
-        name: 'Date of last order',
-        value: '{{ticket.customer.integrations.shopify.orders[0].created_at|datetime_format("MMMM Do YYYY")}}',
-    }, {
-        name: 'Tracking url of last order',
-        value: '{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].tracking_url}}',
-    }, {
-        name: 'Tracking number of last order',
-        value: '{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].tracking_number}}',
-    }, {
-        name: 'Delivery status of last order',
-        value: '{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].shipment_status}}',
-    }, {
-        name: 'Status URL of last order',
-        value: '{{ticket.customer.integrations.shopify.orders[0].order_status_url}}',
-    }, {
-        name: 'Shipping date of last order',
-        value: '{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].created_at|datetime_format("MMMM Do YYYY")}}'
-    }, {
-        name: 'Destination country of last order',
-        value: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.country}}'
-    }, {
-        name: 'Shipping address of last order',
-        value: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.address1}} {{ticket.customer.integrations.shopify.orders[0].shipping_address.address2}}, {{ticket.customer.integrations.shopify.orders[0].shipping_address.zip}} {{ticket.customer.integrations.shopify.orders[0].shipping_address.city}} {{ticket.customer.integrations.shopify.orders[0].shipping_address.province}}',
-    }]
-}, {
-    type: 'recharge',
-    integration: true,
-    name: 'Recharge',
-    children: [{
-        name: 'Hash of customer',
-        value: '{{ticket.customer.integrations.recharge.customer.hash}}',
-    }, {
-        name: 'Quantity of last subscription',
-        value: '{{ticket.customer.integrations.recharge.subscriptions[0].quantity}}',
-    }, {
-        name: 'Product title of last subscription',
-        value: '{{ticket.customer.integrations.recharge.subscriptions[0].product_title}}',
-    }, {
-        name: 'Order interval frequency of last subscription',
-        value: '{{ticket.customer.integrations.recharge.subscriptions[0].order_interval_frequency}}',
-    }, {
-        name: 'Order interval unit of last subscription',
-        value: '{{ticket.customer.integrations.recharge.subscriptions[0].order_interval_unit}}',
-    }, {
-        name: 'Price of last subscription',
-        value: '{{ticket.customer.integrations.recharge.subscriptions[0].price}}',
-    }, {
-        name: 'Scheduled date of next charge of last subscription',
-        value: '{{ticket.customer.integrations.recharge.subscriptions[0].next_charge_scheduled_at|datetime_format("L")}}',
-    }]
-}, {
-    type: 'smile',
-    integration: true,
-    name: 'Smile',
-    children: [{
-        name: 'Points balance',
-        value: '{{ticket.customer.integrations.smile.customer.points_balance}}',
-    }, {
-        name: 'Referral URL',
-        value: '{{ticket.customer.integrations.smile.customer.referral_url}}',
-    }, {
-        name: 'Customer state',
-        value: '{{ticket.customer.integrations.smile.customer.state}}',
-    }, {
-        name: 'Vip tier',
-        value: '{{ticket.customer.integrations.smile.customer.vip_tier.name}}',
-    }]
-}, {
     type: 'survey',
     explicit: true,
     name: 'Satisfaction Survey',
     value: '{{satisfaction_survey_url}}',
-}]
+},
+...INTEGRATION_VARIABLES
+]
 
 // variables used in some other variables, but which are never available to use on their own
-export const HIDDEN_VARIABLES = [{
-    type: 'shopify',
-    name: 'Shopify',
-    integration: true,
-    children: [{
-        name: 'Address 1',
-        value: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.address1}}'
-    }, {
-        name: 'Address 2',
-        value: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.address2}}'
-    }, {
-        name: 'Zip code',
-        value: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.zip}}'
-    }, {
-        name: 'City',
-        value: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.city}}'
-    }, {
-        name: 'Province',
-        value: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.province}}'
-    }],
-}]
+export const HIDDEN_VARIABLES = [
+    ...INTEGRATION_HIDDEN_VARIABLES
+]
 
 // previously available variables in macros: still displayed as variables but are not available in dropdowns anymore
 export const PREVIOUS_VARIABLES = [{
@@ -232,64 +143,9 @@ export const PREVIOUS_VARIABLES = [{
         fullName: 'Customer email',
         value: '{{ticket.customer.email}}',
     }],
-}, {
-    type: 'shopify',
-    name: 'Shopify',
-    children: [{
-        name: 'Number of last order',
-        value: '{{ticket.customer.integrations.shopify.orders[0].name}}',
-    }, {
-        name: 'Tracking url of last order',
-        value: '{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].tracking_url}}',
-    }, {
-        name: 'Tracking number of last order',
-        value: '{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].tracking_number}}',
-    }, {
-        name: 'Delivery status of last order',
-        value: '{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].shipment_status}}',
-    }, {
-        name: 'Status URL of last order',
-        value: '{{ticket.customer.integrations.shopify.orders[0].order_status_url}}',
-    }, {
-        name: 'Shipping date of last order',
-        value: '{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].created_at|datetime_format("MMMM Do YYYY")}}'
-    }, {
-        name: 'Destination country of last order',
-        value: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.country}}'
-    }, {
-        name: 'Number of last order',
-        value: '{{ticket.customer.integrations.shopify.orders[0].order_number}}',
-    }, {
-        name: 'Tracking urls of last order',
-        value: '{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].tracking_urls}}',
-    }, {
-        name: 'Tracking numbers of last order',
-        value: '{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].tracking_numbers}}',
-    }, {
-        name: 'Address 1',
-        value: '{{ticket.customer.integrations.shopify.customer.default_address.address1}}'
-    }, {
-        name: 'Address 2',
-        value: '{{ticket.customer.integrations.shopify.customer.default_address.address2}}'
-    }, {
-        name: 'Zip code',
-        value: '{{ticket.customer.integrations.shopify.customer.default_address.zip}}'
-    }, {
-        name: 'City',
-        value: '{{ticket.customer.integrations.shopify.customer.default_address.city}}'
-    }, {
-        name: 'Province',
-        value: '{{ticket.customer.integrations.shopify.customer.default_address.province}}'
-    }],
-}, {
-    type: 'recharge',
-    integration: true,
-    name: 'Recharge',
-    children: [{
-        name: 'Hash of customer',
-        value: '{{ticket.customer.integrations.recharge.customer.hash}}',
-    }]
-}]
+},
+...INTEGRATION_PREVIOUS_VARIABLES
+]
 
 /**
  * Return passed messages ordered by created_datetime

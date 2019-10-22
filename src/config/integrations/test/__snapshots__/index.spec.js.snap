@@ -1,0 +1,230 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`config integrations INTEGRATION_HIDDEN_VARIABLES should contain all hidden variables of all integrations with hidden variables 1`] = `
+Array [
+  Object {
+    "children": Array [
+      Object {
+        "name": "Address 1",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].shipping_address.address1}}",
+      },
+      Object {
+        "name": "Address 2",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].shipping_address.address2}}",
+      },
+      Object {
+        "name": "Zip code",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].shipping_address.zip}}",
+      },
+      Object {
+        "name": "City",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].shipping_address.city}}",
+      },
+      Object {
+        "name": "Province",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].shipping_address.province}}",
+      },
+    ],
+    "integration": true,
+    "name": "Shopify",
+    "type": "shopify",
+  },
+]
+`;
+
+exports[`config integrations INTEGRATION_PREVIOUS_VARIABLES should contain all previous variables of all integrations with previous variables 1`] = `
+Array [
+  Object {
+    "children": Array [
+      Object {
+        "name": "Hash of customer",
+        "value": "{{ticket.customer.integrations.recharge.customer.hash}}",
+      },
+    ],
+    "integration": true,
+    "name": "Recharge",
+    "type": "recharge",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "name": "Number of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].name}}",
+      },
+      Object {
+        "name": "Tracking url of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].tracking_url}}",
+      },
+      Object {
+        "name": "Tracking number of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].tracking_number}}",
+      },
+      Object {
+        "name": "Delivery status of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].shipment_status}}",
+      },
+      Object {
+        "name": "Status URL of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].order_status_url}}",
+      },
+      Object {
+        "name": "Shipping date of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].created_at|datetime_format(\\"MMMM Do YYYY\\")}}",
+      },
+      Object {
+        "name": "Destination country of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].shipping_address.country}}",
+      },
+      Object {
+        "name": "Number of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].order_number}}",
+      },
+      Object {
+        "name": "Tracking urls of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].tracking_urls}}",
+      },
+      Object {
+        "name": "Tracking numbers of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].tracking_numbers}}",
+      },
+      Object {
+        "name": "Address 1",
+        "value": "{{ticket.customer.integrations.shopify.customer.default_address.address1}}",
+      },
+      Object {
+        "name": "Address 2",
+        "value": "{{ticket.customer.integrations.shopify.customer.default_address.address2}}",
+      },
+      Object {
+        "name": "Zip code",
+        "value": "{{ticket.customer.integrations.shopify.customer.default_address.zip}}",
+      },
+      Object {
+        "name": "City",
+        "value": "{{ticket.customer.integrations.shopify.customer.default_address.city}}",
+      },
+      Object {
+        "name": "Province",
+        "value": "{{ticket.customer.integrations.shopify.customer.default_address.province}}",
+      },
+    ],
+    "integration": true,
+    "name": "Shopify",
+    "type": "shopify",
+  },
+]
+`;
+
+exports[`config integrations INTEGRATION_TYPE_WITH_VARIABLES should contain integration types of all integrations with any kind of variables 1`] = `
+Array [
+  "recharge",
+  "shopify",
+  "smile",
+]
+`;
+
+exports[`config integrations INTEGRATION_VARIABLES should contain all variables of all integrations with variables 1`] = `
+Array [
+  Object {
+    "children": Array [
+      Object {
+        "name": "Hash of customer",
+        "value": "{{ticket.customer.integrations.recharge.customer.hash}}",
+      },
+      Object {
+        "name": "Quantity of last subscription",
+        "value": "{{ticket.customer.integrations.recharge.subscriptions[0].quantity}}",
+      },
+      Object {
+        "name": "Product title of last subscription",
+        "value": "{{ticket.customer.integrations.recharge.subscriptions[0].product_title}}",
+      },
+      Object {
+        "name": "Order interval frequency of last subscription",
+        "value": "{{ticket.customer.integrations.recharge.subscriptions[0].order_interval_frequency}}",
+      },
+      Object {
+        "name": "Order interval unit of last subscription",
+        "value": "{{ticket.customer.integrations.recharge.subscriptions[0].order_interval_unit}}",
+      },
+      Object {
+        "name": "Price of last subscription",
+        "value": "{{ticket.customer.integrations.recharge.subscriptions[0].price}}",
+      },
+      Object {
+        "name": "Scheduled date of next charge of last subscription",
+        "value": "{{ticket.customer.integrations.recharge.subscriptions[0].next_charge_scheduled_at|datetime_format(\\"L\\")}}",
+      },
+    ],
+    "integration": true,
+    "name": "Recharge",
+    "type": "recharge",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "name": "Number of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].name}}",
+      },
+      Object {
+        "name": "Date of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].created_at|datetime_format(\\"MMMM Do YYYY\\")}}",
+      },
+      Object {
+        "name": "Tracking url of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].tracking_url}}",
+      },
+      Object {
+        "name": "Tracking number of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].tracking_number}}",
+      },
+      Object {
+        "name": "Delivery status of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].shipment_status}}",
+      },
+      Object {
+        "name": "Status URL of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].order_status_url}}",
+      },
+      Object {
+        "name": "Shipping date of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].created_at|datetime_format(\\"MMMM Do YYYY\\")}}",
+      },
+      Object {
+        "name": "Destination country of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].shipping_address.country}}",
+      },
+      Object {
+        "name": "Shipping address of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].shipping_address.address1}} {{ticket.customer.integrations.shopify.orders[0].shipping_address.address2}}, {{ticket.customer.integrations.shopify.orders[0].shipping_address.zip}} {{ticket.customer.integrations.shopify.orders[0].shipping_address.city}} {{ticket.customer.integrations.shopify.orders[0].shipping_address.province}}",
+      },
+    ],
+    "integration": true,
+    "name": "Shopify",
+    "type": "shopify",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "name": "Points balance",
+        "value": "{{ticket.customer.integrations.smile.customer.points_balance}}",
+      },
+      Object {
+        "name": "Referral URL",
+        "value": "{{ticket.customer.integrations.smile.customer.referral_url}}",
+      },
+      Object {
+        "name": "Customer state",
+        "value": "{{ticket.customer.integrations.smile.customer.state}}",
+      },
+      Object {
+        "name": "Vip tier",
+        "value": "{{ticket.customer.integrations.smile.customer.vip_tier.name}}",
+      },
+    ],
+    "integration": true,
+    "name": "Smile",
+    "type": "smile",
+  },
+]
+`;
