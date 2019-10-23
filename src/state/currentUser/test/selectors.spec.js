@@ -59,10 +59,7 @@ describe('current user selectors', () => {
     })
 
     it('getPreferences', () => {
-        // TODO(@samy): remove fallback after clean up
-        expect(selectors.getPreferences(state).deleteIn(['data', 'available_for_chat']))
-            .toEqualImmutable(state.currentUser.get('settings').last())
-
+        expect(selectors.getPreferences(state)).toEqualImmutable(state.currentUser.get('settings').last())
         expect(selectors.getPreferences({})).toEqualImmutable(fromJS({
             type: 'preferences',
             data: DEFAULT_PREFERENCES

@@ -2,7 +2,6 @@
 import axios from 'axios'
 import _isUndefined from 'lodash/isUndefined'
 import _get from 'lodash/get'
-import _omit from 'lodash/omit'
 
 import {notify} from '../notifications/actions'
 
@@ -87,17 +86,11 @@ export function submitSetting(data: {id?: string, type: string, data: Object}, n
             settingType: data.type
         })
 
-        // TODO(@samy): remove fallback after clean up
-        const dataToSend = {
-            ...data,
-            data: _omit(data.data, 'available_for_chat')
-        }
-
         if (isUpdate) {
             // $FlowFixMe
-            promise = axios.put(`/api/users/0/settings/${data.id}/`, dataToSend)
+            promise = axios.put(`/api/users/0/settings/${data.id}/`, data)
         } else {
-            promise = axios.post('/api/users/0/settings/', dataToSend)
+            promise = axios.post('/api/users/0/settings/', data)
         }
 
         return promise
