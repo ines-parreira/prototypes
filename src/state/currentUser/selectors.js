@@ -67,9 +67,19 @@ export const getPreferences = createSelector(
     }
 )
 
-export const isAvailableForChat = createSelector(
+export const isAvailable = createSelector(
     [getPreferences],
-    (state) => state.getIn(['data', 'available_for_chat'], true)
+    // TODO(@samy): remove fallback after clean up
+    (state) => {
+        let available = state.getIn(['data', 'available'])
+
+        if (available !== null) {
+            return available
+        }
+
+        available = state.getIn(['data', 'available_for_chat'])
+        return available !== null ? available : true
+    }
 )
 
 export const isHidingTips = createSelector(

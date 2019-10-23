@@ -90,7 +90,7 @@ type NavbarState = {
 @connect((state) => ({
     currentUser: currentUserSelectors.getCurrentUser(state),
     currentUserPreferences: currentUserSelectors.getPreferences(state),
-    available: currentUserSelectors.isAvailableForChat(state),
+    available: currentUserSelectors.isAvailable(state),
     isOpenedPanel: layoutSelectors.isOpenedPanel('navbar')(state),
 }), {
     submitSetting: currentUserActions.submitSetting,
@@ -131,7 +131,7 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
     _updateAvailableForChatPreference = () => {
         const {currentUserPreferences, submitSetting} = this.props
         const newPreferences = currentUserPreferences
-            .updateIn(['data', 'available_for_chat'], (status) => !status)
+            .updateIn(['data', 'available'], (status) => !status)
         return submitSetting(newPreferences.toJS())
     }
 

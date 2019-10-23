@@ -59,7 +59,10 @@ describe('current user selectors', () => {
     })
 
     it('getPreferences', () => {
-        expect(selectors.getPreferences(state)).toEqualImmutable(state.currentUser.get('settings').last())
+        // TODO(@samy): remove fallback after clean up
+        expect(selectors.getPreferences(state).deleteIn(['data', 'available_for_chat']))
+            .toEqualImmutable(state.currentUser.get('settings').last())
+
         expect(selectors.getPreferences({})).toEqualImmutable(fromJS({
             type: 'preferences',
             data: DEFAULT_PREFERENCES
@@ -67,8 +70,8 @@ describe('current user selectors', () => {
     })
 
     it('isAvailableForChat', () => {
-        expect(selectors.isAvailableForChat(state)).toBe(true)
-        expect(selectors.isAvailableForChat({})).toBe(true)
+        expect(selectors.isAvailable(state)).toBe(true)
+        expect(selectors.isAvailable({})).toBe(true)
     })
 
     it('isHidingTips', () => {

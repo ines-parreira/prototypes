@@ -57,17 +57,17 @@ describe('current user actions', () => {
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
-        it('should update available for chat status and fetch chats', (done) => {
-            // the current user is not available for chat by default
+        it('should update available status and fetch chats', (done) => {
+            // the current user is available by default
             const settings = fromJS([{
                 type: 'preferences',
-                data: {'available_for_chat': true}
+                data: {'available': true}
             }])
             const state = initialState.set('settings', settings)
             store = mockStore({currentUser: state})
 
             // update his status
-            const newSetting = {type: 'preferences', data: {'available_for_chat': false}}
+            const newSetting = {type: 'preferences', data: {'available': false}}
             const chats = {
                 tickets: [{id: 1}]
             }

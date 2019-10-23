@@ -2,6 +2,7 @@
 import axios from 'axios'
 import _isUndefined from 'lodash/isUndefined'
 import _get from 'lodash/get'
+import _omit from 'lodash/omit'
 
 import {notify} from '../notifications/actions'
 
@@ -78,7 +79,7 @@ export function updateCurrentUser(data: Object) {
 export function submitSetting(data: {id?: string, type: string, data: Object}, notification: boolean) {
     return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType | {}> => {
         const isUpdate = !!data.id
-        const prevIsAvailableForChat = currentUserSelectors.isAvailableForChat(getState())
+        const prevIsAvailableForChat = currentUserSelectors.isAvailable(getState())
         let promise
 
         dispatch({
@@ -86,11 +87,17 @@ export function submitSetting(data: {id?: string, type: string, data: Object}, n
             settingType: data.type
         })
 
+        // TODO(@samy): remove fallback after clean up
+        const dataToSend = {
+            ...data,
+            data: _omit(data.data, 'available_for_chat')
+        }
+
         if (isUpdate) {
             // $FlowFixMe
-            promise = axios.put(`/api/users/0/settings/${data.id}/`, data)
+            promise = axios.put(`/api/users/0/settings/${data.id}/`, dataToSend)
         } else {
-            promise = axios.post('/api/users/0/settings/', data)
+            promise = axios.post('/api/users/0/settings/', dataToSend)
         }
 
         return promise
@@ -103,8 +110,8 @@ export function submitSetting(data: {id?: string, type: string, data: Object}, n
                     resp
                 })
 
-                // Refresh chat tickets if the current user updates his availability for chats
-                if (prevIsAvailableForChat !== data.data.available_for_chat) {
+                // Refresh chat tickets if the current user updates his availability
+                if (prevIsAvailableForChat !== data.data.available) {
                     dispatch(fetchChats())
                 }
 

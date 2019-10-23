@@ -964,7 +964,9 @@ export const DEFAULT_ACTIONS = ACTION_TEMPLATES.map<string>((template) => templa
  */
 export const DEFAULT_PREFERENCES = {
     show_macros: false,
-    available_for_chat: true
+    available: null,
+    // TODO(@samy): remove fallback after clean up
+    available_for_chat: null,
 }
 
 /**

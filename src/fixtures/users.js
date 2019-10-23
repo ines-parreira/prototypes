@@ -78,7 +78,7 @@ export const currentUser = {
         {
             data: {
                 show_macros: true,
-                available_for_chat: true,
+                available: true,
                 hide_tips: true,
             },
             id: 3,
