@@ -69,7 +69,8 @@ export class TicketAssignment extends React.Component<Props, State> {
 
         submitSetting({
             id: ticketAssignmentSettings.get('id'),
-            type: currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,
+            // TODO(@samy): remove fallback after clean up
+            type: ticketAssignmentSettings.get('type') || currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,
             data: {
                 unassign_on_reply: unassignOnReply,
                 auto_assign_to_teams: autoAssignToTeams,
