@@ -34,7 +34,6 @@ export class TicketAssignment extends React.Component<Props, State> {
         isLoading: false,
         unassignOnReply: true,
         autoAssignToTeams: false,
-        // todo(@samy): remove when existing chat-assignment settings have been migrated
         assignmentChannels: [CHAT_CHANNEL, FACEBOOK_MESSENGER_CHANNEL],
     }
 
@@ -69,8 +68,7 @@ export class TicketAssignment extends React.Component<Props, State> {
 
         submitSetting({
             id: ticketAssignmentSettings.get('id'),
-            // TODO(@samy): remove fallback after clean up
-            type: ticketAssignmentSettings.get('type') || currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,
+            type: currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,
             data: {
                 unassign_on_reply: unassignOnReply,
                 auto_assign_to_teams: autoAssignToTeams,

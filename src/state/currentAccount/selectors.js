@@ -76,14 +76,7 @@ export const getSettingsByType = (type: string) => {
         [getCurrentAccountState],
         (account) => {
             const settings = account.get('settings') || fromJS([])
-            let result = settings.find((setting) => setting.get('type') === type) || fromJS({})
-
-            // TODO(@samy): remove fallback after clean up
-            if (type === constants.SETTING_TYPE_TICKET_ASSIGNMENT && result.isEmpty()) {
-                result = settings.find((setting) => setting.get('type') === 'chat-assignment') || fromJS({})
-            }
-
-            return result
+            return settings.find((setting) => setting.get('type') === type) || fromJS({})
         }
     )
 }
