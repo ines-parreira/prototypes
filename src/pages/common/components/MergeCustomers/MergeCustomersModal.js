@@ -1,8 +1,10 @@
 // @flow
 import React from 'react'
 import {fromJS, type Map, type List} from 'immutable'
-import {clone as _clone, pick as _pick, omit as _omit} from 'lodash'
 import {Button, Form} from 'reactstrap'
+import _clone from 'lodash/clone'
+import _omit from 'lodash/omit'
+import _pick from 'lodash/pick'
 
 import {isCustomerDataPresent, isCustomerDataValid} from '../infobar/utils'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'

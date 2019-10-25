@@ -4,7 +4,8 @@ import classnames from 'classnames'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import {fromJS, type Map} from 'immutable'
-import {omitBy as _omitBy, isUndefined as _isUndefined} from 'lodash'
+import _isUndefined from 'lodash/isUndefined'
+import _omitBy from 'lodash/omitBy'
 
 import {
     Breadcrumb,

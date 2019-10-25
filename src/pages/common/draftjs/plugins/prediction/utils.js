@@ -1,6 +1,7 @@
 // @flow
 import {EditorState, Modifier, ContentState} from 'draft-js'
-import {range as _range, some as _some} from 'lodash'
+import _range from 'lodash/range'
+import _some from 'lodash/some'
 
 import {getEntitySelectionState} from '../../../../../utils/editor'
 

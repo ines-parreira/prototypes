@@ -2,7 +2,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {List} from 'immutable'
-import {upperFirst} from 'lodash'
+import _upperFirst from 'lodash/upperFirst'
 
 import Action, {actionsConfig} from '../actions/Action'
 import Hoverable from '../../Hoverable'
@@ -82,7 +82,7 @@ export class WrappedCallExpression extends React.Component<Props> {
                 definition = OBJECT_DEFINITIONS[definition]
             } else {
                 // if we can't find it just try to uppercase the first letter
-                definition = upperFirst(definition)
+                definition = _upperFirst(definition)
             }
             left = left.set(1, definition)
             // each object in the swagger spec has properties

@@ -4,7 +4,8 @@ import {fromJS} from 'immutable'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {Badge} from 'reactstrap'
 import {connect} from 'react-redux'
-import _ from 'lodash'
+import _get from 'lodash/get'
+import _pickBy from 'lodash/pickBy'
 
 import {BASIC_OPERATORS, UNARY_OPERATORS} from '../../../../../config'
 import {fieldPath, findProperty} from '../../../../../utils'
@@ -59,13 +60,13 @@ export default class CallExpression extends React.Component {
 
         if (property && property.meta) {
             let operators = {
-                ..._.get(property.meta, 'operators'),
-                ..._.get(property.meta, 'views.additional_operators', {})
+                ..._get(property.meta, 'operators'),
+                ..._get(property.meta, 'views.additional_operators', {})
             }
 
-            const excludedOperators = _.get(property.meta, 'views.excluded_operators', {})
+            const excludedOperators = _get(property.meta, 'views.excluded_operators', {})
             if (excludedOperators) {
-                operators = _.pickBy(operators, (value, key) => !Object.keys(excludedOperators).includes(key))
+                operators = _pickBy(operators, (value, key) => !Object.keys(excludedOperators).includes(key))
             }
 
             return operators

@@ -5,12 +5,10 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 import type {Map} from 'immutable'
-import {
-    omit as _omit,
-    debounce as _debounce,
-    isUndefined as _isUndefined,
-    uniqueId as _uniqueId
-} from 'lodash'
+import _debounce from 'lodash/debounce'
+import _isUndefined from 'lodash/isUndefined'
+import _omit from 'lodash/omit'
+import _uniqueId from 'lodash/uniqueId'
 
 import {
     Button,

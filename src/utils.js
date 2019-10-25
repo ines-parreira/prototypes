@@ -7,7 +7,6 @@ import escodegen from 'escodegen'
 import esprima from 'esprima'
 import htmlparser from 'htmlparser2'
 import Immutable, {fromJS, type Iterable, type Map} from 'immutable'
-import _ from 'lodash'
 import _filter from 'lodash/filter'
 import _find from 'lodash/find'
 import _flatMapDeep from 'lodash/flatMapDeep'
@@ -15,6 +14,7 @@ import _get from 'lodash/get'
 import _has from 'lodash/has'
 import _isNumber from 'lodash/isNumber'
 import _isString from 'lodash/isString'
+import _isUndefined from 'lodash/isUndefined'
 import _last from 'lodash/last'
 import _map from 'lodash/map'
 import _trim from 'lodash/trim'
@@ -65,7 +65,7 @@ export const devLog = (...args: Array<any>) => {
 }
 
 export const defined = (item: any): boolean => {
-    return !_.isUndefined(item) && item !== null
+    return !_isUndefined(item) && item !== null
 }
 
 /**

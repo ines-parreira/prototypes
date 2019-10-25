@@ -5,7 +5,9 @@ import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 import {fromJS, type List, type Map} from 'immutable'
-import {defaults as _defaults, merge as _merge, pick as _pick} from 'lodash'
+import _defaults from 'lodash/defaults'
+import _merge from 'lodash/merge'
+import _pick from 'lodash/pick'
 import {Breadcrumb, BreadcrumbItem, Button, ButtonGroup, Col, Container, Form, Row,} from 'reactstrap'
 
 

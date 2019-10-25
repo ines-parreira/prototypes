@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
-import {pick as _pick} from 'lodash'
+import _pick from 'lodash/pick'
 
 import {submitSetting, updateCurrentUser} from '../../../state/currentUser/actions'
 import {getPreferences} from '../../../state/currentUser/selectors'

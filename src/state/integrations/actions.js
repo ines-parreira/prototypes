@@ -1,9 +1,10 @@
 // @flow
 import axios from 'axios'
-import {sortBy as _sortBy, capitalize as _capitalize} from 'lodash'
 import {browserHistory} from 'react-router'
 import moment from 'moment'
 import {fromJS, type Map} from 'immutable'
+import _capitalize from 'lodash/capitalize'
+import _sortBy from 'lodash/sortBy'
 
 import {FACEBOOK_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE} from '../../constants/integration'
 

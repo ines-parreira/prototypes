@@ -1,8 +1,27 @@
 import React from 'react'
 import {fromJS} from 'immutable'
-import _ from 'lodash'
 import moment from 'moment'
 import {Badge} from 'reactstrap'
+import _compact from 'lodash/compact'
+import _concat from 'lodash/concat'
+import _get from 'lodash/get'
+import _includes from 'lodash/includes'
+import _initial from 'lodash/initial'
+import _isArray from 'lodash/isArray'
+import _isBoolean from 'lodash/isBoolean'
+import _isInteger from 'lodash/isInteger'
+import _isNull from 'lodash/isNull'
+import _isObject from 'lodash/isObject'
+import _isString from 'lodash/isString'
+import _isUndefined from 'lodash/isUndefined'
+import _last from 'lodash/last'
+import _omitBy from 'lodash/omitBy'
+import _pickBy from 'lodash/pickBy'
+import _size from 'lodash/size'
+import _sortBy from 'lodash/sortBy'
+import _forEach from 'lodash/forEach'
+import _forIn from 'lodash/forIn'
+import _toLower from 'lodash/toLower'
 
 import {DatetimeLabel} from '../../utils/labels'
 import * as utils from '../../../../utils'
@@ -16,7 +35,7 @@ const Raven = window.Raven
  * @returns {*|boolean}
  */
 export function isArrayOfObjects(value) {
-    return _.isArray(value) && !!value.length && _.isObject(value[0])
+    return _isArray(value) && !!value.length && _isObject(value[0])
 }
 
 /**
@@ -25,7 +44,7 @@ export function isArrayOfObjects(value) {
  * @returns {boolean}
  */
 export function isObject(value) {
-    return !!value && _.isObject(value) && !_.isArray(value)
+    return !!value && _isObject(value) && !_isArray(value)
 }
 
 /**
@@ -78,8 +97,8 @@ export const isCustomerDataPresent = (data) => {
 export function stripLastListsFromPath(path = []) {
     let newPath = path
 
-    while (_.last(newPath) === '[]') {
-        newPath = _.initial(newPath)
+    while (_last(newPath) === '[]') {
+        newPath = _initial(newPath)
     }
 
     return newPath
@@ -124,11 +143,11 @@ export function isDate(string) {
  * @returns {boolean}
  */
 export function isBoolean(string) {
-    if (_.isBoolean(string)) {
+    if (_isBoolean(string)) {
         return true
     }
 
-    if (_.isString(string)) {
+    if (_isString(string)) {
         return string === 'true' || string === 'false'
     }
 
@@ -248,30 +267,26 @@ export function jsonToWidget(value, key = '', isChildOfList = false) {
         // if object (and not an array, since Array is an Object in JS)
         if (isObject(value)) {
             // remove private keys from source
-            value = _.omitBy(value, (v, k) => k.startsWith('_'))
+            value = _omitBy(value, (v, k) => k.startsWith('_'))
 
             let enhancedValues = {}
 
             // order keys in alphabetical order
-            _.chain(value)
-                .keys()
-                .sortBy(_.toLower)
-                .forEach((v) => {
-                    enhancedValues[v] = value[v]
-                })
-                .value()
+            _sortBy(Object.keys(value), _toLower).forEach((v) => {
+                enhancedValues[v] = value[v]
+            })
 
             // order keys by simple fields, then objects and finally arrays
             enhancedValues = {
-                ..._.pickBy(enhancedValues, (v) => {
+                ..._pickBy(enhancedValues, (v) => {
                     return !isObject(v) && !isArrayOfObjects(v)
                 }),
-                ..._.pickBy(enhancedValues, isObject),
-                ..._.pickBy(enhancedValues, isArrayOfObjects)
+                ..._pickBy(enhancedValues, isObject),
+                ..._pickBy(enhancedValues, isArrayOfObjects)
             }
 
             const widgets = []
-            _.forIn(enhancedValues, (v, k) => widgets.push(jsonToWidget(v, k)))
+            _forIn(enhancedValues, (v, k) => widgets.push(jsonToWidget(v, k)))
 
             const response = {
                 type: 'card',
@@ -289,7 +304,7 @@ export function jsonToWidget(value, key = '', isChildOfList = false) {
         // other kind of field
         let type = 'text'
 
-        if (_.isArray(value)) {
+        if (_isArray(value)) {
             type = 'array'
         } else if (key === 'birthday') {
             type = 'age'
@@ -347,10 +362,10 @@ export function jsonToWidgets(json: Object, context: string = 'ticket'): Array {
     try {
         const sourcePaths = getSourcePathFromContext(context)
         const integrationsPath = sourcePaths.find((path) => {
-            return _.includes(path, 'integrations')
+            return _includes(path, 'integrations')
         })
 
-        const integrationsData = _.get(json, integrationsPath, {})
+        const integrationsData = _get(json, integrationsPath, {})
 
         let typeByPath = fromJS({})
 
@@ -359,7 +374,7 @@ export function jsonToWidgets(json: Object, context: string = 'ticket'): Array {
         //  [['customer', 'data'], ['customer', 'integrations']]
         // To:
         //  [['customer', 'data'], ['customer', 'integrations', '1'], ['customer', 'integrations', '2']]
-        _.forEach(integrationsData, (integrationData, integrationId) => {
+        _forEach(integrationsData, (integrationData, integrationId) => {
             const newPath = integrationsPath.slice()
             newPath.push(integrationId.toString())
             typeByPath = typeByPath.set(newPath, fromJS({
@@ -374,18 +389,18 @@ export function jsonToWidgets(json: Object, context: string = 'ticket'): Array {
 
         const response = sourcePaths
             .map((sourcePath, i) => {
-                let source = _.get(json, sourcePath, {})
+                let source = _get(json, sourcePath, {})
 
                 // remove private keys from source before we transform it into a template
-                source = _.omitBy(source, (v, k) => k.startsWith('_'))
+                source = _omitBy(source, (v, k) => k.startsWith('_'))
 
-                if (!source || !_.size(source)) {
+                if (!source || !_size(source)) {
                     return null
                 }
 
                 const template = jsonToWidget(source)
 
-                if (!template || !_.size(template)) {
+                if (!template || !_size(template)) {
                     return null
                 }
 
@@ -400,7 +415,7 @@ export function jsonToWidgets(json: Object, context: string = 'ticket'): Array {
             })
 
         // remove null widgets
-        return _.compact(response)
+        return _compact(response)
     } catch (err) {
         const message = 'Conversion of json to infobar widgets template failed'
 
@@ -455,7 +470,7 @@ export function prepareWidgetToDisplay(template = fromJS({}), source = fromJS({}
         absolutePath = parentPath
 
         if (ownPath) {
-            absolutePath = _.concat(absolutePath, ownPath)
+            absolutePath = _concat(absolutePath, ownPath)
         }
     }
 
@@ -466,7 +481,7 @@ export function prepareWidgetToDisplay(template = fromJS({}), source = fromJS({}
 
     path = utils.toJS(path)
 
-    if (path && !_.isArray(path)) {
+    if (path && !_isArray(path)) {
         path = [path]
     }
 
@@ -493,11 +508,11 @@ export function prepareWidgetToDisplay(template = fromJS({}), source = fromJS({}
 export function guessFieldValueFromRawData(data, type) {
     let fieldValue = ''
 
-    if (_.isUndefined(data) || _.isNull(data)) {
+    if (_isUndefined(data) || _isNull(data)) {
         return fieldValue
     }
 
-    if (_.isString(data)) {
+    if (_isString(data)) {
         fieldValue = data
     }
 
@@ -548,15 +563,15 @@ export function guessFieldValueFromRawData(data, type) {
         case 'boolean': {
             let isTrue = true
 
-            if (_.isBoolean(data)) {
+            if (_isBoolean(data)) {
                 isTrue = data
             }
 
-            if (_.isString(data)) {
+            if (_isString(data)) {
                 isTrue = data === 'true' || data.toString() === '1'
             }
 
-            if (_.isInteger(data)) {
+            if (_isInteger(data)) {
                 isTrue = data !== 0
             }
 
@@ -566,7 +581,7 @@ export function guessFieldValueFromRawData(data, type) {
             break
         }
         case 'array': {
-            if (_.isArray(data)) {
+            if (_isArray(data)) {
                 fieldValue = data.join(', ')
             }
             break
@@ -585,15 +600,15 @@ export function guessFieldValueFromRawData(data, type) {
 export const displayLabel = (label) => {
     const defaultLabel = '-'
 
-    if (_.isUndefined(label)) {
+    if (_isUndefined(label)) {
         return defaultLabel
     }
 
-    if (_.isNull(label)) {
+    if (_isNull(label)) {
         return defaultLabel
     }
 
-    if (_.isString(label) && !label) {
+    if (_isString(label) && !label) {
         return defaultLabel
     }
 

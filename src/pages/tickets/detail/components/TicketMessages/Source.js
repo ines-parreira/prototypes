@@ -2,7 +2,7 @@
 import React from 'react'
 import {Popover, PopoverBody} from 'reactstrap'
 import classnames from 'classnames'
-import {isArray as _isArray} from 'lodash'
+import _isArray from 'lodash/isArray'
 
 import SourceIcon from '../../../../common/components/SourceIcon'
 import {DatetimeLabel} from '../../../../common/utils/labels'

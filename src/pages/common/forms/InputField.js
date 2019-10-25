@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import {uniqueId as _uniqueId, omit as _omit} from 'lodash'
+import _omit from 'lodash/omit'
+import _uniqueId from 'lodash/uniqueId'
 import {
     FormGroup,
     Label,

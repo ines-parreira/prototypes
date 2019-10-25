@@ -4,7 +4,7 @@ import {browserHistory} from 'react-router'
 import {Card, CardBody} from 'reactstrap'
 import {fromJS, List, Map} from 'immutable'
 import moment from 'moment'
-import {capitalize as _capitalize} from 'lodash'
+import _capitalize from 'lodash/capitalize'
 
 import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../constants/integration'
 import * as integrationHelpers from '../../../../state/integrations/helpers'

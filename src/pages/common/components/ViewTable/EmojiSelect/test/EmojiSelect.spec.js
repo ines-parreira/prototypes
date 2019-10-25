@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import {shallow, mount} from 'enzyme'
-import {noop} from 'lodash'
+import _noop from 'lodash/noop'
 
 import EmojiSelect from '../EmojiSelect'
 import css from '../EmojiSelect.less'
@@ -11,8 +11,8 @@ const EMOJI_MART_EMOJI_SELECTOR = '.emoji-mart-emoji'
 
 const defaultProps = {
     emoji: '1',
-    onEmojiSelect: noop,
-    onEmojiClear: noop
+    onEmojiSelect: _noop,
+    onEmojiClear: _noop
 }
 
 afterEach(() => {

@@ -3,10 +3,10 @@
  */
 
 import findWithRegex from 'find-with-regex'
-import _ from 'lodash'
+import _escapeRegExp from 'lodash/escapeRegExp'
 
 const mentionSuggestionStrategy = (trigger, regExp) => (contentBlock, callback) => {
-    findWithRegex(new RegExp(`(\\s|^)${_.escapeRegExp(trigger)}${regExp}`, 'g'), contentBlock, callback)
+    findWithRegex(new RegExp(`(\\s|^)${_escapeRegExp(trigger)}${regExp}`, 'g'), contentBlock, callback)
 }
 
 export default mentionSuggestionStrategy

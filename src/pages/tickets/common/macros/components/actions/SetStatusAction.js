@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
-import {upperFirst as _upperFirst} from 'lodash'
+import _upperFirst from 'lodash/upperFirst'
 
 import {TICKET_STATUSES} from '../../../../../../config'
 import InputField from '../../../../../common/forms/InputField'
