@@ -35,7 +35,7 @@ export const MACRO_VARIABLES = {
         value: '{{ticket.customer.integrations.recharge.subscriptions[0].price}}',
     }, {
         name: 'Scheduled date of next charge of last subscription',
-        value: '{{ticket.customer.integrations.recharge.subscriptions[0].next_charge_scheduled_at|datetime_format("L")}}',
+        value: '{{ticket.customer.integrations.recharge.subscriptions[0].next_charge_scheduled_at|datetime_format("MM/d/YYYY")}}',
     }]
 }
 
@@ -46,5 +46,8 @@ export const MACRO_PREVIOUS_VARIABLES = {
     children: [{
         name: 'Hash of customer',
         value: '{{ticket.customer.integrations.recharge.customer.hash}}',
+    }, {
+        name: 'Scheduled date of next charge of last subscription',
+        value: '{{ticket.customer.integrations.recharge.subscriptions[0].next_charge_scheduled_at|datetime_format("L")}}',
     }]
 }

@@ -40,6 +40,10 @@ Array [
         "name": "Hash of customer",
         "value": "{{ticket.customer.integrations.recharge.customer.hash}}",
       },
+      Object {
+        "name": "Scheduled date of next charge of last subscription",
+        "value": "{{ticket.customer.integrations.recharge.subscriptions[0].next_charge_scheduled_at|datetime_format(\\"L\\")}}",
+      },
     ],
     "integration": true,
     "name": "Recharge",
@@ -47,34 +51,6 @@ Array [
   },
   Object {
     "children": Array [
-      Object {
-        "name": "Number of last order",
-        "value": "{{ticket.customer.integrations.shopify.orders[0].name}}",
-      },
-      Object {
-        "name": "Tracking url of last order",
-        "value": "{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].tracking_url}}",
-      },
-      Object {
-        "name": "Tracking number of last order",
-        "value": "{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].tracking_number}}",
-      },
-      Object {
-        "name": "Delivery status of last order",
-        "value": "{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].shipment_status}}",
-      },
-      Object {
-        "name": "Status URL of last order",
-        "value": "{{ticket.customer.integrations.shopify.orders[0].order_status_url}}",
-      },
-      Object {
-        "name": "Shipping date of last order",
-        "value": "{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].created_at|datetime_format(\\"MMMM Do YYYY\\")}}",
-      },
-      Object {
-        "name": "Destination country of last order",
-        "value": "{{ticket.customer.integrations.shopify.orders[0].shipping_address.country}}",
-      },
       Object {
         "name": "Number of last order",
         "value": "{{ticket.customer.integrations.shopify.orders[0].order_number}}",
@@ -106,6 +82,14 @@ Array [
       Object {
         "name": "Province",
         "value": "{{ticket.customer.integrations.shopify.customer.default_address.province}}",
+      },
+      Object {
+        "name": "Date of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].created_at|datetime_format(\\"MMMM Do YYYY\\")}}",
+      },
+      Object {
+        "name": "Shipping date of last order",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].created_at|datetime_format(\\"MMMM Do YYYY\\")}}",
       },
     ],
     "integration": true,
@@ -153,7 +137,7 @@ Array [
       },
       Object {
         "name": "Scheduled date of next charge of last subscription",
-        "value": "{{ticket.customer.integrations.recharge.subscriptions[0].next_charge_scheduled_at|datetime_format(\\"L\\")}}",
+        "value": "{{ticket.customer.integrations.recharge.subscriptions[0].next_charge_scheduled_at|datetime_format(\\"MM/d/YYYY\\")}}",
       },
     ],
     "integration": true,
@@ -168,7 +152,7 @@ Array [
       },
       Object {
         "name": "Date of last order",
-        "value": "{{ticket.customer.integrations.shopify.orders[0].created_at|datetime_format(\\"MMMM Do YYYY\\")}}",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].created_at|datetime_format(\\"MMMM d YYYY\\")}}",
       },
       Object {
         "name": "Tracking url of last order",
@@ -188,7 +172,7 @@ Array [
       },
       Object {
         "name": "Shipping date of last order",
-        "value": "{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].created_at|datetime_format(\\"MMMM Do YYYY\\")}}",
+        "value": "{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].created_at|datetime_format(\\"MMMM d YYYY\\")}}",
       },
       Object {
         "name": "Destination country of last order",
