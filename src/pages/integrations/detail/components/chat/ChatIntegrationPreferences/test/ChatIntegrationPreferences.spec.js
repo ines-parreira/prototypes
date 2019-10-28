@@ -3,8 +3,6 @@ import {mount, shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import {
-    CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
-    CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
     CHAT_AUTO_RESPONDER_REPLY_SHORTLY
 } from '../../../../../../../config/integrations'
@@ -18,7 +16,6 @@ import {
 import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../../../constants/integration'
 import {SPANISH_LANGUAGE} from '../../../../../../../constants/languages'
 import {ChatIntegrationPreferences, PREVIEW_AUTO_RESPONDER, PREVIEW_EMAIL_CAPTURE} from '../ChatIntegrationPreferences'
-
 
 describe('<ChatIntegrationPreferences/>', () => {
     describe('componentDidMount()', () => {
@@ -302,6 +299,21 @@ describe('<ChatIntegrationPreferences/>', () => {
         })
     })
 
+    describe('_setLinkedEmailIntegration()', () => {
+        it('should update the linked email integration in the state.', () => {
+            const component = shallow(
+                <ChatIntegrationPreferences
+                    updateOrCreateIntegration={() => {}}
+                    integration={fromJS({})}
+                />
+            )
+
+            expect(component.state()).toMatchSnapshot()
+            component.instance()._setLinkedEmailIntegration(234)
+            expect(component.state()).toMatchSnapshot()
+        })
+    })
+
     describe('_submitPreferences()', () => {
         it('should be called when the form is submitted', () => {
             const component = mount(
@@ -318,7 +330,7 @@ describe('<ChatIntegrationPreferences/>', () => {
             expect(submitPreferencesSpy).toHaveBeenCalledTimes(1)
         })
 
-        it('should submit the form with defaults', async () => {
+        it('should submit the form with defaults', async() => {
             const updateOrCreateIntegration = jest.fn()
 
             const component = shallow(
@@ -335,22 +347,10 @@ describe('<ChatIntegrationPreferences/>', () => {
 
             await component.instance()._submitPreferences({preventDefault: jest.fn()})
 
-            expect(updateOrCreateIntegration).toHaveBeenCalledWith(fromJS({
-                id: undefined,
-                meta: {
-                    language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
-                    preferences: {
-                        auto_responder: {
-                            enabled: CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
-                            reply: CHAT_AUTO_RESPONDER_REPLY_DEFAULT
-                        },
-                        email_capture_enforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT
-                    }
-                }
-            }))
+            expect(updateOrCreateIntegration).toMatchSnapshot()
         })
 
-        it('should submit the form with loaded values', async () => {
+        it('should submit the form with loaded values', async() => {
             const updateOrCreateIntegration = jest.fn()
 
             const integration = fromJS({
@@ -387,11 +387,7 @@ describe('<ChatIntegrationPreferences/>', () => {
 
             await component.instance()._submitPreferences({preventDefault: jest.fn()})
 
-            expect(updateOrCreateIntegration).toHaveBeenCalledWith(
-                integration
-                    .delete('type')
-                    .setIn(['meta', 'preferences', 'auto_responder'], fromJS(newAutoResponder))
-            )
+            expect(updateOrCreateIntegration).toMatchSnapshot()
         })
     })
 

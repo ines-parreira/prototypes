@@ -1,9 +1,12 @@
+@select-padding: 14px;
+@base-input-width: 2px;
+
 :local .select {
     display: block;
     position: relative;
     width: 100%;
     line-height: 1.25;
-    padding: 0 1rem;
+    padding: 0 @select-padding;
     border: 1px solid rgba(0, 0, 0, .15);
     border-radius: .25rem;
     background-clip: padding-box;
@@ -13,20 +16,30 @@
     color: #464a4c;
     font-size: 1rem;
     white-space: nowrap;
+    box-sizing: border-box;
+
+    &.selectFullWidth {
+        .label {
+            box-sizing: border-box;
+            width: ~"calc(100% - (@{select-padding} * 2) + @{base-input-width})";
+        }
+    }
 
     .input {
         position: absolute;
         left: 1rem;
         height: 100%;
         line-height: 2.25;
-        width: 2px; // input will grow dynamically with the min width
+        width: @base-input-width; // input will grow dynamically with the min width
         max-width: 350px;
         padding: .50rem 0;
         margin: 0;
         outline: none;
         border: none;
         background: transparent;
+        box-sizing: border-box;
     }
+
 
     .placeholder {
         color: #A4AAAE;
@@ -47,6 +60,12 @@
     overflow-y: auto;
     max-height: 200px;
     max-width: 350px;
+
+    &.optionsFullWidth {
+        width: 100%;
+        max-width: 100%;
+    }
+
 
     .option {
         &.option--focused {

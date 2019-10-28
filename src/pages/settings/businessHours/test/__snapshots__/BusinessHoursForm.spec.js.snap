@@ -7,6 +7,7 @@ exports[`BusinessHoursForm component should render 1`] = `
   <SelectField
     allowCustomValue={false}
     fixedWidth={true}
+    fullWidth={false}
     onChange={[Function]}
     onSearchChange={[Function]}
     options={

@@ -268,6 +268,7 @@ exports[`ActionButton component should display a single option with a select par
           allowCustomValue={false}
           className="mb-2"
           fixedWidth={false}
+          fullWidth={false}
           key="param"
           label="Execute the action for real"
           name="param"
@@ -574,6 +575,7 @@ exports[`ActionButton component should display multiple options with a common pa
         <SelectField
           allowCustomValue={false}
           fixedWidth={false}
+          fullWidth={false}
           key="input"
           onChange={[Function]}
           onSearchChange={[Function]}
@@ -711,6 +713,7 @@ exports[`ActionButton component should display multiple options with different p
         <SelectField
           allowCustomValue={false}
           fixedWidth={false}
+          fullWidth={false}
           key="input"
           onChange={[Function]}
           onSearchChange={[Function]}
@@ -848,6 +851,7 @@ exports[`ActionButton component should display multiple options without paramete
         <SelectField
           allowCustomValue={false}
           fixedWidth={false}
+          fullWidth={false}
           key="input"
           onChange={[Function]}
           onSearchChange={[Function]}

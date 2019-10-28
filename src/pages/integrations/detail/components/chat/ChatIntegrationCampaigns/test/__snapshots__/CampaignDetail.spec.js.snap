@@ -181,6 +181,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                 allowCustomValue={false}
                 className="authorInput"
                 fixedWidth={false}
+                fullWidth={false}
                 onChange={[Function]}
                 onSearchChange={[Function]}
                 options={
@@ -513,6 +514,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                 allowCustomValue={false}
                 className="authorInput"
                 fixedWidth={false}
+                fullWidth={false}
                 onChange={[Function]}
                 onSearchChange={[Function]}
                 options={
@@ -869,6 +871,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                 allowCustomValue={false}
                 className="authorInput"
                 fixedWidth={false}
+                fullWidth={false}
                 onChange={[Function]}
                 onSearchChange={[Function]}
                 options={

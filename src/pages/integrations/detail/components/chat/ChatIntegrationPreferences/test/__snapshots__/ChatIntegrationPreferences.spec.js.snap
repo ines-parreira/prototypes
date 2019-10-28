@@ -1,5 +1,87 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<ChatIntegrationPreferences/> _setLinkedEmailIntegration() should update the linked email integration in the state. 1`] = `
+Object {
+  "autoResponderEnabled": false,
+  "autoResponderReply": "reply-shortly",
+  "emailCaptureEnforcement": "optional",
+  "isInitialized": false,
+  "isUpdating": false,
+  "linkedEmailIntegration": null,
+  "preview": "email-capture",
+}
+`;
+
+exports[`<ChatIntegrationPreferences/> _setLinkedEmailIntegration() should update the linked email integration in the state. 2`] = `
+Object {
+  "autoResponderEnabled": false,
+  "autoResponderReply": "reply-shortly",
+  "emailCaptureEnforcement": "optional",
+  "isInitialized": false,
+  "isUpdating": false,
+  "linkedEmailIntegration": 234,
+  "preview": "email-capture",
+}
+`;
+
+exports[`<ChatIntegrationPreferences/> _submitPreferences() should submit the form with defaults 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Immutable.Map {
+        "id": undefined,
+        "meta": Immutable.Map {
+          "language": "en-US",
+          "preferences": Immutable.Map {
+            "auto_responder": Immutable.Map {
+              "enabled": false,
+              "reply": "reply-shortly",
+            },
+            "email_capture_enforcement": "optional",
+            "linked_email_integration": null,
+          },
+        },
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`<ChatIntegrationPreferences/> _submitPreferences() should submit the form with loaded values 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Immutable.Map {
+        "id": 1,
+        "meta": Immutable.Map {
+          "preferences": Immutable.Map {
+            "auto_responder": Immutable.Map {
+              "enabled": false,
+              "reply": "reply-in-minutes",
+            },
+            "email_capture_enforcement": "optional",
+            "linked_email_integration": null,
+          },
+          "language": "en-US",
+        },
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
 exports[`<ChatIntegrationPreferences/> componentDidMount() should initialize the state using the integration passed 1`] = `
 Object {
   "autoResponderEnabled": true,
@@ -7,6 +89,7 @@ Object {
   "emailCaptureEnforcement": "always-required",
   "isInitialized": true,
   "isUpdating": false,
+  "linkedEmailIntegration": null,
   "preview": "email-capture",
 }
 `;
@@ -18,6 +101,7 @@ Object {
   "emailCaptureEnforcement": "always-required",
   "isInitialized": true,
   "isUpdating": false,
+  "linkedEmailIntegration": null,
   "preview": "email-capture",
 }
 `;
@@ -223,6 +307,48 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
                 , Gorgias will automatically tell customers when they can expect a response.
               </p>
             </div>
+          </div>
+          <h4>
+            Associated email integration
+          </h4>
+          <div
+            className="mb-4"
+          >
+            <p
+              className="mb-3"
+            >
+              If a customer doesn't see your responses on a chat for 1 hour, Gorgias will automatically deliver these messages via email.
+              <br />
+              Satisfaction surveys for chat tickets are also sent over email.
+            </p>
+            <Label
+              className="control-label"
+              for="linkedEmailIntegration"
+              tag="label"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              Email integration used to send these emails
+            </Label>
+            <SelectField
+              allowCustomValue={false}
+              fixedWidth={false}
+              fullWidth={true}
+              onChange={[Function]}
+              onSearchChange={[Function]}
+              options={Array []}
+              placeholder="Select an email integration"
+              singular="option"
+              style={Object {}}
+              value={null}
+            />
           </div>
           <div>
             <Button
@@ -467,6 +593,48 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
                 , Gorgias will automatically tell customers when they can expect a response.
               </p>
             </div>
+          </div>
+          <h4>
+            Associated email integration
+          </h4>
+          <div
+            className="mb-4"
+          >
+            <p
+              className="mb-3"
+            >
+              If a customer doesn't see your responses on a chat for 1 hour, Gorgias will automatically deliver these messages via email.
+              <br />
+              Satisfaction surveys for chat tickets are also sent over email.
+            </p>
+            <Label
+              className="control-label"
+              for="linkedEmailIntegration"
+              tag="label"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              Email integration used to send these emails
+            </Label>
+            <SelectField
+              allowCustomValue={false}
+              fixedWidth={false}
+              fullWidth={true}
+              onChange={[Function]}
+              onSearchChange={[Function]}
+              options={Array []}
+              placeholder="Select an email integration"
+              singular="option"
+              style={Object {}}
+              value={null}
+            />
           </div>
           <div>
             <Button

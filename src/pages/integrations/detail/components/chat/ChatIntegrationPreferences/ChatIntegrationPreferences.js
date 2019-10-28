@@ -3,44 +3,38 @@ import React from 'react'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
-import {fromJS, type Map} from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 import _omitBy from 'lodash/omitBy'
+import {fromJS, type List, type Map} from 'immutable'
+
+import {Breadcrumb, BreadcrumbItem, Button, Col, Container, Form, Label, Row} from 'reactstrap'
 
 import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Button,
-    Col,
-    Container,
-    Form,
-    Row
-} from 'reactstrap'
-
-import {
-    CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
+    CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     getAutoResponderReplyOptions
 } from '../../../../../../config/integrations'
 
 import {
-    SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS,
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
+    SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_OPTIONAL,
-    SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT
+    SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS
 } from '../../../../../../config/integrations/smooch_inside'
 
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import PageHeader from '../../../../../common/components/PageHeader'
 import ToggleButton from '../../../../../common/components/ToggleButton'
 import RadioField from '../../../../../common/forms/RadioField'
+import SelectField from '../../../../../common/forms/SelectField'
 
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
 import ChatIntegrationPreview from '../ChatIntegrationPreview'
 import OptionalEmailCapturePreview from '../ChatIntegrationPreview/OptionalEmailCapture'
 import RequiredEmailCapturePreview from '../ChatIntegrationPreview/RequiredEmailCapture'
 import AutoResponderPreview from '../ChatIntegrationPreview/AutoResponder'
-
+import {EMAIL_INTEGRATION_TYPES} from '../../../../../../constants/integration'
+import {getIntegrationsByTypes} from '../../../../../../state/integrations/selectors'
 
 const emailCaptureOptions = [
     {
@@ -60,43 +54,48 @@ const emailCaptureOptions = [
     },
 ]
 
-
 export const PREVIEW_EMAIL_CAPTURE = 'email-capture'
 export const PREVIEW_AUTO_RESPONDER = 'auto-responder'
 
-
 type Props = {
-    updateOrCreateIntegration: (Map<*,*>) => Promise<*>,
-    integration: Map<*,*>
+    updateOrCreateIntegration: (Map<*, *>) => Promise<*>,
+    integration: Map<*, *>,
+    emailIntegrations: List<Map<*, *>>
 }
 
 type State = {
     autoResponderEnabled: boolean,
     autoResponderReply: string,
     emailCaptureEnforcement: string,
-
     isInitialized: boolean,
     isUpdating: boolean,
-    preview: string
+    preview: string,
+    linkedEmailIntegration: ?number
 }
 
 export class ChatIntegrationPreferences extends React.Component<Props, State> {
+    static defaultProps = {
+        emailIntegrations: fromJS([])
+    }
+
     state = {
         autoResponderEnabled: CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
         autoResponderReply: CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
         emailCaptureEnforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
+        linkedEmailIntegration: null,
 
         isInitialized: false,
         isUpdating: false,
         preview: PREVIEW_EMAIL_CAPTURE
     }
 
-    _initState = (integration: Map<*,*>) => {
+    _initState = (integration: Map<*, *>) => {
         this.setState(_omitBy({
             autoResponderEnabled: integration.getIn(['meta', 'preferences', 'auto_responder', 'enabled']),
             autoResponderReply: integration.getIn(['meta', 'preferences', 'auto_responder', 'reply'])
                 || CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
             emailCaptureEnforcement: integration.getIn(['meta', 'preferences', 'email_capture_enforcement']),
+            linkedEmailIntegration: integration.getIn(['meta', 'preferences', 'linked_email_integration']),
             isInitialized: true
         }, _isUndefined))
     }
@@ -134,7 +133,11 @@ export class ChatIntegrationPreferences extends React.Component<Props, State> {
         })
     }
 
-    _submitPreferences = async (event: SyntheticEvent<*>) => {
+    _setLinkedEmailIntegration = (integrationId: number) => {
+        this.setState({linkedEmailIntegration: integrationId})
+    }
+
+    _submitPreferences = async(event: SyntheticEvent<*>) => {
         const {updateOrCreateIntegration, integration} = this.props
         event.preventDefault()
 
@@ -150,7 +153,8 @@ export class ChatIntegrationPreferences extends React.Component<Props, State> {
                         enabled: this.state.autoResponderEnabled,
                         reply: this.state.autoResponderReply
                     },
-                    email_capture_enforcement: this.state.emailCaptureEnforcement
+                    email_capture_enforcement: this.state.emailCaptureEnforcement,
+                    linked_email_integration: this.state.linkedEmailIntegration
                 }
             })
         })
@@ -161,8 +165,15 @@ export class ChatIntegrationPreferences extends React.Component<Props, State> {
     }
 
     render() {
-        const {autoResponderEnabled, autoResponderReply, emailCaptureEnforcement, isUpdating, preview} = this.state
-        const {integration} = this.props
+        const {
+            autoResponderEnabled,
+            autoResponderReply,
+            emailCaptureEnforcement,
+            isUpdating,
+            preview,
+            linkedEmailIntegration
+        } = this.state
+        const {integration, emailIntegrations} = this.props
 
         const conversationColor = integration.getIn(['decoration', 'conversation_color'], '')
         const language = integration.getIn(['meta', 'language'])
@@ -277,7 +288,40 @@ export class ChatIntegrationPreferences extends React.Component<Props, State> {
                                         </p>
                                     </div>
                                 </div>
+                                <h4>
+                                    Associated email integration
+                                </h4>
 
+                                <div className="mb-4">
+                                    <p className="mb-3">
+                                        If a customer doesn't see your responses on a chat for 1 hour, Gorgias will
+                                        automatically deliver these messages via email.<br/>
+                                        Satisfaction surveys for chat tickets are also sent over email.
+                                    </p>
+                                    <Label
+                                        className="control-label"
+                                        for="linkedEmailIntegration"
+                                    >
+                                        Email integration used to send these emails
+                                    </Label>
+                                    <SelectField
+                                        placeholder="Select an email integration"
+                                        // Typing of `SelectOption` is not correct and value cannot be `null`.
+                                        // $FlowFixMe
+                                        value={linkedEmailIntegration}
+                                        options={emailIntegrations.map((integration) => ({
+                                            label: `${integration.get('name')} <${integration.getIn(['meta', 'address'])}>`,
+                                            value: integration.get('id')
+                                        })).toJS()}
+                                        fullWidth
+                                        onChange={(integrationId) => {
+                                            // Typing of `SelectOption` is not correct and
+                                            // Flow thinks `integrationId` can be a string which is impossible in our case.
+                                            // $FlowFixMe
+                                            this._setLinkedEmailIntegration(integrationId)
+                                        }}
+                                    />
+                                </div>
                                 <div>
                                     <Button
                                         type="submit"
@@ -312,6 +356,8 @@ export class ChatIntegrationPreferences extends React.Component<Props, State> {
     }
 }
 
-export default connect(null, {
+export default connect((state) => ({
+    emailIntegrations: getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)(state)
+}), {
     updateOrCreateIntegration
 })(ChatIntegrationPreferences)

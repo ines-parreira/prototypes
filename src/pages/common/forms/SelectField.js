@@ -33,7 +33,8 @@ type Props = {
     onSearchChange: string => void,
     className?: string,
     fixedWidth: boolean,
-    focusedPlaceholder?: string
+    focusedPlaceholder?: string,
+    fullWidth?: boolean
 }
 
 type State = {
@@ -52,7 +53,8 @@ export default class SelectField extends Component<Props, State> {
         singular: 'option',
         style: {},
         onSearchChange: _noop,
-        fixedWidth: false
+        fixedWidth: false,
+        fullWidth: false
     }
 
     constructor(props: Props) {
@@ -192,7 +194,7 @@ export default class SelectField extends Component<Props, State> {
     render() {
         const {
             allowCustomValue, value, singular, style, placeholder, className, options,
-            rightAddon, fixedWidth, focusedPlaceholder
+            rightAddon, fixedWidth, focusedPlaceholder, fullWidth
         } = this.props
         const {filteredOptions, input, optionsOpen, selectedOptionIndex, isFocused} = this.state
         const selectedOption = options.find((option) => _isEqual(option.value, value))
@@ -232,7 +234,9 @@ export default class SelectField extends Component<Props, State> {
                         className={className}
                     >
                         <div
-                            className={`${css.select} dropdown-toggle`}
+                            className={classnames(css.select, 'dropdown-toggle', {
+                                [css.selectFullWidth]: fullWidth
+                            })}
                             onClick={this._toggleDropdown}
                         >
                             <span
@@ -264,7 +268,9 @@ export default class SelectField extends Component<Props, State> {
                         </div>
                     </DropdownToggle>
                     <DropdownMenu
-                        className={css.options}
+                        className={classnames(css.options, {
+                            [css.optionsFullWidth]: fullWidth
+                        })}
                     >
                         {hasNoFilteredOptions && !allowCustomValue ? (
                             <DropdownItem header>

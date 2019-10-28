@@ -317,6 +317,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                               <SelectField
                                 allowCustomValue={false}
                                 fixedWidth={true}
+                                fullWidth={false}
                                 onChange={[Function]}
                                 onSearchChange={[Function]}
                                 options={
@@ -722,6 +723,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                               <SelectField
                                 allowCustomValue={false}
                                 fixedWidth={true}
+                                fullWidth={false}
                                 onChange={[Function]}
                                 onSearchChange={[Function]}
                                 options={
