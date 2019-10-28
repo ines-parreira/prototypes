@@ -171,8 +171,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         type: MAGENTO2_INTEGRATION_TYPE,
         title: 'Magento 2',
         description: 'Display customer profiles & orders next to tickets. Edit orders with macros',
-        image: 'integrations/magento.png',
-        hide: true
+        image: 'integrations/magento.png'
 
     },
     {
