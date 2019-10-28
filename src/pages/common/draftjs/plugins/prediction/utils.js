@@ -1,7 +1,5 @@
 // @flow
-import {EditorState, Modifier, ContentState} from 'draft-js'
-import _range from 'lodash/range'
-import _some from 'lodash/some'
+import {ContentState, EditorState, Modifier} from 'draft-js'
 
 import {getEntitySelectionState} from '../../../../../utils/editor'
 
@@ -84,16 +82,8 @@ export const isTypingPrediction = (entityKey: string, editorState: EditorState) 
     currentText = currentText.substring(0, currentText.length - 1)
     const currentPrediction = getPredictionText(entityKey, editorState)
 
-    let predictionSubstrings = []
-
-    // We use `length - 1` because we don't want to match the whole prediction: if the content already ends
-    // with it, we want to remove it
-    _range(currentPrediction.length - 1).forEach((idx: number) => {
-        // We use idx + 1 because we don't want to match the substring "empty string"
-        predictionSubstrings.push(currentPrediction.substring(0, idx + 1))
-    })
-
-    return _some(predictionSubstrings, (substring) => currentText.endsWith(substring))
+    // the implicit assumption is that only the last character of the currentText was added
+    return currentText.slice(-1) === currentPrediction.slice(0, 1)
 }
 
 export const hasTypedPrediction = (entityKey: string, editorState: EditorState) => {

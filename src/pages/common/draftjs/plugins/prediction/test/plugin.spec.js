@@ -107,12 +107,13 @@ describe('prediction plugin', () => {
 
             state = await typeAndPredict('Hi', ' Marie,', state, onChange, plugin)
             state = await typeAndPredict(' ', '', state, onChange, plugin)
+            state = await typeAndPredict('M', '', state, onChange, plugin)
 
             const content = state.getCurrentContent()
-            expect(content.getPlainText()).toBe('Hi  ')
+            expect(content.getPlainText()).toBe('Hi M ')
             expect(getPredictionCalls()).toHaveLength(1) // It should cache results to avoid excessive requests
-            expect(DraftTestUtils.getLastCreatedEntityRange(content)).toEqual([3, 4])
-            expect((DraftTestUtils.getLastCreatedEntity(content): any).toJS()).toMatchObject(createPredictionEntity('Marie,'))
+            expect(DraftTestUtils.getLastCreatedEntityRange(content)).toEqual([4, 5])
+            expect((DraftTestUtils.getLastCreatedEntity(content): any).toJS()).toMatchObject(createPredictionEntity('arie,'))
         })
 
         it('should hide the prediction and request a new one when new text does not match the previous prediction', async () => {
@@ -137,6 +138,43 @@ describe('prediction plugin', () => {
                 result_prediction_text: 'Marie,',
                 result_prediction_accepted: false
             })
+        })
+
+        it('should remove the prediction if it was completed', async () => {
+            const {onChange} = prediction({context: defaultContext})
+            let state = EditorState.createEmpty()
+            const plugin = DraftTestUtils.mockPlugin(state)
+
+            state = await typeAndPredict('Hi Mari', 'e', state, onChange, plugin)
+            state = await typeAndPredict('e', '', state, onChange, plugin)
+
+            const content = state.getCurrentContent()
+
+            expect(content.getPlainText()).toBe('Hi Marie')
+            expect(DraftTestUtils.getLastCreatedEntityRange(content)).toBeNull()
+
+            const feedbackCalls = getFeedbackCalls()
+            expect(feedbackCalls).toHaveLength(1)
+            expect(JSON.parse(feedbackCalls[0].data)).toMatchObject({
+                result_number_accepted_characters: 1,
+                query_text: 'Hi Mari',
+                result_prediction_text: 'e',
+                result_prediction_accepted: true
+            })
+        })
+
+        // Regression test for https://github.com/gorgias/gorgias/issues/4553
+        it('should hide the prediction on partial input mismatch', async () => {
+            const {onChange} = prediction({context: defaultContext})
+            let state = EditorState.createEmpty()
+            const plugin = DraftTestUtils.mockPlugin(state)
+
+            state = await typeAndPredict('I\'m so', ' sorry,', state, onChange, plugin)
+            state = await typeAndPredict('r', '', state, onChange, plugin)
+
+            const content = state.getCurrentContent()
+            expect(DraftTestUtils.getLastCreatedEntityRange(content)).toBeNull()
+            expect(content.getPlainText()).toBe('I\'m sor')
         })
     })
 })

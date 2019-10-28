@@ -6,7 +6,7 @@ import type {Map} from 'immutable'
 import type {PluginMethods} from '../types'
 
 import {
-    createPrediction,
+    createPrediction, getPredictionText,
     hasTypedPrediction,
     insertPrediction,
     isTypingPrediction,
@@ -169,7 +169,11 @@ const predictionPlugin = (config: { context: Map<*, *> }) => {
             }
 
             if (predictionKey) {
-                if (isTypingPrediction(predictionKey, editorState)) {
+                const predictionText = getPredictionText(predictionKey, editorState)
+                const inputMatchesPrediction = isTypingPrediction(predictionKey, editorState)
+
+                // Update the prediction if input matches the prediction and it's not complete yet
+                if (inputMatchesPrediction && predictionText.length > 1) {
                     currentPrediction.numberAcceptedCharacters += 1
                     return removeFirstCharOfPrediction(predictionKey, editorState)
                 }
