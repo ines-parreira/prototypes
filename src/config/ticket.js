@@ -1,7 +1,8 @@
 import {fromJS} from 'immutable'
 import _find from 'lodash/find'
 
-import { SourceTypes } from '../business/ticket'
+import { SourceTypes, type SourceType } from '../business/ticket'
+import type {TicketMessage} from '../models/ticket'
 import {compare, getLastMessage, toImmutable} from '../utils'
 import {isForwardedMessage} from '../state/ticket/utils'
 
@@ -151,9 +152,9 @@ export const PREVIOUS_VARIABLES = [{
  * Return passed messages ordered by created_datetime
  * @param messages
  */
-export const orderedMessages = (messages) => {
-    messages = toImmutable(messages)
-    return messages.sort((a, b) => compare(a.get('created_datetime'), b.get('created_datetime')))
+export function orderedMessages(messages: Array<TicketMessage>): Array<TicketMessage> {
+    return toImmutable(messages)
+        .sort((a, b) => compare(a.get('created_datetime'), b.get('created_datetime')))
 }
 
 /**
@@ -161,7 +162,7 @@ export const orderedMessages = (messages) => {
  * @param sourceType
  * @returns {boolean}
  */
-export const isAnswerableType = (sourceType) => {
+export function isAnswerableType(sourceType: SourceType): boolean {
     return USABLE_SOURCE_TYPES.includes(sourceType)
 }
 
@@ -170,36 +171,33 @@ export const isAnswerableType = (sourceType) => {
  * @param sourceType
  * @returns {boolean}
  */
-export const isSystemType = (sourceType) => {
+export function isSystemType(sourceType: SourceType): boolean {
     return SYSTEM_SOURCE_TYPES.includes(sourceType)
 }
 
 /**
- * Get the most recent message that was not a system-type message
+ * Get the most recent message that was not a system-type message, if any
  * @param messages
- * @returns {*}
+ * @returns {?TicketMessage}
  */
-export function lastNonSystemTypeMessage(messages) {
-    messages = toImmutable(messages)
-    messages = orderedMessages(messages)
-    const filteredMessages = messages.filter((message) => {
-        return !isSystemType(message.getIn(['source', 'type'])) && !isForwardedMessage(message)
-    })
+export function lastNonSystemTypeMessage(messages: Array<TicketMessage>): ?TicketMessage  {
+    const filteredMessages = orderedMessages(messages)
+        .filter((message) => {
+            return !isSystemType(message.getIn(['source', 'type'])) && !isForwardedMessage(message)
+        })
     return !filteredMessages.isEmpty() && fromJS(getLastMessage(filteredMessages.toJS()))
 }
 
 /**
  * Return channel of passed source type
- * @param sourceType
- * @param messages
- * @returns {*}
+ * @param sourceType: the source type from which we want to get the corresponding channel
+ * @param messages: the messages for which we want to get a channel
+ * @returns {string}: the channel corresponding to the passed source type
  */
-export const sourceTypeToChannel = (sourceType, messages = []) => {
+export function sourceTypeToChannel(sourceType: SourceType, messages: Array<TicketMessage> = []): string {
     if (!sourceType) {
         return DEFAULT_CHANNEL
     }
-
-    messages = toImmutable(messages)
 
     if (isSystemType(sourceType)) {
         const lastMessage = lastNonSystemTypeMessage(messages)
@@ -212,7 +210,7 @@ export const sourceTypeToChannel = (sourceType, messages = []) => {
         return sourceTypeToChannel(lastSourceType, messages)
     }
 
-    if (sourceType.startsWith('facebook') && sourceType !== 'facebook-messenger') {
+    if (sourceType.startsWith('facebook') && sourceType !== SourceTypes.FACEBOOK_MESSENGER) {
         return FACEBOOK_CHANNEL
     }
 
@@ -234,10 +232,7 @@ export const sourceTypeToChannel = (sourceType, messages = []) => {
 /**
  * Return source type we should set on a **new** message based on the source type of messages we're responding to
  */
-export const responseSourceType = (messages) => {
-    messages = toImmutable(messages)
-    messages = orderedMessages(messages)
-
+export function responseSourceType(messages: Array<TicketMessage>): SourceType {
     if (!messages) {
         return DEFAULT_SOURCE_TYPE
     }
@@ -251,16 +246,16 @@ export const responseSourceType = (messages) => {
 
     const lastSourceType = lastMessage.getIn(['source', 'type'])
 
-    if (lastSourceType === FACEBOOK_POST_SOURCE) {
-        return FACEBOOK_COMMENT_SOURCE
+    if (lastSourceType === SourceTypes.FACEBOOK_POST) {
+        return SourceTypes.FACEBOOK_COMMENT
     }
 
-    if (lastSourceType === INSTAGRAM_MEDIA_SOURCE) {
-        return INSTAGRAM_COMMENT_SOURCE
+    if (lastSourceType === SourceTypes.INSTAGRAM_MEDIA) {
+        return SourceTypes.INSTAGRAM_COMMENT
     }
 
-    if (lastSourceType === INSTAGRAM_AD_MEDIA_SOURCE) {
-        return INSTAGRAM_AD_COMMENT_SOURCE
+    if (lastSourceType === SourceTypes.INSTAGRAM_AD_MEDIA) {
+        return SourceTypes.INSTAGRAM_AD_COMMENT
     }
 
     if (!isAnswerableType(lastSourceType)) {
@@ -275,8 +270,8 @@ export const responseSourceType = (messages) => {
  * @param sourceType
  * @returns {boolean}
  */
-export const isPublic = (sourceType) => {
-    return sourceType !== 'internal-note'
+export function isPublic(sourceType: SourceType): boolean {
+    return sourceType !== SourceTypes.INTERNAL_NOTE
 }
 
 /**
@@ -284,8 +279,8 @@ export const isPublic = (sourceType) => {
  * @param sourceType
  * @returns {boolean}
  */
-export const isRichType = (sourceType) => {
-    return ['email', 'internal-note'].includes(sourceType)
+export function isRichType(sourceType: SourceType): boolean {
+    return [SourceTypes.EMAIL, SourceTypes.INTERNAL_NOTE].includes(sourceType)
 }
 
 /**
@@ -293,15 +288,15 @@ export const isRichType = (sourceType) => {
  * @param sourceType
  * @returns {boolean}
  */
-export const canLeaveInternalNote = (sourceType) => {
-    return sourceType === 'internal-note'
+export function canLeaveInternalNote(sourceType: SourceType): boolean {
+    return sourceType === SourceTypes.INTERNAL_NOTE
 }
 
 /**
  * Return variables config
  * @returns {[*,*,*,*]}
  */
-export const getVariables = (types) => {
+export function getVariables(types: Array<string>): Array {
     if (!types) {
         return VARIABLES.filter((variable) => !variable.explicit)
     }
@@ -315,7 +310,7 @@ export const getVariables = (types) => {
  * @param variablesList
  * @returns {Array}
  */
-export const getVariablesList = (variablesList = VARIABLES) => {
+export function getVariablesList(variablesList: Array<Object> = VARIABLES): Array<Object> {
     const variables = []
 
     variablesList.forEach((category) => {
@@ -353,7 +348,7 @@ export const getVariablesList = (variablesList = VARIABLES) => {
  * @param value
  * @returns {*}
  */
-export const getVariableWithValue = (value) => {
+export function getVariableWithValue(value: string): Object {
     const variables = getVariablesList()
     const hiddenVariables = getVariablesList(HIDDEN_VARIABLES)
     const previousVariables = getVariablesList(PREVIOUS_VARIABLES)

@@ -1,5 +1,6 @@
 // @flow
 import * as facebook from './facebook'
+import * as magento2 from './magento2'
 import * as recharge from './recharge'
 import * as shopify from './shopify'
 import * as smile from './smile'
@@ -8,6 +9,7 @@ import * as smoochInside from './smooch_inside'
 
 const allIntegrations = [
     facebook,
+    magento2,
     recharge,
     shopify,
     smile,

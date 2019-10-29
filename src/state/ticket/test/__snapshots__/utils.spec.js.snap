@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ticket utils replaceIntegrationVariables() should return an empty value and log a notification because there is no matching integration 1`] = `
+Array [
+  Array [
+    Object {
+      "title": "This customer does not have any Shopify information",
+      "type": "warning",
+    },
+  ],
+]
+`;

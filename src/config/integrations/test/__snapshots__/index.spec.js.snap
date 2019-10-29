@@ -5,6 +5,29 @@ Array [
   Object {
     "children": Array [
       Object {
+        "name": "Street",
+        "value": "{{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.street[0]}}",
+      },
+      Object {
+        "name": "City",
+        "value": "{{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.city}}",
+      },
+      Object {
+        "name": "Postcode",
+        "value": "{{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.postcode}}",
+      },
+      Object {
+        "name": "Region code",
+        "value": "{{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.region_code}}",
+      },
+    ],
+    "integration": true,
+    "name": "Magento 2",
+    "type": "magento2",
+  },
+  Object {
+    "children": Array [
+      Object {
         "name": "Address 1",
         "value": "{{ticket.customer.integrations.shopify.orders[0].shipping_address.address1}}",
       },
@@ -101,6 +124,7 @@ Array [
 
 exports[`config integrations INTEGRATION_TYPE_WITH_VARIABLES should contain integration types of all integrations with any kind of variables 1`] = `
 Array [
+  "magento2",
   "recharge",
   "shopify",
   "smile",
@@ -109,6 +133,44 @@ Array [
 
 exports[`config integrations INTEGRATION_VARIABLES should contain all variables of all integrations with variables 1`] = `
 Array [
+  Object {
+    "children": Array [
+      Object {
+        "name": "Number of last order",
+        "value": "{{ticket.customer.integrations.magento2.orders[0].increment_id}}",
+      },
+      Object {
+        "name": "Date of last order",
+        "value": "{{ticket.customer.integrations.magento2.orders[0].created_at|datetime_format(\\"MMMM d YYYY\\")}}",
+      },
+      Object {
+        "name": "Tracking url of last order",
+        "replace": [Function],
+        "value": "{{ticket.customer.integrations.magento2.orders[0].last_shipment.last_track.tracking_url}}",
+      },
+      Object {
+        "name": "Tracking number of last order",
+        "replace": [Function],
+        "value": "{{ticket.customer.integrations.magento2.orders[0].last_shipment.last_track.track_number}}",
+      },
+      Object {
+        "name": "Shipping date of last order",
+        "replace": [Function],
+        "value": "{{ticket.customer.integrations.magento2.orders[0].last_shipment.last_track.created_at}}",
+      },
+      Object {
+        "name": "Destination country of last order",
+        "value": "{{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.country_id}}",
+      },
+      Object {
+        "name": "Shipping address of last order",
+        "value": "{{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.street[0]}}, {{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.postcode}} {{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.city}} {{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.region_code}}",
+      },
+    ],
+    "integration": true,
+    "name": "Magento 2",
+    "type": "magento2",
+  },
   Object {
     "children": Array [
       Object {

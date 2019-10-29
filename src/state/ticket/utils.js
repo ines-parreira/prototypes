@@ -1,10 +1,10 @@
 import {fromJS} from 'immutable'
+import _capitalize from 'lodash/capitalize'
 import _forEach from 'lodash/forEach'
 import _isArray from 'lodash/isArray'
 import _toLower from 'lodash/toLower'
 import _isEqual from 'lodash/isEqual'
 import _pickBy from 'lodash/pickBy'
-import _capitalize from 'lodash/capitalize'
 
 import {SOURCE_VALUE_PROP} from '../../config'
 import {INTEGRATION_TYPE_WITH_VARIABLES} from '../../config/integrations'
@@ -443,7 +443,13 @@ export const replaceIntegrationVariables = (integrationType, ticketState, variab
         return newArgument.replace(variable, '')
     }
 
-    const newVariable = variable.replace(`integrations.${integrationType}`, `integrations[${integrationId}]`)
+    const variableConfig = ticketConfig.getVariableWithValue(variable)
+    let newVariable = variable.replace(`integrations.${integrationType}`, `integrations[${integrationId}]`)
+
+    if (variableConfig && variableConfig.replace) {
+        newVariable = variableConfig.replace(fromJS({ticket: ticketState}), integrationId)
+    }
+
     return newArgument.replace(variable, newVariable)
 }
 
