@@ -163,6 +163,34 @@ describe('prediction plugin', () => {
             })
         })
 
+        it('should remove the prediction on cursor move', async () => {
+            const {onChange} = prediction({context: defaultContext})
+            let state = EditorState.createEmpty()
+            const plugin = DraftTestUtils.mockPlugin(state)
+
+            state = await typeAndPredict('Hi', ' Bob', state, onChange, plugin)
+
+            const newSelection = state.getSelection()
+                .set('anchorOffset', 0)
+                .set('focusOffset', 0)
+            state = EditorState.forceSelection(state, newSelection)
+            state = onChange(state, plugin)
+
+            expect(DraftTestUtils.getLastCreatedEntityRange(state.getCurrentContent())).toBeNull()
+        })
+
+        it('should remove the prediction on content remove', async () => {
+            const {onChange} = prediction({context: defaultContext})
+            let state = EditorState.createEmpty()
+            const plugin = DraftTestUtils.mockPlugin(state)
+
+            state = await typeAndPredict('Hi', ' Bob', state, onChange, plugin)
+            state = DraftTestUtils.pressBackspace(state)
+            state = onChange(state, plugin)
+
+            expect(DraftTestUtils.getLastCreatedEntityRange(state.getCurrentContent())).toBeNull()
+        })
+
         // Regression test for https://github.com/gorgias/gorgias/issues/4553
         it('should hide the prediction on partial input mismatch', async () => {
             const {onChange} = prediction({context: defaultContext})

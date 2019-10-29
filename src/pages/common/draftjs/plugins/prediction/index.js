@@ -6,7 +6,8 @@ import type {Map} from 'immutable'
 import type {PluginMethods} from '../types'
 
 import {
-    createPrediction, getPredictionText,
+    createPrediction,
+    getPredictionText,
     hasTypedPrediction,
     insertPrediction,
     isTypingPrediction,

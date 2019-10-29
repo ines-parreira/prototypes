@@ -1,14 +1,18 @@
 // @flow
-import {EditorState, Modifier, SelectionState} from 'draft-js'
+import {EditorState, SelectionState} from 'draft-js'
 
 import {
-    debugBlockMap, debugLastAppliedEntity,
+    createEntityAndApplyToFirstBlockRange,
+    debugBlockMap,
+    debugEditorState,
+    debugLastAppliedEntity,
     debugSelection,
     getLastCreatedEntity,
     getLastCreatedEntityRange,
     mockPlugin,
-    typeText,
-    createEntityAndApplyToFirstBlockRange, debugEditorState
+    pressBackspace,
+    splitFirstBlock,
+    typeText
 } from './draftTestUtils'
 
 describe('draftTestUtils', () => {
@@ -38,6 +42,99 @@ describe('draftTestUtils', () => {
             state = typeText(state, ' bar')
             expect(state.getSelection().getStartOffset()).toBe(7)
             expect(state.getSelection().getEndOffset()).toBe(7)
+        })
+    })
+
+
+    describe('pressBackspace()', () => {
+        it('should not change the empty state', () => {
+            const state = EditorState.createEmpty()
+            expect(pressBackspace(state)).toBe(state)
+        })
+
+        it('should delete the preceding char and update selection if selection is collapsed', () => {
+            let state = EditorState.createEmpty()
+            state = typeText(state, 'foo')
+            state = pressBackspace(state)
+            expect(state.getCurrentContent().getPlainText()).toBe('fo')
+            expect(state.getSelection().getStartOffset()).toBe(2)
+            expect(state.getSelection().getEndOffset()).toBe(2)
+        })
+
+        it('should delete the char in the preceding block if cursor is at the beginning of the block', () => {
+            let state = EditorState.createEmpty()
+            state = typeText(state, 'foobar')
+            state = splitFirstBlock(state, 3)
+
+            state = EditorState.forceSelection(
+                state,
+                state.getSelection()
+                    .set('anchorOffset', 0)
+                    .set('focusOffset', 0)
+            )
+
+            state = pressBackspace(state)
+            expect(state.getCurrentContent().getPlainText()).toBe('fo\nbar')
+
+            const selection = state.getSelection()
+            const firstBlockKey = state.getCurrentContent().getFirstBlock().getKey()
+            expect(selection.getAnchorKey()).toBe(firstBlockKey)
+            expect(selection.getFocusKey()).toBe(firstBlockKey)
+            expect(selection.getStartOffset()).toBe(2)
+            expect(selection.getEndOffset()).toBe(2)
+        })
+
+        it('should not change the state if cursor is at the beginning of the text', () => {
+            let state = EditorState.createEmpty()
+            state = typeText(state, 'foobar')
+            const firstBlockKey = state.getCurrentContent().getFirstBlock().getKey()
+            state = EditorState.forceSelection(
+                state,
+                state.getSelection()
+                    .set('anchorOffset', 0)
+                    .set('anchorKey', firstBlockKey)
+                    .set('focusOffset', 0)
+                    .set('focusKey', firstBlockKey)
+            )
+            expect(pressBackspace(state)).toBe(state)
+        })
+
+        it('should delete the selection and update selection if selection not collapsed', () => {
+            let state = EditorState.createEmpty()
+            state = typeText(state, 'foo bar')
+
+            state = EditorState.forceSelection(
+                state,
+                state.getSelection()
+                    .set('anchorOffset', 1)
+                    .set('focusOffset', 5)
+            )
+
+            state = pressBackspace(state)
+            expect(state.getCurrentContent().getPlainText()).toBe('far')
+            expect(state.getSelection().getStartOffset()).toBe(1)
+            expect(state.getSelection().getEndOffset()).toBe(1)
+        })
+
+        it('should delete selection spanning on multiple blocks', () => {
+            let state = EditorState.createEmpty()
+            state = typeText(state, 'foobar')
+            state = splitFirstBlock(state, 3)
+
+            state = EditorState.forceSelection(
+                state,
+                state.getSelection()
+                    .set('anchorOffset', 1)
+                    .set('anchorKey', state.getCurrentContent().getFirstBlock().getKey())
+                    .set('focusOffset', 1)
+                    .set('focusKey', state.getCurrentContent().getLastBlock().getKey())
+            )
+
+            state = pressBackspace(state)
+            expect(state.getCurrentContent().getPlainText()).toBe('far')
+            expect(state.getSelection().getStartOffset()).toBe(1)
+            expect(state.getSelection().getEndOffset()).toBe(1)
+
         })
     })
 
@@ -141,15 +238,7 @@ describe('draftTestUtils', () => {
         it('should return simple block map representation', () => {
             let state = EditorState.createEmpty()
             state = typeText(state, 'foobar')
-
-            const newContentState = Modifier.splitBlock(
-                state.getCurrentContent(),
-                SelectionState.createEmpty(state.getCurrentContent().getFirstBlock().getKey())
-                    .set('anchorOffset', 3)
-                    .set('focusOffset', 3)
-            )
-            state = EditorState.push(state, newContentState, 'split-blocks')
-
+            state = splitFirstBlock(state, 3)
             expect(debugBlockMap(state.getCurrentContent().getBlockMap())).toEqual({
                 [state.getCurrentContent().getFirstBlock().getKey()]: 'foo',
                 [state.getCurrentContent().getLastBlock().getKey()]: 'bar'

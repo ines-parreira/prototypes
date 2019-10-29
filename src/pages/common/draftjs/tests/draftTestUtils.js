@@ -36,7 +36,7 @@ export const typeText = (editorState: EditorState, text: string): EditorState =>
         text
     )
 
-    let newState = EditorState.push(
+    const newState = EditorState.push(
         editorState,
         newContentState,
         'insert-characters'
@@ -46,9 +46,49 @@ export const typeText = (editorState: EditorState, text: string): EditorState =>
         .set('anchorOffset', selection.getAnchorOffset() + text.length)
         .set('focusOffset', selection.getFocusOffset() + text.length)
 
-    newState = EditorState.forceSelection(newState, newSelection)
+    return EditorState.forceSelection(newState, newSelection)
+}
 
-    return newState
+export const pressBackspace = (editorState: EditorState) => {
+    const selection = editorState.getSelection()
+
+    let removeSelection = selection.isCollapsed() ?
+        selection.set('anchorOffset', selection.getAnchorOffset() - 1) :
+        selection
+
+    // If selection at the beginning of the block
+    if (selection.getAnchorOffset() === 0 &&
+        selection.getFocusOffset() === 0 &&
+        selection.getAnchorKey() === selection.getFocusKey()) {
+
+        // If selection block is the first one
+        if (selection.getFocusKey() === editorState.getCurrentContent().getFirstBlock().getKey()) {
+            return editorState
+        }
+
+        const previousBlock  = editorState.getCurrentContent().getBlockBefore(selection.getAnchorKey())
+        removeSelection = selection
+            .set('anchorOffset', previousBlock.getLength() - 1)
+            .set('anchorKey', previousBlock.getKey())
+            .set('focusOffset', previousBlock.getLength())
+            .set('focusKey', previousBlock.getKey())
+    }
+
+    const newContentState = Modifier.removeRange(
+        editorState.getCurrentContent(),
+        removeSelection,
+        'backward'
+    )
+
+    const newState = EditorState.push(
+        editorState,
+        newContentState,
+        'remove-characters'
+    )
+
+    const newSelection = removeSelection.set('focusOffset', removeSelection.getAnchorOffset())
+
+    return EditorState.forceSelection(newState, newSelection)
 }
 
 export const createEditorStateFromHtml = (html: string) => {
@@ -109,6 +149,14 @@ export const createEntityAndApplyToFirstBlockRange = (
         Modifier.applyEntity(contentStateWithEntity, rangeSelection, key),
         'insert-characters'
     )
+}
+
+export const splitFirstBlock = (editorState: EditorState, offset: number) => {
+    const splitSelection = SelectionState.createEmpty(editorState.getCurrentContent().getFirstBlock().getKey())
+        .set('anchorOffset', offset)
+        .set('focusOffset', offset)
+    const newContentState = Modifier.splitBlock(editorState.getCurrentContent(), splitSelection)
+    return EditorState.push(editorState, newContentState, 'split-blocks')
 }
 
 // Returns human-readable selection textual representation, eg. "[startKey] startPosition - endPosition [endKey]".
