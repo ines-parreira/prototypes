@@ -30,7 +30,7 @@ import OutlookIntegrationSetup from './components/email/outlook/OutlookIntegrati
 import FacebookIntegrationDetail from './components/facebook/FacebookIntegrationDetail'
 import FacebookIntegrationList from './components/facebook/FacebookIntegrationList'
 import FacebookIntegrationPreferences from './components/facebook/FacebookIntegrationPreferences'
-import FacebookIntegrationAds from './components/facebook/FacebookIntegrationAds'
+import FacebookIntegrationInstagramAds from './components/facebook/FacebookIntegrationAds'
 import FacebookIntegrationSetup from './components/facebook/FacebookIntegrationSetup'
 import FacebookIntegrationCustomerChat from './components/facebook/FacebookIntegrationCustomerChat'
 
@@ -219,7 +219,7 @@ class IntegrationDetailContainer extends React.Component {
 
                     if (params.extra === 'ads') {
                         return (
-                            <FacebookIntegrationAds
+                            <FacebookIntegrationInstagramAds
                                 integrations={commonProps.integrations}
                                 integration={commonProps.integration}
                             />

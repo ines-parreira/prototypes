@@ -23,7 +23,7 @@ import Loader from '../../../../../common/components/Loader/Loader'
 import {DatetimeLabel} from '../../../../../common/utils/labels'
 
 import {fetchAds, updateAd} from './actions'
-import css from './FacebookIntegrationAds.less'
+import css from './FacebookIntegrationInstagramAds.less'
 import colors from './colors.less'
 
 
@@ -38,7 +38,7 @@ type Props = {
     updateAd: (adId: string, isActive: boolean) => void
 }
 
-class FacebookIntegrationAds extends React.Component<Props> {
+class FacebookIntegrationInstagramAds extends React.Component<Props> {
     componentWillMount() {
         const {fetchAds} = this.props
         fetchAds()
@@ -66,7 +66,7 @@ class FacebookIntegrationAds extends React.Component<Props> {
                             {integration.get('name')}
                         </BreadcrumbItem>
                         <BreadcrumbItem active>
-                            Ads
+                            Instagram Ads
                         </BreadcrumbItem>
                     </Breadcrumb>
                 )}/>
@@ -127,7 +127,7 @@ class FacebookIntegrationAds extends React.Component<Props> {
         const {internals} = this.props
 
         return internals.reduce(
-            (total, internal) => total + FacebookIntegrationAds.getIntegrationTotalAds(internal),
+            (total, internal) => total + FacebookIntegrationInstagramAds.getIntegrationTotalAds(internal),
             0
         )
     }
@@ -172,7 +172,7 @@ const mapDispatchToProps = (dispatch: dispatchType, props: Props) => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(FacebookIntegrationAds)
+)(FacebookIntegrationInstagramAds)
 
 // Alerts
 function UpgradePlanAlert() {
@@ -223,7 +223,7 @@ class AdsOverviewCard extends React.Component<AdsOverviewCardProps> {
                             id={`progress-${integrationId}`}
                             bar
                             striped
-                            value={FacebookIntegrationAds.getIntegrationTotalAds(internal)}
+                            value={FacebookIntegrationInstagramAds.getIntegrationTotalAds(internal)}
                             max={maxAccountAds}
                             className={colors[`color-${index % Object.keys(colors).length}`]}
                         />
@@ -252,7 +252,7 @@ class AdsOverviewCard extends React.Component<AdsOverviewCardProps> {
                                 />
                                 {integration.get('name')}
                                 {' '}
-                                ({FacebookIntegrationAds.getIntegrationTotalAds(internal)} active ads)
+                                ({FacebookIntegrationInstagramAds.getIntegrationTotalAds(internal)} active ads)
                             </div>
                         )
                     })}
@@ -281,19 +281,14 @@ class AdsTable extends React.Component<AdsTableProps> {
 
         const limitReached = accountTotalAds >= maxAccountAds
 
-        // Sort ads by created datetime, and then by publisher platform
+        // Sort ads by created datetime
         const sortedAds = ads
             .map(([adId, ad]) => ad.set('id', adId))
             .sort((a, b) => {
                 const aCreatedAt = new Date(a.get('created_datetime'))
                 const bCreatedAt = new Date(b.get('created_datetime'))
 
-                const aPlatform = a.get('publisher_platform')
-                const bPlatform = b.get('publisher_platform')
-
-                return aCreatedAt === bCreatedAt
-                    ? aPlatform.localeCompare(bPlatform)
-                    : bCreatedAt - aCreatedAt
+                return bCreatedAt - aCreatedAt
             })
 
         return (
@@ -301,7 +296,6 @@ class AdsTable extends React.Component<AdsTableProps> {
                 <thead>
                     <tr className={css.row}>
                         <th>Name</th>
-                        <th>Publisher platform</th>
                         <th>Creation date</th>
                         <th />
                     </tr>
@@ -320,12 +314,6 @@ class AdsTable extends React.Component<AdsTableProps> {
                                 >
                                     {ad.get('name')}
                                 </a>
-                            </td>
-                            <td className="text-capitalize">
-                                {ad.get('publisher_platform')
-                                    ? ad.get('publisher_platform').toLowerCase()
-                                    : null
-                                }
                             </td>
                             <td>
                                 {

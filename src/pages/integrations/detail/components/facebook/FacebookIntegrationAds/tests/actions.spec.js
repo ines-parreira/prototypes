@@ -5,7 +5,7 @@ import MockAdapter from 'axios-mock-adapter'
 
 import * as actions from '../actions'
 
-describe('FacebookIntegrationAds actions', () => {
+describe('FacebookIntegrationInstagramAds actions', () => {
     let store
     let mockServer
 

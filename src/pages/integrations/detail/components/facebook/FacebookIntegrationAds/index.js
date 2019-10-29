@@ -1,1 +1,1 @@
-export default from './FacebookIntegrationAds'
+export default from './FacebookIntegrationInstagramAds'

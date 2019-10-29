@@ -6,10 +6,10 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
 import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../../constants/integration'
-import FacebookIntegrationAds from '../'
+import FacebookIntegrationInstagramAds from '../'
 
 
-describe('<FacebookIntegrationAds/>', () => {
+describe('<FacebookIntegrationInstagramAds/>', () => {
     const integrations = [{
         id: 1,
         name: 'integration 1',
@@ -84,7 +84,7 @@ describe('<FacebookIntegrationAds/>', () => {
                         }
                     })}
                 >
-                    <FacebookIntegrationAds {...props}/>
+                    <FacebookIntegrationInstagramAds {...props}/>
                 </Provider>
             )
 
@@ -101,7 +101,7 @@ describe('<FacebookIntegrationAds/>', () => {
                         }
                     })}
                 >
-                    <FacebookIntegrationAds {...props}/>
+                    <FacebookIntegrationInstagramAds {...props}/>
                 </Provider>
             )
 
@@ -120,7 +120,6 @@ describe('<FacebookIntegrationAds/>', () => {
                                     comments_fetched_at: '2019-01-01 10:30:00',
                                     name: 'ad 1',
                                     is_active: true,
-                                    publisher_platform: 'INSTAGRAM',
                                     permalink: 'http://fake.link.to/ad1',
                                     ad_account_id: 'act_123'
                                 }
@@ -128,34 +127,7 @@ describe('<FacebookIntegrationAds/>', () => {
                         }
                     })}
                 >
-                    <FacebookIntegrationAds {...props}/>
-                </Provider>
-            )
-
-            expect(component).toMatchSnapshot()
-        })
-
-        it('should render with one Facebook ad', () => {
-            const component = mount(
-                <Provider
-                    store={getStore({
-                        maxAccountAds: 100,
-                        internal: {
-                            ads: {
-                                postid1: {
-                                    created_datetime: '2019-01-01 10:30:00',
-                                    comments_fetched_at: '2019-01-01 10:30:00',
-                                    name: 'ad 1',
-                                    is_active: true,
-                                    publisher_platform: 'FACEBOOK',
-                                    permalink: 'http://fake.link.to/ad1',
-                                    ad_account_id: 'act_123'
-                                }
-                            }
-                        }
-                    })}
-                >
-                    <FacebookIntegrationAds {...props}/>
+                    <FacebookIntegrationInstagramAds {...props}/>
                 </Provider>
             )
 
@@ -174,7 +146,6 @@ describe('<FacebookIntegrationAds/>', () => {
                                     comments_fetched_at: '2019-01-01 10:30:00',
                                     name: 'ad 1',
                                     is_active: true,
-                                    publisher_platform: 'INSTAGRAM',
                                     permalink: 'http://fake.link.to/ad1',
                                     ad_account_id: 'act_123'
                                 },
@@ -183,7 +154,6 @@ describe('<FacebookIntegrationAds/>', () => {
                                     comments_fetched_at: '2019-01-01 10:30:00',
                                     name: 'ad 2',
                                     is_active: false,
-                                    publisher_platform: 'INSTAGRAM',
                                     permalink: 'http://fake.link.to/ad2',
                                     ad_account_id: 'act_123'
                                 }
@@ -191,7 +161,7 @@ describe('<FacebookIntegrationAds/>', () => {
                         }
                     })}
                 >
-                    <FacebookIntegrationAds {...props}/>
+                    <FacebookIntegrationInstagramAds {...props}/>
                 </Provider>
             )
 
@@ -210,7 +180,6 @@ describe('<FacebookIntegrationAds/>', () => {
                                     comments_fetched_at: '2019-01-01 10:30:00',
                                     name: 'ad 1',
                                     is_active: true,
-                                    publisher_platform: 'INSTAGRAM',
                                     permalink: 'http://fake.link.to/ad1',
                                     ad_account_id: 'act_123'
                                 },
@@ -219,7 +188,6 @@ describe('<FacebookIntegrationAds/>', () => {
                                     comments_fetched_at: '2019-01-01 10:30:00',
                                     name: 'ad 2',
                                     is_active: true,
-                                    publisher_platform: 'INSTAGRAM',
                                     permalink: 'http://fake.link.to/ad2',
                                     ad_account_id: 'act_123'
                                 },
@@ -228,7 +196,6 @@ describe('<FacebookIntegrationAds/>', () => {
                                     comments_fetched_at: '2019-01-01 10:30:00',
                                     name: 'ad 3',
                                     is_active: false,
-                                    publisher_platform: 'INSTAGRAM',
                                     permalink: 'http://fake.link.to/ad3',
                                     ad_account_id: 'act_123'
                                 }
@@ -236,7 +203,7 @@ describe('<FacebookIntegrationAds/>', () => {
                         }
                     })}
                 >
-                    <FacebookIntegrationAds {...props}/>
+                    <FacebookIntegrationInstagramAds {...props}/>
                 </Provider>
             )
 

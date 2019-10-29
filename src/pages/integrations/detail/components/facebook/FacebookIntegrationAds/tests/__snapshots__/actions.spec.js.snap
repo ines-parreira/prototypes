@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`FacebookIntegrationAds actions fetchAds() should fetch ads 1`] = `
+exports[`FacebookIntegrationInstagramAds actions fetchAds() should fetch ads 1`] = `
 Array [
   Object {
     "payload": true,
@@ -27,7 +27,7 @@ Array [
 ]
 `;
 
-exports[`FacebookIntegrationAds actions updateAd() should activate ad 1`] = `
+exports[`FacebookIntegrationInstagramAds actions updateAd() should activate ad 1`] = `
 Array [
   Object {
     "payload": "postid1",
@@ -48,7 +48,7 @@ Array [
 ]
 `;
 
-exports[`FacebookIntegrationAds actions updateAd() should deactivate ad 1`] = `
+exports[`FacebookIntegrationInstagramAds actions updateAd() should deactivate ad 1`] = `
 Array [
   Object {
     "payload": "postid1",
