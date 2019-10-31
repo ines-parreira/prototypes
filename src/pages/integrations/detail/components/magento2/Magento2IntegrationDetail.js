@@ -171,11 +171,33 @@ class Magento2IntegrationDetail extends React.Component<Props, State> {
                         <Col md="8">
                             {
                                 !isUpdate ? (
-                                    <p>
-                                        Let's connect your store to Gorgias. We'll import your Magento 2 customers in
-                                        Gorgias, along with their order information. This way, when they contact you,
-                                        you'll be able to see their Magento 2 information next to tickets.
-                                    </p>
+                                    <div>
+                                        <p>
+                                            Let's connect your store to Gorgias. We'll import your Magento 2 customers
+                                            in Gorgias, along with their order information. This way, when they contact
+                                            you, you'll be able to see their Magento 2 information next to tickets.
+                                        </p>
+                                        <Alert color="warning">
+                                            To add a Magento 2 integration to Gorgias, you will need to have installed
+                                            the{' '}
+                                            <a
+                                                href="https://marketplace.magento.com/gorgias-module-magento-connect.html"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                Gorgias plugin
+                                            </a>
+                                            {' '}on your store first. Please follow instructions{' '}
+                                            <a
+                                                href="https://docs.gorgias.io/article/qw7vt5pyjw-magento-2"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                here
+                                            </a>
+                                            {' '}for more details about how to do that.
+                                        </Alert>
+                                    </div>
                                 ) : null
                             }
                             {

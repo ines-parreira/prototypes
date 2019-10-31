@@ -200,9 +200,59 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
           ]
         }
       >
-        <p>
-          Let's connect your store to Gorgias. We'll import your Magento 2 customers in Gorgias, along with their order information. This way, when they contact you, you'll be able to see their Magento 2 information next to tickets.
-        </p>
+        <div>
+          <p>
+            Let's connect your store to Gorgias. We'll import your Magento 2 customers in Gorgias, along with their order information. This way, when they contact you, you'll be able to see their Magento 2 information next to tickets.
+          </p>
+          <Alert
+            closeAriaLabel="Close"
+            color="warning"
+            isOpen={true}
+            tag="div"
+            transition={
+              Object {
+                "appear": true,
+                "baseClass": "fade",
+                "baseClassActive": "show",
+                "enter": true,
+                "exit": true,
+                "in": true,
+                "mountOnEnter": false,
+                "onEnter": [Function],
+                "onEntered": [Function],
+                "onEntering": [Function],
+                "onExit": [Function],
+                "onExited": [Function],
+                "onExiting": [Function],
+                "tag": "div",
+                "timeout": 150,
+                "unmountOnExit": true,
+              }
+            }
+          >
+            To add a Magento 2 integration to Gorgias, you will need to have installed the
+             
+            <a
+              href="https://marketplace.magento.com/gorgias-module-magento-connect.html"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Gorgias plugin
+            </a>
+             
+            on your store first. Please follow instructions
+             
+            <a
+              href="https://docs.gorgias.io/article/qw7vt5pyjw-magento-2"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              here
+            </a>
+             
+            for more details about how to do that.
+          </Alert>
+        </div>
         <Form
           onSubmit={[Function]}
           tag="form"
@@ -483,9 +533,59 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to create 
           ]
         }
       >
-        <p>
-          Let's connect your store to Gorgias. We'll import your Magento 2 customers in Gorgias, along with their order information. This way, when they contact you, you'll be able to see their Magento 2 information next to tickets.
-        </p>
+        <div>
+          <p>
+            Let's connect your store to Gorgias. We'll import your Magento 2 customers in Gorgias, along with their order information. This way, when they contact you, you'll be able to see their Magento 2 information next to tickets.
+          </p>
+          <Alert
+            closeAriaLabel="Close"
+            color="warning"
+            isOpen={true}
+            tag="div"
+            transition={
+              Object {
+                "appear": true,
+                "baseClass": "fade",
+                "baseClassActive": "show",
+                "enter": true,
+                "exit": true,
+                "in": true,
+                "mountOnEnter": false,
+                "onEnter": [Function],
+                "onEntered": [Function],
+                "onEntering": [Function],
+                "onExit": [Function],
+                "onExited": [Function],
+                "onExiting": [Function],
+                "tag": "div",
+                "timeout": 150,
+                "unmountOnExit": true,
+              }
+            }
+          >
+            To add a Magento 2 integration to Gorgias, you will need to have installed the
+             
+            <a
+              href="https://marketplace.magento.com/gorgias-module-magento-connect.html"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Gorgias plugin
+            </a>
+             
+            on your store first. Please follow instructions
+             
+            <a
+              href="https://docs.gorgias.io/article/qw7vt5pyjw-magento-2"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              here
+            </a>
+             
+            for more details about how to do that.
+          </Alert>
+        </div>
         <Form
           onSubmit={[Function]}
           tag="form"
