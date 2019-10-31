@@ -43,6 +43,7 @@ type Props = {
 }
 
 type State = {
+    adminUrl: string,
     url: string,
     adminUrlSuffix: string,
     isInitialized: boolean
@@ -50,6 +51,7 @@ type State = {
 
 class Magento2IntegrationDetail extends React.Component<Props, State> {
     state = {
+        adminUrl: '',
         url: '',
         adminUrlSuffix: '',
         isInitialized: false
@@ -103,8 +105,14 @@ class Magento2IntegrationDetail extends React.Component<Props, State> {
     }
 
     _handleCreate = (evt: Event): void => {
+        const {adminUrl} = this.state
         evt.preventDefault()
-        window.location.href = this.props.redirectUri.replace('{store_url}', this.state.url)
+
+        const splitAdminUrl = adminUrl.split('/')
+        const url = splitAdminUrl[0]
+        const adminUrlSuffix = splitAdminUrl[1]
+
+        window.location.href = this.props.redirectUri.concat(`?store_url=${url}&admin_url_suffix=${adminUrlSuffix}`)
     }
 
     _handleUpdate = (evt: Event): void => {
@@ -120,7 +128,7 @@ class Magento2IntegrationDetail extends React.Component<Props, State> {
 
     render() {
         const {actions, integration, isUpdate, loading, getExistingMagento2Integration} = this.props
-        const {url, adminUrlSuffix} = this.state
+        const {adminUrl, url, adminUrlSuffix} = this.state
 
         const isSubmitting = !!loading.get('updateIntegration')
 
@@ -203,38 +211,34 @@ class Magento2IntegrationDetail extends React.Component<Props, State> {
 
                             <Form onSubmit={isUpdate ? this._handleUpdate : this._handleCreate}>
                                 <div className="mb-4">
-                                    <InputField
-                                        type="text"
-                                        name="name"
-                                        label="Store URL"
-                                        placeholder={'ex: acme.com'}
-                                        required
-                                        disabled={isUpdate}
-                                        value={url}
-                                        error={error}
-                                        onChange={(url) => this.setState({url})}
-                                    />
                                     {
-                                        isUpdate ? [
+                                        isUpdate ? (
                                             <InputField
                                                 key="input"
                                                 type="text"
                                                 name="adminUrlSuffix"
-                                                label="Admin URL suffix"
+                                                label="Store admin URL"
                                                 placeholder={'ex: admin_45f1c'}
                                                 leftAddon={`https://${url}/`}
                                                 value={adminUrlSuffix}
                                                 error={error}
                                                 onChange={(adminUrlSuffix) => this.setState({adminUrlSuffix})}
-                                            />,
-                                            <div
-                                                key="help"
-                                                className="text-faded"
-                                            >
-                                                This is necessary to generate links to customers and orders in
-                                                the information bar next to tickets.
-                                            </div>
-                                        ] : null
+                                                required
+                                            />
+                                        ) : (
+                                            <InputField
+                                                type="text"
+                                                name="name"
+                                                label="Store admin URL"
+                                                placeholder={'ex: acme.com/admin_45f1c'}
+                                                value={adminUrl}
+                                                error={error}
+                                                leftAddon="https://"
+                                                onChange={(adminUrl) => this.setState({adminUrl})}
+                                                pattern="[\w\d\.]+/[\w\d]+/?"
+                                                required
+                                            />
+                                        )
                                     }
                                 </div>
 

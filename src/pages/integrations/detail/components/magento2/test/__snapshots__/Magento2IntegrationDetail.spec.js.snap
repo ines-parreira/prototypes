@@ -79,33 +79,17 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for a deac
             className="mb-4"
           >
             <InputField
-              disabled={true}
-              error={null}
-              label="Store URL"
-              name="name"
-              onChange={[Function]}
-              placeholder="ex: acme.com"
-              required={true}
-              type="text"
-              value="magento.gorgi.us"
-            />
-            <InputField
               error={null}
               key="input"
-              label="Admin URL suffix"
+              label="Store admin URL"
               leftAddon="https://magento.gorgi.us/"
               name="adminUrlSuffix"
               onChange={[Function]}
               placeholder="ex: admin_45f1c"
+              required={true}
               type="text"
               value="admin_12fg"
             />
-            <div
-              className="text-faded"
-              key="help"
-            >
-              This is necessary to generate links to customers and orders in the information bar next to tickets.
-            </div>
           </div>
           <div>
             <Button
@@ -227,15 +211,16 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
             className="mb-4"
           >
             <InputField
-              disabled={false}
               error="There is already an integration for this Magento 2 store"
-              label="Store URL"
+              label="Store admin URL"
+              leftAddon="https://"
               name="name"
               onChange={[Function]}
-              placeholder="ex: acme.com"
+              pattern="[\\\\w\\\\d\\\\.]+/[\\\\w\\\\d]+/?"
+              placeholder="ex: acme.com/admin_45f1c"
               required={true}
               type="text"
-              value="magento.gorgi.us"
+              value=""
             />
           </div>
           <div>
@@ -376,33 +361,17 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
             className="mb-4"
           >
             <InputField
-              disabled={true}
-              error={null}
-              label="Store URL"
-              name="name"
-              onChange={[Function]}
-              placeholder="ex: acme.com"
-              required={true}
-              type="text"
-              value="magento.gorgi.us"
-            />
-            <InputField
               error={null}
               key="input"
-              label="Admin URL suffix"
+              label="Store admin URL"
               leftAddon="https://magento.gorgi.us/"
               name="adminUrlSuffix"
               onChange={[Function]}
               placeholder="ex: admin_45f1c"
+              required={true}
               type="text"
               value="admin_12fg"
             />
-            <div
-              className="text-faded"
-              key="help"
-            >
-              This is necessary to generate links to customers and orders in the information bar next to tickets.
-            </div>
           </div>
           <div>
             <Button
@@ -525,12 +494,13 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to create 
             className="mb-4"
           >
             <InputField
-              disabled={false}
               error={null}
-              label="Store URL"
+              label="Store admin URL"
+              leftAddon="https://"
               name="name"
               onChange={[Function]}
-              placeholder="ex: acme.com"
+              pattern="[\\\\w\\\\d\\\\.]+/[\\\\w\\\\d]+/?"
+              placeholder="ex: acme.com/admin_45f1c"
               required={true}
               type="text"
               value=""
@@ -633,33 +603,17 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to update 
             className="mb-4"
           >
             <InputField
-              disabled={true}
-              error={null}
-              label="Store URL"
-              name="name"
-              onChange={[Function]}
-              placeholder="ex: acme.com"
-              required={true}
-              type="text"
-              value="magento.gorgi.us"
-            />
-            <InputField
               error={null}
               key="input"
-              label="Admin URL suffix"
+              label="Store admin URL"
               leftAddon="https://magento.gorgi.us/"
               name="adminUrlSuffix"
               onChange={[Function]}
               placeholder="ex: admin_45f1c"
+              required={true}
               type="text"
               value="admin_12fg"
             />
-            <div
-              className="text-faded"
-              key="help"
-            >
-              This is necessary to generate links to customers and orders in the information bar next to tickets.
-            </div>
           </div>
           <div>
             <Button
