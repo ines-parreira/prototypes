@@ -3,15 +3,14 @@ import {EditorState, type SelectionState} from 'draft-js'
 import axios, {Cancel, CancelToken} from 'axios'
 import type {Map} from 'immutable'
 
-import type {PluginMethods} from '../types'
+import type {Plugin, PluginMethods} from '../types'
 
 import {
     createPrediction,
+    getPlainTextFromStateWithPrediction,
     getPredictionText,
-    hasTypedPrediction,
     insertPrediction,
-    isTypingPrediction,
-    removeFirstCharOfPrediction,
+    removeFirstNCharsOfPrediction,
     removePrediction,
     usePrediction
 } from './utils'
@@ -110,30 +109,38 @@ const requestPrediction = (
     })
 }
 
-const sendFeedback = (
+const sendFeedback = async (
     context: Map<*, *>,
-    editorState: EditorState,
-    forcePredictionAccepted: ?boolean = false,
+    addedText: string,
+    editorState: EditorState
 ) => {
     if (!predictionKey) {
         return
     }
 
-    const manuallyTypedPrediction = hasTypedPrediction(predictionKey, editorState)
-    if (manuallyTypedPrediction) {
-        currentPrediction.numberAcceptedCharacters += 1
+    const predictionText = getPredictionText(predictionKey, editorState)
+    let acceptedPredictionChars = 0
+    let charIndex = 0
+    while (charIndex < predictionText.length &&
+        charIndex < addedText.length &&
+        predictionText.charAt(charIndex) === addedText.charAt(charIndex)
+    ) {
+        charIndex++
+        acceptedPredictionChars++
     }
 
-    axios.post(window.PHRASE_FEEDBACK_URL, {
+    currentPrediction.numberAcceptedCharacters += acceptedPredictionChars
+
+    await axios.post(window.PHRASE_FEEDBACK_URL, {
         query_text: currentPrediction.inputText,
         query_context: context.toJS(),
         result_prediction_text: currentPrediction.predictionText,
-        result_prediction_accepted: forcePredictionAccepted || manuallyTypedPrediction,
-        result_number_accepted_characters: forcePredictionAccepted
-            ? currentPrediction.predictionText.length
-            : currentPrediction.numberAcceptedCharacters,
+        result_prediction_accepted: predictionText.length === acceptedPredictionChars,
+        result_number_accepted_characters: currentPrediction.numberAcceptedCharacters,
         diverged_phrase: null
-    }).then(() => resetCurrentPrediction())
+    })
+
+    resetCurrentPrediction()
 }
 
 const completePrediction = (event: KeyboardEvent, plugin: PluginMethods, config: Object) => {
@@ -143,14 +150,14 @@ const completePrediction = (event: KeyboardEvent, plugin: PluginMethods, config:
     event.preventDefault()
 
     const editorState = plugin.getEditorState()
-    sendFeedback(config.context, editorState, true)
+    sendFeedback(config.context, getPredictionText(predictionKey, editorState), editorState)
 
     const newEditorState = usePrediction(predictionKey, editorState)
     predictionKey = null
     plugin.setEditorState(newEditorState)
 }
 
-const predictionPlugin = (config: { context: Map<*, *> }) => {
+const predictionPlugin = (config: { context: Map<*, *> }): Plugin => {
     return {
         decorators,
         onChange: (editorState: EditorState, plugin: PluginMethods) => {
@@ -171,15 +178,21 @@ const predictionPlugin = (config: { context: Map<*, *> }) => {
 
             if (predictionKey) {
                 const predictionText = getPredictionText(predictionKey, editorState)
-                const inputMatchesPrediction = isTypingPrediction(predictionKey, editorState)
+                const currentText = getPlainTextFromStateWithPrediction(editorState)
+                const prevText = getPlainTextFromStateWithPrediction(EditorState.undo(editorState))
+                const charNumDiff = currentText.length - prevText.length
+                const addedText = charNumDiff > 0 ? currentText.slice(-charNumDiff) : ''
 
-                // Update the prediction if input matches the prediction and it's not complete yet
-                if (inputMatchesPrediction && predictionText.length > 1) {
-                    currentPrediction.numberAcceptedCharacters += 1
-                    return removeFirstCharOfPrediction(predictionKey, editorState)
+                // Update the prediction if there's an input that matches the prediction and doesn't complete it
+                if (addedText &&
+                    predictionText.startsWith(addedText) &&
+                    addedText.length < predictionText.length
+                ) {
+                    currentPrediction.numberAcceptedCharacters += addedText.length
+                    return removeFirstNCharsOfPrediction(predictionKey, editorState, addedText.length)
                 }
 
-                sendFeedback(config.context, editorState)
+                sendFeedback(config.context, addedText, editorState)
             }
 
             cancelApiRequest()

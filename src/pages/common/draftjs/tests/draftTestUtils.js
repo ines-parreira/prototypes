@@ -14,7 +14,7 @@ import _noop from 'lodash/noop'
 import type {PluginMethods} from '../plugins/types'
 import {convertFromHTML} from '../../../../utils/editor'
 
-export const mockPlugin = (initialState: EditorState): PluginMethods => {
+export const mockPluginMethods = (initialState: EditorState): PluginMethods => {
     let state = initialState || EditorState.createEmpty()
     return {
         getEditorState: () => {

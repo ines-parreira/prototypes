@@ -9,16 +9,16 @@ import {
     debugSelection,
     getLastCreatedEntity,
     getLastCreatedEntityRange,
-    mockPlugin,
+    mockPluginMethods,
     pressBackspace,
     splitFirstBlock,
     typeText
 } from './draftTestUtils'
 
 describe('draftTestUtils', () => {
-    describe('mockPlugin()', () => {
+    describe('mockPluginMethods()', () => {
         it('should persist the state on save', () => {
-            const plugin = mockPlugin()
+            const plugin = mockPluginMethods()
             const newState = typeText(plugin.getEditorState(), 'foo')
             plugin.setEditorState(newState)
             expect(plugin.getEditorState().getCurrentContent().getPlainText()).toBe('foo')

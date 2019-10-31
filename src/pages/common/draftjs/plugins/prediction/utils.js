@@ -5,6 +5,7 @@ import {getEntitySelectionState} from '../../../../../utils/editor'
 
 import {setCachedSelection, setPredictionKey} from './index'
 
+const PREDICTION_TYPE = 'prediction'
 
 export const createPrediction = (
     text: string,
@@ -12,7 +13,7 @@ export const createPrediction = (
 ): EditorState => {
     const currentContent = editorState.getCurrentContent()
     const entityContentState = currentContent.createEntity(
-        'prediction',
+        PREDICTION_TYPE,
         'IMMUTABLE',
         {text},
     )
@@ -62,10 +63,10 @@ export const usePrediction = (entityKey: string, editorState: EditorState) => {
     return EditorState.push(editorState, newContentState, 'insert-fragment')
 }
 
-export const removeFirstCharOfPrediction = (entityKey: string, editorState: EditorState) => {
+export const removeFirstNCharsOfPrediction = (entityKey: string, editorState: EditorState, n: number): EditorState => {
     const selection = editorState.getSelection()
     const predictionText = getPredictionText(entityKey, editorState)
-    const newEntityKey = createPrediction(predictionText.substring(1), editorState)
+    const newEntityKey = createPrediction(predictionText.substring(n), editorState)
 
     let newEditorState = removePrediction(entityKey, editorState)
     newEditorState = insertPrediction(newEntityKey, newEditorState)
@@ -76,21 +77,8 @@ export const removeFirstCharOfPrediction = (entityKey: string, editorState: Edit
     return EditorState.acceptSelection(newEditorState, selection)
 }
 
-export const isTypingPrediction = (entityKey: string, editorState: EditorState) => {
-    let currentText = editorState.getCurrentContent().getPlainText()
-    // a trailing whitespace is added by the prediction plugin, so we need to remove it before comparing
-    currentText = currentText.substring(0, currentText.length - 1)
-    const currentPrediction = getPredictionText(entityKey, editorState)
-
-    // the implicit assumption is that only the last character of the currentText was added
-    return currentText.slice(-1) === currentPrediction.slice(0, 1)
-}
-
-export const hasTypedPrediction = (entityKey: string, editorState: EditorState) => {
-    let currentText = editorState.getCurrentContent().getPlainText()
-    // a trailing whitespace is added by the prediction plugin, so we need to remove it before comparing
-    currentText = currentText.substring(0, currentText.length - 1)
-    const currentPrediction = getPredictionText(entityKey, editorState)
-
-    return currentText.endsWith(currentPrediction)
+// It returns plain text stripping the prediction artifacts
+export const getPlainTextFromStateWithPrediction = (editorState: EditorState): string => {
+    const text = editorState.getCurrentContent().getPlainText()
+    return text.slice(0, -1)
 }

@@ -37,5 +37,8 @@ export type Plugin = {
     decorators?: Decorator[],
     blockRendererFn?: (ContentBlock, PluginMethods) => ?Object,
     keyBindingFn?: (SyntheticKeyboardEvent<*>, PluginMethods) => ?string,
-    handleKeyCommand?: (string, EditorState, PluginMethods) => string
+    handleKeyCommand?: (string, EditorState, PluginMethods) => string,
+    onChange?: (EditorState, PluginMethods) => EditorState,
+    onTab?: (event: KeyboardEvent, plugin: PluginMethods) => void,
+    onRightArrow?: (event: KeyboardEvent, plugin: PluginMethods) => void,
 }
