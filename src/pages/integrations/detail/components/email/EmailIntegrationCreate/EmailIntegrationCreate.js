@@ -22,8 +22,8 @@ import InputField from '../../../../../common/forms/InputField'
 
 import PageHeader from '../../../../../common/components/PageHeader'
 
-import googleLogo from './../../../../../../../../public/img/google-icon.svg'
-import officeLogo from './../../../../../../../../public/img/office-transparent.png'
+import googleLogo from '../../../../../../../img/integrations/google-icon.svg'
+import officeLogo from '../../../../../../../img/integrations/office-transparent.png'
 
 import css from './EmailIntegrationCreate.less'
 
