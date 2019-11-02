@@ -56,14 +56,19 @@ export function fetchIntegrations() {
  * @param integrationType: the type of deleted integrations we want to fetch
  * @param forceOverride: whether the result should be forcefully set in the reducer, or only set if the page of the
  *   response's meta matches the page currently set in the reducer
+ * @param filter: filter results that contain typed value
  */
-function fetchOnboardingIntegrations(page: number = 1, integrationType: string, forceOverride: boolean = true) {
+function fetchOnboardingIntegrations(
+    page: number = 1, integrationType: string, forceOverride: boolean = true, filter: string = ''
+) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
             type: constants.FETCH_ONBOARDING_INTEGRATIONS_START
         })
 
-        return axios.get(`/integrations/${integrationType}/onboarding-integrations/`, {params: {page}})
+        const params = filter ? {page, filter} : {page}
+
+        return axios.get(`/integrations/${integrationType}/onboarding-integrations/`, {params})
             .then((json = {}) => json.data)
             .then((resp) => {
                 return dispatch({
@@ -100,9 +105,12 @@ export function fetchFacebookOnboardingIntegrations(page: number = 1, forceOverr
  * @param page: the page of the list that we want
  * @param forceOverride: whether the result should be forcefully set in the reducer, or only set if the page of the
  *   response's meta matches the page currently set in the reducer
+ * @param filter: filter results that contain typed value
  */
-export function fetchOutlookOnboardingIntegrations(page: number = 1, forceOverride: boolean = true) {
-    return fetchOnboardingIntegrations(page, OUTLOOK_INTEGRATION_TYPE, forceOverride)
+export function fetchOutlookOnboardingIntegrations(
+    page: number = 1, forceOverride: boolean = true, filter: string = ''
+) {
+    return fetchOnboardingIntegrations(page, OUTLOOK_INTEGRATION_TYPE, forceOverride, filter)
 }
 
 export function activateOnboardingIntegrations(data: Array<{}>, integrationType: string) {
@@ -114,9 +122,11 @@ export function activateOnboardingIntegrations(data: Array<{}>, integrationType:
         return axios.put(`/integrations/${integrationType}/onboarding-integrations/`, data)
             .then((json = {}) => json.data)
             .then((resp) => {
+                const formattedType = `${_capitalize(integrationType)} integration${data.length > 1 ? 's' : ''}`
+
                 dispatch(notify({
                     status: 'success',
-                    message: `${_capitalize(integrationType)} integration${data.length > 1 ? 's' : ''} successfully activated.`
+                    message: `${formattedType} successfully activated.`
                 }))
                 return dispatch({
                     type: constants.ACTIVATE_ONBOARDING_INTEGRATIONS_SUCCESS,
@@ -176,7 +186,9 @@ export function triggerCreateSuccess(integration: integrationType) {
  * @param notificationId: the id of the notification to replace with the success notification, if any
  * @param didInvalidateCache: whether this update invalidated the cache of this integration or not
  */
-export function onUpdateSuccess(dispatch: dispatchType, resp: {type: string}, notificationId: ?string = null, didInvalidateCache: boolean = false): dispatchType {
+export function onUpdateSuccess(
+    dispatch: dispatchType, resp: { type: string }, notificationId: ?string = null, didInvalidateCache: boolean = false
+): dispatchType {
     dispatch({
         type: constants.UPDATE_INTEGRATION_SUCCESS,
         resp
@@ -197,7 +209,9 @@ export function onUpdateSuccess(dispatch: dispatchType, resp: {type: string}, no
     }))
 }
 
-export function fetchIntegration(integrationId: string, integrationType: string, waitingForAuthentication: boolean = false) {
+export function fetchIntegration(
+    integrationId: string, integrationType: string, waitingForAuthentication: boolean = false
+) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         if (!waitingForAuthentication) {
             dispatch({
@@ -235,7 +249,7 @@ export function fetchIntegration(integrationId: string, integrationType: string,
     }
 }
 
-export function deleteIntegration(integration: Map<*,*>) {
+export function deleteIntegration(integration: Map<*, *>) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
             type: constants.DELETE_INTEGRATION_START,
@@ -272,7 +286,7 @@ export function deleteIntegration(integration: Map<*,*>) {
     }
 }
 
-function updateOrCreateIntegrationRequest(integration: Map<*,*>, action: ?{}, notificationId: ?string = null) {
+function updateOrCreateIntegrationRequest(integration: Map<*, *>, action: ?{}, notificationId: ?string = null) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         const isUpdate = integration.get('id')
         const oldDecoration = integration.get('decoration') || fromJS({})
@@ -319,7 +333,7 @@ function updateOrCreateIntegrationRequest(integration: Map<*,*>, action: ?{}, no
     }
 }
 
-export function createImportIntegration(integration: Map<*,*>) {
+export function createImportIntegration(integration: Map<*, *>) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         const isUpdate = !!integration.get('id')
 
@@ -367,7 +381,7 @@ export function deactivateIntegration(id: number) {
         if (fullIntegration.getIn(['meta', 'shopify_integration_ids'])) {
             const notification = dispatch(notify({
                 status: 'loading',
-                message:'Removing the chat from your Shopify stores...'
+                message: 'Removing the chat from your Shopify stores...'
             }))
 
             notificationId = notification.id
@@ -391,7 +405,7 @@ export function activateIntegration(id: number) {
         if (fullIntegration.getIn(['meta', 'shopify_integration_ids'])) {
             const notification = dispatch(notify({
                 status: 'loading',
-                message:'Adding the chat on your Shopify stores...'
+                message: 'Adding the chat on your Shopify stores...'
             }))
 
             notificationId = notification.id
@@ -407,13 +421,13 @@ export function activateIntegration(id: number) {
  * @param action
  * @returns {Function}
  */
-export function updateOrCreateIntegration(integration: Map<*,*>, action: {}) {
+export function updateOrCreateIntegration(integration: Map<*, *>, action: {}) {
     return (dispatch: dispatchType): dispatchType => {
         return dispatch(updateOrCreateIntegrationRequest(integration, action))
     }
 }
 
-export function importEmails(integration: Map<*,*>) {
+export function importEmails(integration: Map<*, *>) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
             type: constants.EMAIL_INTEGRATION_IMPORT_START,

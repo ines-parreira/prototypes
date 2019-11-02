@@ -1,0 +1,363 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OutlookIntegrationSetup/> render() should render the list of integrations with 0 address 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/email"
+          >
+            Email
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Outlook setup
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  >
+    <Search
+      bindKey={true}
+      className="mr-2"
+      disabled={false}
+      onChange={[Function]}
+      placeholder="Search addresses..."
+      searchDebounceTime={300}
+      style={Object {}}
+    />
+  </PageHeader>
+  <Container
+    className="page-container with-space-bottom"
+    fluid={true}
+    tag="div"
+  >
+    <h1>
+      Outlook email addresses setup
+    </h1>
+    <p>
+      One last step: choose the email addresses you want to manage with Gorgias.
+    </p>
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <p
+        className="font-weight-medium"
+      >
+        We did not find any email address associated with your account.
+      </p>
+      <div>
+        <Button
+          className=""
+          color="success"
+          disabled={true}
+          tag="button"
+          type="submit"
+        >
+          Save Changes
+        </Button>
+      </div>
+    </Form>
+  </Container>
+</div>
+`;
+
+exports[`<OutlookIntegrationSetup/> render() should render the list of integrations with 1 address 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/email"
+          >
+            Email
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Outlook setup
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  >
+    <Search
+      bindKey={true}
+      className="mr-2"
+      disabled={false}
+      onChange={[Function]}
+      placeholder="Search addresses..."
+      searchDebounceTime={300}
+      style={Object {}}
+    />
+  </PageHeader>
+  <Container
+    className="page-container with-space-bottom"
+    fluid={true}
+    tag="div"
+  >
+    <h1>
+      Outlook email addresses setup
+    </h1>
+    <p>
+      One last step: choose the email addresses you want to manage with Gorgias.
+    </p>
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <p
+        className="font-weight-medium"
+      >
+        We found one email address associated with your account. Please activate it to connect it to Gorgias:
+      </p>
+      <div
+        className="mb-4"
+      >
+        <div
+          className="mb-2"
+        >
+          <div
+            key="1"
+          >
+            <div
+              className="d-flex flex-wrap flex-md-nowrap mb-2"
+            >
+              <div
+                className="mr-auto"
+              >
+                <b
+                  className="mr-2"
+                >
+                  Address 1
+                </b>
+                <span
+                  className="text-faded"
+                >
+                  email1@foo.com
+                </span>
+              </div>
+              <ToggleButton
+                onChange={[Function]}
+                value={false}
+              />
+            </div>
+          </div>
+        </div>
+        <Pagination
+          currentPage={1}
+          onChange={[Function]}
+          pageCount={1}
+        />
+      </div>
+      <div>
+        <Button
+          className=""
+          color="success"
+          disabled={true}
+          tag="button"
+          type="submit"
+        >
+          Save Changes
+        </Button>
+      </div>
+    </Form>
+  </Container>
+</div>
+`;
+
+exports[`<OutlookIntegrationSetup/> render() should render the list of integrations with 2 addresses 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/email"
+          >
+            Email
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Outlook setup
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  >
+    <Search
+      bindKey={true}
+      className="mr-2"
+      disabled={false}
+      onChange={[Function]}
+      placeholder="Search addresses..."
+      searchDebounceTime={300}
+      style={Object {}}
+    />
+  </PageHeader>
+  <Container
+    className="page-container with-space-bottom"
+    fluid={true}
+    tag="div"
+  >
+    <h1>
+      Outlook email addresses setup
+    </h1>
+    <p>
+      One last step: choose the email addresses you want to manage with Gorgias.
+    </p>
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <p
+        className="font-weight-medium"
+      >
+        We found 2 email addresses associated with your account. Please activate the ones you want to connect to Gorgias:
+      </p>
+      <div
+        className="mb-4"
+      >
+        <div
+          className="mb-2"
+        >
+          <div
+            key="1"
+          >
+            <div
+              className="d-flex flex-wrap flex-md-nowrap mb-2"
+            >
+              <div
+                className="mr-auto"
+              >
+                <b
+                  className="mr-2"
+                >
+                  Address 1
+                </b>
+                <span
+                  className="text-faded"
+                >
+                  email1@foo.com
+                </span>
+              </div>
+              <ToggleButton
+                onChange={[Function]}
+                value={false}
+              />
+            </div>
+          </div>
+          <div
+            key="2"
+          >
+            <div
+              className="d-flex flex-wrap flex-md-nowrap mb-2"
+            >
+              <div
+                className="mr-auto"
+              >
+                <b
+                  className="mr-2"
+                >
+                  Address 2
+                </b>
+                <span
+                  className="text-faded"
+                >
+                  email2@foo.com
+                </span>
+              </div>
+              <ToggleButton
+                onChange={[Function]}
+                value={false}
+              />
+            </div>
+          </div>
+        </div>
+        <Pagination
+          currentPage={1}
+          onChange={[Function]}
+          pageCount={1}
+        />
+      </div>
+      <div>
+        <Button
+          className=""
+          color="success"
+          disabled={true}
+          tag="button"
+          type="submit"
+        >
+          Save Changes
+        </Button>
+      </div>
+    </Form>
+  </Container>
+</div>
+`;
