@@ -158,40 +158,43 @@ const _throttledIsTyping = _throttle((ticketId: string) => {
     socketManager.send(AGENT_TYPING_STARTED, ticketId)
 }, 5000, {trailing: false}) // we don't want to throw event after the ticket has been left
 
-export const setResponseText = (args: Map<*, *> = fromJS({})) => (dispatch: dispatchType, getState: getStateType): dispatchType => {
-    const state = getState()
-    const {ticket, currentUser, newMessage} = state
-    const contentState = args.get('contentState')
-    const ticketId = ticket.get('id')
-    const signature = selectors.getNewMessageSignature(state)
+export const setResponseText = (args: Map<*, *> = fromJS({})) =>
+    (dispatch: dispatchType, getState: getStateType): dispatchType => {
+        const state = getState()
+        const {ticket, currentUser, newMessage} = state
+        const contentState = args.get('contentState')
+        const ticketId = ticket.get('id')
+        const signature = selectors.getNewMessageSignature(state)
 
-    if (contentState && newMessage && ticketId) {
-        const plainText = contentState.getPlainText()
+        if (contentState && newMessage && ticketId) {
+            const plainText = contentState.getPlainText()
 
-        if (plainText && !responseUtils.hasOnlySignature(contentState, signature.get('text'))
-            && newMessage.getIn(['newMessage', 'source', 'type']) !== 'internal-note'
-        ) {
-            _throttledIsTyping(ticketId)
-        } else if (agentSelectors.isAgentTypingOnTicket(ticketId)(state)) {
-            _throttledIsTyping.cancel()
-            socketManager.send(AGENT_TYPING_STOPPED, ticketId)
+            const shouldSendTypingEvent = plainText
+                && !responseUtils.hasOnlySignature(contentState, signature.get('text'))
+                && newMessage.getIn(['newMessage', 'source', 'type']) === SourceTypes.CHAT
+
+            if (shouldSendTypingEvent) {
+                _throttledIsTyping(ticketId)
+            } else if (agentSelectors.isAgentTypingOnTicket(ticketId)(state)) {
+                _throttledIsTyping.cancel()
+                socketManager.send(AGENT_TYPING_STOPPED, ticketId)
+            }
         }
-    }
 
-    // should have the same params in state/ticket/actions/applyMacroAction
-    return dispatch({
-        type: constants.SET_RESPONSE_TEXT,
-        args,
-        ticketId,
-        forceFocus: args.get('forceFocus', false),
-        forceUpdate: args.get('forceUpdate', false),
-        ticket, // used in middleware, not in reducer
-        appliedMacro: ticket.getIn(['state', 'appliedMacro']),
-        currentUser, // used in middleware, not in reducer
-        signature,
-        fromMacro: false, // used in middleware, not in reducer
-    })
-}
+        // should have the same params in state/ticket/actions/applyMacroAction
+        return dispatch({
+            type: constants.SET_RESPONSE_TEXT,
+            args,
+            ticketId,
+            forceFocus: args.get('forceFocus', false),
+            forceUpdate: args.get('forceUpdate', false),
+            ticket, // used in middleware, not in reducer
+            appliedMacro: ticket.getIn(['state', 'appliedMacro']),
+            currentUser, // used in middleware, not in reducer
+            signature,
+            fromMacro: false, // used in middleware, not in reducer
+        })
+    }
 
 /**
  * Add a signature (if any) at the end of the content state

@@ -5,6 +5,7 @@ import {fromJS} from 'immutable'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
+import {SourceTypes} from '../../../business/ticket'
 import * as actions from '../actions'
 import * as types from '../constants'
 import {initialState} from '../reducers'
@@ -445,9 +446,9 @@ describe('actions', () => {
                 expect(store.getActions()).toMatchSnapshot()
             })
 
-            it('should send typing event when the user is typing', () => {
+            it('should send typing event when the user is typing in a chat message', () => {
                 store = mockStore({
-                    newMessage: initialState,
+                    newMessage: initialState.setIn(['newMessage', 'source', 'type'], SourceTypes.CHAT),
                     ticket: fromJS({id: 1}),
                     agents: fromJS({
                         all: [{
@@ -464,9 +465,11 @@ describe('actions', () => {
                 expect(socketManager.send.mock.calls.length).toBe(1)
             })
 
-            it('should not send a typing event when the user is typing in an internal-note', () => {
+            it.each([
+                SourceTypes.INTERNAL_NOTES, SourceTypes.EMAIL
+            ])('should not send a typing event when the user is typing in a non-chat message', (sourceType) => {
                 store = mockStore({
-                    newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'internal-note'),
+                    newMessage: initialState.setIn(['newMessage', 'source', 'type'], sourceType),
                     ticket: fromJS({id: 1})
                 })
 
