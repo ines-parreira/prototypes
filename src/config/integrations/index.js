@@ -30,7 +30,7 @@ export const CHAT_AUTO_RESPONDER_REPLY_OPTIONS = [
     CHAT_AUTO_RESPONDER_REPLY_IN_DAY
 ]
 
-export const CHAT_AUTO_RESPONDER_TEXTS = require('../../../../../integrations/texts/chat_auto_responder_texts.json')
+export const CHAT_AUTO_RESPONDER_TEXTS = require('../../../../../integrations/common/texts/chat_auto_responder_texts.json')
 
 /**
  * Generate a list of variables separated by integration.
