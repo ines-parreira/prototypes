@@ -388,7 +388,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
             "ads": Immutable.Map {
               "postid1": Immutable.Map {
                 "created_datetime": "2019-01-01 10:30:00",
-                "comments_fetched_at": "2019-01-01 10:30:00",
                 "name": "ad 1",
                 "is_active": true,
                 "permalink": "http://fake.link.to/ad1",
@@ -396,7 +395,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
               },
               "postid2": Immutable.Map {
                 "created_datetime": "2019-01-01 10:30:00",
-                "comments_fetched_at": "2019-01-01 10:30:00",
                 "name": "ad 2",
                 "is_active": true,
                 "permalink": "http://fake.link.to/ad2",
@@ -404,7 +402,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
               },
               "postid3": Immutable.Map {
                 "created_datetime": "2019-01-01 10:30:00",
-                "comments_fetched_at": "2019-01-01 10:30:00",
                 "name": "ad 3",
                 "is_active": false,
                 "permalink": "http://fake.link.to/ad3",
@@ -652,7 +649,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                       "ads": Immutable.Map {
                         "postid1": Immutable.Map {
                           "created_datetime": "2019-01-01 10:30:00",
-                          "comments_fetched_at": "2019-01-01 10:30:00",
                           "name": "ad 1",
                           "is_active": true,
                           "permalink": "http://fake.link.to/ad1",
@@ -660,7 +656,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                         },
                         "postid2": Immutable.Map {
                           "created_datetime": "2019-01-01 10:30:00",
-                          "comments_fetched_at": "2019-01-01 10:30:00",
                           "name": "ad 2",
                           "is_active": true,
                           "permalink": "http://fake.link.to/ad2",
@@ -668,7 +663,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                         },
                         "postid3": Immutable.Map {
                           "created_datetime": "2019-01-01 10:30:00",
-                          "comments_fetched_at": "2019-01-01 10:30:00",
                           "name": "ad 3",
                           "is_active": false,
                           "permalink": "http://fake.link.to/ad3",
@@ -877,7 +871,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                 "postid1",
                 Immutable.Map {
                   "created_datetime": "2019-01-01 10:30:00",
-                  "comments_fetched_at": "2019-01-01 10:30:00",
                   "name": "ad 1",
                   "is_active": true,
                   "permalink": "http://fake.link.to/ad1",
@@ -888,7 +881,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                 "postid2",
                 Immutable.Map {
                   "created_datetime": "2019-01-01 10:30:00",
-                  "comments_fetched_at": "2019-01-01 10:30:00",
                   "name": "ad 2",
                   "is_active": true,
                   "permalink": "http://fake.link.to/ad2",
@@ -899,7 +891,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                 "postid3",
                 Immutable.Map {
                   "created_datetime": "2019-01-01 10:30:00",
-                  "comments_fetched_at": "2019-01-01 10:30:00",
                   "name": "ad 3",
                   "is_active": false,
                   "permalink": "http://fake.link.to/ad3",
@@ -1299,7 +1290,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
             "ads": Immutable.Map {
               "postid1": Immutable.Map {
                 "created_datetime": "2019-01-01 10:30:00",
-                "comments_fetched_at": "2019-01-01 10:30:00",
                 "name": "ad 1",
                 "is_active": true,
                 "permalink": "http://fake.link.to/ad1",
@@ -1540,7 +1530,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                 "postid1",
                 Immutable.Map {
                   "created_datetime": "2019-01-01 10:30:00",
-                  "comments_fetched_at": "2019-01-01 10:30:00",
                   "name": "ad 1",
                   "is_active": true,
                   "permalink": "http://fake.link.to/ad1",
@@ -1744,7 +1733,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
             "ads": Immutable.Map {
               "postid1": Immutable.Map {
                 "created_datetime": "2019-01-01 10:30:00",
-                "comments_fetched_at": "2019-01-01 10:30:00",
                 "name": "ad 1",
                 "is_active": true,
                 "permalink": "http://fake.link.to/ad1",
@@ -1752,7 +1740,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
               },
               "postid2": Immutable.Map {
                 "created_datetime": "2019-01-01 10:30:00",
-                "comments_fetched_at": "2019-01-01 10:30:00",
                 "name": "ad 2",
                 "is_active": false,
                 "permalink": "http://fake.link.to/ad2",
@@ -1993,7 +1980,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                 "postid1",
                 Immutable.Map {
                   "created_datetime": "2019-01-01 10:30:00",
-                  "comments_fetched_at": "2019-01-01 10:30:00",
                   "name": "ad 1",
                   "is_active": true,
                   "permalink": "http://fake.link.to/ad1",
@@ -2004,7 +1990,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                 "postid2",
                 Immutable.Map {
                   "created_datetime": "2019-01-01 10:30:00",
-                  "comments_fetched_at": "2019-01-01 10:30:00",
                   "name": "ad 2",
                   "is_active": false,
                   "permalink": "http://fake.link.to/ad2",

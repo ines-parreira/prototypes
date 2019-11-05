@@ -117,7 +117,6 @@ describe('<FacebookIntegrationInstagramAds/>', () => {
                             ads: {
                                 postid1: {
                                     created_datetime: '2019-01-01 10:30:00',
-                                    comments_fetched_at: '2019-01-01 10:30:00',
                                     name: 'ad 1',
                                     is_active: true,
                                     permalink: 'http://fake.link.to/ad1',
@@ -143,7 +142,6 @@ describe('<FacebookIntegrationInstagramAds/>', () => {
                             ads: {
                                 postid1: {
                                     created_datetime: '2019-01-01 10:30:00',
-                                    comments_fetched_at: '2019-01-01 10:30:00',
                                     name: 'ad 1',
                                     is_active: true,
                                     permalink: 'http://fake.link.to/ad1',
@@ -151,7 +149,6 @@ describe('<FacebookIntegrationInstagramAds/>', () => {
                                 },
                                 postid2: {
                                     created_datetime: '2019-01-01 10:30:00',
-                                    comments_fetched_at: '2019-01-01 10:30:00',
                                     name: 'ad 2',
                                     is_active: false,
                                     permalink: 'http://fake.link.to/ad2',
@@ -177,7 +174,6 @@ describe('<FacebookIntegrationInstagramAds/>', () => {
                             ads: {
                                 postid1: {
                                     created_datetime: '2019-01-01 10:30:00',
-                                    comments_fetched_at: '2019-01-01 10:30:00',
                                     name: 'ad 1',
                                     is_active: true,
                                     permalink: 'http://fake.link.to/ad1',
@@ -185,7 +181,6 @@ describe('<FacebookIntegrationInstagramAds/>', () => {
                                 },
                                 postid2: {
                                     created_datetime: '2019-01-01 10:30:00',
-                                    comments_fetched_at: '2019-01-01 10:30:00',
                                     name: 'ad 2',
                                     is_active: true,
                                     permalink: 'http://fake.link.to/ad2',
@@ -193,7 +188,6 @@ describe('<FacebookIntegrationInstagramAds/>', () => {
                                 },
                                 postid3: {
                                     created_datetime: '2019-01-01 10:30:00',
-                                    comments_fetched_at: '2019-01-01 10:30:00',
                                     name: 'ad 3',
                                     is_active: false,
                                     permalink: 'http://fake.link.to/ad3',

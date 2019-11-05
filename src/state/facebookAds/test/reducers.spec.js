@@ -25,7 +25,6 @@ describe('facebookAds reducer', () => {
             '1': {
                 ads: {
                     postid1: {
-                        comments_fetched_at: '2019-01-01 10:30:00',
                         name: 'ad 1',
                         is_active: true
                     }
@@ -72,7 +71,6 @@ describe('facebookAds reducer', () => {
                 '1': {
                     ads: {
                         postid1: {
-                            comments_fetched_at: '2019-01-01 10:30:00',
                             name: 'ad 1',
                             is_active: false
                         }
