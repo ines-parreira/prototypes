@@ -171,7 +171,7 @@ export const setResponseText = (args: Map<*, *> = fromJS({})) =>
 
             const shouldSendTypingEvent = plainText
                 && !responseUtils.hasOnlySignature(contentState, signature.get('text'))
-                && newMessage.getIn(['newMessage', 'source', 'type']) === SourceTypes.CHAT
+                && newMessage.getIn(['newMessage', 'source', 'type']) !== SourceTypes.INTERNAL_NOTE
 
             if (shouldSendTypingEvent) {
                 _throttledIsTyping(ticketId)

@@ -1250,82 +1250,7 @@ Array [
 ]
 `;
 
-exports[`actions new message setResponseText() should not send a typing event when the user is typing in a non-chat message 1`] = `
-Array [
-  Object {
-    "appliedMacro": undefined,
-    "args": Immutable.Map {
-      "contentState": Immutable.Record {
-        "entityMap": Object {
-          "__add": [Function],
-          "__create": [Function],
-          "__get": [Function],
-          "__getLastCreatedEntityKey": [Function],
-          "__mergeData": [Function],
-          "__replaceData": [Function],
-          "add": [Function],
-          "create": [Function],
-          "get": [Function],
-          "getLastCreatedEntityKey": [Function],
-          "mergeData": [Function],
-          "replaceData": [Function],
-        },
-        "blockMap": Immutable.OrderedMap {
-          "someRandomKey": Immutable.Record {
-            "key": "someRandomKey",
-            "type": "unstyled",
-            "text": "foo",
-            "characterList": Immutable.List [
-              Immutable.Record {
-                "style": Immutable.OrderedSet [],
-                "entity": null,
-              },
-              Immutable.Record {
-                "style": Immutable.OrderedSet [],
-                "entity": null,
-              },
-              Immutable.Record {
-                "style": Immutable.OrderedSet [],
-                "entity": null,
-              },
-            ],
-            "depth": 0,
-            "data": Immutable.Map {},
-          },
-        },
-        "selectionBefore": Immutable.Record {
-          "anchorKey": "someRandomKey",
-          "anchorOffset": 0,
-          "focusKey": "someRandomKey",
-          "focusOffset": 0,
-          "isBackward": false,
-          "hasFocus": false,
-        },
-        "selectionAfter": Immutable.Record {
-          "anchorKey": "someRandomKey",
-          "anchorOffset": 0,
-          "focusKey": "someRandomKey",
-          "focusOffset": 0,
-          "isBackward": false,
-          "hasFocus": false,
-        },
-      },
-    },
-    "currentUser": undefined,
-    "forceFocus": false,
-    "forceUpdate": false,
-    "fromMacro": false,
-    "signature": Immutable.Map {},
-    "ticket": Immutable.Map {
-      "id": 1,
-    },
-    "ticketId": 1,
-    "type": "setResponseText",
-  },
-]
-`;
-
-exports[`actions new message setResponseText() should not send a typing event when the user is typing in a non-chat message 2`] = `
+exports[`actions new message setResponseText() should not send a typing event when the user is typing in an internal note 1`] = `
 Array [
   Object {
     "appliedMacro": undefined,
@@ -1528,7 +1453,7 @@ Array [
 ]
 `;
 
-exports[`actions new message setResponseText() should send typing event when the user is typing in a chat message 1`] = `
+exports[`actions new message setResponseText() should send typing event when the user is typing 1`] = `
 Array [
   Object {
     "appliedMacro": undefined,

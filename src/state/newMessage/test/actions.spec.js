@@ -446,7 +446,7 @@ describe('actions', () => {
                 expect(store.getActions()).toMatchSnapshot()
             })
 
-            it('should send typing event when the user is typing in a chat message', () => {
+            it('should send typing event when the user is typing', () => {
                 store = mockStore({
                     newMessage: initialState.setIn(['newMessage', 'source', 'type'], SourceTypes.CHAT),
                     ticket: fromJS({id: 1}),
@@ -465,11 +465,9 @@ describe('actions', () => {
                 expect(socketManager.send.mock.calls.length).toBe(1)
             })
 
-            it.each([
-                SourceTypes.INTERNAL_NOTES, SourceTypes.EMAIL
-            ])('should not send a typing event when the user is typing in a non-chat message', (sourceType) => {
+            it('should not send a typing event when the user is typing in an internal note', () => {
                 store = mockStore({
-                    newMessage: initialState.setIn(['newMessage', 'source', 'type'], sourceType),
+                    newMessage: initialState.setIn(['newMessage', 'source', 'type'], SourceTypes.INTERNAL_NOTE),
                     ticket: fromJS({id: 1})
                 })
 
