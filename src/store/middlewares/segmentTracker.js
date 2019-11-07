@@ -30,19 +30,15 @@ export const identifyUser = (user) => {
 
     const domain = window.location.hostname.split('.')[0]
 
-    const userId = user.id.toString()
-    const userData = {
-        account_id: user.account_id,
-        domain: domain,
+    analytics.identify(window.SEGMENT_ANALYTICS_USER_ID, {
+        gorgias_account_id: user.account_id,
+        gorgias_subdomain: domain,
         name: user.name,
         email: user.email,
         country: user.country,
         role: user.roles[0].name,
         created_at: user.created_datetime,
-    }
-
-    devLog('Identify Segment user', userId, userData)
-    analytics.identify(userId, userData)
+    })
 }
 
 export const EVENTS = {
