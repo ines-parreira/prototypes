@@ -221,7 +221,6 @@ export function deleteView(view: viewType): thunkActionType {
             .get('items', fromJS([]))
             .filter((v) => v.get('type', 'ticket-list') === vType && v.get('id') !== view.get('id'))
 
-        // prevent deletion of the last view of this type
         if (otherViewsOfType.size === 0) {
             return dispatch(notify({
                 status: 'error',
@@ -231,11 +230,11 @@ export function deleteView(view: viewType): thunkActionType {
         }
 
         return axios.delete(`/api/views/${view.get('id')}/`)
-            .then((json = {}) => json.data)
             .then(() => {
                 const viewConfig = viewsConfig.getConfigByType(vType)
                 const destinationView = otherViewsOfType.first()
                 const destinationRoute = `/app/${viewConfig.get('routeList')}/${destinationView.get('id')}/${destinationView.get('slug')}`
+                dispatch(setViewActive(destinationView))
                 browserHistory.push(destinationRoute)
                 return Promise.resolve()
             }, (error) => {
@@ -262,6 +261,7 @@ export const deleteViewSuccess = (viewId: number): thunkActionType => (dispatch:
             return v.get('type') === state.getIn(['active', 'type'])
         })
         const destinationRoute = `/app/${viewConfig.get('routeList')}/${destinationView.get('id')}/${destinationView.get('slug')}`
+        dispatch(setViewActive(destinationView))
         browserHistory.push(destinationRoute)
     }
 }

@@ -70,6 +70,91 @@ Object {
 }
 `;
 
+exports[`actions deleteView() should prevent deletion of last view of same type 1`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [],
+  "put": Array [],
+}
+`;
+
+exports[`actions deleteView() should prevent deletion of last view of same type 2`] = `Array []`;
+
+exports[`actions deleteView() should redirect to other view of same type when delete succeeds 1`] = `
+Object {
+  "delete": Array [
+    Object {
+      "data": undefined,
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "X-CSRF-Token": undefined,
+      },
+      "maxContentLength": -1,
+      "method": "delete",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/views/1/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [],
+  "put": Array [],
+}
+`;
+
+exports[`actions deleteView() should redirect to other view of same type when delete succeeds 2`] = `
+Array [
+  Object {
+    "type": "ADD_RECENT_VIEW",
+    "viewId": 2,
+  },
+  Object {
+    "type": "SET_VIEW_ACTIVE",
+    "view": Immutable.Map {
+      "id": 2,
+      "type": "ticket-list",
+    },
+  },
+]
+`;
+
+exports[`actions deleteViewSuccess() should redirect to other view of same type when view is active 1`] = `
+Array [
+  Object {
+    "type": "DELETE_VIEW_SUCCESS",
+    "viewId": 1,
+  },
+  Object {
+    "type": "ADD_RECENT_VIEW",
+    "viewId": 1,
+  },
+  Object {
+    "type": "SET_VIEW_ACTIVE",
+    "view": Immutable.Map {
+      "id": 1,
+      "type": "ticket-list",
+    },
+  },
+]
+`;
+
 exports[`actions fetchActiveViewTickets should fetch tickets 1`] = `
 Array [
   Object {

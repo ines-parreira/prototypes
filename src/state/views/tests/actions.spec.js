@@ -1,4 +1,3 @@
-
 import moment from 'moment'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -449,6 +448,7 @@ describe('actions', () => {
             })
         })
     })
+
     describe('bulkUpdate()', () => {
         let mockServer
         const viewId = 1
@@ -489,6 +489,72 @@ describe('actions', () => {
             return store.dispatch(actions.bulkUpdate(view, jobType, jobPartialParams)).then(() => {
                 expect(mockServer.history).toMatchSnapshot()
             })
+        })
+    })
+
+    describe('deleteView()', () => {
+        let view
+        let store
+        let mockServer
+
+        beforeEach(() => {
+            view = fromJS({
+                id: 1,
+                type: 'ticket-list',
+            })
+            mockServer = new MockAdapter(axios)
+            mockServer
+                .onDelete(`/api/views/${view.get('id')}/`)
+                .reply(() => [200, {}])
+        })
+
+        it('should prevent deletion of last view of same type', async () => {
+            const views = initialState.set('items', fromJS([view]))
+            store = mockStore({ views })
+
+            await store.dispatch(actions.deleteView(view))
+
+            expect(mockServer.history).toMatchSnapshot()
+            expect(store.getActions()).toMatchSnapshot()
+        })
+
+        it('should redirect to other view of same type when delete succeeds', async () => {
+            const views = initialState.set('items', fromJS([
+                view,
+                view.set('id', 2)
+            ]))
+            store = mockStore({ views })
+
+            await store.dispatch(actions.deleteView(view))
+
+            expect(mockServer.history).toMatchSnapshot()
+            expect(store.getActions()).toMatchSnapshot()
+        })
+    })
+
+    describe('deleteViewSuccess()', () => {
+        let view
+        let store
+
+        beforeEach(() => {
+            view = fromJS({
+                id: 1,
+                type: 'ticket-list',
+            })
+        })
+
+        it('should redirect to other view of same type when view is active', async () => {
+            const views = initialState
+                .set('items', fromJS([
+                    view,
+                    view.set('id', 2)
+                ]))
+                .set('active', view)
+            store = mockStore({ views })
+
+            await store.dispatch(actions.deleteViewSuccess(view.get('id')))
+
+            expect(store.getActions()).toMatchSnapshot()
         })
     })
 })
