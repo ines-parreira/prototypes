@@ -1,9 +1,20 @@
-import axios from 'axios'
+// @flow
 
+import axios from 'axios'
 import {fromJS} from 'immutable'
 
+import type {AxiosInstance, CancelTokenSource} from 'axios'
+import type {Map} from 'immutable'
+
+type GorgiasApiOptions = {
+    requestsCancellation: boolean,
+}
+
 export default class GorgiasApi {
-    constructor({requestsCancellation: requestsCancellation = true} = {}) {
+    _api: AxiosInstance
+    _requestCanceller: CancelTokenSource
+
+    constructor({requestsCancellation: requestsCancellation = true}: GorgiasApiOptions = {}) {
         this._api = axios.create()
 
         if (requestsCancellation) {

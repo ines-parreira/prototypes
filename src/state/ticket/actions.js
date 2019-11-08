@@ -1,46 +1,40 @@
-import {fromJS} from 'immutable'
-import {browserHistory} from 'react-router'
+// @flow
 
+import {fromJS, type Map, type Record} from 'immutable'
+import {browserHistory} from 'react-router'
 import _isEmpty from 'lodash/isEmpty'
 import _noop from 'lodash/noop'
 import axios from 'axios'
 
-import browserNotification from '../../services/browserNotification'
-import * as newMessageActions from '../newMessage/actions'
-import * as viewsSelectors from '../views/selectors'
-import * as newMessageTypes from '../newMessage/constants'
+import type Moment from 'moment'
 
 import {DEFAULT_ACTIONS} from '../../config'
-import {notify} from '../notifications/actions'
-import {
-    isCurrentlyOnTicket,
-    isTabActive,
-} from '../../utils'
-
-import socketManager from '../../services/socketManager'
-import type {dispatchType, getStateType, thunkActionType} from '../types'
-import {markChatAsRead} from '../chats/actions'
-import * as ticketsSelectors from '../tickets/selectors'
-
-import {getSourceTypeCache} from '../newMessage/responseUtils'
-
 import {INSTAGRAM_AD_COMMENT_SOURCE, INSTAGRAM_COMMENT_SOURCE} from '../../config/ticket'
+import browserNotification from '../../services/browserNotification'
+import socketManager from '../../services/socketManager'
+import {isCurrentlyOnTicket, isTabActive,} from '../../utils'
+import {markChatAsRead} from '../chats/actions'
+import * as newMessageActions from '../newMessage/actions'
+import * as newMessageTypes from '../newMessage/constants'
+import {getSourceTypeCache} from '../newMessage/responseUtils'
+import {notify} from '../notifications/actions'
+import * as ticketsSelectors from '../tickets/selectors'
+import * as viewsSelectors from '../views/selectors'
 
-import {getCustomerMessages} from './selectors'
-import {
-    buildPartialUpdateFromAction,
-    getSourceTypeOfResponse,
-    nestedReplace,
-} from './utils'
+import type {Action, Ticket, TicketMessage} from '../../models/ticket'
+import type {Macro} from '../macro/types'
+import type {dispatchType, getStateType, thunkActionType} from '../types'
+
+import {buildPartialUpdateFromAction, getSourceTypeOfResponse, nestedReplace,} from './utils'
 import * as types from './constants'
 
-export const mergeTicket = (ticket) => (dispatch, getState) => {
-    ticket = fromJS(ticket)
+export const mergeTicket = (ticket: Ticket) => (dispatch: dispatchType, getState: getStateType) => {
+    const ticketRecord = fromJS(ticket)
     const state = getState()
     const {ticket: ticketState} = state
 
     // if received ticket data does not concern current ticket, do nothing
-    if (ticket.get('id') !== ticketState.get('id')) {
+    if (ticketRecord.get('id') !== ticketState.get('id')) {
         return Promise.resolve()
     }
 
@@ -48,10 +42,10 @@ export const mergeTicket = (ticket) => (dispatch, getState) => {
     if (!isTabActive()) {
         const {ticket: previousTicket} = getState()
 
-        const messagesLength = ticket.get('messages', fromJS([])).size
+        const messagesLength = ticketRecord.get('messages', fromJS([])).size
         const previousMessagesLength = previousTicket.get('messages', fromJS([])).size
 
-        const newMessage = ticket.get('messages', fromJS([])).last()
+        const newMessage = ticketRecord.get('messages', fromJS([])).last()
 
         if (messagesLength !== previousMessagesLength && newMessage && !newMessage.get('from_agent')) {
             const title = newMessage.getIn(['sender', 'name'])
@@ -61,22 +55,22 @@ export const mergeTicket = (ticket) => (dispatch, getState) => {
     }
 
     const currentMessages = ticketState.get('messages', fromJS([]))
-    const messagesDifference = ticket.get('messages', fromJS([])).size - currentMessages.size
+    const messagesDifference = ticketRecord.get('messages', fromJS([])).size - currentMessages.size
 
     const mergeDispatch = dispatch({
         type: types.MERGE_TICKET,
-        ticket,
+        ticket: ticketRecord,
         messagesDifference,
     })
 
     if (messagesDifference) {
-        dispatch(newMessageActions.resetFromTicket(ticket))
+        dispatch(newMessageActions.resetFromTicket(ticketRecord))
     }
 
     return Promise.resolve(mergeDispatch)
 }
 
-export const mergeCustomer = (customer) => {
+export const mergeCustomer = (customer: Map<*, *>) => {
     return {
         type: types.MERGE_CUSTOMER,
         customer,
@@ -87,7 +81,7 @@ export const fetchTicketReplyMacro = () => ({
     type: types.FETCH_TICKET_REPLY_MACRO
 })
 
-export const ticketPartialUpdate = (args) => (dispatch, getState) => {
+export const ticketPartialUpdate = (args: Object) => (dispatch: dispatchType, getState: getStateType) => {
     if (_isEmpty(args)) {
         return Promise.resolve()
     }
@@ -121,7 +115,7 @@ export const ticketPartialUpdate = (args) => (dispatch, getState) => {
         })
 }
 
-export const addTags = (tags) => (dispatch, getState) => {
+export const addTags = (tags: string) => (dispatch: dispatchType, getState: getStateType) => {
     dispatch({
         type: types.ADD_TICKET_TAGS,
         args: fromJS({tags}),
@@ -130,7 +124,7 @@ export const addTags = (tags) => (dispatch, getState) => {
     return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('addTags', getState())))
 }
 
-export const removeTag = (tag) => (dispatch, getState) => {
+export const removeTag = (tag: string) => (dispatch: dispatchType, getState: getStateType) => {
     dispatch({
         type: types.REMOVE_TICKET_TAG,
         args: fromJS({tag}),
@@ -139,109 +133,55 @@ export const removeTag = (tag) => (dispatch, getState) => {
     return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('addTags', getState())))
 }
 
-export const setRequest = (request) => (dispatch, getState) => {
-    const messages = getCustomerMessages(getState()).sortBy((m) => m.get('created_datetime'))
-    const lastMessageWithRequest = messages.find((m) => m.get('request_id'))
-    // if there is a request set we modify it, otherwise the last customer message is set as a request.
-    const message = lastMessageWithRequest ? lastMessageWithRequest : messages.last()
+export const setSpam = (spam: boolean, callback: () => void = _noop) =>
+    (dispatch: dispatchType, getState: getStateType) => {
+        const {ticket} = getState()
+        const currentSpam = ticket.get('spam')
 
-    if (!message) {
-        return Promise.resolve()
-    }
-
-    const messageId = message.get('id')
-    const ticketId = message.get('ticket_id')
-
-    return axios.put(`/api/tickets/${ticketId}/messages/${messageId}/`, {request_id: request.get('id')})
-        .then((json = {}) => json.data)
-        .then(() => {
-            return dispatch({
-                type: types.SET_TICKET_MESSAGE_REQUEST,
-                requestId: request.get('id'),
-                messageId
-            })
-        }, (error) => {
-            return dispatch({
-                type: types.SET_TICKET_MESSAGE_REQUEST_ERROR,
-                error,
-                reason: 'Failed to set request'
-            })
-        })
-}
-
-export const removeRequest = () => (dispatch, getState) => {
-    const messages = getCustomerMessages(getState()).sortBy((m) => m.get('created_datetime'))
-    const lastMessageWithRequest = messages.find((m) => m.get('request_id'))
-    if (!lastMessageWithRequest) {
-        return
-    }
-
-    const messageId = lastMessageWithRequest.get('id')
-    const ticketId = lastMessageWithRequest.get('ticket_id')
-
-    return axios.put(`/api/tickets/${ticketId}/messages/${messageId}/`, {request_id: null})
-        .then((json = {}) => json.data)
-        .then(() => {
-            return dispatch({
-                type: types.REMOVE_TICKET_MESSAGE_REQUEST,
-                messageId
-            })
-        }, (error) => {
-            return dispatch({
-                type: types.REMOVE_TICKET_MESSAGE_REQUEST_ERROR,
-                error,
-                reason: 'Failed to set request'
-            })
-        })
-}
-
-export const setSpam = (spam, callback = _noop) => (dispatch, getState) => {
-    const {ticket} = getState()
-    const currentSpam = ticket.get('spam')
-
-    if (currentSpam === spam) {
-        return Promise.resolve()
-    }
-
-    dispatch({
-        type: types.SET_SPAM,
-        spam
-    })
-
-    // execute callback immediately, do not wait for server answer
-    callback()
-
-    return dispatch(ticketPartialUpdate({spam}))
-}
-
-export const setTrashed = (datetime, callback = _noop) => (dispatch, getState) => {
-    const {ticket} = getState()
-    const isTrashed = !!ticket.get('trashed_datetime')
-
-    if (isTrashed && !!datetime) {
-        return Promise.resolve()
-    }
-
-    dispatch({
-        type: types.SET_TRASHED,
-        trashed_datetime: datetime
-    })
-
-    // execute callback immediately, do not wait for server answer
-    callback()
-
-    return dispatch(ticketPartialUpdate({trashed_datetime: datetime})).then(() => {
-        // display a notification when we trash a ticket
-        if (datetime) {
-            return dispatch(notify({
-                status: 'success',
-                message: 'Ticket deleted'
-            }))
+        if (currentSpam === spam) {
+            return Promise.resolve()
         }
-    })
-}
 
-export const setAgent = (assigneeUser) => (dispatch, getState) => {
+        dispatch({
+            type: types.SET_SPAM,
+            spam
+        })
+
+        // execute callback immediately, do not wait for server answer
+        callback()
+
+        return dispatch(ticketPartialUpdate({spam}))
+    }
+
+export const setTrashed = (datetime: ?Moment, callback: () => void = _noop): thunkActionType =>
+    (dispatch: dispatchType, getState: getStateType) => {
+        const {ticket} = getState()
+        const isTrashed = !!ticket.get('trashed_datetime')
+
+        if (isTrashed && !!datetime) {
+            return Promise.resolve()
+        }
+
+        dispatch({
+            type: types.SET_TRASHED,
+            trashed_datetime: datetime
+        })
+
+        // execute callback immediately, do not wait for server answer
+        callback()
+
+        return dispatch(ticketPartialUpdate({trashed_datetime: datetime})).then(() => {
+            // display a notification when we trash a ticket
+            if (datetime) {
+                return dispatch(notify({
+                    status: 'success',
+                    message: 'Ticket deleted'
+                }))
+            }
+        })
+    }
+
+export const setAgent = (assigneeUser: ?Object) => (dispatch: dispatchType, getState: getStateType) => {
     dispatch({
         type: types.SET_AGENT,
         args: fromJS({assignee_user: assigneeUser}),
@@ -250,7 +190,7 @@ export const setAgent = (assigneeUser) => (dispatch, getState) => {
     return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setAssignee', getState())))
 }
 
-export const setTeam = (assigneeTeam) => (dispatch, getState) => {
+export const setTeam = (assigneeTeam: ?Object) => (dispatch: dispatchType, getState: getStateType) => {
     dispatch({
         type: types.SET_TEAM,
         args: fromJS({assignee_team: assigneeTeam}),
@@ -259,7 +199,7 @@ export const setTeam = (assigneeTeam) => (dispatch, getState) => {
     return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setTeamAssignee', getState())))
 }
 
-export const setCustomer = (customer) => (dispatch) => {
+export const setCustomer = (customer: Object): thunkActionType => (dispatch: dispatchType) => {
     dispatch({
         type: types.SET_CUSTOMER,
         args: fromJS({customer}),
@@ -278,26 +218,27 @@ export const setCustomer = (customer) => (dispatch) => {
     }))
 }
 
-export const setStatus = (status, callback = _noop) => (dispatch, getState) => {
-    dispatch({
-        type: types.SET_STATUS,
-        args: fromJS({status}),
-    })
+export const setStatus = (status: string, callback: () => void = _noop) =>
+    (dispatch: dispatchType, getState: getStateType) => {
+        dispatch({
+            type: types.SET_STATUS,
+            args: fromJS({status}),
+        })
 
-    if (status === 'closed') {
-        dispatch(notify({
-            status: 'success',
-            message: 'The ticket has been closed.'
-        }))
+        if (status === 'closed') {
+            dispatch(notify({
+                status: 'success',
+                message: 'The ticket has been closed.'
+            }))
 
-        // execute callback immediately, do not wait for server answer
-        callback()
+            // execute callback immediately, do not wait for server answer
+            callback()
+        }
+
+        return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setStatus', getState())))
     }
 
-    return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setStatus', getState())))
-}
-
-export const setSubject = (subject) => (dispatch, getState) => {
+export const setSubject = (subject: string) => (dispatch: dispatchType, getState: getStateType) => {
     dispatch({
         type: types.SET_SUBJECT,
         args: fromJS({subject}),
@@ -306,7 +247,7 @@ export const setSubject = (subject) => (dispatch, getState) => {
     return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setSubject', getState())))
 }
 
-export const setSnooze = (datetime, callback = _noop) => (dispatch) => {
+export const setSnooze = (datetime: Moment, callback: () => void = _noop) => (dispatch: dispatchType) => {
     const data = {
         snooze_datetime: datetime,
         status: 'closed'
@@ -328,7 +269,7 @@ export const setSnooze = (datetime, callback = _noop) => (dispatch) => {
     })
 }
 
-export const deleteMessage = (ticketId, messageId) => (dispatch) => {
+export const deleteMessage = (ticketId: number, messageId: number) => (dispatch: dispatchType) => {
     return axios.delete(`/api/tickets/${ticketId}/messages/${messageId}/`)
         .then((json = {}) => json.data)
         .then(() => {
@@ -345,20 +286,20 @@ export const deleteMessage = (ticketId, messageId) => (dispatch) => {
         })
 }
 
-export const deleteActionOnApplied = (actionIndex, ticketId) => ({
+export const deleteActionOnApplied = (actionIndex: number, ticketId: number) => ({
     type: types.DELETE_ACTION_ON_APPLIED,
     actionIndex,
     ticketId
 })
 
-export const updateActionArgsOnApplied = (actionIndex, value, ticketId) => ({
+export const updateActionArgsOnApplied = (actionIndex: number, value: string, ticketId: number) => ({
     type: types.UPDATE_ACTION_ARGS_ON_APPLIED,
     actionIndex,
     value,
     ticketId
 })
 
-export const applyMacroAction = (action) => (dispatch, getState) => {
+export const applyMacroAction = (action: Record<Action>) => (dispatch: dispatchType, getState: getStateType) => {
     const state = getState()
     const {ticket, currentUser} = state
 
@@ -381,7 +322,7 @@ export const applyMacroAction = (action) => (dispatch, getState) => {
     })
 }
 
-export const applyMacro = (macro, ticketId) => (dispatch, getState) => {
+export const applyMacro = (macro: Macro, ticketId: number) => (dispatch: dispatchType, getState: getStateType) => {
     // render macro action arguments
     let state = getState()
 
@@ -418,7 +359,7 @@ export const applyMacro = (macro, ticketId) => (dispatch, getState) => {
     return Promise.resolve()
 }
 
-export const clearAppliedMacro = (ticketId) => ({
+export const clearAppliedMacro = (ticketId: number) => ({
     type: types.CLEAR_APPLIED_MACRO,
     ticketId
 })
@@ -429,9 +370,9 @@ export const clearAppliedMacro = (ticketId) => ({
  * @param ticketId: the id of the ticket to fetch
  * @param discreetly: (default: false) whether or not the function should dispatch `FETCH_TICKET_START`
  */
-export const fetchTicket = (ticketId, discreetly = false) => (dispatch) => {
+export const fetchTicket = (ticketId: string, discreetly: boolean = false) => (dispatch: dispatchType) => {
     if (ticketId === 'new') {
-        return new Promise((resolve) => {
+        return new Promise<thunkActionType>((resolve) => {
             // wait next tick before initializing the draft
             // so that draft-js is mounted (and Editor plugins are ran) before we initialize message content
             // otherwise on a new ticket plugins are not applied to the Editor
@@ -441,7 +382,7 @@ export const fetchTicket = (ticketId, discreetly = false) => (dispatch) => {
         })
     }
 
-    ticketId = parseInt(ticketId)
+    const parsedTicketId: number = parseInt(ticketId)
 
     if (!discreetly) {
         dispatch({
@@ -449,9 +390,9 @@ export const fetchTicket = (ticketId, discreetly = false) => (dispatch) => {
         })
     }
 
-    dispatch(markChatAsRead(ticketId))
+    dispatch(markChatAsRead(parsedTicketId))
 
-    const url = `/api/tickets/${ticketId}/`
+    const url = `/api/tickets/${parsedTicketId}/`
 
     return axios.get(url)
         .then((json = {}) => json.data)
@@ -466,8 +407,8 @@ export const fetchTicket = (ticketId, discreetly = false) => (dispatch) => {
 
             const customerId = fromJS(resp).getIn(['customer', 'id'])
 
-            if (ticketId) {
-                socketManager.join('ticket', ticketId)
+            if (parsedTicketId) {
+                socketManager.join('ticket', parsedTicketId)
             }
 
             if (customerId) {
@@ -478,7 +419,7 @@ export const fetchTicket = (ticketId, discreetly = false) => (dispatch) => {
             dispatch({
                 type: types.FETCH_TICKET_SUCCESS,
                 resp,
-                ticketId,
+                ticketId: parsedTicketId,
             })
 
             // dispatch for newMessage reducer branch
@@ -502,14 +443,14 @@ export const fetchTicket = (ticketId, discreetly = false) => (dispatch) => {
             }
 
             // Notify the server that we viewed this ticket
-            socketManager.send('ticket-viewed', ticketId)
+            socketManager.send('ticket-viewed', parsedTicketId)
 
             return dispatch(newMessageActions.resetReceiversAndSender)
         }, (error) => {
             return dispatch({
                 type: types.FETCH_TICKET_ERROR,
                 error,
-                reason: `Failed to fetch ticket ${ticketId}`
+                reason: `Failed to fetch ticket ${parsedTicketId}`
             })
         })
 }
@@ -520,12 +461,11 @@ export const fetchTicket = (ticketId, discreetly = false) => (dispatch) => {
  *
  * @param {number} ticketId - the id of the ticket from which we want the next or the previous ticket
  * @param {String} direction - `next` or `prev` to get the ticket after or before the current ticket
- * @param {String} cursor - the value of the attribute of the ticket used to sort tickets in the current view
  * @param {String} promise - promise to resolve before displaying the ticket fetched
  * @returns {Promise}
  */
-export const _goToNextOrPrevTicket = (ticketId: number, direction: string, promise: Promise) => {
-    return (dispatch: dispatchType<Promise>, getState: getStateType) => {
+export const _goToNextOrPrevTicket = (ticketId: number, direction: string, promise: Promise<?dispatchType>) => {
+    return (dispatch: dispatchType, getState: getStateType) => {
         if (!promise) {
             // we do not display the loading state if there is a promise to resolve
             // because we want to do it discreetly: while something else is happening.
@@ -608,7 +548,7 @@ export const _goToNextOrPrevTicket = (ticketId: number, direction: string, promi
  * Fetch the previous ticket immediately
  * but wait the Promise (`promise` argument) to be resolved to display it
  */
-export const goToPrevTicket = (ticketId: number, promise: Promise) => (dispatch: dispatchType<Promise>) => {
+export const goToPrevTicket = (ticketId: number, promise: Promise<?dispatchType>) => (dispatch: dispatchType) => {
     return dispatch(_goToNextOrPrevTicket(ticketId, 'prev', promise))
 }
 
@@ -616,11 +556,11 @@ export const goToPrevTicket = (ticketId: number, promise: Promise) => (dispatch:
  * Fetch the next ticket immediately
  * but wait the Promise (`promise` argument) to be resolved to display it
  */
-export const goToNextTicket = (ticketId: number, promise: Promise) => (dispatch: dispatchType<Promise>) => {
+export const goToNextTicket = (ticketId: number, promise: Promise<?dispatchType>) => (dispatch: dispatchType) => {
     return dispatch(_goToNextOrPrevTicket(ticketId, 'next', promise))
 }
 
-export const handleMessageActionError = (ticketId) => (dispatch) => {
+export const handleMessageActionError = (ticketId: string) => (dispatch: dispatchType) => {
     let buttons = []
     let fetchPromise = null
 
@@ -647,7 +587,7 @@ export const handleMessageActionError = (ticketId) => (dispatch) => {
     return fetchPromise || Promise.resolve()
 }
 
-export const handleMessageError = (ticketId) => (dispatch) => {
+export const handleMessageError = (ticketId: string) => (dispatch: dispatchType) => {
     let buttons = []
     let fetchPromise = null
 
@@ -674,8 +614,8 @@ export const handleMessageError = (ticketId) => (dispatch) => {
     return fetchPromise || Promise.resolve()
 }
 
-export function updateTicketMessage(ticketId, messageId, data, action = null) {
-    return (dispatch) => {
+export function updateTicketMessage(ticketId: string, messageId: number, data: Object, action: ?string = null) {
+    return (dispatch: dispatchType) => {
         dispatch({
             type: types.UPDATE_TICKET_MESSAGE_START,
             messageId
@@ -700,14 +640,15 @@ export function updateTicketMessage(ticketId, messageId, data, action = null) {
                     type: types.UPDATE_TICKET_MESSAGE_ERROR,
                     messageId,
                     error,
-                    reason: 'Message was not sent. Please try again in a few moments. If the problem persists contact us.'
+                    reason:
+                        'Message was not sent. Please try again in a few moments. If the problem persists, contact us.'
                 })
             })
     }
 }
 
 export function clearTicket() {
-    return (dispatch, getState) => {
+    return (dispatch: dispatchType, getState: getStateType) => {
         const state = getState()
 
         const shouldDisplayHistoryOnNextPage = state.ticket.getIn(['_internal', 'shouldDisplayHistoryOnNextPage'])
@@ -721,22 +662,22 @@ export function clearTicket() {
     }
 }
 
-export function toggleHistory(state) {
+export function toggleHistory(state: boolean) {
     return {
         type: types.TOGGLE_HISTORY,
         state
     }
 }
 
-export function displayHistoryOnNextPage(state = true) {
+export function displayHistoryOnNextPage(state: boolean = true) {
     return {
         type: types.DISPLAY_HISTORY_ON_NEXT_PAGE,
         state
     }
 }
 
-export function deleteTicket(id) {
-    return (dispatch) => {
+export function deleteTicket(id: number) {
+    return (dispatch: dispatchType) => {
         return axios.delete(`/api/tickets/${id}/`)
             .then((json = {}) => json.data)
             .then(() => {
@@ -754,7 +695,7 @@ export function deleteTicket(id) {
     }
 }
 
-export function deleteTicketPendingMessage(message) {
+export function deleteTicketPendingMessage(message: Record<TicketMessage>) {
     return {
         type: types.DELETE_TICKET_PENDING_MESSAGE,
         message
@@ -765,25 +706,23 @@ export function deleteTicketPendingMessage(message) {
  * Search a customer by email, and then fetch it and set it as customer of the current ticket.
  * @param email: the email of the customer we want to set as customer
  */
-export const findAndSetCustomer = (email: string): thunkActionType => (
-    (dispatch: dispatchType): Promise<dispatchType> => {
-        return axios.post('/api/search/', {type: 'user_channel_email', query: email})
-            .then((json = {}) => json.data)
-            .then((resp): Promise<dispatchType> => {
-                if (resp.data.length !== 1) {
-                    // We can't do anything if we are not sure which customer should be set as customer of the current ticket.
-                    // We don't want to log an error here, as this may be expected if the agent is sending an email
-                    // to a new customer.
-                    return Promise.resolve()
-                }
+export const findAndSetCustomer = (email: string) => (dispatch: dispatchType) =>
+    axios.post('/api/search/', {type: 'user_channel_email', query: email})
+        .then((json = {}) => json.data)
+        .then((resp) => {
+            if (resp.data.length !== 1) {
+                // We can't do anything if we are not sure which customer should be set as customer of the current
+                // ticket. We don't want to log an error here, as this may be expected if the agent is sending an email
+                // to a new customer.
+                return Promise.resolve()
+            }
 
-                const channel = resp.data[0]
+            const channel = resp.data[0]
 
-                return axios.get(`/api/customers/${channel.user.id}/`)
-                    .then((json = {}) => json.data)
-                    .then((resp): Promise<dispatchType> => {
-                        return dispatch(setCustomer(fromJS(resp)))
-                    })
-            })
-    }
-)
+            return axios.get(`/api/customers/${channel.user.id}/`)
+                .then((json = {}) => json.data)
+                .then((resp): Promise<dispatchType> => {
+                    return dispatch(setCustomer(fromJS(resp)))
+                })
+        })
+

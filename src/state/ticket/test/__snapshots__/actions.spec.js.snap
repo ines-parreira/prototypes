@@ -1425,15 +1425,6 @@ Array [
 ]
 `;
 
-exports[`ticket actions removeRequest() 1`] = `
-Array [
-  Object {
-    "messageId": 1,
-    "type": "REMOVE_TICKET_MESSAGE_REQUEST",
-  },
-]
-`;
-
 exports[`ticket actions removeTag() 1`] = `
 Array [
   Object {
@@ -1468,16 +1459,6 @@ Array [
       },
     },
     "type": "setCustomer",
-  },
-]
-`;
-
-exports[`ticket actions setRequest() 1`] = `
-Array [
-  Object {
-    "messageId": 1,
-    "requestId": 1,
-    "type": "SET_TICKET_MESSAGE_REQUEST",
   },
 ]
 `;

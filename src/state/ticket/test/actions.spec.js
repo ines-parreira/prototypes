@@ -132,54 +132,6 @@ describe('ticket actions', () => {
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('setRequest()', () => {
-        store = mockStore({
-            ticket: initialState.set('messages', fromJS([
-                {
-                    id: 1,
-                    ticket_id: 1,
-                    from_agent: false,
-                    request_id: 1,
-                    created_datetime: '2017-01-09'
-                },
-                {
-                    id: 2,
-                    ticket_id: 2,
-                    from_agent: true,
-                    request_id: null,
-                    created_datetime: '2017-01-10'
-                },
-                {
-                    id: 3,
-                    ticket_id: 3,
-                    from_agent: false,
-                    request_id: 2,
-                    created_datetime: '2017-02-10'
-                }
-            ]))
-        })
-        mockServer.onPut(/\/api\/tickets\/\d+\/messages\/\d+/).reply(202, {data: {}})
-        return store.dispatch(actions.setRequest(fromJS({id: 1})))
-            .then(() => expect(store.getActions()).toMatchSnapshot())
-    })
-
-    it('removeRequest()', () => {
-        store = mockStore({
-            ticket: initialState.set('messages', fromJS([
-                {
-                    id: 1,
-                    ticket_id: 1,
-                    from_agent: false,
-                    request_id: 1,
-                    created_datetime: '2017-01-09'
-                }
-            ]))
-        })
-        mockServer.onPut(/\/api\/tickets\/\d+\/messages\/\d+/).reply(202, {data: {}})
-        return store.dispatch(actions.removeRequest())
-            .then(() => expect(store.getActions()).toMatchSnapshot())
-    })
-
     describe('setSpam()', () => {
         it('fails because same status', () => {
             store = mockStore({ticket: initialState.set('spam', true)})
