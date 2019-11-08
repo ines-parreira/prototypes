@@ -31,7 +31,6 @@ export const identifyUser = (user) => {
     const domain = window.location.hostname.split('.')[0]
 
     analytics.identify(window.SEGMENT_ANALYTICS_USER_ID, {
-        gorgias_account_id: user.account_id,
         gorgias_subdomain: domain,
         name: user.name,
         email: user.email,
