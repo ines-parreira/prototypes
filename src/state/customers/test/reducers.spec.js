@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 
-import {OPEN_STATUS, CLOSED_STATUS} from '../../../constants/ticket'
+import {OPEN_STATUS, CLOSED_STATUS} from '../../../config/ticket'
 import reducer, {initialState} from '../reducers'
 import * as newMessageTypes from '../../newMessage/constants'
 import * as viewTypes from '../../views/constants'

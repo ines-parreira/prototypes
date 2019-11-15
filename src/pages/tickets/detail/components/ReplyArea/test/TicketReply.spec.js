@@ -5,7 +5,7 @@ import _noop from 'lodash/noop'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {SourceTypes} from '../../../../../../business/ticket'
+import {TicketMessageSourceTypes} from '../../../../../../business/ticket'
 import TicketReply from '../TicketReply'
 
 jest.unmock('../../../../../../business/ticket')
@@ -33,7 +33,7 @@ describe('<TicketReply/>', () => {
             reply_options: {
                 [answerableSourceType]: {answerable: true},
                 [nonAnswerableSourceType]: {answerable: false, reason: 'You cannot respond.'},
-                [SourceTypes.FACEBOOK_MESSENGER]: {answerable: true},
+                [TicketMessageSourceTypes.FACEBOOK_MESSENGER]: {answerable: true},
             }
         }),
     }

@@ -1,16 +1,16 @@
 // @flow
-import { canAddAttachments, type SourceType, SourceTypes } from './ticket'
+import { canAddAttachments, type TicketMessageSourceType, TicketMessageSourceTypes } from '../ticket'
 
 describe('Business', () => {
     describe('ticket', () => {
         describe('canAddAttachments()', () => {
-            let messageType: SourceType
+            let messageType: TicketMessageSourceType
             let newMessage: string
             let attachmentCount: number
 
             it('should not allow to add when facebook-messenger has already text', () => {
                 // Given
-                messageType = SourceTypes.FACEBOOK_MESSENGER
+                messageType = TicketMessageSourceTypes.FACEBOOK_MESSENGER
                 newMessage = 'Hello'
                 attachmentCount = 1
 
@@ -30,7 +30,7 @@ describe('Business', () => {
 
                 it('should not allow to add when chat', () => {
                     // Given
-                    messageType = SourceTypes.CHAT
+                    messageType = TicketMessageSourceTypes.CHAT
 
                     // When
                     const result = canAddAttachments(messageType, newMessage, attachmentCount)
@@ -42,7 +42,7 @@ describe('Business', () => {
 
                 it('should not allow to add when facebook-comment', () => {
                     // Given
-                    messageType = SourceTypes.FACEBOOK_COMMENT
+                    messageType = TicketMessageSourceTypes.FACEBOOK_COMMENT
 
                     // When
                     const result = canAddAttachments(messageType, newMessage, attachmentCount)
@@ -54,7 +54,7 @@ describe('Business', () => {
 
                 it('should not allow to add when facebook-messenger', () => {
                     // Given
-                    messageType = SourceTypes.FACEBOOK_MESSENGER
+                    messageType = TicketMessageSourceTypes.FACEBOOK_MESSENGER
 
                     // When
                     const result = canAddAttachments(messageType, newMessage, attachmentCount)

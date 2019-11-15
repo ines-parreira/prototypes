@@ -1,13 +1,21 @@
+import {fromJS} from 'immutable'
 import _find from 'lodash/find'
 import _isArray from 'lodash/isArray'
 import _isObject from 'lodash/isObject'
 
-import {CLOSED_STATUS, OPEN_STATUS} from '../../constants/ticket'
-import {FACEBOOK_INTEGRATIONS_RECONNECTED, TICKET_CHAT_UPDATED} from '../socketConstants'
-import * as socketEvents from '../socketEvents'
+import {TicketStatuses} from '../../business/ticket'
+import {shouldTicketBeDisplayedInRecentChats} from '../../business/recentChats'
+
 import * as chatActions from '../../state/chats/actions'
+import * as currentAccountConstants from '../../state/currentAccount/constants'
+import * as currentAccountSelectors from '../../state/currentAccount/selectors'
 import * as integrationActions from '../../state/integrations/actions'
 import * as notificationActions from '../../state/notifications/actions'
+import * as socketConstants from '../socketConstants'
+import * as socketEvents from '../socketEvents'
+
+import {isCurrentlyOnTicket} from '../../utils'
+import {store as reduxStore} from '../../init'
 
 
 jest.mock('../../state/chats/actions', () => {
@@ -16,7 +24,7 @@ jest.mock('../../state/chats/actions', () => {
     return {
         addChat: jest.fn(() => _identity),
         removeChat: jest.fn(() => _identity),
-        fetchChatsThrottled: jest.fn(() => _identity)
+        fetchChatsThrottled: jest.fn(() => _identity),
     }
 })
 
@@ -27,16 +35,38 @@ jest.mock('../../init', () => {
     const thunk = require('redux-thunk').default
 
     const mockStore = configureMockStore([thunk])
-
-    return {
-        store: mockStore({
-            currentUser: fromJS({id: 1}),
-            chats: fromJS({
-                tickets: Array(MAX_RECENT_CHATS - 1).fill({
-                    id: 0
-                })
+    const store = mockStore({
+        currentUser: fromJS({id: 1}),
+        chats: fromJS({
+            tickets: Array(MAX_RECENT_CHATS - 1).fill({
+                id: 0
             })
         })
+    })
+
+    store.dispatch = jest.fn()
+
+    return {store}
+})
+
+jest.mock('../../state/currentAccount/selectors', () => {
+    return {
+        ...require.requireActual('../../state/currentAccount/selectors'),
+        getTicketAssignmentSettings: jest.fn()
+    }
+})
+
+jest.mock('../../business/recentChats', () => {
+    return {
+        ...require.requireActual('../../business/recentChats'),
+        shouldTicketBeDisplayedInRecentChats: jest.fn()
+    }
+})
+
+jest.mock('../../utils', () => {
+    return {
+        ...require.requireActual('../../utils'),
+        isCurrentlyOnTicket: jest.fn()
     }
 })
 
@@ -106,113 +136,215 @@ describe('Config: socketEvents', () => {
             })
         })
 
-        describe('TICKET_CHAT_UPDATED handler', () => {
-            const ticketChatUpdatedHandler = _find(receivedEvents, {name: TICKET_CHAT_UPDATED})
+        describe('ACCOUNT_UPDATED handler', () => {
+            const accountUpdatedHandler = _find(receivedEvents, {name: socketConstants.ACCOUNT_UPDATED})
 
-            it('should add the ticket to recent chats', () => {
+            beforeEach(() => {
+                jest.resetAllMocks()
+            })
+
+            it('should not fetch chats because `ticket_assignment` settings do not exist', () => {
+                const account = {
+                    settings: []
+                }
+
+                currentAccountSelectors.getTicketAssignmentSettings.mockReturnValue(fromJS({}))
+
+                accountUpdatedHandler.onReceive({account: account})
+                expect(chatActions.fetchChatsThrottled).not.toHaveBeenCalled()
+                expect(reduxStore.dispatch).toHaveBeenCalledWith({
+                    type: currentAccountConstants.UPDATE_ACCOUNT_SUCCESS,
+                    resp: account,
+                })
+            })
+
+            it('should fetch chats because `ticket_assignment` settings were just created', () => {
+                const account = {
+                    settings: [{
+                        type: currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,
+                        data: {auto_assign_to_teams: false}
+                    }]
+                }
+
+                currentAccountSelectors.getTicketAssignmentSettings.mockReturnValue(fromJS({}))
+
+                accountUpdatedHandler.onReceive({account: account})
+                expect(chatActions.fetchChatsThrottled).toHaveBeenCalled()
+                expect(reduxStore.dispatch).toHaveBeenCalledWith({
+                    type: currentAccountConstants.UPDATE_ACCOUNT_SUCCESS,
+                    resp: account,
+                })
+            })
+
+            it.each([[false, true], [true, false]])('should fetch chats because the auto_assign setting has changed',
+                (oldAutoAssignToTeams, newAutoAssignToTeams) => {
+                    const account = {
+                        settings: [{
+                            type: currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,
+                            data: {auto_assign_to_teams: newAutoAssignToTeams}
+                        }]
+                    }
+
+                    currentAccountSelectors.getTicketAssignmentSettings.mockReturnValue(fromJS({
+                        data: {
+                            auto_assign_to_teams: oldAutoAssignToTeams
+                        }
+                    }))
+
+                    accountUpdatedHandler.onReceive({account: account})
+                    expect(chatActions.fetchChatsThrottled).toHaveBeenCalled()
+                    expect(reduxStore.dispatch).toHaveBeenCalledWith({
+                        type: currentAccountConstants.UPDATE_ACCOUNT_SUCCESS,
+                        resp: account,
+                    })
+                })
+
+            it.each([true, false])('should not fetch chats because the auto_assign setting did not change',
+                (autoAssignToTeams) => {
+                    const account = {
+                        settings: [{
+                            type: currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,
+                            data: {auto_assign_to_teams: autoAssignToTeams}
+                        }]
+                    }
+
+                    currentAccountSelectors.getTicketAssignmentSettings.mockReturnValue(fromJS({
+                        data: {
+                            auto_assign_to_teams: autoAssignToTeams
+                        }
+                    }))
+
+                    accountUpdatedHandler.onReceive({account: account})
+                    expect(chatActions.fetchChatsThrottled).not.toHaveBeenCalled()
+                    expect(reduxStore.dispatch).toHaveBeenCalledWith({
+                        type: currentAccountConstants.UPDATE_ACCOUNT_SUCCESS,
+                        resp: account,
+                    })
+                })
+        })
+
+        describe('TICKET_MESSAGE_CHAT_CREATED handler', () => {
+            const ticketMessageChatCreatedHandler = _find(receivedEvents,
+                {name: socketConstants.TICKET_MESSAGE_CHAT_CREATED})
+
+            class MockSocketManager {
+                ticketMessageChatCreatedHandler = ticketMessageChatCreatedHandler.onReceive
+                send = jest.fn()
+            }
+
+            const mockSocketManager = new MockSocketManager()
+
+            it.each([true, false])('should add ticket to recent chats because `shouldTicketBeDisplayedInRecentChats` ' +
+                'returned `true`, and not have marked it as read because the current user is not viewing the ticket',
+            (lastMessageFromAgent) => {
+                shouldTicketBeDisplayedInRecentChats.mockReturnValue(true)
+                isCurrentlyOnTicket.mockReturnValue(false)
+
                 const ticket = {
-                    status: OPEN_STATUS,
+                    id: 1,
+                    status: TicketStatuses.OPEN,
                     spam: false,
                     trashed_datetime: null,
                     deleted_datetime: null,
-                    assignee_user_id: null
+                    assignee_user_id: 123,
+                    is_unread: true,
+                    last_message_from_agent: lastMessageFromAgent
                 }
 
-                ticketChatUpdatedHandler.onReceive({data: ticket})
-                expect(chatActions.addChat).toHaveBeenCalledWith(ticket, false)
+                mockSocketManager.ticketMessageChatCreatedHandler({data: ticket})
+                expect(chatActions.addChat).toHaveBeenCalledWith(ticket, !lastMessageFromAgent)
             })
 
-            it('should remove the ticket from recent chats because it is closed', () => {
+            it.each([true, false])('should add ticket to recent chats because `shouldTicketBeDisplayedInRecentChats` ' +
+                'returned `true`,  and have marked it as read because the current user is viewing the ticket ',
+            (lastMessageFromAgent) => {
+                shouldTicketBeDisplayedInRecentChats.mockReturnValue(true)
+                isCurrentlyOnTicket.mockReturnValue(true)
+
                 const ticket = {
                     id: 1,
-                    status: CLOSED_STATUS,
+                    status: TicketStatuses.OPEN,
                     spam: false,
                     trashed_datetime: null,
                     deleted_datetime: null,
-                    assignee_user_id: null
+                    assignee_user_id: 123,
+                    is_unread: true,
+                    last_message_from_agent: lastMessageFromAgent
                 }
 
-                ticketChatUpdatedHandler.onReceive({data: ticket})
-                expect(chatActions.removeChat).toHaveBeenCalledWith(ticket.id)
-            })
-
-            it('should remove the ticket from recent chats because it is marked as spam', () => {
-                const ticket = {
-                    id: 1,
-                    status: OPEN_STATUS,
-                    spam: true,
-                    trashed_datetime: null,
-                    deleted_datetime: null,
-                    assignee_user_id: null
+                const expectedTicket = {
+                    ...ticket,
+                    is_unread: false
                 }
 
-                ticketChatUpdatedHandler.onReceive({data: ticket})
-                expect(chatActions.removeChat).toHaveBeenCalledWith(ticket.id)
+                mockSocketManager.ticketMessageChatCreatedHandler({data: ticket})
+                expect(chatActions.addChat).toHaveBeenCalledWith(expectedTicket, !lastMessageFromAgent)
             })
 
-            it('should remove the ticket from recent chats because it is trashed', () => {
+            it('should remove ticket from recent chats because `shouldTicketBeDisplayedInRecentChats` returned ' +
+                '`false`, and then fetch chats from the API because there is now a free slot available in the ' +
+                'recent chats section', () => {
+                shouldTicketBeDisplayedInRecentChats.mockReturnValue(false)
+
                 const ticket = {
                     id: 1,
-                    status: OPEN_STATUS,
-                    spam: false,
-                    trashed_datetime: '2019-01-01 00:00:00',
-                    deleted_datetime: null,
-                    assignee_user_id: null
-                }
-
-                ticketChatUpdatedHandler.onReceive({data: ticket})
-                expect(chatActions.removeChat).toHaveBeenCalledWith(ticket.id)
-            })
-
-            it('should remove the ticket from recent chats because it is deleted', () => {
-                const ticket = {
-                    id: 1,
-                    status: OPEN_STATUS,
-                    spam: false,
-                    trashed_datetime: null,
-                    deleted_datetime: '2019-01-01 00:00:00',
-                    assignee_user_id: null
-                }
-
-                ticketChatUpdatedHandler.onReceive({data: ticket})
-                expect(chatActions.removeChat).toHaveBeenCalledWith(ticket.id)
-            })
-
-            it('should remove the ticket from recent chats because it has been reassigned', () => {
-                const ticket = {
-                    id: 1,
-                    status: OPEN_STATUS,
+                    status: TicketStatuses.OPEN,
                     spam: false,
                     trashed_datetime: null,
                     deleted_datetime: null,
                     assignee_user_id: 123
                 }
 
-                ticketChatUpdatedHandler.onReceive({data: ticket})
+                mockSocketManager.ticketMessageChatCreatedHandler({data: ticket})
                 expect(chatActions.removeChat).toHaveBeenCalledWith(ticket.id)
+                expect(chatActions.fetchChatsThrottled).toHaveBeenCalledWith(reduxStore.dispatch)
             })
+        })
 
-            // todo(@martin): uncomment this when we have a good way for patching the global `reduxStore`
-            // it('should NOT fetch chats from the API because a ticket was removed from recent chats but there is now ' +
-            //     'still more than MAX_RECENT_CHATS recent chats available in the state', () => {
-            //     const ticket = {
-            //         id: 1,
-            //         status: OPEN_STATUS,
-            //         spam: false,
-            //         trashed_datetime: null,
-            //         deleted_datetime: null,
-            //         assignee_user_id: 123
-            //     }
-            //
-            //     ticketChatUpdatedHandler.onReceive({data: ticket})
-            //     expect(chatActions.fetchChatsThrottled).not.toHaveBeenCalled()
-            // })
+        describe('TICKET_CHAT_UPDATED handler', () => {
+            const ticketChatUpdatedHandler = _find(receivedEvents, {name: socketConstants.TICKET_CHAT_UPDATED})
+
+            it('should add ticket to recent chats because `shouldTicketBeDisplayedInRecentChats` returned `true`',
+                () => {
+                    shouldTicketBeDisplayedInRecentChats.mockReturnValue(true)
+
+                    const ticket = {
+                        id: 1,
+                        status: TicketStatuses.OPEN,
+                        spam: false,
+                        trashed_datetime: null,
+                        deleted_datetime: null,
+                        assignee_user_id: 123
+                    }
+
+                    ticketChatUpdatedHandler.onReceive({data: ticket})
+                    expect(chatActions.addChat).toHaveBeenCalledWith(ticket, false)
+                })
+
+            it('should remove ticket from recent chats because `shouldTicketBeDisplayedInRecentChats` returned `false`',
+                () => {
+                    shouldTicketBeDisplayedInRecentChats.mockReturnValue(false)
+
+                    const ticket = {
+                        id: 1,
+                        status: TicketStatuses.OPEN,
+                        spam: false,
+                        trashed_datetime: null,
+                        deleted_datetime: null,
+                        assignee_user_id: 123
+                    }
+
+                    ticketChatUpdatedHandler.onReceive({data: ticket})
+                    expect(chatActions.removeChat).toHaveBeenCalledWith(ticket.id)
+                })
 
             it('should fetch chats from the API because a ticket was removed from recent chats and there is now ' +
                 'a free slot available in the recent chats section', () => {
+                shouldTicketBeDisplayedInRecentChats.mockReturnValue(false)
+
                 const ticket = {
                     id: 1,
-                    status: OPEN_STATUS,
+                    status: TicketStatuses.OPEN,
                     spam: false,
                     trashed_datetime: null,
                     deleted_datetime: null,
@@ -220,12 +352,12 @@ describe('Config: socketEvents', () => {
                 }
 
                 ticketChatUpdatedHandler.onReceive({data: ticket})
-                expect(chatActions.fetchChatsThrottled).toHaveBeenCalled()
+                expect(chatActions.fetchChatsThrottled).toHaveBeenCalledWith(reduxStore.dispatch)
             })
         })
 
         describe('FACEBOOK_INTEGRATIONS_RECONNECTED handler', () => {
-            const handler = _find(receivedEvents, {name: FACEBOOK_INTEGRATIONS_RECONNECTED})
+            const handler = _find(receivedEvents, {name: socketConstants.FACEBOOK_INTEGRATIONS_RECONNECTED})
 
             it('should fetch integrations', () => {
                 const spy = jest.spyOn(integrationActions, 'fetchIntegrations')

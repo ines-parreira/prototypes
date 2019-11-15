@@ -4,11 +4,11 @@ import { INotification } from './notification'
 
 // Public functions
 export function canAddAttachments(
-    messageType: SourceType,
+    messageType: TicketMessageSourceType,
     newMessage: string,
     attachmentCount: number
 ): ?INotification {
-    let isInvalid = messageType === SourceTypes.FACEBOOK_MESSENGER
+    let isInvalid = messageType === TicketMessageSourceTypes.FACEBOOK_MESSENGER
         && !!newMessage
         && attachmentCount > 0
 
@@ -20,9 +20,9 @@ export function canAddAttachments(
     }
 
     isInvalid = [
-        SourceTypes.CHAT,
-        SourceTypes.FACEBOOK_COMMENT,
-        SourceTypes.FACEBOOK_MESSENGER,
+        TicketMessageSourceTypes.CHAT,
+        TicketMessageSourceTypes.FACEBOOK_COMMENT,
+        TicketMessageSourceTypes.FACEBOOK_MESSENGER,
     ].includes(messageType)
         && attachmentCount > 1
 
@@ -37,7 +37,7 @@ export function canAddAttachments(
 }
 
 export function canReply(
-    messageType: SourceType,
+    messageType: TicketMessageSourceType,
     attachmentCount: number,
     explicitReason: ?string,
 ): ?INotification {
@@ -48,7 +48,7 @@ export function canReply(
         }
     }
 
-    let isInvalid = messageType === SourceTypes.FACEBOOK_MESSENGER
+    let isInvalid = messageType === TicketMessageSourceTypes.FACEBOOK_MESSENGER
         && attachmentCount > 0
 
     if (isInvalid) {
@@ -63,7 +63,7 @@ export function canReply(
 }
 
 // Types
-export const SourceTypes = Object.freeze({
+export const TicketMessageSourceTypes = Object.freeze({
     AIRCALL: 'aircall',
     API: 'api',
     CHAT: 'chat',
@@ -83,12 +83,25 @@ export const SourceTypes = Object.freeze({
     SYSTEM_MESSAGE: 'system-message',
     TWITTER: 'twitter',
 })
-export type SourceType = $Values<typeof SourceTypes>
+export type TicketMessageSourceType = $Values<typeof TicketMessageSourceTypes>
 
-export interface INewMessage {
-    body_text: string
-}
+export const TicketStatuses = Object.freeze({
+    OPEN: 'open',
+    CLOSED: 'closed'
+})
+export type TicketStatus = $Values<typeof TicketStatuses>
 
-export interface ICanAddAttachmentResult {
-    notification?: INotification;
-}
+export const TicketChannels = Object.freeze({
+    AIRCALL: 'aircall',
+    API: 'api',
+    CHAT: 'chat',
+    EMAIL: 'email',
+    FACEBOOK: 'facebook',
+    FACEBOOK_MESSENGER: 'facebook-messenger',
+    INSTAGRAM_AD_COMMENT: 'instagram-ad-comment',
+    INSTAGRAM_COMMENT: 'instagram-comment',
+    PHONE: 'phone',
+    SMS: 'sms',
+    TWITTER: 'twitter'
+})
+export type TicketChannel = $Values<typeof TicketChannels>

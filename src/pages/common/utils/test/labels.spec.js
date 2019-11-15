@@ -12,7 +12,7 @@ import {
     FACEBOOK_INTEGRATION_TYPE,
     GMAIL_INTEGRATION_TYPE
 } from '../../../../constants/integration'
-import {OPEN_STATUS} from '../../../../constants/ticket'
+import {OPEN_STATUS} from '../../../../config/ticket'
 import * as labels from '../labels'
 
 /* DatetimeLabel uses Math.random.

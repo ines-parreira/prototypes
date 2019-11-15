@@ -18,7 +18,7 @@ import {notify} from '../notifications/actions'
 import * as ticketActions from '../ticket/actions'
 import {renderTemplate} from '../../pages/common/utils/template'
 
-import { SourceTypes } from '../../business/ticket'
+import { TicketMessageSourceTypes } from '../../business/ticket'
 import {
     getActionTemplate,
     uploadFiles,
@@ -89,7 +89,7 @@ export const addAttachments = (ticket: Map<*, *>, atts: Array<attachmentType>) =
 
     let attachments = atts
 
-    if (ticket.getIn(['newMessage', 'source', 'type']) === SourceTypes.FACEBOOK_COMMENT) {
+    if (ticket.getIn(['newMessage', 'source', 'type']) === TicketMessageSourceTypes.FACEBOOK_COMMENT) {
         // We have specific constraints on attachments.
 
         const attsFiltered = atts.filter(
@@ -171,7 +171,7 @@ export const setResponseText = (args: Map<*, *> = fromJS({})) =>
 
             const shouldSendTypingEvent = plainText
                 && !responseUtils.hasOnlySignature(contentState, signature.get('text'))
-                && newMessage.getIn(['newMessage', 'source', 'type']) !== SourceTypes.INTERNAL_NOTE
+                && newMessage.getIn(['newMessage', 'source', 'type']) !== TicketMessageSourceTypes.INTERNAL_NOTE
 
             if (shouldSendTypingEvent) {
                 _throttledIsTyping(ticketId)

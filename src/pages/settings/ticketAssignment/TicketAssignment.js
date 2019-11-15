@@ -4,8 +4,10 @@ import {type Map} from 'immutable'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
 import {Button, Col, Container, Form, Label, Row} from 'reactstrap'
+import _isEqual from 'lodash/isEqual'
 
 import UserActivityManager from '../../../services/userActivityManager'
+import * as chatsActions from '../../../state/chats/actions'
 import * as currentAccountActions from '../../../state/currentAccount/actions'
 import * as currentAccountConstants from '../../../state/currentAccount/constants'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
@@ -13,13 +15,13 @@ import * as currentAccountSelectors from '../../../state/currentAccount/selector
 import PageHeader from '../../common/components/PageHeader'
 import BooleanField from '../../common/forms/BooleanField'
 import {CHANNELS, CHAT_CHANNEL, FACEBOOK_MESSENGER_CHANNEL} from '../../../config/ticket'
-import type {Option} from '../../common/forms/MultiSelectOptionsField'
-import MultiSelectOptionsField from '../../common/forms/MultiSelectOptionsField'
+import MultiSelectOptionsField, {type Option} from '../../common/forms/MultiSelectOptionsField'
 
 
 type Props = {
     ticketAssignmentSettings: Map<*, *>,
-    submitSetting: (Object) => Promise<*>
+    submitSetting: (Object) => Promise<*>,
+    fetchChats: () => void
 }
 
 type State = {
@@ -59,14 +61,22 @@ export class TicketAssignment extends React.Component<Props, State> {
         }
     }
 
-    _onSubmit = (evt: SyntheticEvent<*>) => {
+    _onSubmit = async (evt: SyntheticEvent<*>) => {
         evt.preventDefault()
         this.setState({isLoading: true})
 
-        const {ticketAssignmentSettings, submitSetting} = this.props
+        const {ticketAssignmentSettings, submitSetting, fetchChats} = this.props
         const {unassignOnReply, autoAssignToTeams, assignmentChannels} = this.state
 
-        submitSetting({
+        const assignToTeamsHasChanged = autoAssignToTeams
+            !== ticketAssignmentSettings.getIn(['data', 'auto_assign_to_teams'])
+
+        const assignmentChannelsHaveChanged = !_isEqual(
+            assignmentChannels,
+            ticketAssignmentSettings.getIn(['data', 'assignment_channels']).toJS()
+        )
+
+        await submitSetting({
             id: ticketAssignmentSettings.get('id'),
             type: currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,
             data: {
@@ -75,8 +85,12 @@ export class TicketAssignment extends React.Component<Props, State> {
                 assignment_channels: assignmentChannels,
             }
         })
-            // $FlowFixMe
-            .finally(() => this.setState({isLoading: false}))
+
+        if (assignToTeamsHasChanged || (autoAssignToTeams && assignmentChannelsHaveChanged)) {
+            fetchChats()
+        }
+
+        this.setState({isLoading: false})
     }
 
     _onChannelsChange = (options: Option[]) => {
@@ -170,5 +184,6 @@ export default connect((state) => {
         ticketAssignmentSettings: currentAccountSelectors.getTicketAssignmentSettings(state)
     }
 }, {
-    submitSetting: currentAccountActions.submitSetting
+    submitSetting: currentAccountActions.submitSetting,
+    fetchChats: chatsActions.fetchChats
 })(TicketAssignment)

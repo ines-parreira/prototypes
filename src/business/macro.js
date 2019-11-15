@@ -2,14 +2,14 @@
 import { fromJS, Map } from 'immutable'
 
 import { INotification } from './notification'
-import { type SourceType, SourceTypes } from './ticket'
+import { type TicketMessageSourceType, TicketMessageSourceTypes } from './ticket'
 
 // Public functions
 export function clearMacroBeforeApply(
-    messageType: SourceType,
+    messageType: TicketMessageSourceType,
     macro: Macro,
 ): IMacroClearingResult {
-    let isInvalid = messageType === SourceTypes.FACEBOOK_MESSENGER
+    let isInvalid = messageType === TicketMessageSourceTypes.FACEBOOK_MESSENGER
         && hasText(macro)
         && getAttachmentsCount(macro) > 0
 
@@ -23,7 +23,7 @@ export function clearMacroBeforeApply(
         }
     }
 
-    isInvalid = messageType === SourceTypes.CHAT
+    isInvalid = messageType === TicketMessageSourceTypes.CHAT
         && getAttachmentsCount(macro) > 1
 
     if (isInvalid) {

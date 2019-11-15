@@ -5,7 +5,7 @@ import {fromJS} from 'immutable'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-import {SourceTypes} from '../../../business/ticket'
+import {TicketMessageSourceTypes} from '../../../business/ticket'
 import * as actions from '../actions'
 import * as types from '../constants'
 import {initialState} from '../reducers'
@@ -448,7 +448,7 @@ describe('actions', () => {
 
             it('should send typing event when the user is typing', () => {
                 store = mockStore({
-                    newMessage: initialState.setIn(['newMessage', 'source', 'type'], SourceTypes.CHAT),
+                    newMessage: initialState.setIn(['newMessage', 'source', 'type'], TicketMessageSourceTypes.CHAT),
                     ticket: fromJS({id: 1}),
                     agents: fromJS({
                         all: [{
@@ -467,7 +467,7 @@ describe('actions', () => {
 
             it('should not send a typing event when the user is typing in an internal note', () => {
                 store = mockStore({
-                    newMessage: initialState.setIn(['newMessage', 'source', 'type'], SourceTypes.INTERNAL_NOTE),
+                    newMessage: initialState.setIn(['newMessage', 'source', 'type'], TicketMessageSourceTypes.INTERNAL_NOTE),
                     ticket: fromJS({id: 1})
                 })
 

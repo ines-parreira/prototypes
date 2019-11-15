@@ -7,7 +7,7 @@ import {connect} from 'react-redux'
 import {Input} from 'reactstrap'
 
 import { clearMacroBeforeApply, type Macro } from '../../../../../business/macro'
-import { type SourceType } from '../../../../../business/ticket'
+import { type TicketMessageSourceType } from '../../../../../business/ticket'
 import shortcutManager from '../../../../../services/shortcutManager'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {applyMacro} from '../../../../../state/ticket/actions'
@@ -31,7 +31,7 @@ type Props = {
     customers: Object,
     preferences: Object,
     newMessage: Object,
-    newMessageType: SourceType,
+    newMessageType: TicketMessageSourceType,
     notify: typeof notify,
     currentMacro: Map<*,*>,
     page: number,

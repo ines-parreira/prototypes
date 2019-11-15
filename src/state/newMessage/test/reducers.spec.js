@@ -2,7 +2,7 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 import {EditorState, ContentState} from 'draft-js'
 
-import {SourceTypes} from '../../../business/ticket'
+import {TicketMessageSourceTypes} from '../../../business/ticket'
 import addMention from '../../../pages/common/draftjs/plugins/mentions/modifiers/addMention'
 import reducer, {makeNewMessage, initialState} from '../reducers'
 import * as types from '../constants'
@@ -192,13 +192,13 @@ describe('New message reducers', () => {
                 },
                 messages: [{
                     source: {
-                        type: SourceTypes.FACEBOOK_MESSENGER
+                        type: TicketMessageSourceTypes.FACEBOOK_MESSENGER
                     }
                 }]
             }
             const newState = reducer(initialState, action)
-            expect(newState.getIn(['newMessage', 'source', 'type'])).toEqual(SourceTypes.FACEBOOK_MESSENGER)
-            expect(newState.getIn(['newMessage', 'channel'])).toEqual(SourceTypes.FACEBOOK_MESSENGER)
+            expect(newState.getIn(['newMessage', 'source', 'type'])).toEqual(TicketMessageSourceTypes.FACEBOOK_MESSENGER)
+            expect(newState.getIn(['newMessage', 'channel'])).toEqual(TicketMessageSourceTypes.FACEBOOK_MESSENGER)
         })
     })
 

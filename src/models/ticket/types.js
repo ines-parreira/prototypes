@@ -1,7 +1,6 @@
 //@flow
 
-import {CHANNELS, SOURCE_TYPES} from '../../config/ticket'
-import {CLOSED_STATUS, OPEN_STATUS} from '../../constants/ticket'
+import {CHANNELS, CLOSED_STATUS, OPEN_STATUS, SOURCE_TYPES} from '../../config/ticket'
 
 export type Ticket = {
     id: number,

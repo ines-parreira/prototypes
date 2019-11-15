@@ -531,7 +531,7 @@ export function hasRole(user: userType, requiredRole: string): boolean {
  * @param ticketId
  * @returns {boolean}
  */
-export const isCurrentlyOnTicket = (ticketId: ?string): boolean => {
+export const isCurrentlyOnTicket = (ticketId: ?(string | number)): boolean => {
     let matchUrl = '/app/ticket/'
 
     if (ticketId) {

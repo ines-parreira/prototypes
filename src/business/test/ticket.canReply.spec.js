@@ -1,16 +1,16 @@
 // @flow
-import { canReply, type SourceType, SourceTypes } from './ticket'
+import { canReply, type TicketMessageSourceType, TicketMessageSourceTypes } from '../ticket'
 
 describe('Business', () => {
     describe('ticket', () => {
         describe('canReply()', () => {
-            let messageType: SourceType
+            let messageType: TicketMessageSourceType
             let attachmentCount: number
             let explicitReason: ?string
 
             it('should not allow to reply on facebook-messenger when there are attachments', () => {
                 // Given
-                messageType = SourceTypes.FACEBOOK_MESSENGER
+                messageType = TicketMessageSourceTypes.FACEBOOK_MESSENGER
                 attachmentCount = 1
                 explicitReason = null
 
@@ -24,7 +24,7 @@ describe('Business', () => {
 
             it('should not allow to reply when there is an explicit reason', () => {
                 // Given
-                messageType = SourceTypes.CHAT
+                messageType = TicketMessageSourceTypes.CHAT
                 attachmentCount = 1
                 explicitReason = 'Your chat integration is disabled'
 

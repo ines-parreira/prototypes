@@ -1,5 +1,6 @@
 export const AGENT_ACTIVE = 'agent-active'
 export const AGENT_INACTIVE = 'agent-inactive'
+export const ACCOUNT_UPDATED = 'account-updated'
 export const TICKET_VIEWED = 'ticket-viewed'
 export const ROOM_JOINED = 'room-joined'
 export const ROOM_LEFT = 'room-left'

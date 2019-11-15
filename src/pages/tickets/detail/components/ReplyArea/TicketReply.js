@@ -4,7 +4,7 @@ import type {List, Map} from 'immutable'
 import React from 'react'
 import {connect} from 'react-redux'
 
-import { canReply, type SourceType } from '../../../../../business/ticket'
+import { canReply, type TicketMessageSourceType } from '../../../../../business/ticket'
 import * as newMessageActions from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {getActionTemplate} from '../../../../../utils'
@@ -19,7 +19,7 @@ type Props = {
     deleteAttachment?: number => void,
     className?: string,
     ticket: Map<*,*>,
-    newMessageType: SourceType,
+    newMessageType: TicketMessageSourceType,
     newMessageAttachments: List<*>,
     appliedMacro: ?Map<*,*>,
     isNewMessagePublic: boolean,

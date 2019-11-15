@@ -1,8 +1,8 @@
 // @flow
 import { fromJS } from 'immutable'
 
-import { IMacro, clearMacroBeforeApply } from './macro'
-import { SourceTypes } from './ticket'
+import { IMacro, clearMacroBeforeApply } from '../macro'
+import { TicketMessageSourceTypes } from '../ticket'
 
 describe('Business', () => {
     describe('macro', () => {
@@ -43,7 +43,7 @@ describe('Business', () => {
                 // Given
 
                 // When
-                const result = clearMacroBeforeApply(SourceTypes.FACEBOOK_MESSENGER, fromJS(macro))
+                const result = clearMacroBeforeApply(TicketMessageSourceTypes.FACEBOOK_MESSENGER, fromJS(macro))
 
                 // Then
                 // $FlowFixMe
@@ -63,7 +63,7 @@ describe('Business', () => {
                 )
 
                 // When
-                const result = clearMacroBeforeApply(SourceTypes.CHAT, fromJS(macro))
+                const result = clearMacroBeforeApply(TicketMessageSourceTypes.CHAT, fromJS(macro))
 
                 // Then
                 // $FlowFixMe
@@ -77,7 +77,7 @@ describe('Business', () => {
                 // Given
 
                 // When
-                const result = clearMacroBeforeApply(SourceTypes.CHAT, fromJS(macro))
+                const result = clearMacroBeforeApply(TicketMessageSourceTypes.CHAT, fromJS(macro))
 
                 // Then
                 expect(result.notification).toBeFalsy()

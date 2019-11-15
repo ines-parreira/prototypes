@@ -1,60 +1,55 @@
 import {fromJS} from 'immutable'
 import _find from 'lodash/find'
 
-import { SourceTypes, type SourceType } from '../business/ticket'
+import {TicketMessageSourceTypes, type TicketMessageSourceType, TicketStatuses, TicketChannels} from '../business/ticket'
 import type {TicketMessage} from '../models/ticket'
 import {compare, getLastMessage, toImmutable} from '../utils'
 import {isForwardedMessage} from '../state/ticket/utils'
 
 import {INTEGRATION_HIDDEN_VARIABLES, INTEGRATION_PREVIOUS_VARIABLES, INTEGRATION_VARIABLES} from './integrations'
 
-export const AIRCALL_CHANNEL = 'aircall'
-export const API_CHANNEL = 'api'
-export const CHAT_CHANNEL = 'chat'
-export const EMAIL_CHANNEL = 'email'
-export const FACEBOOK_CHANNEL = 'facebook'
-export const FACEBOOK_MESSENGER_CHANNEL = 'facebook-messenger'
-export const INSTAGRAM_AD_COMMENT_CHANNEL = 'instagram-ad-comment'
-export const INSTAGRAM_COMMENT_CHANNEL = 'instagram-comment'
-export const PHONE_CHANNEL = 'phone'
-export const SMS_CHANNEL = 'sms'
-export const TWITTER_CHANNEL = 'twitter'
+// TODO(business-extract): Deprecated constants => Use directly Channels.XXX in your code
+export const AIRCALL_CHANNEL = TicketChannels.AIRCALL
+export const API_CHANNEL = TicketChannels.API
+export const CHAT_CHANNEL = TicketChannels.CHAT
+export const EMAIL_CHANNEL = TicketChannels.EMAIL
+export const FACEBOOK_CHANNEL = TicketChannels.FACEBOOK
+export const FACEBOOK_MESSENGER_CHANNEL = TicketChannels.FACEBOOK_MESSENGER
+export const INSTAGRAM_AD_COMMENT_CHANNEL = TicketChannels.INSTAGRAM_AD_COMMENT
+export const INSTAGRAM_COMMENT_CHANNEL = TicketChannels.INSTAGRAM_COMMENT
+export const PHONE_CHANNEL = TicketChannels.PHONE
+export const SMS_CHANNEL = TicketChannels.SMS
 
 export const DEFAULT_CHANNEL = EMAIL_CHANNEL
-export const DEFAULT_SOURCE_TYPE = EMAIL_CHANNEL
 
-export const STATUSES = ['open', 'closed']
-export const CHANNELS = [
-    AIRCALL_CHANNEL, API_CHANNEL, CHAT_CHANNEL, EMAIL_CHANNEL, FACEBOOK_CHANNEL, FACEBOOK_MESSENGER_CHANNEL,
-    INSTAGRAM_AD_COMMENT_CHANNEL, INSTAGRAM_COMMENT_CHANNEL, PHONE_CHANNEL, SMS_CHANNEL, TWITTER_CHANNEL
-]
+export const CHANNELS = Object.values(TicketChannels)
 
-// TODO(business-extract): Deprecated constants => Use directly the SourceTypes.XXX in your code
-export const AIRCALL_SOURCE = SourceTypes.AIRCALL
-export const API_SOURCE = SourceTypes.API
-export const CHAT_SOURCE = SourceTypes.CHAT
-export const EMAIL_FORWARD_SOURCE = SourceTypes.EMAIL_FORWARD
-export const EMAIL_SOURCE = SourceTypes.EMAIL
-export const FACEBOOK_COMMENT_SOURCE = SourceTypes.FACEBOOK_COMMENT
-export const FACEBOOK_MESSAGE_SOURCE = SourceTypes.FACEBOOK_MESSAGE
-export const FACEBOOK_MESSENGER_SOURCE = SourceTypes.FACEBOOK_MESSENGER
-export const FACEBOOK_POST_SOURCE = SourceTypes.FACEBOOK_POST
-export const INSTAGRAM_AD_COMMENT_SOURCE = SourceTypes.INSTAGRAM_AD_COMMENT
-export const INSTAGRAM_AD_MEDIA_SOURCE = SourceTypes.INSTAGRAM_AD_MEDIA
-export const INSTAGRAM_COMMENT_SOURCE = SourceTypes.INSTAGRAM_COMMENT
-export const INSTAGRAM_MEDIA_SOURCE = SourceTypes.INSTAGRAM_MEDIA
-export const INTERNAL_NOTE_SOURCE = SourceTypes.INTERNAL_NOTE
-export const OTTSPOTT_CALL_SOURCE = SourceTypes.OTTSPOTT_CALL
-export const PHONE_SOURCE = SourceTypes.PHONE
-export const SYSTEM_MESSAGE_SOURCE = SourceTypes.SYSTEM_MESSAGE
-export const TWITTER_SOURCE = SourceTypes.TWITTER
+// TODO(business-extract): Deprecated constants => Use directly Statuses.XXX in your code
+export const OPEN_STATUS = TicketStatuses.OPEN
+export const CLOSED_STATUS = TicketStatuses.CLOSED
+export const STATUSES = Object.values(TicketStatuses)
 
-export const SOURCE_TYPES = [
-    AIRCALL_SOURCE | API_SOURCE | CHAT_SOURCE | EMAIL_FORWARD_SOURCE | EMAIL_SOURCE | FACEBOOK_COMMENT_SOURCE |
-    FACEBOOK_MESSAGE_SOURCE | FACEBOOK_MESSENGER_SOURCE | FACEBOOK_POST_SOURCE | INSTAGRAM_AD_COMMENT_SOURCE |
-    INSTAGRAM_AD_MEDIA_SOURCE | INSTAGRAM_COMMENT_SOURCE | INSTAGRAM_MEDIA_SOURCE | INTERNAL_NOTE_SOURCE |
-    OTTSPOTT_CALL_SOURCE | PHONE_SOURCE | SYSTEM_MESSAGE_SOURCE | TWITTER_SOURCE
-]
+// TODO(business-extract): Deprecated constants => Use directly SourceTypes.XXX in your code
+export const AIRCALL_SOURCE = TicketMessageSourceTypes.AIRCALL
+export const API_SOURCE = TicketMessageSourceTypes.API
+export const CHAT_SOURCE = TicketMessageSourceTypes.CHAT
+export const EMAIL_FORWARD_SOURCE = TicketMessageSourceTypes.EMAIL_FORWARD
+export const EMAIL_SOURCE = TicketMessageSourceTypes.EMAIL
+export const FACEBOOK_COMMENT_SOURCE = TicketMessageSourceTypes.FACEBOOK_COMMENT
+export const FACEBOOK_MESSAGE_SOURCE = TicketMessageSourceTypes.FACEBOOK_MESSAGE
+export const FACEBOOK_MESSENGER_SOURCE = TicketMessageSourceTypes.FACEBOOK_MESSENGER
+export const FACEBOOK_POST_SOURCE = TicketMessageSourceTypes.FACEBOOK_POST
+export const INSTAGRAM_AD_COMMENT_SOURCE = TicketMessageSourceTypes.INSTAGRAM_AD_COMMENT
+export const INSTAGRAM_AD_MEDIA_SOURCE = TicketMessageSourceTypes.INSTAGRAM_AD_MEDIA
+export const INSTAGRAM_COMMENT_SOURCE = TicketMessageSourceTypes.INSTAGRAM_COMMENT
+export const INSTAGRAM_MEDIA_SOURCE = TicketMessageSourceTypes.INSTAGRAM_MEDIA
+export const INTERNAL_NOTE_SOURCE = TicketMessageSourceTypes.INTERNAL_NOTE
+export const OTTSPOTT_CALL_SOURCE = TicketMessageSourceTypes.OTTSPOTT_CALL
+export const PHONE_SOURCE = TicketMessageSourceTypes.PHONE
+export const SYSTEM_MESSAGE_SOURCE = TicketMessageSourceTypes.SYSTEM_MESSAGE
+export const TWITTER_SOURCE = TicketMessageSourceTypes.TWITTER
+
+export const SOURCE_TYPES = Object.values(TicketMessageSourceTypes)
 
 export const SYSTEM_SOURCE_TYPES = [INTERNAL_NOTE_SOURCE, SYSTEM_MESSAGE_SOURCE]
 
@@ -63,6 +58,8 @@ export const USABLE_SOURCE_TYPES = [
     CHAT_SOURCE, EMAIL_SOURCE, FACEBOOK_COMMENT_SOURCE, FACEBOOK_MESSAGE_SOURCE, FACEBOOK_MESSENGER_SOURCE,
     INSTAGRAM_AD_COMMENT_SOURCE, INSTAGRAM_COMMENT_SOURCE, INTERNAL_NOTE_SOURCE
 ]
+
+export const DEFAULT_SOURCE_TYPE = TicketMessageSourceTypes.EMAIL
 
 // available variables in macros
 export const VARIABLES = [{
@@ -162,7 +159,7 @@ export function orderedMessages(messages: Array<TicketMessage>): Array<TicketMes
  * @param sourceType
  * @returns {boolean}
  */
-export function isAnswerableType(sourceType: SourceType): boolean {
+export function isAnswerableType(sourceType: TicketMessageSourceType): boolean {
     return USABLE_SOURCE_TYPES.includes(sourceType)
 }
 
@@ -171,7 +168,7 @@ export function isAnswerableType(sourceType: SourceType): boolean {
  * @param sourceType
  * @returns {boolean}
  */
-export function isSystemType(sourceType: SourceType): boolean {
+export function isSystemType(sourceType: TicketMessageSourceType): boolean {
     return SYSTEM_SOURCE_TYPES.includes(sourceType)
 }
 
@@ -194,7 +191,7 @@ export function lastNonSystemTypeMessage(messages: Array<TicketMessage>): ?Ticke
  * @param messages: the messages for which we want to get a channel
  * @returns {string}: the channel corresponding to the passed source type
  */
-export function sourceTypeToChannel(sourceType: SourceType, messages: Array<TicketMessage> = []): string {
+export function sourceTypeToChannel(sourceType: TicketMessageSourceType, messages: Array<TicketMessage> = []): string {
     if (!sourceType) {
         return DEFAULT_CHANNEL
     }
@@ -210,7 +207,7 @@ export function sourceTypeToChannel(sourceType: SourceType, messages: Array<Tick
         return sourceTypeToChannel(lastSourceType, messages)
     }
 
-    if (sourceType.startsWith('facebook') && sourceType !== SourceTypes.FACEBOOK_MESSENGER) {
+    if (sourceType.startsWith('facebook') && sourceType !== TicketMessageSourceTypes.FACEBOOK_MESSENGER) {
         return FACEBOOK_CHANNEL
     }
 
@@ -232,7 +229,7 @@ export function sourceTypeToChannel(sourceType: SourceType, messages: Array<Tick
 /**
  * Return source type we should set on a **new** message based on the source type of messages we're responding to
  */
-export function responseSourceType(messages: Array<TicketMessage>): SourceType {
+export function responseSourceType(messages: Array<TicketMessage>): TicketMessageSourceType {
     if (!messages) {
         return DEFAULT_SOURCE_TYPE
     }
@@ -246,16 +243,16 @@ export function responseSourceType(messages: Array<TicketMessage>): SourceType {
 
     const lastSourceType = lastMessage.getIn(['source', 'type'])
 
-    if (lastSourceType === SourceTypes.FACEBOOK_POST) {
-        return SourceTypes.FACEBOOK_COMMENT
+    if (lastSourceType === TicketMessageSourceTypes.FACEBOOK_POST) {
+        return TicketMessageSourceTypes.FACEBOOK_COMMENT
     }
 
-    if (lastSourceType === SourceTypes.INSTAGRAM_MEDIA) {
-        return SourceTypes.INSTAGRAM_COMMENT
+    if (lastSourceType === TicketMessageSourceTypes.INSTAGRAM_MEDIA) {
+        return TicketMessageSourceTypes.INSTAGRAM_COMMENT
     }
 
-    if (lastSourceType === SourceTypes.INSTAGRAM_AD_MEDIA) {
-        return SourceTypes.INSTAGRAM_AD_COMMENT
+    if (lastSourceType === TicketMessageSourceTypes.INSTAGRAM_AD_MEDIA) {
+        return TicketMessageSourceTypes.INSTAGRAM_AD_COMMENT
     }
 
     if (!isAnswerableType(lastSourceType)) {
@@ -270,8 +267,8 @@ export function responseSourceType(messages: Array<TicketMessage>): SourceType {
  * @param sourceType
  * @returns {boolean}
  */
-export function isPublic(sourceType: SourceType): boolean {
-    return sourceType !== SourceTypes.INTERNAL_NOTE
+export function isPublic(sourceType: TicketMessageSourceType): boolean {
+    return sourceType !== TicketMessageSourceTypes.INTERNAL_NOTE
 }
 
 /**
@@ -279,8 +276,8 @@ export function isPublic(sourceType: SourceType): boolean {
  * @param sourceType
  * @returns {boolean}
  */
-export function isRichType(sourceType: SourceType): boolean {
-    return [SourceTypes.EMAIL, SourceTypes.INTERNAL_NOTE].includes(sourceType)
+export function isRichType(sourceType: TicketMessageSourceType): boolean {
+    return [TicketMessageSourceTypes.EMAIL, TicketMessageSourceTypes.INTERNAL_NOTE].includes(sourceType)
 }
 
 /**
@@ -288,8 +285,8 @@ export function isRichType(sourceType: SourceType): boolean {
  * @param sourceType
  * @returns {boolean}
  */
-export function canLeaveInternalNote(sourceType: SourceType): boolean {
-    return sourceType === SourceTypes.INTERNAL_NOTE
+export function canLeaveInternalNote(sourceType: TicketMessageSourceType): boolean {
+    return sourceType === TicketMessageSourceTypes.INTERNAL_NOTE
 }
 
 /**

@@ -2,17 +2,19 @@ import {fromJS} from 'immutable'
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import {TicketAssignment} from '../TicketAssignment'
-
+import {TicketChannels} from '../../../../business/ticket'
 import * as currentAccountConstants from '../../../../state/currentAccount/constants'
-import {EMAIL_CHANNEL} from '../../../../config/ticket'
+
+import {TicketAssignment} from '../TicketAssignment'
 
 
 const unassignOnReplyEnabledSetting = fromJS({
     id: 1,
     type: currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,
     data: {
-        unassign_on_reply: true
+        auto_assign_to_teams: true,
+        unassign_on_reply: true,
+        assignment_channels: [TicketChannels.CHAT, TicketChannels.FACEBOOK_MESSENGER]
     }
 })
 
@@ -22,13 +24,141 @@ const autoAssignToTeamsEnabledSetting = fromJS({
     id: 1,
     type: currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,
     data: {
-        auto_assign_to_teams: true
+        auto_assign_to_teams: true,
+        unassign_on_reply: true,
+        assignment_channels: [TicketChannels.CHAT, TicketChannels.FACEBOOK_MESSENGER]
     }
 })
 
 const autoAssignToTeamsDisabledSetting = autoAssignToTeamsEnabledSetting.setIn(['data', 'auto_assign_to_teams'], false)
 
+
 describe('<TicketAssignment/>', () => {
+    describe('_onSubmit()', () => {
+        beforeEach(() => {
+            jest.resetAllMocks()
+        })
+
+        it('should call `submitSetting` and not call `fetchChats` because nor the `auto_assign_to_teams` setting ' +
+            'nor the `assignment_channels` setting has changed', (done) => {
+            const submitSetting = jest.fn(() => Promise.resolve())
+            const fetchChats = jest.fn()
+            const component = shallow(
+                <TicketAssignment
+                    ticketAssignmentSettings={autoAssignToTeamsEnabledSetting}
+                    submitSetting={submitSetting}
+                    fetchChats={fetchChats}
+                />
+            )
+
+            const state = {
+                unassignOnReply: false,
+                assignmentChannels: [TicketChannels.CHAT, TicketChannels.FACEBOOK_MESSENGER],
+                autoAssignToTeams: true,
+            }
+
+            component.setState(state, async () => {
+                await component.instance()._onSubmit({
+                    preventDefault: () => {}
+                })
+
+                expect(submitSetting.mock.calls).toMatchSnapshot()
+                expect(fetchChats).not.toHaveBeenCalled()
+
+                done()
+            })
+        })
+
+        it('should call `fetchChats` because the `auto_assign_to_teams` setting has changed', (done) => {
+            const submitSetting = jest.fn(() => Promise.resolve())
+            const fetchChats = jest.fn()
+            const component = shallow(
+                <TicketAssignment
+                    ticketAssignmentSettings={autoAssignToTeamsEnabledSetting}
+                    submitSetting={submitSetting}
+                    fetchChats={fetchChats}
+                />
+            )
+
+            const state = {
+                unassignOnReply: false,
+                assignmentChannels: [TicketChannels.CHAT, TicketChannels.FACEBOOK_MESSENGER],
+                autoAssignToTeams: false,
+            }
+
+            component.setState(state, async () => {
+                await component.instance()._onSubmit({
+                    preventDefault: () => {}
+                })
+
+                expect(submitSetting.mock.calls).toMatchSnapshot()
+                expect(fetchChats).toHaveBeenCalled()
+
+                done()
+            })
+        })
+
+        it('should call `fetchChats` because the `assignment_channels` setting has changed and ' +
+            '`auto_assign_to_teams` is enabled', (done) => {
+            const submitSetting = jest.fn(() => Promise.resolve())
+            const fetchChats = jest.fn()
+            const component = shallow(
+                <TicketAssignment
+                    ticketAssignmentSettings={autoAssignToTeamsEnabledSetting}
+                    submitSetting={submitSetting}
+                    fetchChats={fetchChats}
+                />
+            )
+
+            const state = {
+                unassignOnReply: false,
+                assignmentChannels: [TicketChannels.CHAT],
+                autoAssignToTeams: true,
+            }
+
+            component.setState(state, async () => {
+                await component.instance()._onSubmit({
+                    preventDefault: () => {}
+                })
+
+                expect(submitSetting.mock.calls).toMatchSnapshot()
+                expect(fetchChats).toHaveBeenCalled()
+
+                done()
+            })
+        })
+
+        it('should not call `fetchChats` because the `assignment_channels` setting has changed but ' +
+            '`auto_assign_to_teams` is disabled', (done) => {
+            const submitSetting = jest.fn(() => Promise.resolve())
+            const fetchChats = jest.fn()
+            const component = shallow(
+                <TicketAssignment
+                    ticketAssignmentSettings={autoAssignToTeamsDisabledSetting}
+                    submitSetting={submitSetting}
+                    fetchChats={fetchChats}
+                />
+            )
+
+            const state = {
+                unassignOnReply: false,
+                assignmentChannels: [TicketChannels.CHAT],
+                autoAssignToTeams: false,
+            }
+
+            component.setState(state, async () => {
+                await component.instance()._onSubmit({
+                    preventDefault: () => {}
+                })
+
+                expect(submitSetting.mock.calls).toMatchSnapshot()
+                expect(fetchChats).not.toHaveBeenCalled()
+
+                done()
+            })
+        })
+    })
+
     describe('render()', () => {
         it(
             'should render the "Unassign on replies" checkbox checked by default and the auto assign checkbox ' +
@@ -116,7 +246,7 @@ describe('<TicketAssignment/>', () => {
         it('should render selected channels', (done) => {
             const settings = unassignOnReplyEnabledSetting.setIn(
                 ['data', 'assignment_channels'],
-                fromJS([EMAIL_CHANNEL])
+                fromJS([TicketChannels.CHAT, TicketChannels.FACEBOOK_MESSENGER])
             )
 
             const component = shallow(
@@ -129,40 +259,6 @@ describe('<TicketAssignment/>', () => {
                 expect(component).toMatchSnapshot()
                 done()
             })
-        })
-    })
-
-    it('should call submitSetting because the method _onSubmit was called', (done) => {
-        const submitSetting = jest.fn(() => Promise.resolve())
-        const component = shallow(
-            <TicketAssignment
-                ticketAssignmentSettings={unassignOnReplyEnabledSetting}
-                submitSetting={submitSetting}
-            />
-        )
-
-        const state = {
-            unassignOnReply: false,
-            assignmentChannels: [EMAIL_CHANNEL],
-            autoAssignToTeams: true,
-        }
-
-        component.setState(state, () => {
-            component.instance()._onSubmit({
-                preventDefault: () => {}
-            })
-
-            expect(submitSetting).toHaveBeenCalledWith({
-                id: unassignOnReplyEnabledSetting.get('id'),
-                type: currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,
-                data: {
-                    unassign_on_reply: false,
-                    assignment_channels: [EMAIL_CHANNEL],
-                    auto_assign_to_teams: true,
-                }
-            })
-
-            done()
         })
     })
 })

@@ -6,7 +6,7 @@ import _noop from 'lodash/noop'
 import React, {type Node} from 'react'
 import {connect} from 'react-redux'
 
-import { canAddAttachments, type SourceType } from '../../../../../business/ticket'
+import { canAddAttachments, type TicketMessageSourceType } from '../../../../../business/ticket'
 import {
     canLeaveInternalNote,
     isRichType
@@ -51,7 +51,7 @@ type Props = {
     actions: {},
     agents: agentsType,
     newMessage: Map<*, *>,
-    newMessageType: SourceType,
+    newMessageType: TicketMessageSourceType,
     ticket: Map<*, *>,
     predictionContext: Map<*, *>,
     attachments: List<*>,
