@@ -1,13 +1,13 @@
 // @flow
 import { fromJS } from 'immutable'
 
-import { IMacro, clearMacroBeforeApply } from '../macro'
+import { clearMacroBeforeApply, type Macro } from '../macro'
 import { TicketMessageSourceTypes } from '../ticket'
 
 describe('Business', () => {
     describe('macro', () => {
         describe('clearMacroBeforeApply()', () => {
-            let macro: IMacro
+            let macro: Macro
 
             beforeEach(() => {
                 macro = {
@@ -48,7 +48,8 @@ describe('Business', () => {
                 // Then
                 // $FlowFixMe
                 expect(result.notification.message)
-                    .toEqual('We have removed the attachment from this message, because you cannot send text and attachments at the same time on Messenger.')
+                    .toEqual('We have removed the attachment from this message, because you cannot send text and ' +
+                        'attachments at the same time on Messenger.')
                 expect(result.macro.get('actions').size).toEqual(1)
                 expect(result.macro.get('actions').get(0).get('name')).toEqual('setResponseText')
             })
@@ -68,7 +69,8 @@ describe('Business', () => {
                 // Then
                 // $FlowFixMe
                 expect(result.notification.message)
-                    .toEqual('We have removed the attachments from this message, because you cannot send multiple attachments at the same time on Chat.')
+                    .toEqual('We have removed the attachments from this message, because you cannot send multiple ' +
+                        'attachments at the same time on Chat.')
                 expect(result.macro.get('actions').size).toEqual(1)
                 expect(result.macro.get('actions').get(0).get('name')).toEqual('setResponseText')
             })

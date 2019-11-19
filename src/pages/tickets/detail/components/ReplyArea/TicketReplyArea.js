@@ -1,6 +1,6 @@
 // @flow
 import classnames from 'classnames'
-import {fromJS, type Map} from 'immutable'
+import {fromJS, type Map, type RecordOf} from 'immutable'
 import _debounce from 'lodash/debounce'
 import React from 'react'
 import {connect} from 'react-redux'
@@ -241,7 +241,7 @@ export class TicketReplyArea extends React.Component<Props, State> {
         })
     }
 
-    _applyMacro = (macro: Macro) => {
+    _applyMacro = (macro: RecordOf<Macro>) => {
         const {
             applyMacro,
             currentTicket,

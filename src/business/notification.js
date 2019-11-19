@@ -1,7 +1,7 @@
 // @flow
 
 // Types
-export interface INotification {
+export type Notification = {
     message: string,
     status: 'warning',
 }

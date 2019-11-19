@@ -1,20 +1,21 @@
 // @flow
 import { humanize } from './format'
-import { INotification } from './notification'
+import { type Notification } from './notification'
 
 // Public functions
 export function canAddAttachments(
     messageType: TicketMessageSourceType,
     newMessage: string,
     attachmentCount: number
-): ?INotification {
+): ?Notification {
     let isInvalid = messageType === TicketMessageSourceTypes.FACEBOOK_MESSENGER
         && !!newMessage
         && attachmentCount > 0
 
     if (isInvalid) {
         return {
-            message: `When using ${humanize(messageType)}, you can either send a text message, or an attachment, but not both at the same time.`,
+            message: `When using ${humanize(messageType)}, you can either send a text message, or an attachment, ` +
+                'but not both at the same time.',
             status: 'warning',
         }
     }
@@ -40,7 +41,7 @@ export function canReply(
     messageType: TicketMessageSourceType,
     attachmentCount: number,
     explicitReason: ?string,
-): ?INotification {
+): ?Notification {
     if (!!explicitReason) {
         return {
             message: explicitReason,
