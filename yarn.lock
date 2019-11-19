@@ -8086,10 +8086,10 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
-push.js@0.0.13:
-  version "0.0.13"
-  resolved "https://registry.yarnpkg.com/push.js/-/push.js-0.0.13.tgz#05f3bf5c414e386b45f9f61a98f9e3ecc7a5f4b4"
-  integrity sha1-BfO/XEFOOGtF+fYamPnj7Mel9LQ=
+push.js@1.0.11:
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/push.js/-/push.js-1.0.11.tgz#df35e765c37306d9b412966eb78a4f35dc345286"
+  integrity sha512-HAHJBdc/kaVfLy3cw35Rfk/8azR0x+f1sSJ9MbYm5xj/mWEOlLYh2DDHKdAymDdBBODQWKwucFUfJw6Y8vBopQ==
 
 q@^1.1.2:
   version "1.5.1"
