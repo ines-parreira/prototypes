@@ -68,13 +68,19 @@ export class TicketAssignment extends React.Component<Props, State> {
         const {ticketAssignmentSettings, submitSetting, fetchChats} = this.props
         const {unassignOnReply, autoAssignToTeams, assignmentChannels} = this.state
 
-        const assignToTeamsHasChanged = autoAssignToTeams
-            !== ticketAssignmentSettings.getIn(['data', 'auto_assign_to_teams'])
+        let shouldFetchChats = true
 
-        const assignmentChannelsHaveChanged = !_isEqual(
-            assignmentChannels,
-            ticketAssignmentSettings.getIn(['data', 'assignment_channels']).toJS()
-        )
+        if (!ticketAssignmentSettings.isEmpty()) {
+            const assignToTeamsHasChanged = autoAssignToTeams
+                !== ticketAssignmentSettings.getIn(['data', 'auto_assign_to_teams'])
+
+            const assignmentChannelsHaveChanged = !_isEqual(
+                assignmentChannels,
+                ticketAssignmentSettings.getIn(['data', 'assignment_channels']).toJS()
+            )
+
+            shouldFetchChats = assignToTeamsHasChanged || (autoAssignToTeams && assignmentChannelsHaveChanged)
+        }
 
         await submitSetting({
             id: ticketAssignmentSettings.get('id'),
@@ -86,7 +92,7 @@ export class TicketAssignment extends React.Component<Props, State> {
             }
         })
 
-        if (assignToTeamsHasChanged || (autoAssignToTeams && assignmentChannelsHaveChanged)) {
+        if (shouldFetchChats) {
             fetchChats()
         }
 

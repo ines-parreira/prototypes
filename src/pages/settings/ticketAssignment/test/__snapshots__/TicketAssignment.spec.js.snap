@@ -37,6 +37,25 @@ Array [
 ]
 `;
 
+exports[`<TicketAssignment/> _onSubmit() should call \`submitSetting\` and call \`fetchChats\` because the account has no \`ticket-assignment\` setting 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        "assignment_channels": Array [
+          "chat",
+          "facebook-messenger",
+        ],
+        "auto_assign_to_teams": true,
+        "unassign_on_reply": false,
+      },
+      "id": undefined,
+      "type": "ticket-assignment",
+    },
+  ],
+]
+`;
+
 exports[`<TicketAssignment/> _onSubmit() should call \`submitSetting\` and not call \`fetchChats\` because nor the \`auto_assign_to_teams\` setting nor the \`assignment_channels\` setting has changed 1`] = `
 Array [
   Array [

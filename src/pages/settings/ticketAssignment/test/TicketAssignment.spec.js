@@ -39,6 +39,36 @@ describe('<TicketAssignment/>', () => {
             jest.resetAllMocks()
         })
 
+        it('should call `submitSetting` and call `fetchChats` because the account has no `ticket-assignment` setting',
+            (done) => {
+                const submitSetting = jest.fn(() => Promise.resolve())
+                const fetchChats = jest.fn()
+                const component = shallow(
+                    <TicketAssignment
+                        ticketAssignmentSettings={fromJS({})}
+                        submitSetting={submitSetting}
+                        fetchChats={fetchChats}
+                    />
+                )
+
+                const state = {
+                    unassignOnReply: false,
+                    assignmentChannels: [TicketChannels.CHAT, TicketChannels.FACEBOOK_MESSENGER],
+                    autoAssignToTeams: true,
+                }
+
+                component.setState(state, async () => {
+                    await component.instance()._onSubmit({
+                        preventDefault: () => {}
+                    })
+
+                    expect(submitSetting.mock.calls).toMatchSnapshot()
+                    expect(fetchChats).toBeCalledWith()
+
+                    done()
+                })
+            })
+
         it('should call `submitSetting` and not call `fetchChats` because nor the `auto_assign_to_teams` setting ' +
             'nor the `assignment_channels` setting has changed', (done) => {
             const submitSetting = jest.fn(() => Promise.resolve())
