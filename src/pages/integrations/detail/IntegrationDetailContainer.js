@@ -70,6 +70,7 @@ import HTTPIntegrationOverview from './components/http/HTTPIntegrationOverview/H
 import HTTPIntegrationEvents from './components/http/HTTPIntegrationEvents'
 import HTTPIntegrationEvent from './components/http/HTTPIntegrationEvent'
 import HTTPIntegrationLayout from './components/http/HTTPIntegrationLayout/HTTPIntegrationLayout'
+import EmailIntegrationCreateCustom from './components/email/EmailIntegrationCreateCustom/EmailIntegrationCreateCustom'
 
 
 class IntegrationDetailContainer extends React.Component {
@@ -165,6 +166,15 @@ class IntegrationDetailContainer extends React.Component {
                             <EmailIntegrationUpdate
                                 actions={actions}
                                 integration={commonProps.integration}
+                                loading={commonProps.loading}
+                            />
+                        )
+                    }
+
+                    if (params.extra === 'custom') {
+                        return (
+                            <EmailIntegrationCreateCustom
+                                actions={actions}
                                 loading={commonProps.loading}
                             />
                         )

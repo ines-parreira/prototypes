@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<EmailIntegrationCreate/> render() should render 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header "
+  >
+    <ol
+      class="breadcrumb"
+    >
+      <li
+        class="breadcrumb-item"
+      >
+        <a>
+          Integrations
+        </a>
+      </li>
+      <li
+        class="breadcrumb-item"
+      >
+        <a>
+          Email
+        </a>
+      </li>
+      <li
+        class="active breadcrumb-item"
+      >
+        Add an email address
+      </li>
+    </ol>
+  </div>
+  <div
+    class="page-container container-fluid"
+  >
+    <p>
+      Choose the type of email account you want to add.
+    </p>
+    <div
+      class="form"
+    >
+      <a
+        class="mb-2 connectButton gmailButton btn btn-secondary btn-block"
+        href="/integrations/gmail/auth"
+      >
+        <img
+          src="test-file-stub"
+        />
+        <span>
+          Connect Google email account
+        </span>
+      </a>
+      <p
+        class="text-muted text-center"
+      >
+        Improve email deliverability, keep your data on your Google account, import last 1000 emails (optional)
+      </p>
+      <div
+        class="divider"
+      >
+        OR
+      </div>
+      <a
+        class="mb-2 connectButton outlookButton btn btn-secondary btn-block"
+        href="test"
+      >
+        <img
+          src="test-file-stub"
+        />
+        <span>
+          Connect Office365 email account
+        </span>
+      </a>
+      <p
+        class="text-muted text-center"
+      >
+        Improve email deliverability, keep your data on your Outlook.com account, import last month of emails (optional)
+      </p>
+      <div
+        class="divider"
+      >
+        OR
+      </div>
+      <a
+        class="mb-2 connectButton btn btn-secondary btn-block"
+        href="/app/settings/integrations/email/new/custom"
+      >
+        <span>
+          Connect other email provider
+        </span>
+      </a>
+      <p
+        class="text-muted text-center"
+      >
+        Alternatively connect another email provider. Note that the setup is a bit more complex compared to the above options.
+      </p>
+    </div>
+  </div>
+</div>
+`;

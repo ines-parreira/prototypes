@@ -1,0 +1,219 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<EmailIntegrationCreateCustom/> render() should render 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header "
+  >
+    <ol
+      class="breadcrumb"
+    >
+      <li
+        class="breadcrumb-item"
+      >
+        <a>
+          Integrations
+        </a>
+      </li>
+      <li
+        class="breadcrumb-item"
+      >
+        <a>
+          Email
+        </a>
+      </li>
+      <li
+        class="active breadcrumb-item"
+      >
+        Add an email address
+      </li>
+    </ol>
+  </div>
+  <div
+    class="page-container container-fluid"
+  >
+    <p>
+      You can connect your email to Gorgias by setting up email forwarding. Follow the steps below to get started.
+    </p>
+    <div
+      class="form"
+    >
+      <form
+        class=""
+      >
+        <div
+          class="InputField required form-group"
+          color=""
+        >
+          <label
+            class="control-label "
+            for="id-name"
+          >
+            Address name
+          </label>
+          <div
+            class=""
+          >
+            <input
+              class="form-control"
+              id="id-name"
+              placeholder=" Support"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
+          <small
+            class="form-text text-muted"
+          >
+            The name that customers will see when they receive emails from you. Cannot contain these characters: @ , ; &lt; &gt;
+          </small>
+        </div>
+        <div
+          class="InputField required form-group"
+          color=""
+        >
+          <label
+            class="control-label "
+            for="id-meta.address"
+          >
+            Email address
+          </label>
+          <div
+            class=""
+          >
+            <input
+              class="form-control"
+              id="id-meta.address"
+              placeholder="support@undefined.com"
+              required=""
+              type="email"
+              value=""
+            />
+          </div>
+        </div>
+        <div>
+          <button
+            class="btn btn-success btn-block disabled"
+            disabled=""
+            type="submit"
+          >
+            Connect this email account
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<EmailIntegrationCreateCustom/> render() should render update 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header "
+  >
+    <ol
+      class="breadcrumb"
+    >
+      <li
+        class="breadcrumb-item"
+      >
+        <a>
+          Integrations
+        </a>
+      </li>
+      <li
+        class="breadcrumb-item"
+      >
+        <a>
+          Email
+        </a>
+      </li>
+      <li
+        class="active breadcrumb-item"
+      >
+        Add an email address
+      </li>
+    </ol>
+  </div>
+  <div
+    class="page-container container-fluid"
+  >
+    <p>
+      You can connect your email to Gorgias by setting up email forwarding. Follow the steps below to get started.
+    </p>
+    <div
+      class="form"
+    >
+      <form
+        class=""
+      >
+        <div
+          class="InputField required form-group"
+          color=""
+        >
+          <label
+            class="control-label "
+            for="id-name"
+          >
+            Address name
+          </label>
+          <div
+            class=""
+          >
+            <input
+              class="form-control"
+              id="id-name"
+              placeholder=" Support"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
+          <small
+            class="form-text text-muted"
+          >
+            The name that customers will see when they receive emails from you. Cannot contain these characters: @ , ; &lt; &gt;
+          </small>
+        </div>
+        <div
+          class="InputField required form-group"
+          color=""
+        >
+          <label
+            class="control-label "
+            for="id-meta.address"
+          >
+            Email address
+          </label>
+          <div
+            class=""
+          >
+            <input
+              class="form-control"
+              id="id-meta.address"
+              placeholder="support@undefined.com"
+              required=""
+              type="email"
+              value=""
+            />
+          </div>
+        </div>
+        <div>
+          <button
+            class="btn-loading btn btn-success btn-block disabled"
+            disabled=""
+            type="submit"
+          >
+            Connect this email account
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+`;

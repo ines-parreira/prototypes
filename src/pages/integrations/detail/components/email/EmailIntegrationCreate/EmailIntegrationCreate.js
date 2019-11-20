@@ -1,35 +1,20 @@
 // @flow
 import React from 'react'
 import {connect} from 'react-redux'
-import {fromJS} from 'immutable'
-import {Link, browserHistory, withRouter} from 'react-router'
-import _capitalize from 'lodash/capitalize'
+import {browserHistory, Link, withRouter} from 'react-router'
 import classnames from 'classnames'
-import {
-    Container,
-    Form,
-    Button,
-    Breadcrumb,
-    BreadcrumbItem,
-} from 'reactstrap'
-
-import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from '../../../../../../constants/integration'
-import {getRedirectUri} from '../../../../../../state/integrations/selectors'
-
-import {notify} from '../../../../../../state/notifications/actions'
-
-import InputField from '../../../../../common/forms/InputField'
+import {Breadcrumb, BreadcrumbItem, Button, Container,} from 'reactstrap'
 
 import PageHeader from '../../../../../common/components/PageHeader'
 
 import googleLogo from '../../../../../../../img/integrations/google-icon.svg'
 import officeLogo from '../../../../../../../img/integrations/office-transparent.png'
+import {getRedirectUri} from '../../../../../../state/integrations/selectors'
 
 import css from './EmailIntegrationCreate.less'
 
 
 type Props = {
-    domain: string,
     outlookRedirectUri: string,
     actions: Object,
     loading: Object,
@@ -37,22 +22,7 @@ type Props = {
     notify: (Object) => Promise<*>,
 }
 
-type State = {
-    name: string,
-    email: string,
-    errors: Object,
-    dirty: boolean
-}
-
-
-class EmailIntegrationCreate extends React.Component<Props, State> {
-    state = {
-        name: '',
-        email: '',
-        errors: {},
-        dirty: false
-    }
-
+export class EmailIntegrationCreate extends React.Component<Props> {
     componentDidMount() {
         // display message from url
         const {
@@ -70,56 +40,8 @@ class EmailIntegrationCreate extends React.Component<Props, State> {
         }
     }
 
-    _handleSubmit = (e) => {
-        e.preventDefault()
-
-        const integration = fromJS({
-            type: 'email',
-            name: this.state.name,
-            meta: {
-                address: this.state.email,
-                preferred: false
-            }
-        })
-
-        const {updateOrCreateIntegration} = this.props.actions
-
-        return updateOrCreateIntegration(integration)
-            .then((res) => {
-                this.setState({dirty: false})
-                return res
-            })
-    }
-
-    _setName = (name) => {
-        const {errors} = this.state
-        const invalidNameRegexp = new RegExp(`[${EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS.join('')}]`)
-
-        if (name && invalidNameRegexp.test(name)) {
-            errors.name = 'The name of your Email integration cannot contain these characters: '+
-                          `${EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS.join(' ')}`
-        } else {
-            errors.name = null
-        }
-
-        this.setState({
-            dirty: true,
-            name,
-            errors
-        })
-
-    }
-
     render() {
-        const {domain, loading, outlookRedirectUri} = this.props
-        const {errors} = this.state
-
-        const nameHelp = 'The name that customers will see when they receive emails from you. ' +
-                         `Cannot contain these characters: ${EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS.join(' ')}`
-
-        const hasErrors = Object.values(errors).some((val) => val != null)
-
-        const isSubmitting = loading.get('updateIntegration')
+        const {outlookRedirectUri} = this.props
 
         return (
             <div className="full-width">
@@ -152,9 +74,8 @@ class EmailIntegrationCreate extends React.Component<Props, State> {
                         >
                             <img
                                 src={googleLogo}
-                                style={{height: '100%'}}
                             />
-                            <div>Connect Google email account</div>
+                            <span>Connect Google email account</span>
                         </Button>
 
                         <p className="text-muted text-center">
@@ -172,9 +93,8 @@ class EmailIntegrationCreate extends React.Component<Props, State> {
                         >
                             <img
                                 src={officeLogo}
-                                style={{height: '50px'}}
                             />
-                            <div>Connect Office365 email account</div>
+                            <span>Connect Office365 email account</span>
                         </Button>
 
                         <p className="text-muted text-center">
@@ -184,42 +104,18 @@ class EmailIntegrationCreate extends React.Component<Props, State> {
 
                         <div className="divider">OR</div>
 
-                        <Form onSubmit={this._handleSubmit}>
-                            <InputField
-                                type="text"
-                                name="name"
-                                label="Address name"
-                                placeholder={`${_capitalize(domain)} Support`}
-                                required
-                                help={nameHelp}
-                                value={this.state.name}
-                                onChange={(name) => this._setName(name)}
-                                error={errors.name}
-                            />
-                            <InputField
-                                type="email"
-                                name="meta.address"
-                                label="Email address"
-                                placeholder={`support@${domain}.com`}
-                                required
-                                value={this.state.email}
-                                onChange={(value) => this.setState({email: value})}
-                            />
-
-                            <div>
-                                <Button
-                                    type="submit"
-                                    block
-                                    color="success"
-                                    className={classnames({
-                                        'btn-loading': isSubmitting,
-                                    })}
-                                    disabled={!this.state.dirty || isSubmitting || hasErrors}
-                                >
-                                    Connect this email account
-                                </Button>
-                            </div>
-                        </Form>
+                        <Button
+                            tag="a"
+                            href="/app/settings/integrations/email/new/custom"
+                            block
+                            className={classnames('mb-2', css.connectButton)}
+                        >
+                            <span>Connect other email provider</span>
+                        </Button>
+                        <p className="text-muted text-center">
+                            Alternatively connect another email provider. Note that the setup is a bit more complex
+                            compared to the above options.
+                        </p>
                     </div>
                 </Container>
             </div>
@@ -228,8 +124,7 @@ class EmailIntegrationCreate extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state) => ({
-    domain: state.currentAccount.get('domain'),
     outlookRedirectUri: getRedirectUri('outlook')(state)
 })
 
-export default withRouter(connect(mapStateToProps, {notify})(EmailIntegrationCreate))
+export default withRouter(connect(mapStateToProps)(EmailIntegrationCreate))
