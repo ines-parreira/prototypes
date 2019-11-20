@@ -159,7 +159,7 @@ class ShopifyIntegrationDetail extends React.Component<Props, State> {
         const isActive = !integration.get('deactivated_datetime')
         const needScopeUpdate = integration.getIn(['meta', 'need_scope_update'])
         const authenticationRequired = integration.getIn(['meta', 'oauth', 'status']) === PENDING_AUTHENTICATION_STATUS
-        const isSyncOver = integration.getIn(['meta', 'sync_state', 'is_initialized'])
+        const isCustomersImportOver = integration.getIn(['meta', 'import_state', 'customers', 'is_over'])
 
         const ctaIsLoading = isSubmitting || authenticationRequired
 
@@ -207,7 +207,7 @@ class ShopifyIntegrationDetail extends React.Component<Props, State> {
                             }
                             {
                                 isUpdate ? (
-                                    isSyncOver ? (
+                                    isCustomersImportOver ? (
                                         <p>
                                             All your Shopify customers have been imported. You can now see their info
                                             in the sidebar. <Link to="/app/customers">Review your customers.</Link>

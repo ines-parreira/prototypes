@@ -72,8 +72,10 @@ describe('ShopifyIntegrationDetail', () => {
                     id: 1,
                     name: 'foo',
                     meta: {
-                        sync_state: {
-                            is_initialized: true
+                        import_state: {
+                            customers: {
+                                is_over: true
+                            }
                         }
                     }
                 })}
@@ -94,8 +96,10 @@ describe('ShopifyIntegrationDetail', () => {
                     id: 1,
                     name: 'foo',
                     meta: {
-                        sync_state: {
-                            is_initialized: true
+                        import_state: {
+                            customers: {
+                                is_over: true
+                            }
                         }
                     },
                     deactivated_datetime: '2018-01-01T18:52:17'
@@ -117,8 +121,10 @@ describe('ShopifyIntegrationDetail', () => {
                     id: 1,
                     name: 'foo',
                     meta: {
-                        sync_state: {
-                            is_initialized: true
+                        import_state: {
+                            customers: {
+                                is_over: true
+                            }
                         },
                         need_scope_update: true
                     }
@@ -140,8 +146,10 @@ describe('ShopifyIntegrationDetail', () => {
                     id: 1,
                     name: 'foo',
                     meta: {
-                        sync_state: {
-                            is_initialized: false
+                        import_state: {
+                            customers: {
+                                is_over: false
+                            }
                         }
                     }
                 })}
@@ -162,8 +170,10 @@ describe('ShopifyIntegrationDetail', () => {
                     id: 1,
                     name: 'foo',
                     meta: {
-                        sync_state: {
-                            is_initialized: true
+                        import_state: {
+                            customers: {
+                                is_over: true
+                            }
                         }
                     }
                 })}
@@ -187,8 +197,10 @@ describe('ShopifyIntegrationDetail', () => {
                     id: 1,
                     name: 'foo',
                     meta: {
-                        sync_state: {
-                            is_initialized: true
+                        import_state: {
+                            customers: {
+                                is_over: true
+                            }
                         },
                         oauth: {
                             status: 'pending'
