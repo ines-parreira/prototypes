@@ -257,7 +257,7 @@ class Magento2IntegrationDetail extends React.Component<Props, State> {
                                                 error={error}
                                                 leftAddon="https://"
                                                 onChange={(adminUrl) => this.setState({adminUrl})}
-                                                pattern="[\w\d\.]+/[\w\d]+/?"
+                                                pattern="[\w\d\.-]+/[\w\d_-]+/?"
                                                 required
                                             />
                                         )
