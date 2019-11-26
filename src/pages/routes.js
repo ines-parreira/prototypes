@@ -231,14 +231,14 @@ export default (
             <Route
                 path="integrations"
                 components={{
-                    content: IntegrationListContainer,
+                    content: UserRoleRequired(IntegrationListContainer, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer
                 }}
             />
             <Route
                 path="integrations/:integrationType"
                 components={{
-                    content: IntegrationDetailContainer,
+                    content: UserRoleRequired(IntegrationDetailContainer, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer
                 }}
             >
