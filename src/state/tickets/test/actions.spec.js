@@ -53,7 +53,7 @@ describe('tickets actions', () => {
             const jobType = 'jobTypeExample'
             const jobPartialParams = {exampleKey: 'exampleValue'}
 
-            await store.dispatch(actions.bulkUpdate(idsList, jobType, jobPartialParams))
+            await store.dispatch(actions.createJob(idsList, jobType, jobPartialParams))
             expect(mockServer.history).toMatchSnapshot()
         })
     })

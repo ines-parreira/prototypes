@@ -34,11 +34,13 @@ import type {currentUserType} from '../../../../../state/types'
 import type {teamsType} from '../../../../../state/teams/types'
 import type {agentsType} from '../../../../../state/agents/types'
 import type {viewType} from '../../../../../state/views/types'
-import {DELETE_TICKET_JOB_TYPE, UPDATE_TICKET_JOB_TYPE} from '../../../../../constants/job'
+import {DELETE_TICKET_JOB_TYPE, EXPORT_TICKET_JOB_TYPE, UPDATE_TICKET_JOB_TYPE} from '../../../../../constants/job'
 import {AgentLabel, TeamLabel} from '../../../../common/utils/labels'
 import TagDropdownMenu from '../../../../common/components/TagDropdownMenu/TagDropdownMenu'
 
 import css from './TicketListActions.less'
+// import {AGENT_ROLE} from '../../../../../config/user'
+// import {hasRole} from '../../../../../utils'
 
 type Props = {
     view: viewType,
@@ -224,11 +226,11 @@ class TicketListActions extends React.Component<Props, State> {
 
     _queryTagsOnSearch = _debounce(this._queryTags, 300)
 
-    _launchJob = (actionType: string, actionParams: Object) => {
+    _createJob = (jobType: string, jobParams: Object) => {
         this.setState({isLaunchingJob: true}, () => {
             const actionsToUse = this.props.allViewItemsSelected ? this.props.actions.views : this.props.actions.tickets
             const actionsArgs = this.props.allViewItemsSelected ? this.props.activeView : this.props.selectedItemsIds
-            actionsToUse.bulkUpdate(actionsArgs, actionType, actionParams)
+            actionsToUse.createJob(actionsArgs, jobType, jobParams)
                 .then(() => {
                     this.props.actions.views.updateSelectedItemsIds(fromJS([]))
                 })
@@ -241,21 +243,25 @@ class TicketListActions extends React.Component<Props, State> {
         if (!this._hasChecked()) {
             return
         }
-        this._launchJob(UPDATE_TICKET_JOB_TYPE, {updates: {[key]: value}})
+        this._createJob(UPDATE_TICKET_JOB_TYPE, {updates: {[key]: value}})
+    }
+
+    _bulkExport = () => {
+        this._createJob(EXPORT_TICKET_JOB_TYPE, {})
     }
 
     _bulkTrash = () => {
         this._toggleTrashConfirmation(false)
-        this._launchJob(UPDATE_TICKET_JOB_TYPE, {updates: {trashed_datetime: moment.utc()}})
+        this._createJob(UPDATE_TICKET_JOB_TYPE, {updates: {trashed_datetime: moment.utc()}})
     }
 
     _bulkUnTrash = () => {
-        this._launchJob(UPDATE_TICKET_JOB_TYPE, {updates: {trashed_datetime: null}})
+        this._createJob(UPDATE_TICKET_JOB_TYPE, {updates: {trashed_datetime: null}})
     }
 
     _bulkDelete = () => {
         this.setState({askDeleteConfirmation: false})
-        this._launchJob(DELETE_TICKET_JOB_TYPE, {})
+        this._createJob(DELETE_TICKET_JOB_TYPE, {})
     }
 
     _renderTagsMenu = () => {
@@ -617,6 +623,16 @@ class TicketListActions extends React.Component<Props, State> {
                         >
                             Apply macro
                         </DropdownItem>
+                        {/*{*/}
+                        {/*    hasRole(currentUser, AGENT_ROLE) && (*/}
+                        {/*        <DropdownItem*/}
+                        {/*            type="button"*/}
+                        {/*            onClick={this._bulkExport}*/}
+                        {/*        >*/}
+                        {/*            Export tickets*/}
+                        {/*        </DropdownItem>*/}
+                        {/*    )*/}
+                        {/*}*/}
                         <DropdownItem divider/>
                         {isActiveViewTrashView ?
                             ([

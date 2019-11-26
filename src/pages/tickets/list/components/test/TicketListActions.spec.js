@@ -5,6 +5,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import TicketListActions from '../TicketListActions'
+import {LITE_AGENT_ROLE, AGENT_ROLE} from '../../../../../config/user'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -12,7 +13,7 @@ const mockStore = configureMockStore(middlewares)
 describe('TicketListActions component', () => {
     const currentUserStore = fromJS({
         id: 1,
-        name: 'Monsieur Agent'
+        name: 'Peter Parker'
     })
 
     const viewsStore = fromJS({
@@ -114,6 +115,48 @@ describe('TicketListActions component', () => {
                     name: 'Trash'
                 }
             }),
+            agents: agentsStore,
+        })
+
+        const component = shallow(
+            <TicketListActions
+                store={store}
+                selectedItemsIds={fromJS([])}
+            />
+        ).dive()
+
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should display the export tickets button for agents', () => {
+        store = mockStore({
+            currentUser: fromJS({
+                id: 1,
+                name: 'Peter Parker',
+                roles: [{id: 1, name: AGENT_ROLE}]
+            }),
+            views: viewsStore,
+            agents: agentsStore,
+        })
+
+        const component = shallow(
+            <TicketListActions
+                store={store}
+                selectedItemsIds={fromJS([])}
+            />
+        ).dive()
+
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should not display the export tickets button for lite agents', () => {
+        store = mockStore({
+            currentUser: fromJS({
+                id: 1,
+                name: 'Peter Parker',
+                roles: [{id: 2, name: LITE_AGENT_ROLE}]
+            }),
+            views: viewsStore,
             agents: agentsStore,
         })
 
